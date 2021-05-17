@@ -1,0 +1,98 @@
+package kr.co.eicn.ippbx.front.service.excel;
+
+import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbDataController;
+import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbResultController;
+import kr.co.eicn.ippbx.front.controller.web.admin.outbound.pds.PdsCustominfoController;
+import kr.co.eicn.ippbx.front.controller.web.admin.outbound.pds.PdsResultController;
+import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonMaindbMultichannelInfo;
+import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonResultCustomInfo;
+import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonCode;
+import kr.co.eicn.ippbx.server.jooq.pds.tables.pojos.PdsCustomInfo;
+import kr.co.eicn.ippbx.server.jooq.pds.tables.pojos.ResultCustomInfo;
+import kr.co.eicn.ippbx.server.model.entity.customdb.ResultCustomInfoEntity;
+import kr.co.eicn.ippbx.server.model.entity.eicn.CommonTypeEntity;
+import kr.co.eicn.ippbx.server.model.entity.pds.PDSResultCustomInfoEntity;
+import lombok.SneakyThrows;
+import lombok.val;
+import org.apache.poi.ss.util.CellRangeAddress;
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class PdsResultExcel extends AbstractExcel {
+    private final List<PDSResultCustomInfoEntity> list;
+    private final CommonTypeEntity pdsType;
+    private final CommonTypeEntity resultType;
+
+    @SneakyThrows
+    public PdsResultExcel(List<PDSResultCustomInfoEntity> list, CommonTypeEntity pdsType, CommonTypeEntity resultType) {
+        this.list = list;
+        this.pdsType = pdsType;
+        this.resultType = resultType;
+        createBody();
+    }
+
+    @SneakyThrows
+    @SuppressWarnings("unchecked")
+    private void createBody() {
+        val firstHeader = new ArrayList<>(Arrays.asList("상담기본정보", ""));
+        firstHeader.add("고객정보필드");
+        for (int i = 1; i < pdsType.getFields().size(); i++) firstHeader.add("");
+        firstHeader.add("상담결과필드");
+        for (int i = 1; i < resultType.getFields().size(); i++) firstHeader.add("");
+        addRow(sheetHeadStyle, firstHeader.toArray());
+
+        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 0, 1));
+        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 2, 2 + pdsType.getFields().size() - 1));
+        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 2 + pdsType.getFields().size(), 2 + pdsType.getFields().size() + resultType.getFields().size() - 1));
+
+        val secondHeader = new ArrayList<>(Arrays.asList("상담등록시간", "상담원"));
+        pdsType.getFields().forEach(field -> secondHeader.add(field.getFieldInfo()));
+        resultType.getFields().forEach(field -> secondHeader.add(field.getFieldInfo()));
+        addRow(sheetHeadStyle, secondHeader.toArray());
+
+        val customIdToFieldNameToValueMap = PdsCustominfoController.createCustomIdToFieldNameToValueMap(list.stream().map(PDSResultCustomInfoEntity::getPdsCustomInfoEntity).collect(Collectors.toList()), pdsType);
+        val seqToFieldNameToValueMap = PdsResultController.createSeqToFieldNameToValueMap((List<ResultCustomInfo>) (List<?>)list, resultType);
+        for (val e : list) {
+            final List<String> row = new ArrayList<>(Arrays.asList(e.getGroupKind(), niceFormat(e.getResultDate()), e.getUserid(), e.getCustomNumber()));
+            pdsType.getFields().forEach(field -> {
+                final Object value = customIdToFieldNameToValueMap.get(e.getCustomId()).get(field.getFieldId());
+
+                if (Objects.equals(field.getFieldType(), "CODE")) {
+                    row.add(field.getCodes().stream().filter(e2 -> Objects.equals(e2.getCodeId(), value)).map(CommonCode::getCodeName).findFirst().orElse(""));
+                } else if (Objects.equals(field.getFieldType(), "MULTICODE")) {
+                    if (value == null) {
+                        row.add("");
+                    } else {
+                        final StringBuilder builder = new StringBuilder();
+                        for (String v : value.toString().split(","))
+                            builder.append(field.getCodes().stream().filter(e2 -> Objects.equals(e2.getCodeId(), v)).map(CommonCode::getCodeName).findFirst().orElse("")).append(" ");
+                        row.add(builder.toString());
+                    }
+                } else {
+                    row.add(niceFormat(value));
+                }
+            });
+            resultType.getFields().forEach(field -> {
+                final Object value = seqToFieldNameToValueMap.get(e.getSeq()).get(field.getFieldId());
+
+                if (Objects.equals(field.getFieldType(), "CODE")) {
+                    row.add(field.getCodes().stream().filter(e2 -> Objects.equals(e2.getCodeId(), value)).map(CommonCode::getCodeName).findFirst().orElse(""));
+                } else if (Objects.equals(field.getFieldType(), "MULTICODE")) {
+                    if (value == null) {
+                        row.add("");
+                    } else {
+                        final StringBuilder builder = new StringBuilder();
+                        for (String v : value.toString().split(","))
+                            builder.append(field.getCodes().stream().filter(e2 -> Objects.equals(e2.getCodeId(), v)).map(CommonCode::getCodeName).findFirst().orElse("")).append(" ");
+                        row.add(builder.toString());
+                    }
+                } else {
+                    row.add(niceFormat(value));
+                }
+            });
+
+            addRow(defaultStyle, row.toArray());
+        }
+    }
+}

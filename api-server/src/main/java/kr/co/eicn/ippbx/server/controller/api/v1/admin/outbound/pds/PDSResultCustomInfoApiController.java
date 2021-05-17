@@ -1,0 +1,106 @@
+package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.pds;
+
+import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
+import kr.co.eicn.ippbx.server.exception.ValidationException;
+import kr.co.eicn.ippbx.server.jooq.eicn.tables.ExecutePdsGroup;
+import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup;
+import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.server.model.entity.eicn.ExecutePDSGroupEntity;
+import kr.co.eicn.ippbx.server.model.entity.pds.PDSResultCustomInfoEntity;
+import kr.co.eicn.ippbx.server.model.enums.IdType;
+import kr.co.eicn.ippbx.server.model.form.PDSResultCustomInfoFormRequest;
+import kr.co.eicn.ippbx.server.model.search.ExecutePDSGroupSearchRequest;
+import kr.co.eicn.ippbx.server.model.search.PDSResultCustomInfoSearchRequest;
+import kr.co.eicn.ippbx.server.repository.eicn.ExecutePDSGroupRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.HistoryPDSGroupRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.PDSGroupRepository;
+import kr.co.eicn.ippbx.server.service.CacheService;
+import kr.co.eicn.ippbx.server.service.PBXServerInterface;
+import kr.co.eicn.ippbx.server.service.PDSResultCustomInfoService;
+import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.server.util.page.Pagination;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.jooq.DSLContext;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import static kr.co.eicn.ippbx.server.util.JsonResult.create;
+import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+
+@Slf4j
+@RequiredArgsConstructor
+@RestController
+@RequestMapping(value = "api/v1/admin/outbound/pds/resultcustominfo", produces = MediaType.APPLICATION_JSON_VALUE)
+public class PDSResultCustomInfoApiController extends ApiBaseController {
+
+    private final PDSResultCustomInfoService service;
+    private final PDSGroupRepository pdsGroupRepository;
+    private final ExecutePDSGroupRepository executePDSGroupRepository;//데모후 찾는정보.
+    private final HistoryPDSGroupRepository historyPDSGroupRepository;
+    private final CacheService cacheService;
+    private final PBXServerInterface pbxServerInterface;
+
+    @GetMapping("excutepds_info")
+    public ResponseEntity<JsonResult<List<ExecutePDSGroupEntity>>> getExecutingPdsList(ExecutePDSGroupSearchRequest search) {
+        final List<PdsGroup> pdsGroups = pdsGroupRepository.findAll();
+        final List<CompanyServerEntity> servers = cacheService.getCompanyServerList(g.getUser().getCompanyId());
+        final List<ExecutePDSGroupEntity> rows = new java.util.ArrayList<>(Collections.emptyList());
+
+        pdsGroups.forEach(group -> {
+            final Optional<CompanyServerEntity> optionalServer = servers.stream().filter(server -> server.getHost().equals(group.getRunHost())).findAny();
+            if (optionalServer.isPresent()) {
+                try (final DSLContext pbxDsl = pbxServerInterface.using(optionalServer.get().getHost())) {
+                    rows.addAll(executePDSGroupRepository.findAll(pbxDsl, ExecutePdsGroup.EXECUTE_PDS_GROUP.PDS_GROUP_ID.eq(group.getSeq())));
+                }
+            }
+        });
+
+        return ResponseEntity.ok(data(rows));
+    }
+
+    @GetMapping("{executeId}/data")
+    public ResponseEntity<JsonResult<Pagination<PDSResultCustomInfoEntity>>> getPagination(@PathVariable String executeId, PDSResultCustomInfoSearchRequest search) {
+        search.setExecuteId(executeId);
+        //return data(service.getRepository(executeId).pagination(search));
+        return ResponseEntity.ok(data(service.getRepository(executeId).pagination(search)));
+    }
+
+    @GetMapping("{executeId}/data/{seq}")
+    public ResponseEntity<JsonResult<PDSResultCustomInfoEntity>> get(@PathVariable String executeId, @PathVariable Integer seq) {
+        return ResponseEntity.ok(data(service.getRepository(executeId).findOne(seq)));
+    }
+
+    @PutMapping("{executeId}/data/{seq}")
+    public JsonResult<Void> put(@Valid @RequestBody PDSResultCustomInfoFormRequest form, BindingResult bindingResult,
+                                @PathVariable String executeId, @PathVariable Integer seq) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        if (!form.validate(bindingResult))
+            throw new ValidationException(bindingResult);
+
+        PDSResultCustomInfoEntity response = service.getRepository(executeId).findOne(seq);
+        if (g.getUser().getIdType().equals(IdType.USER.getCode()) && !g.getUser().getId().equals(response.getUserid()))
+            throw new IllegalArgumentException("다른 상담원의 이력은 수정할 수 없습니다.");
+
+        service.getRepository(executeId).update(form, seq);
+        return create();
+    }
+
+    @DeleteMapping("{executeId}/data/{seq}")
+    public ResponseEntity<JsonResult<Void>> delete(@PathVariable String executeId, @PathVariable Integer seq) {
+        
+        PDSResultCustomInfoEntity response = service.getRepository(executeId).findOne(seq);
+        if (g.getUser().getIdType().equals(IdType.USER.getCode()) && !g.getUser().getId().equals(response.getUserid()))
+            throw new IllegalArgumentException("다른 상담원의 이력은 삭제할 수 없습니다.");
+        
+        service.getRepository(executeId).deleteData(seq);
+        return ResponseEntity.ok(create());
+    }
+}

@@ -1,0 +1,33 @@
+package kr.co.eicn.ippbx.server.model.form;
+
+import kr.co.eicn.ippbx.server.util.PatternUtils;
+import kr.co.eicn.ippbx.server.util.valid.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import org.springframework.validation.BindingResult;
+
+import java.time.LocalDate;
+
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class DayScheduleInfoFormRequest extends ScheduleInfoFormRequest {
+	@NotNull("시작일")
+	private String fromDate;
+	@NotNull("종료일")
+	private String toDate;
+
+	@Override
+	public boolean validate(BindingResult bindingResult) {
+		if (isNotEmpty(fromDate) && isNotEmpty(toDate))
+			if (!PatternUtils.isDate(fromDate))
+				reject(bindingResult, "fromDate", "messages.validator.pattern", "시작일");
+			else if (!PatternUtils.isDate(toDate))
+				reject(bindingResult, "toDate", "messages.validator.pattern", "종료일");
+			else if (LocalDate.parse(fromDate).isAfter(LocalDate.parse(toDate)))
+				reject(bindingResult, "fromDate", "messages.validator.enddate.after.startdate");
+
+		return super.validate(bindingResult);
+	}
+}

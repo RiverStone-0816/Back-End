@@ -1,0 +1,25 @@
+package kr.co.eicn.ippbx.server.model.entity.customdb;
+
+import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonEicnCdr;
+import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonMaindbCustomInfo;
+import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonResultCustomInfo;
+import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.server.model.dto.customdb.MultiChannelInfoResponse;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class ResultCustomInfoEntity extends CommonResultCustomInfo {
+    private CommonMaindbCustomInfo customInfo;
+    private CommonEicnCdr eicnCdr;
+    private List<MultiChannelInfoResponse> multiChannelInfo;
+    private List<MaindbMultichannelInfoEntity> multichannelList = new ArrayList<>();
+    private String userName;
+    private String userOrgName;
+    private String userTrName;
+    private PersonList personList; // 상담원 정보
+}

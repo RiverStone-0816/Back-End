@@ -1,0 +1,131 @@
+package kr.co.eicn.ippbx.server.repository.statdb;
+
+import kr.co.eicn.ippbx.server.jooq.statdb.tables.CommonStatUserOutbound;
+import kr.co.eicn.ippbx.server.model.entity.statdb.StatUserOutboundEntity;
+import kr.co.eicn.ippbx.server.model.enums.SearchCycle;
+import kr.co.eicn.ippbx.server.model.search.StatUserSearchRequest;
+import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
+import org.jooq.Condition;
+import org.jooq.Record;
+import org.jooq.SelectConditionStep;
+import org.jooq.SelectJoinStep;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static org.jooq.impl.DSL.*;
+
+@Getter
+public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatUserOutbound, StatUserOutboundEntity, Integer> {
+    protected final Logger logger = LoggerFactory.getLogger(StatUserOutboundRepository.class);
+
+    private final CommonStatUserOutbound TABLE;
+    private boolean isTotal = false;
+
+    public StatUserOutboundRepository(String companyId) {
+        super(new CommonStatUserOutbound(companyId), new CommonStatUserOutbound(companyId).SEQ, StatUserOutboundEntity.class);
+        TABLE = new CommonStatUserOutbound(companyId);
+
+        addField(
+                year(TABLE.STAT_DATE),
+                month(TABLE.STAT_DATE),
+                TABLE.STAT_DATE,
+                TABLE.STAT_HOUR,
+                dayOfWeek(TABLE.STAT_DATE),
+                TABLE.GROUP_CODE,
+                TABLE.USERID,
+                ifnull(sum(TABLE.OUT_TOTAL), 0).as(TABLE.OUT_TOTAL),
+                ifnull(sum(TABLE.OUT_SUCCESS), 0).as(TABLE.OUT_SUCCESS),
+                ifnull(sum(TABLE.OUT_BILLSEC_SUM), 0).as(TABLE.OUT_BILLSEC_SUM),
+                ifnull(sum(TABLE.CALLBACK_CALL_CNT), 0).as(TABLE.CALLBACK_CALL_CNT),
+                ifnull(sum(TABLE.CALLBACK_CALL_SUCC), 0).as(TABLE.CALLBACK_CALL_SUCC),
+                ifnull(sum(TABLE.RESERVE_CALL_CNT), 0).as(TABLE.RESERVE_CALL_CNT),
+                ifnull(sum(TABLE.RESERVE_CALL_SUCC), 0).as(TABLE.RESERVE_CALL_SUCC),
+                TABLE.DCONTEXT
+        );
+    }
+
+    @Override
+    protected SelectConditionStep<Record> query(SelectJoinStep<Record> query) {
+        if (!isTotal)
+            query.groupBy(TABLE.USERID);
+
+        setTimeUnit(query);
+
+        return query.where();
+    }
+
+    public List<StatUserOutboundEntity> findAll(StatUserSearchRequest search) {
+        isTotal = false;
+        return findAll(conditions(search));
+    }
+
+    public List<StatUserOutboundEntity> findAllTotal(StatUserSearchRequest search) {
+        standardTime = null;
+        isTotal = true;
+        return findAll(conditions(search));
+    }
+
+    public List<Condition> conditions(StatUserSearchRequest search) {
+        List<Condition> conditions = new ArrayList<>();
+
+        standardTime = search.getTimeUnit();
+
+        if (StringUtils.isNotEmpty(search.getGroupCode()))
+            conditions.add(TABLE.GROUP_TREE_NAME.like("%" + search.getGroupCode() + "%"));
+
+        if (search.getPersonIds().size() > 0) {
+            Condition personCondition = noCondition();
+            for (String personId : search.getPersonIds()) {
+                personCondition = personCondition.or(TABLE.USERID.eq(personId));
+            }
+
+            conditions.add(personCondition);
+        }
+
+        conditions.add(getOutboundCondition(search));
+
+        return conditions;
+    }
+
+    public StatUserOutboundEntity getBillsecSumByHunt(String userId) {
+        final StatUserOutboundEntity entity = new StatUserOutboundEntity();
+        final List<StatUserOutboundEntity> entityList = findAllByHunt(userId);
+
+        entity.setOutSuccess(0);
+        entity.setOutBillsecSum(0);
+        for (StatUserOutboundEntity outboundEntity : entityList) {
+            entity.setOutBillsecSum(entity.getOutBillsecSum() + outboundEntity.getOutBillsecSum());
+            entity.setOutSuccess(entity.getOutSuccess() + outboundEntity.getOutSuccess());
+        }
+
+        return entity;
+    }
+
+    public List<StatUserOutboundEntity> findAllByHunt(String userId) {
+        return dsl.select(TABLE.fields())
+                .from(TABLE)
+                .where(compareCompanyId())
+                .and(TABLE.STAT_DATE.eq(currentDate()))
+                .and(TABLE.DCONTEXT.eq("hunt_context"))
+                .and(TABLE.USERID.eq(userId))
+                .fetchInto(StatUserOutboundEntity.class);
+    }
+
+    public Map<String, StatUserOutboundEntity> findAllUserIndividualStat() {
+        return dsl.select(TABLE.USERID,
+                ifnull(sum(TABLE.OUT_TOTAL), 0).as(TABLE.OUT_TOTAL),
+                ifnull(sum(TABLE.OUT_SUCCESS), 0).as(TABLE.OUT_SUCCESS),
+                ifnull(sum(TABLE.OUT_BILLSEC_SUM), 0).as(TABLE.OUT_BILLSEC_SUM))
+                .from(TABLE)
+                .where(compareCompanyId())
+                .and(TABLE.STAT_DATE.eq(currentDate()))
+                .groupBy(TABLE.USERID)
+                .fetchMap(TABLE.USERID, StatUserOutboundEntity.class);
+    }
+}

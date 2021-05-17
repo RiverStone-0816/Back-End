@@ -1,0 +1,154 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+
+<%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="cached" type="kr.co.eicn.ippbx.front.config.CachedEntity"--%>
+<%--@elvariable id="user" type="kr.co.eicn.ippbx.server.model.dto.eicn.PersonDetailResponse"--%>
+<%--@elvariable id="version" type="java.lang.String"--%>
+
+<tags:tabContentLayout>
+    <div class="content-wrapper-frame">
+        <tags:page-menu-tab url="/admin/service/etc/monit/"/>
+        <div class="sub-content ui container fluid unstackable">
+            <form:form id="search-form" commandName="search" method="get" class="panel panel-search">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        검색
+                    </div>
+                    <div class="pull-right">
+                        <div class="ui slider checkbox">
+                            <label>접기/펴기</label>
+                            <input type="checkbox" name="newsletter">
+                        </div>
+                        <div class="btn-wrap">
+                            <button type="submit" class="ui brand basic button">검색</button>
+                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="search-area">
+                        <div class="ui grid">
+                            <div class="row">
+                                <div class="two wide column"><label class="control-label">부서선택</label></div>
+                                <div class="five wide column">
+                                    <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group" data-clear=".-clear-group">
+                                        <button type="button" class="ui icon button mini blue compact -select-group">
+                                            <i class="search icon"></i>
+                                        </button>
+                                        <form:hidden path="groupCode"/>
+                                        <div class="ui breadcrumb -group-name">
+                                            <c:choose>
+                                                <c:when test="${searchOrganizationNames != null && searchOrganizationNames.size() > 0}">
+                                                    <c:forEach var="e" items="${searchOrganizationNames}" varStatus="status">
+                                                        <span class="section">${g.htmlQuote(e)}</span>
+                                                        <c:if test="${!status.last}">
+                                                            <i class="right angle icon divider"></i>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                        <button type="button" class="ui icon button mini compact -clear-group">
+                                            <i class="undo icon"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form:form>
+            <div class="panel">
+                <div class="panel-body">
+                    <div class="ui three column grid">
+                        <c:forEach var="e" items="${list}" varStatus="status">
+                            <div class="column">
+                                <table class="ui celled table compact unstackable fixed">
+                                    <caption>${g.htmlQuote(e.groupName)}</caption>
+                                    <thead>
+                                    <tr>
+                                        <th>상담원</th>
+                                        <th>상태</th>
+                                        <th>상태변경</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:choose>
+                                        <c:when test="${e.person != null && e.person.size() > 0}">
+                                            <c:forEach var="person" items="${e.person}">
+                                                <tr>
+                                                    <td>${g.htmlQuote(person.idName)}(${g.htmlQuote(person.extension)})</td>
+                                                    <td>
+                                                        <span data-peer="${g.htmlQuote(person.peer)}"
+                                                              class="-status-label ui small label ${person.paused != null && person.paused == 0 ? 'blue' : null} -consultant-status"> ${g.htmlQuote(statusCodes.get(person.paused))} </span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="ui form">
+                                                            <select onchange="updatePersonPausedStatus('${g.htmlQuote(person.peer)}', $(this).val())">
+                                                                <c:forEach var="s" items="${statusCodes}">
+                                                                    <option value="${s.key}" ${person.paused != null && person.paused == s.key ? 'selected' : null}>${g.htmlQuote(s.value)}</option>
+                                                                </c:forEach>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <tr>
+                                                <td colspan="3" class="null-data">소속된 상담원이 없습니다.</td>
+                                            </tr>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
+    <tags:scripts>
+        <script>
+            const statusCodes = {
+                <c:forEach var="s" items="${statusCodes}">
+                '${s.key}': '${g.escapeQuote(s.value)}',
+                </c:forEach>
+            };
+
+            const ipccAdminCommunicator = createIpccAdminCommunicator()
+                .on("MEMBERSTATUS", function (message, kind, nothing, nothing_, peer, currentStatus, previousStatus) {
+                    $('.-status-label').filter(function () {
+                        return $(this).attr('data-peer') === peer;
+                    }).each(function () {
+                        $(this).removeClass('blue');
+                        if (currentStatus === '0') $(this).addClass('blue');
+                        $(this).text(statusCodes[currentStatus]);
+                    });
+                });
+
+            function updatePersonPausedStatus(peer, status) {
+                ipccAdminCommunicator.send({
+                    company_id: ipccAdminCommunicator.request.companyId,
+                    userid: ipccAdminCommunicator.request.userId,
+                    target_pbx: ipccAdminCommunicator.request.pbxName,
+                    command: 'CMD|SETMEMBERSTATUS|${user.companyId},' + peer + ',' + status
+                });
+            }
+        </script>
+    </tags:scripts>
+</tags:tabContentLayout>

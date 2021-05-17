@@ -1,0 +1,793 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>kr.co.eicn</groupId>
+    <artifactId>ippbx.front</artifactId>
+    <name>Server</name>
+    <version>20210217</version>
+    <packaging>war</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <file.encoding>UTF-8</file.encoding>
+
+        <application.version>${project.version}</application.version>
+        <web.directory>${basedir}/src/main/webapp</web.directory>
+
+        <jdbc.driverClass>com.mysql.jdbc.Driver</jdbc.driverClass>
+        <jdbc.maven.groupId>mysql</jdbc.maven.groupId>
+        <jdbc.maven.artifactId>mysql-connector-java</jdbc.maven.artifactId>
+        <jdbc.maven.version>5.1.39</jdbc.maven.version>
+        <jdbc.dialect>mysql</jdbc.dialect>
+        <jdbc.port>3306</jdbc.port>
+        <jdbc.url>jdbc:${jdbc.dialect}://${jdbc.host}:${jdbc.port}/${jdbc.service}?useUnicode=yes&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;autoReconnectForPools=true&amp;zeroDateTimeBehavior=convertToNull&amp;useSSL=false</jdbc.url>
+
+        <java.version>1.8</java.version>
+        <embed.server.port>19010</embed.server.port>
+
+        <org.springframework.version>4.3.24.RELEASE</org.springframework.version>
+        <com.fasterxml.jackson.version>2.9.8</com.fasterxml.jackson.version>
+
+        <org.aspectj.version>1.9.2</org.aspectj.version>
+        <org.slf4j.version>1.7.21</org.slf4j.version>
+        <ch.qos.logback.version>1.1.7</ch.qos.logback.version>
+        <org.apache.poi.version>4.1.0</org.apache.poi.version>
+        <org.jooq.version>3.12.4</org.jooq.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-websocket</artifactId>
+            <version>${org.springframework.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${org.springframework.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${com.fasterxml.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${com.fasterxml.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${com.fasterxml.jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-joda</artifactId>
+            <version>${com.fasterxml.jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${org.apache.poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${org.apache.poi.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>aopalliance</groupId>
+            <artifactId>aopalliance</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
+            <version>${org.aspectj.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${org.aspectj.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.10</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
+            <version>1.4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>4.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.snksoft</groupId>
+            <artifactId>crc</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${org.slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>${org.slf4j.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${ch.qos.logback.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.0.14.Final</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.websocket</groupId>
+            <artifactId>javax.websocket-api</artifactId>
+            <version>1.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>javax.servlet.jsp-api</artifactId>
+            <version>2.3.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>4.2.13.RELEASE</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>67.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>${org.jooq.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${jdbc.maven.groupId}</groupId>
+            <artifactId>${jdbc.maven.artifactId}</artifactId>
+            <version>${jdbc.maven.version}</version>
+        </dependency>
+
+        <!-- webjars common -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery-blockui</artifactId>
+            <version>2.65</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>momentjs</artifactId>
+            <version>2.21.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>less.js</artifactId>
+            <version>2.7.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>font-awesome</artifactId>
+            <version>5.13.0</version>
+        </dependency>
+
+        <!-- webjars depend -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery-ui</artifactId>
+            <version>1.12.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>d3js</artifactId>
+            <version>5.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>Semantic-UI</artifactId>
+            <version>2.4.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>overlayscrollbars</artifactId>
+            <version>1.9.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>material-design-icons</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>toastr</artifactId>
+            <version>2.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>cryptojs</artifactId>
+            <version>3.1.2</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <defaultGoal>install</defaultGoal>
+        <directory>${basedir}/target</directory>
+        <finalName>ROOT</finalName>
+        <sourceDirectory>target/generated-sources/delombok</sourceDirectory>
+        <testSourceDirectory>target/generated-test-sources/delombok</testSourceDirectory>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>${basedir}/src/main/resources-${env}</directory>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok-maven-plugin</artifactId>
+                <version>1.16.18.1</version>
+                <executions>
+                    <execution>
+                        <id>delombok</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>delombok</goal>
+                        </goals>
+                        <configuration>
+                            <addOutputDirectory>false</addOutputDirectory>
+                            <sourceDirectory>src/main/java</sourceDirectory>
+                            <encoding>${file.encoding}</encoding>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>test-delombok</id>
+                        <phase>generate-test-sources</phase>
+                        <goals>
+                            <goal>testDelombok</goal>
+                        </goals>
+                        <configuration>
+                            <addOutputDirectory>false</addOutputDirectory>
+                            <sourceDirectory>src/test/java</sourceDirectory>
+                            <encoding>${file.encoding}</encoding>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>${org.jooq.version}</version>
+                <executions>
+                    <execution>
+                        <!--<phase>generate-sources</phase>-->
+                        <phase>none</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jdbc>
+                        <driver>${jdbc.driverClass}</driver>
+                        <url>${jdbc.url}</url>
+                        <user>${jdbc.user}</user>
+                        <password>${jdbc.password}</password>
+                    </jdbc>
+                    <generator>
+                        <name>org.jooq.codegen.JavaGenerator</name>
+                        <strategy>
+                            <name>org.jooq.codegen.DefaultGeneratorStrategy</name>
+                        </strategy>
+
+                        <generate>
+                            <deprecated>false</deprecated>
+                            <instanceFields>true</instanceFields>
+                            <pojos>true</pojos>
+                        </generate>
+
+                        <database>
+                            <name>org.jooq.meta.mysql.MySQLDatabase</name>
+                            <includes>.*</includes>
+                            <excludes>
+                                schema_version
+                                | menu_company_.*
+                                | cst_custom_info_.*
+                                | maindb_custom_info_.*
+                                | maindb_key_info_.*
+                                | maindb_multichannel_info_.*
+                                | result_custom_info_.*
+                                | talk_msg_.*
+                                | talk_room_.*
+                                | voc_result_.*
+                                | execute_pds_custom_info_.*
+                                | pds_custom_info_.*
+                                | result_custom_info_.*
+                                | stat_inbound_.*
+                                | stat_member_.*
+                                | stat_outbound_.*
+                                | stat_talk_.*
+                                | stat_user_inbound_.*
+                                | stat_user_outbound_.*
+                                | stat_voc_.*
+                                | stat_queue_wait_.*
+                                | chatt_bookmark_.*
+                                | chatt_msg_read_.*
+                                | chatt_room_member_.*
+                                | eicn_cdr_.*
+                                | history_queue_wait_.*
+                                | CUSTOMDB.member_status_.*
+                                | prv_custom_info_.*
+                                | voc_custom_list_.*
+                                | voc_research_result_.*
+                                | pds_research_result_.*
+                                | stat_user_ranking_.*
+                            </excludes>
+                            <forcedTypes>
+                                <forcedType>
+                                    <name>BOOLEAN</name>
+                                    <includeTypes>(?i:(TINY|SMALL|MEDIUM|BIG)?INT(UNSIGNED)?\(1\))</includeTypes>
+                                </forcedType>
+                            </forcedTypes>
+                            <schemata>
+                                <schema>
+                                    <inputSchema>eicn</inputSchema>
+                                </schema>
+                                <schema>
+                                    <inputSchema>CUSTOMDB</inputSchema>
+                                </schema>
+                                <schema>
+                                    <inputSchema>CONFIGDB</inputSchema>
+                                </schema>
+                                <schema>
+                                    <inputSchema>STATDB</inputSchema>
+                                </schema>
+                                <schema>
+                                    <inputSchema>PDS</inputSchema>
+                                </schema>
+                            </schemata>
+                        </database>
+                        <target>
+                            <packageName>kr.co.eicn.ippbx.server.jooq</packageName>
+                            <directory>target/generated-sources/delombok</directory>
+                        </target>
+                    </generator>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.samaxes.maven</groupId>
+                <artifactId>minify-maven-plugin</artifactId>
+                <version>1.7.6</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>minify</goal>
+                        </goals>
+                        <configuration>
+                            <webappTargetDir>${project.basedir}/target/${project.build.finalName}</webappTargetDir>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <charset>${file.encoding}</charset>
+                    <webappSourceDir>${web.directory}</webappSourceDir>
+                    <webappTargetDir>${web.directory}</webappTargetDir>
+                    <skipMerge>false</skipMerge>
+                    <!--<nosuffix>false</nosuffix>-->
+                    <suffix>.min</suffix>
+                    <jsEngine>CLOSURE</jsEngine>
+                    <jsSourceDir>resources/js</jsSourceDir>
+                    <jsTargetDir>resources/compiled</jsTargetDir>
+                    <jsFinalFile>${project.version}.js</jsFinalFile>
+                    <skipMinify>true</skipMinify>
+                    <jsSourceFiles>
+                        <jsSourceFile>string.ex.js</jsSourceFile>
+                        <jsSourceFile>formData.ex.js</jsSourceFile>
+                        <jsSourceFile>jquery.ex.js</jsSourceFile>
+                        <jsSourceFile>jquery.leanModal.js</jsSourceFile>
+                        <jsSourceFile>jquery.bind.helpers.js</jsSourceFile>
+                        <jsSourceFile>TabController.js</jsSourceFile>
+                        <jsSourceFile>IvrEditor.js</jsSourceFile>
+                        <jsSourceFile>IpccAdminCommunicator.js</jsSourceFile>
+                        <jsSourceFile>IpccPdsCommunicator.js</jsSourceFile>
+                        <jsSourceFile>IpccCommunicator.js</jsSourceFile>
+                        <jsSourceFile>TalkCommunicator.js</jsSourceFile>
+                        <jsSourceFile>MessengerCommunicator.js</jsSourceFile>
+                        <jsSourceFile>common.func.js</jsSourceFile>
+                        <jsSourceFile>depend.func.js</jsSourceFile>
+                        <jsSourceFile>depend.use.strict.js</jsSourceFile>
+                    </jsSourceFiles>
+                    <jsSourceExcludes>
+                        <jsSourceExclude>**/_unused/**</jsSourceExclude>
+                        <jsSourceExclude>**/*.min.js</jsSourceExclude>
+                        <jsSourceExclude>**/*.css</jsSourceExclude>
+                        <jsSourceExclude>**/*.xml</jsSourceExclude>
+                        <jsSourceExclude>**/*.properties</jsSourceExclude>
+                    </jsSourceExcludes>
+                    <cssSourceDir>resources/compiled</cssSourceDir>
+                    <cssTargetDir>resources/compiled</cssTargetDir>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.lesscss</groupId>
+                <artifactId>lesscss-maven-plugin</artifactId>
+                <version>1.7.0.1.1</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.basedir}/target/${project.build.finalName}/resources/compiled</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!--<lessJs>${project.basedir}/src/main/webapp/resources/library/miscellaneous/less-2.6.1.min.js</lessJs>-->
+                    <includes>
+                        <include>app.less</include>
+                    </includes>
+                    <sourceDirectory>src/main/webapp/resources/less</sourceDirectory>
+                    <outputDirectory>${web.directory}/resources/compiled</outputDirectory>
+                    <compress>true</compress>
+                    <force>true</force>
+                    <outputFileFormat>${project.version}.min.css</outputFileFormat>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.tinywind</groupId>
+                <artifactId>tomcat-embed-maven</artifactId>
+                <version>8.5.2</version>
+                <configuration>
+                    <port>${embed.server.port}</port>
+                    <contextPath>/</contextPath>
+                    <baseDir>${web.directory}</baseDir>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.tomcat.embed</groupId>
+                        <artifactId>tomcat-embed-websocket</artifactId>
+                        <version>8.5.2</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <path>${tomcat.deploy.path}</path>
+                    <url>${tomcat.deploy.url}</url>
+                    <username>${tomcat.deploy.username}</username>
+                    <password>${tomcat.deploy.password}</password>
+                    <warFile>${project.build.directory}/${project.build.finalName}.${project.packaging}</warFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>write-project-properties</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <outputFile>${project.build.outputDirectory}/maven.properties</outputFile>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-eclipse-plugin</artifactId>
+                <version>2.10</version>
+                <configuration>
+                    <additionalProjectnatures>
+                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+                    </additionalProjectnatures>
+                    <additionalBuildcommands>
+                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+                    </additionalBuildcommands>
+                    <downloadSources>true</downloadSources>
+                    <downloadJavadocs>true</downloadJavadocs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${file.encoding}</encoding>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <warSourceDirectory>${web.directory}</warSourceDirectory>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>local</env>
+
+                <jdbc.host>122.49.74.233</jdbc.host>
+                <jdbc.service>eicn</jdbc.service>
+                <jdbc.user>eicn</jdbc.user>
+                <jdbc.password>eicnrw</jdbc.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>stage</id>
+            <properties>
+                <env>stage</env>
+
+                <jdbc.host>122.49.74.233</jdbc.host>
+                <jdbc.service>eicn</jdbc.service>
+                <jdbc.user>eicn</jdbc.user>
+                <jdbc.password>eicnrw</jdbc.password>
+
+                <tomcat.deploy.path>/</tomcat.deploy.path>
+                <tomcat.deploy.url>http://122.49.74.233/manager/text</tomcat.deploy.url>
+                <tomcat.deploy.username>tomcat</tomcat.deploy.username>
+                <tomcat.deploy.password>tomcat</tomcat.deploy.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>guns</id>
+            <properties>
+                <env>guns</env>
+
+                <jdbc.host>112.216.160.18</jdbc.host>
+                <jdbc.service>eicn</jdbc.service>
+                <jdbc.user>eicn</jdbc.user>
+                <jdbc.password>eicnrw</jdbc.password>
+
+                <tomcat.deploy.path>/</tomcat.deploy.path>
+                <tomcat.deploy.url>http://112.216.160.18/manager/text</tomcat.deploy.url>
+                <tomcat.deploy.username>tomcat</tomcat.deploy.username>
+                <tomcat.deploy.password>tomcat</tomcat.deploy.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>cc</id>
+            <properties>
+                <env>cc</env>
+
+                <jdbc.host>MAIN_DB_VIP</jdbc.host>
+                <jdbc.service>eicn</jdbc.service>
+                <jdbc.user>eicn</jdbc.user>
+                <jdbc.password>eicnrw</jdbc.password>
+
+                <tomcat.deploy.path>/</tomcat.deploy.path>
+                <tomcat.deploy.url>http://114.108.159.10:8080/manager/text</tomcat.deploy.url>
+                <tomcat.deploy.username>tomcat</tomcat.deploy.username>
+                <tomcat.deploy.password>tomcat</tomcat.deploy.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <inherited>true</inherited>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.0.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <excludeResources>true</excludeResources>
+                            <useDefaultExcludes>true</useDefaultExcludes>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <inherited>true</inherited>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.0.0-M1</version>
+                        <executions>
+                            <execution>
+                                <id>bundle-sources</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <maxmemory>1024</maxmemory>
+                            <encoding>${file.encoding}</encoding>
+                            <show>protected</show>
+                            <notree>true</notree>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>

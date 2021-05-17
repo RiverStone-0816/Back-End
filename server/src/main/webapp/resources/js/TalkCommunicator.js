@@ -1,0 +1,198 @@
+function TalkCommunicator() {
+    this.socket = null;
+    this.init();
+}
+
+TalkCommunicator.prototype.CONSTANTS = {
+    EVENT_WHOLE: '*'
+};
+TalkCommunicator.prototype.init = function () {
+    this.url = null;
+    this.request = null;
+    this.status = {
+        eventNumber: 0
+    };
+    this.events = {};
+    this.logClear();
+
+    return this;
+};
+TalkCommunicator.prototype.on = function (type, processor) {
+    if (!processor)
+        throw 'invalid argument';
+
+    if (!this.events[type])
+        this.events[type] = [];
+
+    this.events[type].push(processor);
+
+    return this;
+};
+TalkCommunicator.prototype.off = function (type, processor) {
+    if (!processor)
+        return this.events[type] = [];
+
+    if (!this.events[type])
+        this.events[type] = [];
+
+    const index = this.events[type].indexOf(processor);
+    if (index >= 0)
+        this.events[type].splice(index, 1);
+
+    return this;
+};
+TalkCommunicator.prototype.log = function (isSend, command, body) {
+    console.log((isSend ? "C->S" : "S->C") + ':: [' + (this.status.eventNumber++) + '.' + command + '] ' + (typeof body === 'object' ? JSON.stringify(body) : body));
+};
+TalkCommunicator.prototype.logClear = function () {
+    this.status.eventNumber = 0;
+};
+TalkCommunicator.prototype.connect = function (url, companyId, groupCode, groupTreeName, groupLevel, userid, username, authtype, usertype) {
+    this.url = url;
+    this.request = {
+        companyId: companyId,
+        groupCode: groupCode,
+        groupTreeName: groupTreeName,
+        groupLevel: groupLevel,
+        userid: userid,
+        username: username,
+        authtype: authtype,
+        usertype: usertype
+    };
+
+    const _this = this;
+    try {
+        this.socket = io.connect(url, {'reconnect': true, 'resource': 'socket.io'});
+        this.socket.emit('cli_join', {
+            company_id: _this.request.companyId,
+            group_code: _this.request.groupCode,
+            group_tree_name: _this.request.groupTreeName,
+            group_level: _this.request.groupLevel,
+            userid: _this.request.userid,
+            username: _this.request.username,
+            authtype: _this.request.authtype,
+            usertype: _this.request.usertype
+        }).on('connect', function () {
+            _this.log(false, 'connect', arguments);
+        }).on('svc_login', function (data) {
+            _this.log(false, 'svc_login', data);
+            _this.process('svc_login', data);
+        }).on('svc_logout', function (data) {
+            _this.log(false, 'svc_logout', data);
+            _this.process('svc_logout', data);
+        }).on('svc_msg', function (data) {
+            _this.log(false, 'svc_msg', data);
+            _this.process('svc_msg', data);
+        }).on('svc_control', function (data) {
+            _this.log(false, 'svc_control', data);
+            _this.process('svc_control', data);
+        }).on('svc_end', function (data) {
+            _this.log(false, 'svc_end', data);
+            _this.process('svc_end', data);
+        }).on('svcmsg_ping', function () {
+            _this.socket.emit('climsg_pong');
+        }).on('disconnect', function () {
+            _this.log(false, 'disconnect', arguments);
+        }).on('error', function () {
+            _this.log(false, 'error', arguments);
+        }).on('end', function () {
+            _this.log(false, 'end', arguments);
+        }).on('close', function () {
+            _this.log(false, 'close', arguments);
+        });
+    } catch (error) {
+        console.error(error);
+        setTimeout(function () {
+            _this.recovery();
+        }, 2000);
+    }
+};
+TalkCommunicator.prototype.disconnect = function () {
+    try {
+        this.socket.disconnect();
+    } catch (ignored) {
+    }
+
+    this.socket = null;
+    this.init();
+};
+TalkCommunicator.prototype.recovery = function () {
+    if (!this.url || !this.request)
+        throw 'connect() 수행 필요';
+    this.connect.apply(this, [
+        this.url,
+        this.request.companyId,
+        this.request.groupCode,
+        this.request.groupTreeName,
+        this.request.groupLevel,
+        this.request.userid,
+        this.request.username,
+        this.request.authtype,
+        this.request.usertype
+    ]);
+};
+TalkCommunicator.prototype.process = function (event, data) {
+    if (this.events[event]) {
+        const events = this.events[event];
+        for (let i = 0; i < events.length; i++) {
+            events[i].apply(this, [data, event]);
+        }
+    }
+
+    if (this.events[this.CONSTANTS.EVENT_WHOLE]) {
+        const events = this.events[this.CONSTANTS.EVENT_WHOLE];
+        for (let i = 0; i < events.length; i++) {
+            events[i].apply(this, [data, event]);
+        }
+    }
+
+    return this;
+};
+TalkCommunicator.prototype.sendMessage = function (roomId, senderKey, userKey, contents) {
+    this.socket.emit('cli_msg', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        sender_key: senderKey,
+        send_receive: "S",
+        user_key: userKey,
+        etc_data: "",
+        contents: contents
+    });
+};
+TalkCommunicator.prototype.assignUnassignedRoomToMe = function (roomId, senderKey, userKey) {
+    this.socket.emit('cli_control', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        sender_key: senderKey,
+        send_receive: "SZ",
+        user_key: userKey,
+        etc_data: "",
+        contents: ""
+    });
+};
+TalkCommunicator.prototype.assignAssignedRoomToMe = function (roomId, senderKey, userKey) {
+    this.socket.emit('cli_control', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        sender_key: senderKey,
+        send_receive: "SG",
+        user_key: userKey,
+        etc_data: "",
+        contents: ""
+    });
+};
+TalkCommunicator.prototype.deleteRoom = function (roomId, senderKey, userKey) {
+    this.socket.emit('cli_end', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        sender_key: senderKey,
+        send_receive: "SE",
+        user_key: userKey,
+        etc_data: "",
+        contents: ""
+    });
+};

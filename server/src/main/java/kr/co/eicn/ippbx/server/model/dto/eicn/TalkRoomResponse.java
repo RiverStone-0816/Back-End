@@ -1,0 +1,20 @@
+package kr.co.eicn.ippbx.server.model.dto.eicn;
+
+import lombok.Data;
+
+@Data
+public class TalkRoomResponse {
+    private Integer seq;
+    private String roomStartTime;   //시작시간
+    private String roomLastTime;    //마지막메시지시간
+    private String roomId;          //대화방 ID
+    private String roomName;        //대화방명
+    private String senderKey;       //상담톡 서비스
+    /**
+     * @see kr.co.eicn.ippbx.server.model.enums.RoomStatus
+     * */
+    private String roomStatus;      //대화방상태
+    private String userKey;
+    private String maindbCustomName;    //고객명
+    private String idName;      //담당자
+}

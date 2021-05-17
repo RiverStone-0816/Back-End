@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>kr.co.eicn</groupId>
+    <artifactId>ippbx.api</artifactId>
+    <version>20210219</version>
+    <packaging>war</packaging>
+    <name>server</name>
+    <description>eicn premium project</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <jdbc.dialect>mysql</jdbc.dialect>
+        <jdbc.port>3306</jdbc.port>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-rest</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jooq</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.restdocs</groupId>
+            <artifactId>spring-restdocs-mockmvc</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-batch</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.junit.vintage</groupId>
+                    <artifactId>junit-vintage-engine</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!--공통 utils-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.10</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+            <version>4.4</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.rakugakibox.util</groupId>
+            <artifactId>yaml-resource-bundle</artifactId>
+            <version>1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>2.3.5</version>
+        </dependency>
+
+        <!--api 문서-->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+            <version>1.2.16</version>
+        </dependency>
+
+        <!--ippbx lib-->
+        <dependency>
+            <groupId>diotts_class</groupId>
+            <artifactId>diotts_class</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/diotts_class.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>api-server</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctor-maven-plugin</artifactId>
+                <version>1.5.8</version>
+                <executions>
+                    <execution>
+                        <id>generate-docs</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>process-asciidoc</goal>
+                        </goals>
+                        <configuration>
+                            <backend>html</backend>
+                            <doctype>book</doctype>
+                        </configuration>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.springframework.restdocs</groupId>
+                        <artifactId>spring-restdocs-asciidoctor</artifactId>
+                        <version>${spring-restdocs.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.7</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>
+                                ${project.build.outputDirectory}/static/docs
+                            </outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>
+                                        ${project.build.directory}/generated-docs
+                                    </directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <executable>false</executable>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.jooq</groupId>
+                <artifactId>jooq-codegen-maven</artifactId>
+                <version>3.12.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <jdbc>
+                        <driver>com.mysql.cj.jdbc.Driver</driver>
+                        <url>jdbc:${jdbc.dialect}://${jdbc.host}:${jdbc.port}/${jdbc.service}?characterEncoding=utf8&amp;serverTimezone=Asia/Seoul</url>
+                        <user>eicn</user>
+                        <password>eicnrw</password>
+                    </jdbc>
+                    <generator>
+                        <name>org.jooq.codegen.JavaGenerator</name>
+                        <strategy>
+                            <name>org.jooq.codegen.DefaultGeneratorStrategy</name>
+                        </strategy>
+
+                        <generate>
+                            <deprecated>false</deprecated>
+                            <instanceFields>true</instanceFields>
+                            <pojos>true</pojos>
+                        </generate>
+
+                        <database>
+                            <name>org.jooq.meta.mysql.MySQLDatabase</name>
+                            <includes>.*</includes>
+                            <excludes>
+                                schema_version
+                                | menu_company_.*
+                                | cst_custom_info_.*
+                                | maindb_custom_info_.*
+                                | maindb_key_info_.*
+                                | maindb_multichannel_info_.*
+                                | result_custom_info_.*
+                                | talk_msg_.*
+                                | talk_room_.*
+                                | voc_result_.*
+                                | execute_pds_custom_info_.*
+                                | pds_custom_info_.*
+                                | result_custom_info_.*
+                                | stat_inbound_.*
+                                | stat_member_.*
+                                | stat_outbound_.*
+                                | stat_talk_.*
+                                | stat_user_inbound_.*
+                                | stat_user_outbound_.*
+                                | stat_voc_.*
+                                | stat_queue_wait_.*
+                                | chatt_bookmark_.*
+                                | chatt_msg_read_.*
+                                | chatt_room_member_.*
+                                | eicn_cdr_.*
+                                | history_queue_wait_.*
+                                | CUSTOMDB.member_status_.*
+                                | prv_custom_info_.*
+                                | voc_custom_list_.*
+                                | voc_research_result_.*
+                                | pds_research_result_.*
+                                | stat_user_ranking_.*
+                            </excludes>
+                            <forcedTypes>
+                                <forcedType>
+                                    <name>BOOLEAN</name>
+                                    <includeTypes>(?i:(TINY|SMALL|MEDIUM|BIG)?INT(UNSIGNED)?\(1\))</includeTypes>
+                                </forcedType>
+                            </forcedTypes>
+                            <schemata>
+                                <schema>
+                                    <inputSchema>eicn</inputSchema>
+                                </schema>
+                                <schema>
+                                    <inputSchema>CUSTOMDB</inputSchema>
+                                </schema>
+                                <schema>
+                                    <inputSchema>CONFIGDB</inputSchema>
+                                </schema>
+                                <schema>
+                                    <inputSchema>STATDB</inputSchema>
+                                </schema>
+                                <schema>
+                                    <inputSchema>PDS</inputSchema>
+                                </schema>
+                            </schemata>
+                        </database>
+                        <target>
+                            <packageName>kr.co.eicn.ippbx.server.jooq</packageName>
+                            <directory>target/generated-sources/jooq</directory>
+                        </target>
+                    </generator>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>2.2</version>
+                <configuration>
+                    <path>/api-server/</path>
+                    <url>http://122.49.74.233:8080/manager/text</url>
+                    <username>tomcat</username>
+                    <password>tomcat</password>
+                    <warFile>${project.build.directory}/${project.build.finalName}.${project.packaging}</warFile>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <profiles>
+        <profile>
+            <id>local</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <env>local</env>
+
+                <jdbc.host>122.49.74.233</jdbc.host>
+                <jdbc.service>eicn</jdbc.service>
+                <jdbc.user>eicn</jdbc.user>
+                <jdbc.password>eicnrw</jdbc.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>stage</id>
+            <properties>
+                <env>stage</env>
+
+                <jdbc.host>122.49.74.233</jdbc.host>
+                <jdbc.service>eicn</jdbc.service>
+                <jdbc.user>eicn</jdbc.user>
+                <jdbc.password>eicnrw</jdbc.password>
+
+                <tomcat.deploy.path>/</tomcat.deploy.path>
+                <tomcat.deploy.url>http://122.49.74.233/manager/text</tomcat.deploy.url>
+                <tomcat.deploy.username>tomcat</tomcat.deploy.username>
+                <tomcat.deploy.password>tomcat</tomcat.deploy.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>guns</id>
+            <properties>
+                <env>guns</env>
+
+                <jdbc.host>112.216.160.18</jdbc.host>
+                <jdbc.service>eicn</jdbc.service>
+                <jdbc.user>eicn</jdbc.user>
+                <jdbc.password>eicnrw</jdbc.password>
+
+                <tomcat.deploy.path>/</tomcat.deploy.path>
+                <tomcat.deploy.url>http://112.216.160.18:8080/manager/text</tomcat.deploy.url>
+                <tomcat.deploy.username>tomcat</tomcat.deploy.username>
+                <tomcat.deploy.password>tomcat</tomcat.deploy.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>cc</id>
+            <properties>
+                <env>cc</env>
+
+                <jdbc.host>MAIN_DB_VIP</jdbc.host>
+                <jdbc.service>eicn</jdbc.service>
+                <jdbc.user>eicn</jdbc.user>
+                <jdbc.password>eicnrw</jdbc.password>
+
+                <tomcat.deploy.path>/</tomcat.deploy.path>
+                <tomcat.deploy.url>http://114.108.159.10:8080/manager/text</tomcat.deploy.url>
+                <tomcat.deploy.username>tomcat</tomcat.deploy.username>
+                <tomcat.deploy.password>tomcat</tomcat.deploy.password>
+            </properties>
+        </profile>
+    </profiles>
+</project>
