@@ -2,15 +2,15 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.ResearchAnswerItemComposite;
-import kr.co.eicn.ippbx.server.model.ResearchQuestionItemComposite;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ResearchListEntity;
-import kr.co.eicn.ippbx.server.model.form.ResearchListFormRequest;
-import kr.co.eicn.ippbx.server.model.form.ResearchTreeFormRequest;
+import kr.co.eicn.ippbx.model.ResearchAnswerItemComposite;
+import kr.co.eicn.ippbx.model.ResearchQuestionItemComposite;
+import kr.co.eicn.ippbx.model.entity.eicn.ResearchListEntity;
+import kr.co.eicn.ippbx.model.form.ResearchListFormRequest;
+import kr.co.eicn.ippbx.model.form.ResearchTreeFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.ResearchItemRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ResearchListRepository;
+import kr.co.eicn.ippbx.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
@@ -252,7 +252,7 @@ public class ResearchListApiControllerTest extends BaseControllerTest {
     }
 
     public void printQLog(ResearchQuestionItemComposite question) {
-        log.info("{}{}.질문 :{}, path: {}", prefix(question.getLevel()), question.getLevel(), kr.co.eicn.ippbx.server.util.StringUtils.subStringBytes(question.getWord(), 30), question.getPath());
+        log.info("{}{}.질문 :{}, path: {}", prefix(question.getLevel()), question.getLevel(), StringUtils.subStringBytes(question.getWord(), 30), question.getPath());
         if (question.getAnswerItems() != null)
             printALog(question.getAnswerItems());
         if (!question.isLeaf())

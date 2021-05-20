@@ -1,12 +1,12 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.exception.DuplicateKeyException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ResearchList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.ResearchListRecord;
-import kr.co.eicn.ippbx.server.model.form.ResearchListFormRequest;
-import kr.co.eicn.ippbx.server.model.search.ResearchListSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.exception.DuplicateKeyException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.ResearchListRecord;
+import kr.co.eicn.ippbx.model.form.ResearchListFormRequest;
+import kr.co.eicn.ippbx.model.search.ResearchListSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.InsertSetMoreStep;
@@ -20,23 +20,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ResearchList.RESEARCH_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ResearchTree.RESEARCH_TREE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchList.RESEARCH_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchTree.RESEARCH_TREE;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class ResearchListRepository extends EicnBaseRepository<ResearchList, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchList, Integer> {
+public class ResearchListRepository extends EicnBaseRepository<ResearchList, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchList, Integer> {
     private final Logger logger = LoggerFactory.getLogger(ResearchListRepository.class);
 
     private final CompanyTreeRepository companyTreeRepository;
 
     public ResearchListRepository(CompanyTreeRepository companyTreeRepository) {
-        super(RESEARCH_LIST, RESEARCH_LIST.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchList.class);
+        super(RESEARCH_LIST, RESEARCH_LIST.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchList.class);
         this.companyTreeRepository = companyTreeRepository;
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchList> pagination(ResearchListSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchList> pagination(ResearchListSearchRequest search) {
         return super.pagination(search, conditions(search), Arrays.asList(RESEARCH_LIST.RESEARCH_ID.asc()));
     }
 
@@ -51,7 +51,7 @@ public class ResearchListRepository extends EicnBaseRepository<ResearchList, kr.
     }
 
     public void insert(ResearchListFormRequest form) {
-        final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchList> duplicatedResearchName = findAll(RESEARCH_LIST.RESEARCH_NAME.eq(form.getResearchName())).stream().findAny();
+        final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchList> duplicatedResearchName = findAll(RESEARCH_LIST.RESEARCH_NAME.eq(form.getResearchName())).stream().findAny();
         if (duplicatedResearchName.isPresent())
             throw new DuplicateKeyException("중복된 설문명이 있습니다.");
 
@@ -74,7 +74,7 @@ public class ResearchListRepository extends EicnBaseRepository<ResearchList, kr.
     }
 
     public void updateByResearchId(ResearchListFormRequest form, Integer researchId) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchList entity = findOneIfNullThrow(RESEARCH_LIST.RESEARCH_ID.eq(researchId));
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchList entity = findOneIfNullThrow(RESEARCH_LIST.RESEARCH_ID.eq(researchId));
 
         entity.setResearchName(form.getResearchName());
 
@@ -112,7 +112,7 @@ public class ResearchListRepository extends EicnBaseRepository<ResearchList, kr.
         return dsl.select(DSL.ifnull(DSL.max(sequenceSeed.RESEARCH_ID), 0).add(1)).from(sequenceSeed).fetchOneInto(Integer.class);
     }
 
-    public kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchList findOneByResearchIdIfNullThrow(Integer researchId){
+    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchList findOneByResearchIdIfNullThrow(Integer researchId){
         return findOneIfNullThrow(RESEARCH_LIST.RESEARCH_ID.eq(researchId));
     }
 }

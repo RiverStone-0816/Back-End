@@ -1,13 +1,13 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.RouteApplicationType;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.GradeList;
-import kr.co.eicn.ippbx.server.model.entity.eicn.GradeListEntity;
-import kr.co.eicn.ippbx.server.model.form.GradeListFormRequest;
-import kr.co.eicn.ippbx.server.model.search.GradeListSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.RouteApplicationType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.GradeList;
+import kr.co.eicn.ippbx.model.entity.eicn.GradeListEntity;
+import kr.co.eicn.ippbx.model.form.GradeListFormRequest;
+import kr.co.eicn.ippbx.model.search.GradeListSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.GRADE_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.QUEUE_NAME;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.GRADE_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.QUEUE_NAME;
 import static org.jooq.impl.DSL.noCondition;
 
 @Getter
@@ -61,7 +61,7 @@ public class GradeListRepository extends EicnBaseRepository<GradeList, GradeList
 
     public Record insertOnGeneratedKey(GradeListFormRequest form) {
         final GradeListEntity record = new GradeListEntity();
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.GradeList duplicateGrade = findOne(GRADE_LIST.GRADE_NUMBER.eq(form.getGradeNumber()));
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.GradeList duplicateGrade = findOne(GRADE_LIST.GRADE_NUMBER.eq(form.getGradeNumber()));
         if (Objects.nonNull(duplicateGrade))
             throw new IllegalArgumentException("해당 전화번호가 " + (duplicateGrade.getGrade().equals(RouteApplicationType.VIP.getLiteral()) ? "VIP" : "블랙리스트") + "에 등록되어있습니다.");
 
@@ -81,8 +81,8 @@ public class GradeListRepository extends EicnBaseRepository<GradeList, GradeList
     }
 
     public void updateByKey(GradeListFormRequest form, Integer seq) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.GradeList record = findOneIfNullThrow(seq);
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.GradeList duplicateGrade = findOne(GRADE_LIST.GRADE_NUMBER.eq(form.getGradeNumber()));
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.GradeList record = findOneIfNullThrow(seq);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.GradeList duplicateGrade = findOne(GRADE_LIST.GRADE_NUMBER.eq(form.getGradeNumber()));
         if (Objects.nonNull(duplicateGrade))
             throw new IllegalArgumentException("해당 전화번호가 " + (duplicateGrade.getGrade().equals(RouteApplicationType.VIP.getLiteral()) ? "VIP" : "블랙리스트") + "에 등록되어있습니다.");
 

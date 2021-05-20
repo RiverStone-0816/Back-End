@@ -1,10 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
-import kr.co.eicn.ippbx.server.jooq.statdb.tables.CommonStatOutbound;
-import kr.co.eicn.ippbx.server.model.dto.eicn.DashServiceStatResponse;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatOutboundEntity;
-import kr.co.eicn.ippbx.server.model.enums.SearchCycle;
-import kr.co.eicn.ippbx.server.model.search.AbstractStatSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatOutbound;
+import kr.co.eicn.ippbx.model.dto.eicn.DashServiceStatResponse;
+import kr.co.eicn.ippbx.model.entity.statdb.StatOutboundEntity;
+import kr.co.eicn.ippbx.model.search.AbstractStatSearchRequest;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.Record;
@@ -16,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static org.jooq.impl.DSL.*;
 

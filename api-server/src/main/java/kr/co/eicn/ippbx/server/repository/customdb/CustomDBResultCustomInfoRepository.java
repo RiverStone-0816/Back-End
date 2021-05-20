@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonResultCustomInfo;
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.ResultCustomInfo;
-import kr.co.eicn.ippbx.server.model.entity.customdb.ResultCustomInfoEntity;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonResultCustomInfo;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.ResultCustomInfo;
+import kr.co.eicn.ippbx.model.entity.customdb.ResultCustomInfoEntity;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.Record;

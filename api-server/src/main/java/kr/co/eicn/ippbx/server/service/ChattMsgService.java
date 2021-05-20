@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattMsgRead;
-import kr.co.eicn.ippbx.server.model.entity.customdb.ChattMsgEntity;
-import kr.co.eicn.ippbx.server.model.entity.customdb.ChattRoomEntity;
-import kr.co.eicn.ippbx.server.model.entity.customdb.ChattRoomMemberEntity;
-import kr.co.eicn.ippbx.server.model.search.ChattingSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattMsgRead;
+import kr.co.eicn.ippbx.model.entity.customdb.ChattMsgEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.ChattRoomEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.ChattRoomMemberEntity;
+import kr.co.eicn.ippbx.model.search.ChattingSearchRequest;
 import kr.co.eicn.ippbx.server.repository.customdb.ChattMsgRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import org.slf4j.Logger;

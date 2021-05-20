@@ -1,17 +1,16 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonMemoMsg;
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.records.MemoMsgRecord;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.model.entity.customdb.MemoMsgEntity;
-import kr.co.eicn.ippbx.server.model.enums.Bool;
-import kr.co.eicn.ippbx.server.model.enums.ChattingJoinStatus;
-import kr.co.eicn.ippbx.server.model.enums.ChattingSendReceive;
-import kr.co.eicn.ippbx.server.model.form.MemoMsgFormRequest;
-import kr.co.eicn.ippbx.server.model.search.ChattingMemberSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.MemoMsgSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMemoMsg;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.model.entity.customdb.MemoMsgEntity;
+import kr.co.eicn.ippbx.model.enums.Bool;
+import kr.co.eicn.ippbx.model.enums.ChattingJoinStatus;
+import kr.co.eicn.ippbx.model.enums.ChattingSendReceive;
+import kr.co.eicn.ippbx.model.form.MemoMsgFormRequest;
+import kr.co.eicn.ippbx.model.search.ChattingMemberSearchRequest;
+import kr.co.eicn.ippbx.model.search.MemoMsgSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
@@ -54,7 +53,7 @@ public class MemoMsgRepository extends CustomDBBaseRepository<CommonMemoMsg, Mem
 
     public String insertMemoMessage(Integer seq, MemoMsgFormRequest form) {
         final String messageId = g.getUser().getId() + "_" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-        final kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonMemoMsg memoMsg = new kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonMemoMsg();
+        final kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMemoMsg memoMsg = new kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMemoMsg();
         memoMsg.setMessageId(messageId);
         memoMsg.setSendUserid(g.getUser().getId());
         memoMsg.setInsertTime(new Timestamp(System.currentTimeMillis()));

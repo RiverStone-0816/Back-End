@@ -1,19 +1,19 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.exception.DuplicateKeyException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MohList;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.enums.ShellCommand;
-import kr.co.eicn.ippbx.server.model.enums.TTSErrorCode;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.form.MohListRequest;
-import kr.co.eicn.ippbx.server.model.form.SoundEditorFormRequest;
+import kr.co.eicn.ippbx.exception.DuplicateKeyException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MohList;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.enums.ShellCommand;
+import kr.co.eicn.ippbx.model.enums.TTSErrorCode;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.form.MohListRequest;
+import kr.co.eicn.ippbx.model.form.SoundEditorFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.MohConfigRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.MohListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.WebSecureHistoryRepository;
-import kr.co.eicn.ippbx.server.util.EnumUtils;
-import kr.co.eicn.ippbx.server.util.UrlUtils;
+import kr.co.eicn.ippbx.util.EnumUtils;
+import kr.co.eicn.ippbx.util.UrlUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -31,8 +31,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.MohConfig.MOH_CONFIG;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.MohList.MOH_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.MohConfig.MOH_CONFIG;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.MohList.MOH_LIST;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -174,7 +174,7 @@ public class MohListService extends ApiBaseService {
 			throw new IllegalArgumentException(String.format("음원 만들기 에러 (%s)", message.getEnumText(Objects.requireNonNull(EnumUtils.of(TTSErrorCode.class, ret)))));
 		}
 
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MohList record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MohList();
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MohList record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MohList();
 		record.setCategory(String.valueOf(nextSequence));
 		record.setMohName(form.getSoundName());
 		record.setCompanyId(g.getUser().getCompanyId());

@@ -1,18 +1,18 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.record.history;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordDown;
-import kr.co.eicn.ippbx.server.model.dto.eicn.RecordDownSummaryResponse;
-import kr.co.eicn.ippbx.server.model.enums.RecordDownStatusKind;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.search.RecordDownSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordDown;
+import kr.co.eicn.ippbx.model.dto.eicn.RecordDownSummaryResponse;
+import kr.co.eicn.ippbx.model.enums.RecordDownStatusKind;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.search.RecordDownSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.WebSecureHistoryRepository;
 import kr.co.eicn.ippbx.server.service.RecordDownService;
 import kr.co.eicn.ippbx.server.service.StorageService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,8 +34,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.replace;
 
 /**

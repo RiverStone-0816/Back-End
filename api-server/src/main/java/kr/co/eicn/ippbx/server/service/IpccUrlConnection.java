@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.util.UrlUtils;
+import kr.co.eicn.ippbx.util.UrlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

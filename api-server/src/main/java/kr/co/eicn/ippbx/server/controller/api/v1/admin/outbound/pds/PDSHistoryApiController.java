@@ -1,12 +1,12 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.pds;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryPdsGroup;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PDSHistoryResponse;
-import kr.co.eicn.ippbx.server.model.search.PDSHistorySearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsGroup;
+import kr.co.eicn.ippbx.model.dto.eicn.PDSHistoryResponse;
+import kr.co.eicn.ippbx.model.search.PDSHistorySearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.HistoryPDSGroupRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  *  아웃바운드관리 > PDS > 실행이력

@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.RecordEnc;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.form.RecordEncFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.RecordEnc;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.form.RecordEncFormRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import lombok.Getter;
@@ -13,11 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.RecordEnc.RECORD_ENC;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.RecordEnc.RECORD_ENC;
 
 @Getter
 @Repository
-public class RecordEncRepository extends EicnBaseRepository<RecordEnc, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEnc, String> {
+public class RecordEncRepository extends EicnBaseRepository<RecordEnc, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEnc, String> {
 	protected final Logger logger = LoggerFactory.getLogger(RecordEncRepository.class);
 
 	private final CacheService cacheService;
@@ -25,7 +25,7 @@ public class RecordEncRepository extends EicnBaseRepository<RecordEnc, kr.co.eic
 	private final WebSecureHistoryRepository webSecureHistoryRepository;
 
 	public RecordEncRepository(CacheService cacheService, PBXServerInterface pbxServerInterface, WebSecureHistoryRepository webSecureHistoryRepository) {
-		super(RECORD_ENC, RECORD_ENC.COMPANY_ID, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEnc.class);
+		super(RECORD_ENC, RECORD_ENC.COMPANY_ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEnc.class);
 
 		this.cacheService = cacheService;
 		this.pbxServerInterface = pbxServerInterface;
@@ -38,9 +38,9 @@ public class RecordEncRepository extends EicnBaseRepository<RecordEnc, kr.co.eic
 	}
 
 	public void insert(RecordEncFormRequest form) {
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEnc entity = findAll().stream()
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEnc entity = findAll().stream()
 				.findFirst()
-				.orElse(new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEnc());
+				.orElse(new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEnc());
 
 		entity.setCompanyId(getCompanyId());
 		entity.setEnable(form.getEncType());

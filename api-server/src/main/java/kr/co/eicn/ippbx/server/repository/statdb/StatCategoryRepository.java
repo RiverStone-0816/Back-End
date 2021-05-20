@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
-import kr.co.eicn.ippbx.server.jooq.statdb.tables.CommonStatInbound;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatInboundEntity;
-import kr.co.eicn.ippbx.server.model.enums.SearchCycle;
-import kr.co.eicn.ippbx.server.model.search.StatCategorySearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatInbound;
+import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
+import kr.co.eicn.ippbx.model.enums.SearchCycle;
+import kr.co.eicn.ippbx.model.search.StatCategorySearchRequest;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.Record;

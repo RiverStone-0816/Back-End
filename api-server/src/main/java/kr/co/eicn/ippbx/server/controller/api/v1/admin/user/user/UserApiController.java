@@ -1,26 +1,26 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.user.user;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.model.dto.eicn.*;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyLicenceEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.UserEntity;
-import kr.co.eicn.ippbx.server.model.enums.DataSearchAuthorityType;
-import kr.co.eicn.ippbx.server.model.enums.IdType;
-import kr.co.eicn.ippbx.server.model.form.PersonFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PersonFormUpdateRequest;
-import kr.co.eicn.ippbx.server.model.form.PersonPasswordUpdateRequest;
-import kr.co.eicn.ippbx.server.model.search.PersonSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyLicenceEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.UserEntity;
+import kr.co.eicn.ippbx.model.enums.DataSearchAuthorityType;
+import kr.co.eicn.ippbx.model.enums.IdType;
+import kr.co.eicn.ippbx.model.form.PersonFormRequest;
+import kr.co.eicn.ippbx.model.form.PersonFormUpdateRequest;
+import kr.co.eicn.ippbx.model.form.PersonPasswordUpdateRequest;
+import kr.co.eicn.ippbx.model.search.PersonSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PhoneInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.UserRepository;
 import kr.co.eicn.ippbx.server.service.CompanyService;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
 import kr.co.eicn.ippbx.server.service.UserService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.PatternUtils;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.PatternUtils;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -36,12 +36,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PersonList.PERSON_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
-import static kr.co.eicn.ippbx.server.util.JsonResult.Result.failure;
-import static kr.co.eicn.ippbx.server.util.JsonResult.Result.success;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
+import static kr.co.eicn.ippbx.util.JsonResult.Result.failure;
+import static kr.co.eicn.ippbx.util.JsonResult.Result.success;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
@@ -279,7 +279,7 @@ public class UserApiController extends ApiBaseController {
      */
     @GetMapping("extensions")
     public ResponseEntity<JsonResult<List<SummaryPhoneInfoResponse>>> extensions(@RequestParam(required = false) String extension) {
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList> useExtensionPersons = personListRepository.findAll(
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> useExtensionPersons = personListRepository.findAll(
                 PERSON_LIST.EXTENSION.isNotNull().and(PERSON_LIST.EXTENSION.ne(EMPTY)).and(PERSON_LIST.EXTENSION.ne("null")));
         return ResponseEntity.ok(
                 data(phoneInfoRepository.findAll(PHONE_INFO.EXTENSION.isNotNull().and(PHONE_INFO.EXTENSION.ne(EMPTY))).stream()
@@ -289,7 +289,7 @@ public class UserApiController extends ApiBaseController {
                                     return false;
                             return person.getExtension().equals(e.getExtension());
                         }))
-                        .sorted(Comparator.comparing(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo::getExtension))
+                        .sorted(Comparator.comparing(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo::getExtension))
                         .map(e -> convertDto(e, SummaryPhoneInfoResponse.class))
                         .collect(Collectors.toList())
                 )

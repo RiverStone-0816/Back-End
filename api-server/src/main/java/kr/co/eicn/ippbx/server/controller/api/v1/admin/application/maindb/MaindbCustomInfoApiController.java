@@ -2,21 +2,21 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin.application.maindb;
 
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ConCodeFieldResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.search.SearchMaindbGroupResponse;
-import kr.co.eicn.ippbx.server.model.entity.customdb.MaindbCustomInfoEntity;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.form.MaindbCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.search.MaindbDataSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.model.dto.eicn.ConCodeFieldResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.search.SearchMaindbGroupResponse;
+import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.form.MaindbCustomInfoFormRequest;
+import kr.co.eicn.ippbx.model.search.MaindbDataSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonFieldRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.MaindbGroupRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.WebSecureHistoryRepository;
 import kr.co.eicn.ippbx.server.service.FileSystemStorageService;
 import kr.co.eicn.ippbx.server.service.MaindbCustomInfoService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,8 +33,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.io.FilenameUtils.getName;
 import static org.apache.commons.lang3.StringUtils.replace;
 

@@ -1,10 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.SendMessageTemplate;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendCategory;
-import kr.co.eicn.ippbx.server.model.form.SendMessageTemplateFormRequest;
-import kr.co.eicn.ippbx.server.model.search.SendMessageTemplateSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.SendMessageTemplate;
+import kr.co.eicn.ippbx.model.form.SendMessageTemplateFormRequest;
+import kr.co.eicn.ippbx.model.search.SendMessageTemplateSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.Record;
@@ -15,26 +14,26 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.SendMessageTemplate.SEND_MESSAGE_TEMPLATE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.SendMessageTemplate.SEND_MESSAGE_TEMPLATE;
 
 @Getter
 @Repository
-public class SendMessageTemplateRepository extends EicnBaseRepository<SendMessageTemplate, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendMessageTemplate, Long> {
+public class SendMessageTemplateRepository extends EicnBaseRepository<SendMessageTemplate, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessageTemplate, Long> {
     protected final Logger logger = LoggerFactory.getLogger(SendSmsCategoryRepository.class);
 
     private final SendSmsCategoryRepository sendSmsCategoryRepository;
 
     SendMessageTemplateRepository(SendSmsCategoryRepository sendSmsCategoryRepository) {
-        super(SEND_MESSAGE_TEMPLATE, SEND_MESSAGE_TEMPLATE.ID, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendMessageTemplate.class);
+        super(SEND_MESSAGE_TEMPLATE, SEND_MESSAGE_TEMPLATE.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessageTemplate.class);
         this.sendSmsCategoryRepository = sendSmsCategoryRepository;
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendMessageTemplate> pagination(SendMessageTemplateSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessageTemplate> pagination(SendMessageTemplateSearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 
     public Record insertOnGeneratedKey(SendMessageTemplateFormRequest formRequest) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendMessageTemplate sendRecord = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendMessageTemplate();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessageTemplate sendRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessageTemplate();
         sendRecord.setCategoryCode(formRequest.getCategoryCode());
         sendRecord.setCompanyId(getCompanyId());
         sendRecord.setContent(formRequest.getContent());

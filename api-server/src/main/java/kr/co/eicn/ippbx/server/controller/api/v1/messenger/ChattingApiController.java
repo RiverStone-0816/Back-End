@@ -1,18 +1,18 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.messenger;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.model.dto.customdb.ChattRoomResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PersonDetailResponse;
-import kr.co.eicn.ippbx.server.model.entity.customdb.ChattRoomEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.OrganizationMetaChatt;
-import kr.co.eicn.ippbx.server.model.form.ChattingMemberFormRequest;
-import kr.co.eicn.ippbx.server.model.search.ChattingMemberSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.ChattingRoomSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.ChattingSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.model.dto.customdb.ChattRoomResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse;
+import kr.co.eicn.ippbx.model.entity.customdb.ChattRoomEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.OrganizationMetaChatt;
+import kr.co.eicn.ippbx.model.form.ChattingMemberFormRequest;
+import kr.co.eicn.ippbx.model.search.ChattingMemberSearchRequest;
+import kr.co.eicn.ippbx.model.search.ChattingRoomSearchRequest;
+import kr.co.eicn.ippbx.model.search.ChattingSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.service.*;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.replaceEach;
 
 @Log4j2

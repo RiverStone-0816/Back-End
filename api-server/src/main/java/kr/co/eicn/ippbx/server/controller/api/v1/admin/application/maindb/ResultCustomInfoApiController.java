@@ -2,22 +2,22 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin.application.maindb;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.controller.api.v1.admin.record.history.RecordApiController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.model.RecordFile;
-import kr.co.eicn.ippbx.server.model.dto.eicn.search.SearchMaindbGroupResponse;
-import kr.co.eicn.ippbx.server.model.entity.customdb.ResultCustomInfoEntity;
-import kr.co.eicn.ippbx.server.model.enums.IdType;
-import kr.co.eicn.ippbx.server.model.form.ResultCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.search.ResultCustomInfoSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.model.RecordFile;
+import kr.co.eicn.ippbx.model.dto.eicn.search.SearchMaindbGroupResponse;
+import kr.co.eicn.ippbx.model.entity.customdb.ResultCustomInfoEntity;
+import kr.co.eicn.ippbx.model.enums.IdType;
+import kr.co.eicn.ippbx.model.form.ResultCustomInfoFormRequest;
+import kr.co.eicn.ippbx.model.search.ResultCustomInfoSearchRequest;
 import kr.co.eicn.ippbx.server.repository.customdb.ResultCustomInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.MaindbGroupRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.service.EicnCdrService;
 import kr.co.eicn.ippbx.server.service.RecordFileService;
 import kr.co.eicn.ippbx.server.service.ResultCustomInfoService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -36,8 +36,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 @Slf4j
 @RequiredArgsConstructor

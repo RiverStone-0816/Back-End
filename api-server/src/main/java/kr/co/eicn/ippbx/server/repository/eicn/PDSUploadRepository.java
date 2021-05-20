@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.HistoryPdsUpload;
-import kr.co.eicn.ippbx.server.model.search.PDSUploadSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.HistoryPdsUpload;
+import kr.co.eicn.ippbx.model.search.PDSUploadSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.impl.DSL;
@@ -14,18 +14,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.HISTORY_PDS_UPLOAD;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.HISTORY_PDS_UPLOAD;
 
 @Getter
 @Repository
-public class PDSUploadRepository extends EicnBaseRepository<HistoryPdsUpload, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryPdsUpload, String> {
+public class PDSUploadRepository extends EicnBaseRepository<HistoryPdsUpload, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsUpload, String> {
     protected final Logger logger = LoggerFactory.getLogger(PDSUploadRepository.class);
 
     public PDSUploadRepository() {
-        super(HISTORY_PDS_UPLOAD, HISTORY_PDS_UPLOAD.UPLOAD_ID, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryPdsUpload.class);
+        super(HISTORY_PDS_UPLOAD, HISTORY_PDS_UPLOAD.UPLOAD_ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsUpload.class);
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryPdsUpload> pagination(PDSUploadSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsUpload> pagination(PDSUploadSearchRequest search) {
         return super.pagination(search, conditions(search), Arrays.asList(HISTORY_PDS_UPLOAD.TRY_CNT.asc()));
     }
 

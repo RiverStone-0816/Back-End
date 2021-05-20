@@ -1,21 +1,21 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.exception.DuplicateKeyException;
-import kr.co.eicn.ippbx.server.exception.EntityNotFoundException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.PdsIvr;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.PdsIvrRecord;
-import kr.co.eicn.ippbx.server.model.PDSIvrComposite;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PDSIvrDetailResponse;
-import kr.co.eicn.ippbx.server.model.enums.Button;
-import kr.co.eicn.ippbx.server.model.enums.IvrTreeType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.form.PDSIvrButtonMappingFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PDSIvrFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PDSIvrFormUpdateRequest;
+import kr.co.eicn.ippbx.exception.DuplicateKeyException;
+import kr.co.eicn.ippbx.exception.EntityNotFoundException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PdsIvr;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.PdsIvrRecord;
+import kr.co.eicn.ippbx.model.PDSIvrComposite;
+import kr.co.eicn.ippbx.model.dto.eicn.PDSIvrDetailResponse;
+import kr.co.eicn.ippbx.model.enums.Button;
+import kr.co.eicn.ippbx.model.enums.IvrTreeType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.form.PDSIvrButtonMappingFormRequest;
+import kr.co.eicn.ippbx.model.form.PDSIvrFormRequest;
+import kr.co.eicn.ippbx.model.form.PDSIvrFormUpdateRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.Getter;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -32,12 +32,12 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparingInt;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PdsIvr.PDS_IVR;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PdsIvr.PDS_IVR;
 import static org.apache.commons.lang3.StringUtils.*;
 
 @Getter
 @Repository
-public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr, Integer> {
+public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr, Integer> {
     private final Logger logger = LoggerFactory.getLogger(PDSIvrRepository.class);
     private final CacheService cacheService;
     private final PBXServerInterface pbxServerInterface;
@@ -45,7 +45,7 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
     private final DecimalFormat decimalFormat = new DecimalFormat("0000");
 
     public PDSIvrRepository(CacheService cacheService, PBXServerInterface pbxServerInterface, WebSecureHistoryRepository webSecureHistoryRepository) {
-        super(PDS_IVR, PDS_IVR.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr.class);
+        super(PDS_IVR, PDS_IVR.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr.class);
         this.cacheService = cacheService;
         this.pbxServerInterface = pbxServerInterface;
         this.webSecureHistoryRepository = webSecureHistoryRepository;
@@ -76,8 +76,8 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
     }
 
     public PDSIvrDetailResponse getIvr(final Integer seq) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr entity = findOneIfNullThrow(seq);
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr> buttonMappings =
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr entity = findOneIfNullThrow(seq);
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr> buttonMappings =
                 findAll(PDS_IVR.CODE.eq(entity.getCode()).and(PDS_IVR.TYPE.ne((byte) 0)), Arrays.asList(PDS_IVR.TREE_NAME.asc(), PDS_IVR.BUTTON.asc()));
 
         final PDSIvrDetailResponse detailResponse = new PDSIvrDetailResponse();
@@ -108,11 +108,11 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
     }
 
     public void insertAllPbxServers(PDSIvrFormRequest form) {
-        final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr> duplicatedName = findAll(PDS_IVR.NAME.eq(form.getName()).and(PDS_IVR.TYPE.eq((byte) 0))).stream().findAny();
+        final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr> duplicatedName = findAll(PDS_IVR.NAME.eq(form.getName()).and(PDS_IVR.TYPE.eq((byte) 0))).stream().findAny();
         if (duplicatedName.isPresent())
             throw new DuplicateKeyException("중복된 IVR명이 있습니다.");
 
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr();
 
         final Integer code = nextSequence();
         record.setName(form.getName());
@@ -140,16 +140,16 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
     }
 
     public void updateByKeyAllPbxServers(PDSIvrFormUpdateRequest form, Integer code) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr entity = findOneIfNullThrow(PDS_IVR.CODE.eq(code).and(PDS_IVR.TYPE.eq((byte) 0)));
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr entity = findOneIfNullThrow(PDS_IVR.CODE.eq(code).and(PDS_IVR.TYPE.eq((byte) 0)));
         if (!IvrTreeType.PARENT_TREE.getCode().equals(entity.getType()))
             throw new IllegalArgumentException();
 
-        final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr> duplicatedName = findAll(PDS_IVR.CODE.ne(code).and(PDS_IVR.NAME.eq(form.getName())).and(PDS_IVR.TYPE.eq((byte) 0)))
+        final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr> duplicatedName = findAll(PDS_IVR.CODE.ne(code).and(PDS_IVR.NAME.eq(form.getName())).and(PDS_IVR.TYPE.eq((byte) 0)))
                 .stream().findAny();
         if (duplicatedName.isPresent())
             throw new DuplicateKeyException("중복된 IVR명이 있습니다.");
 
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr();
 
         record.setName(form.getName());
         record.setSoundCode(defaultString(form.getSoundCode()));
@@ -166,8 +166,8 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
         webSecureHistoryRepository.insert(WebSecureActionType.PDS_IVR, WebSecureActionSubType.MOD, form.getName());
     }
 
-    public void updateOrInsertByDslContext(DSLContext dslContext, PDSIvrFormUpdateRequest form, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr entity,
-                                           kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr record, Integer code) {
+    public void updateOrInsertByDslContext(DSLContext dslContext, PDSIvrFormUpdateRequest form, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr entity,
+                                           kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr record, Integer code) {
 
 
         dslContext.update(PDS_IVR)
@@ -177,14 +177,14 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
                 .and(PDS_IVR.SEQ.eq(entity.getSeq()))
                 .execute();
 
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr> ivrTrees = findAll(dslContext, PDS_IVR.CODE.eq(code));
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr> ivrTrees = findAll(dslContext, PDS_IVR.CODE.eq(code));
 
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr> deletePdsTrees = ivrTrees.stream()
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr> deletePdsTrees = ivrTrees.stream()
                 .filter(e -> e.getType() != 0)
                 .filter(e -> form.getButtonMappingFormRequests().stream().noneMatch(data -> e.getSeq().equals(data.getSeq())))
                 .collect(Collectors.toList());
 
-        for (kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr deletePdsTree : deletePdsTrees) {
+        for (kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr deletePdsTree : deletePdsTrees) {
             dslContext.deleteFrom(PDS_IVR)
                     .where(PDS_IVR.SEQ.eq(deletePdsTree.getSeq()))
                     .and(PDS_IVR.COMPANY_ID.eq(getCompanyId()))
@@ -193,9 +193,9 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
 
         for (int i = 0, length = form.getButtonMappingFormRequests().size(); i < length; i++) {
             final PDSIvrButtonMappingFormRequest mappingForm = form.getButtonMappingFormRequests().get(i);
-            final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr> any = ivrTrees.stream().filter(e -> e.getSeq().equals(mappingForm.getSeq())).findAny();
+            final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr> any = ivrTrees.stream().filter(e -> e.getSeq().equals(mappingForm.getSeq())).findAny();
             if (any.isPresent()) {
-                final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr pdsIvr = any.get();
+                final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr pdsIvr = any.get();
                 dslContext.update(PDS_IVR)
                         .set(PDS_IVR.NAME, mappingForm.getName())
                         .set(PDS_IVR.TYPE, mappingForm.getType())
@@ -210,7 +210,7 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
                     createChildIvr(dslContext, entity.getLevel(), pdsIvr, pdsIvr.getTreeName(), pdsIvr.getSeq());
                 }
             } else {
-                final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr pdsIvrRecord = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr();
+                final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr pdsIvrRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr();
                 final String treeName = entity.getTreeName().concat("_").concat(decimalFormat.format(Button.of(mappingForm.getButton()).getIntValue()));
                 pdsIvrRecord.setName(mappingForm.getName());
                 pdsIvrRecord.setType(mappingForm.getType());
@@ -235,8 +235,8 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
             }
         }
         // 참조하는 정보가 없는 parent_tree 정보는 삭제해뿜
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr> parentTrees = findAll(dslContext, PDS_IVR.LEVEL.ne(0).and(PDS_IVR.TYPE.eq((byte) 0)));
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr> all = findAll();
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr> parentTrees = findAll(dslContext, PDS_IVR.LEVEL.ne(0).and(PDS_IVR.TYPE.eq((byte) 0)));
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr> all = findAll();
 
         parentTrees.stream()
                 .filter(e -> all.stream().noneMatch(ivr -> String.valueOf(e.getCode()).equals(ivr.getTypeData())))
@@ -246,8 +246,8 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
                         .execute());
     }
 
-    public void createChildIvr(DSLContext dslContext, Integer level, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr pdsIvr, String treeName, Integer seq) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr insertRecord = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr();
+    public void createChildIvr(DSLContext dslContext, Integer level, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr pdsIvr, String treeName, Integer seq) {
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr insertRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr();
         final Integer newIvrCode = dslContext.select(DSL.ifnull(DSL.max(PDS_IVR.CODE), 0).add(1))
                 .from(PDS_IVR)
                 .where(PDS_IVR.TYPE.eq((byte) 0))
@@ -275,7 +275,7 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
     }
 
     public void deleteAllPbxServers(Integer code) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr entity = findAll(PDS_IVR.CODE.eq(code).and(PDS_IVR.TYPE.eq((byte) 0))).stream().findAny().orElseThrow(EntityNotFoundException::new);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr entity = findAll(PDS_IVR.CODE.eq(code).and(PDS_IVR.TYPE.eq((byte) 0))).stream().findAny().orElseThrow(EntityNotFoundException::new);
         if (!IvrTreeType.PARENT_TREE.getCode().equals(entity.getType()))
             throw new IllegalArgumentException();
 
@@ -294,13 +294,13 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
                     }
                 });
 
-        final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr> optionalPdsIvr = findAll(PDS_IVR.CODE.eq(entity.getParent()).and(PDS_IVR.TYPE.eq((byte) 5)), Collections.singletonList(PDS_IVR.TREE_NAME.desc()))
+        final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr> optionalPdsIvr = findAll(PDS_IVR.CODE.eq(entity.getParent()).and(PDS_IVR.TYPE.eq((byte) 5)), Collections.singletonList(PDS_IVR.TREE_NAME.desc()))
                 .stream()
                 .filter(e -> entity.getTreeName().startsWith(e.getTreeName()))
                 .findFirst();
         // 상위노드 삭제
         if (optionalPdsIvr.isPresent()) {
-            final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsIvr parent = optionalPdsIvr.get();
+            final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr parent = optionalPdsIvr.get();
 
             dsl.deleteFrom(PDS_IVR)
                     .where(PDS_IVR.SEQ.eq(parent.getSeq()))

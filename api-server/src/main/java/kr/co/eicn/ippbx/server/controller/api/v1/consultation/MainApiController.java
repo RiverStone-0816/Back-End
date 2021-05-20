@@ -1,31 +1,30 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.consultation;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonTalkMsg;
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.MaindbCustomInfo;
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.records.CommonTalkMsgRecord;
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.TodoListTodoKind;
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.TodoListTodoStatus;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.CurrentTalkRoom;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.TalkServiceInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TodoList;
-import kr.co.eicn.ippbx.server.model.dto.customdb.*;
-import kr.co.eicn.ippbx.server.model.dto.eicn.*;
-import kr.co.eicn.ippbx.server.model.entity.customdb.MaindbCustomInfoEntity;
-import kr.co.eicn.ippbx.server.model.entity.customdb.MaindbMultichannelInfoEntity;
-import kr.co.eicn.ippbx.server.model.entity.customdb.TalkMsgEntity;
-import kr.co.eicn.ippbx.server.model.entity.customdb.TalkRoomEntity;
-import kr.co.eicn.ippbx.server.model.enums.*;
-import kr.co.eicn.ippbx.server.model.form.CallbackListUpdateFormRequest;
-import kr.co.eicn.ippbx.server.model.form.TalkCurrentListSearchRequest;
-import kr.co.eicn.ippbx.server.model.form.TodoListUpdateFormRequest;
-import kr.co.eicn.ippbx.server.model.form.TodoReservationFormRequest;
-import kr.co.eicn.ippbx.server.model.search.TodoListSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonTalkMsg;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.CommonTalkMsgRecord;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoKind;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentTalkRoom;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkServiceInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
+import kr.co.eicn.ippbx.model.dto.customdb.*;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.TalkMsgEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.TalkRoomEntity;
+import kr.co.eicn.ippbx.model.enums.*;
+import kr.co.eicn.ippbx.model.form.CallbackListUpdateFormRequest;
+import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
+import kr.co.eicn.ippbx.model.form.TodoListUpdateFormRequest;
+import kr.co.eicn.ippbx.model.form.TodoReservationFormRequest;
+import kr.co.eicn.ippbx.model.search.TodoListSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.*;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -39,11 +38,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
-import static kr.co.eicn.ippbx.server.jooq.customdb.tables.MaindbCustomInfo.MAINDB_CUSTOM_INFO;
 /**
  * 상담화면_메인
  */
@@ -199,7 +197,7 @@ public class MainApiController extends ApiBaseController {
      * - 프리뷰 : 상담원이 통화 완료 후 상담이력 처리상태를 완료로 저장한 경우
      */
     @GetMapping("to-do")
-    public JsonResult<List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TodoList>> getTodoList(TodoListSearchRequest search) {
+    public JsonResult<List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList>> getTodoList(TodoListSearchRequest search) {
         return data(todoListRepository.findAll(search));
     }
 
@@ -340,9 +338,9 @@ public class MainApiController extends ApiBaseController {
             search.setOrderBy("room_last_time");
         }
 
-        final Map<String, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkServiceInfo> talkServiceInfoMap = talkServiceInfoRepository.findAll(TalkServiceInfo.TALK_SERVICE_INFO.COMPANY_ID.eq(g.getUser().getCompanyId()))
+        final Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo> talkServiceInfoMap = talkServiceInfoRepository.findAll(TalkServiceInfo.TALK_SERVICE_INFO.COMPANY_ID.eq(g.getUser().getCompanyId()))
                 .stream()
-                .collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkServiceInfo::getSenderKey, e -> e));
+                .collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo::getSenderKey, e -> e));
 
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
         final Map<String, String> mainDb = maindbCustomInfoService.getRepository().findAll().stream().collect(Collectors.toMap(MaindbCustomInfoEntity::getMaindbSysCustomId, MaindbCustomInfoEntity::getMaindbString_1));
@@ -371,7 +369,7 @@ public class MainApiController extends ApiBaseController {
                 .map((e) -> {
                     final TalkCurrentListResponse data = convertDto(e, TalkCurrentListResponse.class);
                     if (isNotEmpty(e.getSenderKey())) {
-                        Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkServiceInfo> talkServiceInfo = Optional.ofNullable(talkServiceInfoMap.get(e.getSenderKey()));
+                        Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo> talkServiceInfo = Optional.ofNullable(talkServiceInfoMap.get(e.getSenderKey()));
                         data.setSvcName(talkServiceInfo.orElseThrow(() -> new NullPointerException("상담톡 서비스가 존재하지 않습니다.")).getKakaoServiceName());
                     }
                     if (isNotEmpty(e.getUserid()) && (personListMap.get(e.getUserid()) != null && isNotEmpty(personListMap.get(e.getUserid())))) {
@@ -407,7 +405,7 @@ public class MainApiController extends ApiBaseController {
                         data.setContent(talkMsgResponseList.get(0).getContent());
                         data.setType(talkMsgResponseList.get(0).getType());
                         data.setSend_receive(talkMsgResponseList.get(0).getSendReceive());
-                        final OptionalInt maxOptional = talkMsgResponseList.stream().mapToInt(kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonTalkMsg::getSeq).max();
+                        final OptionalInt maxOptional = talkMsgResponseList.stream().mapToInt(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonTalkMsg::getSeq).max();
                         if (maxOptional.isPresent())
                             data.setLastMessageSeq(maxOptional.getAsInt());
                     }

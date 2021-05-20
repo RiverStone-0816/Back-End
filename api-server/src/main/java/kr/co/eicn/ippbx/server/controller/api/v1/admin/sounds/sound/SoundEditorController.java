@@ -1,16 +1,16 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.sounds.sound;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.model.enums.TTSErrorCode;
-import kr.co.eicn.ippbx.server.model.form.SoundEditorFormRequest;
-import kr.co.eicn.ippbx.server.model.form.SoundEditorListenRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.model.enums.TTSErrorCode;
+import kr.co.eicn.ippbx.model.form.SoundEditorFormRequest;
+import kr.co.eicn.ippbx.model.form.SoundEditorListenRequest;
 import kr.co.eicn.ippbx.server.service.MohListService;
 import kr.co.eicn.ippbx.server.service.SoundListService;
 import kr.co.eicn.ippbx.server.service.StorageService;
 import kr.co.eicn.ippbx.server.service.TTSService;
-import kr.co.eicn.ippbx.server.util.EnumUtils;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.EnumUtils;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.replace;
 

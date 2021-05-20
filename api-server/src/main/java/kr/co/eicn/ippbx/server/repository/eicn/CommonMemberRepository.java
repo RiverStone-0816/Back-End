@@ -1,21 +1,21 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.CommonMember;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CommonMember;
 import lombok.Getter;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.CommonMember.COMMON_MEMBER;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CommonMember.COMMON_MEMBER;
 
 @Getter
 @Repository
-public class CommonMemberRepository extends EicnBaseRepository<CommonMember, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonMember, Integer>  {
+public class CommonMemberRepository extends EicnBaseRepository<CommonMember, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonMember, Integer>  {
     protected final Logger logger = LoggerFactory.getLogger(CommonMemberRepository.class);
 
     public CommonMemberRepository() {
-        super(COMMON_MEMBER,COMMON_MEMBER.SEQ,kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonMember.class);
+        super(COMMON_MEMBER,COMMON_MEMBER.SEQ,kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonMember.class);
     }
 
     public Integer nextSEQ() {

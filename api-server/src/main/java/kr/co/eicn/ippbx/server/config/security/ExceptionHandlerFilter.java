@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.config.security;
 
-import kr.co.eicn.ippbx.server.util.ResponseUtils;
+import kr.co.eicn.ippbx.util.ResponseUtils;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;

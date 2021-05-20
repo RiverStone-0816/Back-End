@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattRoomMember;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattRoomMember;
 import kr.co.eicn.ippbx.server.repository.customdb.ChattMemberRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,16 +1,16 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.RouteApplicationResult;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.PersonList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.RouteApplication;
-import kr.co.eicn.ippbx.server.model.entity.eicn.RouteApplicationEntity;
-import kr.co.eicn.ippbx.server.model.form.GradeListFormRequest;
-import kr.co.eicn.ippbx.server.model.form.RAFormUpdateRequest;
-import kr.co.eicn.ippbx.server.model.form.RouteApplicationFormRequest;
-import kr.co.eicn.ippbx.server.model.search.RouteApplicationSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.RouteApplicationResult;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.RouteApplication;
+import kr.co.eicn.ippbx.model.entity.eicn.RouteApplicationEntity;
+import kr.co.eicn.ippbx.model.form.GradeListFormRequest;
+import kr.co.eicn.ippbx.model.form.RAFormUpdateRequest;
+import kr.co.eicn.ippbx.model.form.RouteApplicationFormRequest;
+import kr.co.eicn.ippbx.model.search.RouteApplicationSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
@@ -22,8 +22,8 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.util.*;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PersonList.PERSON_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.RouteApplication.ROUTE_APPLICATION;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.RouteApplication.ROUTE_APPLICATION;
 
 @Getter
 @Repository
@@ -123,7 +123,7 @@ public class RouteApplicationRepository extends EicnBaseRepository<RouteApplicat
     }
 
     public void reject(Integer seq) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RouteApplication record = findOneIfNullThrow(seq);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RouteApplication record = findOneIfNullThrow(seq);
         record.setResultDate(new Timestamp(System.currentTimeMillis()));
         record.setRstUserid(g.getUser().getId());
         record.setResult(RouteApplicationResult.REJECT);
@@ -145,7 +145,7 @@ public class RouteApplicationRepository extends EicnBaseRepository<RouteApplicat
     }
 
     public void insert(RouteApplicationFormRequest form) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RouteApplication record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RouteApplication();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RouteApplication record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RouteApplication();
         record.setInputDate(new Timestamp(System.currentTimeMillis()));
         record.setType(form.getType());
         record.setNumber(form.getNumber());

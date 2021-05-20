@@ -1,34 +1,29 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.EicnMonitData;
-import kr.co.eicn.ippbx.server.model.dto.eicn.DashCurrentResultCallResponse;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.EicnMonitData;
 import lombok.Getter;
-import org.jooq.DSLContext;
-import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.CURRENT_MEMBER_STATUS;
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.EICN_MONIT_DATA;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.EICN_MONIT_DATA;
 
 @Getter
 @Repository
-public class EicnMonitDataRepository extends EicnBaseRepository<EicnMonitData, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EicnMonitData, Integer> {
+public class EicnMonitDataRepository extends EicnBaseRepository<EicnMonitData, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EicnMonitData, Integer> {
 	protected final Logger logger = LoggerFactory.getLogger(EicnMonitDataRepository.class);
 
 	public EicnMonitDataRepository() {
-		super(EICN_MONIT_DATA, EICN_MONIT_DATA.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EicnMonitData.class);
+		super(EICN_MONIT_DATA, EICN_MONIT_DATA.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EicnMonitData.class);
 	}
 
 	public List<String> getMonitData(String host) {
 
 //		final List<String> serverData = eicnMonitDataRepository.findAll(EICN_MONIT_DATA.HOST.eq(host)).stream()
 ////				.filter(e -> e.getHost().equals(host))
-//				.map(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EicnMonitData::getData)
+//				.map(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EicnMonitData::getData)
 //				.collect(Collectors.toList());
 
 		//		DashCurrentResultCallResponse response = new DashCurrentResultCallResponse();

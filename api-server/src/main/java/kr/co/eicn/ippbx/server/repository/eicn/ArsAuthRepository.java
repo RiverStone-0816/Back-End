@@ -1,10 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.server.config.Constants;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ArsAuth;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.enums.ServerType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ArsAuth;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.enums.ServerType;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import lombok.Getter;
@@ -16,11 +15,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ArsAuth.ARS_AUTH;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ArsAuth.ARS_AUTH;
 
 @Getter
 @Repository
-public class ArsAuthRepository extends EicnBaseRepository<ArsAuth, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ArsAuth, Integer> {
+public class ArsAuthRepository extends EicnBaseRepository<ArsAuth, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ArsAuth, Integer> {
 	protected final Logger logger = LoggerFactory.getLogger(ArsAuthRepository.class);
 	private final CacheService cacheService;
 	private final PBXServerInterface pbxServerInterface;
@@ -31,7 +30,7 @@ public class ArsAuthRepository extends EicnBaseRepository<ArsAuth, kr.co.eicn.ip
 
     public ArsAuthRepository(CacheService cacheService, PBXServerInterface pbxServerInterface, CompanyInfoRepository companyInfoRepository,
 							 CompanyServerRepository companyServerRepository, PersonListRepository personListRepository) {
-		super(ARS_AUTH, ARS_AUTH.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ArsAuth.class);
+		super(ARS_AUTH, ARS_AUTH.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ArsAuth.class);
 
 		this.cacheService = cacheService;
 		this.pbxServerInterface = pbxServerInterface;
@@ -71,18 +70,18 @@ public class ArsAuthRepository extends EicnBaseRepository<ArsAuth, kr.co.eicn.ip
 				.execute();
 	}
 
-	public kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ArsAuth findOneBySessionId(final String sessionId) {
+	public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ArsAuth findOneBySessionId(final String sessionId) {
 			return findAll(ARS_AUTH.SESSION_ID.eq(sessionId)).stream().findFirst().orElse(null);
     }
 
-    public kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ArsAuth findOneByUserId(final String userId) {
+    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ArsAuth findOneByUserId(final String userId) {
 
         final Optional<CompanyServerEntity> optionalPbxServer = companyServerRepository.findAllType(ServerType.PBX).stream().findAny();
         if (!optionalPbxServer.isPresent())
             throw new IllegalStateException("PBX ERROR");
 
         final CompanyServerEntity pbxServer = optionalPbxServer.get();
-		Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ArsAuth> arsAuth;
+		Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ArsAuth> arsAuth;
 
         if (Constants.LOCAL_HOST.equals(pbxServer.getHost())) {
 			arsAuth = findAll(ARS_AUTH.USERID.eq(userId)).stream().findFirst();

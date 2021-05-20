@@ -1,16 +1,16 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonChattMsg;
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonChattRoom;
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonChattRoomMember;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.model.entity.customdb.ChattRoomEntity;
-import kr.co.eicn.ippbx.server.model.entity.customdb.ChattRoomMemberEntity;
-import kr.co.eicn.ippbx.server.model.enums.ChattingJoinStatus;
-import kr.co.eicn.ippbx.server.model.enums.ChattingRoomNameYn;
-import kr.co.eicn.ippbx.server.model.form.ChattingMemberFormRequest;
-import kr.co.eicn.ippbx.server.model.search.ChattingRoomSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.ChattingSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonChattMsg;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonChattRoom;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonChattRoomMember;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.model.entity.customdb.ChattRoomEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.ChattRoomMemberEntity;
+import kr.co.eicn.ippbx.model.enums.ChattingJoinStatus;
+import kr.co.eicn.ippbx.model.enums.ChattingRoomNameYn;
+import kr.co.eicn.ippbx.model.form.ChattingMemberFormRequest;
+import kr.co.eicn.ippbx.model.search.ChattingRoomSearchRequest;
+import kr.co.eicn.ippbx.model.search.ChattingSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.service.ChattMemberService;
 import kr.co.eicn.ippbx.server.service.ChattMsgService;
@@ -123,7 +123,7 @@ public class ChattRoomRepository extends CustomDBBaseRepository<CommonChattRoom,
     }
 
     public void updateChattingRoomMemberCount(String roomId, String newChattingRoomName, Integer memberSize) {
-        final kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattRoom chattingRoom = findOneByRoomId(roomId);
+        final kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattRoom chattingRoom = findOneByRoomId(roomId);
         dsl.update(TABLE)
                 .set(TABLE.ROOM_NAME, chattingRoom.getRoomNameChange().contains(ChattingRoomNameYn.CHANGE_N.getCode()) ? newChattingRoomName : chattingRoom.getRoomName())
                 .set(TABLE.CUR_MEMBER_CNT, chattingRoom.getCurMemberCnt() + memberSize)
@@ -145,7 +145,7 @@ public class ChattRoomRepository extends CustomDBBaseRepository<CommonChattRoom,
     }
 
     public void deleteChattingRoom(String roomId) {
-        final kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattRoom chattingRoom = findOneByRoomId(roomId);
+        final kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattRoom chattingRoom = findOneByRoomId(roomId);
 
         if (chattingRoom.getCurMemberCnt() > 1)
             dsl.deleteFrom(chatMemberTable)
@@ -172,7 +172,7 @@ public class ChattRoomRepository extends CustomDBBaseRepository<CommonChattRoom,
                 .fetchOneInto(String.class);
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattRoom> findAllByUserId(ChattingRoomSearchRequest search) {
+    public List<kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattRoom> findAllByUserId(ChattingRoomSearchRequest search) {
         Condition roomCondition = noCondition();
         if (StringUtils.isNotEmpty(search.getRoomName()))
             roomCondition = roomCondition.and(TABLE.ROOM_NAME.like("%" + search.getRoomName() + "%"));
@@ -184,7 +184,7 @@ public class ChattRoomRepository extends CustomDBBaseRepository<CommonChattRoom,
                 .and(chatMemberTable.USERID.eq(g.getUser().getId()))
                 .and(chatMemberTable.IS_JOIN.ne(ChattingJoinStatus.LEAVE.getCode()))
                 .and(chatMemberTable.IS_JOIN.ne(ChattingJoinStatus.PREPARE_ACTIVE.getCode()))
-                .fetchInto(kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattRoom.class);
+                .fetchInto(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattRoom.class);
     }
 
     public ChattRoomEntity findOneByRoomId(String roomId, ChattingSearchRequest search) {
@@ -195,10 +195,10 @@ public class ChattRoomRepository extends CustomDBBaseRepository<CommonChattRoom,
         return postProcedure(entity, search);
     }
 
-    public kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattRoom findOneByRoomId(String roomId) {
-        final kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattRoom chatRoom = dsl.selectFrom(TABLE)
+    public kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattRoom findOneByRoomId(String roomId) {
+        final kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattRoom chatRoom = dsl.selectFrom(TABLE)
                 .where(TABLE.ROOM_ID.eq(roomId))
-                .fetchOneInto(kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattRoom.class);
+                .fetchOneInto(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattRoom.class);
         if (Objects.isNull(chatRoom))
             throw new IllegalArgumentException("존재하지 않는 채팅방입니다.");
         return chatRoom;

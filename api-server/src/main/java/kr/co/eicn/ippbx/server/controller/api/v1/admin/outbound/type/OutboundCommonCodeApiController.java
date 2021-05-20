@@ -1,22 +1,22 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.type;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonCode;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonField;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType;
-import kr.co.eicn.ippbx.server.model.dto.eicn.CommonCodeDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.CommonFieldResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.CommonTypeDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.RelatedFieldResponse;
-import kr.co.eicn.ippbx.server.model.enums.CommonTypeKind;
-import kr.co.eicn.ippbx.server.model.enums.CommonTypeKindGroup;
-import kr.co.eicn.ippbx.server.model.form.CommonCodeUpdateFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType;
+import kr.co.eicn.ippbx.model.dto.eicn.CommonCodeDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.CommonFieldResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.CommonTypeDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.RelatedFieldResponse;
+import kr.co.eicn.ippbx.model.enums.CommonTypeKind;
+import kr.co.eicn.ippbx.model.enums.CommonTypeKindGroup;
+import kr.co.eicn.ippbx.model.form.CommonCodeUpdateFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonCodeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonFieldRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonTypeRepository;
 import kr.co.eicn.ippbx.server.service.CommonFieldPoster;
-import kr.co.eicn.ippbx.server.util.EnumUtils;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.EnumUtils;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
 *   아웃바운드관리 > 아웃바운드유형&코드관리 > 프리뷰, PDS, 상담결과유형 코드관리
@@ -48,7 +48,7 @@ public class OutboundCommonCodeApiController extends ApiBaseController {
 
     /**
      *  유형목록
-     * @see kr.co.eicn.ippbx.server.model.enums.CommonTypeKind
+     * @see kr.co.eicn.ippbx.model.enums.CommonTypeKind
      **/
     @GetMapping("")
     public ResponseEntity<JsonResult<List<CommonTypeDetailResponse>>> list(@RequestParam (required = false) String kind) {

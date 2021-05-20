@@ -1,13 +1,13 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ConfInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ConfMember;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.ConfInfoRecord;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ConfInfoSummaryResponse;
-import kr.co.eicn.ippbx.server.model.form.ConfInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.ConfMemberOutPersonFormRequest;
-import kr.co.eicn.ippbx.server.model.search.ConfInfoSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ConfInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ConfMember;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.ConfInfoRecord;
+import kr.co.eicn.ippbx.model.dto.eicn.ConfInfoSummaryResponse;
+import kr.co.eicn.ippbx.model.form.ConfInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.ConfMemberOutPersonFormRequest;
+import kr.co.eicn.ippbx.model.search.ConfInfoSearchRequest;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.Record;
@@ -20,19 +20,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.CONF_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.CONF_MEMBER;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.CONF_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.CONF_MEMBER;
 
 @Getter
 @Repository
-public class ConfInfoRepository extends EicnBaseRepository<ConfInfo, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ConfInfo, Integer> {
+public class ConfInfoRepository extends EicnBaseRepository<ConfInfo, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ConfInfo, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(ConfInfoRepository.class);
 
     private final ConfMemberRepository confMemberRepository;
     private final Number070Repository numberRepository;
 
     ConfInfoRepository(ConfMemberRepository confMemberRepository, Number070Repository numberRepository) {
-        super(CONF_INFO, CONF_INFO.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ConfInfo.class);
+        super(CONF_INFO, CONF_INFO.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ConfInfo.class);
 
         this.confMemberRepository = confMemberRepository;
         this.numberRepository = numberRepository;
@@ -57,7 +57,7 @@ public class ConfInfoRepository extends EicnBaseRepository<ConfInfo, kr.co.eicn.
 
         final Number_070 number = numberRepository.findOneIfNullThrow(getCompanyId(), form.getRoomNumber());
 
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ConfInfo confInfo = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ConfInfo();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ConfInfo confInfo = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ConfInfo();
 
         confInfo.setConfName(form.getConfName());
         confInfo.setReserveFromtime(form.getReserveFromTime());
@@ -134,7 +134,7 @@ public class ConfInfoRepository extends EicnBaseRepository<ConfInfo, kr.co.eicn.
 
 //        final Number_070 number = numberRepository.findOneIfNullThrow(getCompanyId(), form.getRoomNumber());
 
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ConfInfo record = findOneIfNullThrow(seq);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ConfInfo record = findOneIfNullThrow(seq);
 
         record.setConfName(form.getConfName());
         record.setReserveFromtime(form.getReserveFromTime());

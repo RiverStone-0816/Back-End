@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.HistoryPdsGroup;
-import kr.co.eicn.ippbx.server.model.search.PDSHistorySearchRequest;
-import kr.co.eicn.ippbx.server.model.search.HistoryPdsGroupSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.HistoryPdsGroup;
+import kr.co.eicn.ippbx.model.search.PDSHistorySearchRequest;
+import kr.co.eicn.ippbx.model.search.HistoryPdsGroupSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
@@ -16,20 +16,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.HISTORY_PDS_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.HISTORY_PDS_GROUP;
 
 @Getter
 @Repository
-public class HistoryPDSGroupRepository extends EicnBaseRepository<HistoryPdsGroup, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryPdsGroup, Integer> {
+public class HistoryPDSGroupRepository extends EicnBaseRepository<HistoryPdsGroup, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsGroup, Integer> {
     private final Logger logger = LoggerFactory.getLogger(HistoryPDSGroupRepository.class);
 
     public HistoryPDSGroupRepository() {
-        super(HISTORY_PDS_GROUP, HISTORY_PDS_GROUP.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryPdsGroup.class);
-        
+        super(HISTORY_PDS_GROUP, HISTORY_PDS_GROUP.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsGroup.class);
+
         addOrderingField(HISTORY_PDS_GROUP.START_DATE.desc());
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryPdsGroup> pagination(PDSHistorySearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsGroup> pagination(PDSHistorySearchRequest search) {
         return pagination(search, conditions(search), Collections.singletonList(HISTORY_PDS_GROUP.STOP_DATE.desc()));
     }
 
@@ -51,34 +51,34 @@ public class HistoryPDSGroupRepository extends EicnBaseRepository<HistoryPdsGrou
         delete(HISTORY_PDS_GROUP.EXECUTE_ID.eq(executeId));
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryPdsGroup> findAllGroupId(Integer groupId) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsGroup> findAllGroupId(Integer groupId) {
         return findAll(HISTORY_PDS_GROUP.PDS_GROUP_ID.eq(groupId));
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryPdsGroup> findAllByExecuteId(String executeId) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsGroup> findAllByExecuteId(String executeId) {
         return findAll(HISTORY_PDS_GROUP.EXECUTE_ID.eq(executeId));
     }
-    
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryPdsGroup> findAll(HistoryPdsGroupSearchRequest search) {
+
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsGroup> findAll(HistoryPdsGroupSearchRequest search) {
         orderByFields.add(HISTORY_PDS_GROUP.START_DATE.desc());
         return findAll(conditions(search));
     }
-    
+
     private List<Condition> conditions(HistoryPdsGroupSearchRequest search) {
         final List<Condition> conditions = new ArrayList<>();
-        
+
         if (search.getStartDate() != null)
             conditions.add(DSL.date(HISTORY_PDS_GROUP.START_DATE).ge(search.getStartDate()));
-        
+
         if (search.getEndDate() != null)
             conditions.add(DSL.date(HISTORY_PDS_GROUP.START_DATE).le(search.getEndDate()));
-        
+
         if (StringUtils.isNotEmpty(search.getExecuteId()))
             conditions.add(HISTORY_PDS_GROUP.EXECUTE_ID.eq(search.getExecuteId()));
-        
+
         if (search.getConnectKinds() != null && !search.getConnectKinds().isEmpty() )
             conditions.add(HISTORY_PDS_GROUP.CONNECT_KIND.in(search.getConnectKinds()));
-        
+
         return conditions;
     }
 }

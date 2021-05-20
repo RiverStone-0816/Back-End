@@ -1,14 +1,14 @@
 package kr.co.eicn.ippbx.server.service;
 
 import kr.co.eicn.ippbx.server.config.Constants;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordDown;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordDownInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.RecordDownRecord;
-import kr.co.eicn.ippbx.server.model.entity.customdb.EicnCdrEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.enums.*;
-import kr.co.eicn.ippbx.server.model.form.RecordDownFormRequest;
-import kr.co.eicn.ippbx.server.model.search.RecordDownSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordDown;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordDownInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.RecordDownRecord;
+import kr.co.eicn.ippbx.model.entity.customdb.EicnCdrEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.enums.*;
+import kr.co.eicn.ippbx.model.form.RecordDownFormRequest;
+import kr.co.eicn.ippbx.model.search.RecordDownSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.RecordDownInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.RecordDownRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.WebSecureHistoryRepository;
@@ -27,8 +27,8 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.stream.Collectors.joining;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.RecordDown.RECORD_DOWN;
-import static kr.co.eicn.ippbx.server.util.StringUtils.subStringBytes;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.RecordDown.RECORD_DOWN;
+import static kr.co.eicn.ippbx.util.StringUtils.subStringBytes;
 import static org.apache.commons.io.FilenameUtils.getBaseName;
 import static org.apache.commons.lang3.StringUtils.*;
 

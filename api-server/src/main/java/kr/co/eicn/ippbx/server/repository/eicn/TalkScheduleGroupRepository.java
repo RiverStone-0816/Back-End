@@ -1,16 +1,16 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.TalkScheduleGroup;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkMemberGroup;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkMent;
-import kr.co.eicn.ippbx.server.model.entity.eicn.TalkScheduleGroupEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.TalkScheduleGroupListEntity;
-import kr.co.eicn.ippbx.server.model.enums.TalkScheduleKind;
-import kr.co.eicn.ippbx.server.model.form.TalkScheduleGroupFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkScheduleGroup;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMent;
+import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleGroupEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleGroupListEntity;
+import kr.co.eicn.ippbx.model.enums.TalkScheduleKind;
+import kr.co.eicn.ippbx.model.form.TalkScheduleGroupFormRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.Getter;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -24,23 +24,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PersonList.PERSON_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.TalkMemberGroup.TALK_MEMBER_GROUP;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.TalkMent.TALK_MENT;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.TalkScheduleGroup.TALK_SCHEDULE_GROUP;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.TalkScheduleGroupList.TALK_SCHEDULE_GROUP_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkMemberGroup.TALK_MEMBER_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkMent.TALK_MENT;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkScheduleGroup.TALK_SCHEDULE_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkScheduleGroupList.TALK_SCHEDULE_GROUP_LIST;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class TalkScheduleGroupRepository extends EicnBaseRepository<TalkScheduleGroup, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkScheduleGroup, Integer> {
+public class TalkScheduleGroupRepository extends EicnBaseRepository<TalkScheduleGroup, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleGroup, Integer> {
 	protected final Logger logger = LoggerFactory.getLogger(TalkScheduleGroupRepository.class);
 	private final PBXServerInterface pbxServerInterface;
 	private final CacheService cacheService;
 
 	TalkScheduleGroupRepository(PBXServerInterface pbxServerInterface, CacheService cacheService) {
-		super(TALK_SCHEDULE_GROUP, TALK_SCHEDULE_GROUP.PARENT, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkScheduleGroup.class);
+		super(TALK_SCHEDULE_GROUP, TALK_SCHEDULE_GROUP.PARENT, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleGroup.class);
 		orderByFields.add(TALK_SCHEDULE_GROUP.NAME.asc());
 
 		this.pbxServerInterface = pbxServerInterface;
@@ -90,7 +90,7 @@ public class TalkScheduleGroupRepository extends EicnBaseRepository<TalkSchedule
 	}
 
 	public void insert(TalkScheduleGroupFormRequest form) {
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkScheduleGroup record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkScheduleGroup();
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleGroup();
 		ReflectionUtils.copy(record, form);
 
 		record.setCompanyId(getCompanyId());

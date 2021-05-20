@@ -1,21 +1,21 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.application.fax.email;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendCategory;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendFile;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SendFileResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SendSmsCategorySummaryResponse;
-import kr.co.eicn.ippbx.server.model.enums.SendCategoryType;
-import kr.co.eicn.ippbx.server.model.form.SendFileFormRequest;
-import kr.co.eicn.ippbx.server.model.form.SendFileUpdateRequest;
-import kr.co.eicn.ippbx.server.model.search.SendCategorySearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendCategory;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendFile;
+import kr.co.eicn.ippbx.model.dto.eicn.SendFileResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SendSmsCategorySummaryResponse;
+import kr.co.eicn.ippbx.model.enums.SendCategoryType;
+import kr.co.eicn.ippbx.model.form.SendFileFormRequest;
+import kr.co.eicn.ippbx.model.form.SendFileUpdateRequest;
+import kr.co.eicn.ippbx.model.search.SendCategorySearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.SendFaxEmailCategoryRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.SendFileRepository;
 import kr.co.eicn.ippbx.server.service.FileSystemStorageService;
 import kr.co.eicn.ippbx.server.service.SendFileService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +24,6 @@ import org.springframework.http.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
@@ -35,8 +34,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 상담어플리케이션 관리 > FAX/EMAIL 관리 > 발송물 관리

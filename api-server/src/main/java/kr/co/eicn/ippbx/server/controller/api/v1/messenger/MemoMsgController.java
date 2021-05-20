@@ -1,15 +1,14 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.messenger;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.model.entity.customdb.MemoMsgEntity;
-import kr.co.eicn.ippbx.server.model.enums.ChattingSendReceive;
-import kr.co.eicn.ippbx.server.model.form.MemoMsgFormRequest;
-import kr.co.eicn.ippbx.server.model.search.MemoMsgSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.model.entity.customdb.MemoMsgEntity;
+import kr.co.eicn.ippbx.model.form.MemoMsgFormRequest;
+import kr.co.eicn.ippbx.model.search.MemoMsgSearchRequest;
 import kr.co.eicn.ippbx.server.service.FileSystemStorageService;
 import kr.co.eicn.ippbx.server.service.MemoMsgService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.Resource;
@@ -24,8 +23,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.io.FilenameUtils.getName;
 
 @Log4j2

@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.CommonCode;
-import kr.co.eicn.ippbx.server.model.form.CommonCodeFormRequest;
-import kr.co.eicn.ippbx.server.model.search.StatQaResultIndividualSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CommonCode;
+import kr.co.eicn.ippbx.model.form.CommonCodeFormRequest;
+import kr.co.eicn.ippbx.model.search.StatQaResultIndividualSearchRequest;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
@@ -12,22 +12,22 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.CommonCode.COMMON_CODE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CommonCode.COMMON_CODE;
 
 @Getter
 @Repository
-public class CommonCodeRepository extends EicnBaseRepository<CommonCode, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonCode, Integer> {
+public class CommonCodeRepository extends EicnBaseRepository<CommonCode, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(CommonCodeRepository.class);
 
     public CommonCodeRepository() {
-        super(COMMON_CODE, COMMON_CODE.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonCode.class);
+        super(COMMON_CODE, COMMON_CODE.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode.class);
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonCode> findAllByType(Integer type) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode> findAllByType(Integer type) {
         return findAll(COMMON_CODE.TYPE.eq(type));
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonCode> findAllByTypeField(Integer type, String fieldId) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode> findAllByTypeField(Integer type, String fieldId) {
         orderByFields.add(COMMON_CODE.SEQUENCE.asc());
         return findAll(COMMON_CODE.TYPE.eq(type).and(COMMON_CODE.FIELD_ID.eq(fieldId)));
     }
@@ -60,7 +60,7 @@ public class CommonCodeRepository extends EicnBaseRepository<CommonCode, kr.co.e
         }
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonCode> individualCodeList(StatQaResultIndividualSearchRequest search) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode> individualCodeList(StatQaResultIndividualSearchRequest search) {
         final CommonCode a = COMMON_CODE.as("A");
         final CommonCode b = COMMON_CODE.as("B");
 
@@ -78,6 +78,6 @@ public class CommonCodeRepository extends EicnBaseRepository<CommonCode, kr.co.e
                         .and(b.TYPE.eq(a.TYPE))
                         .and(b.RELATED_FIELD_ID.eq(a.FIELD_ID))).asField().eq(0))
                 .and(condition)
-                .fetchInto(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonCode.class);
+                .fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode.class);
     }
 }

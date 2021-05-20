@@ -1,17 +1,17 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.application.fax.email;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendCategory;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendFaxEmail;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendFile;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SendFaxEmailHistoryResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SendFaxEmailResponse;
-import kr.co.eicn.ippbx.server.model.search.SendFaxEmailHistorySearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendCategory;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendFaxEmail;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendFile;
+import kr.co.eicn.ippbx.model.dto.eicn.SendFaxEmailHistoryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SendFaxEmailResponse;
+import kr.co.eicn.ippbx.model.search.SendFaxEmailHistorySearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.SendFaxEmailCategoryRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.SendFaxEmailHistoryRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.SendFileRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 상담어플리케이션 관리 > FAX/EMAIL 관리 > 발송이력

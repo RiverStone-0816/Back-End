@@ -1,15 +1,15 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonPrvCustomInfo;
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonResultCustomInfo;
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.records.PrvCustomInfoRecord;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PrvGroup;
-import kr.co.eicn.ippbx.server.model.entity.customdb.PrvCustomInfoEntity;
-import kr.co.eicn.ippbx.server.model.form.PrvCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.search.PrvCustomInfoSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonPrvCustomInfo;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonResultCustomInfo;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.PrvCustomInfoRecord;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PrvGroup;
+import kr.co.eicn.ippbx.model.entity.customdb.PrvCustomInfoEntity;
+import kr.co.eicn.ippbx.model.form.PrvCustomInfoFormRequest;
+import kr.co.eicn.ippbx.model.search.PrvCustomInfoSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PrvGroupRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.UserRepository;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
@@ -25,8 +25,8 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.customdb.tables.PrvCustomInfo.PRV_CUSTOM_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PrvGroup.PRV_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.customdb.tables.PrvCustomInfo.PRV_CUSTOM_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PrvGroup.PRV_GROUP;
 
 @Getter
 public class PrvCustomInfoRepository extends CustomDBBaseRepository<CommonPrvCustomInfo, PrvCustomInfoEntity, String> {
@@ -83,7 +83,7 @@ public class PrvCustomInfoRepository extends CustomDBBaseRepository<CommonPrvCus
     protected RecordMapper<Record, PrvCustomInfoEntity> getMapper() {
         return record -> {
             final PrvCustomInfoEntity entity = record.into(TABLE.fields()).into(PrvCustomInfoEntity.class);
-            final kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonResultCustomInfo customInfo = record.into(resultTable).into(kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonResultCustomInfo.class);
+            final kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo customInfo = record.into(resultTable).into(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo.class);
             if (customInfo != null && customInfo.getSeq() != null)
                 entity.setResult(customInfo);
             return entity;
@@ -92,7 +92,7 @@ public class PrvCustomInfoRepository extends CustomDBBaseRepository<CommonPrvCus
 
     @Override
     protected void postProcedure(List<PrvCustomInfoEntity> entities) {
-        userRepository.findAllByIds(entities.stream().map(kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonPrvCustomInfo::getPrvSysDamdangId).filter(Objects::nonNull).collect(Collectors.toSet()))
+        userRepository.findAllByIds(entities.stream().map(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonPrvCustomInfo::getPrvSysDamdangId).filter(Objects::nonNull).collect(Collectors.toSet()))
                 .forEach(e -> entities.stream().filter(e2 -> Objects.equals(e.getId(), e2.getPrvSysDamdangId())).forEach(e2 -> e2.setPrvSysDamdangName(e.getIdName())));
     }
 

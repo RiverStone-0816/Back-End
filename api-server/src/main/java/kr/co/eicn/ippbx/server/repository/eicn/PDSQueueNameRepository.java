@@ -1,22 +1,22 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.PdsQueueName;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueTable;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.QueueMemberTableRecord;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.enums.CallDistributionStrategy;
-import kr.co.eicn.ippbx.server.model.enums.PDSResultGroupStrategy;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.form.PDSResultGroupFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PDSResultGroupPersonFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PDSResultGroupUpdateFormRequest;
-import kr.co.eicn.ippbx.server.model.search.PDSResultGroupSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PdsQueueName;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueTable;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.QueueMemberTableRecord;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.enums.CallDistributionStrategy;
+import kr.co.eicn.ippbx.model.enums.PDSResultGroupStrategy;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.form.PDSResultGroupFormRequest;
+import kr.co.eicn.ippbx.model.form.PDSResultGroupPersonFormRequest;
+import kr.co.eicn.ippbx.model.form.PDSResultGroupUpdateFormRequest;
+import kr.co.eicn.ippbx.model.search.PDSResultGroupSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.StringUtils;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.StringUtils;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -32,13 +32,13 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toMap;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PdsQueueName.PDS_QUEUE_NAME;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PdsQueueName.PDS_QUEUE_NAME;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @Getter
 @Repository
-public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsQueueName, String> {
+public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsQueueName, String> {
     protected final Logger logger = LoggerFactory.getLogger(PDSQueueNameRepository.class);
 
     private final QueueMemberTableRepository queueMemberTableRepository;
@@ -48,7 +48,7 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
     private final WebSecureHistoryRepository webSecureHistoryRepository;
 
     public PDSQueueNameRepository(QueueMemberTableRepository queueMemberTableRepository, QueueTableRepository queueTableRepository, PBXServerInterface pbxServerInterface, CacheService cacheService, WebSecureHistoryRepository webSecureHistoryRepository) {
-        super(PDS_QUEUE_NAME, PDS_QUEUE_NAME.NAME, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsQueueName.class);
+        super(PDS_QUEUE_NAME, PDS_QUEUE_NAME.NAME, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsQueueName.class);
         this.queueTableRepository = queueTableRepository;
         this.webSecureHistoryRepository = webSecureHistoryRepository;
         this.queueMemberTableRepository = queueMemberTableRepository;
@@ -58,7 +58,7 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
         orderByFields.add(PDS_QUEUE_NAME.HAN_NAME.asc());
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsQueueName> pagination(PDSResultGroupSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsQueueName> pagination(PDSResultGroupSearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 
@@ -71,7 +71,7 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
     public String insertOnGeneratedKey(PDSResultGroupFormRequest form) {
         final PdsQueueName sequenceSeed = PDS_QUEUE_NAME.as("SEQUENCE_SEED");
         final Integer nextSequence = dsl.select(DSL.ifnull(DSL.max(sequenceSeed.SEQ), 0).add(1)).from(sequenceSeed).fetchOneInto(Integer.class);
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsQueueName queueNameRecord = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsQueueName();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsQueueName queueNameRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsQueueName();
         final String queueName = "PDS_QUEUE".concat(String.valueOf(nextSequence));
 
         queueNameRecord.setSeq(nextSequence);
@@ -245,7 +245,7 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
     }
 
     public void update(PDSResultGroupUpdateFormRequest form) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsQueueName modQueueTable = findOneIfNullThrow(form.getName());
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsQueueName modQueueTable = findOneIfNullThrow(form.getName());
 
         final Optional<CompanyServerEntity> optionalPbxServer = cacheService.pbxServerList(getCompanyId())
                 .stream()
@@ -253,7 +253,7 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                 .findFirst();
 
         if (modQueueTable != null) {
-            final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsQueueName modQueueName = modelMapper.map(modQueueTable, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsQueueName.class);
+            final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsQueueName modQueueName = modelMapper.map(modQueueTable, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsQueueName.class);
             modQueueName.setHanName(form.getHanName());
             modQueueName.setStrategy(form.getStrategy());
             modQueueName.setBusyContext(form.getBusyContext());
@@ -362,7 +362,7 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
     }
 
     public int delete(String queueName) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsQueueName pdsQueueName = findOneIfNullThrow(queueName);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsQueueName pdsQueueName = findOneIfNullThrow(queueName);
         // queue_table 삭제, queue_member_table 삭제
         queueTableRepository.delete(dsl, queueName);
         queueMemberTableRepository.delete(dsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(queueName));

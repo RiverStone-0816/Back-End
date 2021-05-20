@@ -1,12 +1,12 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.PrvGroup;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonMember;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.model.enums.CommonTypeKind;
-import kr.co.eicn.ippbx.server.model.form.PrvGroupFormRequest;
-import kr.co.eicn.ippbx.server.model.search.PrvGroupSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PrvGroup;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonMember;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.model.enums.CommonTypeKind;
+import kr.co.eicn.ippbx.model.form.PrvGroupFormRequest;
+import kr.co.eicn.ippbx.model.search.PrvGroupSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.*;
 import org.slf4j.Logger;
@@ -16,12 +16,12 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.*;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.*;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class PrvGroupRepository extends EicnBaseRepository<PrvGroup, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PrvGroup, Integer> {
+public class PrvGroupRepository extends EicnBaseRepository<PrvGroup, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PrvGroup, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(PrvGroupRepository.class);
 
     private final CommonMemberRepository commonMemberRepository;
@@ -29,18 +29,18 @@ public class PrvGroupRepository extends EicnBaseRepository<PrvGroup, kr.co.eicn.
     private final Number070Repository numberRepository;
 
     PrvGroupRepository(CommonMemberRepository commonMemberRepository, CompanyTreeRepository companyTreeRepository, Number070Repository numberRepository) {
-        super(PRV_GROUP,PRV_GROUP.SEQ,kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PrvGroup.class);
+        super(PRV_GROUP,PRV_GROUP.SEQ,kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PrvGroup.class);
         this.commonMemberRepository = commonMemberRepository;
         this.companyTreeRepository = companyTreeRepository;
         this.numberRepository = numberRepository;
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PrvGroup> pagination(PrvGroupSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PrvGroup> pagination(PrvGroupSearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 
     public Record insertOnGeneratedKey(PrvGroupFormRequest form) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PrvGroup prvRecord = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PrvGroup();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PrvGroup prvRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PrvGroup();
 
         prvRecord.setName(form.getName());
         prvRecord.setPrvType(form.getPrvType());
@@ -104,7 +104,7 @@ public class PrvGroupRepository extends EicnBaseRepository<PrvGroup, kr.co.eicn.
     }
 
     public void updateByKeyWithCommonMember(PrvGroupFormRequest form, Integer seq) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PrvGroup prvRecord = findOneIfNullThrow(seq);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PrvGroup prvRecord = findOneIfNullThrow(seq);
 
         prvRecord.setName(form.getName());
         prvRecord.setPrvType(form.getPrvType());

@@ -1,13 +1,13 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.dto.eicn.Number070ScheduleInfoResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.OrganizationSummaryResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ScheduleInfoEntity;
-import kr.co.eicn.ippbx.server.model.form.DayScheduleInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.DayScheduleInfoUpdateFormRequest;
-import kr.co.eicn.ippbx.server.model.form.HolyScheduleInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PeriodDateFormRequest;
+import kr.co.eicn.ippbx.model.dto.eicn.Number070ScheduleInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.ScheduleInfoEntity;
+import kr.co.eicn.ippbx.model.form.DayScheduleInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.DayScheduleInfoUpdateFormRequest;
+import kr.co.eicn.ippbx.model.form.HolyScheduleInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.PeriodDateFormRequest;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Order;
 import org.springframework.http.MediaType;

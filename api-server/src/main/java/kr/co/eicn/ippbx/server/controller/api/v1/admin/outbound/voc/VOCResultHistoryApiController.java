@@ -1,13 +1,13 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.voc;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.*;
-import kr.co.eicn.ippbx.server.model.entity.customdb.VocResearchResultEntity;
-import kr.co.eicn.ippbx.server.model.search.CustomDBVOCResultSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
+import kr.co.eicn.ippbx.model.entity.customdb.VocResearchResultEntity;
+import kr.co.eicn.ippbx.model.search.CustomDBVOCResultSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.VocResearchResultService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ResearchItem.RESEARCH_ITEM;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchItem.RESEARCH_ITEM;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.*;
 
 /**

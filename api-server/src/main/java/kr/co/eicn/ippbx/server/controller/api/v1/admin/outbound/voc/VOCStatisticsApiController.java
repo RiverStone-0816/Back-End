@@ -1,15 +1,15 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.voc;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocGroup;
-import kr.co.eicn.ippbx.server.model.dto.statdb.StatVocResponse;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatVOCEntity;
-import kr.co.eicn.ippbx.server.model.search.StatDBVOCStatisticsSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup;
+import kr.co.eicn.ippbx.model.dto.statdb.StatVocResponse;
+import kr.co.eicn.ippbx.model.entity.statdb.StatVOCEntity;
+import kr.co.eicn.ippbx.model.search.StatDBVOCStatisticsSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.ResearchTreeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.VOCGroupRepository;
 import kr.co.eicn.ippbx.server.service.StatDBStatVOCService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.*;
 
 /**

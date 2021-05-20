@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonTalkMsg;
-import kr.co.eicn.ippbx.server.model.entity.customdb.TalkMsgEntity;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonTalkMsg;
+import kr.co.eicn.ippbx.model.entity.customdb.TalkMsgEntity;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

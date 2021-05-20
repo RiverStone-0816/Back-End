@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.model.entity.eicn.UserEntity;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.model.entity.eicn.UserEntity;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyServerRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import lombok.Getter;

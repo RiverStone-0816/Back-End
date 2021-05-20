@@ -2,20 +2,16 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.entity.pds.PDSResultCustomInfoEntity;
-import kr.co.eicn.ippbx.server.model.form.MaindbCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PDSResultCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.model.entity.pds.PDSResultCustomInfoEntity;
+import kr.co.eicn.ippbx.model.form.PDSResultCustomInfoFormRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

@@ -1,19 +1,19 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.Number_070;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.model.dto.customdb.MainReceivePathResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.OrganizationSummaryResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.search.SearchNumber070Response;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.Number070Entity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ScheduleGroupEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ScheduleInfoEntity;
-import kr.co.eicn.ippbx.server.model.enums.ScheduleType;
-import kr.co.eicn.ippbx.server.model.form.NumberTypeChangeRequest;
-import kr.co.eicn.ippbx.server.model.search.NumberSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.ScheduleInfoSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.search.SearchNumber070Request;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.Number_070;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.model.dto.customdb.MainReceivePathResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.search.SearchNumber070Response;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.Number070Entity;
+import kr.co.eicn.ippbx.model.entity.eicn.ScheduleGroupEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.ScheduleInfoEntity;
+import kr.co.eicn.ippbx.model.enums.ScheduleType;
+import kr.co.eicn.ippbx.model.form.NumberTypeChangeRequest;
+import kr.co.eicn.ippbx.model.search.NumberSearchRequest;
+import kr.co.eicn.ippbx.model.search.ScheduleInfoSearchRequest;
+import kr.co.eicn.ippbx.model.search.search.SearchNumber070Request;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
@@ -30,15 +30,15 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.Number_070.NUMBER_070;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ScheduleGroup.SCHEDULE_GROUP;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ScheduleInfo.SCHEDULE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.Number_070.NUMBER_070;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleGroup.SCHEDULE_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleInfo.SCHEDULE_INFO;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class Number070Repository extends EicnBaseRepository<Number_070, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070, String> {
+public class Number070Repository extends EicnBaseRepository<Number_070, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070, String> {
 	protected final Logger logger = LoggerFactory.getLogger(Number070Repository.class);
 
 	private final ScheduleGroupRepository scheduleGroupRepository;
@@ -47,7 +47,7 @@ public class Number070Repository extends EicnBaseRepository<Number_070, kr.co.ei
 	private final CacheService cacheService;
 
 	public Number070Repository(ScheduleGroupRepository scheduleGroupRepository, OrganizationService organizationService, PBXServerInterface pbxServerInterface, CacheService cacheService) {
-		super(NUMBER_070, NUMBER_070.NUMBER, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070.class);
+		super(NUMBER_070, NUMBER_070.NUMBER, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070.class);
 		orderByFields.add(NUMBER_070.NUMBER.asc());
 
 		this.scheduleGroupRepository = scheduleGroupRepository;
@@ -56,14 +56,14 @@ public class Number070Repository extends EicnBaseRepository<Number_070, kr.co.ei
 		this.cacheService = cacheService;
 	}
 
-	public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070> findAll(NumberSearchRequest search) {
+	public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070> findAll(NumberSearchRequest search) {
 		return super.findAll(typeConditions(search));
 	}
 
-	public Map<String, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070> findByAllListCovertToMap(Condition condition) {
-		final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070> entities = findAll(condition);
+	public Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070> findByAllListCovertToMap(Condition condition) {
+		final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070> entities = findAll(condition);
 		return entities.stream()
-				.collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070::getNumber, e -> e));
+				.collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070::getNumber, e -> e));
 	}
 
 	public void typeChange(NumberTypeChangeRequest form, String number) {
@@ -95,7 +95,7 @@ public class Number070Repository extends EicnBaseRepository<Number_070, kr.co.ei
 	}
 
 	public List<SearchNumber070Response> search(SearchNumber070Request search) {
-		final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070> numbers = findAll(searchConditions(search));
+		final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070> numbers = findAll(searchConditions(search));
 		final List<CompanyServerEntity> companyServerEntities = cacheService.getCompanyServerList(g.getUser().getCompanyId());
 
 		return numbers.stream()
@@ -211,7 +211,7 @@ public class Number070Repository extends EicnBaseRepository<Number_070, kr.co.ei
 		return number070Entities;
 	}
 
-	public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070> prvGroupNumber070() {
+	public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070> prvGroupNumber070() {
 		return findAll(NUMBER_070.NUMBER.like("070%"));
 	}
 }

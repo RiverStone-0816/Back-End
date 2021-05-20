@@ -1,17 +1,17 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.email.mng;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.*;
-import kr.co.eicn.ippbx.server.model.dto.eicn.*;
-import kr.co.eicn.ippbx.server.model.entity.eicn.EmailMemberListEntity;
-import kr.co.eicn.ippbx.server.model.form.EmailReceiveGroupFormRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.entity.eicn.EmailMemberListEntity;
+import kr.co.eicn.ippbx.model.form.EmailReceiveGroupFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.EmailMemberListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.EmailMngRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.EmailMemberGroupRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -26,10 +26,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.EMAIL_MEMBER_GROUP;
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.EMAIL_MEMBER_LIST;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.EMAIL_MEMBER_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.EMAIL_MEMBER_LIST;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 이메일상담관리 > 이메일설정관리 > 이메일수신그룹관리

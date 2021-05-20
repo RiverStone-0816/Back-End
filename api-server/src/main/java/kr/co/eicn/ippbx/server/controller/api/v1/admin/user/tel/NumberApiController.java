@@ -1,19 +1,19 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.user.tel;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServerInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList;
-import kr.co.eicn.ippbx.server.model.dto.eicn.NumberSummaryResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryNumber070Response;
-import kr.co.eicn.ippbx.server.model.enums.Bool;
-import kr.co.eicn.ippbx.server.model.enums.NumberType;
-import kr.co.eicn.ippbx.server.model.form.NumberTypeChangeRequest;
-import kr.co.eicn.ippbx.server.model.search.NumberSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServerInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
+import kr.co.eicn.ippbx.model.dto.eicn.NumberSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryNumber070Response;
+import kr.co.eicn.ippbx.model.enums.Bool;
+import kr.co.eicn.ippbx.model.enums.NumberType;
+import kr.co.eicn.ippbx.model.form.NumberTypeChangeRequest;
+import kr.co.eicn.ippbx.model.search.NumberSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.jooq.impl.DSL;
@@ -29,10 +29,10 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.Number_070.NUMBER_070;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueName.QUEUE_NAME;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.Number_070.NUMBER_070;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName.QUEUE_NAME;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
@@ -57,14 +57,14 @@ public class NumberApiController extends ApiBaseController {
     @GetMapping("")
     public ResponseEntity<JsonResult<List<NumberSummaryResponse>>> list(NumberSearchRequest search) {
         final List<NumberSummaryResponse> summaryResponses = new ArrayList<>();
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070> rows = repository.findAll(search);
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070> rows = repository.findAll(search);
 
         final List<ServiceList> serviceLists = serviceRepository.findAll();
         final List<ScheduleInfo> scheduleInfos = scheduleInfoRepository.findAll();
         final List<ServerInfo> serverInfos = serverInfoRepository.findAll();
         final List<PhoneInfo> phoneInfos = phoneInfoRepository.findAll();
 
-        for (kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070 row : rows) {
+        for (kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070 row : rows) {
             final NumberSummaryResponse number = modelMapper.map(row, NumberSummaryResponse.class);
 
             number.setUseService("비사용중");

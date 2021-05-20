@@ -1,11 +1,11 @@
 package kr.co.eicn.ippbx.server.controller.api;
 
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.model.entity.eicn.UserScheduleEntity;
-import kr.co.eicn.ippbx.server.model.form.UserScheduleFormRequest;
-import kr.co.eicn.ippbx.server.model.search.UserScheduleSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.model.entity.eicn.UserScheduleEntity;
+import kr.co.eicn.ippbx.model.form.UserScheduleFormRequest;
+import kr.co.eicn.ippbx.model.search.UserScheduleSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.UserScheduleRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 @Slf4j
 @RequiredArgsConstructor

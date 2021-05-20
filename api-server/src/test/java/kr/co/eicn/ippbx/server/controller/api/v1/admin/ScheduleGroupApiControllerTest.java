@@ -1,16 +1,14 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
-import kr.co.eicn.ippbx.server.config.RequestMessage;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ScheduleGroupSummaryResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ScheduleGroupListEntity;
-import kr.co.eicn.ippbx.server.model.enums.ScheduleKind;
-import kr.co.eicn.ippbx.server.model.form.ScheduleGroupFormRequest;
-import kr.co.eicn.ippbx.server.model.form.ScheduleGroupListFormRequest;
-import kr.co.eicn.ippbx.server.util.EnumUtils;
+import kr.co.eicn.ippbx.model.dto.eicn.ScheduleGroupSummaryResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.ScheduleGroupListEntity;
+import kr.co.eicn.ippbx.model.enums.ScheduleKind;
+import kr.co.eicn.ippbx.model.form.ScheduleGroupFormRequest;
+import kr.co.eicn.ippbx.model.form.ScheduleGroupListFormRequest;
+import kr.co.eicn.ippbx.util.EnumUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;

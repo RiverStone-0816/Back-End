@@ -1,12 +1,12 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonResultCustomInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonCode;
-import kr.co.eicn.ippbx.server.model.dto.customdb.QaResultResponse;
-import kr.co.eicn.ippbx.server.model.dto.customdb.StatQaResultCodeResponse;
-import kr.co.eicn.ippbx.server.model.dto.customdb.StatQaResultIndividualResponse;
-import kr.co.eicn.ippbx.server.model.search.StatQaResultIndividualSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.StatQaResultSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode;
+import kr.co.eicn.ippbx.model.dto.customdb.QaResultResponse;
+import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultCodeResponse;
+import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultIndividualResponse;
+import kr.co.eicn.ippbx.model.search.StatQaResultIndividualSearchRequest;
+import kr.co.eicn.ippbx.model.search.StatQaResultSearchRequest;
 import kr.co.eicn.ippbx.server.repository.customdb.StatQaResultRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonCodeRepository;
 import org.apache.commons.lang3.StringUtils;

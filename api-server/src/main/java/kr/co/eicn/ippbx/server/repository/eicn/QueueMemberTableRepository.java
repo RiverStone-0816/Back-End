@@ -1,22 +1,22 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.Tables;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueMemberTable;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.QueueMemberTableRecord;
-import kr.co.eicn.ippbx.server.model.dto.eicn.DashHuntMonitorResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.DashQueueMemberResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PDSQueuePersonResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.QueueMemberLoginCountResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CenterMemberStatusCountEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.MemberStatusOfHunt;
-import kr.co.eicn.ippbx.server.model.enums.PersonPausedStatus;
-import kr.co.eicn.ippbx.server.model.form.MonitControlChangeRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.Tables;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueMemberTable;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.QueueMemberTableRecord;
+import kr.co.eicn.ippbx.model.dto.eicn.DashHuntMonitorResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.DashQueueMemberResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.PDSQueuePersonResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.QueueMemberLoginCountResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.CenterMemberStatusCountEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.MemberStatusOfHunt;
+import kr.co.eicn.ippbx.model.enums.PersonPausedStatus;
+import kr.co.eicn.ippbx.model.form.MonitControlChangeRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.EicnUtils;
+import kr.co.eicn.ippbx.util.EicnUtils;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
@@ -29,15 +29,15 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.PERSON_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.QUEUE_NAME;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.PERSON_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.QUEUE_NAME;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.jooq.impl.DSL.*;
 
 @Getter
 @Repository
-public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTable, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable, UInteger> {
+public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTable, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable, UInteger> {
     protected final Logger logger = LoggerFactory.getLogger(QueueMemberTableRepository.class);
 
     private final PBXServerInterface pbxServerInterface;
@@ -46,7 +46,7 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
     private Boolean groupBy = false;
 
     public QueueMemberTableRepository(PBXServerInterface pbxServerInterface, CacheService cacheService, PersonListRepository personListRepository) {
-        super(QUEUE_MEMBER_TABLE, QUEUE_MEMBER_TABLE.UNIQUEID, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable.class);
+        super(QUEUE_MEMBER_TABLE, QUEUE_MEMBER_TABLE.UNIQUEID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable.class);
         this.pbxServerInterface = pbxServerInterface;
         this.cacheService = cacheService;
         this.personListRepository = personListRepository;
@@ -77,16 +77,16 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
         });
     }
 
-    public Map<String, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable> findByMemberName(DSLContext dslContext, String peer) {
+    public Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable> findByMemberName(DSLContext dslContext, String peer) {
         return dslContext.selectFrom(Tables.QUEUE_MEMBER_TABLE)
                 .where(compareCompanyId())
                 .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq("").or(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(peer)).or(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq("QUEUE".concat(peer))))
                 .and(Tables.QUEUE_MEMBER_TABLE.MEMBERNAME.eq(peer))
                 .fetch()
-                .intoMap(Tables.QUEUE_MEMBER_TABLE.QUEUE_NAME, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable.class);
+                .intoMap(Tables.QUEUE_MEMBER_TABLE.QUEUE_NAME, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable.class);
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable> findAllPDSMember() {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable> findAllPDSMember() {
         return findAll(QUEUE_MEMBER_TABLE.QUEUE_NAME.like("PDS%"));
     }
 
@@ -114,7 +114,7 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
         return r;
     }
 
-    public void insertOnConflictDoNothingAllPbxServers(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable record) {
+    public void insertOnConflictDoNothingAllPbxServers(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable record) {
         insertOnConflictDoNothing(dsl, record);
 
         cacheService.pbxServerList(getCompanyId())
@@ -125,7 +125,7 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
                 });
     }
 
-    public void insertOnConflictDoNothing(DSLContext dslContext, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable record) {
+    public void insertOnConflictDoNothing(DSLContext dslContext, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable record) {
         Result<Record> result = dslContext.select(QUEUE_MEMBER_TABLE.fields())
                 .from(QUEUE_MEMBER_TABLE)
                 .where(compareCompanyId())
@@ -154,7 +154,7 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
                 .execute();
     }
 
-    public Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable> findByOneQueueMemberTableQueueNameAndMemberName(DSLContext dslContext, String memberName) {
+    public Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable> findByOneQueueMemberTableQueueNameAndMemberName(DSLContext dslContext, String memberName) {
         return findAll(dslContext, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(memberName).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq("QUEUE" + memberName))).stream().findFirst();
     }
 
@@ -208,7 +208,7 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
                 .execute();
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable> getBlendingPersons(String queueName) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable> getBlendingPersons(String queueName) {
         return findAll(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(queueName).and(QUEUE_MEMBER_TABLE.BLENDING_MODE.notEqual("N")));
     }
 
@@ -272,7 +272,7 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
                 .fetchInto(MemberStatusOfHunt.class);
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable> findAllByQueueName(List<QueueName> queueNameList, Boolean isGroupBy) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable> findAllByQueueName(List<QueueName> queueNameList, Boolean isGroupBy) {
         Condition condition = DSL.noCondition();
 
         if (isGroupBy != null)
@@ -323,7 +323,7 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
                 .fetchInto(PDSQueuePersonResponse.class);
     }
 
-    public Map<String, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable> findAllQueueMember() {
-        return findAll(compareCompanyId().and(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(EMPTY))).stream().collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable::getMembername, e -> e));
+    public Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable> findAllQueueMember() {
+        return findAll(compareCompanyId().and(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(EMPTY))).stream().collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable::getMembername, e -> e));
     }
 }

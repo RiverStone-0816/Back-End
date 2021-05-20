@@ -1,19 +1,19 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonMaindbCustomInfo;
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.MaindbKeyInfo;
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonMaindbMultichannelInfo;
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.records.MaindbCustomInfoRecord;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonField;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MaindbGroup;
-import kr.co.eicn.ippbx.server.model.dto.eicn.MaindbCustomFieldResponse;
-import kr.co.eicn.ippbx.server.model.entity.customdb.MaindbCustomInfoEntity;
-import kr.co.eicn.ippbx.server.model.entity.customdb.MaindbMultichannelInfoEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.UserEntity;
-import kr.co.eicn.ippbx.server.model.enums.MultichannelChannelType;
-import kr.co.eicn.ippbx.server.model.form.MaindbCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.search.MaindbDataSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbCustomInfo;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.MaindbKeyInfo;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbMultichannelInfo;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.MaindbCustomInfoRecord;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup;
+import kr.co.eicn.ippbx.model.dto.eicn.MaindbCustomFieldResponse;
+import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.UserEntity;
+import kr.co.eicn.ippbx.model.enums.MultichannelChannelType;
+import kr.co.eicn.ippbx.model.form.MaindbCustomInfoFormRequest;
+import kr.co.eicn.ippbx.model.search.MaindbDataSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonFieldRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CurrentTalkRoomRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.MaindbGroupRepository;
@@ -21,7 +21,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.UserRepository;
 import kr.co.eicn.ippbx.server.service.MaindbCustomInfoService;
 import kr.co.eicn.ippbx.server.service.MaindbKeyInfoService;
 import kr.co.eicn.ippbx.server.service.MaindbMultichannelInfoService;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
@@ -40,7 +40,7 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.*;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.*;
 import static org.apache.commons.lang3.StringUtils.replace;
 import static org.jooq.impl.DSL.noCondition;
 
@@ -49,7 +49,7 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
     protected final Logger logger = LoggerFactory.getLogger(MaindbCustomInfoRepository.class);
 
     private final CommonMaindbCustomInfo TABLE;
-    private final kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonMaindbMultichannelInfo multichannelInfoTable;
+    private final kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo multichannelInfoTable;
     @Autowired
     private MaindbMultichannelInfoService maindbMultichannelInfoService;
     @Autowired
@@ -70,7 +70,7 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
     public MaindbCustomInfoRepository(String companyId) {
         super(new CommonMaindbCustomInfo(companyId), new CommonMaindbCustomInfo(companyId).MAINDB_SYS_CUSTOM_ID, MaindbCustomInfoEntity.class);
         TABLE = new CommonMaindbCustomInfo(companyId);
-        multichannelInfoTable = new kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonMaindbMultichannelInfo(companyId);
+        multichannelInfoTable = new kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo(companyId);
 
         addField(TABLE);
         addField(MAINDB_GROUP);
@@ -118,7 +118,7 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
 
         final List<MaindbMultichannelInfoEntity> multichannelLists = maindbMultichannelInfoService.getRepository().findAllByCustomIds(
                 entities.stream() // entities list
-                        .map(kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonMaindbCustomInfo::getMaindbSysCustomId) // convert to custom id list
+                        .map(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbCustomInfo::getMaindbSysCustomId) // convert to custom id list
                         .distinct() // remove duplicated custom id
                         .collect(Collectors.toList()) // bind to list
         );
@@ -128,7 +128,7 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
             entities.forEach(e -> e.setMultichannelList(customIdToChannelInfoList.get(e.getMaindbSysCustomId())));
         }
 
-        for (UserEntity user : userRepository.findAllByIds(entities.stream().map(kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonMaindbCustomInfo::getMaindbSysDamdangId).collect(Collectors.toSet()))) {
+        for (UserEntity user : userRepository.findAllByIds(entities.stream().map(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbCustomInfo::getMaindbSysDamdangId).collect(Collectors.toSet()))) {
             for (MaindbCustomInfoEntity entity : entities) {
                 if (Objects.equals(entity.getMaindbSysDamdangId(), user.getId()))
                     entity.setMaindbSysDamdangName(user.getIdName());

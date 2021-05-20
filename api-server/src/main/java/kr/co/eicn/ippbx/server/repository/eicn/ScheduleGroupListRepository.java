@@ -1,40 +1,36 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.exception.DuplicateKeyException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ScheduleGroupList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.ScheduleGroupListRecord;
-import kr.co.eicn.ippbx.server.model.form.ScheduleGroupListFormRequest;
-import kr.co.eicn.ippbx.server.model.form.ScheduleGroupListTimeUpdateFormRequest;
+import kr.co.eicn.ippbx.exception.DuplicateKeyException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleGroupList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.ScheduleGroupListRecord;
+import kr.co.eicn.ippbx.model.form.ScheduleGroupListFormRequest;
+import kr.co.eicn.ippbx.model.form.ScheduleGroupListTimeUpdateFormRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.Getter;
 import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ScheduleGroupList.SCHEDULE_GROUP_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleGroupList.SCHEDULE_GROUP_LIST;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.jooq.impl.DSL.ifnull;
-import static org.jooq.impl.DSL.max;
 
 @Getter
 @Repository
-public class ScheduleGroupListRepository extends EicnBaseRepository<ScheduleGroupList, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleGroupList, Integer> {
+public class ScheduleGroupListRepository extends EicnBaseRepository<ScheduleGroupList, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroupList, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(ScheduleGroupListRepository.class);
     private final ScheduleGroupRepository scheduleGroupRepository;
     private final PBXServerInterface pbxServerInterface;
     private final CacheService cacheService;
 
     ScheduleGroupListRepository(ScheduleGroupRepository scheduleGroupRepository, PBXServerInterface pbxServerInterface, CacheService cacheService) {
-        super(SCHEDULE_GROUP_LIST, SCHEDULE_GROUP_LIST.CHILD, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleGroupList.class);
+        super(SCHEDULE_GROUP_LIST, SCHEDULE_GROUP_LIST.CHILD, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroupList.class);
         this.scheduleGroupRepository = scheduleGroupRepository;
         this.pbxServerInterface = pbxServerInterface;
         this.cacheService = cacheService;
@@ -43,7 +39,7 @@ public class ScheduleGroupListRepository extends EicnBaseRepository<ScheduleGrou
     public void insertAllPbxServers(ScheduleGroupListFormRequest form) {
         findAllDuplicateItem(form.getParent(), form.getFromhour(), form.getTohour());
 
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleGroupList record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleGroupList();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroupList record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroupList();
         ReflectionUtils.copy(record, form);
 
         record.setChildName(EMPTY);
@@ -125,7 +121,7 @@ public class ScheduleGroupListRepository extends EicnBaseRepository<ScheduleGrou
                 .execute();
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleGroupList> findAllByGroupId(Integer groupId) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroupList> findAllByGroupId(Integer groupId) {
         return findAll(SCHEDULE_GROUP_LIST.PARENT.eq(groupId), SCHEDULE_GROUP_LIST.FROMHOUR.asc());
     }
 
@@ -135,7 +131,7 @@ public class ScheduleGroupListRepository extends EicnBaseRepository<ScheduleGrou
 
     public void findAllDuplicateItem(Integer parent, Integer child, Integer fromHour, Integer toHour) {
         scheduleGroupRepository.findOneIfNullThrow(parent);
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleGroupList> duplicatedTime =
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroupList> duplicatedTime =
                 findAll(SCHEDULE_GROUP_LIST.FROMHOUR.lt(fromHour).and(SCHEDULE_GROUP_LIST.TOHOUR.gt(fromHour))
                         .or(SCHEDULE_GROUP_LIST.FROMHOUR.lt(toHour).and(SCHEDULE_GROUP_LIST.TOHOUR.gt(toHour)))
                         .or(SCHEDULE_GROUP_LIST.FROMHOUR.ge(fromHour).and(SCHEDULE_GROUP_LIST.TOHOUR.le(toHour)))

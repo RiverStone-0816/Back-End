@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.search;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.model.dto.eicn.search.SearchNumber070Response;
-import kr.co.eicn.ippbx.server.model.search.search.SearchNumber070Request;
+import kr.co.eicn.ippbx.model.dto.eicn.search.SearchNumber070Response;
+import kr.co.eicn.ippbx.model.search.search.SearchNumber070Request;
 import kr.co.eicn.ippbx.server.repository.eicn.Number070Repository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.*;
+import static kr.co.eicn.ippbx.util.JsonResult.*;
 
 @Slf4j
 @RequiredArgsConstructor

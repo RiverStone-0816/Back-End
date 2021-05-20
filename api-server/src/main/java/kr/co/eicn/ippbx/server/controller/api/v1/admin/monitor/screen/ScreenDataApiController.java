@@ -1,17 +1,17 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.monitor.screen;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList;
-import kr.co.eicn.ippbx.server.model.dto.eicn.DashServiceStatResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CmpMemberStatusCodeEntity;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatInboundEntity;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
+import kr.co.eicn.ippbx.model.dto.eicn.DashServiceStatResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.CmpMemberStatusCodeEntity;
+import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
 import kr.co.eicn.ippbx.server.repository.eicn.CmpMemberStatusCodeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.QueueMemberTableRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.QueueNameRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ServiceRepository;
 import kr.co.eicn.ippbx.server.service.StatInboundService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueName.QUEUE_NAME;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName.QUEUE_NAME;
 
 /**
  * 모니터링 > 전광판 > 통화전광판

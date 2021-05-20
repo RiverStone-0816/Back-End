@@ -1,11 +1,10 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.dto.eicn.MohDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.MohDetailResponse;
 import kr.co.eicn.ippbx.server.service.StorageService;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;

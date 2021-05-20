@@ -1,18 +1,18 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.type;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonBasicField;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CommonTypeEntity;
-import kr.co.eicn.ippbx.server.model.enums.CommonTypeKind;
-import kr.co.eicn.ippbx.server.model.enums.CommonTypeKindGroup;
-import kr.co.eicn.ippbx.server.model.form.CommonTypeFormRequest;
-import kr.co.eicn.ippbx.server.model.form.CommonTypeUpdateFormRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonBasicField;
+import kr.co.eicn.ippbx.model.entity.eicn.CommonTypeEntity;
+import kr.co.eicn.ippbx.model.enums.CommonTypeKind;
+import kr.co.eicn.ippbx.model.enums.CommonTypeKindGroup;
+import kr.co.eicn.ippbx.model.form.CommonTypeFormRequest;
+import kr.co.eicn.ippbx.model.form.CommonTypeUpdateFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonBasicFieldRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonFieldRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonTypeRepository;
-import kr.co.eicn.ippbx.server.util.EnumUtils;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.EnumUtils;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -26,8 +26,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 아웃바운드관리 > 유형관리 > 프리뷰유형, PDS유형, 상담결과유형

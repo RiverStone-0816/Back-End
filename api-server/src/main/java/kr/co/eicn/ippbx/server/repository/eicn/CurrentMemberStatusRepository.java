@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.CurrentMemberStatus;
-import kr.co.eicn.ippbx.server.model.dto.eicn.DashCurrentResultCallResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.MonitorQueuePersonStatResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CenterMemberStatusCountEntity;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentMemberStatus;
+import kr.co.eicn.ippbx.model.dto.eicn.DashCurrentResultCallResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.MonitorQueuePersonStatResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.CenterMemberStatusCountEntity;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import lombok.Getter;
@@ -15,19 +15,19 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.CURRENT_MEMBER_STATUS;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.CURRENT_MEMBER_STATUS;
 import static org.jooq.impl.DSL.*;
 
 @Getter
 @Repository
-public class CurrentMemberStatusRepository extends EicnBaseRepository<CurrentMemberStatus, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CurrentMemberStatus, Integer> {
+public class CurrentMemberStatusRepository extends EicnBaseRepository<CurrentMemberStatus, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CurrentMemberStatus, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(CurrentMemberStatusRepository.class);
 
     private final CacheService cacheService;
     private final PBXServerInterface pbxServerInterface;
 
     public CurrentMemberStatusRepository(CacheService cacheService, PBXServerInterface pbxServerInterface) {
-        super(CURRENT_MEMBER_STATUS, CURRENT_MEMBER_STATUS.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CurrentMemberStatus.class);
+        super(CURRENT_MEMBER_STATUS, CURRENT_MEMBER_STATUS.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CurrentMemberStatus.class);
         this.pbxServerInterface = pbxServerInterface;
         this.cacheService = cacheService;
     }

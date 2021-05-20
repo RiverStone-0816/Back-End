@@ -1,17 +1,17 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ScheduleGroup;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ContextInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleGroupList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SoundList;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ScheduleGroupEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ScheduleGroupListEntity;
-import kr.co.eicn.ippbx.server.model.enums.ScheduleKind;
-import kr.co.eicn.ippbx.server.model.form.ScheduleGroupFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleGroup;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ContextInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroupList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList;
+import kr.co.eicn.ippbx.model.entity.eicn.ScheduleGroupEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.ScheduleGroupListEntity;
+import kr.co.eicn.ippbx.model.enums.ScheduleKind;
+import kr.co.eicn.ippbx.model.form.ScheduleGroupFormRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.Getter;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -26,23 +26,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ContextInfo.CONTEXT_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.IvrTree.IVR_TREE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ScheduleGroup.SCHEDULE_GROUP;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ScheduleGroupList.SCHEDULE_GROUP_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.SoundList.SOUND_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ContextInfo.CONTEXT_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.IvrTree.IVR_TREE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleGroup.SCHEDULE_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleGroupList.SCHEDULE_GROUP_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.SoundList.SOUND_LIST;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleGroup, Integer> {
+public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroup, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(ScheduleGroupRepository.class);
     private final PBXServerInterface pbxServerInterface;
     private final CacheService cacheService;
 
     public ScheduleGroupRepository(PBXServerInterface pbxServerInterface, CacheService cacheService) {
-        super(SCHEDULE_GROUP, SCHEDULE_GROUP.PARENT, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleGroup.class);
+        super(SCHEDULE_GROUP, SCHEDULE_GROUP.PARENT, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroup.class);
 
         this.pbxServerInterface = pbxServerInterface;
         this.cacheService = cacheService;
@@ -93,7 +93,7 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
     }
 
     public void insert(ScheduleGroupFormRequest form) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleGroup record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleGroup();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroup();
         ReflectionUtils.copy(record, form);
 
         record.setCompanyId(getCompanyId());
@@ -129,7 +129,7 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
     }
 
     public void itemCopy(Integer parent, Integer targetParent) {
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleGroup> scheduleGroups = findAll(SCHEDULE_GROUP.PARENT.eq(parent).or(SCHEDULE_GROUP.PARENT.eq(targetParent)));
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroup> scheduleGroups = findAll(SCHEDULE_GROUP.PARENT.eq(parent).or(SCHEDULE_GROUP.PARENT.eq(targetParent)));
         if (scheduleGroups.size() != 2)
             throw new IllegalArgumentException();
 
@@ -164,14 +164,14 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
                 .fetchInto(SoundList.class);
     }
 
-    private List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree> getIvrRootTree() {
+    private List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree> getIvrRootTree() {
         return dsl.select()
                 .from(IVR_TREE)
                 .where(IVR_TREE.COMPANY_ID.eq(getCompanyId()))
                 .and(IVR_TREE.TYPE.eq((byte) 1))
                 .and(IVR_TREE.LEVEL.eq(0))
                 .orderBy(IVR_TREE.CODE)
-                .fetchInto(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree.class);
+                .fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree.class);
     }
 
     private List<ContextInfo> getContextInfo() {

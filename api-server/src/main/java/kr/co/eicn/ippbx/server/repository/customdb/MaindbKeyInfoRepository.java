@@ -1,11 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonMaindbKeyInfo;
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.MaindbKeyInfo;
-import kr.co.eicn.ippbx.server.model.dto.eicn.MaindbCustomFieldResponse;
-import kr.co.eicn.ippbx.server.model.entity.customdb.MaindbKeyInfoEntity;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbKeyInfo;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.MaindbKeyInfo;
+import kr.co.eicn.ippbx.model.entity.customdb.MaindbKeyInfoEntity;
 import lombok.Getter;
-import org.jooq.Condition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

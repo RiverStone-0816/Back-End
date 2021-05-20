@@ -1,16 +1,13 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.CmpMemberStatusCode;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CmpMemberStatusCodeEntity;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CmpMemberStatusCode;
+import kr.co.eicn.ippbx.model.entity.eicn.CmpMemberStatusCodeEntity;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.util.Comparator;
-import java.util.TreeMap;
-
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.CMP_MEMBER_STATUS_CODE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.CMP_MEMBER_STATUS_CODE;
 
 @Getter
 @Repository

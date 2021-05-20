@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattBookmark;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PersonDetailResponse;
-import kr.co.eicn.ippbx.server.model.search.ChattingMemberSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattBookmark;
+import kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse;
+import kr.co.eicn.ippbx.model.search.ChattingMemberSearchRequest;
 import kr.co.eicn.ippbx.server.repository.customdb.ChattBookmarkRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import org.slf4j.Logger;
@@ -42,7 +42,7 @@ public class ChattBookmarkService extends ApiBaseService implements ApplicationC
         this.applicationContext = applicationContext;
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattBookmark> findAllByUserId() {
+    public List<kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattBookmark> findAllByUserId() {
         return this.getRepository().findAllByUserId();
     }
 

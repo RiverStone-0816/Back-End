@@ -1,19 +1,19 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.CommonField;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.CommonType;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonBasicField;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonCode;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.CommonTypeRecord;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CommonCodeEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CommonFieldEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CommonTypeEntity;
-import kr.co.eicn.ippbx.server.model.enums.CommonTypeKind;
-import kr.co.eicn.ippbx.server.model.enums.CommonTypeStatus;
-import kr.co.eicn.ippbx.server.model.form.CommonFieldFormRequest;
-import kr.co.eicn.ippbx.server.model.form.CommonTypeFormRequest;
-import kr.co.eicn.ippbx.server.model.form.CommonTypeUpdateFormRequest;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CommonField;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CommonType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonBasicField;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.CommonTypeRecord;
+import kr.co.eicn.ippbx.model.entity.eicn.CommonCodeEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CommonFieldEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CommonTypeEntity;
+import kr.co.eicn.ippbx.model.enums.CommonTypeKind;
+import kr.co.eicn.ippbx.model.enums.CommonTypeStatus;
+import kr.co.eicn.ippbx.model.form.CommonFieldFormRequest;
+import kr.co.eicn.ippbx.model.form.CommonTypeFormRequest;
+import kr.co.eicn.ippbx.model.form.CommonTypeUpdateFormRequest;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Record;
@@ -30,19 +30,19 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.COMMON_CODE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.CommonField.COMMON_FIELD;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.CommonType.COMMON_TYPE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.COMMON_CODE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CommonField.COMMON_FIELD;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CommonType.COMMON_TYPE;
 
 @Getter
 @Repository
-public class CommonTypeRepository extends EicnBaseRepository<CommonType, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType, Integer> {
+public class CommonTypeRepository extends EicnBaseRepository<CommonType, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(CommonTypeRepository.class);
 
     private final CommonBasicFieldRepository commonBasicFieldRepository;
 
     public CommonTypeRepository(CommonBasicFieldRepository commonBasicFieldRepository) {
-        super(COMMON_TYPE, COMMON_TYPE.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType.class);
+        super(COMMON_TYPE, COMMON_TYPE.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType.class);
         this.commonBasicFieldRepository = commonBasicFieldRepository;
     }
 
@@ -51,11 +51,11 @@ public class CommonTypeRepository extends EicnBaseRepository<CommonType, kr.co.e
         return dsl.select(DSL.ifnull(DSL.max(sequenceSeed.DISPLAY_SEQ), 0).add(1)).from(sequenceSeed.as("SEQUENCE_SEED")).where(sequenceSeed.TYPE.eq(seq)).fetchOneInto(Integer.class);
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType> findAllByKind(String kind) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType> findAllByKind(String kind) {
         return findAll(COMMON_TYPE.KIND.eq(kind).and(COMMON_TYPE.STATUS.eq("U")));
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType> findAllType() {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType> findAllType() {
         return findAll(COMMON_TYPE.STATUS.eq("U").and(COMMON_TYPE.KIND.eq(CommonTypeKind.MAIN_DB.getCode()).or(COMMON_TYPE.KIND.eq(CommonTypeKind.LINK_DB.getCode())).or(COMMON_TYPE.KIND.eq(CommonTypeKind.CONSULTATION_RESULTS.getCode()))));
     }
 
@@ -89,7 +89,7 @@ public class CommonTypeRepository extends EicnBaseRepository<CommonType, kr.co.e
     }
 
     public CommonTypeEntity getCommonType(Integer seq) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType commonType =
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType commonType =
                 findOne(COMMON_TYPE.STATUS.eq(CommonTypeStatus.USING.getCode()).and(COMMON_TYPE.SEQ.eq(seq)));
         final CommonTypeEntity entity = new CommonTypeEntity();
         ReflectionUtils.copy(entity, commonType);
@@ -121,7 +121,7 @@ public class CommonTypeRepository extends EicnBaseRepository<CommonType, kr.co.e
     }
 
     public void insert(CommonTypeFormRequest form) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType();
         record.setName(form.getName());
         record.setEtc(form.getEtc());
         record.setKind(form.getKind());
@@ -227,7 +227,7 @@ public class CommonTypeRepository extends EicnBaseRepository<CommonType, kr.co.e
                 .execute();
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType> findByKindStatus(CommonTypeKind kind, CommonTypeStatus status) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType> findByKindStatus(CommonTypeKind kind, CommonTypeStatus status) {
         return findAll(COMMON_TYPE.KIND.eq(kind.getCode()).and(COMMON_TYPE.STATUS.eq(status.getCode())));
     }
 }

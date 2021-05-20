@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.TaskScript;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScriptCategory;
-import kr.co.eicn.ippbx.server.model.form.TaskScriptFormRequest;
-import kr.co.eicn.ippbx.server.model.search.TaskScriptSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TaskScript;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScriptCategory;
+import kr.co.eicn.ippbx.model.form.TaskScriptFormRequest;
+import kr.co.eicn.ippbx.model.search.TaskScriptSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.impl.DSL;
@@ -17,19 +17,19 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.TASK_SCRIPT;
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.TASK_SCRIPT_CATEGORY;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.TASK_SCRIPT;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.TASK_SCRIPT_CATEGORY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class TaskScriptRepository extends EicnBaseRepository<TaskScript,kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScript, Long> {
+public class TaskScriptRepository extends EicnBaseRepository<TaskScript,kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScript, Long> {
     protected final Logger logger = LoggerFactory.getLogger(TaskScriptRepository.class);
 
     private final TaskScriptCategoryRepository categoryRepository;
 
     TaskScriptRepository(TaskScriptCategoryRepository categoryRepository) {
-        super(TASK_SCRIPT,TASK_SCRIPT.ID,kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScript.class);
+        super(TASK_SCRIPT,TASK_SCRIPT.ID,kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScript.class);
         this.categoryRepository = categoryRepository;
     }
 
@@ -38,13 +38,13 @@ public class TaskScriptRepository extends EicnBaseRepository<TaskScript,kr.co.ei
         return dsl.select(DSL.ifnull(DSL.max(Id.ID), 0).add(1)).from(Id).fetchOneInto(Long.class);
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScript> pagination(TaskScriptSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScript> pagination(TaskScriptSearchRequest search) {
         return super.pagination(search, conditions(search), Collections.singletonList(TASK_SCRIPT.CREATED_AT.desc()));
     }
 
     public void insertOnGeneratedKey(TaskScriptFormRequest form) {
         final TaskScriptCategory scriptCategory = categoryRepository.findOne(TASK_SCRIPT_CATEGORY.ID.eq(form.getCategoryId()));
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScript scriptRecord = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScript();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScript scriptRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScript();
 
         scriptRecord.setId(nextId());
         if (Objects.nonNull(scriptCategory))

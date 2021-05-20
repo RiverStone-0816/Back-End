@@ -1,9 +1,8 @@
 package kr.co.eicn.ippbx.server.controller.api;
 
-import kr.co.eicn.ippbx.server.model.form.UserMenuSequenceUpdateRequest;
+import kr.co.eicn.ippbx.model.form.UserMenuSequenceUpdateRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;

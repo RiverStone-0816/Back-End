@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.server.config.security;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
-import kr.co.eicn.ippbx.server.model.UserDetails;
+import kr.co.eicn.ippbx.model.UserDetails;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.BadCredentialsException;

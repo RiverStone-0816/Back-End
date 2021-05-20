@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.TaskScriptXFile;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TaskScriptXFile;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,15 +8,15 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.TASK_SCRIPT_X_FILE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.TASK_SCRIPT_X_FILE;
 
 @Getter
 @Repository
-public class TaskScriptXFileRepository extends EicnBaseRepository<TaskScriptXFile, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScriptXFile, Long> {
+public class TaskScriptXFileRepository extends EicnBaseRepository<TaskScriptXFile, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScriptXFile, Long> {
     protected final Logger logger = LoggerFactory.getLogger(TaskScriptXFileRepository.class);
 
     public TaskScriptXFileRepository() {
-        super(TASK_SCRIPT_X_FILE,TASK_SCRIPT_X_FILE.TASK_SCRIPT,kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScriptXFile.class);
+        super(TASK_SCRIPT_X_FILE,TASK_SCRIPT_X_FILE.TASK_SCRIPT,kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScriptXFile.class);
     }
 
     public List<Long> findAllScriptXFile(Long scriptId) {

@@ -1,21 +1,21 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.research;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchItem;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SoundList;
-import kr.co.eicn.ippbx.server.model.dto.eicn.OrganizationSummaryResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ResearchItemResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryResearchItemResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummarySoundListResponse;
-import kr.co.eicn.ippbx.server.model.form.ResearchItemFormRequest;
-import kr.co.eicn.ippbx.server.model.search.ResearchItemSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchItem;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList;
+import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.ResearchItemResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryResearchItemResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummarySoundListResponse;
+import kr.co.eicn.ippbx.model.form.ResearchItemFormRequest;
+import kr.co.eicn.ippbx.model.search.ResearchItemSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.ResearchItemRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.SoundListRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -31,9 +31,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ResearchItem.RESEARCH_ITEM;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchItem.RESEARCH_ITEM;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**

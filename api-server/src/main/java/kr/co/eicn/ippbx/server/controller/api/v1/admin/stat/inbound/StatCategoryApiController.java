@@ -1,19 +1,19 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.stat.inbound;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList;
-import kr.co.eicn.ippbx.server.jooq.statdb.tables.pojos.CommonStatInbound;
-import kr.co.eicn.ippbx.server.model.dto.statdb.StatCategoryIvrResponse;
-import kr.co.eicn.ippbx.server.model.dto.statdb.StatCategoryIvrTreeResponse;
-import kr.co.eicn.ippbx.server.model.dto.statdb.StatCategoryResponse;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatInboundEntity;
-import kr.co.eicn.ippbx.server.model.search.StatCategorySearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
+import kr.co.eicn.ippbx.meta.jooq.statdb.tables.pojos.CommonStatInbound;
+import kr.co.eicn.ippbx.model.dto.statdb.StatCategoryIvrResponse;
+import kr.co.eicn.ippbx.model.dto.statdb.StatCategoryIvrTreeResponse;
+import kr.co.eicn.ippbx.model.dto.statdb.StatCategoryResponse;
+import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
+import kr.co.eicn.ippbx.model.search.StatCategorySearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.IvrTreeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ServiceRepository;
 import kr.co.eicn.ippbx.server.service.StatCategoryService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.SearchCycleUtils;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.SearchCycleUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 통계관리 > 인바운드통계 > 인입경로별통계

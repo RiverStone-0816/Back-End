@@ -1,14 +1,14 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.TalkServiceInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.model.dto.eicn.OrganizationSummaryResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.TalkScheduleGroupEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.TalkScheduleInfoEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.TalkServiceInfoEntity;
-import kr.co.eicn.ippbx.server.model.enums.ScheduleType;
-import kr.co.eicn.ippbx.server.model.form.TalkServiceInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.search.TalkServiceInfoSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkServiceInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleGroupEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleInfoEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.TalkServiceInfoEntity;
+import kr.co.eicn.ippbx.model.enums.ScheduleType;
+import kr.co.eicn.ippbx.model.form.TalkServiceInfoFormRequest;
+import kr.co.eicn.ippbx.model.search.TalkServiceInfoSearchRequest;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -26,26 +26,26 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.TalkScheduleGroup.TALK_SCHEDULE_GROUP;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.TalkScheduleInfo.TALK_SCHEDULE_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.TalkServiceInfo.TALK_SERVICE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkScheduleGroup.TALK_SCHEDULE_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkScheduleInfo.TALK_SCHEDULE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkServiceInfo.TALK_SERVICE_INFO;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class TalkServiceInfoRepository extends EicnBaseRepository<TalkServiceInfo, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkServiceInfo, Integer> {
+public class TalkServiceInfoRepository extends EicnBaseRepository<TalkServiceInfo, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo, Integer> {
 	protected final Logger logger = LoggerFactory.getLogger(TalkServiceInfoRepository.class);
 	private final TalkScheduleGroupRepository talkScheduleGroupRepository;
 	private final OrganizationService organizationService;
 
 	TalkServiceInfoRepository(TalkScheduleGroupRepository talkScheduleGroupRepository, OrganizationService organizationService) {
-		super(TALK_SERVICE_INFO, TALK_SERVICE_INFO.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkServiceInfo.class);
+		super(TALK_SERVICE_INFO, TALK_SERVICE_INFO.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo.class);
 		this.talkScheduleGroupRepository = talkScheduleGroupRepository;
 		this.organizationService = organizationService;
 	}
 
 	public Record insertOnGeneratedKey(TalkServiceInfoFormRequest form) {
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkServiceInfo record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkServiceInfo();
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo();
 
 		record.setCompanyId(getCompanyId());
 		record.setSenderKey(form.getSenderKey());

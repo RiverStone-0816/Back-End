@@ -1,15 +1,15 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.BoardInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ManualFileEntity;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ManualXFile;
-import kr.co.eicn.ippbx.server.model.enums.BoardType;
-import kr.co.eicn.ippbx.server.model.enums.IdType;
-import kr.co.eicn.ippbx.server.model.form.ManualFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ManualFileEntity;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ManualXFile;
+import kr.co.eicn.ippbx.model.enums.BoardType;
+import kr.co.eicn.ippbx.model.enums.IdType;
+import kr.co.eicn.ippbx.model.form.ManualFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.ManualFileEntityRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ManualRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ManualXFileRepository;
-import kr.co.eicn.ippbx.server.util.UrlUtils;
+import kr.co.eicn.ippbx.util.UrlUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

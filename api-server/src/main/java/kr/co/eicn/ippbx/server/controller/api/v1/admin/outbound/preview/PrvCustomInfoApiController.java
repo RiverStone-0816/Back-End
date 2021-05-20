@@ -1,23 +1,20 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.preview;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PrvGroup;
-import kr.co.eicn.ippbx.server.model.entity.customdb.PrvCustomInfoEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CommonTypeEntity;
-import kr.co.eicn.ippbx.server.model.form.PrvCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PrvCustomInfoRedistributionFormRequest;
-import kr.co.eicn.ippbx.server.model.search.PrvCustomInfoSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PrvGroup;
+import kr.co.eicn.ippbx.model.entity.customdb.PrvCustomInfoEntity;
+import kr.co.eicn.ippbx.model.form.PrvCustomInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.PrvCustomInfoRedistributionFormRequest;
+import kr.co.eicn.ippbx.model.search.PrvCustomInfoSearchRequest;
 import kr.co.eicn.ippbx.server.repository.customdb.PrvCustomInfoRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.CommonTypeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PrvGroupRepository;
 import kr.co.eicn.ippbx.server.service.PrvCustomInfoService;
 import kr.co.eicn.ippbx.server.service.PrvResultCustomInfoService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -29,8 +26,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 아웃바운드 관리 > 프리뷰 > 데이터관리

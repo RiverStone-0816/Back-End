@@ -1,0 +1,329 @@
+buildscript {
+    def env = { String name -> System.getProperty(name, System.getenv(name)) }
+
+    ext.databaseHost = env("JDBC_HOST") ?: "122.49.74.233"
+    ext.databasePort = env("JDBC_POST") ?: 3306
+    ext.databaseUsername = env("JDBC_USERNAME") ?: "eicn"
+    ext.databasePassword = env("JDBC_PASSWORD") ?: "eicnrw"
+
+    ext.databaseName = env("JDBC_DATABASE") ?: "eicn"
+    ext.databaseUrl = "jdbc:mysql://$databaseHost:$databasePort/$databaseName?useUnicode=yes&characterEncoding=utf8&autoReconnect=true&autoReconnectForPools=true&zeroDateTimeBehavior=convertToNull&useSSL=false"
+
+    ext.profile = (!project.hasProperty('profile') || !profile) ? 'local' : profile
+
+    ext {
+        springBootVersion = '2.3.0.RELEASE'
+        springCloudVersion = 'Hoxton.SR4'
+        vavrVersion = '0.10.2'
+        mysqlVersion = '5.1.47'
+        jooqVersion = '3.13.2'
+        poiVersion = '4.1.0'
+        okhttpVersion = '4.2.2'
+        //okhttpVersion = '3.12.0'
+        retrofitVersion = '2.9.0'
+        gsonVersion = '2.8.6'
+        ckanJavaApiVersion = '1.2.0.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE"
+        classpath "io.freefair.gradle:lombok-plugin:5.0.1"
+        classpath "nu.studer:gradle-jooq-plugin:4.2"
+//        classpath files("gradle/lib/gradle-css-plugin-6.0.0-tinywind-custom.jar")
+        classpath 'de.obqo.gradle:gradle-lesscss-plugin:1.0-1.3.3'
+    }
+}
+
+plugins {
+//    id "com.eriwen.gradle.css" version "2.14.0"
+}
+
+allprojects {
+    group 'kr.co.eicn'
+    version '1.0-SNAPSHOT'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: "io.freefair.lombok"
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    compileJava.options.encoding = "UTF-8"
+    compileTestJava.options.encoding = "UTF-8"
+
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://jitpack.io'
+        }
+    }
+
+    configurations {
+        developmentOnly
+        runtimeClasspath {
+            extendsFrom developmentOnly
+        }
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    sourceSets {
+        main {
+            resources {
+                srcDirs "src/main/resources", "src/main/resources-${profile}"
+            }
+        }
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    dependencies {
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+
+        implementation 'io.springfox:springfox-swagger2:2.8.0'
+        implementation 'io.springfox:springfox-swagger-ui:2.8.0'
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        }
+    }
+}
+
+project(':jooq-model') {
+    bootJar.enabled = false
+    jar.enabled = true
+
+    apply plugin: 'nu.studer.jooq'
+    jooq {
+        version = jooqVersion
+        edition = 'OSS'
+        meta(sourceSets.main) {
+            jdbc {
+                driver = 'com.mysql.jdbc.Driver'
+                url = databaseUrl
+                user = databaseUsername
+                password = databasePassword
+            }
+            generator {
+                name = 'org.jooq.codegen.DefaultGenerator'
+                strategy {
+                    name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+                }
+                database {
+                    name = 'org.jooq.meta.mysql.MySQLDatabase'
+                    schemata {
+                        schema {
+                            inputSchema = 'eicn'
+                        }
+                        schema {
+                            inputSchema = 'CUSTOMDB'
+                        }
+                        schema {
+                            inputSchema = 'CONFIGDB'
+                        }
+                        schema {
+                            inputSchema = 'STATDB'
+                        }
+                        schema {
+                            inputSchema = 'PDS'
+                        }
+                    }
+
+                    excludes = 'schema_version' +
+                            '| menu_company_.*' +
+                            '| cst_custom_info_.*' +
+                            '| maindb_custom_info_.*' +
+                            '| maindb_key_info_.*' +
+                            '| maindb_multichannel_info_.*' +
+                            '| result_custom_info_.*' +
+                            '| talk_msg_.*' +
+                            '| talk_room_.*' +
+                            '| voc_result_.*' +
+                            '| execute_pds_custom_info_.*' +
+                            '| pds_custom_info_.*' +
+                            '| result_custom_info_.*' +
+                            '| stat_inbound_.*' +
+                            '| stat_member_.*' +
+                            '| stat_outbound_.*' +
+                            '| stat_talk_.*' +
+                            '| stat_user_inbound_.*' +
+                            '| stat_user_outbound_.*' +
+                            '| stat_voc_.*' +
+                            '| stat_queue_wait_.*' +
+                            '| chatt_bookmark_.*' +
+                            '| chatt_msg_read_.*' +
+                            '| chatt_room_member_.*' +
+                            '| eicn_cdr_.*' +
+                            '| history_queue_wait_.*' +
+                            '| CUSTOMDB.member_status_.*' +
+                            '| prv_custom_info_.*' +
+                            '| voc_custom_list_.*' +
+                            '| voc_research_result_.*' +
+                            '| pds_research_result_.*' +
+                            '| stat_user_ranking_.*'
+
+                    forcedTypes {
+                        forcedType {
+                            name = "BOOLEAN"
+                            expression = ".*"
+                            types = "(?i:TINYINT)\\(1\\)"
+                        }
+                    }
+                }
+                generate {
+                    relations = true
+                    deprecated = false
+                    records = true
+                    pojos = true
+                    fluentSetters = true
+                    javaTimeTypes = false
+                }
+                target {
+                    packageName = 'kr.co.eicn.ippbx.meta.jooq'
+                }
+            }
+        }
+    }
+
+    dependencies {
+        jooqRuntime "mysql:mysql-connector-java:${mysqlVersion}"
+        compile "mysql:mysql-connector-java:${mysqlVersion}"
+        compile 'org.jooq:jooq'
+    }
+}
+
+project(':util') {
+    bootJar.enabled = false
+    jar.enabled = true
+
+    dependencies {
+        compileOnly 'org.springframework.boot:spring-boot-starter-validation'
+        compileOnly 'org.springframework.boot:spring-boot-starter-jooq'
+        compileOnly 'org.springframework.boot:spring-boot-starter-web'
+        compileOnly 'org.springframework.security:spring-security-core'
+        compile 'org.apache.commons:commons-lang3:3.8.1'
+        compile 'org.apache.httpcomponents:httpcore:4.4.12'
+        compile 'org.apache.httpcomponents:httpclient:4.5.10'
+        compile "io.vavr:vavr-jackson:${vavrVersion}"
+        compile "org.apache.poi:poi:${poiVersion}"
+        compile "org.apache.poi:poi-ooxml:${poiVersion}"
+    }
+}
+
+project(':model-extension') {
+    bootJar.enabled = false
+    jar.enabled = true
+
+    dependencies {
+        compile project(':jooq-model')
+        compile project(':util')
+        compileOnly 'org.springframework.boot:spring-boot-starter-validation'
+        compileOnly 'org.springframework.boot:spring-boot-starter-web'
+        compileOnly 'org.springframework.security:spring-security-core'
+        compile 'commons-fileupload:commons-fileupload:1.3.2'
+        compile 'io.jsonwebtoken:jjwt:0.9.1'
+    }
+}
+
+project(':api-server') {
+    apply plugin: 'war'
+
+    configurations {
+        optional
+        compile.extendsFrom optional
+    }
+
+    dependencies {
+        compile project(':model-extension')
+
+        compileOnly 'org.springframework.boot:spring-boot-starter-tomcat'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-aop'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+        implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+        implementation 'org.springframework.boot:spring-boot-starter-jooq'
+        implementation "org.springframework.boot:spring-boot-starter-data-rest"
+        implementation "org.springframework.boot:spring-boot-starter-mail"
+        implementation 'org.springframework.boot:spring-boot-starter-security'
+        implementation "org.springframework.boot:spring-boot-starter-cache"
+        implementation "org.springframework.boot:spring-boot-starter-batch"
+
+        optional "org.springframework.boot:spring-boot-configuration-processor"
+
+        implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+        implementation 'taglibs:standard:1.1.2'
+        implementation 'javax.servlet:jstl'
+
+        implementation "org.springframework.restdocs:spring-restdocs-mockmvc"
+        implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.1"
+
+        implementation 'org.modelmapper:modelmapper:2.3.5'
+        implementation 'net.rakugakibox.util:yaml-resource-bundle:1.1'
+        implementation 'commons-io:commons-io:2.5'
+        implementation 'org.apache.commons:commons-collections4:4.4'
+        implementation 'org.springdoc:springdoc-openapi-ui:1.2.16'
+
+        implementation files('libs/diotts_class.jar')
+
+        testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+        testImplementation 'org.springframework.security:spring-security-test'
+    }
+
+}
+
+project(':front-common') {
+    dependencies {
+        compile project(':model-extension')
+
+        compileOnly 'org.springframework.boot:spring-boot-starter-tomcat'
+        compile 'org.springframework.boot:spring-boot-starter-web'
+        compile 'org.springframework.boot:spring-boot-starter-aop'
+        compile 'org.springframework.boot:spring-boot-starter-validation'
+        compile 'org.springframework.boot:spring-boot-starter-jdbc'
+        compile 'org.springframework.boot:spring-boot-starter-jooq'
+        compile "org.springframework.boot:spring-boot-starter-data-rest"
+        compile "org.springframework.boot:spring-boot-starter-mail"
+        compile "org.springframework.boot:spring-boot-starter-security"
+        compile "org.springframework.boot:spring-boot-starter-cache"
+        compile "org.springframework.boot:spring-boot-starter-batch"
+
+        compile 'org.apache.tomcat.embed:tomcat-embed-jasper'
+        compile 'taglibs:standard:1.1.2'
+        compile 'javax.servlet:jstl'
+
+        compile 'mysql:mysql-connector-java'
+
+        compile 'com.ibm.icu:icu4j:67.1'
+
+        testCompile 'org.springframework.restdocs:spring-restdocs-mockmvc'
+        testCompile 'org.springframework.security:spring-security-test'
+    }
+}
+
+project(':lgu-front') {
+    apply plugin: 'war'
+
+    dependencies {
+        compile project(':front-common')
+    }
+}

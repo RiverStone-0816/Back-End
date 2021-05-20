@@ -1,12 +1,12 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.WebSecureHistory;
-import kr.co.eicn.ippbx.server.model.dto.eicn.LoginInfoResponse;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.search.WebSecureHistorySearchRequest;
-import kr.co.eicn.ippbx.server.util.ContextUtil;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebSecureHistory;
+import kr.co.eicn.ippbx.model.dto.eicn.LoginInfoResponse;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.search.WebSecureHistorySearchRequest;
+import kr.co.eicn.ippbx.util.ContextUtil;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
@@ -16,22 +16,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.WebSecureHistory.WEB_SECURE_HISTORY;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebSecureHistory.WEB_SECURE_HISTORY;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class WebSecureHistoryRepository extends EicnBaseRepository<WebSecureHistory, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebSecureHistory, Integer> {
+public class WebSecureHistoryRepository extends EicnBaseRepository<WebSecureHistory, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebSecureHistory, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(WebSecureHistoryRepository.class);
 
     public WebSecureHistoryRepository() {
-        super(WEB_SECURE_HISTORY, WEB_SECURE_HISTORY.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebSecureHistory.class);
+        super(WEB_SECURE_HISTORY, WEB_SECURE_HISTORY.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebSecureHistory.class);
         orderByFields.add(WEB_SECURE_HISTORY.INSERT_DATE.desc());
     }
 
@@ -61,7 +60,7 @@ public class WebSecureHistoryRepository extends EicnBaseRepository<WebSecureHist
                 .execute();
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebSecureHistory> pagination(WebSecureHistorySearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebSecureHistory> pagination(WebSecureHistorySearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 

@@ -1,0 +1,14 @@
+package kr.co.eicn.ippbx.model.dto.eicn;
+
+import lombok.Data;
+
+import java.util.TreeMap;
+
+@Data
+public class DashCurrentResultCallResponse {
+    private String title;
+    private Integer inCallingCount = 0;  //I/B 통화중
+    private Integer outCallingCount = 0;  //O/B 통화중
+
+    private TreeMap<Integer, DashResultCallChartResponse> hourToResultCall = new TreeMap<>();
+}

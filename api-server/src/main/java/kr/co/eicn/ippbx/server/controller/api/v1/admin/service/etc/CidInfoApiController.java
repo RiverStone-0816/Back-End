@@ -1,22 +1,22 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.service.etc;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo;
-import kr.co.eicn.ippbx.server.model.dto.eicn.CidInfoResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.NumberListResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PhoneInfoResponse;
-import kr.co.eicn.ippbx.server.model.enums.DialStatus;
-import kr.co.eicn.ippbx.server.model.enums.FirstStatus;
-import kr.co.eicn.ippbx.server.model.enums.LogoutStatus;
-import kr.co.eicn.ippbx.server.model.form.CidInfoChangeRequest;
-import kr.co.eicn.ippbx.server.model.form.CidInfoUpdateFormRequest;
-import kr.co.eicn.ippbx.server.model.search.CidInfoSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo;
+import kr.co.eicn.ippbx.model.dto.eicn.CidInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.NumberListResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.PhoneInfoResponse;
+import kr.co.eicn.ippbx.model.enums.DialStatus;
+import kr.co.eicn.ippbx.model.enums.FirstStatus;
+import kr.co.eicn.ippbx.model.enums.LogoutStatus;
+import kr.co.eicn.ippbx.model.form.CidInfoChangeRequest;
+import kr.co.eicn.ippbx.model.form.CidInfoUpdateFormRequest;
+import kr.co.eicn.ippbx.model.search.CidInfoSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.CidRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.Number070Repository;
 import kr.co.eicn.ippbx.server.repository.eicn.PhoneInfoRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -28,8 +28,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 서비스운영관리 > 기타관리 > 내선기타정보설정

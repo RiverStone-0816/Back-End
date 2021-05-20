@@ -1,0 +1,12 @@
+package kr.co.eicn.ippbx.model.search;
+
+import kr.co.eicn.ippbx.util.page.PageQueryableForm;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class UserScheduleSearchRequest extends PageQueryableForm {
+    private Integer year;
+    private Integer month;
+}

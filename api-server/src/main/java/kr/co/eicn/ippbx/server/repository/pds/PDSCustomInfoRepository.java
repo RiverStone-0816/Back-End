@@ -1,15 +1,15 @@
 package kr.co.eicn.ippbx.server.repository.pds;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup;
-import kr.co.eicn.ippbx.server.jooq.pds.tables.CommonPDSCustomInfo;
-import kr.co.eicn.ippbx.server.jooq.pds.tables.records.PdsCustomInfoRecord;
-import kr.co.eicn.ippbx.server.model.entity.pds.PDSCustomInfoEntity;
-import kr.co.eicn.ippbx.server.model.form.PDSCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.search.PDSDataSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup;
+import kr.co.eicn.ippbx.meta.jooq.pds.tables.CommonPDSCustomInfo;
+import kr.co.eicn.ippbx.meta.jooq.pds.tables.records.PdsCustomInfoRecord;
+import kr.co.eicn.ippbx.model.entity.pds.PDSCustomInfoEntity;
+import kr.co.eicn.ippbx.model.form.PDSCustomInfoFormRequest;
+import kr.co.eicn.ippbx.model.search.PDSDataSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PDSGroupRepository;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
@@ -25,8 +25,8 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PdsGroup.PDS_GROUP;
-import static kr.co.eicn.ippbx.server.jooq.pds.tables.PdsCustomInfo.PDS_CUSTOM_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PdsGroup.PDS_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.pds.tables.PdsCustomInfo.PDS_CUSTOM_INFO;
 
 @Getter
 public class PDSCustomInfoRepository extends PDSDbBaseRepository<CommonPDSCustomInfo, PDSCustomInfoEntity, String> {

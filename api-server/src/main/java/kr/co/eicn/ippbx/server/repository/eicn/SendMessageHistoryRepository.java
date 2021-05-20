@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.SendMessage;
-import kr.co.eicn.ippbx.server.model.search.SendMessageSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.SendMessage;
+import kr.co.eicn.ippbx.model.search.SendMessageSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.impl.DSL;
@@ -10,23 +10,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.SendMessage.SEND_MESSAGE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.SendMessage.SEND_MESSAGE;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class SendMessageHistoryRepository extends EicnBaseRepository<SendMessage, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendMessage, Long> {
+public class SendMessageHistoryRepository extends EicnBaseRepository<SendMessage, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessage, Long> {
     protected final Logger logger = LoggerFactory.getLogger(SendMessageHistoryRepository.class);
 
     public SendMessageHistoryRepository() {
-        super(SEND_MESSAGE, SEND_MESSAGE.ID, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendMessage.class);
+        super(SEND_MESSAGE, SEND_MESSAGE.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessage.class);
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendMessage> pagination(SendMessageSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessage> pagination(SendMessageSearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 

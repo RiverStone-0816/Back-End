@@ -8,11 +8,11 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @Configuration
 public class SchedulerConfiguration {
 
-	@Bean
-	public TaskScheduler poolScheduler() {
-		final ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
-		threadPoolTaskScheduler.setPoolSize(Runtime.getRuntime().availableProcessors() * 2);
-		threadPoolTaskScheduler.setThreadNamePrefix("eicn-threadpool");
-		return threadPoolTaskScheduler;
-	}
+    @Bean
+    public TaskScheduler poolScheduler() {
+        final ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+        threadPoolTaskScheduler.setPoolSize(Runtime.getRuntime().availableProcessors() * 2);
+        threadPoolTaskScheduler.setThreadNamePrefix("eicn-threadpool");
+        return threadPoolTaskScheduler;
+    }
 }

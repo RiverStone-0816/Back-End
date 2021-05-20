@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonTalkRoom;
-import kr.co.eicn.ippbx.server.model.entity.customdb.TalkRoomEntity;
-import kr.co.eicn.ippbx.server.model.search.TalkRoomSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonTalkRoom;
+import kr.co.eicn.ippbx.model.entity.customdb.TalkRoomEntity;
+import kr.co.eicn.ippbx.model.search.TalkRoomSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;

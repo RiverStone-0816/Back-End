@@ -1,15 +1,15 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.MaindbGroup;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.model.dto.eicn.GroupUploadLogResponse;
-import kr.co.eicn.ippbx.server.model.enums.CommonTypeKind;
-import kr.co.eicn.ippbx.server.model.enums.IsDupNeedYn;
-import kr.co.eicn.ippbx.server.model.form.MaindbGroupFormRequest;
-import kr.co.eicn.ippbx.server.model.form.MaindbGroupUpdateRequest;
-import kr.co.eicn.ippbx.server.model.search.MaindbGroupSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.MaindbGroup;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.model.dto.eicn.GroupUploadLogResponse;
+import kr.co.eicn.ippbx.model.enums.CommonTypeKind;
+import kr.co.eicn.ippbx.model.enums.IsDupNeedYn;
+import kr.co.eicn.ippbx.model.form.MaindbGroupFormRequest;
+import kr.co.eicn.ippbx.model.form.MaindbGroupUpdateRequest;
+import kr.co.eicn.ippbx.model.search.MaindbGroupSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.Record;
@@ -19,17 +19,16 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.COMPANY_TREE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.MAINDB_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.COMPANY_TREE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.MAINDB_GROUP;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class MaindbGroupRepository extends EicnBaseRepository<MaindbGroup, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MaindbGroup, Integer> {
+public class MaindbGroupRepository extends EicnBaseRepository<MaindbGroup, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(MaindbGroupRepository.class);
 
     private final MaindbUploadRepository uploadRepository;
@@ -38,24 +37,24 @@ public class MaindbGroupRepository extends EicnBaseRepository<MaindbGroup, kr.co
     private final CompanyTreeRepository companyTreeRepository;
 
     MaindbGroupRepository(MaindbUploadRepository uploadRepository, CommonTypeRepository typeRepository, CommonFieldRepository fieldRepository, CompanyTreeRepository companyTreeRepository) {
-        super(MAINDB_GROUP, MAINDB_GROUP.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MaindbGroup.class);
+        super(MAINDB_GROUP, MAINDB_GROUP.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup.class);
         this.uploadRepository = uploadRepository;
         this.typeRepository = typeRepository;
         this.fieldRepository = fieldRepository;
         this.companyTreeRepository = companyTreeRepository;
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MaindbGroup> findAll(MaindbGroupSearchRequest search) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup> findAll(MaindbGroupSearchRequest search) {
         return super.findAll(conditions(search));
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MaindbGroup> pagination(MaindbGroupSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup> pagination(MaindbGroupSearchRequest search) {
         return super.pagination(search, conditions(search), Collections.singletonList(MAINDB_GROUP.SEQ.asc()));
     }
 
     public Record insertOnGeneratedKey(MaindbGroupFormRequest form) {
         final CommonType commonType = typeRepository.findOne(form.getMaindbType());
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MaindbGroup record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MaindbGroup();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup();
         record.setName(form.getName());
         record.setMakeDate(new Timestamp(System.currentTimeMillis()));
         record.setIsDupUse(form.getIsDupUse());
@@ -88,7 +87,7 @@ public class MaindbGroupRepository extends EicnBaseRepository<MaindbGroup, kr.co
 
     public void updateGroup(MaindbGroupUpdateRequest formRequest, Integer seq) {
         final CommonType commonType = typeRepository.findOne(formRequest.getMaindbType());
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MaindbGroup record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MaindbGroup();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup();
         record.setName(formRequest.getName());
         record.setResultType(formRequest.getResultType());
         record.setCompanyId(getCompanyId());

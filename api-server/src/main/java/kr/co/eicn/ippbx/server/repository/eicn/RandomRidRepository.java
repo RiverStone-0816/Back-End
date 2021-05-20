@@ -1,14 +1,14 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.exception.DuplicateKeyException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.RandomCid;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.model.form.RandomCidFormRequest;
-import kr.co.eicn.ippbx.server.model.search.RandomCidSearchRequest;
+import kr.co.eicn.ippbx.exception.DuplicateKeyException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.RandomCid;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.model.form.RandomCidFormRequest;
+import kr.co.eicn.ippbx.model.search.RandomCidSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -22,13 +22,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.CompanyTree.COMPANY_TREE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.RandomCid.RANDOM_CID;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CompanyTree.COMPANY_TREE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.RandomCid.RANDOM_CID;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class RandomRidRepository extends EicnBaseRepository<RandomCid, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RandomCid, Integer> {
+public class RandomRidRepository extends EicnBaseRepository<RandomCid, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RandomCid, Integer> {
 	protected final Logger logger = LoggerFactory.getLogger(RandomRidRepository.class);
 
 	private final CacheService cacheService;
@@ -36,24 +36,24 @@ public class RandomRidRepository extends EicnBaseRepository<RandomCid, kr.co.eic
 	private final CompanyTreeRepository companyTreeRepository;
 
 	public RandomRidRepository(CacheService cacheService, PBXServerInterface pbxServerInterface, CompanyTreeRepository companyTreeRepository) {
-		super(RANDOM_CID, RANDOM_CID.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RandomCid.class);
+		super(RANDOM_CID, RANDOM_CID.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RandomCid.class);
 
 		this.cacheService = cacheService;
 		this.pbxServerInterface = pbxServerInterface;
 		this.companyTreeRepository = companyTreeRepository;
 	}
 
-	public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RandomCid> pagination(RandomCidSearchRequest search) {
+	public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RandomCid> pagination(RandomCidSearchRequest search) {
 		return super.pagination(search, conditions(search), Arrays.asList(RANDOM_CID.GROUP_CODE.asc(), RANDOM_CID.SHORT_NUM.asc()));
 	}
 
 	public void insert(RandomCidFormRequest form) {
-		final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RandomCid> optionalDuplicatedShortNum =
+		final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RandomCid> optionalDuplicatedShortNum =
 				existsShortNum(form.getGroupCode(), form.getShortNum()).stream().findAny();
 		if (optionalDuplicatedShortNum.isPresent())
 			throw new DuplicateKeyException("이미 사용중인 단축번호가 있습니다.");
 
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RandomCid record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RandomCid();
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RandomCid record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RandomCid();
 		ReflectionUtils.copy(record, form);
 
 		if (isNotEmpty(form.getGroupCode())) {
@@ -76,9 +76,9 @@ public class RandomRidRepository extends EicnBaseRepository<RandomCid, kr.co.eic
 	}
 
 	public void updateByKey(RandomCidFormRequest form, Integer seq) {
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RandomCid entity = findOneIfNullThrow(seq);
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RandomCid entity = findOneIfNullThrow(seq);
 
-		final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RandomCid> randomCids = existsShortNum(form.getGroupCode(), form.getShortNum());
+		final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RandomCid> randomCids = existsShortNum(form.getGroupCode(), form.getShortNum());
 		final long count = randomCids.stream().filter(e -> !e.getGroupCode().equals(entity.getGroupCode())).count();
 		if (count > 0)
 			throw new DuplicateKeyException("이미 사용중인 단축번호가 있습니다.");
@@ -116,7 +116,7 @@ public class RandomRidRepository extends EicnBaseRepository<RandomCid, kr.co.eic
 		return delete;
 	}
 
-	public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RandomCid> existsShortNum(String groupCode, Byte shortNum) {
+	public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RandomCid> existsShortNum(String groupCode, Byte shortNum) {
 		return findAll(RANDOM_CID.SHORT_NUM.eq(shortNum).and(groupCode != null ? RANDOM_CID.GROUP_CODE.eq(groupCode) : DSL.noCondition()));
 	}
 

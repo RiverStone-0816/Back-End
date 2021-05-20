@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.config;
 
-import kr.co.eicn.ippbx.server.model.UserDetails;
-import kr.co.eicn.ippbx.server.model.enums.IdType;
+import kr.co.eicn.ippbx.model.UserDetails;
+import kr.co.eicn.ippbx.model.enums.IdType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

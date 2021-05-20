@@ -1,19 +1,19 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.service.context;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ContextInfo;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ContextInfoResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryContextInfoResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.WebVoiceItemsResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.WebVoiceResponse;
-import kr.co.eicn.ippbx.server.model.form.ContextInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.WebVoiceItemsFormRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ContextInfo;
+import kr.co.eicn.ippbx.model.dto.eicn.ContextInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryContextInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WebVoiceItemsResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WebVoiceResponse;
+import kr.co.eicn.ippbx.model.form.ContextInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.WebVoiceItemsFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ContextInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.WebVoiceInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.WebVoiceItemsRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -26,8 +26,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 서비스운영관리 > 컨텍스트관리 > 컨텍스트관리

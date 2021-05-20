@@ -1,16 +1,16 @@
 package kr.co.eicn.ippbx.server.controller.api;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServerInfo;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryCompanyServerResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CmpMemberStatusCodeEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyLicenceEntity;
-import kr.co.eicn.ippbx.server.model.enums.ServerType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServerInfo;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryCompanyServerResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.CmpMemberStatusCodeEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyLicenceEntity;
+import kr.co.eicn.ippbx.model.enums.ServerType;
 import kr.co.eicn.ippbx.server.repository.eicn.CmpMemberStatusCodeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyServerRepository;
 import kr.co.eicn.ippbx.server.service.CompanyService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 공통 고객사 API 인터페이스

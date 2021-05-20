@@ -1,13 +1,10 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.exception.EntityNotFoundException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.model.OrganizationPerson;
-import kr.co.eicn.ippbx.server.model.dto.eicn.OrganizationPersonSummaryResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.Organization;
+import kr.co.eicn.ippbx.exception.EntityNotFoundException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.model.OrganizationPerson;
+import kr.co.eicn.ippbx.model.entity.eicn.Organization;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 

@@ -1,14 +1,13 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ConfRoomDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ConfRoomSummaryResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryNumber070Response;
-import kr.co.eicn.ippbx.server.model.form.ConfRoomFormRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.model.dto.eicn.ConfRoomDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.ConfRoomSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryNumber070Response;
+import kr.co.eicn.ippbx.model.form.ConfRoomFormRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;

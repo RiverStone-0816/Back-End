@@ -1,18 +1,18 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.SipBuddiesType;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.*;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.PhoneInfoRecord;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.SipBuddiesRecord;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyLicenceEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.enums.*;
-import kr.co.eicn.ippbx.server.model.form.PhoneInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PhoneInfoUpdateFormRequest;
-import kr.co.eicn.ippbx.server.model.search.PhoneSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.SipBuddiesType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.PhoneInfoRecord;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.SipBuddiesRecord;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyLicenceEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.enums.*;
+import kr.co.eicn.ippbx.model.form.PhoneInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.PhoneInfoUpdateFormRequest;
+import kr.co.eicn.ippbx.model.search.PhoneSearchRequest;
 import kr.co.eicn.ippbx.server.service.*;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
@@ -27,16 +27,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueTable.QUEUE_TABLE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.SipBuddies.SIP_BUDDIES;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueTable.QUEUE_TABLE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.SipBuddies.SIP_BUDDIES;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.jooq.tools.StringUtils.defaultString;
 
 @Getter
 @Repository
-public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo, String> {
+public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo, String> {
     protected final Logger logger = LoggerFactory.getLogger(ExtensionRepository.class);
     private final CompanyService companyService;
     private final Number070Repository numberRepository;
@@ -53,7 +53,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
     public ExtensionRepository(CompanyService companyService, Number070Repository numberRepository, CompanyServerRepository companyServerRepository, SipBuddiesRepository sipBuddiesRepository, QueueTableRepository queueTableRepository,
                                QueueMemberTableRepository queueMemberTableRepository, WebSecureHistoryRepository webSecureHistoryRepository, PersonListRepository personListRepository,
                                PBXServerInterface pbxServerInterface, CacheService cacheService, ProcessService processService) {
-        super(PHONE_INFO, PHONE_INFO.PEER, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo.class);
+        super(PHONE_INFO, PHONE_INFO.PEER, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo.class);
         this.companyService = companyService;
         this.numberRepository = numberRepository;
         this.companyServerRepository = companyServerRepository;
@@ -67,7 +67,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         this.processService = processService;
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo> pagination(PhoneSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo> pagination(PhoneSearchRequest search) {
         return super.pagination(search, conditions(search), Collections.singletonList(PHONE_INFO.EXTENSION.asc()));
     }
 
@@ -217,7 +217,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         final Number_070 number = numberRepository.findOneIfNullThrow(form.getNumber());
         final CompanyLicenceEntity companyLicenceInfo = companyService.getCompanyLicenceInfo();
 
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo old = findOne(form.getOldPeer());
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo old = findOne(form.getOldPeer());
         final List<CompanyServerEntity> pbxServerList = cacheService.pbxServerList(getCompanyId());
 
         // 라이센스 체크
@@ -353,7 +353,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
             });
         }
 
-        Map<String, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable> queueMemberTableMap;
+        Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable> queueMemberTableMap;
 
         Optional<CompanyServerEntity> byPbxHost = pbxServerList.stream()
                 .filter(e -> e.getHost().equals(number.getHost()))
@@ -554,7 +554,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
      * 5. phone_info 전화기에 대한 정보를 삭제한다.
      */
     public void deleteWithForeign(String peer) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo phoneInfoEntity = this.findOneIfNullThrow(peer);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo phoneInfoEntity = this.findOneIfNullThrow(peer);
         final Number_070 numberEntity = numberRepository.findOne(phoneInfoEntity.getVoipTel());
         final List<CompanyServerEntity> pbxServerList = cacheService.pbxServerList(getCompanyId());
 

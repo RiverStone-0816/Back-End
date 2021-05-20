@@ -1,11 +1,11 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.statistics;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.model.dto.statdb.TalkStatisticsHourlyResponse;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatTalkEntity;
-import kr.co.eicn.ippbx.server.model.search.TalkStatisticsHourlySearchRequest;
+import kr.co.eicn.ippbx.model.dto.statdb.TalkStatisticsHourlyResponse;
+import kr.co.eicn.ippbx.model.entity.statdb.StatTalkEntity;
+import kr.co.eicn.ippbx.model.search.TalkStatisticsHourlySearchRequest;
 import kr.co.eicn.ippbx.server.service.TalkStatisticsService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 상담톡관리 > 상담톡통계 > 상담톡시간별통계

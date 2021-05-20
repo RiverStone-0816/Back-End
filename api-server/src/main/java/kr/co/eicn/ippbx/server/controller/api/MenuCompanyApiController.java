@@ -1,13 +1,13 @@
 package kr.co.eicn.ippbx.server.controller.api;
 
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.configdb.tables.pojos.CommonMenuCompany;
-import kr.co.eicn.ippbx.server.model.dto.configdb.MenuCompanyResponse;
-import kr.co.eicn.ippbx.server.model.dto.configdb.UserMenuCompanyResponse;
-import kr.co.eicn.ippbx.server.model.form.MenuFormRequest;
-import kr.co.eicn.ippbx.server.model.form.UserMenuSequenceUpdateRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.configdb.tables.pojos.CommonMenuCompany;
+import kr.co.eicn.ippbx.model.dto.configdb.MenuCompanyResponse;
+import kr.co.eicn.ippbx.model.dto.configdb.UserMenuCompanyResponse;
+import kr.co.eicn.ippbx.model.form.MenuFormRequest;
+import kr.co.eicn.ippbx.model.form.UserMenuSequenceUpdateRequest;
 import kr.co.eicn.ippbx.server.service.MenuCompanyService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -19,8 +19,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 메뉴 API

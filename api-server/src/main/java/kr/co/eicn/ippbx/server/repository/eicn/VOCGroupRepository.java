@@ -1,15 +1,15 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.VocGroup;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocMemberList;
-import kr.co.eicn.ippbx.server.model.enums.InOutTarget;
-import kr.co.eicn.ippbx.server.model.enums.IsArsSms;
-import kr.co.eicn.ippbx.server.model.enums.ProcessKind;
-import kr.co.eicn.ippbx.server.model.enums.VocGroupSender;
-import kr.co.eicn.ippbx.server.model.form.VOCGroupFormRequest;
-import kr.co.eicn.ippbx.server.model.search.VOCGroupSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.VocGroup;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocMemberList;
+import kr.co.eicn.ippbx.model.enums.InOutTarget;
+import kr.co.eicn.ippbx.model.enums.IsArsSms;
+import kr.co.eicn.ippbx.model.enums.ProcessKind;
+import kr.co.eicn.ippbx.model.enums.VocGroupSender;
+import kr.co.eicn.ippbx.model.form.VOCGroupFormRequest;
+import kr.co.eicn.ippbx.model.search.VOCGroupSearchRequest;
 import kr.co.eicn.ippbx.server.service.*;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.*;
 import org.jooq.impl.DSL;
@@ -21,14 +21,14 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.*;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ResearchList.RESEARCH_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.VocGroup.VOC_GROUP;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.VocMemberList.VOC_MEMBER_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchList.RESEARCH_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.VocGroup.VOC_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.VocMemberList.VOC_MEMBER_LIST;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class VOCGroupRepository extends EicnBaseRepository<VocGroup, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocGroup, Integer> {
+public class VOCGroupRepository extends EicnBaseRepository<VocGroup, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(VOCGroupRepository.class);
 
     private final VocResearchResultService resultService;
@@ -41,7 +41,7 @@ public class VOCGroupRepository extends EicnBaseRepository<VocGroup, kr.co.eicn.
     List<String> memberList = new ArrayList<>();
 
     public VOCGroupRepository(VocResearchResultService resultService, VocCustomListService customListService, StatDBStatVOCService statVOCService, VocMemberListRepository memberListRepository, ResearchListRepository researchListRepository, PBXServerInterface pbxServerInterface, CacheService cacheService) {
-        super(VOC_GROUP, VOC_GROUP.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocGroup.class);
+        super(VOC_GROUP, VOC_GROUP.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup.class);
         this.resultService = resultService;
         this.customListService = customListService;
         this.statVOCService = statVOCService;
@@ -59,17 +59,17 @@ public class VOCGroupRepository extends EicnBaseRepository<VocGroup, kr.co.eicn.
                 .where(DSL.noCondition());
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocGroup> findAll(VOCGroupSearchRequest search) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup> findAll(VOCGroupSearchRequest search) {
         return super.findAll(conditions(search));
     }
 
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocGroup> pagination(VOCGroupSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup> pagination(VOCGroupSearchRequest search) {
         return super.pagination(search, conditions(search), Collections.singletonList(VOC_GROUP.INSERT_DATE.desc()));
     }
 
     public void insertAllPbxServers(VOCGroupFormRequest form) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocGroup groupRecord = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocGroup();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup groupRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup();
         groupRecord.setVocGroupName(form.getVocGroupName());
         groupRecord.setSender(form.getSender());
         groupRecord.setProcessKind(form.getProcessKind());
@@ -147,7 +147,7 @@ public class VOCGroupRepository extends EicnBaseRepository<VocGroup, kr.co.eicn.
     }
 
     public void updateByKey(VOCGroupFormRequest form, Integer groupId) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocGroup groupRecord = findOneIfNullThrow(groupId);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup groupRecord = findOneIfNullThrow(groupId);
         groupRecord.setVocGroupName(form.getVocGroupName());
         groupRecord.setSender(form.getSender());
         groupRecord.setProcessKind(form.getProcessKind());
@@ -233,13 +233,13 @@ public class VOCGroupRepository extends EicnBaseRepository<VocGroup, kr.co.eicn.
         return deleteRow;
     }
 
-    public kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocGroup getLatestRegisterGroup() {
+    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup getLatestRegisterGroup() {
         return dsl.select().from(VOC_GROUP).where(compareCompanyId()).orderBy(VOC_GROUP.SEQ.desc())
                 .limit(1)
-                .fetchOneInto(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocGroup.class);
+                .fetchOneInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup.class);
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocGroup> getArsSmsList(String type) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup> getArsSmsList(String type) {
         final VOCGroupSearchRequest search = new VOCGroupSearchRequest();
         search.setIsArsSms(type);
         search.setSender(VocGroupSender.MEMBER.getCode());

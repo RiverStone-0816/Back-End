@@ -1,17 +1,17 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.exception.DuplicateKeyException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.IvrTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.IvrTreeRecord;
-import kr.co.eicn.ippbx.server.model.IvrTreeComposite;
-import kr.co.eicn.ippbx.server.model.MonitorIvrTree;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PersonOnHunt;
-import kr.co.eicn.ippbx.server.model.dto.eicn.QueueNameResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.enums.*;
-import kr.co.eicn.ippbx.server.model.form.*;
+import kr.co.eicn.ippbx.exception.DuplicateKeyException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.IvrTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.IvrTreeRecord;
+import kr.co.eicn.ippbx.model.IvrTreeComposite;
+import kr.co.eicn.ippbx.model.MonitorIvrTree;
+import kr.co.eicn.ippbx.model.dto.eicn.PersonOnHunt;
+import kr.co.eicn.ippbx.model.dto.eicn.QueueNameResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.enums.*;
+import kr.co.eicn.ippbx.model.form.*;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import lombok.Getter;
@@ -29,13 +29,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparingInt;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.IvrTree.IVR_TREE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.IvrTree.IVR_TREE;
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.jooq.impl.DSL.noCondition;
 
 @Getter
 @Repository
-public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree, Integer> {
+public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree, Integer> {
     private final Logger logger = LoggerFactory.getLogger(IvrTreeRepository.class);
     private final CacheService cacheService;
     private final PBXServerInterface pbxServerInterface;
@@ -45,7 +45,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
     private final WebVoiceInfoRepository webVoiceInfoRepository;
 
     public IvrTreeRepository(CacheService cacheService, PBXServerInterface pbxServerInterface, WebSecureHistoryRepository webSecureHistoryRepository, QueueNameRepository queueNameRepository, PersonListRepository personListRepository, WebVoiceInfoRepository webVoiceInfoRepository) {
-        super(IVR_TREE, IVR_TREE.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree.class);
+        super(IVR_TREE, IVR_TREE.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree.class);
         this.cacheService = cacheService;
         this.pbxServerInterface = pbxServerInterface;
         this.webSecureHistoryRepository = webSecureHistoryRepository;
@@ -98,7 +98,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
         return entity;
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree> getIvrTreeList() {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree> getIvrTreeList() {
         return findAll(IVR_TREE.BUTTON.eq("").or(IVR_TREE.BUTTON.isNull()));
     }
 
@@ -121,7 +121,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
     public MonitorIvrTree getMonitorIvrTree(Integer groupCode) {
         final List<QueueName> queueNameList = queueNameRepository.findAll();
         final List<PersonOnHunt> queueMemberList = personListRepository.findAllPersonOnHunt();
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree rootIvr = findOne(IVR_TREE.CODE.eq(groupCode).and(IVR_TREE.BUTTON.eq("")));
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree rootIvr = findOne(IVR_TREE.CODE.eq(groupCode).and(IVR_TREE.BUTTON.eq("")));
         if (rootIvr != null) {
             final MonitorIvrTree entity = modelMapper.map(rootIvr, MonitorIvrTree.class);
             final List<MonitorIvrTree> childNodes = findAll(IVR_TREE.SEQ.ne(entity.getSeq()).and(IVR_TREE.TREE_NAME.like(entity.getTreeName() + "%")))
@@ -176,7 +176,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
     }
 
     public Integer insertMenu(IvrFormRequest form) {
-        final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree> duplicatedName =
+        final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree> duplicatedName =
                 findAll(IVR_TREE.NAME.eq(form.getName()).and(IVR_TREE.TYPE.eq((byte) 1)).and(IVR_TREE.LEVEL.eq(0))).stream().findAny();
         if (duplicatedName.isPresent())
             throw new DuplicateKeyException("중복된 IVR명이 있습니다.");
@@ -196,7 +196,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
         String treeName = decimalFormat.format(code);
 
         if (form.getParentSeq() != null) {
-            final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree parentNode = findOneIfNullThrow(form.getParentSeq());
+            final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree parentNode = findOneIfNullThrow(form.getParentSeq());
             root = parentNode.getRoot();
             parent = parentNode.getCode();
             level = parentNode.getLevel() + 1;
@@ -291,7 +291,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
     }
 
     public void updateByKeyAllPbxServers(IvrFormUpdateRequest form, Integer seq) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree entity = findOneIfNullThrow(seq);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree entity = findOneIfNullThrow(seq);
 
         updateOrInsert(dsl, form, entity);
 
@@ -305,7 +305,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
         webSecureHistoryRepository.insert(WebSecureActionType.IVR, WebSecureActionSubType.MOD, form.getName());
     }
 
-    public void updateOrInsert(DSLContext dslContext, IvrFormUpdateRequest form, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree entity) {
+    public void updateOrInsert(DSLContext dslContext, IvrFormUpdateRequest form, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree entity) {
         final DecimalFormat decimalFormat = new DecimalFormat("0000");
         final Integer code = entity.getCode();
         final IvrMenuType type = Objects.requireNonNull(IvrMenuType.of(form.getType()));
@@ -326,13 +326,13 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
         // 새로운 메뉴 연결이라면 버튼정보를 업데이트
         if (type.isMenu()) {
             if (form.getButtons() != null) {
-                final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree> ivrTrees = findAll(dslContext, IVR_TREE.CODE.eq(code));
-                final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree> deleteTrees = ivrTrees.stream()
+                final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree> ivrTrees = findAll(dslContext, IVR_TREE.CODE.eq(code));
+                final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree> deleteTrees = ivrTrees.stream()
                         .filter(e -> isNotEmpty(e.getButton()))
                         .filter(e -> form.getButtons() != null && form.getButtons().stream().noneMatch(button -> e.getSeq().equals(button.getSeq())))
                         .collect(Collectors.toList());
 
-                for (kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree deleteTree : deleteTrees) {
+                for (kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree deleteTree : deleteTrees) {
                     dslContext.deleteFrom(IVR_TREE)
                             .where(IVR_TREE.SEQ.eq(deleteTree.getSeq()))
                             .and(IVR_TREE.COMPANY_ID.eq(getCompanyId()))
@@ -341,7 +341,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
 
                 for (int i = 0, length = Objects.requireNonNull(form.getButtons()).size(); i < length; i++) {
                     final IvrButtonMappingFormRequest button = form.getButtons().get(i);
-                    final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree> any = ivrTrees.stream().filter(e -> e.getSeq().equals(button.getSeq())).findAny();
+                    final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree> any = ivrTrees.stream().filter(e -> e.getSeq().equals(button.getSeq())).findAny();
                     final String treeName = entity.getTreeName().concat("_").concat(decimalFormat.format(Objects.requireNonNull(Button.of(button.getButton())).getIntValue()));
 
                     if (any.isPresent()) {
@@ -380,7 +380,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
     }
 
     public void deleteAllPbxServers(Integer seq) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree entity = findOneIfNullThrow(seq);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree entity = findOneIfNullThrow(seq);
         final IvrMenuType type = IvrMenuType.of(entity.getType());
 
         if (type != null && type.isMenu()) {
@@ -441,14 +441,14 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
             });
         }
 
-        final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree> optionalParent = findAll(IVR_TREE.CODE.eq(entity.getParent()), Collections.singletonList(IVR_TREE.TREE_NAME.desc()))
+        final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree> optionalParent = findAll(IVR_TREE.CODE.eq(entity.getParent()), Collections.singletonList(IVR_TREE.TREE_NAME.desc()))
                 .stream()
                 .filter(e -> entity.getTreeName().startsWith(e.getTreeName()))
                 .findFirst();
 
         // 상위노드 속성정보 초기화
         if (optionalParent.isPresent()) {
-            final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree parentTree = optionalParent.get();
+            final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree parentTree = optionalParent.get();
 
             dsl.update(IVR_TREE)
                     .set(IVR_TREE.TYPE, (byte) 0)
@@ -493,9 +493,9 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
      * @param targetId 복사대상 아이디
      */
     public void copy(Integer sourceId, Integer targetId) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree target = findOneIfNullThrow(targetId);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree target = findOneIfNullThrow(targetId);
         final IvrTreeComposite ivr = getIvr(sourceId);
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree source = findOne(sourceId);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree source = findOne(sourceId);
         target.setIntroSoundCode(source.getIntroSoundCode());
         target.setTtsData(source.getTtsData());
         target.setPosX(source.getPosX());
@@ -527,7 +527,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
         recursiveCopy(target, ivr.getNodes());
     }
 
-    public void recursiveCopy(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree parentNode, List<IvrTreeComposite> nodes) {
+    public void recursiveCopy(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree parentNode, List<IvrTreeComposite> nodes) {
         final DecimalFormat decimalFormat = new DecimalFormat("0000");
 
         for (IvrTreeComposite node : nodes) {
@@ -590,12 +590,12 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
             }
 
             if (!node.isLeaf())
-                recursiveCopy(modelMapper.map(ivrTreeRecord, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree.class), node.getNodes());
+                recursiveCopy(modelMapper.map(ivrTreeRecord, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree.class), node.getNodes());
         }
     }
 
     //인입 경로 통계
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree> findAllByRoot(List<String> treeNames) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree> findAllByRoot(List<String> treeNames) {
         List<Condition> conditions = new ArrayList<>();
         Condition ivrCondition = DSL.noCondition();
         conditions.add(IVR_TREE.LEVEL.eq(0).and(IVR_TREE.BUTTON.eq("")));
@@ -612,12 +612,12 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
         return findAll(conditions);
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree> findAllByParentCode(Integer parentRoot, Integer parentSeq) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree> findAllByParentCode(Integer parentRoot, Integer parentSeq) {
         return dsl.selectFrom(IVR_TREE)
                 .where(IVR_TREE.ROOT.eq(parentRoot))
                 .and(IVR_TREE.SEQ.notEqual(parentSeq))
                 .orderBy(IVR_TREE.TREE_NAME)
-                .fetchInto(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree.class);
+                .fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree.class);
     }
 
     public void updatePosition(Integer seq, IvrPositionFormRequest form) {

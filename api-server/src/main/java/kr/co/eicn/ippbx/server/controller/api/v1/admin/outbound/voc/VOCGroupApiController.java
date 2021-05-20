@@ -1,20 +1,20 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.voc;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocGroup;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocMemberList;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryResearchListResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.VOCGroupResponse;
-import kr.co.eicn.ippbx.server.model.enums.IsArsSms;
-import kr.co.eicn.ippbx.server.model.form.VOCGroupFormRequest;
-import kr.co.eicn.ippbx.server.model.search.VOCGroupSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocMemberList;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryResearchListResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.VOCGroupResponse;
+import kr.co.eicn.ippbx.model.enums.IsArsSms;
+import kr.co.eicn.ippbx.model.form.VOCGroupFormRequest;
+import kr.co.eicn.ippbx.model.search.VOCGroupSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.ResearchListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.VOCGroupRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.VocMemberListRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -29,9 +29,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ResearchList.RESEARCH_LIST;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchList.RESEARCH_LIST;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 아웃바운드관리 > VOC/해피콜 관리 > VOC/해피콜 관리

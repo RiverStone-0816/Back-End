@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.UserScheduleType;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.UserSchedule;
-import kr.co.eicn.ippbx.server.model.entity.eicn.UserScheduleEntity;
-import kr.co.eicn.ippbx.server.model.form.UserScheduleFormRequest;
-import kr.co.eicn.ippbx.server.model.search.UserScheduleSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.UserScheduleType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.UserSchedule;
+import kr.co.eicn.ippbx.model.entity.eicn.UserScheduleEntity;
+import kr.co.eicn.ippbx.model.form.UserScheduleFormRequest;
+import kr.co.eicn.ippbx.model.search.UserScheduleSearchRequest;
 import lombok.Getter;
 import org.jooq.*;
 import org.slf4j.Logger;
@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.PERSON_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.USER_SCHEDULE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.PERSON_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.USER_SCHEDULE;
 
 @Getter
 @Repository

@@ -1,20 +1,20 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.schedule;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.EntityNotFoundException;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.TalkServiceInfo;
-import kr.co.eicn.ippbx.server.model.dto.eicn.*;
-import kr.co.eicn.ippbx.server.model.entity.eicn.TalkScheduleGroupEntity;
-import kr.co.eicn.ippbx.server.model.enums.ScheduleType;
-import kr.co.eicn.ippbx.server.model.form.TalkScheduleInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.TalkScheduleInfoFormUpdateRequest;
-import kr.co.eicn.ippbx.server.model.search.TalkServiceInfoSearchRequest;
+import kr.co.eicn.ippbx.exception.EntityNotFoundException;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkServiceInfo;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleGroupEntity;
+import kr.co.eicn.ippbx.model.enums.ScheduleType;
+import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormUpdateRequest;
+import kr.co.eicn.ippbx.model.search.TalkServiceInfoSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.TalkScheduleGroupRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.TalkScheduleInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.TalkServiceInfoRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -29,8 +29,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 상담톡관리 > 상담톡일정관리 > 주간 스케쥴러
@@ -78,7 +78,7 @@ public class WeekTalkScheduleInfoApiController extends ApiBaseController {
 				.filter(e -> e.getSeq().equals(seq))
 				.map(e -> {
 					final TalkScheduleInfoDetailResponse response = convertDto(e, TalkScheduleInfoDetailResponse.class);
-					final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkServiceInfo entity = talkServiceInfoRepository.findOne(TalkServiceInfo.TALK_SERVICE_INFO.SENDER_KEY.eq(e.getSenderKey()));
+					final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo entity = talkServiceInfoRepository.findOne(TalkServiceInfo.TALK_SERVICE_INFO.SENDER_KEY.eq(e.getSenderKey()));
 					if (entity != null) {
 						response.setKakaoServiceName(entity.getKakaoServiceName());
 						response.setSenderKey(entity.getSenderKey());

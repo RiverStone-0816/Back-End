@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
-import kr.co.eicn.ippbx.server.jooq.statdb.tables.CommonStatVoc;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatVOCEntity;
-import kr.co.eicn.ippbx.server.model.search.StatDBVOCStatisticsSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatVoc;
+import kr.co.eicn.ippbx.model.entity.statdb.StatVOCEntity;
+import kr.co.eicn.ippbx.model.search.StatDBVOCStatisticsSearchRequest;
 import lombok.Getter;
 import org.jooq.*;
 import org.jooq.impl.DSL;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.VocGroup.VOC_GROUP;
-import static kr.co.eicn.ippbx.server.jooq.statdb.tables.StatVoc.STAT_VOC;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.VocGroup.VOC_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.statdb.tables.StatVoc.STAT_VOC;
 
 @Getter
 public class StatVOCRepository extends StatDBBaseRepository<CommonStatVoc, StatVOCEntity, Integer> {
@@ -39,7 +39,7 @@ public class StatVOCRepository extends StatDBBaseRepository<CommonStatVoc, StatV
     protected RecordMapper<Record, StatVOCEntity> getMapper() {
         return record -> {
             final StatVOCEntity entity = record.into(TABLE).into(StatVOCEntity.class);
-            entity.setGroup(record.into(VOC_GROUP).into(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.VocGroup.class));
+            entity.setGroup(record.into(VOC_GROUP).into(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup.class));
             return entity;
         };
     }

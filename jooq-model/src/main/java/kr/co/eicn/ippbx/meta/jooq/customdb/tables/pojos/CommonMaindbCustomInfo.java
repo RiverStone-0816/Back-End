@@ -1,0 +1,77 @@
+package kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos;
+
+import lombok.Data;
+
+import java.io.Serializable;
+import java.sql.Date;
+import java.sql.Timestamp;
+
+@Data
+public class CommonMaindbCustomInfo implements Serializable {
+    private String    maindbSysCustomId;
+    private Timestamp maindbSysUploadDate;
+    private Timestamp maindbSysUpdateDate;
+    private Integer   maindbSysGroupId;
+    private Integer   maindbSysGroupType;
+    private Integer   maindbSysResultType;
+    private String    maindbSysDamdangId;
+    private Integer   maindbSysLastResultId;
+    private Timestamp maindbSysLastResultDate;
+    private String    maindbSysCompanyId;
+    private Date      maindbDate_1;
+    private Date      maindbDate_2;
+    private Date      maindbDate_3;
+    private Date      maindbDay_1;
+    private Date      maindbDay_2;
+    private Date      maindbDay_3;
+    private Timestamp maindbDatetime_1;
+    private Timestamp maindbDatetime_2;
+    private Timestamp maindbDatetime_3;
+    private Integer   maindbInt_1;
+    private Integer   maindbInt_2;
+    private Integer   maindbInt_3;
+    private Integer   maindbInt_4;
+    private Integer   maindbInt_5;
+    private String    maindbString_1;
+    private String    maindbString_2;
+    private String    maindbString_3;
+    private String    maindbString_4;
+    private String    maindbString_5;
+    private String    maindbString_6;
+    private String    maindbString_7;
+    private String    maindbString_8;
+    private String    maindbString_9;
+    private String    maindbString_10;
+    private String    maindbString_11;
+    private String    maindbString_12;
+    private String    maindbString_13;
+    private String    maindbString_14;
+    private String    maindbString_15;
+    private String    maindbString_16;
+    private String    maindbString_17;
+    private String    maindbString_18;
+    private String    maindbString_19;
+    private String    maindbString_20;
+    private String    maindbCode_1;
+    private String    maindbCode_2;
+    private String    maindbCode_3;
+    private String    maindbCode_4;
+    private String    maindbCode_5;
+    private String    maindbCode_6;
+    private String    maindbCode_7;
+    private String    maindbCode_8;
+    private String    maindbCode_9;
+    private String    maindbCode_10;
+    private String    maindbMulticode_1;
+    private String    maindbMulticode_2;
+    private String    maindbMulticode_3;
+    private String    maindbImg_1;
+    private String    maindbImg_2;
+    private String    maindbImg_3;
+    private String    maindbConcode_1;
+    private String    maindbConcode_2;
+    private String    maindbConcode_3;
+    private String    maindbCscode_1;
+    private String    maindbCscode_2;
+    private String    maindbCscode_3;
+}

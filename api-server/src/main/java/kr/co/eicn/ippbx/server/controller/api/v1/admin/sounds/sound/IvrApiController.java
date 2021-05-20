@@ -1,19 +1,19 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.sounds.sound;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ConfRoom;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ServiceList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070;
-import kr.co.eicn.ippbx.server.model.dto.eicn.*;
-import kr.co.eicn.ippbx.server.model.enums.NumberType;
-import kr.co.eicn.ippbx.server.model.form.IvrFormRequest;
-import kr.co.eicn.ippbx.server.model.form.IvrFormUpdateRequest;
-import kr.co.eicn.ippbx.server.model.form.IvrPositionFormRequest;
-import kr.co.eicn.ippbx.server.model.form.WebVoiceItemsFormRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ConfRoom;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ServiceList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.enums.NumberType;
+import kr.co.eicn.ippbx.model.form.IvrFormRequest;
+import kr.co.eicn.ippbx.model.form.IvrFormUpdateRequest;
+import kr.co.eicn.ippbx.model.form.IvrPositionFormRequest;
+import kr.co.eicn.ippbx.model.form.WebVoiceItemsFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.impl.DSL;
@@ -27,12 +27,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.IvrTree.IVR_TREE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.Number_070.NUMBER_070;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueName.QUEUE_NAME;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.IvrTree.IVR_TREE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.Number_070.NUMBER_070;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName.QUEUE_NAME;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 /**

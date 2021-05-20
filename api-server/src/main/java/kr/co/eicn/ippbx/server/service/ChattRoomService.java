@@ -1,13 +1,13 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattRoom;
-import kr.co.eicn.ippbx.server.model.dto.customdb.ChattRoomResponse;
-import kr.co.eicn.ippbx.server.model.entity.customdb.ChattRoomEntity;
-import kr.co.eicn.ippbx.server.model.search.ChattingRoomSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.ChattingSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattRoom;
+import kr.co.eicn.ippbx.model.dto.customdb.ChattRoomResponse;
+import kr.co.eicn.ippbx.model.entity.customdb.ChattRoomEntity;
+import kr.co.eicn.ippbx.model.search.ChattingRoomSearchRequest;
+import kr.co.eicn.ippbx.model.search.ChattingSearchRequest;
 import kr.co.eicn.ippbx.server.repository.customdb.ChattRoomRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,7 +82,7 @@ public class ChattRoomService extends ApiBaseService implements ApplicationConte
         if (StringUtils.isNotEmpty(oldRoomName) && oldRoomName.contains(".."))
             return oldRoomName;
         else
-            return kr.co.eicn.ippbx.server.util.StringUtils.subStringBytes(newChattingMemberMD5(oldRoomName, chattingMembers), 40);
+            return kr.co.eicn.ippbx.util.StringUtils.subStringBytes(newChattingMemberMD5(oldRoomName, chattingMembers), 40);
     }
 
     public String newChattingMemberMD5(String oldRoomName, List<String> chattingMembers) {

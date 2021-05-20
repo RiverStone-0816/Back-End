@@ -1,15 +1,15 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.email.mng;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EmailServiceInfo;
-import kr.co.eicn.ippbx.server.model.dto.eicn.EmailMngDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.EmailMngSummaryResponse;
-import kr.co.eicn.ippbx.server.model.form.EmailMngFormRequest;
-import kr.co.eicn.ippbx.server.model.search.EmailMngSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailServiceInfo;
+import kr.co.eicn.ippbx.model.dto.eicn.EmailMngDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.EmailMngSummaryResponse;
+import kr.co.eicn.ippbx.model.form.EmailMngFormRequest;
+import kr.co.eicn.ippbx.model.search.EmailMngSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.EmailMngRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
@@ -24,8 +24,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 이메일상담관리 > 이메일설정관리 > 이메일설정관리

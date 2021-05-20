@@ -1,11 +1,11 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.model.LicenseInfo;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyLicenceEntity;
-import kr.co.eicn.ippbx.server.model.enums.IdStatus;
-import kr.co.eicn.ippbx.server.model.enums.RecordType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.model.LicenseInfo;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyLicenceEntity;
+import kr.co.eicn.ippbx.model.enums.IdStatus;
+import kr.co.eicn.ippbx.model.enums.RecordType;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PhoneInfoRepository;
@@ -15,8 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PersonList.PERSON_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
 
 /**
  * 고객사 관련 공통 서비스

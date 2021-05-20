@@ -1,18 +1,16 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.monitor.consultant;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName;
-import kr.co.eicn.ippbx.server.model.dto.eicn.*;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CmpMemberStatusCodeEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.MemberStatusOfHunt;
-import kr.co.eicn.ippbx.server.model.enums.Bool;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.entity.eicn.CmpMemberStatusCodeEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.MemberStatusOfHunt;
+import kr.co.eicn.ippbx.model.enums.Bool;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.StatInboundService;
-import kr.co.eicn.ippbx.server.service.StatUserInboundService;
-import kr.co.eicn.ippbx.server.service.StatUserOutboundService;
-import kr.co.eicn.ippbx.server.util.EicnUtils;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.EicnUtils;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -27,7 +25,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 모니터링 > 상담원 모니터링 > 모니터링[헌트별]

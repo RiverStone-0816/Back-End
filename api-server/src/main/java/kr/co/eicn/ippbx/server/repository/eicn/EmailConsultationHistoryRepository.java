@@ -1,11 +1,11 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.EmailList;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.form.EmailConsultationHistoryFormRequest;
-import kr.co.eicn.ippbx.server.model.search.EmailConsultationHistorySearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.EmailList;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.form.EmailConsultationHistoryFormRequest;
+import kr.co.eicn.ippbx.model.search.EmailConsultationHistorySearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.impl.DSL;
@@ -17,23 +17,23 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.*;
-import static kr.co.eicn.ippbx.server.util.StringUtils.subStringBytes;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.*;
+import static kr.co.eicn.ippbx.util.StringUtils.subStringBytes;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class EmailConsultationHistoryRepository extends EicnBaseRepository<EmailList, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EmailList, UInteger> {
+public class EmailConsultationHistoryRepository extends EicnBaseRepository<EmailList, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailList, UInteger> {
     protected final Logger logger = LoggerFactory.getLogger(EmailConsultationHistoryRepository.class);
 
     WebSecureHistoryRepository webSecureHistoryRepository;
 
     EmailConsultationHistoryRepository(WebSecureHistoryRepository webSecureHistoryRepository) {
-        super(EMAIL_LIST, EMAIL_LIST.ID, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EmailList.class);
+        super(EMAIL_LIST, EMAIL_LIST.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailList.class);
         this.webSecureHistoryRepository = webSecureHistoryRepository;
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EmailList> pagination(EmailConsultationHistorySearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailList> pagination(EmailConsultationHistorySearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 

@@ -1,24 +1,24 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
-import kr.co.eicn.ippbx.server.jooq.statdb.tables.CommonStatUserRanking;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ExcellentConsultant;
-import kr.co.eicn.ippbx.server.model.dto.statdb.StatUserRankingResponse;
+import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatUserRanking;
+import kr.co.eicn.ippbx.model.dto.eicn.ExcellentConsultant;
+import kr.co.eicn.ippbx.model.dto.statdb.StatUserRankingResponse;
 import lombok.Getter;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.PERSON_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.PERSON_LIST;
 import static org.jooq.impl.DSL.sum;
 
 @Getter
-public class StatUserRankingRepository extends StatDBBaseRepository<CommonStatUserRanking, kr.co.eicn.ippbx.server.jooq.statdb.tables.pojos.CommonStatUserRanking, Integer> {
+public class StatUserRankingRepository extends StatDBBaseRepository<CommonStatUserRanking, kr.co.eicn.ippbx.meta.jooq.statdb.tables.pojos.CommonStatUserRanking, Integer> {
     private final Logger logger = LoggerFactory.getLogger(StatUserRankingRepository.class);
 
     private final CommonStatUserRanking TABLE;
 
     public StatUserRankingRepository(String companyId) {
-        super(new CommonStatUserRanking(companyId), new CommonStatUserRanking(companyId).SEQ, kr.co.eicn.ippbx.server.jooq.statdb.tables.pojos.CommonStatUserRanking.class);
+        super(new CommonStatUserRanking(companyId), new CommonStatUserRanking(companyId).SEQ, kr.co.eicn.ippbx.meta.jooq.statdb.tables.pojos.CommonStatUserRanking.class);
         TABLE = new CommonStatUserRanking(companyId);
     }
 

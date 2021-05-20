@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.config.security;
 
-import kr.co.eicn.ippbx.server.model.UserDetails;
-import kr.co.eicn.ippbx.server.model.form.LoginRequest;
+import kr.co.eicn.ippbx.model.UserDetails;
+import kr.co.eicn.ippbx.model.form.LoginRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 public class CompanyIdUsernamePasswordAuthenticationToken extends UsernamePasswordAuthenticationToken {

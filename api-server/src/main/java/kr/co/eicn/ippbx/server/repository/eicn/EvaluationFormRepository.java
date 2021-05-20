@@ -1,15 +1,14 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.EvaluationForm;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationCategory;
-import kr.co.eicn.ippbx.server.model.entity.eicn.EvaluationFormEntity;
-import kr.co.eicn.ippbx.server.model.form.EvaluationFormRequest;
-import kr.co.eicn.ippbx.server.model.form.EvaluationFormVisibleRequest;
-import kr.co.eicn.ippbx.server.model.search.EvaluationFormSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.PageForm;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationForm;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationCategory;
+import kr.co.eicn.ippbx.model.entity.eicn.EvaluationFormEntity;
+import kr.co.eicn.ippbx.model.form.EvaluationFormRequest;
+import kr.co.eicn.ippbx.model.form.EvaluationFormVisibleRequest;
+import kr.co.eicn.ippbx.model.search.EvaluationFormSearchRequest;
+import kr.co.eicn.ippbx.util.page.PageForm;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.impl.DSL;
@@ -20,32 +19,31 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.EvaluationCategory.EVALUATION_CATEGORY;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.EvaluationForm.EVALUATION_FORM;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.EvaluationItem.EVALUATION_ITEM;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.EvaluationResult.EVALUATION_RESULT;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationCategory.EVALUATION_CATEGORY;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationForm.EVALUATION_FORM;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationItem.EVALUATION_ITEM;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationResult.EVALUATION_RESULT;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class EvaluationFormRepository extends EicnBaseRepository<EvaluationForm, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationForm, Long> {
+public class EvaluationFormRepository extends EicnBaseRepository<EvaluationForm, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationForm, Long> {
     protected final Logger logger = LoggerFactory.getLogger(EvaluationFormRepository.class);
 
     private final EvaluationCategoryRepository evaluationCategoryRepository;
 
     public EvaluationFormRepository(EvaluationCategoryRepository evaluationCategoryRepository) {
-        super(EVALUATION_FORM, EVALUATION_FORM.ID, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationForm.class);
+        super(EVALUATION_FORM, EVALUATION_FORM.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationForm.class);
         this.evaluationCategoryRepository = evaluationCategoryRepository;
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationForm> pagination(PageForm search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationForm> pagination(PageForm search) {
         return super.pagination(search);
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationForm> findAll(EvaluationFormSearchRequest search) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationForm> findAll(EvaluationFormSearchRequest search) {
         return super.findAll(conditions(search));
     }
 
@@ -81,7 +79,7 @@ public class EvaluationFormRepository extends EicnBaseRepository<EvaluationForm,
     }
 
     public void hiddenUpdate(final List<EvaluationFormVisibleRequest> ids) {
-        final Map<Long, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationForm> entityMap = findAll().stream().collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationForm::getId, e -> e));
+        final Map<Long, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationForm> entityMap = findAll().stream().collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationForm::getId, e -> e));
 
         dsl.batch(ids.stream().filter(form -> entityMap.get(form.getId()) != null)
                 .map(form -> DSL.update(EVALUATION_FORM).set(EVALUATION_FORM.HIDDEN, form.getHidden()).where(EVALUATION_FORM.ID.eq(form.getId())))

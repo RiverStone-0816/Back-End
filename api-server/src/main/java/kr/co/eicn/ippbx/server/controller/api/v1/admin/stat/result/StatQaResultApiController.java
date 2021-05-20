@@ -1,21 +1,21 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.stat.result;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonCode;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonField;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType;
-import kr.co.eicn.ippbx.server.model.dto.customdb.StatQaResultCodeResponse;
-import kr.co.eicn.ippbx.server.model.dto.customdb.StatQaResultFieldResponse;
-import kr.co.eicn.ippbx.server.model.dto.customdb.StatQaResultIndividualResponse;
-import kr.co.eicn.ippbx.server.model.dto.customdb.StatQaResultResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.IndividualCodeResponse;
-import kr.co.eicn.ippbx.server.model.search.StatQaResultIndividualSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.StatQaResultSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType;
+import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultCodeResponse;
+import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultFieldResponse;
+import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultIndividualResponse;
+import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.IndividualCodeResponse;
+import kr.co.eicn.ippbx.model.search.StatQaResultIndividualSearchRequest;
+import kr.co.eicn.ippbx.model.search.StatQaResultSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonCodeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonFieldRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonTypeRepository;
 import kr.co.eicn.ippbx.server.service.StatQaResultService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 통계관리 > 상담결과통계

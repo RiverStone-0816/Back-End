@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RouteApplication;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RouteApplication;
 import kr.co.eicn.ippbx.server.repository.eicn.RouteApplicationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

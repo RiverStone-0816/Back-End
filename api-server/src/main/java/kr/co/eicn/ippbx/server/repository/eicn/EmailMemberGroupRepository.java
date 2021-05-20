@@ -1,11 +1,11 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EmailMemberList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EmailServiceInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.EmailMemberGroup;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.form.EmailReceiveGroupFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailMemberList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailServiceInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.EmailMemberGroup;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.form.EmailReceiveGroupFormRequest;
 import lombok.Getter;
 import org.jooq.Record;
 import org.slf4j.Logger;
@@ -16,13 +16,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.*;
-import static kr.co.eicn.ippbx.server.util.StringUtils.subStringBytes;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.*;
+import static kr.co.eicn.ippbx.util.StringUtils.subStringBytes;
 import static org.jooq.tools.StringUtils.EMPTY;
 
 @Getter
 @Repository
-public class EmailMemberGroupRepository extends EicnBaseRepository<EmailMemberGroup, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EmailMemberGroup, Integer> {
+public class EmailMemberGroupRepository extends EicnBaseRepository<EmailMemberGroup, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailMemberGroup, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(EmailMemberGroupRepository.class);
 
     private final EmailMngRepository emailMngRepository;
@@ -30,7 +30,7 @@ public class EmailMemberGroupRepository extends EicnBaseRepository<EmailMemberGr
     private final WebSecureHistoryRepository webSecureHistoryRepository;
 
     EmailMemberGroupRepository(EmailMngRepository emailMngRepository, EmailMemberListRepository emailMemberListRepository, WebSecureHistoryRepository webSecureHistoryRepository) {
-        super(EMAIL_MEMBER_GROUP, EMAIL_MEMBER_GROUP.GROUP_ID, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EmailMemberGroup.class);
+        super(EMAIL_MEMBER_GROUP, EMAIL_MEMBER_GROUP.GROUP_ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailMemberGroup.class);
         this.emailMngRepository = emailMngRepository;
         this.emailMemberListRepository = emailMemberListRepository;
         this.webSecureHistoryRepository = webSecureHistoryRepository;
@@ -38,12 +38,12 @@ public class EmailMemberGroupRepository extends EicnBaseRepository<EmailMemberGr
 
     public Record insertOnGeneratedKey(EmailReceiveGroupFormRequest form) {
         final EmailServiceInfo emailServiceInfo = emailMngRepository.findOne(EMAIL_SERVICE_INFO.SEQ.eq(form.getEmailId()));
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EmailMemberGroup emailMemberGroup = findOne(EMAIL_MEMBER_GROUP.EMAIL_ID.eq(form.getEmailId()));
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailMemberGroup emailMemberGroup = findOne(EMAIL_MEMBER_GROUP.EMAIL_ID.eq(form.getEmailId()));
         if (emailMemberGroup != null) {
             throw new IllegalArgumentException(emailServiceInfo.getServiceName() + "은(는) 이미 등록된 그룹명입니다.");
         }
 
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EmailMemberGroup memberGroupRecord = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EmailMemberGroup();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailMemberGroup memberGroupRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailMemberGroup();
         memberGroupRecord.setGroupName(form.getGroupName());
         memberGroupRecord.setEmailId(form.getEmailId());
         memberGroupRecord.setCompanyId(getCompanyId());
@@ -67,10 +67,10 @@ public class EmailMemberGroupRepository extends EicnBaseRepository<EmailMemberGr
     }
 
     public void emailGroupUpdate(EmailReceiveGroupFormRequest form, Integer groupId) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EmailMemberGroup record = findOneIfNullThrow(groupId);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailMemberGroup record = findOneIfNullThrow(groupId);
 
         final EmailServiceInfo emailServiceInfo = emailMngRepository.findOne(EMAIL_SERVICE_INFO.SEQ.eq(form.getEmailId()));
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EmailMemberGroup emailMemberGroup =
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EmailMemberGroup emailMemberGroup =
                 findOne(EMAIL_MEMBER_GROUP.GROUP_ID.notEqual(groupId).and(EMAIL_MEMBER_GROUP.EMAIL_ID.eq(form.getEmailId())));
         if (emailMemberGroup != null) {
             throw new IllegalArgumentException(emailServiceInfo.getServiceName() + "은(는) 이미 등록된 그룹명입니다.");

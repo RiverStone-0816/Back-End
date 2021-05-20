@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonChattBookmark;
-import kr.co.eicn.ippbx.server.model.form.ChattingMemberFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonChattBookmark;
+import kr.co.eicn.ippbx.model.form.ChattingMemberFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @Getter
-public class ChattBookmarkRepository extends CustomDBBaseRepository<CommonChattBookmark, kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattBookmark, Integer> {
+public class ChattBookmarkRepository extends CustomDBBaseRepository<CommonChattBookmark, kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattBookmark, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(ChattBookmarkRepository.class);
 
     private final CommonChattBookmark TABLE;
@@ -19,7 +19,7 @@ public class ChattBookmarkRepository extends CustomDBBaseRepository<CommonChattB
     private PersonListRepository personListRepository;
 
     public ChattBookmarkRepository(String table) {
-        super(new CommonChattBookmark(table), new CommonChattBookmark(table).SEQ, kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattBookmark.class);
+        super(new CommonChattBookmark(table), new CommonChattBookmark(table).SEQ, kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattBookmark.class);
         this.TABLE = new CommonChattBookmark(table);
 
         addField(TABLE);
@@ -27,7 +27,7 @@ public class ChattBookmarkRepository extends CustomDBBaseRepository<CommonChattB
 
     public void updateBookMark(ChattingMemberFormRequest form) {
         delete(TABLE.USERID.eq(g.getUser().getId()));
-        final kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattBookmark bookmark = new kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattBookmark();
+        final kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattBookmark bookmark = new kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattBookmark();
         bookmark.setUserid(g.getUser().getId());
         bookmark.setMemberid(getCompanyId());
 
@@ -37,7 +37,7 @@ public class ChattBookmarkRepository extends CustomDBBaseRepository<CommonChattB
         }
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattBookmark> findAllByUserId() {
+    public List<kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattBookmark> findAllByUserId() {
         return findAll(TABLE.USERID.eq(g.getUser().getId()));
     }
 }

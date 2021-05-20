@@ -1,15 +1,14 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationItemScore;
-import kr.co.eicn.ippbx.server.model.entity.eicn.EvaluationResultEntity;
-import kr.co.eicn.ippbx.server.model.enums.CallType;
-import kr.co.eicn.ippbx.server.model.form.EvaluationItemScoreFormRequest;
-import kr.co.eicn.ippbx.server.model.form.EvaluationResultFormRequest;
-import kr.co.eicn.ippbx.server.model.search.EvaluationResultSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationItemScore;
+import kr.co.eicn.ippbx.model.entity.eicn.EvaluationResultEntity;
+import kr.co.eicn.ippbx.model.enums.CallType;
+import kr.co.eicn.ippbx.model.form.EvaluationItemScoreFormRequest;
+import kr.co.eicn.ippbx.model.form.EvaluationResultFormRequest;
+import kr.co.eicn.ippbx.model.search.EvaluationResultSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MvcResult;

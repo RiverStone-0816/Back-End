@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.repository.pds;
 
-import kr.co.eicn.ippbx.server.jooq.pds.tables.CommonExecutePDSCustomInfo;
-import kr.co.eicn.ippbx.server.model.dto.pds.ExecutePDSCustomInfoCountResponse;
+import kr.co.eicn.ippbx.meta.jooq.pds.tables.CommonExecutePDSCustomInfo;
+import kr.co.eicn.ippbx.model.dto.pds.ExecutePDSCustomInfoCountResponse;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.DSLContext;
@@ -12,16 +12,16 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.pds.tables.ExecutePdsCustomInfo.EXECUTE_PDS_CUSTOM_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.pds.tables.ExecutePdsCustomInfo.EXECUTE_PDS_CUSTOM_INFO;
 
 @Getter
-public class ExecutePDSCustomInfoRepository extends PDSDbBaseRepository<CommonExecutePDSCustomInfo, kr.co.eicn.ippbx.server.jooq.pds.tables.pojos.CommonExecutePDSCustomInfo, Integer> {
+public class ExecutePDSCustomInfoRepository extends PDSDbBaseRepository<CommonExecutePDSCustomInfo, kr.co.eicn.ippbx.meta.jooq.pds.tables.pojos.CommonExecutePDSCustomInfo, Integer> {
     private final Logger logger = LoggerFactory.getLogger(ExecutePDSCustomInfoRepository.class);
 
     private final CommonExecutePDSCustomInfo TABLE;
 
     public ExecutePDSCustomInfoRepository(String name) {
-        super(new CommonExecutePDSCustomInfo(name), new CommonExecutePDSCustomInfo(name).SEQ, kr.co.eicn.ippbx.server.jooq.pds.tables.pojos.CommonExecutePDSCustomInfo.class);
+        super(new CommonExecutePDSCustomInfo(name), new CommonExecutePDSCustomInfo(name).SEQ, kr.co.eicn.ippbx.meta.jooq.pds.tables.pojos.CommonExecutePDSCustomInfo.class);
         TABLE = new CommonExecutePDSCustomInfo(name);
     }
 
@@ -32,7 +32,7 @@ public class ExecutePDSCustomInfoRepository extends PDSDbBaseRepository<CommonEx
     public ExecutePDSCustomInfoCountResponse findAllCount(String executeId, DSLContext dslContext) {
         ExecutePDSCustomInfoCountResponse response = new ExecutePDSCustomInfoCountResponse();
 
-        List<kr.co.eicn.ippbx.server.jooq.pds.tables.pojos.CommonExecutePDSCustomInfo> list = findAll(dslContext, TABLE.EXECUTE_ID.eq(executeId));
+        List<kr.co.eicn.ippbx.meta.jooq.pds.tables.pojos.CommonExecutePDSCustomInfo> list = findAll(dslContext, TABLE.EXECUTE_ID.eq(executeId));
         response.setTotalTry((int) list.stream().filter(execute -> !execute.getStatus().equals("")).count());
         response.setTotalMod(getCount(list, "", ""));
         response.setRings(getCount(list, "R", ""));
@@ -47,7 +47,7 @@ public class ExecutePDSCustomInfoRepository extends PDSDbBaseRepository<CommonEx
         return response;
     }
 
-    private Integer getCount(List<kr.co.eicn.ippbx.server.jooq.pds.tables.pojos.CommonExecutePDSCustomInfo> list, String status, String hangupCause) {
+    private Integer getCount(List<kr.co.eicn.ippbx.meta.jooq.pds.tables.pojos.CommonExecutePDSCustomInfo> list, String status, String hangupCause) {
         int size = 0;
         if (StringUtils.isEmpty(hangupCause))
             size = (int) list.stream().filter(execute -> execute.getStatus().equals(status)).count();

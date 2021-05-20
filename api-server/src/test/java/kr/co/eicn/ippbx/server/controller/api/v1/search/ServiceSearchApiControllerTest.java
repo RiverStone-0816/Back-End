@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.search;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.dto.eicn.search.SearchServiceResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.search.SearchServiceResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

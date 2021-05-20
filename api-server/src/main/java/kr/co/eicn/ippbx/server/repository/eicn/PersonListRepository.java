@@ -1,12 +1,12 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattBookmark;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.PersonList;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PersonOnHunt;
-import kr.co.eicn.ippbx.server.model.enums.ChattingJoinStatus;
-import kr.co.eicn.ippbx.server.model.enums.IdStatus;
-import kr.co.eicn.ippbx.server.model.search.ChattingMemberSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.StatUserSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattBookmark;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList;
+import kr.co.eicn.ippbx.model.dto.eicn.PersonOnHunt;
+import kr.co.eicn.ippbx.model.enums.ChattingJoinStatus;
+import kr.co.eicn.ippbx.model.enums.IdStatus;
+import kr.co.eicn.ippbx.model.search.ChattingMemberSearchRequest;
+import kr.co.eicn.ippbx.model.search.StatUserSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import lombok.Getter;
@@ -24,14 +24,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.QUEUE_MEMBER_TABLE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PersonList.PERSON_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.QUEUE_MEMBER_TABLE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.jooq.impl.DSL.noCondition;
 
 @Getter
 @Repository
-public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList, String> {
+public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList, String> {
     protected final Logger logger = LoggerFactory.getLogger(PersonListRepository.class);
 
     private final PBXServerInterface pbxServerInterface;
@@ -39,13 +39,13 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
     private final CacheService cacheService;
 
     public PersonListRepository(PBXServerInterface pbxServerInterface, ServiceRepository serviceRepository, CacheService cacheService) {
-        super(PERSON_LIST, PERSON_LIST.ID, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList.class);
+        super(PERSON_LIST, PERSON_LIST.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList.class);
         this.pbxServerInterface = pbxServerInterface;
         this.serviceRepository = serviceRepository;
         this.cacheService = cacheService;
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList> findAllByGroup(List<String> group) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> findAllByGroup(List<String> group) {
         Condition groupCondition = null;
 
         if (group != null)
@@ -95,10 +95,10 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
         return r;
     }
 
-    public kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList findOneById(final String id) {
+    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList findOneById(final String id) {
         return dsl.selectFrom(PERSON_LIST)
                 .where(PERSON_LIST.ID.eq(id))
-                .fetchOneInto(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList.class);
+                .fetchOneInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList.class);
     }
 
     public String findIdByPeer(final String peer) {
@@ -109,11 +109,11 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
                 .fetchOneInto(String.class);
     }
 
-    public Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList> findOneByKeyExtension(DSLContext dslContext, String extension) {
+    public Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> findOneByKeyExtension(DSLContext dslContext, String extension) {
         return dslContext.selectFrom(PERSON_LIST)
                 .where(compareCompanyId())
                 .and(PERSON_LIST.EXTENSION.eq(extension))
-                .fetchInto(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList.class)
+                .fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList.class)
                 .stream()
                 .findFirst();
     }
@@ -139,7 +139,7 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
         dslContext.batch(queries).execute();
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList> findAllByServiceHunt(StatUserSearchRequest search) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> findAllByServiceHunt(StatUserSearchRequest search) {
         orderByFields.add(PERSON_LIST.GROUP_CODE.asc());
         List<Condition> conditions = new ArrayList<>();
 
@@ -180,16 +180,16 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
                 .fetch().size() > 0;
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList> findAllByChatting(ChattingMemberSearchRequest search) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> findAllByChatting(ChattingMemberSearchRequest search) {
         return dsl.selectFrom(PERSON_LIST)
                 .where(PERSON_LIST.ID_STATUS.notEqual(IdStatus.RETIRE.getCode()))
                 .and(PERSON_LIST.IS_CHATT.eq(ChattingJoinStatus.ACTIVE.getCode()))
                 .and(StringUtils.isNotEmpty(search.getUserName()) ?
                         PERSON_LIST.ID_NAME.like("%" + search.getUserName() + "%").or(PERSON_LIST.ID.like("%" + search.getUserName() + "%")) : noCondition())
-                .fetchInto(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList.class);
+                .fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList.class);
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList> findAllByBookmarkMemberId(ChattingMemberSearchRequest search, List<CommonChattBookmark> bookmarks) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> findAllByBookmarkMemberId(ChattingMemberSearchRequest search, List<CommonChattBookmark> bookmarks) {
         Condition personCondition = noCondition();
 
         for (int i = 0; i < bookmarks.size(); i++) {

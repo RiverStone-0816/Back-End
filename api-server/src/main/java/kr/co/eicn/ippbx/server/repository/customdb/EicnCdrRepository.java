@@ -1,18 +1,18 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonEicnCdr;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.model.dto.customdb.MainInOutInfoResponse;
-import kr.co.eicn.ippbx.server.model.entity.customdb.EicnCdrEntity;
-import kr.co.eicn.ippbx.server.model.entity.customdb.EicnCdrEvaluationEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.EicnCdrEvaluationResultEntity;
-import kr.co.eicn.ippbx.server.model.enums.AdditionalState;
-import kr.co.eicn.ippbx.server.model.enums.CallStatus;
-import kr.co.eicn.ippbx.server.model.enums.CallType;
-import kr.co.eicn.ippbx.server.model.search.RecordCallSearch;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonEicnCdr;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.model.dto.customdb.MainInOutInfoResponse;
+import kr.co.eicn.ippbx.model.entity.customdb.EicnCdrEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.EicnCdrEvaluationEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.EicnCdrEvaluationResultEntity;
+import kr.co.eicn.ippbx.model.enums.AdditionalState;
+import kr.co.eicn.ippbx.model.enums.CallStatus;
+import kr.co.eicn.ippbx.model.enums.CallType;
+import kr.co.eicn.ippbx.model.search.RecordCallSearch;
 import kr.co.eicn.ippbx.server.repository.eicn.EvaluationFormRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.EnumUtils;
 import org.jooq.Condition;
@@ -31,8 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.EvaluationResult.EVALUATION_RESULT;
-import static kr.co.eicn.ippbx.server.model.enums.AdditionalState.PICKUPER;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationResult.EVALUATION_RESULT;
+import static kr.co.eicn.ippbx.model.enums.AdditionalState.PICKUPER;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.jooq.impl.DSL.timestamp;
@@ -153,7 +153,7 @@ public class EicnCdrRepository extends CustomDBBaseRepository<CommonEicnCdr, Eic
 
                 case TRANSFEREE: //돌려받음
                     conditions.add(TABLE.TURN_OVER_KIND.eq("TRANSFEREE").and(TABLE.TURN_OVER_NUMBER.isNotNull().or(TABLE.TURN_OVER_NUMBER.notEqual(""))));
-                    
+
                     break;
                 default:
                     conditions.add(TABLE.TURN_OVER_KIND.eq(search.getEtcStatus()));

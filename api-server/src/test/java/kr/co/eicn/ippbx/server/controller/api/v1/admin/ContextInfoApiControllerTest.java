@@ -1,29 +1,21 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.enums.Bool;
-import kr.co.eicn.ippbx.server.model.form.ContextInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.WebVoiceItemsDtmfFormRequest;
-import kr.co.eicn.ippbx.server.model.form.WebVoiceItemsFormRequest;
-import kr.co.eicn.ippbx.server.model.form.WebVoiceItemsInputFormRequest;
+import kr.co.eicn.ippbx.model.form.ContextInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.WebVoiceItemsDtmfFormRequest;
+import kr.co.eicn.ippbx.model.form.WebVoiceItemsFormRequest;
+import kr.co.eicn.ippbx.model.form.WebVoiceItemsInputFormRequest;
 import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

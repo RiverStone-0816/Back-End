@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.service;
 
 import kr.co.eicn.ippbx.server.config.RequestGlobal;
-import kr.co.eicn.ippbx.server.config.RequestMessage;
+import kr.co.eicn.ippbx.util.spring.RequestMessage;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 

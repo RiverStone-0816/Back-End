@@ -1,27 +1,20 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.enums.PDSGroupRidKind;
-import kr.co.eicn.ippbx.server.model.enums.PDSGroupSpeedMultiple;
-import kr.co.eicn.ippbx.server.model.form.MaindbGroupFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PDSExecuteFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PDSGroupFormRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.model.enums.PDSGroupRidKind;
+import kr.co.eicn.ippbx.model.enums.PDSGroupSpeedMultiple;
+import kr.co.eicn.ippbx.model.form.PDSExecuteFormRequest;
+import kr.co.eicn.ippbx.model.form.PDSGroupFormRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -175,10 +168,10 @@ public class PDSGroupApiControllerTest extends BaseControllerTest {
                 ))
                 .andReturn();
 
-        final Pagination<kr.co.eicn.ippbx.server.model.dto.eicn.PDSGroupSummaryResponse> pagination =
-                paginationData(result, kr.co.eicn.ippbx.server.model.dto.eicn.PDSGroupSummaryResponse.class);
+        final Pagination<kr.co.eicn.ippbx.model.dto.eicn.PDSGroupSummaryResponse> pagination =
+                paginationData(result, kr.co.eicn.ippbx.model.dto.eicn.PDSGroupSummaryResponse.class);
 
-        for (kr.co.eicn.ippbx.server.model.dto.eicn.PDSGroupSummaryResponse row : pagination.getRows()) {
+        for (kr.co.eicn.ippbx.model.dto.eicn.PDSGroupSummaryResponse row : pagination.getRows()) {
             log.info("그룹명:{}, 그룹생성일:{}, 마지막업로드날짜:{}, 업로드데이터수:{}, 업로드횟수:{}, 마지막업로드상태:{}, 마지막실행한날:{}, 실행횟수:{}, 실행상태:{}"
                 , row.getName()
                 , row.getMakeDate()

@@ -1,15 +1,15 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.BoardInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.NoticeFileEntity;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.NoticeXFile;
-import kr.co.eicn.ippbx.server.model.enums.BoardType;
-import kr.co.eicn.ippbx.server.model.enums.IdType;
-import kr.co.eicn.ippbx.server.model.form.NoticeFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.NoticeFileEntity;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.NoticeXFile;
+import kr.co.eicn.ippbx.model.enums.BoardType;
+import kr.co.eicn.ippbx.model.enums.IdType;
+import kr.co.eicn.ippbx.model.form.NoticeFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.NoticeFileEntityRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.NoticeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.NoticeXFileRepository;
-import kr.co.eicn.ippbx.server.util.UrlUtils;
+import kr.co.eicn.ippbx.util.UrlUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

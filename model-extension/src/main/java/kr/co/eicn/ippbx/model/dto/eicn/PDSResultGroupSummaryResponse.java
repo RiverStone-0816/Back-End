@@ -1,0 +1,16 @@
+package kr.co.eicn.ippbx.model.dto.eicn;
+
+import lombok.Data;
+
+@Data
+public class PDSResultGroupSummaryResponse {
+	private Integer   seq;
+	private String    name;             // 헌트그룹명(영문)
+	private String hanName;         // 헌트그룹명(한글)
+	/**
+	 * @see kr.co.eicn.ippbx.model.enums.PDSResultGroupStrategy
+	 */
+	private String strategy; // 분배정책
+	private String   hostName;     // 교환기
+	private Integer   cnt; // 사용자수
+}

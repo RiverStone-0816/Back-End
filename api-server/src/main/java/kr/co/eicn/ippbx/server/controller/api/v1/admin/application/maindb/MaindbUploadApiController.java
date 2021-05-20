@@ -1,17 +1,16 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.application.maindb;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryUploadInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MaindbGroup;
-import kr.co.eicn.ippbx.server.model.dto.eicn.GroupUploadLogDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.GroupUploadLogResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.MaindbUploadResponse;
-import kr.co.eicn.ippbx.server.model.enums.UploadStatus;
-import kr.co.eicn.ippbx.server.model.search.MaindbUploadSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryUploadInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup;
+import kr.co.eicn.ippbx.model.dto.eicn.GroupUploadLogDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.GroupUploadLogResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.MaindbUploadResponse;
+import kr.co.eicn.ippbx.model.search.MaindbUploadSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.MaindbGroupRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.MaindbUploadRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -29,7 +28,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 상담어플리케이션 관리 > 고객DB 관리 > 업로드이력

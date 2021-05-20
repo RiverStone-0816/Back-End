@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonChattRoomMember;
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattRoom;
-import kr.co.eicn.ippbx.server.model.enums.ChattingJoinStatus;
-import kr.co.eicn.ippbx.server.model.enums.ChattingRoomNameYn;
-import kr.co.eicn.ippbx.server.model.form.ChattingMemberFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonChattRoomMember;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattRoom;
+import kr.co.eicn.ippbx.model.enums.ChattingJoinStatus;
+import kr.co.eicn.ippbx.model.enums.ChattingRoomNameYn;
+import kr.co.eicn.ippbx.model.form.ChattingMemberFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.service.ChattRoomService;
 import lombok.Getter;
@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Getter
-public class ChattMemberRepository extends CustomDBBaseRepository<CommonChattRoomMember, kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattRoomMember, String> {
+public class ChattMemberRepository extends CustomDBBaseRepository<CommonChattRoomMember, kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattRoomMember, String> {
     protected final Logger logger = LoggerFactory.getLogger(ChattMemberRepository.class);
 
     private final CommonChattRoomMember TABLE;
@@ -28,7 +28,7 @@ public class ChattMemberRepository extends CustomDBBaseRepository<CommonChattRoo
     private PersonListRepository personListRepository;
 
     public ChattMemberRepository(String companyId) {
-        super(new CommonChattRoomMember(companyId), new CommonChattRoomMember(companyId).ROOM_ID, kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattRoomMember.class);
+        super(new CommonChattRoomMember(companyId), new CommonChattRoomMember(companyId).ROOM_ID, kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattRoomMember.class);
         this.TABLE = new CommonChattRoomMember(companyId);
 
         addField(TABLE);
@@ -74,7 +74,7 @@ public class ChattMemberRepository extends CustomDBBaseRepository<CommonChattRoo
                 .execute();
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.customdb.tables.pojos.CommonChattRoomMember> findAllByRoomId(String roomId) {
+    public List<kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattRoomMember> findAllByRoomId(String roomId) {
         return findAll(TABLE.ROOM_ID.eq(roomId), Collections.singletonList(TABLE.USERID.desc()));
     }
 

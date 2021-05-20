@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api;
 
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.Result.failure;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.Result.failure;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
 
 @Slf4j
 @RestController

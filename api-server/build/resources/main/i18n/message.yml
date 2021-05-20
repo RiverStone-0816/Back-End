@@ -1,0 +1,141 @@
+error:
+  access:
+    denied: "접근 권한이 없습니다."
+    invalid: "유효하지 않은 접근입니다."
+    notexit: "존재하지 않는 정보입니다."
+  exception:
+    cause:
+      SQLException: "시스템 예외 발생"
+      IllegalArgumentException: "올바르지 않은 입력값"
+      DuplicateKeyException: "이미 존재하는 정보입니다."
+      NullPointerException: "정의되지 않은 조건"
+      SQLNonTransientException: "서버 접근에 실패했습니다.(DB)"
+      Exception: "시스템 예외 발생"
+      UncheckedIOException: "시스템 예외 발생"
+      EntityNotFoundException: "존재하지 않는 정보입니다."
+      StorageFileNotFoundException: "파일을 찾을 수 없습니다."
+    status:
+      401: "실패"
+      412: "올바르지 않은 입력값"
+      500: "시스템 예외 발생"
+kr:
+  co:
+    eicn:
+      ippbx:
+        server:
+          model:
+            enums:
+              RecordType:
+                M: "녹취함"
+                S: "녹취안함"
+              ForwardWhen:
+                N: "착신전환안함"
+                A: "항상"
+                B: "통화중"
+                C: "부재중"
+                T: "통화중+부재중"
+              ForwardKind:
+                E: "내선"
+                H: "헌트번호"
+                R: "대표번호"
+                O: "외부번호"
+              IdStatus:
+                "": "정상"
+                S: "휴직"
+                X: "퇴직"
+              GatewayType:
+                SIP: "소프트스위치"
+                CPG: "CPG"
+                ETC: "ETC"
+                TRK: "TRK"
+                SBC: "SBC"
+              CallDistributionStrategy:
+                RINGALL: "동시 모두"
+                LEASTRECENT: "먼저끊은순서"
+                FEWESTCALLS: "적게받은순서"
+                RRMEMORY: "마지막통화한다음순서"
+                RANDOM: "랜덤"
+                SEQUENCE: "목록순서"
+                SKILL: "스킬순서"
+                CALLRATE: "콜배율순서"
+              TTSErrorCode:
+                ILLEGAL_PARAMETER: "잘못된 파라미터"
+                UN_KNOWN_HOST: "TTS SERVER 호스트를 알수 없습니다."
+                NO_DATA: "서버로 부터 받은 데이터가 없습니다."
+                BAD_PROTOCOL: "서버와 통신 프로토콜이 잘못되었습니다."
+                EXCEPTION5: "TTS 음원 생성중 오류가 발생했습니다."
+                EXCEPTION6: "TTS 음원 생성중 오류가 발생했습니다."
+              RecordDownStatusKind:
+                REQUEST_COMPLETED: "요청완료"
+                IN_READY: "준비중"
+                COMPLETE: "준비완료"
+              TalkScheduleKind:
+                AUTO_MENT_REQUEST: "자동멘트요청"
+                SERVICE_BY_GROUP_CONNECT: "상담톡그룹연결"
+                PERSON_CONSULTATION_CONNECT: "개인상담원연결"
+              ScheduleKind:
+                ONY_SOUND_PLAY: "음원만플레이"
+                DIRECT_NUMBER: "번호직접여결(내부번호연결)"
+                CALL_FORWARDING: "착신전환(외부번호연결)"
+                IVR_CONNECT: "IVR연결"
+                EXCEPTION_CONTEXT: "예외컨텍스트"
+                VOICE: "음성사서함"
+              AdditionalState:
+                HANGUP_BEFORE_CONNECT: "연결전끊음"
+                CANCEL_CONNECT: "포기호(헌트대기중끊음)"
+                PICKUPEE: "당겨짐"
+                PICKUPER: "당겨받음"
+                PROTECT: "ARS멘트"
+                TRANSFEREE: "돌려받음"
+                TRANSFERER: "돌려줌"
+                FORWARD_TRANSFEREE: "내선설정포워딩됨"
+                FORWARD_TRANSFERER: "내선설정포워딩함"
+                SCD_TRANSFEREE: "스케쥴포워딩됨"
+                SCD_TRANSFERER: "스케쥴포워딩함"
+                LOCAL_TRANSFEREE: "전화기포워딩됨"
+                LOCAL_TRANSFERER: "전화기포워딩함"
+                ATTENDEDOUT_TRANSFEREE: "외부돌려받음"
+                ATTENDEDOUT_TRANSFERER: "외부돌려줌"
+                INNER_PICKUPER: "INNER_PICKUPER"
+                INNER_TRANSFEREE: "내선포워딩됨"
+                INNER_TRANSFERER: "내선포워딩함"
+                INNER_TRANS_BACK: "내선되돌려받음"
+                XFER_TRANSFEREE: "돌려받음"
+                EXTEN_TRANSFERER: "EXTEN_TRANSFERER"
+                REDIRECTOUT_TRANSFEREE: "외부돌려받음"
+                REDIRECTOUT_TRANSFERER: "외부돌려줌"
+                SPY: "엿듣기"
+                TRANS_BACK: "되돌려받음"
+messages:
+  company:
+    notfound: "회사 아이디를 확인할 수 없습니다."
+  company-tree:
+    notfound: "조직정보를 찾을 수 없습니다."
+  login:
+    fail:
+      notexit: "시스템에 등록되지 않은 아이디입니다."
+      password: "올바르지 않은 비밀번호입니다."
+  validator:
+    invalid: "{0}을 올바르게 입력해 주세요."
+    blank: "{0}를(을) 입력해 주세요."
+    pattern: "{0}는(은) 유효하지 않은 패턴입니다."
+    minimum: "{0}는(은) {1}보다 커야 합니다."
+    length:
+      empty: "{0}는(은) {1}자로 입력해 주세요."
+      over: "{0}는(은) {1}자 이상 {2}자 이하로 입력해 주세요."
+    range:
+      over: "{0}는(은) {1}이상 {2}이하이어야 합니다."
+      number: "{0}는(은) {1}개이상 {2}개이하로 선택해주세요."
+    equal: "{0}는(은) {1}과 동일해야 합니다."
+    enddate:
+      after.startdate: "검색 종료일이 검색 시작일 이후여야 합니다."
+      indays: "조회기간은 {0}이내여야 합니다."
+    endhour:
+      after.starthour: "종료시간이 시작시간 이후여야 합니다."
+    field:
+      password: "입력하신 비밀번호가 일치하지 않습니다."
+javax:
+  validation:
+    constraints:
+      Size:
+        message: "입력범위를 초과하였습니다."

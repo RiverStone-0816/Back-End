@@ -1,17 +1,17 @@
 package kr.co.eicn.ippbx.server.repository.pds;
 
 
-import kr.co.eicn.ippbx.server.jooq.pds.tables.CommonPDSCustomInfo;
-import kr.co.eicn.ippbx.server.jooq.pds.tables.CommonPDSResultCustomInfo;
-import kr.co.eicn.ippbx.server.jooq.pds.tables.pojos.PdsCustomInfo;
-import kr.co.eicn.ippbx.server.jooq.pds.tables.records.ResultCustomInfoRecord;
-import kr.co.eicn.ippbx.server.model.entity.pds.PDSCustomInfoEntity;
-import kr.co.eicn.ippbx.server.model.entity.pds.PDSResultCustomInfoEntity;
-import kr.co.eicn.ippbx.server.model.form.PDSResultCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.search.PDSResultCustomInfoSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.pds.tables.CommonPDSCustomInfo;
+import kr.co.eicn.ippbx.meta.jooq.pds.tables.CommonPDSResultCustomInfo;
+import kr.co.eicn.ippbx.meta.jooq.pds.tables.pojos.PdsCustomInfo;
+import kr.co.eicn.ippbx.meta.jooq.pds.tables.records.ResultCustomInfoRecord;
+import kr.co.eicn.ippbx.model.entity.pds.PDSCustomInfoEntity;
+import kr.co.eicn.ippbx.model.entity.pds.PDSResultCustomInfoEntity;
+import kr.co.eicn.ippbx.model.form.PDSResultCustomInfoFormRequest;
+import kr.co.eicn.ippbx.model.search.PDSResultCustomInfoSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonFieldRepository;
 import kr.co.eicn.ippbx.server.service.PDSCustomInfoService;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.pds.tables.ResultCustomInfo.RESULT_CUSTOM_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.pds.tables.ResultCustomInfo.RESULT_CUSTOM_INFO;
 import static org.apache.commons.lang3.StringUtils.substringBeforeLast;
 
 @Getter

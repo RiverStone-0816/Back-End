@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.repository;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.Number_070;
-import kr.co.eicn.ippbx.server.model.form.NumberTypeChangeRequest;
-import kr.co.eicn.ippbx.server.model.search.NumberSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.Number_070;
+import kr.co.eicn.ippbx.model.form.NumberTypeChangeRequest;
+import kr.co.eicn.ippbx.model.search.NumberSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.EicnBaseRepository;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
@@ -18,32 +18,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.Number_070.NUMBER_070;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.Number_070.NUMBER_070;
 
 @Getter
 @Repository
-public class NumberRepositoryTest extends EicnBaseRepository<Number_070, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070, String> {
+public class NumberRepositoryTest extends EicnBaseRepository<Number_070, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070, String> {
 	protected final Logger logger = LoggerFactory.getLogger(NumberRepositoryTest.class);
 
 	private final CacheService cacheService;
 	private final PBXServerInterface pbxServerInterface;
 
 	public NumberRepositoryTest(CacheService cacheService, PBXServerInterface pbxServerInterface) {
-		super(NUMBER_070, NUMBER_070.NUMBER, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070.class);
+		super(NUMBER_070, NUMBER_070.NUMBER, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070.class);
 		orderByFields.add(NUMBER_070.NUMBER.asc());
 
 		this.cacheService = cacheService;
 		this.pbxServerInterface = pbxServerInterface;
 	}
 
-	public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070> findAll(NumberSearchRequest search) {
+	public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070> findAll(NumberSearchRequest search) {
 		return super.findAll(typeConditions(search));
 	}
 
-	public Map<String, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070> findByAllListCovertToMap(Condition condition) {
-		final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070> entities = findAll(condition);
+	public Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070> findByAllListCovertToMap(Condition condition) {
+		final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070> entities = findAll(condition);
 		return entities.stream()
-				.collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070::getNumber, e -> e));
+				.collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070::getNumber, e -> e));
 	}
 
 	public void typeChange(NumberTypeChangeRequest form, String number) {

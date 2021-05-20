@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.enums.InOutCallKind;
-import kr.co.eicn.ippbx.server.model.enums.InOutTarget;
-import kr.co.eicn.ippbx.server.model.enums.ProcessKind;
-import kr.co.eicn.ippbx.server.model.form.VOCGroupFormRequest;
+import kr.co.eicn.ippbx.model.enums.InOutCallKind;
+import kr.co.eicn.ippbx.model.enums.InOutTarget;
+import kr.co.eicn.ippbx.model.enums.ProcessKind;
+import kr.co.eicn.ippbx.model.form.VOCGroupFormRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;

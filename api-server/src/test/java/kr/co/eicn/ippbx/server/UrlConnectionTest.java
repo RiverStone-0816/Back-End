@@ -1,30 +1,21 @@
 package kr.co.eicn.ippbx.server;
 
-import kr.co.eicn.ippbx.server.model.dto.eicn.DiskResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.FileSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.DiskResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.FileSummaryResponse;
 import kr.co.eicn.ippbx.server.service.IpccUrlConnection;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.FileUrlResource;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.InputStreamSource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.format.number.NumberStyleFormatter;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.*;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.apache.commons.lang3.StringUtils.trim;
 

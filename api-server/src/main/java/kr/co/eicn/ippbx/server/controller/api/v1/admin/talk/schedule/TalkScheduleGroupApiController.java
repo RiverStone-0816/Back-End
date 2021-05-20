@@ -1,16 +1,16 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.schedule;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryTalkMentResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.TalkScheduleGroupListDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.TalkScheduleGroupSummaryResponse;
-import kr.co.eicn.ippbx.server.model.form.TalkScheduleGroupFormRequest;
-import kr.co.eicn.ippbx.server.model.form.TalkScheduleGroupListFormRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryTalkMentResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.TalkScheduleGroupListDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.TalkScheduleGroupSummaryResponse;
+import kr.co.eicn.ippbx.model.form.TalkScheduleGroupFormRequest;
+import kr.co.eicn.ippbx.model.form.TalkScheduleGroupListFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.TalkMentRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.TalkScheduleGroupListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.TalkScheduleGroupRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -23,8 +23,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 상담톡관리 > 상담톡일정관리 > 스케쥴유형

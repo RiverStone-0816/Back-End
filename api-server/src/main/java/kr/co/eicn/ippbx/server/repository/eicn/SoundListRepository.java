@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.SoundList;
-import kr.co.eicn.ippbx.server.model.search.SoundListSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.SoundList;
+import kr.co.eicn.ippbx.model.search.SoundListSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
@@ -14,23 +14,23 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.SoundList.SOUND_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.SoundList.SOUND_LIST;
 
 @Getter
 @Repository
-public class SoundListRepository extends EicnBaseRepository<SoundList, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SoundList, Integer> {
+public class SoundListRepository extends EicnBaseRepository<SoundList, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList, Integer> {
 	protected final Logger logger = LoggerFactory.getLogger(SoundListRepository.class);
 
 	public SoundListRepository() {
-		super(SOUND_LIST, SOUND_LIST.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SoundList.class);
+		super(SOUND_LIST, SOUND_LIST.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList.class);
 		orderByFields.add(SOUND_LIST.SEQ.desc());
 	}
 
-	public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SoundList> findAll(SoundListSearchRequest search) {
+	public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList> findAll(SoundListSearchRequest search) {
 		return super.findAll(conditions(search));
 	}
 
-	public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SoundList> pagination(SoundListSearchRequest search) {
+	public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList> pagination(SoundListSearchRequest search) {
 		return super.pagination(search, conditions(search));
 	}
 
@@ -57,7 +57,7 @@ public class SoundListRepository extends EicnBaseRepository<SoundList, kr.co.eic
 
 		return conditions;
 	}
-	public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SoundList> findAllArs() {
+	public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList> findAllArs() {
 		return findAll(SOUND_LIST.ARS.eq(true));
 	}
 }

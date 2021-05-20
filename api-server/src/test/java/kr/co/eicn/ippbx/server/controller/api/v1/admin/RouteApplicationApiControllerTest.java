@@ -1,10 +1,9 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.dto.eicn.search.SearchPersonListResponse;
-import kr.co.eicn.ippbx.server.model.form.RAFormUpdateRequest;
+import kr.co.eicn.ippbx.model.dto.eicn.search.SearchPersonListResponse;
+import kr.co.eicn.ippbx.model.form.RAFormUpdateRequest;
 import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.Order;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;

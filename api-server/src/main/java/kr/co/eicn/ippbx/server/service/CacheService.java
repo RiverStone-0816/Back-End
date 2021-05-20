@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyServerRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

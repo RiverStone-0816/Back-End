@@ -1,10 +1,8 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.form.MaindbCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PDSCustomInfoFormRequest;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
+import kr.co.eicn.ippbx.model.form.MaindbCustomInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.PDSCustomInfoFormRequest;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MvcResult;

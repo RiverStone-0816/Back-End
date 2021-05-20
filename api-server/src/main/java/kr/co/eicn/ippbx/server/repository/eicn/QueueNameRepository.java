@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueName;
-import kr.co.eicn.ippbx.server.model.dto.eicn.search.SearchQueueNameResponse;
-import kr.co.eicn.ippbx.server.model.search.StatHuntSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.search.SearchQueueNameRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName;
+import kr.co.eicn.ippbx.model.dto.eicn.search.SearchQueueNameResponse;
+import kr.co.eicn.ippbx.model.search.StatHuntSearchRequest;
+import kr.co.eicn.ippbx.model.search.search.SearchQueueNameRequest;
 import lombok.Data;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
@@ -19,23 +19,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueName.QUEUE_NAME;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName.QUEUE_NAME;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.jooq.impl.DSL.noCondition;
 
 @Getter
 @Repository
-public class QueueNameRepository extends EicnBaseRepository<QueueName, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName, String> {
+public class QueueNameRepository extends EicnBaseRepository<QueueName, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName, String> {
     protected final Logger logger = LoggerFactory.getLogger(QueueNameRepository.class);
 
     public QueueNameRepository() {
-        super(QUEUE_NAME, QUEUE_NAME.NAME, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName.class);
+        super(QUEUE_NAME, QUEUE_NAME.NAME, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName.class);
 
         orderByFields.add(QUEUE_NAME.HAN_NAME.asc());
     }
 
-    public kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName findOneByQueueNumber(String queueNumber) {
+    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName findOneByQueueNumber(String queueNumber) {
         return findOne(QUEUE_NAME.COMPANY_ID.eq(getCompanyId()).and(QUEUE_NAME.NUMBER.eq(queueNumber)));
     }
 
@@ -45,7 +45,7 @@ public class QueueNameRepository extends EicnBaseRepository<QueueName, kr.co.eic
                 .collect(Collectors.toList());
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName> getQueueNameListByService(StatHuntSearchRequest search, String groupTreeName) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName> getQueueNameListByService(StatHuntSearchRequest search, String groupTreeName) {
         return findAll(conditions(search, groupTreeName));
     }
 
@@ -71,7 +71,7 @@ public class QueueNameRepository extends EicnBaseRepository<QueueName, kr.co.eic
         return conditions;
     }
 
-    public void insert(DSLContext dslContext, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName record) {
+    public void insert(DSLContext dslContext, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName record) {
         dslContext.insertInto(QUEUE_NAME)
                 .set(dslContext.newRecord(QUEUE_NAME, record))
                 .set(QUEUE_NAME.CNT, 0)
@@ -139,7 +139,7 @@ public class QueueNameRepository extends EicnBaseRepository<QueueName, kr.co.eic
 
     //<영어명, 한글명>
     public Map<String, String> getHuntNameMap() {
-        return findAll().stream().collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName::getName, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName::getHanName));
+        return findAll().stream().collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName::getName, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName::getHanName));
     }
 
     @Data

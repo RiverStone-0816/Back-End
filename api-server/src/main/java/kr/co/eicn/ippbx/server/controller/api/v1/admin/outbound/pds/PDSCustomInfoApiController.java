@@ -2,13 +2,13 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.pds;
 
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.model.entity.pds.PDSCustomInfoEntity;
-import kr.co.eicn.ippbx.server.model.form.PDSCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.search.PDSDataSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.model.entity.pds.PDSCustomInfoEntity;
+import kr.co.eicn.ippbx.model.form.PDSCustomInfoFormRequest;
+import kr.co.eicn.ippbx.model.search.PDSDataSearchRequest;
 import kr.co.eicn.ippbx.server.service.PDSCustomInfoService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -20,8 +20,8 @@ import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 @Slf4j
 @RequiredArgsConstructor

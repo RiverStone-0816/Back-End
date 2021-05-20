@@ -2,30 +2,26 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
 import kr.co.eicn.ippbx.server.repository.CompanyTreeNameRepositoryTest;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTreeLevelName;
-import kr.co.eicn.ippbx.server.model.OrganizationPerson;
-import kr.co.eicn.ippbx.server.model.dto.eicn.CompanyTreeLevelNameResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.OrganizationPersonSummaryResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.Organization;
-import kr.co.eicn.ippbx.server.model.form.CompanyTreeNameFormRequest;
-import kr.co.eicn.ippbx.server.model.form.CompanyTreeNameUpdateFormRequest;
-import kr.co.eicn.ippbx.server.model.form.OrganizationFormRequest;
-import kr.co.eicn.ippbx.server.model.form.OrganizationFormUpdateRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTreeLevelName;
+import kr.co.eicn.ippbx.model.OrganizationPerson;
+import kr.co.eicn.ippbx.model.dto.eicn.CompanyTreeLevelNameResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.OrganizationPersonSummaryResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.Organization;
+import kr.co.eicn.ippbx.model.form.CompanyTreeNameFormRequest;
+import kr.co.eicn.ippbx.model.form.CompanyTreeNameUpdateFormRequest;
+import kr.co.eicn.ippbx.model.form.OrganizationFormRequest;
+import kr.co.eicn.ippbx.model.form.OrganizationFormUpdateRequest;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,7 +29,6 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -322,7 +317,7 @@ public class OrganizationApiControllerTest extends BaseControllerTest {
 //	@Test
 	@Order(1)
 	public void update_meta_type() throws Exception {
-		final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTreeLevelName> test_code = getTestCode();
+		final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTreeLevelName> test_code = getTestCode();
 
 		final CompanyTreeLevelName companyTreeLevelName = test_code.get(0);
 		final String groupTreeName = companyTreeLevelName.getGroupTreeName();
@@ -358,10 +353,10 @@ public class OrganizationApiControllerTest extends BaseControllerTest {
 
 	}
 
-	public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTreeLevelName> getTestCode() {
+	public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTreeLevelName> getTestCode() {
 		return companyTreeNameRepositoryTest.findAll()
 				.stream()
-				.sorted(Comparator.comparing(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTreeLevelName::getGroupLevel))
+				.sorted(Comparator.comparing(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTreeLevelName::getGroupLevel))
 				.collect(Collectors.toList());
 	}
 

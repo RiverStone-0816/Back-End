@@ -1,17 +1,17 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.dashboard;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServerInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList;
-import kr.co.eicn.ippbx.server.model.dto.eicn.*;
-import kr.co.eicn.ippbx.server.model.dto.statdb.StatUserRankingResponse;
-import kr.co.eicn.ippbx.server.model.enums.ServiceKind;
-import kr.co.eicn.ippbx.server.model.form.DashboardViewListFormRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServerInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.dto.statdb.StatUserRankingResponse;
+import kr.co.eicn.ippbx.model.enums.ServiceKind;
+import kr.co.eicn.ippbx.model.form.DashboardViewListFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.*;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -24,9 +24,9 @@ import java.net.URI;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueName.QUEUE_NAME;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName.QUEUE_NAME;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**

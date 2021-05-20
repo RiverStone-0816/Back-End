@@ -1,24 +1,24 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.DashboardInfoDashboardType;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueName;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueTable;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.QueueMemberTableRecord;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.QueueEntity;
-import kr.co.eicn.ippbx.server.model.enums.*;
-import kr.co.eicn.ippbx.server.model.form.QueueFormRequest;
-import kr.co.eicn.ippbx.server.model.form.QueueFormUpdateRequest;
-import kr.co.eicn.ippbx.server.model.form.QueuePersonFormRequest;
-import kr.co.eicn.ippbx.server.model.form.QueueUpdateBlendingFormRequest;
-import kr.co.eicn.ippbx.server.model.search.QueueSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.DashboardInfoDashboardType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueTable;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.QueueMemberTableRecord;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.QueueEntity;
+import kr.co.eicn.ippbx.model.enums.*;
+import kr.co.eicn.ippbx.model.form.QueueFormRequest;
+import kr.co.eicn.ippbx.model.form.QueueFormUpdateRequest;
+import kr.co.eicn.ippbx.model.form.QueuePersonFormRequest;
+import kr.co.eicn.ippbx.model.form.QueueUpdateBlendingFormRequest;
+import kr.co.eicn.ippbx.model.search.QueueSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.StringUtils;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.StringUtils;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.*;
 import org.jooq.impl.DSL;
@@ -33,9 +33,9 @@ import java.util.Optional;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toMap;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueName.QUEUE_NAME;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueTable.QUEUE_TABLE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName.QUEUE_NAME;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueTable.QUEUE_TABLE;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
@@ -106,7 +106,7 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
 
         final QueueName sequenceSeed = QUEUE_NAME.as("SEQUENCE_SEED");
         final Integer nextSequence = dsl.select(DSL.ifnull(DSL.max(sequenceSeed.SEQ), 0).add(1)).from(sequenceSeed).fetchOneInto(Integer.class);
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName queueNameRecord = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName queueNameRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName();
         final String queueName = "QUEUE".concat(String.valueOf(nextSequence));
 
         queueNameRecord.setSeq(nextSequence);
@@ -316,7 +316,7 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
         final QueueTable modQueueTable = modQueueEntity.getQueueTable();
 
         if (modQueueTable != null) {
-            final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName modQueueName = modelMapper.map(modQueueEntity, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName.class);
+            final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName modQueueName = modelMapper.map(modQueueEntity, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName.class);
             modQueueName.setHanName(form.getHanName());
             modQueueName.setNumber(form.getNumber());
             modQueueName.setSvcNumber(form.getSvcNumber());

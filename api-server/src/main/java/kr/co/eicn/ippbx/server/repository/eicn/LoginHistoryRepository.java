@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.LoginHistory;
-import kr.co.eicn.ippbx.server.model.search.LoginHistorySearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.LoginHistory;
+import kr.co.eicn.ippbx.model.search.LoginHistorySearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
@@ -11,22 +11,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.LOGIN_HISTORY;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.LOGIN_HISTORY;
 
 @Getter
 @Repository
-public class LoginHistoryRepository extends EicnBaseRepository<LoginHistory, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.LoginHistory, Integer> {
+public class LoginHistoryRepository extends EicnBaseRepository<LoginHistory, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.LoginHistory, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(LoginHistory.class);
 
     public LoginHistoryRepository() {
-        super(LOGIN_HISTORY, LOGIN_HISTORY.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.LoginHistory.class);
+        super(LOGIN_HISTORY, LOGIN_HISTORY.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.LoginHistory.class);
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.LoginHistory> pagination(LoginHistorySearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.LoginHistory> pagination(LoginHistorySearchRequest search) {
         orderByFields.add(LOGIN_HISTORY.LOGIN_DATE.desc());
         return super.pagination(search, conditions(search));
     }

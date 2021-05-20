@@ -1,17 +1,14 @@
 package kr.co.eicn.ippbx.server.controller.api.v1;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.form.ChattingMemberFormRequest;
-import kr.co.eicn.ippbx.server.model.form.MemoMsgFormRequest;
-import kr.co.eicn.ippbx.server.model.search.MemoMsgSearchRequest;
+import kr.co.eicn.ippbx.model.form.MemoMsgFormRequest;
+import kr.co.eicn.ippbx.model.search.MemoMsgSearchRequest;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.util.ArrayList;

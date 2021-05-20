@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.CompanyServer;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServerInfo;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ServerInfoEntity;
-import kr.co.eicn.ippbx.server.model.enums.ServerType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CompanyServer;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServerInfo;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.ServerInfoEntity;
+import kr.co.eicn.ippbx.model.enums.ServerType;
 import lombok.Getter;
 import org.jooq.Record;
 import org.jooq.RecordMapper;
@@ -19,10 +19,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.PERSON_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.PHONE_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.CompanyServer.COMPANY_SERVER;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ServerInfo.SERVER_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CompanyServer.COMPANY_SERVER;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ServerInfo.SERVER_INFO;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter

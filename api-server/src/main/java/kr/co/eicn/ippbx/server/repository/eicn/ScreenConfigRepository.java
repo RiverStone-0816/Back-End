@@ -1,14 +1,14 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ScreenConfig;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ScreenConfigEntity;
-import kr.co.eicn.ippbx.server.model.form.ScreenConfigFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScreenConfig;
+import kr.co.eicn.ippbx.model.entity.eicn.ScreenConfigEntity;
+import kr.co.eicn.ippbx.model.form.ScreenConfigFormRequest;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.SCREEN_CONFIG;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.SCREEN_CONFIG;
 
 @Getter
 @Repository

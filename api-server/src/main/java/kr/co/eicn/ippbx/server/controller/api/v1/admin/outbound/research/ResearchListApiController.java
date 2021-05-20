@@ -2,21 +2,21 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.research;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree;
-import kr.co.eicn.ippbx.server.model.dto.eicn.OrganizationSummaryResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ResearchListResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ResearchListEntity;
-import kr.co.eicn.ippbx.server.model.form.ResearchListFormRequest;
-import kr.co.eicn.ippbx.server.model.form.ResearchTreeFormRequest;
-import kr.co.eicn.ippbx.server.model.search.ResearchListSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree;
+import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.ResearchListResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.ResearchListEntity;
+import kr.co.eicn.ippbx.model.form.ResearchListFormRequest;
+import kr.co.eicn.ippbx.model.form.ResearchTreeFormRequest;
+import kr.co.eicn.ippbx.model.search.ResearchListSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.ResearchListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ResearchTreeRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -30,9 +30,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ResearchList.RESEARCH_LIST;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchList.RESEARCH_LIST;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**

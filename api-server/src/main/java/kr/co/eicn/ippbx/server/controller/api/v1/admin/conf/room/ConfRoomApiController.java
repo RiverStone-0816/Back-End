@@ -1,25 +1,25 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.conf.room;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.Number_070;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ConfRoom;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ConfRoomDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ConfRoomSummaryResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.OrganizationSummaryResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryNumber070Response;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.enums.NumberType;
-import kr.co.eicn.ippbx.server.model.form.ConfRoomFormRequest;
-import kr.co.eicn.ippbx.server.model.search.ConfRoomSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.Number_070;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ConfRoom;
+import kr.co.eicn.ippbx.model.dto.eicn.ConfRoomDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.ConfRoomSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryNumber070Response;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.enums.NumberType;
+import kr.co.eicn.ippbx.model.form.ConfRoomFormRequest;
+import kr.co.eicn.ippbx.model.search.ConfRoomSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.ConfRoomRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.Number070Repository;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
-import kr.co.eicn.ippbx.server.util.FunctionUtils;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.FunctionUtils;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.slf4j.Logger;
@@ -37,8 +37,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 전화회의 > 회의실관리
@@ -58,8 +58,8 @@ public class ConfRoomApiController extends ApiBaseController {
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<ConfRoomSummaryResponse>>> pagination(ConfRoomSearchRequest search) {
         final List<CompanyServerEntity> companyServerEntities = cacheService.getCompanyServerList(g.getUser().getCompanyId());
-        Map<String, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070> numberStringObjectMap =
-                numberRepository.findAll().stream().filter(FunctionUtils.distinctByKey(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070::getNumber)).collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070::getNumber, e -> e));
+        Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070> numberStringObjectMap =
+                numberRepository.findAll().stream().filter(FunctionUtils.distinctByKey(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070::getNumber)).collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070::getNumber, e -> e));
 
         List<CompanyTree> companyTrees = organizationService.getAllCompanyTrees();
         final Pagination<ConfRoom> pagination = repository.pagination(search);
@@ -68,7 +68,7 @@ public class ConfRoomApiController extends ApiBaseController {
                     ConfRoomSummaryResponse response = convertDto(e, ConfRoomSummaryResponse.class);
 
                     if (Objects.nonNull(numberStringObjectMap.get(e.getRoomNumber()))) {
-                        kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070 number_070 = numberStringObjectMap.get(e.getRoomNumber());
+                        kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070 number_070 = numberStringObjectMap.get(e.getRoomNumber());
                         companyServerEntities.stream()
                                 .filter(company -> company.getServer().getHost().equals(number_070.getHost()))
                                 .findAny()

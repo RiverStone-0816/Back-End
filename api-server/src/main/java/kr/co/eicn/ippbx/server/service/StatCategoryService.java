@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.IvrTree;
-import kr.co.eicn.ippbx.server.model.dto.statdb.StatCategoryIvrPathResponse;
-import kr.co.eicn.ippbx.server.model.dto.statdb.StatInboundResponse;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatInboundEntity;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree;
+import kr.co.eicn.ippbx.model.dto.statdb.StatCategoryIvrPathResponse;
+import kr.co.eicn.ippbx.model.dto.statdb.StatInboundResponse;
+import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
 import kr.co.eicn.ippbx.server.repository.statdb.StatCategoryRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

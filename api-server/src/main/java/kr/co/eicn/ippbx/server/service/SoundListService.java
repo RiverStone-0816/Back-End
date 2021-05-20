@@ -1,18 +1,18 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SoundList;
-import kr.co.eicn.ippbx.server.model.enums.ShellCommand;
-import kr.co.eicn.ippbx.server.model.enums.TTSErrorCode;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.form.SoundEditorFormRequest;
-import kr.co.eicn.ippbx.server.model.form.SoundListRequest;
-import kr.co.eicn.ippbx.server.model.search.SoundListSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList;
+import kr.co.eicn.ippbx.model.enums.ShellCommand;
+import kr.co.eicn.ippbx.model.enums.TTSErrorCode;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.form.SoundEditorFormRequest;
+import kr.co.eicn.ippbx.model.form.SoundListRequest;
+import kr.co.eicn.ippbx.model.search.SoundListSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.SoundListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.WebSecureHistoryRepository;
-import kr.co.eicn.ippbx.server.util.EnumUtils;
-import kr.co.eicn.ippbx.server.util.UrlUtils;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.EnumUtils;
+import kr.co.eicn.ippbx.util.UrlUtils;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -28,8 +28,8 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.SoundList.SOUND_LIST;
-import static kr.co.eicn.ippbx.server.util.StringUtils.subStringBytes;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.SoundList.SOUND_LIST;
+import static kr.co.eicn.ippbx.util.StringUtils.subStringBytes;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -48,7 +48,7 @@ public class SoundListService extends ApiBaseService {
 	@Value("${server.schema}")
 	private String schema;
 
-	public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SoundList> pagination(SoundListSearchRequest search) {
+	public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList> pagination(SoundListSearchRequest search) {
 		return repository.pagination(search);
 	}
 

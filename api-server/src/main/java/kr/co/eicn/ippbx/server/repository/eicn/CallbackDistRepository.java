@@ -1,15 +1,15 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.CallbackDist;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.CallbackDistRecord;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CallbackDistEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CallbackEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.form.CallbackHuntDistFormRequest;
-import kr.co.eicn.ippbx.server.model.form.CallbackRedistFormRequest;
-import kr.co.eicn.ippbx.server.model.form.CallbackUserDistFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CallbackDist;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.CallbackDistRecord;
+import kr.co.eicn.ippbx.model.entity.eicn.CallbackDistEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CallbackEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.form.CallbackHuntDistFormRequest;
+import kr.co.eicn.ippbx.model.form.CallbackRedistFormRequest;
+import kr.co.eicn.ippbx.model.form.CallbackUserDistFormRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import lombok.Getter;
@@ -22,9 +22,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.CALLBACK_DIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.CALLBACK_LIST;
-import static kr.co.eicn.ippbx.server.util.StringUtils.subStringBytes;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.CALLBACK_DIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.CALLBACK_LIST;
+import static kr.co.eicn.ippbx.util.StringUtils.subStringBytes;
 
 @Getter
 @Repository

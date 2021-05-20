@@ -1,16 +1,16 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo;
-import kr.co.eicn.ippbx.server.model.dto.eicn.search.SearchPhoneInfoResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.form.CidInfoChangeRequest;
-import kr.co.eicn.ippbx.server.model.form.CidInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.CidInfoUpdateFormRequest;
-import kr.co.eicn.ippbx.server.model.search.CidInfoSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.search.SearchPhoneInfoRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo;
+import kr.co.eicn.ippbx.model.dto.eicn.search.SearchPhoneInfoResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.form.CidInfoChangeRequest;
+import kr.co.eicn.ippbx.model.form.CidInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.CidInfoUpdateFormRequest;
+import kr.co.eicn.ippbx.model.search.CidInfoSearchRequest;
+import kr.co.eicn.ippbx.model.search.search.SearchPhoneInfoRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
@@ -25,18 +25,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.QUEUE_MEMBER_TABLE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.QUEUE_MEMBER_TABLE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
 
 @Getter
 @Repository
-public class PhoneInfoRepository extends EicnBaseRepository<PhoneInfo, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo, String> {
+public class PhoneInfoRepository extends EicnBaseRepository<PhoneInfo, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo, String> {
     protected final Logger logger = LoggerFactory.getLogger(PhoneInfoRepository.class);
     private final PBXServerInterface pbxServerInterface;
     private final CacheService cacheService;
 
     public PhoneInfoRepository(PBXServerInterface pbxServerInterface, CacheService cacheService) {
-        super(PHONE_INFO, PHONE_INFO.PEER, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo.class);
+        super(PHONE_INFO, PHONE_INFO.PEER, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo.class);
         this.pbxServerInterface = pbxServerInterface;
         this.cacheService = cacheService;
     }
@@ -53,7 +53,7 @@ public class PhoneInfoRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         return conditions;
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo> pagination(CidInfoSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo> pagination(CidInfoSearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 

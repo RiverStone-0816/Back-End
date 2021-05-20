@@ -1,28 +1,16 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.model.entity.customdb.PrvCustomInfoEntity;
-import kr.co.eicn.ippbx.server.model.form.MaindbCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PDSCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PrvCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.model.entity.customdb.PrvCustomInfoEntity;
+import kr.co.eicn.ippbx.model.form.PrvCustomInfoFormRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
-
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 

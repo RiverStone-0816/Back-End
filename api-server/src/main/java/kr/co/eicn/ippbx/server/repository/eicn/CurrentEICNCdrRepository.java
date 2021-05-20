@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.CurrentEicnCdr;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CurrentEICNCdrEntity;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentEicnCdr;
+import kr.co.eicn.ippbx.model.entity.eicn.CurrentEICNCdrEntity;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.CurrentEicnCdr.CURRENT_EICN_CDR;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentEicnCdr.CURRENT_EICN_CDR;
 
 @Getter
 @Repository

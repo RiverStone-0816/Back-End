@@ -1,14 +1,14 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.Tables;
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.TodoListTodoKind;
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.TodoListTodoStatus;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.TodoList;
-import kr.co.eicn.ippbx.server.model.dto.eicn.TodoDataResponse;
-import kr.co.eicn.ippbx.server.model.form.TodoListUpdateFormRequest;
-import kr.co.eicn.ippbx.server.model.form.TodoReservationFormRequest;
-import kr.co.eicn.ippbx.server.model.search.TodoListSearchRequest;
-import kr.co.eicn.ippbx.server.util.EicnUtils;
+import kr.co.eicn.ippbx.meta.jooq.eicn.Tables;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoKind;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TodoList;
+import kr.co.eicn.ippbx.model.dto.eicn.TodoDataResponse;
+import kr.co.eicn.ippbx.model.form.TodoListUpdateFormRequest;
+import kr.co.eicn.ippbx.model.form.TodoReservationFormRequest;
+import kr.co.eicn.ippbx.model.search.TodoListSearchRequest;
+import kr.co.eicn.ippbx.util.EicnUtils;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
@@ -22,16 +22,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.TodoList.TODO_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TodoList.TODO_LIST;
 import static org.jooq.impl.DSL.now;
 
 @Getter
 @Repository
-public class TodoListRepository extends EicnBaseRepository<TodoList, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TodoList, Integer> {
+public class TodoListRepository extends EicnBaseRepository<TodoList, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(TodoListRepository.class);
 
     public TodoListRepository() {
-        super(TODO_LIST, TODO_LIST.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TodoList.class);
+        super(TODO_LIST, TODO_LIST.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList.class);
     }
 
     public TodoDataResponse getTodoMonitor(TodoListTodoKind kind) {
@@ -57,7 +57,7 @@ public class TodoListRepository extends EicnBaseRepository<TodoList, kr.co.eicn.
         return res;
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TodoList> findRecentReservations() {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList> findRecentReservations() {
         final int ONE_MINUTE = 60 * 1000;
         return findAll(TODO_LIST.USERID.eq(g.getUser().getId())
                 .and(DSL.cast(TODO_LIST.DETAIL_CONNECT_INFO, Long.class).ge(System.currentTimeMillis() - ONE_MINUTE))
@@ -92,7 +92,7 @@ public class TodoListRepository extends EicnBaseRepository<TodoList, kr.co.eicn.
                 .execute();
     }
 
-    public kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TodoList findOneByCallbackSeq(String detailConnectInfo) {
+    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList findOneByCallbackSeq(String detailConnectInfo) {
         final Condition condition = TODO_LIST.TODO_KIND.eq(TodoListTodoKind.CALLBACK).and(TODO_LIST.DETAIL_CONNECT_INFO.eq(detailConnectInfo));
         return findOne(condition);
     }
@@ -128,7 +128,7 @@ public class TodoListRepository extends EicnBaseRepository<TodoList, kr.co.eicn.
                 .execute();
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TodoList> findAll(TodoListSearchRequest search) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList> findAll(TodoListSearchRequest search) {
         return findAll(conditions(search));
     }
 

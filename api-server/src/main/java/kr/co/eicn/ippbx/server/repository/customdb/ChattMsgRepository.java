@@ -1,11 +1,11 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonChattMsg;
-import kr.co.eicn.ippbx.server.model.entity.customdb.ChattMsgEntity;
-import kr.co.eicn.ippbx.server.model.entity.customdb.ChattRoomEntity;
-import kr.co.eicn.ippbx.server.model.entity.customdb.ChattRoomMemberEntity;
-import kr.co.eicn.ippbx.server.model.enums.MessageType;
-import kr.co.eicn.ippbx.server.model.search.ChattingSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonChattMsg;
+import kr.co.eicn.ippbx.model.entity.customdb.ChattMsgEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.ChattRoomEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.ChattRoomMemberEntity;
+import kr.co.eicn.ippbx.model.enums.MessageType;
+import kr.co.eicn.ippbx.model.search.ChattingSearchRequest;
 import kr.co.eicn.ippbx.server.service.ChattMemberService;
 import kr.co.eicn.ippbx.server.service.ChattRoomService;
 import lombok.Getter;

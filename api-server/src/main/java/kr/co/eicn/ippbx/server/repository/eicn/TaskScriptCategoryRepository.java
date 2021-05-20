@@ -1,21 +1,21 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.TaskScriptCategory;
-import kr.co.eicn.ippbx.server.model.form.TaskScriptCategoryFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TaskScriptCategory;
+import kr.co.eicn.ippbx.model.form.TaskScriptCategoryFormRequest;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.*;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.*;
 
 @Getter
 @Repository
-public class TaskScriptCategoryRepository extends EicnBaseRepository<TaskScriptCategory, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScriptCategory, Long> {
+public class TaskScriptCategoryRepository extends EicnBaseRepository<TaskScriptCategory, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScriptCategory, Long> {
     protected final Logger logger = LoggerFactory.getLogger(TaskScriptCategoryRepository.class);
 
 
     TaskScriptCategoryRepository() {
-        super(TASK_SCRIPT_CATEGORY,TASK_SCRIPT_CATEGORY.ID,kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScriptCategory.class);
+        super(TASK_SCRIPT_CATEGORY,TASK_SCRIPT_CATEGORY.ID,kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScriptCategory.class);
     }
 
     public void insert(TaskScriptCategoryFormRequest form) {

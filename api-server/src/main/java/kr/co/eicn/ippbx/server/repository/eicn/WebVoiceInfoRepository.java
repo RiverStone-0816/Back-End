@@ -1,14 +1,14 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.WebvoiceInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceItems;
-import kr.co.eicn.ippbx.server.model.enums.ContextType;
-import kr.co.eicn.ippbx.server.model.enums.WebVoiceAreaType;
-import kr.co.eicn.ippbx.server.model.enums.WebVoiceInfoYn;
-import kr.co.eicn.ippbx.server.model.enums.WebVoiceItemType;
-import kr.co.eicn.ippbx.server.model.form.WebVoiceItemsDtmfFormRequest;
-import kr.co.eicn.ippbx.server.model.form.WebVoiceItemsFormRequest;
-import kr.co.eicn.ippbx.server.model.form.WebVoiceItemsInputFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebvoiceInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceItems;
+import kr.co.eicn.ippbx.model.enums.ContextType;
+import kr.co.eicn.ippbx.model.enums.WebVoiceAreaType;
+import kr.co.eicn.ippbx.model.enums.WebVoiceInfoYn;
+import kr.co.eicn.ippbx.model.enums.WebVoiceItemType;
+import kr.co.eicn.ippbx.model.form.WebVoiceItemsDtmfFormRequest;
+import kr.co.eicn.ippbx.model.form.WebVoiceItemsFormRequest;
+import kr.co.eicn.ippbx.model.form.WebVoiceItemsInputFormRequest;
 import kr.co.eicn.ippbx.server.service.IpccUrlConnection;
 import lombok.Getter;
 import org.jooq.Record;
@@ -21,11 +21,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.WEBVOICE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.WEBVOICE_INFO;
 
 @Getter
 @Repository
-public class WebVoiceInfoRepository extends EicnBaseRepository<WebvoiceInfo, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceInfo, Integer> {
+public class WebVoiceInfoRepository extends EicnBaseRepository<WebvoiceInfo, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceInfo, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(WebVoiceInfoRepository.class);
 
     private final WebVoiceItemsRepository webVoiceItemsRepository;
@@ -33,21 +33,21 @@ public class WebVoiceInfoRepository extends EicnBaseRepository<WebvoiceInfo, kr.
     private final CompanyInfoRepository companyInfoRepository;
 
     public WebVoiceInfoRepository(WebVoiceItemsRepository webVoiceItemsRepository, CompanyServerRepository companyServerRepository, CompanyInfoRepository companyInfoRepository) {
-        super(WEBVOICE_INFO, WEBVOICE_INFO.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceInfo.class);
+        super(WEBVOICE_INFO, WEBVOICE_INFO.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceInfo.class);
         this.webVoiceItemsRepository = webVoiceItemsRepository;
         this.companyServerRepository = companyServerRepository;
         this.companyInfoRepository = companyInfoRepository;
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceInfo> findAll(String context) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceInfo> findAll(String context) {
         return findAll(WEBVOICE_INFO.CONTEXT.eq(context));
     }
 
-    public kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceInfo findOneByContext(String context) {
+    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceInfo findOneByContext(String context) {
         return findOne(WEBVOICE_INFO.CONTEXT.eq(context));
     }
 
-    public kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceInfo findOneByIvrCode(Integer ivrCode) {
+    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceInfo findOneByIvrCode(Integer ivrCode) {
         return findOne(WEBVOICE_INFO.IVR_CODE.eq(ivrCode));
     }
 
@@ -70,7 +70,7 @@ public class WebVoiceInfoRepository extends EicnBaseRepository<WebvoiceInfo, kr.
     }
 
     public void updateContext(String context, WebVoiceItemsFormRequest form) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceInfo entity = findOneByContext(context);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceInfo entity = findOneByContext(context);
         if (entity == null) {
             form.setContext(context);
             form.setCompanyId(getCompanyId());
@@ -94,14 +94,14 @@ public class WebVoiceInfoRepository extends EicnBaseRepository<WebvoiceInfo, kr.
             final Record record = super.insertOnGeneratedKey(form);
             updateApply(record.getValue(WEBVOICE_INFO.SEQ), form);
         } else {
-            final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceInfo entity = findOneByIvrCode(ivrCode);
+            final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceInfo entity = findOneByIvrCode(ivrCode);
             super.updateByKey(form, entity.getSeq());
             updateApply(entity.getSeq(), form);
         }
     }
 
     public void updateApply(Integer seq, WebVoiceItemsFormRequest form) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceInfo webVoiceInfo = findOne(seq);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceInfo webVoiceInfo = findOne(seq);
         webVoiceItemsRepository.deleteByIvrCodeContext(webVoiceInfo.getIvrCode(), webVoiceInfo.getContext());
         int sequence = 0;
         webVoiceItemsRepository.setItem(webVoiceInfo.getContext(), webVoiceInfo.getIvrCode());
@@ -133,7 +133,7 @@ public class WebVoiceInfoRepository extends EicnBaseRepository<WebvoiceInfo, kr.
         }
     }
 
-    public String apply(String serviceKey, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceInfo info, String context) {
+    public String apply(String serviceKey, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceInfo info, String context) {
         String fetch = "";
         fetch = insertRelay("info", serviceKey, info, "");
         if (!fetch.startsWith("NOK")) {
@@ -160,7 +160,7 @@ public class WebVoiceInfoRepository extends EicnBaseRepository<WebvoiceInfo, kr.
         Map<String, Object> map = new HashMap<>();
 
         if (mode.equals("info")) {
-            final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceInfo info = (kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceInfo) entity;
+            final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceInfo info = (kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceInfo) entity;
 
             map.put("service_key", service_key);
             map.put("ipcc_seq", info.getSeq());

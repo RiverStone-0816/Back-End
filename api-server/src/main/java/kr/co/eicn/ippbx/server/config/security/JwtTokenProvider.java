@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.server.config.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import kr.co.eicn.ippbx.server.model.UserDetails;
+import kr.co.eicn.ippbx.model.UserDetails;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

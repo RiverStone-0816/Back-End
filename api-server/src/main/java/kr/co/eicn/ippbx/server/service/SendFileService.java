@@ -1,14 +1,14 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendCategory;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendFaxEmail;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendFile;
-import kr.co.eicn.ippbx.server.model.form.SendFileFormRequest;
-import kr.co.eicn.ippbx.server.model.form.SendFileUpdateRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendCategory;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendFaxEmail;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendFile;
+import kr.co.eicn.ippbx.model.form.SendFileFormRequest;
+import kr.co.eicn.ippbx.model.form.SendFileUpdateRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.SendFaxEmailCategoryRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.SendFaxEmailHistoryRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.SendFileRepository;
-import kr.co.eicn.ippbx.server.util.UrlUtils;
+import kr.co.eicn.ippbx.util.UrlUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.SendFaxEmail.SEND_FAX_EMAIL;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.SendFaxEmail.SEND_FAX_EMAIL;
 
 @Slf4j
 @RequiredArgsConstructor

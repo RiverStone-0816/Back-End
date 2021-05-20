@@ -1,18 +1,18 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.record.history;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.GradeList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList;
-import kr.co.eicn.ippbx.server.model.RecordFile;
-import kr.co.eicn.ippbx.server.model.dto.customdb.CommonEicnCdrResponse;
-import kr.co.eicn.ippbx.server.model.entity.customdb.EicnCdrEntity;
-import kr.co.eicn.ippbx.server.model.entity.customdb.EicnCdrEvaluationEntity;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.form.RecordDownFormRequest;
-import kr.co.eicn.ippbx.server.model.search.RecordCallSearch;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.GradeList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
+import kr.co.eicn.ippbx.model.RecordFile;
+import kr.co.eicn.ippbx.model.dto.customdb.CommonEicnCdrResponse;
+import kr.co.eicn.ippbx.model.entity.customdb.EicnCdrEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.EicnCdrEvaluationEntity;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.form.RecordDownFormRequest;
+import kr.co.eicn.ippbx.model.search.RecordCallSearch;
 import kr.co.eicn.ippbx.server.repository.customdb.EicnCdrRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.GradeListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
@@ -22,9 +22,9 @@ import kr.co.eicn.ippbx.server.service.EicnCdrService;
 import kr.co.eicn.ippbx.server.service.RecordDownService;
 import kr.co.eicn.ippbx.server.service.RecordFileService;
 import kr.co.eicn.ippbx.server.service.StorageService;
-import kr.co.eicn.ippbx.server.util.FunctionUtils;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.FunctionUtils;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.Resource;
@@ -46,9 +46,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
-import static kr.co.eicn.ippbx.server.util.JsonResult.Result.success;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.Result.success;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**

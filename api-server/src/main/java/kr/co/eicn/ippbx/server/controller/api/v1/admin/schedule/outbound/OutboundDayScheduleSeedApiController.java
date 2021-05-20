@@ -1,20 +1,20 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.schedule.outbound;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.EntityNotFoundException;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.OutScheduleList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SoundList;
-import kr.co.eicn.ippbx.server.model.dto.eicn.OutScheduleSeedDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryPhoneInfoResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummarySoundListResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.OutScheduleSeedEntity;
-import kr.co.eicn.ippbx.server.model.enums.ScheduleType;
-import kr.co.eicn.ippbx.server.model.form.DayOutScheduleSeedFormRequest;
-import kr.co.eicn.ippbx.server.model.form.HolyOutScheduleFormRequest;
-import kr.co.eicn.ippbx.server.model.search.OutScheduleSeedSearchRequest;
+import kr.co.eicn.ippbx.exception.EntityNotFoundException;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.OutScheduleList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList;
+import kr.co.eicn.ippbx.model.dto.eicn.OutScheduleSeedDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryPhoneInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummarySoundListResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.OutScheduleSeedEntity;
+import kr.co.eicn.ippbx.model.enums.ScheduleType;
+import kr.co.eicn.ippbx.model.form.DayOutScheduleSeedFormRequest;
+import kr.co.eicn.ippbx.model.form.HolyOutScheduleFormRequest;
+import kr.co.eicn.ippbx.model.search.OutScheduleSeedSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -29,10 +29,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PersonList.PERSON_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 /**
@@ -165,11 +165,11 @@ public class OutboundDayScheduleSeedApiController extends ApiBaseController {
 	}
 
 	private List<SummaryPhoneInfoResponse> getExtensions() {
-		final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList> useExtensionPersons = personListRepository.findAll(
+		final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> useExtensionPersons = personListRepository.findAll(
 				PERSON_LIST.EXTENSION.isNotNull().and(PERSON_LIST.EXTENSION.ne(EMPTY)).and(PERSON_LIST.EXTENSION.ne("null")));
 
 		return phoneInfoRepository.findAll(PHONE_INFO.EXTENSION.isNotNull().and(PHONE_INFO.EXTENSION.ne(EMPTY))).stream()
-				.sorted(Comparator.comparing(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo::getExtension))
+				.sorted(Comparator.comparing(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo::getExtension))
 				.map(e -> {
 					final SummaryPhoneInfoResponse response = convertDto(e, SummaryPhoneInfoResponse.class);
 					useExtensionPersons.stream()

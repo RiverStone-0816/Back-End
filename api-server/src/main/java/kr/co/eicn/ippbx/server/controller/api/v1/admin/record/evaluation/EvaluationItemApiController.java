@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.record.evaluation;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationItem;
-import kr.co.eicn.ippbx.server.model.form.EvaluationWholeCategoryFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationItem;
+import kr.co.eicn.ippbx.model.form.EvaluationWholeCategoryFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.EvaluationItemRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -16,8 +16,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 녹취관리 > 평가항목관리

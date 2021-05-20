@@ -1,9 +1,8 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
-import kr.co.eicn.ippbx.server.jooq.statdb.tables.CommonStatQueueWait;
-import kr.co.eicn.ippbx.server.jooq.statdb.tables.pojos.StatQueueWait;
-import kr.co.eicn.ippbx.server.model.dto.eicn.DashResultChartResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.DashServiceStatResponse;
+import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatQueueWait;
+import kr.co.eicn.ippbx.meta.jooq.statdb.tables.pojos.StatQueueWait;
+import kr.co.eicn.ippbx.model.dto.eicn.DashResultChartResponse;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

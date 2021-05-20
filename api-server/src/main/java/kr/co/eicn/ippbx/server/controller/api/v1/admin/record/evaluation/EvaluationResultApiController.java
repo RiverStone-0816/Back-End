@@ -1,15 +1,15 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.record.evaluation;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.model.entity.eicn.EvaluationResultEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.EvaluationResultStatResponse;
-import kr.co.eicn.ippbx.server.model.form.DisputeEvaluationFormRequest;
-import kr.co.eicn.ippbx.server.model.form.EvaluationResultFormRequest;
-import kr.co.eicn.ippbx.server.model.search.EvaluationResultSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.model.entity.eicn.EvaluationResultEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.EvaluationResultStatResponse;
+import kr.co.eicn.ippbx.model.form.DisputeEvaluationFormRequest;
+import kr.co.eicn.ippbx.model.form.EvaluationResultFormRequest;
+import kr.co.eicn.ippbx.model.search.EvaluationResultSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.EvaluationResultRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 녹취관리 > 평가결과

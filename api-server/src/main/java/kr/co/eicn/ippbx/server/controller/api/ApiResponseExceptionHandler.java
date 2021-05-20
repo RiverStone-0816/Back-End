@@ -1,12 +1,12 @@
 package kr.co.eicn.ippbx.server.controller.api;
 
 import kr.co.eicn.ippbx.server.config.Constants;
-import kr.co.eicn.ippbx.server.config.RequestMessage;
-import kr.co.eicn.ippbx.server.exception.DuplicateKeyException;
-import kr.co.eicn.ippbx.server.exception.EntityNotFoundException;
-import kr.co.eicn.ippbx.server.exception.StorageFileNotFoundException;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.exception.DuplicateKeyException;
+import kr.co.eicn.ippbx.exception.EntityNotFoundException;
+import kr.co.eicn.ippbx.exception.StorageFileNotFoundException;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.spring.RequestMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -31,8 +31,8 @@ import java.sql.SQLException;
 import java.sql.SQLNonTransientException;
 import java.util.Arrays;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.Result.failure;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.Result.failure;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
 
 @Log4j2
 @RequiredArgsConstructor

@@ -1,18 +1,17 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
-import kr.co.eicn.ippbx.server.jooq.statdb.tables.CommonStatInbound;
-import kr.co.eicn.ippbx.server.model.dto.eicn.DashCurrentCustomWaitResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.DashServiceStatResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.MonitorMajorStatusResponse;
-import kr.co.eicn.ippbx.server.model.dto.statdb.CenterStatResponse;
-import kr.co.eicn.ippbx.server.model.dto.statdb.TotalStatResponse;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatInboundEntity;
-import kr.co.eicn.ippbx.server.model.enums.ContextType;
-import kr.co.eicn.ippbx.server.model.enums.SearchCycle;
-import kr.co.eicn.ippbx.server.model.search.AbstractStatSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.StatInboundSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.StatTotalSearchRequest;
-import kr.co.eicn.ippbx.server.util.EicnUtils;
+import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatInbound;
+import kr.co.eicn.ippbx.model.dto.eicn.DashCurrentCustomWaitResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.DashServiceStatResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.MonitorMajorStatusResponse;
+import kr.co.eicn.ippbx.model.dto.statdb.CenterStatResponse;
+import kr.co.eicn.ippbx.model.dto.statdb.TotalStatResponse;
+import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
+import kr.co.eicn.ippbx.model.enums.ContextType;
+import kr.co.eicn.ippbx.model.search.AbstractStatSearchRequest;
+import kr.co.eicn.ippbx.model.search.StatInboundSearchRequest;
+import kr.co.eicn.ippbx.model.search.StatTotalSearchRequest;
+import kr.co.eicn.ippbx.util.EicnUtils;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
@@ -21,12 +20,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.QUEUE_NAME;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.QUEUE_NAME;
 import static org.jooq.impl.DSL.*;
 
 @Getter

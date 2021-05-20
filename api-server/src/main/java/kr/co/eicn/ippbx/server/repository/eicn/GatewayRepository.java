@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.GwInfo;
-import kr.co.eicn.ippbx.server.model.dto.eicn.search.SearchGwInfoResponse;
-import kr.co.eicn.ippbx.server.model.search.search.SearchGwInfoRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.GwInfo;
+import kr.co.eicn.ippbx.model.dto.eicn.search.SearchGwInfoResponse;
+import kr.co.eicn.ippbx.model.search.search.SearchGwInfoRequest;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.slf4j.Logger;
@@ -13,16 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.GwInfo.GW_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.GwInfo.GW_INFO;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class GatewayRepository extends EicnBaseRepository<GwInfo, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.GwInfo, String> {
+public class GatewayRepository extends EicnBaseRepository<GwInfo, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.GwInfo, String> {
 	protected final Logger logger = LoggerFactory.getLogger(GatewayRepository.class);
 
 	public GatewayRepository() {
-		super(GW_INFO, GW_INFO.HOST, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.GwInfo.class);
+		super(GW_INFO, GW_INFO.HOST, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.GwInfo.class);
 
 		orderByFields.add(GW_INFO.NAME.asc());
 	}

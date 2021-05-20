@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
-import kr.co.eicn.ippbx.server.jooq.statdb.tables.CommonStatTalk;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatTalkEntity;
-import kr.co.eicn.ippbx.server.model.search.TalkStatisticsHourlySearchRequest;
-import kr.co.eicn.ippbx.server.model.search.TalkStatisticsSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatTalk;
+import kr.co.eicn.ippbx.model.entity.statdb.StatTalkEntity;
+import kr.co.eicn.ippbx.model.search.TalkStatisticsHourlySearchRequest;
+import kr.co.eicn.ippbx.model.search.TalkStatisticsSearchRequest;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.jooq.impl.DSL.ifnull;

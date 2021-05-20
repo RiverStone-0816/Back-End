@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
-import kr.co.eicn.ippbx.server.jooq.statdb.tables.CommonStatMemberStatus;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatMemberStatusEntity;
-import kr.co.eicn.ippbx.server.model.search.StatUserSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatMemberStatus;
+import kr.co.eicn.ippbx.model.entity.statdb.StatMemberStatusEntity;
+import kr.co.eicn.ippbx.model.search.StatUserSearchRequest;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.Record;

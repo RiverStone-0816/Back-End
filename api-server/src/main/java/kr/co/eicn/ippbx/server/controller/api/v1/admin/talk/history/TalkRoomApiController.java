@@ -1,19 +1,19 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.history;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.model.dto.customdb.TalkMsgResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.TalkRoomResponse;
-import kr.co.eicn.ippbx.server.model.entity.customdb.TalkRoomEntity;
-import kr.co.eicn.ippbx.server.model.enums.RoomStatus;
-import kr.co.eicn.ippbx.server.model.search.TalkRoomSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.model.dto.customdb.TalkMsgResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.TalkRoomResponse;
+import kr.co.eicn.ippbx.model.entity.customdb.TalkRoomEntity;
+import kr.co.eicn.ippbx.model.enums.RoomStatus;
+import kr.co.eicn.ippbx.model.search.TalkRoomSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.CurrentTalkRoomRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.service.StorageService;
 import kr.co.eicn.ippbx.server.service.TalkMsgService;
 import kr.co.eicn.ippbx.server.service.TalkRoomService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.CurrentTalkRoom.CURRENT_TALK_ROOM;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentTalkRoom.CURRENT_TALK_ROOM;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.replace;
 
 /**

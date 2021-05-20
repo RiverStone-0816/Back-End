@@ -1,13 +1,12 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName;
-import kr.co.eicn.ippbx.server.jooq.statdb.tables.CommonStatUserInbound;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatUserInboundEntity;
-import kr.co.eicn.ippbx.server.model.enums.ContextType;
-import kr.co.eicn.ippbx.server.model.enums.SearchCycle;
-import kr.co.eicn.ippbx.server.model.search.AbstractStatSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.StatHuntSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.StatUserSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName;
+import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatUserInbound;
+import kr.co.eicn.ippbx.model.entity.statdb.StatUserInboundEntity;
+import kr.co.eicn.ippbx.model.enums.ContextType;
+import kr.co.eicn.ippbx.model.search.AbstractStatSearchRequest;
+import kr.co.eicn.ippbx.model.search.StatHuntSearchRequest;
+import kr.co.eicn.ippbx.model.search.StatUserSearchRequest;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
@@ -20,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import static org.jooq.impl.DSL.*;
 

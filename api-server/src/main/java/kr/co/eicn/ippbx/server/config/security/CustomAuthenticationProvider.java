@@ -1,23 +1,23 @@
 package kr.co.eicn.ippbx.server.config.security;
 
+import kr.co.eicn.ippbx.exception.EntityNotFoundException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.WebSecureHistoryRecord;
+import kr.co.eicn.ippbx.model.UserDetails;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.enums.IdType;
+import kr.co.eicn.ippbx.model.enums.ServerType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
 import kr.co.eicn.ippbx.server.config.Constants;
-import kr.co.eicn.ippbx.server.exception.EntityNotFoundException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.WebSecureHistoryRecord;
-import kr.co.eicn.ippbx.server.model.UserDetails;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.enums.IdType;
-import kr.co.eicn.ippbx.server.model.enums.ServerType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.ContextUtil;
-import kr.co.eicn.ippbx.server.util.EicnUtils;
-import kr.co.eicn.ippbx.server.util.EnumUtils;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.ContextUtil;
+import kr.co.eicn.ippbx.util.EicnUtils;
+import kr.co.eicn.ippbx.util.EnumUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.DSLContext;
@@ -36,7 +36,7 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Optional;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
 @Slf4j

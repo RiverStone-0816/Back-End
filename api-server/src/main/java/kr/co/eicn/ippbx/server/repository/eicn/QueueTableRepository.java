@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueTable;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueTable;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import lombok.Getter;
@@ -9,17 +9,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueTable.QUEUE_TABLE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueTable.QUEUE_TABLE;
 
 @Getter
 @Repository
-public class QueueTableRepository extends EicnBaseRepository<QueueTable, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueTable, String> {
+public class QueueTableRepository extends EicnBaseRepository<QueueTable, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueTable, String> {
 	protected final Logger logger = LoggerFactory.getLogger(QueueTableRepository.class);
 	private final PBXServerInterface pbxServerInterface;
 	private final CacheService cacheService;
 
 	public QueueTableRepository(PBXServerInterface pbxServerInterface, CacheService cacheService) {
-		super(QUEUE_TABLE, QUEUE_TABLE.NAME, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueTable.class);
+		super(QUEUE_TABLE, QUEUE_TABLE.NAME, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueTable.class);
 		this.pbxServerInterface = pbxServerInterface;
 		this.cacheService = cacheService;
 	}

@@ -1,20 +1,20 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.exception.DuplicateKeyException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.PersonList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.UserEntity;
-import kr.co.eicn.ippbx.server.model.enums.*;
-import kr.co.eicn.ippbx.server.model.form.PersonFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PersonFormUpdateRequest;
-import kr.co.eicn.ippbx.server.model.search.PersonSearchRequest;
+import kr.co.eicn.ippbx.exception.DuplicateKeyException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.UserEntity;
+import kr.co.eicn.ippbx.model.enums.*;
+import kr.co.eicn.ippbx.model.form.PersonFormRequest;
+import kr.co.eicn.ippbx.model.form.PersonFormUpdateRequest;
+import kr.co.eicn.ippbx.model.search.PersonSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
@@ -28,11 +28,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.CompanyInfo.COMPANY_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.CompanyTree.COMPANY_TREE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PersonList.PERSON_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CompanyInfo.COMPANY_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CompanyTree.COMPANY_TREE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
 import static org.apache.commons.lang3.StringUtils.*;
 
 @Getter
@@ -122,7 +122,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
         final CompanyTree companyTree = companyTreeRepository.findOneGroupCodeIfNullThrow(form.getGroupCode());
 
         if (isNotEmpty(form.getExtension())) {
-            final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList> usedExtensionPersonList = personListRepository.findOneByKeyExtension(dsl, form.getExtension());
+            final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> usedExtensionPersonList = personListRepository.findOneByKeyExtension(dsl, form.getExtension());
             usedExtensionPersonList.ifPresent(e -> {
                 if (!IdStatus.RETIRE.getCode().equals(e.getIdStatus())) {
                     throw new DuplicateKeyException("사용중인 내선번호입니다.");
@@ -130,7 +130,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
             });
         }
 
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList();
 
         record.setId(form.getId());
         record.setIdType(form.getIdType());
@@ -187,7 +187,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
     }
 
     public void updateByKey(PersonFormUpdateRequest form, String id) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList record = findOneIfNullThrow(id);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList record = findOneIfNullThrow(id);
         final PhoneInfo phone = phoneInfoRepository.findOne(PHONE_INFO.EXTENSION.eq(form.getExtension()));
         final CompanyTree companyTree = companyTreeRepository.findOneGroupCodeIfNullThrow(form.getGroupCode());
 

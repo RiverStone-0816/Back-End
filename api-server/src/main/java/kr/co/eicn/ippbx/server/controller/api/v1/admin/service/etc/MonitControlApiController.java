@@ -1,14 +1,14 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.service.etc;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.model.dto.eicn.MonitControlResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PersonListSummary;
-import kr.co.eicn.ippbx.server.model.form.MonitControlChangeRequest;
-import kr.co.eicn.ippbx.server.model.search.MonitControlSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.model.dto.eicn.MonitControlResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.PersonListSummary;
+import kr.co.eicn.ippbx.model.form.MonitControlChangeRequest;
+import kr.co.eicn.ippbx.model.search.MonitControlSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyTreeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.QueueMemberTableRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -20,8 +20,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 서비스운영관리 > 기타관리 > 상담원상태변경

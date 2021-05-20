@@ -1,23 +1,22 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonEicnCdr;
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.EvaluationFormUseType;
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.EvaluationResultProcessStatus;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.EvaluationResult;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationForm;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationItem;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.EvaluationResultRecord;
-import kr.co.eicn.ippbx.server.model.entity.customdb.EicnCdrEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.EvaluationFormEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.EvaluationResultEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.EvaluationResultStatResponse;
-import kr.co.eicn.ippbx.server.model.form.DisputeEvaluationFormRequest;
-import kr.co.eicn.ippbx.server.model.form.EvaluationItemScoreFormRequest;
-import kr.co.eicn.ippbx.server.model.form.EvaluationResultFormRequest;
-import kr.co.eicn.ippbx.server.model.search.EvaluationResultSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonEicnCdr;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.EvaluationFormUseType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.EvaluationResultProcessStatus;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationResult;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationForm;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationItem;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.model.entity.customdb.EicnCdrEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.EvaluationFormEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.EvaluationResultEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.EvaluationResultStatResponse;
+import kr.co.eicn.ippbx.model.form.DisputeEvaluationFormRequest;
+import kr.co.eicn.ippbx.model.form.EvaluationItemScoreFormRequest;
+import kr.co.eicn.ippbx.model.form.EvaluationResultFormRequest;
+import kr.co.eicn.ippbx.model.search.EvaluationResultSearchRequest;
 import kr.co.eicn.ippbx.server.service.EicnCdrService;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -32,9 +31,9 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.EvaluationForm.EVALUATION_FORM;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.EvaluationItemScore.EVALUATION_ITEM_SCORE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.EvaluationResult.EVALUATION_RESULT;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationForm.EVALUATION_FORM;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationItemScore.EVALUATION_ITEM_SCORE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationResult.EVALUATION_RESULT;
 
 @Getter
 @Setter
@@ -277,7 +276,7 @@ public class EvaluationResultRepository extends EicnBaseRepository<EvaluationRes
     }
 
     public void complete(Integer id, EvaluationResultFormRequest form) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationResult result = findOneIfNullThrow(id);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationResult result = findOneIfNullThrow(id);
         if (EvaluationResultProcessStatus.COMPLETE.equals(result.getProcessStatus()))
             throw new IllegalArgumentException("이미 평가한 상담원입니다.");
         if (!Arrays.asList("J", "A", "B").contains(g.getUser().getIdType()))

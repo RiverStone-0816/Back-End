@@ -1,13 +1,13 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.consultation;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.TodoListTodoStatus;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TodoList;
-import kr.co.eicn.ippbx.server.model.dto.eicn.TalkCurrentListResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.TalkCurrentMsgResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.TodoDataResponse;
-import kr.co.eicn.ippbx.server.model.form.TalkCurrentListSearchRequest;
-import kr.co.eicn.ippbx.server.model.form.TodoListUpdateFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
+import kr.co.eicn.ippbx.model.dto.eicn.TalkCurrentListResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.TalkCurrentMsgResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.TodoDataResponse;
+import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
+import kr.co.eicn.ippbx.model.form.TodoListUpdateFormRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;

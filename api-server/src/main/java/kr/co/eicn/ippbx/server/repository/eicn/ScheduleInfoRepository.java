@@ -1,14 +1,14 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ScheduleInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.ScheduleInfoRecord;
-import kr.co.eicn.ippbx.server.model.enums.ScheduleType;
-import kr.co.eicn.ippbx.server.model.form.*;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.ScheduleInfoRecord;
+import kr.co.eicn.ippbx.model.enums.ScheduleType;
+import kr.co.eicn.ippbx.model.form.*;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.EicnUtils;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.EicnUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.Getter;
 import org.jooq.DSLContext;
 import org.slf4j.Logger;
@@ -22,13 +22,13 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ScheduleInfo.SCHEDULE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleInfo.SCHEDULE_INFO;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.jooq.impl.DSL.*;
 
 @Getter
 @Repository
-public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleInfo, Integer> {
+public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleInfo, Integer> {
 	protected final Logger logger = LoggerFactory.getLogger(ScheduleInfoRepository.class);
 	private final CompanyTreeRepository companyTreeRepository;
 	private final Number070Repository numberRepository;
@@ -38,7 +38,7 @@ public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.
 	private final int MAX_PERIOD = 20;
 
 	public ScheduleInfoRepository(CompanyTreeRepository companyTreeRepository, Number070Repository numberRepository, PBXServerInterface pbxServerInterface, CacheService cacheService) {
-		super(SCHEDULE_INFO, SCHEDULE_INFO.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleInfo.class);
+		super(SCHEDULE_INFO, SCHEDULE_INFO.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleInfo.class);
 		this.companyTreeRepository = companyTreeRepository;
 		this.numberRepository = numberRepository;
 		this.pbxServerInterface = pbxServerInterface;
@@ -113,7 +113,7 @@ public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.
 			}
 		}
 
-		final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleInfo> dayScheduleInfos = findAll(SCHEDULE_INFO.TYPE.eq(ScheduleType.DAY.getCode()));
+		final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleInfo> dayScheduleInfos = findAll(SCHEDULE_INFO.TYPE.eq(ScheduleType.DAY.getCode()));
 
 		for (LocalDate localDate : localDates) {
 			record.setFromdate(Date.valueOf(localDate));
@@ -149,7 +149,7 @@ public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.
 	}
 
 	public void updateByWeekType(ScheduleInfoUpdateFormRequest form, Integer key) {
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleInfo record = findOne(key);
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleInfo record = findOne(key);
 		final CompanyTree companyTree = companyTreeRepository.findOneGroupCodeIfNullThrow(form.getGroupCode());
 
 		if (companyTree != null) {
@@ -169,7 +169,7 @@ public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.
 	}
 
 	public void updateByDayType(DayScheduleInfoUpdateFormRequest form, Integer key) {
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleInfo record = findOneIfNullThrow(key);
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleInfo record = findOneIfNullThrow(key);
 
 		record.setFromdate(Date.valueOf(form.getFromDate()));
 		record.setTodate(Date.valueOf(form.getFromDate()));
@@ -214,8 +214,8 @@ public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.
 				});
 	}
 
-	public kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleInfo getScheduleByService(String serviceNumber) {
-		final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleInfo> scheduleInfo = findAll(SCHEDULE_INFO.TYPE.eq(ScheduleType.DAY.getCode()).and(SCHEDULE_INFO.NUMBER.eq(serviceNumber)).and(SCHEDULE_INFO.FROMDATE.eq(currentDate()))).stream().findFirst();
+	public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleInfo getScheduleByService(String serviceNumber) {
+		final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleInfo> scheduleInfo = findAll(SCHEDULE_INFO.TYPE.eq(ScheduleType.DAY.getCode()).and(SCHEDULE_INFO.NUMBER.eq(serviceNumber)).and(SCHEDULE_INFO.FROMDATE.eq(currentDate()))).stream().findFirst();
 
 		if (scheduleInfo.isPresent())
 			return scheduleInfo.get();

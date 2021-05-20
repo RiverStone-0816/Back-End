@@ -1,15 +1,15 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.DashboardInfoDashboardType;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ServiceList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070;
-import kr.co.eicn.ippbx.server.model.dto.eicn.search.SearchServiceResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ServiceListEntity;
-import kr.co.eicn.ippbx.server.model.form.ServiceListFormRequest;
-import kr.co.eicn.ippbx.server.model.form.ServiceListFormUpdateRequest;
-import kr.co.eicn.ippbx.server.model.search.ServiceListSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.search.SearchServiceRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.DashboardInfoDashboardType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ServiceList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070;
+import kr.co.eicn.ippbx.model.dto.eicn.search.SearchServiceResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.ServiceListEntity;
+import kr.co.eicn.ippbx.model.form.ServiceListFormRequest;
+import kr.co.eicn.ippbx.model.form.ServiceListFormUpdateRequest;
+import kr.co.eicn.ippbx.model.search.ServiceListSearchRequest;
+import kr.co.eicn.ippbx.model.search.search.SearchServiceRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import lombok.Getter;
@@ -23,14 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.Number_070.NUMBER_070;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ServiceList.SERVICE_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.Number_070.NUMBER_070;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ServiceList.SERVICE_LIST;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class ServiceRepository extends EicnBaseRepository<ServiceList, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList, Integer> {
+public class ServiceRepository extends EicnBaseRepository<ServiceList, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList, Integer> {
 	protected final Logger logger = LoggerFactory.getLogger(ServiceRepository.class);
 
 	private final DashboardInfoRepository dashboardInfoRepository;
@@ -39,7 +39,7 @@ public class ServiceRepository extends EicnBaseRepository<ServiceList, kr.co.eic
 	private final CompanyTreeRepository companyTreeRepository;
 
 	public ServiceRepository(DashboardInfoRepository dashboardInfoRepository, PBXServerInterface pbxServerInterface, CacheService cacheService, CompanyTreeRepository companyTreeRepository) {
-		super(SERVICE_LIST, SERVICE_LIST.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList.class);
+		super(SERVICE_LIST, SERVICE_LIST.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList.class);
 		orderByFields.add(SERVICE_LIST.SEQ.asc());
 
 		this.dashboardInfoRepository = dashboardInfoRepository;
@@ -48,7 +48,7 @@ public class ServiceRepository extends EicnBaseRepository<ServiceList, kr.co.eic
 		this.companyTreeRepository = companyTreeRepository;
 	}
 
-	public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList> findAll(ServiceListSearchRequest search) {
+	public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList> findAll(ServiceListSearchRequest search) {
 		return findAll(conditions(search));
 	}
 
@@ -87,7 +87,7 @@ public class ServiceRepository extends EicnBaseRepository<ServiceList, kr.co.eic
 	}
 
 	//인입경로별 통계
-	public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList> findAllBySvcNumber(List<String> svcNumbers) {
+	public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList> findAllBySvcNumber(List<String> svcNumbers) {
 		Condition condition = DSL.noCondition();
 
 		if (svcNumbers.size() > 0) {
@@ -129,7 +129,7 @@ public class ServiceRepository extends EicnBaseRepository<ServiceList, kr.co.eic
 	}
 
 	public void updateByKey(ServiceListFormUpdateRequest form, Integer key) {
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList oldServiceInfo = findOneIfNullThrow(key);
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList oldServiceInfo = findOneIfNullThrow(key);
 
 		if (isEmpty(form.getSvcCid()))
 			form.setSvcCid(form.getSvcNumber());
@@ -156,7 +156,7 @@ public class ServiceRepository extends EicnBaseRepository<ServiceList, kr.co.eic
 
 	@Override
 	public int deleteOnIfNullThrow(Integer key) {
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList entity = findOneIfNullThrow(key);
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList entity = findOneIfNullThrow(key);
 
 		final int r = super.delete(key);
 		cacheService.pbxServerList(getCompanyId())

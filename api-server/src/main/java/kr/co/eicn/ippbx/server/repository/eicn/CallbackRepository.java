@@ -1,19 +1,19 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.TodoListTodoStatus;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.CallbackList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TodoList;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CallbackEntity;
-import kr.co.eicn.ippbx.server.model.enums.CallbackStatus;
-import kr.co.eicn.ippbx.server.model.enums.IdType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.form.CallbackListUpdateFormRequest;
-import kr.co.eicn.ippbx.server.model.search.CallbackHistorySearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CallbackList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
+import kr.co.eicn.ippbx.model.entity.eicn.CallbackEntity;
+import kr.co.eicn.ippbx.model.enums.CallbackStatus;
+import kr.co.eicn.ippbx.model.enums.IdType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.form.CallbackListUpdateFormRequest;
+import kr.co.eicn.ippbx.model.search.CallbackHistorySearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
@@ -30,10 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.*;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ServiceList.SERVICE_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.*;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ServiceList.SERVICE_LIST;
 import static org.jooq.impl.DSL.count;
-import static org.jooq.impl.DSL.currentDate;
 
 @Getter
 @Repository

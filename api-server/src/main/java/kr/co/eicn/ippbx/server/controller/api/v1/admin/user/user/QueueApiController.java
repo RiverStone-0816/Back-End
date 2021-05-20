@@ -1,21 +1,21 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.user.user;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.*;
-import kr.co.eicn.ippbx.server.model.dto.eicn.*;
-import kr.co.eicn.ippbx.server.model.entity.eicn.QueueEntity;
-import kr.co.eicn.ippbx.server.model.enums.NoConnectKind;
-import kr.co.eicn.ippbx.server.model.form.QueueFormRequest;
-import kr.co.eicn.ippbx.server.model.form.QueueFormUpdateRequest;
-import kr.co.eicn.ippbx.server.model.form.QueueUpdateBlendingFormRequest;
-import kr.co.eicn.ippbx.server.model.search.QueueSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.entity.eicn.QueueEntity;
+import kr.co.eicn.ippbx.model.enums.NoConnectKind;
+import kr.co.eicn.ippbx.model.form.QueueFormRequest;
+import kr.co.eicn.ippbx.model.form.QueueFormUpdateRequest;
+import kr.co.eicn.ippbx.model.form.QueueUpdateBlendingFormRequest;
+import kr.co.eicn.ippbx.model.search.QueueSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
-import kr.co.eicn.ippbx.server.util.FunctionUtils;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.FunctionUtils;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.impl.DSL;
@@ -34,11 +34,11 @@ import java.util.stream.Collectors;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PersonList.PERSON_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
@@ -101,12 +101,12 @@ public class QueueApiController extends ApiBaseController {
 
         final List<QueueMemberTable> queueMemberTables = queueMemberTableRepository.findAll(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(queue.getName()), Arrays.asList(QUEUE_MEMBER_TABLE.PENALTY.asc(), QUEUE_MEMBER_TABLE.UNIQUEID.asc()));
 
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo> phoneInfos = phoneInfoRepository.findAll(PHONE_INFO.HOST.eq(queue.getHost()));
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo> phoneInfos = phoneInfoRepository.findAll(PHONE_INFO.HOST.eq(queue.getHost()));
 
-        final Map<String, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList> personListMap = personListRepository.findAll(PERSON_LIST.EXTENSION.isNotNull().and(PERSON_LIST.EXTENSION.notEqual(EMPTY)))
+        final Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> personListMap = personListRepository.findAll(PERSON_LIST.EXTENSION.isNotNull().and(PERSON_LIST.EXTENSION.notEqual(EMPTY)))
                 .stream()
                 .filter(FunctionUtils.distinctByKey(PersonList::getExtension))
-                .collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList::getExtension, e -> e));
+                .collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList::getExtension, e -> e));
 
         if (queue.getRetryMaxCnt() > 0) {
             String[] sound = queue.getRetrySound().split("\\|");
@@ -273,7 +273,7 @@ public class QueueApiController extends ApiBaseController {
         final List<ServerInfo> serverInfos = serverInfoRepository.findAll();
         final List<CompanyTree> companyTrees = organizationService.getAllCompanyTrees();
 
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo> phoneInfos = phoneInfoRepository.findAll(queue != null
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo> phoneInfos = phoneInfoRepository.findAll(queue != null
                         ? PHONE_INFO.HOST.eq(queue.getHost()) : DSL.noCondition()
                 , PHONE_INFO.EXTENSION.asc());
 
@@ -281,9 +281,9 @@ public class QueueApiController extends ApiBaseController {
                         ? QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(queue.getName()) : DSL.noCondition()
                 , Arrays.asList(QUEUE_MEMBER_TABLE.PENALTY.asc(), QUEUE_MEMBER_TABLE.UNIQUEID.asc()));
 
-        final Map<String, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList> personListMap = personListRepository.findAll(PERSON_LIST.EXTENSION.isNotNull().and(PERSON_LIST.EXTENSION.notEqual(EMPTY)))
+        final Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> personListMap = personListRepository.findAll(PERSON_LIST.EXTENSION.isNotNull().and(PERSON_LIST.EXTENSION.notEqual(EMPTY)))
                 .stream()
-                .collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList::getExtension, e -> e));
+                .collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList::getExtension, e -> e));
 
         final List<SummaryPersonResponse> persons = phoneInfos
                 .stream()

@@ -1,25 +1,20 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CommonFieldEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CommonTypeEntity;
-import kr.co.eicn.ippbx.server.model.enums.Bool;
-import kr.co.eicn.ippbx.server.model.enums.CommonTypeKind;
-import kr.co.eicn.ippbx.server.model.form.CommonFieldFormRequest;
-import kr.co.eicn.ippbx.server.model.form.CommonTypeFormRequest;
-import kr.co.eicn.ippbx.server.model.form.CommonTypeUpdateFormRequest;
+import kr.co.eicn.ippbx.model.entity.eicn.CommonFieldEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CommonTypeEntity;
+import kr.co.eicn.ippbx.model.enums.CommonTypeKind;
+import kr.co.eicn.ippbx.model.form.CommonFieldFormRequest;
+import kr.co.eicn.ippbx.model.form.CommonTypeFormRequest;
+import kr.co.eicn.ippbx.model.form.CommonTypeUpdateFormRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;

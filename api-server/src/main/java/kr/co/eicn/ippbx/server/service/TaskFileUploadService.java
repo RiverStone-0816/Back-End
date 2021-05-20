@@ -1,15 +1,15 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.FileEntity;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScript;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScriptCategory;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScriptXFile;
-import kr.co.eicn.ippbx.server.model.form.TaskScriptFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.FileEntity;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScript;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScriptCategory;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScriptXFile;
+import kr.co.eicn.ippbx.model.form.TaskScriptFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.TaskFileEntityRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.TaskScriptCategoryRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.TaskScriptRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.TaskScriptXFileRepository;
-import kr.co.eicn.ippbx.server.util.UrlUtils;
+import kr.co.eicn.ippbx.util.UrlUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.Record;
@@ -26,8 +26,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.FILE_ENTITY;
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.TASK_SCRIPT_CATEGORY;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.FILE_ENTITY;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.TASK_SCRIPT_CATEGORY;
 import static org.apache.commons.lang3.StringUtils.replaceEach;
 import static org.springframework.util.StringUtils.cleanPath;
 
@@ -51,7 +51,7 @@ public class TaskFileUploadService extends ApiBaseService {
     public void insertFileEntityWithFileStore(TaskScriptFormRequest form) {
 
         final TaskScriptCategory scriptCategory = categoryRepository.findOne(TASK_SCRIPT_CATEGORY.ID.eq(form.getCategoryId()));
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScript scriptRecord = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TaskScript();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScript scriptRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TaskScript();
         final Long scriptId = taskScriptRepository.nextId();
 
         scriptRecord.setId(scriptId);

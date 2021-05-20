@@ -1,13 +1,12 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.CsRoute;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.form.CsRouteFormRequest;
-import kr.co.eicn.ippbx.server.model.search.CsRouteSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CsRoute;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.form.CsRouteFormRequest;
+import kr.co.eicn.ippbx.model.search.CsRouteSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
@@ -23,22 +22,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.CS_ROUTE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.CS_ROUTE;
 
 @Getter
 @Repository
-public class CsRouteRepository extends EicnBaseRepository<CsRoute, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CsRoute, Integer>{
+public class CsRouteRepository extends EicnBaseRepository<CsRoute, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CsRoute, Integer>{
     protected final Logger logger = LoggerFactory.getLogger(CsRouteRepository.class);
     private final CacheService cacheService;
     private final PBXServerInterface pbxServerInterface;
 
     public CsRouteRepository(CacheService cacheService, PBXServerInterface pbxServerInterface) {
-        super(CS_ROUTE, CS_ROUTE.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CsRoute.class);
+        super(CS_ROUTE, CS_ROUTE.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CsRoute.class);
         this.cacheService = cacheService;
         this.pbxServerInterface = pbxServerInterface;
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CsRoute> pagination(CsRouteSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CsRoute> pagination(CsRouteSearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 
@@ -53,7 +52,7 @@ public class CsRouteRepository extends EicnBaseRepository<CsRoute, kr.co.eicn.ip
     }
 
     public Record insertOnGeneratedKey(CsRouteFormRequest form){
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CsRoute record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CsRoute();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CsRoute record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CsRoute();
 
         record.setHuntNumber(form.getQueueNumber());
         record.setCycle(form.getCycle());

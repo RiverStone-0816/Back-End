@@ -1,12 +1,12 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.exception.EntityNotFoundException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ResearchTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchItem;
-import kr.co.eicn.ippbx.server.model.ResearchAnswerItemComposite;
-import kr.co.eicn.ippbx.server.model.ResearchQuestionItemComposite;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ResearchListEntity;
-import kr.co.eicn.ippbx.server.model.form.ResearchTreeFormRequest;
+import kr.co.eicn.ippbx.exception.EntityNotFoundException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchItem;
+import kr.co.eicn.ippbx.model.ResearchAnswerItemComposite;
+import kr.co.eicn.ippbx.model.ResearchQuestionItemComposite;
+import kr.co.eicn.ippbx.model.entity.eicn.ResearchListEntity;
+import kr.co.eicn.ippbx.model.form.ResearchTreeFormRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import lombok.Getter;
@@ -24,15 +24,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ResearchItem.RESEARCH_ITEM;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ResearchList.RESEARCH_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ResearchTree.RESEARCH_TREE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchItem.RESEARCH_ITEM;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchList.RESEARCH_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchTree.RESEARCH_TREE;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class ResearchTreeRepository extends EicnBaseRepository<ResearchTree, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree, Integer> {
+public class ResearchTreeRepository extends EicnBaseRepository<ResearchTree, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree, Integer> {
     private final Logger logger = LoggerFactory.getLogger(ResearchTreeRepository.class);
 
     private final ResearchListRepository researchListRepository;
@@ -41,7 +41,7 @@ public class ResearchTreeRepository extends EicnBaseRepository<ResearchTree, kr.
     private final PBXServerInterface pbxServerInterface;
 
     public ResearchTreeRepository(ResearchListRepository researchListRepository, ResearchItemRepository researchItemRepository, CacheService cacheService, PBXServerInterface pbxServerInterface) {
-        super(RESEARCH_TREE, RESEARCH_TREE.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree.class);
+        super(RESEARCH_TREE, RESEARCH_TREE.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree.class);
         this.researchListRepository = researchListRepository;
         this.researchItemRepository = researchItemRepository;
         this.cacheService = cacheService;
@@ -60,21 +60,21 @@ public class ResearchTreeRepository extends EicnBaseRepository<ResearchTree, kr.
         if ("N".equals(researchListEntity.getHaveTree()))
             throw new IllegalArgumentException("시나리오 정보를 등록 해 주세요.");
 
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> researchTrees = findAll(RESEARCH_TREE.RESEARCH_ID.eq(researchId));
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> researchTrees = findAll(RESEARCH_TREE.RESEARCH_ID.eq(researchId));
         final List<ResearchItem> researchItems = researchItemRepository.findAll().stream().sorted(Comparator.comparing(ResearchItem::getMappingNumber)).collect(Collectors.toList());
 
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> childTrees = getChildTree(researchTrees, "0");
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> childTrees = getChildTree(researchTrees, "0");
 
-        final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> rootNodeAny = childTrees.stream().findFirst();
+        final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> rootNodeAny = childTrees.stream().findFirst();
 
         if (rootNodeAny.isPresent()) {
-            final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree rootTree = rootNodeAny.get();
+            final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree rootTree = rootNodeAny.get();
             final List<ResearchItem> currentRowResearchItems = researchItems.stream().filter(e -> e.getItemId().equals(rootTree.getItemId())).collect(Collectors.toList());
 
             final ResearchQuestionItemComposite root = new ResearchQuestionItemComposite();
 
             for (ResearchItem item : currentRowResearchItems) {
-                Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> any = childTrees.stream()
+                Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> any = childTrees.stream()
                         .filter(e -> e.getItemId().equals(item.getItemId()) && e.getMappingNumber().equals(item.getMappingNumber())).findAny();
 
                 String path = EMPTY;
@@ -109,18 +109,18 @@ public class ResearchTreeRepository extends EicnBaseRepository<ResearchTree, kr.
         return researchListEntity;
     }
 
-    public void buildQuestionHierarchyTree(ResearchQuestionItemComposite parentNode, String path, List<ResearchItem> items, List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> trees) {
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> childTrees = getChildTree(trees, path);
+    public void buildQuestionHierarchyTree(ResearchQuestionItemComposite parentNode, String path, List<ResearchItem> items, List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> trees) {
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> childTrees = getChildTree(trees, path);
 
-        final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> nodeAny = childTrees.stream().findAny();
+        final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> nodeAny = childTrees.stream().findAny();
 
         if (nodeAny.isPresent()) {
-            final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree anyTree = nodeAny.get();
+            final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree anyTree = nodeAny.get();
             final List<ResearchItem> currentRowResearchItems = items.stream().filter(e -> e.getItemId().equals(anyTree.getItemId())).collect(Collectors.toList());
             final ResearchQuestionItemComposite questionItemNode = new ResearchQuestionItemComposite();
 
             for (ResearchItem item : currentRowResearchItems) {
-                Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> any = childTrees.stream()
+                Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> any = childTrees.stream()
                         .filter(e -> e.getItemId().equals(item.getItemId()) && e.getMappingNumber().equals(item.getMappingNumber())).findAny();
 
                 String subPath = EMPTY;
@@ -153,19 +153,19 @@ public class ResearchTreeRepository extends EicnBaseRepository<ResearchTree, kr.
         }
     }
 
-    public void buildHierarchyTree(ResearchAnswerItemComposite parentNode, String path, List<ResearchItem> items, List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> trees) {
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> childTrees = getChildTree(trees, path);
+    public void buildHierarchyTree(ResearchAnswerItemComposite parentNode, String path, List<ResearchItem> items, List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> trees) {
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> childTrees = getChildTree(trees, path);
 
-        final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> nodeAny = childTrees.stream().findAny();
+        final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> nodeAny = childTrees.stream().findAny();
 
         if (nodeAny.isPresent()) {
-            final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree anyTree = nodeAny.get();
+            final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree anyTree = nodeAny.get();
             final List<ResearchItem> currentRowResearchItems = items.stream().filter(e -> e.getItemId().equals(anyTree.getItemId())).collect(Collectors.toList());
             final ResearchQuestionItemComposite questionItemNode = new ResearchQuestionItemComposite();
 
             for (ResearchItem item : currentRowResearchItems) {
                 String subPath = EMPTY;
-                Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> any = childTrees.stream()
+                Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> any = childTrees.stream()
                         .filter(e -> e.getItemId().equals(item.getItemId()) && e.getMappingNumber().equals(item.getMappingNumber())).findAny();
 
                 if (any.isPresent())
@@ -206,8 +206,8 @@ public class ResearchTreeRepository extends EicnBaseRepository<ResearchTree, kr.
 
         processChild(form, researchId, ROOT_LEVEL, ROOT_PARENT);
 
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> currentInsertRows = findAllResearchId(researchId);
-        final List<Integer> distinctItemIds = currentInsertRows.stream().map(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree::getItemId).distinct().collect(Collectors.toList());
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> currentInsertRows = findAllResearchId(researchId);
+        final List<Integer> distinctItemIds = currentInsertRows.stream().map(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree::getItemId).distinct().collect(Collectors.toList());
         final List<ResearchItem> useSoundCodeTtsItems = researchItemRepository.findAll(RESEARCH_ITEM.MAPPING_NUMBER.eq((byte) 0).and(RESEARCH_ITEM.SOUND_KIND.eq("T")));
 
         final StringBuilder ttsBuffer = new StringBuilder();
@@ -331,15 +331,15 @@ public class ResearchTreeRepository extends EicnBaseRepository<ResearchTree, kr.
                 .fetchOneInto(Integer.class);
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> findAllResearchId(Integer researchId) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> findAllResearchId(Integer researchId) {
         return findAll(RESEARCH_TREE.RESEARCH_ID.eq(researchId));
     }
 
-    private List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> getChildTree(List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> targetList, final String path) {
+    private List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> getChildTree(List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> targetList, final String path) {
         return targetList.stream().filter(e -> e.getParent().equals(path)).collect(Collectors.toList());
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchTree> findAllByResearchId(Integer researchId) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchTree> findAllByResearchId(Integer researchId) {
         return findAll(RESEARCH_TREE.RESEARCH_ID.eq(researchId));
     }
 }

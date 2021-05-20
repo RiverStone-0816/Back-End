@@ -1,22 +1,22 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.server.config.Constants;
-import kr.co.eicn.ippbx.server.jooq.eicn.Tables;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.PdsGroup;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryPdsGroup;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.ExecutePdsGroupRecord;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.PdsGroupRecord;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ExecutePDSGroupEntity;
-import kr.co.eicn.ippbx.server.model.enums.*;
-import kr.co.eicn.ippbx.server.model.form.PDSExecuteFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PDSGroupFormRequest;
-import kr.co.eicn.ippbx.server.model.search.PDSGroupSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.PDSMonitSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.Tables;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PdsGroup;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsGroup;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.ExecutePdsGroupRecord;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.PdsGroupRecord;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.ExecutePDSGroupEntity;
+import kr.co.eicn.ippbx.model.enums.*;
+import kr.co.eicn.ippbx.model.form.PDSExecuteFormRequest;
+import kr.co.eicn.ippbx.model.form.PDSGroupFormRequest;
+import kr.co.eicn.ippbx.model.search.PDSGroupSearchRequest;
+import kr.co.eicn.ippbx.model.search.PDSMonitSearchRequest;
 import kr.co.eicn.ippbx.server.service.*;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -30,14 +30,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.*;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ExecutePdsGroup.EXECUTE_PDS_GROUP;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PdsGroup.PDS_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.*;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ExecutePdsGroup.EXECUTE_PDS_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PdsGroup.PDS_GROUP;
 import static org.apache.commons.lang3.StringUtils.*;
 
 @Getter
 @Repository
-public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup, Integer> {
+public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup, Integer> {
     private final Logger logger = LoggerFactory.getLogger(PDSGroupRepository.class);
 
     private final PDSCustomInfoService pdsCustomInfoService;
@@ -57,7 +57,7 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
                               PDSResearchResultService pdsResearchResultService, PDSResultCustomInfoService pdsResultCustomInfoService, HistoryPDSGroupRepository historyPDSGroupRepository,
                               CompanyTreeRepository companyTreeRepository, WebSecureHistoryRepository webSecureHistoryRepository, HistoryUploadInfoRepository historyUploadInfoRepository,
                               CommonTypeRepository commonTypeRepository, CacheService cacheService, PBXServerInterface pbxServerInterface) {
-        super(PDS_GROUP, PDS_GROUP.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup.class);
+        super(PDS_GROUP, PDS_GROUP.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup.class);
         orderByFields.add(PDS_GROUP.MAKE_DATE.asc());
 
         this.pdsCustomInfoService = pdsCustomInfoService;
@@ -74,20 +74,20 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
         this.pbxServerInterface = pbxServerInterface;
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup> pagination(PDSGroupSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup> pagination(PDSGroupSearchRequest search) {
         return pagination(search, conditions(search), Collections.singletonList(PDS_GROUP.MAKE_DATE.desc()));
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup> findAllOrderByLastExecuteDate() {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup> findAllOrderByLastExecuteDate() {
         return dsl.select(PDS_GROUP.fields())
                 .from(PDS_GROUP)
                 .where(compareCompanyId())
                 .orderBy(PDS_GROUP.LAST_EXECUTE_DATE.desc())
-                .fetchInto(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup.class);
+                .fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup.class);
     }
 
     public void insertWithPDSCustomInfoTableCreate(PDSGroupFormRequest form) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup();
 
         final Optional<CommonType> optionalPdsTypeEntity = commonTypeRepository.findAll(COMMON_TYPE.SEQ.eq(form.getPdsType())
                         .and(COMMON_TYPE.KIND.eq(CommonTypeKind.PDS.getCode()))
@@ -149,7 +149,7 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
     }
 
     public void updateByKey(PDSGroupFormRequest form, Integer seq) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup record = findOneIfNullThrow(seq);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup record = findOneIfNullThrow(seq);
 
         final Optional<CommonType> optionalPdsTypeEntity = commonTypeRepository.findAll(COMMON_TYPE.SEQ.eq(form.getPdsType())
                 .and(COMMON_TYPE.KIND.eq(CommonTypeKind.PDS.getCode()))
@@ -190,7 +190,7 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
 
 
     public void executeRequest(PDSExecuteFormRequest form, Integer seq) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup entity = findOneIfNullThrow(seq);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup entity = findOneIfNullThrow(seq);
 
         if (entity.getTotalCnt() == 0)
             throw new IllegalArgumentException("업로드된 데이터가 없습니다.");
@@ -406,11 +406,11 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
         return conditions;
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup> pagination(PDSMonitSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup> pagination(PDSMonitSearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup> findAll(PDSMonitSearchRequest search) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup> findAll(PDSMonitSearchRequest search) {
         return findAll(conditions(search));
     }
 
@@ -433,7 +433,7 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
         return conditions;
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup> findAll(PDSGroupSearchRequest search) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup> findAll(PDSGroupSearchRequest search) {
         return findAll(conditions(search));
     }
 }

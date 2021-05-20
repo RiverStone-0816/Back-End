@@ -1,13 +1,13 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.configdb.tables.pojos.CommonMenuCompany;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.model.dto.configdb.UserMenuCompanyResponse;
-import kr.co.eicn.ippbx.server.model.enums.GroupLevelAuth;
+import kr.co.eicn.ippbx.meta.jooq.configdb.tables.pojos.CommonMenuCompany;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.model.dto.configdb.UserMenuCompanyResponse;
+import kr.co.eicn.ippbx.model.enums.GroupLevelAuth;
 import kr.co.eicn.ippbx.server.repository.configdb.MenuCompanyRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyTreeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -138,10 +138,10 @@ public class MenuCompanyService extends ApiBaseService implements ApplicationCon
         return menus;
     }
 
-    public List<UserMenuCompanyResponse> convertToMenu(List<kr.co.eicn.ippbx.server.jooq.configdb.tables.pojos.CommonMenuCompany> menuCompanies) {
+    public List<UserMenuCompanyResponse> convertToMenu(List<kr.co.eicn.ippbx.meta.jooq.configdb.tables.pojos.CommonMenuCompany> menuCompanies) {
         final List<UserMenuCompanyResponse> menus = new ArrayList<>();
 
-        final List<kr.co.eicn.ippbx.server.jooq.configdb.tables.pojos.CommonMenuCompany> roots = menuCompanies.stream().filter(e -> StringUtils.isEmpty(e.getParentMenuCode())).collect(Collectors.toList());
+        final List<kr.co.eicn.ippbx.meta.jooq.configdb.tables.pojos.CommonMenuCompany> roots = menuCompanies.stream().filter(e -> StringUtils.isEmpty(e.getParentMenuCode())).collect(Collectors.toList());
         menuCompanies.removeAll(roots);
 
         roots.forEach(e -> {
@@ -164,8 +164,8 @@ public class MenuCompanyService extends ApiBaseService implements ApplicationCon
         return menus;
     }
 
-    private void joinToParentMenu(UserMenuCompanyResponse parentMenu, List<kr.co.eicn.ippbx.server.jooq.configdb.tables.pojos.CommonMenuCompany> menuCompanies) {
-        final List<kr.co.eicn.ippbx.server.jooq.configdb.tables.pojos.CommonMenuCompany> children = menuCompanies.stream().filter(e -> Objects.equals(parentMenu.getMenuCode(), e.getParentMenuCode())).collect(Collectors.toList());
+    private void joinToParentMenu(UserMenuCompanyResponse parentMenu, List<kr.co.eicn.ippbx.meta.jooq.configdb.tables.pojos.CommonMenuCompany> menuCompanies) {
+        final List<kr.co.eicn.ippbx.meta.jooq.configdb.tables.pojos.CommonMenuCompany> children = menuCompanies.stream().filter(e -> Objects.equals(parentMenu.getMenuCode(), e.getParentMenuCode())).collect(Collectors.toList());
         menuCompanies.removeAll(children);
 
         children.forEach(e -> {

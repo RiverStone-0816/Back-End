@@ -1,18 +1,18 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.record.evaluation;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationForm;
-import kr.co.eicn.ippbx.server.model.entity.eicn.EvaluationCategoryEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.EvaluationFormEntity;
-import kr.co.eicn.ippbx.server.model.form.EvaluationFormRequest;
-import kr.co.eicn.ippbx.server.model.form.EvaluationFormVisibleRequest;
-import kr.co.eicn.ippbx.server.model.search.EvaluationFormSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationForm;
+import kr.co.eicn.ippbx.model.entity.eicn.EvaluationCategoryEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.EvaluationFormEntity;
+import kr.co.eicn.ippbx.model.form.EvaluationFormRequest;
+import kr.co.eicn.ippbx.model.form.EvaluationFormVisibleRequest;
+import kr.co.eicn.ippbx.model.search.EvaluationFormSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.EvaluationCategoryRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.EvaluationFormRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.PageForm;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.PageForm;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -24,9 +24,9 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.EvaluationForm.EVALUATION_FORM;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationForm.EVALUATION_FORM;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 녹취관리 > 평가지관리

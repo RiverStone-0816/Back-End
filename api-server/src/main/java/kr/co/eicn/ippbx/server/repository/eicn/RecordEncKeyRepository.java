@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.exception.DuplicateKeyException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.RecordEncKey;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.form.RecordEncKeyFormRequest;
+import kr.co.eicn.ippbx.exception.DuplicateKeyException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.RecordEncKey;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.form.RecordEncKeyFormRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import lombok.Getter;
@@ -18,13 +18,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.RecordEncKey.RECORD_ENC_KEY;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.RecordEncKey.RECORD_ENC_KEY;
 
 @Getter
 @Repository
-public class RecordEncKeyRepository extends EicnBaseRepository<RecordEncKey, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncKey, Integer> {
+public class RecordEncKeyRepository extends EicnBaseRepository<RecordEncKey, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncKey, Integer> {
 	protected final Logger logger = LoggerFactory.getLogger(RecordEncKeyRepository.class);
 
 	private final CacheService cacheService;
@@ -34,7 +33,7 @@ public class RecordEncKeyRepository extends EicnBaseRepository<RecordEncKey, kr.
 	private String ENC_MASTER_KEY;
 
 	public RecordEncKeyRepository(CacheService cacheService, PBXServerInterface pbxServerInterface, WebSecureHistoryRepository webSecureHistoryRepository) {
-		super(RECORD_ENC_KEY, RECORD_ENC_KEY.ID, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncKey.class);
+		super(RECORD_ENC_KEY, RECORD_ENC_KEY.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncKey.class);
 		orderByFields.add(RECORD_ENC_KEY.CREATE_TIME.desc());
 
 		this.cacheService = cacheService;
@@ -50,11 +49,11 @@ public class RecordEncKeyRepository extends EicnBaseRepository<RecordEncKey, kr.
 	}
 
 	public Record insertOnGeneratedKey(RecordEncKeyFormRequest form) {
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncKey entity = findOne(RECORD_ENC_KEY.CREATE_TIME.eq(Timestamp.valueOf(form.getApplyDate())));
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncKey entity = findOne(RECORD_ENC_KEY.CREATE_TIME.eq(Timestamp.valueOf(form.getApplyDate())));
 		if (entity != null)
 			throw new DuplicateKeyException("동일한 암호키 적용시간이 이미 존재합니다.");
 
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncKey record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncKey();
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncKey record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncKey();
 		record.setCreateTime(Timestamp.valueOf(form.getApplyDate()));
 		record.setEncKey(form.getEncKey());
 
@@ -74,7 +73,7 @@ public class RecordEncKeyRepository extends EicnBaseRepository<RecordEncKey, kr.
 	}
 
 	public void updateByKey(RecordEncKeyFormRequest form, Integer id) {
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncKey record = findOneIfNullThrow(id);
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncKey record = findOneIfNullThrow(id);
 		// 적용시간이 지난 암호키는 수정할 수 없다.
 //		if (record.getCreateTime().toLocalDateTime().isBefore(LocalDateTime.now()))
 //			throw new IllegalArgumentException("현재 사용 중이거나 이미 사용된 KEY는 변경할 수 없습니다.");
@@ -95,7 +94,7 @@ public class RecordEncKeyRepository extends EicnBaseRepository<RecordEncKey, kr.
 	}
 
 	public void deleteByKey(Integer id) {
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncKey record = findOneIfNullThrow(id);
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncKey record = findOneIfNullThrow(id);
 		// 적용시간이 지난 암호키는 삭제할 수 없다.
 //		if (record.getCreateTime().toLocalDateTime().isBefore(LocalDateTime.now()))
 //			throw new IllegalArgumentException("현재 사용 중인 KEY는 삭제할 수 없습니다.");
@@ -111,7 +110,7 @@ public class RecordEncKeyRepository extends EicnBaseRepository<RecordEncKey, kr.
 		webSecureHistoryRepository.insert(WebSecureActionType.RECORD_ENC, WebSecureActionSubType.DEL, "");
 	}
 
-	public Record insertOnGeneratedKey(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncKey record) {
+	public Record insertOnGeneratedKey(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncKey record) {
 		return dsl.insertInto(RECORD_ENC_KEY)
 				.set(RECORD_ENC_KEY.COMPANY_ID, getCompanyId())
 				.set(RECORD_ENC_KEY.CREATE_TIME, record.getCreateTime())
@@ -120,7 +119,7 @@ public class RecordEncKeyRepository extends EicnBaseRepository<RecordEncKey, kr.
 				.fetchOne();
 	}
 
-	public void updateByKey(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncKey record, Integer key) {
+	public void updateByKey(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncKey record, Integer key) {
 		dsl.update(table)
 				.set(RECORD_ENC_KEY.CREATE_TIME, record.getCreateTime())
 				.set(RECORD_ENC_KEY.ENC_KEY, DSL.field("HEX(AES_ENCRYPT({0},{1}))", String.class, record.getEncKey(), ENC_MASTER_KEY))
@@ -129,7 +128,7 @@ public class RecordEncKeyRepository extends EicnBaseRepository<RecordEncKey, kr.
 				.execute();
 	}
 
-	public void insert(DSLContext pbxDsl, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncKey record) {
+	public void insert(DSLContext pbxDsl, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncKey record) {
 		pbxDsl.insertInto(RECORD_ENC_KEY)
 				.set(RECORD_ENC_KEY.COMPANY_ID, getCompanyId())
 				.set(RECORD_ENC_KEY.CREATE_TIME, record.getCreateTime())
@@ -138,7 +137,7 @@ public class RecordEncKeyRepository extends EicnBaseRepository<RecordEncKey, kr.
 				.fetchOne();
 	}
 
-	public void updateByKey(DSLContext pbxDsl, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncKey record, Integer key) {
+	public void updateByKey(DSLContext pbxDsl, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncKey record, Integer key) {
 		pbxDsl.update(table)
 				.set(RECORD_ENC_KEY.CREATE_TIME, record.getCreateTime())
 				.set(RECORD_ENC_KEY.ENC_KEY, DSL.field("HEX(AES_ENCRYPT({0},{1}))", String.class, record.getEncKey(), ENC_MASTER_KEY))

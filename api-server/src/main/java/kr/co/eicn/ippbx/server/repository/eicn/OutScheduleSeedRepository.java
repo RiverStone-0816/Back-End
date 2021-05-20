@@ -1,20 +1,20 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.OutScheduleSeed;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.OutScheduleList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SoundList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.OutScheduleListRecord;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.OutScheduleSeedRecord;
-import kr.co.eicn.ippbx.server.model.entity.eicn.OutScheduleListEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.OutScheduleSeedEntity;
-import kr.co.eicn.ippbx.server.model.enums.ScheduleType;
-import kr.co.eicn.ippbx.server.model.form.DayOutScheduleSeedFormRequest;
-import kr.co.eicn.ippbx.server.model.form.OutScheduleSeedFormRequest;
-import kr.co.eicn.ippbx.server.model.search.OutScheduleSeedSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.OutScheduleSeed;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.OutScheduleList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.OutScheduleListRecord;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.OutScheduleSeedRecord;
+import kr.co.eicn.ippbx.model.entity.eicn.OutScheduleListEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.OutScheduleSeedEntity;
+import kr.co.eicn.ippbx.model.enums.ScheduleType;
+import kr.co.eicn.ippbx.model.form.DayOutScheduleSeedFormRequest;
+import kr.co.eicn.ippbx.model.form.OutScheduleSeedFormRequest;
+import kr.co.eicn.ippbx.model.search.OutScheduleSeedSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.EicnUtils;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.EicnUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.Getter;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -32,14 +32,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.OutScheduleList.OUT_SCHEDULE_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.OutScheduleSeed.OUT_SCHEDULE_SEED;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.OutScheduleList.OUT_SCHEDULE_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.OutScheduleSeed.OUT_SCHEDULE_SEED;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSeed, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.OutScheduleSeed, Integer> {
+public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSeed, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.OutScheduleSeed, Integer> {
 	protected final Logger logger = LoggerFactory.getLogger(OutScheduleSeedRepository.class);
 
 	private final SoundListRepository soundListRepository;
@@ -47,7 +47,7 @@ public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSee
 	private final PBXServerInterface pbxServerInterface;
 
 	public OutScheduleSeedRepository(SoundListRepository soundListRepository, CacheService cacheService, PBXServerInterface pbxServerInterface) {
-		super(OUT_SCHEDULE_SEED, OUT_SCHEDULE_SEED.PARENT, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.OutScheduleSeed.class);
+		super(OUT_SCHEDULE_SEED, OUT_SCHEDULE_SEED.PARENT, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.OutScheduleSeed.class);
 		this.soundListRepository = soundListRepository;
 		this.cacheService = cacheService;
 		this.pbxServerInterface = pbxServerInterface;
@@ -100,7 +100,7 @@ public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSee
 		final OutScheduleSeed sequenceSeed = OUT_SCHEDULE_SEED.as("SEQUENCE_SEED");
 		final Integer sequenceKey = dsl.select(DSL.ifnull(DSL.max(sequenceSeed.PARENT), 0).add(1)).from(sequenceSeed).fetchOneInto(Integer.class);
 
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.OutScheduleSeed record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.OutScheduleSeed();
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.OutScheduleSeed record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.OutScheduleSeed();
 		ReflectionUtils.copy(record, form);
 
 		record.setParent(sequenceKey);
@@ -150,7 +150,7 @@ public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSee
 	}
 
 	public void insertOnDayScheduleAllPbxServers(DayOutScheduleSeedFormRequest form) {
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.OutScheduleSeed record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.OutScheduleSeed();
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.OutScheduleSeed record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.OutScheduleSeed();
 
 		final OutScheduleSeed sequenceSeed = OUT_SCHEDULE_SEED.as("SEQUENCE_SEED");
 		final Integer sequenceKey = dsl.select(DSL.ifnull(DSL.max(sequenceSeed.PARENT), 0).add(1)).from(sequenceSeed).fetchOneInto(Integer.class);

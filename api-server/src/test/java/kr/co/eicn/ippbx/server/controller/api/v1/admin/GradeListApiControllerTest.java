@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.form.GradeListFormRequest;
+import kr.co.eicn.ippbx.model.form.GradeListFormRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
 import org.springframework.http.MediaType;

@@ -1,34 +1,29 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PickUpGroupDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PickUpGroupSummaryResponse;
-import kr.co.eicn.ippbx.server.model.form.PickUpGroupFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PickUpGroupFormUpdateRequest;
+import kr.co.eicn.ippbx.model.dto.eicn.PickUpGroupDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.PickUpGroupSummaryResponse;
+import kr.co.eicn.ippbx.model.form.PickUpGroupFormRequest;
+import kr.co.eicn.ippbx.model.form.PickUpGroupFormUpdateRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PickUpGroupRepository;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PickupGroup.PICKUP_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PickupGroup.PICKUP_GROUP;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

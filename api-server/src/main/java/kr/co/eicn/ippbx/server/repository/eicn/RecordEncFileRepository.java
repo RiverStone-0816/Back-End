@@ -1,11 +1,11 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.RecordEncFile;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.RecordEncFileEntity;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.RecordEncFile;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.RecordEncFileEntity;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.Getter;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -16,12 +16,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.RecordEncFile.RECORD_ENC_FILE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.RecordEncKey.RECORD_ENC_KEY;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.RecordEncFile.RECORD_ENC_FILE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.RecordEncKey.RECORD_ENC_KEY;
 
 @Getter
 @Repository
-public class RecordEncFileRepository extends EicnBaseRepository<RecordEncFile, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncFile, String> {
+public class RecordEncFileRepository extends EicnBaseRepository<RecordEncFile, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncFile, String> {
 	protected final Logger logger = LoggerFactory.getLogger(RecordEncFileRepository.class);
 	@Value("${env.enc.master-key}")
 	private String ENC_MASTER_KEY;
@@ -29,7 +29,7 @@ public class RecordEncFileRepository extends EicnBaseRepository<RecordEncFile, k
 	private final CacheService cacheService;
 
 	public RecordEncFileRepository(PBXServerInterface pbxServerInterface, CacheService cacheService) {
-		super(RECORD_ENC_FILE, RECORD_ENC_FILE.RECORD_FILE, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncFile.class);
+		super(RECORD_ENC_FILE, RECORD_ENC_FILE.RECORD_FILE, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncFile.class);
 		this.pbxServerInterface = pbxServerInterface;
 		this.cacheService = cacheService;
 	}
@@ -61,7 +61,7 @@ public class RecordEncFileRepository extends EicnBaseRepository<RecordEncFile, k
 				.and(RECORD_ENC_FILE.RECORD_FILE.eq(recordFile))
 				.fetchAny(record -> {
 					final RecordEncFileEntity entity = record.into(RECORD_ENC_FILE).into(RecordEncFileEntity.class);
-					entity.setRecordEncKey(record.into(RECORD_ENC_KEY).into(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncKey.class));
+					entity.setRecordEncKey(record.into(RECORD_ENC_KEY).into(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncKey.class));
 					return entity;
 				});
 	}

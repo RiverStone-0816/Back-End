@@ -1,14 +1,14 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ResearchItem;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.ResearchItemRecord;
-import kr.co.eicn.ippbx.server.model.form.ResearchItemFormRequest;
-import kr.co.eicn.ippbx.server.model.search.ResearchItemSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchItem;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.ResearchItemRecord;
+import kr.co.eicn.ippbx.model.form.ResearchItemFormRequest;
+import kr.co.eicn.ippbx.model.search.ResearchItemSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -21,13 +21,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ResearchItem.RESEARCH_ITEM;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchItem.RESEARCH_ITEM;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class ResearchItemRepository extends EicnBaseRepository<ResearchItem, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchItem, Integer> {
+public class ResearchItemRepository extends EicnBaseRepository<ResearchItem, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchItem, Integer> {
     private final Logger logger = LoggerFactory.getLogger(ResearchItemRepository.class);
 
     private final CacheService cacheService;
@@ -35,7 +35,7 @@ public class ResearchItemRepository extends EicnBaseRepository<ResearchItem, kr.
     private final CompanyTreeRepository companyTreeRepository;
 
     public ResearchItemRepository(CacheService cacheService, PBXServerInterface pbxServerInterface, CompanyTreeRepository companyTreeRepository) {
-        super(RESEARCH_ITEM, RESEARCH_ITEM.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchItem.class);
+        super(RESEARCH_ITEM, RESEARCH_ITEM.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchItem.class);
         this.cacheService = cacheService;
         this.pbxServerInterface = pbxServerInterface;
         this.companyTreeRepository = companyTreeRepository;
@@ -43,11 +43,11 @@ public class ResearchItemRepository extends EicnBaseRepository<ResearchItem, kr.
         addOrderingField(RESEARCH_ITEM.ITEM_ID.asc());
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchItem> pagination(ResearchItemSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchItem> pagination(ResearchItemSearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchItem> findAll(ResearchItemSearchRequest search) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchItem> findAll(ResearchItemSearchRequest search) {
         return super.findAll(conditions(search));
     }
 
@@ -68,7 +68,7 @@ public class ResearchItemRepository extends EicnBaseRepository<ResearchItem, kr.
     }
 
     public void insert(ResearchItemFormRequest form) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchItem record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchItem();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchItem record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchItem();
         ReflectionUtils.copy(record, form);
 
         if (isNotEmpty(form.getGroupCode())) {
@@ -110,7 +110,7 @@ public class ResearchItemRepository extends EicnBaseRepository<ResearchItem, kr.
     }
 
     public void updateByKey(ResearchItemFormRequest form, Integer seq) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchItem record = findOneIfNullThrow(seq);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchItem record = findOneIfNullThrow(seq);
 
         record.setItemName(form.getItemName());
         record.setWord(form.getWord());
@@ -182,7 +182,7 @@ public class ResearchItemRepository extends EicnBaseRepository<ResearchItem, kr.
     }
 
     public void deleteItemId(Integer seq) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchItem entity = findOneIfNullThrow(RESEARCH_ITEM.SEQ.eq(seq).and(RESEARCH_ITEM.MAPPING_NUMBER.eq((byte) 0)));
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchItem entity = findOneIfNullThrow(RESEARCH_ITEM.SEQ.eq(seq).and(RESEARCH_ITEM.MAPPING_NUMBER.eq((byte) 0)));
 
         delete(RESEARCH_ITEM.ITEM_ID.eq(entity.getItemId()));
 
@@ -193,7 +193,7 @@ public class ResearchItemRepository extends EicnBaseRepository<ResearchItem, kr.
         });
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ResearchItem> findAllItemId(Integer itemId) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ResearchItem> findAllItemId(Integer itemId) {
         return findAll(RESEARCH_ITEM.ITEM_ID.eq(itemId), Arrays.asList(RESEARCH_ITEM.MAPPING_NUMBER.asc()));
     }
 

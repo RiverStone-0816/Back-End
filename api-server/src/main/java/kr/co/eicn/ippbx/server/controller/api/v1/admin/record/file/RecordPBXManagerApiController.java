@@ -1,12 +1,12 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.record.file;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.model.dto.eicn.DiskResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.FileSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.DiskResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.FileSummaryResponse;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.IpccUrlConnection;
 import kr.co.eicn.ippbx.server.service.StorageService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +14,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -27,10 +26,10 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.Result.failure;
-import static kr.co.eicn.ippbx.server.util.JsonResult.Result.success;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.Result.failure;
+import static kr.co.eicn.ippbx.util.JsonResult.Result.success;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.*;
 
 /**

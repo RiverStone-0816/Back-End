@@ -1,16 +1,16 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.pds;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PDSIvrDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PDSIvrResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryIvrTreeResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryPDSQueueNameResponse;
-import kr.co.eicn.ippbx.server.model.form.PDSIvrFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PDSIvrFormUpdateRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.model.dto.eicn.PDSIvrDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.PDSIvrResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryIvrTreeResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryPDSQueueNameResponse;
+import kr.co.eicn.ippbx.model.form.PDSIvrFormRequest;
+import kr.co.eicn.ippbx.model.form.PDSIvrFormUpdateRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PDSIvrRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PDSQueueNameRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,9 +24,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PdsIvr.PDS_IVR;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PdsIvr.PDS_IVR;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  *  아웃바운드관리 > PDS > IVR설정

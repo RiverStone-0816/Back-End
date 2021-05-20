@@ -1,19 +1,19 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.record.file;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEnc;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.RecordEncKey;
-import kr.co.eicn.ippbx.server.model.dto.eicn.RecordEncKeyResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.RecordEncKeySummaryResponse;
-import kr.co.eicn.ippbx.server.model.form.RecordEncFormRequest;
-import kr.co.eicn.ippbx.server.model.form.RecordEncKeyFormRequest;
-import kr.co.eicn.ippbx.server.model.search.RecordEncSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEnc;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.RecordEncKey;
+import kr.co.eicn.ippbx.model.dto.eicn.RecordEncKeyResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.RecordEncKeySummaryResponse;
+import kr.co.eicn.ippbx.model.form.RecordEncFormRequest;
+import kr.co.eicn.ippbx.model.form.RecordEncKeyFormRequest;
+import kr.co.eicn.ippbx.model.search.RecordEncSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.RecordEncKeyRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.RecordEncRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
-import kr.co.eicn.ippbx.server.util.spring.IsAdmin;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -26,9 +26,9 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.RecordEncKey.RECORD_ENC_KEY;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.RecordEncKey.RECORD_ENC_KEY;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 녹취관리 > 녹취파일관리 > 녹취암호관리

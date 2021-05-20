@@ -2,27 +2,27 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin.monitor.consultant;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.controller.api.v1.admin.dashboard.DashboardApiController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueMemberTable;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.QueueName;
-import kr.co.eicn.ippbx.server.jooq.statdb.tables.pojos.CommonStatInbound;
-import kr.co.eicn.ippbx.server.model.dto.eicn.*;
-import kr.co.eicn.ippbx.server.model.dto.statdb.*;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CenterMemberStatusCountEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CmpMemberStatusCodeEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.MemberStatusOfHunt;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatInboundEntity;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatOutboundEntity;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatUserInboundEntity;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatUserOutboundEntity;
-import kr.co.eicn.ippbx.server.model.enums.PhoneInfoStatus;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName;
+import kr.co.eicn.ippbx.meta.jooq.statdb.tables.pojos.CommonStatInbound;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.dto.statdb.*;
+import kr.co.eicn.ippbx.model.entity.eicn.CenterMemberStatusCountEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CmpMemberStatusCodeEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.MemberStatusOfHunt;
+import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
+import kr.co.eicn.ippbx.model.entity.statdb.StatOutboundEntity;
+import kr.co.eicn.ippbx.model.entity.statdb.StatUserInboundEntity;
+import kr.co.eicn.ippbx.model.entity.statdb.StatUserOutboundEntity;
+import kr.co.eicn.ippbx.model.enums.PhoneInfoStatus;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.StatInboundService;
 import kr.co.eicn.ippbx.server.service.StatOutboundService;
 import kr.co.eicn.ippbx.server.service.StatUserInboundService;
 import kr.co.eicn.ippbx.server.service.StatUserOutboundService;
-import kr.co.eicn.ippbx.server.util.EicnUtils;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.EicnUtils;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 모니터링 > 상담원 모니터링 > 모니터링[부서별]

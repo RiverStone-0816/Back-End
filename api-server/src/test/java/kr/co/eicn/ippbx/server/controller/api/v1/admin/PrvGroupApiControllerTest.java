@@ -1,12 +1,11 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.enums.BillingKind;
-import kr.co.eicn.ippbx.server.model.form.PrvGroupFormRequest;
+import kr.co.eicn.ippbx.model.enums.BillingKind;
+import kr.co.eicn.ippbx.model.form.PrvGroupFormRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;

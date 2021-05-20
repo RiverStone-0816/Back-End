@@ -1,14 +1,12 @@
 package kr.co.eicn.ippbx.server.service;
 
 import kr.co.eicn.ippbx.server.config.Constants;
-import kr.co.eicn.ippbx.server.model.dto.pds.ExecutePDSCustomInfoCountResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.enums.ShellCommand;
+import kr.co.eicn.ippbx.model.dto.pds.ExecutePDSCustomInfoCountResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
 import kr.co.eicn.ippbx.server.repository.pds.ExecutePDSCustomInfoRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.jooq.DSLContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;

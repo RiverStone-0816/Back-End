@@ -1,22 +1,22 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.pds;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup;
-import kr.co.eicn.ippbx.server.model.dto.eicn.*;
-import kr.co.eicn.ippbx.server.model.enums.CommonTypeKind;
-import kr.co.eicn.ippbx.server.model.enums.CommonTypeStatus;
-import kr.co.eicn.ippbx.server.model.enums.ServerType;
-import kr.co.eicn.ippbx.server.model.form.PDSExecuteFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PDSGroupFormRequest;
-import kr.co.eicn.ippbx.server.model.search.PDSGroupSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.enums.CommonTypeKind;
+import kr.co.eicn.ippbx.model.enums.CommonTypeStatus;
+import kr.co.eicn.ippbx.model.enums.ServerType;
+import kr.co.eicn.ippbx.model.form.PDSExecuteFormRequest;
+import kr.co.eicn.ippbx.model.form.PDSGroupFormRequest;
+import kr.co.eicn.ippbx.model.search.PDSGroupSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.CommonFieldPoster;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
-import kr.co.eicn.ippbx.server.util.EnumUtils;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.EnumUtils;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -35,11 +35,11 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.CommonField.COMMON_FIELD;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.Number_070.NUMBER_070;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PdsIvr.PDS_IVR;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CommonField.COMMON_FIELD;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.Number_070.NUMBER_070;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PdsIvr.PDS_IVR;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  *  아웃바운드관리 > PDS > 그룹관리/실행요청
@@ -244,7 +244,7 @@ public class PDSGroupApiController extends ApiBaseController {
 	public ResponseEntity<JsonResult<List<SummaryCommonFieldResponse>>> addCommonFieldLists() {
 		return ResponseEntity.ok(data(commonFieldRepository.findAll(COMMON_FIELD.FIELD_TYPE.eq("NUMBER"))
 				.stream()
-				.sorted(Comparator.comparingInt(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonField::getDisplaySeq))
+				.sorted(Comparator.comparingInt(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField::getDisplaySeq))
 				.map(e -> convertDto(e, SummaryCommonFieldResponse.class))
 				.collect(Collectors.toList()))
 		);

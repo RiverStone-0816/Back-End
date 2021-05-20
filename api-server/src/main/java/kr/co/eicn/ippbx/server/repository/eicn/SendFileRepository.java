@@ -1,32 +1,30 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.SendFile;
-import kr.co.eicn.ippbx.server.model.search.SendFileSearchRequest;
-import kr.co.eicn.ippbx.server.service.StorageService;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.SendFile;
+import kr.co.eicn.ippbx.model.search.SendFileSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.SendFile.SEND_FILE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.SendFile.SEND_FILE;
 
 @Getter
 @Repository
-public class SendFileRepository extends EicnBaseRepository<SendFile, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendFile, Long> {
+public class SendFileRepository extends EicnBaseRepository<SendFile, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendFile, Long> {
     protected final Logger logger = LoggerFactory.getLogger(SendFileRepository.class);
 
    SendFileRepository() {
-        super(SEND_FILE, SEND_FILE.ID, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendFile.class);
+        super(SEND_FILE, SEND_FILE.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendFile.class);
    }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendFile> pagination(SendFileSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendFile> pagination(SendFileSearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 

@@ -1,0 +1,13 @@
+package kr.co.eicn.ippbx.model.entity.eicn;
+
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.List;
+
+@EqualsAndHashCode(callSuper = true)
+@Data
+public class CommonTypeEntity extends CommonType {
+	private List<CommonFieldEntity> fields; // 필드 목록
+}

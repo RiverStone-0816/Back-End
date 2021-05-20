@@ -1,12 +1,12 @@
 package kr.co.eicn.ippbx.server.repository;
 
+import kr.co.eicn.ippbx.exception.DuplicateKeyException;
+import kr.co.eicn.ippbx.exception.EntityNotFoundException;
 import kr.co.eicn.ippbx.server.config.RequestGlobal;
-import kr.co.eicn.ippbx.server.config.RequestMessage;
-import kr.co.eicn.ippbx.server.exception.DuplicateKeyException;
-import kr.co.eicn.ippbx.server.exception.EntityNotFoundException;
-import kr.co.eicn.ippbx.server.util.jooq.JooqPaginationFactory;
-import kr.co.eicn.ippbx.server.util.page.PageForm;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.jooq.JooqPaginationFactory;
+import kr.co.eicn.ippbx.util.page.PageForm;
+import kr.co.eicn.ippbx.util.page.Pagination;
+import kr.co.eicn.ippbx.util.spring.RequestMessage;
 import lombok.Data;
 import org.jooq.*;
 import org.jooq.impl.DSL;

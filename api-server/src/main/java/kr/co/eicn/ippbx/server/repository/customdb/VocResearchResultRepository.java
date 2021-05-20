@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonVocResearchResult;
-import kr.co.eicn.ippbx.server.model.entity.customdb.VocResearchResultEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.VocGroupEntity;
-import kr.co.eicn.ippbx.server.model.search.CustomDBVOCResultSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonVocResearchResult;
+import kr.co.eicn.ippbx.model.entity.customdb.VocResearchResultEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.VocGroupEntity;
+import kr.co.eicn.ippbx.model.search.CustomDBVOCResultSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.*;
 import org.jooq.impl.DSL;
@@ -16,8 +16,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.VocGroup.VOC_GROUP;
-import static kr.co.eicn.ippbx.server.jooq.customdb.tables.VocResearchResult.VOC_RESEARCH_RESULT;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.VocGroup.VOC_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.customdb.tables.VocResearchResult.VOC_RESEARCH_RESULT;
 
 @Getter
 public class VocResearchResultRepository extends CustomDBBaseRepository<CommonVocResearchResult, VocResearchResultEntity, Integer>{

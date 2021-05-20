@@ -1,7 +1,6 @@
 package kr.co.eicn.ippbx.server.config;
 
 public class Constants {
-    public static final String DEFAULT_TIMEZONE = "Asia/Seoul";
     public static final String BASE_PACKAGE = "kr.co.eicn.ippbx.server";
     public static final String BASE_MODEL_PACKAGE = BASE_PACKAGE + ".model";
     public static final String REPOSITORY_PACKAGE = BASE_PACKAGE + ".repository";
@@ -25,10 +24,6 @@ public class Constants {
     public static final String BEAN_DATASOURCE_PDS = "BEAN_DATASOURCE_PDS";
     public static final String BEAN_DSL_PDS = "BEAN_DSL_PDS";
     public static final String BEAN_TRANSACTION_MANAGER_PDS = "BEAN_TRANSACTION_MANAGER_PDS";
-
-    public static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd";
-    public static final String DEFAULT_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
-    public static final String DEFAULT_TIME_PATTERN = "HH:mm:ss";
 
     public static final String LOCAL_HOST = "localhost";
 }

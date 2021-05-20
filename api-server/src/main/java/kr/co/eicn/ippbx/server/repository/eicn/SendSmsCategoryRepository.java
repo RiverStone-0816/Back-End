@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.SendCategory;
-import kr.co.eicn.ippbx.server.model.enums.SendCategoryType;
-import kr.co.eicn.ippbx.server.model.form.SendSmsCategoryFormRequest;
-import kr.co.eicn.ippbx.server.model.search.SendCategorySearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.SendCategory;
+import kr.co.eicn.ippbx.model.enums.SendCategoryType;
+import kr.co.eicn.ippbx.model.form.SendSmsCategoryFormRequest;
+import kr.co.eicn.ippbx.model.search.SendCategorySearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.Record;
@@ -15,27 +15,27 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.SendCategory.SEND_CATEGORY;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.SendCategory.SEND_CATEGORY;
 
 @Getter
 @Repository
-public class SendSmsCategoryRepository extends EicnBaseRepository<SendCategory, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendCategory, String> {
+public class SendSmsCategoryRepository extends EicnBaseRepository<SendCategory, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendCategory, String> {
     protected final Logger logger = LoggerFactory.getLogger(SendSmsCategoryRepository.class);
 
     public SendSmsCategoryRepository() {
-        super(SEND_CATEGORY, SEND_CATEGORY.CATEGORY_CODE, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendCategory.class);
+        super(SEND_CATEGORY, SEND_CATEGORY.CATEGORY_CODE, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendCategory.class);
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendCategory> pagination(SendCategorySearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendCategory> pagination(SendCategorySearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 
     public Record insertOnGeneratedKey(SendSmsCategoryFormRequest formRequest) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendCategory category = findOne(SEND_CATEGORY.CATEGORY_CODE.eq(formRequest.getCategoryCode()));
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendCategory category = findOne(SEND_CATEGORY.CATEGORY_CODE.eq(formRequest.getCategoryCode()));
         if (category != null)
             throw new IllegalArgumentException("이미 등록된 카테고리 입니다.");
 
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendCategory sendCategoryRecord = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendCategory();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendCategory sendCategoryRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendCategory();
         sendCategoryRecord.setCategoryCode(formRequest.getCategoryCode());
         sendCategoryRecord.setCategoryName(formRequest.getCategoryName());
         sendCategoryRecord.setCategoryType(String.valueOf(formRequest.getCategoryType()));

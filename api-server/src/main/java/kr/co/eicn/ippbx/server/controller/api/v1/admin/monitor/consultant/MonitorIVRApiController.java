@@ -1,15 +1,15 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.monitor.consultant;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleInfo;
-import kr.co.eicn.ippbx.server.model.dto.eicn.MonitorIvrResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.MonitorIvrScheduleGroupListResponse;
-import kr.co.eicn.ippbx.server.model.enums.ScheduleKind;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleInfo;
+import kr.co.eicn.ippbx.model.dto.eicn.MonitorIvrResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.MonitorIvrScheduleGroupListResponse;
+import kr.co.eicn.ippbx.model.enums.ScheduleKind;
 import kr.co.eicn.ippbx.server.repository.eicn.IvrTreeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ScheduleGroupListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ScheduleGroupRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ScheduleInfoRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;

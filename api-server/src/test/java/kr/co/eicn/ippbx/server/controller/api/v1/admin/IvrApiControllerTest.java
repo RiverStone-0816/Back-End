@@ -1,14 +1,13 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.dto.eicn.IvrResponse;
-import kr.co.eicn.ippbx.server.model.enums.Button;
-import kr.co.eicn.ippbx.server.model.enums.IvrMenuType;
-import kr.co.eicn.ippbx.server.model.form.IvrButtonMappingFormRequest;
-import kr.co.eicn.ippbx.server.model.form.IvrFormRequest;
-import kr.co.eicn.ippbx.server.model.form.IvrFormUpdateRequest;
-import kr.co.eicn.ippbx.server.model.form.WebVoiceItemsFormRequest;
+import kr.co.eicn.ippbx.model.dto.eicn.IvrResponse;
+import kr.co.eicn.ippbx.model.enums.Button;
+import kr.co.eicn.ippbx.model.enums.IvrMenuType;
+import kr.co.eicn.ippbx.model.form.IvrButtonMappingFormRequest;
+import kr.co.eicn.ippbx.model.form.IvrFormRequest;
+import kr.co.eicn.ippbx.model.form.IvrFormUpdateRequest;
+import kr.co.eicn.ippbx.model.form.WebVoiceItemsFormRequest;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
@@ -283,7 +282,7 @@ public class IvrApiControllerTest extends BaseControllerTest {
 	 */
 //	@Test
 	protected void put() throws Exception {
-		final kr.co.eicn.ippbx.server.model.form.IvrFormUpdateRequest form = new IvrFormUpdateRequest();
+		final kr.co.eicn.ippbx.model.form.IvrFormUpdateRequest form = new IvrFormUpdateRequest();
 		// -- 대표번호연결
 		// 메뉴명(*)
 		// 음원선택
@@ -503,7 +502,7 @@ public class IvrApiControllerTest extends BaseControllerTest {
 				.andReturn();
 	}
 
-	private void printTree(List<kr.co.eicn.ippbx.server.model.dto.eicn.IvrResponse> nodes) {
+	private void printTree(List<kr.co.eicn.ippbx.model.dto.eicn.IvrResponse> nodes) {
 		for (IvrResponse node : nodes) {
 			log.info(prefix(StringUtils.countMatches(node.getTreeName(), '_')) + "({}-{}){}, button:{}, type:{}, tree_name:{}, type_date:{}, tts_data:{}"
 					, node.getCode()

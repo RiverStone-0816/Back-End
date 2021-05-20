@@ -1,23 +1,23 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.user.tel;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServerInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList;
-import kr.co.eicn.ippbx.server.model.dto.eicn.OrganizationSummaryResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ServiceListDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ServiceListSummaryResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryServiceListResponse;
-import kr.co.eicn.ippbx.server.model.form.ServiceListFormRequest;
-import kr.co.eicn.ippbx.server.model.form.ServiceListFormUpdateRequest;
-import kr.co.eicn.ippbx.server.model.search.ServiceListSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServerInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
+import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.ServiceListDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.ServiceListSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryServiceListResponse;
+import kr.co.eicn.ippbx.model.form.ServiceListFormRequest;
+import kr.co.eicn.ippbx.model.form.ServiceListFormUpdateRequest;
+import kr.co.eicn.ippbx.model.search.ServiceListSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.Number070Repository;
 import kr.co.eicn.ippbx.server.repository.eicn.ServerInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ServiceRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -31,10 +31,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.Number_070.NUMBER_070;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ServiceList.SERVICE_LIST;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.Number_070.NUMBER_070;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ServiceList.SERVICE_LIST;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**

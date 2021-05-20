@@ -1,13 +1,13 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.server.jooq.customdb.tables.CommonMaindbMultichannelInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.MaindbGroup;
-import kr.co.eicn.ippbx.server.model.dto.customdb.CommonMultiChannelInfoResponse;
-import kr.co.eicn.ippbx.server.model.dto.customdb.CustomMultichannelInfoResponse;
-import kr.co.eicn.ippbx.server.model.entity.customdb.MaindbCustomInfoEntity;
-import kr.co.eicn.ippbx.server.model.entity.customdb.MaindbMultichannelInfoEntity;
-import kr.co.eicn.ippbx.server.model.enums.MultichannelChannelType;
-import kr.co.eicn.ippbx.server.model.form.MaindbCustomInfoFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.MaindbGroup;
+import kr.co.eicn.ippbx.model.dto.customdb.CommonMultiChannelInfoResponse;
+import kr.co.eicn.ippbx.model.dto.customdb.CustomMultichannelInfoResponse;
+import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
+import kr.co.eicn.ippbx.model.enums.MultichannelChannelType;
+import kr.co.eicn.ippbx.model.form.MaindbCustomInfoFormRequest;
 import kr.co.eicn.ippbx.server.service.MaindbCustomInfoService;
 import lombok.Getter;
 import org.slf4j.Logger;

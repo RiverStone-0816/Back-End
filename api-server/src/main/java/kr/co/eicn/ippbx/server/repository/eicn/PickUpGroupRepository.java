@@ -1,21 +1,21 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.PickupGroup;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SipBuddies;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.enums.ShellCommand;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.server.model.enums.WebSecureActionType;
-import kr.co.eicn.ippbx.server.model.form.PickUpGroupFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PickUpGroupFormUpdateRequest;
-import kr.co.eicn.ippbx.server.model.search.PickUpGroupSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PickupGroup;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SipBuddies;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.enums.ShellCommand;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.form.PickUpGroupFormRequest;
+import kr.co.eicn.ippbx.model.form.PickUpGroupFormUpdateRequest;
+import kr.co.eicn.ippbx.model.search.PickUpGroupSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.IpccUrlConnection;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import kr.co.eicn.ippbx.server.service.ProcessService;
-import kr.co.eicn.ippbx.server.util.StringUtils;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.StringUtils;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
@@ -28,14 +28,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PickupGroup.PICKUP_GROUP;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.SipBuddies.SIP_BUDDIES;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PickupGroup.PICKUP_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.SipBuddies.SIP_BUDDIES;
 import static org.apache.commons.lang3.StringUtils.*;
 
 @Getter
 @Repository
-public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PickupGroup, Integer> {
+public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PickupGroup, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(PickUpGroupRepository.class);
     private final CacheService cacheService;
     private final PBXServerInterface pbxServerInterface;
@@ -46,7 +46,7 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
     private final ProcessService processService;
 
     public PickUpGroupRepository(CacheService cacheService, PBXServerInterface pbxServerInterface, PhoneInfoRepository phoneInfoRepository, SipBuddiesRepository sipBuddiesRepository, WebSecureHistoryRepository webSecureHistoryRepository, CompanyTreeRepository companyTreeRepository, ProcessService processService) {
-        super(PICKUP_GROUP, PICKUP_GROUP.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PickupGroup.class);
+        super(PICKUP_GROUP, PICKUP_GROUP.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PickupGroup.class);
         this.cacheService = cacheService;
         this.pbxServerInterface = pbxServerInterface;
         this.phoneInfoRepository = phoneInfoRepository;
@@ -56,7 +56,7 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
         this.processService = processService;
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PickupGroup> pagination(PickUpGroupSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PickupGroup> pagination(PickUpGroupSearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 
@@ -72,12 +72,12 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
     }
 
     public Record insertOnGeneratedKey(PickUpGroupFormRequest form) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PickupGroup one = findOne(PICKUP_GROUP.GROUPNAME.eq(form.getGroupname()));
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PickupGroup one = findOne(PICKUP_GROUP.GROUPNAME.eq(form.getGroupname()));
         final CompanyTree companyTree = companyTreeRepository.findOneGroupCodeIfNullThrow(form.getGroupCode());
         if (one != null)
             throw new IllegalArgumentException(form.getGroupname() + "은(는) 이미 등록된 그룹명입니다.");
 
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PickupGroup> pickupGroups = findAll();
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PickupGroup> pickupGroups = findAll();
 
         final int limitMax = 100;
         final OptionalInt optionalToLimitMaxNextGroupCode = IntStream.rangeClosed(1, 100)
@@ -88,7 +88,7 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
             throw new IllegalArgumentException("당겨받기 그룹수 초과(" + limitMax + ")");
 
         final int nextGroupCodeAsInt = optionalToLimitMaxNextGroupCode.getAsInt();
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PickupGroup record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PickupGroup();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PickupGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PickupGroup();
         record.setGroupcode(nextGroupCodeAsInt);
         record.setGroupname(form.getGroupname());
         record.setGroupnamecode(getCompanyId() + "_" + nextGroupCodeAsInt);
@@ -115,7 +115,7 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
     }
 
     public void updateByKey(PickUpGroupFormUpdateRequest form, Integer groupcode) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PickupGroup pickupGroup = findOneIfNullThrow(PICKUP_GROUP.GROUPCODE.eq(groupcode));
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PickupGroup pickupGroup = findOneIfNullThrow(PICKUP_GROUP.GROUPCODE.eq(groupcode));
 
         // 당겨받기그룹 업데이트
         dsl.update(PICKUP_GROUP)
@@ -156,7 +156,7 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
         final String groupname = pickupGroup.getGroupname();
 
         // 고객사 아이디 + 당겨받기 그룹코드 데이터가 없다면 새로 만들어줌?..
-        List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SipBuddies> resetPickUpSipBuddies;
+        List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SipBuddies> resetPickUpSipBuddies;
         if (isNotEmpty(groupname)) {
             resetPickUpSipBuddies = sipBuddiesRepository.findAll(SIP_BUDDIES.NAMEDPICKUPGROUP.eq(groupname));
         } else {
@@ -174,7 +174,7 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
         }
         // 전화기 정보(asterisk 사용테이블) 당겨받기그룹 초기화
         if (resetPickUpSipBuddies != null && resetPickUpSipBuddies.size() > 0) {
-            for (kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SipBuddies resetPickUpSipBuddy : resetPickUpSipBuddies) {
+            for (kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SipBuddies resetPickUpSipBuddy : resetPickUpSipBuddies) {
                 resetPickUpSipBuddy.setPickupgroup(EMPTY);
                 resetPickUpSipBuddy.setCallgroup(EMPTY);
                 resetPickUpSipBuddy.setNamedpickupgroup(EMPTY);
@@ -266,7 +266,7 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
     }
 
     public int delete(Integer groupcode) {
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PickupGroup entity = findOneIfNullThrow(PICKUP_GROUP.GROUPCODE.eq(groupcode));
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PickupGroup entity = findOneIfNullThrow(PICKUP_GROUP.GROUPCODE.eq(groupcode));
         final int r = super.delete(entity.getSeq());
 
         final Optional<CompanyServerEntity> optionalPbxServer = cacheService.pbxServerList(getCompanyId())
@@ -280,8 +280,8 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
             }
         });
 
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo> pickUpPhones = phoneInfoRepository.findAll(PHONE_INFO.PICKUP.eq(String.valueOf(entity.getGroupcode())));
-        for (kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo pickUpPhone : pickUpPhones) {
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo> pickUpPhones = phoneInfoRepository.findAll(PHONE_INFO.PICKUP.eq(String.valueOf(entity.getGroupcode())));
+        for (kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo pickUpPhone : pickUpPhones) {
             pickUpPhone.setPickup(EMPTY);
             phoneInfoRepository.updateByKey(pickUpPhone, pickUpPhone.getPeer());
 
@@ -292,8 +292,8 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
             });
         }
 
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SipBuddies> pickUpSipBuddies = sipBuddiesRepository.findAll(SIP_BUDDIES.PICKUPGROUP.eq(String.valueOf(entity.getGroupcode())));
-        for (kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SipBuddies pickUpSipBuddy : pickUpSipBuddies) {
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SipBuddies> pickUpSipBuddies = sipBuddiesRepository.findAll(SIP_BUDDIES.PICKUPGROUP.eq(String.valueOf(entity.getGroupcode())));
+        for (kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SipBuddies pickUpSipBuddy : pickUpSipBuddies) {
             pickUpSipBuddy.setPickupgroup(EMPTY);
             pickUpSipBuddy.setCallgroup(EMPTY);
             sipBuddiesRepository.updateByKey(pickUpSipBuddy, pickUpSipBuddy.getId());

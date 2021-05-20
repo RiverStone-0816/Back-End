@@ -1,27 +1,27 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.user.user;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PickupGroup;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServerInfo;
-import kr.co.eicn.ippbx.server.model.dto.eicn.OrganizationSummaryResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PickUpGroupDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PickUpGroupSummaryResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryPickUpPersonResponse;
-import kr.co.eicn.ippbx.server.model.form.PickUpGroupFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PickUpGroupFormUpdateRequest;
-import kr.co.eicn.ippbx.server.model.search.PickUpGroupSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PickupGroup;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServerInfo;
+import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.PickUpGroupDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.PickUpGroupSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryPickUpPersonResponse;
+import kr.co.eicn.ippbx.model.form.PickUpGroupFormRequest;
+import kr.co.eicn.ippbx.model.form.PickUpGroupFormUpdateRequest;
+import kr.co.eicn.ippbx.model.search.PickUpGroupSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PhoneInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PickUpGroupRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ServerInfoRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
-import kr.co.eicn.ippbx.server.util.FunctionUtils;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
-import kr.co.eicn.ippbx.server.util.spring.IsAdmin;
+import kr.co.eicn.ippbx.util.FunctionUtils;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -35,11 +35,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PersonList.PERSON_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PickupGroup.PICKUP_GROUP;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PickupGroup.PICKUP_GROUP;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
@@ -91,14 +91,14 @@ public class PickUpGroupApiController extends ApiBaseController {
     public ResponseEntity<JsonResult<PickUpGroupDetailResponse>> get(@PathVariable Integer groupcode) {
         final PickUpGroupDetailResponse detail = convertDto(repository.findOneIfNullThrow(PICKUP_GROUP.GROUPCODE.eq(groupcode)), PickUpGroupDetailResponse.class);
         final List<ServerInfo> serverInfos = serverInfoRepository.findAll();
-        final Map<String, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList> personListMap = personListRepository.findAll(PERSON_LIST.EXTENSION.isNotNull().and(PERSON_LIST.EXTENSION.notEqual(EMPTY)))
+        final Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> personListMap = personListRepository.findAll(PERSON_LIST.EXTENSION.isNotNull().and(PERSON_LIST.EXTENSION.notEqual(EMPTY)))
                 .stream()
 		        .filter(FunctionUtils.distinctByKey(PersonList::getExtension))
-                .collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList::getExtension, e -> e));
+                .collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList::getExtension, e -> e));
 
         final List<PickupGroup> pickupGroups = repository.findAll();
 
-        final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo> phoneInfos = phoneInfoRepository.findAll(PHONE_INFO.HOST.eq(detail.getHost()), PHONE_INFO.EXTENSION.desc());
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo> phoneInfos = phoneInfoRepository.findAll(PHONE_INFO.HOST.eq(detail.getHost()), PHONE_INFO.EXTENSION.desc());
 
         final List<SummaryPickUpPersonResponse> pickUpPersons = phoneInfos
                 .stream()
@@ -109,7 +109,7 @@ public class PickUpGroupApiController extends ApiBaseController {
                         serverInfos.stream().filter(server -> isNotEmpty(server.getHost()) && server.getHost().equals(e.getHost())).findFirst()
                                 .ifPresent(server -> person.setHostName(server.getName()));
 
-                    final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList personList = personListMap.get(e.getExtension());
+                    final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList personList = personListMap.get(e.getExtension());
                     if (personList != null)
                         person.setIdName(personList.getIdName());
                     else

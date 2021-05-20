@@ -1,17 +1,17 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.application.sms;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SendCategory;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SendSmsCategoryDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SendSmsCategorySummaryResponse;
-import kr.co.eicn.ippbx.server.model.enums.SendCategoryType;
-import kr.co.eicn.ippbx.server.model.form.SendSmsCategoryFormRequest;
-import kr.co.eicn.ippbx.server.model.form.SendCategoryUpdateRequest;
-import kr.co.eicn.ippbx.server.model.search.SendCategorySearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendCategory;
+import kr.co.eicn.ippbx.model.dto.eicn.SendSmsCategoryDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SendSmsCategorySummaryResponse;
+import kr.co.eicn.ippbx.model.enums.SendCategoryType;
+import kr.co.eicn.ippbx.model.form.SendSmsCategoryFormRequest;
+import kr.co.eicn.ippbx.model.form.SendCategoryUpdateRequest;
+import kr.co.eicn.ippbx.model.search.SendCategorySearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.SendSmsCategoryRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -21,13 +21,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 상담어플리케이션 관리 > SMS 관리 > 카테고리 관리

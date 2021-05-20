@@ -1,22 +1,22 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.conf.info;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.*;
-import kr.co.eicn.ippbx.server.model.dto.eicn.*;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.enums.CallType;
-import kr.co.eicn.ippbx.server.model.form.ConfInfoDuplicateFormRequest;
-import kr.co.eicn.ippbx.server.model.form.ConfInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.ConfInfoMinutesSaveFormRequest;
-import kr.co.eicn.ippbx.server.model.form.ConfInfoUpdateFormRequest;
-import kr.co.eicn.ippbx.server.model.search.ConfInfoSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.enums.CallType;
+import kr.co.eicn.ippbx.model.form.ConfInfoDuplicateFormRequest;
+import kr.co.eicn.ippbx.model.form.ConfInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.ConfInfoMinutesSaveFormRequest;
+import kr.co.eicn.ippbx.model.form.ConfInfoUpdateFormRequest;
+import kr.co.eicn.ippbx.model.search.ConfInfoSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
 import kr.co.eicn.ippbx.server.service.StorageService;
-import kr.co.eicn.ippbx.server.util.FunctionUtils;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.FunctionUtils;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.impl.DSL;
@@ -41,14 +41,14 @@ import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.CONF_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ConfMember.CONF_MEMBER;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PersonList.PERSON_LIST;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
-import static kr.co.eicn.ippbx.server.util.JsonResult.Result.failure;
-import static kr.co.eicn.ippbx.server.util.JsonResult.Result.success;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.CONF_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ConfMember.CONF_MEMBER;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
+import static kr.co.eicn.ippbx.util.JsonResult.Result.failure;
+import static kr.co.eicn.ippbx.util.JsonResult.Result.success;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.*;
 
 /**
@@ -84,7 +84,7 @@ public class ConfInfoApiController extends ApiBaseController {
 	public ResponseEntity<JsonResult<List<ConfRoomSummaryResponse>>> getConfRoomList(/*ConfRoomSearchRequest search*/) {
 		final List<CompanyServerEntity> companyServerEntities = cacheService.getCompanyServerList(g.getUser().getCompanyId());
 		Map<String, Number_070> numberStringObjectMap =
-				numberRepository.findAll().stream().filter(FunctionUtils.distinctByKey(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070::getNumber)).collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070::getNumber, e -> e));
+				numberRepository.findAll().stream().filter(FunctionUtils.distinctByKey(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070::getNumber)).collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070::getNumber, e -> e));
 
 		List<CompanyTree> companyTrees = organizationService.getAllCompanyTrees();
 		final List<ConfRoom> confRooms = confRoomRepository.findAll();
@@ -93,7 +93,7 @@ public class ConfInfoApiController extends ApiBaseController {
 					ConfRoomSummaryResponse response = convertDto(e, ConfRoomSummaryResponse.class);
 
 					if (Objects.nonNull(numberStringObjectMap.get(e.getRoomNumber()))) {
-						kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070 number_070 = numberStringObjectMap.get(e.getRoomNumber());
+						kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070 number_070 = numberStringObjectMap.get(e.getRoomNumber());
 						companyServerEntities.stream()
 								.filter(company -> company.getServer().getHost().equals(number_070.getHost()))
 								.findAny()
@@ -125,14 +125,14 @@ public class ConfInfoApiController extends ApiBaseController {
 	@GetMapping("add_on_conf_persons")
 	public ResponseEntity<JsonResult<List<SummaryPersonResponse>>> addOnConfPersons(@RequestParam(required = false) Integer seq) {
 		final List<CompanyTree> companyTrees = organizationService.getAllCompanyTrees();
-		final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PhoneInfo> phoneInfos = phoneInfoRepository.findAll(DSL.noCondition(), PHONE_INFO.EXTENSION.asc());
+		final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo> phoneInfos = phoneInfoRepository.findAll(DSL.noCondition(), PHONE_INFO.EXTENSION.asc());
 		final List<ConfMember> confMembers = confMemberRepository.findAll(seq != null
 						? CONF_MEMBER.CONF_KEY.eq(seq).and(CONF_MEMBER.MEMBER_TYPE.eq("I")) : DSL.noCondition()
 				, Arrays.asList(CONF_MEMBER.MEMBER_NAME.asc(), CONF_MEMBER.SEQ.asc()));
 
-		final Map<String, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList> personListMap = personListRepository.findAll(PERSON_LIST.EXTENSION.isNotNull().and(PERSON_LIST.EXTENSION.notEqual(EMPTY)))
+		final Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> personListMap = personListRepository.findAll(PERSON_LIST.EXTENSION.isNotNull().and(PERSON_LIST.EXTENSION.notEqual(EMPTY)))
 				.stream()
-				.collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList::getExtension, e -> e));
+				.collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList::getExtension, e -> e));
 
 		final List<SummaryPersonResponse> persons = phoneInfos
 				.stream()
@@ -193,12 +193,12 @@ public class ConfInfoApiController extends ApiBaseController {
 		final ConfInfoDetailResponse detail = convertDto(repository.findOneIfNullThrow(seq), ConfInfoDetailResponse.class);
 		final List<CompanyServerEntity> companyServerEntities = cacheService.getCompanyServerList(g.getUser().getCompanyId());
 		final Map<String, Number_070> numberStringObjectMap = numberRepository.findAll().stream()
-				.filter(FunctionUtils.distinctByKey(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070::getNumber))
-				.collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070::getNumber, e -> e));
+				.filter(FunctionUtils.distinctByKey(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070::getNumber))
+				.collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070::getNumber, e -> e));
 		final List<CompanyTree> companyTrees = organizationService.getAllCompanyTrees();
 		final List<ConfMember> members = confMemberRepository.findAll(CONF_MEMBER.CONF_KEY.eq(seq));
 		String aaa = detail.getReserveAdmin();
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList admin =  personListRepository.findOne(PERSON_LIST.ID.eq(aaa));
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList admin =  personListRepository.findOne(PERSON_LIST.ID.eq(aaa));
 		if(admin != null) {
 			if(admin.getIdName() != null && !admin.getIdName().equals("")) {
 				detail.setReserveAdminName(admin.getIdName());
@@ -209,10 +209,10 @@ public class ConfInfoApiController extends ApiBaseController {
 			detail.setReserveAdminName(detail.getReserveAdmin());
 		}
 
-		final Map<String, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList> personListMap = personListRepository.findAll(PERSON_LIST.EXTENSION.isNotNull().and(PERSON_LIST.EXTENSION.notEqual(EMPTY)))
+		final Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> personListMap = personListRepository.findAll(PERSON_LIST.EXTENSION.isNotNull().and(PERSON_LIST.EXTENSION.notEqual(EMPTY)))
 				.stream()
-				.filter(FunctionUtils.distinctByKey(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList::getPeer))
-				.collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList::getPeer, e -> e));
+				.filter(FunctionUtils.distinctByKey(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList::getPeer))
+				.collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList::getPeer, e -> e));
 
 		detail.setInMemberList(
 				members.stream().filter(e -> CallType.INBOUND.getCode().equals(e.getMemberType()))
@@ -228,7 +228,7 @@ public class ConfInfoApiController extends ApiBaseController {
 						response.setExtension(personList.getExtension());
 
 						if (Objects.nonNull(numberStringObjectMap.get(e.getRoomNumber()))) {
-							final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070 number_070 = numberStringObjectMap.get(e.getRoomNumber());
+							final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070 number_070 = numberStringObjectMap.get(e.getRoomNumber());
 							companyServerEntities.stream()
 									.filter(company -> company.getServer().getHost().equals(number_070.getHost()))
 									.findAny()
@@ -286,7 +286,7 @@ public class ConfInfoApiController extends ApiBaseController {
     @PutMapping("update/{seq}")
     public ResponseEntity<JsonResult<Void>> update(@Valid @RequestBody ConfInfoUpdateFormRequest form, BindingResult bindingResult, @PathVariable Integer seq) {
 
-        final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ConfInfo record = repository.findOneIfNullThrow(seq);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ConfInfo record = repository.findOneIfNullThrow(seq);
 
         if(form.getStatus() == null) {
 			form.setStatus(record.getStatus());
@@ -362,15 +362,15 @@ public class ConfInfoApiController extends ApiBaseController {
 
 			final List<ConfMember> members = confMemberRepository.findAll(CONF_MEMBER.CONF_KEY.eq(confInfoId));
 
-			final Map<String, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList> personListMap = personListRepository.findAll(PERSON_LIST.EXTENSION.isNotNull().and(PERSON_LIST.EXTENSION.notEqual(EMPTY)))
+			final Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> personListMap = personListRepository.findAll(PERSON_LIST.EXTENSION.isNotNull().and(PERSON_LIST.EXTENSION.notEqual(EMPTY)))
 					.stream()
-					.filter(FunctionUtils.distinctByKey(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList::getPeer))
-					.collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList::getPeer, e -> e));
+					.filter(FunctionUtils.distinctByKey(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList::getPeer))
+					.collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList::getPeer, e -> e));
 
 			final List<CompanyServerEntity> companyServerEntities = cacheService.getCompanyServerList(g.getUser().getCompanyId());
 			final Map<String, Number_070> numberStringObjectMap = numberRepository.findAll().stream()
-					.filter(FunctionUtils.distinctByKey(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070::getNumber))
-					.collect(Collectors.toMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070::getNumber, e -> e));
+					.filter(FunctionUtils.distinctByKey(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070::getNumber))
+					.collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070::getNumber, e -> e));
 
 			List<SummaryPersonResponse> inMemberList =
 					members.stream().filter(e -> CallType.INBOUND.getCode().equals(e.getMemberType()))
@@ -386,7 +386,7 @@ public class ConfInfoApiController extends ApiBaseController {
 									response1.setExtension(personList.getExtension());
 
 									if (Objects.nonNull(numberStringObjectMap.get(e.getRoomNumber()))) {
-										final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070 number_070 = numberStringObjectMap.get(e.getRoomNumber());
+										final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070 number_070 = numberStringObjectMap.get(e.getRoomNumber());
 										companyServerEntities.stream()
 												.filter(company -> company.getServer().getHost().equals(number_070.getHost()))
 												.findAny()

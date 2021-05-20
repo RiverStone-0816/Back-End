@@ -1,24 +1,24 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.pds;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ExecutePdsGroup;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PdsGroup;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ExecutePDSGroupEntity;
-import kr.co.eicn.ippbx.server.model.entity.pds.PDSResultCustomInfoEntity;
-import kr.co.eicn.ippbx.server.model.enums.IdType;
-import kr.co.eicn.ippbx.server.model.form.PDSResultCustomInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.search.ExecutePDSGroupSearchRequest;
-import kr.co.eicn.ippbx.server.model.search.PDSResultCustomInfoSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ExecutePdsGroup;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.ExecutePDSGroupEntity;
+import kr.co.eicn.ippbx.model.entity.pds.PDSResultCustomInfoEntity;
+import kr.co.eicn.ippbx.model.enums.IdType;
+import kr.co.eicn.ippbx.model.form.PDSResultCustomInfoFormRequest;
+import kr.co.eicn.ippbx.model.search.ExecutePDSGroupSearchRequest;
+import kr.co.eicn.ippbx.model.search.PDSResultCustomInfoSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.ExecutePDSGroupRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.HistoryPDSGroupRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PDSGroupRepository;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import kr.co.eicn.ippbx.server.service.PDSResultCustomInfoService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.DSLContext;
@@ -33,8 +33,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -95,11 +95,11 @@ public class PDSResultCustomInfoApiController extends ApiBaseController {
 
     @DeleteMapping("{executeId}/data/{seq}")
     public ResponseEntity<JsonResult<Void>> delete(@PathVariable String executeId, @PathVariable Integer seq) {
-        
+
         PDSResultCustomInfoEntity response = service.getRepository(executeId).findOne(seq);
         if (g.getUser().getIdType().equals(IdType.USER.getCode()) && !g.getUser().getId().equals(response.getUserid()))
             throw new IllegalArgumentException("다른 상담원의 이력은 삭제할 수 없습니다.");
-        
+
         service.getRepository(executeId).deleteData(seq);
         return ResponseEntity.ok(create());
     }

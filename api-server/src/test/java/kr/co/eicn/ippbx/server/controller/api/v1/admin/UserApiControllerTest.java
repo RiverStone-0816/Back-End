@@ -1,32 +1,26 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.dto.eicn.PersonSummaryResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryPhoneInfoResponse;
-import kr.co.eicn.ippbx.server.model.enums.IdStatus;
-import kr.co.eicn.ippbx.server.model.enums.IdType;
-import kr.co.eicn.ippbx.server.model.enums.RecordingAuthorityType;
-import kr.co.eicn.ippbx.server.model.form.PersonFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PersonFormUpdateRequest;
-import kr.co.eicn.ippbx.server.model.form.PersonPasswordUpdateRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.model.dto.eicn.PersonSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryPhoneInfoResponse;
+import kr.co.eicn.ippbx.model.enums.IdStatus;
+import kr.co.eicn.ippbx.model.enums.IdType;
+import kr.co.eicn.ippbx.model.enums.RecordingAuthorityType;
+import kr.co.eicn.ippbx.model.form.PersonFormRequest;
+import kr.co.eicn.ippbx.model.form.PersonFormUpdateRequest;
+import kr.co.eicn.ippbx.model.form.PersonPasswordUpdateRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.*;

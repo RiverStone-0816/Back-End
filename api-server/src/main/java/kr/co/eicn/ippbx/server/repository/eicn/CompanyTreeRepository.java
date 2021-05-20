@@ -1,13 +1,13 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.exception.EntityNotFoundException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.CompanyTreeRecord;
-import kr.co.eicn.ippbx.server.model.entity.eicn.MonitControlEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.Organization;
-import kr.co.eicn.ippbx.server.model.entity.eicn.PersonEntity;
-import kr.co.eicn.ippbx.server.model.form.OrganizationFormRequest;
-import kr.co.eicn.ippbx.server.model.search.MonitControlSearchRequest;
+import kr.co.eicn.ippbx.exception.EntityNotFoundException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.CompanyTreeRecord;
+import kr.co.eicn.ippbx.model.entity.eicn.MonitControlEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.Organization;
+import kr.co.eicn.ippbx.model.entity.eicn.PersonEntity;
+import kr.co.eicn.ippbx.model.form.OrganizationFormRequest;
+import kr.co.eicn.ippbx.model.search.MonitControlSearchRequest;
 import lombok.Getter;
 import org.jooq.Record;
 import org.jooq.impl.DSL;
@@ -21,18 +21,18 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.QUEUE_MEMBER_TABLE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.CompanyTree.COMPANY_TREE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PersonList.PERSON_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.QUEUE_MEMBER_TABLE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CompanyTree.COMPANY_TREE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
 import static org.apache.commons.lang3.StringUtils.*;
 
 @Getter
 @Repository
-public class CompanyTreeRepository extends EicnBaseRepository<CompanyTree, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree, Integer> {
+public class CompanyTreeRepository extends EicnBaseRepository<CompanyTree, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree, Integer> {
 	protected final Logger logger = LoggerFactory.getLogger(CompanyTreeRepository.class);
 
 	public CompanyTreeRepository() {
-		super(COMPANY_TREE, COMPANY_TREE.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree.class);
+		super(COMPANY_TREE, COMPANY_TREE.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree.class);
 
 		orderByFields.add(COMPANY_TREE.GROUP_NAME.asc());
 	}
@@ -69,11 +69,11 @@ public class CompanyTreeRepository extends EicnBaseRepository<CompanyTree, kr.co
 	}
 
 	public Record insertOnGeneratedKey(OrganizationFormRequest record) {
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.CompanyTree sequenceTable = COMPANY_TREE.as("GROUP_CODE_SEQUENCE");
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.CompanyTree sequenceTable = COMPANY_TREE.as("GROUP_CODE_SEQUENCE");
 		final Integer nextGeneratedKey = dsl.select(DSL.ifnull(DSL.max(sequenceTable.GROUP_CODE), 0).add(1)).from(sequenceTable)
 				.where(sequenceTable.COMPANY_ID.eq(getCompanyId())).fetchOneInto(Integer.class);
 		final CompanyTreeRecord companyTreeRecord = dsl.newRecord(COMPANY_TREE, record);
-		final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree> parentTrees = new ArrayList<>();
+		final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree> parentTrees = new ArrayList<>();
 
 		companyTreeRecord.setCompanyId(g.getUser().getCompanyId());
 		companyTreeRecord.setGroupCode(generateKey(nextGeneratedKey));
@@ -85,7 +85,7 @@ public class CompanyTreeRepository extends EicnBaseRepository<CompanyTree, kr.co
 			factorialParentOrganization(findAll(), record.getParentGroupCode(), parentTrees);
 
 			final String parentTreeName = parentTrees.stream()
-					.map(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree::getGroupCode)
+					.map(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree::getGroupCode)
 					.sorted()
 					.collect(Collectors.joining("_"));
 
@@ -110,8 +110,8 @@ public class CompanyTreeRepository extends EicnBaseRepository<CompanyTree, kr.co
 		return null;
 	}
 
-	public void factorialParentOrganization(List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree> organizations, String parentCode, List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree> parentTreeNames) {
-		final Optional<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree> any = organizations.stream()
+	public void factorialParentOrganization(List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree> organizations, String parentCode, List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree> parentTreeNames) {
+		final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree> any = organizations.stream()
 				.filter(e -> e.getGroupCode().equals(parentCode)).findAny();
 
 		any.ifPresent(e -> {
@@ -120,8 +120,8 @@ public class CompanyTreeRepository extends EicnBaseRepository<CompanyTree, kr.co
 		});
 	}
 
-	public kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree findOneGroupCodeIfNullThrow(String groupCode) {
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree entity = super.findOne(COMPANY_TREE.GROUP_CODE.eq(groupCode));
+	public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree findOneGroupCodeIfNullThrow(String groupCode) {
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree entity = super.findOne(COMPANY_TREE.GROUP_CODE.eq(groupCode));
 
 		if (entity == null)
 			throw new EntityNotFoundException(message.getText("messages.company-tree.notfound"));
@@ -129,7 +129,7 @@ public class CompanyTreeRepository extends EicnBaseRepository<CompanyTree, kr.co
 		return entity;
 	}
 
-	public kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree findOneByGroupCode(String groupCode) {
+	public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree findOneByGroupCode(String groupCode) {
 		return super.findOne(COMPANY_TREE.GROUP_CODE.eq(groupCode));
 	}
 }

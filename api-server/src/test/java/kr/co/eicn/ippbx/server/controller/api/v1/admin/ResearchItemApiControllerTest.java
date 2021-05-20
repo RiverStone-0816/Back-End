@@ -1,11 +1,11 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ResearchItemResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ResearchItemSummaryResponse;
-import kr.co.eicn.ippbx.server.model.enums.ResearchItemSoundKind;
-import kr.co.eicn.ippbx.server.model.form.ResearchItemFormRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.model.dto.eicn.ResearchItemResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.ResearchItemSummaryResponse;
+import kr.co.eicn.ippbx.model.enums.ResearchItemSoundKind;
+import kr.co.eicn.ippbx.model.form.ResearchItemFormRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;

@@ -1,13 +1,13 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.server.model.entity.customdb.MemoMsgEntity;
-import kr.co.eicn.ippbx.server.model.enums.Bool;
-import kr.co.eicn.ippbx.server.model.enums.ChattingSendReceive;
-import kr.co.eicn.ippbx.server.model.search.MemoMsgSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.model.entity.customdb.MemoMsgEntity;
+import kr.co.eicn.ippbx.model.enums.Bool;
+import kr.co.eicn.ippbx.model.enums.ChattingSendReceive;
+import kr.co.eicn.ippbx.model.search.MemoMsgSearchRequest;
 import kr.co.eicn.ippbx.server.repository.customdb.MemoMsgRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

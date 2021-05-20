@@ -1,27 +1,27 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.schedule.inbound;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.EntityNotFoundException;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ConfRoom;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ScheduleInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ServiceList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.Number_070;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleGroup;
-import kr.co.eicn.ippbx.server.model.dto.eicn.Number070ScheduleInfoDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.Number070ScheduleInfoResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryNumber070Response;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummaryScheduleGroupResponse;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ScheduleGroupEntity;
-import kr.co.eicn.ippbx.server.model.enums.NumberType;
-import kr.co.eicn.ippbx.server.model.enums.ScheduleType;
-import kr.co.eicn.ippbx.server.model.form.DayScheduleInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.DayScheduleInfoUpdateFormRequest;
-import kr.co.eicn.ippbx.server.model.form.HolyScheduleInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.search.ScheduleInfoSearchRequest;
+import kr.co.eicn.ippbx.exception.EntityNotFoundException;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ConfRoom;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ServiceList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroup;
+import kr.co.eicn.ippbx.model.dto.eicn.Number070ScheduleInfoDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.Number070ScheduleInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryNumber070Response;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryScheduleGroupResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.ScheduleGroupEntity;
+import kr.co.eicn.ippbx.model.enums.NumberType;
+import kr.co.eicn.ippbx.model.enums.ScheduleType;
+import kr.co.eicn.ippbx.model.form.DayScheduleInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.DayScheduleInfoUpdateFormRequest;
+import kr.co.eicn.ippbx.model.form.HolyScheduleInfoFormRequest;
+import kr.co.eicn.ippbx.model.search.ScheduleInfoSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
-import kr.co.eicn.ippbx.server.util.FunctionUtils;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.FunctionUtils;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -38,10 +38,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.QueueName.QUEUE_NAME;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName.QUEUE_NAME;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 음원/IVR관리 > 일정관리 > [수신]일별스케쥴러
@@ -65,9 +65,9 @@ public class InboundDayScheduleInfoApiController extends ApiBaseController {
 	 */
 	@GetMapping("")
 	public ResponseEntity<JsonResult<List<Number070ScheduleInfoResponse>>> list(ScheduleInfoSearchRequest search) {
-		final Map<String, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList> serviceListMap =
-				serviceRepository.findAll().stream().filter(FunctionUtils.distinctByKey(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList::getSvcNumber))
-						.collect(Collectors.toConcurrentMap(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList::getSvcNumber, e -> e));
+		final Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList> serviceListMap =
+				serviceRepository.findAll().stream().filter(FunctionUtils.distinctByKey(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList::getSvcNumber))
+						.collect(Collectors.toConcurrentMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList::getSvcNumber, e -> e));
 
 		search.setType(ScheduleType.DAY);
 
@@ -76,7 +76,7 @@ public class InboundDayScheduleInfoApiController extends ApiBaseController {
 					final Number070ScheduleInfoResponse response = convertDto(e, Number070ScheduleInfoResponse.class);
 					if (NumberType.SERVICE.getCode().equals(response.getType())) {
 						if (Objects.nonNull(serviceListMap.get(response.getNumber()))) {
-							final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ServiceList serviceList = serviceListMap.get(response.getNumber());
+							final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList serviceList = serviceListMap.get(response.getNumber());
 							response.setSvcName(serviceList.getSvcName());
 							response.setSvcCid(serviceList.getSvcCid());
 						}
@@ -182,9 +182,9 @@ public class InboundDayScheduleInfoApiController extends ApiBaseController {
 	 */
 	@GetMapping("/search-number-list")
 	public ResponseEntity<JsonResult<List<SummaryNumber070Response>>> searchNumbers() {
-		final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleInfo> scheduleInfos = repository.findAll(ScheduleInfo.SCHEDULE_INFO.TYPE.eq(ScheduleType.DAY.getCode()));
+		final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleInfo> scheduleInfos = repository.findAll(ScheduleInfo.SCHEDULE_INFO.TYPE.eq(ScheduleType.DAY.getCode()));
 		return ResponseEntity.ok(data(getNumbers().stream()
-				.filter(e -> scheduleInfos.stream().map(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.ScheduleInfo::getNumber).distinct().anyMatch(s -> s.equals(e.getNumber())))
+				.filter(e -> scheduleInfos.stream().map(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleInfo::getNumber).distinct().anyMatch(s -> s.equals(e.getNumber())))
 				.collect(Collectors.toList()))
 		);
 	}

@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.ExecutePdsGroup;
-import kr.co.eicn.ippbx.server.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ExecutePDSGroupEntity;
-import kr.co.eicn.ippbx.server.model.search.ExecutePDSGroupSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ExecutePdsGroup;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.ExecutePDSGroupEntity;
+import kr.co.eicn.ippbx.model.search.ExecutePDSGroupSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import lombok.Getter;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.EXECUTE_PDS_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.EXECUTE_PDS_GROUP;
 
 @Getter
 @Repository

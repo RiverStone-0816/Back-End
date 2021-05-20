@@ -1,11 +1,11 @@
 package kr.co.eicn.ippbx.server.repository.pds;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryPdsGroup;
-import kr.co.eicn.ippbx.server.jooq.pds.tables.CommonPDSCustomInfo;
-import kr.co.eicn.ippbx.server.jooq.pds.tables.CommonPDSResearchResult;
-import kr.co.eicn.ippbx.server.jooq.pds.tables.pojos.PdsCustomInfo;
-import kr.co.eicn.ippbx.server.model.entity.pds.PdsResearchResultEntity;
-import kr.co.eicn.ippbx.server.model.search.PDSResearchResultSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsGroup;
+import kr.co.eicn.ippbx.meta.jooq.pds.tables.CommonPDSCustomInfo;
+import kr.co.eicn.ippbx.meta.jooq.pds.tables.CommonPDSResearchResult;
+import kr.co.eicn.ippbx.meta.jooq.pds.tables.pojos.PdsCustomInfo;
+import kr.co.eicn.ippbx.model.entity.pds.PdsResearchResultEntity;
+import kr.co.eicn.ippbx.model.search.PDSResearchResultSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.HistoryPDSGroupRepository;
 import kr.co.eicn.ippbx.server.service.PDSCustomInfoService;
 import lombok.Getter;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.pds.Tables.PDS_RESEARCH_RESULT;
+import static kr.co.eicn.ippbx.meta.jooq.pds.Tables.PDS_RESEARCH_RESULT;
 
 @Getter
 public class PDSResearchResultRepository extends PDSDbBaseRepository<CommonPDSResearchResult, PdsResearchResultEntity, Integer> {

@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
 import kr.co.eicn.ippbx.server.config.Constants;
-import kr.co.eicn.ippbx.server.model.enums.ContextType;
-import kr.co.eicn.ippbx.server.model.enums.SearchCycle;
-import kr.co.eicn.ippbx.server.model.search.AbstractStatSearchRequest;
+import kr.co.eicn.ippbx.model.enums.ContextType;
+import kr.co.eicn.ippbx.model.enums.SearchCycle;
+import kr.co.eicn.ippbx.model.search.AbstractStatSearchRequest;
 import kr.co.eicn.ippbx.server.repository.BaseRepository;
 import org.jooq.*;
 import org.jooq.impl.TableImpl;
@@ -14,7 +14,6 @@ import java.sql.Date;
 import java.util.Objects;
 
 import static org.jooq.impl.DSL.*;
-import static org.jooq.impl.DSL.dayOfWeek;
 
 public abstract class StatDBBaseRepository<TABLE extends TableImpl<?>, ENTITY, PK> extends BaseRepository<TABLE, ENTITY, PK> {
     protected TableField<? extends Record, PK> primaryField;

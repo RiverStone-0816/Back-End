@@ -1,18 +1,18 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.OutScheduleList;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HolyInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.OutScheduleSeed;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.OutScheduleListRecord;
-import kr.co.eicn.ippbx.server.model.enums.ScheduleType;
-import kr.co.eicn.ippbx.server.model.form.DayScheduleInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.HolyOutScheduleFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PeriodDateFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.OutScheduleList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HolyInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.OutScheduleSeed;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.OutScheduleListRecord;
+import kr.co.eicn.ippbx.model.enums.ScheduleType;
+import kr.co.eicn.ippbx.model.form.DayScheduleInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.HolyOutScheduleFormRequest;
+import kr.co.eicn.ippbx.model.form.PeriodDateFormRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
-import kr.co.eicn.ippbx.server.util.EicnUtils;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.EicnUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.Getter;
 import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
@@ -27,12 +27,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.OutScheduleList.OUT_SCHEDULE_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.OutScheduleList.OUT_SCHEDULE_LIST;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class OutScheduleListRepository extends EicnBaseRepository<OutScheduleList, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.OutScheduleList, Integer> {
+public class OutScheduleListRepository extends EicnBaseRepository<OutScheduleList, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.OutScheduleList, Integer> {
 	protected final Logger logger = LoggerFactory.getLogger(OutScheduleListRepository.class);
 
 	private final OutScheduleSeedRepository outScheduleSeedRepository;
@@ -44,7 +44,7 @@ public class OutScheduleListRepository extends EicnBaseRepository<OutScheduleLis
 	private final int MAX_PERIOD = 20;
 
 	public OutScheduleListRepository(OutScheduleSeedRepository outScheduleSeedRepository, HolyInfoRepository holyInfoRepository, CompanyTreeRepository companyTreeRepository, CacheService cacheService, PBXServerInterface pbxServerInterface) {
-		super(OUT_SCHEDULE_LIST, OUT_SCHEDULE_LIST.CODE, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.OutScheduleList.class);
+		super(OUT_SCHEDULE_LIST, OUT_SCHEDULE_LIST.CODE, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.OutScheduleList.class);
 		this.outScheduleSeedRepository = outScheduleSeedRepository;
 		this.holyInfoRepository = holyInfoRepository;
 		this.companyTreeRepository = companyTreeRepository;
@@ -104,7 +104,7 @@ public class OutScheduleListRepository extends EicnBaseRepository<OutScheduleLis
 				record.setExtension(companyTree.getGroupTreeName());
 		}
 
-		final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.OutScheduleList> dayScheduleInfos = findAll(OUT_SCHEDULE_LIST.TYPE.eq(ScheduleType.DAY.getCode()));
+		final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.OutScheduleList> dayScheduleInfos = findAll(OUT_SCHEDULE_LIST.TYPE.eq(ScheduleType.DAY.getCode()));
 
 		for (LocalDate localDate : localDates) {
 			record.setName(holyName);

@@ -1,19 +1,19 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.application.code;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonCode;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonField;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CommonType;
-import kr.co.eicn.ippbx.server.model.dto.eicn.CommonCodeDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.CommonFieldResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.CommonTypeDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.RelatedFieldResponse;
-import kr.co.eicn.ippbx.server.model.form.CommonCodeUpdateFormRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType;
+import kr.co.eicn.ippbx.model.dto.eicn.CommonCodeDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.CommonFieldResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.CommonTypeDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.RelatedFieldResponse;
+import kr.co.eicn.ippbx.model.form.CommonCodeUpdateFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonCodeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonFieldRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonTypeRepository;
 import kr.co.eicn.ippbx.server.service.CommonFieldPoster;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -27,8 +27,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * 상담어플리케이션관리 > 코드관리 > 코드/멀티코드

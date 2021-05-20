@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.server.controller.api;
 
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.PersonLink;
-import kr.co.eicn.ippbx.server.model.form.PersonLinkFormRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonLink;
+import kr.co.eicn.ippbx.model.form.PersonLinkFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonLinkRepository;
-import kr.co.eicn.ippbx.server.util.JsonResult;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;

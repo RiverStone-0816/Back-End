@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.EvaluationCategory;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.records.EvaluationCategoryRecord;
-import kr.co.eicn.ippbx.server.model.entity.eicn.EvaluationCategoryEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.EvaluationItemEntity;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationCategory;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.EvaluationCategoryRecord;
+import kr.co.eicn.ippbx.model.entity.eicn.EvaluationCategoryEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.EvaluationItemEntity;
 import lombok.Getter;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -16,16 +16,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.EvaluationCategory.EVALUATION_CATEGORY;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.EvaluationItem.EVALUATION_ITEM;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationCategory.EVALUATION_CATEGORY;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationItem.EVALUATION_ITEM;
 
 @Getter
 @Repository
-public class EvaluationCategoryRepository extends EicnBaseRepository<EvaluationCategory, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationCategory, Long> {
+public class EvaluationCategoryRepository extends EicnBaseRepository<EvaluationCategory, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationCategory, Long> {
 	protected final Logger logger = LoggerFactory.getLogger(EvaluationCategoryRepository.class);
 
 	public EvaluationCategoryRepository() {
-		super(EVALUATION_CATEGORY, EVALUATION_CATEGORY.ID, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.EvaluationCategory.class);
+		super(EVALUATION_CATEGORY, EVALUATION_CATEGORY.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationCategory.class);
 	}
 
 	public List<EvaluationCategoryEntity> getCategories(final Long evaluationId) {

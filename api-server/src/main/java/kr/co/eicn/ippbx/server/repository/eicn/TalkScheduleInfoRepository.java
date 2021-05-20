@@ -1,16 +1,16 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.TalkScheduleInfo;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.CompanyTree;
-import kr.co.eicn.ippbx.server.model.entity.eicn.TalkScheduleGroupEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.TalkScheduleInfoEntity;
-import kr.co.eicn.ippbx.server.model.enums.ScheduleType;
-import kr.co.eicn.ippbx.server.model.form.DayTalkScheduleInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.HolyTalkScheduleInfoFormRequest;
-import kr.co.eicn.ippbx.server.model.form.PeriodDateFormRequest;
-import kr.co.eicn.ippbx.server.model.form.TalkScheduleInfoFormRequest;
-import kr.co.eicn.ippbx.server.util.EicnUtils;
-import kr.co.eicn.ippbx.server.util.ReflectionUtils;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkScheduleInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
+import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleGroupEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleInfoEntity;
+import kr.co.eicn.ippbx.model.enums.ScheduleType;
+import kr.co.eicn.ippbx.model.form.DayTalkScheduleInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.HolyTalkScheduleInfoFormRequest;
+import kr.co.eicn.ippbx.model.form.PeriodDateFormRequest;
+import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormRequest;
+import kr.co.eicn.ippbx.util.EicnUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,19 +21,19 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.TalkScheduleGroup.TALK_SCHEDULE_GROUP;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.TalkScheduleInfo.TALK_SCHEDULE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkScheduleGroup.TALK_SCHEDULE_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkScheduleInfo.TALK_SCHEDULE_INFO;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class TalkScheduleInfoRepository extends EicnBaseRepository<TalkScheduleInfo, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkScheduleInfo, Integer> {
+public class TalkScheduleInfoRepository extends EicnBaseRepository<TalkScheduleInfo, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleInfo, Integer> {
 	protected final Logger logger = LoggerFactory.getLogger(TalkScheduleInfoRepository.class);
 	private final CompanyTreeRepository companyTreeRepository;
 
 	public TalkScheduleInfoRepository(CompanyTreeRepository companyTreeRepository) {
-		super(TALK_SCHEDULE_INFO, TALK_SCHEDULE_INFO.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkScheduleInfo.class);
+		super(TALK_SCHEDULE_INFO, TALK_SCHEDULE_INFO.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleInfo.class);
 		this.companyTreeRepository = companyTreeRepository;
 	}
 
@@ -53,7 +53,7 @@ public class TalkScheduleInfoRepository extends EicnBaseRepository<TalkScheduleI
 
 	public void insertOnWeekSchedule(TalkScheduleInfoFormRequest form) {
 		final List<String> weeks = Arrays.asList("1Mon", "2Tue", "3Wed", "4Thu", "5Fri", "6Sat", "7Sun");
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkScheduleInfo record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkScheduleInfo();
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleInfo record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleInfo();
 
 		record.setType(ScheduleType.WEEK.getCode());
 		record.setFromdate(Date.valueOf("2007-11-22"));
@@ -74,7 +74,7 @@ public class TalkScheduleInfoRepository extends EicnBaseRepository<TalkScheduleI
 
 	public void insertOnDaySchedule(DayTalkScheduleInfoFormRequest form) {
 		final List<LocalDate> localDates = EicnUtils.betweenDate(LocalDate.parse(form.getFromDate()), LocalDate.parse(form.getToDate()));
-		final kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkScheduleInfo record = new kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkScheduleInfo();
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleInfo record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleInfo();
 
 		record.setType(ScheduleType.DAY.getCode());
 		record.setGroupId(form.getGroupId());
@@ -90,7 +90,7 @@ public class TalkScheduleInfoRepository extends EicnBaseRepository<TalkScheduleI
 			}
 		}
 
-		final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.TalkScheduleInfo> dayScheduleInfos = findAll(TALK_SCHEDULE_INFO.TYPE.eq(ScheduleType.DAY.getCode()));
+		final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleInfo> dayScheduleInfos = findAll(TALK_SCHEDULE_INFO.TYPE.eq(ScheduleType.DAY.getCode()));
 
 		for (LocalDate localDate : localDates) {
 			record.setFromdate(Date.valueOf(localDate));

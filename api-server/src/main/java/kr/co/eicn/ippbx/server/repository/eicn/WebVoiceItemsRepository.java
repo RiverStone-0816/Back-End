@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.WebvoiceItems;
-import kr.co.eicn.ippbx.server.model.enums.ContextType;
-import kr.co.eicn.ippbx.server.model.enums.IsWebVoiceYn;
-import kr.co.eicn.ippbx.server.model.enums.WebVoiceItemType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebvoiceItems;
+import kr.co.eicn.ippbx.model.enums.ContextType;
+import kr.co.eicn.ippbx.model.enums.IsWebVoiceYn;
+import kr.co.eicn.ippbx.model.enums.WebVoiceItemType;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -13,11 +13,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.WebvoiceItems.WEBVOICE_ITEMS;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebvoiceItems.WEBVOICE_ITEMS;
 
 @Getter
 @Repository
-public class WebVoiceItemsRepository extends EicnBaseRepository<WebvoiceItems, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceItems, Integer> {
+public class WebVoiceItemsRepository extends EicnBaseRepository<WebvoiceItems, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceItems, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(WebVoiceItemsRepository.class);
     private String context;
     private Integer ivrCode;
@@ -25,14 +25,14 @@ public class WebVoiceItemsRepository extends EicnBaseRepository<WebvoiceItems, k
     private String itemType;
 
     public WebVoiceItemsRepository() {
-        super(WEBVOICE_ITEMS, WEBVOICE_ITEMS.SEQ, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceItems.class);
+        super(WEBVOICE_ITEMS, WEBVOICE_ITEMS.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceItems.class);
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceItems> findAllByContext(String context) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceItems> findAllByContext(String context) {
         return findAll(WEBVOICE_ITEMS.CONTEXT.eq(context));
     }
 
-    public List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.WebvoiceItems> findAllByIvrCode(Integer ivrCode) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceItems> findAllByIvrCode(Integer ivrCode) {
         return findAll(WEBVOICE_ITEMS.IVR_CODE.eq(ivrCode));
     }
 

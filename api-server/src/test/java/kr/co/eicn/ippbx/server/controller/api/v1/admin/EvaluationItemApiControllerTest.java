@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.entity.eicn.EvaluationFormEntity;
-import kr.co.eicn.ippbx.server.model.form.EvaluationCategoryFormRequest;
-import kr.co.eicn.ippbx.server.model.form.EvaluationItemFormRequest;
+import kr.co.eicn.ippbx.model.entity.eicn.EvaluationFormEntity;
+import kr.co.eicn.ippbx.model.form.EvaluationCategoryFormRequest;
+import kr.co.eicn.ippbx.model.form.EvaluationItemFormRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;

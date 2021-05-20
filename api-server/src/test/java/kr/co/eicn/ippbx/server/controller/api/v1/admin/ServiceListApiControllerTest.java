@@ -1,31 +1,26 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ServiceListDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.ServiceListSummaryResponse;
-import kr.co.eicn.ippbx.server.model.form.ServiceListFormRequest;
-import kr.co.eicn.ippbx.server.model.form.ServiceListFormUpdateRequest;
+import kr.co.eicn.ippbx.model.dto.eicn.ServiceListDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.ServiceListSummaryResponse;
+import kr.co.eicn.ippbx.model.form.ServiceListFormRequest;
+import kr.co.eicn.ippbx.model.form.ServiceListFormUpdateRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.ServiceRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;

@@ -1,18 +1,18 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.sounds.sound;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.exception.ValidationException;
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.SoundList;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SoundDetailResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SoundListSummaryResponse;
-import kr.co.eicn.ippbx.server.model.dto.eicn.SummarySoundListResponse;
-import kr.co.eicn.ippbx.server.model.form.SoundListRequest;
-import kr.co.eicn.ippbx.server.model.search.SoundListSearchRequest;
+import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList;
+import kr.co.eicn.ippbx.model.dto.eicn.SoundDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SoundListSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummarySoundListResponse;
+import kr.co.eicn.ippbx.model.form.SoundListRequest;
+import kr.co.eicn.ippbx.model.search.SoundListSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.SoundListRepository;
 import kr.co.eicn.ippbx.server.service.SoundListService;
 import kr.co.eicn.ippbx.server.service.StorageService;
-import kr.co.eicn.ippbx.server.util.JsonResult;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,8 +30,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
-import static kr.co.eicn.ippbx.server.util.JsonResult.create;
-import static kr.co.eicn.ippbx.server.util.JsonResult.data;
+import static kr.co.eicn.ippbx.util.JsonResult.create;
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 @Slf4j
 @RequiredArgsConstructor

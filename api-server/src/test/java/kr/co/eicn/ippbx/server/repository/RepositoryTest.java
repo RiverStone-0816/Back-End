@@ -2,18 +2,18 @@ package kr.co.eicn.ippbx.server.repository;
 
 import kr.co.eicn.ippbx.server.config.Constants;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.server.jooq.eicn.enums.TodoListTodoStatus;
-import kr.co.eicn.ippbx.server.jooq.pds.tables.CommonExecutePDSCustomInfo;
-import kr.co.eicn.ippbx.server.model.IvrTreeComposite;
-import kr.co.eicn.ippbx.server.model.PDSIvrComposite;
-import kr.co.eicn.ippbx.server.model.ResearchAnswerItemComposite;
-import kr.co.eicn.ippbx.server.model.ResearchQuestionItemComposite;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ResearchListEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ScheduleGroupEntity;
-import kr.co.eicn.ippbx.server.model.entity.eicn.ScheduleGroupListEntity;
-import kr.co.eicn.ippbx.server.model.entity.statdb.StatInboundEntity;
-import kr.co.eicn.ippbx.server.model.enums.ScheduleType;
-import kr.co.eicn.ippbx.server.model.search.TalkServiceInfoSearchRequest;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
+import kr.co.eicn.ippbx.meta.jooq.pds.tables.CommonExecutePDSCustomInfo;
+import kr.co.eicn.ippbx.model.IvrTreeComposite;
+import kr.co.eicn.ippbx.model.PDSIvrComposite;
+import kr.co.eicn.ippbx.model.ResearchAnswerItemComposite;
+import kr.co.eicn.ippbx.model.ResearchQuestionItemComposite;
+import kr.co.eicn.ippbx.model.entity.eicn.ResearchListEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.ScheduleGroupEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.ScheduleGroupListEntity;
+import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
+import kr.co.eicn.ippbx.model.enums.ScheduleType;
+import kr.co.eicn.ippbx.model.search.TalkServiceInfoSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.StatInboundService;
 import kr.co.eicn.ippbx.server.service.StatQueueWaitService;
@@ -34,13 +34,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.HolyInfo.HOLY_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.IvrTree.IVR_TREE;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.Number_070.NUMBER_070;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ScheduleGroup.SCHEDULE_GROUP;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.ScheduleInfo.SCHEDULE_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.TodoList.TODO_LIST;
-import static kr.co.eicn.ippbx.server.jooq.pds.tables.ExecutePdsCustomInfo.EXECUTE_PDS_CUSTOM_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.HolyInfo.HOLY_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.IvrTree.IVR_TREE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.Number_070.NUMBER_070;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleGroup.SCHEDULE_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleInfo.SCHEDULE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TodoList.TODO_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.pds.tables.ExecutePdsCustomInfo.EXECUTE_PDS_CUSTOM_INFO;
 
 @Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -197,8 +197,8 @@ public class RepositoryTest extends BaseControllerTest {
 
 //	@Test
 	public void dslTest(){
-		final List<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HolyInfo> holyInfos = eicnDsl.select().from(HOLY_INFO).fetchInto(kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HolyInfo.class);
-		for (kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HolyInfo holyInfo : holyInfos) {
+		final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HolyInfo> holyInfos = eicnDsl.select().from(HOLY_INFO).fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HolyInfo.class);
+		for (kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HolyInfo holyInfo : holyInfos) {
 			log.info("holy -> {}", holyInfo.toString());
 		}
 	}
@@ -213,7 +213,7 @@ public class RepositoryTest extends BaseControllerTest {
 	}
 
 	public void printQLog(ResearchQuestionItemComposite question) {
-		log.info("{}{}.질문 :{}, path: {}", prefix(question.getLevel()), question.getLevel(), kr.co.eicn.ippbx.server.util.StringUtils.subStringBytes(question.getWord(), 30), question.getPath());
+		log.info("{}{}.질문 :{}, path: {}", prefix(question.getLevel()), question.getLevel(), kr.co.eicn.ippbx.util.StringUtils.subStringBytes(question.getWord(), 30), question.getPath());
 		if (question.getAnswerItems() != null)
 			printALog(question.getAnswerItems());
 		if (!question.isLeaf())

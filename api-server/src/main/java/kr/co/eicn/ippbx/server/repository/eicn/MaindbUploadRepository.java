@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.HistoryUploadInfo;
-import kr.co.eicn.ippbx.server.model.enums.CommonTypeKind;
-import kr.co.eicn.ippbx.server.model.search.MaindbUploadSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.HistoryUploadInfo;
+import kr.co.eicn.ippbx.model.enums.CommonTypeKind;
+import kr.co.eicn.ippbx.model.search.MaindbUploadSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.Record;
@@ -18,17 +18,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.HISTORY_UPLOAD_INFO;
-import static kr.co.eicn.ippbx.server.jooq.eicn.Tables.MAINDB_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.HISTORY_UPLOAD_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.MAINDB_GROUP;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
 @Repository
-public class MaindbUploadRepository extends EicnBaseRepository<HistoryUploadInfo, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryUploadInfo, String> {
+public class MaindbUploadRepository extends EicnBaseRepository<HistoryUploadInfo, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryUploadInfo, String> {
     protected final Logger logger = LoggerFactory.getLogger(MaindbGroupRepository.class);
 
     public MaindbUploadRepository() {
-        super(HISTORY_UPLOAD_INFO, HISTORY_UPLOAD_INFO.UPLOAD_ID, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryUploadInfo.class);
+        super(HISTORY_UPLOAD_INFO, HISTORY_UPLOAD_INFO.UPLOAD_ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryUploadInfo.class);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class MaindbUploadRepository extends EicnBaseRepository<HistoryUploadInfo
                 .where();
     }
 
-    public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.HistoryUploadInfo> pagination(MaindbUploadSearchRequest search) {
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryUploadInfo> pagination(MaindbUploadSearchRequest search) {
         return super.pagination(search, conditions(search), Collections.singletonList(HISTORY_UPLOAD_INFO.UPLOAD_DATE.desc()));
     }
 

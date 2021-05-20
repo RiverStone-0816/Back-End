@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.server.exception.StorageException;
-import kr.co.eicn.ippbx.server.exception.StorageFileNotFoundException;
-import kr.co.eicn.ippbx.server.util.UrlUtils;
+import kr.co.eicn.ippbx.exception.StorageException;
+import kr.co.eicn.ippbx.exception.StorageFileNotFoundException;
+import kr.co.eicn.ippbx.util.UrlUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;

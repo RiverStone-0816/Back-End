@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.MohList;
-import kr.co.eicn.ippbx.server.model.search.MohListSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.MohList;
+import kr.co.eicn.ippbx.model.search.MohListSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
@@ -14,19 +14,19 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.MohList.MOH_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.MohList.MOH_LIST;
 
 @Getter
 @Repository
-public class MohListRepository extends EicnBaseRepository<MohList, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MohList, String> {
+public class MohListRepository extends EicnBaseRepository<MohList, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MohList, String> {
 	private final Logger logger = LoggerFactory.getLogger(MohListRepository.class);
 
 	public MohListRepository() {
-		super(MOH_LIST, MOH_LIST.CATEGORY, kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MohList.class);
+		super(MOH_LIST, MOH_LIST.CATEGORY, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MohList.class);
 		orderByFields.add(MOH_LIST.CATEGORY.desc());
 	}
 
-	public Pagination<kr.co.eicn.ippbx.server.jooq.eicn.tables.pojos.MohList> pagination(MohListSearchRequest search) {
+	public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MohList> pagination(MohListSearchRequest search) {
 		return super.pagination(search, conditions(search));
 	}
 

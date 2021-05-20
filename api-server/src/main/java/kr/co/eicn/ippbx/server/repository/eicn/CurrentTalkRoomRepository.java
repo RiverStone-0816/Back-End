@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.jooq.eicn.tables.CurrentTalkRoom;
-import kr.co.eicn.ippbx.server.model.entity.customdb.TalkRoomEntity;
-import kr.co.eicn.ippbx.server.model.search.TalkRoomSearchRequest;
-import kr.co.eicn.ippbx.server.util.page.Pagination;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentTalkRoom;
+import kr.co.eicn.ippbx.model.entity.customdb.TalkRoomEntity;
+import kr.co.eicn.ippbx.model.search.TalkRoomSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.server.jooq.eicn.tables.CurrentTalkRoom.CURRENT_TALK_ROOM;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentTalkRoom.CURRENT_TALK_ROOM;
 
 @Getter
 @Repository

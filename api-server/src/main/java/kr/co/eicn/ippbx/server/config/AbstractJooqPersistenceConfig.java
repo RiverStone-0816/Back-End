@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.config;
 
-import kr.co.eicn.ippbx.server.util.jooq.ExceptionTranslator;
+import kr.co.eicn.ippbx.util.jooq.ExceptionTranslator;
 import org.jooq.ExecuteListener;
 import org.jooq.SQLDialect;
 import org.jooq.conf.Settings;
