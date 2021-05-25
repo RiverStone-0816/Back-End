@@ -16,7 +16,7 @@
 <%--@elvariable id="form" type="kr.co.eicn.ippbx.front.model.form.LoginForm"--%>
 
 <mobileTags:layout>
-    <form:form commandName="form" cssClass="ui modal window -json-submit" data-method="put"
+    <form:form modelAttribute="form" cssClass="ui modal window -json-submit" data-method="put"
                action="${pageContext.request.contextPath}/api/chatt/bookmark"
                data-before="prepareWriteMessengerBookmarkFormData" data-done="doneSubmitMessengerBookmarkFormData">
 

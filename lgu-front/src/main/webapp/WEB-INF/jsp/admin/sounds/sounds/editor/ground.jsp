@@ -8,7 +8,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
@@ -17,7 +17,7 @@
 <tags:tabContentLayout>
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/sounds/sounds/editor/"/>
-        <form:form id="make-form" commandName="form" cssClass="sub-content ui container fluid">
+        <form:form id="make-form" modelAttribute="form" cssClass="sub-content ui container fluid">
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">

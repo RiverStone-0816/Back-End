@@ -8,12 +8,12 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
-<form:form id="call-counseling-input" commandName="form" cssClass="panel -json-submit"
+<form:form id="call-counseling-input" modelAttribute="form" cssClass="panel -json-submit"
            data-method="${entity != null ? 'put' : 'post'}"
            action="${pageContext.request.contextPath}/api/maindb-result/${entity != null ? entity.seq : null}"
            data-before="prepareCounselingInfoFormData" data-done="donePostCounselingInfo">

@@ -8,11 +8,11 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<form:form commandName="form" class="ui modal -json-submit" data-method="put"
+<form:form modelAttribute="form" class="ui modal -json-submit" data-method="put"
            action="${pageContext.request.contextPath}/api/talk-schedule-day/service/type/${entity.seq}" data-done="reload">
 
     <i class="close icon"></i>

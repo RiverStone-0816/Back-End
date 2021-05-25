@@ -8,11 +8,11 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<form:form commandName="form" cssClass="ui modal small -json-submit" data-method="put"
+<form:form modelAttribute="form" cssClass="ui modal small -json-submit" data-method="put"
            action="${pageContext.request.contextPath}/api/pds-result/${entity.executeId}/data/${entity.seq}"
            data-before="prepareWriteFormData" data-done="reload">
 

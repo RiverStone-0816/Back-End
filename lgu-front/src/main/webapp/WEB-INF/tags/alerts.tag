@@ -8,7 +8,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 
 <c:if test="${not empty g.alerts}">
     <script>

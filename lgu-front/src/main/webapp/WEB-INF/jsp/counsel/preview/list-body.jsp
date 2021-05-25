@@ -8,14 +8,14 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
 <div class="sub-content ui container fluid unstackable">
-    <form:form id="search-preview-form" commandName="search" method="get" class="panel panel-search -ajax-loader"
+    <form:form id="search-preview-form" modelAttribute="search" method="get" class="panel panel-search -ajax-loader"
                action="${pageContext.request.contextPath}/counsel/preview/list-body"
                data-target="#preview-list-body">
         <div class="panel-heading">

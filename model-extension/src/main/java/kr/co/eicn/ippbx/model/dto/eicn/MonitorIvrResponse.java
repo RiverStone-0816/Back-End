@@ -6,9 +6,6 @@ import lombok.Data;
 
 import java.util.List;
 
-/**
- * TODO:
- */
 @Data
 public class MonitorIvrResponse {
     private ScheduleInfo scheduleInfo; // 스케쥴 유형정보

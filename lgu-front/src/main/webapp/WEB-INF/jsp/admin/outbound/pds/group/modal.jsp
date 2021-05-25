@@ -8,7 +8,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="queues" type="java.util.List<kr.co.eicn.ippbx.model.dto.eicn.SummaryPDSQueueNameResponse>"--%>
 <%--@elvariable id="commonFields" type="java.util.List<kr.co.eicn.ippbx.model.dto.eicn.SummaryCommonFieldResponse>"--%>
@@ -16,7 +16,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
-<form:form commandName="form" cssClass="ui modal -json-submit" data-method="${entity == null ? 'post' : 'put'}"
+<form:form modelAttribute="form" cssClass="ui modal -json-submit" data-method="${entity == null ? 'post' : 'put'}"
            action="${pageContext.request.contextPath}/api/pds-group/${entity == null ? null : entity.seq}"
            data-before="prepareWriteForm" data-done="reload">
     <form:hidden path="billingKind"/>

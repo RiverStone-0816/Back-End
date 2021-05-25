@@ -8,12 +8,12 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="commonFields" type="java.util.List<kr.co.eicn.ippbx.model.dto.eicn.SummaryCommonFieldResponse>"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<form:form commandName="form" cssClass="ui modal -json-submit" data-method="post"
+<form:form modelAttribute="form" cssClass="ui modal -json-submit" data-method="post"
            action="${pageContext.request.contextPath}/api/pds-group/${entity.seq}/execute"
            data-before="prepareWriteForm" data-done="reload">
 

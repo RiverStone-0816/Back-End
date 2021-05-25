@@ -8,7 +8,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
@@ -19,7 +19,7 @@
 <%@ page import="kr.co.eicn.ippbx.model.enums.RecordingAuthorityType" %>
 <%@ page import="kr.co.eicn.ippbx.model.enums.DataSearchAuthorityType" %>
 
-<form:form commandName="form" cssClass="ui modal -json-submit" data-method="${entity == null ? 'post' : 'put'}"
+<form:form modelAttribute="form" cssClass="ui modal -json-submit" data-method="${entity == null ? 'post' : 'put'}"
            action="${pageContext.request.contextPath}/api/user/${entity != null ? g.htmlQuote(entity.id) : null}" data-done="reload">
 
     <i class="close icon"></i>

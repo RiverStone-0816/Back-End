@@ -8,7 +8,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
@@ -103,7 +103,7 @@
         </div>
     </div>
 
-    <form:form commandName="form" id="root-ivr-modal" class="ui modal mini -json-submit" data-method="post"
+    <form:form modelAttribute="form" id="root-ivr-modal" class="ui modal mini -json-submit" data-method="post"
                action="${pageContext.request.contextPath}/api/pds-ivr/"
                data-done="reload">
 

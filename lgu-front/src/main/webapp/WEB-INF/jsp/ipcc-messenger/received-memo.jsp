@@ -14,7 +14,7 @@
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
-<form:form commandName="search" class="-ajax-loader" method="get" data-method="get"
+<form:form modelAttribute="search" class="-ajax-loader" method="get" data-method="get"
            action="${pageContext.request.contextPath}/ipcc-messenger/tab-received-memo"
            data-target="#tab4">
     <div class="inner-box" style="margin-top: 5px;">

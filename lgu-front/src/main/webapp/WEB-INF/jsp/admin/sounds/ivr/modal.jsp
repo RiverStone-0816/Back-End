@@ -8,7 +8,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
@@ -33,7 +33,7 @@
 <c:set var="TO_PREVIOUS_MENU" value="${IvrMenuType.TO_PREVIOUS_MENU.code}"/>
 <c:set var="TO_FIRST_MENU" value="${IvrMenuType.TO_FIRST_MENU.code}"/>
 
-<form:form commandName="form" cssClass="ui modal small -json-submit" data-method="${entity == null ? 'post' : 'put'}"
+<form:form modelAttribute="form" cssClass="ui modal small -json-submit" data-method="${entity == null ? 'post' : 'put'}"
            action="${pageContext.request.contextPath}/api/ivr/${entity == null ? null : entity.seq}"
            data-before="prepareWriteFormData" data-done="doneWriteFormData">
 

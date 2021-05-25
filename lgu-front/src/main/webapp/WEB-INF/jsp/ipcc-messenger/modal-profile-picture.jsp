@@ -16,7 +16,7 @@
 <%--@elvariable id="form" type="kr.co.eicn.ippbx.front.model.form.LoginForm"--%>
 
 <mobileTags:layout>
-    <form:form commandName="form" class="ui modal window tiny -json-submit" data-method="put"
+    <form:form modelAttribute="form" class="ui modal window tiny -json-submit" data-method="put"
                action="${pageContext.request.contextPath}/api/memo/profile" data-done="doneSubmit">
         <div class="inner-box bb-unset">
             <div class="ui grid">

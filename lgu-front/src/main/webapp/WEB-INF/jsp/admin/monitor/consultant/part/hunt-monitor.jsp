@@ -8,11 +8,11 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<form:form id="hunt-monitor" commandName="search" class="panel -ajax-loader">
+<form:form id="hunt-monitor" modelAttribute="search" class="panel -ajax-loader">
     <div class="panel-heading">
         <label class="control-label">모니터링</label>
             <%--<div class="pull-right">

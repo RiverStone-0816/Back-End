@@ -8,12 +8,12 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
 <%--@elvariable id="search" type="kr.co.eicn.ippbx.model.search.PhoneSearchRequest"--%>
-<%--@elvariable id="pagination" type="kr.co.eicn.ippbx.front.util.page.Pagination<kr.co.eicn.ippbx.model.dto.eicn.PhoneInfoSummaryResponse>"--%>
+<%--@elvariable id="pagination" type="kr.co.eicn.ippbx.test.util.page.Pagination<kr.co.eicn.ippbx.model.dto.eicn.PhoneInfoSummaryResponse>"--%>
 <%--@elvariable id="licenseInfo" type="kr.co.eicn.ippbx.model.LicenseInfo"--%>
 
 <%@ page import="kr.co.eicn.ippbx.model.enums.ForwardWhen" %>
@@ -22,7 +22,7 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/user/tel/extension/"/>
         <div class="sub-content ui container fluid unstackable">
-            <form:form id="search-form" commandName="search" class="panel panel-search" method="get">
+            <form:form id="search-form" modelAttribute="search" class="panel panel-search" method="get">
                 <div class="panel-heading">
                     <div class="pull-left">
                         검색

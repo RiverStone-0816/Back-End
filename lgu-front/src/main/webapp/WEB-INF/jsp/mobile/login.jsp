@@ -34,7 +34,7 @@
                 <h1><a href="javascript:" title="메인"><img src="<c:url value="/resources/images/logo.png"/>" alt="IPCC"></a></h1>
                 <h2><span>${serviceKind.equals("SC") ? 'SMART CONTACT' : '클컨 고객센터 PRO'}</span> 로그인</h2>
             </div>
-            <form:form id="login-form" commandName="form" cssClass="login-box ui form">
+            <form:form id="login-form" modelAttribute="form" cssClass="login-box ui form">
                 <%--<ol>
                     <li>
                         <div>

@@ -8,12 +8,12 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
-<%--@elvariable id="pagination" type="kr.co.eicn.ippbx.front.util.page.Pagination<kr.co.eicn.ippbx.model.dto.eicn.PersonSummaryResponse>"--%>
+<%--@elvariable id="pagination" type="kr.co.eicn.ippbx.test.util.page.Pagination<kr.co.eicn.ippbx.model.dto.eicn.PersonSummaryResponse>"--%>
 <%--@elvariable id="searchOrganizationNames" type="java.util.List"--%>
 <%--@elvariable id="search" type="kr.co.eicn.ippbx.model.search.PersonSearchRequest"--%>
 
@@ -21,7 +21,7 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/user/user/user/"/>
         <div class="sub-content ui container fluid">
-            <form:form id="search-form" commandName="search" method="get" class="panel panel-search">
+            <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
                         검색

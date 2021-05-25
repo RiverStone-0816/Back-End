@@ -25,7 +25,7 @@
                 <div class="logo-wrap">
                     <h1><a href="javascript:" title="메인"></a></h1>
                 </div>
-                <form:form id="login-form" commandName="form" cssClass="login-box ui form">
+                <form:form id="login-form" modelAttribute="form" cssClass="login-box ui form">
                     <form:hidden path="isChatLogin" value="true"/>
                     <ol>
                         <li>

@@ -8,14 +8,14 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
 <div class="sub-content ui container fluid unstackable" id="modal-search-maindb-custom-body">
-    <form:form id="search-maindb-custom-form" commandName="search" method="get" class="panel panel-search -ajax-loader"
+    <form:form id="search-maindb-custom-form" modelAttribute="search" method="get" class="panel panel-search -ajax-loader"
                action="${pageContext.request.contextPath}/counsel/modal-search-maindb-custom-body"
                data-target="#modal-search-maindb-custom-body">
         <input type="hidden" name="type" value="${pageContext.request.getParameter('type')}"/>

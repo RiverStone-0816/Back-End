@@ -7,7 +7,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
-<%@ attribute name="navigation" required="true" type="kr.co.eicn.ippbx.front.util.page.PageNavigation" %>
+<%@ attribute name="navigation" required="true" type="kr.co.eicn.ippbx.test.util.page.PageNavigation" %>
 <%@ attribute name="ajaxLoaderTarget" type="java.lang.String" %>
 <%@ attribute name="ajaxLoaderEnable" type="java.lang.Boolean" %>
 <%@ attribute name="url" required="true" %>
@@ -15,7 +15,7 @@
 <%@ attribute name="clickFunction" required="false" type="java.lang.String" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 
 <div class="ui pagination menu pull-right small">
 

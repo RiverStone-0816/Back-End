@@ -11,7 +11,7 @@
 <%@ attribute name="contents" required="false" rtexprvalue="true" type="java.lang.String" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 
 <p class="-alert pink lighten-2" style="display: none; text-align: right;" data-field="${field}" data-path="${field}">
     <span>${contents}</span></p>

@@ -8,7 +8,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
@@ -16,7 +16,7 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/acd/queue/"/>
         <div class="sub-content ui container fluid unstackable">
-            <form:form id="search-form" commandName="search" method="get" class="panel">
+            <form:form id="search-form" modelAttribute="search" method="get" class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
                         <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>

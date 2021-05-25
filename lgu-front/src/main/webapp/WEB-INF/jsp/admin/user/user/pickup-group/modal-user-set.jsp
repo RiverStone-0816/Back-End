@@ -8,14 +8,14 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
 <%--@elvariable id="entity" type="kr.co.eicn.ippbx.model.dto.eicn.PickUpGroupDetailResponse"--%>
 <%--@elvariable id="form" type="kr.co.eicn.ippbx.model.form.PickUpGroupFormUpdateRequest"--%>
 
-<form:form commandName="form" cssClass="ui modal -json-submit" data-method="put" action="${pageContext.request.contextPath}/api/pickup-group/${entity.groupcode}"
+<form:form modelAttribute="form" cssClass="ui modal -json-submit" data-method="put" action="${pageContext.request.contextPath}/api/pickup-group/${entity.groupcode}"
            data-before="prepareWriteFormData" data-done="reload">
 
     <i class="close icon"></i>

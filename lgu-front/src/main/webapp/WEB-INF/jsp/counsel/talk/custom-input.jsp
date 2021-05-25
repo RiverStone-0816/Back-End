@@ -8,11 +8,11 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.front.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<form:form id="talk-custom-input" commandName="form" cssClass="panel -json-submit" data-method="${entity != null ? 'put' : 'post'}"
+<form:form id="talk-custom-input" modelAttribute="form" cssClass="panel -json-submit" data-method="${entity != null ? 'put' : 'post'}"
            action="${pageContext.request.contextPath}/api/maindb-data/${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : null}"
            data-before="prepareTalkCustomInfoFormData" data-done="donePostTalkCustomInfo">
     <div class="panel-heading">

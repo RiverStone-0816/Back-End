@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import static kr.co.eicn.ippbx.util.JsonResult.create;
 
-@Log4j2
+@Slf4j
 public class ResponseUtils {
     private final ObjectMapper objectMapper;
 

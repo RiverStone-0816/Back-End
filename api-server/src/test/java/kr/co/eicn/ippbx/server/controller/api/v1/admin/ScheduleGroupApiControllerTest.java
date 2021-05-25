@@ -7,6 +7,7 @@ import kr.co.eicn.ippbx.model.enums.ScheduleKind;
 import kr.co.eicn.ippbx.model.form.ScheduleGroupFormRequest;
 import kr.co.eicn.ippbx.model.form.ScheduleGroupListFormRequest;
 import kr.co.eicn.ippbx.util.EnumUtils;
+import kr.co.eicn.ippbx.util.spring.RequestMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
 import org.springframework.beans.factory.annotation.Autowired;

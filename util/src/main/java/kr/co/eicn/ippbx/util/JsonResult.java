@@ -137,6 +137,9 @@ public class JsonResult<T> implements Serializable {
         return null;
     }
 
+    public void setRepresentMessage(String representMessage) {
+    }
+
     @JsonIgnore
     public boolean isSuccess() {
         return Objects.equals(result, Result.success);
