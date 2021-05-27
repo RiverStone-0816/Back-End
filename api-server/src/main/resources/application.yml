@@ -1,6 +1,6 @@
 server:
   schema: http
-  host: 122.49.74.233
+  host: 122.49.74.102
   port: 8080
   servlet:
     context-path: /api-server
@@ -9,7 +9,7 @@ server:
 ---
 # datasource config
 jdbc:
-  host: 122.49.74.233
+  host: 122.49.74.102
   port: 3306
   dialect: mysql
   username: eicn
