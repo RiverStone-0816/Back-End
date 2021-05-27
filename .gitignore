@@ -127,9 +127,4 @@ logs/
 logs/**
 .DS_Store
 lombok.config
-/front-controller/build
-/api-server/build
-/jooq-model/build
-/lgu-front/build
-/model-extension/build
-/util/build
+build
