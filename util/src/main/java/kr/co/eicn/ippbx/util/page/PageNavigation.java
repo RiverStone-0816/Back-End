@@ -1,11 +1,13 @@
 package kr.co.eicn.ippbx.util.page;
 
-/**
- * @author tinywind
- * @since 2016-09-03
- */
+import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@ToString
 public class PageNavigation {
-    private final int first = 0;
+    private final int first;
     private final int[] items;
     private final int last;
     private final int next;
@@ -14,20 +16,27 @@ public class PageNavigation {
     private final int rowsPerPage;
 
     public PageNavigation(int page, int totalCount, int numberOfRowsPerPage, int numberOfPagesPerNavigation) {
-        this.page = page;
-        this.rowsPerPage = numberOfRowsPerPage;
+        page--;
+
+        final int first = 0;
         final int last = ((int) Math.ceil(totalCount * 1.0 / numberOfRowsPerPage));
         final int begin = page - (page % numberOfPagesPerNavigation);
         final int end = Math.min(begin + numberOfPagesPerNavigation, last);
 
         final int max = Math.max(end, 1);
         final int size = max - begin;
-        items = new int[size > 0 ? size : 0];
+        final int[] items = new int[Math.max(size, 0)];
+
         for (int i = begin; i < max; i++)
-            items[i - begin] = i;
-        previous = Math.max(page - 1, first);
-        next = Math.max(Math.min(last - 1, page + 1), first);
-        this.last = Math.max(last - 1, first);
+            items[i - begin] = i + 1;
+
+        this.items = items;
+        this.previous = Math.max(page - 1, first) + 1;
+        this.next = Math.max(Math.min(last - 1, page + 1), first) + 1;
+        this.last = Math.max(last - 1, first) + 1;
+        this.page = page + 1;
+        this.rowsPerPage = numberOfRowsPerPage;
+        this.first = first + 1;
     }
 
     public boolean contains(int i) {
@@ -41,8 +50,12 @@ public class PageNavigation {
         return first;
     }
 
-    public int[] getItems() {
-        return items;
+    public List<Integer> getItems() {
+        final List<Integer> list = new ArrayList<>();
+        for (int e : items)
+            list.add(e);
+
+        return list;
     }
 
     public int getLast() {
