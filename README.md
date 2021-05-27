@@ -7,6 +7,11 @@
 1. build (compile)
 1. ServerApplication.main() 실행
 
+# 테스트 계정
+* company id / user id / password / extension
+   * ```skdev / admin / admin12!@! / ```
+   * ```skdev / user1 / user12!@! / 1000```
+   * ```skdev / user2 / user12!@! / 2000```
 
 # 변경된 스키마 이력
 
