@@ -373,3 +373,44 @@ project(':lgu-front') {
         implementation 'org.webjars:stomp-websocket:2.3.3'
     }
 }
+
+project(':skt-front') {
+    apply plugin: 'war'
+
+    apply plugin: 'lesscss'
+    lesscss {
+        source = fileTree('src/main/webapp/resources/less') {
+            include 'app.less'
+        }
+        dest = 'src/main/webapp/resources/compiled'
+        compress = true
+    }
+    war {
+        dependsOn 'lesscss'
+    }
+    bootWar {
+        dependsOn 'lesscss'
+    }
+
+    dependencies {
+        compile project(':front-controller')
+        compileOnly 'org.springframework.boot:spring-boot-starter-tomcat'
+
+        implementation 'org.webjars:jquery:3.4.1'
+        implementation 'org.webjars:jquery-blockui:2.65'
+        implementation 'org.webjars:momentjs:2.21.0'
+        implementation 'org.webjars.bower:less.js:2.7.3'
+        implementation 'org.webjars:font-awesome:5.13.0'
+
+        implementation 'org.webjars:jquery-ui:1.12.1'
+        implementation 'org.webjars:d3js:5.9.1'
+        implementation 'org.webjars:Semantic-UI:2.4.1'
+        implementation 'org.webjars.npm:overlayscrollbars:1.9.1'
+        implementation 'org.webjars:material-design-icons:3.0.1'
+        implementation 'org.webjars:toastr:2.1.2'
+        implementation 'org.webjars:cryptojs:3.1.2'
+
+        implementation 'org.webjars:sockjs-client:1.0.2'
+        implementation 'org.webjars:stomp-websocket:2.3.3'
+    }
+}

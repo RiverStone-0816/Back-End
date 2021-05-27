@@ -1,0 +1,93 @@
+@import "base";
+@import "table.fix.less";
+@import "flex";
+
+#wrap-mobile {
+  background: @color-bg;
+  height:100%;
+  .ui.fixed.menu {
+    img {
+      width:5em;
+    }
+  }
+}
+
+.ui.container.basic {
+  padding-top:4em;
+}
+
+.main-link {
+  .column {
+    .ui.segment {
+      a {
+        .ui.header {
+          margin:0;
+          i {
+            color:#b7b7b7;
+            margin:0;
+          }
+        }
+        h4.ui.header {
+          margin-top:.5em;
+        }
+        .flex;
+        flex-flow: column;
+        justify-content: center;
+        text-align:center;
+        height: 110px;
+      }
+    }
+  }
+}
+
+.filter-container {
+  text-align:right;
+  margin-bottom: 0.5em;
+}
+
+
+.login-form-mobile {
+  padding-top: 25px;
+  .login-form-inner {
+    .box-shadow;
+    .logo-wrap {
+      h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        img {
+          width: 228px;
+        }
+      }
+      h2 {
+        font-size: @font-size-default;
+        font-weight: 500;
+        margin: 0 0 7px 0;
+        color: @color-darkgray;
+        letter-spacing: -1px;
+        span {
+          font-weight: 700;
+        }
+      }
+    }
+    width: 85%;
+    padding: 30px;
+    margin: 0 auto;
+    border: 1px solid @color-border;
+    background: @color-white;
+  }
+  .chk-box-wrap {}
+}
+
+.login-box {
+  li {
+    padding: 8px 0;
+  }
+  .ui.basic.button {
+    width: 100%;
+  }
+}
+
+#wrap.login-mobile {
+  background: url("../images/login-bg.png") no-repeat;
+  background-size: unset;
+}

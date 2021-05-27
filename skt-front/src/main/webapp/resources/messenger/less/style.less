@@ -1,0 +1,214 @@
+@import "normalize.css";
+@import "lg.smartfont.css";
+@import "modal.min.css";
+@import "transition.min.css";
+@import "dimmer.min.css";
+@import "button.min.css";
+@import "material.icon.css";
+@import "grid.min.css";
+@import "form.min.css";
+@import "input.min.css";
+@import "icon.min.css";
+@import "table.min.css";
+@import "grid.min.css";
+
+@base-font: 'LG Smart UI', 'Malgun Gothic', dotum, sans-serif;
+@color-brand: #e62388;
+@color-darkblue: #41475d;
+
+
+@width-left-panel: 70px;
+@color-left-panel: #f6f6f6;
+@color-border: #dbdbdb;
+
+
+//공통
+.flex-auto {flex:auto;}
+.pl10 {padding-left:10px;}
+.text-right {text-align:right!important}
+.overflow-hidden {overflow:hidden!important}
+.pull-left {float:left;}
+.pull-right {float:right;}
+
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height:100%;
+}
+
+body {
+    height:100%;
+    font-family: @base-font;
+    overflow-x:hidden;
+}
+
+button {
+    white-space: nowrap;
+    font-family: @base-font!important;
+}
+
+.container {
+    height:100%;
+}
+
+.left-panel {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width:@width-left-panel;
+    background:@color-left-panel;
+    border-right: 1px solid #dbdbdb;
+    .logo {
+        text-align:center;
+        padding:20px 0;
+    }
+    .nav {
+        text-align:center;
+        padding:0;
+        margin:0;
+        .number {
+            position: absolute;
+            width: 21px;
+            height: 21px;
+            line-height: 23px;
+            background: #797979;
+            right: 7px;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 11px;
+            letter-spacing: -1px;
+            font-weight: bold;
+        }
+        li {
+            position:relative;
+            list-style: none;
+            margin:0 0 10px 0;
+            button {
+                margin:0;
+                .material-icons {
+                    color:#333;
+                    font-size:27px;
+                }
+            }
+        }
+        .ui.icon.button {
+            background:transparent;
+            &:hover {
+                background:darken(@color-left-panel, 10%);
+            }
+        }
+        .ui.icon.button.active {
+            background:@color-brand;
+            .material-icons {
+                color:#fff;
+            }
+        }
+    }
+}
+
+.tab-cont {
+    display:none;
+}
+.tab-cont.active {
+    display:block;
+}
+
+.right-panel {
+    position:relative;
+    margin-left:@width-left-panel;
+    height:100%;
+}
+
+.no-drag {
+    -ms-user-select: none; -moz-user-select: -moz-none; -webkit-user-select: none; -khtml-user-select: none; user-select:none; 
+}
+
+.sub-title {
+    font-size: 17px;
+    color: #333;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+}
+
+.inner-box {
+    border-bottom:1px solid @color-border;
+    width:100%;
+    padding:15px;
+    &:last-child {
+        border-bottom:0;
+    }
+}
+
+.inner-box.flex {
+    display:flex;
+}
+
+
+.remote-panel {
+    padding:5px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    border-top:1px solid darken(@color-border, 5%);
+    ul {
+        display:flex;
+        flex-wrap:wrap;
+        padding:0;
+        margin:0;
+        li {
+            list-style: none;
+            width: 20%;
+            padding: 5px;
+            .ui.button {
+                padding:15px 0;
+            }
+            .ui.button.active {
+                background:@color-brand;
+                color:#fff;
+            }
+        }
+    }    
+}
+
+// table 
+.ui.table {
+    text-align:center;
+    th {
+        white-space: nowrap;
+    }
+}
+
+// button 
+.ui.button.darkblue {
+    background:@color-darkblue;
+    color:#fff;
+    &:hover {
+        background:darken(@color-darkblue,5%);
+    }
+}
+.ui.basic.button.darkblue {
+    -webkit-box-shadow: 0 0 0 1px @color-darkblue inset;
+    box-shadow: 0 0 0 1px @color-darkblue inset;
+    color:@color-darkblue!important;
+}
+
+.ui.grid.search {
+    .row {
+        padding-bottom:0;
+    &:last-child {
+        padding-bottom:1rem;
+    }
+    }
+}
+
+.envelope.icon.state {
+    color: #dbdbdb;
+}
+
+.envelope.open.icon.state {
+    color:#333;
+}
