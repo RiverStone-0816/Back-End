@@ -121,7 +121,6 @@ logs/
 /target/maven-status
 /target/surefire-reports
 /target/*.jar
-/gradle/
 /.gradle/
 .idea/**
 logs/**
