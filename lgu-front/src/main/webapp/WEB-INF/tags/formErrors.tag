@@ -12,7 +12,7 @@
 <%@ attribute name="path" required="true" rtexprvalue="true" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 
 <c:choose>
     <c:when test="${inputWrap eq true}">

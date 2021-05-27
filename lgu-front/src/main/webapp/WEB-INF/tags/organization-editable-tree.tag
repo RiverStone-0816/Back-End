@@ -8,7 +8,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
-<%--@elvariable id="message" type="kr.co.eicn.ippbx.test.config.RequestMessage"--%>
+<%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 
 <%@ attribute name="e" required="true" type="kr.co.eicn.ippbx.front.model.OrganizationTree" %>
 <%@ attribute name="maxLevel" required="true" type="java.lang.Integer" %>

@@ -14,14 +14,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAspectJAutoProxy
 @EnableScheduling
 @SpringBootApplication
-public class Application extends SpringBootServletInitializer {
+public class FrontApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(FrontApplication.class, args);
     }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
-        return builder.sources(Application.class);
+        return builder.sources(FrontApplication.class);
     }
 }
