@@ -153,7 +153,7 @@
                             .append(uiList);
 
                         scripts.map(function (script) {
-                            eval('(function() { return function(component, uiList) {' + script.text() + '}; })()').apply(window, [widget, uiList]);
+                            eval('(function() { return function(component, uiList) {' + script.text() + '} })()').apply(window, [widget, uiList]);
                         });
                     });
                 } else {

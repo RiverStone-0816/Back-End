@@ -3135,7 +3135,7 @@ function popupReceivedHtml(url, id, classes) {
             }
             return scripts;
         })().map(function (script) {
-            eval('(function() { return function(modal) {' + script.text() + '}; })()').apply(window, [modal]);
+            eval('(function() { return function(modal) {' + script.text() + '} })()').apply(window, [modal]);
         });
     });
 }
@@ -3178,7 +3178,7 @@ function popupDraggableModalFromReceivedHtml(url, id, classes) {
             }
             return scripts;
         })().map(function (script) {
-            eval('(function() { return function(modal) {' + script.text() + '}; })()').apply(window, [modal]);
+            eval('(function() { return function(modal) {' + script.text() + '} })()').apply(window, [modal]);
         });
     });
 }
@@ -3221,7 +3221,7 @@ function replaceReceivedHtml(url, targetSelector, uiSelector, failFunc, noneBloc
             }
             return scripts;
         })().map(function (script) {
-            eval('(function() { return function(ui) {' + script.text() + '}; })()').apply(window, [ui]);
+            eval('(function() { return function(ui) {' + script.text() + '} })()').apply(window, [ui]);
         });
     });
 }

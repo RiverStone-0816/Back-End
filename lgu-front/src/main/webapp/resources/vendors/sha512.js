@@ -249,8 +249,7 @@ function binb_sha512(x, len)
     if(sha512_k == undefined)
     {
         //SHA512 constants
-        sha512_k = new Array(
-            new int64(0x428a2f98, -685199838), new int64(0x71374491, 0x23ef65cd),
+        sha512_k = [new int64(0x428a2f98, -685199838), new int64(0x71374491, 0x23ef65cd),
             new int64(-1245643825, -330482897), new int64(-373957723, -2121671748),
             new int64(0x3956c25b, -213338824), new int64(0x59f111f1, -1241133031),
             new int64(-1841331548, -1357295717), new int64(-1424204075, -630357736),
@@ -289,19 +288,18 @@ function binb_sha512(x, len)
             new int64(0x28db77f5, 0x23047d84), new int64(0x32caab7b, 0x40c72493),
             new int64(0x3c9ebe0a, 0x15c9bebc), new int64(0x431d67c4, -1676669620),
             new int64(0x4cc5d4be, -885112138), new int64(0x597f299c, -60457430),
-            new int64(0x5fcb6fab, 0x3ad6faec), new int64(0x6c44198c, 0x4a475817));
+            new int64(0x5fcb6fab, 0x3ad6faec), new int64(0x6c44198c, 0x4a475817)];
     }
 
     //Initial hash values
-    var H = new Array(
-        new int64(0x6a09e667, -205731576),
+    var H = [new int64(0x6a09e667, -205731576),
         new int64(-1150833019, -2067093701),
         new int64(0x3c6ef372, -23791573),
         new int64(-1521486534, 0x5f1d36f1),
         new int64(0x510e527f, -1377402159),
         new int64(-1694144372, 0x2b3e6c1f),
         new int64(0x1f83d9ab, -79577749),
-        new int64(0x5be0cd19, 0x137e2179));
+        new int64(0x5be0cd19, 0x137e2179)];
 
     var T1 = new int64(0, 0),
         T2 = new int64(0, 0),
