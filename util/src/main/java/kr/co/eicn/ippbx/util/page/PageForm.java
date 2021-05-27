@@ -7,7 +7,7 @@ import org.jooq.SortOrder;
  * @author tinywind
  * @since 2016-09-03
  */
-public class PageForm {
+public class PageForm extends PageQueryableForm {
     @PageQueryable
     protected Integer page = 1;
 
@@ -19,6 +19,15 @@ public class PageForm {
 
     @PageQueryable
     protected SortOrder orderDirection;
+
+    public final String getQuery(int toPage) {
+        final int originPage = page;
+        page = toPage;
+        final String query = getQuery();
+
+        page = originPage;
+        return query;
+    }
 
     public Integer getPage() {
         return page;
