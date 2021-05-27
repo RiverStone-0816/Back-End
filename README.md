@@ -2,6 +2,7 @@
 
 # 실행 방법
 1. C:\Windows\System32\drivers\etc\hosts 내용 추가: ```122.49.74.240 PBX_VIP```
+   * SKT향 테스트: ```122.49.74.101 PBX_VIP```
 1. mvn jooq-codegen:generate
 1. build (compile)
 1. ServerApplication.main() 실행
