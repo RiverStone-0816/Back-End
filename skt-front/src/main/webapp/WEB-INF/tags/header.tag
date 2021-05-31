@@ -71,6 +71,32 @@
             </div>
         </div>
     </div>
+    <div class="header-sub">
+        <div class="header-sub-left">
+            <button class="side-toggle-btn nav-bar"><span class="material-icons">menu</span></button>
+            <ul class="gnb-ul2">
+                <li class="active"><a href="#">설정메뉴</a></li>
+                <li><a href="#">관리메뉴</a></li>
+                <li><a href="#">조회메뉴</a></li>
+                <li><a href="#">통계메뉴</a></li>
+                <li><a href="#">기타메뉴</a></li>
+            </ul>
+        </div>
+        <div class="header-sub-center">
+            <button class="ui button basic small">대쉬보드</button>
+            <button class="ui button basic small">전광판</button>
+            <button class="ui button basic small">관리모드</button>
+        </div>
+        <div class="header-sub-right">
+            <div>
+                <button class="ui button small">대기</button>
+                <button class="ui button small">상담중</button>
+                <button class="ui button small">후처리</button>
+                <button class="ui button small">식사</button>
+                <button class="ui button small">PDS</button>
+            </div>
+        </div>
+    </div>
 <c:if test="${serviceKind.equals('SC') && usingServices.contains('CHATT')}">
     <jsp:include page="/messenger"/>
 </c:if>

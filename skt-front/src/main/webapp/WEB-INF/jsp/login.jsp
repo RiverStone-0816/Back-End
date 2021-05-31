@@ -30,7 +30,7 @@
 <div id="wrap" class="login ui middle aligned center aligned grid">
     <div class="login-form">
         <div class="ui header">
-            <h3><span>${serviceKind.equals("SC") ? 'SMART CONTACT' : '클컨 고객센터 PRO'}</span> 로그인</h3>
+            <h3><span>${serviceKind.equals("SC") ? 'SMART CONTACT' : '클컨 고객센터 PRO'}</span> 로그인 ***************************************************</h3>
         </div>
         <div class="ui segment very padded column login-form-inner">
             <div class="logo-wrap">

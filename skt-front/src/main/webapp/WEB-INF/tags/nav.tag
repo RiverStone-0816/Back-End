@@ -15,6 +15,7 @@
 <aside class="side-bar manage-side">
     <button class="nav-bar"><i class="material-icons arrow"> keyboard_arrow_left </i></button>
     <div class="sidebar-menu-container">
+        <h2 class="page-title">설정메뉴</h2>
         <ul class="sidebar-menu">
             <li><a href="<c:url value="/admin/dashboard/"/>" class="tab-indicator" title="대시보드"><i class="material-icons menu-icon"> computer </i><span>대시보드</span></a></li>
 
