@@ -186,7 +186,7 @@ pre {
   background: @color-white;
   position: absolute;
   right: 0;
-  height: 78px;
+  height: 70px;
   .top-ivr-groups {
     margin:0 4px 0 0;
     .button:first-child {
@@ -440,6 +440,7 @@ pre {
   flex-flow: column;
   height: 100%;
   overflow-y: auto;
+  padding:10px 0 0 0;
   .-evaluation-mode {
     padding: 5px 0 0 28px;
   }
@@ -463,6 +464,7 @@ pre {
   }
 }
 .menu-tab {
+  display:none;
   overflow: hidden;
   border-bottom: 1px solid @color-border;
   padding: 0 26px;
@@ -764,6 +766,10 @@ label.control-label {
     width: 100%;
     overflow-y: scroll;
     flex: 1;
+    background:@color-white;
+    padding: 10px 10px 0 0;
+    border-top:1px solid @color-border;
+    border-right:1px solid @color-border;
   }
   .flex;
   .transition;
@@ -773,12 +779,14 @@ label.control-label {
   top: @height-header;
   left: 0;
   padding: 10px 10px 0 0;
-  .page-title {
-    color: #fff;
-    background: @color-brand;
-    font-size: 16px;
-    padding: 12px 20px;
-    font-weight: 500;
+  .page-title-wrap {
+    .page-title {
+      color: #fff;
+      background: @color-brand;
+      font-size: 16px;
+      padding: 12px 20px;
+      font-weight: 500;
+    }
   }
   .nav-bar {
     position: absolute;
@@ -799,6 +807,9 @@ label.control-label {
       color: darken(@color-gray, 40%);
     }
   }
+}
+.side-bar.hide {
+  display:none
 }
 .nav-bar-hide {
   left: -@width-side-bar;
@@ -1309,7 +1320,7 @@ label.control-label {
   .flex();
   flex-flow: column;
   flex: 1;
-  padding: 10px 25px;
+  /*padding: 10px 25px;*/
   overflow-y: auto;
   .panel {
     &:last-child {
@@ -1419,6 +1430,7 @@ label.control-label {
   vertical-align: middle;
 }
 .tab-label-flow-container {
+  display:none!important;
   &:after {
     width: 100%;
     content: '';
@@ -1461,11 +1473,10 @@ label.control-label {
   margin: 2px 0 0 0;
 }
 .tab-content-container {
-  .box-shadow;
   .flex();
   overflow: auto;
   box-sizing: border-box;
-  height: ~"calc(100% - 35px)";
+  height: 100%;
 }
 .tab-arrow {
   .box-shadow;

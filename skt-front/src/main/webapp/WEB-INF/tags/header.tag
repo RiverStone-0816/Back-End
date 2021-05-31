@@ -36,6 +36,7 @@
                 <li><a href="#" onclick="master()">마스터페이지</a></li>
             </c:if>
             <li><a href="#" onclick="popupMyPasswordModal()">비밀번호변경</a></li>
+            <li><a href="#">전화 알림창 ON</a></li>
             <li><a href="#" onclick="logout()">로그아웃</a></li>
         </ul>
     </div>
@@ -43,11 +44,10 @@
         <div class="pull-right" id="call-control-panel">
             <div class="ui buttons top-ivr-groups">
                 <button class="ui button call-btn">00:00</button>
-                <button class="ui button active">아이콘</button>
-                <button class="ui button">아이콘</button>
-                <button class="ui button">아이콘</button>
-                <button class="ui button">아이콘</button>
-                <button class="ui button">아이콘</button>
+                <button class="ui button active">전화받기</button>
+                <button class="ui button">보류</button>
+                <button class="ui button">전화끊기</button>
+                <button class="ui button">돌려주기</button>
             </div>
             <div class="etc-groups">
                 <button class="ui button">아이콘</button>

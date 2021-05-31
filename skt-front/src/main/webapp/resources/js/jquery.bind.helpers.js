@@ -225,6 +225,7 @@
         findAndMe('.nav-bar', this).each(function () { // side-bar toggle
             $(this).click(function () {
                 $('.content-wrapper').toggleClass('remove-padding');
+                $('.side-bar').toggleClass('hide');
                 $('.tab-label-container').toggleClass('hide-navbar');
                 $(this).parent().toggleClass('nav-bar-hide');
             });
