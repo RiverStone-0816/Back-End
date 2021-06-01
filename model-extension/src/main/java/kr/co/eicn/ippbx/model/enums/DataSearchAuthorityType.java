@@ -7,7 +7,7 @@ import java.util.Objects;
 public enum DataSearchAuthorityType implements CodeHasable<String> {
     NONE("NO"), MINE("MY"), BRANCH("BRANCH"), AREA("AREA"), PART("PART"), ALL("ALL");
 
-    private String code;
+    private final String code;
 
     DataSearchAuthorityType(String code) {
         this.code = code;

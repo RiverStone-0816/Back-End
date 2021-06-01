@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
  */
 public enum PDSGroupRidKind implements CodeHasable<String> {
 	GROUP_BY_RID("CAMPAIGN"), UPLOAD_FIELD("FIELD");
-	private String code;
+	private final String code;
 
 	PDSGroupRidKind(String code) {
 		this.code = code;

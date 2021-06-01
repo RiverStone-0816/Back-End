@@ -11,7 +11,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum ProcessKind implements CodeHasable<String> {
     CONTINUE("C"), NOTUSE("N"), TERM("T"), DELETE("D");
 
-    private String code;
+    private final String code;
 
     ProcessKind(String code) {
         this.code = code;

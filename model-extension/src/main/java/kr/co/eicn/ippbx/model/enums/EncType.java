@@ -10,7 +10,7 @@ import java.util.Objects;
 public enum EncType implements CodeHasable<String> {
 	NONE("N"), AES_256("B"), ZIP("Y");
 
-	private String code;
+	private final String code;
 
 	EncType(String code) {
 		this.code = code;

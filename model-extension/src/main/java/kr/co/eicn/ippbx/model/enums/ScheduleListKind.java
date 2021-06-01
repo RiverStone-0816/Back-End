@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum ScheduleListKind implements CodeHasable<String> {
 	AUTO_MENT_REQUEST("A"), BY_SERVICE_GROUP_REQUEST("G");
 
-	private String code;
+	private final String code;
 
 	ScheduleListKind(String code) {
 		this.code = code;

@@ -4,7 +4,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 
 public enum BoardType implements CodeHasable<String> {
     NOTICE("N"), MANUAL("M");
-    private String code;
+    private final String code;
 
     BoardType(String code) {
         this.code = code;

@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum ConfInfoIsRecord implements CodeHasable<String> {
     녹취함("M"), 녹취안함("S");
 
-    private String code;
+    private final String code;
 
     ConfInfoIsRecord(String code) {
         this.code = code;

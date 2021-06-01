@@ -11,7 +11,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum ChattingJoinStatus implements CodeHasable<String> {
     PREPARE_ACTIVE("S"), ACTIVE("Y"), INACTIVE("N"), LEAVE("X");
 
-    private String code;
+    private final String code;
 
     ChattingJoinStatus(String code) {
         this.code = code;

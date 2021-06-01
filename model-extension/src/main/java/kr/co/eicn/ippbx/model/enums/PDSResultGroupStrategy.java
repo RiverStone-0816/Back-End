@@ -10,7 +10,7 @@ public enum PDSResultGroupStrategy implements CodeHasable<String> {
 	DO_NOT_STRATEGY(""), RRMEMORY("rrmemory"), RINGALL("ringall"), SEQUENCE("sequence"),
 	LEASTRECENT("leastrecent"), FEWESTCALLS("fewestcalls"), RANDOM("fewestcalls");
 
-	private String code;
+	private final String code;
 
 	PDSResultGroupStrategy(String code) {
 		this.code = code;

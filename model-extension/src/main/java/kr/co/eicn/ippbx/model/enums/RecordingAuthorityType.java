@@ -10,7 +10,7 @@ import java.util.Objects;
 public enum RecordingAuthorityType implements CodeHasable<String> {
     NONE("NO"), MINE("MY"), GROUP("GROUP"), ALL("ALL");
 
-    private String code;
+    private final String code;
 
     RecordingAuthorityType(String code) {
         this.code = code;

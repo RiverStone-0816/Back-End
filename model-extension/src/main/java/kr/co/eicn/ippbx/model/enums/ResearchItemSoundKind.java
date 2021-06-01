@@ -9,7 +9,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum ResearchItemSoundKind implements CodeHasable<String> {
 	NONE("N"), TTS("T"), SOUND("S");
 
-	private String code;
+	private final String code;
 
 	ResearchItemSoundKind(String code) {
 		this.code = code;

@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum PrvMemberKind implements CodeHasable<String> {
     FIELD("FIELD"), CAMPAIGN("CAMPAIGN");
 
-    private String code;
+    private final String code;
 
     PrvMemberKind(String code) {
         this.code = code;

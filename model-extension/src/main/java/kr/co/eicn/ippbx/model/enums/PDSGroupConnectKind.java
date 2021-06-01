@@ -9,7 +9,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum PDSGroupConnectKind implements CodeHasable<String> {
 	CONSULTATION_GROUP("MEMBER"), PDS_IVR("PDS_IVR"), ARS_RESEARCH("ARS_RSCH"), RESEARCH("RSCH");
 
-	private String code;
+	private final String code;
 
 	PDSGroupConnectKind(String code) {
 		this.code = code;

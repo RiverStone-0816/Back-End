@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum ChattingMsgType implements CodeHasable<String> {
     TEXT("text"), PHOTO("photo"), AUDIO("audio"), FILE("file");
 
-    private String code;
+    private final String code;
 
     ChattingMsgType(String code) {
         this.code = code;

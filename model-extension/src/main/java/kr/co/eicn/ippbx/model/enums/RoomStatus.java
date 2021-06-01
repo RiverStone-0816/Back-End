@@ -11,7 +11,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum RoomStatus implements CodeHasable<String> {
     PROCESS("S"), STOP("E"), PROCESS_OR_STOP("C"), DOWN("X");
 
-    private String code;
+    private final String code;
 
     RoomStatus(String code) {
         this.code = code;

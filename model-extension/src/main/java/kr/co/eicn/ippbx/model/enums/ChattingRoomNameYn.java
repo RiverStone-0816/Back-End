@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum ChattingRoomNameYn implements CodeHasable<String> {
     CHANGE("Y"), CHANGE_N("N");
 
-    private String code;
+    private final String code;
 
     ChattingRoomNameYn(String code) {
         this.code = code;

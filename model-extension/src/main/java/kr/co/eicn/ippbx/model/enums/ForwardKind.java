@@ -10,7 +10,7 @@ import java.util.Objects;
 public enum ForwardKind implements CodeHasable<String> {
 	INNER("E"), HUNT("H"), REPRESENTATIVE("R"), OUTER("O");
 
-	private String code;
+	private final String code;
 	ForwardKind(String code) {
 		this.code = code;
 	}

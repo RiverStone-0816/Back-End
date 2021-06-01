@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum ScheduleType implements CodeHasable<String> {
 	WEEK("W"), DAY("H");
 
-	private String code;
+	private final String code;
 
 	ScheduleType(String code) {
 		this.code = code;

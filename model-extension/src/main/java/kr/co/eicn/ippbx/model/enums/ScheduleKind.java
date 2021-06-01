@@ -9,7 +9,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum ScheduleKind implements CodeHasable<String> {
 	ONY_SOUND_PLAY("S"), DIRECT_NUMBER("D"), CALL_FORWARDING("F"), IVR_CONNECT("I"), EXCEPTION_CONTEXT("C"), VOICE("V") ;
 
-	private String code;
+	private final String code;
 
 	ScheduleKind(String code) {
 		this.code = code;

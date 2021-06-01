@@ -10,7 +10,7 @@ public enum PDSGroupExecuteStatus implements CodeHasable<String> {
 	PREPARING("I"), READY("R"), PROCEEDING("P"), STOP("S"), COMPLETE("C"), FINISHED("D"),
 	UN_EXECUTED("");
 
-	private String code;
+	private final String code;
 
 	PDSGroupExecuteStatus(String code) {
 		this.code = code;

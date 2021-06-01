@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum IsArsSms implements CodeHasable<String> {
     ARS("ARS"), SMS("SMS");
 
-    private String code;
+    private final String code;
 
     IsArsSms(String code) {
         this.code = code;

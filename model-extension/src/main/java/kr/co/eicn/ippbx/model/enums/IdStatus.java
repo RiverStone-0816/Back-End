@@ -9,7 +9,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum IdStatus implements CodeHasable<String > {
 	WORKING(""), LEAVE("S"), RETIRE("X");
 
-	private String code;
+	private final String code;
 
 	IdStatus(String code) {
 		this.code = code;

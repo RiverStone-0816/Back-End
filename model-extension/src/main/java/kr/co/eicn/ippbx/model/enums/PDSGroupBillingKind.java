@@ -10,7 +10,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum PDSGroupBillingKind implements CodeHasable<String> {
 	PBX("PBX"), GROUP_BY_NUMBER("NUMBER"), GROUP_BY_DIRECT("DIRECT");
 
-	private String code;
+	private final String code;
 
 	PDSGroupBillingKind(String code) {
 		this.code = code;

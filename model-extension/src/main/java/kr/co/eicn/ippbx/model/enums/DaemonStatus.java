@@ -9,7 +9,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum DaemonStatus implements CodeHasable<String> {
     OK("OK"), NOK("NOK");
 
-    private String code;
+    private final String code;
 
     DaemonStatus(String code) {
         this.code = code;

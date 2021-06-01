@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum MailProtocolType implements CodeHasable<String> {
     SMTP("S"), POP3("P"), IMAP("I");
 
-    private String code;
+    private final String code;
 
     MailProtocolType(String code) {
         this.code = code;

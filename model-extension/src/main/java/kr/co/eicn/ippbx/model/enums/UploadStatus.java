@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum UploadStatus implements CodeHasable<String> {
     NONE("N"), UPLOAD("C"), UPLOADING("U"), UPLOAD_ERROR("E");
 
-    private String code;
+    private final String code;
 
     UploadStatus(String code) {
         this.code = code;

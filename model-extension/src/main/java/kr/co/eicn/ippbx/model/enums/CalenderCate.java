@@ -14,7 +14,7 @@ public enum CalenderCate implements CodeHasable<String>{
     HOLIDAY("1"),
     COMPANY_CAL("2");
 
-    private String code;
+    private final String code;
 
     CalenderCate(String code) {
         this.code = code;

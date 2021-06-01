@@ -56,7 +56,7 @@ public enum AdditionalState implements CodeHasable<String> {
 	SPY("SPY"),
 	TRANS_BACK("TRANS_BACK");
 
-	private String code;
+	private final String code;
 
 	AdditionalState(String code) {
 		this.code = code;

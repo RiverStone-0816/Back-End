@@ -11,7 +11,7 @@ import java.util.Objects;
 public enum ForwardWhen implements CodeHasable<String> {
     NONE("N"), ALWAYS("A"), IN_CALLING("B"), OUT("C"), IN_CALLING_OR_OUT("T");
 
-    private String code;
+    private final String code;
 
     ForwardWhen(String code) {
         this.code = code;

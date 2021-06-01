@@ -208,11 +208,9 @@
 
     <tags:scripts>
         <script>
-            const sideBox = $('.side-box');
-            $(sideBox).mouseenter(function () {
+            $('.side-box').mouseenter(function () {
                 $(this).find('.nav-ul').show();
-            });
-            $(sideBox).mouseleave(function () {
+            }).mouseleave(function () {
                 $(this).find('.nav-ul').hide();
             });
         </script>

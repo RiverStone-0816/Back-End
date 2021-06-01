@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum CallbackStatus implements CodeHasable<String> {
     NONE("A"), COMPLETE("B"), PROCESSING("C");
 
-    private String code;
+    private final String code;
 
     CallbackStatus(String code) {
         this.code = code;

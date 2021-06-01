@@ -10,7 +10,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum CommonTypeKind implements CodeHasable<String> {
 	MAIN_DB("MAINDB"), CONSULTATION_RESULTS("RS"), PREVIEW("PRV"), PDS("PDS"), LINK_DB("CON"), CUSTOM_TALK("TALK");
 
-	private String code;
+	private final String code;
 
 	CommonTypeKind(String code) {
 		this.code = code;

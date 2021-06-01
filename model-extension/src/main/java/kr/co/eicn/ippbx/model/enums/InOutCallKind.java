@@ -10,7 +10,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum InOutCallKind implements CodeHasable<String> {
     NOANSWER("NOANSWER"), ANSWER("ANSWER"), ALL("ALL");
 
-    private String code;
+    private final String code;
 
     InOutCallKind(String code) {
         this.code = code;

@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum NormalCallStatus implements CodeHasable<String> {
     NORMAL("Y"), NON_RECEIVING("N");
 
-    private String code;
+    private final String code;
 
     NormalCallStatus(String code) {
         this.code = code;

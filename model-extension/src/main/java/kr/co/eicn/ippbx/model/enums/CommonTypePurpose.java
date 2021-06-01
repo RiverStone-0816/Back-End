@@ -10,7 +10,7 @@ public enum CommonTypePurpose implements CodeHasable<String> {
 	PDS_CONSULTATION_CONN("PCC"), PDS_IVR_CONN("PIC"), SURVEY("SVY"), VOC_DB_UPLOAD("VDU"), VOC_CONSULTATION_SCREEN("VCS"),
 	ACS_DB_UPLOAD("ADU"), ACS_CONSULTATION_SCREEN("ACS");
 
-	private String code;
+	private final String code;
 
 	CommonTypePurpose(String code) {
 		this.code = code;

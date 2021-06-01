@@ -11,7 +11,7 @@ public enum CallDistributionStrategy implements CodeHasable<String> {
     RINGALL("ringall"), LEASTRECENT("leastrecent"), FEWESTCALLS("fewestcalls"),
     RRMEMORY("rrmemory"), RANDOM("random"), SKILL("skill"), CALLRATE("callrate");
 
-    private String code;
+    private final String code;
 
     CallDistributionStrategy(String code) {
         this.code = code;

@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum DayOfWeek implements CodeHasable<String> {
     MONDAY("Mon"), TUESDAY("Tue"), WEDNESDAY("Wed"), THURSDAY("Thu"), FRIDAY("Fri"), SATURDAY("Sat"), SUNDAY("Sun");
 
-    private String code;
+    private final String code;
 
     DayOfWeek(String code) {
         this.code = code;

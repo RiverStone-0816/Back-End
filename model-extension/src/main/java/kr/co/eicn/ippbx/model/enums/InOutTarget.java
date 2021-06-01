@@ -12,7 +12,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum InOutTarget implements CodeHasable<String> {
     MEMBER("MEMBER"), CIDNUM("CIDNUM"), SVCNUM("SVCNUM"), ALL("ALL"), NO("NO");
 
-    private String code;
+    private final String code;
 
     InOutTarget(String code) {
         this.code = code;

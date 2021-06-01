@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum ResultCodeType implements CodeHasable<String> {
     REGISTER("R"), PROCESSING("P"), TRANSFER("T"), COMPLETE("C");
 
-    private String code;
+    private final String code;
 
     ResultCodeType(String code) {
         this.code = code;

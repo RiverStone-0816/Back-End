@@ -9,7 +9,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum PDSGroupUploadStatus implements CodeHasable<String> {
 	DO_NOT_UPLOAD(""), UPLOADING("U"), COMPLETE("C"), ERROR("E");
 
-	private String code;
+	private final String code;
 
 	PDSGroupUploadStatus(String code) {
 		this.code = code;

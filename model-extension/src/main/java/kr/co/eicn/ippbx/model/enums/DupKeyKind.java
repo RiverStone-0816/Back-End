@@ -12,7 +12,7 @@ import java.util.Objects;
 public enum DupKeyKind implements CodeHasable<String> {
     FIELD_NUMBER("FLD_NUM"), FIELD("FLD"), NUMBER("NUM");
 
-    private String code;
+    private final String code;
 
     DupKeyKind(String code) {
         this.code = code;

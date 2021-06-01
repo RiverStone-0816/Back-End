@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum RecordDownStatusKind implements CodeHasable<String> {
 	REQUEST_COMPLETED("A"), IN_READY("B"), COMPLETE("C");
 
-	private String code;
+	private final String code;
 
 	RecordDownStatusKind(String code) {
 		this.code = code;

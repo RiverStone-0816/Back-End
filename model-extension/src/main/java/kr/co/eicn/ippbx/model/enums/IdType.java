@@ -11,7 +11,7 @@ import java.util.Objects;
 public enum IdType implements CodeHasable<String>, GrantedAuthority {
     MASTER("J"), SUPER_ADMIN("A"), ADMIN("B"), USER("M");
 
-    private String code;
+    private final String code;
 
     IdType(String code) {
         this.code = code;

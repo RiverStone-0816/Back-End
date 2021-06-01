@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum IsDupNeedYn implements CodeHasable<String> {
     USE("Y"), SKIP("N");
 
-    private String code;
+    private final String code;
 
     IsDupNeedYn(String code) {
         this.code = code;

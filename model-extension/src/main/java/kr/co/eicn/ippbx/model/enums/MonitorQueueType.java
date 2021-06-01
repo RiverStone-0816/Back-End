@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum MonitorQueueType implements CodeHasable<String> {
     SUMMARY("SU"), STATUS("ST");
 
-    private String code;
+    private final String code;
 
     MonitorQueueType(String code) {
         this.code = code;

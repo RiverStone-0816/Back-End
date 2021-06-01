@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum BillingKind implements CodeHasable<String> {
     PBX("PBX"), DIRECT("DIRECT"), NUMBER("NUMBER");
 
-    private String code;
+    private final String code;
 
     BillingKind(String code) {
         this.code = code;

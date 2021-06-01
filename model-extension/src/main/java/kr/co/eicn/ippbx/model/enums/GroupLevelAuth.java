@@ -11,7 +11,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum GroupLevelAuth implements CodeHasable<String> {
 	ALL("A"), ALLOW_ONLY_AUTHORIZED_ORGANIZATIONS("G"), ALLOW_YOURSELF_ONLY("M");
 
-	private String code;
+	private final String code;
 
 	GroupLevelAuth(String code) {
 		this.code = code;

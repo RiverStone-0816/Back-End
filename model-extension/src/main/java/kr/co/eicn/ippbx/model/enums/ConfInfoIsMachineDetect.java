@@ -7,7 +7,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
  */
 public enum ConfInfoIsMachineDetect implements CodeHasable<String> {
     머신디텍트함("Y"), 버튼눌러참여("N");
-    private String code;
+    private final String code;
 
     ConfInfoIsMachineDetect(String code) {
         this.code = code;

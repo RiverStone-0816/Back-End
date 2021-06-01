@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum RidKind implements CodeHasable<String> {
     PBX("PBX"), CAMPAIGN("CAMPAIGN");
 
-    private String code;
+    private final String code;
 
     RidKind(String code) {
         this.code = code;

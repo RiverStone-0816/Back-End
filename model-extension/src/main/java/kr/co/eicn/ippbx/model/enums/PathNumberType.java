@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum PathNumberType implements CodeHasable<String> {
     INI("INI"), SECOND("SECOND");
 
-    private String code;
+    private final String code;
 
     PathNumberType(String code) {
         this.code = code;

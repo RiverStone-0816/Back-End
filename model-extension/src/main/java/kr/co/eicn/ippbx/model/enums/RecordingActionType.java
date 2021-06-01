@@ -6,7 +6,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum RecordingActionType implements CodeHasable<String> {
     LISTENING("L"), DOWNLOAD("D"), REMOVE("R");
 
-    private String code;
+    private final String code;
 
     RecordingActionType(String code) {
         this.code = code;

@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum SendAuthConnType implements CodeHasable<String> {
     TLS("T"), SSL("S");
 
-    private String code;
+    private final String code;
 
     SendAuthConnType(String code) {
         this.code = code;

@@ -9,7 +9,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum TalkScheduleKind implements CodeHasable<String> {
 	AUTO_MENT_REQUEST("A"), SERVICE_BY_GROUP_CONNECT("G"), PERSON_CONSULTATION_CONNECT("P");
 
-	private String code;
+	private final String code;
 
 	TalkScheduleKind(String code) {
 		this.code = code;

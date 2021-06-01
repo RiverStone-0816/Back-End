@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
  */
 public enum PDSGroupResultKind implements CodeHasable<String> {
 	CONSULTATION_RESULTS("RS"), RSCH("RSCH");
-	private String code;
+	private final String code;
 
 	PDSGroupResultKind(String code) {
 		this.code = code;

@@ -10,7 +10,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum PDSGroupSpeedKind implements CodeHasable<String> {
 	STANDBY_CONSULTATION_BASE("MEMBER"), CONCURRENT_CALL_BASE("CHANNEL");
 
-	private String code;
+	private final String code;
 
 	PDSGroupSpeedKind(String code) {
 		this.code = code;

@@ -10,7 +10,7 @@ public enum ConfInfoStatusType implements CodeHasable<String> {
     //회의진행 메시지 동일
     미진행("A"), 진행중("B"), 진행완료("C"), 예약날짜만료("P");
 
-    private String code;
+    private final String code;
 
     ConfInfoStatusType(String code) {
         this.code = code;

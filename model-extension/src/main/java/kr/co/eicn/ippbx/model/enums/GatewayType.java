@@ -9,7 +9,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum GatewayType implements CodeHasable<String> {
 	SIP_SOFT_SWITCH("SIP"), CPG("CPG"), ETC("ETC"), TRK("TRK"), SBC("SBC");
 
-	private String code;
+	private final String code;
 
 	GatewayType(String code) {
 		this.code = code;

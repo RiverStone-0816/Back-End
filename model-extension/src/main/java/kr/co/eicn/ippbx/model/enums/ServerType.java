@@ -11,7 +11,7 @@ public enum ServerType implements CodeHasable<String> {
 	WEB("W"), PBX("P"), WEB_VOICE_SERVER("V"), TALK_RELAY_SERVER("K"), SMS("S"),
 	RECORD_SERVER("R"), TTS_SERVER("T"), WEB_CONTENT_SERVER("C");
 
-	private String code;
+	private final String code;
 
 	ServerType(String code) {
 		this.code = code;

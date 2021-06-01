@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum ChattingSendReceive implements CodeHasable<String> {
     SEND("S"), RECEIVE("R"), SELF("SR");
 
-    private String code;
+    private final String code;
 
     ChattingSendReceive(String code) {
         this.code = code;

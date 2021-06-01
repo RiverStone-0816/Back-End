@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum ForwardingType implements CodeHasable<String> {
     NONE("N"), INNER("I"), OUTER("O");
 
-    private String code;
+    private final String code;
 
     ForwardingType(String code) {
         this.code = code;

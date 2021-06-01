@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum SendCategoryType implements CodeHasable<String> {
     SMS("S"), FAX("F"), EMAIL("E");
 
-    private String code;
+    private final String code;
 
     SendCategoryType(String code) {
         this.code = code;

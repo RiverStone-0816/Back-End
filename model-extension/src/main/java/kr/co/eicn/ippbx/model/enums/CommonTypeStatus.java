@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum CommonTypeStatus implements CodeHasable<String> {
 	USING("U"), DELETE("D");
 
-	private String code;
+	private final String code;
 
 	CommonTypeStatus(String code) {
 		this.code = code;

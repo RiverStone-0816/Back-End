@@ -30,7 +30,7 @@ public enum CallStatus implements CodeHasable<String> {
 	ars("223"),
 	local_forward("330");
 
-	private String code;
+	private final String code;
 
 	CallStatus(String code) {
 		this.code = code;

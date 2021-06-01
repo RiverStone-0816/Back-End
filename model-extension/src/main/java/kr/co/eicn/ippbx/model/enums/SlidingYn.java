@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 public enum SlidingYn implements CodeHasable<String> {
     SLIDING_Y("Y"), SLIDING_N("N");
 
-    private String code;
+    private final String code;
 
     SlidingYn(String code) {
         this.code = code;

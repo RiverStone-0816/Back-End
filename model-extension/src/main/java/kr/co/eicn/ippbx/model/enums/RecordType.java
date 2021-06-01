@@ -6,7 +6,7 @@ import java.util.Objects;
 public enum RecordType implements CodeHasable<String> {
     RECORDING("M"), NONE_RECORDING("S");
 
-    private String code;
+    private final String code;
 
     RecordType(String code) {
         this.code = code;
