@@ -13,8 +13,6 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 
 <tags:tabContentLayout>
-
-
     <div id="wrap">
         <header id="header">
             <div class="header-main">
@@ -33,7 +31,7 @@
                             <div class="prof-info">
                                 <span class="name">홍길동[620]</span>
                             </div>
-                            <%--<i class="material-icons arrow"> keyboard_arrow_down </i>--%>
+                                <%--<i class="material-icons arrow"> keyboard_arrow_down </i>--%>
                         </a>
                         <ul class="my-info-dropdown nav-ul">
                             <li><a href="#">비밀번호변경</a></li>
@@ -187,22 +185,22 @@
                                 <li><a href="#" class="link-txt">상담톡상담원별통계</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
                             </ul>
                         </div>--%>
-                       <%-- <div class="page-title-wrap">
-                            <h2 class="page-title">기타메뉴</h2>
-                        </div>
-                        <div class="sidebar-menu-wrap">
-                            <ul class="sidebar-menu">
-                                <li class="active"><a href="#" class="link-txt">로그인이력</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
-                                <li><a href="#" class="link-txt">웹로그관리</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
-                                <li><a href="#" class="link-txt">컨텍스트관리</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
-                                <li><a href="#" class="link-txt">내선기타정보설정</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
-                                <li><a href="#" class="link-txt">상담원상태변경</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
-                                <li><a href="#" class="link-txt">IPCC 라이센스 현황</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
-                                <li><a href="#" class="link-txt">공지사항</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
-                                <li><a href="#" class="link-txt">지식관리</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
-                                <li><a href="#" class="link-txt">메뉴얼</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
-                            </ul>
-                        </div>--%>
+                        <%-- <div class="page-title-wrap">
+                             <h2 class="page-title">기타메뉴</h2>
+                         </div>
+                         <div class="sidebar-menu-wrap">
+                             <ul class="sidebar-menu">
+                                 <li class="active"><a href="#" class="link-txt">로그인이력</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
+                                 <li><a href="#" class="link-txt">웹로그관리</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
+                                 <li><a href="#" class="link-txt">컨텍스트관리</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
+                                 <li><a href="#" class="link-txt">내선기타정보설정</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
+                                 <li><a href="#" class="link-txt">상담원상태변경</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
+                                 <li><a href="#" class="link-txt">IPCC 라이센스 현황</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
+                                 <li><a href="#" class="link-txt">공지사항</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
+                                 <li><a href="#" class="link-txt">지식관리</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
+                                 <li><a href="#" class="link-txt">메뉴얼</a><a href="#" target="_blank" class="link-new material-icons"> open_in_new </a></li>
+                             </ul>
+                         </div>--%>
                 </div>
             </aside>
         </div>
