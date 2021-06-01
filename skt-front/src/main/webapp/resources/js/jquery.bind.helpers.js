@@ -234,8 +234,8 @@
             event.stopPropagation();
         });
         findAndMe('.menu .item', this).tab();
-        findAndMe(".sidebar-menu-container", this).overlayScrollbars({ // overflow scroll
-            className: "os-theme-light"
+        findAndMe(".sidebar-menu-wrap", this).overlayScrollbars({ // overflow scroll
+            className: "os-theme-dark"
         });
         findAndMe(".chat-body", this).overlayScrollbars({});
 

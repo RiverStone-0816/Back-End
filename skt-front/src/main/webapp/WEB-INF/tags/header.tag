@@ -18,7 +18,7 @@
 <header id="header">
     <div class="logo">
         <h1>
-            <a href="<c:url value="/"/>"><img src="<c:url value="/resources/images/logo.png"/>"></a>
+            <a href="<c:url value="/"/>"><%--<img src="<c:url value="/resources/images/logo.png"/>">--%></a>
             <%--<a href="<c:url value="/"/>"><img src="http://www.eicn.co.kr/img/main_logo.png"></a>--%>
         </h1>
     </div>
