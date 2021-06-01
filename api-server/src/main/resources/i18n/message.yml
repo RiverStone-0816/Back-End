@@ -22,8 +22,7 @@ kr:
   co:
     eicn:
       ippbx:
-        server:
-          model:
+        model:
             enums:
               RecordType:
                 M: "녹취함"
