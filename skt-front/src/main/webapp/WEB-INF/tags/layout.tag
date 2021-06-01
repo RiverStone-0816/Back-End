@@ -29,12 +29,12 @@
 <div id="wrap">
     <tags:header/>
 
-    <main id="main">
+    <div id="main">
         <div class="content-wrapper">
             <jsp:doBody/>
         </div>
         <tags:nav/>
-    </main>
+    </div>
 </div>
 
 <div id="scripts">

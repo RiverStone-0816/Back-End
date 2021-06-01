@@ -10,6 +10,7 @@
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
+<%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
 <tags:scripts/>
 
@@ -19,7 +20,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=440, initial-scale=0.8"/>
-    <title></title>
+    <title>${serviceKind.equals('SC') ? 'IPCC 프리미엄' : '클컨 고객센터 PRO'}</title>
     <tags:favicon/>
     <tags:css/>
 </head>
@@ -31,22 +32,6 @@
     <tags:js/>
     <tags:alerts/>
     <tags:scripts method="pop"/>
-
-    <script>
-        /*TODO: 임시처리*/
-        $(document).ready(function () {
-            if (window.name && window.name.indexOf('menu') === 0) {
-                const menuTab = $(window.document).find('.menu-tab');
-                const subContent = $(window.document).find('.sub-content:first');
-                subContent.children().each(function () {
-                    $(this).detach().appendTo($(window.document).find('.content-wrapper-frame:first'));
-                });
-
-                menuTab.remove();
-                subContent.remove();
-            }
-        });
-    </script>
 </div>
 
 </body>
