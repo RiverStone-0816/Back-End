@@ -1,17 +1,34 @@
-# API SERVER
-
-# 실행 방법
+# API SERVER 테스트 실행 방법
 1. C:\Windows\System32\drivers\etc\hosts 내용 추가: ```122.49.74.240 PBX_VIP```
    * SKT향 테스트: ```122.49.74.101 PBX_VIP```
 1. mvn jooq-codegen:generate
 1. build (compile)
 1. ServerApplication.main() 실행
 
+# FRONT SERVER 테스트 실행 방법
+1. ./gradlew :skt-front:bootRun
+
 # 테스트 계정 (company id / user id / password / extension)
 * SKT향
    * ```skdev / admin / admin12!@! / ```
    * ```skdev / user1 / user12!@! / 1000```
    * ```skdev / user2 / user12!@! / 2000```
+
+# 테스트 배포 방법
+1. git pull
+1. (혹시 JAVA_HOME 세팅이 안되어 있다면..) JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
+1. ./gradlew clean (꼭 필요하지 않음)
+1. ./gradlew :api-server:bootWar :skt-front:bootWar
+1. nohup java -jar ./api-server/build/libs/api-server-1.0-SNAPSHOT.war --server.port=8080 1> api.log 2>&1 &
+1. nohup java -jar ./skt-front/build/libs/skt-front-1.0-SNAPSHOT.war --server.port=21003 1> front.log 2>&1 &
+
+# 톰캣 배포 방법
+1. ./gradlew :api-server:bootWar :skt-front:bootWar -Pprofile={provide} -DJDBC_USERNAME='{username}' -DJDBC_PASSWORD='{password}' -DJDBC_HOST='{host}';
+1. 생성된 war 파일을 톰캣 webapps에 복사
+```
+- ./api-server/build/libs/api-server-1.0-SNAPSHOT.war 
+- ./skt-front/build/libs/skt-front-1.0-SNAPSHOT.war
+```
 
 # 변경된 스키마 이력
 
