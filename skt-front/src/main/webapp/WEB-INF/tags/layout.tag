@@ -30,6 +30,31 @@
     <tags:header/>
 
     <div id="main">
+        <%--<div class="consult-wrapper">
+            <div class="left">1</div>
+            <div class="right">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="pull-left">1</div>
+                        <div class="pull-right">1</div>
+                    </div>
+                    <div class="panel-body">
+                        <table class="ui celled table compact unstackable num-tbl selectable">
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>--%>
         <div class="content-wrapper">
             <jsp:doBody/>
         </div>
