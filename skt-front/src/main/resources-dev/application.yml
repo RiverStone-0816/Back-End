@@ -1,0 +1,78 @@
+server:
+  port: 80
+  servlet:
+    session:
+      timeout: 10h
+spring:
+  profiles:
+    active: dev
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+  application:
+    name: eicn-premium
+  messages:
+    basename: classpath:messages
+    encoding: UTF-8
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  devtools:
+    livereload:
+      enabled: false
+    restart:
+      enabled: false
+  servlet:
+    multipart:
+      file-size-threshold: 1MB
+      max-request-size: 100MB
+      max-file-size: 100MB
+logging:
+  config: classpath:logback-spring.xml
+management:
+  metrics:
+    tags:
+      application: ${spring.application.name}-metrics
+  endpoints:
+    web:
+      exposure:
+        include: "health, info, prometheus"
+  health:
+    mail:
+      enabled: false
+  security:
+    enabled: false
+security:
+  basic:
+    enabled: false
+# 정의 설정
+eicn:
+  service:
+    base-url: http://122.49.74.102
+    servicekind: SC
+  version: 20210525
+  debugging: true
+  swagger:
+    api-package: kr.co.eicn.ippbx.front.controller.api
+  file:
+    location: /tmp
+  apiserver: http://122.49.74.102/api-server
+  admin:
+    socket:
+      id: monitor_connector
+  call-control:
+    socket:
+      id: maincli_connector
+  talk:
+    socket:
+      id: talk_connector
+  pds:
+    socket:
+      id: pds_connector
+  messenger:
+    socket:
+      id: chatting_connector
+    cipher:
+      key: eicn
