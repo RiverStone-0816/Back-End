@@ -60,6 +60,8 @@ public class MainController extends BaseController {
 
     @GetMapping(FileService.FILE_PATH)
     public void downloadFile(HttpServletResponse response, @RequestParam(FileService.FILE_REQUEST_PARAM_KEY) String fileName) throws IOException {
+        fileName = fileName.replaceAll("\\.\\.[/]", "");
+
         response.setContentType("application/download; charset=utf-8");
         response.setHeader("Content-Disposition", "attachment; filename=\""
                 + URLEncoder.encode(fileName, "UTF-8").replaceAll("[+]", "%20") + "\";");
