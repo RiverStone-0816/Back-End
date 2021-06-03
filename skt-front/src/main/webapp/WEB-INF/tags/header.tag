@@ -46,19 +46,23 @@
             </div>
         </div>
         <div class="end">
-            <div class="ui buttons small top-ivr-groups">
-                <button class="ui button call-time">00:00</button>
-                <button class="ui button phone-call" data-inverted="" data-tooltip="전화받기" data-position="bottom center"></button>
-                <button class="ui button phone-outgoing" data-inverted="" data-tooltip="당겨받기" data-position="bottom center"></button>
-                <button class="ui button phone-off" data-inverted="" data-tooltip="통화보류" data-position="bottom center"></button>
-                <button class="ui button phone-cancel" data-inverted="" data-tooltip="전화끊기" data-position="bottom center"></button>
-                <button class="ui button phone-forwarded" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
-            </div>
+            <c:if test="${hasExtension && isStat}">
+                <div class="ui buttons small top-ivr-groups">
+                    <button class="ui button call-time">00:00</button>
+                    <button class="ui button phone-call" data-inverted="" data-tooltip="전화받기" data-position="bottom center"></button>
+                    <button class="ui button phone-outgoing" data-inverted="" data-tooltip="당겨받기" data-position="bottom center"></button>
+                    <button class="ui button phone-off" data-inverted="" data-tooltip="통화보류" data-position="bottom center"></button>
+                    <button class="ui button phone-cancel" data-inverted="" data-tooltip="전화끊기" data-position="bottom center"></button>
+                    <button class="ui button phone-forwarded" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
+                </div>
+            </c:if>
             <div class="etc-groups">
                 <button class="ui button dial"  data-inverted="" data-tooltip="다이얼" data-position="bottom center"></button>
-                <button class="ui button bell"  data-inverted="" data-tooltip="전화알림창" data-position="bottom right"></button>
-                <%--전화알림 off일 경우--%>
-                <%--<button class="ui button bell-off"  data-inverted="" data-tooltip="전화알림창" data-position="bottom right"></button>--%>
+                <c:if test="${hasExtension && isStat}">
+                    <button class="ui button bell"  data-inverted="" data-tooltip="전화알림창" data-position="bottom right"></button>
+                    <%--전화알림 off일 경우--%>
+                    <%--<button class="ui button bell-off"  data-inverted="" data-tooltip="전화알림창" data-position="bottom right"></button>--%>
+                </c:if>
             </div>
         </div>
     </div>
@@ -83,19 +87,19 @@
         </div>
         <div class="center">
             <a class="ui button basic small -menu-page" href="<c:url value="/admin/dashboard/"/>">대쉬보드</a>
-            <button class="ui button basic small">전광판</button>
-            <button class="ui button basic small">관리모드</button>
+            <a class="ui button basic small -menu-page" href="<c:url value="/admin/monitor/screen/config"/>">전광판</a>
+            <c:if test="${hasExtension && isStat}">
+                <button class="ui button basic small" onclick="modeChange()" id="mode">관리모드</button>
+            </c:if>
         </div>
-        <div class="end">
-            <button class="ui button small">대기</button>
-            <button class="ui button small">상담중</button>
-            <button class="ui button small">후처리</button>
-            <button class="ui button small">식사</button>
-            <button class="ui button small">PDS</button>
-        </div>
+        <c:if test="${hasExtension && isStat}">
+            <div class="end" id="user-state"></div>
+        </c:if>
     </div>
 </header>
 
+<jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
+<jsp:include page="/modal-update-password"/>
 
 <tags:scripts>
     <script>
@@ -105,11 +109,14 @@
             });
         }
 
-        function master() {
-            location.href = "/ipcc/mc_master/login.jsp";
+        function modeChange() {
+            $('#main').toggleClass('change-mode'); // TODO: check
+            if ($('#main').is('.change-mode')) {
+                $('#mode').text('상담모드');
+            } else {
+                $('#mode').text('관리모드');
+            }
         }
-
-
 
         const sideBox = $('.prof-info');
         $(sideBox).mouseenter(function () {
@@ -161,6 +168,57 @@
         });
 
         $(window).on('load', function () {
+            for (let status in statusCodes) {
+
+                if (status === '9')
+                    continue;
+
+                if (statusCodes.hasOwnProperty(status)) {
+                    const isPds = statusCodes[status] === 'PDS';
+
+                    $('<button/>', {
+                        type: 'button',
+                        class: "ui button small -member-status " + (isPds ? 'status-is-pds' : ''),
+                        'data-status': status,
+                        text: statusCodes[status],
+                        click: function () {
+                            const status = parseInt($(this).attr('data-status'));
+                            if (status === MEMBER_STATUS_CALLING)
+                                return;
+
+                            if (ipccCommunicator.status.cMemberStatus === MEMBER_STATUS_CALLING)
+                                return;
+
+                            ipccCommunicator.setMemberStatus(status);
+                        }
+                    }).appendTo('#user-state');
+
+                    if (isPds) {
+                        pdsStatus = parseInt(status);
+
+                        const pdsStatusButtonContainer = $('<div/>', {
+                            class: 'pds-status-button-container',
+                        }).appendTo('#user-state');
+
+                        const pdsStatuses = {0: '대기', 1: '상담중', 2: '후처리'}
+                        keys(pdsStatuses).map(function (pds) {
+                            pdsStatusButtonContainer.append($('<button/>', {
+                                type: 'button',
+                                class: "ui button small mini -member-status-pds",
+                                'data-status': pds,
+                                text: pdsStatuses[pds],
+                                click: function () {
+                                    if (parseInt(pds) === MEMBER_STATUS_CALLING)
+                                        return;
+
+                                    ipccCommunicator.setPdsStatus(pds);
+                                }
+                            }));
+                        });
+                    }
+                }
+            }
+
             $('.-menu:first').click();
         });
     </script>
