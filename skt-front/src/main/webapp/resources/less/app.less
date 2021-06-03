@@ -111,10 +111,47 @@ pre {
       .ui.button {
         font-size: 0;
         padding: 8px 15px;
+        width:60px;
+        height:40px;
+        background-repeat: no-repeat;
+        background-position: center center;
         &:hover {
           path {
             stroke:@color-white;
           }
+        }
+      }
+      .ui.button.call-time {
+        width:63px;
+      }
+      .ui.button.phone-call {
+        background-image:url('../images/phone-call.svg');
+        &:hover {
+          background-image:url('../images/phone-call-hover.svg');
+        }
+      }
+      .ui.button.phone-outgoing {
+        background-image:url('../images/phone-outgoing.svg');
+        &:hover {
+          background-image:url('../images/phone-outgoing-hover.svg');
+        }
+      }
+      .ui.button.phone-off {
+        background-image:url('../images/phone-off.svg');
+        &:hover {
+          background-image:url('../images/phone-off-hover.svg');
+        }
+      }
+      .ui.button.phone-cancel {
+        background-image:url('../images/phone-cancel.svg');
+        &:hover {
+          background-image:url('../images/phone-cancel-hover.svg');
+        }
+      }
+      .ui.button.phone-forwarded {
+        background-image:url('../images/phone-forwarded.svg');
+        &:hover {
+          background-image:url('../images/phone-forwarded-hover.svg');
         }
       }
       .button:first-child {
@@ -142,19 +179,30 @@ pre {
       font-size: 0;
       padding: 9px 9px;
       margin: 0 0 0 7px;
-      background:darken(@color-gray, 4.8%);
+      background-repeat: no-repeat;
+      background-position: center center;
+      width:40px;
+      height:40px;
+      background-color:darken(@color-gray,5%);
+    }
+    .ui.button.dial {
+      background-image:url('../images/dial.svg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      width:40px;
+      height:40px;
       &:hover {
-        background:@color-brand;
-        path {
-          stroke:@color-white;
-        }
-        circle {
-          fill:@color-white;
-        }
+        background-image:url('../images/dial-hover.svg');
+        background-color:@color-brand;
       }
     }
-    .bell-state {
-      pointer-events: none;
+    .ui.button.bell {
+      background-image:url('../images/bell.svg');
+      cursor: unset;
+    }
+    .ui.button.bell-off {
+      background-image:url('../images/bell-off.svg');
+      cursor: unset;
     }
   }
   .logo {
@@ -487,7 +535,7 @@ pre {
     display: block;
     padding: 0 10px;
   }
-  svg {
+  img {
     margin: 0 6px 0 0;
     vertical-align: top;
   }
@@ -515,7 +563,7 @@ pre {
     padding:23px 0;
   }
   i {
-    color: @color-darkgray;
+    color: darken(@color-gray, 23%);
     line-height: 8px;
     vertical-align: middle;
   }

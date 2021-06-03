@@ -30,16 +30,19 @@
     <tags:header/>
 
     <div id="main">
-        <%--<div class="consult-wrapper">
+        <div class="consult-wrapper">
             <div class="left">
                 <div class="ui top attached tabular menu">
-                    <button class="item active" data-tab="menu1">전화</button>
-                    <button class="item" data-tab="menu2">상담톡</button>
+                    <button class="item active" data-tab="call-view">전화</button>
+                    <button class="item" data-tab="talk-view">상담톡</button>
                 </div>
-                <div class="ui bottom attached tab segment active" data-tab="menu1">
-                    111
+                <div class="ui bottom attached tab segment active" data-tab="call-view">
+                    <div class="panel">
+                        <div class="panel-heading">d</div>
+                        <div class="panel-body">d</div>
+                    </div>
                 </div>
-                <div class="ui bottom attached tab segment" data-tab="menu2">
+                <div class="ui bottom attached tab segment" data-tab="talk-view">
                   2222
                 </div>
             </div>
@@ -225,11 +228,11 @@
                     </div>
                 </div>
             </div>
-        </div>--%>
-        <div class="content-wrapper">
+        </div>
+        <%--<div class="content-wrapper">
             <jsp:doBody/>
         </div>
-        <tags:nav/>
+        <tags:nav/>--%>
     </div>
 </div>
 
