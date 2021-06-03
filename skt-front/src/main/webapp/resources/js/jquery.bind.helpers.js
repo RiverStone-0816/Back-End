@@ -225,12 +225,10 @@
                         .toggleClass("rotate");
                 });
         });
-        findAndMe('.nav-bar', this).each(function () { // side-bar toggle
+        findAndMe('.side-toggle-btn', this).each(function () { // side-bar toggle
             $(this).click(function () {
                 $('.content-wrapper').toggleClass('remove-padding');
                 $('.side-bar').toggleClass('hide');
-                $('.tab-label-container').toggleClass('hide-navbar');
-                $(this).parent().toggleClass('nav-bar-hide');
             });
         });
         findAndMe('td .form, .table button, .table a', this).on("click", function () {
