@@ -31,15 +31,186 @@
 
     <div id="main">
         <%--<div class="consult-wrapper">
-            <div class="left">1</div>
+            <div class="left">
+                <div class="ui top attached tabular menu">
+                    <button class="item active" data-tab="menu1">전화</button>
+                    <button class="item" data-tab="menu2">상담톡</button>
+                </div>
+                <div class="ui bottom attached tab segment active" data-tab="menu1">
+                    111
+                </div>
+                <div class="ui bottom attached tab segment" data-tab="menu2">
+                  2222
+                </div>
+            </div>
             <div class="right">
-                <div class="panel">
+                <div class="panel remove-mb panel-resizable top">
                     <div class="panel-heading">
                         <div class="pull-left">1</div>
                         <div class="pull-right">1</div>
                     </div>
                     <div class="panel-body">
-                        <table class="ui celled table compact unstackable num-tbl selectable">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel remove-mb panel-resizable middle">
+                    <div class="panel-heading">
+                        <div class="pull-left">1</div>
+                        <div class="pull-right">1</div>
+                    </div>
+                    <div class="panel-body">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="panel bottom">
+                    <div class="panel-heading">
+                        <div class="pull-left">1</div>
+                        <div class="pull-right">1</div>
+                    </div>
+                    <div class="panel-body">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
+                            <tr>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                                <th>제목</th>
+                                <td>제목</td>
+                            </tr>
                             <tr>
                                 <th>제목</th>
                                 <td>제목</td>

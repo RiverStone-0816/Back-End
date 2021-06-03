@@ -14,6 +14,19 @@
   box-shadow: @x @y @blur rgba(0, 0, 0, @alpha);
 }
 
+.panel-resize-btn {
+  position:absolute;
+  width:18px;
+  height:18px;
+  background:lighten(@color-gray, 4%);
+  border:1px solid @color-border;
+  color:@color-brand;
+  font-size: 10px;
+  text-align: center;
+  line-height: 15px;
+  font-family: sans-serif;
+}
+
 .keyframes(@name; @arguments) {
   @-moz-keyframes @name { @arguments(); }
   @-webkit-keyframes @name { @arguments(); }

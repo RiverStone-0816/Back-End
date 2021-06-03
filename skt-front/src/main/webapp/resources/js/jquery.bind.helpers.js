@@ -200,6 +200,9 @@
             });
         });
         /* 태헌씨 스크립트 */
+        $( function() {
+            $( ".panel-resizable" ).resizable();
+        } );
         findAndMe("select.level", this).each(function () {
             for (let i = 1; i < 11; i++) {
                 $(this).append("<option>" + i + "</option>");

@@ -113,11 +113,21 @@
                         </g>
                     </svg>
                 </button>
-                <button class="ui small button">
-                    <svg width="22" height="22" viewBox="0 0 21.763 24.01">
+                <button class="ui small button bell-state">
+                    <%--<svg width="22" height="22" viewBox="0 0 21.763 24.01">
                         <g id="Icon_feather-bell" data-name="Icon feather-bell" transform="translate(-3.75 -2.25)">
                             <path d="M21.386,9.754a6.754,6.754,0,1,0-13.508,0c0,7.88-3.377,10.131-3.377,10.131H24.763s-3.377-2.251-3.377-10.131" fill="none" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
                             <path d="M19.3,31.5a2.251,2.251,0,0,1-3.895,0" transform="translate(-2.721 -7.112)" fill="none" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                        </g>
+                    </svg>--%>
+                    <svg width="22" height="22" viewBox="0 0 23.103 24.871">
+                        <g transform="translate(-367.441 -125.097)">
+                            <g id="Icon_feather-bell" data-name="Icon feather-bell" transform="translate(364.5 123)">
+                                <path d="M21.386,9.754a6.754,6.754,0,1,0-13.508,0c0,7.88-3.377,10.131-3.377,10.131H24.763s-3.377-2.251-3.377-10.131" fill="none" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                                <path d="M19.3,31.5a2.251,2.251,0,0,1-3.895,0" transform="translate(-2.721 -7.112)" fill="none" stroke="#333" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+                            </g>
+                            <line x2="20" y2="22" transform="translate(369.131 126.51)" fill="none" stroke="#e3e3e3" stroke-linecap="round" stroke-width="2"/>
+                            <line x2="20" y2="22" transform="translate(368.5 126.908)" fill="none" stroke="#333" stroke-linecap="round" stroke-width="1.5"/>
                         </g>
                     </svg>
                 </button>

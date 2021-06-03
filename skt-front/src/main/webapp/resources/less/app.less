@@ -93,6 +93,8 @@ pre {
   }
 }
 
+
+
 .header-main {
   .flex();
   justify-content: space-between;
@@ -140,7 +142,9 @@ pre {
       font-size: 0;
       padding: 9px 9px;
       margin: 0 0 0 7px;
+      background:darken(@color-gray, 4.8%);
       &:hover {
+        background:@color-brand;
         path {
           stroke:@color-white;
         }
@@ -148,6 +152,9 @@ pre {
           fill:@color-white;
         }
       }
+    }
+    .bell-state {
+      pointer-events: none;
     }
   }
   .logo {
@@ -181,6 +188,9 @@ pre {
       .ui.button.active {
         color:@color-white
       }
+    }
+    .ui.button.active {
+      color:@color-white;
     }
   }
   .center {
@@ -404,9 +414,55 @@ pre {
   .flex();
   .left {
     flex:1;
+    padding-right:10px;
   }
   .right {
     flex:2;
+    .top {
+      &:after {
+        content:'▲';
+        right:-9px;
+        bottom:2px;
+        .panel-resize-btn();
+      }
+    }
+    .middle {
+      &:after {
+        content:'▼';
+        right:-9px;
+        top:2px;
+        .panel-resize-btn();
+      }
+      &:before {
+        content:'▲';
+        right:-9px;
+        bottom:2px;
+        .panel-resize-btn();
+      }
+    }
+    .bottom {
+      &:after {
+        content:'▼';
+        right:-9px;
+        top:2px;
+        .panel-resize-btn();
+      }
+    }
+  }
+}
+
+.ui.bottom.attached.tab.segment {
+  border-radius: 0;
+}
+
+.ui.tabular.menu {
+  .item {
+    border-radius: 0!important;
+    cursor: pointer;
+    background:darken(@color-gray, 5%);
+  }
+  .item.active {
+    border-radius: 0!important;
   }
 }
 
@@ -414,7 +470,6 @@ pre {
   position:relative;
   .flex();
   align-items: center;
-  padding:23px 0;
   a {
     display: block;
     padding: 0 10px;
@@ -444,6 +499,7 @@ pre {
   }
   .prof-info {
     display: inline-block;
+    padding:23px 0;
   }
   i {
     color: @color-darkgray;
@@ -464,7 +520,7 @@ pre {
   .my-info-dropdown {
     display:none;
     position: absolute;
-    top: 40px;
+    top: 44px;
     right: -15px;
     z-index: 300;
     .box-shadow();
@@ -614,9 +670,19 @@ pre {
   }
 }
 .panel {
+  position:relative;
   background: @color-white;
   border: 1px solid @color-border;
   margin-bottom: 10px;
+  .ui-resizable-handle {
+    background:darken(@color-bg, 6%);
+  }
+  .ui-resizable-e {
+    display:none!important;
+  }
+  .ui-icon-gripsmall-diagonal-se {
+    display:none!important;
+  }
   .panel-heading, .panel-body {
     position: relative;
     padding: 15px 15px;
