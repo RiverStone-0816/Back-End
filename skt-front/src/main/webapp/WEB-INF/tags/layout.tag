@@ -31,7 +31,7 @@
 
     <div id="main">
         <div class="consult-wrapper">
-            <div class="left">
+            <div class="left-panel">
                 <div class="ui top attached tabular menu">
                     <button class="item" data-tab="call-view">전화</button>
                     <button class="item active" data-tab="talk-view">상담톡</button>
@@ -220,54 +220,162 @@
                     </div>
                 </div>
                 <div class="ui bottom attached tab segment active" data-tab="talk-view">
-                    <div class="ui top attached tabular menu flex">
-                        <button class="item active" data-tab="talk-list-type-MY">상담중(1)</button>
-                        <button class="item" data-tab="talk-list-type-TOT">비접수(1)</button>
-                        <button class="item" data-tab="talk-list-type-OTH">타상담(1)</button>
-                        <button class="item" data-tab="talk-list-type-END">종료(1)</button>
-                    </div>
-                    <div class="ui bottom attached tab segment active" data-tab="talk-list-type-MY">
-                        <div class="sort-wrap">
-                            <div class="ui form">
-                                <div class="fields">
-                                    <div class="four wide field">
-                                        <select>
-                                            <option>고객명</option>
-                                            <option>상담원명</option>
-                                        </select>
-                                    </div>
-                                    <div class="nine wide field">
-                                        <div class="ui action input">
-                                            <input type="text">
+                    <div class="panel-resizable top-chat-list-wrap">
+                        <div class="ui top attached tabular menu flex">
+                            <button class="item active" data-tab="talk-list-type-MY">상담중(1)</button>
+                            <button class="item" data-tab="talk-list-type-TOT">비접수(1)</button>
+                            <button class="item" data-tab="talk-list-type-OTH">타상담(1)</button>
+                            <button class="item" data-tab="talk-list-type-END">종료(1)</button>
+                        </div>
+                        <div class="ui bottom attached tab segment remove-margin active" data-tab="talk-list-type-MY">
+                            <div class="sort-wrap">
+                                <div class="ui form">
+                                    <div class="fields">
+                                        <div class="four wide field">
+                                            <select>
+                                                <option>고객명</option>
+                                                <option>상담원명</option>
+                                            </select>
+                                        </div>
+                                        <div class="nine wide field">
+                                            <div class="ui input">
+                                                <input type="text">
+                                            </div>
+                                        </div>
+                                        <div class="three wide field">
+                                            <select>
+                                                <option>최근시간</option>
+                                                <option>고객명</option>
+                                                <option>상담원명</option>
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="three wide field">
-                                        <select>
-                                            <option>최근시간</option>
-                                            <option>고객명</option>
-                                            <option>상담원명</option>
-                                        </select>
+                                </div>
+                            </div>
+                            <div class="talk-list-container">
+                                <ul>
+                                    <li class="item">
+                                        <div class="header">
+                                            <div class="left"><span class="label">서비스 test</span><span class="customer">미등록 고객</span></div>
+                                            <div class="right">상담원 : 홍길동</div>
+                                        </div>
+                                        <div class="content">
+                                            <div class="left">마지막 메시지 출력</div>
+                                            <div class="right">2021-05-21 09:00:00</div>
+                                        </div>
+                                    </li>
+                                    <li class="item">
+                                        <div class="header">
+                                            <div class="left"><span class="label">서비스 test</span><span class="customer">미등록 고객</span></div>
+                                            <div class="right">상담원 : 홍길동</div>
+                                        </div>
+                                        <div class="content">
+                                            <div class="left">마지막 메시지 출력</div>
+                                            <div class="right">2021-05-21 09:00:00</div>
+                                        </div>
+                                    </li>
+                                    <li class="item">
+                                        <div class="header">
+                                            <div class="left"><span class="label">서비스 test</span><span class="customer">미등록 고객</span></div>
+                                            <div class="right">상담원 : 홍길동</div>
+                                        </div>
+                                        <div class="content">
+                                            <div class="left">마지막 메시지 출력</div>
+                                            <div class="right">2021-05-21 09:00:00</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="ui bottom attached tab segment remove-margin" data-tab="talk-list-type-TOT">
+                            통계
+                        </div>
+                        <div class="ui bottom attached tab segment remove-margin" data-tab="talk-list-type-OTH">
+                            통계
+                        </div>
+                        <div class="ui bottom attached tab segment remove-margin" data-tab="talk-list-type-END">
+                            통계
+                        </div>
+                    </div>
+                    <div class="btm-room-wrap">
+                        <div class="chat-container">
+                            <div class="room">
+                                <div class="chat-header"></div>
+                                <div class="chat-body">
+                                    <div class="chat-item chat-me">
+                                        <div class="wrap-content">
+                                            <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
+                                            <div class="chat">
+                                                <div class="bubble">
+                                                    <p class="txt_chat">테스트</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="chat-item chat-me">
+                                        <div class="wrap-content">
+                                            <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
+                                            <div class="chat">
+                                                <div class="bubble">
+                                                    <p class="txt_chat">
+                                                        <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Yuumi_0.jpg">
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <a href="#">저장하기</a>
+                                        </div>
+                                    </div>
+                                    <div class="chat-item">
+                                        <div class="wrap-content">
+                                            <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
+                                            <div class="chat">
+                                                <div class="bubble">
+                                                    <p class="txt_chat">TEST TEST TEST TEST TEST TEST TEST TEST TEST
+                                                        TEST TEST TEST TEST TEST TEST </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="info-msg">[2019-07-16 17:50:10] [김옥중어드민]상담건을 찜하였습니다. TEXT</p>
+                                    <div class="chat-item">
+                                        <div class="wrap-content">
+                                            <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
+                                            <div class="chat">
+                                                <div class="bubble">
+                                                    <p class="txt_chat">
+                                                        <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Yuumi_0.jpg">
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <a href="#">저장하기</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="write-chat">
+                                    <div class="write-menu">
+                                        <button type="button" class="mini ui button compact">템플릿</button>
+                                        <button type="button" class="mini ui button compact">파일전송</button>
+                                    </div>
+                                    <div class="wrap-inp">
+                                        <div class="inp-box">
+                                            <textarea id="talk-message" placeholder="전송하실 메시지를 입력하세요."></textarea>
+                                        </div>
+                                        <button type="button" class="send-btn">전송</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="ui bottom attached tab segment" data-tab="talk-list-type-TOT">
-                        통계
-                    </div>
-                    <div class="ui bottom attached tab segment" data-tab="talk-list-type-OTH">
-                        통계
-                    </div>
-                    <div class="ui bottom attached tab segment" data-tab="talk-list-type-END">
-                        통계
-                    </div>
                 </div>
             </div>
-            <div class="right">
+            <div class="right-panel">
                 <div class="panel remove-mb panel-resizable top">
                     <div class="panel-heading">
-                        <div class="pull-left">1</div>
-                        <div class="pull-right">1</div>
+                        <div class="pull-left"><label class="panel-label">고객정보</label></div>
+                        <div class="pull-right">
+                            <button class="ui button right floated">신규고객정보저장</button>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <table class="ui celled table compact unstackable">
@@ -326,8 +434,8 @@
                 </div>
                 <div class="panel remove-mb panel-resizable middle">
                     <div class="panel-heading">
-                        <div class="pull-left">1</div>
-                        <div class="pull-right">1</div>
+                        <div class="pull-left"><label class="panel-label">상담결과 입력</label></div>
+                        <div class="pull-right"><button class="ui button right floated">신규고객정보저장</button></div>
                     </div>
                     <div class="panel-body">
                         <table class="ui celled table compact unstackable">
@@ -384,66 +492,68 @@
                         </table>
                     </div>
                 </div>
-                <div class="panel bottom">
-                    <div class="panel-heading">
-                        <div class="pull-left">1</div>
-                        <div class="pull-right">1</div>
-                    </div>
-                    <div class="panel-body">
-                        <table class="ui celled table compact unstackable">
-                            <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                            </tr>
-                            <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                            </tr>
-                            <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                            </tr>
-                            <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                            </tr>
-                            <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                            </tr>
-                        </table>
-                    </div>
+                <div class="ui top attached tabular menu flex">
+                    <button class="item active" data-tab="todo">To-Do</button>
+                    <button class="item" data-tab="consult-history">상담이력</button>
+                    <button class="item" data-tab="etc-lookup">기타조회</button>
                 </div>
+                <div class="ui bottom attached tab segment active" data-tab="todo">
+                    <table class="ui celled table compact unstackable">
+                        <thead>
+                            <tr>
+                                <th>채널</th>
+                                <th>요청시간</th>
+                                <th>고객정보</th>
+                                <th>처리상태</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="ui bottom attached tab segment" data-tab="consult-history">
+                    consult-history
+                </div>
+                <div class="ui bottom attached tab segment" data-tab="etc-lookup">
+                    etc-lookup
+                </div>
+
             </div>
         </div>
         <%--<div class="content-wrapper">
