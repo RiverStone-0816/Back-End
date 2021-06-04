@@ -64,6 +64,9 @@ pre {
 .text-primary {color: @color-brand}
 .text-green {color: @color-green}
 .text-red {color: @color-red}
+.ui.input.fluid {
+  width:100%;
+}
 .wrap {
   height: 100%;
   background: @color-bg;
@@ -93,7 +96,39 @@ pre {
   }
 }
 
+.ui.button.sharp {
+  background:darken(@color-gray,30%);
+  color:@color-white;
+  font-size:@font-size-xsmall;
+  border-radius: 0;
+  font-weight: 300;
+  padding: 0.57em .73em;
+  &:hover {
+    background:darken(@color-gray,33%);
+  }
+}
 
+.ui.button.sharp.brand {
+  background:@color-brand;
+  color:@color-white;
+  font-size:@font-size-xsmall;
+  border-radius: 0;
+  font-weight: 300;
+  padding: 0.57em .73em;
+}
+
+.ui.button.sharp.light {
+  background:lighten(@color-gray,1%);
+  color:@color-darkgray;
+  font-size:@font-size-xsmall;
+  border-radius: 0;
+  font-weight: 300;
+  padding: 0.57em .73em;
+  border:1px solid @color-border;
+  &:hover {
+    background:lighten(@color-gray,0%);
+  }
+}
 
 .header-main {
   .flex();
@@ -604,6 +639,7 @@ pre {
 #main {
   height: 100%;
   padding-top: @height-header;
+  overflow:auto;
 }
 // login
 .login-form {
@@ -745,7 +781,7 @@ pre {
   }
   .panel-heading, .panel-body {
     position: relative;
-    padding: 15px 15px;
+    padding: 8px;
   }
   .panel-body.grid-bg {
     flex: 1;
@@ -757,8 +793,7 @@ pre {
   }
   .panel-heading {
     border-bottom: 1px solid @color-border;
-    padding: 10px 15px;
-    max-height: 57px;
+    padding: 6px 8px;
     .pull-left {
       .ui.toggle.checkbox {
         margin: 0 0 0 15px;
@@ -843,6 +878,12 @@ pre {
     }
   }
 }
+
+.panel-label {
+  font-size:@font-size-default - 1px;
+  font-weight:500;
+}
+
 .panel:not(.panel-search) {
   .flex();
   flex-flow: column;
@@ -1217,6 +1258,9 @@ label.control-label {
 .pr15 {
   padding-right: 15px;
 }
+.pd10 {
+  padding:10px!important;
+}
 .mr15 {
   margin-right: 15px !important;
 }
@@ -1426,7 +1470,7 @@ label.control-label {
     }
     select {
       padding: 0;
-      height: 30px;
+      height: 26px;
     }
     input[type="text"], input[type="password"] {
       padding: 5.5px 11px;
@@ -1446,6 +1490,42 @@ label.control-label {
     .multi-select-wrap {
       width: 100%;
     }
+  }
+}
+
+.ui.celled.grid > .row {
+  -webkit-box-shadow: 0 -1px 0 0 @color-border;
+  box-shadow: 0 -1px 0 0 @color-border;
+}
+
+.ui.celled.grid > .column:not(.row), .ui.celled.grid > .row > .column {
+  box-shadow: -1px 0 0 0 @color-border;
+}
+
+.ui.celled.grid {
+  -webkit-box-shadow: 0 0 0 1px @color-border;
+}
+
+.ui.celled.grid > .column:not(.row), .ui.celled.grid > .row > .column {
+  -webkit-box-shadow: -1px 0 0 0 @color-border;
+  box-shadow: -1px 0 0 0 @color-border;
+}
+
+.ui.attached.tabular.menu.flex {
+  display:flex;
+  .item {
+    flex:1;
+    justify-content: center;
+    background:@color-gray;
+  }
+  .item.active {
+    background:@color-white;
+  }
+}
+
+.ui.internally.celled.grid {
+  .column {
+    padding:10px;
   }
 }
 
