@@ -200,6 +200,7 @@
             });
         });
         /* 태헌씨 스크립트 */
+
         $( function() {
             $( ".panel-resizable" ).resizable();
         } );
@@ -211,6 +212,18 @@
         findAndMe('.ui.checkbox', this).checkbox();
         findAndMe('.panel-heading .slider', this).on("click", function () {
             $(this).parents('.panel').toggleClass('hide');
+        });
+        findAndMe('.header-main .dial', this).on("click", function () {
+            $('.dial-pad').toggle();
+        });
+        findAndMe('.dial-close', this).on("click", function () {
+            $('.dial-pad').hide();
+        });
+        findAndMe('.header-main .phone-forwarded', this).on("click", function () {
+            $('.call-forwarded').toggle();
+        });
+        findAndMe('.call-forwarded-close', this).on("click", function () {
+            $('.call-forwarded').hide();
         });
         findAndMe('.treeview-menu', this).each(function () { // 좌측네비게이션
             $(this)
@@ -236,6 +249,9 @@
         });
         findAndMe('.menu .item', this).tab();
         findAndMe(".sidebar-menu-wrap", this).overlayScrollbars({ // overflow scroll
+            className: "os-theme-dark"
+        });
+        findAndMe(".top-chat-list-wrap", this).overlayScrollbars({ // overflow scroll
             className: "os-theme-dark"
         });
         findAndMe(".chat-body", this).overlayScrollbars({});

@@ -55,6 +55,89 @@
                     <button class="ui button phone-cancel" data-inverted="" data-tooltip="전화끊기" data-position="bottom center"></button>
                     <button class="ui button phone-forwarded" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
                 </div>
+                <div class="call-forwarded">
+                    <div class="header">
+                        호전환
+                        <button class="call-forwarded-close"><img src="<c:url value="/resources/images/close.svg"/>"></button>
+                    </div>
+                    <div class="content">
+                        <div class="accordion">
+                            <button class="team-title">
+                                <div class="team">
+                                    <img src="<c:url value="/resources/images/layer-group.svg"/>">
+                                    <span>개발 1팀</span>
+                                </div>
+                                <div class="arrow">
+                                    <i class="material-icons arrow"> keyboard_arrow_down </i>
+                                </div>
+                            </button>
+                            <ul class="team-list">
+                                <li class="item">
+                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="title"><span class="ui mini red label">통화중</span></div>
+                                </li>
+                                <li class="item">
+                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="title"><span class="ui mini green label">대기</span></div>
+                                </li>
+                                <li class="item">
+                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="title"><span class="ui mini teal label">벨울림</span></div>
+                                </li>
+                                <li class="item">
+                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="title"><span class="ui mini orange label">후처리</span></div>
+                                </li>
+                                <li class="item">
+                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="title"><span class="ui mini gray label">로그아웃</span></div>
+                                </li>
+                                <li class="item">
+                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="title"><span class="ui mini purple label">기타</span></div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="accordion">
+                            <button class="team-title">
+                                <div class="team">
+                                    <img src="<c:url value="/resources/images/layer-group.svg"/>">
+                                    <span>개발 1팀</span>
+                                </div>
+                                <div class="arrow">
+                                    <i class="material-icons arrow"> keyboard_arrow_down </i>
+                                </div>
+                            </button>
+                            <ul class="team-list">
+                                <li class="item">
+                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="title"><span class="ui mini red label">통화중</span></div>
+                                </li>
+                                <li class="item">
+                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="title"><span class="ui mini green label">대기</span></div>
+                                </li>
+                                <li class="item">
+                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="title"><span class="ui mini teal label">벨울림</span></div>
+                                </li>
+                                <li class="item">
+                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="title"><span class="ui mini orange label">후처리</span></div>
+                                </li>
+                                <li class="item">
+                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="title"><span class="ui mini gray label">로그아웃</span></div>
+                                </li>
+                                <li class="item">
+                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="title"><span class="ui mini purple label">기타</span></div>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
             </c:if>
             <div class="etc-groups">
                 <button class="ui button dial"  data-inverted="" data-tooltip="다이얼" data-position="bottom center"></button>
@@ -63,6 +146,34 @@
                     <%--전화알림 off일 경우--%>
                     <%--<button class="ui button bell-off"  data-inverted="" data-tooltip="전화알림창" data-position="bottom right"></button>--%>
                 </c:if>
+                <div class="dial-pad">
+                    <div class="header">
+                        다이얼 패드
+                        <button class="dial-close"><img src="<c:url value="/resources/images/close.svg"/>"></button>
+                    </div>
+                    <div class="content">
+                        <div class="number-result">
+                            <input type="text">
+                        </div>
+                        <div class="ui three column grid number">
+                            <div class="column"><button class="ui button fluid">1</button></div>
+                            <div class="column"><button class="ui button fluid">2</button></div>
+                            <div class="column"><button class="ui button fluid">3</button></div>
+                            <div class="column"><button class="ui button fluid">4</button></div>
+                            <div class="column"><button class="ui button fluid">5</button></div>
+                            <div class="column"><button class="ui button fluid">6</button></div>
+                            <div class="column"><button class="ui button fluid">7</button></div>
+                            <div class="column"><button class="ui button fluid">8</button></div>
+                            <div class="column"><button class="ui button fluid">9</button></div>
+                            <div class="column"><button class="ui button fluid">✳</button></div>
+                            <div class="column"><button class="ui button fluid">0</button></div>
+                            <div class="column"><button class="ui button fluid">#</button></div>
+                        </div>
+                        <div class="call-btn-wrap">
+                            <button class="ui button fluid">전화걸기</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -84,6 +195,13 @@
                     </c:if>
                 </c:forEach>
             </ul>
+            <ul class="gnb-ul2">
+                <li><a href="#">상담화면</a></li>
+                <li><a href="#">공지사항</a></li>
+                <li><a href="#">지식관리</a></li>
+                <li><a href="#">일정관리</a></li>
+                <li><a class="bookmark-btn" onclick="bookmarkPopup()">즐겨찾기</a></li>
+            </ul>
         </div>
         <div class="center">
             <a class="ui button basic small -menu-page" href="<c:url value="/admin/dashboard/"/>">대쉬보드</a>
@@ -98,11 +216,248 @@
     </div>
 </header>
 
+<div class="ui modal" id="bookmark-popup">
+    <i class="close icon"></i>
+    <div class="header">
+        즐겨찾기 설정
+    </div>
+    <div class="content">
+        <table class="ui celled table unstackable">
+            <thead>
+            <tr>
+                <th>선택</th>
+                <th>이름</th>
+                <th>사이트 주소</th>
+                <th>이동</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="radio" checked="checked">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td class="one wide column">
+                    <a href="#" class="ui button sharp navy" target="_blank">바로가기</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="radio" checked="checked">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td class="one wide column">
+                    <a href="#" class="ui button sharp navy" target="_blank">바로가기</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="radio" checked="checked">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td class="one wide column">
+                    <a href="#" class="ui button sharp navy" target="_blank">바로가기</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="radio" checked="checked">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td class="one wide column">
+                    <a href="#" class="ui button sharp navy" target="_blank">바로가기</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="radio" checked="checked">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td class="one wide column">
+                    <a href="#" class="ui button sharp navy" target="_blank">바로가기</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="radio" checked="checked">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td class="one wide column">
+                    <a href="#" class="ui button sharp navy" target="_blank">바로가기</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="radio" checked="checked">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td class="one wide column">
+                    <a href="#" class="ui button sharp navy" target="_blank">바로가기</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="radio" checked="checked">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td class="one wide column">
+                    <a href="#" class="ui button sharp navy" target="_blank">바로가기</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="radio" checked="checked">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td class="one wide column">
+                    <a href="#" class="ui button sharp navy" target="_blank">바로가기</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="ui radio checkbox">
+                        <input type="radio" name="radio" checked="checked">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td>
+                    <div class="ui form">
+                        <input type="text">
+                    </div>
+                </td>
+                <td class="one wide column">
+                    <a href="#" class="ui button sharp navy" target="_blank">바로가기</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="actions">
+        <button class="ui left floated button sharp light remove-ml">선택 지우기</button>
+        <button class="ui right floated button sharp brand">확인</button>
+        <button class="ui right floated button sharp">취소</button>
+    </div>
+</div>
+
+
 <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
 <jsp:include page="/modal-update-password"/>
 
 <tags:scripts>
     <script>
+        function bookmarkPopup() {
+            $('.header-sub .bookmark-btn').click(function(){
+                $('#bookmark-popup').modalShow();
+            })
+        }
+
+        $('.accordion .team-title').click(function(){
+            $(this).siblings('.team-list').toggle();
+        })
+
         function logout() {
             restSelf.get("/api/auth/logout").done(function () {
                 location.href = contextPath + '/';

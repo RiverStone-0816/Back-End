@@ -39,8 +39,8 @@
                 <div class="ui bottom attached tab segment" data-tab="call-view">
                     <div class="panel remove-margin">
                         <div class="panel-heading">
-                            <label class="panel-label">수발신정보</label>
-                            <button class="ui button right floated sharp">초기화</button>
+                            <div class="pull-left"><label class="panel-label">수발신정보</label></div>
+                            <div class="pull-right"><button class="ui button right floated sharp">초기화</button></div>
                         </div>
                         <div class="panel-body">
                             <table class="ui celled table compact unstackable">
@@ -82,11 +82,11 @@
                                     </td>
                                 </tr>
                             </table>
-                            <div class="ui top attached tabular menu flex">
+                            <div class="ui top attached tabular menu light flex">
                                 <button class="item active" data-tab="monitoring">모니터링</button>
                                 <button class="item" data-tab="statistics">통계</button>
                             </div>
-                            <div class="ui bottom attached tab segment active remove-padding" data-tab="monitoring">
+                            <div class="ui bottom attached tab segment active remove-padding remove-margin" data-tab="monitoring">
                                 <div class="pd10">
                                     <label class="panel-label">상담원 현황</label>
                                 </div>
@@ -219,9 +219,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="ui bottom attached tab segment active" data-tab="talk-view">
+                <div class="ui bottom attached tab segment remove-margin active" data-tab="talk-view">
                     <div class="panel-resizable top-chat-list-wrap">
-                        <div class="ui top attached tabular menu flex">
+                        <div class="ui top attached tabular menu light flex">
                             <button class="item active" data-tab="talk-list-type-MY">상담중(1)</button>
                             <button class="item" data-tab="talk-list-type-TOT">비접수(1)</button>
                             <button class="item" data-tab="talk-list-type-OTH">타상담(1)</button>
@@ -284,6 +284,46 @@
                                             <div class="right">2021-05-21 09:00:00</div>
                                         </div>
                                     </li>
+                                    <li class="item">
+                                        <div class="header">
+                                            <div class="left"><span class="label">서비스 test</span><span class="customer">미등록 고객</span></div>
+                                            <div class="right">상담원 : 홍길동</div>
+                                        </div>
+                                        <div class="content">
+                                            <div class="left">마지막 메시지 출력</div>
+                                            <div class="right">2021-05-21 09:00:00</div>
+                                        </div>
+                                    </li>
+                                    <li class="item">
+                                        <div class="header">
+                                            <div class="left"><span class="label">서비스 test</span><span class="customer">미등록 고객</span></div>
+                                            <div class="right">상담원 : 홍길동</div>
+                                        </div>
+                                        <div class="content">
+                                            <div class="left">마지막 메시지 출력</div>
+                                            <div class="right">2021-05-21 09:00:00</div>
+                                        </div>
+                                    </li>
+                                    <li class="item">
+                                        <div class="header">
+                                            <div class="left"><span class="label">서비스 test</span><span class="customer">미등록 고객</span></div>
+                                            <div class="right">상담원 : 홍길동</div>
+                                        </div>
+                                        <div class="content">
+                                            <div class="left">마지막 메시지 출력</div>
+                                            <div class="right">2021-05-21 09:00:00</div>
+                                        </div>
+                                    </li>
+                                    <li class="item">
+                                        <div class="header">
+                                            <div class="left"><span class="label">서비스 test</span><span class="customer">미등록 고객</span></div>
+                                            <div class="right">상담원 : 홍길동</div>
+                                        </div>
+                                        <div class="content">
+                                            <div class="left">마지막 메시지 출력</div>
+                                            <div class="right">2021-05-21 09:00:00</div>
+                                        </div>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -310,19 +350,6 @@
                                                     <p class="txt_chat">테스트</p>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="chat-item chat-me">
-                                        <div class="wrap-content">
-                                            <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
-                                            <div class="chat">
-                                                <div class="bubble">
-                                                    <p class="txt_chat">
-                                                        <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Yuumi_0.jpg">
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <a href="#">저장하기</a>
                                         </div>
                                     </div>
                                     <div class="chat-item">
@@ -374,60 +401,167 @@
                     <div class="panel-heading">
                         <div class="pull-left"><label class="panel-label">고객정보</label></div>
                         <div class="pull-right">
-                            <button class="ui button right floated">신규고객정보저장</button>
+                            <div class="pull-right"><button class="ui button sharp light"><img src="<c:url value="/resources/images/save.svg"/>">신규고객정보 저장</button></div>
                         </div>
                     </div>
                     <div class="panel-body">
-                        <table class="ui celled table compact unstackable">
+                        <table class="ui celled table compact unstackable fixed">
                             <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
+                                <th>고객DB</th>
+                                <td colspan="3">
+                                    <div class="ui form flex">
+                                        <select>
+                                            <option>고객정보 선택</option>
+                                        </select>
+                                        <select>
+                                            <option>김민호 테스트</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <th>기념일1</th>
+                                <td>
+                                    <div class="ui form">
+                                        <input type="text">
+                                    </div>
+                                </td>
+                                <th>기념일2</th>
+                                <td>
+                                    <div class="ui form">
+                                        <input type="text">
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
+                                <th>날짜</th>
+                                <td>
+                                    <div class="ui form">
+                                        <div class="fields">
+                                            <div class="eight wide field remove-pl">
+                                                <input type="text" placeholder="날짜">
+                                            </div>
+                                            <div class="four wide field remove-padding">
+                                                <input type="text" placeholder="시">
+                                            </div>
+                                            <div class="four wide field remove-pr">
+                                                <input type="text" placeholder="분">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <th>나이</th>
+                                <td>
+                                    <div class="ui form">
+                                        <input type="text">
+                                    </div>
+                                </td>
+                                <th>고객명</th>
+                                <td>
+                                    <div class="ui form">
+                                        <input type="text">
+                                    </div>
+                                </td>
+                                <th>소속</th>
+                                <td>
+                                    <div class="ui form">
+                                        <input type="text">
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
+                                <th>회사명</th>
+                                <td>
+                                    <div class="ui form">
+                                        <input type="text">
+                                    </div>
+                                </td>
+                                <th>고객명</th>
+                                <td>
+                                    <div class="ui form">
+                                        <input type="text">
+                                    </div>
+                                </td>
+                                <th>주소</th>
+                                <td>
+                                    <div class="ui form">
+                                        <input type="text">
+                                    </div>
+                                </td>
+                                <th>고객등급</th>
+                                <td>
+                                    <div class="ui form flex">
+                                        <select>
+                                            <option>선택</option>
+                                        </select>
+                                        <button class="ui button sharp brand">상세</button>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
+                                <th>이미지</th>
+                                <td colspan="7">
+                                    <div class="file-upload-header">
+                                        <label for="file" class="ui button sharp light mini compact">파일찾기</label>
+                                        <input type="file" id="file">
+                                        <span class="file-name">No file selected</span>
+                                    </div>
+                                    <div class="ui orange tiny progress" data-percent="49">
+                                        <div class="bar"></div>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
+                                <th>멀티채널추가</th>
+                                <td colspan="7">
+                                    <div class="ui grid remove-margin">
+                                        <div class="row remove-padding">
+                                            <div class="twelve wide column remove-pl">
+                                                <div class="ui form">
+                                                    <select name="channels" multiple="multiple" class="one-multiselect">
+                                                        <c:forEach var="c" items="${entity.multichannelList}">
+                                                            <option value="${c.channelData}" data-type="${g.htmlQuote(c.channelType)}">
+                                                                [${c.channelType == 'TALK' ? g.htmlQuote(talkServices.get(c.channelData.split('[_]')[0])) : g.htmlQuote(channelTypes.get(c.channelType))}]
+                                                                    ${g.htmlQuote(c.channelType == 'TALK' ? c.channelData.split('[_]')[1] : c.channelData)}
+                                                            </option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="four wide column remove-padding">
+                                                <div class="ui form">
+                                                    <div class="field">
+                                                        <button type="button" class="ui button sharp light fluid -remove-channel">삭제</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row remove-pb">
+                                            <div class="four wide column remove-pl">
+                                                <div class="ui form">
+                                                    <select name="channelType">
+                                                        <c:forEach var="e" items="${channelTypes}">
+                                                            <option value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.value)}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="eight wide column">
+                                                <div class="ui form flex">
+                                                    <div class="field" style="flex: 1; display: none;">
+                                                        <select name="channelDataTalkService">
+                                                            <c:forEach var="e" items="${talkServices}">
+                                                                <option value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.value)}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                    <div class="ui fluid action input">
+                                                        <input type="text" name="channelData">
+                                                        <button class="ui icon button -add-channel">추가</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         </table>
                     </div>
@@ -435,79 +569,66 @@
                 <div class="panel remove-mb panel-resizable middle">
                     <div class="panel-heading">
                         <div class="pull-left"><label class="panel-label">상담결과 입력</label></div>
-                        <div class="pull-right"><button class="ui button right floated">신규고객정보저장</button></div>
+                        <div class="pull-right"><button class="ui button sharp light"><img src="<c:url value="/resources/images/save.svg"/>">신규고객정보&상담결과 저장</button></div>
                     </div>
                     <div class="panel-body">
                         <table class="ui celled table compact unstackable">
                             <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
+                                <th>관련서비스</th>
+                                <td>
+                                    <div class="ui form">
+                                        <select>
+                                            <option>선택</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <th>상담종류</th>
+                                <td>
+                                    <div class="ui form">
+                                        <select>
+                                            <option>선택</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <th>처리여부</th>
+                                <td>
+                                    <div class="ui form">
+                                        <select>
+                                            <option>선택</option>
+                                        </select>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                            </tr>
-                            <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                            </tr>
-                            <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                            </tr>
-                            <tr>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
-                                <th>제목</th>
-                                <td>제목</td>
+                                <th>메모</th>
+                                <td colspan="5">
+                                    <div class="ui form">
+                                        <div class="field">
+                                            <textarea rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                </td>
                             </tr>
                         </table>
                     </div>
                 </div>
-                <div class="ui top attached tabular menu flex">
-                    <button class="item active" data-tab="todo">To-Do</button>
-                    <button class="item" data-tab="consult-history">상담이력</button>
-                    <button class="item" data-tab="etc-lookup">기타조회</button>
-                </div>
-                <div class="ui bottom attached tab segment active" data-tab="todo">
-                    <table class="ui celled table compact unstackable">
-                        <thead>
+                <div>
+                    <div class="ui top attached tabular menu light flex remove-margin">
+                        <button class="item active" data-tab="todo">To-Do</button>
+                        <button class="item" data-tab="consult-history">상담이력</button>
+                        <button class="item" data-tab="etc-lookup">기타조회</button>
+                    </div>
+                    <div class="ui bottom attached tab segment active" data-tab="todo">
+                        <table class="ui celled table unstackable">
+                            <thead>
                             <tr>
                                 <th>채널</th>
                                 <th>요청시간</th>
                                 <th>고객정보</th>
                                 <th>처리상태</th>
                             </tr>
-                        </thead>
-                        <tbody>
+                            </thead>
+                            <tbody>
                             <tr>
                                 <td>-</td>
                                 <td>-</td>
@@ -544,14 +665,107 @@
                                 <td>-</td>
                                 <td>-</td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="ui bottom attached tab segment" data-tab="consult-history">
-                    consult-history
-                </div>
-                <div class="ui bottom attached tab segment" data-tab="etc-lookup">
-                    etc-lookup
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="consult-history">
+                        <table class="ui celled table unstackable">
+                            <thead>
+                            <tr>
+                                <th>채널</th>
+                                <th>수/발신</th>
+                                <th>상담등록시간</th>
+                                <th>전화번호</th>
+                                <th>상담톡아이디</th>
+                                <th>상담원</th>
+                                <th>자세히</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="ui bottom attached tab segment" data-tab="etc-lookup">
+                        기타조회
+                    </div>
                 </div>
 
             </div>
@@ -562,6 +776,10 @@
         <tags:nav/>--%>
     </div>
 </div>
+
+
+
+
 
 <div id="scripts">
     <tags:js/>
