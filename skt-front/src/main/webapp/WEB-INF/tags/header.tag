@@ -16,12 +16,13 @@
 
 <c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
 <c:set var="isStat" value="${user.isStat == 'Y'}"/>
+
 <header id="header">
     <div class="header-main">
         <div class="start">
             <div class="logo">
                 <h1>
-                    <a href="<c:url value="/"/>"><img src="<c:url value="/resources/images/logo.png"/>"></a>
+                    <a href="<c:url value="/"/>"><img src="<c:url value="/resources/images/logo.png"/>" alt="logo"></a>
                 </h1>
             </div>
             <div class="side-box">
@@ -36,17 +37,18 @@
                     <i class="material-icons arrow"> keyboard_arrow_down </i>
                     <ul class="my-info-dropdown nav-ul">
                         <c:if test="${user.idType.equals('J')}">
-                            <li><a href="#" onclick="master()">마스터페이지</a></li>
+                            <li><a href="javascript:toMasterSite()">마스터페이지</a></li>
                         </c:if>
                         <li><a href="javascript:popupMyPasswordModal()">비밀번호변경</a></li>
-                        <li><a href="#">전화 알림창 ON</a></li>
+                        <%--<li><a href="#">전화 알림창 ON</a></li>--%>
                         <li><a href="javascript:logout()">로그아웃</a></li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="end">
-            <c:if test="${hasExtension && isStat}">
+
+        <c:if test="${hasExtension && isStat}">
+            <div class="end">
                 <div class="ui buttons small top-ivr-groups">
                     <button class="ui button call-time">00:00</button>
                     <button class="ui button phone-call" data-inverted="" data-tooltip="전화받기" data-position="bottom center"></button>
@@ -55,16 +57,18 @@
                     <button class="ui button phone-cancel" data-inverted="" data-tooltip="전화끊기" data-position="bottom center"></button>
                     <button class="ui button phone-forwarded" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
                 </div>
+
                 <div class="call-forwarded">
                     <div class="header">
                         호전환
-                        <button class="call-forwarded-close"><img src="<c:url value="/resources/images/close.svg"/>"></button>
+                        <button class="call-forwarded-close"><img src="<c:url value="/resources/images/close.svg"/>" alt="close"></button>
                     </div>
                     <div class="content">
+
                         <div class="accordion">
                             <button class="team-title">
                                 <div class="team">
-                                    <img src="<c:url value="/resources/images/layer-group.svg"/>">
+                                    <img src="<c:url value="/resources/images/layer-group.svg"/>" alt="group">
                                     <span>개발 1팀</span>
                                 </div>
                                 <div class="arrow">
@@ -73,31 +77,44 @@
                             </button>
                             <ul class="team-list">
                                 <li class="item">
-                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="user">홍길동
+                                        <button class="forwarded-btn"></button>
+                                    </div>
                                     <div class="title"><span class="ui mini red label">통화중</span></div>
                                 </li>
                                 <li class="item">
-                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="user">홍길동
+                                        <button class="forwarded-btn"></button>
+                                    </div>
                                     <div class="title"><span class="ui mini green label">대기</span></div>
                                 </li>
                                 <li class="item">
-                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="user">홍길동
+                                        <button class="forwarded-btn"></button>
+                                    </div>
                                     <div class="title"><span class="ui mini teal label">벨울림</span></div>
                                 </li>
                                 <li class="item">
-                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="user">홍길동
+                                        <button class="forwarded-btn"></button>
+                                    </div>
                                     <div class="title"><span class="ui mini orange label">후처리</span></div>
                                 </li>
                                 <li class="item">
-                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="user">홍길동
+                                        <button class="forwarded-btn"></button>
+                                    </div>
                                     <div class="title"><span class="ui mini gray label">로그아웃</span></div>
                                 </li>
                                 <li class="item">
-                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="user">홍길동
+                                        <button class="forwarded-btn"></button>
+                                    </div>
                                     <div class="title"><span class="ui mini purple label">기타</span></div>
                                 </li>
                             </ul>
                         </div>
+
                         <div class="accordion">
                             <button class="team-title">
                                 <div class="team">
@@ -110,27 +127,39 @@
                             </button>
                             <ul class="team-list">
                                 <li class="item">
-                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="user">홍길동
+                                        <button class="forwarded-btn"></button>
+                                    </div>
                                     <div class="title"><span class="ui mini red label">통화중</span></div>
                                 </li>
                                 <li class="item">
-                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="user">홍길동
+                                        <button class="forwarded-btn"></button>
+                                    </div>
                                     <div class="title"><span class="ui mini green label">대기</span></div>
                                 </li>
                                 <li class="item">
-                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="user">홍길동
+                                        <button class="forwarded-btn"></button>
+                                    </div>
                                     <div class="title"><span class="ui mini teal label">벨울림</span></div>
                                 </li>
                                 <li class="item">
-                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="user">홍길동
+                                        <button class="forwarded-btn"></button>
+                                    </div>
                                     <div class="title"><span class="ui mini orange label">후처리</span></div>
                                 </li>
                                 <li class="item">
-                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="user">홍길동
+                                        <button class="forwarded-btn"></button>
+                                    </div>
                                     <div class="title"><span class="ui mini gray label">로그아웃</span></div>
                                 </li>
                                 <li class="item">
-                                    <div class="user">홍길동 <button class="forwarded-btn"></button></div>
+                                    <div class="user">홍길동
+                                        <button class="forwarded-btn"></button>
+                                    </div>
                                     <div class="title"><span class="ui mini purple label">기타</span></div>
                                 </li>
                             </ul>
@@ -138,50 +167,71 @@
 
                     </div>
                 </div>
-            </c:if>
-            <div class="etc-groups">
-                <button class="ui button dial"  data-inverted="" data-tooltip="다이얼" data-position="bottom center"></button>
-                <c:if test="${hasExtension && isStat}">
-                    <button class="ui button bell"  data-inverted="" data-tooltip="전화알림창" data-position="bottom right"></button>
-                    <%--전화알림 off일 경우--%>
-                    <%--<button class="ui button bell-off"  data-inverted="" data-tooltip="전화알림창" data-position="bottom right"></button>--%>
-                </c:if>
-                <div class="dial-pad">
-                    <div class="header">
-                        다이얼 패드
-                        <button class="dial-close"><img src="<c:url value="/resources/images/close.svg"/>"></button>
-                    </div>
-                    <div class="content">
-                        <div class="number-result">
-                            <input type="text">
+
+                <div class="etc-groups">
+                    <button class="ui button dial" data-inverted="" data-tooltip="다이얼" data-position="bottom center"></button>
+                    <button class="ui button bell <%--bell-off--%>" data-inverted="" data-tooltip="전화알림창" data-position="bottom right"></button>
+                    <div class="dial-pad">
+                        <div class="header">
+                            다이얼 패드
+                            <button class="dial-close"><img src="<c:url value="/resources/images/close.svg"/>"></button>
                         </div>
-                        <div class="ui three column grid number">
-                            <div class="column"><button class="ui button fluid">1</button></div>
-                            <div class="column"><button class="ui button fluid">2</button></div>
-                            <div class="column"><button class="ui button fluid">3</button></div>
-                            <div class="column"><button class="ui button fluid">4</button></div>
-                            <div class="column"><button class="ui button fluid">5</button></div>
-                            <div class="column"><button class="ui button fluid">6</button></div>
-                            <div class="column"><button class="ui button fluid">7</button></div>
-                            <div class="column"><button class="ui button fluid">8</button></div>
-                            <div class="column"><button class="ui button fluid">9</button></div>
-                            <div class="column"><button class="ui button fluid">✳</button></div>
-                            <div class="column"><button class="ui button fluid">0</button></div>
-                            <div class="column"><button class="ui button fluid">#</button></div>
-                        </div>
-                        <div class="call-btn-wrap">
-                            <button class="ui button fluid">전화걸기</button>
+                        <div class="content">
+                            <div class="number-result">
+                                <input type="text">
+                            </div>
+                            <div class="ui three column grid number">
+                                <div class="column">
+                                    <button class="ui button fluid">1</button>
+                                </div>
+                                <div class="column">
+                                    <button class="ui button fluid">2</button>
+                                </div>
+                                <div class="column">
+                                    <button class="ui button fluid">3</button>
+                                </div>
+                                <div class="column">
+                                    <button class="ui button fluid">4</button>
+                                </div>
+                                <div class="column">
+                                    <button class="ui button fluid">5</button>
+                                </div>
+                                <div class="column">
+                                    <button class="ui button fluid">6</button>
+                                </div>
+                                <div class="column">
+                                    <button class="ui button fluid">7</button>
+                                </div>
+                                <div class="column">
+                                    <button class="ui button fluid">8</button>
+                                </div>
+                                <div class="column">
+                                    <button class="ui button fluid">9</button>
+                                </div>
+                                <div class="column">
+                                    <button class="ui button fluid">✳</button>
+                                </div>
+                                <div class="column">
+                                    <button class="ui button fluid">0</button>
+                                </div>
+                                <div class="column">
+                                    <button class="ui button fluid">#</button>
+                                </div>
+                            </div>
+                            <div class="call-btn-wrap">
+                                <button class="ui button fluid">전화걸기</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </c:if>
     </div>
 
     <div class="header-sub">
         <div class="start">
-            <button class="side-toggle-btn"><span class="material-icons">menu</span></button>
-            <ul class="gnb-ul2">
+            <button class="side-toggle-btn -admin-panel"><span class="material-icons">menu</span></button>
+            <ul class="gnb-ul2 -admin-panel">
                 <c:forEach var="e" items="${menu.menus}">
                     <c:if test="${e.viewYn == 'Y'}">
                         <c:choose>
@@ -195,19 +245,21 @@
                     </c:if>
                 </c:forEach>
             </ul>
-            <ul class="gnb-ul2">
-                <li><a href="#">상담화면</a></li>
-                <li><a href="#">공지사항</a></li>
-                <li><a href="#">지식관리</a></li>
-                <li><a href="#">일정관리</a></li>
-                <li><a class="bookmark-btn" onclick="bookmarkPopup()">즐겨찾기</a></li>
-            </ul>
+            <c:if test="${hasExtension && isStat}">
+                <ul class="gnb-ul2 -counsel-panel">
+                    <li><a href="#" data-type="COUNSEL" class="-counsel-menu">상담화면</a></li>
+                    <li><a href="#" data-type="NOTICE" class="-counsel-menu">공지사항</a></li>
+                    <li><a href="#" data-type="KNOWLEDGE" class="-counsel-menu">지식관리</a></li>
+                    <li><a href="#" data-type="CALENDAR" class="-counsel-menu">일정관리</a></li>
+                    <li><a href="javascript:bookmarkPopup()" class="-counsel-panel bookmark-btn">즐겨찾기</a></li>
+                </ul>
+            </c:if>
         </div>
         <div class="center">
             <a class="ui button basic small -menu-page" href="<c:url value="/admin/dashboard/"/>">대쉬보드</a>
             <a class="ui button basic small -menu-page" href="<c:url value="/admin/monitor/screen/config"/>">전광판</a>
             <c:if test="${hasExtension && isStat}">
-                <button class="ui button basic small" onclick="modeChange()" id="mode">관리모드</button>
+                <button class="ui button basic small" onclick="changeMode()" id="mode">관리모드</button>
             </c:if>
         </div>
         <c:if test="${hasExtension && isStat}">
@@ -449,14 +501,18 @@
 <tags:scripts>
     <script>
         function bookmarkPopup() {
-            $('.header-sub .bookmark-btn').click(function(){
+            $('.header-sub .bookmark-btn').click(function () {
                 $('#bookmark-popup').modalShow();
             })
         }
 
-        $('.accordion .team-title').click(function(){
+        $('.accordion .team-title').click(function () {
             $(this).siblings('.team-list').toggle();
         })
+
+        function toMasterSite() {
+            location.href = "/ipcc/mc_master/login.jsp";
+        }
 
         function logout() {
             restSelf.get("/api/auth/logout").done(function () {
@@ -464,14 +520,43 @@
             });
         }
 
-        function modeChange() {
-            $('#main').toggleClass('change-mode'); // TODO: check
+        <c:if test="${hasExtension && isStat}">
+        $('.-counsel-menu').click(function () {
+            $('.-counsel-menu').parent().removeClass('active');
+            $(this).parent().addClass('active');
+
+            const type = $(this).attr('data-type');
+
+            $('.-counsel-content-panel').hide().filter(function () {
+                console.log(type , $(this).attr('data-type'));
+                return type === $(this).attr('data-type');
+            }).show();
+        });
+
+        function changeMode() {
+            $('#main').toggleClass('change-mode');
             if ($('#main').is('.change-mode')) {
                 $('#mode').text('상담모드');
+                $('.-admin-panel').hide();
+                $('.-counsel-panel').show();
+                $('#main > .content-wrapper').removeClass('content-wrapper').addClass('consult-wrapper');
+
+                if ($('.-counsel-menu').filter(function () {
+                    return $(this).hasClass('active');
+                }).length === 0) {
+                    $('.-counsel-menu[data-type=COUNSEL]').click();
+                }
             } else {
                 $('#mode').text('관리모드');
+                $('.-admin-panel').show();
+                $('.-counsel-panel').hide();
+                $('#main > .consult-wrapper').addClass('content-wrapper').removeClass('consult-wrapper');
             }
         }
+
+        changeMode();
+
+        </c:if>
 
         const sideBox = $('.prof-info');
         $(sideBox).mouseenter(function () {

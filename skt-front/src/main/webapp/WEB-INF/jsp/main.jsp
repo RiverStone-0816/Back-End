@@ -12,9 +12,16 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
+<c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
+<c:set var="isStat" value="${user.isStat == 'Y'}"/>
+
 <tags:layout>
 
-    <iframe class="content-inner" id="main-content" src="<c:url value="/admin/dashboard/"/>"></iframe>
+    <iframe class="content-inner -admin-panel" id="main-content" src="<c:url value="/admin/dashboard/"/>"></iframe>
+
+    <c:if test="${hasExtension && isStat}">
+        <jsp:include page="/counsel/"/>
+    </c:if>
 
     <tags:scripts>
         <script>
@@ -28,7 +35,6 @@
 
                 $('#main-content').attr('src', $this.attr('href'));
 
-                console.log(event)
                 return false;
             });
         </script>

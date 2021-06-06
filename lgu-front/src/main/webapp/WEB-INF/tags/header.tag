@@ -45,7 +45,7 @@
                     <div class="option nav-ul">
                         <ul>
                             <c:if test="${hasExtension && isStat}">
-                                <li><a href="javascript:" onclick="modeChange();" id="mode-switcher">모드변경</a></li>
+                                <li><a href="javascript:" onclick="changeMode();" id="mode-switcher">모드변경</a></li>
                             </c:if>
                             <li><a href="javascript:" onclick="sitemapOpen();">사이트맵</a></li>
                         </ul>
@@ -99,7 +99,7 @@
             $(this).find('.nav-ul').hide();
         });
 
-        function modeChange() {
+        function changeMode() {
             $('#main').toggleClass('change-mode');
             if ($('#main').is('.change-mode')) {
                 $('#mode').text('상담모드');
@@ -112,7 +112,7 @@
 
         (function () {
             if (${hasExtension} && ${isStat} && ${user.idType eq 'M'})
-                modeChange();
+                changeMode();
         })();
     </script>
 </tags:scripts>

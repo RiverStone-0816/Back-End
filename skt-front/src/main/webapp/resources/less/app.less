@@ -439,11 +439,31 @@ pre {
     }
     .ui.button.bell {
       background-image:url('../images/bell.svg');
-      cursor: unset;
+      border-radius: 10px;
+      padding: 9px 9px;
+      margin: 0 0 0 7px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      width:40px;
+      height:40px;
+      background-color:darken(@color-gray,5%);
+      &:hover {
+        background-color:@color-brand;
+      }
     }
     .ui.button.bell-off {
       background-image:url('../images/bell-off.svg');
-      cursor: unset;
+      border-radius: 10px;
+      padding: 9px 9px;
+      margin: 0 0 0 7px;
+      background-repeat: no-repeat;
+      background-position: center center;
+      width:40px;
+      height:40px;
+      background-color:darken(@color-gray,5%);
+      &:hover {
+        background-color:@color-brand;
+      }
     }
   }
   .logo {

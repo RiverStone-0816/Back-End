@@ -39,6 +39,19 @@ public class UserScheduleController extends BaseController {
 
     private final UserScheduleApiInterface apiInterface;
 
+    @GetMapping("")
+    public String page(Model model, @RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month) throws IOException, ResultFailException {
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+
+        year = year != null && year >= 1970 && year <= 2100 ? year : calendar.get(Calendar.YEAR);
+        month = month != null && month >= 1 && month <= 12 ? month : calendar.get(Calendar.MONTH) + 1;
+
+        model.addAttribute("year", year);
+        model.addAttribute("month", month);
+        return "counsel/user-schedule/ground";
+    }
+
     @GetMapping("modal")
     public String modal(Model model, @RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month) throws IOException, ResultFailException {
         final Calendar calendar = Calendar.getInstance();

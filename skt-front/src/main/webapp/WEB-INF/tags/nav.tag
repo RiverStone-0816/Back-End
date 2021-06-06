@@ -12,7 +12,7 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="menu" type="kr.co.eicn.ippbx.front.model.CurrentUserMenu"--%>
 
-<aside class="side-bar">
+<aside class="side-bar -admin-panel">
     <div class="sidebar-menu-container">
         <div class="page-title-wrap">
             <h2 class="page-title" id="selected-menu">설정메뉴</h2>
