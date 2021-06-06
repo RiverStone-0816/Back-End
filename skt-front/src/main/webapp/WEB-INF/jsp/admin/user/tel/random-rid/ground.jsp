@@ -19,73 +19,57 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
+                        <div class="panel-label">랜덤RID관리</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
-                            <label>접기/펴기</label>
+                            <label>검색옵션 전체보기</label>
                             <input type="checkbox" name="newsletter">
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="search-area">
-                        <div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">부서선택</label></div>
-                                <div class="five wide column">
-                                    <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
-                                         data-clear=".-clear-group">
-                                        <button type="button" class="ui icon button mini blue compact -select-group">
-                                            <i class="search icon"></i>
-                                        </button>
-                                        <form:hidden path="groupCode"/>
-                                        <div class="ui breadcrumb -group-name">
-                                            <c:choose>
-                                                <c:when test="${searchOrganizationNames != null && searchOrganizationNames.size() > 0}">
-                                                    <c:forEach var="e" items="${searchOrganizationNames}" varStatus="status">
-                                                        <span class="section">${g.htmlQuote(e)}</span>
-                                                        <c:if test="${!status.last}">
-                                                            <i class="right angle icon divider"></i>
-                                                        </c:if>
-                                                    </c:forEach>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="section">버튼을 눌러 소속을 선택하세요.</span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </div>
-                                        <button type="button" class="ui icon button mini compact -clear-group">
-                                            <i class="undo icon"></i>
-                                        </button>
+                        <table class="ui celled table compact unstackable">
+                            <th>부서선택</th>
+                            <td>
+                                <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
+                                     data-clear=".-clear-group">
+                                    <button type="button" class="ui icon button mini blue compact -select-group">
+                                        <i class="search icon"></i>
+                                    </button>
+                                    <form:hidden path="groupCode"/>
+                                    <div class="ui breadcrumb -group-name">
+                                        <c:choose>
+                                            <c:when test="${searchOrganizationNames != null && searchOrganizationNames.size() > 0}">
+                                                <c:forEach var="e" items="${searchOrganizationNames}" varStatus="status">
+                                                    <span class="section">${g.htmlQuote(e)}</span>
+                                                    <c:if test="${!status.last}">
+                                                        <i class="right angle icon divider"></i>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
+                                    <button type="button" class="ui icon button mini compact -clear-group">
+                                        <i class="undo icon"></i>
+                                    </button>
                                 </div>
-                                <div class="two wide column"><label class="control-label">번호</label></div>
-                                <div class="two wide column">
-                                    <div class="ui input fluid"><form:input path="number"/></div>
-                                </div>
+                            </td>
+                            <th>번호</th>
+                            <td> <div class="ui form"><form:input path="number"/></div></td>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button class="ui button sharp brand large">검색</button>
+                                <button class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
                     </div>
-                </div>
-            </form:form>
-            <div class="panel">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
-                    </div>
-                    <div class="pull-right">
-                        <button class="ui basic button" onclick="popupModal()">추가</button>
-                        <button class="ui basic button -control-entity" data-entity="RandomRid" style="display: none;" onclick="popupModal(getEntityId('RandomRid'))">수정</button>
-                        <button class="ui basic button -control-entity" data-entity="RandomRid" style="display: none;" onclick="deleteEntity(getEntityId('RandomRid'))">삭제</button>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <div class="ui segment">
+                    <div class="ui border-box">
                         <div class="ui list">
                             <div class="item">
                                 사용방법 <span class="ui circular label tiny">1</span> - 전체 RID번호를 사용할때 : 99+고객전화번호
@@ -102,6 +86,24 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </form:form>
+            <div class="panel">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <h3 class="panel-total-count">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
+                        <div class="ui basic buttons">
+                            <button class="ui button" onclick="popupModal()">추가</button>
+                            <button class="ui button -control-entity" data-entity="RandomRid" style="display: none;" onclick="popupModal(getEntityId('RandomRid'))">수정</button>
+                            <button class="ui button -control-entity" data-entity="RandomRid" style="display: none;" onclick="deleteEntity(getEntityId('RandomRid'))">삭제</button>
+                        </div>
+                    </div>
+                    <div class="pull-right">
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/user/tel/random-rid/" pageForm="${search}"/>
+                    </div>
+                </div>
+
+                <div class="panel-body">
                     <table class="ui celled table compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="RandomRid">
                         <thead>
                         <tr>
@@ -138,9 +140,6 @@
                         </c:choose>
                         </tbody>
                     </table>
-                </div>
-                <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/user/tel/random-rid/" pageForm="${search}"/>
                 </div>
             </div>
         </div>

@@ -19,23 +19,56 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
+                        <div class="panel-label">업로드이력</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
-                            <label>접기/펴기</label>
+                            <label>검색옵션 전체보기</label>
                             <input type="checkbox" name="newsletter">
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화
-                            </button>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="search-area">
-                        <div class="ui grid">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>업로드날짜</th>
+                                <td colspan="7">
+                                    <div class="ui action input calendar-area">
+                                        <input type="text">
+                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <span class="tilde">~</span>
+                                        <input type="text">
+                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                    </div>
+                                    <div class="ui basic buttons">
+                                        <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
+                                        <button type="button" data-interval="day" data-number="3" class="ui button -button-set-range">3일</button>
+                                        <button type="button" data-interval="day" data-number="7" class="ui button -button-set-range">1주일</button>
+                                        <button type="button" data-interval="month" data-number="1" class="ui button -button-set-range">1개월</button>
+                                        <button type="button" data-interval="month" data-number="3" class="ui button -button-set-range">3개월</button>
+                                        <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>고객DB그룹</th>
+                                <td>
+                                    <div class="ui form">
+                                        <select>
+                                            <option>선택안함</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button class="ui button sharp brand large">검색</button>
+                                <button class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
+                            </div>
+                        </div>
+                        <%--<div class="ui grid">
                             <div class="row">
                                 <div class="two wide column"><label class="control-label">업로드날짜</label></div>
                                 <div class="nine wide column -buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
@@ -82,19 +115,20 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>--%>
                     </div>
                 </div>
             </form:form>
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
-                    </div>
-                    <div class="pull-right">
+                        <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span> 건</h3>
                         <button class="ui basic button -control-entity" data-entity="MaindbUpload"
                                 style="display: none;" onclick="popupModal(getEntityId('MaindbUpload'))">업로드로그보기
                         </button>
+                    </div>
+                    <div class="pull-right">
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/application/maindb/upload/" pageForm="${search}"/>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -142,9 +176,6 @@
                         </c:choose>
                         </tbody>
                     </table>
-                </div>
-                <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/application/maindb/upload/" pageForm="${search}"/>
                 </div>
             </div>
         </div>

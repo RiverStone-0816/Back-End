@@ -19,13 +19,16 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
+                        <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span> 건</h3>
+                        <div class="ui basic buttons">
+                            <button type="button" class="ui button" onclick="popupModal()">추가</button>
+                            <button type="button" class="ui button -control-entity" style="display: none;" data-entity="Queue" onclick="popupModal(getEntityId('Queue'))">수정</button>
+                            <button type="button" class="ui button -control-entity" style="display: none;" data-entity="Queue" onclick="deleteEntity(getEntityId('Queue'))">삭제</button>
+                                <%--<button type="button" class="ui grey button -control-entity" style="display: none;" data-entity="Queue" onclick="popupBlendingModeModal(getEntityId('Queue'))">블랜딩</button>--%>
+                        </div>
                     </div>
                     <div class="pull-right">
-                        <button type="button" class="ui basic button" onclick="popupModal()">추가</button>
-                        <button type="button" class="ui basic button -control-entity" style="display: none;" data-entity="Queue" onclick="popupModal(getEntityId('Queue'))">수정</button>
-                        <button type="button" class="ui basic button -control-entity" style="display: none;" data-entity="Queue" onclick="deleteEntity(getEntityId('Queue'))">삭제</button>
-                            <%--<button type="button" class="ui basic grey button -control-entity" style="display: none;" data-entity="Queue" onclick="popupBlendingModeModal(getEntityId('Queue'))">블랜딩</button>--%>
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/acd/queue/" pageForm="${search}"/>
                     </div>
                 </div>
 
@@ -76,9 +79,6 @@
                         </c:choose>
                         </tbody>
                     </table>
-                </div>
-                <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/acd/queue/" pageForm="${search}"/>
                 </div>
             </form:form>
         </div>

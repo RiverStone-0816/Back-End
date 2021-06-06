@@ -22,25 +22,21 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
+                        <div class="panel-label">당겨받기그룹설정</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
-                            <label>접기/펴기</label>
+                            <label>검색옵션 전체보기</label>
                             <input type="checkbox" name="newsletter">
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="search-area">
-                        <div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">부서선택</label></div>
-                                <div class="five wide column">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>부서선택</th>
+                                <td colspan="7">
                                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
                                          data-clear=".-clear-group">
                                         <button type="button" class="ui icon button mini blue compact -select-group">
@@ -66,7 +62,13 @@
                                             <i class="undo icon"></i>
                                         </button>
                                     </div>
-                                </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button class="ui button sharp brand large">검색</button>
+                                <button class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
                     </div>
@@ -75,12 +77,15 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
+                        <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span> 건</h3>
+                        <div class="ui basic buttons">
+                            <button class="ui button" onclick="popupRegisterModal()">추가</button>
+                            <button class="ui button -control-entity" data-entity="PickupGroup" style="display: none;" onclick="popupUpdateModal(getEntityId('PickupGroup'))">수정</button>
+                            <button class="ui button -control-entity" data-entity="PickupGroup" style="display: none;" onclick="deleteEntity(getEntityId('PickupGroup'))">삭제</button>
+                        </div>
                     </div>
                     <div class="pull-right">
-                        <button class="ui basic button" onclick="popupRegisterModal()">추가</button>
-                        <button class="ui basic button -control-entity" data-entity="PickupGroup" style="display: none;" onclick="popupUpdateModal(getEntityId('PickupGroup'))">수정</button>
-                        <button class="ui basic button -control-entity" data-entity="PickupGroup" style="display: none;" onclick="deleteEntity(getEntityId('PickupGroup'))">삭제</button>
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/user/user/pickup-group" pageForm="${search}"/>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -124,9 +129,6 @@
                         </c:choose>
                         </tbody>
                     </table>
-                </div>
-                <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/user/user/pickup-group" pageForm="${search}"/>
                 </div>
             </div>
         </div>

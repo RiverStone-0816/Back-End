@@ -19,16 +19,19 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
+                        <h3 class="panel-total-count">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
+                        <div class="ui basic buttons">
+                            <button type="button" class="ui button" onClick="encSetModal()">녹취파일 암호화 설정</button>
+                            <button type="button" class="ui button" onclick="popupModal();">추가</button>
+                                <%--                        <button type="button" class="ui basic button -control-entity" data-entity="RecordEnc" style="display: none;" onclick="popupModal(getEntityId('RecordEnc'))">수정</button>--%>
+                            <button type="button" class="ui button -control-entity" data-entity="RecordEnc" style="display: none;" onclick="deleteEntity(getEntityId('RecordEnc'))">삭제</button>
+                        </div>
                         <div class="ui label ml10">
                             녹취파일 암호화 설정값 <div class="detail">${encType.enable == 'Y' ? 'ZIP암호화' : encType.enable == 'B' ? 'AES-256 암호화' : '사용안함'}</div>
                         </div>
                     </div>
                     <div class="pull-right">
-                        <button type="button" class="ui basic button" onClick="encSetModal()">녹취파일 암호화 설정</button>
-                        <button type="button" class="ui basic button" onclick="popupModal();">추가</button>
-<%--                        <button type="button" class="ui basic button -control-entity" data-entity="RecordEnc" style="display: none;" onclick="popupModal(getEntityId('RecordEnc'))">수정</button>--%>
-                        <button type="button" class="ui basic button -control-entity" data-entity="RecordEnc" style="display: none;" onclick="deleteEntity(getEntityId('RecordEnc'))">삭제</button>
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/record/file/enc/" pageForm="${search}"/>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -59,9 +62,6 @@
                         </c:choose>
                         </tbody>
                     </table>
-                </div>
-                <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/record/file/enc/" pageForm="${search}"/>
                 </div>
             </div>
         </div>
