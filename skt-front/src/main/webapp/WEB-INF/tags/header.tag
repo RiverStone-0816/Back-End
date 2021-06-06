@@ -155,8 +155,12 @@
         $('#button-bell-toggle').click(function () {
             if ($(this).hasClass('bell')) {
                 $(this).removeClass('bell').addClass('bell-off');
+                if (counselDisplayConfiguration)
+                    counselDisplayConfiguration.useCallNoticePopup = false;
             } else {
                 $(this).addClass('bell').removeClass('bell-off');
+                if (counselDisplayConfiguration)
+                    counselDisplayConfiguration.useCallNoticePopup = true;
             }
         });
 
