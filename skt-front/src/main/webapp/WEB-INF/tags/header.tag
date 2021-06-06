@@ -168,6 +168,19 @@
             }
         });
 
+        $('.header-main .dial').click(function () {
+            $('.dial-pad').toggle();
+        });
+        $('.dial-close').click(function () {
+            $('.dial-pad').hide();
+        });
+        $('.header-main .phone-forwarded').click(function () {
+            $('.call-forwarded').toggle();
+        });
+        $('.call-forwarded-close').click(function () {
+            $('.call-forwarded').hide();
+        });
+
         $(window).on('load', function () {
             changeMode();
         });
@@ -238,7 +251,7 @@
         $(window).on('load', function () {
             for (let status in statusCodes) {
 
-                if (status === '9')
+                if (status === '9') // 9 = LOGOUT
                     continue;
 
                 if (statusCodes.hasOwnProperty(status)) {
