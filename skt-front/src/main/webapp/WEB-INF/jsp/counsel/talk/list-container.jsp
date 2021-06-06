@@ -13,6 +13,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 
 <div id="talk-list-container-${search.mode}">
+
     <div class="sort-wrap">
         <div class="ui form">
             <div class="fields">
@@ -40,65 +41,59 @@
             </div>
         </div>
     </div>
-    <div class="talk-list-wrap">
+    <div class="talk-list-container -talk-list-wrap">
         <c:choose>
             <c:when test="${talkList.size() > 0}">
                 <ul>
                     <c:forEach var="e" items="${talkList}">
-                        <li class="talk-list" data-id="${g.htmlQuote(e.roomId)}" data-sender-key="${g.htmlQuote(e.senderKey)}" data-user-key="${g.htmlQuote(e.userKey)}">
-                            <div class="ui segment">
-                                <div class="ui top left attached label small blue">서비스 : ${g.htmlQuote(e.svcName)}</div>
-                                <div class="ui top right attached label small">상담원 :
-                                    <text class="-user-name">${g.htmlQuote(e.userName)}</text>
+                        <li class="item -talk-list" data-id="${g.htmlQuote(e.roomId)}" data-sender-key="${g.htmlQuote(e.senderKey)}" data-user-key="${g.htmlQuote(e.userKey)}">
+
+                            <div class="header">
+                                <div class="left">
+                                    <span class="label">${g.htmlQuote(e.svcName)}</span>
+                                    <span class="customer -custom-name">${e.maindbCustomName != null ? g.htmlQuote(e.maindbCustomName) : '미등록고객'}</span>
                                 </div>
-                                <div class="ui bottom right attached label small time -time"><fmt:formatDate value="${e.roomLastTime}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
-                                <div class="ui divided items">
-                                    <div class="item">
-                                        <div class="thumb">
-                                            <i class="user circle icon"></i>
-                                        </div>
-                                        <div class="middle aligned content">
-                                            <div class="header">
-                                                <text class="-custom-name">${e.maindbCustomName != null ? g.htmlQuote(e.maindbCustomName) : '미등록고객'}</text>
-                                                <span class="ui mini label circular -indicator-new-message" style="display: none"> N </span>
-                                            </div>
-                                            <div class="meta">
-                                                <c:choose>
-                                                    <c:when test="${e.type == 'photo' && e.send_receive == 'S'}">
-                                                        <i>사진 전송됨</i>
-                                                    </c:when>
-                                                    <c:when test="${e.type == 'photo' && e.send_receive == 'R'}">
-                                                        <i>사진 전달 받음</i>
-                                                    </c:when>
-                                                    <c:when test="${e.type == 'audio' && e.send_receive == 'S'}">
-                                                        <i>음원 전송됨</i>
-                                                    </c:when>
-                                                    <c:when test="${e.type == 'audio' && e.send_receive == 'R'}">
-                                                        <i>음원 전달 받음</i>
-                                                    </c:when>
-                                                    <c:when test="${e.type == 'file' && e.send_receive == 'S'}">
-                                                        <i>파일 전송됨</i>
-                                                    </c:when>
-                                                    <c:when test="${e.type == 'file' && e.send_receive == 'R'}">
-                                                        <i>파일 전달 받음</i>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        ${g.htmlQuote(e.content)}
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="right -user-name">상담원 : ${g.htmlQuote(e.userName)}</div>
+                                <%-- todo: 읽지 않은 메세지 갯수 출력 ui 없음
+                                <span class="ui mini label circular -indicator-new-message" style="display: none"> N </span>
+                                --%>
+                            </div>
+                            <div class="content">
+                                <div class="left">
+                                    <c:choose>
+                                        <c:when test="${e.type == 'photo' && e.send_receive == 'S'}">
+                                            <i>사진 전송됨</i>
+                                        </c:when>
+                                        <c:when test="${e.type == 'photo' && e.send_receive == 'R'}">
+                                            <i>사진 전달 받음</i>
+                                        </c:when>
+                                        <c:when test="${e.type == 'audio' && e.send_receive == 'S'}">
+                                            <i>음원 전송됨</i>
+                                        </c:when>
+                                        <c:when test="${e.type == 'audio' && e.send_receive == 'R'}">
+                                            <i>음원 전달 받음</i>
+                                        </c:when>
+                                        <c:when test="${e.type == 'file' && e.send_receive == 'S'}">
+                                            <i>파일 전송됨</i>
+                                        </c:when>
+                                        <c:when test="${e.type == 'file' && e.send_receive == 'R'}">
+                                            <i>파일 전달 받음</i>
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${g.htmlQuote(e.content)}
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
+                                <div class="right -time"><fmt:formatDate value="${e.roomLastTime}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
                             </div>
                         </li>
                     </c:forEach>
                 </ul>
             </c:when>
             <c:otherwise>
-                <div class="null-data">
+                <%--<div class="null-data">
                     조회된 데이터가 없습니다.
-                </div>
+                </div>--%>
             </c:otherwise>
         </c:choose>
     </div>
@@ -106,9 +101,9 @@
 
 <script>
     $('.item[data-tab="talk-list-type-${search.mode}"] span').text(${talkList.size()});
-    ui.find(".talk-list-wrap").overlayScrollbars({});
-    ui.find('.talk-list').click(function () {
-        ui.find('.talk-list').each(function () {
+    ui.find(".-talk-list-wrap").overlayScrollbars({});
+    ui.find('.-talk-list').click(function () {
+        ui.find('.-talk-list').each(function () {
             $(this).find('.ui.segment').removeClass('active');
         });
         $(this).find('.ui.segment').removeClass('active');
@@ -123,7 +118,7 @@
         searchType = ui.find('.-search-type').val();
         searchValue = ui.find('.-search-value').val();
 
-        ui.find('.talk-list').hide().filter(function () {
+        ui.find('.-talk-list').hide().filter(function () {
             return $(this).find(searchType === 'userName' ? '.-user-name' : '.-custom-name').text().indexOf(searchValue) >= 0;
         }).show();
     });
@@ -138,7 +133,7 @@
 
         <c:if test="${showNoti}">
         if (!originLastMessageSeq || newLastMessageSeq > originLastMessageSeq) {
-            const item = $('.talk-list[data-id="' + roomId + '"]');
+            const item = $('.-talk-list[data-id="' + roomId + '"]');
             item.find('.-indicator-new-message').show();
             $('.item[data-tab="talk-list-type-${search.mode}"]').addClass('newImg_c');
             $('.item[data-tab="talk-panel"]').addClass('newImg');
@@ -154,12 +149,12 @@
 
     ui.find('.-orderby').change(function () {
         const orderby = $(this).val();
-        const sorted = ui.find('.talk-list').sort(function (a, b) {
+        const sorted = ui.find('.-talk-list').sort(function (a, b) {
             const result = $(b).find(orderby === 'lastMessageTime' ? '.-time' : orderby === 'customName' ? '.-custom-name' : '.-user-name').text()
                 > $(a).find(orderby === 'lastMessageTime' ? '.-time' : orderby === 'customName' ? '.-custom-name' : '.-user-name').text();
 
             return (result ? 1 : -1);
         });
-        ui.find('.talk-list-wrap  ul').append(sorted.detach());
+        ui.find('.-talk-list-wrap  ul').append(sorted.detach());
     }).change();
 </script>
