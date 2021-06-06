@@ -27,11 +27,11 @@
             </div>
             <div class="side-box">
                 <div class="team">
-                    <img src="<c:url value="/resources/images/layer-group.svg"/>">
+                    <img src="<c:url value="/resources/images/layer-group.svg"/>" alt="group">
                     <span>${g.htmlQuote(user.companyName.length() > 6 ? user.companyName.substring(0,6).concat("...") : user.companyName)}</span>
                 </div>
                 <div class="prof-info">
-                    <img src="<c:url value="/resources/images/user.svg"/>">
+                    <img src="<c:url value="/resources/images/user.svg"/>" alt="user">
                     <span class="name">${g.htmlQuote(user.idName.length() > 3 ? user.idName.substring(0,3).concat("..") : user.idName)}
                     <c:if test="${user.extension != null && user.extension != ''}">[${g.htmlQuote(user.extension)}]</c:if></span>
                     <i class="material-icons arrow"> keyboard_arrow_down </i>
@@ -122,8 +122,10 @@
 <tags:scripts>
     <script>
         <c:if test="${hasExtension && isStat}">
-        $('.-counsel-menu').click(function () {
-            $('.-counsel-menu').parent().removeClass('active');
+        const menus = $('.-counsel-menu');
+
+        menus.click(function () {
+            menus.parent().removeClass('active');
             $(this).parent().addClass('active');
 
             const type = $(this).attr('data-type');
@@ -134,8 +136,10 @@
         });
 
         function changeMode() {
-            $('#main').toggleClass('change-mode');
-            if ($('#main').is('.change-mode')) { // 상담모드
+            const main = $('#main');
+
+            main.toggleClass('change-mode');
+            if (main.is('.change-mode')) { // 상담모드
                 $('#mode').text('상담모드');
                 $('.-admin-panel').hide();
                 $('.-counsel-panel').show();
@@ -186,8 +190,7 @@
         const sideBox = $('.prof-info');
         $(sideBox).mouseenter(function () {
             $(this).find('.nav-ul').show();
-        });
-        $(sideBox).mouseleave(function () {
+        }).mouseleave(function () {
             $(this).find('.nav-ul').hide();
         });
 
