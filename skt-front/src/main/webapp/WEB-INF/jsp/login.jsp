@@ -28,47 +28,50 @@
 <body>
 
 <div id="wrap" class="login ui middle aligned center aligned grid">
-    <div class="login-form">
+    <div class="login-form remove-padding">
         <div class="ui header">
-            <h3><span>${serviceKind.equals("SC") ? 'SMART CONTACT' : '클컨 고객센터 PRO'}</span> 로그인 ***************************************************</h3>
+            <p>최고의 고객상담을 실천하는</p>
+            <h3>SK telecom</h3>
         </div>
-        <div class="ui segment very padded column login-form-inner">
-            <div class="logo-wrap">
-                <h1><a href="javascript:" title="메인"><img src="<c:url value="/resources/images/logo.png"/>" alt="IPCC"></a>
-                </h1>
-            </div>
-            <form:form id="login-form" modelAttribute="form" cssClass="login-box ui form">
+        <div class="column login-form-inner">
+            <form:form id="login-form" modelAttribute="form" cssClass="login-box">
                 <form:hidden path="isChatLogin" value="false"/>
                 <ol>
                     <li>
                         <div class="field">
-                            <label>회사아이디</label>
+
                             <form:input autocomplete="false" path="company" placeholder="회사 아이디"
                                         cssClass="form-control"/>
                         </div>
                     </li>
                     <li>
                         <div class="field">
-                            <label>아이디</label>
+
                             <form:input autocomplete="false" path="id" placeholder="아이디" cssClass="form-control"/></div>
                     </li>
                     <li>
                         <div class="field">
-                            <label>비밀번호</label>
+
                             <form:password autocomplete="false" path="password" placeholder="비밀번호"
                                            cssClass="form-control"/></div>
                     </li>
                     <li>
                         <div class="field">
-                            <label>내선번호</label>
-                            <form:input autocomplete="false" path="extension" placeholder="내선번호"
+
+                            <form:input autocomplete="false" path="extension" placeholder="내선인증번호"
                                         cssClass="form-control"/></div>
                     </li>
                     <li class="chk-box-wrap">
-                        <div class="ui toggle checkbox">
+                        <div class="ccheck">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">
+                                <div class="chk_img">로그인 상태 유지</div>
+                            </label>
+                        </div>
+                        <%--<div class="ui toggle checkbox">
                             <input type="checkbox" id="remember">
                             <label for="remember">로그인저장</label>
-                        </div>
+                        </div>--%>
                     </li>
                     <li>
                         <button type="button" class="ui basic button brand -login-submit">LOGIN</button>

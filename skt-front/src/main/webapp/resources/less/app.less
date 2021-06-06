@@ -97,7 +97,7 @@ pre {
 }
 
 .ui.button.sharp {
-  background:darken(@color-gray,30%);
+  background-color:darken(@color-gray,30%);
   color:@color-white;
   font-size:@font-size-xsmall;
   border-radius: 0;
@@ -110,7 +110,7 @@ pre {
 }
 
 .ui.button.sharp.brand {
-  background:@color-brand;
+  background-color:@color-brand;
   color:@color-white;
   font-size:@font-size-xsmall;
   border-radius: 0;
@@ -119,7 +119,7 @@ pre {
 }
 
 .ui.button.sharp.light {
-  background:@color-gray-btn;
+  background-color:@color-gray-btn;
   color:@color-darkgray;
   font-size:@font-size-xsmall;
   border-radius: 0;
@@ -132,8 +132,34 @@ pre {
   }
 }
 
+.ui.button.sharp.large {
+  padding: .715em 1.5em .715em 1.5em;
+}
+
+.ui.button.sharp.light.large.excel {
+  padding: .715em 1.5em .715em 2.8em;
+  background-image:url("../images/microsoftexcel.svg");
+  background-repeat: no-repeat;
+  background-position: 15px center;
+  background-size: 20px 20px;
+}
+
+.ui.button.sharp.light.large.check {
+  padding: .715em 1.5em .715em 2.4em;
+  background-image:url("../images/modecheck.svg");
+  background-repeat: no-repeat;
+  background-position: 14px center;
+  background-size: 13px 13px;
+}
+
+.ui.button.sharp.light.large.check.active {
+  color:@color-brand;
+  border:1px solid @color-brand;
+  background-image:url("../images/modecheck-on.svg");
+}
+
 .ui.button.sharp.navy {
-  background:@color-navy;
+  background-color:@color-navy;
   color:@color-white;
   font-size:@font-size-xsmall;
   border-radius: 0;
@@ -677,6 +703,9 @@ pre {
   height:100%;
   padding:0 10px 10px 10px;
   overflow: hidden;
+  .panel-heading {
+    border-bottom:1px solid @color-border;
+  }
   .flex();
   .left-panel {
     .flex();
@@ -852,9 +881,10 @@ pre {
   height: 100%;
 }
 #wrap.login {
-  background: url("../images/login-bg.png") no-repeat;
+  background: url("../images/skt-bg-img1.png") no-repeat;
   background-size: cover;
   margin: 0;
+  align-items: center;
 }
 #main {
   height: 100%;
@@ -863,39 +893,61 @@ pre {
 }
 // login
 .login-form {
-  padding-top: 150px;
-  .login-form-inner.segment.padded {
-    width: 350px;
-    padding: 2em 3em;
-    .logo-wrap {
-      h1 {
-        text-align: center;
-        img {
-          width: 200px;
-        }
-      }
-      h2 {
-        font-size: @font-size-default;
-        font-weight: 500;
-        margin: 0 0 7px 0;
-        color: @color-darkgray;
-        letter-spacing: -1px;
-        span {
-          font-weight: 700;
-        }
+  padding: 0;
+  margin: 0;
+  width: 379px;
+  .login-box {
+    .ui.button {
+      border-radius: 0;
+      padding:20px 0;
+    }
+    li {
+      padding: 8px 0;
+    }
+    .chk-box-wrap {
+      padding:15px 0 30px 0;
+    }
+    .ui.basic.button {
+      width: 100%;
+    }
+    input[type="text"], input[type="password"] {
+      background:transparent;
+      color:@color-white;
+      padding:10px 0;
+      width:100%;
+      border:0;
+      border-bottom:2px solid darken(@color-white, 50%);
+      outline:0;
+      border-radius: 0;
+      &:focus {
+        border:0!important;
+        box-shadow: none!important;
+        outline:0!important;
+        border-bottom:2px solid @color-white!important;
       }
     }
   }
+  .ui.header {
+    p {
+      color:@color-white;
+      font-size: 33px;
+      font-weight: 100;
+    }
+    h3 {
+      color: @color-white;
+      font-size: 33px;
+      font-weight: 600;
+      padding: 10px 0 50px 0;
+    }
+  }
+  .login-form-inner.segment.padded {
+    width: 350px;
+    padding: 2em 3em;
+
+  }
   .chk-box-wrap {}
 }
-.login-box {
-  li {
-    padding: 8px 0;
-  }
-  .ui.basic.button {
-    width: 100%;
-  }
-}
+
 #modal-login {
   .info {
     color: @color-blue;
@@ -905,6 +957,32 @@ pre {
     color: @color-red;
   }
 }
+
+.ccheck {
+  input[type="checkbox"] {
+    display:none
+  }
+  label {
+    width:100%;
+    height:20px;
+  }
+  input[type="checkbox"] + label .chk_img {
+    padding:0 0 0 30px;
+    height:20px;
+    background:url("../images/modecheck.svg")no-repeat;
+    cursor:pointer;
+    color:#fff;
+    line-height: 20px;
+    font-size: 16px;
+  }
+  input[type="checkbox"]:checked + label .chk_img {
+    background:url("../images/modecheck-on.svg")no-repeat;
+  }
+}
+
+
+
+
 .content-wrapper {
   .transition;
   position: relative;
@@ -913,9 +991,9 @@ pre {
   padding: 0 0 0 226px;
 }
 .content-inner {
-  background:@color-white;
+/*  background:@color-white;
   border-top:1px solid @color-border;
-  border-left:1px solid @color-border;
+  border-left:1px solid @color-border;*/
   width:100%;
   height:100%;
 }
@@ -923,7 +1001,6 @@ pre {
   .flex();
   flex-flow: column;
   height: 100%;
-  padding:10px;
   .-evaluation-mode {
     padding: 5px 0 0 28px;
   }
@@ -1002,12 +1079,33 @@ pre {
   }
 }
 
+.ui.pagination.menu {
+  box-shadow: none;
+  border:0;
+  .item {
+    border: 1px solid @color-border;
+    margin: 0 0 0 10px;
+    border-radius: 0!important;
+    background-color:@color-gray-btn;
+    color:lighten(@color-darkgray,40%);
+    width: 36px;
+    padding: .643em 0;
+    justify-content: center;
+    &:before {
+      display:none;
+    }
+  }
+  .item.active {
+    background: @color-menu-bg;
+    color:@color-white;
+  }
+}
+
+
 .panel {
   position:relative;
   background: @color-white;
   border: 1px solid @color-border;
-  margin-bottom: 10px;
-
   .panel-heading, .panel-body {
     position: relative;
     padding: 10px 14px;
@@ -1021,8 +1119,7 @@ pre {
     }
   }
   .panel-heading {
-    border-bottom: 1px solid @color-border;
-    padding: 6px 14px;
+    padding: 10px 14px;
     .flex();
     align-items:center;
     .pull-left {
@@ -1044,8 +1141,23 @@ pre {
     }
     .ui.buttons {
       margin: 0 5px 0 0;
+      border-radius: 0;
       .ui.button {
         line-height: ~"calc(1em - 2px)";
+      }
+    }
+    .panel-total-count {
+      display: inline-block;
+      background-color:@color-gray-btn;
+      border: 1px solid @color-border;
+      font-size: 16px;
+      font-weight: 500;
+      padding: .43em 1em;
+      vertical-align: top;
+      margin: 0 8px 0 0;
+
+      span {
+        color:@color-red;
       }
     }
     .panel-title {
@@ -1069,12 +1181,32 @@ pre {
     color: @color-darkgray;
     margin: 0 5px 0 0;
   }
+  .button-area {
+    .flex();
+    align-items: center;
+    margin:10px 0;
+    .align-left {
+      margin-right: auto;
+    }
+    .align-right {
+      margin-left: auto;
+    }
+  }
   .search-area {
-    padding: 0 15px;
+    .ui.table {
+      td {
+        text-align:left;
+      }
+    }
     .control-label {
       vertical-align: unset;
     }
-    span {padding: 0 5px;}
+    .ui.basic.buttons {
+      border-radius: 0;
+      .button {
+        padding: .56em 1.5em;
+      }
+    }
     .row {
       border-top: 1px solid @color-gray;
       padding: 7px 0;
@@ -1104,13 +1236,18 @@ pre {
       }
     }
     .column {white-space: nowrap;overflow: hidden}
-    .ui.button {
-      padding-top: 7px;
-      padding-bottom: 7px;
-    }
+
     .date-picker {
       margin: 0 10px 0 0;
     }
+  }
+}
+
+.panel.panel-search {
+  margin: 0 0 -2px 0;
+  .panel-heading {
+    border-bottom: 1px solid @color-border;
+    padding:14px;
   }
 }
 
@@ -1123,6 +1260,9 @@ pre {
   .flex();
   flex-flow: column;
   flex: 1;
+  .panel-heading {
+    padding-bottom:0;
+  }
 }
 .panel.hide {
   .panel-body {
@@ -1251,7 +1391,6 @@ label.control-label {
 }
 .panel-search {
   .panel-body {
-    background: darken(@color-white, 1.5%);
     border-bottom: 1px solid lighten(@color-border, 5%);
   }
   .panel-footer {
@@ -1390,7 +1529,7 @@ label.control-label {
     a {
       position: relative;
       font-size: @font-size-xsmall;
-      color: #9A9A9A;
+      color: darken(@color-gray,25%);
       display: block;
       padding: 0 0 0 10px;
       white-space: nowrap;
@@ -1710,7 +1849,22 @@ label.control-label {
   }
 }
 
+.calendar-area {
+  margin:0 .5em 0 0;
+  .ui.basic.button {
+    border-radius: 0!important;
+  }
+  .tilde {
+    padding: 0 10px;
+    line-height: 28px;
+    color: @color-darkgray;
+  }
+}
+
+
 //semantic ui css fix
+
+
 .ui {
   .form {
     .inline.fields {
@@ -1742,6 +1896,55 @@ label.control-label {
     }
   }
 }
+
+.ui.action.input.left.floated {
+  float:left;
+}
+
+.ui.action.input {
+  .ui.button {
+    img {
+      margin:0;
+    }
+  }
+  input[type="text"] {
+    border-radius: 0;
+  }
+}
+
+.ui.slider.checkbox input:checked ~ .box:after, .ui.slider.checkbox input:checked ~ label:after {
+  right: 2rem;
+  left: 0;
+  background:@color-brand;
+}
+
+.ui.slider.checkbox .box:after, .ui.slider.checkbox label:after {
+  left:2em;
+  background:lighten(@color-darkgray, 30%);
+}
+
+div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
+  height:5px;
+  background:darken(@color-gray,10%);
+}
+
+.ui.slider.checkbox .box:after, .ui.slider.checkbox label:after {
+  box-shadow: none;
+}
+
+.ui.slider.checkbox input:checked ~ .box:before, .ui.slider.checkbox input:checked ~ label:before {
+  background:lighten(@color-brand,20%)!important;
+}
+
+.ui.checkbox input:checked ~ .box:before, .ui.checkbox input:checked ~ label:before {
+  background:lighten(@color-brand,20%)!important;
+}
+
+.ui.slider.checkbox input:focus:checked ~ .box:before, .ui.slider.checkbox input:focus:checked ~ label:before {
+  background:lighten(@color-brand,20%)!important;
+}
+
+
 
 .ui.red.labels .label, .ui.red.label {
   background-color:@color-red!important;
@@ -1874,6 +2077,9 @@ label.control-label {
   select {
     flex: 1;
     margin-right: 5px;
+  }
+  input[type="text"] {
+    flex:1;
   }
 }
 

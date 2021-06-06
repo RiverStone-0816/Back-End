@@ -22,8 +22,8 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
-                        <c:if test="${g.user.downloadRecordingAuthority.equals('ALL')}">
+                        <div class="panel-label">녹취/통화이력 조회</div>
+                        <%--<c:if test="${g.user.downloadRecordingAuthority.equals('ALL')}">
                             <div class="ui toggle checkbox">
                                 <form:checkbox path="batchDownloadMode"/>
                                 <form:hidden path="limit"/>
@@ -35,22 +35,80 @@
                                 <form:checkbox path="batchEvaluationMode"/>
                                 <label>상담원 일괄평가모드로 전환</label>
                             </div>
-                        </c:if>
+                        </c:if>--%>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
-                            <label>접기/펴기</label>
+                            <label>검색 옵션 전체보기</label>
                             <input type="checkbox" name="newsletter">
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="search-area">
-                        <div class="ui grid">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>검색기간</th>
+                                <td colspan="7">
+                                    <div class="ui action input calendar-area">
+                                        <input type="text">
+                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <span class="tilde">~</span>
+                                        <input type="text">
+                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                    </div>
+                                    <div class="ui basic buttons">
+                                        <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
+                                        <button type="button" data-interval="day" data-number="3" class="ui button -button-set-range">3일</button>
+                                        <button type="button" data-interval="day" data-number="7" class="ui button -button-set-range">1주일</button>
+                                        <button type="button" data-interval="month" data-number="1" class="ui button -button-set-range">1개월</button>
+                                        <button type="button" data-interval="month" data-number="3" class="ui button -button-set-range">3개월</button>
+                                        <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>전화번호</th>
+                                <td>
+                                    <div class="ui form">
+                                        <input type="text">
+                                    </div>
+                                </td>
+                                <th>상담자</th>
+                                <td>
+                                    <div class="ui form">
+                                        <input type="text">
+                                    </div>
+                                </td>
+                                <th>수/발신 선택</th>
+                                <td>
+                                    <div class="ui form">
+                                        <select>
+                                            <option>수/발신 선택</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <th>호상태 선택</th>
+                                <td>
+                                    <div class="ui form">
+                                        <select>
+                                            <option>호상태 선택</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-left">
+                                <button class="ui button sharp light large check">녹취 일괄 다운로드 모드</button>
+                                <button class="ui button sharp light large check active">상담원 일괄 평가모드</button>
+                            </div>
+                            <div class="align-right">
+                                <button class="ui button sharp brand large">검색</button>
+                                <button class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
+                            </div>
+                        </div>
+                        <%--<div class="ui grid">
                             <div class="row">
                                    <div class="two wide column"><label class="control-label">검색기간</label></div>
                                     <div class="ten wide column -buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
@@ -225,22 +283,24 @@
                                     </div>
                                 </div>
                             </c:if>
-                        </div>
+                        </div>--%>
                     </div>
                 </div>
             </form:form>
-            <div class="panel" >
+            <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
+                        <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span> 건</h3>
+                        <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                     </div>
                     <div class="pull-right">
-                        <button class="ui basic button action-button" type="button" id="select-all" onclick="selectAll()">전체 선택</button>
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/record/history/history/" pageForm="${search}"/>
+                        <%--<button class="ui basic button action-button" type="button" id="select-all" onclick="selectAll()">전체 선택</button>
                         <button class="ui basic button action-button" type="button" id="down-all" onclick="postBatchDownload()">녹취 일괄다운로드 등록</button>
                         <button class="ui basic green button action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">Excel 다운로드</button>
                         <c:if test="${company.isServiceAvailable('QA')}">
                             <button class="ui basic button action-button" type="button" id="batch-evaluation" onclick="popupBatchEvaluationModal()">일괄평가</button>
-                        </c:if>
+                        </c:if>--%>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -344,9 +404,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/record/history/history/" pageForm="${search}"/>
-                </div>
+
             </div>
         </div>
     </div>

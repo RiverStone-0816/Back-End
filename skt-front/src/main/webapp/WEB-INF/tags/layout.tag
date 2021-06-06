@@ -30,7 +30,7 @@
     <tags:header/>
 
     <div id="main">
-        <div class="consult-wrapper">
+        <%--<div class="consult-wrapper">
             <div class="left-panel">
                 <div class="ui top attached tabular menu">
                     <button class="item" data-tab="call-view">전화</button>
@@ -769,11 +769,11 @@
                 </div>
 
             </div>
-        </div>
-        <%--<div class="content-wrapper">
+        </div>--%>
+        <div class="content-wrapper">
             <jsp:doBody/>
         </div>
-        <tags:nav/>--%>
+        <tags:nav/>
     </div>
 </div>
 
