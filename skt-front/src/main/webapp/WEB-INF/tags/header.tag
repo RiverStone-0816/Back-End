@@ -144,10 +144,10 @@
                 $('.-admin-panel').hide();
                 $('.-counsel-panel').show();
 
-                if ($('.-counsel-menu').filter(function () {
+                if (menus.filter(function () {
                     return $(this).hasClass('active');
                 }).length === 0) {
-                    $('.-counsel-menu[data-type=COUNSEL]').click();
+                    menus.filter('[data-type=COUNSEL]').click();
                 }
             } else {
                 $('#mode').text('관리모드');
