@@ -17,7 +17,9 @@
 
 <tags:layout>
 
-    <iframe class="content-inner -admin-panel" id="main-content" src="<c:url value="/admin/dashboard/"/>"></iframe>
+    <div class="content-wrapper -admin-panel">
+    <iframe class="content-inner" id="main-content" src="<c:url value="/admin/dashboard/"/>"></iframe>
+    </div>
 
     <c:if test="${hasExtension && isStat}">
         <jsp:include page="/counsel/"/>
@@ -34,6 +36,10 @@
                 $this.parent().addClass('active');
 
                 $('#main-content').attr('src', $this.attr('href'));
+
+                if ($('#main').is('.change-mode')) {
+                    changeMode();
+                }
 
                 return false;
             });

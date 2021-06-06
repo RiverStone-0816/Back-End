@@ -30,9 +30,7 @@
     <tags:header/>
 
     <div id="main">
-        <div class="content-wrapper">
-            <jsp:doBody/>
-        </div>
+        <jsp:doBody/>
         <tags:nav/>
     </div>
 </div>

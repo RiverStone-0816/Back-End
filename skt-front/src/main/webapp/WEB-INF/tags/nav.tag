@@ -15,7 +15,7 @@
 <aside class="side-bar -admin-panel">
     <div class="sidebar-menu-container">
         <div class="page-title-wrap">
-            <h2 class="page-title" id="selected-menu">설정메뉴</h2>
+            <h2 class="page-title" id="selected-menu"></h2>
         </div>
         <div class="sidebar-menu-wrap">
             <ul class="sidebar-menu" id="menu-list"></ul>

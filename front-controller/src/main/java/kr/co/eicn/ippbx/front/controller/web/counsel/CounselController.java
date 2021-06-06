@@ -102,6 +102,7 @@ public class CounselController extends BaseController {
         final List<MonitControlResponse> list = monitApiInterface.list(new MonitControlSearchRequest());
         model.addAttribute("list", list);
         model.addAttribute("statusCodes", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
+        model.addAttribute("memberStatuses", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
 
         for (MonitControlResponse monitGroup : list) {
             for (int i = 0; i < monitGroup.getPerson().size(); i++) {
