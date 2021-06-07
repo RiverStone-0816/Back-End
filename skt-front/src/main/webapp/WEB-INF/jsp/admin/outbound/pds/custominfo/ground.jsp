@@ -73,8 +73,8 @@
                         </table>
                         <div class="button-area remove-mb">
                             <div class="align-right">
-                                <button class="ui button sharp brand large">검색</button>
-                                <button class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
                         <%--<div class="ui grid">
