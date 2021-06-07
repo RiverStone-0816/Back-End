@@ -42,8 +42,8 @@
         </table>
     </div>
     <div class="actions">
-        <button type="button" class="ui right floated button sharp brand">확인</button>
-        <button type="submit" class="ui right floated button sharp modal-close">취소</button>
+        <button type="submit" class="ui right floated button sharp brand">확인</button>
+        <button type="button" class="ui right floated button sharp modal-close">취소</button>
     </div>
 </div>
 
@@ -75,26 +75,19 @@
             '</tr>');
     });
 
-    // todo: 즐겨찾기 링크. 한번에 다 저장할수 있는 api 추가 필요
     modal.find('[type=submit]').click(function () {
         modal.asJsonData().done(function (data) {
-            const indices = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+            const form = [];
 
-            function process(i) {
-                indices.splice(0, 1);
+            [0, 1, 2, 3, 4, 5, 6, 7, 8].map(function (i) {
+                const d = data.form[i];
+                if (d && d.name && d.reference)
+                    form.push(d);
+            });
 
-                const form = data.form[i];
-                if (form && form.name && form.reference) {
-                    restSelf[!form.seq ? 'post' : 'put'].apply(null, ['/api/person-link/' + (form.seq || ''), {name: form.name, reference: form.reference}]).done(function () {
-                        if (indices.length > 0) process(indices[0]);
-                    });
-                } else {
-                    if (indices.length > 0) process(indices[0]);
-                }
-            }
-
-            process(indices[0]);
-            modal.modalHide();
+            restSelf.post('/api/person-link/list', {personLinkForms: form}).done(function () {
+                modal.modalHide();
+            });
         });
     });
 </script>

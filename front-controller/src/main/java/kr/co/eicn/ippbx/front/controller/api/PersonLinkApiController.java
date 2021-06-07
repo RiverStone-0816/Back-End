@@ -5,10 +5,10 @@ import kr.co.eicn.ippbx.front.service.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.PersonLinkApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonLink;
 import kr.co.eicn.ippbx.model.form.PersonLinkFormRequest;
+import kr.co.eicn.ippbx.model.form.PersonLinkListFormRequest;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +38,11 @@ public class PersonLinkApiController extends BaseController {
     @PostMapping("")
     public Integer post(@Valid @RequestBody PersonLinkFormRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
         return apiInterface.post(form);
+    }
+
+    @PostMapping("list")
+    public void post(@Valid @RequestBody PersonLinkListFormRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
+        apiInterface.post(form);
     }
 
     @PutMapping("{seq}")

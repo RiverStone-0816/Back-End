@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.front.service.api;
 import kr.co.eicn.ippbx.front.service.ResultFailException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonLink;
 import kr.co.eicn.ippbx.model.form.PersonLinkFormRequest;
+import kr.co.eicn.ippbx.model.form.PersonLinkListFormRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
@@ -26,6 +27,10 @@ public class PersonLinkApiInterface extends ApiServerInterface {
 
     public Integer post(PersonLinkFormRequest form) throws IOException, ResultFailException {
         return getData(HttpMethod.POST, subUrl, form, Integer.class, false).getData();
+    }
+
+    public void post(PersonLinkListFormRequest form) throws IOException, ResultFailException {
+        post(subUrl + "list", form);
     }
 
     public void put(Integer seq, PersonLinkFormRequest form) throws IOException, ResultFailException {
