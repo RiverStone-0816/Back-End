@@ -49,13 +49,13 @@
                         <table class="ui celled table compact unstackable">
                             <tr>
                                 <th>검색기간</th>
-                                <td colspan="7">
+                                <td colspan="7" class="-buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
                                     <div class="ui action input calendar-area">
-                                        <input type="text">
-                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
-                                        <input type="text">
-                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
                                     <div class="ui basic buttons">
                                         <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
@@ -71,29 +71,36 @@
                                 <th>전화번호</th>
                                 <td>
                                     <div class="ui form">
-                                        <input type="text">
+                                        <form:input path="phone"/>
                                     </div>
                                 </td>
-                                <th>상담자</th>
+                                <th>통화자</th>
                                 <td>
                                     <div class="ui form">
-                                        <input type="text">
+                                        <select name="userId">
+                                            <option value="" label="선택안함"></option>
+                                            <c:forEach var="e" items="${persons}">
+                                                <option value="${g.htmlQuote(e.id)}">${g.htmlQuote(e.idName)}</option>
+                                            </c:forEach>
+                                        </select>
                                     </div>
                                 </td>
                                 <th>수/발신 선택</th>
                                 <td>
                                     <div class="ui form">
-                                        <select>
-                                            <option>수/발신 선택</option>
-                                        </select>
+                                        <form:select path="callType">
+                                            <form:option value="" label="수/발신 선택"/>
+                                            <form:options items="${callTypes}"/>
+                                        </form:select>
                                     </div>
                                 </td>
                                 <th>호상태 선택</th>
                                 <td>
                                     <div class="ui form">
-                                        <select>
-                                            <option>호상태 선택</option>
-                                        </select>
+                                        <form:select path="callStatus">
+                                            <form:option value="" label="호상태 선택"/>
+                                            <form:options items="${callStatuses}"/>
+                                        </form:select>
                                     </div>
                                 </td>
                             </tr>
@@ -108,33 +115,7 @@
                                 <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
-                        <%--<div class="ui grid">
-                            <div class="row">
-                                   <div class="two wide column"><label class="control-label">검색기간</label></div>
-                                    <div class="ten wide column -buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
-                                        <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
-                                    </div>
-                                    <div class="ui basic buttons">
-                                        <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
-                                        <button type="button" data-interval="day" data-number="3" class="ui button -button-set-range">3일</button>
-                                        <button type="button" data-interval="day" data-number="7" class="ui button -button-set-range">1주일</button>
-                                        <button type="button" data-interval="month" data-number="1" class="ui button -button-set-range">1개월</button>
-                                        <button type="button" data-interval="month" data-number="3" class="ui button -button-set-range">3개월</button>
-                                        <c:if test="${serviceKind.equals('SC')}">
-                                            <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
-                                        </c:if>
-                                    </div>
-                                </div>
-                            </div>
+                        <%--
                             <div class="row">
                                 <div class="two wide column"><label class="control-label">부서선택</label></div>
                                 <div class="six wide column">
@@ -164,17 +145,6 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="two wide column"><label class="control-label">통화자</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <select name="userId">
-                                            <option value="" label="선택안함"></option>
-                                            <c:forEach var="e" items="${persons}">
-                                                <option value="${g.htmlQuote(e.id)}">${g.htmlQuote(e.idName)}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="two wide column"><label class="control-label">내선번호</label></div>
@@ -186,12 +156,6 @@
                                         </form:select>
                                     </div>
                                 </div>
-                                <div class="two wide column"><label class="control-label">전화번호</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:input path="phone"/>
-                                    </div>
-                                </div>
                                 <div class="two wide column"><label class="control-label">정렬순서</label></div>
                                 <div class="two wide column">
                                     <div class="ui form">
@@ -201,22 +165,6 @@
                             </div>
                             <div class="row">
                                 <div class="two wide column"><label class="control-label">기타선택</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="callType">
-                                            <form:option value="" label="수/발신 선택"/>
-                                            <form:options items="${callTypes}"/>
-                                        </form:select>
-                                    </div>
-                                </div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="callStatus">
-                                            <form:option value="" label="호상태 선택"/>
-                                            <form:options items="${callStatuses}"/>
-                                        </form:select>
-                                    </div>
-                                </div>
                                 <div class="two wide column">
                                     <div class="ui form">
                                         <form:select path="etcStatus">

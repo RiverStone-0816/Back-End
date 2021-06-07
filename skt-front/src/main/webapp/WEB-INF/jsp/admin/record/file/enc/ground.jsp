@@ -23,11 +23,12 @@
                         <div class="ui basic buttons">
                             <button type="button" class="ui button" onClick="encSetModal()">녹취파일 암호화 설정</button>
                             <button type="button" class="ui button" onclick="popupModal();">추가</button>
-                                <%--                        <button type="button" class="ui basic button -control-entity" data-entity="RecordEnc" style="display: none;" onclick="popupModal(getEntityId('RecordEnc'))">수정</button>--%>
+                                <%--<button type="button" class="ui basic button -control-entity" data-entity="RecordEnc" style="display: none;" onclick="popupModal(getEntityId('RecordEnc'))">수정</button>--%>
                             <button type="button" class="ui button -control-entity" data-entity="RecordEnc" style="display: none;" onclick="deleteEntity(getEntityId('RecordEnc'))">삭제</button>
                         </div>
                         <div class="ui label ml10">
-                            녹취파일 암호화 설정값 <div class="detail">${encType.enable == 'Y' ? 'ZIP암호화' : encType.enable == 'B' ? 'AES-256 암호화' : '사용안함'}</div>
+                            녹취파일 암호화 설정값
+                            <div class="detail">${encType.enable == 'Y' ? 'ZIP암호화' : encType.enable == 'B' ? 'AES-256 암호화' : '사용안함'}</div>
                         </div>
                     </div>
                     <div class="pull-right">

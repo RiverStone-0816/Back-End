@@ -33,13 +33,13 @@
                         <table class="ui celled table compact unstackable">
                             <tr>
                                 <th>상담날짜</th>
-                                <td colspan="7">
+                                <td colspan="7" class="-buttons-set-range-container" data-startdate="[name=createdStartDate]" data-enddate="[name=createdEndDate]">
                                     <div class="ui action input calendar-area">
-                                        <input type="text">
-                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <form:input path="createdStartDate" cssClass="-datepicker" placeholder="시작일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
-                                        <input type="text">
-                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <form:input path="createdEndDate" cssClass="-datepicker" placeholder="종료일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
                                     <div class="ui basic buttons">
                                         <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
@@ -55,18 +55,32 @@
                                 <th>상담그룹</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <select>
-                                            <option>수/발신 선택</option>
-                                        </select>
+                                        <form:select path="groupSeq">
+                                            <form:option value="" label="선택안함"/>
+                                            <form:options items="${groups}"/>
+                                        </form:select>
                                     </div>
                                 </td>
                                 <th>검색항목</th>
                                 <td colspan="3">
                                     <div class="ui form flex">
-                                        <select>
-                                            <option>선택안함</option>ㄷ
-                                        </select>
-                                        <input type="text">
+                                        <form:select path="searchType">
+                                            <form:option value="" label="선택안함"/>
+                                            <c:forEach var="e" items="${pdsType.fields}">
+                                                <c:if test="${e.issearch == 'Y'}">
+                                                    <form:option value="${e.fieldId.substring(pdsType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}" data-type="${g.htmlQuote(e.fieldType)}"/>
+                                                </c:if>
+                                            </c:forEach>
+                                        </form:select>
+                                        <%--TODO: 상담 테스트 가능할 때 , 스타일 체크 다시--%>
+                                        <div class="ui action input calendar-area -search-type-sub-input" data-type="DATE">
+                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                            <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                            <span class="tilde">~</span>
+                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                            <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                        </div>
+                                        <form:input path="keyword" cssClass="-search-type-sub-input"/>
                                     </div>
                                 </td>
                             </tr>
@@ -77,74 +91,6 @@
                                 <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
-                        <%--<div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">상담날짜</label></div>
-                                <div class="ten wide column -buttons-set-range-container" data-startdate="[name=createdStartDate]" data-enddate="[name=createdEndDate]">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label for="createdStartDate" style="display:none">From</label>
-                                            <form:input path="createdStartDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
-                                        <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label for="createdEndDate" style="display:none">to</label>
-                                            <form:input path="createdEndDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
-                                    </div>
-                                    <div class="ui basic buttons">
-                                        <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
-                                        <button type="button" data-interval="day" data-number="3" class="ui button -button-set-range">3일</button>
-                                        <button type="button" data-interval="day" data-number="7" class="ui button -button-set-range">1주일</button>
-                                        <button type="button" data-interval="month" data-number="1" class="ui button -button-set-range">1개월</button>
-                                        <button type="button" data-interval="month" data-number="3" class="ui button -button-set-range">3개월</button>
-                                        <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
-                                    </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">상담그룹</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="groupSeq">
-                                            <form:option value="" label="선택안함"/>
-                                            <form:options items="${groups}"/>
-                                        </form:select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">검색항목</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="searchType">
-                                            <form:option value="" label="선택안함"/>
-                                            <c:forEach var="e" items="${pdsType.fields}">
-                                                <c:if test="${e.issearch == 'Y'}">
-                                                    <form:option value="${e.fieldId.substring(pdsType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}" data-type="${g.htmlQuote(e.fieldType)}"/>
-                                                </c:if>
-                                            </c:forEach>
-                                        </form:select>
-                                    </div>
-                                </div>
-                                <div class="five wide column -search-type-sub-input" data-type="DATE">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
-                                        <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="two wide column -search-type-sub-input">
-                                    <div class="ui input fluid">
-                                        <form:input path="keyword"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>--%>
                     </div>
                 </div>
             </form:form>
@@ -185,33 +131,33 @@
                         </c:if>
                         </thead>
                         <c:choose>
-                            <c:when test="${pdsType.fields.size() != 0}">
-                                <tbody>
-                                <c:choose>
-                                    <c:when test="${pagination.rows.size() > 0}">
-                                        <c:forEach var="e" items="${pagination.rows}" varStatus="status">
-                                            <tr data-id="${g.htmlQuote(e.pdsSysCustomId)}" data-group="${search.groupSeq}">
-                                                <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
-                                                <td><fmt:formatDate value="${e.pdsSysUploadDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                        <c:when test="${pdsType.fields.size() != 0}">
+                        <tbody>
+                        <c:choose>
+                            <c:when test="${pagination.rows.size() > 0}">
+                                <c:forEach var="e" items="${pagination.rows}" varStatus="status">
+                                    <tr data-id="${g.htmlQuote(e.pdsSysCustomId)}" data-group="${search.groupSeq}">
+                                        <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
+                                        <td><fmt:formatDate value="${e.pdsSysUploadDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 
-                                                <c:forEach var="field" items="${pdsType.fields}">
-                                                    <td>${g.htmlQuote(customIdToFieldNameToValueMap.get(e.pdsSysCustomId).get(field.fieldId))}</td>
-                                                </c:forEach>
-                                            </tr>
+                                        <c:forEach var="field" items="${pdsType.fields}">
+                                            <td>${g.htmlQuote(customIdToFieldNameToValueMap.get(e.pdsSysCustomId).get(field.fieldId))}</td>
                                         </c:forEach>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <tr>
-                                            <td colspan="${2 + (fn:length(pdsType.fields) > 0 ? pdsType.fields.size() : 1)}" class="null-data">조회된 데이터가 없습니다.</td>
-                                        </tr>
-                                    </c:otherwise>
-                                </c:choose>
+                                    </tr>
+                                </c:forEach>
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="3" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <td colspan="${2 + (fn:length(pdsType.fields) > 0 ? pdsType.fields.size() : 1)}" class="null-data">조회된 데이터가 없습니다.</td>
                                 </tr>
                             </c:otherwise>
+                        </c:choose>
+                        </c:when>
+                        <c:otherwise>
+                            <tr>
+                                <td colspan="3" class="null-data">조회된 데이터가 없습니다.</td>
+                            </tr>
+                        </c:otherwise>
                         </c:choose>
 
                         </tbody>

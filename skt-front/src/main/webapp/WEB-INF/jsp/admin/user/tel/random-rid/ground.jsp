@@ -31,36 +31,40 @@
                 <div class="panel-body">
                     <div class="search-area">
                         <table class="ui celled table compact unstackable">
-                            <th>부서선택</th>
-                            <td>
-                                <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
-                                     data-clear=".-clear-group">
-                                    <button type="button" class="ui icon button mini blue compact -select-group">
-                                        <i class="search icon"></i>
-                                    </button>
-                                    <form:hidden path="groupCode"/>
-                                    <div class="ui breadcrumb -group-name">
-                                        <c:choose>
-                                            <c:when test="${searchOrganizationNames != null && searchOrganizationNames.size() > 0}">
-                                                <c:forEach var="e" items="${searchOrganizationNames}" varStatus="status">
-                                                    <span class="section">${g.htmlQuote(e)}</span>
-                                                    <c:if test="${!status.last}">
-                                                        <i class="right angle icon divider"></i>
-                                                    </c:if>
-                                                </c:forEach>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <span class="section">버튼을 눌러 소속을 선택하세요.</span>
-                                            </c:otherwise>
-                                        </c:choose>
+                            <tr>
+                                <th>부서선택</th>
+                                <td>
+                                    <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
+                                         data-clear=".-clear-group">
+                                        <button type="button" class="ui icon button mini blue compact -select-group">
+                                            <i class="search icon"></i>
+                                        </button>
+                                        <form:hidden path="groupCode"/>
+                                        <div class="ui breadcrumb -group-name">
+                                            <c:choose>
+                                                <c:when test="${searchOrganizationNames != null && searchOrganizationNames.size() > 0}">
+                                                    <c:forEach var="e" items="${searchOrganizationNames}" varStatus="status">
+                                                        <span class="section">${g.htmlQuote(e)}</span>
+                                                        <c:if test="${!status.last}">
+                                                            <i class="right angle icon divider"></i>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                        <button type="button" class="ui icon button mini compact -clear-group">
+                                            <i class="undo icon"></i>
+                                        </button>
                                     </div>
-                                    <button type="button" class="ui icon button mini compact -clear-group">
-                                        <i class="undo icon"></i>
-                                    </button>
-                                </div>
-                            </td>
-                            <th>번호</th>
-                            <td> <div class="ui form"><form:input path="number"/></div></td>
+                                </td>
+                                <th>번호</th>
+                                <td>
+                                    <div class="ui form"><form:input path="number"/></div>
+                                </td>
+                            </tr>
                         </table>
                         <div class="button-area remove-mb">
                             <div class="align-right">

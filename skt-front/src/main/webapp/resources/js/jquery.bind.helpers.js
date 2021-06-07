@@ -34,6 +34,9 @@
                 }
             });
         });
+        findAndMe('.-click-prev', this).click(function () {
+           $(this).prev().click();
+        });
         findAndMe('.selectable-only tr', this).not('.ui').click(function () {
             if (!$(this).attr('data-id')) return;
 

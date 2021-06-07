@@ -33,13 +33,13 @@
                         <table class="ui celled table compact unstackable">
                             <tr>
                                 <th>업로드날짜</th>
-                                <td colspan="7">
+                                <td colspan="7" class="-buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
                                     <div class="ui action input calendar-area">
-                                        <input type="text">
-                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
-                                        <input type="text">
-                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
                                     <div class="ui basic buttons">
                                         <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
@@ -55,26 +55,25 @@
                                 <th>상담자</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <select>
-                                            <option>선택안함</option>
-                                        </select>
+                                        <form:select path="id">
+                                            <form:option value="" label="선택안함"/>
+                                            <form:options items="${users}"/>
+                                        </form:select>
                                     </div>
                                 </td>
                                 <th>대화방상태</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <select>
-                                            <option>진행/종료</option>
-                                            <option>내려감</option>
-                                        </select>
+                                        <form:select path="roomStatus" items="${roomStatuses}"/>
                                     </div>
                                 </td>
                                 <th>상담톡서비스</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <select>
-                                            <option>선택안함</option>
-                                        </select>
+                                        <form:select path="senderKey">
+                                            <form:option value="" label="선택안함"/>
+                                            <form:options items="${talkServices}"/>
+                                        </form:select>
                                     </div>
                                 </td>
                             </tr>
@@ -82,25 +81,22 @@
                                 <th>대화방명</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <input type="text">
+                                        <form:input path="roomName"/>
                                     </div>
                                 </td>
                                 <th>정렬데이터</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <select>
-                                            <option>시작시간</option>
-                                            <option>마지막메시지시간</option>
-                                        </select>
+                                        <form:select path="sort" items="${orderTypes}"/>
                                     </div>
                                 </td>
                                 <th>정렬순서</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <select>
-                                            <option>내림차순</option>
-                                            <option>오름차순</option>
-                                        </select>
+                                        <form:select path="sequence">
+                                            <form:option value="desc" label="내림차순"/>
+                                            <form:option value="asc" label="오름차순"/>
+                                        </form:select>
                                     </div>
                                 </td>
                             </tr>
@@ -111,81 +107,6 @@
                                 <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
-                        <%--<div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">검색기간</label></div>
-                                <div class="ten wide column -buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label class="control-label" for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
-                                        <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label class="control-label" for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
-                                    </div>
-                                    <div class="ui basic buttons">
-                                        <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
-                                        <button type="button" data-interval="day" data-number="3" class="ui button -button-set-range">3일</button>
-                                        <button type="button" data-interval="day" data-number="7" class="ui button -button-set-range">1주일</button>
-                                        <button type="button" data-interval="month" data-number="1" class="ui button -button-set-range">1개월</button>
-                                        <button type="button" data-interval="month" data-number="3" class="ui button -button-set-range">3개월</button>
-                                        <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
-                                    </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">상담자</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="id">
-                                            <form:option value="" label="선택안함"/>
-                                            <form:options items="${users}"/>
-                                        </form:select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">대화방상태</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="roomStatus" items="${roomStatuses}"/>
-                                    </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">상담톡서비스</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="senderKey">
-                                            <form:option value="" label="선택안함"/>
-                                            <form:options items="${talkServices}"/>
-                                        </form:select>
-                                    </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">대화방명</label></div>
-                                <div class="two wide column">
-                                    <div class="ui input fluid">
-                                        <form:input path="roomName"/>
-                                    </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">정렬데이터</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="sort" items="${orderTypes}"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">정렬순서</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="sequence">
-                                            <form:option value="desc" label="내림차순"/>
-                                            <form:option value="asc" label="오름차순"/>
-                                        </form:select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>--%>
                     </div>
                 </div>
             </form:form>
