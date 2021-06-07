@@ -157,7 +157,7 @@ public abstract class BaseControllerTest {
 //		authenticationRequest.setPassword("orange90");
 //		authenticationRequest.setExtension("0677");
 
-		authenticationRequest.setCompany("premium");
+		authenticationRequest.setCompany("skdev");
 		authenticationRequest.setId("master");
 		authenticationRequest.setPassword("orange90");
 		authenticationRequest.setActionType(WebSecureActionType.LOGIN.getCode());
