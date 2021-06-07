@@ -38,10 +38,10 @@
                                 <td colspan="7" class="-buttons-set-range-container" data-startdate="[name=createdStartDate]" data-enddate="[name=createdEndDate]">
                                     <div class="ui action input calendar-area">
                                         <form:input path="createdStartDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
                                         <span class="tilde">~</span>
                                         <form:input path="createdEndDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
                                     </div>
                                     <div class="ui basic buttons">
                                         <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
@@ -136,8 +136,8 @@
                         </table>
                         <div class="button-area remove-mb">
                             <div class="align-right">
-                                <button class="ui button sharp brand large">검색</button>
-                                <button class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
                     </div>

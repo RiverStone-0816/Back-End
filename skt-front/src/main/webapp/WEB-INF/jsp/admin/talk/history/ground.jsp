@@ -36,10 +36,10 @@
                                 <td colspan="7">
                                     <div class="ui action input calendar-area">
                                         <input type="text">
-                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
                                         <span class="tilde">~</span>
                                         <input type="text">
-                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
                                     </div>
                                     <div class="ui basic buttons">
                                         <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>

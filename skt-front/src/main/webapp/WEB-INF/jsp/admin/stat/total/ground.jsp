@@ -46,10 +46,10 @@
                                 <td colspan="7">
                                     <div class="ui action input calendar-area">
                                         <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
                                         <span class="tilde">~</span>
                                         <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
                                     </div>
                                 </td>
                             </tr>
