@@ -35,12 +35,12 @@
                         <table class="ui celled table compact unstackable">
                             <tr>
                                 <th>업로드날짜</th>
-                                <td colspan="7">
+                                <td colspan="7" class="-buttons-set-range-container" data-startdate="[name=createdStartDate]" data-enddate="[name=createdEndDate]">
                                     <div class="ui action input calendar-area">
-                                        <input type="text">
+                                        <form:input path="createdStartDate" cssClass="-datepicker" placeholder="시작일"/>
                                         <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
                                         <span class="tilde">~</span>
-                                        <input type="text">
+                                        <form:input path="createdEndDate" cssClass="-datepicker" placeholder="종료일"/>
                                         <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
                                     </div>
                                     <div class="ui basic buttons">
@@ -57,18 +57,21 @@
                                 <th>고객DB그룹</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <select>
-                                            <option>선택안함</option>
-                                        </select>
+                                        <form:select path="groupSeq">
+                                            <form:option value="" label="선택안함"/>
+                                            <form:options items="${customdbGroups}"/>
+                                        </form:select>
                                     </div>
                                 </td>
                                 <th>채널검색</th>
                                 <td colspan="3">
                                     <div class="ui form flex">
-                                        <select>
-                                            <option>선택안함</option>ㄷ
-                                        </select>
-                                        <input type="text">
+                                        <form:select path="channelType">
+                                            <form:option value="PHONE" label="전화번호"/>
+                                            <form:option value="EMAIL" label="이메일"/>
+                                            <form:option value="TALK" label="상담톡"/>
+                                        </form:select>
+                                        <form:input path="channelData"/>
                                     </div>
                                 </td>
                             </tr>
@@ -76,90 +79,14 @@
                                 <th>상담자</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <select>
-                                            <option>수/발신 선택</option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <th>검색항목</th>
-                                <td colspan="3">
-                                    <div class="ui form">
-                                        <select>
-                                            <option>수/발신 선택</option>
-                                        </select>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                        <div class="button-area remove-mb">
-                            <div class="align-right">
-                                <button class="ui button sharp brand large">검색</button>
-                                <button class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
-                            </div>
-                        </div>
-                        <%--<div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">검색기간</label></div>
-                                <div class="ten wide column -buttons-set-range-container" data-startdate="[name=createdStartDate]" data-enddate="[name=createdEndDate]">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label for="createdStartDate" style="display:none">From</label>
-                                            <form:input path="createdStartDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
-                                        <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label for="createdEndDate" style="display:none">to</label>
-                                            <form:input path="createdEndDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
-                                    </div>
-                                    <div class="ui basic buttons">
-                                        <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
-                                        <button type="button" data-interval="day" data-number="3" class="ui button -button-set-range">3일</button>
-                                        <button type="button" data-interval="day" data-number="7" class="ui button -button-set-range">1주일</button>
-                                        <button type="button" data-interval="month" data-number="1" class="ui button -button-set-range">1개월</button>
-                                        <button type="button" data-interval="month" data-number="3" class="ui button -button-set-range">3개월</button>
-                                        <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">고객DB그룹</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="groupSeq">
-                                            <form:option value="" label="선택안함"/>
-                                            <form:options items="${customdbGroups}"/>
-                                        </form:select>
-                                    </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">채널검색</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="channelType">
-                                            <form:option value="PHONE" label="전화번호"/>
-                                            <form:option value="EMAIL" label="이메일"/>
-                                            <form:option value="TALK" label="상담톡"/>
-                                        </form:select>
-                                    </div>
-                                </div>
-                                <div class="two wide column">
-                                    <div class="ui input fluid">
-                                        <form:input path="channelData"/>
-                                    </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">상담자</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
                                         <form:select path="userId">
                                             <form:option value="" label="선택안함"/>
                                             <form:options items="${users}"/>
                                         </form:select>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">검색항목</label></div>
-                                <div class="two wide column">
+                                </td>
+                                <th>검색항목</th>
+                                <td colspan="3">
                                     <div class="ui form">
                                         <form:select path="searchType">
                                             <form:option value="" label="선택안함"/>
@@ -179,32 +106,40 @@
                                             </c:forEach>
                                         </form:select>
                                     </div>
-                                </div>
-                                <div class="five wide column -search-type-sub-input" data-type="DATE">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+
+                                    <div class="five wide column -search-type-sub-input" data-type="DATE">
+                                        <div class="date-picker from-to">
+                                            <div class="dp-wrap">
+                                                <label for="startDate" style="display:none">From</label>
+                                                <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                            </div>
+                                            <span class="tilde">~</span>
+                                            <div class="dp-wrap">
+                                                <label for="endDate" style="display:none">to</label>
+                                                <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                            </div>
                                         </div>
-                                        <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                    </div>
+                                    <div class="two wide column -search-type-sub-input" data-type="TEXT">
+                                        <div class="ui input fluid">
+                                            <form:input path="keyword"/>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="two wide column -search-type-sub-input" data-type="TEXT">
-                                    <div class="ui input fluid">
-                                        <form:input path="keyword"/>
+                                    <div class="two wide column -search-type-sub-input" data-type="CODE">
+                                        <div class="ui form">
+                                            <form:select path="code"/>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="two wide column -search-type-sub-input" data-type="CODE">
-                                    <div class="ui form">
-                                        <form:select path="code"/>
-                                    </div>
-                                </div>
+
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button class="ui button sharp brand large">검색</button>
+                                <button class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
-                        </div>--%>
+                        </div>
                     </div>
                 </div>
             </form:form>
