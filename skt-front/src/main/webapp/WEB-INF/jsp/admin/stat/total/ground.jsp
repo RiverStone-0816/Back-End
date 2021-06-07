@@ -354,10 +354,11 @@
 
     <tags:scripts>
         <script>
-            /* TODO
+            /*
             $('.data-detail-trigger').click(function () {
                 $('#modal-data-detain-view').modalShow();
-            });*/
+            });
+            */
 
             <c:if test="${list.size() > 0}">
             const data = [

@@ -62,7 +62,7 @@
                 </tr>
             </table>
 
-            <%--TODO--%>
+            <%--TODO: 아래서부터는 작업되지 않음--%>
             <div class="ui top attached tabular menu light flex">
                 <button class="item active" data-tab="monitoring">모니터링</button>
                 <button class="item" data-tab="statistics">통계</button>

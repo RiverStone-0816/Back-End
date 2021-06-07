@@ -201,7 +201,7 @@
 
             function after() {
                 localStorage.setItem(STORAGE_KEY, remember.prop('checked') ? JSON.stringify(form.formDataObject()) : '');
-                // TODO: 마지막로그인 정보 출력하지 않음.
+
                 return restSelf.get("/api/auth/confirm-login", null).done(function () {
                     location.href = contextPath + '/ipcc-messenger/main';
                 });

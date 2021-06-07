@@ -564,31 +564,6 @@
         $(window).on('load', function () {
             updateQueues();
             updatePersonStatus();
-
-            /*TODO: 임시처리*/
-            $('.-configured-tab[data-tab=menu1]').empty().append($('<iframe/>', {id: 'menu1', name: 'menu1', class: 'tab-menu', style: 'width: 100%; height: 100%;'}));
-            $('.-configured-tab[data-tab=menu2]').empty().append($('<iframe/>', {id: 'menu2', name: 'menu2', class: 'tab-menu', style: 'width: 100%; height: 100%;'}));
-            $('.-configured-tab[data-tab=menu3]').empty().append($('<iframe/>', {id: 'menu3', name: 'menu3', class: 'tab-menu', style: 'width: 100%; height: 100%;'}));
-            <c:if test="${usingServices.contains('NOT')}">
-            $('.-configured-tab[data-tab=menu4]').empty().append($('<iframe/>', {id: 'menu4', name: 'menu4', class: 'tab-menu', style: 'width: 100%; height: 100%;'}));
-            $('.-configured-tab[data-tab=menu5]').empty().append($('<iframe/>', {id: 'menu5', name: 'menu5', class: 'tab-menu', style: 'width: 100%; height: 100%;'}));
-            $('.-configured-tab[data-tab=menu6]').empty().append($('<iframe/>', {id: 'menu6', name: 'menu6', class: 'tab-menu', style: 'width: 100%; height: 100%;'}));
-            </c:if>
-            <c:if test="${serviceKind.equals('SC')}">
-            $('.-configured-tab[data-tab=menu7]').empty().append($('<iframe/>', {id: 'menu7', name: 'menu7', class: 'tab-menu', style: 'width: 100%; height: 100%;'}));
-            </c:if>
-            // TODO
-            <%--window.menu1 = window.open(contextPath + '/admin/application/maindb/result/', 'menu1', "width=0 height=0 menubar=no status=no");--%>
-            <%--window.menu2 = window.open(contextPath + '/admin/record/history/history/', 'menu2', "width=0 height=0 menubar=no status=no");--%>
-            <%--window.menu3 = window.open(contextPath + '/admin/record/callback/history/', 'menu3', "width=0 height=0 menubar=no status=no");--%>
-            <%--<c:if test="${usingServices.contains('NOT')}">--%>
-            <%--window.menu4 = window.open(contextPath + '/admin/service/help/notice/', 'menu4', "width=0 height=0 menubar=no status=no");--%>
-            <%--window.menu5 = window.open(contextPath + '/admin/service/help/task-script/', 'menu5', "width=0 height=0 menubar=no status=no");--%>
-            <%--window.menu6 = window.open(contextPath + '/admin/service/help/manual/', 'menu6', "width=0 height=0 menubar=no status=no");--%>
-            <%--</c:if>--%>
-            <%--<c:if test="${serviceKind.equals('SC') && usingServices.contains('QA')}">--%>
-            <%--window.menu7 = window.open(contextPath + '/admin/record/evaluation/result/', 'menu7', "width=0 height=0 menubar=no status=no");--%>
-            <%--</c:if>--%>
         });
     </script>
     <script>
