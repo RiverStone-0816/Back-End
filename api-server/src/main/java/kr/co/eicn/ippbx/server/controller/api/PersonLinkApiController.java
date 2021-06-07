@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.server.controller.api;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonLink;
 import kr.co.eicn.ippbx.model.form.PersonLinkFormRequest;
+import kr.co.eicn.ippbx.model.form.PersonLinkListFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonLinkRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,6 +47,20 @@ public class PersonLinkApiController extends ApiBaseController {
             throw new ValidationException(bindingResult);
 
         return JsonResult.data(repository.insert(form));
+    }
+
+    @PostMapping("list")
+    public JsonResult<List<Integer>> post(@Valid @RequestBody PersonLinkListFormRequest form, BindingResult bindingResult) {
+        if (!form.validate(bindingResult))
+            throw new ValidationException(bindingResult);
+
+        List<Integer> seqList = new ArrayList<>();
+
+        repository.delete(g.getUser().getId());
+        if (form.getPersonLinkForms() != null && form.getPersonLinkForms().size() > 0)
+            form.getPersonLinkForms().forEach(e -> seqList.add(repository.insert(convertDto(e,PersonLinkFormRequest.class))));
+
+        return JsonResult.data(seqList);
     }
 
     @PutMapping("{seq}")

@@ -42,4 +42,11 @@ public class PersonLinkRepository extends EicnBaseRepository<PersonLink, kr.co.e
                 .where(PERSON_LINK.SEQ.eq(seq))
                 .execute();
     }
+
+    public void delete(String userId){
+        dsl.delete(PERSON_LINK)
+                .where(PERSON_LINK.PERSON_ID.eq(userId))
+                .and(PERSON_LINK.COMPANY_ID.eq(getCompanyId()))
+                .execute();
+    }
 }
