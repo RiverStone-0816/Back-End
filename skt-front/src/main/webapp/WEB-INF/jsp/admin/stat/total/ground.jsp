@@ -45,10 +45,10 @@
                                 <th>기간설정</th>
                                 <td colspan="7">
                                     <div class="ui action input calendar-area">
-                                        <input type="text">
+                                        <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
                                         <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
                                         <span class="tilde">~</span>
-                                        <input type="text">
+                                        <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
                                         <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
                                     </div>
                                 </td>
@@ -86,68 +86,10 @@
                         </table>
                         <div class="button-area remove-mb">
                             <div class="align-right">
-                                <button class="ui button sharp brand large">검색</button>
-                                <button class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
-                       <%-- <div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">주기설정</label></div>
-                                <div class="five wide column">
-                                    <div class="ui basic buttons">
-                                        <form:hidden path="timeUnit"/>
-                                        <c:forEach var="e" items="${searchCycles}">
-                                            <button type="button" class="ui button -button-time-unit ${search.timeUnit.name() == e.key ? 'active' : ''}"
-                                                    data-value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.value)}</button>
-                                        </c:forEach>
-                                    </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">기간설정</label></div>
-                                <div class="six wide column">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label class="control-label" for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
-                                        <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label class="control-label" for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">서비스선택</label></div>
-                                <div class="five wide column overflow-unset">
-                                    <div class="ui form">
-                                        <form:select path="serviceNumbers" multiple="multiple" class="ui fluid dropdown">
-                                            <form:option value="" label="서비스선택"/>
-                                            <form:options items="${services}"/>
-                                        </form:select>
-                                    </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">추가조건선택</label></div>
-                                <div class="five wide column">
-                                    <div class="ui checkbox">
-                                        <form:checkbox path="person" value="Y"/>
-                                        <label>직통전화</label>
-                                    </div>
-                                    <div class="ui checkbox">
-                                        <form:checkbox path="inner" value="Y"/>
-                                        <label>내선통화</label>
-                                    </div>
-                                    <div class="ui checkbox">
-                                        <form:checkbox path="busy" value="Y"/>
-                                        <label>콜백</label>
-                                    </div>
-                                    <div class="ui checkbox">
-                                        <form:checkbox path="workHour" value="Y"/>
-                                        <label>업무시간</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>--%>
                     </div>
                 </div>
             </form:form>
@@ -263,96 +205,96 @@
                         </div>
                     </div>
                     <c:if test="${list.size() > 0}">
-                    <div class="panel-section">
-                        <div class="panel">
-                            <div class="panel-heading">총통화그래프</div>
-                            <div class="panel-body pd-1em">
-                                <div class="-chart basic-chart-container" id="total-call-chart"></div>
-                                <div class="chart-label-container">
-                                    <div class="ui segment secondary">
-                                        <text class="label-list"><i class="point color-red"></i>인바운드</text>
-                                        <text class="label-list"><i class="point color-blue"></i>아웃바운드</text>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="panel-section">
-                        <div class="panel">
-                            <div class="panel-heading">아웃바운드 통계 그래프</div>
-                            <div class="panel-body pd-1em">
-                                <div class="ui grid">
-                                    <div class="four wide column" >
-                                        <div class="label-container"><label class="control-label">평균통계</label></div>
-                                        <div class="pie-chart-container">
-                                            <svg id="outbound-outer-pie-chart" class="full-width full-height"></svg>
-                                            <div class="inner-label">
-                                                <span class="ui label">TOTAL</span> ${total.outboundStat.success + total.outboundStat.cancel}
-                                            </div>
-                                        </div>
-
-                                        <div class="chart-label-container">
-                                            <div class="ui segment secondary">
-                                                <text class="label-list">성공호 <span class="color-bar1">${total.outboundStat.success}</span></text>
-                                                <text class="label-list">비수신 <span class="color-bar2">${total.outboundStat.cancel}</span></text>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                    <div class="twelve wide column">
-                                        <div class="label-container">
-                                            <label class="control-label">O/B비교통계</label>
-                                        </div>
-                                        <div class="-chart basic-chart-container" id="outbound-chart"></div>
-                                        <div class="chart-label-container">
-                                            <div class="ui segment secondary">
-                                                <text class="label-list"><span class="point color-red"></span>성공호</text>
-                                                <text class="label-list"><span class="point color-blue"></span>비수신</text>
-                                            </div>
+                        <div class="panel-section">
+                            <div class="panel">
+                                <div class="panel-heading">총통화그래프</div>
+                                <div class="panel-body pd-1em">
+                                    <div class="-chart basic-chart-container" id="total-call-chart"></div>
+                                    <div class="chart-label-container">
+                                        <div class="ui segment secondary">
+                                            <text class="label-list"><i class="point color-red"></i>인바운드</text>
+                                            <text class="label-list"><i class="point color-blue"></i>아웃바운드</text>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="panel-section">
-                        <div class="panel">
-                            <div class="panel-heading">인바운드 통계 그래프</div>
-                            <div class="panel-body pd-1em">
-                                <div class="ui grid">
-                                    <div class="four wide column">
-                                        <div class="label-container"><label class="control-label">평균통계</label></div>
-                                        <div class="pie-chart-container">
-                                            <svg id="inbound-outer-pie-chart" class="full-width full-height"></svg>
-
-                                            <div class="inner-label">
-                                                <span class="ui label">TOTAL</span> ${total.inboundStat.success + total.inboundStat.cancel}
+                        <div class="panel-section">
+                            <div class="panel">
+                                <div class="panel-heading">아웃바운드 통계 그래프</div>
+                                <div class="panel-body pd-1em">
+                                    <div class="ui grid">
+                                        <div class="four wide column">
+                                            <div class="label-container"><label class="control-label">평균통계</label></div>
+                                            <div class="pie-chart-container">
+                                                <svg id="outbound-outer-pie-chart" class="full-width full-height"></svg>
+                                                <div class="inner-label">
+                                                    <span class="ui label">TOTAL</span> ${total.outboundStat.success + total.outboundStat.cancel}
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="chart-label-container">
-                                            <div class="ui segment secondary">
-                                                <text class="label-list">성공호 <span class="color-bar1">${total.inboundStat.success}</span></text>
-                                                <text class="label-list">비수신 <span class="color-bar2">${total.inboundStat.cancel}</span></text>
-                                            </div>
-                                        </div>
 
-                                    </div>
-                                    <div class="twelve wide column">
-                                        <div class="label-container">
-                                            <label class="control-label">I/B비교통계</label>
+                                            <div class="chart-label-container">
+                                                <div class="ui segment secondary">
+                                                    <text class="label-list">성공호 <span class="color-bar1">${total.outboundStat.success}</span></text>
+                                                    <text class="label-list">비수신 <span class="color-bar2">${total.outboundStat.cancel}</span></text>
+                                                </div>
+                                            </div>
+
                                         </div>
-                                        <div class="-chart basic-chart-container" id="inbound-chart"></div>
-                                        <div class="chart-label-container">
-                                            <div class="ui segment secondary">
-                                                <text class="label-list"><span class="point color-red"></span>응대호</text>
-                                                <text class="label-list"><span class="point color-blue"></span>포기호</text>
+                                        <div class="twelve wide column">
+                                            <div class="label-container">
+                                                <label class="control-label">O/B비교통계</label>
+                                            </div>
+                                            <div class="-chart basic-chart-container" id="outbound-chart"></div>
+                                            <div class="chart-label-container">
+                                                <div class="ui segment secondary">
+                                                    <text class="label-list"><span class="point color-red"></span>성공호</text>
+                                                    <text class="label-list"><span class="point color-blue"></span>비수신</text>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="panel-section">
+                            <div class="panel">
+                                <div class="panel-heading">인바운드 통계 그래프</div>
+                                <div class="panel-body pd-1em">
+                                    <div class="ui grid">
+                                        <div class="four wide column">
+                                            <div class="label-container"><label class="control-label">평균통계</label></div>
+                                            <div class="pie-chart-container">
+                                                <svg id="inbound-outer-pie-chart" class="full-width full-height"></svg>
+
+                                                <div class="inner-label">
+                                                    <span class="ui label">TOTAL</span> ${total.inboundStat.success + total.inboundStat.cancel}
+                                                </div>
+                                            </div>
+                                            <div class="chart-label-container">
+                                                <div class="ui segment secondary">
+                                                    <text class="label-list">성공호 <span class="color-bar1">${total.inboundStat.success}</span></text>
+                                                    <text class="label-list">비수신 <span class="color-bar2">${total.inboundStat.cancel}</span></text>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="twelve wide column">
+                                            <div class="label-container">
+                                                <label class="control-label">I/B비교통계</label>
+                                            </div>
+                                            <div class="-chart basic-chart-container" id="inbound-chart"></div>
+                                            <div class="chart-label-container">
+                                                <div class="ui segment secondary">
+                                                    <text class="label-list"><span class="point color-red"></span>응대호</text>
+                                                    <text class="label-list"><span class="point color-blue"></span>포기호</text>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </c:if>
 
                 </div>
