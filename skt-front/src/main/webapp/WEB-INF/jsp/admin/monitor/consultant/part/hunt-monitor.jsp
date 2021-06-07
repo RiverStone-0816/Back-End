@@ -12,20 +12,8 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<form:form id="hunt-monitor" modelAttribute="search" class="panel -ajax-loader">
-    <div class="panel-heading">
-        <label class="control-label">모니터링</label>
-            <%--<div class="pull-right">
-                <div class="ui action input">
-                    <form:input path="huntName" placeholder="헌트명"/>
-                    <button type="submit" class="ui icon button">
-                        <i class="search icon"></i>
-                    </button>
-                </div>
-            </div>--%>
-    </div>
-    <div class="panel-body">
-        <table class="ui table celled fixed structured">
+<form:form id="hunt-monitor" modelAttribute="search" class="-ajax-loader">
+     <table class="ui table celled fixed structured">
             <thead>
             <tr>
                 <th>큐그룹명</th>
@@ -71,7 +59,7 @@
             </c:choose>
             </tbody>
         </table>
-    </div>
+
 </form:form>
 
 <script>

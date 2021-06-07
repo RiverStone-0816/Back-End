@@ -12,115 +12,110 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<div id="consultant-monitor" class="panel">
-    <div class="panel-heading">
-        <label class="control-label">상담원모니터링</label>
-        <div class="pull-right">
-            <%--<div class="ui action input">
-                <input type="text" placeholder="헌트명">
-                <button class="ui icon button">
-                    <i class="search icon"></i>
-                </button>
-            </div>--%>
-        </div>
+<div id="consultant-monitor">
+    <div class="pull-right">
+        <%--<div class="ui action input">
+            <input type="text" placeholder="헌트명">
+            <button class="ui icon button">
+                <i class="search icon"></i>
+            </button>
+        </div>--%>
     </div>
-    <div class="panel-body">
-        <div class="ui grid">
-            <div class="thirteen wide column">
-                <table id="consultant-monitor-table" class="ui table celled fixed structured">
-                    <thead>
-                    <tr>
-                        <th rowspan="2">상담사명<i class="sort-icon material-icons"></i></th>
-                        <th rowspan="2">상담사ID<i class="sort-icon material-icons"></i></th>
-                        <th rowspan="2">내선번호<i class="sort-icon material-icons"></i></th>
-                        <th colspan="8" class="no-sort">상담사 개인별 상태</th>
-                        <th colspan="5" class="no-sort">상담사 개인별 통계</th>
-                    </tr>
-                    <tr>
-                        <th class="no-sort">전화기</th>
-                        <th class="no-sort">로그인</th>
-                        <th class="no-sort">인입큐</th>
-                        <th data-sort-index="6">상태<i class="sort-icon material-icons"></i></th>
-                        <th class="no-sort">유지시간</th>
-                        <th class="no-sort">수/발신</th>
-                        <th class="no-sort" colspan="2">고객번호</th>
-                        <th class="no-sort">수신</th>
-                        <th class="no-sort">발신</th>
-                        <th class="no-sort">합계</th>
-                        <th class="no-sort">총통화시간</th>
-                        <th class="no-sort">평균통화시간</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:choose>
-                        <c:when test="${list.size() > 0}">
-                            <c:forEach var="e" items="${list}">
-                                <tr>
-                                    <td data-sort-value="${g.htmlQuote(e.person.idName)}">${g.htmlQuote(e.person.idName)}</td>
-                                    <td data-sort-value="${g.htmlQuote(e.person.id)}">${g.htmlQuote(e.person.id)}</td>
-                                    <td data-sort-value="${g.htmlQuote(e.person.extension)}">${g.htmlQuote(e.person.extension)}</td>
-                                    <td>
-                                        <i class="phone icon ${e.isPhone != 'Y' ? 'translucent' : 'blue'} -consultant-phone-status" data-peer="${g.htmlQuote(e.person.peer)}"></i>
-                                    </td>
-                                    <td>
-                                        <i class="key icon ${e.person.isLogin != 'Y' ? 'translucent' : 'blue'} -consultant-login" data-value="${e.person.isLogin}" data-peer="${g.htmlQuote(e.person.peer)}"></i>
-                                    </td>
-                                    <td class="-consultant-queue-name" data-peer="${g.htmlQuote(e.person.peer)}"></td>
-                                    <td class="-consultant-status" data-sort-value="${g.htmlQuote(e.person.paused)}" data-peer="${g.htmlQuote(e.person.peer)}">${statuses.get(e.person.paused)}</td>
-                                    <td class="-consultant-status-time" data-peer="${g.htmlQuote(e.person.peer)}">00:00</td>
-                                    <td class="-consultant-send-receive-status" data-peer="${g.htmlQuote(e.person.peer)}">${e.inOut == 'I' ? '수신' : e.inOut == 'O' ? '발신' : ''}</td>
-                                    <td class="-consultant-calling-custom-number" data-peer="${g.htmlQuote(e.person.peer)}" colspan="2">${g.htmlQuote(e.customNumber)}</td>
-                                    <td>${e.inboundSuccess}</td>
-                                    <td>${e.outboundSuccess}</td>
-                                    <td>${e.statTotal}</td>
-                                    <td>${g.timeFormatFromSeconds(e.billSecSum)}</td>
-                                    <td>${g.timeFormatFromSeconds(e.billSecAvg)}</td>
-                                </tr>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
+    <div class="ui grid">
+        <div class="thirteen wide column">
+            <table id="consultant-monitor-table" class="ui table celled fixed structured">
+                <thead>
+                <tr>
+                    <th rowspan="2">상담사명<i class="sort-icon material-icons"></i></th>
+                    <th rowspan="2">상담사ID<i class="sort-icon material-icons"></i></th>
+                    <th rowspan="2">내선번호<i class="sort-icon material-icons"></i></th>
+                    <th colspan="8" class="no-sort">상담사 개인별 상태</th>
+                    <th colspan="5" class="no-sort">상담사 개인별 통계</th>
+                </tr>
+                <tr>
+                    <th class="no-sort">전화기</th>
+                    <th class="no-sort">로그인</th>
+                    <th class="no-sort">인입큐</th>
+                    <th data-sort-index="6">상태<i class="sort-icon material-icons"></i></th>
+                    <th class="no-sort">유지시간</th>
+                    <th class="no-sort">수/발신</th>
+                    <th class="no-sort" colspan="2">고객번호</th>
+                    <th class="no-sort">수신</th>
+                    <th class="no-sort">발신</th>
+                    <th class="no-sort">합계</th>
+                    <th class="no-sort">총통화시간</th>
+                    <th class="no-sort">평균통화시간</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:choose>
+                    <c:when test="${list.size() > 0}">
+                        <c:forEach var="e" items="${list}">
                             <tr>
-                                <td colspan="17" class="null-data">조회된 데이터가 없습니다.</td>
+                                <td data-sort-value="${g.htmlQuote(e.person.idName)}">${g.htmlQuote(e.person.idName)}</td>
+                                <td data-sort-value="${g.htmlQuote(e.person.id)}">${g.htmlQuote(e.person.id)}</td>
+                                <td data-sort-value="${g.htmlQuote(e.person.extension)}">${g.htmlQuote(e.person.extension)}</td>
+                                <td>
+                                    <i class="phone icon ${e.isPhone != 'Y' ? 'translucent' : 'blue'} -consultant-phone-status" data-peer="${g.htmlQuote(e.person.peer)}"></i>
+                                </td>
+                                <td>
+                                    <i class="key icon ${e.person.isLogin != 'Y' ? 'translucent' : 'blue'} -consultant-login" data-value="${e.person.isLogin}" data-peer="${g.htmlQuote(e.person.peer)}"></i>
+                                </td>
+                                <td class="-consultant-queue-name" data-peer="${g.htmlQuote(e.person.peer)}"></td>
+                                <td class="-consultant-status" data-sort-value="${g.htmlQuote(e.person.paused)}" data-peer="${g.htmlQuote(e.person.peer)}">${statuses.get(e.person.paused)}</td>
+                                <td class="-consultant-status-time" data-peer="${g.htmlQuote(e.person.peer)}">00:00</td>
+                                <td class="-consultant-send-receive-status" data-peer="${g.htmlQuote(e.person.peer)}">${e.inOut == 'I' ? '수신' : e.inOut == 'O' ? '발신' : ''}</td>
+                                <td class="-consultant-calling-custom-number" data-peer="${g.htmlQuote(e.person.peer)}" colspan="2">${g.htmlQuote(e.customNumber)}</td>
+                                <td>${e.inboundSuccess}</td>
+                                <td>${e.outboundSuccess}</td>
+                                <td>${e.statTotal}</td>
+                                <td>${g.timeFormatFromSeconds(e.billSecSum)}</td>
+                                <td>${g.timeFormatFromSeconds(e.billSecAvg)}</td>
                             </tr>
-                        </c:otherwise>
-                    </c:choose>
-                    </tbody>
-                </table>
-            </div>
-            <div class="three wide column">
-                <table class="ui table celled structured">
-                    <thead>
-                    <tr>
-                        <th colspan="4">우수상담원</th>
-                    </tr>
-                    <tr>
-                        <th>구분</th>
-                        <th>상담사명</th>
-                        <th>콜수</th>
-                        <th>시간</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:choose>
-                        <c:when test="${excellentConsultants.size() > 0}">
-                            <c:forEach var="e" items="${excellentConsultants}">
-                                <tr>
-                                    <td>${excellentConsultantTypes.get(e.type.name())}</td>
-                                    <td>${g.htmlQuote(e.userName)}</td>
-                                    <td>${e.callCount}</td>
-                                    <td>${g.timeFormatFromSeconds(e.time)}</td>
-                                </tr>
-                            </c:forEach>
-                        </c:when>
-                        <c:otherwise>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="17" class="null-data">조회된 데이터가 없습니다.</td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
+                </tbody>
+            </table>
+        </div>
+        <div class="three wide column">
+            <table class="ui table celled structured">
+                <thead>
+                <tr>
+                    <th colspan="4">우수상담원</th>
+                </tr>
+                <tr>
+                    <th>구분</th>
+                    <th>상담사명</th>
+                    <th>콜수</th>
+                    <th>시간</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:choose>
+                    <c:when test="${excellentConsultants.size() > 0}">
+                        <c:forEach var="e" items="${excellentConsultants}">
                             <tr>
-                                <td colspan="4" class="null-data">조회된 데이터가 없습니다.</td>
+                                <td>${excellentConsultantTypes.get(e.type.name())}</td>
+                                <td>${g.htmlQuote(e.userName)}</td>
+                                <td>${e.callCount}</td>
+                                <td>${g.timeFormatFromSeconds(e.time)}</td>
                             </tr>
-                        </c:otherwise>
-                    </c:choose>
-                    </tbody>
-                </table>
-            </div>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="4" class="null-data">조회된 데이터가 없습니다.</td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

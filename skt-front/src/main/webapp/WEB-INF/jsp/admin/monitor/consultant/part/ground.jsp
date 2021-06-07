@@ -16,66 +16,61 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/monitor/consultant/part/"/>
         <div class="sub-content ui container fluid">
-            <div class="ui grid">
-                <div class="sixteen wide column"></div>
-                <div class="sixteen wide column">
-                    <h3 class="ui header center aligned">
-                        <text class="content">센터현황모니터링</text>
-                    </h3>
+            <div class="panel panel-statstics">
+                <div class="panel-heading">
+                    <div class="panel-label">센터현황관리[부서별]</div>
                 </div>
-                <div class="sixteen wide column">
-                    <div id="center-stat"></div>
-                </div>
-                <div class="eight wide column">
-                    <div id="primary-stat"></div>
-                </div>
-                <div class="eight wide column">
-                    <div id="waiting-number-chart"></div>
-                </div>
-                <div class="sixteen wide column">
-                    <h3 class="ui header center aligned">
-                        <text class="content">큐그룹모니터링</text>
-                    </h3>
-                </div>
-                <div class="sixteen wide column">
-                    <div id="hunt-monitor"></div>
-                </div>
-                <div class="sixteen wide column">
-                    <h3 class="ui header center aligned">
-                        <text class="content">상담원모니터링</text>
-                    </h3>
-                </div>
-                <div class="sixteen wide column">
-                    <div id="consultant-monitor"></div>
-                </div>
-                <div class="sixteen wide column">
-                    <h3 class="ui header center aligned">
-                        <text class="content">통합 통계 모니터링</text>
-                    </h3>
-                </div>
-                <div class="sixteen wide column">
-                    <div id="total-stat"></div>
-                </div>
-                <div class="sixteen wide column">
-                    <div id="hunt-compare-chart"></div>
-                </div>
-                <div class="sixteen wide column">
-                    <h3 class="ui header center aligned">
-                        <text class="content">큐그룹별 통계 모니터링</text>
-                    </h3>
-                </div>
-                <div class="sixteen wide column">
-                    <div id="hunt-stat"></div>
-                </div>
-                <div class="sixteen wide column">
-                    <h3 class="ui header center aligned">
-                        <text class="content">시간대별 / 큐그룹별 통계 모니터링</text>
-                    </h3>
-                </div>
-                <div class="sixteen wide column">
-                    <div id="hunt-hour-chart"></div>
+                <div class="panel-body">
+                    <div class="panel-section">
+                        <div id="center-stat"></div>
+                    </div>
+                    <div class="panel-section">
+                        <div class="panel-sub-title">센터현황모니터링</div>
+                        <div class="panel-sub-container">
+                            <div class="ui grid">
+                                <div class="eight wide column">
+                                    <div id="primary-stat"></div>
+                                </div>
+                                <div class="eight wide column">
+                                    <div id="waiting-number-chart"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-section">
+                        <div class="panel-sub-title">큐그룹모니터링</div>
+                        <div class="panel-sub-container">
+                            <div id="hunt-monitor"></div>
+                        </div>
+                    </div>
+                    <div class="panel-section">
+                        <div class="panel-sub-title">상담원모니터링</div>
+                        <div class="panel-sub-container">
+                            <div id="consultant-monitor"></div>
+                        </div>
+                    </div>
+                    <div class="panel-section">
+                        <div class="panel-sub-title">통합 통계 모니터링</div>
+                        <div class="panel-sub-container">
+                            <div id="total-stat"></div>
+                            <div id="hunt-compare-chart"></div>
+                        </div>
+                    </div>
+                    <div class="panel-section">
+                        <div class="panel-sub-title">큐그룹별 통계 모니터링</div>
+                        <div class="panel-sub-container">
+                            <div id="hunt-stat"></div>
+                        </div>
+                    </div>
+                    <div class="panel-section">
+                        <div class="panel-sub-title">시간대별/큐그룹별 모니터링</div>
+                        <div class="panel-sub-container">
+                            <div id="hunt-hour-chart"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 
