@@ -1137,6 +1137,16 @@ pre {
   position:relative;
   background: @color-white;
   border: 1px solid @color-border;
+  .arrow-btn {
+    border: 1px solid @color-border;
+    outline: 0;
+    background: #fff;
+    cursor: pointer;
+    font-size: 8px;
+    padding: .4em .4em;
+    color: darken(@color-gray, 60%);
+    margin: 0 0 0 2px;
+  }
   .panel-heading, .panel-body {
     position: relative;
     padding: 10px 14px;
@@ -1185,11 +1195,9 @@ pre {
     }
     .panel-total-count {
       display: inline-block;
-      background-color:@color-gray-btn;
-      border: 1px solid @color-border;
       font-size: @font-size-xsmall;
       font-weight: 500;
-      padding: .43em 1em;
+      padding: .43em 1em .43em 0;
       vertical-align: top;
       margin: 0 8px 0 0;
       span {
@@ -1747,10 +1755,11 @@ label.control-label {
   overflow: hidden !important;
 }
 .progress-wrap {
-  width: 345px;
+  width: 354px;
   display: inline-block;
   vertical-align: top;
   margin: 0 0 0 15px;
+  white-space: nowrap;
   .ui.progress .label {
     text-align: left;
   }
@@ -3948,3 +3957,73 @@ g {
 .ui-resizable-handle {z-index: 10000 !important;}
 .ui-resizable-helper {z-index: 10001 !important;}
 */
+
+
+/*dashboard*/
+
+.dashboard-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#main-dashboard {
+  .flex();
+  background:@color-gray;
+  padding:1em;
+  flex-flow:column;
+  .top {
+    margin: 0 0 10px 0;
+  }
+  .bottom {
+    .flex();
+    flex:1;
+    .state-area {
+      flex:2;
+    }
+    .rank-area {
+      flex:1;
+      margin: 0 0 0 10px;
+    }
+  }
+}
+
+.panel.panel-dashboard {
+  .panel-heading {
+    height:40px;
+    padding:10px 14px;
+    border-bottom:1px solid @color-border;
+  }
+}
+
+.panel.panel-dashboard {
+  .visual-panel {
+    .panel-heading {
+      color:@color-white;
+      border-bottom:1px solid darken(@color-border,20%);
+      background:@color-brand;
+      text-align: center;
+      font-size: 1.6vw;
+      padding: .8em 1em;
+      justify-content: center;
+      height: auto;
+    }
+    .panel-body {
+      border:1px solid darken(@color-border,20%);
+      border-top: 0;
+      text-align: center;
+      padding: 1.5em 1em;
+      color:@color-darkgray;
+      .num {
+        font-size: 2.3vw;
+      }
+    }
+  }
+}
+
+.call-state-bg {background: @color-red !important;color:@color-white!important;}
+.wait-state-bg {background:@color-green!important;color:@color-white!important;}
+.bell-state-bg {background:@color-teal!important;color:@color-darkgray!important;}
+.after-state-bg {background:@color-yellow!important;color:@color-darkgray!important;}
+.logout-state-bg {background:@color-gray2!important;color:@color-white!important;}
+.etc-state-bg {background: @color-purple!important;color:@color-white!important;}

@@ -28,24 +28,24 @@
             <div class="panel">
                 <div class="panel-heading align-center">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${list.size()}</span> 건</h3>
-                    </div>
-                    <div class="progress-wrap">
-                        <div class="ui blue progress small -disk-occ" data-percent="${disk.use}">
-                            <div class="bar">
-                                <div class="progress">${disk.use}</div>
-                            </div>
-                            <div class="label">
-                                사용중디스크 : ${disk.used}
-                                <span class="slash">/</span>
-                                사용가능디스크 : ${disk.avail}
-                                <span class="slash">/</span>
-                                사용비율 : ${disk.use}
-                            </div>
-                        </div>
+                        <h3 class="panel-total-count">전체 <span>${list.size()}</span> 건</h3>
+                        <button type="button" class="ui basic button -control-entity" data-entity="Record" style="display: none;" onclick="deleteEntity(getEntityId('Record'))">삭제</button>
                     </div>
                     <div class="pull-right">
-                        <button type="button" class="ui basic button -control-entity" data-entity="Record" style="display: none;" onclick="deleteEntity(getEntityId('Record'))">삭제</button>
+                        <div class="progress-wrap">
+                            <div class="ui blue progress small -disk-occ" data-percent="${disk.use}">
+                                <div class="bar">
+                                    <div class="progress">${disk.use}</div>
+                                </div>
+                                <div class="label">
+                                    사용중디스크 : ${disk.used}
+                                    <span class="slash">/</span>
+                                    사용가능디스크 : ${disk.avail}
+                                    <span class="slash">/</span>
+                                    사용비율 : ${disk.use}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="panel-body">
