@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 공통 고객사 API 인터페이스
@@ -33,7 +35,7 @@ public class PersonLinkApiController extends ApiBaseController {
         if (!g.isLogin())
             throw new AccessDeniedException("로그인 후 사용 가능");
 
-        return JsonResult.data(repository.findAllByPersonId(g.getUser().getId()));
+        return JsonResult.data(repository.findAllByPersonId(g.getUser().getId()).stream().sorted(Comparator.comparing(PersonLink::getSeq)).collect(Collectors.toList()));
     }
 
     @GetMapping("{seq}")
