@@ -19,25 +19,23 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
+                        <div class="panel-label">
+                            상담그룹별통계
+                        </div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
-                            <label>접기/펴기</label>
+                            <label>검색옵션 전체보기</label>
                             <input type="checkbox" name="newsletter">
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body overflow-unset">
                     <div class="search-area">
-                        <div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">주기설정</label></div>
-                                <div class="five wide column">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>주기설정</th>
+                                <td colspan="3">
                                     <div class="ui basic buttons">
                                         <form:hidden path="timeUnit"/>
                                         <c:forEach var="e" items="${searchCycles}">
@@ -45,25 +43,21 @@
                                                     data-value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.value)}</button>
                                         </c:forEach>
                                     </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">기간설정</label></div>
-                                <div class="four wide column">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label class="control-label" for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
+                                </td>
+                                <th>기간설정</th>
+                                <td colspan="3">
+                                    <div class="ui action input calendar-area">
+                                        <input type="text">
+                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
                                         <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label class="control-label" for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
+                                        <input type="text">
+                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">추가조건선택</label></div>
-                                <div class="five wide column">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>추가조건선택</th>
+                                <td colspan="3">
                                     <div class="ui checkbox">
                                         <form:checkbox path="busy" value="Y"/>
                                         <label>콜백</label>
@@ -72,20 +66,20 @@
                                         <form:checkbox path="workHour" value="Y"/>
                                         <label>업무시간</label>
                                     </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">서비스선택</label></div>
-                                <div class="five wide column overflow-unset">
+                                </td>
+                                <th>서비스선택</th>
+                                <td colspan="3">
                                     <div class="ui form">
                                         <form:select path="serviceNumbers" multiple="multiple" class="ui fluid dropdown">
                                             <form:option value="" label="서비스선택"/>
                                             <form:options items="${services}"/>
                                         </form:select>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">부서선택</label></div>
-                                <div class="five wide column overflow-unset">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>부서선택</th>
+                                <td colspan="3">
                                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
                                          data-clear=".-clear-group">
                                         <button type="button" class="ui icon button mini blue compact -select-group">
@@ -111,121 +105,147 @@
                                             <i class="undo icon"></i>
                                         </button>
                                     </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">상담원선택</label></div>
-                                <div class="five wide column overflow-unset">
+                                </td>
+                                <th>상담원선택</th>
+                                <td colspan="3">
                                     <div class="ui form">
                                         <form:select path="personIds" multiple="multiple" class="ui fluid dropdown">
                                             <form:option value="" label="상담원선택"/>
                                             <form:options items="${persons}"/>
                                         </form:select>
                                     </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
+                            </div>
+                        </div>
+                        <%--<div class="ui grid">
+                            <div class="row">
+                                <div class="two wide column"><label class="control-label">기간설정</label></div>
+                                <div class="four wide column">
+                                    <div class="date-picker from-to">
+                                        <div class="dp-wrap">
+                                            <label class="control-label" for="startDate" style="display:none">From</label>
+                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                        </div>
+                                        <span class="tilde">~</span>
+                                        <div class="dp-wrap">
+                                            <label class="control-label" for="endDate" style="display:none">to</label>
+                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>--%>
+                    </div>
+                </div>
+            </form:form>
+            <div class="panel panel-statstics">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="panel-section">
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <text class="content">
+                                    큐(그룹)별통계
+                                    <div class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</div>
+                                </text>
+                            </div>
+                            <div class="panel-body pd-1em">
+                                <table class="ui celled table compact unstackable structured">
+                                    <thead>
+                                    <tr>
+                                        <th rowspan="2">날짜/시간</th>
+                                        <th rowspan="2">큐그룹</th>
+                                        <th colspan="8">I/B</th>
+                                    </tr>
+                                    <tr>
+                                        <th>I/B 연결요청</th>
+                                        <th>응대호</th>
+                                        <th>포기호</th>
+                                        <th>콜백</th>
+                                        <th>I/B 총통화시간</th>
+                                        <th>평균통화시간</th>
+                                        <th>응답률</th>
+                                        <th>서비스레벨 호응답률</th>
+                                    </tr>
+                                    </thead>
+                                    <c:choose>
+                                        <c:when test="${list.size() > 0}">
+                                            <tbody>
+                                            <c:forEach var="element" items="${list}">
+                                                <c:if test="${element.statQueueInboundResponses.size() > 0}">
+                                                    <tr>
+                                                    <td rowspan="${element.statQueueInboundResponses.size() + 1}">${g.htmlQuote(element.timeInformation)}</td>
+                                                    <c:forEach var="e" items="${element.statQueueInboundResponses}">
+                                                        <tr>
+                                                            <td>${g.htmlQuote(e.queueName)}</td>
+
+                                                            <td>${e.inTotal}</td>
+                                                            <td>${e.inSuccess}</td>
+                                                            <td>${e.cancel}</td>
+                                                            <td>${e.callbackCount}</td>
+                                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inBillSecSum)}</td>
+                                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.avgBillSec)}</td>
+                                                            <td>${e.avgRateValue}%</td>
+                                                            <td>${e.serviceLevelOk}</td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                    </tr>
+                                                </c:if>
+                                            </c:forEach>
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                <td colspan="2">합계</td>
+
+                                                <td>${total.inTotal}</td>
+                                                <td>${total.inSuccess}</td>
+                                                <td>${total.cancel}</td>
+                                                <td>${total.callbackCount}</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inBillSecSum)}</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.avgBillSec)}</td>
+                                                <td>${String.format("%.1f", total.avgRateValue)}%</td>
+                                                <td>${total.serviceLevelOk}</td>
+                                            </tr>
+                                            </tfoot>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <tbody>
+                                            <tr>
+                                                <td colspan="9" class="null-data">조회된 데이터가 없습니다.</td>
+                                            </tr>
+                                            </tbody>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-section">
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <text class="content">총통화그래프</text>
+                            </div>
+                            <div class="panel-body pd-1em">
+                                <div class="-chart" id="total-call-chart" style="height: 300px;"></div>
+                                <div style="text-align: center; padding: 2em 0;">
+                                    <text style="display: inline-block;"><i class="circle color-red"></i>응대호</text>
+                                    <text style="display: inline-block;"><i class="circle color-blue"></i>포기호</text>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form:form>
-            <div class="panel">
-                <div class="panel-heading">
-                    <div class="pull-right">
-                        <button class="ui basic green button" type="button" onclick="downloadExcel()">Excel 다운로드</button>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <div class="ui grid">
-                        <div class="sixteen wide column">
-                            <h3 class="ui header center aligned">
-                                <text class="content">
-                                    큐(그룹)별통계
-                                    <div class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</div>
-                                </text>
-                            </h3>
-                        </div>
-                        <div class="sixteen wide column">
-                            <table class="ui celled table compact unstackable definition structured">
-                                <thead>
-                                <tr>
-                                    <th rowspan="2">날짜/시간</th>
-                                    <th rowspan="2">큐그룹</th>
-                                    <th colspan="8" class="color red">I/B</th>
-                                </tr>
-                                <tr>
-                                    <th class="color red">I/B 연결요청</th>
-                                    <th class="color red">응대호</th>
-                                    <th class="color red">포기호</th>
-                                    <th class="color red">콜백</th>
-                                    <th class="color red">I/B 총통화시간</th>
-                                    <th class="color red">평균통화시간</th>
-                                    <th class="color red">응답률</th>
-                                    <th class="color red">서비스레벨 호응답률</th>
-                                </tr>
-                                </thead>
-                                <c:choose>
-                                    <c:when test="${list.size() > 0}">
-                                        <tbody>
-                                        <c:forEach var="element" items="${list}">
-                                            <c:if test="${element.statQueueInboundResponses.size() > 0}">
-                                                <tr>
-                                                <td rowspan="${element.statQueueInboundResponses.size() + 1}">${g.htmlQuote(element.timeInformation)}</td>
-                                                <c:forEach var="e" items="${element.statQueueInboundResponses}">
-                                                    <tr>
-                                                        <td>${g.htmlQuote(e.queueName)}</td>
-
-                                                        <td>${e.inTotal}</td>
-                                                        <td>${e.inSuccess}</td>
-                                                        <td>${e.cancel}</td>
-                                                        <td>${e.callbackCount}</td>
-                                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inBillSecSum)}</td>
-                                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.avgBillSec)}</td>
-                                                        <td>${e.avgRateValue}%</td>
-                                                        <td>${e.serviceLevelOk}</td>
-                                                    </tr>
-                                                </c:forEach>
-                                                </tr>
-                                            </c:if>
-                                        </c:forEach>
-                                        </tbody>
-                                        <tfoot>
-                                        <tr>
-                                            <td colspan="2">합계</td>
-
-                                            <td>${total.inTotal}</td>
-                                            <td>${total.inSuccess}</td>
-                                            <td>${total.cancel}</td>
-                                            <td>${total.callbackCount}</td>
-                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inBillSecSum)}</td>
-                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.avgBillSec)}</td>
-                                            <td>${String.format("%.1f", total.avgRateValue)}%</td>
-                                            <td>${total.serviceLevelOk}</td>
-                                        </tr>
-                                        </tfoot>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <tbody>
-                                        <tr>
-                                            <td colspan="9" class="null-data">조회된 데이터가 없습니다.</td>
-                                        </tr>
-                                        </tbody>
-                                    </c:otherwise>
-                                </c:choose>
-                            </table>
-                        </div>
-                        <div class="sixteen wide column">
-                            <h3 class="ui header center aligned">
-                                <text class="content">총통화그래프</text>
-                            </h3>
-                        </div>
-                        <div class="sixteen wide column">
-                            <div class="-chart" id="total-call-chart" style="height: 300px;"></div>
-                            <div style="text-align: center; padding: 2em 0;">
-                                <text style="display: inline-block;"><i class="circle color-red"></i>응대호</text>
-                                <text style="display: inline-block;"><i class="circle color-blue"></i>포기호</text>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </div>            
         </div>
     </div>
 

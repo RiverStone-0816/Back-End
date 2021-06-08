@@ -21,7 +21,7 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">상담결과이력</div>
+                        <div class="panel-label">상담 이력조회</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">

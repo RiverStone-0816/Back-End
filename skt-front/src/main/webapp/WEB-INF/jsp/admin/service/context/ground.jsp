@@ -19,12 +19,12 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${list.size()}</span> 건</h3>
-                    </div>
-                    <div class="pull-right">
-                        <button class="ui basic button" onclick="popupModal()">추가</button>
-                        <button class="ui basic button -control-entity" data-entity="Context" style="display: none;" onclick="popupModal(getEntityId('Context'))">수정</button>
-                        <button class="ui basic button -control-entity" data-entity="Context" style="display: none;" onclick="deleteEntity(getEntityId('Context'))">삭제</button>
+                        <h3 class="panel-total-count">전체 <span class="text-primary">${list.size()}</span> 건</h3>
+                        <div class="ui basic buttons">
+                            <button class="ui basic button" onclick="popupModal()">추가</button>
+                            <button class="ui basic button -control-entity" data-entity="Context" style="display: none;" onclick="popupModal(getEntityId('Context'))">수정</button>
+                            <button class="ui basic button -control-entity" data-entity="Context" style="display: none;" onclick="deleteEntity(getEntityId('Context'))">삭제</button>
+                        </div>
                     </div>
                 </div>
                 <div class="panel-body">

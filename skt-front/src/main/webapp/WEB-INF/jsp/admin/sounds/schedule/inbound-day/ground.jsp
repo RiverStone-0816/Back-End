@@ -19,7 +19,7 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">[수신]일별스케쥴러</div>
+                        <div class="panel-label">휴일일정관리</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">

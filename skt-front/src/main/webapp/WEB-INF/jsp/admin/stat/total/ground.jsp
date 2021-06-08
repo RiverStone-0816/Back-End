@@ -109,34 +109,34 @@
                                 </text>
                             </div>
                             <div class="panel-body pd-1em">
-                                <table class="ui celled table compact unstackable definition structured">
+                                <table class="ui celled table compact unstackable structured">
                                     <thead>
                                     <tr>
                                         <th rowspan="2">날짜/시간</th>
                                         <th colspan="2">총통화</th>
-                                        <th colspan="6" class="color blue">O/B</th>
-                                        <th colspan="11" class="color red">I/B</th>
+                                        <th colspan="6">O/B</th>
+                                        <th colspan="11">I/B</th>
                                     </tr>
                                     <tr>
                                         <th>총건수</th>
                                         <th>총시간</th>
-                                        <th class="color blue">총시도콜</th>
-                                        <th class="color blue">O/B건수<br>(성공호)</th>
-                                        <th class="color blue">비수신</th>
-                                        <th class="color blue">통화성공률</th>
-                                        <th class="color blue">O/B<br>총통화시간</th>
-                                        <th class="color blue">O/B<br>평균통화시간</th>
-                                        <th class="color red">I/B<br>전체콜</th>
-                                        <th class="color red">단순조회</th>
-                                        <th class="color red">연결요청</th>
-                                        <th class="color red">응대호</th>
-                                        <th class="color red">포기호</th>
-                                        <th class="color red">콜백</th>
-                                        <th class="color red">I/B<br>총통화시간</th>
-                                        <th class="color red">평균<br>통화시간</th>
-                                        <th class="color red">평균<br>대기시간</th>
-                                        <th class="color red">호응답률</th>
-                                        <th class="color red">단순조회율</th>
+                                        <th>총시도콜</th>
+                                        <th>O/B건수<br>(성공호)</th>
+                                        <th>비수신</th>
+                                        <th>통화성공률</th>
+                                        <th>O/B<br>총통화시간</th>
+                                        <th>O/B<br>평균통화시간</th>
+                                        <th>I/B<br>전체콜</th>
+                                        <th>단순조회</th>
+                                        <th>연결요청</th>
+                                        <th>응대호</th>
+                                        <th>포기호</th>
+                                        <th>콜백</th>
+                                        <th>I/B<br>총통화시간</th>
+                                        <th>평균<br>통화시간</th>
+                                        <th>평균<br>대기시간</th>
+                                        <th>호응답률</th>
+                                        <th>단순조회율</th>
                                     </tr>
                                     </thead>
                                     <c:choose>

@@ -1215,6 +1215,9 @@ pre {
         background:lighten(@color-gray,3%);
         font-weight: 500;
       }
+      &:last-child {
+        border-bottom:0;
+      }
     }
   }
   .panel-footer {padding: 0 15px 15px}
@@ -1239,6 +1242,7 @@ pre {
   }
   .search-area {
     .ui.table {
+      border-top:1px solid @color-border;
       td {
         text-align:left;
       }
@@ -1264,6 +1268,8 @@ pre {
       select {
         width: auto;
         display: inline-block;
+        height: 32px;
+        margin: 0 0 0 5px;
       }
     }
     .ui.selection.dropdown {

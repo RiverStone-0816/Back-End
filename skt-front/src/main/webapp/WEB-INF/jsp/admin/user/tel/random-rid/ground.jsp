@@ -19,7 +19,7 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">랜덤RID관리</div>
+                        <div class="panel-label">발신번호설정</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">

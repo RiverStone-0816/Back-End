@@ -22,7 +22,7 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">녹취/통화이력 조회</div>
+                        <div class="panel-label">통화이력조회</div>
                         <%--<c:if test="${g.user.downloadRecordingAuthority.equals('ALL')}">
                             <div class="ui toggle checkbox">
                                 <form:checkbox path="batchDownloadMode"/>

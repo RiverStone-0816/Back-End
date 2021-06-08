@@ -19,39 +19,41 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
+                        <div class="panel-label">개인번호기타설정</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
-                            <label>접기/펴기</label>
+                            <label>검색옵션 전체보기</label>
                             <input type="checkbox" name="newsletter">
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="search-area">
-                        <div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">내선번호</label></div>
-                                <div class="two wide column">
-                                    <div class="ui input fluid"><form:input path="extension"/></div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">지역번호</label></div>
-                                <div class="two wide column">
-                                    <div class="ui input fluid"><form:input path="localPrefix"/></div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">CID</label></div>
-                                <div class="two wide column">
-                                    <div class="ui input fluid"><form:input path="cid"/></div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">과금번호</label></div>
-                                <div class="two wide column">
-                                    <div class="ui input fluid"><form:input path="billingNumber"/></div>
-                                </div>
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>내선번호</th>
+                                <td>
+                                    <div class="ui form"><form:input path="extension"/></div>
+                                </td>
+                                <th>지역번호</th>
+                                <td>
+                                    <div class="ui form"><form:input path="localPrefix"/></div>
+                                </td>
+                                <th>CID</th>
+                                <td>
+                                    <div class="ui form"><form:input path="cid"/></div>
+                                </td>
+                                <th>과금번호</th>
+                                <td>
+                                    <div class="ui form"><form:input path="billingNumber"/></div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
                     </div>
@@ -60,10 +62,11 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span>건</h3>
+                        <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span>건</h3>
+                        <button class="ui basic button" onclick="popupUpdateExtensionExtraInfoModal()">수정</button>
                     </div>
                     <div class="pull-right">
-                        <button class="ui basic button" onclick="popupUpdateExtensionExtraInfoModal()">수정</button>
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/service/etc/extension-extra-info/" pageForm="${search}"/>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -104,9 +107,6 @@
                         </c:choose>
                         </tbody>
                     </table>
-                </div>
-                <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/service/etc/extension-extra-info/" pageForm="${search}"/>
                 </div>
             </div>
         </div>

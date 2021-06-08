@@ -19,22 +19,62 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
+                        <div class="panel-label">
+                            상담코드통계[개별형]
+                        </div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
-                            <label>접기/펴기</label>
+                            <label>검색옵션 전체보기</label>
                             <input type="checkbox" name="newsletter">
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body overflow-unset">
                     <div class="search-area">
-                        <div class="ui grid">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>기간설정</th>
+                                <td>
+                                    <div class="ui action input calendar-area">
+                                        <input type="text">
+                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <span class="tilde">~</span>
+                                        <input type="text">
+                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                    </div>
+                                </td>
+                                <th>수/발신선택</th>
+                                <td>
+                                    <div class="ui form">
+                                        <form:select path="type">
+                                            <form:option value="" label="선택안함" data-type=""/>
+                                            <c:forEach var="e" items="${sendReceiveTypes}">
+                                                <form:option value="${g.htmlQuote(e.key)}" label="${g.htmlQuote(e.value)}"/>
+                                            </c:forEach>
+                                        </form:select>
+                                    </div>
+                                </td>
+                                <th>필드선택</th>
+                                <td>
+                                    <div class="ui form">
+                                        <form:select path="fieldId">
+                                            <form:option value="" label="선택안함" data-type=""/>
+                                            <c:forEach var="e" items="${fieldList}">
+                                                <form:option value="${g.htmlQuote(e.fieldId)}" label="${g.htmlQuote(e.fieldInfo)}"/>
+                                            </c:forEach>
+                                        </form:select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
+                            </div>
+                        </div>
+                        <%--<div class="ui grid">
                             <div class="row">
                                 <div class="two wide column"><label class="control-label">기간설정</label></div>
                                 <div class="four wide column">
@@ -50,77 +90,59 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="two wide column"><label class="control-label">수/발신선택</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="type">
-                                            <form:option value="" label="선택안함" data-type=""/>
-                                            <c:forEach var="e" items="${sendReceiveTypes}">
-                                                <form:option value="${g.htmlQuote(e.key)}" label="${g.htmlQuote(e.value)}"/>
-                                            </c:forEach>
-                                        </form:select>
-                                    </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">필드선택</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="fieldId">
-                                            <form:option value="" label="선택안함" data-type=""/>
-                                            <c:forEach var="e" items="${fieldList}">
-                                                <form:option value="${g.htmlQuote(e.fieldId)}" label="${g.htmlQuote(e.fieldInfo)}"/>
-                                            </c:forEach>
-                                        </form:select>
-                                    </div>
-                                </div>
                             </div>
-                        </div>
+                        </div>--%>
                     </div>
                 </div>
             </form:form>
-            <div class="panel">
+            <div class="panel panel-statstics">
                 <div class="panel-heading">
-                    <div class="pull-right">
-                        <button type="button" class="ui basic green button" onclick="downloadExcel()">Excel 다운로드</button>
+                    <div class="pull-left">
+                        <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                     </div>
                 </div>
-                <div class="panel-body" style="overflow-x: auto;">
-                    <div class="sixteen wide column">
-                        <h3 class="ui header center aligned">
-                            <text class="content">
-                                상담결과통계(개별)
-                                <div class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</div>
-                            </text>
-                        </h3>
-                    </div>
-                    <table class="ui celled table compact unstackable">
-                        <thead>
-                        <tr>
-                            <th>문의유형</th>
-                            <c:forEach var="date" items="${dates}">
-                                <th>${g.htmlQuote(date)}</th>
-                            </c:forEach>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:choose>
-                            <c:when test="${list.size() > 0}">
-                                <c:forEach var="e" items="${list}">
+                <div class="panel-body">
+                    <div class="panel-section">
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <text class="content">
+                                    상담결과통계(개별)
+                                    <div class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</div>
+                                </text>
+                            </div>
+                            <div class="panel-body pd-1em">
+                                <table class="ui celled table compact unstackable">
+                                    <thead>
                                     <tr>
-                                        <td>${g.htmlQuote(e.codeName)}</td>
+                                        <th>문의유형</th>
                                         <c:forEach var="date" items="${dates}">
-                                            <td>${codeToDateToCountMap.get(e).getOrDefault(date, 0)}</td>
+                                            <th>${g.htmlQuote(date)}</th>
                                         </c:forEach>
                                     </tr>
-                                </c:forEach>
-                            </c:when>
-                            <c:otherwise>
-                                <tr>
-                                    <td colspan="${1 + dates.size()}" class="null-data">조회된 데이터가 없습니다.</td>
-                                </tr>
-                            </c:otherwise>
-                        </c:choose>
-                        </tbody>
-                    </table>
+                                    </thead>
+                                    <tbody>
+                                    <c:choose>
+                                        <c:when test="${list.size() > 0}">
+                                            <c:forEach var="e" items="${list}">
+                                                <tr>
+                                                    <td>${g.htmlQuote(e.codeName)}</td>
+                                                    <c:forEach var="date" items="${dates}">
+                                                        <td>${codeToDateToCountMap.get(e).getOrDefault(date, 0)}</td>
+                                                    </c:forEach>
+                                                </tr>
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <tr>
+                                                <td colspan="${1 + dates.size()}" class="null-data">조회된 데이터가 없습니다.</td>
+                                            </tr>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

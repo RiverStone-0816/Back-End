@@ -19,50 +19,50 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
+                        <div class="panel-label">상담원상태조정</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
-                            <label>접기/펴기</label>
+                            <label>검색옵션 전체보기</label>
                             <input type="checkbox" name="newsletter">
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="search-area">
-                        <div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">부서선택</label></div>
-                                <div class="five wide column">
-                                    <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group" data-clear=".-clear-group">
-                                        <button type="button" class="ui icon button mini blue compact -select-group">
-                                            <i class="search icon"></i>
-                                        </button>
-                                        <form:hidden path="groupCode"/>
-                                        <div class="ui breadcrumb -group-name">
-                                            <c:choose>
-                                                <c:when test="${searchOrganizationNames != null && searchOrganizationNames.size() > 0}">
-                                                    <c:forEach var="e" items="${searchOrganizationNames}" varStatus="status">
-                                                        <span class="section">${g.htmlQuote(e)}</span>
-                                                        <c:if test="${!status.last}">
-                                                            <i class="right angle icon divider"></i>
-                                                        </c:if>
-                                                    </c:forEach>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="section">버튼을 눌러 소속을 선택하세요.</span>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </div>
-                                        <button type="button" class="ui icon button mini compact -clear-group">
-                                            <i class="undo icon"></i>
-                                        </button>
+                        <table class="ui celled table compact unstackable">
+                            <th>부서선택</th>
+                            <td colspan="7">
+                                <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group" data-clear=".-clear-group">
+                                    <button type="button" class="ui icon button mini blue compact -select-group">
+                                        <i class="search icon"></i>
+                                    </button>
+                                    <form:hidden path="groupCode"/>
+                                    <div class="ui breadcrumb -group-name">
+                                        <c:choose>
+                                            <c:when test="${searchOrganizationNames != null && searchOrganizationNames.size() > 0}">
+                                                <c:forEach var="e" items="${searchOrganizationNames}" varStatus="status">
+                                                    <span class="section">${g.htmlQuote(e)}</span>
+                                                    <c:if test="${!status.last}">
+                                                        <i class="right angle icon divider"></i>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
+                                    <button type="button" class="ui icon button mini compact -clear-group">
+                                        <i class="undo icon"></i>
+                                    </button>
                                 </div>
+                            </td>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
                     </div>

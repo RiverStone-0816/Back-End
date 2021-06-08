@@ -8,12 +8,15 @@
   text-align: center;
   line-height: 20px;
   border-radius: 0;
+  border-top:1px solid darken(@color-border,20%);
   caption {
-    background: #eee;
+    background: @color-white;
     margin: 0 0 4px 0;
     padding: 5px 0;
     border-radius: 0.28571429rem;
-    border: 1px solid @color-border;
+    text-align: left;
+    font-weight: 800;
+    font-size: @font-size-small;
   }
   tr {
     td {
@@ -35,6 +38,12 @@
       }
     }
   }
+}
+
+.ui.structured.table {
+  border-collapse: unset;
+  border: 0;
+  border-top:1px solid darken(@color-border,20%);
 }
 
 .ui.table:last-child {

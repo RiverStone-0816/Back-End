@@ -22,7 +22,7 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">당겨받기그룹설정</div>
+                        <div class="panel-label">픽업그룹설정</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
