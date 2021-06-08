@@ -18,7 +18,7 @@
 <tags:layout>
 
     <div class="content-wrapper -admin-panel">
-    <iframe class="content-inner" id="main-content" src="<c:url value="/admin/dashboard/"/>"></iframe>
+    <iframe class="content-inner" id="main-content" src="<c:url value="/sub-url/dashboard"/>"></iframe>
     </div>
 
     <c:if test="${hasExtension && isStat}">

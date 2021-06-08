@@ -1736,6 +1736,9 @@ label.control-label {
 .ml10 {
   margin-left: 10px !important;
 }
+.ml5 {
+  margin-left: 5px !important;
+}
 .mb15 {
   margin-bottom: 15px !important
 }
@@ -2171,6 +2174,13 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
   }
   input[type="text"] {
     flex:1;
+  }
+  .ip-wrap {
+    flex:1;
+    margin-left: 5px;
+    &:first-child {
+      margin-left:0;
+    }
   }
 }
 
@@ -3970,12 +3980,88 @@ g {
 #main-dashboard {
   .flex();
   background:@color-gray;
-  padding:1em;
   flex-flow:column;
+  overflow: auto;
   .top {
     margin: 0 0 10px 0;
+    .chart-wrap {
+      height:190px;
+    }
+    .chart-label-wrap {
+      padding: 20px 0 4px 0;
+      li {
+        display:inline-block;
+        margin: 0 1em;
+      }
+      .symbol {
+        width: 25px;
+        height: 4px;
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 6px 0 0;
+      }
+      .symbol.color-1 {background:@color-blue}
+      .symbol.color-2 {background:@color-brand}
+      .symbol.color-3 {background:@color-gray2}
+      .symbol.color-4 {background:@color-yellow}
+      .symbol.color-5 {background:@color-skyblue}
+      .symbol.color-6 {background:@color-green}
+      .text {
+        color:lighten(@color-darkgray,20%);
+      }
+    }
   }
   .bottom {
+    .chart-wrap {
+      height:258px;
+    }
+    .chart-label-wrap {
+      overflow: hidden;
+      width: 253px;
+      margin: 0 26% auto;
+      padding:10px 0 0 0;
+      ul {
+        overflow: hidden;
+        li {
+          width: 50%;
+          display: inline-block;
+          float: left;
+          padding: 0 0 10px 0;
+        }
+      }
+      .symbol {
+        width: 12px;
+        height: 12px;
+        display: inline-block;
+        vertical-align: bottom;
+        margin: 0 20% 0 0;
+        border-radius: 50%;
+      }
+      .symbol.color-1 {
+        background:@color-blue;
+      }
+      .symbol.color-2 {
+        background:@color-brown;
+      }
+      .symbol.color-3 {
+        background: @color-red;
+      }
+      .symbol.color-4 {
+        background: @color-brand;
+      }
+      .symbol.color-5 {
+        background:@color-green;
+      }
+      .symbol.color-6 {
+        background:@color-navy;
+      }
+      .symbol.color-7 {
+        background:@color-gray2;
+      }
+      .text {
+        color:lighten(@color-darkgray,20%);
+      }
+    }
     .flex();
     flex:1;
     .state-area {
@@ -4003,7 +4089,7 @@ g {
       border-bottom:1px solid darken(@color-border,20%);
       background:@color-brand;
       text-align: center;
-      font-size: 1.6vw;
+      font-size: 2em;
       padding: .8em 1em;
       justify-content: center;
       height: auto;
@@ -4015,7 +4101,8 @@ g {
       padding: 1.5em 1em;
       color:@color-darkgray;
       .num {
-        font-size: 2.3vw;
+        font-size: 3.5em;
+        color: lighten(@color-darkgray, 15%);
       }
     }
   }

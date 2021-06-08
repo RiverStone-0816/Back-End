@@ -72,7 +72,6 @@
                                                 </c:if>
                                             </c:forEach>
                                         </form:select>
-                                        <%--TODO: 상담 테스트 가능할 때 , 스타일 체크 다시--%>
                                         <div class="ui action input calendar-area -search-type-sub-input" data-type="DATE">
                                             <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
                                             <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>

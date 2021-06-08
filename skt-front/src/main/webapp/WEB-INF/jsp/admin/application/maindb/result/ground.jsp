@@ -87,48 +87,50 @@
                                 </td>
                                 <th>검색항목</th>
                                 <td colspan="3">
-                                    <div class="ui form">
-                                        <form:select path="searchType">
-                                            <form:option value="" label="선택안함"/>
-                                            <form:option value="" label="--고객정보필드--"/>
-                                            <c:forEach var="e" items="${customDbType.fields}">
-                                                <c:if test="${e.issearch == 'Y'}">
-                                                    <form:option value="MAINDB_${e.fieldId.substring(customDbType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
-                                                                 data-type="${g.htmlQuote(e.fieldType)}"/>
-                                                </c:if>
-                                            </c:forEach>
-                                            <form:option value="" label="--상담결과필드--"/>
-                                            <c:forEach var="e" items="${resultType.fields}">
-                                                <c:if test="${e.issearch == 'Y'}">
-                                                    <form:option value="RS_${e.fieldId.substring(resultType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
-                                                                 data-type="${g.htmlQuote(e.fieldType)}"/>
-                                                </c:if>
-                                            </c:forEach>
-                                        </form:select>
-                                    </div>
+                                    <div class="ui form flex">
+                                        <div class="ip-wrap">
+                                            <form:select path="searchType">
+                                                <form:option value="" label="선택안함"/>
+                                                <form:option value="" label="--고객정보필드--"/>
+                                                <c:forEach var="e" items="${customDbType.fields}">
+                                                    <c:if test="${e.issearch == 'Y'}">
+                                                        <form:option value="MAINDB_${e.fieldId.substring(customDbType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
+                                                                     data-type="${g.htmlQuote(e.fieldType)}"/>
+                                                    </c:if>
+                                                </c:forEach>
+                                                <form:option value="" label="--상담결과필드--"/>
+                                                <c:forEach var="e" items="${resultType.fields}">
+                                                    <c:if test="${e.issearch == 'Y'}">
+                                                        <form:option value="RS_${e.fieldId.substring(resultType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
+                                                                     data-type="${g.htmlQuote(e.fieldType)}"/>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </form:select>
+                                        </div>
 
-                                        <%--TODO: 상담 테스트 가능할 때 , 스타일 체크 다시--%>
-                                    <div class="five wide column -search-type-sub-input" data-type="DATE">
-                                        <div class="date-picker from-to">
-                                            <div class="dp-wrap">
-                                                <label for="startDate" style="display:none">From</label>
-                                                <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                            </div>
-                                            <span class="tilde">~</span>
-                                            <div class="dp-wrap">
-                                                <label for="endDate" style="display:none">to</label>
-                                                <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                            <%--TODO: 상담 테스트 가능할 때 , 스타일 체크 다시--%>
+                                        <div class="ip-wrap -search-type-sub-input" data-type="DATE">
+                                            <div class="date-picker from-to">
+                                                <div class="dp-wrap">
+                                                    <label for="startDate" style="display:none">From</label>
+                                                    <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                                </div>
+                                                <span class="tilde">~</span>
+                                                <div class="dp-wrap">
+                                                    <label for="endDate" style="display:none">to</label>
+                                                    <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="two wide column -search-type-sub-input" data-type="TEXT">
-                                        <div class="ui input fluid">
-                                            <form:input path="keyword"/>
+                                        <div class="ip-wrap -search-type-sub-input" data-type="TEXT">
+                                            <div class="ui input fluid">
+                                                <form:input path="keyword"/>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="two wide column -search-type-sub-input" data-type="CODE">
-                                        <div class="ui form">
-                                            <form:select path="code"/>
+                                        <div class="ip-wrap -search-type-sub-input" data-type="CODE">
+                                            <div class="ui form">
+                                                <form:select path="code"/>
+                                            </div>
                                         </div>
                                     </div>
 

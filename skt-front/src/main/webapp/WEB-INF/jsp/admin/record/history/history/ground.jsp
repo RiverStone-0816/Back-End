@@ -20,26 +20,14 @@
         <tags:page-menu-tab url="/admin/record/history/history/"/>
         <div class="sub-content ui container fluid unstackable">
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
+                <form:hidden path="limit"/>
                 <div class="panel-heading">
                     <div class="pull-left">
                         <div class="panel-label">통화이력조회</div>
-                        <%--<c:if test="${g.user.downloadRecordingAuthority.equals('ALL')}">
-                            <div class="ui toggle checkbox">
-                                <form:checkbox path="batchDownloadMode"/>
-                                <form:hidden path="limit"/>
-                                <label>녹취 일괄다운로드 모드로 전환 (1일 녹취만 다운로드 가능)</label>
-                            </div>
-                        </c:if>
-                        <c:if test="${company.isServiceAvailable('QA') && !g.user.idType.equals('M')}">
-                            <div class="ui toggle checkbox -evaluation-mode">
-                                <form:checkbox path="batchEvaluationMode"/>
-                                <label>상담원 일괄평가모드로 전환</label>
-                            </div>
-                        </c:if>--%>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
-                            <label>검색 옵션 전체보기</label>
+                            <label for="_newsletter">검색 옵션 전체보기</label>
                             <input type="checkbox" name="newsletter" id="_newsletter">
                         </div>
                     </div>
@@ -68,57 +56,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>전화번호</th>
-                                <td>
-                                    <div class="ui form">
-                                        <form:input path="phone"/>
-                                    </div>
-                                </td>
-                                <th>통화자</th>
-                                <td>
-                                    <div class="ui form">
-                                        <select name="userId">
-                                            <option value="" label="선택안함"></option>
-                                            <c:forEach var="e" items="${persons}">
-                                                <option value="${g.htmlQuote(e.id)}">${g.htmlQuote(e.idName)}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                </td>
-                                <th>수/발신 선택</th>
-                                <td>
-                                    <div class="ui form">
-                                        <form:select path="callType">
-                                            <form:option value="" label="수/발신 선택"/>
-                                            <form:options items="${callTypes}"/>
-                                        </form:select>
-                                    </div>
-                                </td>
-                                <th>호상태 선택</th>
-                                <td>
-                                    <div class="ui form">
-                                        <form:select path="callStatus">
-                                            <form:option value="" label="호상태 선택"/>
-                                            <form:options items="${callStatuses}"/>
-                                        </form:select>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                        <div class="button-area remove-mb">
-                            <div class="align-left">
-                                <button class="ui button sharp light large check">녹취 일괄 다운로드 모드</button>
-                                <button class="ui button sharp light large check active">상담원 일괄 평가모드</button>
-                            </div>
-                            <div class="align-right">
-                                <button type="submit" class="ui button sharp brand large">검색</button>
-                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
-                            </div>
-                        </div>
-                        <%--
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">부서선택</label></div>
-                                <div class="six wide column">
+                                <th>부서선택</th>
+                                <td colspan="3">
                                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
                                          data-clear=".-clear-group">
                                         <button type="button" class="ui icon button mini blue compact -select-group">
@@ -144,94 +83,131 @@
                                             <i class="undo icon"></i>
                                         </button>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">내선번호</label></div>
-                                <div class="two wide column">
+                                </td>
+                                <th>통화자</th>
+                                <td>
+                                    <div class="ui form">
+                                        <select name="userId">
+                                            <option value="" label="선택안함"></option>
+                                            <c:forEach var="e" items="${persons}">
+                                                <option value="${g.htmlQuote(e.id)}">${g.htmlQuote(e.idName)}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </td>
+                                <th>내선번호</th>
+                                <td>
                                     <div class="ui form">
                                         <form:select path="extension">
                                             <form:option value="" label="선택안함"/>
                                             <form:options items="${extensions}" itemValue="extension" itemLabel="extension"/>
                                         </form:select>
                                     </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">정렬순서</label></div>
-                                <div class="two wide column">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>전화번호</th>
+                                <td>
+                                    <div class="ui form">
+                                        <form:input path="phone"/>
+                                    </div>
+                                </td>
+                                <th>정렬순서</th>
+                                <td>
                                     <div class="ui form">
                                         <form:select path="sort" items="${sortTypes}"/>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">기타선택</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="etcStatus">
-                                            <form:option value="" label="부가상태 선택"/>
-                                            <form:options items="${etcStatuses}"/>
-                                        </form:select>
-                                    </div>
-                                </div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="ivrCode">
-                                            <form:option value="" label="IVR 선택"/>
-                                            <form:options items="${ivrCodes}"/>
-                                        </form:select>
-                                    </div>
-                                </div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="ivrKey">
-                                            <form:option value="${search.ivrKey}" label="${search.ivrKey}"/>
-                                        </form:select>
-                                    </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">대표번호</label></div>
-                                <div class="two wide column">
+                                </td>
+                                <th>대표번호</th>
+                                <td>
                                     <div class="ui form">
                                         <form:select path="iniNum">
                                             <form:option value="" label="선택안함"/>
                                             <form:options items="${services}" itemValue="svcNumber" itemLabel="svcName"/>
                                         </form:select>
                                     </div>
-                                </div>
-                            </div>
-                            <c:if test="${serviceKind.contains('SC')}">
-                                <div class="row">
-                                    <div class="two wide column"><label class="control-label">통화시간별</label></div>
-                                    <div class="two wide column">
-                                        <div class="ui form">
+                                </td>
+                                <th>헌트경로</th>
+                                <td>
+                                    <div class="ui form">
+                                        <form:select path="secondNum">
+                                            <form:option value="" label="선택안함"/>
+                                            <form:options items="${queues}"/>
+                                        </form:select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>통화시간별</th>
+                                <td colspan="3">
+                                    <c:if test="${serviceKind.contains('SC')}">
+                                    <div class="ui form flex">
+                                        <div class="ip-wrap">
                                             <form:select path="byCallTime">
                                                 <form:option value="" label="선택안함"/>
                                                 <form:options items="${callTimeTypes}"/>
                                             </form:select>
                                         </div>
-                                    </div>
-                                    <div class="four wide column">
-                                        <div class="ui input"><form:input path="callStartMinutes" size="2" class="-input-numerical"/></div>
-                                        <span>분</span>
-                                        <div class="ui input"><form:input path="callStartSeconds" size="2" class="-input-numerical"/></div>
-                                        <span>초</span>
-                                        <span class="tilde">~</span>
-                                        <div class="ui input"><form:input path="callEndMinutes" size="2" class="-input-numerical"/></div>
-                                        <span>분</span>
-                                        <div class="ui input"><form:input path="callEndSeconds" size="2" class="-input-numerical"/></div>
-                                        <span>초</span>
-                                    </div>
-                                    <div class="two wide column"><label class="control-label">헌트경로</label></div>
-                                    <div class="two wide column">
-                                        <div class="ui form">
-                                            <form:select path="secondNum">
-                                                <form:option value="" label="선택안함"/>
-                                                <form:options items="${queues}"/>
-                                            </form:select>
+                                        <div class="ip-wrap">
+                                            <div class="ui input"><form:input path="callStartMinutes" size="2" class="-input-numerical"/></div>
+                                            <span>분</span>
+                                            <div class="ui input"><form:input path="callStartSeconds" size="2" class="-input-numerical"/></div>
+                                            <span>초</span>
+                                            <span class="tilde">~</span>
+                                            <div class="ui input"><form:input path="callEndMinutes" size="2" class="-input-numerical"/></div>
+                                            <span>분</span>
+                                            <div class="ui input"><form:input path="callEndSeconds" size="2" class="-input-numerical"/></div>
+                                            <span>초</span>
                                         </div>
                                     </div>
-                                </div>
-                            </c:if>
-                        </div>--%>
+                                    </c:if>
+                                </td>
+                                <th>기타선택</th>
+                                <td colspan="3">
+                                    <div class="ui form flex">
+                                        <form:select path="callType">
+                                            <form:option value="" label="수/발신 선택"/>
+                                            <form:options items="${callTypes}"/>
+                                        </form:select>
+                                        <form:select path="callStatus">
+                                            <form:option value="" label="호상태 선택"/>
+                                            <form:options items="${callStatuses}"/>
+                                        </form:select>
+                                        <form:select path="etcStatus">
+                                            <form:option value="" label="부가상태 선택"/>
+                                            <form:options items="${etcStatuses}"/>
+                                        </form:select>
+                                        <form:select path="ivrCode">
+                                            <form:option value="" label="IVR 선택"/>
+                                            <form:options items="${ivrCodes}"/>
+                                        </form:select>
+                                        <form:select path="ivrKey">
+                                            <form:option value="${search.ivrKey}" label="${search.ivrKey}"/>
+                                        </form:select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-left">
+                                <c:if test="${g.user.downloadRecordingAuthority.equals('ALL')}">
+                                    <form:checkbox path="batchDownloadMode" cssStyle="display: none;"/>
+                                    <button type="button" class="ui button sharp light large check ${search.batchDownloadMode == true ? 'active' : ''}"
+                                            onclick="$(this).toggleClass('active'); $('[name=batchDownloadMode]').prop('checked', $(this).hasClass('active'))">녹취 일괄 다운로드 모드
+                                    </button>
+                                </c:if>
+                                <c:if test="${company.isServiceAvailable('QA') && !g.user.idType.equals('M')}">
+                                    <form:checkbox path="batchEvaluationMode" cssStyle="display: none;"/>
+                                    <button type="button" class="ui button sharp light large check ${search.batchEvaluationMode == true ? 'active' : ''}"
+                                            onclick="$(this).toggleClass('active'); $('[name=batchEvaluationMode]').prop('checked', $(this).hasClass('active'))">상담원 일괄 평가모드
+                                    </button>
+                                </c:if>
+                            </div>
+                            <div class="align-right">
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form:form>
@@ -243,12 +219,12 @@
                     </div>
                     <div class="pull-right">
                         <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/record/history/history/" pageForm="${search}"/>
-                        <%--<button class="ui basic button action-button" type="button" id="select-all" onclick="selectAll()">전체 선택</button>
-                        <button class="ui basic button action-button" type="button" id="down-all" onclick="postBatchDownload()">녹취 일괄다운로드 등록</button>
-                        <button class="ui basic green button action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">Excel 다운로드</button>
-                        <c:if test="${company.isServiceAvailable('QA')}">
-                            <button class="ui basic button action-button" type="button" id="batch-evaluation" onclick="popupBatchEvaluationModal()">일괄평가</button>
-                        </c:if>--%>
+                            <%--<button class="ui basic button action-button" type="button" id="select-all" onclick="selectAll()">전체 선택</button>
+                            <button class="ui basic button action-button" type="button" id="down-all" onclick="postBatchDownload()">녹취 일괄다운로드 등록</button>
+                            <button class="ui basic green button action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">Excel 다운로드</button>
+                            <c:if test="${company.isServiceAvailable('QA')}">
+                                <button class="ui basic button action-button" type="button" id="batch-evaluation" onclick="popupBatchEvaluationModal()">일괄평가</button>
+                            </c:if>--%>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -287,7 +263,7 @@
                                         <c:if test="${serviceKind.equals('SC')}">
                                             <td>
                                                 <c:if test="${e.grade != null}">
-                                                    <c:set var="colorInfo" value="${e.grade.contains('V') ? 'blue' : 'red'}" />
+                                                    <c:set var="colorInfo" value="${e.grade.contains('V') ? 'blue' : 'red'}"/>
                                                     <span class="ui ${colorInfo} basic label mini compact sparkle-${colorInfo}" style="line-height: 15px; width: 47px;">
                                                             ${e.grade.contains('V') ? 'VIP' : 'BLACK'}
                                                     </span>
@@ -310,9 +286,9 @@
                                                 <c:if test="${isFile}">
                                                     <c:if test="${!user.listeningRecordingAuthority.equals('NO')}">
                                                         <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)}">
-                                                        <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                            <i class="volume up icon"></i>
-                                                        </button>
+                                                            <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
+                                                                <i class="volume up icon"></i>
+                                                            </button>
                                                         </c:if>
                                                         <c:if test="${user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)}">
                                                             <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
@@ -518,8 +494,7 @@
                     $("#excel-down").hide();
                     if (!searchForm.find('[name=batchEvaluationMode]').prop('checked'))
                         $("#batch-evaluation").hide();
-                }
-                else {
+                } else {
                     $("#down-all").hide();
                     if (searchForm.find('[name=batchEvaluationMode]').prop('checked'))
                         $("#excel-down").hide();
@@ -538,12 +513,12 @@
             }
 
             showActionButton();
-            searchForm.find('[name=batchDownloadMode]').on("change" , function () {
+            searchForm.find('[name=batchDownloadMode]').on("change", function () {
                 changePaginationLimit();
                 searchForm.submit();
             });
 
-            searchForm.find('[name=batchEvaluationMode]').on("change" , function () {
+            searchForm.find('[name=batchEvaluationMode]').on("change", function () {
                 searchForm.submit();
             });
 

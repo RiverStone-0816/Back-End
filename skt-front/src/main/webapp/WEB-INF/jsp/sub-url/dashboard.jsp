@@ -36,7 +36,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="eight wide column">
+                                    <div class="eight wide column remove-pr">
                                         <div class="visual-panel">
                                             <div class="panel-heading">수신건</div>
                                             <div class="panel-body">
@@ -58,7 +58,19 @@
                                 <div class="visual-panel">
                                     <div class="panel-heading">인바운드 현황</div>
                                     <div class="panel-body">
-                                        인바운드 현황 그래프 영역
+                                        <div class="chart-wrap">
+                                            차트삽입
+                                        </div>
+                                        <div class="chart-label-wrap">
+                                            <ul>
+                                                <li><span class="symbol color-1"></span><span class="text">I/B전체</span></li>
+                                                <li><span class="symbol color-2"></span><span class="text">단순조회</span></li>
+                                                <li><span class="symbol color-3"></span><span class="text">연결요청</span></li>
+                                                <li><span class="symbol color-4"></span><span class="text">응대호</span></li>
+                                                <li><span class="symbol color-5"></span><span class="text">포기호</span></li>
+                                                <li><span class="symbol color-6"></span><span class="text">콜백</span></li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -143,7 +155,39 @@
                         <div class="panel-body">
                             <div class="ui grid">
                                 <div class="six wide column">
-                                    <div>그래프 영역</div>
+                                    <div class="chart-wrap"></div>
+                                    <div class="chart-label-wrap">
+                                        <ul>
+                                            <li>
+                                                <span class="symbol color-1"></span>
+                                                <span class="text">대기</span>
+                                            </li>
+                                            <li>
+                                                <span class="symbol color-2"></span>
+                                                <span class="text">휴식</span>
+                                            </li>
+                                            <li>
+                                                <span class="symbol color-3"></span>
+                                                <span class="text">통화중</span>
+                                            </li>
+                                            <li>
+                                                <span class="symbol color-4"></span>
+                                                <span class="text">식사</span>
+                                            </li>
+                                            <li>
+                                                <span class="symbol color-5"></span>
+                                                <span class="text">후처리</span>
+                                            </li>
+                                            <li>
+                                                <span class="symbol color-6"></span>
+                                                <span class="text">이석</span>
+                                            </li>
+                                            <li>
+                                                <span class="symbol color-7"></span>
+                                                <span class="text">로그아웃</span>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                                 <div class="ten wide column">
                                     <table class="ui celled table compact">
