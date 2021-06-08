@@ -8,6 +8,8 @@ import kr.co.eicn.ippbx.server.repository.eicn.PersonLinkRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.poi.util.ArrayUtil;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
@@ -55,7 +57,8 @@ public class PersonLinkApiController extends ApiBaseController {
             throw new ValidationException(bindingResult);
 
         List<Integer> seqList = new ArrayList<>();
-
+        List<PersonLinkFormRequest> ary = form.getPersonLinkForms();
+        ArrayUtils.reverse(ary.toArray());
         repository.delete(g.getUser().getId());
         if (form.getPersonLinkForms() != null && form.getPersonLinkForms().size() > 0)
             form.getPersonLinkForms().forEach(e -> seqList.add(repository.insert(convertDto(e,PersonLinkFormRequest.class))));
