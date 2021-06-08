@@ -19,9 +19,7 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">
-                            상담코드통계[단계형]
-                        </div>
+                        <div class="panel-label">상담코드통계[단계형]</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
@@ -37,10 +35,10 @@
                                 <th>기간설정</th>
                                 <td>
                                     <div class="ui action input calendar-area">
-                                        <input type="text">
+                                        <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
                                         <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
-                                        <input type="text">
+                                        <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
                                         <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
                                 </td>
@@ -63,24 +61,6 @@
                                 <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
-                        <%--<div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">기간설정</label></div>
-                                <div class="four wide column">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label class="control-label" for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
-                                        <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label class="control-label" for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>--%>
                     </div>
                 </div>
             </form:form>

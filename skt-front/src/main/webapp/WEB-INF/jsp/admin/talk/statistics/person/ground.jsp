@@ -19,9 +19,7 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">
-                            상담톡상담원별통계
-                        </div>
+                        <div class="panel-label">상담톡상담원별통계</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
