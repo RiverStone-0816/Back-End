@@ -108,7 +108,7 @@
                                             </form:select>
                                         </div>
 
-                                            <%--TODO: 상담 테스트 가능할 때 , 스타일 체크 다시--%>
+
                                         <div class="ip-wrap -search-type-sub-input" data-type="DATE">
                                             <div class="date-picker from-to">
                                                 <div class="dp-wrap">
