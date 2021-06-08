@@ -49,4 +49,18 @@ public class PersonLinkApiControllerTest extends BaseControllerTest {
 
         log.info(result);
     }
+
+    @Test
+    protected void select_person_link() throws Exception {
+
+        final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL)
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                .with(new JwtRequestPostProcessor()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                /*문서작성필요.*/
+                .andReturn();
+
+        log.info(result);
+    }
 }

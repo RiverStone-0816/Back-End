@@ -8,8 +8,6 @@ import kr.co.eicn.ippbx.server.repository.eicn.PersonLinkRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.poi.util.ArrayUtil;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
@@ -17,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 공통 고객사 API 인터페이스
@@ -35,7 +35,7 @@ public class PersonLinkApiController extends ApiBaseController {
         if (!g.isLogin())
             throw new AccessDeniedException("로그인 후 사용 가능");
 
-        return JsonResult.data(repository.findAllByPersonId(g.getUser().getId()));
+        return JsonResult.data(repository.findAllByPersonId(g.getUser().getId()).stream().sorted(Comparator.comparing(PersonLink::getSeq)).collect(Collectors.toList()));
     }
 
     @GetMapping("{seq}")
@@ -57,8 +57,7 @@ public class PersonLinkApiController extends ApiBaseController {
             throw new ValidationException(bindingResult);
 
         List<Integer> seqList = new ArrayList<>();
-        List<PersonLinkFormRequest> ary = form.getPersonLinkForms();
-        ArrayUtils.reverse(ary.toArray());
+
         repository.delete(g.getUser().getId());
         if (form.getPersonLinkForms() != null && form.getPersonLinkForms().size() > 0)
             form.getPersonLinkForms().forEach(e -> seqList.add(repository.insert(convertDto(e,PersonLinkFormRequest.class))));
