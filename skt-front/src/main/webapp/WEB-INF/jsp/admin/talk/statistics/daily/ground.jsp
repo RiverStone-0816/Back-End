@@ -25,8 +25,8 @@
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
-                            <label>검색옵션 전체보기</label>
-                            <input type="checkbox" name="newsletter">
+                            <label for="_newsletter">검색옵션 전체보기</label>
+                            <input type="checkbox" name="newsletter" id="_newsletter">
                         </div>
                     </div>
                 </div>

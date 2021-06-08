@@ -23,8 +23,8 @@
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
-                            <label>검색옵션 전체보기</label>
-                            <input type="checkbox" name="newsletter">
+                            <label for="_newsletter">검색옵션 전체보기</label>
+                            <input type="checkbox" name="newsletter" id="_newsletter">
                         </div>
                     </div>
                 </div>
@@ -45,10 +45,10 @@
                                 <td colspan="3">
                                     <div class="ui action input calendar-area">
                                         <input type="text">
-                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
                                         <input type="text">
-                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
                                 </td>
                             </tr>

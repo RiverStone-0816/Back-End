@@ -18,6 +18,13 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/sounds/sounds/ars/"/>
         <div class="sub-content ui container fluid">
+            <div class="panel panel-search">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <div class="panel-label">음원설정(ARS)</div>
+                    </div>
+                </div>
+            </div>
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">

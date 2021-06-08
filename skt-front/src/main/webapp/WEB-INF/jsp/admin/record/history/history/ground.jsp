@@ -40,7 +40,7 @@
                     <div class="pull-right">
                         <div class="ui slider checkbox">
                             <label>검색 옵션 전체보기</label>
-                            <input type="checkbox" name="newsletter">
+                            <input type="checkbox" name="newsletter" id="_newsletter">
                         </div>
                     </div>
                 </div>

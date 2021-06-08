@@ -18,6 +18,13 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/sounds/sounds/editor/"/>
         <form:form id="make-form" modelAttribute="form" cssClass="sub-content ui container fluid">
+            <div class="panel panel-search">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <div class="panel-label">TTS음원생성</div>
+                    </div>
+                </div>
+            </div>
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">

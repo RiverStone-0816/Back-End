@@ -40,7 +40,7 @@
                     <div class="pull-right">
                         <div class="ui slider checkbox">
                             <label>접기/펴기</label>
-                            <input type="checkbox" name="newsletter">
+                            <input type="checkbox" name="newsletter" id="_newsletter">
                         </div>
                         <div class="btn-wrap">
                             <button type="submit" class="ui brand basic button">검색</button>

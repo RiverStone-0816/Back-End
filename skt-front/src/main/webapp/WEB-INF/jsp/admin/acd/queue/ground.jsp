@@ -16,6 +16,13 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/acd/queue/"/>
         <div class="sub-content ui container fluid unstackable">
+            <div class="panel panel-search">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <div class="panel-label">수신그룹관리</div>
+                    </div>
+                </div>
+            </div>
             <form:form id="search-form" modelAttribute="search" method="get" class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
