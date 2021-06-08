@@ -88,50 +88,32 @@
                                 <th>검색항목</th>
                                 <td colspan="3">
                                     <div class="ui form flex">
-                                        <div class="ip-wrap">
-                                            <form:select path="searchType">
-                                                <form:option value="" label="선택안함"/>
-                                                <form:option value="" label="--고객정보필드--"/>
-                                                <c:forEach var="e" items="${customDbType.fields}">
-                                                    <c:if test="${e.issearch == 'Y'}">
-                                                        <form:option value="MAINDB_${e.fieldId.substring(customDbType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
-                                                                     data-type="${g.htmlQuote(e.fieldType)}"/>
-                                                    </c:if>
-                                                </c:forEach>
-                                                <form:option value="" label="--상담결과필드--"/>
-                                                <c:forEach var="e" items="${resultType.fields}">
-                                                    <c:if test="${e.issearch == 'Y'}">
-                                                        <form:option value="RS_${e.fieldId.substring(resultType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
-                                                                     data-type="${g.htmlQuote(e.fieldType)}"/>
-                                                    </c:if>
-                                                </c:forEach>
-                                            </form:select>
+                                        <form:select path="searchType">
+                                            <form:option value="" label="선택안함"/>
+                                            <form:option value="" label="--고객정보필드--"/>
+                                            <c:forEach var="e" items="${customDbType.fields}">
+                                                <c:if test="${e.issearch == 'Y'}">
+                                                    <form:option value="MAINDB_${e.fieldId.substring(customDbType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
+                                                                 data-type="${g.htmlQuote(e.fieldType)}"/>
+                                                </c:if>
+                                            </c:forEach>
+                                            <form:option value="" label="--상담결과필드--"/>
+                                            <c:forEach var="e" items="${resultType.fields}">
+                                                <c:if test="${e.issearch == 'Y'}">
+                                                    <form:option value="RS_${e.fieldId.substring(resultType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
+                                                                 data-type="${g.htmlQuote(e.fieldType)}"/>
+                                                </c:if>
+                                            </c:forEach>
+                                        </form:select>
+                                        <div class="ui action input -search-type-sub-input" data-type="DATE">
+                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                            <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                            <span class="tilde">~</span>
+                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                            <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         </div>
-
-
-                                        <div class="ip-wrap -search-type-sub-input" data-type="DATE">
-                                            <div class="date-picker from-to">
-                                                <div class="dp-wrap">
-                                                    <label for="startDate" style="display:none">From</label>
-                                                    <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                                </div>
-                                                <span class="tilde">~</span>
-                                                <div class="dp-wrap">
-                                                    <label for="endDate" style="display:none">to</label>
-                                                    <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="ip-wrap -search-type-sub-input" data-type="TEXT">
-                                            <div class="ui input fluid">
-                                                <form:input path="keyword"/>
-                                            </div>
-                                        </div>
-                                        <div class="ip-wrap -search-type-sub-input" data-type="CODE">
-                                            <div class="ui form">
-                                                <form:select path="code"/>
-                                            </div>
-                                        </div>
+                                        <form:input path="keyword" cssClass="-search-type-sub-input" data-type="TEXT"/>
+                                        <form:select path="code" cssClass="-search-type-sub-input" data-type="CODE"/>
                                     </div>
 
                                 </td>
@@ -230,7 +212,8 @@
                                                     </div>
                                                 </c:when>
                                                 <c:when test="${e.groupKind == 'TALK'}">
-                                                    <button type="button" class="ui icon button mini compact" onclick="consultingHistoryTalkView('${e.hangupMsg}')"><i class="comment alternate icon"></i></button>
+                                                    <button type="button" class="ui icon button mini compact" onclick="consultingHistoryTalkView('${e.hangupMsg}')"><i
+                                                            class="comment alternate icon"></i></button>
                                                 </c:when>
                                             </c:choose>
                                         </td>
@@ -250,11 +233,13 @@
                                                     <c:when test="${field.fieldType == 'IMG'}">
                                                         <c:choose>
                                                             <c:when test="${value.length() > 0}">
-                                                                <img class="profile-picture" src="${apiServerUrl}/api/v1/admin/application/maindb/custominfo/resource?path=${g.urlEncode(value)}&token=${accessToken}"
+                                                                <img class="profile-picture"
+                                                                     src="${apiServerUrl}/api/v1/admin/application/maindb/custominfo/resource?path=${g.urlEncode(value)}&token=${accessToken}"
                                                                      style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden;"/>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <img class="profile-picture" src="<c:url value="/resources/ipcc-messenger/images/person.png"/>" style="border-radius: 50%; width: 21px; overflow: hidden;"/>
+                                                                <img class="profile-picture" src="<c:url value="/resources/ipcc-messenger/images/person.png"/>"
+                                                                     style="border-radius: 50%; width: 21px; overflow: hidden;"/>
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </c:when>
@@ -280,11 +265,13 @@
                                                     <c:when test="${field.fieldType == 'IMG'}">
                                                         <c:choose>
                                                             <c:when test="${value.length() > 0}">
-                                                                <img class="profile-picture" src="${apiServerUrl}/api/v1/admin/application/maindb/custominfo/resource?path=${g.urlEncode(value)}&token=${accessToken}"
+                                                                <img class="profile-picture"
+                                                                     src="${apiServerUrl}/api/v1/admin/application/maindb/custominfo/resource?path=${g.urlEncode(value)}&token=${accessToken}"
                                                                      style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden;"/>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <img class="profile-picture" src="<c:url value="/resources/ipcc-messenger/images/person.png"/>" style="border-radius: 50%; width: 21px; overflow: hidden;"/>
+                                                                <img class="profile-picture" src="<c:url value="/resources/ipcc-messenger/images/person.png"/>"
+                                                                     style="border-radius: 50%; width: 21px; overflow: hidden;"/>
                                                             </c:otherwise>
                                                         </c:choose>
                                                     </c:when>
@@ -323,7 +310,7 @@
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="${10 + customDbType.fields.size() + resultType.fields.size()}" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <td colspan="${11 + customDbType.fields.size() + resultType.fields.size()}" class="null-data">조회된 데이터가 없습니다.</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>
@@ -566,15 +553,16 @@
             function downloadExcel() {
                 window.open(contextPath + '/admin/application/maindb/result/_excel?${g.escapeQuote(search.query)}', '_blank');
             }
+
             <c:if test="${customdbGroups == null}">
-                alert("[고객DB그룹] 이 없습니다.");
+            alert("[고객DB그룹] 이 없습니다.");
             </c:if>
 
             function replaceCodeSelect() {
                 searchForm.find()
             }
 
-            function formSubmit(){
+            function formSubmit() {
 
                 let objText = $('#modal-result').find('[data-value="Y"]');
                 for (let i = 0; i < objText.length; i++) {

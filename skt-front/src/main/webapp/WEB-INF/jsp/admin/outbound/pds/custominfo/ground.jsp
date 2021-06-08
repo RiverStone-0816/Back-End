@@ -72,7 +72,7 @@
                                                 </c:if>
                                             </c:forEach>
                                         </form:select>
-                                        <div class="ui action input calendar-area -search-type-sub-input" data-type="DATE">
+                                        <div class="ui action input -search-type-sub-input" data-type="DATE">
                                             <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
                                             <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                             <span class="tilde">~</span>

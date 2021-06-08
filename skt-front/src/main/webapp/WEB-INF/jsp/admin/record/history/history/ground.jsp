@@ -138,32 +138,8 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>통화시간별</th>
-                                <td colspan="3">
-                                    <c:if test="${serviceKind.contains('SC')}">
-                                    <div class="ui form flex">
-                                        <div class="ip-wrap">
-                                            <form:select path="byCallTime">
-                                                <form:option value="" label="선택안함"/>
-                                                <form:options items="${callTimeTypes}"/>
-                                            </form:select>
-                                        </div>
-                                        <div class="ip-wrap">
-                                            <div class="ui input"><form:input path="callStartMinutes" size="2" class="-input-numerical"/></div>
-                                            <span>분</span>
-                                            <div class="ui input"><form:input path="callStartSeconds" size="2" class="-input-numerical"/></div>
-                                            <span>초</span>
-                                            <span class="tilde">~</span>
-                                            <div class="ui input"><form:input path="callEndMinutes" size="2" class="-input-numerical"/></div>
-                                            <span>분</span>
-                                            <div class="ui input"><form:input path="callEndSeconds" size="2" class="-input-numerical"/></div>
-                                            <span>초</span>
-                                        </div>
-                                    </div>
-                                    </c:if>
-                                </td>
                                 <th>기타선택</th>
-                                <td colspan="3">
+                                <td colspan="${serviceKind.contains('SC') ? '3' : '7'}">
                                     <div class="ui form flex">
                                         <form:select path="callType">
                                             <form:option value="" label="수/발신 선택"/>
@@ -186,10 +162,39 @@
                                         </form:select>
                                     </div>
                                 </td>
+                                <c:if test="${serviceKind.contains('SC')}">
+                                    <th>통화시간별</th>
+                                    <td colspan="3">
+                                        <div class="ui form flex">
+                                            <div class="ip-wrap">
+                                                <form:select path="byCallTime">
+                                                    <form:option value="" label="선택안함"/>
+                                                    <form:options items="${callTimeTypes}"/>
+                                                </form:select>
+                                            </div>
+                                            <div class="ip-wrap">
+                                                <div class="ui input"><form:input path="callStartMinutes" size="2" class="-input-numerical"/></div>
+                                                <span>분</span>
+                                                <div class="ui input"><form:input path="callStartSeconds" size="2" class="-input-numerical"/></div>
+                                                <span>초</span>
+                                                <span class="tilde">~</span>
+                                                <div class="ui input"><form:input path="callEndMinutes" size="2" class="-input-numerical"/></div>
+                                                <span>분</span>
+                                                <div class="ui input"><form:input path="callEndSeconds" size="2" class="-input-numerical"/></div>
+                                                <span>초</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </c:if>
                             </tr>
                         </table>
                         <div class="button-area remove-mb">
                             <div class="align-left">
+                                <button class="ui button sharp light large action-button" type="button" id="select-all" onclick="selectAll()">전체 선택</button>
+                                <button class="ui button sharp light large action-button" type="button" id="down-all" onclick="postBatchDownload()">녹취 일괄다운로드 등록</button>
+                                <c:if test="${company.isServiceAvailable('QA')}">
+                                    <button class="ui button sharp light large action-button" type="button" id="batch-evaluation" onclick="popupBatchEvaluationModal()">일괄평가</button>
+                                </c:if>
                                 <c:if test="${g.user.downloadRecordingAuthority.equals('ALL')}">
                                     <form:checkbox path="batchDownloadMode" cssStyle="display: none;"/>
                                     <button type="button" class="ui button sharp light large check ${search.batchDownloadMode == true ? 'active' : ''}"
@@ -219,12 +224,6 @@
                     </div>
                     <div class="pull-right">
                         <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/record/history/history/" pageForm="${search}"/>
-                            <%--<button class="ui basic button action-button" type="button" id="select-all" onclick="selectAll()">전체 선택</button>
-                            <button class="ui basic button action-button" type="button" id="down-all" onclick="postBatchDownload()">녹취 일괄다운로드 등록</button>
-                            <button class="ui basic green button action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">Excel 다운로드</button>
-                            <c:if test="${company.isServiceAvailable('QA')}">
-                                <button class="ui basic button action-button" type="button" id="batch-evaluation" onclick="popupBatchEvaluationModal()">일괄평가</button>
-                            </c:if>--%>
                     </div>
                 </div>
                 <div class="panel-body">
