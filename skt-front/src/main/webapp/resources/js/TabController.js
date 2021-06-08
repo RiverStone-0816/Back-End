@@ -99,7 +99,6 @@ TabController.prototype.attachTab = function (linker) {
         this.decideTabArrowVisible();
     }
 
-    // FIXME: extract
     const tab = window.open(href, tabContentId, "width=0 height=0 menubar=no status=no");
 
     tabLabel.click();

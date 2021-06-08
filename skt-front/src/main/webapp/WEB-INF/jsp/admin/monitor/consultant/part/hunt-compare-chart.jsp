@@ -29,11 +29,11 @@
     <div class="panel-body">
         <div class="ui grid">
             <div class="eight wide column">
-                <div style="text-align: center;">일별</div>
+                <div class="pd20 align-center">일별</div>
                 <div class="-day-chart" style="width: 100%; height: 300px; overflow-y: hidden; overflow-x: auto;"></div>
             </div>
             <div class="eight wide column">
-                <div style="text-align: center;">주별</div>
+                <div class="pd20 align-center">주별</div>
                 <div class="-week-chart" style="width: 100%; height: 300px; overflow-y: hidden; overflow-x: auto;"></div>
             </div>
         </div>

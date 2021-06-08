@@ -35,13 +35,13 @@
                         <table class="ui celled table compact unstackable">
                             <tr>
                                 <th>업로드날짜</th>
-                                <td colspan="7">
+                                <td colspan="7" class="-buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
                                     <div class="ui action input calendar-area">
-                                        <input type="text">
-                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
-                                        <input type="text">
-                                        <button class="ui basic button"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
                                     <div class="ui basic buttons">
                                         <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
@@ -56,36 +56,10 @@
                         </table>
                         <div class="button-area remove-mb">
                             <div class="align-right">
-                                <button class="ui button sharp brand large">검색</button>
-                                <button class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
-                        <%--<div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">검색기간</label></div>
-                                <div class="fourteen wide column -buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
-                                        <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
-                                    </div>
-                                    <div class="ui basic buttons">
-                                        <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
-                                        <button type="button" data-interval="day" data-number="3" class="ui button -button-set-range">3일</button>
-                                        <button type="button" data-interval="day" data-number="7" class="ui button -button-set-range">1주일</button>
-                                        <button type="button" data-interval="month" data-number="1" class="ui button -button-set-range">1개월</button>
-                                        <button type="button" data-interval="month" data-number="3" class="ui button -button-set-range">3개월</button>
-                                        <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>--%>
                     </div>
                 </div>
             </form:form>

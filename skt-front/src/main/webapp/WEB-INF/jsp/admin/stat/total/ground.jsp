@@ -19,25 +19,21 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
+                        <div class="panel-label">전체통계</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
-                            <label>접기/펴기</label>
+                            <label>검색옵션 전체보기</label>
                             <input type="checkbox" name="newsletter">
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body overflow-unset">
                     <div class="search-area">
-                        <div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">주기설정</label></div>
-                                <div class="five wide column">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>주기설정</th>
+                                <td colspan="7">
                                     <div class="ui basic buttons">
                                         <form:hidden path="timeUnit"/>
                                         <c:forEach var="e" items="${searchCycles}">
@@ -45,34 +41,30 @@
                                                     data-value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.value)}</button>
                                         </c:forEach>
                                     </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">기간설정</label></div>
-                                <div class="six wide column">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label class="control-label" for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
+                                </td>
+                                <th>기간설정</th>
+                                <td colspan="7">
+                                    <div class="ui action input calendar-area">
+                                        <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label class="control-label" for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
+                                        <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">서비스선택</label></div>
-                                <div class="five wide column overflow-unset">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>서비스선택</th>
+                                <td colspan="7">
                                     <div class="ui form">
                                         <form:select path="serviceNumbers" multiple="multiple" class="ui fluid dropdown">
                                             <form:option value="" label="서비스선택"/>
                                             <form:options items="${services}"/>
                                         </form:select>
                                     </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">추가조건선택</label></div>
-                                <div class="five wide column">
+                                </td>
+                                <th>추가조건선택</th>
+                                <td colspan="7">
                                     <div class="ui checkbox">
                                         <form:checkbox path="person" value="Y"/>
                                         <label>직통전화</label>
@@ -89,208 +81,222 @@
                                         <form:checkbox path="workHour" value="Y"/>
                                         <label>업무시간</label>
                                     </div>
-                                </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </form:form>
-            <div class="panel">
+            <div class="panel panel-statstics">
                 <div class="panel-heading">
-                    <div class="pull-right">
-                        <button class="ui basic green button" type="button" onclick="downloadExcel()">Excel 다운로드</button>
+                    <div class="pull-left">
+                        <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                     </div>
                 </div>
                 <div class="panel-body">
-                    <div class="ui grid">
-                        <div class="sixteen wide column">
-                            <h3 class="ui header center aligned">
+                    <div class="panel-section">
+                        <div class="panel">
+                            <div class="panel-heading">
                                 <text class="content">
                                     총통화통계
                                     <div class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</div>
                                 </text>
-                            </h3>
-                        </div>
-                        <div class="sixteen wide column">
-                            <table class="ui celled table compact unstackable definition structured">
-                                <thead>
-                                <tr>
-                                    <th rowspan="2">날짜/시간</th>
-                                    <th colspan="2">총통화</th>
-                                    <th colspan="6" class="color blue">O/B</th>
-                                    <th colspan="11" class="color red">I/B</th>
-                                </tr>
-                                <tr>
-                                    <th>총건수</th>
-                                    <th>총시간</th>
-                                    <th class="color blue">총시도콜</th>
-                                    <th class="color blue">O/B건수<br>(성공호)</th>
-                                    <th class="color blue">비수신</th>
-                                    <th class="color blue">통화성공률</th>
-                                    <th class="color blue">O/B<br>총통화시간</th>
-                                    <th class="color blue">O/B<br>평균통화시간</th>
-                                    <th class="color red">I/B<br>전체콜</th>
-                                    <th class="color red">단순조회</th>
-                                    <th class="color red">연결요청</th>
-                                    <th class="color red">응대호</th>
-                                    <th class="color red">포기호</th>
-                                    <th class="color red">콜백</th>
-                                    <th class="color red">I/B<br>총통화시간</th>
-                                    <th class="color red">평균<br>통화시간</th>
-                                    <th class="color red">평균<br>대기시간</th>
-                                    <th class="color red">호응답률</th>
-                                    <th class="color red">단순조회율</th>
-                                </tr>
-                                </thead>
-                                <c:choose>
-                                    <c:when test="${list.size() > 0}">
-                                        <tbody>
-                                        <c:forEach var="e" items="${list}">
+                            </div>
+                            <div class="panel-body pd-1em">
+                                <table class="ui celled table compact unstackable definition structured">
+                                    <thead>
+                                    <tr>
+                                        <th rowspan="2">날짜/시간</th>
+                                        <th colspan="2">총통화</th>
+                                        <th colspan="6" class="color blue">O/B</th>
+                                        <th colspan="11" class="color red">I/B</th>
+                                    </tr>
+                                    <tr>
+                                        <th>총건수</th>
+                                        <th>총시간</th>
+                                        <th class="color blue">총시도콜</th>
+                                        <th class="color blue">O/B건수<br>(성공호)</th>
+                                        <th class="color blue">비수신</th>
+                                        <th class="color blue">통화성공률</th>
+                                        <th class="color blue">O/B<br>총통화시간</th>
+                                        <th class="color blue">O/B<br>평균통화시간</th>
+                                        <th class="color red">I/B<br>전체콜</th>
+                                        <th class="color red">단순조회</th>
+                                        <th class="color red">연결요청</th>
+                                        <th class="color red">응대호</th>
+                                        <th class="color red">포기호</th>
+                                        <th class="color red">콜백</th>
+                                        <th class="color red">I/B<br>총통화시간</th>
+                                        <th class="color red">평균<br>통화시간</th>
+                                        <th class="color red">평균<br>대기시간</th>
+                                        <th class="color red">호응답률</th>
+                                        <th class="color red">단순조회율</th>
+                                    </tr>
+                                    </thead>
+                                    <c:choose>
+                                        <c:when test="${list.size() > 0}">
+                                            <tbody>
+                                            <c:forEach var="e" items="${list}">
+                                                <tr>
+                                                    <td>${g.htmlQuote(e.timeInformation)}</td>
+                                                    <td>${e.totalCount}</td>
+                                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.totalBillSec)}</td>
+                                                    <td><span class="data-detail-trigger">${e.outboundStat.total}</span></td>
+                                                    <td>${e.outboundStat.success}</td>
+                                                    <td><span class="data-detail-trigger">${e.outboundStat.cancel}</span></td>
+                                                    <td>${e.outboundStat.successAvg}%</td>
+                                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.outboundStat.billSecSum)}</td>
+                                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.outboundStat.billSecAvg)}</td>
+                                                    <td><span class="data-detail-trigger">${e.inboundStat.total}</span></td>
+                                                    <td><span class="data-detail-trigger">${e.inboundStat.onlyRead}</span></td>
+                                                    <td><span class="data-detail-trigger">${e.inboundStat.connReq}</span></td>
+                                                    <td><span class="data-detail-trigger">${e.inboundStat.success}</span></td>
+                                                    <td><span class="data-detail-trigger">${e.inboundStat.cancel}</span></td>
+                                                    <td>${e.inboundStat.callbackSuccess}</td>
+                                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.billSecSum)}</td>
+                                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.billSecAvg)}</td>
+                                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.waitAvg)}</td>
+                                                    <td>${e.inboundStat.responseRate}%</td>
+                                                    <td>${e.inboundStat.ivrAvg}%</td>
+                                                </tr>
+                                            </c:forEach>
+                                            </tbody>
+                                            <tfoot>
                                             <tr>
-                                                <td>${g.htmlQuote(e.timeInformation)}</td>
-                                                <td>${e.totalCount}</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.totalBillSec)}</td>
-                                                <td><span class="data-detail-trigger">${e.outboundStat.total}</span></td>
-                                                <td>${e.outboundStat.success}</td>
-                                                <td><span class="data-detail-trigger">${e.outboundStat.cancel}</span></td>
-                                                <td>${e.outboundStat.successAvg}%</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.outboundStat.billSecSum)}</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.outboundStat.billSecAvg)}</td>
-                                                <td><span class="data-detail-trigger">${e.inboundStat.total}</span></td>
-                                                <td><span class="data-detail-trigger">${e.inboundStat.onlyRead}</span></td>
-                                                <td><span class="data-detail-trigger">${e.inboundStat.connReq}</span></td>
-                                                <td><span class="data-detail-trigger">${e.inboundStat.success}</span></td>
-                                                <td><span class="data-detail-trigger">${e.inboundStat.cancel}</span></td>
-                                                <td>${e.inboundStat.callbackSuccess}</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.billSecSum)}</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.billSecAvg)}</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.waitAvg)}</td>
-                                                <td>${e.inboundStat.responseRate}%</td>
-                                                <td>${e.inboundStat.ivrAvg}%</td>
+                                                <td>합계</td>
+                                                <td>${total.totalCount}</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.totalBillSec)}</td>
+                                                <td>${total.outboundStat.total}</td>
+                                                <td>${total.outboundStat.success}</td>
+                                                <td>${total.outboundStat.cancel}</td>
+                                                <td>${String.format("%.1f", total.outboundStat.successAvg)}%</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.outboundStat.billSecSum)}</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.outboundStat.billSecAvg)}</td>
+                                                <td>${total.inboundStat.total}</td>
+                                                <td>${total.inboundStat.onlyRead}</td>
+                                                <td>${total.inboundStat.connReq}</td>
+                                                <td>${total.inboundStat.success}</td>
+                                                <td>${total.inboundStat.cancel}</td>
+                                                <td>${total.inboundStat.callbackSuccess}</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecSum)}</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecAvg)}</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.waitAvg)}</td>
+                                                <td>${String.format("%.1f", total.inboundStat.responseRate)}%</td>
+                                                <td>${String.format("%.1f", total.inboundStat.ivrAvg)}%</td>
                                             </tr>
-                                        </c:forEach>
-                                        </tbody>
-                                        <tfoot>
-                                        <tr>
-                                            <td>합계</td>
-                                            <td>${total.totalCount}</td>
-                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.totalBillSec)}</td>
-                                            <td>${total.outboundStat.total}</td>
-                                            <td>${total.outboundStat.success}</td>
-                                            <td>${total.outboundStat.cancel}</td>
-                                            <td>${String.format("%.1f", total.outboundStat.successAvg)}%</td>
-                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.outboundStat.billSecSum)}</td>
-                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.outboundStat.billSecAvg)}</td>
-                                            <td>${total.inboundStat.total}</td>
-                                            <td>${total.inboundStat.onlyRead}</td>
-                                            <td>${total.inboundStat.connReq}</td>
-                                            <td>${total.inboundStat.success}</td>
-                                            <td>${total.inboundStat.cancel}</td>
-                                            <td>${total.inboundStat.callbackSuccess}</td>
-                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecSum)}</td>
-                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecAvg)}</td>
-                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.waitAvg)}</td>
-                                            <td>${String.format("%.1f", total.inboundStat.responseRate)}%</td>
-                                            <td>${String.format("%.1f", total.inboundStat.ivrAvg)}%</td>
-                                        </tr>
-                                        </tfoot>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <tbody>
-                                        <tr>
-                                            <td colspan="20" class="null-data">조회된 데이터가 없습니다.</td>
-                                        </tr>
-                                        </tbody>
-                                    </c:otherwise>
-                                </c:choose>
-                            </table>
+                                            </tfoot>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <tbody>
+                                            <tr>
+                                                <td colspan="20" class="null-data">조회된 데이터가 없습니다.</td>
+                                            </tr>
+                                            </tbody>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </table>
+                            </div>
                         </div>
-
-                        <c:if test="${list.size() > 0}">
-                            <div class="sixteen wide column">
-                                <h3 class="ui header center aligned">
-                                    <text class="content">총통화그래프</text>
-                                </h3>
-                            </div>
-                            <div class="sixteen wide column">
-                                <div class="-chart basic-chart-container" id="total-call-chart"></div>
-                                <div class="chart-label-container">
-                                    <div class="ui segment secondary">
-                                        <text class="label-list"><i class="point color-red"></i>인바운드</text>
-                                        <text class="label-list"><i class="point color-blue"></i>아웃바운드</text>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sixteen wide column">
-                                <h3 class="ui header center aligned">
-                                    <text class="content">아웃바운드 통계 그래프</text>
-                                </h3>
-                            </div>
-                            <div class="four wide column" >
-                                <div class="label-container"><label class="control-label">평균통계</label></div>
-                                <div class="pie-chart-container">
-                                    <svg id="outbound-outer-pie-chart" class="full-width full-height"></svg>
-                                    <div class="inner-label">
-                                        <span class="ui label">TOTAL</span> ${total.outboundStat.success + total.outboundStat.cancel}
-                                    </div>
-                                </div>
-
+                    </div>
+                    <c:if test="${list.size() > 0}">
+                        <div class="panel-section">
+                            <div class="panel">
+                                <div class="panel-heading">총통화그래프</div>
+                                <div class="panel-body pd-1em">
+                                    <div class="-chart basic-chart-container" id="total-call-chart"></div>
                                     <div class="chart-label-container">
                                         <div class="ui segment secondary">
-                                            <text class="label-list">성공호 <span class="color-bar1">${total.outboundStat.success}</span></text>
-                                            <text class="label-list">비수신 <span class="color-bar2">${total.outboundStat.cancel}</span></text>
+                                            <text class="label-list"><i class="point color-red"></i>인바운드</text>
+                                            <text class="label-list"><i class="point color-blue"></i>아웃바운드</text>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-section">
+                            <div class="panel">
+                                <div class="panel-heading">아웃바운드 통계 그래프</div>
+                                <div class="panel-body pd-1em">
+                                    <div class="ui grid">
+                                        <div class="four wide column">
+                                            <div class="label-container"><label class="control-label">평균통계</label></div>
+                                            <div class="pie-chart-container">
+                                                <svg id="outbound-outer-pie-chart" class="full-width full-height"></svg>
+                                                <div class="inner-label">
+                                                    <span class="ui label">TOTAL</span> ${total.outboundStat.success + total.outboundStat.cancel}
+                                                </div>
+                                            </div>
 
-                            </div>
-                            <div class="twelve wide column">
-                                <div class="label-container">
-                                    <label class="control-label">O/B비교통계</label>
-                                </div>
-                                <div class="-chart basic-chart-container" id="outbound-chart"></div>
-                                <div class="chart-label-container">
-                                    <div class="ui segment secondary">
-                                        <text class="label-list"><span class="point color-red"></span>성공호</text>
-                                        <text class="label-list"><span class="point color-blue"></span>비수신</text>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="sixteen wide column">
-                                <h3 class="ui header center aligned">
-                                    <text class="content">인바운드 통계 그래프</text>
-                                </h3>
-                            </div>
-                            <div class="four wide column">
-                                <div class="label-container"><label class="control-label">평균통계</label></div>
-                                <div class="pie-chart-container">
-                                    <svg id="inbound-outer-pie-chart" class="full-width full-height"></svg>
+                                            <div class="chart-label-container">
+                                                <div class="ui segment secondary">
+                                                    <text class="label-list">성공호 <span class="color-bar1">${total.outboundStat.success}</span></text>
+                                                    <text class="label-list">비수신 <span class="color-bar2">${total.outboundStat.cancel}</span></text>
+                                                </div>
+                                            </div>
 
-                                    <div class="inner-label">
-                                        <span class="ui label">TOTAL</span> ${total.inboundStat.success + total.inboundStat.cancel}
+                                        </div>
+                                        <div class="twelve wide column">
+                                            <div class="label-container">
+                                                <label class="control-label">O/B비교통계</label>
+                                            </div>
+                                            <div class="-chart basic-chart-container" id="outbound-chart"></div>
+                                            <div class="chart-label-container">
+                                                <div class="ui segment secondary">
+                                                    <text class="label-list"><span class="point color-red"></span>성공호</text>
+                                                    <text class="label-list"><span class="point color-blue"></span>비수신</text>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="chart-label-container">
-                                    <div class="ui segment secondary">
-                                        <text class="label-list">성공호 <span class="color-bar1">${total.inboundStat.success}</span></text>
-                                        <text class="label-list">비수신 <span class="color-bar2">${total.inboundStat.cancel}</span></text>
-                                    </div>
-                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-section">
+                            <div class="panel">
+                                <div class="panel-heading">인바운드 통계 그래프</div>
+                                <div class="panel-body pd-1em">
+                                    <div class="ui grid">
+                                        <div class="four wide column">
+                                            <div class="label-container"><label class="control-label">평균통계</label></div>
+                                            <div class="pie-chart-container">
+                                                <svg id="inbound-outer-pie-chart" class="full-width full-height"></svg>
 
-                            </div>
-                            <div class="twelve wide column">
-                                <div class="label-container">
-                                    <label class="control-label">I/B비교통계</label>
-                                </div>
-                                <div class="-chart basic-chart-container" id="inbound-chart"></div>
-                                <div class="chart-label-container">
-                                    <div class="ui segment secondary">
-                                        <text class="label-list"><span class="point color-red"></span>응대호</text>
-                                        <text class="label-list"><span class="point color-blue"></span>포기호</text>
+                                                <div class="inner-label">
+                                                    <span class="ui label">TOTAL</span> ${total.inboundStat.success + total.inboundStat.cancel}
+                                                </div>
+                                            </div>
+                                            <div class="chart-label-container">
+                                                <div class="ui segment secondary">
+                                                    <text class="label-list">성공호 <span class="color-bar1">${total.inboundStat.success}</span></text>
+                                                    <text class="label-list">비수신 <span class="color-bar2">${total.inboundStat.cancel}</span></text>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="twelve wide column">
+                                            <div class="label-container">
+                                                <label class="control-label">I/B비교통계</label>
+                                            </div>
+                                            <div class="-chart basic-chart-container" id="inbound-chart"></div>
+                                            <div class="chart-label-container">
+                                                <div class="ui segment secondary">
+                                                    <text class="label-list"><span class="point color-red"></span>응대호</text>
+                                                    <text class="label-list"><span class="point color-blue"></span>포기호</text>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </c:if>
-                    </div>
+                        </div>
+                    </c:if>
+
                 </div>
             </div>
         </div>
@@ -348,10 +354,11 @@
 
     <tags:scripts>
         <script>
-            /* TODO
+            /*
             $('.data-detail-trigger').click(function () {
                 $('#modal-data-detain-view').modalShow();
-            });*/
+            });
+            */
 
             <c:if test="${list.size() > 0}">
             const data = [

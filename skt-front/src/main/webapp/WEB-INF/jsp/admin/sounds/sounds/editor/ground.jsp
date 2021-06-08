@@ -22,8 +22,8 @@
                 <div class="panel-heading">
                     <div class="pull-left">
                         <div class="ui basic buttons">
-                            <button class="ui button" type="button" onclick="saveOnSound()" class="ui basic button">음원으로저장</button>
-                            <button class="ui button" type="button" onclick="saveOnColoring()" class="ui basic button">컬러링으로저장</button>
+                            <button class="ui button" type="button" onclick="saveOnSound()">음원으로저장</button>
+                            <button class="ui button" type="button" onclick="saveOnColoring()">컬러링으로저장</button>
                         </div>
                     </div>
                 </div>

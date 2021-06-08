@@ -19,35 +19,29 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
+                        <div class="panel-label">
+                            상담톡시간별통계
+                        </div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
-                            <label>접기/펴기</label>
+                            <label>검색옵션 전체보기</label>
                             <input type="checkbox" name="newsletter">
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="search-area">
-                        <div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">검색기간</label></div>
-                                <div class="fourteen wide column -buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>검색기간</th>
+                                <td colspan="7" class="-buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
+                                    <div class="ui action input calendar-area">
+                                        <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
+                                        <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
                                     <div class="ui basic buttons">
                                         <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
@@ -57,18 +51,24 @@
                                         <button type="button" data-interval="month" data-number="3" class="ui button -button-set-range">3개월</button>
                                         <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">서비스선택</label></div>
-                                <div class="two wide column">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>서비스선택</th>
+                                <td>
                                     <div class="ui form">
                                         <form:select path="senderKey">
                                             <form:option value="" label="선택안함"/>
                                             <form:options items="${talkServices}"/>
                                         </form:select>
                                     </div>
-                                </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
                     </div>
@@ -77,10 +77,8 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${list.size()}</span> 건</h3>
-                    </div>
-                    <div class="pull-right">
-                        <button type="button" class="ui basic green button" onclick="downloadExcel()">Excel 다운로드</button>
+                        <h3 class="panel-total-count">전체 <span class="text-primary">${list.size()}</span> 건</h3>
+                        <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                     </div>
                 </div>
                 <div class="panel-body">

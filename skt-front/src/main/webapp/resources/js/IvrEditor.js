@@ -383,8 +383,8 @@
             if (offset.left === 0 && offset.top === 0)
                 console.log('connectionPoint 렌더링이 완료되지 못한 상태로 widget 렌더링 시도', {widgetId: widget.option.id});
 
-            widget.x = offset.left + 50; // TODO: check
-            widget.y = offset.top - 10; // TODO: check
+            widget.x = offset.left + 50; // 패딩
+            widget.y = offset.top - 10; // 패딩
         }
 
         widget.width = $(widget.dom).outerWidth();

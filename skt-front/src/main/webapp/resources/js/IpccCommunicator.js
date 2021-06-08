@@ -301,7 +301,7 @@ IpccCommunicator.prototype.startRecording = function () {
 IpccCommunicator.prototype.stopRecording = function () {
     this.send("CMD|REC_STOP|" + this.peer.phonePeer);
 };
-IpccCommunicator.prototype.startListeningRecordedWithCaller = function (fileId, isMonitor /*TODO: 용도 확인*/) {
+IpccCommunicator.prototype.startListeningRecordedWithCaller = function (fileId, isMonitor) {
     this.send("CMD|RECORD_PLAY_START|" + fileId + "," + isMonitor);
 };
 IpccCommunicator.prototype.stopListeningRecordedWithCaller = function () {

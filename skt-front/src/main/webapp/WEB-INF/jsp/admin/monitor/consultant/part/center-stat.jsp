@@ -12,39 +12,36 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<div class="panel" id="center-stat">
-    <div class="panel-heading">
-        <label class="control-label">통계</label>
-    </div>
-    <div class="panel-body">
-        <table class="ui table celled fixed structured">
-            <tbody>
-            <tr>
-                <th>응대율</th>
-                <td class="positive">${String.format("%.1f", stat.rateValue)}%</td>
-                <th>고객대기자수</th>
-                <td class="warning -custom-wait-count">${stat.waitCustomerCount}</td>
-                <th>근무상담사</th>
-                <td class="negative -consultant-status-count" data-value="0,1,2,3,4,5,6,7,8">${stat.workingPerson}</td>
-                <th>총 콜백</th>
-                <td>${stat.totalCallback}</td>
-                <th>미처리 콜백</th>
-                <td>${stat.unprocessedCallback}</td>
-            </tr>
-            <tr>
-                <th>대기</th>
-                <td class="-consultant-status-count" data-value="0">${stat.waitPersonCount}</td>
-                <th>I/B통화중</th>
-                <td class="-consultant-status-count" data-value="1" data-call="IR,ID">${stat.inboundCall}</td>
-                <th>O/B통화중</th>
-                <td class="-consultant-status-count" data-value="1" data-call="OR,OD">${stat.outboundCall}</td>
-                <th>후처리</th>
-                <td class="-consultant-status-count" data-value="2">${stat.postProcess}</td>
-                <th>기타</th>
-                <td class="-consultant-status-count" data-value="3,4,5,6,7,8,9">${stat.etc}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+<div id="center-stat">
+    <table class="ui table celled fixed structured">
+        <thead>
+        <tr>
+            <th>응대율</th>
+            <th>고객대기자수</th>
+            <th>근무상담사</th>
+            <th>총 콜백</th>
+            <th>미처리 콜백</th>
+            <th>대기</th>
+            <th>I/B통화중</th>
+            <th>O/B통화중</th>
+            <th>후처리</th>
+            <th>기타</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class="positive">${String.format("%.1f", stat.rateValue)}%</td>
+            <td class="warning -custom-wait-count">${stat.waitCustomerCount}</td>
+            <td class="negative -consultant-status-count" data-value="0,1,2,3,4,5,6,7,8">${stat.workingPerson}</td>
+            <td>${stat.totalCallback}</td>
+            <td>${stat.unprocessedCallback}</td>
+            <td class="-consultant-status-count" data-value="0">${stat.waitPersonCount}</td>
+            <td class="-consultant-status-count" data-value="1" data-call="IR,ID">${stat.inboundCall}</td>
+            <td class="-consultant-status-count" data-value="1" data-call="OR,OD">${stat.outboundCall}</td>
+            <td class="-consultant-status-count" data-value="2">${stat.postProcess}</td>
+            <td class="-consultant-status-count" data-value="3,4,5,6,7,8,9">${stat.etc}</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 

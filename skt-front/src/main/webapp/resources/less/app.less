@@ -137,11 +137,12 @@ pre {
 }
 
 .ui.button.sharp.light.large.excel {
-  padding: .715em 1.5em .715em 2.8em;
+  padding: .6em 1.2em .6em 2.8em;
   background-image:url("../images/microsoftexcel.svg");
   background-repeat: no-repeat;
   background-position: 15px center;
   background-size: 20px 20px;
+  margin:0 8px 0 0;
 }
 
 .ui.button.sharp.light.large.check {
@@ -504,7 +505,7 @@ pre {
   }
   .center {
     .ui.button {
-      font-size: 16px;
+      font-size: @font-size-xsmall;
       padding: 10px 13px;
       border-radius: 10px;
       margin: 0 6px;
@@ -534,7 +535,7 @@ pre {
           white-space: nowrap;
           display: block;
           padding: 20px 0;
-          font-size: 16px;
+          font-size: @font-size-xsmall;
           color: #9A9A9A;
           line-height: 17px;
           &:hover {
@@ -1021,6 +1022,8 @@ pre {
   .flex();
   flex-flow: column;
   height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
   .-evaluation-mode {
     padding: 5px 0 0 28px;
   }
@@ -1167,23 +1170,28 @@ pre {
         display: inline-block;
       }
     }
-    .ui.buttons {
-      margin: 0 5px 0 0;
+    .ui.basic.button {
       border-radius: 0;
+      box-shadow: none;
+      border:1px solid @color-border;
+      padding: .6em 1.33em;
+    }
+    .ui.buttons {
+      border-radius: 0;
+      padding:0;
       .ui.button {
-        line-height: ~"calc(1em - 2px)";
+        padding: 0.57em 1.4em;
       }
     }
     .panel-total-count {
       display: inline-block;
       background-color:@color-gray-btn;
       border: 1px solid @color-border;
-      font-size: 16px;
+      font-size: @font-size-xsmall;
       font-weight: 500;
       padding: .43em 1em;
       vertical-align: top;
       margin: 0 8px 0 0;
-
       span {
         color:@color-red;
       }
@@ -1199,7 +1207,16 @@ pre {
   .panel-heading:before {content: "";display: table;}
   .panel-heading:after {clear: both;content: "";display: table;}
   .panel-body:after, .panel-body:before {content: "";display: table;}
-  .panel-body {overflow: auto}
+  .panel-body {
+    .panel-section {
+      padding:14px;
+      border-bottom:1px solid @color-border;
+      .panel-heading {
+        background:lighten(@color-gray,3%);
+        font-weight: 500;
+      }
+    }
+  }
   .panel-footer {padding: 0 15px 15px}
   .panel-footer .btn-wrap {text-align: center}
   .panel-footer:after {clear: both;content: "";display: table;}
@@ -1279,9 +1296,39 @@ pre {
   }
 }
 
+.panel.panel-statstics {
+  .panel-heading {
+    border-bottom: 1px solid @color-border;
+    padding:14px!important;
+    .sub.header {
+      margin:5px 0 0 0;
+      color:darken(@color-gray, 30%);
+      font-weight:300;
+    }
+  }
+  .panel-body {
+    padding:0;
+  }
+}
+
 .panel-label {
   font-size:@font-size-default - 1px;
   font-weight:500;
+}
+
+.panel-sub-title {
+  display: inline-block;
+  background-color:@color-gray-btn;
+  border: 1px solid @color-border;
+  font-size: 16px;
+  font-weight: 500;
+  padding: .43em 1em;
+  vertical-align: top;
+  margin: 0 8px 0 0;
+}
+
+.panel-sub-container {
+  margin: 1em 0 0 0;
 }
 
 .panel:not(.panel-search) {
@@ -1404,15 +1451,6 @@ label.control-label {
   margin: 0 5px 0 0;
   white-space: nowrap;
   vertical-align: sub;
-  &:before {
-    content: '·';
-    font-weight: bold;
-    font-size: large;
-    vertical-align: top;
-    position: relative;
-    margin: 0 3px 0 0;
-    color: @color-brand;
-  }
 }
 .label-container {
   line-height: 35px;
@@ -1540,7 +1578,7 @@ label.control-label {
       flex: 1;
       padding: 8px 5px 8px 15px;
       line-height: 17px;
-      font-size:@font-size-xsmall;
+      font-size:@font-size-xsmall - 1px;
       &:hover {
         background: @color-menu-bg;
         color: @color-white;
@@ -1669,8 +1707,14 @@ label.control-label {
 .pr15 {
   padding-right: 15px;
 }
+.pd-1em {
+  padding:1em!important;
+}
 .pd10 {
   padding:10px!important;
+}
+.pd20 {
+  padding:20px!important;
 }
 .mr15 {
   margin-right: 15px !important;
@@ -1794,10 +1838,14 @@ label.control-label {
 }
 .ui.button {
   font-family: @base-font;
+  font-size:@font-size-xsmall;
   img {
     vertical-align: bottom;
     margin: 0 5px 0 0;
   }
+}
+.ui.buttons .button, .ui.buttons .or, .ui.button {
+  font-size:@font-size-xsmall;
 }
 .ui-datepicker-trigger {
   position: absolute;

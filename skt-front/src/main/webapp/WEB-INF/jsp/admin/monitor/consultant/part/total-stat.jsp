@@ -12,11 +12,11 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<div id="total-stat" class="panel">
+<div id="total-stat" class="panel mb15">
     <div class="panel-heading">
         <label class="control-label">통계</label>
     </div>
-    <div class="panel-body">
+    <div class="panel-body pd-1em">
         <table class="ui table celled fixed structured">
             <tbody>
             <tr>
