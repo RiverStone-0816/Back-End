@@ -24,6 +24,8 @@
 
 # 톰캣 배포 방법
 1. ./gradlew :api-server:bootWar :skt-front:bootWar -Pprofile={provide} -DJDBC_USERNAME='{username}' -DJDBC_PASSWORD='{password}' -DJDBC_HOST='{host}';
+```windows 환경에서 실행시```
+1. gradlew :api-server:bootWar :skt-front:bootWar -Pprofile={provide} -DJDBC_USERNAME='{username}' -DJDBC_PASSWORD={password} -DJDBC_HOST={host}
 1. 생성된 war 파일을 톰캣 webapps에 복사
 ```
 - ./api-server/build/libs/api-server-1.0-SNAPSHOT.war 
