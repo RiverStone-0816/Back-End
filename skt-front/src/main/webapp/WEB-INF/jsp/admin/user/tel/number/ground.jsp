@@ -23,7 +23,7 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${numbers.size()}</span> 건</h3>
+                        <h3 class="panel-total-count">전체 <span>${numbers.size()}</span> 건</h3>
                     </div>
                 </div>
                 <div class="panel-body">

@@ -506,7 +506,7 @@ pre {
   .center {
     .ui.button {
       font-size: @font-size-xsmall;
-      padding: 10px 13px;
+      padding: 8px 12px;
       border-radius: 10px;
       margin: 0 6px;
       background:lighten(@color-gray, 4%)!important;
@@ -522,7 +522,7 @@ pre {
       background: transparent;
       cursor: pointer;
       height: 100%;
-      padding: 15px 25px;
+      padding: 12px 25px;
       float: left;
     }
     .gnb-ul2 {
@@ -534,7 +534,7 @@ pre {
           cursor:pointer;
           white-space: nowrap;
           display: block;
-          padding: 20px 0;
+          padding: 17px 0;
           font-size: @font-size-xsmall;
           color: #9A9A9A;
           line-height: 17px;
@@ -1394,6 +1394,7 @@ ul.ui.list li:first-child, ol.ui.list li:first-child, .ui.list .list > .item:fir
     font-weight: normal;
     cursor: pointer;
     line-height: 18px;
+    font-size: @font-size-xsmall;
   }
   .item {
     .content {
@@ -3570,7 +3571,7 @@ g {
   }
   .exclamation.icon {
     display: block;
-    color: #c60452;
+    color: @color-brand;
     margin: .5em auto .4em auto;
     font-size: 3em;
   }
@@ -3984,6 +3985,9 @@ g {
   overflow: auto;
   .top {
     margin: 0 0 10px 0;
+    .panel-body {
+      overflow:hidden;
+    }
     .chart-wrap {
       height:190px;
     }
@@ -4070,6 +4074,10 @@ g {
     .rank-area {
       flex:1;
       margin: 0 0 0 10px;
+    }
+    .panel-body {
+      overflow:hidden;
+      height: 406px;
     }
   }
 }

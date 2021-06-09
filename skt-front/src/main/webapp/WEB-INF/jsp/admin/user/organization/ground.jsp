@@ -20,7 +20,7 @@
 
         <div class="sub-content ui container fluid">
             <div class="ui grid complex">
-                <div class="eight wide column">
+                <div class="eight wide column remove-pr">
                     <div class="panel">
                         <div class="panel-heading">
                             <div class="ui action input fluid">

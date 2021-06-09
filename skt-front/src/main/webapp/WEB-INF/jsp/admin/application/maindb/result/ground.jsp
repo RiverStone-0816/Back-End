@@ -74,8 +74,6 @@
                                         <form:input path="channelData"/>
                                     </div>
                                 </td>
-                            </tr>
-                            <tr>
                                 <th>상담자</th>
                                 <td colspan="3">
                                     <div class="ui form">
