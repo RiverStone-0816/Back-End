@@ -21,7 +21,7 @@
         <div class="panel panel-search">
             <div class="panel-heading">
                 <div class="pull-left">
-                    <div class="panel-label">전체 통계</div>
+                    <div class="panel-label">모니터링</div>
                 </div>
             </div>
         </div>
