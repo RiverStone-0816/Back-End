@@ -51,10 +51,12 @@
                     <div class="row">
                         <div class="four wide column">
                             <label class="control-label">인트로음원</label>
-                            <button type="button" class="ui icon button mini compact -sound-download -play-trigger" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
+                            <button type="button" class="ui icon button mini compact -sound-download -play-trigger" data-sound-input=".-input[data-name=introSoundCode]"
+                                    data-tts-input=".-input[data-name=introTtsData]">
                                 <i class="arrow down icon"></i>
                             </button>
-                            <button type="button" class="ui icon button mini compact -sound-play -play-trigger" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
+                            <button type="button" class="ui icon button mini compact -sound-play -play-trigger" data-sound-input=".-input[data-name=introSoundCode]"
+                                    data-tts-input=".-input[data-name=introTtsData]">
                                 <i class="volume up icon"></i>
                             </button>
                             <div class="ui popup top left"></div>
@@ -63,7 +65,7 @@
                             <div class="ui form">
                                 <c:forEach var="e" items="${sounds}">
                                     <c:if test="${e.key == form.introSoundCode}">
-                                        ${g.htmlQuote(e.value)}
+                                        <text class="-input" data-name="introSoundCode" data-value="${g.escapeQuote(e.key)}">${g.htmlQuote(e.value)}</text>
                                     </c:if>
                                 </c:forEach>
                             </div>
@@ -74,17 +76,20 @@
                     <div class="row -intro-tts-data">
                         <div class="four wide column">
                             <label class="control-label">인트로음원(TTS)</label>
-                            <button type="button" class="ui icon button mini compact -sound-download -play-trigger" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
+                            <button type="button" class="ui icon button mini compact -sound-download -play-trigger" data-sound-input=".-input[data-name=introSoundCode]"
+                                    data-tts-input=".-input[data-name=introTtsData]">
                                 <i class="arrow down icon"></i>
                             </button>
-                            <button type="button" class="ui icon button mini compact -sound-play -play-trigger" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
+                            <button type="button" class="ui icon button mini compact -sound-play -play-trigger" data-sound-input=".-input[data-name=introSoundCode]"
+                                    data-tts-input=".-input[data-name=introTtsData]">
                                 <i class="volume up icon"></i>
                             </button>
                             <div class="ui popup top left"></div>
                         </div>
                         <div class="twelve wide column">
                             <div class="ui form">
-                                    ${entity != null && entity.ttsData != null ? g.htmlQuote(entity.ttsData.split('[|]')[0]) : ''}
+                                <text class="-input" data-name="introSoundCode" style="display: none" data-value="TTS"></text>
+                                <text class="-input" data-name="introTtsData">${entity != null && entity.ttsData != null ? g.htmlQuote(entity.ttsData.split('[|]')[0]) : ''}</text>
                             </div>
                         </div>
                     </div>
@@ -115,10 +120,11 @@
                                                             CONNECT_INNER_NUMBER_DIRECTLY]}"/>
                     <div class="four wide column">
                         <label class="control-label">음원${requireSoundMenus.contains(form.type) ? '(*)' : ''}</label>
-                        <button type="button" class="ui icon button mini compact -sound-download -play-trigger" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
+                        <button type="button" class="ui icon button mini compact -sound-download -play-trigger" data-sound-input=".-input[data-name=soundCode]"
+                                data-tts-input=".-input[data-name=ttsData]">
                             <i class="arrow down icon"></i>
                         </button>
-                        <button type="button" class="ui icon button mini compact -sound-play -play-trigger" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
+                        <button type="button" class="ui icon button mini compact -sound-play -play-trigger" data-sound-input=".-input[data-name=soundCode]" data-tts-input=".-input[data-name=ttsData]">
                             <i class="volume up icon"></i>
                         </button>
                         <div class="ui popup top left"></div>
@@ -127,7 +133,7 @@
                         <div class="ui form">
                             <c:forEach var="e" items="${sounds}">
                                 <c:if test="${e.key == form.soundCode}">
-                                    ${g.htmlQuote(e.value)}
+                                    <text class="-input" data-name="soundCode" data-value="${g.escapeQuote(e.key)}">${g.htmlQuote(e.value)}</text>
                                 </c:if>
                             </c:forEach>
                         </div>
@@ -138,17 +144,21 @@
                 <div class="row -tts-data">
                     <div class="four wide column">
                         <label class="control-label">음원(TTS)</label>
-                        <button type="button" class="ui icon button mini compact -sound-download -play-trigger" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
+                        <button type="button" class="ui icon button mini compact -sound-download -play-trigger" data-sound-input=".-input[data-name=soundCode]"
+                                data-tts-input=".-input[data-name=ttsData]">
                             <i class="arrow down icon"></i>
                         </button>
-                        <button type="button" class="ui icon button mini compact -sound-play -play-trigger" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
+                        <button type="button" class="ui icon button mini compact -sound-play -play-trigger" data-sound-input=".-input[data-name=soundCode]" data-tts-input=".-input[data-name=ttsData]">
                             <i class="volume up icon"></i>
                         </button>
                         <div class="ui popup top left"></div>
                     </div>
                     <div class="twelve wide column">
                         <div class="ui form">
-                                ${entity != null && entity.ttsData != null ? g.htmlQuote(entity.ttsData.split('[|]')[entity.introSoundCode == 'TTS' ? 1 : 0]) : ''}
+                            <text class="-input" data-name="soundCode" style="display: none" data-value="TTS"></text>
+                            <text class="-input" data-name="ttsData">
+                                    ${entity != null && entity.ttsData != null ? g.htmlQuote(entity.ttsData.split('[|]')[entity.introSoundCode == 'TTS' ? 1 : 0]) : ''}
+                            </text>
                         </div>
                     </div>
                 </div>
@@ -288,8 +298,8 @@
     modal.find('.-sound-download').click(function (event) {
         event.stopPropagation();
 
-        const sound = modal.find($(this).attr('data-sound-input')).val();
-        const tts = modal.find($(this).attr('data-tts-input')).val();
+        const sound = modal.find($(this).attr('data-sound-input')).val() || modal.find($(this).attr('data-sound-input')).attr('data-value');
+        const tts = modal.find($(this).attr('data-tts-input')).val() || modal.find($(this).attr('data-tts-input')).attr('data-value');
 
         if (!sound)
             return;
