@@ -22,6 +22,7 @@ public class IvrFormRequest extends BaseForm {
 	 * 상위노드 연결시
 	 */
 	private Integer parentSeq;
+	private Integer rootSeq;
 	@NotNull("메뉴")
 	private String name;           // IVR명
 	private String introSoundCode; // 인트로음원
