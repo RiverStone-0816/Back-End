@@ -124,16 +124,22 @@
     }
 
     IvrEditor.prototype.render = function () {
+        const deferred = $.Deferred();
+
         if (!this.widgets)
             return;
 
+        const rendering = [];
         this.widgets.map(function (widget) {
+            rendering.push(widget.option.id);
             widget.rendered = false;
             if (widget.connectionPoint)
                 widget.connectionPoint.rendered = false;
         });
 
-        findRootWidget(this.widgets[0]).render();
+        findRootWidget(this.widgets[0]).render(deferred, rendering);
+
+        return deferred;
     };
 
     /**
@@ -370,21 +376,21 @@
         }
     };
 
-    Widget.prototype.render = function () {
+    Widget.prototype.render = function (deferred, rendering) {
         const widget = this;
         if (widget.rendered)
             return;
 
         if (widget.connectionPoint && !widget.connectionPoint.rendered)
-            return widget.connectionPoint.render();
+            return widget.connectionPoint.render(deferred, rendering);
 
         if ((widget.x == null) || (widget.y == null)) {
             const offset = widget.editor.offset($(widget.connectionPoint.dom).find('.ui-ivr-connection-point-line-start-point'));
             if (offset.left === 0 && offset.top === 0)
                 console.log('connectionPoint 렌더링이 완료되지 못한 상태로 widget 렌더링 시도', {widgetId: widget.option.id});
 
-            widget.x = offset.left + 50; // TODO: check
-            widget.y = offset.top - 10; // TODO: check
+            widget.x = offset.left + 50; // 패딩
+            widget.y = offset.top - 10; // 패딩
         }
 
         widget.width = $(widget.dom).outerWidth();
@@ -394,12 +400,17 @@
         // 브라우저 렌더링이 되기 위한 시간이 필요하다.
 
         console.log('rendered ' + widget.option.id);
+        if (rendering) {
+            rendering.splice(rendering.indexOf(widget.option.id), 1);
+            if (!rendering.length)
+                deferred.resolve();
+        }
 
         setTimeout(function () {
             widget.drawLine();
             widget.editor.setMaxSizeIfOverflowByWidget(widget);
             widget.points.map(function (point) {
-                point.render();
+                point.render(deferred, rendering);
             });
         }, 100);
     };
@@ -434,6 +445,9 @@
         widget.points.map(function (point) {
             point.remove();
         });
+        const iWidget = this.editor.widgets.indexOf(this);
+        if (iWidget >= 0)
+            this.editor.widgets.splice(iWidget, 1);
 
         if (widget.connectionPoint) {
             $(widget.dom).find('.ui-ivr-widget').remove();
@@ -484,13 +498,13 @@
         $dom.find('.ui-ivr-connection-point-number').text(connectionPoint.option.number);
     };
 
-    ConnectionPoint.prototype.render = function () {
+    ConnectionPoint.prototype.render = function (deferred, rendering) {
         const connectionPoint = this;
         if (connectionPoint.rendered)
             return;
 
         if (!connectionPoint.widget.rendered)
-            return connectionPoint.widget.render();
+            return connectionPoint.widget.render(deferred, rendering);
 
         const offset = connectionPoint.widget.editor.offset(connectionPoint.dom);
         if (offset.left === 0 && offset.top === 0)
@@ -506,7 +520,7 @@
 
         connectionPoint.rendered = true;
         connectionPoint.nextWidget.rendered = false;
-        connectionPoint.nextWidget.render();
+        connectionPoint.nextWidget.render(deferred, rendering);
     };
 
     ConnectionPoint.prototype.remove = function () {
