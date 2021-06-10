@@ -101,6 +101,9 @@ public class DashboardController extends BaseController {
         model.addAttribute("statusCountMap", statusCountMap);
         model.addAttribute("statusCountMapSum", statusCountMap.values().stream().mapToInt(e -> e).sum());
 
+        final List<MonitorQueuePersonStatResponse> individualStat = partMonitoringApiInterface.getIndividualStat();
+        model.addAttribute("individualStat", individualStat);
+
         return "admin/dashboard-sheet/ground";
     }
 
