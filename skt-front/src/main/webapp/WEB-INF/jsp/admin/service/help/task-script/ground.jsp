@@ -24,7 +24,7 @@
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">
-                            <label>검색옵션 전체보기</label>
+                            <label for="_newsletter">검색옵션 전체보기</label>
                             <input type="checkbox" name="newsletter" id="_newsletter">
                         </div>
                     </div>
@@ -34,13 +34,13 @@
                         <table class="ui celled table compact unstackable">
                             <tr>
                                 <th>등록일</th>
-                                <td colspan="3">
+                                <td colspan="3" class="-buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
                                     <div class="ui action input calendar-area">
-                                        <input type="text">
-                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
-                                        <input type="text">
-                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>"></button>
+                                        <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
                                     <div class="ui basic buttons">
                                         <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
