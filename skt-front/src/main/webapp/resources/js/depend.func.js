@@ -774,6 +774,84 @@ function drawStackedBarChart(container, data, xAxisField, yAxisFields, options) 
     }, 50);
 }
 
+function drawDonutChart(svgSelector, rates, options) {
+    setTimeout(function () {
+
+        const svg = document.querySelector(svgSelector);
+        $(svg).empty();
+        const dataSet = rates;
+
+        const width = $(svg).width();
+        const height = $(svg).height();
+        const colorClasses = (options && options.colorClasses) || [''];
+
+        if (!width || !height)
+            return drawDonutChart(svgSelector, rates, options);
+
+        const arc = d3.arc().innerRadius((options && options.innerRadius || 40)).outerRadius((options && options.outerRadius || 70));
+        const pie = d3.select(svg)
+            .selectAll("g")
+            .data(
+                d3.pie()
+                    .startAngle(0)
+                    .endAngle(360 * (Math.PI / 180))
+                    // .padAngle(0.02)
+                    .sort(null)
+                    (dataSet)
+            )
+            .enter()
+            .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        pie.append("path")
+            .attr("class", function (d, i) {
+                return colorClasses[i % colorClasses.length];
+            })
+            .transition()
+            .duration(200)
+            .delay(function (d, i) {
+                return i * 200
+            })
+            .attrTween("d", function (d, i) {
+                const interpolate = d3.interpolate(
+                    {startAngle: d.startAngle, endAngle: d.startAngle},
+                    {startAngle: d.startAngle, endAngle: d.endAngle}
+                );
+
+                return (function (t) {
+                    return arc(interpolate(t));
+                });
+            });
+
+
+        /*const sum = dataSet.reduce(function (accumulator, value) {
+            return accumulator + value;
+        }, 0);*/
+
+        /*d3.select(svgSelector)
+            .append("text")
+            .attr("class", "d3-total")
+            .attr("transform", "translate(" + (width / 2 - 15) + ", " + (height / 2) + ")")
+            .text((rate * 100) + "%");*/
+
+        d3.select(svgSelector)
+            .append("text")
+            .attr("class", "d3-total-label")
+            .attr("transform", "translate(" + (width / 2) + ", " + (height / 2) + ")");
+
+        /*pie.append("text")
+            .attr("class", "d3-num")
+            .attr("transform", function (d, i) {
+                const position = arc.centroid(d);
+                position[1] += 5;
+                return "translate(" + position + ")";
+            })
+            .text(function (d, i) {
+                return ((d.value || 0) / sum * 100).toFixed(1) + '%';
+            });*/
+    }, 50);
+}
+
 function drawPieChart(svgSelector, rate, options) {
     setTimeout(function () {
         rate = rate || 0;

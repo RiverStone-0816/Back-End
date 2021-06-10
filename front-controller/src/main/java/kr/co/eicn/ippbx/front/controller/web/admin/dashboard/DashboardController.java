@@ -7,11 +7,18 @@ import kr.co.eicn.ippbx.front.service.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.QueueApiInterface;
 import kr.co.eicn.ippbx.front.service.api.dashboard.DashboardApiInterface;
+import kr.co.eicn.ippbx.front.service.api.monitor.consultant.PartMonitoringApiInterface;
 import kr.co.eicn.ippbx.front.service.api.record.callback.CallbackDistributionApiInterface;
 import kr.co.eicn.ippbx.front.service.api.service.etc.MonitApiInterface;
+import kr.co.eicn.ippbx.front.service.api.stat.InboundStatApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CmpMemberStatusCode;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.dto.statdb.HuntMonitorResponse;
+import kr.co.eicn.ippbx.model.dto.statdb.StatInboundResponse;
+import kr.co.eicn.ippbx.model.dto.statdb.StatInboundTimeResponse;
+import kr.co.eicn.ippbx.model.search.HuntMonitorSearchRequest;
 import kr.co.eicn.ippbx.model.search.MonitControlSearchRequest;
+import kr.co.eicn.ippbx.model.search.StatInboundSearchRequest;
 import lombok.AllArgsConstructor;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
@@ -64,6 +71,37 @@ public class DashboardController extends BaseController {
         model.addAttribute("dashboardSequenceToDashboard", dashboardSequenceToDashboard);
 
         return "admin/dashboard/ground";
+    }
+
+    private final InboundStatApiInterface inboundStatApiInterface;
+    private final PartMonitoringApiInterface partMonitoringApiInterface;
+
+    /**
+     * skt향 대시보드
+     */
+    @GetMapping("total")
+    public String mainPage(Model model) throws IOException, ResultFailException {
+        val search = new StatInboundSearchRequest();
+        search.setStartDate(search.getEndDate());
+        final List<StatInboundTimeResponse<?>> list = inboundStatApiInterface.list(search);
+        model.addAttribute("inboundData", list.isEmpty() ? new StatInboundResponse() : list.get(0).getInboundStat());
+
+        final Map<Integer, String> statuses = companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName));
+        model.addAttribute("statuses", statuses);
+
+        val huntMonitorSearchRequest = new HuntMonitorSearchRequest();
+        val huntMonitor = partMonitoringApiInterface.getHuntMonitor(huntMonitorSearchRequest);
+        model.addAttribute("huntConsultantsStat", huntMonitor);
+
+        final Map<Integer, Integer>  statusCountMap = huntMonitor.stream().reduce(new HuntMonitorResponse(), (a, b) -> {
+            val result = new HuntMonitorResponse();
+            statuses.keySet().forEach(s -> result.getStatusCountMap().put(s, a.getStatusCountMap().getOrDefault(s, 0) + b.getStatusCountMap().getOrDefault(s, 0)));
+            return result;
+        }).getStatusCountMap();
+        model.addAttribute("statusCountMap", statusCountMap);
+        model.addAttribute("statusCountMapSum", statusCountMap.values().stream().mapToInt(e -> e).sum());
+
+        return "admin/dashboard-sheet/ground";
     }
 
     @GetMapping("script-for-queue-and-person-status")
