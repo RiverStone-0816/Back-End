@@ -123,12 +123,30 @@
                             </div>
                             <div class="eight wide column compact-pr">
                                 <div class="inner-box">
-                                    1
+                                    <h2 class="chart-title">수신 통계</h2>
+                                    <div class="pd10 align-center">
+                                        차트영역
+                                    </div>
+                                    <div class="chart-label-wrap-bar">
+                                        <ul>
+                                            <li><span class="symbol color-2"></span><span class="text">어제</span></li>
+                                            <li><span class="symbol color-1"></span><span class="text">오늘</span></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                             <div class="eight wide column compact-pl">
                                 <div class="inner-box">
-                                    1
+                                    <h2 class="chart-title">응답율 통계</h2>
+                                    <div class="pd10 align-center">
+                                        차트영역
+                                    </div>
+                                    <div class="chart-label-wrap-bar">
+                                        <ul>
+                                            <li><span class="symbol color-2"></span><span class="text">어제</span></li>
+                                            <li><span class="symbol color-1"></span><span class="text">오늘</span></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -61,7 +61,7 @@
                                         <div class="chart-wrap">
                                             차트삽입
                                         </div>
-                                        <div class="chart-label-wrap">
+                                        <div class="chart-label-wrap-bar">
                                             <ul>
                                                 <li><span class="symbol color-1"></span><span class="text">I/B전체</span></li>
                                                 <li><span class="symbol color-2"></span><span class="text">단순조회</span></li>
@@ -98,7 +98,6 @@
                                 <th>호응답률</th>
                                 <th>서비스레벨<br>호응답률</th>
                                 <th>단순조회율</th>
-
                                 <th>~10(초)</th>
                                 <th>~20(초)</th>
                                 <th>~30(초)</th>
@@ -156,7 +155,7 @@
                             <div class="ui grid">
                                 <div class="six wide column">
                                     <div class="chart-wrap"></div>
-                                    <div class="chart-label-wrap">
+                                    <div class="chart-label-wrap-circle">
                                         <ul>
                                             <li>
                                                 <span class="symbol color-1"></span>

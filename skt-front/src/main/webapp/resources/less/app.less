@@ -1221,6 +1221,17 @@ pre {
     .inner-box {
       border:1px solid @color-border;
       padding:1em;
+      .chart-top {}
+    }
+    .state-list {
+      li {
+        display:inline-block;
+        padding:0 10px;
+        border-right:1px solid darken(@color-border,30%);
+        &:last-child {
+          border-right:0;
+        }
+      }
     }
     .ui.secondary.menu {
       .item {
@@ -1238,7 +1249,12 @@ pre {
       border-bottom:1px solid @color-border;
       .panel-heading {
         background:lighten(@color-gray,3%);
-        font-weight: 500;
+      }
+      .panel-heading.transparent {
+        border:0;
+        background:transparent;
+        padding:0;
+        margin:0 0 15px 0;
       }
       &:last-child {
         border-bottom:0;
@@ -1327,10 +1343,10 @@ pre {
   }
 }
 
-.panel.panel-statstics {
+.panel:not(.panel-search).panel-statstics {
   .panel-heading {
     border-bottom: 1px solid @color-border;
-    padding:14px!important;
+    padding:15px;
     .sub.header {
       margin:5px 0 0 0;
       color:darken(@color-gray, 30%);
@@ -2594,6 +2610,17 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
     .play {
       background-position: 11px -22px;
     }
+  }
+}
+
+.play-btn {
+  background:transparent;
+  outline:0;
+  border:0;
+  vertical-align: bottom;
+  cursor:pointer;
+  img {
+    vertical-align: bottom;
   }
 }
 
@@ -4014,80 +4041,10 @@ g {
     .chart-wrap {
       height:190px;
     }
-    .chart-label-wrap {
-      padding: 20px 0 4px 0;
-      li {
-        display:inline-block;
-        margin: 0 1em;
-      }
-      .symbol {
-        width: 25px;
-        height: 4px;
-        display: inline-block;
-        vertical-align: middle;
-        margin: 0 6px 0 0;
-      }
-      .symbol.color-1 {background:@color-blue}
-      .symbol.color-2 {background:@color-brand}
-      .symbol.color-3 {background:@color-gray2}
-      .symbol.color-4 {background:@color-yellow}
-      .symbol.color-5 {background:@color-skyblue}
-      .symbol.color-6 {background:@color-green}
-      .text {
-        color:lighten(@color-darkgray,20%);
-      }
-    }
   }
   .bottom {
     .chart-wrap {
       height:258px;
-    }
-    .chart-label-wrap {
-      overflow: hidden;
-      width: 253px;
-      margin: 0 26% auto;
-      padding:10px 0 0 0;
-      ul {
-        overflow: hidden;
-        li {
-          width: 50%;
-          display: inline-block;
-          float: left;
-          padding: 0 0 10px 0;
-        }
-      }
-      .symbol {
-        width: 12px;
-        height: 12px;
-        display: inline-block;
-        vertical-align: bottom;
-        margin: 0 20% 0 0;
-        border-radius: 50%;
-      }
-      .symbol.color-1 {
-        background:@color-blue;
-      }
-      .symbol.color-2 {
-        background:@color-brown;
-      }
-      .symbol.color-3 {
-        background: @color-red;
-      }
-      .symbol.color-4 {
-        background: @color-brand;
-      }
-      .symbol.color-5 {
-        background:@color-green;
-      }
-      .symbol.color-6 {
-        background:@color-navy;
-      }
-      .symbol.color-7 {
-        background:@color-gray2;
-      }
-      .text {
-        color:lighten(@color-darkgray,20%);
-      }
     }
     .flex();
     flex:1;
@@ -4145,3 +4102,84 @@ g {
 .after-state-bg {background:@color-yellow!important;color:@color-darkgray!important;}
 .logout-state-bg {background:@color-gray2!important;color:@color-white!important;}
 .etc-state-bg {background: @color-purple!important;color:@color-white!important;}
+
+.chart-label-wrap-bar {
+  padding: 20px 0 4px 0;
+  text-align:center;
+  li {
+    display:inline-block;
+    margin: 0 1em;
+  }
+  .symbol {
+    width: 25px;
+    height: 4px;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 6px 0 0;
+  }
+  .symbol.color-1 {background:@color-blue}
+  .symbol.color-2 {background:@color-brand}
+  .symbol.color-3 {background:@color-gray2}
+  .symbol.color-4 {background:@color-yellow}
+  .symbol.color-5 {background:@color-skyblue}
+  .symbol.color-6 {background:@color-green}
+  .text {
+    color:lighten(@color-darkgray,20%);
+  }
+}
+
+.chart-title {
+  text-align: center;
+  font-size: 19px;
+  font-weight: 500;
+  margin: 0 0 .5em 0;
+
+}
+
+.chart-label-wrap-circle {
+  overflow: hidden;
+  width: 253px;
+  margin: 0 auto;
+  padding:10px 0 0 0;
+  ul {
+    overflow: hidden;
+    li {
+      width: 50%;
+      display: inline-block;
+      float: left;
+      padding: 0 0 10px 0;
+    }
+  }
+  .symbol {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    vertical-align: bottom;
+    margin: 0 10px 0 0;
+    border-radius: 50%;
+  }
+  .symbol.color-1 {
+    background:@color-blue;
+  }
+  .symbol.color-2 {
+    background:@color-brown;
+  }
+  .symbol.color-3 {
+    background: @color-red;
+  }
+  .symbol.color-4 {
+    background: @color-brand;
+  }
+  .symbol.color-5 {
+    background:@color-green;
+  }
+  .symbol.color-6 {
+    background:@color-navy;
+  }
+  .symbol.color-7 {
+    background:@color-gray2;
+  }
+  .text {
+    color:lighten(@color-darkgray,20%);
+  }
+}
