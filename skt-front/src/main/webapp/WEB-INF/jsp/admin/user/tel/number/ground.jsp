@@ -20,6 +20,13 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/user/tel/number/"/>
         <div class="sub-content ui container fluid unstackable">
+            <div class="panel panel-search">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <div class="panel-label">번호관리</div>
+                    </div>
+                </div>
+            </div>
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">

@@ -1189,8 +1189,10 @@ pre {
     .ui.buttons {
       border-radius: 0;
       padding:0;
+      border:0;
       .ui.button {
         padding: 0.57em 1.4em;
+        border:1px solid @color-border;
       }
     }
     .panel-total-count {
@@ -1216,6 +1218,17 @@ pre {
   .panel-heading:after {clear: both;content: "";display: table;}
   .panel-body:after, .panel-body:before {content: "";display: table;}
   .panel-body {
+    .ui.secondary.menu {
+      .item {
+        border-radius: 0;
+        border:1px solid @color-border;
+        background:@color-white;
+      }
+      .item.active {
+        border:1px solid @color-brand;
+        color:@color-brand;
+      }
+    }
     .panel-section {
       padding:14px;
       border-bottom:1px solid @color-border;
