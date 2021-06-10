@@ -1,6 +1,5 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.sounds;
 
-import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.ResultFailException;
@@ -10,7 +9,6 @@ import kr.co.eicn.ippbx.front.service.api.sounds.IvrApiInterface;
 import kr.co.eicn.ippbx.front.service.api.sounds.schedule.OutboundWeekScheduleApiInterface;
 import kr.co.eicn.ippbx.front.service.api.sounds.schedule.ScheduleGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.user.tel.NumberApiInterface;
-import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchQueueResponse;
@@ -22,6 +20,9 @@ import kr.co.eicn.ippbx.model.form.WebVoiceItemsDtmfFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsInputFormRequest;
 import kr.co.eicn.ippbx.model.search.NumberSearchRequest;
+import kr.co.eicn.ippbx.util.ContextUtil;
+import kr.co.eicn.ippbx.util.FormUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,14 +53,14 @@ public class IvrController extends BaseController {
     private final OutboundWeekScheduleApiInterface outboundWeekScheduleApiInterface;
     private final NumberApiInterface numberApiInterface;
 
-    @GetMapping("")
+    @GetMapping({"", "view"})
     public String page(Model model, @RequestParam(required = false) Integer seq) throws IOException, ResultFailException {
         final List<IvrResponse> roots = apiInterface.rootIvrTrees();
         final Map<Integer, String> rootMap = roots.stream().collect(Collectors.toMap(IvrTree::getSeq, IvrTree::getName));
         List<IvrMenuType> menuTypes = Arrays.asList(IvrMenuType.values());
 
         if (model.asMap().get("serviceKind").equals("CC")) {
-            menuTypes = menuTypes.stream().filter(e -> ! (e.getCode().equals(IvrMenuType.CONNECT_MENU_AFTER_DONE_EXCEPTION.getCode()) ||
+            menuTypes = menuTypes.stream().filter(e -> !(e.getCode().equals(IvrMenuType.CONNECT_MENU_AFTER_DONE_EXCEPTION.getCode()) ||
                     e.getCode().equals(IvrMenuType.CONNECT_REPRESENTABLE_NUMBER_AFTER_DONE_EXCEPTION.getCode()) ||
                     e.getCode().equals(IvrMenuType.CONNECT_HUNT_NUMBER_AFTER_DONE_EXCEPTION.getCode()))).collect(Collectors.toList());
         }
@@ -77,7 +78,7 @@ public class IvrController extends BaseController {
 
         model.addAttribute("seq", seq);
 
-        return "admin/sounds/ivr/ground";
+        return ContextUtil.getRequest().getRequestURI().endsWith("/view") ? "admin/sounds/ivr-view/ground" : "admin/sounds/ivr/ground";
     }
 
     @GetMapping(value = "new/modal", params = {"type", "posX", "posY"})
@@ -99,7 +100,7 @@ public class IvrController extends BaseController {
         return "admin/sounds/ivr/modal";
     }
 
-    @GetMapping("{seq}/modal")
+    @GetMapping({"{seq}/modal", "{seq}/modal/view"})
     public String modal(Model model, @PathVariable Integer seq, @ModelAttribute("form") IvrFormRequest form) throws IOException, ResultFailException {
         final Byte updatingType = form.getType();
 
@@ -111,10 +112,12 @@ public class IvrController extends BaseController {
         if (form.getType() == null || Objects.equals(form.getType(), (byte) 0))
             form.setType(updatingType);
 
-        return modal(model, form);
+        modal(model, form);
+
+        return ContextUtil.getRequest().getRequestURI().endsWith("/view") ? "admin/sounds/ivr-view/modal" : "admin/sounds/ivr/modal";
     }
 
-    @GetMapping("{ivrCode}/modal-visual-ars")
+    @GetMapping({"{ivrCode}/modal-visual-ars", "{ivrCode}/modal-visual-ars/view"})
     public String modalVisualArs(Model model, @PathVariable Integer ivrCode, @ModelAttribute("form") WebVoiceItemsFormRequest form) throws IOException, ResultFailException {
         final Map<Integer, IvrTree> ivrTreeMap = apiInterface.getIvrList().stream().collect(Collectors.toMap(IvrTree::getCode, e -> e));
         model.addAttribute("entity", ivrTreeMap.get(ivrCode));
@@ -152,6 +155,6 @@ public class IvrController extends BaseController {
         } catch (Exception ignored) {
         }
 
-        return "admin/sounds/ivr/modal-visual-ars";
+        return ContextUtil.getRequest().getRequestURI().endsWith("/view") ? "admin/sounds/ivr-view/modal-visual-ars" : "admin/sounds/ivr/modal-visual-ars";
     }
 }
