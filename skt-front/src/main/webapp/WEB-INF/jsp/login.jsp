@@ -109,17 +109,51 @@
     </div>
 </div>
 
-<div class="ui modal mini" id="modal-login">
+<div class="ui modal" id="modal-login">
     <div class="content">
         <div class="login-info">
             <label class="info-title">보안정보</label>
-            <ul class="ui list">
-                <li>· 아이디 : <label id="login-id"></label></li>
-                <li>· 현재접근 IP : ${g.clientIp()}</li>
-                <li>· 최종로그인 시간 : <label id="last-login-time"></label></li>
-                <li>· 최종로그인 IP : <label id="last-login-ip"></label></li>
-                <li>· <label id="warring-text"></label></li>
-            </ul>
+            <table class="ui table celled compact unstackable">
+                <tr>
+                    <th>아이디</th>
+                    <td><label id="login-id"></label></td>
+                </tr>
+                <tr>
+                    <th>현재접근 IP</th>
+                    <td>${g.clientIp()}</td>
+                </tr>
+                <tr>
+                    <th>최종로그인 시간</th>
+                    <td><label id="last-login-time"></td>
+                </tr>
+                <tr>
+                    <th>최종로그인 IP</th>
+                    <td><label id="last-login-ip"></label></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><label id="warring-text"></label></td>
+                </tr>
+            </table>
+
+            <table class="ui table celled compact unstackable mt30">
+                <tr>
+                    <th>새로운 비밀번호</th>
+                    <td>
+                        <div class="ui form">
+                            <input type="password" name="password" placeholder="문자/숫자/특수문자 9~20자">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>비밀번호 확인</th>
+                    <td>
+                        <div class="ui form">
+                            <input type="password" name="passwordConfirm">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
         </div>
         <div class="change-password" id="password-update-form">
             <div class="row">
@@ -136,6 +170,13 @@
             </div>
         </div>
     </div>
+
+    <div class="actions">
+        <button type="button" class="ui orange button">확인</button>
+        <button type="button" class="ui grey button">취소</button>
+        <button type="button" class="ui orange button">변경</button>
+    </div>
+
     <div class="actions">
         <div class="ui positive right labeled icon button check-login" id="confirm-login">
             확인

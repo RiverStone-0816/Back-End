@@ -200,9 +200,10 @@ pre {
       .ui.button {
         border-radius: 0;
         background:@color-brand;
-        font-size: 9px;
+        font-size: 14px;
         color:@color-white;
-        font-weight:500;
+        padding: 1em 0;
+        font-weight: 500;
       }
     }
     .number-result {
@@ -225,6 +226,17 @@ pre {
       margin:0;
       .column {
         padding:4px 5px;
+        &:nth-child(10) {
+          .ui.button {
+            font-size:0;
+            &:before {
+              content: '*';
+              font-size: 41px;
+              position: relative;
+              top: 17px;
+            }
+          }
+        }
       }
       .ui.button {
         background: @color-white;
@@ -233,6 +245,7 @@ pre {
         font-size: 23.35px;
         font-weight: 200;
         border-radius: 0;
+        height:35px;
         &:hover {
           background:@color-brand;
           color:@color-white;
@@ -492,6 +505,7 @@ pre {
       font-size: 14px;
       font-weight: 500;
       color: darken(@color-gray, 30%);
+      padding: 8px 11px;
       &:hover {
         color:@color-white;
       }
@@ -1785,6 +1799,9 @@ label.control-label {
 .mb10 {
   margin-bottom: 10px !important
 }
+.mt30 {
+  margin-top: 30px !important
+}
 .full-height {
   height: 100% !important;
 }
@@ -2029,6 +2046,10 @@ label.control-label {
       width: 100%;
     }
   }
+}
+
+.ui.modal {
+  border-radius: 0;
 }
 
 .ui.action.input.left.floated {
@@ -3920,10 +3941,7 @@ g {
   right: 11px;
 }
 
-.info-title {
-  margin-left: 40%;
-  font-size: 1.5em;
-}
+
 
 .status-is-pds + .pds-status-button-container {
   display: none;
@@ -4181,5 +4199,38 @@ g {
   }
   .text {
     color:lighten(@color-darkgray,20%);
+  }
+}
+
+
+#modal-login {
+  padding:2em;
+  width:428px;
+  .info {
+    color:@color-brand;
+  }
+  .login-info {
+    .info-title {
+      text-align: left;
+      font-size: 2em;
+      margin: 0 0 1.5em 0;
+      display: block;
+    }
+    .ui.table {
+      border-top:1px solid @color-border;
+    }
+  }
+  .actions {
+    margin:1.5em 0 0 0;
+    display:flex;
+    padding:0;
+    .ui.button {
+      flex:1;
+      border-radius: 0;
+      padding: 1.3em 1em;
+    }
+    .ui.grey.button {
+      background:darken(@color-gray,30%);
+    }
   }
 }
