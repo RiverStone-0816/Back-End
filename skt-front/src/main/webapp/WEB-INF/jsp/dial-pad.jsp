@@ -20,7 +20,6 @@
     <div class="content">
         <div class="number-result">
             <input type="text" class="-input-phone" id="dial-pad-input"/>
-            <button class="ui button" onclick="removeLastDialNumber()"><img src="<c:url value="/resources/images/close.svg"/>"></button><%--todo: 스타일 확인--%>
         </div>
         <div class="ui three column grid number">
             <c:forEach var="e" items="${'123456789*0#'.toCharArray()}">
@@ -30,7 +29,8 @@
             </c:forEach>
         </div>
         <div class="call-btn-wrap">
-            <button class="ui button fluid" onclick="tryDialByDialPadInput();">전화걸기</button>
+            <button class="ui grey button" onclick="removeLastDialNumber()">지우기</button>
+            <button class="ui orange button" onclick="tryDialByDialPadInput();">전화걸기</button>
         </div>
     </div>
 </div>
