@@ -1218,6 +1218,10 @@ pre {
   .panel-heading:after {clear: both;content: "";display: table;}
   .panel-body:after, .panel-body:before {content: "";display: table;}
   .panel-body {
+    .inner-box {
+      border:1px solid @color-border;
+      padding:1em;
+    }
     .ui.secondary.menu {
       .item {
         border-radius: 0;
@@ -1713,6 +1717,12 @@ label.control-label {
 }
 .remove-padding {
   padding: 0 !important;
+}
+.compact-pr {
+  padding-right:0.5rem!important;
+}
+.compact-pl {
+  padding-left:0.5rem!important;
 }
 .remove-margin {
   margin: 0 !important;
