@@ -318,8 +318,8 @@
     modal.find('.-sound-play').click(function (event) {
         event.stopPropagation();
 
-        const sound = modal.find($(this).attr('data-sound-input')).val();
-        const tts = modal.find($(this).attr('data-tts-input')).val();
+        const sound = modal.find($(this).attr('data-sound-input')).val() || modal.find($(this).attr('data-sound-input')).attr('data-value');
+        const tts = modal.find($(this).attr('data-tts-input')).val() || modal.find($(this).attr('data-tts-input')).attr('data-value');
         const player = $(this).next().empty();
 
         if (player.hasClass('out'))
