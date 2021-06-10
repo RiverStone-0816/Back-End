@@ -135,7 +135,7 @@
                 </tr>
             </table>
 
-            <table class="ui table celled compact unstackable mt30">
+            <table class="ui table celled compact unstackable mt30" id="password-update-form">
                 <tr>
                     <th>새로운 비밀번호</th>
                     <td>
@@ -153,41 +153,13 @@
                     </td>
                 </tr>
             </table>
-
-        </div>
-        <div class="change-password" id="password-update-form">
-            <div class="row">
-                <div class="four wide column"><label class="control-label">새로운 비밀번호</label></div>
-                <div class="twelve wide column">
-                    <div class="ui input fluid"><input type="password" name="password" placeholder="문자/숫자/특수문자 9~20자"></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="four wide column"><label class="control-label">비밀번호 확인</label></div>
-                <div class="twelve wide column">
-                    <div class="ui input fluid"><input type="password" name="passwordConfirm"></div>
-                </div>
-            </div>
         </div>
     </div>
 
     <div class="actions">
-        <button type="button" class="ui orange button">확인</button>
-        <button type="button" class="ui grey button">취소</button>
-        <button type="button" class="ui orange button">변경</button>
-    </div>
-
-    <div class="actions">
-        <div class="ui positive right labeled icon button check-login" id="confirm-login">
-            확인
-            <i class="checkmark icon"></i>
-        </div>
-        <button type="button" id="password-change" class="ui blue button change-password">
-            변경
-        </button>
-        <button type="button" id="cancel-login" class="ui button modal-close change-password">
-            취소
-        </button>
+        <button type="submit" class="ui orange button" id="confirm-login">확인</button>
+        <button type="button" class="ui grey button" id="password-change">취소</button>
+        <button type="button" class="ui orange button" id="cancel-login">변경</button>
     </div>
 </div>
 
@@ -268,15 +240,15 @@
 
                 if (loginInfo.passwordChangeDate == null) {
                     loginModal.find('#warring-text').text('비밀번호를 변경해 주세요.');
-                    loginModal.find('.check-login').remove();
+                    loginModal.find('#confirm-login').remove();
                     loginModal.find('#warring-text').parent().addClass('warning');
                 } else if(loginInfo.changePasswordDays >= 90) {
                     loginModal.find('#warring-text').text('패스워드 변경 후 ' + loginInfo.changePasswordDays + '일 초과');
-                    loginModal.find('.check-login').remove();
+                    loginModal.find('#confirm-login').remove();
                     loginModal.find('#warring-text').parent().addClass('warning');
                 } else {
                     loginModal.find('#warring-text').text('패스워드 변경 후 ' + loginInfo.changePasswordDays + '일 초과');
-                    loginModal.find('.change-password').remove();
+                    loginModal.find('#cancel-login,#password-change,#password-update-form').remove();
                     loginModal.find('#warring-text').parent().addClass('info');
                 }
 
