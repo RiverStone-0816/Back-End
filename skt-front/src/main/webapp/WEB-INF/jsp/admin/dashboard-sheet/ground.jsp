@@ -12,12 +12,8 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
-<c:set var="isStat" value="${user.isStat == 'Y'}"/>
-
 <tags:tabContentLayout>
-
-    <div class="dashboard-wrapper -admin-panel">
+    <div class="dashboard-wrapper">
         <div class="content-inner" id="main-dashboard">
             <div class="top">
                 <div class="panel panel-dashboard">
@@ -32,7 +28,7 @@
                                         <div class="visual-panel">
                                             <div class="panel-heading">실시간 응답율</div>
                                             <div class="panel-body">
-                                                <span class="num">58%</span>
+                                                <span class="num -data-response-rate">%</span>
                                             </div>
                                         </div>
                                     </div>
@@ -40,7 +36,7 @@
                                         <div class="visual-panel">
                                             <div class="panel-heading">수신건</div>
                                             <div class="panel-body">
-                                                <span class="num">185</span>
+                                                <span class="num -data-success-call"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -48,7 +44,7 @@
                                         <div class="visual-panel">
                                             <div class="panel-heading">비수신건</div>
                                             <div class="panel-body">
-                                                <span class="num">185</span>
+                                                <span class="num -data-cancel-call"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -59,7 +55,7 @@
                                     <div class="panel-heading">인바운드 현황</div>
                                     <div class="panel-body">
                                         <div class="chart-wrap">
-                                            차트삽입
+                                            차트삽입<%--TODO: 작업필요--%>
                                         </div>
                                         <div class="chart-label-wrap-bar">
                                             <ul>
@@ -75,75 +71,73 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-scroll-wrap">
-                            <table class="ui celled table compact unstackable structured">
-                                <thead>
-                                <tr>
-                                    <th rowspan="2">날짜/시간</th>
-                                    <th colspan="6">I/B 콜 현황</th>
-                                    <th colspan="6">성과지표</th>
-                                    <th colspan="5">응대호 대기시간 분석</th>
-                                    <th colspan="5">포기호 대기시간 분석</th>
-                                </tr>
-                                <tr>
-                                    <th>I/B<br>전체콜</th>
-                                    <th>단순조회</th>
-                                    <th>연결요청</th>
-                                    <th>응대호</th>
-                                    <th>포기호</th>
-                                    <th>콜백</th>
+                        <table class="ui celled table compact unstackable structured">
+                            <thead>
+                            <tr>
+                                <th rowspan="2">날짜/시간</th>
+                                <th colspan="6">I/B 콜 현황</th>
+                                <th colspan="6">성과지표</th>
+                                <th colspan="5">응대호 대기시간 분석</th>
+                                <th colspan="5">포기호 대기시간 분석</th>
+                            </tr>
+                            <tr>
+                                <th>I/B<br>전체콜</th>
+                                <th>단순조회</th>
+                                <th>연결요청</th>
+                                <th>응대호</th>
+                                <th>포기호</th>
+                                <th>콜백</th>
 
-                                    <th>I/B<br>총통화시간</th>
-                                    <th>평균통화시간</th>
-                                    <th>평균대기시간</th>
-                                    <th>호응답률</th>
-                                    <th>서비스레벨<br>호응답률</th>
-                                    <th>단순조회율</th>
-                                    <th>~10(초)</th>
-                                    <th>~20(초)</th>
-                                    <th>~30(초)</th>
-                                    <th>~40(초)</th>
-                                    <th>40~(초)</th>
-                                    <th>~10(초)</th>
-                                    <th>~20(초)</th>
-                                    <th>~30(초)</th>
-                                    <th>~40(초)</th>
-                                    <th>40~(초)</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <th>합계</th>
+                                <th>I/B<br>총통화시간</th>
+                                <th>평균통화시간</th>
+                                <th>평균대기시간</th>
+                                <th>호응답률</th>
+                                <th>서비스레벨<br>호응답률</th>
+                                <th>단순조회율</th>
+                                <th>~10(초)</th>
+                                <th>~20(초)</th>
+                                <th>~30(초)</th>
+                                <th>~40(초)</th>
+                                <th>40~(초)</th>
+                                <th>~10(초)</th>
+                                <th>~20(초)</th>
+                                <th>~30(초)</th>
+                                <th>~40(초)</th>
+                                <th>40~(초)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th>합계</th>
 
-                                    <td><span>0</span></td>
-                                    <td><span>0</span></td>
-                                    <td><span>0</span></td>
-                                    <td><span>0</span></td>
-                                    <td><span>0</span></td>
-                                    <td><span>0</span></td>
+                                <td><span>${inboundData.total}</span></td>
+                                <td><span>${inboundData.onlyRead}</span></td>
+                                <td><span>${inboundData.connReq}</span></td>
+                                <td><span>${inboundData.success}</span></td>
+                                <td><span>${inboundData.cancel}</span></td>
+                                <td><span>${inboundData.callbackSuccess}</span></td>
 
-                                    <td>00:00:00</td>
-                                    <td>00:00:00</td>
-                                    <td>00:00:00</td>
-                                    <td>0.0%</td>
-                                    <td>0.0%</td>
-                                    <td>0.0%</td>
+                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(inboundData.billSecSum)}</td>
+                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(inboundData.billSecAvg)}</td>
+                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(inboundData.waitAvg)}</td>
+                                <td>${inboundData.responseRate}%</td>
+                                <td>${inboundData.svcLevelAvg}%</td>
+                                <td>${inboundData.ivrAvg}%</td>
 
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
+                                <td>${inboundData.waitSucc_0_10}</td>
+                                <td>${inboundData.waitSucc_10_20}</td>
+                                <td>${inboundData.waitSucc_20_30}</td>
+                                <td>${inboundData.waitSucc_30_40}</td>
+                                <td>${inboundData.waitSucc_40}</td>
 
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                                <td>${inboundData.waitCancel_0_10}</td>
+                                <td>${inboundData.waitCancel_10_20}</td>
+                                <td>${inboundData.waitCancel_20_30}</td>
+                                <td>${inboundData.waitCancel_30_40}</td>
+                                <td>${inboundData.waitCancel_40}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -156,181 +150,69 @@
                         <div class="panel-body">
                             <div class="ui grid">
                                 <div class="six wide column">
-                                    <div class="chart-wrap"></div>
+                                    <div class="chart-wrap">
+                                        <svg id="pie-consultant-status" style="width: 100%; height: 100%;"></svg>
+                                    </div>
                                     <div class="chart-label-wrap-circle">
                                         <ul>
-                                            <li>
-                                                <span class="symbol color-1"></span>
-                                                <span class="text">대기</span>
-                                            </li>
-                                            <li>
-                                                <span class="symbol color-2"></span>
-                                                <span class="text">휴식</span>
-                                            </li>
-                                            <li>
-                                                <span class="symbol color-3"></span>
-                                                <span class="text">통화중</span>
-                                            </li>
-                                            <li>
-                                                <span class="symbol color-4"></span>
-                                                <span class="text">식사</span>
-                                            </li>
-                                            <li>
-                                                <span class="symbol color-5"></span>
-                                                <span class="text">후처리</span>
-                                            </li>
-                                            <li>
-                                                <span class="symbol color-6"></span>
-                                                <span class="text">이석</span>
-                                            </li>
-                                            <li>
-                                                <span class="symbol color-7"></span>
-                                                <span class="text">로그아웃</span>
-                                            </li>
+                                            <c:forEach var="status" items="${statuses}">
+                                                <c:if test="${status.key != 9}">
+                                                    <li>
+                                                        <span class="symbol color-${status.key + 1}"></span>
+                                                        <span class="text">${g.htmlQuote(status.value)}</span>
+                                                    </li>
+                                                </c:if>
+                                            </c:forEach>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="ten wide column">
-                                    <div class="table-scroll-wrap">
                                     <table class="ui celled table compact">
                                         <thead>
                                         <tr>
                                             <th>콜그룹명</th>
                                             <th>고객대기</th>
-                                            <th>대기</th>
-                                            <th>통화중</th>
-                                            <th>후처리</th>
-                                            <th>휴식</th>
-                                            <th>식사</th>
+
+                                            <c:forEach var="status" items="${statuses}">
+                                                <c:if test="${status.key != 9}">
+                                                    <th>${g.htmlQuote(status.value)}</th>
+                                                </c:if>
+                                            </c:forEach>
+
                                             <th>로그인</th>
                                             <th>로그아웃</th>
                                             <th>전체</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <td>콜그룹명</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>콜그룹명</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>콜그룹명</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>콜그룹명</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>콜그룹명</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>콜그룹명</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>콜그룹명</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>콜그룹명</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>콜그룹명</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
-                                        <tr>
-                                            <td>콜그룹명</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                            <td>0</td>
-                                        </tr>
+                                        <c:choose>
+                                            <c:when test="${huntConsultantsStat.size() > 0}">
+                                                <c:forEach var="e" items="${huntConsultantsStat}">
+                                                    <tr>
+                                                        <td>${g.htmlQuote(e.queueHanName)}</td>
+                                                        <td class="-custom-wait-count" data-hunt="${g.htmlQuote(e.queueName)}">${e.customWait}</td>
+
+                                                        <c:forEach var="status" items="${statuses}">
+                                                            <c:if test="${status.key != 9}">
+                                                                <td class="-consultant-status-count" data-value="${status.key}"
+                                                                    data-hunt="${g.htmlQuote(e.queueName)}">${e.statusCountMap.getOrDefault(status.key, 0)}</td>
+                                                            </c:if>
+                                                        </c:forEach>
+
+                                                        <td class="-login-user-count" data-hunt="${g.htmlQuote(e.queueName)}">${e.loginCount}</td>
+                                                        <td class="-logout-user-count" data-hunt="${g.htmlQuote(e.queueName)}">${e.logoutCount}</td>
+                                                        <td>${e.total}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <tr>
+                                                    <td colspan="11" class="null-data">조회된 데이터가 없습니다.</td>
+                                                </tr>
+                                            </c:otherwise>
+                                        </c:choose>
                                         </tbody>
                                     </table>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -536,25 +418,54 @@
         </div>
     </div>
 
-
-
     <tags:scripts>
         <script>
-            $(document).on('click', '.-menu-page', function (event) {
-                const $this = $(event.target);
-                event.stopPropagation();
-                event.preventDefault();
+            function loadInboundData() {
+                restSelf.get("/api/screen-data/integration", null, null, true).done(function (data) {
+                    $('.-data-response-rate').text(data.data.responseRate.toFixed(1) + '%');
+                    $('.-data-success-call').text(data.data.successCall);
+                    $('.-data-cancel-call').text(data.data.cancelCall);
+                    $('.-data-connection-request').text(data.data.connectionRequest);
+                    $('.-data-inbound-call').text(data.data.inboundCall);
+                });
+            }
 
-                $('.-menu-page').parent().removeClass('active');
-                $this.parent().addClass('active');
+            setInterval(loadInboundData, 1000 * 30);
 
-                $('#main-content').attr('src', $this.attr('href'));
+            $(window).on('load', loadInboundData);
 
-                if ($('#main').is('.change-mode')) {
-                    changeMode();
-                }
+            drawDonutChart('#pie-consultant-status', [
+                <c:choose>
+                <c:when test="${statusCountMapSum > 0}">
 
-                return false;
+                <c:forEach var="status" items="${statuses}">
+                <c:if test="${status.key != 9}">
+                ${statusCountMap.getOrDefault(status.key, 0) / statusCountMapSum},
+                </c:if>
+                </c:forEach>
+
+                </c:when>
+                <c:otherwise>
+                1
+                </c:otherwise>
+                </c:choose>
+            ], {
+                colorClasses: [
+                    <c:choose>
+                    <c:when test="${statusCountMapSum > 0}">
+
+                    <c:forEach var="status" items="${statuses}">
+                    <c:if test="${status.key != 9}">
+                    'bcolor-bar${status.key+ 1}',
+                    </c:if>
+                    </c:forEach>
+
+                    </c:when>
+                    <c:otherwise>
+                    'bcolor-bar0'
+                    </c:otherwise>
+                    </c:choose>
+                ]
             });
         </script>
     </tags:scripts>
