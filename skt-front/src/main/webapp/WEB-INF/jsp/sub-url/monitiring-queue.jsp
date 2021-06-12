@@ -64,200 +64,204 @@
                                 </ul>
                             </div>
                             <div class="panel-body">
-                                <div class="ui grid">
+                                <div class="ui grid stackable">
                                     <div class="eight wide column">
-                                        <table class="ui celled table compact unstackable">
-                                            <thead>
-                                            <tr>
-                                                <th>이름</th>
-                                                <th>내선</th>
-                                                <th>상태</th>
-                                                <th>인입경로</th>
-                                                <th colspan="2">통화량</th>
-                                                <th>고객번호</th>
-                                                <th>시간</th>
-                                                <th>감청</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="call-state-bg">통화중</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="wait-state-bg">대기</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="bell-state-bg">벨울림</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="after-state-bg">후처리</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="logout-state-bg">로그아웃</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="etc-state-bg">기타</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
+                                        <div class="table-scroll-wrap">
+                                            <table class="ui celled table compact unstackable">
+                                                <thead>
+                                                <tr>
+                                                    <th>이름</th>
+                                                    <th>내선</th>
+                                                    <th>상태</th>
+                                                    <th>인입경로</th>
+                                                    <th colspan="2">통화량</th>
+                                                    <th>고객번호</th>
+                                                    <th>시간</th>
+                                                    <th>감청</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="call-state-bg">통화중</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="wait-state-bg">대기</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="bell-state-bg">벨울림</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="after-state-bg">후처리</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="logout-state-bg">로그아웃</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="etc-state-bg">기타</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                     <div class="eight wide column">
-                                        <table class="ui celled table compact unstackable">
-                                            <thead>
-                                            <tr>
-                                                <th>이름</th>
-                                                <th>내선</th>
-                                                <th>상태</th>
-                                                <th>인입경로</th>
-                                                <th colspan="2">통화량</th>
-                                                <th>고객번호</th>
-                                                <th>시간</th>
-                                                <th>감청</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="call-state-bg">통화중</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="wait-state-bg">대기</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="bell-state-bg">벨울림</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="after-state-bg">후처리</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="logout-state-bg">로그아웃</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="etc-state-bg">기타</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
+                                        <div class="table-scroll-wrap">
+                                            <table class="ui celled table compact unstackable">
+                                                <thead>
+                                                <tr>
+                                                    <th>이름</th>
+                                                    <th>내선</th>
+                                                    <th>상태</th>
+                                                    <th>인입경로</th>
+                                                    <th colspan="2">통화량</th>
+                                                    <th>고객번호</th>
+                                                    <th>시간</th>
+                                                    <th>감청</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="call-state-bg">통화중</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="wait-state-bg">대기</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="bell-state-bg">벨울림</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="after-state-bg">후처리</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="logout-state-bg">로그아웃</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="etc-state-bg">기타</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -275,200 +279,204 @@
                                 </ul>
                             </div>
                             <div class="panel-body">
-                                <div class="ui grid">
+                                <div class="ui grid stackable">
                                     <div class="eight wide column">
-                                        <table class="ui celled table compact unstackable">
-                                            <thead>
-                                            <tr>
-                                                <th>이름</th>
-                                                <th>내선</th>
-                                                <th>상태</th>
-                                                <th>인입경로</th>
-                                                <th colspan="2">통화량</th>
-                                                <th>고객번호</th>
-                                                <th>시간</th>
-                                                <th>감청</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="call-state-bg">통화중</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="wait-state-bg">대기</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="bell-state-bg">벨울림</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="after-state-bg">후처리</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="logout-state-bg">로그아웃</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="etc-state-bg">기타</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
+                                        <div class="table-scroll-wrap">
+                                            <table class="ui celled table compact unstackable">
+                                                <thead>
+                                                <tr>
+                                                    <th>이름</th>
+                                                    <th>내선</th>
+                                                    <th>상태</th>
+                                                    <th>인입경로</th>
+                                                    <th colspan="2">통화량</th>
+                                                    <th>고객번호</th>
+                                                    <th>시간</th>
+                                                    <th>감청</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="call-state-bg">통화중</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="wait-state-bg">대기</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="bell-state-bg">벨울림</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="after-state-bg">후처리</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="logout-state-bg">로그아웃</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="etc-state-bg">기타</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                     <div class="eight wide column">
-                                        <table class="ui celled table compact unstackable">
-                                            <thead>
-                                            <tr>
-                                                <th>이름</th>
-                                                <th>내선</th>
-                                                <th>상태</th>
-                                                <th>인입경로</th>
-                                                <th colspan="2">통화량</th>
-                                                <th>고객번호</th>
-                                                <th>시간</th>
-                                                <th>감청</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="call-state-bg">통화중</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="wait-state-bg">대기</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="bell-state-bg">벨울림</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="after-state-bg">후처리</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="logout-state-bg">로그아웃</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>홍길동</td>
-                                                <td>123</td>
-                                                <td class="etc-state-bg">기타</td>
-                                                <td>1서비스 / 1헌트</td>
-                                                <td>수신:4/5</td>
-                                                <td>발신:4/5</td>
-                                                <td>01000000000</td>
-                                                <td>01:30</td>
-                                                <td>
-                                                    <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
-                                                </td>
-                                            </tr>
+                                        <div class="table-scroll-wrap">
+                                            <table class="ui celled table compact unstackable">
+                                                <thead>
+                                                <tr>
+                                                    <th>이름</th>
+                                                    <th>내선</th>
+                                                    <th>상태</th>
+                                                    <th>인입경로</th>
+                                                    <th colspan="2">통화량</th>
+                                                    <th>고객번호</th>
+                                                    <th>시간</th>
+                                                    <th>감청</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="call-state-bg">통화중</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="wait-state-bg">대기</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="bell-state-bg">벨울림</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="after-state-bg">후처리</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="logout-state-bg">로그아웃</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>홍길동</td>
+                                                    <td>123</td>
+                                                    <td class="etc-state-bg">기타</td>
+                                                    <td>1서비스 / 1헌트</td>
+                                                    <td>수신:4/5</td>
+                                                    <td>발신:4/5</td>
+                                                    <td>01000000000</td>
+                                                    <td>01:30</td>
+                                                    <td>
+                                                        <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="logo"></button>
+                                                    </td>
+                                                </tr>
 
-                                            </tbody>
-                                        </table>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

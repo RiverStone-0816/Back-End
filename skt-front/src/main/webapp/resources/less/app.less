@@ -7,6 +7,7 @@
 @import "screen";
 @import "ivr";
 @import "mobile";
+@import "billboard";
 html {
   height: 100%;
 }
@@ -74,6 +75,7 @@ pre {
 #header {
   position: fixed;
   width: 100%;
+  min-width:1240px;
   z-index: 1002;
   border-bottom: 1px solid @color-border;
   background:@color-white;
@@ -1806,6 +1808,9 @@ label.control-label {
 }
 .mt30 {
   margin-top: 30px !important
+}
+.height-250 {
+  height:250px;
 }
 .full-height {
   height: 100% !important;
@@ -4068,6 +4073,7 @@ g {
   overflow: auto;
   .top {
     margin: 0 0 10px 0;
+    min-width:1620px;
     .panel-body {
       overflow:hidden;
     }
@@ -4089,8 +4095,8 @@ g {
       margin: 0 0 0 10px;
     }
     .panel-body {
-      overflow:hidden;
-      height: 406px;
+      overflow:auto;
+      height: 410px;
     }
   }
 }
@@ -4217,6 +4223,9 @@ g {
   }
 }
 
+.table-scroll-wrap {
+  overflow:auto;
+}
 
 #modal-login {
   padding:2em;

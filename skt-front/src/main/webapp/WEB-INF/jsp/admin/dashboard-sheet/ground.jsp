@@ -12,8 +12,12 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
+<c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
+<c:set var="isStat" value="${user.isStat == 'Y'}"/>
+
 <tags:tabContentLayout>
-    <div class="dashboard-wrapper">
+
+    <div class="dashboard-wrapper -admin-panel">
         <div class="content-inner" id="main-dashboard">
             <div class="top">
                 <div class="panel panel-dashboard">
@@ -28,7 +32,7 @@
                                         <div class="visual-panel">
                                             <div class="panel-heading">실시간 응답율</div>
                                             <div class="panel-body">
-                                                <span class="num -data-response-rate">%</span>
+                                                <span class="num">58%</span>
                                             </div>
                                         </div>
                                     </div>
@@ -36,7 +40,7 @@
                                         <div class="visual-panel">
                                             <div class="panel-heading">수신건</div>
                                             <div class="panel-body">
-                                                <span class="num -data-success-call"></span>
+                                                <span class="num">185</span>
                                             </div>
                                         </div>
                                     </div>
@@ -44,7 +48,7 @@
                                         <div class="visual-panel">
                                             <div class="panel-heading">비수신건</div>
                                             <div class="panel-body">
-                                                <span class="num -data-cancel-call"></span>
+                                                <span class="num">185</span>
                                             </div>
                                         </div>
                                     </div>
@@ -55,7 +59,7 @@
                                     <div class="panel-heading">인바운드 현황</div>
                                     <div class="panel-body">
                                         <div class="chart-wrap">
-                                            차트삽입<%--TODO: 작업필요--%>
+                                            차트삽입
                                         </div>
                                         <div class="chart-label-wrap-bar">
                                             <ul>
@@ -71,73 +75,75 @@
                                 </div>
                             </div>
                         </div>
-                        <table class="ui celled table compact unstackable structured">
-                            <thead>
-                            <tr>
-                                <th rowspan="2">날짜/시간</th>
-                                <th colspan="6">I/B 콜 현황</th>
-                                <th colspan="6">성과지표</th>
-                                <th colspan="5">응대호 대기시간 분석</th>
-                                <th colspan="5">포기호 대기시간 분석</th>
-                            </tr>
-                            <tr>
-                                <th>I/B<br>전체콜</th>
-                                <th>단순조회</th>
-                                <th>연결요청</th>
-                                <th>응대호</th>
-                                <th>포기호</th>
-                                <th>콜백</th>
+                        <div class="table-scroll-wrap">
+                            <table class="ui celled table compact unstackable structured">
+                                <thead>
+                                <tr>
+                                    <th rowspan="2">날짜/시간</th>
+                                    <th colspan="6">I/B 콜 현황</th>
+                                    <th colspan="6">성과지표</th>
+                                    <th colspan="5">응대호 대기시간 분석</th>
+                                    <th colspan="5">포기호 대기시간 분석</th>
+                                </tr>
+                                <tr>
+                                    <th>I/B<br>전체콜</th>
+                                    <th>단순조회</th>
+                                    <th>연결요청</th>
+                                    <th>응대호</th>
+                                    <th>포기호</th>
+                                    <th>콜백</th>
 
-                                <th>I/B<br>총통화시간</th>
-                                <th>평균통화시간</th>
-                                <th>평균대기시간</th>
-                                <th>호응답률</th>
-                                <th>서비스레벨<br>호응답률</th>
-                                <th>단순조회율</th>
-                                <th>~10(초)</th>
-                                <th>~20(초)</th>
-                                <th>~30(초)</th>
-                                <th>~40(초)</th>
-                                <th>40~(초)</th>
-                                <th>~10(초)</th>
-                                <th>~20(초)</th>
-                                <th>~30(초)</th>
-                                <th>~40(초)</th>
-                                <th>40~(초)</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <th>합계</th>
+                                    <th>I/B<br>총통화시간</th>
+                                    <th>평균통화시간</th>
+                                    <th>평균대기시간</th>
+                                    <th>호응답률</th>
+                                    <th>서비스레벨<br>호응답률</th>
+                                    <th>단순조회율</th>
+                                    <th>~10(초)</th>
+                                    <th>~20(초)</th>
+                                    <th>~30(초)</th>
+                                    <th>~40(초)</th>
+                                    <th>40~(초)</th>
+                                    <th>~10(초)</th>
+                                    <th>~20(초)</th>
+                                    <th>~30(초)</th>
+                                    <th>~40(초)</th>
+                                    <th>40~(초)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <th>합계</th>
 
-                                <td><span>${inboundData.total}</span></td>
-                                <td><span>${inboundData.onlyRead}</span></td>
-                                <td><span>${inboundData.connReq}</span></td>
-                                <td><span>${inboundData.success}</span></td>
-                                <td><span>${inboundData.cancel}</span></td>
-                                <td><span>${inboundData.callbackSuccess}</span></td>
+                                    <td><span>0</span></td>
+                                    <td><span>0</span></td>
+                                    <td><span>0</span></td>
+                                    <td><span>0</span></td>
+                                    <td><span>0</span></td>
+                                    <td><span>0</span></td>
 
-                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(inboundData.billSecSum)}</td>
-                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(inboundData.billSecAvg)}</td>
-                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(inboundData.waitAvg)}</td>
-                                <td>${inboundData.responseRate}%</td>
-                                <td>${inboundData.svcLevelAvg}%</td>
-                                <td>${inboundData.ivrAvg}%</td>
+                                    <td>00:00:00</td>
+                                    <td>00:00:00</td>
+                                    <td>00:00:00</td>
+                                    <td>0.0%</td>
+                                    <td>0.0%</td>
+                                    <td>0.0%</td>
 
-                                <td>${inboundData.waitSucc_0_10}</td>
-                                <td>${inboundData.waitSucc_10_20}</td>
-                                <td>${inboundData.waitSucc_20_30}</td>
-                                <td>${inboundData.waitSucc_30_40}</td>
-                                <td>${inboundData.waitSucc_40}</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
 
-                                <td>${inboundData.waitCancel_0_10}</td>
-                                <td>${inboundData.waitCancel_10_20}</td>
-                                <td>${inboundData.waitCancel_20_30}</td>
-                                <td>${inboundData.waitCancel_30_40}</td>
-                                <td>${inboundData.waitCancel_40}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -150,69 +156,181 @@
                         <div class="panel-body">
                             <div class="ui grid">
                                 <div class="six wide column">
-                                    <div class="chart-wrap">
-                                        <svg id="pie-consultant-status" style="width: 100%; height: 100%;"></svg>
-                                    </div>
+                                    <div class="chart-wrap"></div>
                                     <div class="chart-label-wrap-circle">
                                         <ul>
-                                            <c:forEach var="status" items="${statuses}">
-                                                <c:if test="${status.key != 9}">
-                                                    <li>
-                                                        <span class="symbol color-${status.key + 1}"></span>
-                                                        <span class="text">${g.htmlQuote(status.value)}</span>
-                                                    </li>
-                                                </c:if>
-                                            </c:forEach>
+                                            <li>
+                                                <span class="symbol color-1"></span>
+                                                <span class="text">대기</span>
+                                            </li>
+                                            <li>
+                                                <span class="symbol color-2"></span>
+                                                <span class="text">휴식</span>
+                                            </li>
+                                            <li>
+                                                <span class="symbol color-3"></span>
+                                                <span class="text">통화중</span>
+                                            </li>
+                                            <li>
+                                                <span class="symbol color-4"></span>
+                                                <span class="text">식사</span>
+                                            </li>
+                                            <li>
+                                                <span class="symbol color-5"></span>
+                                                <span class="text">후처리</span>
+                                            </li>
+                                            <li>
+                                                <span class="symbol color-6"></span>
+                                                <span class="text">이석</span>
+                                            </li>
+                                            <li>
+                                                <span class="symbol color-7"></span>
+                                                <span class="text">로그아웃</span>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="ten wide column">
+                                    <div class="table-scroll-wrap">
                                     <table class="ui celled table compact">
                                         <thead>
                                         <tr>
                                             <th>콜그룹명</th>
                                             <th>고객대기</th>
-
-                                            <c:forEach var="status" items="${statuses}">
-                                                <c:if test="${status.key != 9}">
-                                                    <th>${g.htmlQuote(status.value)}</th>
-                                                </c:if>
-                                            </c:forEach>
-
+                                            <th>대기</th>
+                                            <th>통화중</th>
+                                            <th>후처리</th>
+                                            <th>휴식</th>
+                                            <th>식사</th>
                                             <th>로그인</th>
                                             <th>로그아웃</th>
                                             <th>전체</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <c:choose>
-                                            <c:when test="${huntConsultantsStat.size() > 0}">
-                                                <c:forEach var="e" items="${huntConsultantsStat}">
-                                                    <tr>
-                                                        <td>${g.htmlQuote(e.queueHanName)}</td>
-                                                        <td class="-custom-wait-count" data-hunt="${g.htmlQuote(e.queueName)}">${e.customWait}</td>
-
-                                                        <c:forEach var="status" items="${statuses}">
-                                                            <c:if test="${status.key != 9}">
-                                                                <td class="-consultant-status-count" data-value="${status.key}"
-                                                                    data-hunt="${g.htmlQuote(e.queueName)}">${e.statusCountMap.getOrDefault(status.key, 0)}</td>
-                                                            </c:if>
-                                                        </c:forEach>
-
-                                                        <td class="-login-user-count" data-hunt="${g.htmlQuote(e.queueName)}">${e.loginCount}</td>
-                                                        <td class="-logout-user-count" data-hunt="${g.htmlQuote(e.queueName)}">${e.logoutCount}</td>
-                                                        <td>${e.total}</td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <tr>
-                                                    <td colspan="11" class="null-data">조회된 데이터가 없습니다.</td>
-                                                </tr>
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <tr>
+                                            <td>콜그룹명</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>콜그룹명</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>콜그룹명</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>콜그룹명</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>콜그룹명</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>콜그룹명</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>콜그룹명</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>콜그룹명</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>콜그룹명</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
+                                        <tr>
+                                            <td>콜그룹명</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                        </tr>
                                         </tbody>
                                     </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -222,11 +340,11 @@
                     <div class="panel panel-dashboard">
                         <div class="panel-heading">
                             <div class="pull-left">
-                                <div class="panel-label" id="ranking-title1" data-index="0">최다수신 TOP 10</div>
+                                <div class="panel-label">최다수신 TOP 10</div>
                             </div>
                             <div class="pull-right">
-                                <button type="button" class="arrow-btn" onclick="moveRankingContents(1, -1)">◀</button>
-                                <button type="button" class="arrow-btn" onclick="moveRankingContents(1, 1)">▶</button>
+                                <button type="button" class="arrow-btn">◀</button>
+                                <button type="button" class="arrow-btn">▶</button>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -236,11 +354,11 @@
                                     <th>상담사명</th>
                                     <th>상담사ID</th>
                                     <th>내선번호</th>
-                                    <th>개인번호</th>
+                                    <th>내선번호</th>
                                     <th>상태</th>
                                 </tr>
                                 </thead>
-                                <tbody id="ranking-sheet1">
+                                <tbody>
                                 <tr>
                                     <td>상담사명</td>
                                     <td>상담사ID</td>
@@ -320,11 +438,11 @@
                     <div class="panel panel-dashboard">
                         <div class="panel-heading">
                             <div class="pull-left">
-                                <div class="panel-label" id="ranking-title2" data-index="1">최다수신 TOP 10</div>
+                                <div class="panel-label">최다수신 TOP 10</div>
                             </div>
                             <div class="pull-right">
-                                <button type="button" class="arrow-btn" onclick="moveRankingContents(2, -1)">◀</button>
-                                <button type="button" class="arrow-btn" onclick="moveRankingContents(2, 1)">▶</button>
+                                <button type="button" class="arrow-btn">◀</button>
+                                <button type="button" class="arrow-btn">▶</button>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -334,11 +452,11 @@
                                     <th>상담사명</th>
                                     <th>상담사ID</th>
                                     <th>내선번호</th>
-                                    <th>개인번호</th>
+                                    <th>내선번호</th>
                                     <th>상태</th>
                                 </tr>
                                 </thead>
-                                <tbody id="ranking-sheet2">
+                                <tbody>
                                 <tr>
                                     <td>상담사명</td>
                                     <td>상담사ID</td>
@@ -418,134 +536,25 @@
         </div>
     </div>
 
+
+
     <tags:scripts>
         <script>
-            function loadInboundData() {
-                restSelf.get("/api/screen-data/integration", null, null, true).done(function (data) {
-                    $('.-data-response-rate').text(data.data.responseRate.toFixed(1) + '%');
-                    $('.-data-success-call').text(data.data.successCall);
-                    $('.-data-cancel-call').text(data.data.cancelCall);
-                    $('.-data-connection-request').text(data.data.connectionRequest);
-                    $('.-data-inbound-call').text(data.data.inboundCall);
-                });
-            }
+            $(document).on('click', '.-menu-page', function (event) {
+                const $this = $(event.target);
+                event.stopPropagation();
+                event.preventDefault();
 
-            setInterval(loadInboundData, 1000 * 30);
+                $('.-menu-page').parent().removeClass('active');
+                $this.parent().addClass('active');
 
-            $(window).on('load', loadInboundData);
+                $('#main-content').attr('src', $this.attr('href'));
 
-            drawDonutChart('#pie-consultant-status', [
-                <c:choose>
-                <c:when test="${statusCountMapSum > 0}">
-
-                <c:forEach var="status" items="${statuses}">
-                <c:if test="${status.key != 9}">
-                ${statusCountMap.getOrDefault(status.key, 0) / statusCountMapSum},
-                </c:if>
-                </c:forEach>
-
-                </c:when>
-                <c:otherwise>
-                1
-                </c:otherwise>
-                </c:choose>
-            ], {
-                colorClasses: [
-                    <c:choose>
-                    <c:when test="${statusCountMapSum > 0}">
-
-                    <c:forEach var="status" items="${statuses}">
-                    <c:if test="${status.key != 9}">
-                    'bcolor-bar${status.key+ 1}',
-                    </c:if>
-                    </c:forEach>
-
-                    </c:when>
-                    <c:otherwise>
-                    'bcolor-bar0'
-                    </c:otherwise>
-                    </c:choose>
-                ]
-            });
-
-            const individualStat = [
-                <c:forEach var="e" items="${individualStat}">
-                {
-                    customNumber: '${g.escapeQuote(e.customNumber)}',
-                    id: '${g.escapeQuote(e.person.id)}',
-                    idName: '${g.escapeQuote(e.person.idName)}',
-                    extension: '${g.escapeQuote(e.person.extension)}',
-                    peer: '${g.escapeQuote(e.person.peer)}',
-                    paused: '${g.escapeQuote(e.person.paused)}',
-                    isLogin: '${g.escapeQuote(e.person.isLogin)}',
-                    values: {
-                        inboundSuccess: ${e.inboundSuccess},
-                        outboundSuccess: ${e.outboundSuccess},
-                    },
-                },
-                </c:forEach>
-            ];
-
-            const rankingKeywords = [
-                {property: 'inboundSuccess', title: '최다수신'},
-                {property: 'outboundSuccess', title: '최다발신'},
-            ];
-
-            const statuses = {
-                <c:forEach var="e" items="${statuses}">
-                '${e.key}': '${g.escapeQuote(e.value)}',
-                </c:forEach>
-            };
-
-            const rankingTitles = ['ranking-title1', 'ranking-title2'];
-
-            function moveRankingContents(index, move) {
-                const title = $('#ranking-title' + index);
-                const sheet = $('#ranking-sheet' + index).empty();
-
-                if (!title.length)
-                    return;
-
-                const usingContentIndices = [];
-                rankingTitles.map(function (e) {
-                    if (e === 'ranking-title' + index)
-                        return;
-                    usingContentIndices.push(parseInt($('#' + e).attr('data-index')));
-                });
-
-                const currentContentIndex = (function extract(){
-                    const currentContentIndex = (parseInt(title.attr('data-index')) + move) % rankingKeywords.length;
-                    title.attr('data-index', currentContentIndex);
-
-                    if (usingContentIndices.indexOf(currentContentIndex) >= 0)
-                        return extract();
-
-                    return currentContentIndex;
-                })();
-
-                title.text(rankingKeywords[currentContentIndex].title + ' TOP 10');
-
-                const propertyName = rankingKeywords[currentContentIndex].property;
-                individualStat.sort(function (a, b) {
-                    return a.values[propertyName] > b.values[propertyName];
-                });
-
-                for (let i = 0; i < 10 && i < individualStat.length; i++) {
-                    const e = individualStat[i];
-                    sheet.append(
-                        $('<tr/>')
-                            .append($('<td/>', {text: e.idName}))
-                            .append($('<td/>', {text: e.id}))
-                            .append($('<td/>', {text: e.extension}))
-                            .append($('<td/>', {text: e.peer}))
-                            .append($('<td/>', {class: 'bcolor-bar' + e.paused, text: statuses[e.paused]}))
-                    );
+                if ($('#main').is('.change-mode')) {
+                    changeMode();
                 }
-            }
 
-            $(window).on('load', function () {
-                moveRankingContents(1, 0);
-                moveRankingContents(2, 0);
+                return false;
             });
         </script>
     </tags:scripts>
