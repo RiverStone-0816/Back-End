@@ -222,11 +222,11 @@
                     <div class="panel panel-dashboard">
                         <div class="panel-heading">
                             <div class="pull-left">
-                                <div class="panel-label">최다수신 TOP 10</div>
+                                <div class="panel-label" id="ranking-title1" data-index="0">최다수신 TOP 10</div>
                             </div>
                             <div class="pull-right">
-                                <button type="button" class="arrow-btn">◀</button>
-                                <button type="button" class="arrow-btn">▶</button>
+                                <button type="button" class="arrow-btn" onclick="moveRankingContents(1, -1)">◀</button>
+                                <button type="button" class="arrow-btn" onclick="moveRankingContents(1, 1)">▶</button>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -236,11 +236,11 @@
                                     <th>상담사명</th>
                                     <th>상담사ID</th>
                                     <th>내선번호</th>
-                                    <th>내선번호</th>
+                                    <th>개인번호</th>
                                     <th>상태</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="ranking-sheet1">
                                 <tr>
                                     <td>상담사명</td>
                                     <td>상담사ID</td>
@@ -320,11 +320,11 @@
                     <div class="panel panel-dashboard">
                         <div class="panel-heading">
                             <div class="pull-left">
-                                <div class="panel-label">최다수신 TOP 10</div>
+                                <div class="panel-label" id="ranking-title2" data-index="1">최다수신 TOP 10</div>
                             </div>
                             <div class="pull-right">
-                                <button type="button" class="arrow-btn">◀</button>
-                                <button type="button" class="arrow-btn">▶</button>
+                                <button type="button" class="arrow-btn" onclick="moveRankingContents(2, -1)">◀</button>
+                                <button type="button" class="arrow-btn" onclick="moveRankingContents(2, 1)">▶</button>
                             </div>
                         </div>
                         <div class="panel-body">
@@ -334,11 +334,11 @@
                                     <th>상담사명</th>
                                     <th>상담사ID</th>
                                     <th>내선번호</th>
-                                    <th>내선번호</th>
+                                    <th>개인번호</th>
                                     <th>상태</th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="ranking-sheet2">
                                 <tr>
                                     <td>상담사명</td>
                                     <td>상담사ID</td>
@@ -466,6 +466,86 @@
                     </c:otherwise>
                     </c:choose>
                 ]
+            });
+
+            const individualStat = [
+                <c:forEach var="e" items="${individualStat}">
+                {
+                    customNumber: '${g.escapeQuote(e.customNumber)}',
+                    id: '${g.escapeQuote(e.person.id)}',
+                    idName: '${g.escapeQuote(e.person.idName)}',
+                    extension: '${g.escapeQuote(e.person.extension)}',
+                    peer: '${g.escapeQuote(e.person.peer)}',
+                    paused: '${g.escapeQuote(e.person.paused)}',
+                    isLogin: '${g.escapeQuote(e.person.isLogin)}',
+                    values: {
+                        inboundSuccess: ${e.inboundSuccess},
+                        outboundSuccess: ${e.outboundSuccess},
+                    },
+                },
+                </c:forEach>
+            ];
+
+            const rankingKeywords = [
+                {property: 'inboundSuccess', title: '최다수신'},
+                {property: 'outboundSuccess', title: '최다발신'},
+            ];
+
+            const statuses = {
+                <c:forEach var="e" items="${statuses}">
+                '${e.key}': '${g.escapeQuote(e.value)}',
+                </c:forEach>
+            };
+
+            const rankingTitles = ['ranking-title1', 'ranking-title2'];
+
+            function moveRankingContents(index, move) {
+                const title = $('#ranking-title' + index);
+                const sheet = $('#ranking-sheet' + index).empty();
+
+                if (!title.length)
+                    return;
+
+                const usingContentIndices = [];
+                rankingTitles.map(function (e) {
+                    if (e === 'ranking-title' + index)
+                        return;
+                    usingContentIndices.push(parseInt($('#' + e).attr('data-index')));
+                });
+
+                const currentContentIndex = (function extract(){
+                    const currentContentIndex = (parseInt(title.attr('data-index')) + move) % rankingKeywords.length;
+                    title.attr('data-index', currentContentIndex);
+
+                    if (usingContentIndices.indexOf(currentContentIndex) >= 0)
+                        return extract();
+
+                    return currentContentIndex;
+                })();
+
+                title.text(rankingKeywords[currentContentIndex].title + ' TOP 10');
+
+                const propertyName = rankingKeywords[currentContentIndex].property;
+                individualStat.sort(function (a, b) {
+                    return a.values[propertyName] > b.values[propertyName];
+                });
+
+                for (let i = 0; i < 10 && i < individualStat.length; i++) {
+                    const e = individualStat[i];
+                    sheet.append(
+                        $('<tr/>')
+                            .append($('<td/>', {text: e.idName}))
+                            .append($('<td/>', {text: e.id}))
+                            .append($('<td/>', {text: e.extension}))
+                            .append($('<td/>', {text: e.peer}))
+                            .append($('<td/>', {class: 'bcolor-bar' + e.paused, text: statuses[e.paused]}))
+                    );
+                }
+            }
+
+            $(window).on('load', function () {
+                moveRankingContents(1, 0);
+                moveRankingContents(2, 0);
             });
         </script>
     </tags:scripts>
