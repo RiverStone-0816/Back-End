@@ -59,12 +59,12 @@
                                         </div>
                                         <div class="chart-label-wrap-bar">
                                             <ul>
-                                                <li><span class="symbol color-1"></span><span class="text">I/B전체</span></li>
-                                                <li><span class="symbol color-2"></span><span class="text">단순조회</span></li>
-                                                <li><span class="symbol color-3"></span><span class="text">연결요청</span></li>
-                                                <li><span class="symbol color-4"></span><span class="text">응대호</span></li>
-                                                <li><span class="symbol color-5"></span><span class="text">포기호</span></li>
-                                                <li><span class="symbol color-6"></span><span class="text">콜백</span></li>
+                                                <li><span class="symbol color-bar1"></span><span class="text">I/B전체</span></li>
+                                                <li><span class="symbol color-bar2"></span><span class="text">단순조회</span></li>
+                                                <li><span class="symbol color-bar3"></span><span class="text">연결요청</span></li>
+                                                <li><span class="symbol color-bar4"></span><span class="text">응대호</span></li>
+                                                <li><span class="symbol color-bar5"></span><span class="text">포기호</span></li>
+                                                <li><span class="symbol color-bar6"></span><span class="text">콜백</span></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -158,7 +158,7 @@
                                             <c:forEach var="status" items="${statuses}">
                                                 <c:if test="${status.key != 9}">
                                                     <li>
-                                                        <span class="symbol color-${status.key + 1}"></span>
+                                                        <span class="symbol bcolor-bar${status.key + 1}"></span>
                                                         <span class="text">${g.htmlQuote(status.value)}</span>
                                                     </li>
                                                 </c:if>
@@ -240,78 +240,7 @@
                                     <th>상태</th>
                                 </tr>
                                 </thead>
-                                <tbody id="ranking-sheet1">
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td class="call-state-bg">통화중</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td class="wait-state-bg">대기</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td class="bell-state-bg">벨울림</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td class="after-state-bg">후처리</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td class="logout-state-bg">로그아웃</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td class="etc-state-bg">기타</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td>대기</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td>대기</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td>대기</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td>대기</td>
-                                </tr>
-                                </tbody>
+                                <tbody id="ranking-sheet1"></tbody>
                             </table>
                         </div>
                     </div>
@@ -338,78 +267,7 @@
                                     <th>상태</th>
                                 </tr>
                                 </thead>
-                                <tbody id="ranking-sheet2">
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td>대기</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td>대기</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td>대기</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td>대기</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td>대기</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td>대기</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td>대기</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td>대기</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td>대기</td>
-                                </tr>
-                                <tr>
-                                    <td>상담사명</td>
-                                    <td>상담사ID</td>
-                                    <td>내선번호</td>
-                                    <td>내선번호</td>
-                                    <td>대기</td>
-                                </tr>
-                                </tbody>
+                                <tbody id="ranking-sheet2"></tbody>
                             </table>
                         </div>
                     </div>
@@ -513,7 +371,7 @@
                     usingContentIndices.push(parseInt($('#' + e).attr('data-index')));
                 });
 
-                const currentContentIndex = (function extract(){
+                const currentContentIndex = (function extract() {
                     const currentContentIndex = (parseInt(title.attr('data-index')) + move) % rankingKeywords.length;
                     title.attr('data-index', currentContentIndex);
 
