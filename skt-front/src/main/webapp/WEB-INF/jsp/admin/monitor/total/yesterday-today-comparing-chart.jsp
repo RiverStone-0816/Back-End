@@ -46,7 +46,7 @@
 </div>
 
 <script>
-    drawBarChart($('#today-and-yesterday-inbound-comparing-chart')[0], [
+    drawLineChart($('#today-and-yesterday-inbound-comparing-chart')[0], [
         <c:forEach var="hour" begin="${0}" end="${23}" >
         {
             yesterday: ${(data.get(hour) != null && data.get(hour).left != null ? data.get(hour).left.total : 0)},
