@@ -19,71 +19,68 @@
         <tags:page-menu-tab url="/admin/user/organization/"/>
 
         <div class="sub-content ui container fluid">
-            <div class="ui grid complex">
-                <div class="eight wide column remove-pr">
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <div class="ui action input fluid">
-                                <button onclick="addChild($('#organization-pan'))" class="ui compact button mr15">대분류추가</button>
-                                <input type="text" placeholder="검색">
-                                <button type="button" class="ui icon button" onclick="search($(this).prev().val())">
-                                    <i class="search icon"></i>
+            <div class="panel panel-search">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <div class="panel-label">조직관리</div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel flex-flow-row">
+                <div class="panel-body">
+                    <div class="ui form flex">
+                        <button onclick="addChild($('#organization-pan'))" class="ui basic button mr10">대분류추가</button>
+                        <input type="text" placeholder="검색" class="mr10">
+                        <button type="button" class="ui button sharp brand remove-margin" onclick="search($(this).prev().val())">검색</button>
+                    </div>
+                    <jsp:include page="/admin/user/organization/editable-pan"/>
+
+                    <form id="organization-register-form" class="item -json-submit" style="display: none;"
+                          action="${pageContext.request.contextPath}/api/organization/" data-method="post"
+                          data-done="doneRegisterElement">
+                        <input type="hidden" name="parentGroupCode">
+                        <input type="hidden" name="groupLevel">
+
+                        <i class="folder icon"></i>
+                        <div class="content">
+                            <div class="header">
+                                <div class="ui mini action input">
+                                    <input type="text" placeholder="명칭입력" name="groupName">
+                                    <button type="submit" class="ui button">확인</button>
+                                </div>
+                                <button type="button" onclick="event.stopPropagation(); detachAddChild()();" class="circular basic ui icon mini very compact button">
+                                    <i class="icon close"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="panel-body">
-                            <jsp:include page="/admin/user/organization/editable-pan"/>
+                    </form>
 
-                            <form id="organization-register-form" class="item -json-submit" style="display: none;"
-                                  action="${pageContext.request.contextPath}/api/organization/" data-method="post"
-                                  data-done="doneRegisterElement">
-                                <input type="hidden" name="parentGroupCode">
-                                <input type="hidden" name="groupLevel">
-
-                                <i class="folder icon"></i>
-                                <div class="content">
-                                    <div class="header">
-                                        <div class="ui mini action input">
-                                            <input type="text" placeholder="명칭입력" name="groupName">
-                                            <button type="submit" class="ui button">확인</button>
-                                        </div>
-                                        <button type="button" onclick="event.stopPropagation(); detachAddChild()();" class="circular basic ui icon mini very compact button">
-                                            <i class="icon close"></i>
-                                        </button>
-                                    </div>
+                    <form id="organization-update-form" class="item -json-submit" style="display: none;"
+                          action="${pageContext.request.contextPath}/api/organization/" data-method="put"
+                          data-done="doneUpdateElement">
+                        <div class="content">
+                            <div class="header">
+                                <div class="ui mini action input">
+                                    <input type="text" placeholder="명칭입력" name="groupName">
+                                    <button type="submit" class="ui button">확인</button>
                                 </div>
-                            </form>
-
-                            <form id="organization-update-form" class="item -json-submit" style="display: none;"
-                                  action="${pageContext.request.contextPath}/api/organization/" data-method="put"
-                                  data-done="doneUpdateElement">
-                                <div class="content">
-                                    <div class="header">
-                                        <div class="ui mini action input">
-                                            <input type="text" placeholder="명칭입력" name="groupName">
-                                            <button type="submit" class="ui button">확인</button>
-                                        </div>
-                                        <button type="button" onclick="event.stopPropagation(); detachInput();" class="circular basic ui icon mini very compact button">
-                                            <i class="icon close"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </form>
+                                <button type="button" onclick="event.stopPropagation(); detachInput();" class="circular basic ui icon mini very compact button">
+                                    <i class="icon close"></i>
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
-                <div class="eight wide column">
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <div class="pull-left">
-                                <h3 class="panel-title">조직정보</h3>
-                            </div>
-                            <div class="pull-right">
-                                <button class="ui basic button" onclick="popupMetaTypeSet()">META유형 수정</button>
-                            </div>
+                <div class="panel-body remove-padding">
+                    <div class="panel-heading">
+                        <div class="pull-left">
+                            <div class="panel-label">조직정보</div>
                         </div>
-                        <div class="panel-body" id="organization-element-summary"></div>
+                        <div class="pull-right">
+                            <button class="ui basic button" onclick="popupMetaTypeSet()">META유형 수정</button>
+                        </div>
                     </div>
+                    <div class="panel-body remove-padding" id="organization-element-summary"></div>
                 </div>
             </div>
         </div>

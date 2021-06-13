@@ -1362,6 +1362,16 @@ pre {
   }
 }
 
+.panel.flex-flow-row {
+  flex-flow: row!important;
+  > .panel-body {
+    flex: 1;
+    &:last-child {
+      border-left:1px solid @color-border;
+    }
+  }
+}
+
 .panel:not(.panel-search).panel-statstics {
   .panel-heading {
     border-bottom: 1px solid @color-border;
@@ -1789,6 +1799,9 @@ label.control-label {
 .pd20 {
   padding:20px!important;
 }
+.mr10 {
+  margin-right: 10px !important;
+}
 .mr15 {
   margin-right: 15px !important;
 }
@@ -2089,6 +2102,15 @@ label.control-label {
   }
 }
 
+.ui.basic.buttons .button, .ui.basic.button {
+  box-shadow: none;
+  border:1px solid @color-border;
+  padding: 0.57em 1.4em;
+  &:hover {
+    box-shadow: none;
+  }
+}
+
 .ui.modal {
   border-radius: 0;
 }
@@ -2106,6 +2128,19 @@ label.control-label {
   input[type="text"] {
     border-radius: 0;
   }
+}
+
+.ui.mini.steps .step, .ui.mini.step {
+  padding: .9em 1em;
+  background:@color-th;
+  &:after {
+    background:@color-th;
+  }
+}
+
+.ui.steps.mini.fluid {
+  margin-top: -3px;
+  line-height: 1em;
 }
 
 .ui.slider.checkbox input:checked ~ .box:after, .ui.slider.checkbox input:checked ~ label:after {
