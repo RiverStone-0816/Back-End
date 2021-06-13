@@ -59,12 +59,12 @@
                                         </div>
                                         <div class="chart-label-wrap-bar">
                                             <ul>
-                                                <li><span class="symbol color-bar1"></span><span class="text">I/B전체</span></li>
-                                                <li><span class="symbol color-bar2"></span><span class="text">단순조회</span></li>
-                                                <li><span class="symbol color-bar3"></span><span class="text">연결요청</span></li>
-                                                <li><span class="symbol color-bar4"></span><span class="text">응대호</span></li>
-                                                <li><span class="symbol color-bar5"></span><span class="text">포기호</span></li>
-                                                <li><span class="symbol color-bar6"></span><span class="text">콜백</span></li>
+                                                <li><span class="symbol bcolor-bar1"></span><span class="text">I/B전체</span></li>
+                                                <li><span class="symbol bcolor-bar2"></span><span class="text">단순조회</span></li>
+                                                <li><span class="symbol bcolor-bar3"></span><span class="text">연결요청</span></li>
+                                                <li><span class="symbol bcolor-bar4"></span><span class="text">응대호</span></li>
+                                                <li><span class="symbol bcolor-bar5"></span><span class="text">포기호</span></li>
+                                                <li><span class="symbol bcolor-bar6"></span><span class="text">콜백</span></li>
                                             </ul>
                                         </div>
                                     </div>

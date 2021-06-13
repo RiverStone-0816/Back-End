@@ -255,11 +255,11 @@
                            </div>
                            <div class="billboard-chart-label-wrap">
                                <ul>
-                                   <li><span class="symbol color-bar1"></span><span class="text">응대율</span></li>
-                                   <li><span class="symbol color-bar2"></span><span class="text">I/B전체</span></li>
-                                   <li><span class="symbol color-bar3"></span><span class="text">연결요청</span></li>
-                                   <li><span class="symbol color-bar4"></span><span class="text">응대호</span></li>
-                                   <li><span class="symbol color-bar5"></span><span class="text">포기호</span></li>
+                                   <li><span class="symbol bcolor-bar1"></span><span class="text">응대율</span></li>
+                                   <li><span class="symbol bcolor-bar2"></span><span class="text">I/B전체</span></li>
+                                   <li><span class="symbol bcolor-bar3"></span><span class="text">연결요청</span></li>
+                                   <li><span class="symbol bcolor-bar4"></span><span class="text">응대호</span></li>
+                                   <li><span class="symbol bcolor-bar5"></span><span class="text">포기호</span></li>
                                </ul>
                            </div>
                        </div>
@@ -521,31 +521,31 @@
                 <div class="inner">
                     <ul>
                         <li>
-                            <div class="left"><span class="symbol color-bar1"></span>대기</div>
+                            <div class="left"><span class="symbol bcolor-bar1"></span>대기</div>
                             <div class="right"><input type="text">분</div>
                         </li>
                         <li>
-                            <div class="left"><span class="symbol color-bar2"></span>통화</div>
+                            <div class="left"><span class="symbol bcolor-bar2"></span>통화</div>
                             <div class="right"><input type="text">분</div>
                         </li>
                         <li>
-                            <div class="left"><span class="symbol color-bar3"></span>후처리</div>
+                            <div class="left"><span class="symbol bcolor-bar3"></span>후처리</div>
                             <div class="right"><input type="text">분</div>
                         </li>
                         <li>
-                            <div class="left"><span class="symbol color-bar4"></span>휴식</div>
+                            <div class="left"><span class="symbol bcolor-bar4"></span>휴식</div>
                             <div class="right"><input type="text">분</div>
                         </li>
                         <li>
-                            <div class="left"><span class="symbol color-bar4"></span>식사</div>
+                            <div class="left"><span class="symbol bcolor-bar4"></span>식사</div>
                             <div class="right"><input type="text">분</div>
                         </li>
                         <li>
-                            <div class="left"><span class="symbol color-bar4"></span>이석</div>
+                            <div class="left"><span class="symbol bcolor-bar4"></span>이석</div>
                             <div class="right"><input type="text">분</div>
                         </li>
                         <li>
-                            <div class="left"><span class="symbol color-bar4"></span>기타</div>
+                            <div class="left"><span class="symbol bcolor-bar4"></span>기타</div>
                             <div class="right"><input type="text">분</div>
                         </li>
                     </ul>
