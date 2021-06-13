@@ -43,12 +43,13 @@ public class ConstantStatusMonitoringController extends BaseController {
     private Map<String, String> getHavingPersonGroups(List<OrganizationMetaChatt> organizations) {
         final Map<String, String> groups = new HashMap<>();
 
-        for (OrganizationMetaChatt e : organizations) {
-            if (!e.getPersonList().isEmpty())
-                groups.put(e.getGroupCode(), e.getGroupName());
+        if (organizations != null)
+            for (OrganizationMetaChatt e : organizations) {
+                if (e.getPersonList() != null && !e.getPersonList().isEmpty())
+                    groups.put(e.getGroupCode(), e.getGroupName());
 
-            groups.putAll(getHavingPersonGroups(e.getOrganizationMetaChatt()));
-        }
+                groups.putAll(getHavingPersonGroups(e.getOrganizationMetaChatt()));
+            }
 
         return groups;
     }
@@ -56,17 +57,18 @@ public class ConstantStatusMonitoringController extends BaseController {
     private Map<String, List<MonitorQueuePersonStatResponse>> getGroupToPersons(List<OrganizationMetaChatt> organizations, List<MonitorQueuePersonStatResponse> persons) {
         final Map<String, List<MonitorQueuePersonStatResponse>> groups = new HashMap<>();
 
-        for (OrganizationMetaChatt e : organizations) {
-            if (!e.getPersonList().isEmpty()) {
-                final List<MonitorQueuePersonStatResponse> groupPersons = groups.getOrDefault(e.getGroupCode(), new ArrayList<>());
-                for (PersonDetailResponse p1 : e.getPersonList())
-                    persons.stream().filter(p -> Objects.equals(p.getPerson().getId(), p1.getId())).forEach(groupPersons::add);
+        if (organizations != null)
+            for (OrganizationMetaChatt e : organizations) {
+                if (e.getPersonList() != null && !e.getPersonList().isEmpty()) {
+                    final List<MonitorQueuePersonStatResponse> groupPersons = groups.getOrDefault(e.getGroupCode(), new ArrayList<>());
+                    for (PersonDetailResponse p1 : e.getPersonList())
+                        persons.stream().filter(p -> Objects.equals(p.getPerson().getId(), p1.getId())).forEach(groupPersons::add);
 
-                groups.put(e.getGroupCode(), groupPersons);
+                    groups.put(e.getGroupCode(), groupPersons);
+                }
+
+                groups.putAll(getGroupToPersons(e.getOrganizationMetaChatt(), persons));
             }
-
-            groups.putAll(getGroupToPersons(e.getOrganizationMetaChatt(), persons));
-        }
 
         return groups;
     }
