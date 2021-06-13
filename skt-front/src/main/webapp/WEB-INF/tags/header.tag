@@ -196,7 +196,7 @@
 
         function logout() {
             restSelf.get("/api/auth/logout").done(function () {
-                location.href = contextPath + '/';
+                parent.location.href = contextPath + '/';
             });
         }
 

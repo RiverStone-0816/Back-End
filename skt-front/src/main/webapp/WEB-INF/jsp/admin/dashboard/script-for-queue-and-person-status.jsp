@@ -39,7 +39,17 @@
         };
 
         window.statusCodes = {<c:forEach var="e" items="${statusCodes}">'${e.key}': '${g.escapeQuote(e.value)}', </c:forEach>};
-        window.statusToColorClass = {'0': 'teal', '1': 'blue'};
+        window.statusToColorClass = {
+            '0': 'bcolor-color1',
+            '1': 'bcolor-color2',
+            '2': 'bcolor-color3',
+            '3': 'bcolor-color4',
+            '4': 'bcolor-color5',
+            '5': 'bcolor-color6',
+            '6': 'bcolor-color7',
+            '7': 'bcolor-color8',
+            '8': 'bcolor-color9'
+        };
         window.serviceNumberToQueueName = {
             <c:forEach var="e" items="${serviceNumberToQueueName}">
             '${g.escapeQuote(e.key)}': [<c:forEach var="e2" items="${e.value}">'${g.escapeQuote(e2)}', </c:forEach>],
@@ -169,8 +179,10 @@
                     $(this).data('sortValue', peerStatus.status);
                 }
 
-                $(this).css({backgroundColor: peerStatus.status === 0 ? 'skyblue' : peerStatus.status === 1 ? 'yellow' : peerStatus.status === 2 ? 'orange' :
-                        peerStatus.status === 3 ? '#FF7171' : peerStatus.status === 4 ? '#86E57F' : peerStatus.status === 8 ? '#C98AFF' : '#ABABAB'});
+                $(this).css({
+                    backgroundColor: peerStatus.status === 0 ? 'skyblue' : peerStatus.status === 1 ? 'yellow' : peerStatus.status === 2 ? 'orange' :
+                        peerStatus.status === 3 ? '#FF7171' : peerStatus.status === 4 ? '#86E57F' : peerStatus.status === 8 ? '#C98AFF' : '#ABABAB'
+                });
             });
 
             $('.-consultant-status-with-color').each(function () {

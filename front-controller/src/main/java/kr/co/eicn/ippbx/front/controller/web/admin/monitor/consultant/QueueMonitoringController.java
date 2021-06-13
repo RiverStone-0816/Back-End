@@ -31,22 +31,22 @@ import java.util.stream.Collectors;
 public class QueueMonitoringController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(QueueMonitoringController.class);
 
-    private final QueueMonitoringApiInterface apiInterface;
+    private final QueueMonitoringApiInterface queueMonitoringApiInterface;
     private final PartMonitoringApiInterface partMonitoringApiInterface;
     private final CompanyApiInterface companyApiInterface;
 
     @GetMapping("")
     public String page(Model model) throws IOException, ResultFailException {
-        final List<MonitorQueueSummaryResponse> queueSummaries = apiInterface.getSummary();
+        final List<MonitorQueueSummaryResponse> queueSummaries = queueMonitoringApiInterface.getSummary();
         model.addAttribute("queueSummaries", queueSummaries);
 
-        final List<MonitorQueueSummaryPerson> queuePersonStatus = apiInterface.getPersonStatus();
+        final List<MonitorQueueSummaryPerson> queuePersonStatus = queueMonitoringApiInterface.getPersonStatus();
         model.addAttribute("queuePersonStatus", queuePersonStatus);
 
         final List<MonitorQueuePersonStatResponse> list = partMonitoringApiInterface.getIndividualStat();
         model.addAttribute("list", list);
 
-        final MonitorQueueTotalResponse queueStats = apiInterface.getStatSummary();
+        final MonitorQueueTotalResponse queueStats = queueMonitoringApiInterface.getStatSummary();
         model.addAttribute("queueStats", queueStats);
 
         final Map<String, String> queues = queueStats.getStatList().stream().collect(Collectors.toMap(MonitorQueueStatResponse::getQueueName, MonitorQueueStatResponse::getQueueHanName));

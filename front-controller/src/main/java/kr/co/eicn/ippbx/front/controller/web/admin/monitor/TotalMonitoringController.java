@@ -111,12 +111,4 @@ public class TotalMonitoringController extends BaseController {
 
         return "admin/monitor/total/yesterday-today-comparing-chart";
     }
-
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class ChartHourDatum {
-        private byte hour;
-        private StatInboundTimeResponse<HourResponse> yesterday;
-        private StatInboundTimeResponse<HourResponse> today;
-    }
 }

@@ -258,7 +258,7 @@
 
         loginModal.find('#confirm-login').click(function () {
             restSelf.get("/api/auth/confirm-login", null).done(function () {
-                location.href = contextPath + '/main';
+                parent.location.href = contextPath + '/main';
             });
         });
 
@@ -268,7 +268,7 @@
                     restSelf.patch("/api/user/" + $('#id').val() + "/password", data).done(function () {
                         alert("변경되었습니다. 다시 로그인해 주세요", function () {
                             restSelf.get("/api/auth/logout").done(function () {
-                                location.href = contextPath + '/';
+                                parent.location.href = contextPath + '/';
                             });
                         });
                     }).fail(function () {
@@ -280,11 +280,9 @@
 
         loginModal.find('#cancel-login').click(function () {
             restSelf.get("/api/auth/logout").done(function () {
-                location.href = contextPath + '/';
+                parent.location.href = contextPath + '/';
             });
         });
-
-
 
         $(document).ready(function () {
             const storedValues = localStorage.getItem(STORAGE_KEY);

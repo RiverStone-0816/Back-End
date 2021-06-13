@@ -22,7 +22,22 @@ public class BaseHandlerInterceptorAdapter extends HandlerInterceptorAdapter {
     protected RequestMessage message;
 
     protected void redirectMain(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        redirect(request, response, "/");
+        response.setContentType("text/html;charset=UTF-8");
+        response.getWriter().write(
+                "<!doctype html>\n" +
+                        "<html lang=\"en\">\n" +
+                        "<head>\n" +
+                        "    <meta charset=\"UTF-8\">\n" +
+                        // "    <meta http-equiv=\"refresh\" content=\"0;url=" + request.getContextPath() + url + "\" data-state=\"false\">\n" +
+                        "    <title>Redirecting</title>\n" +
+                        "</head>\n" +
+                        "<body>\n" +
+                        "<script>\n" +
+                        "parent.location.href = " + request.getContextPath() + " + '/';" +
+                        "</script>\n" +
+                        "</body>\n" +
+                        "</html>"
+        );
     }
 
     protected void redirect(HttpServletRequest request, HttpServletResponse response, String url) throws Exception {

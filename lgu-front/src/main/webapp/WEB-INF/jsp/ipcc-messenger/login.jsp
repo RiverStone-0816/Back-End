@@ -235,7 +235,7 @@
 
             loginModal.find('#confirm-login').click(function () {
                 restSelf.get("/api/auth/confirm-login", null).done(function () {
-                    location.href = contextPath + '/main';
+                    parent.location.href = contextPath + '/main';
                 });
             });
 
