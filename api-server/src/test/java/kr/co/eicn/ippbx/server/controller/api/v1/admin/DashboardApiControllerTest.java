@@ -433,7 +433,7 @@ public class DashboardApiControllerTest extends BaseControllerTest {
                 .andReturn();
     }
 
-    @Test
+//    @Test
     public void dashboardInboundchart() throws Exception {
         final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL + "/dashboard-inboundchart")
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
