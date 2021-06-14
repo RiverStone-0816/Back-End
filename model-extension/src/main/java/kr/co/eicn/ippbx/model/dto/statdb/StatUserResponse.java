@@ -20,6 +20,8 @@ public class StatUserResponse<T> {
     public static class UserStat {
         private String idName;
         private String groupName;
+        private String groupCode;
+        private String groupTreeName;
         private Integer totalCnt;
         private Integer totalBillSec;
 
