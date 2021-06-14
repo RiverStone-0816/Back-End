@@ -3360,17 +3360,25 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
 }
 
 #pds-ivr-container {
+  .ui.segments {
+    border-radius:0;
+    margin:-1px 0 0 0;
+  }
   .content {
     .header {
       line-height: 25px;
     }
   }
   .ui.list {
-    padding: 0;
-    margin: 0;
+    background: #fafafa;
+    padding: 1em;
   }
   .ui.segment {
-    padding: 0.5em;
+    padding: 0;
+    background:@color-th;
+  }
+  .ui.secondary.segment {
+
   }
   .ui.segment.secondary {
     > .ui.list > .item > .content > .header {
@@ -3391,9 +3399,9 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
         content: '';
         left: -13px;
         width: 9px;
-        height: 2px;
+        height: 1px;
         top: 12px;
-        background: #cccccc;
+        background: #333;
       }
     }
   }
@@ -3425,7 +3433,7 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
         top: 26px;
         left: 32px;
         text-indent: -999999px;
-        border-left: 2px solid darken(@color-gray, 12%);
+        border-left: 1px solid #333;
       }
     }
   }
@@ -3437,7 +3445,7 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
   }
   .item, .ui.list .list > .item {
     position: relative;
-    background: #f3f3f3;
+    background: #fafafa;
     border-radius: 5px;
     padding: 0;
   }
