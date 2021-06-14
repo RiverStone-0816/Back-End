@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 public class ConsultantStatController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(ConsultantStatController.class);
 
-    private final ConsultantStatApiInterface apiInterface;
+    private final ConsultantStatApiInterface consultantStatApiInterface;
     private final SearchApiInterface searchApiInterface;
     private final CsRouteApiInterface csRouteApiInterface;
     private final UserApiInterface userApiInterface;
@@ -52,10 +52,10 @@ public class ConsultantStatController extends BaseController {
 
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") StatUserSearchRequest search) throws IOException, ResultFailException {
-        final List<StatUserResponse<?>> list = apiInterface.list(search);
+        final List<StatUserResponse<?>> list = consultantStatApiInterface.list(search);
         model.addAttribute("list", list);
 
-        final StatUserResponse.UserStat total = apiInterface.getTotal(search);
+        final StatUserResponse.UserStat total = consultantStatApiInterface.getTotal(search);
         model.addAttribute("total", total);
 
         final Map<String, String> searchCycles = FormUtils.options(false, SearchCycle.class);
@@ -79,8 +79,8 @@ public class ConsultantStatController extends BaseController {
 
     @GetMapping("_excel")
     public void downloadExcel(StatUserSearchRequest search, HttpServletResponse response) throws IOException, ResultFailException {
-        final List<StatUserResponse<?>> list = apiInterface.list(search);
-        final StatUserResponse.UserStat total = apiInterface.getTotal(search);
+        final List<StatUserResponse<?>> list = consultantStatApiInterface.list(search);
+        final StatUserResponse.UserStat total = consultantStatApiInterface.getTotal(search);
 
         new ConsultantStatExcel(list, total).generator(response, "상담원(개인별)실적통계");
     }

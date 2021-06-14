@@ -173,12 +173,12 @@
             const name = $(this).find($(this).attr('data-name'));
             $(this).find($(this).attr('data-select')).click(function () {
                 popupSelectOrganizationModal(function (groupCode, groupNames, groupNameElement) {
-                    input.val(groupCode);
+                    input.val(groupCode).change();
                     name.empty().append(groupNameElement);
                 });
             });
             $(this).find($(this).attr('data-clear')).click(function () {
-                input.val('');
+                input.val('').change();
                 name.html('<span class="section">버튼을 눌러 소속을 선택하세요.</span>');
             });
         });

@@ -55,11 +55,40 @@
                             <div class="panel-heading transparent">
                                 <div class="panel-sub-title">${g.htmlQuote(queues.get(queue.key))}</div>
                                 <ul class="state-list">
-                                        <%--todo: 새로운 상태정보가 업데이트되면, 숫자 바꿔줘야 함.--%>
-                                    <li>대기: ${queue.value.steam().filter(e -> e.person.paused == 0).count()}명</li>
-                                    <li>통화중: ${queue.value.steam().filter(e -> e.person.paused == 1).count()}명</li>
-                                    <li>후처리: ${queue.value.steam().filter(e -> e.person.paused == 2).count()}명</li>
-                                    <li>기타: ${queue.value.steam().filter(e -> e.person.paused != 0 && e.person.paused != 1 && e.person.paused != 2).count()}명</li>
+                                    <li>
+                                        대기:
+                                        <text class="-queue-consultant-status-count" data-queue="${g.escapeQuote(queue.key)}" data-status="0">
+                                                ${queueToStatusToCount.get(queue.key).getOrDefault((0).intValue(), 0)}
+                                        </text>
+                                        명
+                                    </li>
+                                    <li>
+                                        통화중:
+                                        <text class="-queue-consultant-status-count" data-queue="${g.escapeQuote(queue.key)}" data-status="1">
+                                                ${queueToStatusToCount.get(queue.key).getOrDefault((1).intValue(), 0)}
+                                        </text>
+                                        명
+                                    </li>
+                                    <li>
+                                        후처리:
+                                        <text class="-queue-consultant-status-count" data-queue="${g.escapeQuote(queue.key)}" data-status="2">
+                                                ${queueToStatusToCount.get(queue.key).getOrDefault((2).intValue(), 0)}
+                                        </text>
+                                        명
+                                    </li>
+                                    <li>
+                                        기타:
+                                        <text class="-queue-consultant-status-count" data-queue="${g.escapeQuote(queue.key)}" data-status="3,4,5,6,7,8,9">
+                                                ${queueToStatusToCount.get(queue.key).getOrDefault((3).intValue(), 0)
+                                                        + queueToStatusToCount.get(queue.key).getOrDefault((4).intValue(), 0)
+                                                        + queueToStatusToCount.get(queue.key).getOrDefault((5).intValue(), 0)
+                                                        + queueToStatusToCount.get(queue.key).getOrDefault((6).intValue(), 0)
+                                                        + queueToStatusToCount.get(queue.key).getOrDefault((7).intValue(), 0)
+                                                        + queueToStatusToCount.get(queue.key).getOrDefault((8).intValue(), 0)
+                                                        + queueToStatusToCount.get(queue.key).getOrDefault((9).intValue(), 0)}
+                                        </text>
+                                        명
+                                    </li>
                                 </ul>
                             </div>
                             <div class="panel-body">
@@ -80,19 +109,29 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <c:forEach var="i" begin="0" end="${queue.value.size() / 2}">
+                                                <c:forEach var="i" begin="0" end="${(queue.value.size() - 1) / 2}">
                                                     <c:set var="e" value="${queue.value.get(i)}"/>
                                                     <tr>
-                                                        <td>${g.htmlQuote(e.person.idName)}</td>
-                                                        <td>${g.htmlQuote(e.person.extension)}</td>
-                                                        <td class="-consultant-status -consultant-status-with-color bcolor-bar${e.person.paused}" data-peer="${g.htmlQuote(e.person.peer)}">
-                                                                ${memberStatuses.get(e.person.paused)}
+                                                        <td>${e.getIdName()}</td>
+                                                        <td>${g.htmlQuote(e.extension)}</td>
+                                                        <td class="-consultant-status -consultant-status-with-color bcolor-bar${e.paused + 1}" data-peer="${g.escapeQuote(e.peer)}">
+                                                                ${memberStatuses.get(e.paused)}
                                                         </td>
-                                                        <td class="-consultant-queue-name" data-peer="${g.htmlQuote(e.person.peer)}"></td>
-                                                        <td><%--todo: 수신 응답/전체 --%></td>
-                                                        <td><%--todo: 발신 전체 --%></td>
-                                                        <td class="-consultant-calling-custom-number" data-peer="${g.htmlQuote(e.person.peer)}">${g.htmlQuote(e.customNumber)}</td>
-                                                        <td class="-consultant-status-time" data-peer="${g.htmlQuote(e.person.peer)}">00:00</td>
+                                                        <td class="-consultant-queue-name" data-peer="${g.escapeQuote(e.peer)}"></td>
+                                                        <td>
+                                                            수신:
+                                                            <text class="-inbound-success" data-id="${g.escapeQuote(e.id)}" data-peer="${g.escapeQuote(e.peer)}">${e.inboundSuccess}</text>
+                                                            /
+                                                            <text class="-inbound-total" data-id="${g.escapeQuote(e.id)}" data-peer="${g.escapeQuote(e.peer)}">${e.inboundTotal}</text>
+                                                        </td>
+                                                        <td>
+                                                            발신:
+                                                            <text class="-outbound-success" data-id="${g.escapeQuote(e.id)}" data-peer="${g.escapeQuote(e.peer)}">${e.outboundSuccess}</text>
+                                                            /
+                                                            <text class="-outbound-total" data-id="${g.escapeQuote(e.id)}" data-peer="${g.escapeQuote(e.peer)}">${e.outboundTotal}</text>
+                                                        </td>
+                                                        <td class="-consultant-calling-custom-number" data-peer="${g.escapeQuote(e.peer)}">${g.htmlQuote(e.customNumber)}</td>
+                                                        <td class="-consultant-status-time" data-peer="${g.escapeQuote(e.peer)}">00:00</td>
                                                         <td>
                                                             <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="play"></button>
                                                                 <%--todo: 감청--%>
@@ -119,19 +158,29 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <c:forEach var="i" begin="${queue.value.size() / 2 + 0.1}" end="${queue.value().size()}">
+                                                <c:forEach var="i" begin="${queue.value.size() / 2}" end="${queue.value.size() - 1}">
                                                     <c:set var="e" value="${queue.value.get(i)}"/>
                                                     <tr>
-                                                        <td>${g.htmlQuote(e.person.idName)}</td>
-                                                        <td>${g.htmlQuote(e.person.extension)}</td>
-                                                        <td class="-consultant-status -consultant-status-with-color bcolor-bar${e.person.paused}" data-peer="${g.htmlQuote(e.person.peer)}">
-                                                                ${memberStatuses.get(e.person.paused)}
+                                                        <td>${e.getIdName()}</td>
+                                                        <td>${g.htmlQuote(e.extension)}</td>
+                                                        <td class="-consultant-status -consultant-status-with-color bcolor-bar${e.paused + 1}" data-peer="${g.escapeQuote(e.peer)}">
+                                                                ${memberStatuses.get(e.paused)}
                                                         </td>
-                                                        <td class="-consultant-queue-name" data-peer="${g.htmlQuote(e.person.peer)}"></td>
-                                                        <td><%--todo: 수신 응답/전체 --%></td>
-                                                        <td><%--todo: 발신 전체 --%></td>
-                                                        <td class="-consultant-calling-custom-number" data-peer="${g.htmlQuote(e.person.peer)}">${g.htmlQuote(e.customNumber)}</td>
-                                                        <td class="-consultant-status-time" data-peer="${g.htmlQuote(e.person.peer)}">00:00</td>
+                                                        <td class="-consultant-queue-name" data-peer="${g.escapeQuote(e.peer)}"></td>
+                                                        <td>
+                                                            수신:
+                                                            <text class="-inbound-success" data-id="${g.escapeQuote(e.id)}" data-peer="${g.escapeQuote(e.peer)}">${e.inboundSuccess}</text>
+                                                            /
+                                                            <text class="-inbound-total" data-id="${g.escapeQuote(e.id)}" data-peer="${g.escapeQuote(e.peer)}">${e.inboundTotal}</text>
+                                                        </td>
+                                                        <td>
+                                                            발신:
+                                                            <text class="-outbound-success" data-id="${g.escapeQuote(e.id)}" data-peer="${g.escapeQuote(e.peer)}">${e.outboundSuccess}</text>
+                                                            /
+                                                            <text class="-outbound-total" data-id="${g.escapeQuote(e.id)}" data-peer="${g.escapeQuote(e.peer)}">${e.outboundTotal}</text>
+                                                        </td>
+                                                        <td class="-consultant-calling-custom-number" data-peer="${g.escapeQuote(e.peer)}">${g.htmlQuote(e.customNumber)}</td>
+                                                        <td class="-consultant-status-time" data-peer="${g.escapeQuote(e.peer)}">00:00</td>
                                                         <td>
                                                             <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="play"></button>
                                                                 <%--todo: 감청--%>
@@ -160,6 +209,36 @@
                     $('.-queue-section').show();
                 }
             }
+
+            const _updatePersonStatus = updatePersonStatus;
+
+            function updatePersonStatus() {
+                _updatePersonStatus();
+
+                $('.-queue-consultant-status-count').each(function () {
+                    const validStatuses = $(this).attr('data-status').split(',');
+                    const validPeers = queues[$(this).attr('data-queue')].peers;
+
+                    let count = 0;
+                    values(peerStatuses).map(function (peer) {
+                        if (validPeers.indexOf(peer.peer) >= 0 && validStatuses.indexOf(peer.status + '') >= 0)
+                            count++;
+                    });
+
+                    $(this).text(count);
+                });
+            }
+
+            setInterval(function () {
+                restSelf.get('/api/stat/user/', {startDate: moment().format('YYYY-MM-DD'), endDate: moment().format('YYYY-MM-DD')}, null, null, true).done(function (response) {
+                    response.data[0].userStatList.map(function (userStat) {
+                        $('.-inbound-success[data-id="' + userStat.userId + '"]').text(userStat.inboundSuccess);
+                        $('.-inbound-total[data-id="' + userStat.userId + '"]').text(userStat.inboundTotal);
+                        $('.-outbound-success[data-id="' + userStat.userId + '"]').text(userStat.outboundSuccess);
+                        $('.-outbound-total[data-id="' + userStat.userId + '"]').text(userStat.outboundTotal);
+                    });
+                });
+            }, 30 * 1000);
         </script>
     </tags:scripts>
 </tags:tabContentLayout>
