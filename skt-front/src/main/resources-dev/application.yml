@@ -76,3 +76,5 @@ eicn:
       id: chatting_connector
     cipher:
       key: eicn
+  screen:
+    variation: true

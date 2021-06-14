@@ -1,17 +1,17 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.monitor.display;
 
-import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.monitor.display.ScreenConfigApiInterface;
-import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.ScreenConfigExpressionType;
 import kr.co.eicn.ippbx.model.entity.eicn.ScreenConfigEntity;
 import kr.co.eicn.ippbx.model.form.ScreenConfigFormRequest;
-import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import kr.co.eicn.ippbx.util.FormUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,12 +28,12 @@ import java.util.Map;
 /**
  * @author tinywind
  */
+@Slf4j
 @LoginRequired
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("admin/monitor/screen/config")
 public class ScreenConfigController extends BaseController {
-    private static final Logger logger = LoggerFactory.getLogger(ScreenConfigController.class);
     private static final Map<Integer, String> lookAndFeelToDescription;
 
     static {
@@ -46,6 +46,9 @@ public class ScreenConfigController extends BaseController {
     }
 
     private final ScreenConfigApiInterface apiInterface;
+
+    @Value("${eicn.screen.variation:false}")
+    private Boolean variation;
 
     @ModelAttribute("lookAndFeelToDescription")
     public Map<Integer, String> lookAndFeelToDescription() {
@@ -61,8 +64,16 @@ public class ScreenConfigController extends BaseController {
 
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") ScreenConfigFormRequest form) throws IOException, ResultFailException {
-        final Map<String, String> expressionTypes = FormUtils.options(false, ScreenConfigExpressionType.class);
-        model.addAttribute("expressionTypes", expressionTypes);
+        model.addAttribute("expressionTypes", variation
+                ? FormUtils.options(false,
+                ScreenConfigExpressionType.INTEGRATION_VARIATION,
+                ScreenConfigExpressionType.BY_HUNT_VARIATION,
+                ScreenConfigExpressionType.INBOUND_CHART,
+                ScreenConfigExpressionType.LIST_CONSULTANT)
+                : FormUtils.options(false,
+                ScreenConfigExpressionType.INTEGRATION,
+                ScreenConfigExpressionType.BY_HUNT,
+                ScreenConfigExpressionType.BY_SERVICE));
         return "admin/monitor/screen/config/modal";
     }
 
@@ -72,8 +83,6 @@ public class ScreenConfigController extends BaseController {
         model.addAttribute("entity", entity);
         ReflectionUtils.copy(form, entity);
 
-        final Map<String, String> expressionTypes = FormUtils.options(false, ScreenConfigExpressionType.class);
-        model.addAttribute("expressionTypes", expressionTypes);
-        return "admin/monitor/screen/config/modal";
+        return modal(model, form);
     }
 }

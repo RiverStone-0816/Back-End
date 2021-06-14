@@ -4359,3 +4359,41 @@ g {
     }
   }
 }
+
+.marquee {
+  margin: 0 auto;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  .marquee-text {
+    display: inline-block;
+    width: max-content;
+
+    padding-left: 100%;
+    /* show the marquee just outside the paragraph */
+    will-change: transform;
+    animation: marquee 15s linear infinite;
+
+    &:hover {
+      animation-play-state: paused
+    }
+  }
+}
+
+.marquee .marquee-text:hover {
+  animation-play-state: paused
+}
+
+@keyframes marquee {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(-100%, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee .marquee-text {
+    animation-iteration-count: 1;
+    animation-duration: 0.01;
+    width: auto;
+    padding-left: 0;
+  }
+}
