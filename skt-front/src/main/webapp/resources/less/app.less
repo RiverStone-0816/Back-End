@@ -3363,6 +3363,7 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
   .ui.segments {
     border-radius:0;
     margin:-1px 0 0 0;
+    box-shadow: none;
   }
   .content {
     .header {
@@ -3378,30 +3379,86 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
     background:@color-th;
   }
   .ui.secondary.segment {
-
+    >.ui.list {
+      >.item {
+        >.content {
+          >.header {
+            >.ui.label {
+             background:@color-menu-bg;
+            }
+          }
+        }
+      }
+    }
+  }
+  .ui.segment:not(.secondary) {
+    text-align:center;
+    padding:10px 0;
+  }
+  .user-ul {
+    .flex();
+    flex-wrap: wrap;
+    margin:1em;
+    white-space: nowrap;
+    position: relative;
+    .title {
+      position: absolute;
+      right: 0;
+      top: -31px;
+      font-weight: 800;
+      color: #333;
+      font-size: 15px;
+    }
+    .box {
+      width:10%;
+      border:1px solid @color-border;
+      .name {
+        background:@color-th;
+        overflow: hidden;
+        border-bottom:1px solid @color-border;
+        text-align:center;
+        padding: .7em 1em;
+        color: @color-black;
+        font-weight: 800;
+      }
+      .state {
+        background:@color-white;
+        padding: .7em 1em;
+        text-align:center;
+      }
+      .state.call {background:@color-state-call;color:@color-white}
+      .state.wait {background:@color-state-wait;color:@color-white}
+      .state.bell {background:@color-state-bell;color:@color-white}
+      .state.after {background: @color-state-after;color:@color-white}
+      .state.logout {background: @color-state-logout;color:@color-white}
+      .state.etc {background: @color-state-etc;color:@color-white}
+    }
   }
   .ui.segment.secondary {
     > .ui.list > .item > .content > .header {
-      > .ui.grey.circular.label.tiny {
+      > .ui.circular.label.tiny {
         &:after {
           display: none;
         }
       }
     }
   }
-  .ui.grey.circular.label.tiny {
-    margin: 0 .5em 0 0;
+  .ui.circular.label.tiny {
+    margin: 0 .5em 0 10px;
   }
   .item {
-    .ui.grey.circular.label.tiny {
+    .ui.circular.label.tiny {
+      background:darken(@color-gray, 30%);
+      color:#fff;
+      font-weight:300;
       &:after {
         position: absolute;
         content: '';
-        left: -13px;
-        width: 9px;
-        height: 1px;
+        left: -14px;
+        width: 15px;
+        height: .5px;
         top: 12px;
-        background: #333;
+        background: #707070;
       }
     }
   }
@@ -3411,9 +3468,13 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
     display: inline-block;
     margin: 0;
   }
-  .ui.buttons.ivr-control {
+  .ivr-control {
     float: right;
-    margin: 0 0 0 7px;
+    margin: -4px 0 6px 7px;
+    .ui.basic.button {
+      border-radius: 0;
+      background:@color-white!important;
+    }
   }
   .ui.segment.black {
     .icon.folder {
@@ -3421,6 +3482,9 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
     }
   }
   .item {
+    .content {
+      margin:0 0 5px 0;
+    }
     .icon.folder {
       color: @color-brand;
       padding: 5px 0 0 25px;
@@ -3429,11 +3493,11 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
       &:after {
         content: '';
         position: absolute;
-        height: ~"calc(100% - 37px)";
+        height: ~"calc(100% - 43px)";
         top: 26px;
         left: 32px;
         text-indent: -999999px;
-        border-left: 1px solid #333;
+        border-left: 1px solid #707070;
       }
     }
   }
