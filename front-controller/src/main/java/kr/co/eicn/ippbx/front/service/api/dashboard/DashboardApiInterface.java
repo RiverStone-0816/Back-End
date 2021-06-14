@@ -4,10 +4,10 @@ import kr.co.eicn.ippbx.front.service.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.form.DashboardViewListFormRequest;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -88,6 +88,11 @@ public class DashboardApiInterface extends ApiServerInterface {
 
     public void delete(Integer seq) throws IOException, ResultFailException {
         delete(subUrl + seq);
+    }
+
+    @SneakyThrows
+    public DashInboundChartResponse dashboardInboundchart() {
+        return getData(subUrl + "dashboard-inboundchart", null, DashInboundChartResponse.class).getData();
     }
 
 }

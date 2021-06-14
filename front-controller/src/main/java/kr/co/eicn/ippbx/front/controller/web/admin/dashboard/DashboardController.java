@@ -81,6 +81,8 @@ public class DashboardController extends BaseController {
      */
     @GetMapping("total")
     public String mainPage(Model model) throws IOException, ResultFailException {
+        model.addAttribute("inboundChart", dashboardApiInterface.dashboardInboundchart().getInboundChat());
+
         val search = new StatInboundSearchRequest();
         search.setStartDate(search.getEndDate());
         final List<StatInboundTimeResponse<?>> list = inboundStatApiInterface.list(search);
