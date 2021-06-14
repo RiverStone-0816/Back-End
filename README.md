@@ -9,10 +9,12 @@
 1. ./gradlew :skt-front:bootRun
 
 # 테스트 계정 (company id / user id / password / extension)
+* LGU향
+  * ```premium / user620 / user620!@ / 620```
 * SKT향
-   * ```skdev / admin / admin12!@! / ```
-   * ```skdev / user1 / user12!@! / 1000```
-   * ```skdev / user2 / user12!@! / 2000```
+  * ```skdev / admin / admin12!@! / ```
+  * ```skdev / user1 / user12!@! / 1000```
+  * ```skdev / user2 / user12!@! / 2000```
 
 # 테스트 배포 방법
 1. git pull
