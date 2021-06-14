@@ -18,6 +18,7 @@ public class StatUserResponse<T> {
 
     @Data
     public static class UserStat {
+        private String userId;
         private String idName;
         private String groupName;
         private String groupCode;

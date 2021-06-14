@@ -94,6 +94,7 @@ public class StatUserApiController extends ApiBaseController {
             List<StatUserResponse.UserStat> userStatList = new ArrayList<>();
             for (PersonList person : personList) {
                 StatUserResponse.UserStat row = new StatUserResponse.UserStat();
+                row.setUserId(person.getId());
                 row.setIdName(person.getIdName());
                 row.setGroupName(
                         allOrganization.stream().filter(organization -> organization.getGroupCode().equals(person.getGroupCode()))
