@@ -199,7 +199,7 @@
             </div>
         </div>
     </div>
-
+    <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
     <tags:scripts>
         <script>
             function filterQueue(queueName) {
@@ -212,7 +212,7 @@
 
             const _updatePersonStatus = updatePersonStatus;
 
-            function updatePersonStatus() {
+            window.updatePersonStatus = function () {
                 _updatePersonStatus();
 
                 $('.-queue-consultant-status-count').each(function () {
@@ -227,10 +227,10 @@
 
                     $(this).text(count);
                 });
-            }
+            };
 
             setInterval(function () {
-                restSelf.get('/api/stat/user/', {startDate: moment().format('YYYY-MM-DD'), endDate: moment().format('YYYY-MM-DD')}, null, null, true).done(function (response) {
+                restSelf.get('/api/stat/user/', {startDate: moment().format('YYYY-MM-DD'), endDate: moment().format('YYYY-MM-DD')}, null, true).done(function (response) {
                     response.data[0].userStatList.map(function (userStat) {
                         $('.-inbound-success[data-id="' + userStat.userId + '"]').text(userStat.inboundSuccess);
                         $('.-inbound-total[data-id="' + userStat.userId + '"]').text(userStat.inboundTotal);

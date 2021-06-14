@@ -239,7 +239,7 @@
 
                     $(this).text(count);
                 });
-            }
+            };
 
             setInterval(function () {
                 restSelf.get('/api/stat/user/', {startDate: moment().format('YYYY-MM-DD'), endDate: moment().format('YYYY-MM-DD')}, null, true).done(function (response) {
