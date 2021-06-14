@@ -164,4 +164,12 @@ public class DashboardApiController extends BaseController {
     public void delete(@PathVariable Integer seq) throws IOException, ResultFailException {
         apiInterface.delete(seq);
     }
+
+    /**
+     * 인바운드 현황
+     */
+    @GetMapping("dashboard-inboundchart")
+    public DashInboundChartResponse dashboardInboundchart() {
+        return apiInterface.dashboardInboundchart();
+    }
 }
