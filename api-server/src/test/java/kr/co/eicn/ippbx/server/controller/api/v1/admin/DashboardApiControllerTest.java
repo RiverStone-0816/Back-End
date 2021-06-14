@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.form.DashboardViewListFormRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -432,4 +433,17 @@ public class DashboardApiControllerTest extends BaseControllerTest {
                 .andReturn();
     }
 
+    @Test
+    public void dashboardInboundchart() throws Exception {
+        final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL + "/dashboard-inboundchart")
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                .with(new JwtRequestPostProcessor()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                /*문서작성필요.*/
+                .andReturn();
+
+        log.info(String.valueOf(result));
+
+    }
 }

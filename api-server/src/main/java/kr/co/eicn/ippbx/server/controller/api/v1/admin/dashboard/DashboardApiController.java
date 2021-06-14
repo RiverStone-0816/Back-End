@@ -381,4 +381,12 @@ public class DashboardApiController extends ApiBaseController {
         dashboardViewListRepository.deleteByKeySeqAndComapnyId(seq);
         return ResponseEntity.ok(create());
     }
+
+    /**
+     * 인바운드 현황
+    * */
+    @GetMapping("dashboard-inboundchart")
+    public ResponseEntity<JsonResult<DashInboundChartResponse>> dashboardInboundchart(){
+        return ResponseEntity.ok(data(statInboundService.getRepository().getInboundChartResponseMap()));
+    }
 }

@@ -1,9 +1,7 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatInbound;
-import kr.co.eicn.ippbx.model.dto.eicn.DashCurrentCustomWaitResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.DashServiceStatResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.MonitorMajorStatusResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.dto.statdb.CenterStatResponse;
 import kr.co.eicn.ippbx.model.dto.statdb.TotalStatResponse;
 import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
@@ -304,6 +302,7 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
                 .fetchOneInto(TotalStatResponse.class);
     }
 
+
     public List<StatInboundEntity> getHourStatGraph() {
         return getHourStatGraph("", "");
     }
@@ -417,6 +416,34 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
                 .fetchMap(TABLE.STAT_HOUR, DashServiceStatResponse.class);
     }
 
+    public DashInboundChartResponse getInboundChartResponseMap(){
+        final Map<Byte, DashInboundChartDataResponse> data =
+                dsl.select(TABLE.STAT_HOUR,
+                        ifnull(sum(TABLE.TOTAL), 0).as("totalCnt"),
+                        ifnull(sum(TABLE.ONLYREAD), 0).as("onlyReadCnt"),
+                        ifnull(sum(TABLE.CONNREQ), 0).as("connReqCnt"),
+                        ifnull(sum(TABLE.SUCCESS), 0).as("successCnt"),
+                        ifnull(sum(TABLE.CANCEL), 0).as("cancelCnt"),
+                        ifnull(sum(TABLE.CALLBACK_SUCCESS), 0).as("callbackCnt"))
+                .from(TABLE)
+                .where(TABLE.COMPANY_ID.eq(g.getUser().getCompanyId()))
+                .and(TABLE.STAT_DATE.eq(date(now())))
+                .and(TABLE.DCONTEXT.in("inbound","hunt_context","busy_context"))
+                .groupBy(TABLE.STAT_HOUR)
+                .fetchMap(TABLE.STAT_HOUR, DashInboundChartDataResponse.class);
+
+
+
+        DashInboundChartResponse res = new DashInboundChartResponse();
+
+        for (int i=0; i < 24; i++){
+            byte hour = (byte) i;
+            res.getInboundChat().put(hour, data.get(hour));
+        }
+
+        return res;
+    }
+
     public Map<Byte, Integer> getMaximumNumberOfWaitCountByTime() {
         return dsl.select(TABLE.STAT_HOUR, ifnull(sum(TABLE.CONNREQ), 0).as(TABLE.CONNREQ))
                 .from(TABLE)
@@ -425,4 +452,6 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
                 .groupBy(TABLE.STAT_HOUR)
                 .fetchMap(TABLE.STAT_HOUR, TABLE.CONNREQ);
     }
+
+
 }
