@@ -133,4 +133,18 @@ public class MonitorPartApiControllerTest extends BaseControllerTest {
                 ))
                 .andReturn();
     }
+
+//    @Test
+    public void individual_stat() throws Exception {
+        final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL + "/individual-stat")
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                .with(new JwtRequestPostProcessor()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                /*문서작성필요.*/
+                .andReturn();
+
+        log.info(result);
+
+    }
 }

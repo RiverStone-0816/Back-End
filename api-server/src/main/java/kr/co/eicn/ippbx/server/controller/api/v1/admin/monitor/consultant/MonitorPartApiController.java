@@ -283,13 +283,18 @@ public class MonitorPartApiController extends ApiBaseController {
         final Map<String, StatUserInboundEntity> individualInboundStat = statUserInboundService.getRepository().findAllUserIndividualStat();
         final Map<String, StatUserOutboundEntity> individualOutboundStat = statUserOutboundService.getRepository().findAllUserIndividualStat();
         final Map<String, String> phoneInfoMap = phoneInfoRepository.findAllPhoneStatus();
+        final Map<String, String> queueNameMap = queueNameRepository.getHuntNameMap();
         final List<PersonList> personList = personListRepository.findAll().stream().filter(e -> StringUtils.isNotEmpty(e.getPeer())).collect(Collectors.toList());
         final Map<String, QueueMemberTable> queueMemberMap = queueMemberTableRepository.findAllQueueMember();
+        final Map<String, QueueMemberTable> queueMemberMap2 = queueMemberTableRepository.findAllQueueName();
+
+
 
         for (PersonList personData : personList) {
             final PersonListSummary person = convertDto(personData, PersonListSummary.class);
             if (Objects.nonNull(queueMemberMap.get(person.getPeer()))) {
                 QueueMemberTable queueMemberTable = queueMemberMap.get(person.getPeer());
+                QueueMemberTable queueMemberTable2 = queueMemberMap2.get(person.getPeer());
 
                 person.setPaused(queueMemberTable.getPaused());
                 person.setIsLogin(queueMemberTable.getIsLogin());
@@ -298,6 +303,8 @@ public class MonitorPartApiController extends ApiBaseController {
 
                 row.setPerson(person);
                 row.setIsPhone(PhoneInfoStatus.REGISTERED.getCode().equals(phoneInfoMap.get(person.getPeer())) ? "Y" : "N");
+                row.setQueueName(queueMemberTable2.getQueueName());
+                row.setQueueHanName(queueNameMap.get(queueMemberTable2.getQueueName()));
 
                 final StatUserInboundEntity inboundStat = individualInboundStat.get(person.getId());
                 final StatUserOutboundEntity outboundStat = individualOutboundStat.get(person.getId());
