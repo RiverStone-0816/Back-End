@@ -1,12 +1,12 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.dashboard;
 
+import kr.co.eicn.ippbx.model.dto.statdb.*;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServerInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
-import kr.co.eicn.ippbx.model.dto.statdb.StatUserRankingResponse;
 import kr.co.eicn.ippbx.model.enums.ServiceKind;
 import kr.co.eicn.ippbx.model.form.DashboardViewListFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
@@ -140,6 +140,33 @@ public class DashboardApiController extends ApiBaseController {
 
         return ResponseEntity.ok(data(list));
     }
+
+    /**
+     * 우수실적상담원
+     */
+    @GetMapping("excellent-cs-top")
+    public ResponseEntity<JsonResult<ExcellentConsultantTopTen>> getExcellentCSTop() {
+        final List<StatUserRankingInSuccess> inSuccessTopTen = statUserRankingService.getRepository().getTopTenToDay(ExcellentConsultantTopTen.Type.MOST_RECEIVE)
+                .stream().map(e -> convertDto(e, StatUserRankingInSuccess.class)).collect(Collectors.toList());
+        final List<StatUserRankingOutSuccess> outSuccessTopTen = statUserRankingService.getRepository().getTopTenToDay(ExcellentConsultantTopTen.Type.MOST_SEND)
+                .stream().map(e -> convertDto(e, StatUserRankingOutSuccess.class)).collect(Collectors.toList());
+        final List<StatUserRankingInBillsecSum> inBillSecTopTen = statUserRankingService.getRepository().getTopTenToDay(ExcellentConsultantTopTen.Type.LONGEST_RECEIVE)
+                .stream().map(e -> convertDto(e, StatUserRankingInBillsecSum.class)).collect(Collectors.toList());
+        final List<StatUserRankingOutBillsecSum> outBillSecTopTen = statUserRankingService.getRepository().getTopTenToDay(ExcellentConsultantTopTen.Type.LONGEST_SEND)
+                .stream().map(e -> convertDto(e, StatUserRankingOutBillsecSum.class)).collect(Collectors.toList());
+        final List<StatUserRankingCallbackSuccess> callbackSuccessTopTen = statUserRankingService.getRepository().getTopTenToDay(ExcellentConsultantTopTen.Type.MOST_CALLBACK)
+                .stream().map(e -> convertDto(e, StatUserRankingCallbackSuccess.class)).collect(Collectors.toList());
+
+        ExcellentConsultantTopTen excellentConsultantTopTen = new ExcellentConsultantTopTen();
+        excellentConsultantTopTen.setInSuccessTopTen(inSuccessTopTen);
+        excellentConsultantTopTen.setOutSuccessTopTen(outSuccessTopTen);
+        excellentConsultantTopTen.setInBillSecTopTen(inBillSecTopTen);
+        excellentConsultantTopTen.setOutBillSecTopTen(outBillSecTopTen);
+        excellentConsultantTopTen.setCallbackSuccessTopTen(callbackSuccessTopTen);
+
+        return ResponseEntity.ok(data(excellentConsultantTopTen));
+    }
+
 
     /**
      * 통합통계

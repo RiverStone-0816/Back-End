@@ -2,11 +2,15 @@ package kr.co.eicn.ippbx.server.repository.statdb;
 
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatUserRanking;
 import kr.co.eicn.ippbx.model.dto.eicn.ExcellentConsultant;
+import kr.co.eicn.ippbx.model.dto.eicn.ExcellentConsultantTopTen;
 import kr.co.eicn.ippbx.model.dto.statdb.StatUserRankingResponse;
 import lombok.Getter;
+import org.jooq.Field;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.PERSON_LIST;
 import static org.jooq.impl.DSL.sum;
@@ -41,5 +45,21 @@ public class StatUserRankingRepository extends StatDBBaseRepository<CommonStatUs
                 .orderBy(TABLE.field(field.getFieldName()).desc())
                 .limit(1)
                 .fetchOneInto(StatUserRankingResponse.class);
+    }
+
+    public List<StatUserRankingResponse> getTopTenToDay(ExcellentConsultantTopTen.Type field){
+        return dsl.select(PERSON_LIST.ID,PERSON_LIST.ID_NAME,
+                sum((Field<? extends Number>) TABLE.field(field.getFieldName())).as((Field<? extends Number>) TABLE.field(field.getFieldName())))
+                .from(TABLE)
+                .innerJoin(PERSON_LIST)
+                .on(TABLE.USERID.eq(PERSON_LIST.ID))
+                .where(compareCompanyId())
+                .and(TABLE.STAT_DATE.eq(DSL.date(DSL.now())))
+                .and(TABLE.USERID.notEqual("master"))
+                .groupBy(TABLE.USERID)
+                .orderBy(TABLE.field(field.getFieldName()).desc())
+                .limit(10)
+                .fetchInto(StatUserRankingResponse.class);
+
     }
 }

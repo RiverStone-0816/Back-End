@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class StatUserRankingResponse {
+    private String id;
     private String idName;
     private Integer inSuccess;
     private Integer outSuccess;

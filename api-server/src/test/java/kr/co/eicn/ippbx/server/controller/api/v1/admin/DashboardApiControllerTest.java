@@ -446,4 +446,18 @@ public class DashboardApiControllerTest extends BaseControllerTest {
         log.info(String.valueOf(result));
 
     }
+
+    @Test
+    public void dashboardTopTen() throws Exception {
+        final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL + "/excellent-cs-top")
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+                .with(new JwtRequestPostProcessor()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                /*문서작성필요.*/
+                .andReturn();
+
+        log.info(String.valueOf(result));
+
+    }
 }
