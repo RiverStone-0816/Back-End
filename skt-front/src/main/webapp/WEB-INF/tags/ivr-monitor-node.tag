@@ -21,7 +21,7 @@
             <c:set var="child" value="${node.nodes[0]}"/>
             <div class="item">
                 <div class="content">
-                    <div class="header"><span class="ui grey circular label tiny">${node.button}</span>${g.htmlQuote(node.name)}[${child.waitingCustomerCount}]</div>
+                    <div class="header"><span class="ui circular label tiny">${node.button}</span>${g.htmlQuote(node.name)}[${child.waitingCustomerCount}]</div>
                     <div class="list">
                         <div class="item">
                             <i class="folder icon"></i>
@@ -43,7 +43,7 @@
         <div class="item">
             <div class="column">
                 <div class="list">
-                    <div class="header"><span class="ui grey circular label tiny">${node.button}</span>${g.htmlQuote(node.name)}[<text class="-custom-wait-count" data-hunt="${node.queueNameResponse.name}">${node.waitingCustomerCount}</text>]
+                    <div class="header"><span class="ui circular label tiny">${node.button}</span>${g.htmlQuote(node.name)}[<text class="-custom-wait-count" data-hunt="${node.queueNameResponse.name}">${node.waitingCustomerCount}</text>]
                         [<text class="-consultant-status-count" data-value="0" data-hunt="${node.queueNameResponse.name}">${node.processingCustomerCount}</text>]</div>
                     <table class="ui celled table compact unstackable fixed">
                         <caption>${g.htmlQuote(node.queueNameResponse.hanName)}</caption>
@@ -73,7 +73,7 @@
     <c:otherwise>
         <div class="item">
             <div class="content">
-                <div class="header"><span class="ui grey circular label tiny">${node.button}</span>${g.htmlQuote(node.name)}[${node.waitingCustomerCount}]</div>
+                <div class="header"><span class="ui circular label tiny">${node.button}</span>${g.htmlQuote(node.name)}[${node.waitingCustomerCount}]</div>
             </div>
         </div>
     </c:otherwise>

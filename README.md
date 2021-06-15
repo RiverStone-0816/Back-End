@@ -9,10 +9,12 @@
 1. ./gradlew :skt-front:bootRun
 
 # 테스트 계정 (company id / user id / password / extension)
+* LGU향
+  * ```premium / user620 / user620!@ / 620```
 * SKT향
-   * ```skdev / admin / admin12!@! / ```
-   * ```skdev / user1 / user12!@! / 1000```
-   * ```skdev / user2 / user12!@! / 2000```
+  * ```skdev / admin / admin12!@! / ```
+  * ```skdev / user1 / user12!@! / 1000```
+  * ```skdev / user2 / user12!@! / 2000```
 
 # 테스트 배포 방법
 1. git pull
@@ -61,7 +63,7 @@ create table screen_config
 	seq int auto_increment,
 	name varchar(100) NOT NULL comment '전광판 이름',
 	look_and_feel int NOT NULL comment '사전 정의된 디자인 번호',
-	expression_type enum('INTEGRATION', 'BY_ HUNT', 'BY_SERVICE') NOT NULL comment '사전 정의된 데이터 표현 형식',
+	expression_type enum('INTEGRATION', 'BY_HUNT', 'BY_SERVICE') NOT NULL comment '사전 정의된 데이터 표현 형식',
 	show_sliding_text boolean DEFAULT false NOT NULL comment '슬라이딩 문구 표현 여부',
 	sliding_text varchar(200) null comment '슬라이딩 문구',
 	company_id varchar(50) NOT NULL,
@@ -166,4 +168,10 @@ ALTER TABLE phone_info ADD COLUMN `first_status` tinyint(4) DEFAULT '2' COMMENT 
 * 2021-04-19 eicn.talk_template 테이블 type_data 길이 변경
 ```
 ALTER TABLE `eicn`.`talk_template` MODIFY `type_data` VARCHAR(100);
+```
+
+* screen_config.expression_type 확장
+```
+ALTER TABLE screen_config CHANGE expression_type expression_type VARCHAR(32) NOT NULL;
+ALTER TABLE screen_config CHANGE expression_type expression_type ENUM('INTEGRATION', 'BY_HUNT', 'BY_SERVICE', 'INTEGRATION_VARIATION', 'BY_HUNT_VARIATION', 'INBOUND_CHART', 'LIST_CONSULTANT') NOT NULL;
 ```

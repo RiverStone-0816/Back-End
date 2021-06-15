@@ -48,7 +48,8 @@
             '5': 'bcolor-color6',
             '6': 'bcolor-color7',
             '7': 'bcolor-color8',
-            '8': 'bcolor-color9'
+            '8': 'bcolor-color9',
+            '9': 'bcolor-color10'
         };
         window.serviceNumberToQueueName = {
             <c:forEach var="e" items="${serviceNumberToQueueName}">

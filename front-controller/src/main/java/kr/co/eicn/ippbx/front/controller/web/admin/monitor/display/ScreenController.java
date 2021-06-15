@@ -6,12 +6,13 @@ import kr.co.eicn.ippbx.front.model.ScreenDataForByService;
 import kr.co.eicn.ippbx.front.model.ScreenDataForIntegration;
 import kr.co.eicn.ippbx.front.service.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
+import kr.co.eicn.ippbx.front.service.api.monitor.consultant.PartMonitoringApiInterface;
 import kr.co.eicn.ippbx.front.service.api.monitor.display.ScreenConfigApiInterface;
 import kr.co.eicn.ippbx.front.service.api.monitor.display.ScreenDataApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.ScreenConfigExpressionType;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CmpMemberStatusCode;
 import kr.co.eicn.ippbx.model.entity.eicn.ScreenConfigEntity;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
  */
 @LoginRequired
 @Controller
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("admin/monitor/screen")
 public class ScreenController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(ScreenController.class);
@@ -37,6 +38,7 @@ public class ScreenController extends BaseController {
     private final ScreenConfigApiInterface apiInterface;
     private final ScreenDataApiInterface dataApiInterface;
     private final CompanyApiInterface companyApiInterface;
+    private final PartMonitoringApiInterface partMonitoringApiInterface;
 
     @GetMapping("{seq}")
     public String popup(Model model, @PathVariable Integer seq) throws IOException, ResultFailException {
@@ -48,6 +50,18 @@ public class ScreenController extends BaseController {
 
         if (ScreenConfigExpressionType.BY_HUNT.equals(config.getExpressionType()))
             return popupByHunt(model);
+
+        if (ScreenConfigExpressionType.INTEGRATION_VARIATION.equals(config.getExpressionType()))
+            return popupIntegrationValidation(model);
+
+        if (ScreenConfigExpressionType.BY_HUNT_VARIATION.equals(config.getExpressionType()))
+            return popupByHuntValidation(model);
+
+        if (ScreenConfigExpressionType.INBOUND_CHART.equals(config.getExpressionType()))
+            return popupInboundChart(model);
+
+        if (ScreenConfigExpressionType.LIST_CONSULTANT.equals(config.getExpressionType()))
+            return popupListConsultant(model);
 
         return popupByService(model);
     }
@@ -76,5 +90,37 @@ public class ScreenController extends BaseController {
         model.addAttribute("statusCodes", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
 
         return "admin/monitor/screen/popup-by-service";
+    }
+
+    @SneakyThrows
+    private String popupIntegrationValidation(Model model) {
+        model.addAttribute("data", dataApiInterface.integration());
+        model.addAttribute("statusCodes", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
+
+        return "admin/monitor/screen/popup-integration-validation";
+    }
+
+    @SneakyThrows
+    private String popupByHuntValidation(Model model) {
+        model.addAttribute("data", dataApiInterface.byHunt());
+        model.addAttribute("statusCodes", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
+
+        return "admin/monitor/screen/popup-by-hunt-validation";
+    }
+
+    @SneakyThrows
+    private String popupInboundChart(Model model) {
+        model.addAttribute("data", dataApiInterface.integration());
+        model.addAttribute("statusCodes", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
+
+        return "admin/monitor/screen/popup-inbound-chart";
+    }
+
+    @SneakyThrows
+    private String popupListConsultant(Model model) {
+        model.addAttribute("personStatuses", partMonitoringApiInterface.getIndividualStat());
+        model.addAttribute("statusCodes", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
+
+        return "admin/monitor/screen/popup-list-consultant";
     }
 }

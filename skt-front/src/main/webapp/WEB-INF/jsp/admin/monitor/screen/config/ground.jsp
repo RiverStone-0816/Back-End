@@ -52,7 +52,7 @@
                             <c:when test="${list.size() > 0}">
                                 <c:forEach var="e" items="${list}" varStatus="status">
                                     <tr data-id="${e.seq}">
-                                        <td>${status.index + 1}</td>
+                                        <td style="width: 50px;">${status.index + 1}</td>
                                         <td>${g.htmlQuote(e.name)}</td>
                                         <td>${lookAndFeelToDescription.getOrDefault(e.lookAndFeel, '협외되지 않은 디자인: '.concat(e.lookAndFeel))}</td>
                                         <td>${g.htmlQuote(message.getEnumText(e.expressionType))}</td>

@@ -18,50 +18,75 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/monitor/consultant/ivr/"/>
         <div class="sub-content ui container fluid">
-            <div class="panel">
-                <form class="panel-heading" method="get">
+            <div class="panel panel-search">
+                <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="ui form">
-                            <select onchange="submit()" name="serviceNumber">
-                                <option value="">서비스선택</option>
-                                <c:forEach var="e" items="${services}">
-                                    <option value="${e.key}" ${e.key == serviceNumber ? 'selected' : ''} >${g.htmlQuote(e.value)}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
+                        <div class="panel-label">센터현황관리[IVR]</div>
+                    </div>
+                </div>
+                <form class="panel-body" method="get">
+                    <div class="search-area">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>IVR</th>
+                                <td colspan="7">
+                                    <div class="ui form">
+                                        <select onchange="submit()" name="serviceNumber">
+                                            <option value="">서비스선택</option>
+                                            <c:forEach var="e" items="${services}">
+                                                <option value="${e.key}" ${e.key == serviceNumber ? 'selected' : ''} >${g.htmlQuote(e.value)}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </form>
+            </div>
+            <div class="panel panel-statstics">
                 <div class="panel-body">
-                    <div class="ui grid">
-                        <div class="row">
-                            <div class="sixteen wide column">
-                                <div id="pds-ivr-container">
-                                    <c:if test="${response != null}">
+                    <div id="pds-ivr-container">
+                        <c:if test="${response != null}">
+                            <c:forEach var="e" items="${response.scheduleContents}">
+                                <div class="panel-section">
+                                    <div class="panel-sub-title">스케쥴명 : ${g.htmlQuote(response.scheduleGroup.name)}</div>
+                                    <div class="panel-sub-container">
+                                        <table class="ui celled table fixed compact unstackable">
+                                            <thead>
+                                            <tr>
+                                                <th>스케쥴 종류</th>
+                                                <th>시간</th>
+                                                <th>유형</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>${g.messageOf("ScheduleType", response.scheduleInfo.type)} ${g.messageOf("DayOfWeek", fn:substring(response.scheduleInfo.week, 1, fn:length(response.scheduleInfo.week)))}</td>
+                                                <td>${g.timeFormatFromSeconds(e.scheduleGroupList.fromhour)} ~ ${g.timeFormatFromSeconds(e.scheduleGroupList.fromhour)}</td>
+                                                <td>${g.messageOf("ScheduleKind", e.scheduleGroupList.kind)}(${e.scheduleGroupList.kind.equals("C") ? contexts.get(e.scheduleGroupList.kindData) : e.scheduleGroupList.kindData})</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
                                         <div class="ui segments">
-                                            <c:forEach var="e" items="${response.scheduleContents}">
-                                                <div class="ui segment">
-                                                    스케줄명 : ${g.htmlQuote(response.scheduleGroup.name)} <br/>
-                                                    스케쥴종류 : ${g.messageOf("ScheduleType", response.scheduleInfo.type)} ${g.messageOf("DayOfWeek", fn:substring(response.scheduleInfo.week, 1, fn:length(response.scheduleInfo.week)))} <br/>
-                                                    시간 : ${g.timeFormatFromSeconds(e.scheduleGroupList.fromhour)} ~ ${g.timeFormatFromSeconds(e.scheduleGroupList.fromhour)} <br/>
-                                                    유형 : ${g.messageOf("ScheduleKind", e.scheduleGroupList.kind)} (${e.scheduleGroupList.kind.equals("C") ? contexts.get(e.scheduleGroupList.kindData) : e.scheduleGroupList.kindData})
+                                            <div class="ui segment">
+                                                <span class="ui header"><c:if test="${e.monitorIvrTree.button != null && e.monitorIvrTree.button != ''}"><span
+                                                        class="ui circular label tiny">${e.monitorIvrTree.button}</span></c:if>${g.htmlQuote(e.monitorIvrTree.name)}[${e.monitorIvrTree.waitingCustomerCount}]</span>
+                                            </div>
+                                            <div class="ui secondary segment">
+                                                <div class="ui list">
+                                                    <c:forEach var="node" items="${e.monitorIvrTree.nodes}">
+                                                        <tags:ivr-monitor-node node="${node}" statusCodes="${statusCodes}"/>
+                                                    </c:forEach>
                                                 </div>
-                                                <div class="ui segment">
-                                                    <i class="folder icon"></i><span class="ui header"><c:if test="${e.monitorIvrTree.button != null && e.monitorIvrTree.button != ''}"><span
-                                                        class="ui grey circular label tiny">${e.monitorIvrTree.button}</span></c:if>${g.htmlQuote(e.monitorIvrTree.name)}[${e.monitorIvrTree.waitingCustomerCount}]</span>
-                                                </div>
-                                                <div class="ui secondary segment">
-                                                    <div class="ui list">
-                                                        <c:forEach var="node" items="${e.monitorIvrTree.nodes}">
-                                                            <tags:ivr-monitor-node node="${node}" statusCodes="${statusCodes}"/>
-                                                        </c:forEach>
-                                                    </div>
-                                                </div>
-                                            </c:forEach>
+                                            </div>
                                         </div>
-                                    </c:if>
+
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            </c:forEach>
+                        </c:if>
                     </div>
                 </div>
             </div>

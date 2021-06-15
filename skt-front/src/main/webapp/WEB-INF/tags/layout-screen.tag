@@ -19,11 +19,14 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=440, initial-scale=0.8"/>
+    <title>${serviceKind.equals('SC') ? 'IPCC 프리미엄' : '클라우드 IPCC'}</title>
     <tags:favicon/>
     <tags:css/>
 </head>
 <body>
+
 <jsp:doBody/>
+
 <div id="scripts">
     <tags:js/>
     <tags:alerts/>

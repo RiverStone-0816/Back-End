@@ -54,9 +54,7 @@
                                 <div class="visual-panel">
                                     <div class="panel-heading">인바운드 현황</div>
                                     <div class="panel-body">
-                                        <div class="chart-wrap">
-                                            차트삽입<%--TODO: 작업필요--%>
-                                        </div>
+                                        <div class="chart-wrap" id="inbound-chart"></div>
                                         <div class="chart-label-wrap-bar">
                                             <ul>
                                                 <li><span class="symbol bcolor-bar1"></span><span class="text">I/B전체</span></li>
@@ -405,6 +403,28 @@
                 moveRankingContents(1, 0);
                 moveRankingContents(2, 0);
             });
+
+            const inboundChartData = [
+                <c:forEach var="e" items="${inboundChart}">
+                {
+                    hour: ${e.key},
+                    totalCnt: ${e.value != null ? e.value.totalCnt : 0},
+                    onlyReadCnt: ${e.value != null ? e.value.onlyReadCnt : 0},
+                    connReqCnt: ${e.value != null ? e.value.connReqCnt : 0},
+                    successCnt: ${e.value != null ? e.value.successCnt : 0},
+                    cancelCnt: ${e.value != null ? e.value.cancelCnt : 0},
+                    callbackCnt: ${e.value != null ? e.value.callbackCnt : 0},
+                },
+                </c:forEach>
+            ];
+
+            drawLineChart(
+                document.getElementById('inbound-chart'),
+                inboundChartData,
+                'hour',
+                ['totalCnt', 'onlyReadCnt', 'connReqCnt', 'successCnt', 'cancelCnt', 'callbackCnt',],
+                {ticks: 4, yLabel: '', unitWidth: 30, colorClasses: ['bcolor-bar1', 'bcolor-bar2', 'bcolor-bar3', 'bcolor-bar4', 'bcolor-bar5', 'bcolor-bar6']}
+            );
         </script>
     </tags:scripts>
 </tags:tabContentLayout>
