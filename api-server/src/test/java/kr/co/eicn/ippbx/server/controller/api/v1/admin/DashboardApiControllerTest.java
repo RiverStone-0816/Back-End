@@ -447,7 +447,7 @@ public class DashboardApiControllerTest extends BaseControllerTest {
 
     }
 
-    @Test
+//    @Test
     public void dashboardTopTen() throws Exception {
         final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL + "/excellent-cs-top")
                 .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
