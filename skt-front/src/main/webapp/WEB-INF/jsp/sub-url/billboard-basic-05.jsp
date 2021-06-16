@@ -18,7 +18,7 @@
 <tags:tabContentLayout>
 
 
-    <div class="billboard-wrap">
+    <div class="billboard-wrap theme2">
         <div class="header">
             <div class="pull-left">
                 전광판 타이틀

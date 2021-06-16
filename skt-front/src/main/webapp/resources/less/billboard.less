@@ -144,6 +144,9 @@
       font-weight: 300;
       font-size: 2rem;
       padding: 0.64em .25em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     @media(max-height: 1080px) {
       td {
@@ -403,10 +406,33 @@
   }
 }
 
+.user-label.warning {
+  background: rgba(234, 0, 44, .3);
+}
+
 
 /*theme2*/
 .billboard-wrap.theme2 {
   background:#484B54;
+  .billboard-table {
+    th {
+      background:@color-pastel-orange;
+    }
+    tr {
+      &:nth-child(odd) {
+        td {
+          background:@color-white;
+          color:@color-black;
+        }
+      }
+      &:nth-child(even) {
+        td {
+          background:@color-gray;
+          color:@color-black;
+        }
+      }
+    }
+  }
   .footer {
     border-top:4px solid @color-pastel-orange;
   }
