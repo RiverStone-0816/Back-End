@@ -80,7 +80,7 @@
                 </div>
                 <div class="row flex-100">
                     <div id="billboard-tab1" class="sixteen wide column remove-pb billboard-tab-content current">
-                        <div class="ui five column grid full-height">
+                        <div class="ui five column grid">
                             <c:set var="statusClasses" value="${['stay', 'call', 'after', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest']}"/>
 
                             <c:forEach var="e" items="${personStatuses}">
@@ -98,7 +98,7 @@
                     </div>
 
                     <div id="billboard-tab2" class="sixteen wide column remove-pb billboard-tab-content">
-                        <div class="ui five column grid full-height">
+                        <div class="ui five column grid">
                             <div class="column">
                                 <div class="user-label">
                                     <div class="left call"></div>
