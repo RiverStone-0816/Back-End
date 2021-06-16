@@ -14,6 +14,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CmpMemberStatusCode;
 import kr.co.eicn.ippbx.model.entity.eicn.ScreenConfigEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.val;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -119,7 +122,9 @@ public class ScreenController extends BaseController {
     @SneakyThrows
     private String popupListConsultant(Model model) {
         model.addAttribute("personStatuses", partMonitoringApiInterface.getIndividualStat());
-        model.addAttribute("statusCodes", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
+        val statusCodes = companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName));
+        model.addAttribute("statusCodes", statusCodes);
+        model.addAttribute("statusCodeKeys", new ArrayList<>(statusCodes.keySet()));
 
         return "admin/monitor/screen/popup-list-consultant";
     }

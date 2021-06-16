@@ -38,27 +38,20 @@
                 <ol>
                     <li>
                         <div class="field">
-
-                            <form:input autocomplete="false" path="company" placeholder="회사 아이디"
-                                        cssClass="form-control"/>
+                            <form:input autocomplete="false" path="company" placeholder="회사 아이디"  cssClass="form-control"/>
                         </div>
                     </li>
                     <li>
                         <div class="field">
-
                             <form:input autocomplete="false" path="id" placeholder="아이디" cssClass="form-control"/></div>
                     </li>
                     <li>
                         <div class="field">
-
-                            <form:password autocomplete="false" path="password" placeholder="비밀번호"
-                                           cssClass="form-control"/></div>
+                            <form:password autocomplete="false" path="password" placeholder="비밀번호"  cssClass="form-control"/></div>
                     </li>
                     <li>
                         <div class="field">
-
-                            <form:input autocomplete="false" path="extension" placeholder="내선인증번호"
-                                        cssClass="form-control"/></div>
+                            <form:input autocomplete="false" path="extension" placeholder="내선인증번호"  cssClass="form-control"/></div>
                     </li>
                     <li class="chk-box-wrap">
                         <div class="ccheck">
