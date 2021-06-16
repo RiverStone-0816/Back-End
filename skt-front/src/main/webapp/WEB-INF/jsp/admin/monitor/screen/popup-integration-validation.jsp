@@ -152,10 +152,6 @@
             });
 
             setInterval(function () {
-                $('.flex-next').click();
-            }, 3000);
-
-            setInterval(function () {
                 restSelf.get("/api/screen-data/integration", null, null, true).done(function (data) {
                     $('.-data-response-rate').text(data.data.responseRate.toFixed(1));
                     $('.-data-success-call').text(data.data.successCall);

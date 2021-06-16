@@ -12,20 +12,16 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
-<c:set var="isStat" value="${user.isStat == 'Y'}"/>
+<%--@elvariable id="config" type="kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScreenConfig"--%>
+<%--@elvariable id="data" type="kr.co.eicn.ippbx.front.model.ScreenDataForIntegration"--%>
+<%--@elvariable id="statusCodes" type="java.util.Map"--%>
 
-<tags:tabContentLayout>
-
-
-    <div class="billboard-wrap">
+<tags:layout-screen>
+    <div class="billboard-wrap ${config.lookAndFeel == 2 ? 'theme2' : config.lookAndFeel == 3 ? 'theme3' : ''}">
         <div class="header">
-            <div class="pull-left">
-                전광판 타이틀
-            </div>
+            <div class="pull-left">${g.htmlQuote(config.name)}</div>
             <div class="pull-right">
-                <div class="menu-btn-wrap"><button class="menu-open-btn" id="billboard-popup-btn" onclick="billboardPopup()"></button></div>
-                <div class="time-wrap">2021-05-16 22:34:23</div>
+                <div class="time-wrap -time"></div>
             </div>
         </div>
         <div class="content">
@@ -40,43 +36,43 @@
                     <div class="column">
                         <div class="board-label-vertical">
                             <div class="top flex-160">대기</div>
-                            <div class="bottom">185</div>
+                            <div class="bottom -consultant-status-count" data-value="0"></div>
                         </div>
                     </div>
                     <div class="column">
                         <div class="board-label-vertical">
                             <div class="top flex-160">통화중</div>
-                            <div class="bottom">185</div>
+                            <div class="bottom -consultant-status-count" data-value="1"></div>
                         </div>
                     </div>
                     <div class="column">
                         <div class="board-label-vertical">
                             <div class="top flex-160">후처리</div>
-                            <div class="bottom">185</div>
+                            <div class="bottom -consultant-status-count" data-value="2"></div>
                         </div>
                     </div>
                     <div class="column">
                         <div class="board-label-vertical">
                             <div class="top flex-160">휴식</div>
-                            <div class="bottom">185</div>
+                            <div class="bottom -consultant-status-count" data-value="3"></div>
                         </div>
                     </div>
                     <div class="column">
                         <div class="board-label-vertical">
                             <div class="top flex-160">식사</div>
-                            <div class="bottom">185</div>
+                            <div class="bottom -consultant-status-count" data-value="4"></div>
                         </div>
                     </div>
                     <div class="column">
                         <div class="board-label-vertical">
                             <div class="top flex-160">이석</div>
-                            <div class="bottom">185</div>
+                            <div class="bottom -consultant-status-count" data-value="5"></div>
                         </div>
                     </div>
                     <div class="column">
                         <div class="board-label-vertical">
                             <div class="top flex-160">기타</div>
-                            <div class="bottom">185</div>
+                            <div class="bottom -consultant-status-count" data-value="6,7,8,9"></div>
                         </div>
                     </div>
                 </div>
@@ -456,18 +452,24 @@
                 </ul>
             </div>
         </div>
-        <div class="footer">
-            공지문구 공지문구 공지문구 공지문구 공지문구 공지문구 공지문구 공지문구 공지문구 공지문구 공지문구 공지문구 공지문구 공지문구 공지문구 공지문구 공지문구 공지문구 공지문구
-        </div>
+
+        <c:if test="${config.showSlidingText}">
+            <div class="footer">
+                <h2 style="width: 100%;">
+                    <text id="sliding-text" class="marquee-text">${g.htmlQuote(config.slidingText)}</text>
+                </h2>
+            </div>
+        </c:if>
     </div>
 
-    <div class="ui mini modal" id="modal-billboard">
+    <div class="ui mini modal ${config.lookAndFeel == 2 ? 'theme2' : config.lookAndFeel == 3 ? 'theme3' : ''}" id="modal-billboard">
         <i class="close icon"></i>
         <div class="content">
             <div class="billboard-inner">
                 <label class="title">상태별 강조 시간</label>
                 <div class="inner">
                     <ul>
+                        <%--TODO: 브라우저에 마지막 값 저장.--%>
                         <li>
                             <div class="left"><span class="symbol state-wait"></span>대기</div>
                             <div class="right"><input type="text">분</div>
@@ -505,10 +507,36 @@
         </div>
     </div>
 
-
+    <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
     <tags:scripts>
-
         <script>
+            setInterval(function () {
+                $('.-time').text(moment().format('YYYY-MM-DD HH:mm:ss'));
+            }, 500);
+
+            $(document).ready(function () {
+                window.resizeTo(620, 690);
+            });
+
+            $(window).on('load', function () {
+                window.resizeTo(1800, 1000);
+            });
+
+            updatePersonStatus();
+            updateQueues();
+
+            const textElement = $('#sliding-text');
+            const container = textElement.parent();
+            setInterval(function () {
+                const textWidth = textElement.width();
+                const containerWidth = container.width();
+
+                if (textWidth >= containerWidth)
+                    container.addClass('marquee');
+                else
+                    container.removeClass('marquee');
+            }, 3 * 1000);
+
             $('.billboard-tabs li').click(function(){
                 var tab_id = $(this).attr('data-tab');
 
@@ -524,4 +552,4 @@
             }
         </script>
     </tags:scripts>
-</tags:tabContentLayout>
+</tags:layout-screen>
