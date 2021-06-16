@@ -26,8 +26,7 @@
     <tags:css/>
 </head>
 <body>
-
-<div id="wrap" class="login theme2">
+<div id="wrap" class="login <%--theme2--%>"> <%--변경된 테마 적용방법: #wrap에 theme2 클래스 추가--%>
     <div class="login-form">
         <div class="ui header">
             <p>최고의 고객상담을 실천하는</p>
@@ -65,13 +64,9 @@
                         <div class="ccheck">
                             <input type="checkbox" id="remember">
                             <label for="remember">
-                                <div class="chk_img">로그인 상태 유지</div>
+                                <text class="chk_img">로그인 상태 유지</text>
                             </label>
                         </div>
-                        <%--<div class="ui toggle checkbox">
-                            <input type="checkbox" id="remember">
-                            <label for="remember">로그인저장</label>
-                        </div>--%>
                     </li>
                     <li>
                         <button type="button" class="ui fluid button -login-submit">LOGIN</button>
