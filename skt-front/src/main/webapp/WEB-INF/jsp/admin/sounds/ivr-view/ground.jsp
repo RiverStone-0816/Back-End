@@ -28,11 +28,6 @@
                                 <option value="${e.key}" ${e.key == seq ? 'selected' : ''}>${g.htmlQuote(e.value)}</option>
                             </c:forEach>
                         </select>
-                        <button class="ui button mini" onclick="addNewRootIvrTree()">추가</button>
-                        <c:if test="${seq != null}">
-                            <button class="ui button mini" onclick="deleteRootIvrTree(rootSeq)">삭제</button>
-                            <button class="ui button mini" onclick="copyRootIvrTree(rootSeq)">복사</button>
-                        </c:if>
                     </div>
                 </div>
                 <div class="panel-body">
