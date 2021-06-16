@@ -13,13 +13,14 @@ import kr.co.eicn.ippbx.front.service.api.service.etc.MonitApiInterface;
 import kr.co.eicn.ippbx.front.service.api.stat.InboundStatApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CmpMemberStatusCode;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
-import kr.co.eicn.ippbx.model.dto.statdb.HuntMonitorResponse;
-import kr.co.eicn.ippbx.model.dto.statdb.StatInboundResponse;
-import kr.co.eicn.ippbx.model.dto.statdb.StatInboundTimeResponse;
+import kr.co.eicn.ippbx.model.dto.statdb.*;
 import kr.co.eicn.ippbx.model.search.HuntMonitorSearchRequest;
 import kr.co.eicn.ippbx.model.search.MonitControlSearchRequest;
 import kr.co.eicn.ippbx.model.search.StatInboundSearchRequest;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -48,6 +49,8 @@ public class DashboardController extends BaseController {
     private final QueueApiInterface queueApiInterface;
     private final CompanyApiInterface companyApiInterface;
     private final CallbackDistributionApiInterface callbackDistributionApiInterface;
+    private final InboundStatApiInterface inboundStatApiInterface;
+    private final PartMonitoringApiInterface partMonitoringApiInterface;
 
     @GetMapping("")
     public String page(Model model) throws IOException, ResultFailException {
@@ -73,9 +76,6 @@ public class DashboardController extends BaseController {
         return "admin/dashboard/ground";
     }
 
-    private final InboundStatApiInterface inboundStatApiInterface;
-    private final PartMonitoringApiInterface partMonitoringApiInterface;
-
     /**
      * skt향 대시보드
      */
@@ -95,7 +95,7 @@ public class DashboardController extends BaseController {
         val huntMonitor = partMonitoringApiInterface.getHuntMonitor(huntMonitorSearchRequest);
         model.addAttribute("huntConsultantsStat", huntMonitor);
 
-        final Map<Integer, Integer>  statusCountMap = huntMonitor.stream().reduce(new HuntMonitorResponse(), (a, b) -> {
+        final Map<Integer, Integer> statusCountMap = huntMonitor.stream().reduce(new HuntMonitorResponse(), (a, b) -> {
             val result = new HuntMonitorResponse();
             statuses.keySet().forEach(s -> result.getStatusCountMap().put(s, a.getStatusCountMap().getOrDefault(s, 0) + b.getStatusCountMap().getOrDefault(s, 0)));
             return result;
@@ -103,8 +103,24 @@ public class DashboardController extends BaseController {
         model.addAttribute("statusCountMap", statusCountMap);
         model.addAttribute("statusCountMapSum", statusCountMap.values().stream().mapToInt(e -> e).sum());
 
-        final List<MonitorQueuePersonStatResponse> individualStat = partMonitoringApiInterface.getIndividualStat();
-        model.addAttribute("individualStat", individualStat);
+        final List<ConsultantRecord> ConsultantRecords = new ArrayList<>();
+        model.addAttribute("consultantRecords", ConsultantRecords);
+
+        val excellentCSTop = dashboardApiInterface.getExcellentCSTop();
+
+        partMonitoringApiInterface.getIndividualStat().forEach(e -> {
+            val record = new ConsultantRecord();
+            ReflectionUtils.copy(record, e);
+            ConsultantRecords.add(record);
+
+            record.setInSuccess(excellentCSTop.getInSuccessTopTen().stream().filter(e2 -> Objects.equals(e2.getId(), e.getPerson().getId())).mapToInt(StatUserRankingInSuccess::getInSuccess).findAny().orElse(0));
+            record.setOutSuccess(excellentCSTop.getOutSuccessTopTen().stream().filter(e2 -> Objects.equals(e2.getId(), e.getPerson().getId())).mapToInt(StatUserRankingOutSuccess::getOutSuccess).findAny().orElse(0));
+            record.setInBillsecSum(excellentCSTop.getInBillSecTopTen().stream().filter(e2 -> Objects.equals(e2.getId(), e.getPerson().getId())).mapToInt(StatUserRankingInBillsecSum::getInBillsecSum).findAny().orElse(0));
+            record.setOutBillsecSum(excellentCSTop.getOutBillSecTopTen().stream().filter(e2 -> Objects.equals(e2.getId(), e.getPerson().getId())).mapToInt(StatUserRankingOutBillsecSum::getOutBillsecSum).findAny().orElse(0));
+            record.setCallbackSuccess(excellentCSTop.getCallbackSuccessTopTen().stream().filter(e2 -> Objects.equals(e2.getId(), e.getPerson().getId())).mapToInt(StatUserRankingCallbackSuccess::getCallbackSuccess).findAny().orElse(0));
+
+            record.setBillsecSum(Math.max(record.getInBillsecSum(), record.getOutBillsecSum()));
+        });
 
         return "admin/dashboard-sheet/ground";
     }
@@ -216,5 +232,16 @@ public class DashboardController extends BaseController {
 
         model.addAttribute("stat", stat);
         return "admin/dashboard/component-server_monitor";
+    }
+
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    public static class ConsultantRecord extends MonitorQueuePersonStatResponse {
+        private Integer inSuccess = 0;
+        private Integer outSuccess = 0;
+        private Integer inBillsecSum = 0;
+        private Integer outBillsecSum = 0;
+        private Integer callbackSuccess = 0;
+        private Integer billsecSum = 0;
     }
 }

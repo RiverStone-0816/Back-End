@@ -95,4 +95,9 @@ public class DashboardApiInterface extends ApiServerInterface {
         return getData(subUrl + "dashboard-inboundchart", null, DashInboundChartResponse.class).getData();
     }
 
+    @SneakyThrows
+    public ExcellentConsultantTopTen getExcellentCSTop() {
+        return getData(subUrl + "excellent-cs-top", null, ExcellentConsultantTopTen.class).getData();
+    }
+
 }

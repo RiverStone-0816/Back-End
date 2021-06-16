@@ -324,8 +324,8 @@
                 ]
             });
 
-            const individualStat = [
-                <c:forEach var="e" items="${individualStat}">
+            const consultantRecords = [
+                <c:forEach var="e" items="${consultantRecords}">
                 {
                     customNumber: '${g.escapeQuote(e.customNumber)}',
                     id: '${g.escapeQuote(e.person.id)}',
@@ -335,16 +335,23 @@
                     paused: '${g.escapeQuote(e.person.paused)}',
                     isLogin: '${g.escapeQuote(e.person.isLogin)}',
                     values: {
-                        inboundSuccess: ${e.inboundSuccess},
-                        outboundSuccess: ${e.outboundSuccess},
+                        inSuccess: ${e.inSuccess},
+                        outSuccess: ${e.outSuccess},
+                        inBillsecSum: ${e.inBillsecSum},
+                        outBillsecSum: ${e.outBillsecSum},
+                        callbackSuccess: ${e.callbackSuccess},
                     },
                 },
                 </c:forEach>
             ];
 
             const rankingKeywords = [
-                {property: 'inboundSuccess', title: '최다수신'},
-                {property: 'outboundSuccess', title: '최다발신'},
+                {property: 'inSuccess', title: '최다수신'},
+                {property: 'outSuccess', title: '최다발신'},
+                {property: 'inBillsecSum', title: '최장수신'},
+                {property: 'outBillsecSum', title: '최장발신'},
+                {property: 'billsecSum', title: '최장통화'},
+                {property: 'callbackSuccess', title: '최다콜백'},
             ];
 
             const statuses = {
@@ -382,12 +389,12 @@
                 title.text(rankingKeywords[currentContentIndex].title + ' TOP 10');
 
                 const propertyName = rankingKeywords[currentContentIndex].property;
-                individualStat.sort(function (a, b) {
+                consultantRecords.sort(function (a, b) {
                     return a.values[propertyName] > b.values[propertyName];
                 });
 
-                for (let i = 0; i < 10 && i < individualStat.length; i++) {
-                    const e = individualStat[i];
+                for (let i = 0; i < 10 && i < consultantRecords.length; i++) {
+                    const e = consultantRecords[i];
                     sheet.append(
                         $('<tr/>')
                             .append($('<td/>', {text: e.idName}))
