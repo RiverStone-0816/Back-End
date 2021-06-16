@@ -16,6 +16,8 @@
 <%--@elvariable id="data" type="kr.co.eicn.ippbx.front.model.ScreenDataForIntegration"--%>
 <%--@elvariable id="statusCodes" type="java.util.Map"--%>
 
+<%--@elvariable id="personStatuses" type="java.util.List<kr.co.eicn.ippbx.model.dto.eicn.MonitorQueuePersonStatResponse>"--%>
+
 <tags:layout-screen>
     <div class="billboard-wrap ${config.lookAndFeel == 2 ? 'theme2' : config.lookAndFeel == 3 ? 'theme3' : ''}">
         <div class="header">
@@ -30,7 +32,7 @@
                     <div class="column">
                         <div class="board-label-vertical">
                             <div class="top flex-160">가용율</div>
-                            <div class="bottom">185</div>
+                            <div class="bottom" id="login-user-rate"></div>
                         </div>
                     </div>
                     <div class="column">
@@ -79,188 +81,22 @@
                 <div class="row flex-100">
                     <div id="billboard-tab1" class="sixteen wide column remove-pb billboard-tab-content current">
                         <div class="ui five column grid full-height">
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left call"></div>
-                                    <div class="right">
-                                        <div class="time">00:00</div>
-                                        <div class="name">김이상담</div>
+                            <c:set var="statusClasses" value="${['stay', 'call', 'after', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest']}"/>
+
+                            <c:forEach var="e" items="${personStatuses}">
+                                <div class="column">
+                                    <div class="user-label">
+                                        <div class="left ${statusClasses[e.person.paused]}"></div>
+                                        <div class="right">
+                                            <div class="time -consultant-status-time">00:00</div>
+                                            <div class="name">${g.htmlQuote(e.person.idName)}</div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left after"></div>
-                                    <div class="right">
-                                        <div class="time">00:00</div>
-                                        <div class="name">김이상담</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left etc"></div>
-                                    <div class="right">
-                                        <div class="time">00:00</div>
-                                        <div class="name">김이상담</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left meal"></div>
-                                    <div class="right">
-                                        <div class="time">00:00</div>
-                                        <div class="name">김이상담</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left move"></div>
-                                    <div class="right">
-                                        <div class="time">00:00</div>
-                                        <div class="name">김이상담</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left rest"></div>
-                                    <div class="right">
-                                        <div class="time">00:00</div>
-                                        <div class="name">김이상담</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left stay"></div>
-                                    <div class="right">
-                                        <div class="time">00:00</div>
-                                        <div class="name">김이상담</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
+                            </c:forEach>
                         </div>
                     </div>
+
                     <div id="billboard-tab2" class="sixteen wide column remove-pb billboard-tab-content">
                         <div class="ui five column grid full-height">
                             <div class="column">
@@ -469,7 +305,7 @@
                 <label class="title">상태별 강조 시간</label>
                 <div class="inner">
                     <ul>
-                        <%--TODO: 브라우저에 마지막 값 저장.--%>
+                            <%--TODO: 브라우저에 마지막 값 저장.--%>
                         <li>
                             <div class="left"><span class="symbol state-wait"></span>대기</div>
                             <div class="right"><input type="text">분</div>
@@ -522,9 +358,6 @@
                 window.resizeTo(1800, 1000);
             });
 
-            updatePersonStatus();
-            updateQueues();
-
             const textElement = $('#sliding-text');
             const container = textElement.parent();
             setInterval(function () {
@@ -537,19 +370,33 @@
                     container.removeClass('marquee');
             }, 3 * 1000);
 
-            $('.billboard-tabs li').click(function(){
+            $('.billboard-tabs li').click(function () {
                 var tab_id = $(this).attr('data-tab');
 
                 $('.billboard-tabs li').removeClass('current');
                 $('.billboard-tab-content').removeClass('current');
 
                 $(this).addClass('current');
-                $("#"+tab_id).addClass('current');
+                $("#" + tab_id).addClass('current');
             })
 
             function billboardPopup() {
                 $('#modal-billboard').modalShow();
             }
+
+            const _updatePersonStatus = updatePersonStatus;
+
+            window.updatePersonStatus = function () {
+                _updatePersonStatus();
+
+                const _peerStatuses = values(peerStatuses);
+                $('#login-user-rate').text((_peerStatuses.filter(function (peer) {
+                    return peer.login;
+                }).length / _peerStatuses.length).toFixed(1) + '%');
+            };
+
+            updatePersonStatus();
+            updateQueues();
         </script>
     </tags:scripts>
 </tags:layout-screen>
