@@ -25,8 +25,8 @@
             </div>
         </div>
         <div class="content">
-            <div class="ui grid full-height remove-margin flex-flow-column">
-                <div class="equal width row flex-100">
+            <div class="ui grid full-height remove-margin">
+                <div class="equal width row" style="height:42%">
                     <div class="column">
                         <div class="board-box incoming-call full-height">
                             <div class="board-title flex-100">인입콜</div>
@@ -70,9 +70,9 @@
                     </div>
                 </div>
 
-                <div class="sixteen wide column flex-130">
-                    <div class="billboard-chart-wrap flex-flow-column full-height">
-                        <div class="flex-100 billboard-chart-container" id="chart">
+                <div class="sixteen wide column" style="height:58%">
+                    <div class="billboard-chart-wrap" >
+                        <div class="billboard-chart-container" id="chart" >
 
                         </div>
                         <div class="billboard-chart-label-wrap">
