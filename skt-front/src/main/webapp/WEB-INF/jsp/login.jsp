@@ -27,8 +27,8 @@
 </head>
 <body>
 
-<div id="wrap" class="login ui middle aligned center aligned grid">
-    <div class="login-form remove-padding">
+<div id="wrap" class="login theme2">
+    <div class="login-form">
         <div class="ui header">
             <p>최고의 고객상담을 실천하는</p>
             <h3>SK telecom</h3>
@@ -74,7 +74,7 @@
                         </div>--%>
                     </li>
                     <li>
-                        <button type="button" class="ui basic button brand -login-submit">LOGIN</button>
+                        <button type="button" class="ui fluid button -login-submit">LOGIN</button>
                     </li>
                 </ol>
             </form:form>

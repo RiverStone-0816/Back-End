@@ -921,73 +921,174 @@ pre {
   height: 100%;
 }
 #wrap.login {
-  background: url("../images/skt-bg-img1.png") no-repeat;
-  background-size: cover;
-  margin: 0;
+  .flex();
   align-items: center;
+  justify-content: center;
+  background-image: url("../images/skt-bg-img1.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  margin: 0;
+  // login
+  .login-form {
+    padding: 0;
+    margin: 0;
+    width: 379px;
+    .login-box {
+      .ui.button {
+        border-radius: 0;
+        padding:20px 0;
+        background:@color-brand;
+        color:#fff;
+        font-weight:300;
+      }
+      li {
+        padding: 8px 0;
+      }
+      .chk-box-wrap {
+        padding:15px 0 30px 0;
+      }
+      .ui.basic.button {
+        width: 100%;
+        border:0;
+      }
+      input[type="text"], input[type="password"] {
+        background:transparent;
+        color:@color-white;
+        padding:10px 0;
+        width:100%;
+        border:0;
+        border-bottom:2px solid darken(@color-white, 50%);
+        outline:0;
+        border-radius: 0;
+        &:focus {
+          border:0!important;
+          box-shadow: none!important;
+          outline:0!important;
+          border-bottom:2px solid @color-white!important;
+        }
+      }
+    }
+    .ui.header {
+      p {
+        color:@color-white;
+        font-size: 33px;
+        font-weight: 100;
+      }
+      h3 {
+        color: @color-white;
+        font-size: 33px;
+        font-weight: 600;
+        padding: 10px 0 50px 0;
+      }
+    }
+    .login-form-inner.segment.padded {
+      width: 350px;
+      padding: 2em 3em;
+
+    }
+    .chk-box-wrap {
+      .ccheck {
+        input[type="checkbox"] {
+          display:none
+        }
+        label {
+          width:100%;
+          height:20px;
+        }
+        input[type="checkbox"] + label .chk_img {
+          padding:0 0 0 30px;
+          height:20px;
+          background:url("../images/modecheck.svg")no-repeat;
+          cursor:pointer;
+          color:#fff;
+          line-height: 20px;
+          font-size: 16px;
+        }
+        input[type="checkbox"]:checked + label .chk_img {
+          background:url("../images/modecheck-on.svg")no-repeat;
+        }
+      }
+
+
+    }
+  }
 }
+#wrap.login.theme2 {
+  &:after {
+    display:inline-block;
+    position:absolute;
+    top:0;
+    content:'logo';
+    text-indent: -9999px;
+    right:0;
+    background-image: url("../images/logo.png");
+    width: 288px;
+    background-size: 100%;
+    height: 115px;
+    background-repeat: no-repeat;
+    margin: 3em 9em 0 0;
+  }
+  background-image: url("../images/skt-bg-img2.png");
+  background-repeat: no-repeat;
+  justify-content: flex-start;
+  padding: 0 0 0 8em;
+  .chk-box-wrap {
+    .ccheck {
+      input[type="checkbox"] + label .chk_img {
+        padding:0 0 0 30px;
+        height:20px;
+        background:url("../images/modecheck-white.svg")no-repeat;
+        cursor:pointer;
+        color:#fff;
+        line-height: 20px;
+        font-size: 16px;
+      }
+      input[type="checkbox"]:checked + label .chk_img {
+        background:url("../images/modecheck-white-on.svg")no-repeat;
+      }
+    }
+  }
+  .login-form {
+    .flex();
+    height:100%;
+    background:@color-brand;
+    padding: 0 2.5em;
+    width: 449px;
+    flex-flow: column;
+    justify-content: center;
+    .login-box {
+      .ui.button {
+        background:#ea002c;
+      }
+      input[type="text"], input[type="password"] {
+        background:transparent;
+        color:@color-white;
+        padding:10px 0;
+        width:100%;
+        border:0;
+        border-bottom:2px solid rgba(255,255,255,.5);
+        outline:0;
+        border-radius: 0;
+        &::placeholder {
+          color:rgba(255,255,255,.5);
+        }
+        &:focus {
+          border:0!important;
+          box-shadow: none!important;
+          outline:0!important;
+          border-bottom:2px solid @color-white!important;
+        }
+      }
+    }
+  }
+}
+
 #main {
   height: 100%;
   padding-top: @height-header;
   overflow:auto;
 }
-// login
-.login-form {
-  padding: 0;
-  margin: 0;
-  width: 379px;
-  .login-box {
-    .ui.button {
-      border-radius: 0;
-      padding:20px 0;
-    }
-    li {
-      padding: 8px 0;
-    }
-    .chk-box-wrap {
-      padding:15px 0 30px 0;
-    }
-    .ui.basic.button {
-      width: 100%;
-      border:0;
-    }
-    input[type="text"], input[type="password"] {
-      background:transparent;
-      color:@color-white;
-      padding:10px 0;
-      width:100%;
-      border:0;
-      border-bottom:2px solid darken(@color-white, 50%);
-      outline:0;
-      border-radius: 0;
-      &:focus {
-        border:0!important;
-        box-shadow: none!important;
-        outline:0!important;
-        border-bottom:2px solid @color-white!important;
-      }
-    }
-  }
-  .ui.header {
-    p {
-      color:@color-white;
-      font-size: 33px;
-      font-weight: 100;
-    }
-    h3 {
-      color: @color-white;
-      font-size: 33px;
-      font-weight: 600;
-      padding: 10px 0 50px 0;
-    }
-  }
-  .login-form-inner.segment.padded {
-    width: 350px;
-    padding: 2em 3em;
 
-  }
-  .chk-box-wrap {}
-}
 
 #modal-login {
   .info {
@@ -996,28 +1097,6 @@ pre {
 
   .warning {
     color: @color-red;
-  }
-}
-
-.ccheck {
-  input[type="checkbox"] {
-    display:none
-  }
-  label {
-    width:100%;
-    height:20px;
-  }
-  input[type="checkbox"] + label .chk_img {
-    padding:0 0 0 30px;
-    height:20px;
-    background:url("../images/modecheck.svg")no-repeat;
-    cursor:pointer;
-    color:#fff;
-    line-height: 20px;
-    font-size: 16px;
-  }
-  input[type="checkbox"]:checked + label .chk_img {
-    background:url("../images/modecheck-on.svg")no-repeat;
   }
 }
 
