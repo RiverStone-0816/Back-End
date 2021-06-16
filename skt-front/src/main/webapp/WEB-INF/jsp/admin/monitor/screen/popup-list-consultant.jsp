@@ -91,8 +91,12 @@
                         </c:if>
                     </c:forEach>
                 </div>
-                <div class="row flex-100">
-                    <div id="billboard-tab1" class="sixteen wide column remove-pb billboard-tab-content current">
+                <style>
+                    .billboard-tab-content.current {
+                        opacity: 1 !important;
+                </style>
+                <div class="row flex-100" style="position: relative;">
+                    <div id="billboard-tab1" class="sixteen wide column remove-pb billboard-tab-content current" style="position: absolute; opacity: 0; transition: 1s opacity;">
                         <div class="ui five column grid">
                             <c:set var="statusClasses" value="${['stay', 'call', 'after', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest']}"/>
                             <c:forEach var="e" items="${personStatuses}">
@@ -109,7 +113,7 @@
                         </div>
                     </div>
 
-                    <div id="billboard-tab2" class="sixteen wide column remove-pb billboard-tab-content">
+                    <div id="billboard-tab2" class="sixteen wide column remove-pb billboard-tab-content" style="position: absolute; opacity: 0; transition: 1s opacity;">
                         <div class="ui five column grid">
                             <div class="column">
                                 <div class="user-label">
