@@ -436,9 +436,9 @@
 
                 const minutes = timeElement.text().split(':')[0];
                 if (minutes > (statusThresholds[ 'status-threshold-' + (peerSeat.find('.-consultant-screen-status-class').attr('data-value'))] || 10)) {
-                    peerSeat.addClass('alert'); // TODO: check
+                    peerSeat.addClass('warning');
                 } else {
-                    peerSeat.removeClass('alert');
+                    peerSeat.removeClass('warning');
                 }
             }, 5 * 1000);
         </script>
