@@ -133,8 +133,9 @@
                                                         <td class="-consultant-calling-custom-number" data-peer="${g.escapeQuote(e.peer)}">${g.htmlQuote(e.customNumber)}</td>
                                                         <td class="-consultant-status-time" data-peer="${g.escapeQuote(e.peer)}">00:00</td>
                                                         <td>
-                                                            <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="play"></button>
-                                                                <%--todo: 감청--%>
+                                                            <button type="button" class="play-btn" onclick="eavesdrop('${g.escapeQuote(e.extension)}')">
+                                                                <img src="<c:url value="/resources/images/play.svg"/>" alt="play">
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
@@ -182,8 +183,9 @@
                                                         <td class="-consultant-calling-custom-number" data-peer="${g.escapeQuote(e.peer)}">${g.htmlQuote(e.customNumber)}</td>
                                                         <td class="-consultant-status-time" data-peer="${g.escapeQuote(e.peer)}">00:00</td>
                                                         <td>
-                                                            <button class="play-btn"><img src="<c:url value="/resources/images/play.svg"/>" alt="play"></button>
-                                                                <%--todo: 감청--%>
+                                                            <button type="button" class="play-btn" onclick="eavesdrop('${g.escapeQuote(e.extension)}')">
+                                                                <img src="<c:url value="/resources/images/play.svg"/>" alt="play">
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
@@ -239,6 +241,12 @@
                     });
                 });
             }, 30 * 1000);
+
+            function eavesdrop(extension) {
+                if (!window.parent.ipccCommunicator)
+                    return alert('전화 소켓이 생성되어 있지 않습니다. 전화 권한이 있는 계정으로 로그인하세요.');
+                window.parent.ipccCommunicator.eavesdrop(extension);
+            }
         </script>
     </tags:scripts>
 </tags:tabContentLayout>
