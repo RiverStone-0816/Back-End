@@ -139,10 +139,6 @@
     <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
     <tags:scripts>
         <script>
-            <c:if test="${config.showSlidingText}">
-            $('.notice .text').transition('fly left');
-            </c:if>
-
             setInterval(function () {
                 $('.-time').text(moment().format('YYYY-MM-DD HH:mm:ss'));
             }, 500);
