@@ -97,10 +97,10 @@
                             <c:set var="statusClasses" value="${['stay', 'call', 'after', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest']}"/>
                             <c:forEach var="e" items="${personStatuses}">
                                 <div class="column">
-                                    <div class="user-label">
-                                        <div class="left -consultant-screen-status-class ${statusClasses[e.person.paused]}" data-peer="${g.escapeQuote(e.person.peer)}"></div>
+                                    <div class="user-label -peer-seat">
+                                        <div class="left -consultant-screen-status-class ${statusClasses[e.person.paused]}" data-value="${e.person.paused}" data-peer="${g.escapeQuote(e.person.peer)}"></div>
                                         <div class="right">
-                                            <div class="time -consultant-status-time">00:00</div>
+                                            <div class="time -consultant-status-time" data-peer="${g.escapeQuote(e.person.peer)}">00:00</div>
                                             <div class="name">${g.htmlQuote(e.person.idName)}</div>
                                         </div>
                                     </div>
@@ -317,11 +317,12 @@
                 <label class="title">상태별 강조 시간</label>
                 <div class="inner">
                     <ul>
+                        <c:set var="statusClasses" value="${['state-wait', 'state-call', 'state-after', 'state-etc', 'state-etc', 'state-etc', 'state-etc', 'state-etc', 'state-etc', 'state-etc']}"/>
                         <c:forEach var="e" items="${statusCodes}">
                             <c:if test="${e.key != 9}">
                                 <li>
-                                    <div class="left"><span class="symbol state-wait"></span>${g.htmlQuote(e.value)}</div>
-                                    <div class="right"><input type="text" name="status-threshold-${e.key}" placeholder="분">분</div>
+                                    <label class="left" for="status-threshold-${e.key}"><span class="symbol ${statusClasses[e.key]}"></span>${g.htmlQuote(e.value)}</label>
+                                    <div class="right"><input type="text" id="status-threshold-${e.key}" name="status-threshold-${e.key}">분</div>
                                 </li>
                             </c:if>
                         </c:forEach>
@@ -330,7 +331,7 @@
             </div>
         </div>
         <div class="actions">
-            <button type="button" class="ui fluid button" onclick="saveThresholds()">저장</button>
+            <button type="button" class="ui fluid button" onclick="saveThresholds(); $('#modal-billboard').modalHide();">저장</button>
         </div>
     </div>
 
@@ -391,6 +392,8 @@
                     if (!p)
                         return;
 
+                    $(this).attr('data-value', p.status);
+
                     statusClasses.map(function (c) {
                         $(this).removeClass(c);
                     });
@@ -404,18 +407,20 @@
 
             function saveThresholds() {
                 $('#modal-billboard').asJsonData().done(function (data) {
+                    statusThresholds = data;
                     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
                 });
             }
 
+            let statusThresholds = {};
+
             $(window).on('load', function () {
-                const storedValues = localStorage.getItem(STORAGE_KEY);
-                if (!storedValues)
-                    return;
+                const storedValues = localStorage.getItem(STORAGE_KEY) || '{}';
 
                 const values = JSON.parse(storedValues);
+                statusThresholds = values;
 
-                const inputs = $('#modal-billboard').find('[name]');
+                const inputs = $('#modal-billboard').find('[name]').val('10');
                 for (let key in values) {
                     if (values.hasOwnProperty(key)) {
                         inputs.filter(function () {
@@ -424,6 +429,18 @@
                     }
                 }
             });
+
+            setInterval(function () {
+                const timeElement = $('.-consultant-status-time');
+                const peerSeat = timeElement.closest('.-peer-seat');
+
+                const minutes = timeElement.text().split(':')[0];
+                if (minutes > (statusThresholds[ 'status-threshold-' + (peerSeat.find('.-consultant-screen-status-class').attr('data-value'))] || 10)) {
+                    peerSeat.addClass('warning');
+                } else {
+                    peerSeat.removeClass('warning');
+                }
+            }, 5 * 1000);
         </script>
     </tags:scripts>
 </tags:layout-screen>
