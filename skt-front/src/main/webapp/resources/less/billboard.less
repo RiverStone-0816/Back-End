@@ -415,6 +415,9 @@
 .billboard-wrap.theme2 {
   background:#484B54;
   .billboard-table {
+    th,td {
+      border-right:1px solid rgba(0,0,0,.1);
+    }
     th {
       background:@color-pastel-orange;
     }
@@ -529,6 +532,28 @@
 
 /*theme3*/
 .billboard-wrap.theme3 {
+  .billboard-table {
+    tbody {
+      td {
+        border-right:1px solid rgba(0,0,0,.1);
+      }
+    }
+    th {
+      background:black;
+    }
+    tr {
+      &:nth-child(odd) {
+        td {
+          background:#9a9a9a;
+        }
+      }
+      &:nth-child(even) {
+        td {
+          background:#929293;
+        }
+      }
+    }
+  }
   background:#514F65;
   .footer {
     border-top:4px solid @color-pastel-orange;
