@@ -105,7 +105,8 @@ public class ScreenController extends BaseController {
 
     @SneakyThrows
     private String popupByHuntValidation(Model model) {
-        model.addAttribute("data", dataApiInterface.byHunt());
+        model.addAttribute("data", dataApiInterface.integration());
+        model.addAttribute("huntData", dataApiInterface.byHunt());
         model.addAttribute("statusCodes", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
 
         return "admin/monitor/screen/popup-by-hunt-validation";
