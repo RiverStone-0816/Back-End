@@ -92,211 +92,36 @@
                     </c:forEach>
                 </div>
                 <div class="row " style="position: relative; height: 73%;">
-                    <div id="billboard-tab1" class="sixteen wide column remove-pb billboard-tab-content current" style="position: absolute; opacity: 0; transition: 1s opacity;">
-                        <div class="ui five column grid">
-                            <c:set var="statusClasses" value="${['stay', 'call', 'after', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest']}"/>
-                            <c:forEach var="e" items="${personStatuses}">
-                                <div class="column">
-                                    <div class="user-label -peer-seat">
-                                        <div class="left -consultant-screen-status-class ${statusClasses[e.person.paused]}" data-value="${e.person.paused}" data-peer="${g.escapeQuote(e.person.peer)}"></div>
-                                        <div class="right">
-                                            <div class="time -consultant-status-time" data-peer="${g.escapeQuote(e.person.peer)}">00:00</div>
-                                            <div class="name">${g.htmlQuote(e.person.idName)}</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </div>
-                    </div>
+                    <c:set var="statusClasses" value="${['stay', 'call', 'after', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest']}"/>
+                    <c:forEach var="e" items="${personStatuses}" varStatus="status">
 
-                    <div id="billboard-tab2" class="sixteen wide column remove-pb billboard-tab-content">
-                        <div class="ui five column grid">
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left call"></div>
-                                    <div class="right">
-                                        <div class="time">00:00</div>
-                                        <div class="name">김이상담</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left after"></div>
-                                    <div class="right">
-                                        <div class="time">00:00</div>
-                                        <div class="name">김이상담</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left etc"></div>
-                                    <div class="right">
-                                        <div class="time">00:00</div>
-                                        <div class="name">김이상담</div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <div class="user-label">
-                                    <div class="left"></div>
-                                    <div class="right">
-                                        <div class="time"></div>
-                                        <div class="name"></div>
-                                    </div>
+                        <c:if test="${status.index % 20 == 0}">
+                            <div id="billboard-tab${(status.index / 20).intValue()}" class="sixteen wide column remove-pb billboard-tab-content current" style="position: absolute; opacity: 0; transition: 1s opacity;">
+                            <div class="ui five column grid">
+                        </c:if>
+
+                        <div class="column">
+                            <div class="user-label -peer-seat">
+                                <div class="left -consultant-screen-status-class ${statusClasses[e.person.paused]}" data-value="${e.person.paused}"
+                                     data-peer="${g.escapeQuote(e.person.peer)}"></div>
+                                <div class="right">
+                                    <div class="time -consultant-status-time" data-peer="${g.escapeQuote(e.person.peer)}">00:00</div>
+                                    <div class="name">${g.htmlQuote(e.person.idName)}</div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+
+                        <c:if test="${status.index % 20 == 19 || status.last}">
+                            </div>
+                            </div>
+                        </c:if>
+
+                    </c:forEach>
                 </div>
                 <ul class="billboard-tabs" style="height: 3%;">
-                    <li class="tab-link current" data-tab="billboard-tab1"></li>
-                    <li class="tab-link" data-tab="billboard-tab2"></li>
+                    <c:forEach var="i" begin="0" end="${personStatuses.size() / 20}" varStatus="status">
+                        <li class="tab-link ${status.first ? 'current' : ''}" data-tab="billboard-tab${i}"></li>
+                    </c:forEach>
                 </ul>
             </div>
         </div>
@@ -435,12 +260,18 @@
                 const peerSeat = timeElement.closest('.-peer-seat');
 
                 const minutes = timeElement.text().split(':')[0];
-                if (minutes > (statusThresholds[ 'status-threshold-' + (peerSeat.find('.-consultant-screen-status-class').attr('data-value'))] || 10)) {
+                if (minutes > (statusThresholds['status-threshold-' + (peerSeat.find('.-consultant-screen-status-class').attr('data-value'))] || 10)) {
                     peerSeat.addClass('warning');
                 } else {
                     peerSeat.removeClass('warning');
                 }
             }, 5 * 1000);
+
+            setInterval(function () {
+                const links = $('.tab-link');
+                const currentIndex = parseInt(links.filter('.current').removeClass('current').attr('data-tab').substr('billboard-tab'.length));
+                links.filter('[data-tab="billboard-tab' + ((currentIndex + 1) % links.length) + '"]').addClass('current').click();
+            }, 10 * 1000);
         </script>
     </tags:scripts>
 </tags:layout-screen>
