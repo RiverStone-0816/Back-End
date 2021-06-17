@@ -26,7 +26,7 @@
                 <div class="four wide column"><label class="control-label">부서선택</label></div>
                 <div class="twelve wide column">
                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group" data-clear=".-clear-group">
-                        <button type="button" class="ui icon button mini blue compact -select-group">
+                        <button type="button" class="ui icon button mini orange compact -select-group">
                             <i class="search icon"></i>
                         </button>
                         <form:hidden path="groupCode"/>
