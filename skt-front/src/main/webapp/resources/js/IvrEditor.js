@@ -479,8 +479,8 @@
         this.height = null;
 
         const $dom = createDom('ui-ivr-connection-point')
-            .append(createDom('ui-ivr-connection-point-title').text(connectionPoint.option.title))
             .append(createDom('ui-ivr-connection-point-number').text(connectionPoint.option.number))
+            .append(createDom('ui-ivr-connection-point-title').text(connectionPoint.option.title))
             .append(createDom('ui-ivr-connection-point-line-start-point'));
 
         this.dom = $dom[0];

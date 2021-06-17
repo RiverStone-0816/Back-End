@@ -45,17 +45,13 @@
   position: absolute !important;
   width: 230px;
   min-height: 30px;
-  border: solid 1px #d0d0d0;
-  background: rgba(0, 0, 0, 0.05);
+  box-shadow: rgba(0, 0, 0, 0.1) 3px 3px 6px;
 
-  &:hover {
-    background: rgba(0, 0, 0, 0.1);
-  }
   &.ui-droppable-hover {
     background-color: rgba(250, 100, 100, 0.75) !important;
   }
   &[data-type="0"] {
-    box-sizing: content-box; width: 1em; height: 1em; min-height: 1em; border-radius: 50%;
+    box-sizing: content-box; width: 1em; height: 1em; min-height: 1em; border-radius: 50%;border:1px solid @color-ivr-border;
     .ui-ivr-widget {width: 1em; height: 1em;}
     .ui-ivr-widget-eye {display: none;}
     .ui-ivr-widget-setup {display: none;}
@@ -67,29 +63,29 @@
   }
 }
 
-.ui-ivr-widget-shadow[data-type="1"] .ui-ivr-widget-title, .node-type[data-type="1"] { background-color: fade(#0E6EB8, 50%); }
-.ui-ivr-widget-shadow[data-type="2"] .ui-ivr-widget-title, .node-type[data-type="2"] { background-color: fade(#dcc945, 50%); }
-.ui-ivr-widget-shadow[data-type="3"] .ui-ivr-widget-title, .node-type[data-type="3"] { background-color: fade(#ff6b6b, 50%); }
-.ui-ivr-widget-shadow[data-type="4"] .ui-ivr-widget-title, .node-type[data-type="4"] { background-color: fade(#48dbfb, 50%); }
-.ui-ivr-widget-shadow[data-type="5"] .ui-ivr-widget-title, .node-type[data-type="5"] { background-color: fade(#1dd1a1, 50%); }
-.ui-ivr-widget-shadow[data-type="6"] .ui-ivr-widget-title, .node-type[data-type="6"] { background-color: fade(#f368e0, 50%); }
-.ui-ivr-widget-shadow[data-type="7"] .ui-ivr-widget-title, .node-type[data-type="7"] { background-color: fade(#ff9f43, 50%); }
-.ui-ivr-widget-shadow[data-type="8"] .ui-ivr-widget-title, .node-type[data-type="8"] { background-color: fade(#ee5253, 50%); }
-.ui-ivr-widget-shadow[data-type="9"] .ui-ivr-widget-title, .node-type[data-type="9"] { background-color: fade(#0abde3, 50%); }
-.ui-ivr-widget-shadow[data-type="10"] .ui-ivr-widget-title, .node-type[data-type="10"] { background-color: fade(#10ac84, 50%); }
-.ui-ivr-widget-shadow[data-type="11"] .ui-ivr-widget-title, .node-type[data-type="11"] { background-color: fade(#00d2d3, 50%); }
-.ui-ivr-widget-shadow[data-type="12"] .ui-ivr-widget-title, .node-type[data-type="12"] { background-color: fade(#54a0ff, 50%); }
-.ui-ivr-widget-shadow[data-type="13"] .ui-ivr-widget-title, .node-type[data-type="13"] { background-color: fade(#5f27cd, 50%); }
-.ui-ivr-widget-shadow[data-type="14"] .ui-ivr-widget-title, .node-type[data-type="14"] { background-color: fade(#52585f, 50%); }
-.ui-ivr-widget-shadow[data-type="15"] .ui-ivr-widget-title, .node-type[data-type="15"] { background-color: fade(#c8d6e5, 50%); }
-.ui-ivr-widget-shadow[data-type="16"] .ui-ivr-widget-title, .node-type[data-type="16"] { background-color: fade(#576574, 50%); }
-.ui-ivr-widget-shadow[data-type="17"] .ui-ivr-widget-title, .node-type[data-type="17"] { background-color: fade(#01a3a4, 50%); }
-.ui-ivr-widget-shadow[data-type="18"] .ui-ivr-widget-title, .node-type[data-type="18"] { background-color: fade(#2e86de, 50%); }
-.ui-ivr-widget-shadow[data-type="19"] .ui-ivr-widget-title, .node-type[data-type="19"] { background-color: fade(#8395a7, 50%); }
-.ui-ivr-widget-shadow[data-type="20"] .ui-ivr-widget-title, .node-type[data-type="20"] { background-color: fade(#222f3e, 50%); }
-.ui-ivr-widget-shadow[data-type="21"] .ui-ivr-widget-title, .node-type[data-type="21"] { background-color: fade(#01a3a4, 50%); }
-.ui-ivr-widget-shadow[data-type="22"] .ui-ivr-widget-title, .node-type[data-type="22"] { background-color: fade(#2e86de, 50%); }
-.ui-ivr-widget-shadow[data-type="23"] .ui-ivr-widget-title, .node-type[data-type="23"] { background-color: fade(#8395a7, 50%); }
+.ui-ivr-widget-shadow[data-type="1"] .ui-ivr-widget-title, .node-type[data-type="1"] { background-color: #FF7902 }
+.ui-ivr-widget-shadow[data-type="2"] .ui-ivr-widget-title, .node-type[data-type="2"] { background-color: #1dd1a1 }
+.ui-ivr-widget-shadow[data-type="3"] .ui-ivr-widget-title, .node-type[data-type="3"] { background-color: #00802f }
+.ui-ivr-widget-shadow[data-type="4"] .ui-ivr-widget-title, .node-type[data-type="4"] { background-color: #48dbfb }
+.ui-ivr-widget-shadow[data-type="5"] .ui-ivr-widget-title, .node-type[data-type="5"] { background-color: #514f65 }
+.ui-ivr-widget-shadow[data-type="6"] .ui-ivr-widget-title, .node-type[data-type="6"] { background-color: #f368e0 }
+.ui-ivr-widget-shadow[data-type="7"] .ui-ivr-widget-title, .node-type[data-type="7"] { background-color: #ff9f43 }
+.ui-ivr-widget-shadow[data-type="8"] .ui-ivr-widget-title, .node-type[data-type="8"] { background-color: #ee5253 }
+.ui-ivr-widget-shadow[data-type="9"] .ui-ivr-widget-title, .node-type[data-type="9"] { background-color: #0abde3 }
+.ui-ivr-widget-shadow[data-type="10"] .ui-ivr-widget-title, .node-type[data-type="10"] { background-color: #10ac84 }
+.ui-ivr-widget-shadow[data-type="11"] .ui-ivr-widget-title, .node-type[data-type="11"] { background-color: #00d2d3 }
+.ui-ivr-widget-shadow[data-type="12"] .ui-ivr-widget-title, .node-type[data-type="12"] { background-color: #54a0ff }
+.ui-ivr-widget-shadow[data-type="13"] .ui-ivr-widget-title, .node-type[data-type="13"] { background-color: #5f27cd }
+.ui-ivr-widget-shadow[data-type="14"] .ui-ivr-widget-title, .node-type[data-type="14"] { background-color: #52585f }
+.ui-ivr-widget-shadow[data-type="15"] .ui-ivr-widget-title, .node-type[data-type="15"] { background-color: #c8d6e5 }
+.ui-ivr-widget-shadow[data-type="16"] .ui-ivr-widget-title, .node-type[data-type="16"] { background-color: #576574 }
+.ui-ivr-widget-shadow[data-type="17"] .ui-ivr-widget-title, .node-type[data-type="17"] { background-color: #01a3a4 }
+.ui-ivr-widget-shadow[data-type="18"] .ui-ivr-widget-title, .node-type[data-type="18"] { background-color: #2e86de }
+.ui-ivr-widget-shadow[data-type="19"] .ui-ivr-widget-title, .node-type[data-type="19"] { background-color: #8395a7 }
+.ui-ivr-widget-shadow[data-type="20"] .ui-ivr-widget-title, .node-type[data-type="20"] { background-color: #222f3e }
+.ui-ivr-widget-shadow[data-type="21"] .ui-ivr-widget-title, .node-type[data-type="21"] { background-color: #01a3a4 }
+.ui-ivr-widget-shadow[data-type="22"] .ui-ivr-widget-title, .node-type[data-type="22"] { background-color: #2e86de }
+.ui-ivr-widget-shadow[data-type="23"] .ui-ivr-widget-title, .node-type[data-type="23"] { background-color: #8395a7 }
 
 .ui-ivr-widget {
   position: relative;
@@ -115,22 +111,26 @@
 }
 
 .ui-ivr-widget-title {
+  color:@color-white;
   cursor: pointer;
   overflow: hidden;
   white-space: nowrap;
+  text-align:center;
   position: relative;
   display: block;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 31px;
-  padding: 0 0 0 11px;
+  padding: 0 0 0 15%;
   background: @color-white;
-  border-bottom: 1px solid @color-border;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  border: 1px solid @color-ivr-border;
 }
 
 .ui-ivr-widget-setup {
   position: absolute;
-  right: 24px;
-  top: 8px;
+  left: 9px;
+  top: 7px;
 }
 
 .ui-ivr-widget-eye {
@@ -144,7 +144,8 @@
   font-weight: 900;
   overflow: hidden;
   cursor: pointer;
-  color: #7d7d7d;
+  color: @color-white;
+  font-size:19px;
 }
 
 .ui-ivr-widget-icon:hover {
@@ -155,8 +156,7 @@
 
 .ui-ivr-widget-setup:before {
   .ui-ivr-widget-icon();
-  content: "\f013";
-
+  content: "\f0c9";
   &:hover {
     color: #333;
   }
@@ -198,16 +198,27 @@
 .ui-ivr-widget-point-container {
   position: relative;
   display: block;
-  border-left: 0;
-  border-right: 0;
+  .ui-ivr-connection-point {
+    &:last-child {
+      border-bottom-right-radius: 3px;
+      border-bottom-left-radius: 3px;
+      .ui-ivr-connection-point-number {
+        border-bottom:1px solid @color-ivr-border;
+        border-bottom-left-radius: 3px;
+      }
+      .ui-ivr-connection-point-title {
+        border-bottom:1px solid @color-ivr-border;
+        border-bottom-right-radius: 3px;
+      }
+    }
+  }
 }
 
 .ui-ivr-connection-point {
   position: relative;
   display: table;
   width: 100%;
-  border-bottom: 1px solid @color-border;
-
+  border-bottom: 1px solid @color-ivr-inner-border;
   &:last-child {
     border-bottom: 0;
   }
@@ -218,27 +229,29 @@
   white-space: normal;
   box-sizing: border-box;
   display: table-cell;
-  border-right: 1px solid @color-border;
   height: @height-ivr-connection-point;
   vertical-align: middle;
   padding: 7px 7px;
-  text-align: right;
+  text-align: center;
   background: @color-white;
   line-height: 1.3;
+  border-right:1px solid @color-ivr-border;
 }
 
 .ui-ivr-connection-point-number {
   overflow: hidden;
   white-space: nowrap;
   box-sizing: border-box;
-  width: 20%;
+  width: 15%;
   display: table-cell;
-  height: @height-ivr-connection-point;
+  height: 27px;
   vertical-align: middle;
   padding: 0 7px;
   text-align: center;
-  font-weight: bold;
-  background: lighten(@color-border, 10%);
+  font-weight: 800;
+  background: #f5f5f5;
+  border-left:1px solid @color-ivr-border;
+  border-right:1px solid @color-ivr-inner-border;
 }
 
 .ui-ivr-connection-point-line-start-point {
@@ -256,7 +269,7 @@
 
 .ui-ivr-line {
   position: absolute !important;
-  border-top: solid 1px darken(@color-border, 15%) !important;
+  border-top: solid 1px @color-ivr-border!important;
 }
 
 /*.ui-ivr-line:after {
