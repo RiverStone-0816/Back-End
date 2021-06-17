@@ -2456,6 +2456,12 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
     top: 1.0535rem;
     right: 1rem;
     color: @color-white;
+    background-image: url("../images/close.svg");
+    background-repeat: no-repeat;
+    background-position: 17px 8px;
+    &:before {
+      display:none
+    }
   }
   > .content {
     padding:1rem;
@@ -2468,6 +2474,7 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
   > .header:not(.ui) {
     font-size: @font-size-default !important;
     font-weight:300;
+    border-radius: 0;
   }
   .header {
     span:not(.label) {
