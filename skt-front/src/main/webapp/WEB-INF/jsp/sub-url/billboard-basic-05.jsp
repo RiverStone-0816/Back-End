@@ -152,7 +152,6 @@
 
 
     <tags:scripts>
-
         <script>
         </script>
     </tags:scripts>

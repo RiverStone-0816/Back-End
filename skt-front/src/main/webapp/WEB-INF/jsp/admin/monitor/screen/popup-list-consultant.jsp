@@ -31,8 +31,8 @@
             </div>
         </div>
         <div class="content">
-            <div class="ui grid full-height remove-margin flex-flow-column">
-                <div class="equal width row height-13rem">
+            <div class="ui grid full-height remove-margin">
+                <div class="equal width row" style="height: 24%;">
                     <div class="column">
                         <div class="board-label-vertical">
                             <div class="top flex-160">가용율</div>
@@ -91,11 +91,7 @@
                         </c:if>
                     </c:forEach>
                 </div>
-                <style>
-                    .billboard-tab-content.current {
-                        opacity: 1 !important;
-                </style>
-                <div class="row flex-100" style="position: relative;">
+                <div class="row " style="position: relative; height: 73%;">
                     <div id="billboard-tab1" class="sixteen wide column remove-pb billboard-tab-content current" style="position: absolute; opacity: 0; transition: 1s opacity;">
                         <div class="ui five column grid">
                             <c:set var="statusClasses" value="${['stay', 'call', 'after', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest']}"/>
@@ -113,7 +109,7 @@
                         </div>
                     </div>
 
-                    <div id="billboard-tab2" class="sixteen wide column remove-pb billboard-tab-content" style="position: absolute; opacity: 0; transition: 1s opacity;">
+                    <div id="billboard-tab2" class="sixteen wide column remove-pb billboard-tab-content">
                         <div class="ui five column grid">
                             <div class="column">
                                 <div class="user-label">
@@ -298,7 +294,7 @@
                         </div>
                     </div>
                 </div>
-                <ul class="billboard-tabs">
+                <ul class="billboard-tabs" style="height: 3%;">
                     <li class="tab-link current" data-tab="billboard-tab1"></li>
                     <li class="tab-link" data-tab="billboard-tab2"></li>
                 </ul>
