@@ -17,19 +17,32 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/sounds/ivr/"/>
         <div class="sub-content ui container fluid">
-            <div class="panel ivr-panel">
+            <div class="panel panel-search">
                 <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <i class="material-icons ivr-header-icon"> touch_app </i>IVR 뷰어
-                    </h3>
-                    <div class="pull-right">
-                        <select onchange="loadRootIvrTree($(this).val())" style="vertical-align: -2px;">
-                            <c:forEach var="e" items="${roots}">
-                                <option value="${e.key}" ${e.key == seq ? 'selected' : ''}>${g.htmlQuote(e.value)}</option>
-                            </c:forEach>
-                        </select>
+                    <div class="pull-left">
+                        <div class="panel-label">IVR뷰어</div>
                     </div>
                 </div>
+                <div class="panel-body">
+                    <div class="search-area">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>선택</th>
+                                <td colspan="7">
+                                    <div class="ui form">
+                                        <select onchange="loadRootIvrTree($(this).val())" style="vertical-align: -2px;">
+                                            <c:forEach var="e" items="${roots}">
+                                                <option value="${e.key}" ${e.key == seq ? 'selected' : ''}>${g.htmlQuote(e.value)}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="panel ivr-panel">
                 <div class="panel-body">
                     <div id="helper-container"></div>
                     <div style="position: absolute; right: 0; left: 0; top: 0; bottom: 0;">
