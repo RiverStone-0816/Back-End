@@ -21,112 +21,93 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
-                        <span style="color: red;padding-left:20px;">※ [프리뷰 그룹] 선택 후 검색을 눌러주세요.</span>
+                        <div class="panel-label">캠페인 관리(프리뷰)  <span style="color: red;padding-left:20px;">※ [프리뷰 그룹] 선택 후 검색을 눌러주세요.</span></div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">
-                            <label>검색옵션 전체보기</label>
-                            <input type="checkbox" name="newsletter" id="_newsletter" checked>
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
+                            <input type="checkbox" name="newsletter" id="_newsletter" checked="" tabindex="0" class="hidden"><label for="_newsletter">검색옵션 전체보기</label>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="search-area">
-                        <div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">프리뷰 그룹</label></div>
-                                <div class="two wide column">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>프리뷰 그룹</th>
+                                <td colspan="3">
                                     <div class="ui form">
                                         <form:select path="groupSeq">
                                             <form:option value="" label="선택안함" />
                                             <form:options  items="${previewGroups}"/>
                                         </form:select>
                                     </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">데이터생성일</label></div>
-                                <div class="five wide column">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label for="createdStartDate" style="display:none">From</label>
-                                            <form:input path="createdStartDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
+                                </td>
+                                <th>데이터생성일</th>
+                                <td colspan="3">
+                                    <div class="ui action input calendar-area">
+                                        <form:input path="createdStartDate" cssClass="-datepicker" placeholder="시작일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label for="createdEndDate" style="display:none">to</label>
-                                            <form:input path="createdEndDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
+                                        <form:input path="createdEndDate" cssClass="-datepicker" placeholder="종료일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">담당자</label></div>
-                                <div class="two wide column">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>담당자</th>
+                                <td colspan="3">
                                     <div class="ui form">
                                         <form:select path="personIdInCharge">
                                             <form:option value="" label="선택안함"/>
                                             <form:options items="${persons}"/>
                                         </form:select>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">마지막상담일</label></div>
-                                <div class="five wide column">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label for="createdStartDate" style="display:none">From</label>
-                                            <form:input path="lastResultStartDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
+                                </td>
+                                <th>마지막상담일</th>
+                                <td colspan="3">
+                                    <div class="ui action input calendar-area">
+                                        <form:input path="lastResultStartDate" cssClass="-datepicker" placeholder="시작일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label for="createdEndDate" style="display:none">to</label>
-                                            <form:input path="lastResultEndDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
+                                        <form:input path="lastResultEndDate" cssClass="-datepicker" placeholder="종료일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">검색항목</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="searchType">
-                                            <form:option value="" label="선택안함"/>
-                                            <form:option value="" label="--고객정보--"/>
-                                            <c:forEach var="e" items="${previewType.fields}">
-                                                <c:if test="${e.issearch == 'Y'}">
-                                                    <form:option value="PRV_${e.fieldId.substring(previewType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
-                                                                 data-type="${g.htmlQuote(e.fieldType)}"/>
-                                                </c:if>
-                                            </c:forEach>
-                                            <form:option value="" label="--상담결과--"/>
-                                            <c:forEach var="e" items="${resultType.fields}">
-                                                <c:if test="${e.issearch == 'Y'}">
-                                                    <form:option value="RS_${e.fieldId.substring(resultType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
-                                                                 data-type="${g.htmlQuote(e.fieldType)}"/>
-                                                </c:if>
-                                            </c:forEach>
-                                        </form:select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>검색항목</th>
+                                <td colspan="13">
+                                    <div class="ui form flex">
+                                       <div class="ip-wrap">
+                                           <form:select path="searchType">
+                                               <form:option value="" label="선택안함"/>
+                                               <form:option value="" label="--고객정보--"/>
+                                               <c:forEach var="e" items="${previewType.fields}">
+                                                   <c:if test="${e.issearch == 'Y'}">
+                                                       <form:option value="PRV_${e.fieldId.substring(previewType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
+                                                                    data-type="${g.htmlQuote(e.fieldType)}"/>
+                                                   </c:if>
+                                               </c:forEach>
+                                               <form:option value="" label="--상담결과--"/>
+                                               <c:forEach var="e" items="${resultType.fields}">
+                                                   <c:if test="${e.issearch == 'Y'}">
+                                                       <form:option value="RS_${e.fieldId.substring(resultType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
+                                                                    data-type="${g.htmlQuote(e.fieldType)}"/>
+                                                   </c:if>
+                                               </c:forEach>
+                                           </form:select>
+                                       </div>
+                                       <div class="ip-wrap">
+                                           <form:input path="keyword"/>
+                                       </div>
                                     </div>
-                                </div>
-                                <%--<div class="five wide column -search-type-sub-input" data-type="DATE">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
-                                        <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
-                                    </div>
-                                </div>--%>
-                                <div class="two wide column -search-type-sub-input">
-                                    <div class="ui input fluid">
-                                        <form:input path="keyword"/>
-                                    </div>
-                                </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
                     </div>
@@ -135,12 +116,13 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
-                    </div>
-                    <div class="pull-right">
-                        <button class="ui basic green button" type="button" onclick="downloadExcel()">Excel 다운로드</button>
+                        <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span> 건</h3>
+                        <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         <button class="ui basic button -control-entity" data-entity="PreviewData" style="display: none;" onclick="popupRedistributionModal()">재분배</button>
                         <button class="ui basic button" onclick="popupModal()">추가</button>
+                    </div>
+                    <div class="pull-right">
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/outbound/preview/data/" pageForm="${search}"/>
                     </div>
                 </div>
                 <div class="panel-body" style="overflow-x: auto;">
@@ -243,9 +225,6 @@
                         </c:choose>
                         </tbody>
                     </table>
-                </div>
-                <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/outbound/preview/data/" pageForm="${search}"/>
                 </div>
             </div>
         </div>

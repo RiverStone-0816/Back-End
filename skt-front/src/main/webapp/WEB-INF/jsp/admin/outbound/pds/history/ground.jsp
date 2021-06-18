@@ -20,35 +20,26 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
+                        <div class="panel-label">실행이력(PDS)</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">
-                            <label>검색옵션 전체보기</label>
-                            <input type="checkbox" name="newsletter" id="_newsletter" checked>
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
+                            <input type="checkbox" name="newsletter" id="_newsletter" checked="" tabindex="0" class="hidden"><label for="_newsletter">검색옵션 전체보기</label>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="search-area">
-                        <div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">실행날짜</label></div>
-                                <div class="nine wide column -buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label class="control-label" for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>실행날짜</th>
+                                <td class="-buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
+                                    <div class="ui action input calendar-area">
+                                        <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label class="control-label" for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
+                                        <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
                                     <div class="ui basic buttons">
                                         <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
@@ -58,16 +49,24 @@
                                         <button type="button" data-interval="month" data-number="3" class="ui button -button-set-range">3개월</button>
                                         <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
                                     </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">상담그룹</label></div>
-                                <div class="two wide column">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>상담그룹</th>
+                                <td>
                                     <div class="ui form">
                                         <form:select path="seq">
                                             <form:option value="" label="선택안함"/>
                                             <form:options items="${pdsGroups}"/>
                                         </form:select>
                                     </div>
-                                </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
                     </div>
@@ -76,14 +75,15 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
-                    </div>
-                    <div class="pull-right">
+                        <h3 class="panel-total-count">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
                         <c:if test="${serviceKind.equals('SC')}">
                             <a href="<c:url value="/admin/outbound/pds/result/"/>" class="ui button basic tab-indicator">상담결과이력</a>
                         </c:if>
                         <a href="<c:url value="/admin/record/history/history/"/>" class="ui button basic tab-indicator">통화이력</a>
                         <button class="ui basic button -control-entity" data-entity="PdsHistory" style="display: none;" onclick="deleteEntity(getEntityId('PdsHistory'))">삭제</button>
+                    </div>
+                    <div class="pull-right">
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/outbound/pds/history/" pageForm="${search}"/>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -128,9 +128,6 @@
                         </c:choose>
                         </tbody>
                     </table>
-                </div>
-                <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/outbound/pds/history/" pageForm="${search}"/>
                 </div>
             </div>
         </div>

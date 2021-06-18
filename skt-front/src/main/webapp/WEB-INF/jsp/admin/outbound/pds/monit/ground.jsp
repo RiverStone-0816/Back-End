@@ -20,35 +20,26 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
+                        <div class="panel-label">모니터링(PDS)</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">
-                            <label>검색옵션 전체보기</label>
-                            <input type="checkbox" name="newsletter" id="_newsletter" checked>
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
+                            <input type="checkbox" name="newsletter" id="_newsletter" checked="" tabindex="0" class="hidden"><label for="_newsletter">검색옵션 전체보기</label>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="search-area">
-                        <div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">${serviceKind.equals("SC") ? 'PDS' : 'Auto IVR'}실행일</label></div>
-                                <div class="nine wide column -buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>${serviceKind.equals("SC") ? 'PDS' : 'Auto IVR'}실행일</th>
+                                <td colspan="7" class="-buttons-set-range-container"  data-startdate="[name=startDate]" data-enddate="[name=endDate]">
+                                    <div class="ui action input calendar-area">
+                                        <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
+                                        <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
                                     <div class="ui basic buttons">
                                         <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
@@ -58,16 +49,24 @@
                                         <button type="button" data-interval="month" data-number="3" class="ui button -button-set-range">3개월</button>
                                         <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
                                     </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">실행중인${serviceKind.equals("SC") ? 'PDS' : 'Auto IVR'}</label></div>
-                                <div class="two wide column">
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>실행중인${serviceKind.equals("SC") ? 'PDS' : 'Auto IVR'}</th>
+                                <td colspan="7">
                                     <div class="ui form">
                                         <form:select path="lastExecuteId">
                                             <form:option value="" label="선택안함"/>
                                             <form:options items="${pdsList}"/>
                                         </form:select>
                                     </div>
-                                </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
                     </div>
@@ -76,14 +75,15 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
-                    </div>
-                    <div class="pull-right">
+                        <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span> 건</h3>
                         <div class="ui basic buttons">
                             <button type="button" class="ui button" onclick="startPdsExecuteGroup()">실행</button>
                             <button type="button" class="ui button" onclick="stopPdsExecuteGroup()">정지</button>
                             <button type="button" class="ui button" onclick="reloadSubmit(deletePdsExecuteGroup())">정지후내리기</button>
                         </div>
+                    </div>
+                    <div class="pull-right">
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/outbound/pds/monit/" pageForm="${search}"/>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -188,9 +188,6 @@
                             </div>
                         </c:otherwise>
                     </c:choose>
-                </div>
-                <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/outbound/pds/monit/" pageForm="${search}"/>
                 </div>
             </div>
         </div>

@@ -22,47 +22,43 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
+                        <div class="panel-label">설문문항생성</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">
-                            <label>검색옵션 전체보기</label>
-                            <input type="checkbox" name="newsletter" id="_newsletter" checked>
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
+                            <input type="checkbox" name="newsletter" id="_newsletter" checked="" tabindex="0" class="hidden"><label for="_newsletter">검색옵션 전체보기</label>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="search-area">
-                        <div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">문항제목</label></div>
-                                <div class="two wide column">
-                                    <div class="ui input fluid">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>문항제목</th>
+                                <td colspan="3">
+                                    <div class="ui form">
                                         <form:input path="itemName"/>
                                     </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">질문</label></div>
-                                <div class="two wide column">
-                                    <div class="ui input fluid">
+                                </td>
+                                <th>질문</th>
+                                <td colspan="3">
+                                    <div class="ui form">
                                         <form:input path="word"/>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </form:form>
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span>건</h3>
+                        <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span>건</h3>
+                        <button class="ui basic button" onclick="popupModal()">추가</button>
                     </div>
                     <div class="pull-right">
-                        <button class="ui basic button" onclick="popupModal()">추가</button>
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/outbound/research/item/" pageForm="${search}"/>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -83,7 +79,6 @@
                                     <tr data-id="${e.seq}">
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.itemName)}</td>
-
                                         <td>
                                             <div class="popup-element-wrap">
                                                     ${g.htmlQuote(g.messageOf('ResearchItemSoundKind', e.soundKind))}
@@ -154,9 +149,6 @@
                         </c:choose>
                         </tbody>
                     </table>
-                </div>
-                <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/outbound/research/item/" pageForm="${search}"/>
                 </div>
             </div>
         </div>

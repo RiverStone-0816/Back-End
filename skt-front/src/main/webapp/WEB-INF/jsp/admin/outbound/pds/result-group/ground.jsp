@@ -16,15 +16,25 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/outbound/pds/result-group/"/>
         <div class="sub-content ui container fluid unstackable">
+            <div class="panel panel-search">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <div class="panel-label">상담그룹(PDS)</div>
+                    </div>
+                </div>
+            </div>
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
+                        <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span> 건</h3>
+                        <div class="ui basic buttons">
+                            <button class="ui button" onclick="popupModal()">추가</button>
+                            <button class="ui button -control-entity" data-entity="PdsResultGroup" style="display: none;" onclick="popupModal(getEntityId('PdsResultGroup'))">수정</button>
+                            <button class="ui button -control-entity" data-entity="PdsResultGroup" style="display: none;" onclick="deleteEntity(getEntityId('PdsResultGroup'))">삭제</button>
+                        </div>
                     </div>
                     <div class="pull-right">
-                        <button class="ui basic button" onclick="popupModal()">추가</button>
-                        <button class="ui basic button -control-entity" data-entity="PdsResultGroup" style="display: none;" onclick="popupModal(getEntityId('PdsResultGroup'))">수정</button>
-                        <button class="ui basic button -control-entity" data-entity="PdsResultGroup" style="display: none;" onclick="deleteEntity(getEntityId('PdsResultGroup'))">삭제</button>
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/outbound/pds/result-group/" pageForm="${search}"/>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -59,9 +69,6 @@
                         </c:choose>
                         </tbody>
                     </table>
-                </div>
-                <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/outbound/pds/result-group/" pageForm="${search}"/>
                 </div>
             </div>
         </div>

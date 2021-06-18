@@ -21,25 +21,20 @@
             <form class="panel panel-search" method="get">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        검색
+                        <div class="panel-label">IVR연결(PDS)</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">
-                            <label>검색옵션 전체보기</label>
-                            <input type="checkbox" name="newsletter" id="_newsletter" checked>
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
+                            <input type="checkbox" name="newsletter" id="_newsletter" checked="" tabindex="0" class="hidden"><label for="_newsletter">검색옵션 전체보기</label>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="search-area">
-                        <div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">루트IVR 선택</label></div>
-                                <div class="two wide column">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>루트IVR 선택</th>
+                                <td colspan="7">
                                     <div class="ui form">
                                         <select name="seq">
                                             <option value="">IVR선택</option>
@@ -48,7 +43,13 @@
                                             </c:forEach>
                                         </select>
                                     </div>
-                                </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
                     </div>
@@ -56,7 +57,7 @@
             </form>
             <div class="panel">
                 <div class="panel-heading">
-                    <div class="pull-right">
+                    <div class="pull-left">
                         <button class="ui basic button" onclick="rootIvrModal()">루트IVR 추가</button>
                     </div>
                 </div>
