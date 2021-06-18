@@ -22,9 +22,9 @@
                         <div class="panel-label">상담원(개인별)통계</div>
                     </div>
                     <div class="pull-right">
-                        <div class="ui slider checkbox">
-                            <label>접기/펴기</label>
-                            <input type="checkbox" name="newsletter" id="_newsletter">
+                        <div class="ui slider checkbox checked">
+                            <label>검색옵션 전체보기</label>
+                            <input type="checkbox" name="newsletter" id="_newsletter" checked>
                         </div>
                     </div>
                 </div>

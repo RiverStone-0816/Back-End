@@ -26,9 +26,9 @@
                         <div class="panel-label">통화이력조회</div>
                     </div>
                     <div class="pull-right">
-                        <div class="ui slider checkbox">
-                            <label for="_newsletter">검색 옵션 전체보기</label>
-                            <input type="checkbox" name="newsletter" id="_newsletter">
+                        <div class="ui slider checkbox checked">
+                            <label for="_newsletter">검색옵션 전체보기</label>
+                            <input type="checkbox" name="newsletter" id="_newsletter" checked>
                         </div>
                     </div>
                 </div>

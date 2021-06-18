@@ -22,9 +22,9 @@
                         <div class="panel-label">메뉴얼</div>
                     </div>
                     <div class="pull-right">
-                        <div class="ui slider checkbox">
+                        <div class="ui slider checkbox checked">
                             <label for="_newsletter">검색옵션 전체보기</label>
-                            <input type="checkbox" name="newsletter" id="_newsletter">
+                            <input type="checkbox" name="newsletter" id="_newsletter" checked>
                         </div>
                     </div>
                 </div>

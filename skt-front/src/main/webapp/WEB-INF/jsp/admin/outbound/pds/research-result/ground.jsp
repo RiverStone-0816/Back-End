@@ -25,9 +25,9 @@
                         검색
                     </div>
                     <div class="pull-right">
-                        <div class="ui slider checkbox">
-                            <label>접기/펴기</label>
-                            <input type="checkbox" name="newsletter" id="_newsletter">
+                        <div class="ui slider checkbox checked">
+                            <label>검색옵션 전체보기</label>
+                            <input type="checkbox" name="newsletter" id="_newsletter" checked>
                         </div>
                         <div class="btn-wrap">
                             <button type="submit" class="ui brand basic button">검색</button>
