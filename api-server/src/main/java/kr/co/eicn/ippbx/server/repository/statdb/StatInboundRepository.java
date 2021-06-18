@@ -17,6 +17,7 @@ import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.*;
 
@@ -451,6 +452,29 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
                 .and(TABLE.DCONTEXT.notEqual("pers_context"))
                 .groupBy(TABLE.STAT_HOUR)
                 .fetchMap(TABLE.STAT_HOUR, TABLE.CONNREQ);
+    }
+
+    public Map<?, BigDecimal> getSuccessPer(){
+
+        Table<?> A = table(select(
+                TABLE.HUNT_NUMBER.as("hunt_number")
+                ,ifnull(sum(TABLE.SUCCESS).divide(sum(TABLE.TOTAL)).mul(100),0).as("per")
+        )
+                .from(TABLE)
+                .where(TABLE.COMPANY_ID.eq(g.getUser().getCompanyId()))
+                .and(TABLE.HUNT_NUMBER.isNotNull().and(TABLE.HUNT_NUMBER.notEqual("")))
+                .and(TABLE.STAT_DATE.eq(date(now())))
+                .groupBy(TABLE.HUNT_NUMBER)).as("A");
+
+        return dsl.select(
+                QUEUE_NAME.NUMBER
+                ,ifnull(A.field("per"),0).as("per")
+        )
+                .from(QUEUE_NAME)
+                .leftJoin(A)
+                .on(QUEUE_NAME.NUMBER.eq((Field<String>) A.field("hunt_number")))
+                .where(QUEUE_NAME.COMPANY_ID.eq(g.getUser().getCompanyId()))
+                .fetchMap(QUEUE_NAME.NUMBER, (Field<BigDecimal>) A.field("per"));
     }
 
 

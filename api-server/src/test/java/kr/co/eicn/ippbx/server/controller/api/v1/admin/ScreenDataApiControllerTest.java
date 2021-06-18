@@ -67,4 +67,17 @@ public class ScreenDataApiControllerTest extends BaseControllerTest {
             }
         }
     }
+
+//    @Test
+    public void byHuntSuccessPer() throws Exception {
+        final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL)
+                .accept(MediaType.APPLICATION_JSON)
+                .with(new JwtRequestPostProcessor())
+                .param("expressionType", "BY_HUNT_SUCCESSPER"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        log.info(String.valueOf(result));
+    }
 }
