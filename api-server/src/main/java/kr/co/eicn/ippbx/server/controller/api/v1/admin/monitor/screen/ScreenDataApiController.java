@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -71,6 +72,23 @@ public class ScreenDataApiController extends ApiBaseController {
         );
 
         return JsonResult.data(result);
+    }
+
+    @GetMapping(value = "", params = "expressionType=BY_HUNT_SUCCESSPER")
+    public JsonResult<ByHuntSuccessPerData> byHuntSuccessPer(){
+        final Map<?, BigDecimal> response = statInboundService.getRepository().getSuccessPer();
+        final Map<String, String> hunt = queueNameRepository.findAll().stream().collect(Collectors.toMap(QueueName::getNumber,QueueName::getName));
+        final List<ByHuntSuccessPer> responses = new ArrayList<>();
+        final ByHuntSuccessPerData byHuntSuccessPerData = new ByHuntSuccessPerData();
+        for(Object key : response.keySet()){
+            ByHuntSuccessPer e = new ByHuntSuccessPer();
+            e.setQueueNumber((String) key);
+            e.setSuccessPer(response.get(key).doubleValue());
+            e.setQueueName(hunt.get(key));
+            responses.add(e);
+        }
+        byHuntSuccessPerData.setByHuntSuccessPerList(responses);
+        return JsonResult.data(byHuntSuccessPerData);
     }
 
     @GetMapping(value = "", params = "expressionType=BY_HUNT")
@@ -178,6 +196,8 @@ public class ScreenDataApiController extends ApiBaseController {
         return JsonResult.data(result);
     }
 
+
+
     @Data
     public static class IntegrationData {
         private String serviceName;
@@ -224,5 +244,17 @@ public class ScreenDataApiController extends ApiBaseController {
     @Data
     public static class ByServiceData {
         private List<IntegrationData> services = new ArrayList<>();
+    }
+
+    @Data
+    public static class ByHuntSuccessPer{
+        private String queueNumber;
+        private String queueName;
+        private Double successPer;
+    }
+
+    @Data
+    public static class ByHuntSuccessPerData{
+        private List<ByHuntSuccessPer> byHuntSuccessPerList = new ArrayList<>();
     }
 }
