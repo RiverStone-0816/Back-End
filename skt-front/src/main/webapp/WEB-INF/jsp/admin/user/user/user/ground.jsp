@@ -180,9 +180,9 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <span><img src="<c:url value="/resources/images/play.svg"/>"> ${g.htmlQuote(g.messageOf('RecordingAuthorityType', e.listeningRecordingAuthority))}</span>
-                                            <span><img src="<c:url value="/resources/images/download.svg"/>"> ${g.htmlQuote(g.messageOf('RecordingAuthorityType', e.downloadRecordingAuthority))}</span>
-                                            <span><img src="<c:url value="/resources/images/delete.svg"/>"> ${g.htmlQuote(g.messageOf('RecordingAuthorityType', e.removeRecordingAuthority))}</span>
+                                            <span>${g.htmlQuote(g.messageOf('RecordingAuthorityType', e.listeningRecordingAuthority))}</span>
+                                            <span>${g.htmlQuote(g.messageOf('RecordingAuthorityType', e.downloadRecordingAuthority))}</span>
+                                            <span>${g.htmlQuote(g.messageOf('RecordingAuthorityType', e.removeRecordingAuthority))}</span>
                                         </td>
                                         <c:if test="${services.contains('PDS')}">
                                         <td>${e.isPds == 'Y' ? '허용됨' : '허용되지 않음'}</td>
@@ -210,7 +210,6 @@
                                 </tr>
                             </c:otherwise>
                         </c:choose>
-
                         </tbody>
                     </table>
                 </div>
