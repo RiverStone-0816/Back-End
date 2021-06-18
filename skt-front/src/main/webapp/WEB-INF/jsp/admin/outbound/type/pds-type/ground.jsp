@@ -17,12 +17,17 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/outbound/type/pds-type/"/>
         <div class="sub-content ui container fluid unstackable">
+            <div class="panel panel-search">
+                <div class="panel-heading">
+                    <div class="pull-left">
+                        <div class="panel-label">DB유형(PDS)</div>
+                    </div>
+                </div>
+            </div>
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${list.size()}</span> 건</h3>
-                    </div>
-                    <div class="pull-right">
+                        <h3 class="panel-total-count">전체 <span>${list.size()}</span> 건</h3>
                         <button class="ui basic button" onclick="popupModal()">추가</button>
                     </div>
                 </div>
