@@ -12,7 +12,7 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<div class="ui bottom attached tab segment active" data-tab="call-panel">
+<div class="ui bottom attached tab segment remove-margin active" data-tab="call-panel">
     <div class="panel remove-margin">
         <div class="panel-heading">
             <div class="pull-left"><label class="panel-label">수발신정보</label></div>
@@ -33,11 +33,11 @@
                 </tr>
                 <tr>
                     <th>고객번호</th>
-                    <td class="flex-td">
-                        <div class="ui input fluid">
+                    <td class="">
+                        <div class="ui form flex">
                             <input type="text" class="-calling-number" id="counseling-target"/>
+                            <button class="ui button sharp light ml5">전화걸기</button>
                         </div>
-                        <button class="ui button sharp light">전화걸기</button>
                     </td>
                 </tr>
                 <tr>
@@ -55,8 +55,9 @@
                 <tr>
                     <th>통화이력</th>
                     <td>
-                        <div class="ui form">
+                        <div class="ui form flex">
                             <jsp:include page="/counsel/call/user-call-history"/>
+                            <button class="ui button sharp light ml5">통화이력</button>
                         </div>
                     </td>
                 </tr>

@@ -743,8 +743,11 @@ pre {
   height:100%;
   padding:0 10px 10px 10px;
   overflow: hidden;
-  .panel-heading {
-    border-bottom:1px solid @color-border;
+  .panel:not(.panel-search) {
+    .panel-heading {
+      padding:10px 14px;
+      border-bottom:1px solid @color-border;
+    }
   }
   .flex();
   .left-panel {
@@ -809,7 +812,8 @@ pre {
 }
 
 .top-chat-list-wrap {
-  overflow:auto;
+  overflow-y:auto;
+  overflow-x:hidden;
   height:333px;
   position:relative;
   &:after {
@@ -1283,7 +1287,7 @@ pre {
       border-radius: 0;
       box-shadow: none;
       border:1px solid @color-border;
-      padding: .6em 1.33em;
+      padding: .54em 1.33em;
     }
     .ui.buttons {
       border-radius: 0;
@@ -2247,7 +2251,7 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
   background:lighten(@color-brand,20%)!important;
 }
 
-.ui.checkbox input:checked ~ .box:before, .ui.checkbox input:checked ~ label:before {
+.ui.slider.checkbox input:checked ~ .box:before, .ui.slider.checkbox input:checked ~ label:before {
   background:lighten(@color-brand,20%)!important;
 }
 
@@ -2397,7 +2401,6 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
   .flex;
   select {
     flex: 1;
-    margin-right: 5px;
   }
   input[type="text"] {
     flex:1;
@@ -4276,6 +4279,17 @@ g {
 .ui-resizable-helper {z-index: 10001 !important;}
 */
 
+
+.multi-list-wrap {
+  border:1px solid @color-border;
+  padding:5px;
+  text-align:left;
+  white-space: normal;
+  line-height: 31px;
+  .ui.label {
+    margin:0 4px 0 0;
+  }
+}
 
 /*dashboard*/
 

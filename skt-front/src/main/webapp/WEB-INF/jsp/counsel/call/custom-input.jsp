@@ -20,13 +20,12 @@
         <div class="pull-left"><label class="panel-label">고객정보</label></div>
 
         <div class="pull-right">
+            <button class="ui basic button" type="button" onclick="popupSearchMaindbCustomModal()">고객검색</button>
+            <button class="ui basic button" type="button">고객등급</button>
             <button type="button" class="ui button sharp light" id="call-submitButton">
                 <img src="<c:url value="/resources/images/save.svg"/>">${entity != null ? '고객수정' : '신규등록'}
             </button>
         </div>
-        <button type="button" class="ui button mini right floated compact" onclick="popupSearchMaindbCustomModal()">
-            고객검색
-        </button>
     </div>
     <div class="panel-body">
         <table class="ui celled table compact unstackable fixed">
@@ -226,11 +225,77 @@
 
                 </c:forEach>
             </tr>
+            <tr>
+                <th>멀티채널추가</th>
+                <td colspan="7">
+                    <div class="ui form flex">
+                        <select>
+                            <option>1</option>
+                            <option>1</option>
+                            <option>1</option>
+                        </select>
+                        <input type="text" class="flex-200 ml5">
+                        <button class="ui button sharp navy ml5">추가</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>멀티채널리스트</th>
+                <td colspan="7">
+                    <div class="ui labels multi-list-wrap">
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                        <span class="ui label">
+                            01011111111 <i class="icon close"></i>
+                        </span>
+                    </div>
+                </td>
+            </tr>
             </tbody>
         </table>
 
             <%--TODO: 더 작업해야 함.--%>
-        <div style="height: 100%;">
+        <%--<div style="height: 100%;">
             <div class="ui grid" style="margin-top: 2em;">
                 <div class="row">
                     <div class="twelve wide column"><label class="control-label">멀티채널(전화번호,상담톡) 추가</label></div>
@@ -289,7 +354,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--%>
     </div>
 </form:form>
 

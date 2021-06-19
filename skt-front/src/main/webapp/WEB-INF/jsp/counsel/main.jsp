@@ -37,8 +37,21 @@
 
         <div class="panel remove-mb panel-resizable middle">
             <div class="panel-heading">
-                <div class="pull-left"><label class="panel-label">상담결과 입력</label></div>
+                <div class="pull-left">
+                    <label class="panel-label">상담결과 입력</label>
+                    <div class="ui checkbox ml10">
+                        <input type="checkbox" name="example">
+                        <label>고객정보저장</label>
+                    </div>
+                    <div class="ui checkbox ml10">
+                        <input type="checkbox" name="example">
+                        <label>저장 후 대기</label>
+                    </div>
+                </div>
                 <div class="pull-right">
+                    <button class="ui basic button" type="button">상담검색</button>
+                    <button class="ui basic button" type="button">상담예약</button>
+                    <button class="ui basic button" type="button">상담이관</button>
                     <button class="ui button sharp light"><img src="<c:url value="/resources/images/save.svg"/>">신규고객정보&상담결과 저장</button>
                 </div>
             </div>
