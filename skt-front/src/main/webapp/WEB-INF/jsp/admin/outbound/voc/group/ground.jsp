@@ -19,7 +19,7 @@
             <div class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">VOS설정</div>
+                        <div class="panel-label">VOC설정</div>
                     </div>
                 </div>
             </div>

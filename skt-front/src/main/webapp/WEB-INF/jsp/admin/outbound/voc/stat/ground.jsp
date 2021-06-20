@@ -33,7 +33,7 @@
                         <table class="ui celled table compact unstackable">
                             <tr>
                                 <th>검색기간</th>
-                                <td class="-buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]"">
+                                <td class="-buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
                                     <div class="ui action input calendar-area">
                                         <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
                                         <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
@@ -73,11 +73,6 @@
                 </div>
             </form:form>
             <div class="panel">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <h3 class="panel-total-count">전체 <span class="text-primary">${list.size()}</span>건</h3>
-                    </div>
-                </div>
                 <div class="panel-body">
                     <table class="ui structured celled table compact unstackable">
                         <thead>

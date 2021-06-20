@@ -43,6 +43,14 @@
                                         <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
                                         <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
+                                    <div class="ui basic buttons">
+                                        <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
+                                        <button type="button" data-interval="day" data-number="3" class="ui button -button-set-range">3일</button>
+                                        <button type="button" data-interval="day" data-number="7" class="ui button -button-set-range">1주일</button>
+                                        <button type="button" data-interval="month" data-number="1" class="ui button -button-set-range">1개월</button>
+                                        <button type="button" data-interval="month" data-number="3" class="ui button -button-set-range">3개월</button>
+                                        <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
+                                    </div>
                                 </td>
                             </tr>
                             <tr>

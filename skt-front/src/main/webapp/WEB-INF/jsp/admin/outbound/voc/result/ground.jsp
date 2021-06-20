@@ -33,7 +33,7 @@
                         <table class="ui celled table compact unstackable">
                             <tr>
                                 <th>검색기간</th>
-                                <td class="-buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]"">
+                                <td class="-buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
                                     <div class="ui action input calendar-area">
                                         <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
                                         <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>

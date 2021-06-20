@@ -20,7 +20,7 @@
             <div class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">상담결과유형</div>
+                        <div class="panel-label">상담결과유형(공통)</div>
                     </div>
                 </div>
             </div>

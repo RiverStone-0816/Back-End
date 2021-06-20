@@ -75,8 +75,7 @@
                                                 <form:option value="" label="--고객정보--"/>
                                                 <c:forEach var="e" items="${pdsType.fields}">
                                                     <c:if test="${e.issearch == 'Y'}">
-                                                        <form:option value="${g.htmlQuote(e.fieldId)}" label="${g.htmlQuote(e.fieldInfo)}"
-                                                                     data-type="${g.htmlQuote(e.fieldType)}"/>
+                                                        <form:option value="${g.htmlQuote(e.fieldId)}" label="${g.htmlQuote(e.fieldInfo)}" data-type="${g.htmlQuote(e.fieldType)}"/>
                                                     </c:if>
                                                 </c:forEach>
                                                 <form:option value="" label="--상담결과--"/>
@@ -90,10 +89,10 @@
                                         </div>
                                         <div class="ip-wrap -search-type-sub-input" data-type="DATE">
                                             <div class="ui action input calendar-area">
-                                                <form:input path="StartDate" cssClass="-datepicker" placeholder="시작일"/>
+                                                <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
                                                 <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                                 <span class="tilde">~</span>
-                                                <form:input path="EndDate" cssClass="-datepicker" placeholder="종료일"/>
+                                                <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
                                                 <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                             </div>
                                         </div>
@@ -137,10 +136,10 @@
                             <th rowspan="2">번호</th>
                             <th colspan="2">상담기본정보</th>
                             <c:if test="${pdsType.fields.size() > 0}">
-                            <th colspan="${pdsType.fields.size()}">고객정보필드</th>
+                                <th colspan="${pdsType.fields.size()}">고객정보필드</th>
                             </c:if>
                             <c:if test="${resultType.fields.size() > 0}">
-                            <th colspan="${resultType.fields.size()}">상담결과필드</th>
+                                <th colspan="${resultType.fields.size()}">상담결과필드</th>
                             </c:if>
                                 <%--<th colspan="3">채널정보</th>--%>
                         </tr>
