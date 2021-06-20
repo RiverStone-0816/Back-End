@@ -235,13 +235,20 @@
                 </c:if>
                 <div class="row dtmf-container">
                     <c:if test="${entity != null && entity.nodes != null && entity.nodes.size() > 0}">
-                        <c:forEach var="e" items="${entity.nodes}" varStatus="status">
-                            <div class="seven wide column">
-                                <div class="ui action right labeled input mini fluid">
-                                    <div style="flex: 0.3 0 auto;">[${g.htmlQuote(e.button)}] : ${g.htmlQuote(e.name)}</div>
-                                </div>
-                            </div>
-                        </c:forEach>
+                        <table class="ui structured celled table">
+                            <tbody>
+                            <c:forEach var="e" items="${entity.nodes}" varStatus="status">
+                                <c:if test="${status.index % 2 == 0}">
+                                    <tr>
+                                </c:if>
+                                <th>[${g.htmlQuote(e.button)}]</th>
+                                <td>${g.htmlQuote(e.name)}</td>
+                                <c:if test="${status.index % 2 == 1 || status.last}">
+                                    </tr>
+                                </c:if>
+                            </c:forEach>
+                            </tbody>
+                        </table>
                     </c:if>
                 </div>
             </c:if>
