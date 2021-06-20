@@ -19,19 +19,19 @@
         <div class="sub-content ui container fluid">
             <div class="panel ivr-panel">
                 <div class="panel-heading">
-                    <h3 class="panel-title">
-                        <i class="material-icons ivr-header-icon"> touch_app </i>IVR 에디터
-                    </h3>
+                    <div class="pull-left">
+                        <div class="panel-label">IVR에디터</div>
+                    </div>
                     <div class="pull-right">
-                        <select onchange="loadRootIvrTree($(this).val())" style="vertical-align: -2px;">
+                        <select onchange="loadRootIvrTree($(this).val())" class="mr5">
                             <c:forEach var="e" items="${roots}">
                                 <option value="${e.key}" ${e.key == seq ? 'selected' : ''}>${g.htmlQuote(e.value)}</option>
                             </c:forEach>
                         </select>
-                        <button class="ui button mini" onclick="addNewRootIvrTree()">추가</button>
+                        <button class="ui basic button" onclick="addNewRootIvrTree()">추가</button>
                         <c:if test="${seq != null}">
-                            <button class="ui button mini" onclick="deleteRootIvrTree(rootSeq)">삭제</button>
-                            <button class="ui button mini" onclick="copyRootIvrTree(rootSeq)">복사</button>
+                            <button class="ui basic button" onclick="deleteRootIvrTree(rootSeq)">삭제</button>
+                            <button class="ui basic button" onclick="copyRootIvrTree(rootSeq)">복사</button>
                         </c:if>
                     </div>
                 </div>
@@ -43,14 +43,14 @@
                         </h5>
                         <div style="text-align: center;">
                             <c:forEach var="e" items="${menuTypes}">
-                                <div class="-init-ivr-node node-type center aligned ui segment raised grey <%--${e.rootable ? '-rootable' : ''}--%>" data-menu="${e.menu}" data-type="${e.code}"
+                                <div class="-init-ivr-node node-type center aligned ui segment <%--${e.rootable ? '-rootable' : ''}--%>" data-menu="${e.menu}" data-type="${e.code}"
                                      data-level="${serviceKind.equals('SC') ? null : (level.get(seq) != null ? level.get(seq) : null)}">
                                     <i class="${e.imageType.name() == 'SOUND' ? 'music' : e.imageType.name() == 'FINISH' ? 'share' : 'bars'} icon"></i>${g.htmlQuote(message.getEnumText(e))}
                                 </div>
                             </c:forEach>
                         </div>
                     </div>
-                    <div style="position: absolute; right: 0; left: 300px; top: 0; bottom: 0;">
+                    <div class="ivr-editor-inner">
                         <div id="editor"></div>
                     </div>
                 </div>

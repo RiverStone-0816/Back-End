@@ -45,7 +45,7 @@
             <div class="panel ivr-panel">
                 <div class="panel-body">
                     <div id="helper-container"></div>
-                    <div style="position: absolute; right: 0; left: 0; top: 0; bottom: 0;">
+                    <div class="ivr-inner">
                         <div id="editor"></div>
                     </div>
                 </div>
