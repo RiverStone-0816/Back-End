@@ -46,7 +46,7 @@
                 <div class="panel-body">
                     <div id="helper-container"></div>
                     <div class="ivr-inner">
-                        <div id="editor"></div>
+                        <div id="editor" class="only-view"></div>
                     </div>
                 </div>
             </div>
@@ -172,7 +172,6 @@
                             }
 
                             $('.ui-draggable').draggable('destroy');
-                            $('.ui-ivr-widget-remove').remove();
                         });
                     });
                 } else {

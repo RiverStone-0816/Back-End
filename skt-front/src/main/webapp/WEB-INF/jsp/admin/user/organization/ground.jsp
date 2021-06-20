@@ -48,7 +48,7 @@
                                     <input type="text" placeholder="명칭입력" name="groupName">
                                     <button type="submit" class="ui button">확인</button>
                                 </div>
-                                <button type="button" onclick="event.stopPropagation(); detachAddChild()();" class="circular basic ui icon mini very compact button">
+                                <button type="button" onclick="event.stopPropagation(); detachAddChild();" class="circular basic ui icon mini very compact button">
                                     <i class="icon close"></i>
                                 </button>
                             </div>

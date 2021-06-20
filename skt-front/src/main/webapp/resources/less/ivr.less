@@ -41,6 +41,23 @@
   }
 }
 
+.only-view {
+  .ui-ivr-widget-remove {display: none;}
+
+  .ui-ivr-widget-shadow[data-type="0"] {
+    .size() {
+      width: 1px; height: 1px; min-width: 1px; min-height: 1px;
+    }
+    .size(); visibility: hidden;
+
+    .ui-ivr-widget {.size();}
+
+    .ui-ivr-connection-point {.size();}
+
+    .ui-ivr-widget-line-end-point {.size();}
+  }
+}
+
 .ui-ivr-widget-shadow[data-type="1"] .ui-ivr-widget-title, .node-type[data-type="1"] { background-color: #FF301D }
 .ui-ivr-widget-shadow[data-type="2"] .ui-ivr-widget-title, .node-type[data-type="2"] { background-color: #FF7902 }
 .ui-ivr-widget-shadow[data-type="3"] .ui-ivr-widget-title, .node-type[data-type="3"] { background-color: #F2B705 }
