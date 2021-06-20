@@ -33,8 +33,9 @@
                         <input type="text" placeholder="검색" class="mr10">
                         <button type="button" class="ui button sharp brand remove-margin" onclick="search($(this).prev().val())">검색</button>
                     </div>
+                    <div class="organization-wrap">
                     <jsp:include page="/admin/user/organization/editable-pan"/>
-
+                    </div>
                     <form id="organization-register-form" class="item -json-submit" style="display: none;"
                           action="${pageContext.request.contextPath}/api/organization/" data-method="post"
                           data-done="doneRegisterElement">

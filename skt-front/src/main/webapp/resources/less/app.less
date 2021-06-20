@@ -811,6 +811,13 @@ pre {
   }
 }
 
+.organization-container {
+  border:1px solid @color-border;
+  border-top:0;
+  padding:1.5em;
+  background: lighten(@color-gray,4%);
+}
+
 .top-chat-list-wrap {
   overflow-y:auto;
   overflow-x:hidden;
@@ -2220,11 +2227,19 @@ label.control-label {
   background:@color-th;
   &:after {
     background:@color-th;
+    border: 0;
+    content: '▶';
+    transform: none;
+    top: 1em;
+    right: -0.8em;
+    color:@color-brand;
   }
 }
 
 .ui.steps.mini.fluid {
-  margin-top: -3px;
+  border-radius: 0;
+  margin: 9px 0 0 0;
+  border-top:1px solid darken(@color-border,20%);
   line-height: 1em;
 }
 
@@ -4209,6 +4224,114 @@ g {
 }
 
 .ui.dimmer {z-index: 91000;}
+
+
+
+
+/*treeview */
+.tree,
+.tree ul {
+  margin:0 0 0 1em; /* indentation */
+  padding:0;
+  list-style:none;
+  color: @color-black;
+  position:relative;
+}
+
+.tree ul {margin-left:.5em} /* (indentation/2) */
+
+.tree:before,
+.tree ul:before {
+  content:"";
+  display:block;
+  width:0;
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  border-left:1px solid;
+}
+
+.tree-caption {
+  margin:.5em 0;
+  font-weight:800;
+  cursor: pointer;
+  .ui.circular.label {
+    background:@color-menu-bg;
+    color:@color-white;
+    margin:0 .5em 0 0;
+    font-weight: 300;
+    line-height: 7px;
+  }
+}
+
+.tree-caption.active {
+  color:@color-brand;
+  .ui.circular.label {
+    background:@color-brand;
+  }
+}
+
+.tree  {
+  .user-icon {
+    margin:0 .5em 0 0;
+  }
+  .ui.action.input {
+    margin:0 0 .7em 0;
+  }
+  .ui.basic.button {
+    background:@color-white!important;
+    border-radius: 0;
+    margin: 0 0 0 .5em;
+    outline:0;
+  }
+  .header {
+    font-weight:500;
+  }
+
+  .ui.circular.label {
+    background:@color-menu-bg;
+    color:@color-white;
+    margin:0 .5em 0 0;
+    font-weight: 300;
+    line-height: 7px;
+  }
+  .header.active {
+    color:@color-brand;
+    .ui.circular.label {
+      background:@color-brand;
+    }
+  }
+
+
+  li {
+    cursor: pointer;
+    margin:0;
+    padding:0 1.5em; /* indentation + .5em */
+    line-height:2em; /* default list item's `line-height` */
+    font-weight:bold;
+    position:relative;
+  }
+}
+
+.tree li:before {
+  content:"";
+  display:block;
+  width:10px; /* same with indentation */
+  height:0;
+  border-top:1px solid;
+  margin-top:-1px; /* border top width */
+  position:absolute;
+  top:1em; /* (line-height/2) */
+  left:0;
+}
+
+.tree li:last-child:before {
+  background:lighten(@color-gray, 4%); /* same with body background */
+  height:auto;
+  top:1em; /* (line-height/2) */
+  bottom:0;
+}
 
 .talk-list-container {
   .item {

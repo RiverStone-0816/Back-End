@@ -17,7 +17,7 @@
 <%--@elvariable id="element" type="kr.co.eicn.ippbx.model.entity.eicn.Organization"--%>
 
 <div class="panel-body" id="organization-element-summary">
-    <table class="ui celled table structured definition unstackable">
+    <table class="ui celled table definition unstackable">
         <tbody>
         <tr>
             <c:forEach var="type" items="${metaTypes}" varStatus="status">
