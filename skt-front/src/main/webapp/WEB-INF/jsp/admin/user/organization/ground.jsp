@@ -34,7 +34,7 @@
                         <button type="button" class="ui button sharp brand remove-margin" onclick="search($(this).prev().val())">검색</button>
                     </div>
                     <div class="organization-wrap">
-                    <jsp:include page="/admin/user/organization/editable-pan"/>
+                        <jsp:include page="/admin/user/organization/editable-pan"/>
                     </div>
                     <form id="organization-register-form" class="item -json-submit" style="display: none;"
                           action="${pageContext.request.contextPath}/api/organization/" data-method="post"
@@ -42,7 +42,6 @@
                         <input type="hidden" name="parentGroupCode">
                         <input type="hidden" name="groupLevel">
 
-                        <i class="folder icon"></i>
                         <div class="content">
                             <div class="header">
                                 <div class="ui mini action input">
@@ -62,7 +61,7 @@
                         <div class="content">
                             <div class="header">
                                 <div class="ui mini action input">
-                                    <input type="text" placeholder="명칭입력" name="groupName">
+                                    <input type="text" placeholder="조직명" name="groupName">
                                     <button type="submit" class="ui button">확인</button>
                                 </div>
                                 <button type="button" onclick="event.stopPropagation(); detachInput();" class="circular basic ui icon mini very compact button">
@@ -98,8 +97,8 @@
 
             function showOrganizationSummary(element, seq) {
                 replaceReceivedHtml('/admin/user/organization/' + seq + '/summary', '#organization-element-summary').done(function () {
-                    $('#organization-pan').find('.select').removeClass('select');
-                    $(element).addClass('select');
+                    $('#organization-pan').find('.active').removeClass('active');
+                    $(element).addClass('active');
                 });
             }
 

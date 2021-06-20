@@ -31,45 +31,11 @@
     </div>
 
     <div class="organization-container">
-        <p class="tree-caption"><span class="ui circular mini label">1</span>프로젝트</p>
+        <p class="tree-caption">${user.companyName}</p>
         <ul class="tree">
-            <li><div class="header">
-                <span class="ui circular mini label">1</span>기획팀
-                <button type="button" class="ui basic button mini" title="추가">추가</button>
-                <button type="button" class="ui basic button mini" title="수정">수정</button>
-                <button type="button" class="ui basic button mini" title="삭제">삭제</button>
-                </div>
-                <ul>
-                    <li><div class="header"><span class="ui circular mini label">1</span>1팀</div></li>
-                    <li><div class="header"><span class="ui circular mini label">2</span>2팀</div>
-                        <ul>
-                            <li><div class="header"><img src="<c:url value="/resources/images/user.svg"/>" class="user-icon">김대리</div></li>
-                            <li><div class="header"><img src="<c:url value="/resources/images/user.svg"/>" class="user-icon">이대리</div></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li><div class="header active"><span class="ui circular mini label">2</span>영업팀</div>
-                <ul>
-                    <li>
-                        <div class="ui mini action input">
-                            <input type="text" placeholder="명칭입력" name="groupName">
-                            <button type="submit" class="ui button">확인</button>
-                        </div>
-                        <button type="button" class="ui basic button mini" title="삭제">삭제</button>
-                        <ul>
-                            <li><div class="header"><img src="<c:url value="/resources/images/user.svg"/>" class="user-icon">최대리</div></li>
-                            <li><div class="header"><img src="<c:url value="/resources/images/user.svg"/>" class="user-icon">박대리</div></li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
+            <c:forEach var="e" items="${root.children}">
+                <tags:organization-editable-tree e="${e}" maxLevel="${maxLevel}" keyword="${condition.keyword}"/>
+            </c:forEach>
         </ul>
     </div>
-
-
-        <c:forEach var="e" items="${root.children}">
-            <tags:organization-editable-tree e="${e}" maxLevel="${maxLevel}" keyword="${condition.keyword}"/>
-        </c:forEach>
-
 </div>

@@ -816,6 +816,12 @@ pre {
   border-top:0;
   padding:1.5em;
   background: lighten(@color-gray,4%);
+
+  .header.highlight text{
+    background: @color-yellow;
+  }
+  .header button {display: none;}
+  .header:hover button {display: inline-block;}
 }
 
 .top-chat-list-wrap {
