@@ -14,28 +14,6 @@
 
 .ui-ivr-canvas {
   position: relative;
-  &:before {
-    content: ' ';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #f6f6f6;
-    background-image: linear-gradient(90deg, #cdcccc 0px, #cdcccc 1px, transparent 1px, transparent 99px, transparent 100px),
-    linear-gradient(#cdcccc 0px, #cdcccc 1px, transparent 1px, transparent 99px, transparent 100px),
-    linear-gradient(#efefef 0px, #efefef 1px, transparent 1px, transparent 99px, transparent 100px),
-    linear-gradient(90deg, #efefef 0px, #efefef 1px, transparent 1px, transparent 99px, transparent 100px),
-    linear-gradient(transparent 0px, transparent 5px, #fff 5px, #fff 95px, transparent 95px, transparent 100px),
-    linear-gradient(90deg, #efefef 0px, #efefef 1px, transparent 1px, transparent 99px, #efefef 99px, #efefef 100px),
-    linear-gradient(90deg, transparent 0px, transparent 5px, #fff 5px, #fff 95px, transparent 95px, transparent 100px),
-    linear-gradient(transparent 0px, transparent 1px, #fff 1px, #fff 99px, transparent 99px, transparent 100px),
-    linear-gradient(#cdcccc, #cdcccc);
-    background-size: 0 100%, 100% 0, 100% 15px, 15px 100%, 100% 0, 0 100%, 100px 100%, 100px 100px, 0 0;
-    background-position: -1px -1px;
-    opacity: 0.75;
-  }
-
   &.ui-droppable-hover:before {
     opacity: 0.25;
   }
@@ -63,29 +41,50 @@
   }
 }
 
-.ui-ivr-widget-shadow[data-type="1"] .ui-ivr-widget-title, .node-type[data-type="1"] { background-color: #FF7902 }
-.ui-ivr-widget-shadow[data-type="2"] .ui-ivr-widget-title, .node-type[data-type="2"] { background-color: #1dd1a1 }
-.ui-ivr-widget-shadow[data-type="3"] .ui-ivr-widget-title, .node-type[data-type="3"] { background-color: #00802f }
-.ui-ivr-widget-shadow[data-type="4"] .ui-ivr-widget-title, .node-type[data-type="4"] { background-color: #48dbfb }
-.ui-ivr-widget-shadow[data-type="5"] .ui-ivr-widget-title, .node-type[data-type="5"] { background-color: #514f65 }
-.ui-ivr-widget-shadow[data-type="6"] .ui-ivr-widget-title, .node-type[data-type="6"] { background-color: #f368e0 }
-.ui-ivr-widget-shadow[data-type="7"] .ui-ivr-widget-title, .node-type[data-type="7"] { background-color: #ff9f43 }
-.ui-ivr-widget-shadow[data-type="8"] .ui-ivr-widget-title, .node-type[data-type="8"] { background-color: #ee5253 }
-.ui-ivr-widget-shadow[data-type="9"] .ui-ivr-widget-title, .node-type[data-type="9"] { background-color: #0abde3 }
-.ui-ivr-widget-shadow[data-type="10"] .ui-ivr-widget-title, .node-type[data-type="10"] { background-color: #10ac84 }
-.ui-ivr-widget-shadow[data-type="11"] .ui-ivr-widget-title, .node-type[data-type="11"] { background-color: #00d2d3 }
-.ui-ivr-widget-shadow[data-type="12"] .ui-ivr-widget-title, .node-type[data-type="12"] { background-color: #54a0ff }
-.ui-ivr-widget-shadow[data-type="13"] .ui-ivr-widget-title, .node-type[data-type="13"] { background-color: #5f27cd }
-.ui-ivr-widget-shadow[data-type="14"] .ui-ivr-widget-title, .node-type[data-type="14"] { background-color: #52585f }
-.ui-ivr-widget-shadow[data-type="15"] .ui-ivr-widget-title, .node-type[data-type="15"] { background-color: #c8d6e5 }
-.ui-ivr-widget-shadow[data-type="16"] .ui-ivr-widget-title, .node-type[data-type="16"] { background-color: #576574 }
-.ui-ivr-widget-shadow[data-type="17"] .ui-ivr-widget-title, .node-type[data-type="17"] { background-color: #01a3a4 }
-.ui-ivr-widget-shadow[data-type="18"] .ui-ivr-widget-title, .node-type[data-type="18"] { background-color: #2e86de }
-.ui-ivr-widget-shadow[data-type="19"] .ui-ivr-widget-title, .node-type[data-type="19"] { background-color: #8395a7 }
-.ui-ivr-widget-shadow[data-type="20"] .ui-ivr-widget-title, .node-type[data-type="20"] { background-color: #222f3e }
-.ui-ivr-widget-shadow[data-type="21"] .ui-ivr-widget-title, .node-type[data-type="21"] { background-color: #01a3a4 }
-.ui-ivr-widget-shadow[data-type="22"] .ui-ivr-widget-title, .node-type[data-type="22"] { background-color: #2e86de }
-.ui-ivr-widget-shadow[data-type="23"] .ui-ivr-widget-title, .node-type[data-type="23"] { background-color: #8395a7 }
+.ui-ivr-widget-shadow[data-type="1"] .ui-ivr-widget-title, .node-type[data-type="1"] { background-color: #FF301D }
+.ui-ivr-widget-shadow[data-type="2"] .ui-ivr-widget-title, .node-type[data-type="2"] { background-color: #FF7902 }
+.ui-ivr-widget-shadow[data-type="3"] .ui-ivr-widget-title, .node-type[data-type="3"] { background-color: #F2B705 }
+.ui-ivr-widget-shadow[data-type="4"] .ui-ivr-widget-title, .node-type[data-type="4"] { background-color: #00BA33 }
+.ui-ivr-widget-shadow[data-type="5"] .ui-ivr-widget-title, .node-type[data-type="5"] { background-color: #1144F0 }
+.ui-ivr-widget-shadow[data-type="6"] .ui-ivr-widget-title, .node-type[data-type="6"] { background-color: #E600F6 }
+
+.ui-ivr-widget-shadow[data-type="7"] .ui-ivr-widget-title, .node-type[data-type="7"] { background-color: #D41E0E }
+.ui-ivr-widget-shadow[data-type="8"] .ui-ivr-widget-title, .node-type[data-type="8"] { background-color: #DD6800 }
+.ui-ivr-widget-shadow[data-type="9"] .ui-ivr-widget-title, .node-type[data-type="9"] { background-color: #BE8F00 }
+.ui-ivr-widget-shadow[data-type="10"] .ui-ivr-widget-title, .node-type[data-type="10"] { background-color: #009529 }
+.ui-ivr-widget-shadow[data-type="11"] .ui-ivr-widget-title, .node-type[data-type="11"] { background-color: #0026A8 }
+.ui-ivr-widget-shadow[data-type="12"] .ui-ivr-widget-title, .node-type[data-type="12"] { background-color: #B400C1 }
+
+.ui-ivr-widget-shadow[data-type="13"] .ui-ivr-widget-title, .node-type[data-type="13"] { background-color: #94241A }
+.ui-ivr-widget-shadow[data-type="14"] .ui-ivr-widget-title, .node-type[data-type="14"] { background-color: #A84F00 }
+.ui-ivr-widget-shadow[data-type="15"] .ui-ivr-widget-title, .node-type[data-type="15"] { background-color: #957000 }
+.ui-ivr-widget-shadow[data-type="16"] .ui-ivr-widget-title, .node-type[data-type="16"] { background-color: #00641B }
+.ui-ivr-widget-shadow[data-type="17"] .ui-ivr-widget-title, .node-type[data-type="17"] { background-color: #001865 }
+.ui-ivr-widget-shadow[data-type="18"] .ui-ivr-widget-title, .node-type[data-type="18"] { background-color: #73027C }
+
+.ui-ivr-widget-shadow[data-type="19"] .ui-ivr-widget-title, .node-type[data-type="19"] { background-color: #620800 }
+.ui-ivr-widget-shadow[data-type="20"] .ui-ivr-widget-title, .node-type[data-type="20"] { background-color: #7C3A00 }
+.ui-ivr-widget-shadow[data-type="21"] .ui-ivr-widget-title, .node-type[data-type="21"] { background-color: #4E3B00 }
+.ui-ivr-widget-shadow[data-type="22"] .ui-ivr-widget-title, .node-type[data-type="22"] { background-color: #004011 }
+.ui-ivr-widget-shadow[data-type="23"] .ui-ivr-widget-title, .node-type[data-type="23"] { background-color: #000F41 }
+
+
+.ivr-inner {
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin:1em;
+  border:1px solid @color-border;
+  background:lighten(@color-gray, 4%);
+}
+
+.ivr-editor-inner {
+  position: absolute; right: 0; left: 300px; top: 0; bottom: 0;
+  border:1px solid @color-border;
+  background:lighten(@color-gray, 4%);
+}
 
 .ui-ivr-widget {
   position: relative;
@@ -94,7 +93,10 @@
 .ui-ivr-widget-handle {
 }
 
-.panel.ivr-panel {
+.panel:not(.panel-search).ivr-panel {
+   .panel-heading {
+    padding:10px;
+  }
   .panel-body {
     height: 100%;
     padding-bottom: 0;
@@ -105,7 +107,7 @@
   }
   .-init-ivr-node {
     i {
-      color: @color-brand;
+      color: @color-white;
     }
   }
 }
@@ -234,6 +236,7 @@
   vertical-align: middle;
   padding: 7px 7px;
   text-align: center;
+  color:@color-black;
   background: @color-white;
   line-height: 1.3;
   border-right:1px solid @color-ivr-border;
@@ -249,6 +252,7 @@
   vertical-align: middle;
   padding: 0 7px;
   text-align: center;
+  color:@color-black;
   font-weight: 800;
   background: #f5f5f5;
   border-left:1px solid @color-ivr-border;
@@ -281,7 +285,7 @@
 }*/
 
 .node-container {
-  .box-shadow(0, 2px, 13px, 0.2);
+  border-top:1px solid @color-border;
   background: @color-white;
   height: 100%;
   border-right: 1px solid #c7c7c7;
@@ -302,11 +306,9 @@
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
+  color:@color-white;
+  z-index:9999;
 
-  &:hover {
-    border: 1px solid lighten(@color-darkgray, 60%);
-    background: #eee;
-  }
 }
 
 .dtmf-container {
