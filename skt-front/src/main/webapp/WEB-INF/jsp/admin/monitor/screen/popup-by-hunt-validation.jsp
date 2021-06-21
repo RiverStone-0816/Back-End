@@ -171,6 +171,11 @@
                     });
                 });
             }
+
+            $(window).on('load', function () {
+                loadByHuntSuccessPer();
+                setInterval(loadByHuntSuccessPer, 30 * 1000);
+            });
         </script>
     </tags:scripts>
 </tags:layout-screen>
