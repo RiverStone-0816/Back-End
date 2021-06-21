@@ -104,7 +104,7 @@
                                         + e.constantStatusCounts.getOrDefault(7, 0)
                                         + e.constantStatusCounts.getOrDefault(8, 0)
                                         + e.constantStatusCounts.getOrDefault(9, 0)}</td>
-                                <td><%--TODO: 혹시 큐별 응대율을 전달받을수가 있나요? 그리고 실시간 갱신이 가능한가요?--%></td>
+                                <td class="-hunt-response-rate" data-hunt="${g.escapeQuote(e.queueName)}"></td>
                             </tr>
                             <c:if test="${status.index % 5 == 4 || status.last}">
                                 </tbody>
@@ -163,6 +163,14 @@
                 else
                     divList.first().addClass('active');
             }, 10 * 1000);
+
+            function loadByHuntSuccessPer() {
+                restSelf.get('/api/screen-data/by-hunt-successper', null, null, true).done(function (response) {
+                    response.data.byHuntSuccessPerList.map(function (e) {
+                        $('.-hunt-response-rate').filter('[data-hunt="' + e.queueName + '"]').text(e.successPer.toFixed(1) + '%');
+                    });
+                });
+            }
         </script>
     </tags:scripts>
 </tags:layout-screen>

@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.front.model.ScreenDataForByService;
 import kr.co.eicn.ippbx.front.model.ScreenDataForIntegration;
 import kr.co.eicn.ippbx.front.service.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
+import kr.co.eicn.ippbx.model.form.ByHuntSuccessPerData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -26,5 +27,9 @@ public class ScreenDataApiInterface extends ApiServerInterface {
 
     public ScreenDataForByService byService() throws IOException, ResultFailException {
         return getData(subUrl + "?expressionType=BY_SERVICE", null, ScreenDataForByService.class).getData();
+    }
+
+    public ByHuntSuccessPerData byHuntSuccessper() throws IOException, ResultFailException {
+        return getData(subUrl + "?expressionType=BY_HUNT_SUCCESSPER", null, ByHuntSuccessPerData.class).getData();
     }
 }

@@ -1,11 +1,12 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.monitor.screen;
 
-import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
 import kr.co.eicn.ippbx.model.dto.eicn.DashServiceStatResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.CmpMemberStatusCodeEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
+import kr.co.eicn.ippbx.model.form.ByHuntSuccessPerData;
+import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.repository.eicn.CmpMemberStatusCodeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.QueueMemberTableRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.QueueNameRepository;
@@ -75,13 +76,13 @@ public class ScreenDataApiController extends ApiBaseController {
     }
 
     @GetMapping(value = "", params = "expressionType=BY_HUNT_SUCCESSPER")
-    public JsonResult<ByHuntSuccessPerData> byHuntSuccessPer(){
+    public JsonResult<ByHuntSuccessPerData> byHuntSuccessPer() {
         final Map<?, BigDecimal> response = statInboundService.getRepository().getSuccessPer();
-        final Map<String, String> hunt = queueNameRepository.findAll().stream().collect(Collectors.toMap(QueueName::getNumber,QueueName::getName));
-        final List<ByHuntSuccessPer> responses = new ArrayList<>();
+        final Map<String, String> hunt = queueNameRepository.findAll().stream().collect(Collectors.toMap(QueueName::getNumber, QueueName::getName));
+        final List<ByHuntSuccessPerData.ByHuntSuccessPer> responses = new ArrayList<>();
         final ByHuntSuccessPerData byHuntSuccessPerData = new ByHuntSuccessPerData();
-        for(Object key : response.keySet()){
-            ByHuntSuccessPer e = new ByHuntSuccessPer();
+        for (Object key : response.keySet()) {
+            ByHuntSuccessPerData.ByHuntSuccessPer e = new ByHuntSuccessPerData.ByHuntSuccessPer();
             e.setQueueNumber((String) key);
             e.setSuccessPer(response.get(key).doubleValue());
             e.setQueueName(hunt.get(key));
@@ -197,7 +198,6 @@ public class ScreenDataApiController extends ApiBaseController {
     }
 
 
-
     @Data
     public static class IntegrationData {
         private String serviceName;
@@ -244,17 +244,5 @@ public class ScreenDataApiController extends ApiBaseController {
     @Data
     public static class ByServiceData {
         private List<IntegrationData> services = new ArrayList<>();
-    }
-
-    @Data
-    public static class ByHuntSuccessPer{
-        private String queueNumber;
-        private String queueName;
-        private Double successPer;
-    }
-
-    @Data
-    public static class ByHuntSuccessPerData{
-        private List<ByHuntSuccessPer> byHuntSuccessPerList = new ArrayList<>();
     }
 }

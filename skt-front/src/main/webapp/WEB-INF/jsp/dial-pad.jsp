@@ -19,7 +19,7 @@
     </div>
     <div class="content">
         <div class="number-result">
-            <input type="text" class="-input-phone" id="dial-pad-input"/>
+            <input type="text" class="" id="dial-pad-input"/>
         </div>
         <div class="ui three column grid number">
             <c:forEach var="e" items="${'123456789*0#'.toCharArray()}">

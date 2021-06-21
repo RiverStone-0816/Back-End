@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.front.model.ScreenDataForByService;
 import kr.co.eicn.ippbx.front.model.ScreenDataForIntegration;
 import kr.co.eicn.ippbx.front.service.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.monitor.display.ScreenDataApiInterface;
+import kr.co.eicn.ippbx.model.form.ByHuntSuccessPerData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,5 +39,10 @@ public class ScreenDataApiController {
     @GetMapping("by-service")
     public ScreenDataForByService byService() throws IOException, ResultFailException {
         return screenDataApiInterface.byService();
+    }
+
+    @GetMapping("by-hunt-successper")
+    public ByHuntSuccessPerData byHuntSuccessper() throws IOException, ResultFailException {
+        return screenDataApiInterface.byHuntSuccessper();
     }
 }
