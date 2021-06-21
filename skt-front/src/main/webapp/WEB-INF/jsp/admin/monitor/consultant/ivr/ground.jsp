@@ -75,6 +75,105 @@
                                                         class="ui circular label tiny">${e.monitorIvrTree.button}</span></c:if>${g.htmlQuote(e.monitorIvrTree.name)}[${e.monitorIvrTree.waitingCustomerCount}]</span>
                                             </div>
                                             <div class="ui secondary segment">
+                                                <p class="tree-caption"><span class="ui circular label tiny">1</span>제목[0]</p>
+                                                <ul class="tree ivr">
+                                                    <li>
+                                                        <div class="header active"><i class="folder open icon"></i>
+                                                            제목
+                                                            <button type="button" class="ui basic button mini" title="추가">음원듣기</button>
+                                                            <button type="button" class="ui basic button mini" title="추가">버튼맵핑</button>
+                                                            <button type="button" class="ui basic button mini" title="추가">삭제</button>
+                                                        </div>
+                                                        <ul>
+                                                            <li><div class="header"><span class="ui circular label tiny">1</span> m1</div>
+                                                                <div class="user-ul">
+                                                                    <span class="title">IVR3_1_법인 대량구매</span>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state call">통화중</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state wait">대기</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state bell">벨울림</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state after">후처리</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state logout">로그아웃</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state etc">기타</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state call">통화중</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state wait">대기</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state bell">벨울림</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state after">후처리</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state logout">로그아웃</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state etc">기타</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state call">통화중</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state wait">대기</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state bell">벨울림</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state after">후처리</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state logout">로그아웃</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">홍길동[000]</div>
+                                                                        <div class="state etc">기타</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">-</div>
+                                                                        <div class="state">-</div>
+                                                                    </div>
+                                                                    <div class="box">
+                                                                        <div class="name">-</div>
+                                                                        <div class="state">-</div>
+                                                                    </div>
+                                                                </div>
+                                                            </li>
+                                                            <li><div class="header"><span class="ui circular label tiny">1</span> m2</div></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
                                                 <div class="ui list">
                                                     <c:forEach var="node" items="${e.monitorIvrTree.nodes}">
                                                         <tags:ivr-monitor-node node="${node}" statusCodes="${statusCodes}"/>

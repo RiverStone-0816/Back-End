@@ -3471,6 +3471,13 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
 }
 
 #pds-ivr-container {
+  .ui.secondary.segment {
+    background:lighten(@color-gray,3%);
+    padding:1em;
+    .tree li:last-child:before {
+      background:lighten(@color-gray,3%);
+    }
+  }
   .ui.segments {
     border-radius:0;
     margin:-1px 0 0 0;
@@ -3509,7 +3516,7 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
   .user-ul {
     .flex();
     flex-wrap: wrap;
-    margin:1em;
+    margin:1em 0;
     white-space: nowrap;
     position: relative;
     .title {
@@ -3528,14 +3535,15 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
         overflow: hidden;
         border-bottom:1px solid @color-border;
         text-align:center;
-        padding: .7em 1em;
+        padding: .2em 1em;
         color: @color-black;
         font-weight: 800;
       }
       .state {
         background:@color-white;
-        padding: .7em 1em;
+        padding: .2em 1em;
         text-align:center;
+        font-weight: 300;
       }
       .state.call {background:@color-state-call;color:@color-white}
       .state.wait {background:@color-state-wait;color:@color-white}
@@ -3553,9 +3561,6 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
         }
       }
     }
-  }
-  .ui.circular.label.tiny {
-    margin: 0 .5em 0 10px;
   }
   .item {
     .ui.circular.label.tiny {
@@ -4265,12 +4270,14 @@ g {
   margin:.5em 0;
   font-weight:800;
   cursor: pointer;
+  color:@color-black;
   .ui.circular.label {
     background:@color-menu-bg;
     color:@color-white;
     margin:0 .5em 0 0;
     font-weight: 300;
     line-height: 7px;
+    vertical-align: text-bottom;
   }
 }
 
@@ -4303,7 +4310,8 @@ g {
     color:@color-white;
     margin:0 .5em 0 0;
     font-weight: 300;
-    line-height: 7px;
+    line-height: 10px;
+    vertical-align: text-bottom;
   }
   .header.active {
     color:@color-brand;
@@ -4311,8 +4319,6 @@ g {
       background:@color-brand;
     }
   }
-
-
   li {
     cursor: pointer;
     margin:0;
@@ -4340,6 +4346,23 @@ g {
   height:auto;
   top:1em; /* (line-height/2) */
   bottom:0;
+}
+
+.tree.ivr {
+  margin:0;
+  overflow:hidden;
+  .ui.table {
+    margin:1em 0;
+    width:20%;
+  }
+  > li {
+    &:before {
+      top:0;
+    }
+  }
+  .ui.circular.label {
+    background:darken(@color-gray, 30%);
+  }
 }
 
 .talk-list-container {
