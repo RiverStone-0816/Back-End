@@ -35,6 +35,8 @@
             <div class="panel remove-mb panel-resizable top" id="call-custom-input"></div>
         </div>
 
+
+
         <div class="panel remove-mb panel-resizable middle">
             <div class="panel-heading">
                 <div class="pull-left">
@@ -55,7 +57,7 @@
                     <button class="ui button sharp light"><img src="<c:url value="/resources/images/save.svg"/>">신규고객정보&상담결과 저장</button>
                 </div>
             </div>
-            <div class="panel-body">
+            <div class="panel-body overflow-auto">
                 <table class="ui celled table compact unstackable">
                     <tr>
                         <th>관련서비스</th>
@@ -96,13 +98,14 @@
                 </table>
             </div>
         </div>
-        <div>
+
+        <div class="overflow-auto">
             <div class="ui top attached tabular menu light flex remove-margin">
                 <button class="item active" data-tab="todo">To-Do</button>
                 <button class="item" data-tab="consult-history">상담이력</button>
                 <button class="item" data-tab="etc-lookup">기타조회</button>
             </div>
-            <div class="ui bottom attached tab segment active" data-tab="todo">
+            <div class="ui bottom attached tab segment remove-margin active" data-tab="todo">
                 <table class="ui celled table unstackable">
                     <thead>
                     <tr>
@@ -176,7 +179,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="ui bottom attached tab segment" data-tab="consult-history">
+            <div class="ui bottom attached tab segment remove-margin" data-tab="consult-history">
                 <table class="ui celled table unstackable">
                     <thead>
                     <tr>
@@ -247,11 +250,10 @@
                     </tbody>
                 </table>
             </div>
-            <div class="ui bottom attached tab segment" data-tab="etc-lookup">
+            <div class="ui bottom attached tab segment remove-margin" data-tab="etc-lookup">
                 기타조회
             </div>
         </div>
-
     </div>
 
     <iframe class="content-inner -counsel-content-panel" data-type="NOTICE" src="<c:url value="/admin/service/help/notice/"/>" style="display: none;"></iframe>

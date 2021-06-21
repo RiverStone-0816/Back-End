@@ -27,7 +27,7 @@
             </button>
         </div>
     </div>
-    <div class="panel-body">
+    <div class="panel-body overflow-auto">
         <table class="ui celled table compact unstackable fixed">
             <colgroup>
                 <col style="width: 100px">

@@ -15,64 +15,68 @@
 
 <div class="ui bottom attached tab segment remove-margin" data-tab="talk-panel">
 
-    <div class="panel-resizable top-chat-list-wrap">
-        <div class="ui top attached tabular menu light flex">
-            <button class="item active" data-tab="talk-list-type-MY" onclick="$(this).removeClass('newImg_c')">상담중(<span></span>)</button>
-            <button class="item" data-tab="talk-list-type-TOT" onclick="$(this).removeClass('newImg_c')">비접수(<span></span>)</button>
-            <button class="item" data-tab="talk-list-type-OTH" onclick="$(this).removeClass('newImg_c')">타상담(<span></span>)</button>
-            <button class="item" data-tab="talk-list-type-END" onclick="$(this).removeClass('newImg_c')">종료(<span></span>)</button>
-        </div>
 
-        <div class="ui bottom attached tab segment remove-margin active" data-tab="talk-list-type-MY">
-            <div id="talk-list-container-MY"></div>
-        </div>
-        <div class="ui bottom attached tab segment remove-margin" data-tab="talk-list-type-TOT">
-            <div id="talk-list-container-TOT"></div>
-        </div>
-        <div class="ui bottom attached tab segment remove-margin" data-tab="talk-list-type-OTH">
-            <div id="talk-list-container-OTH"></div>
-        </div>
-        <div class="ui bottom attached tab segment remove-margin" data-tab="talk-list-type-END">
-            <div id="talk-list-container-END"></div>
-        </div>
-    </div>
+    <div class="display-flex flex-flow-column full-height">
+        <div class="panel-resizable top-chat-list-wrap">
+            <div class="ui top attached tabular menu light flex">
+                <button class="item active" data-tab="talk-list-type-MY" onclick="$(this).removeClass('newImg_c')">상담중(<span></span>)</button>
+                <button class="item" data-tab="talk-list-type-TOT" onclick="$(this).removeClass('newImg_c')">비접수(<span></span>)</button>
+                <button class="item" data-tab="talk-list-type-OTH" onclick="$(this).removeClass('newImg_c')">타상담(<span></span>)</button>
+                <button class="item" data-tab="talk-list-type-END" onclick="$(this).removeClass('newImg_c')">종료(<span></span>)</button>
+            </div>
 
-    <div class="btm-room-wrap">
-        <div class="chat-container">
-            <div class="room">
-                <div class="chat-header"></div>
-                <div class="chat-body"></div>
-                <div class="write-chat">
-                    <div class="write-menu">
-                        <button type="button" class="mini ui button compact" onclick="templateSelectPopup()">템플릿</button>
-                        <button type="button" class="mini ui button compact" onclick="uploadTalkFile()">파일전송</button>
-                        <button type="button" class="mini ui button compact pull-right -assignUnassignedRoomToMe" style="display: none;"
-                                onclick="talkCommunicator.assignUnassignedRoomToMe($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key')); $(this).hide()">
-                            찜하기
-                        </button>
-                        <button type="button" class="mini ui button compact pull-right -assignAssignedRoomToMe" style="display: none;"
-                                onclick="talkCommunicator.assignAssignedRoomToMe($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key')); $(this).hide()">
-                            가져오기
-                        </button>
-                        <button type="button" class="mini ui button compact pull-right -deleteRoom" style="display: none;"
-                                onclick="deleteRoom($('#talk-room').attr('data-id'))">
-                            대화방내리기
-                        </button>
-                        <button type="button" class="mini ui button compact pull-right -downRoom" style="display: none;"
-                                onclick="talkCommunicator.deleteRoom($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key'))">
-                            대화방종료
-                        </button>
-                    </div>
-                    <div class="wrap-inp">
-                        <div class="inp-box">
-                            <textarea id="talk-message" placeholder="전송하실 메시지를 입력하세요."></textarea>
+            <div class="ui bottom attached tab segment remove-margin active" data-tab="talk-list-type-MY">
+                <div id="talk-list-container-MY"></div>
+            </div>
+            <div class="ui bottom attached tab segment remove-margin" data-tab="talk-list-type-TOT">
+                <div id="talk-list-container-TOT"></div>
+            </div>
+            <div class="ui bottom attached tab segment remove-margin" data-tab="talk-list-type-OTH">
+                <div id="talk-list-container-OTH"></div>
+            </div>
+            <div class="ui bottom attached tab segment remove-margin" data-tab="talk-list-type-END">
+                <div id="talk-list-container-END"></div>
+            </div>
+        </div>
+        <div class="btm-room-wrap flex-100">
+            <div class="chat-container">
+                <div class="room">
+                    <div class="chat-header"></div>
+                    <div class="chat-body"></div>
+                    <div class="write-chat">
+                        <div class="write-menu">
+                            <button type="button" class="mini ui button compact" onclick="templateSelectPopup()">템플릿</button>
+                            <button type="button" class="mini ui button compact" onclick="uploadTalkFile()">파일전송</button>
+                            <button type="button" class="mini ui button compact pull-right -assignUnassignedRoomToMe" style="display: none;"
+                                    onclick="talkCommunicator.assignUnassignedRoomToMe($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key')); $(this).hide()">
+                                찜하기
+                            </button>
+                            <button type="button" class="mini ui button compact pull-right -assignAssignedRoomToMe" style="display: none;"
+                                    onclick="talkCommunicator.assignAssignedRoomToMe($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key')); $(this).hide()">
+                                가져오기
+                            </button>
+                            <button type="button" class="mini ui button compact pull-right -deleteRoom" style="display: none;"
+                                    onclick="deleteRoom($('#talk-room').attr('data-id'))">
+                                대화방내리기
+                            </button>
+                            <button type="button" class="mini ui button compact pull-right -downRoom" style="display: none;"
+                                    onclick="talkCommunicator.deleteRoom($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key'))">
+                                대화방종료
+                            </button>
                         </div>
-                        <button type="button" class="send-btn" onclick="sendTalkMessage()">전송</button>
+                        <div class="wrap-inp">
+                            <div class="inp-box">
+                                <textarea id="talk-message" placeholder="전송하실 메시지를 입력하세요."></textarea>
+                            </div>
+                            <button type="button" class="send-btn" onclick="sendTalkMessage()">전송</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
 </div>
 
 <jsp:include page="/counsel/talk/modal-template"/>

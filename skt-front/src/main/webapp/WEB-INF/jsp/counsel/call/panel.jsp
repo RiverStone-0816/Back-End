@@ -12,7 +12,7 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<div class="ui bottom attached tab segment remove-margin active" data-tab="call-panel">
+<div class="ui bottom attached tab segment overflow-auto remove-margin active" data-tab="call-panel">
     <div class="panel remove-margin">
         <div class="panel-heading">
             <div class="pull-left"><label class="panel-label">수발신정보</label></div>
@@ -195,8 +195,10 @@
                     </div>
                 </div>
             </div>
-            <div class="ui bottom attached tab segment" data-tab="statistics">
-                통계
+            <div class="ui bottom attached tab segment remove-margin" data-tab="statistics">
+                <div class="statistics-inner">
+                    통계
+                </div>
             </div>
         </div>
     </div>
