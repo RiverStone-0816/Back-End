@@ -158,10 +158,10 @@ public abstract class BaseControllerTest {
 //		authenticationRequest.setExtension("0677");
 
 		authenticationRequest.setCompany("skdev");
-		authenticationRequest.setId("master");
-		authenticationRequest.setPassword("orange90");
+		authenticationRequest.setId("user1");
+		authenticationRequest.setPassword("user12!@!");
 		authenticationRequest.setActionType(WebSecureActionType.LOGIN.getCode());
-//		authenticationRequest.setExtension("0677");
+		authenticationRequest.setExtension("1000");
 
 		final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.post("/auth/authenticate")
 				.contentType(MediaType.APPLICATION_JSON)

@@ -138,7 +138,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         final PhoneInfo phone = extensionRepository.findOne(PHONE_INFO.EXTENSION.eq(authenticationRequest.getExtension()).and(PHONE_INFO.COMPANY_ID.eq(authenticationRequest.getCompanyId())));
 
-        if (IdType.isConsultant(user.getIdType()) && !authenticationRequest.getIsChatLogin()) {
+        if (IdType.isConsultant(user.getIdType())) {
             if (StringUtils.isEmpty(authenticationRequest.getExtension()))
                 throw new IllegalArgumentException("내선번호를 입력해 주세요.");
         }
