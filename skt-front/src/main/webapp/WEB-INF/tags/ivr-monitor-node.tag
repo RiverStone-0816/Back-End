@@ -15,11 +15,11 @@
 <%@ attribute name="node" required="true" type="kr.co.eicn.ippbx.model.MonitorIvrTree" %>
 <%@ attribute name="statusCodes" required="true" type="java.util.Map" %>
 
-<li>
-    <c:choose>
-        <c:when test="${node.type == 0}">
-            <c:if test="${node.type == 0 && node.nodes.size() > 0}">
-                <c:set var="child" value="${node.nodes[0]}"/>
+<c:choose>
+    <c:when test="${node.type == 0}">
+        <c:if test="${node.type == 0 && node.nodes.size() > 0}">
+            <c:set var="child" value="${node.nodes[0]}"/>
+            <li>
                 <div class="header"><span class="ui circular label tiny">${node.button}</span>${g.htmlQuote(node.name)}[${child.waitingCustomerCount}]</div>
                 <ul class="">
                     <li>
@@ -35,9 +35,11 @@
                         </ul>
                     </li>
                 </ul>
-            </c:if>
-        </c:when>
-        <c:when test="${node.type == 3}">
+            </li>
+        </c:if>
+    </c:when>
+    <c:when test="${node.type == 3}">
+        <li>
             <div class="header"><span class="ui circular label tiny">${node.button}</span>${g.htmlQuote(node.name)}[
                 <text class="-custom-wait-count" data-hunt="${node.queueNameResponse.name}">${node.waitingCustomerCount}</text>
                 ]
@@ -67,12 +69,14 @@
                     </c:choose>
                 </dl>
             </div>
-        </c:when>
-        <c:otherwise>
+        </li>
+    </c:when>
+    <c:otherwise>
+        <li>
             <div class="header"><span class="ui circular label tiny">${node.button}</span>${g.htmlQuote(node.name)}[${node.waitingCustomerCount}]</div>
-        </c:otherwise>
-    </c:choose>
-</li>
+        </li>
+    </c:otherwise>
+</c:choose>
 
 <script>
     (function () {
