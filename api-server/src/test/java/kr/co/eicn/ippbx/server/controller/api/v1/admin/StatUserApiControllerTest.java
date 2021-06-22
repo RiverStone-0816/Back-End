@@ -111,4 +111,16 @@ public class StatUserApiControllerTest extends BaseControllerTest {
                 ))
                 .andReturn();
     }
+
+    @Test
+    public void myCallStatTEST() throws Exception {
+        final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL+"/my-call-stat")
+                .accept(MediaType.APPLICATION_JSON)
+                .with(new JwtRequestPostProcessor()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        log.info(String.valueOf(result));
+    }
 }

@@ -2,10 +2,7 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin.stat.user;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.model.dto.statdb.StatMemberStatusResponse;
-import kr.co.eicn.ippbx.model.dto.statdb.StatUserInboundResponse;
-import kr.co.eicn.ippbx.model.dto.statdb.StatUserOutboundResponse;
-import kr.co.eicn.ippbx.model.dto.statdb.StatUserResponse;
+import kr.co.eicn.ippbx.model.dto.statdb.*;
 import kr.co.eicn.ippbx.model.dto.util.*;
 import kr.co.eicn.ippbx.model.entity.eicn.CmpMemberStatusCodeEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.Organization;
@@ -32,10 +29,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static kr.co.eicn.ippbx.util.JsonResult.data;
@@ -173,5 +167,27 @@ public class StatUserApiController extends ApiBaseController {
         result.setTotalBillSec();
 
         return ResponseEntity.ok(data(result));
+    }
+
+    @GetMapping("my-call-stat")
+    public StatMyCallResponse myCallStat(){
+        final StatUserInboundEntity statUserInboundEntity = statUserInboundService.getRepository().findUserCallStat();
+        final StatUserOutboundEntity statUserOutboundEntity = statUserOutboundService.getRepository().findUserCallStat();
+
+        final StatMyCallResponse response = new StatMyCallResponse();
+        if(Objects.nonNull(statUserInboundEntity)) {
+            response.setInSuccess(statUserInboundEntity.getInSuccess());
+            response.setInTotal(statUserInboundEntity.getInTotal());
+        }
+        if(Objects.nonNull(statUserOutboundEntity)) {
+            response.setCallback(statUserOutboundEntity.getCallbackCallSucc());
+            response.setOutSuccess(statUserOutboundEntity.getOutSuccess());
+        }
+        Double successPer = 0.0;
+        if(response.getInTotal() > 0)
+            successPer = (double) response.getInSuccess()/response.getInTotal()*100;
+        response.setSuccessPer(successPer);
+
+        return response;
     }
 }

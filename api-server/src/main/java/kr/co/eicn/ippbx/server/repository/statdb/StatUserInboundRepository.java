@@ -228,4 +228,17 @@ public class StatUserInboundRepository extends StatDBBaseRepository<CommonStatUs
                 .groupBy(TABLE.USERID)
                 .fetchMap(TABLE.USERID, StatUserInboundEntity.class);
     }
+
+    public StatUserInboundEntity findUserCallStat() {
+        return dsl.select(TABLE.USERID,
+                ifnull(sum(TABLE.IN_TOTAL), 0).as(TABLE.IN_TOTAL),
+                ifnull(sum(TABLE.IN_SUCCESS), 0).as(TABLE.IN_SUCCESS),
+                ifnull(sum(TABLE.CALLBACK_SUCC), 0).as(TABLE.CALLBACK_SUCC))
+                .from(TABLE)
+                .where(compareCompanyId())
+                .and(TABLE.STAT_DATE.eq(currentDate()))
+                .and(TABLE.USERID.eq(g.getUser().getId()))
+                .groupBy(TABLE.USERID)
+                .fetchOneInto(StatUserInboundEntity.class);
+    }
 }
