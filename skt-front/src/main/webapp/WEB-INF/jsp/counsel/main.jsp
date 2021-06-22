@@ -257,6 +257,9 @@
     <iframe class="content-inner -counsel-content-panel" data-type="NOTICE" src="<c:url value="/admin/service/help/notice/"/>" style="display: none;"></iframe>
     <iframe class="content-inner -counsel-content-panel" data-type="KNOWLEDGE" src="<c:url value="/admin/service/help/task-script/"/>" style="display: none;"></iframe>
     <iframe class="content-inner -counsel-content-panel" data-type="CALENDAR" src="<c:url value="/user-schedule/"/>" style="display: none;"></iframe>
+    <div class="-counsel-content-panel" data-type="PREVIEW">
+        프리뷰 내용
+    </div>
 
     <jsp:include page="/counsel/modal-calling"/>
     <jsp:include page="/counsel/modal-route-application"/>

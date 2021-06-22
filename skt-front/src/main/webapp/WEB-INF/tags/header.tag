@@ -100,6 +100,7 @@
                     <li><a href="#" data-type="KNOWLEDGE" class="-counsel-menu">지식관리</a></li>
                     <li><a href="#" data-type="CALENDAR" class="-counsel-menu">일정관리</a></li>
                     <li><a href="javascript:popupBookmark()" class="-counsel-panel bookmark-btn">즐겨찾기</a></li>
+                    <li><a href="#" data-type="PREVIEW" class="-counsel-menu">프리뷰</a></li>
                 </ul>
             </c:if>
         </div>
