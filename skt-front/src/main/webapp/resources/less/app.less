@@ -18,6 +18,11 @@ body {
   overflow: hidden;
   background: transparent
 }
+
+body ::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
 h1, h2, h3, h4, h5, h6 {font-family: @base-font;}
 input[type="text"],
 input[type="password"] {
@@ -765,9 +770,6 @@ pre {
     flex-flow:column;
     width: 33%;
     padding-right:10px;
-    .statistics-inner {
-      height:504px;
-    }
     .ui.bottom.attached.tab.segment {
       flex:1;
       overflow: hidden;
@@ -775,9 +777,15 @@ pre {
   }
   .right-panel {
     width: 67%;
+    .bottom-area {
+      .ui.bottom.attached.tab.segment {
+        height: ~"calc(100% - 50px)";
+        overflow: auto;
+      }
+    }
     .flex();
     flex-flow: column;
-    .top {
+    .top-area {
       select[multiple] {
         height: 100px;
         min-height: auto;
@@ -810,12 +818,10 @@ pre {
 }
 
 .top-chat-list-wrap {
-  overflow-y:auto;
-  overflow-x:hidden;
   height:333px;
   position:relative;
-  &:after {
-
+  .ui.bottom.attached.tab.segment {
+    height: ~"calc(100% - 44px);"
   }
 }
 .btm-room-wrap {
@@ -2380,7 +2386,7 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
   .item {
     flex:1;
     justify-content: center;
-
+    padding:1em 0;
   }
   .item.active {
     background:@color-white;
@@ -2455,6 +2461,9 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
   }
   input[type="text"] {
     flex:1;
+  }
+  .field {
+    margin:0;
   }
   .ip-wrap {
     flex:1;
@@ -4461,6 +4470,7 @@ g {
   text-align:left;
   white-space: normal;
   line-height: 31px;
+  min-height: 42px;
   .ui.label {
     margin:0 4px 0 0;
   }

@@ -31,73 +31,79 @@
     </div>
 
     <div class="-counsel-content-panel right-panel" data-type="COUNSEL" style="display: none;">
-        <div id="call-custom-input-panel">
-            <div class="panel remove-mb panel-resizable top" id="call-custom-input"></div>
+        <div id="call-custom-input-panel" class="top-area">
+            <div class="panel remove-mb panel-resizable" id="call-custom-input"></div>
         </div>
 
-        <div class="panel remove-mb panel-resizable middle">
-            <div class="panel-heading">
-                <div class="pull-left">
-                    <label class="panel-label">상담결과 입력</label>
-                    <div class="ui checkbox ml10">
-                        <input type="checkbox" name="example">
-                        <label>고객정보저장</label>
+        <div class="middle-area">
+            <div class="remove-mb panel-resizable">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="pull-left">
+                            <label class="panel-label">상담결과 입력</label>
+                            <div class="ui checkbox ml10">
+                                <input type="checkbox" name="example">
+                                <label>고객정보저장</label>
+                            </div>
+                            <div class="ui checkbox ml10">
+                                <input type="checkbox" name="example">
+                                <label>저장 후 대기</label>
+                            </div>
+                        </div>
+                        <div class="pull-right">
+                            <button class="ui basic button" type="button">상담검색</button>
+                            <button class="ui basic button" type="button">상담예약</button>
+                            <button class="ui basic button" type="button">상담이관</button>
+                            <button class="ui button sharp light"><img src="<c:url value="/resources/images/save.svg"/>" alt="save">상담결과 저장</button>
+                        </div>
                     </div>
-                    <div class="ui checkbox ml10">
-                        <input type="checkbox" name="example">
-                        <label>저장 후 대기</label>
+                    <div class="panel-body overflow-auto">
+                        <table class="ui celled table compact unstackable">
+                            <tbody>
+                            <tr>
+                                <th>관련서비스</th>
+                                <td>
+                                    <div class="ui form">
+                                        <select>
+                                            <option>선택</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <th>상담종류</th>
+                                <td>
+                                    <div class="ui form">
+                                        <select>
+                                            <option>선택</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <th>처리여부</th>
+                                <td>
+                                    <div class="ui form">
+                                        <select>
+                                            <option>선택</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>메모</th>
+                                <td colspan="5">
+                                    <div class="ui form">
+                                        <div class="field">
+                                            <textarea rows="2"></textarea>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <div class="pull-right">
-                    <button class="ui basic button" type="button">상담검색</button>
-                    <button class="ui basic button" type="button">상담예약</button>
-                    <button class="ui basic button" type="button">상담이관</button>
-                    <button class="ui button sharp light"><img src="<c:url value="/resources/images/save.svg"/>" alt="save">상담결과 저장</button>
-                </div>
-            </div>
-            <div class="panel-body overflow-auto">
-                <table class="ui celled table compact unstackable">
-                    <tr>
-                        <th>관련서비스</th>
-                        <td>
-                            <div class="ui form">
-                                <select>
-                                    <option>선택</option>
-                                </select>
-                            </div>
-                        </td>
-                        <th>상담종류</th>
-                        <td>
-                            <div class="ui form">
-                                <select>
-                                    <option>선택</option>
-                                </select>
-                            </div>
-                        </td>
-                        <th>처리여부</th>
-                        <td>
-                            <div class="ui form">
-                                <select>
-                                    <option>선택</option>
-                                </select>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>메모</th>
-                        <td colspan="5">
-                            <div class="ui form">
-                                <div class="field">
-                                    <textarea rows="2"></textarea>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
             </div>
         </div>
 
-        <div class="overflow-auto">
+        <div class="flex-100 bottom-area overflow-hidden">
             <div class="ui top attached tabular menu light flex remove-margin">
                 <button class="item active" data-tab="todo">To-Do</button>
                 <button class="item" data-tab="consult-history">상담이력</button>

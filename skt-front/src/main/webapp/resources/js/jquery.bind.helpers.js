@@ -242,10 +242,14 @@
         // findAndMe(".sidebar-menu-wrap", this).overlayScrollbars({ // overflow scroll
         //     className: "os-theme-dark"
         // });
-        // findAndMe(".top-chat-list-wrap", this).overlayScrollbars({ // overflow scroll
-        //     className: "os-theme-dark"
-        // });
+        /*findAndMe(".top-chat-list-wrap", this).overlayScrollbars({ // overflow scroll
+            className: "os-theme-dark"
+        });*/
         // findAndMe(".chat-body", this).overlayScrollbars({});
+
+
+
+
 
 
         /* jquery-ui.datepicker 호출. id 재생성되므로, 기존 id 속성을 삭제시킨다. */

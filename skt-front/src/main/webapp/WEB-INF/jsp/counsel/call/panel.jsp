@@ -87,7 +87,7 @@
             <div class="ui bottom attached tab segment active remove-padding remove-margin" data-tab="monitoring">
                 <jsp:include page="/counsel/call/consultant-status"/>
             </div>
-            <div class="ui bottom attached tab segment remove-margin" data-tab="statistics">
+            <div class="ui bottom attached tab segment remove-margin overflow-auto" data-tab="statistics">
                 <jsp:include page="/counsel/call/stat"/>
             </div>
         </div>

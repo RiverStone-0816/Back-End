@@ -39,7 +39,7 @@
         </div>
     </div>
     <div class="panel-body overflow-auto">
-        <table class="ui celled table compact unstackable fixed">
+        <table class="ui celled table compact unstackable">
             <colgroup>
                 <col style="width: 100px">
                 <col style="width: calc(25% - 100px)">
@@ -53,13 +53,13 @@
             <tbody>
             <tr>
                 <th>고객DB</th>
-                <td>
+                <td colspan="3">
                     <div class="ui form flex">
                         <select onchange="loadCustomInput(${form.groupSeq}, $(this).val() === 'insert' ? null : '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(phoneNumber)}')">
                             <option value="insert" ${entity == null ? 'selected' : ''}>새로운 고객으로 등록</option>
                             <option value="update" ${entity != null ? 'selected' : ''}>고객정보 갱신</option>
                         </select>
-                        <select onchange="loadCustomInput($(this).val(), null, '${g.htmlQuote(phoneNumber)}')">
+                        <select class="ml5" onchange="loadCustomInput($(this).val(), null, '${g.htmlQuote(phoneNumber)}')">
                             <c:forEach var="e" items="${maindbGroups}">
                                 <option value="${e.seq}" ${e.seq == form.groupSeq ? 'selected' : ''}>${g.htmlQuote(e.name)}</option>
                             </c:forEach>
@@ -216,14 +216,14 @@
 
             <tr>
                 <th>멀티채널추가</th>
-                <td colspan="5">
+                <td colspan="7">
                     <div class="ui form flex">
                         <select name="channelType" style="flex: 1">
                             <c:forEach var="channel" items="${channelTypes}">
                                 <option value="${g.htmlQuote(channel.key)}">${g.htmlQuote(channel.value)}</option>
                             </c:forEach>
                         </select>
-                        <div class="field" style="flex: 1; display: none;">
+                        <div class="field ml5" style="flex: 1; display: none;">
                             <select name="channelDataTalkService">
                                 <c:forEach var="talk" items="${talkServices}">
                                     <option value="${g.htmlQuote(talk.key)}">${g.htmlQuote(talk.value)}</option>
@@ -237,7 +237,7 @@
             </tr>
             <tr>
                 <th>멀티채널리스트</th>
-                <td colspan="5">
+                <td colspan="7">
                     <div class="ui labels multi-list-wrap -channel-container">
                         <c:forEach var="channel" items="${entity.multichannelList}">
                             <div class="ui label -channel" data-value="${g.escapeQuote(channel.channelData)}" data-type="${g.escapeQuote(channel.channelType)}">
@@ -254,6 +254,59 @@
                         </c:if>
                     </div>
                 </td>
+            </tr>
+            <tr>
+                <th>1/4</th>
+                <td>
+                    <div class="ui form flex">
+                        <input type="text">
+                        <button type="button" class="ui button sharp navy ml5">추가</button>
+                    </div>
+                </td>
+                <th>1/4</th>
+                <td></td>
+                <th>1/4</th>
+                <td></td>
+                <th>1/4</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>1/4</th>
+                <td></td>
+                <th>2/4</th>
+                <td colspan="3"></td>
+                <th>1/4</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>1/4</th>
+                <td></td>
+                <th>3/4</th>
+                <td colspan="5"></td>
+            </tr>
+            <tr>
+                <th>2/4</th>
+                <td colspan="3"></td>
+                <th>1/4</th>
+                <td></td>
+                <th>1/4</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>2/4</th>
+                <td colspan="3"></td>
+                <th>2/4</th>
+                <td colspan="3"></td>
+            </tr>
+            <tr>
+                <th>3/4</th>
+                <td colspan="5"></td>
+                <th>1/4</th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>4/4</th>
+                <td colspan="7"></td>
             </tr>
             </tbody>
         </table>
