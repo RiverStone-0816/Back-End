@@ -35,6 +35,19 @@
                         </ul>
                     </li>
                 </ul>
+
+                <script>
+                    (function () {
+                        if (window.queues) {
+                            if (!queues['${g.escapeQuote(node.queueNameResponse.name)}']) queues['${node.queueNameResponse.name}'] = {
+                                name: '${g.escapeQuote(node.queueNameResponse.name)}',
+                                hanName: '${g.escapeQuote(node.queueNameResponse.hanName)}',
+                                peer: []
+                            };
+                            queues['${g.escapeQuote(node.queueNameResponse.name)}'].waitingCustomerCount = ${node.processingCustomerCount};
+                        }
+                    })()
+                </script>
             </li>
         </c:if>
     </c:when>
@@ -69,24 +82,38 @@
                     </c:choose>
                 </dl>
             </div>
+
+            <script>
+                (function () {
+                    if (window.queues) {
+                        if (!queues['${g.escapeQuote(node.queueNameResponse.name)}']) queues['${node.queueNameResponse.name}'] = {
+                            name: '${g.escapeQuote(node.queueNameResponse.name)}',
+                            hanName: '${g.escapeQuote(node.queueNameResponse.hanName)}',
+                            peer: []
+                        };
+                        queues['${g.escapeQuote(node.queueNameResponse.name)}'].waitingCustomerCount = ${node.processingCustomerCount};
+                    }
+                })()
+            </script>
         </li>
     </c:when>
     <c:otherwise>
         <li>
             <div class="header"><span class="ui circular label tiny">${node.button}</span>${g.htmlQuote(node.name)}[${node.waitingCustomerCount}]</div>
+
+            <script>
+                (function () {
+                    if (window.queues) {
+                        if (!queues['${g.escapeQuote(node.queueNameResponse.name)}']) queues['${node.queueNameResponse.name}'] = {
+                            name: '${g.escapeQuote(node.queueNameResponse.name)}',
+                            hanName: '${g.escapeQuote(node.queueNameResponse.hanName)}',
+                            peer: []
+                        };
+                        queues['${g.escapeQuote(node.queueNameResponse.name)}'].waitingCustomerCount = ${node.processingCustomerCount};
+                    }
+                })()
+            </script>
         </li>
     </c:otherwise>
 </c:choose>
 
-<script>
-    (function () {
-        if (window.queues) {
-            if (!queues['${g.escapeQuote(node.queueNameResponse.name)}']) queues['${node.queueNameResponse.name}'] = {
-                name: '${g.escapeQuote(node.queueNameResponse.name)}',
-                hanName: '${g.escapeQuote(node.queueNameResponse.hanName)}',
-                peer: []
-            };
-            queues['${g.escapeQuote(node.queueNameResponse.name)}'].waitingCustomerCount = ${node.processingCustomerCount};
-        }
-    })()
-</script>
