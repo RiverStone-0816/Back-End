@@ -19,7 +19,7 @@
         <div class="ui top attached tabular menu">
             <button class="item active" data-tab="call-panel">전화</button>
             <c:if test="${user.isTalk.equals('Y')}">
-                <button class="item" data-tab="talk-panel">상담톡</button>
+                <button class="item" data-tab="talk-panel" onclick="$(this).removeClass('highlight'); $(this).removeClass('newImg');">상담톡</button>
             </c:if>
         </div>
 
@@ -34,8 +34,6 @@
         <div id="call-custom-input-panel">
             <div class="panel remove-mb panel-resizable top" id="call-custom-input"></div>
         </div>
-
-
 
         <div class="panel remove-mb panel-resizable middle">
             <div class="panel-heading">
@@ -54,7 +52,7 @@
                     <button class="ui basic button" type="button">상담검색</button>
                     <button class="ui basic button" type="button">상담예약</button>
                     <button class="ui basic button" type="button">상담이관</button>
-                    <button class="ui button sharp light"><img src="<c:url value="/resources/images/save.svg"/>">신규고객정보&상담결과 저장</button>
+                    <button class="ui button sharp light"><img src="<c:url value="/resources/images/save.svg"/>" alt="save">상담결과 저장</button>
                 </div>
             </div>
             <div class="panel-body overflow-auto">

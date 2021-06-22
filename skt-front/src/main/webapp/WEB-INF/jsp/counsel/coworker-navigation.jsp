@@ -14,9 +14,11 @@
 <%--@elvariable id="usingservices" type="java.lang.String"--%>
 
 <div class="content" id="counsel-nav">
-    <div class="counsel-trans-wrap">
-        <button type="button" class="ui orange fluid button">ARS로돌려주기</button>
-    </div>
+    <c:if test="${serviceKind.equals('SC')}">
+        <div class="counsel-trans-wrap">
+            <button type="button" class="ui orange fluid button" onclick="popupArsModal()">>ARS로 돌려주기</button>
+        </div>
+    </c:if>
     <div class="accordion">
         <button class="team-title">
             <div class="team">
