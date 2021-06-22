@@ -260,7 +260,7 @@
                 <td>
                     <div class="ui form flex">
                         <input type="text">
-                        <button type="button" class="ui button sharp navy ml5">추가</button>
+                        <button type="button" class="ui button sharp navy ml5" onclick="popupToolTip();">추가</button>
                     </div>
                 </td>
                 <th>1/4</th>
@@ -313,7 +313,10 @@
     </div>
 </form:form>
 
+
+
 <script>
+
     ui.find('[type="file"]').change(function () {
         uploadFile(this.files[0], ui.find('progress')).done(function (response) {
             const name = ui.find('[type="file"]').attr('data-value');

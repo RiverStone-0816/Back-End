@@ -272,7 +272,44 @@
     <jsp:include page="/counsel/modal-ars"/>
     <jsp:include page="/counsel/modal-cms"/>
     <jsp:include page="/counsel/modal-send-message"/>
+
+    <div class="ui modal" id="modal-tooltip">
+        <i class="close icon"></i>
+        <div class="header">옵션 설명</div>
+        <div class="content scrolling">
+            <table class="ui table celled compact unstackable">
+                <tr>
+                    <th>옵션명</th>
+                    <td>설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명</td>
+                </tr>
+                <tr>
+                    <th>옵션명</th>
+                    <td>설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명</td>
+                </tr>
+                <tr>
+                    <th>옵션명</th>
+                    <td>설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명</td>
+                </tr>
+                <tr>
+                    <th>옵션명</th>
+                    <td>설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명</td>
+                </tr>
+            </table>
+        </div>
+        <div class="actions">
+            <button type="submit" class="ui orange button">확인</button>
+        </div>
+    </div>
+
+    <script>
+        function popupToolTip() {
+            $('#modal-tooltip').modalShow();
+        }
+    </script>
+
 </div>
+
+
 
 <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
 <tags:scripts>

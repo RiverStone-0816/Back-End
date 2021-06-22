@@ -42,8 +42,8 @@
         </table>
     </div>
     <div class="actions">
-        <button type="submit" class="ui right floated button sharp brand">확인</button>
-        <button type="button" class="ui right floated button sharp modal-close">취소</button>
+        <button type="button" class="ui button modal-close">취소</button>
+        <button type="submit" class="ui orange button">확인</button>
     </div>
 </div>
 
