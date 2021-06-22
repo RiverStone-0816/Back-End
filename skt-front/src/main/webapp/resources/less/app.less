@@ -3541,44 +3541,45 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
     text-align:center;
     padding:10px 0;
   }
-  .user-ul {
-    .flex();
-    flex-wrap: wrap;
+  .user-ivr-wrap {
     margin:1em 0;
     white-space: nowrap;
-    position: relative;
-    .title {
-      position: absolute;
-      right: 0;
-      top: -31px;
+    display:inline-block;
+    .user-ivr-title {
+      margin: 0 0 .6em 0;
       font-weight: 800;
-      color: #333;
-      font-size: 15px;
+      text-align:left;
     }
-    .box {
-      width:10%;
-      border:1px solid @color-border;
-      .name {
-        background:@color-th;
-        overflow: hidden;
-        border-bottom:1px solid @color-border;
-        text-align:center;
-        padding: .2em 1em;
-        color: @color-black;
-        font-weight: 800;
+    .user-ivr-ul {
+      .box {
+        float:left;
+        width:125px;
+        border:1px solid @color-border;
+        margin:0 -1px 0 0;
+        .name {
+          background: @color-white;
+          overflow: hidden;
+          border-bottom:1px solid @color-border;
+          text-align:center;
+          padding: .2em 1em;
+          color: @color-black;
+          font-weight: 800;
+          font-size: @font-size-xsmall - 1px;
+        }
+        .state {
+          background:@color-white;
+          padding: .2em 1em;
+          text-align:center;
+          font-weight: 300;
+          font-size: @font-size-xsmall - 1px;
+        }
+        .state.call {background:@color-state-call;color:@color-white}
+        .state.wait {background:@color-state-wait;color:@color-white}
+        .state.bell {background:@color-state-bell;color:@color-white}
+        .state.after {background: @color-state-after;color:@color-white}
+        .state.logout {background: @color-state-logout;color:@color-white}
+        .state.etc {background: @color-state-etc;color:@color-white}
       }
-      .state {
-        background:@color-white;
-        padding: .2em 1em;
-        text-align:center;
-        font-weight: 300;
-      }
-      .state.call {background:@color-state-call;color:@color-white}
-      .state.wait {background:@color-state-wait;color:@color-white}
-      .state.bell {background:@color-state-bell;color:@color-white}
-      .state.after {background: @color-state-after;color:@color-white}
-      .state.logout {background: @color-state-logout;color:@color-white}
-      .state.etc {background: @color-state-etc;color:@color-white}
     }
   }
   .ui.segment.secondary {
