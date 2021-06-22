@@ -70,14 +70,16 @@
                                         </table>
 
                                         <div class="ui segments">
-                                            <div class="ui segment">
-                                                <span class="ui header"><c:if test="${e.monitorIvrTree.button != null && e.monitorIvrTree.button != ''}"><span
-                                                        class="ui circular label tiny">${e.monitorIvrTree.button}</span></c:if>${g.htmlQuote(e.monitorIvrTree.name)}[${e.monitorIvrTree.waitingCustomerCount}]</span>
-                                            </div>
                                             <div class="ui secondary segment">
-                                                <c:forEach var="node" items="${e.monitorIvrTree.nodes}">
-                                                    <tags:ivr-monitor-node node="${node}" statusCodes="${statusCodes}"/>
-                                                </c:forEach>
+                                                <p class="tree-caption"><c:if test="${e.monitorIvrTree.button != null && e.monitorIvrTree.button != ''}"><span
+                                                        class="ui circular label tiny">${e.monitorIvrTree.button}</span></c:if>${g.htmlQuote(e.monitorIvrTree.name)}[${e.monitorIvrTree.waitingCustomerCount}]
+                                                </p>
+
+                                                <ul class="tree ivr">
+                                                    <c:forEach var="node" items="${e.monitorIvrTree.nodes}">
+                                                        <tags:ivr-monitor-node node="${node}" statusCodes="${statusCodes}"/>
+                                                    </c:forEach>
+                                                </ul>
                                             </div>
                                         </div>
 
