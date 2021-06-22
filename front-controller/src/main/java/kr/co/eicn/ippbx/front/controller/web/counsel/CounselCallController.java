@@ -1,5 +1,9 @@
 package kr.co.eicn.ippbx.front.controller.web.counsel;
 
+import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
+import kr.co.eicn.ippbx.front.service.api.dashboard.DashboardApiInterface;
+import kr.co.eicn.ippbx.front.service.api.monitor.display.ScreenDataApiInterface;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CmpMemberStatusCode;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbDataController;
@@ -43,6 +47,7 @@ import kr.co.eicn.ippbx.model.form.ResultCustomInfoFormRequest;
 import kr.co.eicn.ippbx.model.search.*;
 import kr.co.eicn.ippbx.model.search.search.SearchServiceRequest;
 import lombok.AllArgsConstructor;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,11 +84,28 @@ public class CounselCallController extends BaseController {
     private final VocGroupApiInterface vocGroupApiInterface;
     private final TalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
     private final MaindbResultApiInterface maindbResultApiInterface;
+    private final ScreenDataApiInterface screenDataApiInterface;
+    private final CompanyApiInterface companyApiInterface;
 
     @GetMapping("")
     public String callPanel(Model model) throws IOException, ResultFailException {
         model.addAttribute("services", searchApiInterface.services(new SearchServiceRequest()).stream().collect(Collectors.toMap(ServiceList::getSvcCid, ServiceList::getSvcName)));
         return "counsel/call/panel";
+    }
+
+    @SneakyThrows
+    @GetMapping("consultant-status")
+    public String consultantStatus(Model model) {
+        model.addAttribute("statusCodes", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
+        model.addAttribute("integrationData", screenDataApiInterface.integration());
+        model.addAttribute("huntData", screenDataApiInterface.byHunt());
+        return "counsel/call/consultant-status";
+    }
+
+    @SneakyThrows
+    @GetMapping("stat")
+    public String stat(Model model) {
+        return "counsel/call/stat";
     }
 
     @GetMapping("custom-input")

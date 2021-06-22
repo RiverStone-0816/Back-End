@@ -12,7 +12,7 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<div class="ui bottom attached tab segment remove-margin active" data-tab="call-panel">
+<div class="ui bottom attached tab segment overflow-auto remove-margin active" data-tab="call-panel">
     <div class="panel remove-margin">
         <div class="panel-heading">
             <div class="pull-left"><label class="panel-label">수발신정보</label></div>
@@ -35,8 +35,9 @@
                     <th>고객번호</th>
                     <td class="">
                         <div class="ui form flex">
-                            <input type="text" class="-calling-number" id="counseling-target"/>
-                            <button class="ui button sharp light ml5">전화걸기</button>
+                            <text style="display: none;" id="counseling-target"></text>
+                            <input type="text" class="-calling-number" id="calling-number"/>
+                            <button type="button" class="ui button sharp light ml5" onclick="tryDial('MAINDB')">전화걸기</button>
                         </div>
                     </td>
                 </tr>
@@ -57,159 +58,40 @@
                     <td>
                         <div class="ui form flex">
                             <jsp:include page="/counsel/call/user-call-history"/>
-                            <button class="ui button sharp light ml5">통화이력</button>
+                            <%--Todo: 처리확인--%>
+                            <%--<button type="button" class="ui mini button compact" onclick="popupSearchMaindbCustomModal()"> 고객DB</button>--%>
+                            <%--<button type="button" class="ui mini button compact" onclick="popupSearchCounselingHistoryModal()"> 상담이력</button>--%>
+                            <button type="button" class="ui button sharp light ml5" onclick="popupSearchCallHistoryModal()">통화이력</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>발신표시</th>
+                    <td>
+                        <div class="ui form flex">
+                            <select id="cid">
+                                <option value="" label="">발신번호선택</option>
+                                <c:forEach var="e" items="${services}">
+                                    <option value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.value)}(${g.htmlQuote(e.key)})</option>
+                                </c:forEach>
+                            </select>
                         </div>
                     </td>
                 </tr>
             </table>
 
-            <%--TODO: 아래서부터는 작업되지 않음--%>
             <div class="ui top attached tabular menu light flex">
                 <button class="item active" data-tab="monitoring">모니터링</button>
                 <button class="item" data-tab="statistics">통계</button>
             </div>
             <div class="ui bottom attached tab segment active remove-padding remove-margin" data-tab="monitoring">
-                <div class="pd10">
-                    <label class="panel-label">상담원 현황</label>
-                </div>
-                <div class="ui internally celled grid compact">
-                    <div class="row">
-                        <div class="sixteen wide column">
-                            <table class="ui celled table compact unstackable">
-                                <thead>
-                                <tr>
-                                    <th>총원</th>
-                                    <th>대기</th>
-                                    <th>상담중</th>
-                                    <th>후처리</th>
-                                    <th>휴식</th>
-                                    <th>식사</th>
-                                    <th>로그아웃</th>
-                                </tr>
-                                <tr>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                    <td>1</td>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="six wide column">
-                            <label class="panel-label">MY CALL 현황(금일)</label>
-                        </div>
-                        <div class="ten wide column">
-                            <label class="panel-label">상담 그룹 현황</label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="six wide column">
-                            <table class="ui celled table compact unstackable">
-                                <tr>
-                                    <th>수신</th>
-                                </tr>
-                                <tr>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <th>콜백</th>
-                                </tr>
-                                <tr>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <th>발신</th>
-                                </tr>
-                                <tr>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <th>응대율</th>
-                                </tr>
-                                <tr>
-                                    <td>-</td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="ten wide column">
-                            <table class="ui celled table compact unstackable">
-                                <thead>
-                                <tr>
-                                    <th>상담그룹</th>
-                                    <th>대기고객</th>
-                                    <th>대기상담</th>
-                                    <th>통화불가</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                <jsp:include page="/counsel/call/consultant-status"/>
             </div>
-            <div class="ui bottom attached tab segment" data-tab="statistics">
-                통계
+            <div class="ui bottom attached tab segment remove-margin" data-tab="statistics">
+                <jsp:include page="/counsel/call/stat"/>
             </div>
         </div>
     </div>
-
-
-    <%--todo: cid 선택하는 ui가 없다
-    <select id="cid">
-        <option value="" label="">발신번호선택</option>
-        <c:forEach var="e" items="${services}">
-            <option value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.value)}(${g.htmlQuote(e.key)})</option>
-        </c:forEach>
-    </select>
-    --%>
 </div>
 
 <jsp:include page="/counsel/call/modal-counseling-transfer"/>
@@ -242,7 +124,6 @@
             $('#user-custom-info').empty().val('');
             $('#user-call-history').empty().val('');
             $('#counsel-list').empty().val('');
-
 
             loadCustomInput();
             loadUserCustomInfo();

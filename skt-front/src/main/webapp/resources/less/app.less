@@ -268,6 +268,15 @@ pre {
   width: 246px;
   right: 0;
   top: 50px;
+  .counsel-trans-wrap {
+    padding: 0 12px 10px 12px;
+    border-bottom:1px solid @color-border;
+    .ui.button {
+      border-radius: 0;
+      font-weight:500;
+      padding: 7px 10px;
+    }
+  }
   .box-shadow(0,5px,7px ,40%);
   .header {
     background:darken(@color-gray, 40%);
@@ -476,6 +485,7 @@ pre {
       background-image:url('../images/bell-off.svg');
       border-radius: 10px;
       padding: 9px 9px;
+
       margin: 0 0 0 7px;
       background-repeat: no-repeat;
       background-position: center center;
@@ -753,49 +763,24 @@ pre {
   .left-panel {
     .flex();
     flex-flow:column;
-    flex:1;
+    width: 33%;
     padding-right:10px;
+    .statistics-inner {
+      height:504px;
+    }
     .ui.bottom.attached.tab.segment {
       flex:1;
       overflow: hidden;
     }
   }
   .right-panel {
-    flex:2;
+    width: 67%;
     .flex();
     flex-flow: column;
     .top {
       select[multiple] {
         height: 100px;
         min-height: auto;
-      }
-      &:after {
-        content:'▲';
-        right:-9px;
-        bottom:2px;
-        .panel-resize-btn();
-      }
-    }
-    .middle {
-      &:after {
-        content:'▼';
-        right:-9px;
-        top:-1px;
-        .panel-resize-btn();
-      }
-      &:before {
-        content:'▲';
-        right:-9px;
-        bottom:2px;
-        .panel-resize-btn();
-      }
-    }
-    .bottom {
-      &:after {
-        content:'▼';
-        right:-9px;
-        top:-44px;
-        .panel-resize-btn();
       }
     }
   }
@@ -850,7 +835,7 @@ pre {
     cursor: pointer;
     background:darken(@color-gray, 6.3%);
     color:darken(@color-gray, 45%);
-    padding: .78em 2.8em;
+    padding: 1.1em 2.8em;
     font-size:16px;
     &:hover {
       background:darken(@color-gray, 6.3%);
@@ -1209,6 +1194,36 @@ pre {
     background:darken(@color-bg, 6%);
     height: 5px;
     bottom: -1px;
+    &:after {
+      content: '▼';
+      right: -9px;
+      top: 5px;
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: #fbfbfb;
+      border: 1px solid #E3E3E3;
+      color: #FF7902;
+      font-size: 10px;
+      text-align: center;
+      line-height: 15px;
+      font-family: sans-serif;
+    }
+    &:before {
+      content: '▲';
+      right: -9px;
+      bottom: 5px;
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: #fbfbfb;
+      border: 1px solid #E3E3E3;
+      color: #FF7902;
+      font-size: 10px;
+      text-align: center;
+      line-height: 15px;
+      font-family: sans-serif;
+    }
   }
   .ui-resizable-e {
     display:none!important;
@@ -1279,6 +1294,7 @@ pre {
     padding: 10px 14px;
     .flex();
     align-items:center;
+    white-space: nowrap;
     .pull-left {
       margin-right: auto;
       float:none;
@@ -1488,6 +1504,7 @@ pre {
 .panel-label {
   font-size:@font-size-default - 1px;
   font-weight:500;
+  white-space: nowrap;
 }
 
 .panel-sub-title {
@@ -1918,6 +1935,9 @@ label.control-label {
 .mb10 {
   margin-bottom: 10px !important
 }
+.display-flex {
+  display:flex;
+}
 .flex-flow-column {
   flex-flow: column!important;
 }
@@ -1968,6 +1988,12 @@ label.control-label {
 }
 .overflow-hidden {
   overflow: hidden !important;
+}
+.overflow-auto {
+  overflow: auto !important;
+}
+.overflow-y-auto {
+  overflow-y: auto !important;
 }
 .progress-wrap {
   width: 354px;
@@ -2362,6 +2388,7 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
 }
 
 .ui.internally.celled.grid {
+  overflow: hidden;
   .column {
     padding:10px;
   }
@@ -3299,13 +3326,14 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
 
 
 .chat-container {
-  border: 1px solid #d4d4d5;
-  margin:10px 0 0 0;
+  padding:10px 0 0 0;
   height:100%;
+  border:0;
   .room {
     background: #dce6f2;
     height: 100%;
     position: relative;
+    border:1px solid @color-border;
     .chat-header {
       background: #616b77;
       padding: 9px 8px;
@@ -3471,6 +3499,13 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
 }
 
 #pds-ivr-container {
+  .ui.secondary.segment {
+    background:lighten(@color-gray,3%);
+    padding:1em;
+    .tree li:last-child:before {
+      background:lighten(@color-gray,3%);
+    }
+  }
   .ui.segments {
     border-radius:0;
     margin:-1px 0 0 0;
@@ -3506,43 +3541,45 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
     text-align:center;
     padding:10px 0;
   }
-  .user-ul {
-    .flex();
-    flex-wrap: wrap;
-    margin:1em;
+  .user-ivr-wrap {
+    margin:1em 0;
     white-space: nowrap;
-    position: relative;
-    .title {
-      position: absolute;
-      right: 0;
-      top: -31px;
+    display:inline-block;
+    .user-ivr-title {
+      margin: 0 0 .6em 0;
       font-weight: 800;
-      color: #333;
-      font-size: 15px;
+      text-align:left;
     }
-    .box {
-      width:10%;
-      border:1px solid @color-border;
-      .name {
-        background:@color-th;
-        overflow: hidden;
-        border-bottom:1px solid @color-border;
-        text-align:center;
-        padding: .7em 1em;
-        color: @color-black;
-        font-weight: 800;
+    .user-ivr-ul {
+      .box {
+        float:left;
+        width:125px;
+        border:1px solid @color-border;
+        margin:0 -1px 0 0;
+        .name {
+          background: @color-white;
+          overflow: hidden;
+          border-bottom:1px solid @color-border;
+          text-align:center;
+          padding: .2em 1em;
+          color: @color-black;
+          font-weight: 800;
+          font-size: @font-size-xsmall - 1px;
+        }
+        .state {
+          background:@color-white;
+          padding: .2em 1em;
+          text-align:center;
+          font-weight: 300;
+          font-size: @font-size-xsmall - 1px;
+        }
+        .state.call {background:@color-state-call;color:@color-white}
+        .state.wait {background:@color-state-wait;color:@color-white}
+        .state.bell {background:@color-state-bell;color:@color-white}
+        .state.after {background: @color-state-after;color:@color-white}
+        .state.logout {background: @color-state-logout;color:@color-white}
+        .state.etc {background: @color-state-etc;color:@color-white}
       }
-      .state {
-        background:@color-white;
-        padding: .7em 1em;
-        text-align:center;
-      }
-      .state.call {background:@color-state-call;color:@color-white}
-      .state.wait {background:@color-state-wait;color:@color-white}
-      .state.bell {background:@color-state-bell;color:@color-white}
-      .state.after {background: @color-state-after;color:@color-white}
-      .state.logout {background: @color-state-logout;color:@color-white}
-      .state.etc {background: @color-state-etc;color:@color-white}
     }
   }
   .ui.segment.secondary {
@@ -3553,9 +3590,6 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
         }
       }
     }
-  }
-  .ui.circular.label.tiny {
-    margin: 0 .5em 0 10px;
   }
   .item {
     .ui.circular.label.tiny {
@@ -4265,12 +4299,14 @@ g {
   margin:.5em 0;
   font-weight:800;
   cursor: pointer;
+  color:@color-black;
   .ui.circular.label {
     background:@color-menu-bg;
     color:@color-white;
     margin:0 .5em 0 0;
     font-weight: 300;
     line-height: 7px;
+    vertical-align: text-bottom;
   }
 }
 
@@ -4303,7 +4339,8 @@ g {
     color:@color-white;
     margin:0 .5em 0 0;
     font-weight: 300;
-    line-height: 7px;
+    line-height: 10px;
+    vertical-align: text-bottom;
   }
   .header.active {
     color:@color-brand;
@@ -4311,8 +4348,6 @@ g {
       background:@color-brand;
     }
   }
-
-
   li {
     cursor: pointer;
     margin:0;
@@ -4340,6 +4375,23 @@ g {
   height:auto;
   top:1em; /* (line-height/2) */
   bottom:0;
+}
+
+.tree.ivr {
+  margin:0;
+  overflow:hidden;
+  .ui.table {
+    margin:1em 0;
+    width:20%;
+  }
+  > li {
+    &:before {
+      top:0;
+    }
+  }
+  .ui.circular.label {
+    background:darken(@color-gray, 30%);
+  }
 }
 
 .talk-list-container {
