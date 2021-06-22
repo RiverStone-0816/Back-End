@@ -85,7 +85,7 @@
                                                             <button type="button" class="ui basic button mini" title="추가">삭제</button>
                                                         </div>
                                                         <ul>
-                                                            <li><div class="header"><span class="ui circular label tiny">1</span> m1</div>
+                                                            <li><div class="header"><span class="ui circular label tiny">1</span> 1단계</div>
                                                                 <div class="user-ivr-wrap">
                                                                     <h4 class="user-ivr-title">IVR3_1_법인 대량구매</h4>
                                                                     <dl class="user-ivr-ul">
@@ -101,29 +101,64 @@
                                                                             <div class="name">홍길동[000]</div>
                                                                             <div class="state bell">벨울림</div>
                                                                         </dd>
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state after">후처리</div>
+                                                                        </dd>
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state logout">로그아웃</div>
+                                                                        </dd>
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state etc">기타</div>
+                                                                        </dd>
                                                                     </dl>
                                                                 </div>
+                                                            </li>
+                                                            <li><div class="header"><span class="ui circular label tiny">2</span> 2단계</div></li>
+                                                            <li><div class="header"><span class="ui circular label tiny">3</span> 3단계</div></li>
+                                                            <li><div class="header"><span class="ui circular label tiny">4</span> 4단계</div>
+                                                                <div class="user-ivr-wrap">
+                                                                    <h4 class="user-ivr-title">IVR3_1_법인 대량구매</h4>
+                                                                    <dl class="user-ivr-ul">
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state call">통화중</div>
+                                                                        </dd>
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state wait">대기</div>
+                                                                        </dd>
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state bell">벨울림</div>
+                                                                        </dd>
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state after">후처리</div>
+                                                                        </dd>
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state logout">로그아웃</div>
+                                                                        </dd>
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state etc">기타</div>
+                                                                        </dd>
+                                                                    </dl>
+                                                                </div>
+                                                            </li>
+                                                            <li><div class="header"><span class="ui circular label tiny">5</span> 5단계</div>
                                                                 <ul>
-                                                                    <li><div class="header"><span class="ui circular label tiny">1</span> m1</div>
-                                                                        <div class="user-ivr-wrap">
-                                                                            <h4 class="user-ivr-title">IVR3_1_법인 대량구매</h4>
-                                                                            <dl class="user-ivr-ul">
-                                                                                <dd class="box">
-                                                                                    <div class="name">홍길동[000]</div>
-                                                                                    <div class="state call">통화중</div>
-                                                                                </dd>
-                                                                                <dd class="box">
-                                                                                    <div class="name">홍길동[000]</div>
-                                                                                    <div class="state wait">대기</div>
-                                                                                </dd>
-                                                                                <dd class="box">
-                                                                                    <div class="name">홍길동[000]</div>
-                                                                                    <div class="state bell">벨울림</div>
-                                                                                </dd>
-                                                                            </dl>
+                                                                    <li>
+                                                                        <div class="header active"><i class="folder open icon"></i>제목
+                                                                            <button type="button" class="ui basic button mini" title="추가">음원듣기</button>
+                                                                            <button type="button" class="ui basic button mini" title="추가">버튼맵핑</button>
+                                                                            <button type="button" class="ui basic button mini" title="추가">삭제</button>
                                                                         </div>
                                                                         <ul>
-                                                                            <li><div class="header"><span class="ui circular label tiny">1</span> m1</div>
+                                                                            <li><div class="header"><span class="ui circular label tiny">1</span> 1단계</div>
                                                                                 <div class="user-ivr-wrap">
                                                                                     <h4 class="user-ivr-title">IVR3_1_법인 대량구매</h4>
                                                                                     <dl class="user-ivr-ul">
@@ -139,38 +174,94 @@
                                                                                             <div class="name">홍길동[000]</div>
                                                                                             <div class="state bell">벨울림</div>
                                                                                         </dd>
+                                                                                        <dd class="box">
+                                                                                            <div class="name">홍길동[000]</div>
+                                                                                            <div class="state after">후처리</div>
+                                                                                        </dd>
+                                                                                        <dd class="box">
+                                                                                            <div class="name">홍길동[000]</div>
+                                                                                            <div class="state logout">로그아웃</div>
+                                                                                        </dd>
+                                                                                        <dd class="box">
+                                                                                            <div class="name">홍길동[000]</div>
+                                                                                            <div class="state etc">기타</div>
+                                                                                        </dd>
                                                                                     </dl>
                                                                                 </div>
-                                                                                <ul>
-                                                                                    <li><div class="header"><span class="ui circular label tiny">1</span> m1</div>
-                                                                                        <div class="user-ivr-wrap">
-                                                                                            <h4 class="user-ivr-title">IVR3_1_법인 대량구매</h4>
-                                                                                            <dl class="user-ivr-ul">
-                                                                                                <dd class="box">
-                                                                                                    <div class="name">홍길동[000]</div>
-                                                                                                    <div class="state call">통화중</div>
-                                                                                                </dd>
-                                                                                                <dd class="box">
-                                                                                                    <div class="name">홍길동[000]</div>
-                                                                                                    <div class="state wait">대기</div>
-                                                                                                </dd>
-                                                                                                <dd class="box">
-                                                                                                    <div class="name">홍길동[000]</div>
-                                                                                                    <div class="state bell">벨울림</div>
-                                                                                                </dd>
-                                                                                            </dl>
-                                                                                        </div>
-                                                                                    </li>
-                                                                                </ul>
+                                                                            </li>
+                                                                            <li><div class="header"><span class="ui circular label tiny">2</span> 2단계</div></li>
+                                                                            <li><div class="header"><span class="ui circular label tiny">3</span> 3단계</div></li>
+                                                                            <li><div class="header"><span class="ui circular label tiny">4</span> 4단계</div>
+                                                                                <div class="user-ivr-wrap">
+                                                                                    <h4 class="user-ivr-title">IVR3_1_법인 대량구매</h4>
+                                                                                    <dl class="user-ivr-ul">
+                                                                                        <dd class="box">
+                                                                                            <div class="name">홍길동[000]</div>
+                                                                                            <div class="state call">통화중</div>
+                                                                                        </dd>
+                                                                                        <dd class="box">
+                                                                                            <div class="name">홍길동[000]</div>
+                                                                                            <div class="state wait">대기</div>
+                                                                                        </dd>
+                                                                                        <dd class="box">
+                                                                                            <div class="name">홍길동[000]</div>
+                                                                                            <div class="state bell">벨울림</div>
+                                                                                        </dd>
+                                                                                        <dd class="box">
+                                                                                            <div class="name">홍길동[000]</div>
+                                                                                            <div class="state after">후처리</div>
+                                                                                        </dd>
+                                                                                        <dd class="box">
+                                                                                            <div class="name">홍길동[000]</div>
+                                                                                            <div class="state logout">로그아웃</div>
+                                                                                        </dd>
+                                                                                        <dd class="box">
+                                                                                            <div class="name">홍길동[000]</div>
+                                                                                            <div class="state etc">기타</div>
+                                                                                        </dd>
+                                                                                    </dl>
+                                                                                </div>
                                                                             </li>
                                                                         </ul>
                                                                     </li>
                                                                 </ul>
                                                             </li>
-                                                            <li><div class="header"><span class="ui circular label tiny">1</span> m2</div></li>
+                                                            <li><div class="header"><span class="ui circular label tiny">6</span> 6단계</div>
+                                                                <div class="user-ivr-wrap">
+                                                                    <h4 class="user-ivr-title">IVR3_1_법인 대량구매</h4>
+                                                                    <dl class="user-ivr-ul">
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state call">통화중</div>
+                                                                        </dd>
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state wait">대기</div>
+                                                                        </dd>
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state bell">벨울림</div>
+                                                                        </dd>
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state after">후처리</div>
+                                                                        </dd>
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state logout">로그아웃</div>
+                                                                        </dd>
+                                                                        <dd class="box">
+                                                                            <div class="name">홍길동[000]</div>
+                                                                            <div class="state etc">기타</div>
+                                                                        </dd>
+                                                                    </dl>
+                                                                </div>
+                                                            </li>
+                                                            <li><div class="header"><span class="ui circular label tiny">7</span> 7단계</div></li>
                                                         </ul>
                                                     </li>
                                                 </ul>
+
                                                 <div class="ui list">
                                                     <c:forEach var="node" items="${e.monitorIvrTree.nodes}">
                                                         <tags:ivr-monitor-node node="${node}" statusCodes="${statusCodes}"/>
