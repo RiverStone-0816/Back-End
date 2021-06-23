@@ -51,25 +51,25 @@
                     <th>수신</th>
                 </tr>
                 <tr>
-                    <td>-</td>
+                    <td class="-stat-my-call" data-field="inTotal"></td>
                 </tr>
                 <tr>
                     <th>콜백</th>
                 </tr>
                 <tr>
-                    <td>-</td>
+                    <td class="-stat-my-call" data-field="callback"></td>
                 </tr>
                 <tr>
                     <th>발신</th>
                 </tr>
                 <tr>
-                    <td>-</td>
+                    <td class="-stat-my-call" data-field="outSuccess"></td>
                 </tr>
                 <tr>
                     <th>응대율</th>
                 </tr>
                 <tr>
-                    <td>-</td>
+                    <td class="-stat-my-call" data-field="successPer" data-fixed="1"></td>
                 </tr>
             </table>
         </div>

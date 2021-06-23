@@ -19,7 +19,10 @@
         <div class="ui top attached tabular menu">
             <button class="item active" data-tab="call-panel">전화</button>
             <c:if test="${user.isTalk.equals('Y')}">
-                <button class="item" data-tab="talk-panel" onclick="$(this).removeClass('highlight'); $(this).removeClass('newImg');">상담톡</button>
+                <button class="item" data-tab="talk-panel" onclick="$(this).removeClass('highlight'); $(this).removeClass('newImg');">
+                    <text>상담톡</text>
+                    <div></div>
+                </button>
             </c:if>
         </div>
 
@@ -37,69 +40,7 @@
 
         <div class="middle-area">
             <div class="remove-mb panel-resizable">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <div class="pull-left">
-                            <label class="panel-label">상담결과 입력</label>
-                            <div class="ui checkbox ml10">
-                                <input type="checkbox" name="example">
-                                <label>고객정보저장</label>
-                            </div>
-                            <div class="ui checkbox ml10">
-                                <input type="checkbox" name="example">
-                                <label>저장 후 대기</label>
-                            </div>
-                        </div>
-                        <div class="pull-right">
-                            <button class="ui basic button" type="button">상담검색</button>
-                            <button class="ui basic button" type="button">상담예약</button>
-                            <button class="ui basic button" type="button">상담이관</button>
-                            <button class="ui button sharp light"><img src="<c:url value="/resources/images/save.svg"/>" alt="save">상담결과 저장</button>
-                        </div>
-                    </div>
-                    <div class="panel-body overflow-auto">
-                        <table class="ui celled table compact unstackable">
-                            <tbody>
-                            <tr>
-                                <th>관련서비스</th>
-                                <td>
-                                    <div class="ui form">
-                                        <select>
-                                            <option>선택</option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <th>상담종류</th>
-                                <td>
-                                    <div class="ui form">
-                                        <select>
-                                            <option>선택</option>
-                                        </select>
-                                    </div>
-                                </td>
-                                <th>처리여부</th>
-                                <td>
-                                    <div class="ui form">
-                                        <select>
-                                            <option>선택</option>
-                                        </select>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>메모</th>
-                                <td colspan="5">
-                                    <div class="ui form">
-                                        <div class="field">
-                                            <textarea rows="2"></textarea>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                <div class="panel" id="call-counseling-input"></div>
             </div>
         </div>
 
@@ -107,87 +48,19 @@
             <div class="ui top attached tabular menu light flex remove-margin">
                 <button class="item active" data-tab="todo">To-Do</button>
                 <button class="item" data-tab="consult-history">상담이력</button>
-                <button class="item" data-tab="etc-lookup">기타조회</button>
+                <%--FIXME:필요시 다음과 같이 추가--%>
+                <%--<button class="item" data-tab="etc-lookup">기타조회</button>--%>
             </div>
             <div class="ui bottom attached tab segment remove-margin active" data-tab="todo">
-                <table class="ui celled table unstackable">
-                    <thead>
-                    <tr>
-                        <th>채널</th>
-                        <th>요청시간</th>
-                        <th>고객정보</th>
-                        <th>처리상태</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <jsp:include page="/counsel/todo-list"/>
             </div>
             <div class="ui bottom attached tab segment remove-margin" data-tab="consult-history">
                 <table class="ui celled table unstackable">
                     <thead>
                     <tr>
-                        <th>채널</th>
+                        <c:if test="${serviceKind.equals('SC')}">
+                            <th>채널</th>
+                        </c:if>
                         <th>수/발신</th>
                         <th>상담등록시간</th>
                         <th>전화번호</th>
@@ -196,67 +69,10 @@
                         <th>자세히</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    </tbody>
+                    <tbody id="counsel-list"></tbody>
                 </table>
             </div>
-            <div class="ui bottom attached tab segment remove-margin" data-tab="etc-lookup">
-                기타조회
-            </div>
+            <div class="ui bottom attached tab segment remove-margin" data-tab="etc-lookup">기타조회</div>
         </div>
     </div>
 
@@ -361,10 +177,10 @@
                                 <table class="ui celled table border structured compact unstackable">
                                     <thead>
                                     <tr>
-                                       <th rowspan="2">번호</th>
-                                       <th colspan="3">기본정보</th>
-                                       <th colspan="2">고객정보필드</th>
-                                       <th>상담결과필드</th>
+                                        <th rowspan="2">번호</th>
+                                        <th colspan="3">기본정보</th>
+                                        <th colspan="2">고객정보필드</th>
+                                        <th>상담결과필드</th>
                                     </tr>
                                     <tr>
                                         <th>데이터생성일</th>
@@ -376,18 +192,20 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>2021-00-00 00:00:00</td>
-                                            <td>홍길동</td>
-                                            <td>2021-00-00 00:00:00</td>
-                                            <td>01011111111 <button class="ui button small sharp light ml5">전화걸기</button></td>
-                                            <td>홍길동</td>
-                                            <td>성공</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="7" class="null-data">조회된 데이터가 없습니다.</td>
-                                        </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>2021-00-00 00:00:00</td>
+                                        <td>홍길동</td>
+                                        <td>2021-00-00 00:00:00</td>
+                                        <td>01011111111
+                                            <button class="ui button small sharp light ml5">전화걸기</button>
+                                        </td>
+                                        <td>홍길동</td>
+                                        <td>성공</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="7" class="null-data">조회된 데이터가 없습니다.</td>
+                                    </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -408,27 +226,27 @@
                                 <div class="search-area">
                                     <table class="ui celled table compact unstackable" style="height:146px">
                                         <tbody>
-                                            <tr>
-                                                <th>프리뷰 그룹</th>
-                                                <td class="align-center">PRV 그룹</td>
-                                            </tr>
-                                            <tr>
-                                                <th>전화번호</th>
-                                                <td>
-                                                    <div class="ui form">
-                                                        <input type="text">
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>이름</th>
-                                                <td>
-                                                    <div class="ui form flex">
-                                                        <input type="text">
-                                                        <span class="ml5">(최대길이 30byte)</span>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                        <tr>
+                                            <th>프리뷰 그룹</th>
+                                            <td class="align-center">PRV 그룹</td>
+                                        </tr>
+                                        <tr>
+                                            <th>전화번호</th>
+                                            <td>
+                                                <div class="ui form">
+                                                    <input type="text">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>이름</th>
+                                            <td>
+                                                <div class="ui form flex">
+                                                    <input type="text">
+                                                    <span class="ml5">(최대길이 30byte)</span>
+                                                </div>
+                                            </td>
+                                        </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -444,13 +262,13 @@
                                 <table class="ui celled table border structured compact unstackable " data-entity="MaindbResult">
                                     <tbody>
                                     <tr>
-                                       <th>대</th>
-                                       <td>
-                                           <div class="ui form flex">
-                                               <input type="text">
-                                               <button type="button" class="ui button sharp brand ml5">상세</button>
-                                           </div>
-                                       </td>
+                                        <th>대</th>
+                                        <td>
+                                            <div class="ui form flex">
+                                                <input type="text">
+                                                <button type="button" class="ui button sharp brand ml5">상세</button>
+                                            </div>
+                                        </td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -467,44 +285,7 @@
     <jsp:include page="/counsel/modal-ars"/>
     <jsp:include page="/counsel/modal-cms"/>
     <jsp:include page="/counsel/modal-send-message"/>
-
-    <div class="ui modal" id="modal-tooltip">
-        <i class="close icon"></i>
-        <div class="header">옵션 설명</div>
-        <div class="content scrolling">
-            <table class="ui table celled compact unstackable">
-                <tr>
-                    <th>옵션명</th>
-                    <td>설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명</td>
-                </tr>
-                <tr>
-                    <th>옵션명</th>
-                    <td>설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명</td>
-                </tr>
-                <tr>
-                    <th>옵션명</th>
-                    <td>설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명</td>
-                </tr>
-                <tr>
-                    <th>옵션명</th>
-                    <td>설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명설명</td>
-                </tr>
-            </table>
-        </div>
-        <div class="actions">
-            <button type="submit" class="ui orange button modal-close">확인</button>
-        </div>
-    </div>
-
-    <script>
-        function popupToolTip() {
-            $('#modal-tooltip').modalShow();
-        }
-    </script>
-
 </div>
-
-
 
 <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
 <tags:scripts>

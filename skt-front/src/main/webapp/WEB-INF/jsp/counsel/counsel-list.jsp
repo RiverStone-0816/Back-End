@@ -13,7 +13,6 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
-
 <tbody id="counsel-list">
 <c:forEach var="e" items="${list}">
     <tr>

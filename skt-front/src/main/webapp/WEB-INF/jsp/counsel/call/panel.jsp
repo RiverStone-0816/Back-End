@@ -58,9 +58,6 @@
                     <td>
                         <div class="ui form flex">
                             <jsp:include page="/counsel/call/user-call-history"/>
-                            <%--Todo: 처리확인--%>
-                            <%--<button type="button" class="ui mini button compact" onclick="popupSearchMaindbCustomModal()"> 고객DB</button>--%>
-                            <%--<button type="button" class="ui mini button compact" onclick="popupSearchCounselingHistoryModal()"> 상담이력</button>--%>
                             <button type="button" class="ui button sharp light ml5" onclick="popupSearchCallHistoryModal()">통화이력</button>
                         </div>
                     </td>
@@ -159,8 +156,21 @@
             replaceReceivedHtmlInSilence('/counsel/call/user-call-history', '#user-call-history');
         }
 
+        function loadMyCallStat() {
+            restSelf.get('/api/stat/user/my-call-stat', null, null, true).done(function (response) {
+                const elements = $('.-stat-my-call');
+                keys(response.data).map(function (fieldName) {
+                    const e = elements.filter('[data-field="' + fieldName + '"]');
+                    e.text((response.data[fieldName] || 0).toFixed(parseInt(e.attr('data-fixed')) || 0));
+                });
+            });
+        }
+
         $(window).on('load', function () {
             loadCustomInput();
+            loadMyCallStat();
+
+            setInterval(loadMyCallStat, 5 * 60 * 1000);
         });
     </script>
 </tags:scripts>

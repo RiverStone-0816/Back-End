@@ -12,7 +12,7 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<table class="table celled ui" id="todo-list">
+<table class="ui celled table unstackable" id="todo-list">
     <thead>
     <tr>
         <th>채널</th>

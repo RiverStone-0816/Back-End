@@ -14,22 +14,23 @@
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
-<div class="ui modal inverted small">
+<div class="ui modal">
     <i class="close icon"></i>
     <div class="header">${g.htmlQuote(field.fieldInfo)}</div>
 
-    <div class="scrolling content rows">
-        <div class="ui grid">
+    <div class="content scrolling">
+        <table class="ui table celled compact unstackable">
+            <tbody>
             <c:forEach var="e" items="${field.commonCodes}">
-                <div class="row">
-                    <div class="three wide column">
-                        <label class="control-label">${g.htmlQuote(e.codeName)}</label>
-                    </div>
-                    <div class="thirteen wide column">
-                        <div class="board-con-inner">${g.htmlQuote(e.script)}</div>
-                    </div>
-                </div>
+                <tr>
+                    <th>${g.htmlQuote(e.codeName)}</th>
+                    <td>${g.htmlQuote(e.script)}</td>
+                </tr>
             </c:forEach>
-        </div>
+            </tbody>
+        </table>
+    </div>
+    <div class="actions">
+        <button type="submit" class="ui orange button modal-close">확인</button>
     </div>
 </div>
