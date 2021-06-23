@@ -15,7 +15,7 @@
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
 <div class="consult-wrapper -counsel-panel">
-    <div class="-counsel-content-panel left-panel" data-type="COUNSEL" style="display: none;">
+    <div class="-counsel-content-panel consult-left-panel" data-type="COUNSEL" style="display: none;">
         <div class="ui top attached tabular menu">
             <button class="item active" data-tab="call-panel">전화</button>
             <c:if test="${user.isTalk.equals('Y')}">
@@ -30,7 +30,7 @@
         </c:if>
     </div>
 
-    <div class="-counsel-content-panel right-panel" data-type="COUNSEL" style="display: none;">
+    <div class="-counsel-content-panel consult-right-panel" data-type="COUNSEL" style="display: none;">
         <div id="call-custom-input-panel" class="top-area">
             <div class="panel remove-mb panel-resizable" id="call-custom-input"></div>
         </div>
@@ -263,8 +263,203 @@
     <iframe class="content-inner -counsel-content-panel" data-type="NOTICE" src="<c:url value="/admin/service/help/notice/"/>" style="display: none;"></iframe>
     <iframe class="content-inner -counsel-content-panel" data-type="KNOWLEDGE" src="<c:url value="/admin/service/help/task-script/"/>" style="display: none;"></iframe>
     <iframe class="content-inner -counsel-content-panel" data-type="CALENDAR" src="<c:url value="/user-schedule/"/>" style="display: none;"></iframe>
-    <div class="-counsel-content-panel" data-type="PREVIEW">
-        프리뷰 내용
+    <div class="content-inner -counsel-content-panel" data-type="PREVIEW">
+        <div class="prv-wrapper">
+            <div class="prv-left-panel">
+                <div class="content-wrapper-frame">
+                    <div class="sub-content ui container fluid unstackable">
+                        <div class="panel panel-search">
+                            <div class="panel-heading">
+                                <div class="pull-left">
+                                    <div class="panel-label">프리뷰리스트</div>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="ui slider checkbox checked">
+                                        <input type="checkbox" name="newsletter" id="_newsletter" checked="" tabindex="0" class="hidden"><label for="_newsletter">검색옵션 전체보기</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="search-area">
+                                    <table class="ui celled table compact unstackable">
+                                        <tr>
+                                            <th>프리뷰 그룹</th>
+                                            <td>
+                                                <div class="ui form">
+                                                    <select>
+                                                        <option>옵션</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <th>데이터생성일</th>
+                                            <td>
+                                                <div class="ui action input calendar-area">
+                                                    <input name="startDate" class="-datepicker hasDatepicker" placeholder="시작일" type="text" value="" id="dp1624448625119" autocomplete="off">
+                                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                                                    <span class="tilde">~</span>
+                                                    <input name="endDate" class="-datepicker hasDatepicker" placeholder="종료일" type="text" value="" id="dp1624448625120" autocomplete="off">
+                                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                                                </div>
+                                            </td>
+                                            <th>검색항목</th>
+                                            <td>
+                                                <div class="ui form">
+                                                    <select>
+                                                        <option>옵션</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>담당자</th>
+                                            <td>
+                                                <div class="ui form">
+                                                    <select>
+                                                        <option>옵션</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <th>마지막상담일</th>
+                                            <td>
+                                                <div class="ui action input calendar-area">
+                                                    <input name="startDate" class="-datepicker hasDatepicker" placeholder="시작일" type="text" value="" id="dp1624448625119" autocomplete="off">
+                                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                                                    <span class="tilde">~</span>
+                                                    <input name="endDate" class="-datepicker hasDatepicker" placeholder="종료일" type="text" value="" id="dp1624448625120" autocomplete="off">
+                                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                                                </div>
+                                            </td>
+                                            <th>검색어</th>
+                                            <td>
+                                                <div class="ui form">
+                                                    <input type="text">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div class="button-area remove-mb">
+                                        <div class="align-right">
+                                            <button type="submit" class="ui button sharp brand large">검색</button>
+                                            <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <div class="pull-left">
+                                    <h3 class="panel-total-count">전체 <span>0</span>건</h3>
+                                </div>
+                                <div class="pull-right">
+                                    <div class="ui pagination menu pull-right small">
+                                        <a href="javascript:" class="item active">1</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <table class="ui celled table border structured compact unstackable">
+                                    <thead>
+                                    <tr>
+                                       <th rowspan="2">번호</th>
+                                       <th colspan="3">기본정보</th>
+                                       <th colspan="2">고객정보필드</th>
+                                       <th>상담결과필드</th>
+                                    </tr>
+                                    <tr>
+                                        <th>데이터생성일</th>
+                                        <th>상담자</th>
+                                        <th>마지막상담일</th>
+                                        <th>전화번호</th>
+                                        <th>이름</th>
+                                        <th>대</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>2021-00-00 00:00:00</td>
+                                            <td>홍길동</td>
+                                            <td>2021-00-00 00:00:00</td>
+                                            <td>01011111111 <button class="ui button small sharp light ml5">전화걸기</button></td>
+                                            <td>홍길동</td>
+                                            <td>성공</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="7" class="null-data">조회된 데이터가 없습니다.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="prv-right-panel">
+                <div class="content-wrapper-frame">
+                    <div class="sub-content ui container fluid unstackable">
+                        <div class="panel panel-search">
+                            <div class="panel-heading">
+                                <div class="pull-left">
+                                    <div class="panel-label">고객정보</div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="search-area">
+                                    <table class="ui celled table compact unstackable" style="height:146px">
+                                        <tbody>
+                                            <tr>
+                                                <th>프리뷰 그룹</th>
+                                                <td class="align-center">PRV 그룹</td>
+                                            </tr>
+                                            <tr>
+                                                <th>전화번호</th>
+                                                <td>
+                                                    <div class="ui form">
+                                                        <input type="text">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th>이름</th>
+                                                <td>
+                                                    <div class="ui form flex">
+                                                        <input type="text">
+                                                        <span class="ml5">(최대길이 30byte)</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel">
+                            <div class="panel-heading">
+                                <div class="pull-left">
+                                    <div class="panel-label">상담정보</div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <table class="ui celled table border structured compact unstackable " data-entity="MaindbResult">
+                                    <tbody>
+                                    <tr>
+                                       <th>대</th>
+                                       <td>
+                                           <div class="ui form flex">
+                                               <input type="text">
+                                               <button type="button" class="ui button sharp brand ml5">상세</button>
+                                           </div>
+                                       </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <jsp:include page="/counsel/modal-calling"/>

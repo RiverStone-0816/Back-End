@@ -143,6 +143,10 @@ pre {
   padding: .715em 1.5em .715em 1.5em;
 }
 
+.ui.button.sharp.small {
+  padding: .3em .5em .3em .5em;
+}
+
 .ui.button.sharp.light.large.excel {
   padding: .6em 1.2em .6em 2.8em;
   background-image:url("../images/microsoftexcel.svg");
@@ -754,6 +758,19 @@ pre {
   }
 }
 
+.prv-wrapper {
+  .flex();
+  height:100%;
+  overflow: hidden;
+  .prv-left-panel {
+    width: 67%;
+    padding-right: 10px;
+  }
+  .prv-right-panel {
+    width: 33%;
+  }
+}
+
 .consult-wrapper {
   height:100%;
   padding:0 10px 10px 10px;
@@ -768,7 +785,7 @@ pre {
     }
   }
   .flex();
-  .left-panel {
+  .consult-left-panel {
     .flex();
     flex-flow:column;
     width: 33%;
@@ -778,7 +795,7 @@ pre {
       overflow: hidden;
     }
   }
-  .right-panel {
+  .consult-right-panel {
     width: 67%;
     .bottom-area {
       .ui.bottom.attached.tab.segment {
@@ -1305,6 +1322,7 @@ pre {
     .flex();
     align-items:center;
     white-space: nowrap;
+    min-height: 53px;
     .pull-left {
       margin-right: auto;
       float:none;
@@ -1877,7 +1895,7 @@ label.control-label {
   float: right;
 }
 .align-center {
-  text-align: center;
+  text-align: center!important;
 }
 .align-left {
   text-align: left;
@@ -2467,6 +2485,7 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
 }
 .ui.form.flex {
   .flex;
+  align-items: center;
   select {
     flex: 1;
   }
