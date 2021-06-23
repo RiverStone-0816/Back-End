@@ -14,22 +14,21 @@
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
-<div class="ui grid">
-    <div class="nine wide column">
-        <div class="panel">
-            <div class="panel-heading">
-                <label class="control-label">프리뷰 리스트</label>
-            </div>
-            <div class="panel-body" id="preview-list">
-                <div id="preview-list-body">
-                    <jsp:include page="/counsel/preview/list-body"/>
-                </div>
+<div class="prv-wrapper">
+    <div class="prv-left-panel">
+        <div class="content-wrapper-frame">
+            <div id="preview-list-body">
+                <jsp:include page="/counsel/preview/list-body"/>
             </div>
         </div>
     </div>
-    <div class="seven wide column">
-        <div class="panel" id="preview-custom-input"></div>
-        <div class="panel" id="preview-counseling-input"></div>
+    <div class="prv-right-panel">
+        <div class="content-wrapper-frame">
+            <div class="sub-content ui container fluid unstackable">
+                <div class="panel panel-search" id="preview-custom-input"></div>
+                <div class="panel" id="preview-counseling-input"></div>
+            </div>
+        </div>
     </div>
 </div>
 
