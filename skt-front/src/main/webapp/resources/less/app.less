@@ -758,6 +758,9 @@ pre {
   height:100%;
   padding:0 10px 10px 10px;
   overflow: hidden;
+  .ui.button.sharp {
+    margin:0;
+  }
   .panel:not(.panel-search) {
     .panel-heading {
       padding:10px 14px;
@@ -1269,6 +1272,7 @@ pre {
     margin:0;
   }
 }
+
 
 .panel {
   position:relative;
@@ -1884,6 +1888,9 @@ label.control-label {
 .remove-padding {
   padding: 0 !important;
 }
+.border-left-none {
+  border-left:0!important;
+}
 .compact-pr {
   padding-right:0.5rem!important;
 }
@@ -2233,6 +2240,10 @@ label.control-label {
       width: 100%;
     }
   }
+}
+
+.ui.multiple.dropdown > .label {
+  text-decoration: none;
 }
 
 .ui.basic.buttons .button, .ui.basic.button {
@@ -4472,6 +4483,7 @@ g {
   line-height: 31px;
   min-height: 42px;
   .ui.label {
+    cursor: pointer;
     margin:0 4px 0 0;
   }
 }

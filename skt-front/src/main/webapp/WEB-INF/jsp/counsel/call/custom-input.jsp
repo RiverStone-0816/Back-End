@@ -15,7 +15,7 @@
 
 <form:form id="call-custom-input" modelAttribute="form" cssClass="panel remove-mb panel-resizable top -json-submit" data-method="${entity != null ? 'put' : 'post'}"
            action="${pageContext.request.contextPath}/api/maindb-data/${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : null}"
-           data-before="prepareCustomInfoFormData" data-done="donePostCustomInfo">
+           data-before="prepareCustomInfoFormData" data-done="donePostCustomInfo" cssStyle="height:436px">
     <div class="panel-heading">
         <div class="pull-left">
             <label class="panel-label">고객정보</label>
@@ -255,59 +255,254 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <th>1/4</th>
-                <td>
-                    <div class="ui form flex">
-                        <input type="text">
-                        <button type="button" class="ui button sharp navy ml5" onclick="popupToolTip();">추가</button>
-                    </div>
-                </td>
-                <th>1/4</th>
-                <td></td>
-                <th>1/4</th>
-                <td></td>
-                <th>1/4</th>
-                <td></td>
-            </tr>
-            <tr>
-                <th>1/4</th>
-                <td></td>
-                <th>2/4</th>
-                <td colspan="3"></td>
-                <th>1/4</th>
-                <td></td>
-            </tr>
-            <tr>
-                <th>1/4</th>
-                <td></td>
-                <th>3/4</th>
-                <td colspan="5"></td>
-            </tr>
-            <tr>
-                <th>2/4</th>
-                <td colspan="3"></td>
-                <th>1/4</th>
-                <td></td>
-                <th>1/4</th>
-                <td></td>
-            </tr>
-            <tr>
-                <th>2/4</th>
-                <td colspan="3"></td>
-                <th>2/4</th>
-                <td colspan="3"></td>
-            </tr>
-            <tr>
-                <th>3/4</th>
-                <td colspan="5"></td>
-                <th>1/4</th>
-                <td></td>
-            </tr>
-            <tr>
-                <th>4/4</th>
-                <td colspan="7"></td>
-            </tr>
+            </tbody>
+        </table>
+
+        <br>
+
+        <table class="ui celled table compact unstackable">
+            <tbody>
+                <tr>
+                    <th>long text</th>
+                    <td colspan="7">
+                        <div class="ui form">
+                            <input type="text">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="col">multi</th>
+                    <td colspan="7">
+                        <div class="ui form flex">
+                            <select name="skills" multiple="" class="ui fluid dropdown">
+                                <option value="">Skills</option>
+                                <option value="angular">Angular</option>
+                                <option value="css">CSS</option>
+                                <option value="design">Graphic Design</option>
+                                <option value="ember">Ember</option>
+                                <option value="html">HTML</option>
+                            </select>
+                            <button type="button" class="ui button sharp navy ml5" onclick="popupToolTip();">TIP</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>memo</th>
+                    <td colspan="7">
+                        <div class="ui form">
+                            <textarea rows="3"></textarea>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>고객DB</th>
+                    <td colspan="3" class="seven wide column">
+                        <div class="ui form flex">
+                            <select>
+                                <option>옵션</option>
+                            </select>
+                            <select class="ml5">
+                                <option>옵션</option>
+                            </select>
+                        </div>
+                    </td>
+                    <th>short text</th>
+                    <td>
+                        <div class="ui form">
+                            <input type="text">
+                        </div>
+                    </td>
+                    <th>short text</th>
+                    <td>
+                        <div class="ui form">
+                            <input type="text">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>멀티채널추가</th>
+                    <td colspan="7">
+                        <div class="ui form flex">
+                            <select>
+                                <option>전화번호</option>
+                                <option>이메일</option>
+                                <option>상담톡계정</option>
+                            </select>
+                                <%--상담톡 계정 선택시 보여지는 select--%>
+                                <%--<select class="ml5">
+                                    <option>-</option>
+                                    <option>-</option>
+                                    <option>-</option>
+                                </select>--%>
+                            <input type="text" class="flex-200 ml5">
+                            <button type="button" class="ui button sharp navy ml5" onclick="popupToolTip();">추가</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>멀티채널리스트</th>
+                    <td colspan="7">
+                        <div class="ui labels multi-list-wrap">
+                            <span class="ui label">01000000000<i class="delete icon"></i></span><span class="ui label">01000000000<i class="delete icon"></i></span><span class="ui label">01000000000<i class="delete icon"></i></span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Short text</th>
+                    <td colspan="3">
+                        <div class="ui form">
+                            <input type="text">
+                        </div>
+                    </td>
+                    <th>select</th>
+                    <td colspan="3">
+                        <div class="ui form flex">
+                            <select>
+                                <option>옵션</option>
+                            </select>
+                            <button type="button" class="ui button sharp navy ml5" onclick="popupToolTip();">TIP</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>long text</th>
+                    <td colspan="7">
+                        <div class="ui form">
+                            <input type="text">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>multi</th>
+                    <td colspan="7">
+                        <div class="ui form flex">
+                            <select name="skills" multiple="" class="ui fluid dropdown">
+                                <option value="">Skills</option>
+                                <option value="angular">Angular</option>
+                                <option value="css">CSS</option>
+                                <option value="design">Graphic Design</option>
+                                <option value="ember">Ember</option>
+                                <option value="html">HTML</option>
+                            </select>
+                            <button type="button" class="ui button sharp navy ml5" onclick="popupToolTip();">TIP</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>long text</th>
+                    <td colspan="7">
+                        <div class="ui form">
+                            <input type="text">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Short text</th>
+                    <td colspan="3">
+                        <div class="ui form">
+                            <input type="text">
+                        </div>
+                    </td>
+                    <th>Short text</th>
+                    <td colspan="3">
+                        <div class="ui form">
+                            <input type="text">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>select</th>
+                    <td colspan="3">
+                        <div class="ui form flex">
+                            <select>
+                                <option></option>
+                            </select>
+                            <button type="button" class="ui button sharp navy ml5" onclick="popupToolTip();">TIP</button>
+                        </div>
+                    </td>
+                    <td colspan="2" class="border-left-none"></td>
+                </tr>
+                <tr>
+                    <th>multi</th>
+                    <td colspan="7">
+                        <div class="ui form flex">
+                            <select name="skills" multiple="" class="ui fluid dropdown">
+                                <option value="">Skills</option>
+                                <option value="angular">Angular</option>
+                                <option value="css">CSS</option>
+                                <option value="design">Graphic Design</option>
+                                <option value="ember">Ember</option>
+                                <option value="html">HTML</option>
+                            </select>
+                            <button type="button" class="ui button sharp navy ml5" onclick="popupToolTip();">TIP</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>long text</th>
+                    <td colspan="7">
+                        <div class="ui form">
+                            <input type="text">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>select</th>
+                    <td colspan="3">
+                        <div class="ui form">
+                            <select>
+                                <option>옵션</option>
+                            </select>
+                        </div>
+                    </td>
+                    <th>Short text</th>
+                    <td colspan="3">
+                        <div class="ui form">
+                            <input type="text">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>select</th>
+                    <td colspan="3">
+                        <div class="ui form">
+                            <select>
+                                <option>옵션</option>
+                            </select>
+                        </div>
+                    </td>
+                    <th>select</th>
+                    <td colspan="3">
+                        <div class="ui form">
+                            <select>
+                                <option>옵션</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Short text</th>
+                    <td colspan="3">
+                        <div class="ui form">
+                            <input type="text">
+                        </div>
+                    </td>
+                    <td colspan="4" class="border-left-none"></td>
+                </tr>
+                <tr>
+                    <th>고객DB</th>
+                    <td colspan="3">
+                        <div class="ui form flex">
+                            <select>
+                                <option>옵션</option>
+                            </select>
+                            <select class="ml5">
+                                <option>옵션</option>
+                            </select>
+                        </div>
+                    </td>
+                    <td colspan="4" class="border-left-none"></td>
+                </tr>
             </tbody>
         </table>
     </div>
