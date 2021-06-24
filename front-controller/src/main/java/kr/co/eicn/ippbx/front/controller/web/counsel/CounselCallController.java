@@ -1,16 +1,12 @@
 package kr.co.eicn.ippbx.front.controller.web.counsel;
 
-import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
-import kr.co.eicn.ippbx.front.service.api.dashboard.DashboardApiInterface;
-import kr.co.eicn.ippbx.front.service.api.monitor.display.ScreenDataApiInterface;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CmpMemberStatusCode;
-import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbDataController;
 import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbResultController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.search.RecordCallSearchForm;
 import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.CounselApiInterface;
 import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.grade.GradelistApiInterface;
@@ -18,13 +14,15 @@ import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbDataApiInterf
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbResultApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.type.CommonTypeApiInterface;
+import kr.co.eicn.ippbx.front.service.api.monitor.display.ScreenDataApiInterface;
 import kr.co.eicn.ippbx.front.service.api.outbound.voc.VocGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.record.history.RecordingHistoryApiInterface;
+import kr.co.eicn.ippbx.front.service.api.stat.ConsultantStatApiInterface;
 import kr.co.eicn.ippbx.front.service.api.talk.group.TalkReceptionGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.user.user.UserApiInterface;
-import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoKind;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CmpMemberStatusCode;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.VocGroup;
@@ -46,6 +44,8 @@ import kr.co.eicn.ippbx.model.form.MaindbCustomInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.ResultCustomInfoFormRequest;
 import kr.co.eicn.ippbx.model.search.*;
 import kr.co.eicn.ippbx.model.search.search.SearchServiceRequest;
+import kr.co.eicn.ippbx.util.FormUtils;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
@@ -86,6 +86,7 @@ public class CounselCallController extends BaseController {
     private final MaindbResultApiInterface maindbResultApiInterface;
     private final ScreenDataApiInterface screenDataApiInterface;
     private final CompanyApiInterface companyApiInterface;
+    private final ConsultantStatApiInterface consultantStatApiInterface;
 
     @GetMapping("")
     public String callPanel(Model model) throws IOException, ResultFailException {
@@ -105,6 +106,7 @@ public class CounselCallController extends BaseController {
     @SneakyThrows
     @GetMapping("stat")
     public String stat(Model model) {
+        model.addAttribute("data", consultantStatApiInterface.myCallByTimeStat());
         return "counsel/call/stat";
     }
 
@@ -187,8 +189,8 @@ public class CounselCallController extends BaseController {
                 final Map<String, Object> fieldNameToValueMap = MaindbDataController.createFieldNameToValueMap(entity, customDbType);
                 model.addAttribute("fieldNameToValueMap", fieldNameToValueMap);
                 String phoneNumberData = "";
-                for (int i = 0; i < entity.getMultichannelList().size(); i++){
-                    if(entity.getMultichannelList().get(i).getChannelType().equals(MultichannelChannelType.PHONE.getCode())){
+                for (int i = 0; i < entity.getMultichannelList().size(); i++) {
+                    if (entity.getMultichannelList().get(i).getChannelType().equals(MultichannelChannelType.PHONE.getCode())) {
                         phoneNumberData = entity.getMultichannelList().get(i).getChannelData();
                         break;
                     }
@@ -274,7 +276,7 @@ public class CounselCallController extends BaseController {
             todoChk = counselApiInterface.getTodoList(search);
             model.addAttribute("todoList", todoChk);
         }
-        if(todoChk != null){
+        if (todoChk != null) {
             for (TodoList todoList : todoChk) {
                 if (todoList.getTodoKind().equals(TodoListTodoKind.TRANSFER) && todoList.getTodoStatus().equals(TodoListTodoStatus.ING)) {
                     final List<ResultCustomInfoEntity> entity = maindbResultApiInterface.getTodo(todoList.getUserid(), todoList.getTodoInfo());

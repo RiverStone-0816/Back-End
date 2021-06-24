@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.stat;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.service.api.stat.ConsultantStatApiInterface;
+import kr.co.eicn.ippbx.model.dto.statdb.StatMyCallByTimeResponse;
 import kr.co.eicn.ippbx.model.dto.statdb.StatMyCallResponse;
 import kr.co.eicn.ippbx.model.dto.statdb.StatUserResponse;
 import kr.co.eicn.ippbx.model.search.StatUserSearchRequest;
@@ -42,5 +43,11 @@ public class StatApiController extends BaseController {
     @GetMapping("user/my-call-stat")
     public StatMyCallResponse myCallStat() {
         return apiInterface.myCallStat();
+    }
+
+    @SneakyThrows
+    @GetMapping("user/my-call-time")
+    public StatMyCallByTimeResponse myCallByTimeStat() {
+        return apiInterface.myCallByTimeStat();
     }
 }

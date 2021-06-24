@@ -2,19 +2,13 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
 import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
@@ -75,7 +69,7 @@ public class StatUserApiControllerTest extends BaseControllerTest {
             fieldWithPath("avgDiff").type(JsonFieldType.NUMBER).description("후처리 평균시간").optional()
     };
 
-//    @Test
+    //    @Test
     public void list() throws Exception {
         final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -112,9 +106,9 @@ public class StatUserApiControllerTest extends BaseControllerTest {
                 .andReturn();
     }
 
-//    @Test
+    //    @Test
     public void myCallStatTEST() throws Exception {
-        final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL+"/my-call-stat")
+        final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL + "/my-call-stat")
                 .accept(MediaType.APPLICATION_JSON)
                 .with(new JwtRequestPostProcessor()))
                 .andDo(print())
@@ -126,7 +120,7 @@ public class StatUserApiControllerTest extends BaseControllerTest {
 
     @Test
     public void myCallByTimeTEST() throws Exception {
-        final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL+"/my-call-Time")
+        final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL + "/my-call-time")
                 .accept(MediaType.APPLICATION_JSON)
                 .with(new JwtRequestPostProcessor()))
                 .andDo(print())

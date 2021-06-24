@@ -12,13 +12,11 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<%--TODO: 통계 작업되지 않음--%>
-<div class="statistics-inner">
+<div class="statistics-inner" id="my-call-time">
     <table class="ui celled table compact unstackable structured">
         <thead>
             <tr>
                 <th rowspan="2">시간</th>
-                <th rowspan="2">상담원명</th>
                 <th rowspan="2">총 건수</th>
                 <th colspan="2">O/B</th>
                 <th colspan="2">I/B</th>
@@ -32,264 +30,26 @@
             </tr>
         </thead>
         <tbody>
+        <c:forEach var="i" begin="0" end="23">
+            <c:set var="e" value="${data.myStatData.get(i.byteValue())}"/>
             <tr>
-                <th>0시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
+                <th>${i}시</th>
+                <td>${e != null ? e.totalCnt : 0}</td>
+                <td>${e != null ? e.outTotal : 0}</td>
+                <td>${e != null ? e.outSuccess : 0}</td>
+                <td>${e != null ? e.inTotal : 0}</td>
+                <td>${e != null ? e.inSuccess : 0}</td>
+                <td>${e != null ? e.memberTotal : 0}</td>
             </tr>
+        </c:forEach>
             <tr>
-                <th>1시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>2시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>3시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>4시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>5시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>6시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>7시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>8시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>9시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>10시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>11시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>12시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>13시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>14시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>15시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>16시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>17시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>18시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>19시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>20시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>21시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>22시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>23시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th>24시</th>
-                <td>테스트</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <th colspan="2">합계</th>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
+                <th>합계</th>
+                <td>${data.totalSum}</td>
+                <td>${data.outTotalSum}</td>
+                <td>${data.outSuccessSum}</td>
+                <td>${data.inTotalSum}</td>
+                <td>${data.inSuccessSum}</td>
+                <td>${data.memberStatSum}</td>
             </tr>
         </tbody>
     </table>

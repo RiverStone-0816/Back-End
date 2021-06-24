@@ -85,7 +85,7 @@
                 <jsp:include page="/counsel/call/consultant-status"/>
             </div>
             <div class="ui bottom attached tab segment remove-margin overflow-auto" data-tab="statistics">
-                <jsp:include page="/counsel/call/stat"/>
+                <div class="statistics-inner" id="my-call-time"></div>
             </div>
         </div>
     </div>
@@ -166,11 +166,17 @@
             });
         }
 
+        function loadMyCallTime() {
+            replaceReceivedHtmlInSilence('/counsel/call/stat', '#my-call-time');
+        }
+
         $(window).on('load', function () {
             loadCustomInput();
             loadMyCallStat();
+            loadMyCallTime();
 
             setInterval(loadMyCallStat, 5 * 60 * 1000);
+            setInterval(loadMyCallTime, 5 * 60 * 1000);
         });
     </script>
 </tags:scripts>

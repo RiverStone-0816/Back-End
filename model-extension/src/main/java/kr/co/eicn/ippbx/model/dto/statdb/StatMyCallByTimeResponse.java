@@ -7,7 +7,7 @@ import java.util.TreeMap;
 
 @Data
 public class StatMyCallByTimeResponse {
-    private TreeMap<Byte, StatMyCallByTimeData> myStatData = new TreeMap<>(); //시간별 데이타
+    private Map<Byte, StatMyCallByTimeData> myStatData = new TreeMap<>(); //시간별 데이타
     private Integer totalSum = 0; //합계: 총건수
     private Integer outTotalSum = 0; //합계: 아웃시도
     private Integer outSuccessSum = 0; //합계: 아웃성공

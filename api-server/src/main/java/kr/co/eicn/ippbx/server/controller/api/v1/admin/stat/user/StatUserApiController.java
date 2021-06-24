@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static kr.co.eicn.ippbx.util.JsonResult.data;
@@ -172,29 +171,29 @@ public class StatUserApiController extends ApiBaseController {
     }
 
     @GetMapping("my-call-stat")
-    public StatMyCallResponse myCallStat(){
+    public JsonResult<StatMyCallResponse> myCallStat() {
         final StatUserInboundEntity statUserInboundEntity = statUserInboundService.getRepository().findUserCallStat();
         final StatUserOutboundEntity statUserOutboundEntity = statUserOutboundService.getRepository().findUserCallStat();
 
         final StatMyCallResponse response = new StatMyCallResponse();
-        if(Objects.nonNull(statUserInboundEntity)) {
+        if (Objects.nonNull(statUserInboundEntity)) {
             response.setInSuccess(statUserInboundEntity.getInSuccess());
             response.setInTotal(statUserInboundEntity.getInTotal());
         }
-        if(Objects.nonNull(statUserOutboundEntity)) {
+        if (Objects.nonNull(statUserOutboundEntity)) {
             response.setCallback(statUserOutboundEntity.getCallbackCallSucc());
             response.setOutSuccess(statUserOutboundEntity.getOutSuccess());
         }
-        Double successPer = 0.0;
-        if(response.getInTotal() > 0)
-            successPer = (double) response.getInSuccess()/response.getInTotal()*100;
+        double successPer = 0.0;
+        if (response.getInTotal() > 0)
+            successPer = (double) response.getInSuccess() / response.getInTotal() * 100;
         response.setSuccessPer(successPer);
 
-        return response;
+        return JsonResult.data(response);
     }
 
-    @GetMapping("my-call-Time")
-    public StatMyCallByTimeResponse myCallByTimeStat(){
+    @GetMapping("my-call-time")
+    public JsonResult<StatMyCallByTimeResponse> myCallByTimeStat() {
         final StatUserSearchRequest search = new StatUserSearchRequest();
         search.setStartDate(new Date(System.currentTimeMillis()));
         search.setEndDate(new Date(System.currentTimeMillis()));
@@ -206,7 +205,7 @@ public class StatUserApiController extends ApiBaseController {
 
         StatMyCallByTimeResponse res = new StatMyCallByTimeResponse();
 
-        for (int i = 0;i < 24;i++){
+        for (int i = 0; i < 24; i++) {
             byte hour = (byte) i;
             res.getMyStatData().put(hour, new StatMyCallByTimeData());
             res.getMyStatData().get(hour).setStatHour(i);
@@ -214,27 +213,26 @@ public class StatUserApiController extends ApiBaseController {
 
             int chk = i;
             userInboundList.forEach(e -> {
-                if(chk == e.getStatHour()){
+                if (chk == e.getStatHour()) {
                     res.getMyStatData().get(hour).setInTotalSum(e.getInTotal());
                     res.getMyStatData().get(hour).setInSuccessSum(e.getInSuccess());
                     res.getMyStatData().get(hour).setTotalCntSum(e.getInTotal());
                 }
             });
             userOutboundList.forEach(e -> {
-                if(chk == e.getStatHour()){
+                if (chk == e.getStatHour()) {
                     res.getMyStatData().get(hour).setOutTotalSum(e.getOutTotal());
                     res.getMyStatData().get(hour).setOutSuccessSum(e.getOutSuccess());
                     res.getMyStatData().get(hour).setTotalCntSum(e.getOutTotal());
                 }
             });
             memberStatusList.forEach(e -> {
-                if(chk == e.getStatHour() && e.getStatus() == 2){
+                if (chk == e.getStatHour() && e.getStatus() == 2) {
                     res.getMyStatData().get(hour).setMemberTotalSum(e.getTotal());
                 }
             });
         }
 
-
-        return res;
+        return JsonResult.data(res);
     }
 }
