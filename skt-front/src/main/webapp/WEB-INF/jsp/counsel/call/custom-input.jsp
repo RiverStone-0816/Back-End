@@ -226,6 +226,11 @@
                 </c:if>
                 </c:forEach>
 
+                <c:if test="${customDbType.fields == null}">
+            </tr>
+            <tr>
+                </c:if>
+
                 <th>멀티채널추가</th>
                 <td colspan="7">
                     <div class="ui form flex">

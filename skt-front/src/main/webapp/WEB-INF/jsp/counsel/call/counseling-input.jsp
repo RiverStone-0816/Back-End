@@ -53,7 +53,7 @@
             <tbody>
             <tr>
                 <c:set var="chargedColCount" value="${0}"/>
-                <c:forEach var="field" items="${resultType.fields}">
+                <c:forEach var="field" items="${resultType.fields}" varStatus="status">
                 <c:set var="name" value="${field.fieldId.substring(resultType.kind.length() + '_'.length()).toLowerCase()}"/>
                 <c:set var="value" value="${fieldNameToValueMap.get(field.fieldId)}"/>
 

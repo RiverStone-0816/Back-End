@@ -17,9 +17,9 @@
 <div class="consult-wrapper -counsel-panel">
     <div class="-counsel-content-panel consult-left-panel" data-type="COUNSEL" style="display: none;">
         <div class="ui top attached tabular menu">
-            <button class="item active" data-tab="call-panel">전화</button>
+            <button class="item active" data-tab="call-panel" onclick="viewCallPanel()">전화</button>
             <c:if test="${user.isTalk.equals('Y')}">
-                <button class="item" data-tab="talk-panel" onclick="$(this).removeClass('highlight'); $(this).removeClass('newImg');">
+                <button class="item" data-tab="talk-panel" onclick="viewTalkPanel(); $(this).removeClass('highlight'); $(this).removeClass('newImg');">
                     <text>상담톡</text>
                     <div></div>
                 </button>
@@ -34,13 +34,19 @@
     </div>
 
     <div class="-counsel-content-panel consult-right-panel" data-type="COUNSEL" style="display: none;">
-        <div id="call-custom-input-panel" class="top-area">
+        <div id="custom-input-panel" class="top-area">
             <div class="panel remove-mb panel-resizable" id="call-custom-input"></div>
+            <c:if test="${user.isTalk.equals('Y')}">
+                <div class="panel remove-mb panel-resizable" id="talk-custom-input"></div>
+            </c:if>
         </div>
 
-        <div class="middle-area">
+        <div id="counseling-input-panel" class="middle-area">
             <div class="remove-mb panel-resizable">
                 <div class="panel" id="call-counseling-input"></div>
+                <c:if test="${user.isTalk.equals('Y')}">
+                    <div class="panel" id="talk-counseling-input"></div>
+                </c:if>
             </div>
         </div>
 
@@ -178,8 +184,8 @@
         function viewCallPanel() {
             $('#talk-panel').removeClass('active');
             $('#call-panel').addClass('active');
-            $('#call-custom-input-panel,#call-counseling-input-panel').show();
-            $('#talk-custom-input-panel,#talk-counseling-input-panel').hide();
+            $('#call-custom-input,#call-counseling-input').show();
+            $('#talk-custom-input,#talk-counseling-input').hide();
 
             $('#etc-panel-resizer').hide();
             callExpandEtcPanel();
@@ -188,8 +194,8 @@
         function viewTalkPanel() {
             $('#call-panel').removeClass('active');
             $('#talk-panel').addClass('active');
-            $('#call-custom-input-panel,#call-counseling-input-panel').hide();
-            $('#talk-custom-input-panel,#talk-counseling-input-panel').show();
+            $('#call-custom-input,#call-counseling-input').hide();
+            $('#talk-custom-input,#talk-counseling-input').show();
 
             $('#etc-panel-resizer').show();
             reduceEtcPanel();

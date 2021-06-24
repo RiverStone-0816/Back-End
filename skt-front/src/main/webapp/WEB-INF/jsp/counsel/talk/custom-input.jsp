@@ -12,218 +12,274 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<form:form id="talk-custom-input" modelAttribute="form" cssClass="panel -json-submit" data-method="${entity != null ? 'put' : 'post'}"
+<form:form id="talk-custom-input" modelAttribute="form" cssClass="panel remove-mb panel-resizable top -json-submit" data-method="${entity != null ? 'put' : 'post'}"
            action="${pageContext.request.contextPath}/api/maindb-data/${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : null}"
            data-before="prepareTalkCustomInfoFormData" data-done="donePostTalkCustomInfo">
     <div class="panel-heading">
-        <label class="control-label">고객정보</label>
-        <c:if test="${vip}">
-            <span class="ui blue basic label mini compact sparkle-blue">VIP</span>
-        </c:if>
-        <c:if test="${blacklist}">
-            <span class="ui red basic label mini compact sparkle-red">블랙리스트</span>
-        </c:if>
-        <c:if test="${roomId != null && roomId != '' && senderKey != null && senderKey != '' && userKey != null && userKey != ''}">
-            <button type="button" class="ui button mini right floated compact blue" id="talk-submitButton">${entity != null ? '고객수정' : '신규등록'}</button>
-            <button type="button" class="ui button mini right floated compact"
-                    onclick="popupSearchMaindbCustomModal('TALK', '${g.htmlQuote(roomId)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}')">고객검색
-            </button>
-        </c:if>
+        <div class="pull-left">
+            <label class="panel-label">고객정보</label>
+            <c:if test="${vip}">
+                <span class="ui blue basic label mini compact sparkle-blue">VIP</span>
+            </c:if>
+            <c:if test="${blacklist}">
+                <span class="ui red basic label mini compact sparkle-red">블랙리스트</span>
+            </c:if>
+        </div>
+
+        <div class="pull-right">
+            <c:if test="${roomId != null && roomId != '' && senderKey != null && senderKey != '' && userKey != null && userKey != ''}">
+                <button class="ui basic button" type="button" onclick="popupSearchMaindbCustomModal('TALK', '${g.htmlQuote(roomId)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}')">
+                    고객검색
+                </button>
+                <button type="button" class="ui button sharp light" id="talk-submitButton">
+                    <img src="<c:url value="/resources/images/save.svg"/>">${entity != null ? '고객수정' : '신규등록'}
+                </button>
+            </c:if>
+        </div>
     </div>
-    <div class="panel-body" style="height: 270px;">
-        <div style="height: 100%;">
-            <table class="ui table celled definition">
-                <tbody>
-                <tr>
-                    <td class="three wide">고객DB</td>
-                    <td>
-                        <div class="ui form">
-                            <div class="two fields">
-                                <div class="field">
-                                    <select onchange="loadTalkCustomInput(${form.groupSeq}, $(this).val() === 'insert' ? null : '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(roomId)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}')">
-                                        <option value="insert" ${entity == null ? 'selected' : ''}>새로운 고객으로 등록</option>
-                                        <option value="update" ${entity != null ? 'selected' : ''}>고객정보 갱신</option>
-                                    </select>
-                                </div>
-                                <div class="field">
-                                    <select onchange="loadTalkCustomInput($(this).val(), null, '${g.htmlQuote(roomId)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}')">
-                                        <c:forEach var="e" items="${maindbGroups}">
-                                            <option value="${e.seq}" ${e.seq == form.groupSeq ? 'selected' : ''}>${g.htmlQuote(e.name)}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <c:if test="${entity != null}">
-                    <div style="display: none;" class="-custom-id">${g.htmlQuote(entity.maindbSysCustomId)}</div>
-                </c:if>
-                <form:hidden path="roomId"/>
-                <form:hidden path="groupSeq"/>
-                <c:forEach var="field" items="${customDbType.fields}">
-                    <c:set var="name" value="${field.fieldId.substring(customDbType.kind.length() + '_'.length()).toLowerCase()}"/>
-                    <c:set var="value" value="${fieldNameToValueMap.get(field.fieldId)}"/>
-                    <tr>
-                        <td class="three wide">${g.htmlQuote(field.fieldInfo)}</td>
-                        <td>
-                            <div class="ui grid">
-                                <c:choose>
-                                    <c:when test="${field.fieldType == 'MULTICODE'}">
-                                        <div class="sixteen wide column">
-                                            <div class="ui form flex">
-                                                <div style="flex: 1; margin-right: 5px;">
-                                                    <select name="${name}" id="${name}" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" multiple="multiple" class="ui fluid dropdown">
-                                                        <c:forEach var="e" items="${field.codes}">
-                                                            <c:set var="contains" value="${false}"/>
-                                                            <c:if test="${value != null}">
-                                                                <c:forEach var="e2" items="${value.split(',')}">
-                                                                    <c:if test="${!contains}">
-                                                                        <c:set var="contains" value="${e2 == e.codeId}"/>
-                                                                    </c:if>
-                                                                </c:forEach>
-                                                            </c:if>
-                                                            <option value="${g.htmlQuote(e.codeId)}" ${contains ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                </div>
-                                                <button type="button" class="ui button mini" onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#talk-custom-input').find('#${name}').val())">상세</button>
-                                            </div>
-                                        </div>
-                                    </c:when>
-                                    <c:when test="${field.fieldType == 'CODE'}">
-                                        <div class="eight wide column">
-                                            <div class="ui form flex">
-                                                <div style="flex: 1; margin-right: 5px;">
-                                                    <select name="${name}" id="${name}" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}">
-                                                        <option value=""></option>
-                                                        <c:forEach var="e" items="${field.codes}">
-                                                            <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
-                                                        </c:forEach>
-                                                    </select>
-                                                </div>
-                                                <button type="button" class="ui button mini" onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#talk-custom-input').find('#${name}').val())">상세</button>
-                                            </div>
-                                        </div>
-                                    </c:when>
-                                    <c:when test="${field.fieldType == 'INT' || field.fieldType == 'NUMBER'}">
-                                        <div class="sixteen wide column">
-                                            <div class="ui form fluid">
-                                                <div class="field">
-                                                    <input type="text" name="${name}" id="${name}" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" class="-input-numerical" value="${g.htmlQuote(value)}"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:when>
-                                    <c:when test="${field.fieldType == 'DATETIME'}">
-                                        <div class="sixteen wide column">
-                                            <div class="ui form fluid" style="text-align: left">
-                                                <input type="text" name="${name}" id="${name}" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" multiple="multiple" value="${value != null ? g.dateFormat(value) : null}" class="-datepicker" style="width: 130px"/>&ensp;
-                                                <input type="text" name="${name}" id="${name}" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" multiple="multiple" value="${value != null ? value.hours : null}" class="-input-numeric" style="width: 50px"/><text style="line-height: 30px">시</text>
-                                                <input type="text" name="${name}" id="${name}" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" multiple="multiple" value="${value != null ? value.minutes : null}" class="-input-numeric" style="width: 50px"/><text style="line-height: 30px">분</text>
-                                                <input type="hidden" name="${name}" id="${name}" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" multiple="multiple" value="00" class="-input-numeric"/>
-                                            </div>
-                                        </div>
-                                    </c:when>
-                                    <c:when test="${field.fieldType == 'DATE' || field.fieldType == 'DAY'}">
-                                        <div class="sixteen wide column">
-                                            <div class="ui form fluid">
-                                                <div class="field">
-                                                    <input type="text" name="${name}" id="${name}" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" value="${value}" class="-datepicker"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:when>
-                                    <c:when test="${field.fieldType == 'STRING' && field.fieldSize > 50}">
-                                        <div class="sixteen wide column">
-                                            <div class="ui form fluid">
-                                                <div class="field">
-                                                    <textarea name="${name}" id="${name}" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" rows="3" maxlength="${field.fieldSize}">${g.htmlQuote(value)}</textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="eight wide column">
-                                            <div class="ui input fluid">
-                                                <input type="text" name="${name}" id="${name}" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" maxlength="${field.fieldSize}" value="${g.htmlQuote(value)}"/>
-                                            </div>
-                                        </div>
-                                        <c:if test="${field.fieldSize > 0}">
-                                            <div class="eight wide column" style="line-height: 30px">
-                                                (최대길이:${field.fieldSize} Bytes)
-                                            </div>
+    <div class="panel-body overflow-auto">
+        <table class="ui celled table compact unstackable">
+            <tbody>
+            <tr>
+                <th>고객DB</th>
+                <td colspan="3">
+                    <div class="ui form flex">
+                        <select <c:if test="${form.groupSeq != null}">
+                            onchange="loadTalkCustomInput(${form.groupSeq}, $(this).val() === 'insert' ? null : '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(roomId)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}')"
+                        </c:if>>
+                            <option value="insert" ${entity == null ? 'selected' : ''}>새로운 고객으로 등록</option>
+                            <option value="update" ${entity != null ? 'selected' : ''}>고객정보 갱신</option>
+                        </select>
+                        <select class="ml5" onchange="loadTalkCustomInput($(this).val(), null, '${g.htmlQuote(roomId)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}')">
+                            <c:forEach var="e" items="${maindbGroups}">
+                                <option value="${e.seq}" ${e.seq == form.groupSeq ? 'selected' : ''}>${g.htmlQuote(e.name)}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+
+                    <c:if test="${entity != null}">
+                        <div style="display: none;" class="-custom-id">${g.htmlQuote(entity.maindbSysCustomId)}</div>
+                    </c:if>
+                    <form:hidden path="roomId"/>
+                    <form:hidden path="groupSeq"/>
+                </td>
+
+                <c:set var="chargedColCount" value="${4}"/>
+                <c:forEach var="field" items="${customDbType.fields}" varStatus="status">
+                <c:set var="name" value="${field.fieldId.substring(customDbType.kind.length() + '_'.length()).toLowerCase()}"/>
+                <c:set var="value" value="${fieldNameToValueMap.get(field.fieldId)}"/>
+
+                <c:choose>
+                    <c:when test="${field.fieldType == 'MULTICODE'}">
+                        <c:if test="${chargedColCount > 0}">
+                            <td colspan="${8 - chargedColCount}" class="border-left-none"></td>
+                            ${'</tr><tr>'}
+                        </c:if>
+                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
+                        <td colspan="7">
+                            <div class="ui form flex">
+                                <select name="${name}" id="${name}" data-type="select"
+                                        data-text="${g.htmlQuote(field.fieldInfo)}"
+                                        data-value="${field.isneed}" multiple="multiple"
+                                        class="ui fluid dropdown">
+                                    <option value=""></option>
+                                    <c:forEach var="e" items="${field.codes}">
+                                        <c:set var="contains" value="${false}"/>
+                                        <c:if test="${value != null}">
+                                            <c:forEach var="e2" items="${value.split(',')}">
+                                                <c:if test="${!contains}">
+                                                    <c:set var="contains"
+                                                           value="${e2 == e.codeId}"/>
+                                                </c:if>
+                                            </c:forEach>
                                         </c:if>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-                        </td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-            <div class="ui grid" style="margin-top: 2em;">
-                <div class="row">
-                    <div class="twelve wide column"><label class="control-label">멀티채널(전화번호,상담톡) 추가</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <select name="channels" multiple="multiple" class="one-multiselect" style="height: 100px;">
-                                <c:set var="existRoomIdInMultichannelList" value="${false}"/>
-                                <c:forEach var="channel" items="${entity.multichannelList}">
-                                    <c:set var="existRoomIdInMultichannelList" value="${existRoomIdInMultichannelList || channel.channelData == senderKey.concat('_').concat(userKey)}"/>
-                                    <option value="${channel.channelData}" data-type="${g.htmlQuote(channel.channelType)}">
-                                        [${channel.channelType == 'TALK' ? g.htmlQuote(talkServices.get(channel.channelData.split('[_]')[0])) : g.htmlQuote(channelTypes.get(channel.channelType))}]
-                                            ${g.htmlQuote(channel.channelType == 'TALK' ? channel.channelData.split('[_]')[1] : channel.channelData)}
-                                    </option>
-                                </c:forEach>
-                                <c:if test="${senderKey != null && senderKey != '' && userKey != null && userKey != '' && talkServices != null && talkServices.get(senderKey) != null && !existRoomIdInMultichannelList}">
-                                    <option value="${g.htmlQuote(senderKey.concat('_').concat(userKey))}" data-type="TALK">
-                                        [${g.htmlQuote(talkServices.get(senderKey))}] ${g.htmlQuote(userKey)}
-                                    </option>
-                                </c:if>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="four wide column">
-                        <div class="ui form">
-                            <div class="field">
-                                <button type="button" class="fluid ui button basic grey -remove-channel">삭제</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="four wide column">
-                        <div class="ui form">
-                            <select name="channelType">
-                                <c:forEach var="e" items="${channelTypes}">
-                                    <option value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.value)}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="five wide column">
-                        <div class="ui form flex">
-                            <div class="field" style="flex: 1; display: none;">
-                                <select name="channelDataTalkService">
-                                    <c:forEach var="e" items="${talkServices}">
-                                        <option value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.value)}</option>
+                                        <option value="${g.htmlQuote(e.codeId)}" ${contains ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
                                     </c:forEach>
                                 </select>
+                                <button type="button" class="ui button sharp navy ml5"
+                                        onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#talk-custom-input').find('#${name}').val())">TIP
+                                </button>
                             </div>
-                            <div class="field" style="flex: 1">
-                                <input type="text" name="channelData">
+                        </td>
+                        <c:set var="chargedColCount" value="${8}"/>
+                    </c:when>
+                    <c:when test="${field.fieldType == 'CODE'}">
+                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
+                        <td colspan="3">
+                            <div class="ui form flex">
+                                <select name="${name}" id="${name}" data-type="select" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}">
+                                    <option value=""></option>
+                                    <c:forEach var="e" items="${field.codes}">
+                                        <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
+                                    </c:forEach>
+                                </select>
+                                <button type="button" class="ui button sharp navy ml5"
+                                        onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#talk-custom-input').find('#${name}').val())">TIP
+                                </button>
                             </div>
+                        </td>
+                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
+                    </c:when>
+                    <c:when test="${field.fieldType == 'INT' || field.fieldType == 'NUMBER'}">
+                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
+                        <td colspan="3">
+                            <div class="ui form">
+                                <input type="text" name="${name}" id="${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isneed}" class="-input-numerical"
+                                       value="${g.htmlQuote(value)}"/>
+                            </div>
+                        </td>
+                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
+                    </c:when>
+                    <c:when test="${field.fieldType == 'DATETIME'}">
+                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
+                        <td colspan="3">
+                            <div class="ui form flex">
+                                <input type="text" name="${name}" id="${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isneed}" multiple="multiple"
+                                       value="${value != null ? g.dateFormat(value) : null}"
+                                       class="-datepicker" style="width: 130px"/>&ensp;
+                                <input type="text" name="${name}" id="${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isneed}" multiple="multiple"
+                                       value="${value != null ? value.hours : null}"
+                                       class="-input-numeric" style="width: 50px"/>
+                                <text style="line-height: 30px">시</text>
+                                <input type="text" name="${name}" id="${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isneed}" multiple="multiple"
+                                       value="${value != null ? value.minutes : null}"
+                                       class="-input-numeric" style="width: 50px"/>
+                                <text style="line-height: 30px">분</text>
+                                <input type="hidden" name="${name}" id="${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isneed}" multiple="multiple"
+                                       value="00" class="-input-numeric"/>
+                            </div>
+                        </td>
+                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
+                    </c:when>
+                    <c:when test="${field.fieldType == 'DATE' || field.fieldType == 'DAY'}">
+                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
+                        <td colspan="3">
+                            <div class="ui form">
+                                <input type="text" name="${name}" id="${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isneed}" value="${value}"
+                                       class="-datepicker"/>
+                            </div>
+                        </td>
+                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
+                    </c:when>
+                    <c:when test="${field.fieldType == 'STRING' && field.fieldSize > 50}">
+                        <c:if test="${chargedColCount > 0}">
+                            <td colspan="${8 - chargedColCount}" class="border-left-none"></td>
+                            ${'</tr><tr>'}
+                        </c:if>
+                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
+                        <td colspan="7">
+                            <div class="ui form">
+                                <input type="text" name="${name}" id="${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isneed}"
+                                       maxlength="${field.fieldSize}" value="${g.escapeQuote(value)}"/>
+                            </div>
+                        </td>
+                        <c:set var="chargedColCount" value="${8}"/>
+                    </c:when>
+                    <c:when test="${field.fieldType == 'IMG'}">
+                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
+                        <td colspan="3">
+                            <div class="ui form flex">
+                                <input name="${name}" type="hidden" value="">
+                                <div class="file-upload-header">
+                                    <label for="file" class="ui button blue mini compact">파일찾기</label>
+                                    <input type="file" id="file" data-value="${name}">
+                                    <span class="file-name">No file selected</span>
+                                </div>
+                                    <%--<div>
+                                        <progress value="0" max="100" style="width:100%"></progress>
+                                    </div>--%>
+                            </div>
+                        </td>
+                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
+                    </c:when>
+                    <c:otherwise>
+                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
+                        <td colspan="3">
+                            <div class="ui input fluid">
+                                <input type="text" name="${name}" id="${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isneed}" maxlength="${field.fieldSize}"
+                                       value="${g.htmlQuote(value)}" placeholder="${field.fieldSize > 0 ? '최대길이:'.concat(field.fieldSize).concat(' Bytes') : ''}"/>
+                            </div>
+                        </td>
+                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
+                    </c:otherwise>
+                </c:choose>
+
+                <c:if test="${chargedColCount >= 8 || status.last}">
+            </tr>
+            <tr>
+                <c:set var="chargedColCount" value="${0}"/>
+                </c:if>
+                </c:forEach>
+
+                <c:if test="${customDbType.fields == null}">
+                <c:if test="${chargedColCount < 8}">
+                    <td colspan="${8 - chargedColCount}" class="border-left-none"></td>
+                </c:if>
+            </tr>
+            <tr>
+                </c:if>
+
+                <th>멀티채널추가</th>
+                <td colspan="7">
+                    <div class="ui form flex">
+                        <select name="channelType" style="flex: 1">
+                            <c:forEach var="channel" items="${channelTypes}">
+                                <option value="${g.htmlQuote(channel.key)}">${g.htmlQuote(channel.value)}</option>
+                            </c:forEach>
+                        </select>
+                        <div class="field ml5" style="flex: 1; display: none;">
+                            <select name="channelDataTalkService">
+                                <c:forEach var="talk" items="${talkServices}">
+                                    <option value="${g.htmlQuote(talk.key)}">${g.htmlQuote(talk.value)}</option>
+                                </c:forEach>
+                            </select>
                         </div>
+                        <input type="text" class="flex-200 ml5" name="channelData" style="flex: 1">
+                        <button type="button" class="ui button sharp navy ml5 -add-channel">추가</button>
                     </div>
-                    <div class="two wide column">
-                        <div class="ui form">
-                            <button type="button" class="ui button compact -add-channel">추가</button>
-                        </div>
+                </td>
+            </tr>
+            <tr>
+                <th>멀티채널리스트</th>
+                <td colspan="7">
+                    <div class="ui labels multi-list-wrap -channel-container">
+                        <c:set var="existRoomIdInMultichannelList" value="${false}"/>
+                        <c:forEach var="channel" items="${entity.multichannelList}">
+                            <c:set var="existRoomIdInMultichannelList" value="${existRoomIdInMultichannelList || channel.channelData == senderKey.concat('_').concat(userKey)}"/>
+                            <div class="ui label -channel" data-value="${g.escapeQuote(channel.channelData)}" data-type="${g.escapeQuote(channel.channelType)}">
+                                [${channel.channelType == 'TALK' ? g.htmlQuote(talkServices.get(channel.channelData.split('[_]')[0])) : g.htmlQuote(channelTypes.get(channel.channelType))}]
+                                    ${g.htmlQuote(channel.channelType == 'TALK' ? channel.channelData.split('[_]')[1] : channel.channelData)}
+                                <i class="icon close" onclick="$(this).closest('.-channel').remove()"></i>
+                            </div>
+                        </c:forEach>
+
+                        <c:if test="${senderKey != null && senderKey != '' && userKey != null && userKey != '' && talkServices != null && talkServices.get(senderKey) != null && !existRoomIdInMultichannelList}">
+                            <div class="ui label -channel" data-value="${g.htmlQuote(senderKey.concat('_').concat(userKey))}" data-type="TALK">
+                                [${g.htmlQuote(talkServices.get(senderKey))}] ${g.htmlQuote(userKey)}
+                                <i class="icon close" onclick="$(this).closest('.-channel').remove()"></i>
+                            </div>
+                        </c:if>
                     </div>
-                </div>
-            </div>
-        </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </form:form>
 
@@ -275,20 +331,20 @@
         relatedField.change();
     });
 
-    $('#talk-submitButton').click(function (){
+    $('#talk-submitButton').click(function () {
         let objText = $('#talk-custom-input [data-value="Y"]');
-        for(let i = 0 ;i < objText.length;i++){
-            if(objText[i].getAttribute('data-type') == 'text') {
+        for (let i = 0; i < objText.length; i++) {
+            if (objText[i].getAttribute('data-type') == 'text') {
                 if (objText[i].value.trim() == "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
                     return;
                 }
-            }else if(objText[i].getAttribute('data-type') == 'select'){
+            } else if (objText[i].getAttribute('data-type') == 'select') {
                 if (objText[i].options[objText[i].selectedIndex].value == "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 선택 해 주세요.");
                     return;
                 }
-            }else{
+            } else {
                 if (objText[i].value.trim() == "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
                     return;
@@ -319,10 +375,10 @@
         }
 
         data.channels = [];
-        ui.find('[name=channels] option').each(function () {
+        ui.find('.-channel').each(function () {
             data.channels.push({
                 type: $(this).attr('data-type'),
-                value: $(this).val()
+                value: $(this).attr('data-value')
             });
         });
 
@@ -353,10 +409,6 @@
         }
     }).change();
 
-    ui.find('.-remove-channel').click(function () {
-        ui.find('[name=channels] :selected').remove();
-    });
-
     ui.find('.-add-channel').click(function () {
         const channelType = ui.find('[name=channelType] :selected').val();
         const channelTypeName = ui.find('[name=channelType] :selected').text();
@@ -366,11 +418,12 @@
         const talkServiceSenderKey = ui.find('[name=channelDataTalkService] :selected').val();
         const talkServiceName = ui.find('[name=channelDataTalkService] :selected').text();
 
-        ui.find('[name=channels]').append($('<option/>', {
-            value: (channelType === 'PHONE' ? channelData : talkServiceSenderKey + '_' + channelData),
+        ui.find('.-channel-container').append($('<div/>', {
+            class: 'ui label -channel',
+            'data-value': (channelType === 'PHONE' ? channelData : talkServiceSenderKey + '_' + channelData),
             'data-type': channelType,
             text: '[' + (channelType === 'PHONE' ? channelTypeName : talkServiceName) + '] ' + channelData
-        }));
+        }).append($('<i/>', {class: 'icon close', onclick: "$(this).closest('.-channel').remove()"})));
     });
 
     loadCounselingList('${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ""}');
