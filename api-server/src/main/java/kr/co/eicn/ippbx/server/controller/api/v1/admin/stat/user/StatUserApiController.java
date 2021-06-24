@@ -29,7 +29,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.Date;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static kr.co.eicn.ippbx.util.JsonResult.data;
@@ -189,5 +191,50 @@ public class StatUserApiController extends ApiBaseController {
         response.setSuccessPer(successPer);
 
         return response;
+    }
+
+    @GetMapping("my-call-Time")
+    public StatMyCallByTimeResponse myCallByTimeStat(){
+        final StatUserSearchRequest search = new StatUserSearchRequest();
+        search.setStartDate(new Date(System.currentTimeMillis()));
+        search.setEndDate(new Date(System.currentTimeMillis()));
+        search.getPersonIds().add(g.getUser().getId());
+
+        final List<StatUserInboundEntity> userInboundList = statUserInboundService.getRepository().findAllUserStat(search);
+        final List<StatUserOutboundEntity> userOutboundList = statUserOutboundService.getRepository().findAll(search);
+        final List<StatMemberStatusEntity> memberStatusList = StatMemberStatusService.getRepository().findAll(search);
+
+        StatMyCallByTimeResponse res = new StatMyCallByTimeResponse();
+
+        for (int i = 0;i < 24;i++){
+            byte hour = (byte) i;
+            res.getMyStatData().put(hour, new StatMyCallByTimeData());
+            res.getMyStatData().get(hour).setStatHour(i);
+            res.getMyStatData().get(hour).setIdName(g.getUser().getIdName());
+
+            int chk = i;
+            userInboundList.forEach(e -> {
+                if(chk == e.getStatHour()){
+                    res.getMyStatData().get(hour).setInTotalSum(e.getInTotal());
+                    res.getMyStatData().get(hour).setInSuccessSum(e.getInSuccess());
+                    res.getMyStatData().get(hour).setTotalCntSum(e.getInTotal());
+                }
+            });
+            userOutboundList.forEach(e -> {
+                if(chk == e.getStatHour()){
+                    res.getMyStatData().get(hour).setOutTotalSum(e.getOutTotal());
+                    res.getMyStatData().get(hour).setOutSuccessSum(e.getOutSuccess());
+                    res.getMyStatData().get(hour).setTotalCntSum(e.getOutTotal());
+                }
+            });
+            memberStatusList.forEach(e -> {
+                if(chk == e.getStatHour() && e.getStatus() == 2){
+                    res.getMyStatData().get(hour).setMemberTotalSum(e.getTotal());
+                }
+            });
+        }
+
+
+        return res;
     }
 }
