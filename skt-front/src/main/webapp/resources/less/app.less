@@ -797,10 +797,27 @@ pre {
   }
   .consult-right-panel {
     width: 67%;
+    .top-area {
+
+      .panel-resizable {
+        height:300px;
+      }
+    }
+    .middle-area {
+
+      .panel-resizable {
+        height:300px;
+        .panel {
+          height:100%;
+        }
+      }
+    }
     .bottom-area {
+        height:300px;
+      overflow-y: auto;
       .ui.bottom.attached.tab.segment {
-        height: ~"calc(100% - 50px)";
-        overflow: auto;
+        height: ~"calc(100% - 51px)";
+
       }
     }
     .flex();

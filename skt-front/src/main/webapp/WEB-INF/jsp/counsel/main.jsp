@@ -36,21 +36,21 @@
     <div class="-counsel-content-panel consult-right-panel" data-type="COUNSEL" style="display: none;">
         <div id="custom-input-panel" class="top-area">
             <div class="panel remove-mb panel-resizable" id="call-custom-input"></div>
-            <c:if test="${user.isTalk.equals('Y')}">
+            <%--<c:if test="${user.isTalk.equals('Y')}">
                 <div class="panel remove-mb panel-resizable" id="talk-custom-input"></div>
-            </c:if>
+            </c:if>--%>
         </div>
 
         <div id="counseling-input-panel" class="middle-area">
             <div class="remove-mb panel-resizable">
                 <div class="panel" id="call-counseling-input"></div>
-                <c:if test="${user.isTalk.equals('Y')}">
+                <%--<c:if test="${user.isTalk.equals('Y')}">
                     <div class="panel" id="talk-counseling-input"></div>
-                </c:if>
+                </c:if>--%>
             </div>
         </div>
 
-        <div class="flex-100 bottom-area overflow-hidden">
+        <div class="flex-100 bottom-area">
             <div class="ui top attached tabular menu light flex remove-margin">
                 <button class="item active" data-tab="todo">To-Do</button>
                 <button class="item" data-tab="consult-history">상담이력</button>
