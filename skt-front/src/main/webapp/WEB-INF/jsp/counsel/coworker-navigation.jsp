@@ -12,6 +12,7 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="usingservices" type="java.lang.String"--%>
+<%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
 <div class="content" id="counsel-nav">
     <c:if test="${serviceKind.equals('SC')}">
@@ -19,36 +20,9 @@
             <button type="button" class="ui orange fluid button" onclick="popupArsModal()">>ARS로 돌려주기</button>
         </div>
     </c:if>
-    <div class="accordion">
-        <button class="team-title">
-            <div class="team">
-                <img src="<c:url value="/resources/images/link_square_icon.svg"/>">
-                <span>대표번호로 돌려주기</span>
-            </div>
-        </button>
-        <ul class="team-list">
-            <li class="item">
-                <div class="user">070-0000-0000
-                    <button class="forwarded-btn -redirect-to" title="전화돌려주기"></button>
-                </div>
-            </li>
-        </ul>
-    </div>
-    <div class="accordion">
-        <button class="team-title">
-            <div class="team">
-                <img src="<c:url value="/resources/images/link_square_icon.svg"/>">
-                <span>헌트번호로 돌려주기</span>
-            </div>
-        </button>
-        <ul class="team-list">
-            <li class="item">
-                <div class="user">070-0000-0000
-                    <button class="forwarded-btn -redirect-to" title="전화돌려주기"></button>
-                </div>
-            </li>
-        </ul>
-    </div>
+
+    <jsp:include page="/counsel/call-transfer"/>
+
     <c:forEach var="e" items="${list}" varStatus="status">
         <c:if test="${e.person != null && e.person.size() > 0}">
             <div class="accordion">

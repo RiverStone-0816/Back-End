@@ -12,45 +12,44 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<table class="ui table celled definition very compact small">
-    <tbody>
-    <tr>
-        <td class="four wide">대표번호</td>
-        <td>
-            <select id="service-numbers">
-                <c:forEach var="e" items="${services}">
-                    <option value="${g.htmlQuote(e.svcNumber)}">${g.htmlQuote(e.svcName)}</option>
-                </c:forEach>
-            </select>
-            <button type="button" class="ui icon button mini -redirect-to-service" data-input="#service-numbers">
-                <i class="share square icon"></i>
-            </button>
-        </td>
-    </tr>
-    <tr>
-        <td>큐번호</td>
-        <td>
-            <select id="hunt-numbers">
-                <c:forEach var="e" items="${queues}">
-                    <option value="${g.htmlQuote(e.number)}">${g.htmlQuote(e.hanName)}</option>
-                </c:forEach>
-            </select>
-            <button type="button" class="ui icon button mini -redirect-to-hunt" data-input="#hunt-numbers">
-                <i class="share square icon"></i>
-            </button>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<c:if test="${services != null && services.size() > 0}">
+    <div class="accordion">
+        <button class="team-title">
+            <div class="team">
+                <img src="<c:url value="/resources/images/link_square_icon.svg"/>">
+                <span>대표번호로 돌려주기</span>
+            </div>
+        </button>
+        <ul class="team-list">
+            <c:forEach var="e" items="${services}">
+                <li class="item">
+                    <div class="user">
+                        <text>${g.htmlQuote(e.svcName)}</text>
+                        <button type="button" class="forwarded-btn" title="전화돌려주기" onclick="ipccCommunicator.redirectHunt('${g.escapeQuote(e.svcNumber)}')"></button>
+                    </div>
+                </li>
+            </c:forEach>
+        </ul>
+    </div>
+</c:if>
 
-<tags:scripts>
-    <script>
-        $('.-redirect-to-hunt').click(function () {
-            ipccCommunicator.redirectHunt($($(this).attr('data-input')).val());
-        });
-        $('.-redirect-to-service').click(function () {
-            ipccCommunicator.redirectHunt($($(this).attr('data-input')).val());
-        });
-    </script>
-</tags:scripts>
-
+<c:if test="${queues != null && queues.size() > 0}">
+    <div class="accordion">
+        <button class="team-title">
+            <div class="team">
+                <img src="<c:url value="/resources/images/link_square_icon.svg"/>">
+                <span>헌트번호로 돌려주기</span>
+            </div>
+        </button>
+        <ul class="team-list">
+            <c:forEach var="e" items="${queues}">
+                <li class="item">
+                    <div class="user">
+                        <text>${g.htmlQuote(e.hanName)}</text>
+                        <button type="button" class="forwarded-btn" title="전화돌려주기" onclick="ipccCommunicator.redirectHunt('${g.escapeQuote(e.number)}')"></button>
+                    </div>
+                </li>
+            </c:forEach>
+        </ul>
+    </div>
+</c:if>
