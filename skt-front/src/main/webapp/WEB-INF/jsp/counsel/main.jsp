@@ -106,7 +106,6 @@
     <jsp:include page="/counsel/modal-send-message"/>
 </div>
 
-<jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
 <tags:scripts>
     <script id="toast-reservation-script">
         window.toastr.options = {
