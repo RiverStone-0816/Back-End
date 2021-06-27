@@ -35,7 +35,7 @@
             });
         });
         findAndMe('.-click-prev', this).click(function () {
-           $(this).prev().click();
+            $(this).prev().click();
         });
         findAndMe('.selectable-only tr', this).not('.ui').click(function () {
             if (!$(this).attr('data-id')) return;
@@ -97,7 +97,7 @@
             container.find('.-to-left').click(toLeft);
             container.find('.-to-right').click(toRight);
 
-            container.on('dblclick','.-right-selector option, .-left-selector option', function () {
+            container.on('dblclick', '.-right-selector option, .-left-selector option', function () {
                 const toLeft = $(this).parent().hasClass('-right-selector');
                 $(this).detach().appendTo(toLeft ? leftSelector : rightSelector);
             });
@@ -120,7 +120,8 @@
             maudio({obj: this});
         });
         findAndMe(".-slider-time", this).each(function () {
-            $(this).slider({range: true, min: 0, max: 24 * 60 - 1, disabled: $(this).attr('data-key') == null, step: 1, values: [$(this).attr('data-start'), $(this).attr('data-end')], slide: function (e, ui) {
+            $(this).slider({
+                range: true, min: 0, max: 24 * 60 - 1, disabled: $(this).attr('data-key') == null, step: 1, values: [$(this).attr('data-start'), $(this).attr('data-end')], slide: function (e, ui) {
                     ui.handle.innerHTML = pad(parseInt(ui.values[ui.handleIndex] / 60), 2) + ':' + pad(ui.values[ui.handleIndex] % 60, 2);
                 }, change: function (e, ui) {
                     if ($(this).attr('data-key') != null && $(this).attr('data-key') !== '') {
@@ -136,7 +137,8 @@
                     }
                 }, stop: function (e, ui) {
                     ui.handle.innerHTML = '';
-                }});
+                }
+            });
         });
         findAndMe('.-play-trigger', this).each(function () {
             $(this).popup({
@@ -147,7 +149,7 @@
         findAndMe('select.dropdown', this).each(function () {
             const options = {};
             const maxSelections = $(this).attr('data-dropdown-max-selections');
-            if (maxSelections){
+            if (maxSelections) {
                 options.maxSelections = parseInt(maxSelections);
                 $(this).dropdown(options);
             } else {
@@ -163,7 +165,7 @@
                     }).prop('selected', true);
                 });
 
-                setTimeout(function (){
+                setTimeout(function () {
                     $this.change();
                 }, 1);
             }
@@ -204,9 +206,8 @@
         });
         /* 태헌씨 스크립트 */
 
-        $( function() {
-            $( ".panel-resizable" ).resizable();
-        } );
+        findAndMe(".panel-resizable", this).resizable();
+
         findAndMe("select.level", this).each(function () {
             for (let i = 1; i < 11; i++) {
                 $(this).append("<option>" + i + "</option>");
@@ -235,22 +236,11 @@
                 $('.side-bar').toggleClass('hide');
             });
         });
+        findAndMe('.menu .item', this).tab();
+
         findAndMe('td .form, .table button, .table a', this).on("click", function () {
             event.stopPropagation();
         });
-        findAndMe('.menu .item', this).tab();
-        // findAndMe(".sidebar-menu-wrap", this).overlayScrollbars({ // overflow scroll
-        //     className: "os-theme-dark"
-        // });
-        /*findAndMe(".top-chat-list-wrap", this).overlayScrollbars({ // overflow scroll
-            className: "os-theme-dark"
-        });*/
-        // findAndMe(".chat-body", this).overlayScrollbars({});
-
-
-
-
-
 
         /* jquery-ui.datepicker 호출. id 재생성되므로, 기존 id 속성을 삭제시킨다. */
         findAndMe('.-datepicker', this).asDatepicker();

@@ -12,7 +12,7 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<form:form id="talk-counseling-input" modelAttribute="form" cssClass="panel -json-submit" data-method="post"
+<form:form id="talk-counseling-input" modelAttribute="form" cssClass="-json-submit" data-method="post"
            action="${pageContext.request.contextPath}/api/maindb-result/"
            data-before="prepareTalkCounselingInfoFormData" data-done="donePostTalkCounselingInfo">
 

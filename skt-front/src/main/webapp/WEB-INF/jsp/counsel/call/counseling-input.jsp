@@ -13,7 +13,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
-<form:form id="call-counseling-input" modelAttribute="form" cssClass="panel -json-submit"
+<form:form id="call-counseling-input" modelAttribute="form" cssClass="-json-submit"
            data-method="${entity != null ? 'put' : 'post'}"
            action="${pageContext.request.contextPath}/api/maindb-result/${entity != null ? entity.seq : null}"
            data-before="prepareCounselingInfoFormData" data-done="donePostCounselingInfo">

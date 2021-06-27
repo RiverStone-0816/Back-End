@@ -12,7 +12,7 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<form:form id="talk-custom-input" modelAttribute="form" cssClass="panel remove-mb panel-resizable top -json-submit" data-method="${entity != null ? 'put' : 'post'}"
+<form:form id="talk-custom-input" modelAttribute="form" cssClass="-json-submit" data-method="${entity != null ? 'put' : 'post'}"
            action="${pageContext.request.contextPath}/api/maindb-data/${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : null}"
            data-before="prepareTalkCustomInfoFormData" data-done="donePostTalkCustomInfo">
     <div class="panel-heading">

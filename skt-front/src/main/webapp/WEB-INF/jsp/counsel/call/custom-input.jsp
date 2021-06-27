@@ -13,7 +13,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
-<form:form id="call-custom-input" modelAttribute="form" cssClass="panel remove-mb panel-resizable top -json-submit" data-method="${entity != null ? 'put' : 'post'}"
+<form:form id="call-custom-input" modelAttribute="form" cssClass="-json-submit" data-method="${entity != null ? 'put' : 'post'}"
            action="${pageContext.request.contextPath}/api/maindb-data/${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : null}"
            data-before="prepareCustomInfoFormData" data-done="donePostCustomInfo">
     <div class="panel-heading">
