@@ -40,16 +40,16 @@
 
         window.statusCodes = {<c:forEach var="e" items="${statusCodes}">'${e.key}': '${g.escapeQuote(e.value)}', </c:forEach>};
         window.statusToColorClass = {
-            '0': 'bcolor-color1',
-            '1': 'bcolor-color2',
-            '2': 'bcolor-color3',
-            '3': 'bcolor-color4',
-            '4': 'bcolor-color5',
-            '5': 'bcolor-color6',
-            '6': 'bcolor-color7',
-            '7': 'bcolor-color8',
-            '8': 'bcolor-color9',
-            '9': 'bcolor-color10'
+            '0': 'bcolor-bar1',
+            '1': 'bcolor-bar2',
+            '2': 'bcolor-bar3',
+            '3': 'bcolor-bar4',
+            '4': 'bcolor-bar5',
+            '5': 'bcolor-bar6',
+            '6': 'bcolor-bar7',
+            '7': 'bcolor-bar8',
+            '8': 'bcolor-bar9',
+            '9': 'bcolor-bar10'
         };
         window.serviceNumberToQueueName = {
             <c:forEach var="e" items="${serviceNumberToQueueName}">

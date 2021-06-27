@@ -41,15 +41,8 @@
                             <div class="user">${g.htmlQuote(person.idName)}[${g.htmlQuote(person.extension)}]
                                 <button class="forwarded-btn -redirect-to" data-extension="${person.extension}" title="전화돌려주기"></button>
                             </div>
-                            <div class="title"><%--TODO: 상담원의 상태 변화에 따라 상태값이 옳바르게 변경되는지 확인이 필요하다.--%>
-                                <span class="ui mini red label -consultant-status-with-color" data-peer="${g.htmlQuote(person.peer)}">
-                                    <text class="-consultant-status" data-peer="${g.htmlQuote(person.peer)}">${g.htmlQuote(memberStatuses.get(person.paused))}</text>
-                                </span>
-                                    <%--<span class="ui mini green label">대기</span>--%>
-                                    <%--<span class="ui mini teal label">벨울림</span>--%>
-                                    <%--<span class="ui mini orange label">후처리</span>--%>
-                                    <%--<span class="ui mini gray label">로그아웃</span>--%>
-                                    <%--<span class="ui mini purple label">기타</span>--%>
+                            <div class="title">
+                                <span class="ui mini label -consultant-status-with-color" data-peer="${g.htmlQuote(person.peer)}" style="color: white;"></span>
                             </div>
                         </li>
                     </c:forEach>

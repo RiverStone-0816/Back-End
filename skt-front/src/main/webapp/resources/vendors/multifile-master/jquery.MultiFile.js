@@ -510,7 +510,6 @@ if (window.jQuery)(function ($) {
 							b = $('<a class="MultiFile-remove" href="#' + MultiFile.wrapID + '">' + MultiFile.STRING.remove + '</a>')
 
 								// ********
-								// TODO:
 								// refactor this as a single event listener on the control's
 								// wrapper for better performance and cleaner code
 								// ********
@@ -875,7 +874,6 @@ if (window.jQuery)(function ($) {
 
 			if(typeof console != 'undefined') console.log(s);
 
-			// TODO: add various dialog handlers here?
 			alert(s);
 		}
 	}; //} });
