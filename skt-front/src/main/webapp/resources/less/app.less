@@ -118,6 +118,7 @@ pre {
 
 .ui.button.sharp.brand {
   background-color:@color-brand;
+  border: 1px solid @color-brand;
   color:@color-white;
   font-size:@font-size-xsmall;
   border-radius: 0;
@@ -488,6 +489,7 @@ pre {
       background-color:darken(@color-gray,5%);
       &:hover {
         background-color:@color-brand;
+        background-image:url('../images/bell-hover.svg');
       }
     }
     .ui.button.bell-off {
@@ -503,6 +505,7 @@ pre {
       background-color:darken(@color-gray,5%);
       &:hover {
         background-color:@color-brand;
+        background-image:url('../images/bell-off-hover.svg');
       }
     }
   }
@@ -797,6 +800,7 @@ pre {
   }
   .consult-right-panel {
     width: 67%;
+    overflow: hidden;
     .top-area {
 
       .panel-resizable {
@@ -1370,6 +1374,8 @@ pre {
       .ui.button {
         padding: 0.57em 1.4em;
         border:1px solid @color-border;
+        border-radius: 0;
+        margin:0 5px 0 0;
       }
     }
     .panel-total-count {
@@ -1949,6 +1955,17 @@ label.control-label {
 }
 .remove-pb {
   padding-bottom: 0 !important;
+}
+.border-top-default {
+  border: 1px solid rgba(34, 36, 38, 0.15)!important;
+}
+.border-top {
+  border-top: 1px solid #b0b0b0!important;
+}
+.explanation-txt {
+  color: @color-brand;
+  padding-left: 10px;
+  font-size: @font-size-xsmall;
 }
 .pr15 {
   padding-right: 15px;
@@ -4007,7 +4024,6 @@ g {
   background-color: white;
   padding: 1em;
   min-width: 300px;
-  border-radius: 5px;
 }
 
 .item.highlight text {background-color: #dcc945;}
@@ -4727,4 +4743,24 @@ g {
     width: auto;
     padding-left: 0;
   }
+}
+
+
+@media(max-height:890px) {
+  .consult-wrapper {
+    .consult-right-panel {
+      .top-area {
+        .panel-resizable {
+          height:180px;
+        }
+      }
+      .middle-area {
+        .panel-resizable {
+          height:180px;
+        }
+      }
+    }
+  }
+
+
 }

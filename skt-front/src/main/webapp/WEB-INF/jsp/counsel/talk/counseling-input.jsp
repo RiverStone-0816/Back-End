@@ -45,7 +45,7 @@
         <form:hidden path="resultType"/>
         <form:hidden path="groupId"/>
 
-        <table class="ui celled table compact unstackable">
+        <table class="ui celled table compact unstackable border-top-default">
             <tbody>
             <tr>
                 <c:set var="chargedColCount" value="${0}"/>
@@ -59,7 +59,7 @@
                     <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
                 </c:if>
 
-                <td class="three wide">대화방명</td>
+                <th>대화방명</th>
                 <td colspan="3">
                     <div class="ui form">
                         <form:input path="roomName"/>

@@ -145,19 +145,19 @@
                                             <form:option value="" label="수/발신 선택"/>
                                             <form:options items="${callTypes}"/>
                                         </form:select>
-                                        <form:select path="callStatus">
+                                        <form:select path="callStatus" cssClass="ml5">
                                             <form:option value="" label="호상태 선택"/>
                                             <form:options items="${callStatuses}"/>
                                         </form:select>
-                                        <form:select path="etcStatus">
+                                        <form:select path="etcStatus" cssClass="ml5">
                                             <form:option value="" label="부가상태 선택"/>
                                             <form:options items="${etcStatuses}"/>
                                         </form:select>
-                                        <form:select path="ivrCode">
+                                        <form:select path="ivrCode" cssClass="ml5">
                                             <form:option value="" label="IVR 선택"/>
                                             <form:options items="${ivrCodes}"/>
                                         </form:select>
-                                        <form:select path="ivrKey">
+                                        <form:select path="ivrKey" cssClass="ml5">
                                             <form:option value="${search.ivrKey}" label="${search.ivrKey}"/>
                                         </form:select>
                                     </div>
@@ -227,7 +227,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured compact unstackable ${pagination.rows.size() > 0 ? "selectable" : null}" data-entity="RecordHistory">
+                    <table class="ui celled table structured border-top compact unstackable ${pagination.rows.size() > 0 ? "selectable" : null}" data-entity="RecordHistory">
                         <thead>
                         <tr>
                             <th>번호</th>

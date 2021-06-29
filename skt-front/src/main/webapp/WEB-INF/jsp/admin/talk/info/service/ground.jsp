@@ -26,7 +26,7 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-total-count">전체 <span class="text-primary">${list.size()}</span> 건</h3>
+                        <h3 class="panel-total-count">전체 <span>${list.size()}</span> 건</h3>
                         <div class="ui basic buttons">
                             <button type="button" class="ui basic button" onclick="popupModal()">추가</button>
                             <button type="button" class="ui basic button -control-entity" data-entity="TalkService" style="display: none;" onclick="popupModal(getEntityId('TalkService'))">수정</button>

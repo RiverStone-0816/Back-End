@@ -26,7 +26,7 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-total-count">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
+                        <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span> 건</h3>
                         <div class="ui basic buttons">
                             <button type="button" class="ui button" onClick="encSetModal()">녹취파일 암호화 설정</button>
                             <button type="button" class="ui button" onclick="popupModal();">추가</button>

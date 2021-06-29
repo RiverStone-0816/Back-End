@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="panel-body overflow-auto">
-        <table class="ui celled table compact unstackable">
+        <table class="ui celled table compact unstackable border-top-default">
             <tbody>
             <tr>
                 <th>고객DB</th>

@@ -66,7 +66,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="Research">
+                    <table class="ui celled table structured border-top compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="Research">
                         <thead>
                         <tr>
                             <th class="one wide">번호</th>

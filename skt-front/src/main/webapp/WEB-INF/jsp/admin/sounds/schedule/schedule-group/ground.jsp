@@ -26,12 +26,12 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-total-count">전체 <span class="text-primary">${list.size()}</span> 건</h3>
+                        <h3 class="panel-total-count">전체 <span>${list.size()}</span> 건</h3>
                         <button class="ui basic button" onclick="popupScheduleGroupModal()">유형추가</button>
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui structured celled table compact unstackable fixed">
+                    <table class="ui structured celled table compact unstackable fixed border-top">
                         <thead>
                         <tr>
                             <th class="two wide">유형명</th>

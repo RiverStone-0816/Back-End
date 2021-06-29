@@ -16,7 +16,7 @@
     <div class="toolbar">
         <h2>
             <button type="button" class="ui button -calendar-date">${year}년 ${month}월</button>
-            <button type="button" class="ui blue button" onclick="userSchedule.moveToThisMonth()">오늘</button>
+            <button type="button" class="ui orange button" onclick="userSchedule.moveToThisMonth()">오늘</button>
             <button type="button" class="ui button" onclick="userSchedule.popupItem()">신규</button>
         </h2>
         <div class="ui flowing popup transition hidden calendar-navigator" style="width: 340px; text-align: center;">
@@ -33,8 +33,8 @@
             </div>
         </div>
         <div class="ui buttons pull-left">
-            <button type="button" class="mini ui blue button" onclick="userSchedule.moveMonth(1)"><i class="angle left icon"></i></button>
-            <button type="button" class="mini ui blue button" onclick="userSchedule.moveMonth(-1)"><i class="angle right icon"></i></button>
+            <button type="button" class="mini ui orange button" onclick="userSchedule.moveMonth(1)"><i class="angle left icon"></i></button>
+            <button type="button" class="mini ui orange button" onclick="userSchedule.moveMonth(-1)"><i class="angle right icon"></i></button>
         </div>
     </div>
     <div class="view-container">

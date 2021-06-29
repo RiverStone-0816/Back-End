@@ -21,7 +21,7 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">상담결과이력(프리뷰)  <span style="color: red;padding-left:20px;">※ [프리뷰 그룹] 선택 후 검색을 눌러주세요.</span></div>
+                        <div class="panel-label">상담결과이력(프리뷰)  <span class="explanation-txt">※ [프리뷰 그룹] 선택 후 검색을 눌러주세요.</span></div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">
@@ -129,7 +129,7 @@
                     </div>
                 </div>
                 <div class="panel-body" style="overflow-x: auto;">
-                    <table class="ui celled table structured compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PreviewResult">
+                    <table class="ui celled table structured border-top compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PreviewResult">
                         <thead>
                         <tr>
                             <th rowspan="2">번호</th>

@@ -108,7 +108,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui structured celled table compact unstackable">
+                    <table class="ui structured celled table compact unstackable border-top">
                         <thead>
                         <tr>
                             <th>서비스명</th>

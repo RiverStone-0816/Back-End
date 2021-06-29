@@ -49,7 +49,7 @@
         <form:hidden path="groupId"/>
         <form:hidden path="clickKey"/>
 
-        <table class="ui celled table compact unstackable">
+        <table class="ui celled table compact unstackable border-top-default">
             <tbody>
             <tr>
                 <c:set var="chargedColCount" value="${0}"/>

@@ -21,7 +21,7 @@
             </div>
         </div>
         <div class="panel-body">
-            <table class="ui celled table compact unstackable">
+            <table class="ui celled table compact unstackable border-top-default">
                 <tr>
                     <th>전화상태</th>
                     <td>

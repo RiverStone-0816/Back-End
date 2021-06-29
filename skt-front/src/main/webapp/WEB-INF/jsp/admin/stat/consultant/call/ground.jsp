@@ -133,7 +133,7 @@
                                 </text>
                             </div>
                             <div class="panel-body pd-1em">
-                                <table class="ui celled table compact unstackable structured x-small">
+                                <table class="ui celled table compact border-top unstackable structured x-small">
                                     <thead>
                                     <tr>
                                         <th rowspan="2">날짜/시간</th>

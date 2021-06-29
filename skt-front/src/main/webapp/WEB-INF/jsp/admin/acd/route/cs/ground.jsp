@@ -53,7 +53,7 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
+                        <h3 class="panel-title">전체 <span>${pagination.totalCount}</span> 건</h3>
                     </div>
                     <div class="pull-right">
                         <button class="ui basic button" onclick="popupModal()">추가</button>

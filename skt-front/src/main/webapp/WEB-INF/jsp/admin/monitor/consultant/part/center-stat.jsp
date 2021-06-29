@@ -13,7 +13,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 
 <div id="center-stat">
-    <table class="ui table celled fixed structured">
+    <table class="ui table celled fixed">
         <thead>
         <tr>
             <th>응대율</th>

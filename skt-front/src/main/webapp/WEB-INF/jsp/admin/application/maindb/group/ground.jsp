@@ -72,7 +72,7 @@
                     </div>
                 </div>
                 <div class="panel-body" style="overflow-x: auto;">
-                    <table class="ui celled table structured compact unstackable num-tbl ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbGroup">
+                    <table class="ui celled table structured border-top compact unstackable num-tbl ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbGroup">
                         <thead>
                         <tr>
                             <th rowspan="2">번호</th>

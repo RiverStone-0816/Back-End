@@ -81,7 +81,7 @@
     <div class="panel">
         <div class="panel-heading">
             <div class="pull-left">
-                <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
+                <h3 class="panel-title">전체 <span>${pagination.totalCount}</span> 건</h3>
             </div>
             <div class="pull-right">
                 <button type="button" class="ui basic green button" onclick="setCustomInfo()">고객정보 내보내기</button>

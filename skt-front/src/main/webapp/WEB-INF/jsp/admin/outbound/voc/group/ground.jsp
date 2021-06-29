@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui structured celled table compact unstackable ${pagination.rows.size() > 0 ? 'selectable-only' : null}" data-entity="VocGroup">
+                    <table class="ui structured celled table compact border-top unstackable ${pagination.rows.size() > 0 ? 'selectable-only' : null}" data-entity="VocGroup">
                         <thead>
                         <tr>
                             <th class="one wide">번호</th>

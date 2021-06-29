@@ -30,16 +30,10 @@
                 </div>
                 <div class="panel-body">
                     <div class="search-area">
-                        <%--<div class="button-area remove-mb">
-                            <div class="align-right">
-                                <button type="submit" class="ui button sharp brand large">검색</button>
-                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
-                            </div>
-                        </div>--%>
-                        <div class="ui grid">
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">고객DB그룹</label></div>
-                                <div class="two wide column">
+                        <table class="ui celled table compact unstackable">
+                            <tr>
+                                <th>고객DB그룹</th>
+                                <td>
                                     <div class="ui form">
                                         <form:select path="groupSeq">
                                             <form:option value="" label="선택안함"/>
@@ -48,59 +42,55 @@
                                             </c:forEach>
                                         </form:select>
                                     </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">채널검색</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
+                                </td>
+                                <th>채널검색</th>
+                                <td>
+                                    <div class="ui form flex">
                                         <form:select path="channelType">
                                             <form:option value="PHONE" label="전화번호"/>
                                             <form:option value="EMAIL" label="이메일"/>
                                             <form:option value="TALK" label="상담톡"/>
                                         </form:select>
+                                        <form:input path="channelData" cssClass="ml5"/>
                                     </div>
-                                </div>
-                                <div class="two wide column">
-                                    <div class="ui input fluid">
-                                        <form:input path="channelData"/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="two wide column"><label class="control-label">검색항목</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="searchType">
-                                            <form:option value="" label="선택안함"/>
-                                            <form:option value="" label="--데이타기본정보--"/>
-                                            <form:option value="${search.SEARCH_TYPE_CREATE_DATE}" label="데이터 생성일" data-type="DATE"/>
-                                            <form:option value="" label="--고객정보필드--"/>
-                                            <c:forEach var="e" items="${customDbType.fields}">
-                                                <c:if test="${e.issearch == 'Y'}">
-                                                    <form:option value="${e.fieldId.substring(customDbType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
-                                                                 data-type="${g.htmlQuote(e.fieldType)}"/>
-                                                </c:if>
-                                            </c:forEach>
-                                        </form:select>
-                                    </div>
-                                </div>
-                                <div class="five wide column -search-type-sub-input" data-type="DATE">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                </td>
+                                <th>검색항목</th>
+                                <td colspan="3">
+                                    <div class="ui form flex">
+                                        <div class="ip-wrap">
+                                            <form:select path="searchType">
+                                                <form:option value="" label="선택안함"/>
+                                                <form:option value="" label="--데이타기본정보--"/>
+                                                <form:option value="${search.SEARCH_TYPE_CREATE_DATE}" label="데이터 생성일" data-type="DATE"/>
+                                                <form:option value="" label="--고객정보필드--"/>
+                                                <c:forEach var="e" items="${customDbType.fields}">
+                                                    <c:if test="${e.issearch == 'Y'}">
+                                                        <form:option value="${e.fieldId.substring(customDbType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
+                                                                     data-type="${g.htmlQuote(e.fieldType)}"/>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </form:select>
                                         </div>
-                                        <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                        <div class="ip-wrap -search-type-sub-input" data-type="DATE">
+                                            <div class="ui action input calendar-area">
+                                                <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                                <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                                <span class="tilde">~</span>
+                                                <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                                <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                            </div>
+                                        </div>
+                                        <div class="ip-wrap -search-type-sub-input">
+                                            <form:input path="keyword"/>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="two wide column -search-type-sub-input">
-                                    <div class="ui input fluid">
-                                        <form:input path="keyword"/>
-                                    </div>
-                                </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
                     </div>
@@ -110,7 +100,7 @@
                 <div class="panel-heading">
                     <div class="pull-left">
                         <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span> 건</h3>
-                        <button class="ui basic green button" type="button" onclick="downloadExcel()">Excel 다운로드</button>
+                        <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         <div class="ui basic buttons">
                             <button class="ui button" onclick="popupModal(null, ${search.groupSeq})">추가</button>
                             <button class="ui button -control-entity" data-entity="MaindbData" style="display: none;"
@@ -124,7 +114,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbData">
+                    <table class="ui celled table structured border-top compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbData">
                         <thead>
                         <tr>
                             <th rowspan="2">번호</th>

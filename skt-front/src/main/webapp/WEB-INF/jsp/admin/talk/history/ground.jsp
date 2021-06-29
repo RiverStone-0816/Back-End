@@ -124,7 +124,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="TalkHistory">
+                    <table class="ui celled table compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="TalkHistory">
                         <thead>
                         <tr>
                             <th class="one wide">번호</th>

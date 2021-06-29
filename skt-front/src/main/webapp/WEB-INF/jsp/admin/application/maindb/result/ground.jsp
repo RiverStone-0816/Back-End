@@ -21,7 +21,7 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">상담 이력조회</div>
+                        <div class="panel-label">상담이력조회</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">
@@ -55,7 +55,7 @@
                             </tr>
                             <tr>
                                 <th>고객DB그룹</th>
-                                <td colspan="3">
+                                <td>
                                     <div class="ui form">
                                         <form:select path="groupSeq">
                                             <form:option value="" label="선택안함"/>
@@ -64,18 +64,22 @@
                                     </div>
                                 </td>
                                 <th>채널검색</th>
-                                <td colspan="3">
+                                <td>
                                     <div class="ui form flex">
-                                        <form:select path="channelType">
-                                            <form:option value="PHONE" label="전화번호"/>
-                                            <form:option value="EMAIL" label="이메일"/>
-                                            <form:option value="TALK" label="상담톡"/>
-                                        </form:select>
-                                        <form:input path="channelData"/>
+                                        <div class="ip-wrap">
+                                            <form:select path="channelType">
+                                                <form:option value="PHONE" label="전화번호"/>
+                                                <form:option value="EMAIL" label="이메일"/>
+                                                <form:option value="TALK" label="상담톡"/>
+                                            </form:select>
+                                        </div>
+                                        <div class="ip-wrap ml5">
+                                            <form:input path="channelData"/>
+                                        </div>
                                     </div>
                                 </td>
                                 <th>상담자</th>
-                                <td colspan="3">
+                                <td>
                                     <div class="ui form">
                                         <form:select path="userId">
                                             <form:option value="" label="선택안함"/>
@@ -84,7 +88,7 @@
                                     </div>
                                 </td>
                                 <th>검색항목</th>
-                                <td colspan="3">
+                                <td>
                                     <div class="ui form flex">
                                         <form:select path="searchType">
                                             <form:option value="" label="선택안함"/>
@@ -103,15 +107,15 @@
                                                 </c:if>
                                             </c:forEach>
                                         </form:select>
-                                        <div class="ui action input -search-type-sub-input" data-type="DATE">
+                                        <div class="ui action input -search-type-sub-input ml5" data-type="DATE">
                                             <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
                                             <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                             <span class="tilde">~</span>
                                             <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
                                             <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         </div>
-                                        <form:input path="keyword" cssClass="-search-type-sub-input" data-type="TEXT"/>
-                                        <form:select path="code" cssClass="-search-type-sub-input" data-type="CODE"/>
+                                        <form:input path="keyword" cssClass="-search-type-sub-input ml5" data-type="TEXT"/>
+                                        <form:select path="code" cssClass="-search-type-sub-input ml5" data-type="CODE"/>
                                     </div>
 
                                 </td>
@@ -141,7 +145,7 @@
                     </div>
                 </div>
                 <div class="panel-body" style="overflow-x: auto;">
-                    <table class="ui celled table structured compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbResult">
+                    <table class="ui celled table structured compact border-top unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbResult">
                         <thead>
                         <tr>
                             <th rowspan="2">번호</th>

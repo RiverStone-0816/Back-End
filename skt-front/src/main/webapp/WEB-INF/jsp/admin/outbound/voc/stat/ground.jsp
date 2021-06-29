@@ -74,7 +74,7 @@
             </form:form>
             <div class="panel">
                 <div class="panel-body">
-                    <table class="ui structured celled table compact unstackable">
+                    <table class="ui structured celled table compact unstackable border-top">
                         <thead>
                         <tr>
                             <c:forEach begin="1" end="${maxLevel}" varStatus="status">

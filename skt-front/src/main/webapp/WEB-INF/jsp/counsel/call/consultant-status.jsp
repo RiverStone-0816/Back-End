@@ -18,7 +18,7 @@
 <div class="ui internally celled grid compact">
     <div class="row">
         <div class="sixteen wide column">
-            <table class="ui celled table compact unstackable">
+            <table class="ui celled table compact unstackable border-top-default">
                 <thead>
                 <tr>
                     <th>총원</th>
@@ -46,7 +46,7 @@
     </div>
     <div class="row">
         <div class="six wide column">
-            <table class="ui celled table compact unstackable">
+            <table class="ui celled table compact unstackable border-top-default">
                 <tr>
                     <th>수신</th>
                 </tr>
@@ -74,7 +74,7 @@
             </table>
         </div>
         <div class="ten wide column">
-            <table class="ui celled table compact unstackable">
+            <table class="ui celled table compact unstackable border-top-default">
                 <thead>
                 <tr>
                     <th>상담그룹</th>

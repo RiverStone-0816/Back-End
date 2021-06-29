@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured compact unstackable ${list.size() > 0 ? "selectable-only" : null}" data-entity="ScreenConfig">
+                    <table class="ui celled table structured compact border-top unstackable ${list.size() > 0 ? "selectable-only" : null}" data-entity="ScreenConfig">
                         <thead>
                         <tr>
                             <th>번호</th>

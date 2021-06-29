@@ -105,7 +105,7 @@
                                         </div>
                                     </div>
                                     <div class="ui segment">
-                                        <table class="ui celled table compact structured unstackable fixed">
+                                        <table class="ui celled table compact structured unstackable fixed border-top">
                                             <tbody>
                                             <tr>
                                                 <th>시작일시</th>

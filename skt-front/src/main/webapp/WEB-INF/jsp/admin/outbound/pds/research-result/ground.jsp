@@ -88,7 +88,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured compact unstackable" data-entity="PdsResearchResult">
+                    <table class="ui celled table structured compact unstackable border-top" data-entity="PdsResearchResult">
                         <thead>
                         <tr>
                             <th rowspan="2">번호</th>

@@ -28,7 +28,7 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-total-count">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
+                        <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span> 건</h3>
                         <div class="ui basic buttons">
                             <button class="ui button" onclick="popupModal()">추가</button>
                             <button class="ui button -control-entity" data-entity="SoundList" style="display: none;" onclick="deleteEntity(getEntityId('SoundList'))">삭제</button>

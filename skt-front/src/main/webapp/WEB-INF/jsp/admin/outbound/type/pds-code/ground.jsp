@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured compact unstackable">
+                    <table class="ui celled table structured compact unstackable border-top">
                         <thead>
                         <tr>
                             <th>유형명</th>

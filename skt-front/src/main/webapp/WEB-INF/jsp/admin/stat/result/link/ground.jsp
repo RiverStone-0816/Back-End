@@ -80,7 +80,7 @@
                                 </text>
                             </div>
                             <div class="panel-body pd-1em">
-                                <table class="ui celled table compact unstackable structured fixed">
+                                <table class="ui celled table compact unstackable structured fixed border-top">
                                     <thead>
                                     <tr>
                                         <th>고객유형</th>
