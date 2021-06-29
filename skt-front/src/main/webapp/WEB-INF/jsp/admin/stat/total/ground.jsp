@@ -94,114 +94,107 @@
                 </div>
             </form:form>
             <div class="panel panel-statstics">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
-                    </div>
-                </div>
                 <div class="panel-body">
                     <div class="panel-section">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <text class="content">
-                                    총통화통계
-                                    <div class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</div>
-                                </text>
+                        <div class="panel-section-title">
+                            <div class="title-txt">
+                                총 통화통계  <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
                             </div>
-                            <div class="panel-body pd-1em">
-                                <table class="ui celled table compact unstackable structured border-top">
-                                    <thead>
-                                    <tr>
-                                        <th rowspan="2">날짜/시간</th>
-                                        <th colspan="2">총통화</th>
-                                        <th colspan="6">O/B</th>
-                                        <th colspan="11">I/B</th>
-                                    </tr>
-                                    <tr>
-                                        <th>총건수</th>
-                                        <th>총시간</th>
-                                        <th>총시도콜</th>
-                                        <th>O/B건수<br>(성공호)</th>
-                                        <th>비수신</th>
-                                        <th>통화성공률</th>
-                                        <th>O/B<br>총통화시간</th>
-                                        <th>O/B<br>평균통화시간</th>
-                                        <th>I/B<br>전체콜</th>
-                                        <th>단순조회</th>
-                                        <th>연결요청</th>
-                                        <th>응대호</th>
-                                        <th>포기호</th>
-                                        <th>콜백</th>
-                                        <th>I/B<br>총통화시간</th>
-                                        <th>평균<br>통화시간</th>
-                                        <th>평균<br>대기시간</th>
-                                        <th>호응답률</th>
-                                        <th>단순조회율</th>
-                                    </tr>
-                                    </thead>
-                                    <c:choose>
-                                        <c:when test="${list.size() > 0}">
-                                            <tbody>
-                                            <c:forEach var="e" items="${list}">
-                                                <tr>
-                                                    <td>${g.htmlQuote(e.timeInformation)}</td>
-                                                    <td>${e.totalCount}</td>
-                                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.totalBillSec)}</td>
-                                                    <td><span class="data-detail-trigger">${e.outboundStat.total}</span></td>
-                                                    <td>${e.outboundStat.success}</td>
-                                                    <td><span class="data-detail-trigger">${e.outboundStat.cancel}</span></td>
-                                                    <td>${e.outboundStat.successAvg}%</td>
-                                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.outboundStat.billSecSum)}</td>
-                                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.outboundStat.billSecAvg)}</td>
-                                                    <td><span class="data-detail-trigger">${e.inboundStat.total}</span></td>
-                                                    <td><span class="data-detail-trigger">${e.inboundStat.onlyRead}</span></td>
-                                                    <td><span class="data-detail-trigger">${e.inboundStat.connReq}</span></td>
-                                                    <td><span class="data-detail-trigger">${e.inboundStat.success}</span></td>
-                                                    <td><span class="data-detail-trigger">${e.inboundStat.cancel}</span></td>
-                                                    <td>${e.inboundStat.callbackSuccess}</td>
-                                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.billSecSum)}</td>
-                                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.billSecAvg)}</td>
-                                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.waitAvg)}</td>
-                                                    <td>${e.inboundStat.responseRate}%</td>
-                                                    <td>${e.inboundStat.ivrAvg}%</td>
-                                                </tr>
-                                            </c:forEach>
-                                            </tbody>
-                                            <tfoot>
+                            <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
+                        </div>
+                        <div class="table-scroll-wrap">
+                            <table class="ui celled table compact unstackable structured border-top">
+                                <thead>
+                                <tr>
+                                    <th rowspan="2">날짜/시간</th>
+                                    <th colspan="2">총통화</th>
+                                    <th colspan="6">O/B</th>
+                                    <th colspan="11">I/B</th>
+                                </tr>
+                                <tr>
+                                    <th>총건수</th>
+                                    <th>총시간</th>
+                                    <th>총시도콜</th>
+                                    <th>O/B건수<br>(성공호)</th>
+                                    <th>비수신</th>
+                                    <th>통화성공률</th>
+                                    <th>O/B<br>총통화시간</th>
+                                    <th>O/B<br>평균통화시간</th>
+                                    <th>I/B<br>전체콜</th>
+                                    <th>단순조회</th>
+                                    <th>연결요청</th>
+                                    <th>응대호</th>
+                                    <th>포기호</th>
+                                    <th>콜백</th>
+                                    <th>I/B<br>총통화시간</th>
+                                    <th>평균<br>통화시간</th>
+                                    <th>평균<br>대기시간</th>
+                                    <th>호응답률</th>
+                                    <th>단순조회율</th>
+                                </tr>
+                                </thead>
+                                <c:choose>
+                                    <c:when test="${list.size() > 0}">
+                                        <tbody>
+                                        <c:forEach var="e" items="${list}">
                                             <tr>
-                                                <td>합계</td>
-                                                <td>${total.totalCount}</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.totalBillSec)}</td>
-                                                <td>${total.outboundStat.total}</td>
-                                                <td>${total.outboundStat.success}</td>
-                                                <td>${total.outboundStat.cancel}</td>
-                                                <td>${String.format("%.1f", total.outboundStat.successAvg)}%</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.outboundStat.billSecSum)}</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.outboundStat.billSecAvg)}</td>
-                                                <td>${total.inboundStat.total}</td>
-                                                <td>${total.inboundStat.onlyRead}</td>
-                                                <td>${total.inboundStat.connReq}</td>
-                                                <td>${total.inboundStat.success}</td>
-                                                <td>${total.inboundStat.cancel}</td>
-                                                <td>${total.inboundStat.callbackSuccess}</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecSum)}</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecAvg)}</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.waitAvg)}</td>
-                                                <td>${String.format("%.1f", total.inboundStat.responseRate)}%</td>
-                                                <td>${String.format("%.1f", total.inboundStat.ivrAvg)}%</td>
+                                                <td>${g.htmlQuote(e.timeInformation)}</td>
+                                                <td>${e.totalCount}</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.totalBillSec)}</td>
+                                                <td><span class="data-detail-trigger">${e.outboundStat.total}</span></td>
+                                                <td>${e.outboundStat.success}</td>
+                                                <td><span class="data-detail-trigger">${e.outboundStat.cancel}</span></td>
+                                                <td>${e.outboundStat.successAvg}%</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.outboundStat.billSecSum)}</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.outboundStat.billSecAvg)}</td>
+                                                <td><span class="data-detail-trigger">${e.inboundStat.total}</span></td>
+                                                <td><span class="data-detail-trigger">${e.inboundStat.onlyRead}</span></td>
+                                                <td><span class="data-detail-trigger">${e.inboundStat.connReq}</span></td>
+                                                <td><span class="data-detail-trigger">${e.inboundStat.success}</span></td>
+                                                <td><span class="data-detail-trigger">${e.inboundStat.cancel}</span></td>
+                                                <td>${e.inboundStat.callbackSuccess}</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.billSecSum)}</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.billSecAvg)}</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.waitAvg)}</td>
+                                                <td>${e.inboundStat.responseRate}%</td>
+                                                <td>${e.inboundStat.ivrAvg}%</td>
                                             </tr>
-                                            </tfoot>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <tbody>
-                                            <tr>
-                                                <td colspan="20" class="null-data">조회된 데이터가 없습니다.</td>
-                                            </tr>
-                                            </tbody>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </table>
-                            </div>
+                                        </c:forEach>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td>합계</td>
+                                            <td>${total.totalCount}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.totalBillSec)}</td>
+                                            <td>${total.outboundStat.total}</td>
+                                            <td>${total.outboundStat.success}</td>
+                                            <td>${total.outboundStat.cancel}</td>
+                                            <td>${String.format("%.1f", total.outboundStat.successAvg)}%</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.outboundStat.billSecSum)}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.outboundStat.billSecAvg)}</td>
+                                            <td>${total.inboundStat.total}</td>
+                                            <td>${total.inboundStat.onlyRead}</td>
+                                            <td>${total.inboundStat.connReq}</td>
+                                            <td>${total.inboundStat.success}</td>
+                                            <td>${total.inboundStat.cancel}</td>
+                                            <td>${total.inboundStat.callbackSuccess}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecSum)}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecAvg)}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.waitAvg)}</td>
+                                            <td>${String.format("%.1f", total.inboundStat.responseRate)}%</td>
+                                            <td>${String.format("%.1f", total.inboundStat.ivrAvg)}%</td>
+                                        </tr>
+                                        </tfoot>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <tbody>
+                                        <tr>
+                                            <td colspan="20" class="null-data">조회된 데이터가 없습니다.</td>
+                                        </tr>
+                                        </tbody>
+                                    </c:otherwise>
+                                </c:choose>
+                            </table>
                         </div>
                     </div>
                     <c:if test="${list.size() > 0}">

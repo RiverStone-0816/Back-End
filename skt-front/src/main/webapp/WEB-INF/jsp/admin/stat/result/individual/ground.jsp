@@ -76,22 +76,15 @@
                 </div>
             </form:form>
             <div class="panel panel-statstics">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
-                    </div>
-                </div>
                 <div class="panel-body">
                     <div class="panel-section">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <text class="content">
-                                    상담결과통계(개별)
-                                    <div class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</div>
-                                </text>
+                        <div class="panel-section-title">
+                            <div class="title-txt">
+                                상담결과통계(개별) <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
                             </div>
-                            <div class="panel-body pd-1em">
-                                <table class="ui celled table compact unstackable">
+                            <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
+                        </div>
+                        <table class="ui celled table compact unstackable">
                                     <thead>
                                     <tr>
                                         <th>문의유형</th>
@@ -120,8 +113,6 @@
                                     </c:choose>
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

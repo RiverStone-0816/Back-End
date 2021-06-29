@@ -778,6 +778,13 @@ pre {
   height:100%;
   padding:0 10px 10px 10px;
   overflow: hidden;
+  .ui.celled.table {
+    tr {
+      th,td {
+        height: 45px;
+      }
+    }
+  }
   .ui.button.sharp {
     margin:0;
   }
@@ -1430,6 +1437,9 @@ pre {
     .panel-section {
       padding:14px;
       border-bottom:1px solid @color-border;
+      .panel-section-title {
+
+      }
       .panel-heading {
         background:lighten(@color-gray,3%);
       }
@@ -1475,10 +1485,15 @@ pre {
       vertical-align: unset;
     }
     .ui.basic.buttons {
-      border-radius: 0;
       border:0;
       .button {
         padding: .56em 1.5em;
+        &:last-child {
+          border-radius: 0;
+        }
+        &:not(:first-of-type) {
+          border-left: 0;
+        }
       }
     }
     .row {
@@ -1538,14 +1553,25 @@ pre {
 }
 
 .panel:not(.panel-search).panel-statstics {
-  .panel-heading {
-    border-bottom: 1px solid @color-border;
-    padding:15px;
+  .panel-section-title {
+    margin: 0 0 1em 0;
+    .title-txt {
+      color: @color-black;
+      display: inline-block;
+      font-weight: 800;
+    }
     .sub.header {
-      margin:5px 0 0 0;
+      margin: 0 0 0 5px;
       color:darken(@color-gray, 30%);
       font-weight:300;
     }
+    .ui.button {
+      margin: 0 0 0 10px;
+    }
+  }
+  .panel-heading {
+    border-bottom: 1px solid @color-border;
+    padding:15px;
   }
   .panel-body {
     padding:0;

@@ -96,133 +96,125 @@
                     </div>
                 </div>
             </form:form>
-
             <div class="panel panel-statstics">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
-                    </div>
-                </div>
                 <div class="panel-body">
                     <div class="panel-section">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <div class="content">
-                                    인입경로별통계
-                                    <div class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</div>
-                                </div>
+                        <div class="panel-section-title">
+                            <div class="title-txt">
+                                인입경로별통계  <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
                             </div>
-                            <div class="panel-body pd-1em">
-                                <table class="ui celled table compact unstackable structured border-top">
-                                    <thead>
-                                    <tr>
-                                        <th rowspan="2">날짜/시간</th>
-                                        <th rowspan="2">서비스</th>
-                                        <th rowspan="2">IVR</th>
-                                        <th colspan="${maxLevel+1}">인입경로</th>
-                                        <th colspan="5">I/B 콜 현황</th>
-                                        <th colspan="5">성과지표</th>
-                                        <th colspan="5">응대호 대기시간 분석</th>
-                                    </tr>
-                                    <tr>
-                                        <c:forEach var="i" begin="1" end="${maxLevel+1}">
-                                            <th>${i}th</th>
-                                        </c:forEach>
+                            <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
+                        </div>
+                        <div class="table-scroll-wrap">
+                            <table class="ui celled table compact unstackable structured border-top">
+                                <thead>
+                                <tr>
+                                    <th rowspan="2">날짜/시간</th>
+                                    <th rowspan="2">서비스</th>
+                                    <th rowspan="2">IVR</th>
+                                    <th colspan="${maxLevel+1}">인입경로</th>
+                                    <th colspan="5">I/B 콜 현황</th>
+                                    <th colspan="5">성과지표</th>
+                                    <th colspan="5">응대호 대기시간 분석</th>
+                                </tr>
+                                <tr>
+                                    <c:forEach var="i" begin="1" end="${maxLevel+1}">
+                                        <th>${i}th</th>
+                                    </c:forEach>
 
-                                        <th>인입콜수</th>
-                                        <th>단순조회</th>
-                                        <th>연결요청</th>
-                                        <th>응대호</th>
-                                        <th>포기호</th>
+                                    <th>인입콜수</th>
+                                    <th>단순조회</th>
+                                    <th>연결요청</th>
+                                    <th>응대호</th>
+                                    <th>포기호</th>
 
-                                        <th>평균<br>통화시간</th>
-                                        <th>평균<br>대기시간</th>
-                                        <th>호응답률</th>
-                                        <th>서비스레벨<br>호응답률</th>
-                                        <th>단순조회율</th>
+                                    <th>평균<br>통화시간</th>
+                                    <th>평균<br>대기시간</th>
+                                    <th>호응답률</th>
+                                    <th>서비스레벨<br>호응답률</th>
+                                    <th>단순조회율</th>
 
-                                        <th>~10(초)</th>
-                                        <th>~20(초)</th>
-                                        <th>~30(초)</th>
-                                        <th>~40(초)</th>
-                                        <th>40~(초)</th>
-                                    </tr>
-                                    </thead>
+                                    <th>~10(초)</th>
+                                    <th>~20(초)</th>
+                                    <th>~30(초)</th>
+                                    <th>~40(초)</th>
+                                    <th>40~(초)</th>
+                                </tr>
+                                </thead>
 
-                                    <c:choose>
-                                        <c:when test="${stat.size() > 0}">
-                                            <tbody>
-                                            <c:forEach var="stat" items="${stat}">
-                                                <tr>
-                                                <td rowspan="${stat.recordList.stream().map(e -> e.recordNameList.size()+1).sum()+1}">${g.htmlQuote(stat.timeInformation)}</td>
-                                                <td rowspan="${stat.recordList.stream().map(e -> e.recordNameList.size()+1).sum()+1}">${g.htmlQuote(stat.svcName)}</td>
-                                                <c:choose>
-                                                    <c:when test="${stat.recordList.size() > 0}">
-                                                        <c:forEach var="record" items="${stat.recordList}">
-                                                            <tr>
-                                                            <td rowspan="${record.recordNameList.size()+1}">${g.htmlQuote(record.ivrName)}</td>
-                                                            <c:choose>
-                                                                <c:when test="${record.recordNameList.size() > 0}">
-                                                                    <c:forEach var="recordName" items="${record.recordNameList}">
-                                                                        <tr>
-                                                                            <c:forEach var="i" begin="0" end="${maxLevel}">
-                                                                                <td>
-                                                                                    <c:if test="${recordName.level == i}">
-                                                                                        ${g.htmlQuote(recordName.name)}&ensp;
-                                                                                    </c:if>
-                                                                                </td>
-                                                                            </c:forEach>
-
-                                                                            <td><span class="data-detail-trigger">${recordName.record.total}</span></td>
-                                                                            <td><span class="data-detail-trigger">${recordName.record.onlyRead}</span></td>
-                                                                            <td><span class="data-detail-trigger">${recordName.record.connReq}</span></td>
-                                                                            <td><span class="data-detail-trigger">${recordName.record.success}</span></td>
-                                                                            <td><span class="data-detail-trigger">${recordName.record.cancel}</span></td>
-
-                                                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(recordName.record.billSecAvg)}</td>
-                                                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(recordName.record.waitAvg)}</td>
-                                                                            <td>${recordName.record.responseRate}%</td>
-                                                                            <td>${recordName.record.svcLevelAvg}%</td>
-                                                                            <td>${recordName.record.ivrAvg}%</td>
-
-                                                                            <td>${recordName.record.waitSucc_0_10}</td>
-                                                                            <td>${recordName.record.waitSucc_10_20}</td>
-                                                                            <td>${recordName.record.waitSucc_20_30}</td>
-                                                                            <td>${recordName.record.waitSucc_30_40}</td>
-                                                                            <td>${recordName.record.waitSucc_40}</td>
-                                                                        </tr>
-                                                                    </c:forEach>
-                                                                </c:when>
-                                                                <c:otherwise>
-                                                                    <c:forEach var="i" begin="0" end="${maxLevel+15}">
-                                                                        <td></td>
-                                                                    </c:forEach>
-                                                                </c:otherwise>
-                                                            </c:choose>
-                                                            </tr>
-                                                        </c:forEach>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <c:forEach var="i" begin="0" end="${maxLevel+15}">
-                                                            <td></td>
-                                                        </c:forEach>
-                                                        <tr></tr>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                                </tr>
-                                            </c:forEach>
-                                            </tbody>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <tbody>
+                                <c:choose>
+                                    <c:when test="${stat.size() > 0}">
+                                        <tbody>
+                                        <c:forEach var="stat" items="${stat}">
                                             <tr>
-                                                <td colspan="21" class="null-data">조회된 데이터가 없습니다.</td>
+                                            <td rowspan="${stat.recordList.stream().map(e -> e.recordNameList.size()+1).sum()+1}">${g.htmlQuote(stat.timeInformation)}</td>
+                                            <td rowspan="${stat.recordList.stream().map(e -> e.recordNameList.size()+1).sum()+1}">${g.htmlQuote(stat.svcName)}</td>
+                                            <c:choose>
+                                                <c:when test="${stat.recordList.size() > 0}">
+                                                    <c:forEach var="record" items="${stat.recordList}">
+                                                        <tr>
+                                                        <td rowspan="${record.recordNameList.size()+1}">${g.htmlQuote(record.ivrName)}</td>
+                                                        <c:choose>
+                                                            <c:when test="${record.recordNameList.size() > 0}">
+                                                                <c:forEach var="recordName" items="${record.recordNameList}">
+                                                                    <tr>
+                                                                        <c:forEach var="i" begin="0" end="${maxLevel}">
+                                                                            <td>
+                                                                                <c:if test="${recordName.level == i}">
+                                                                                    ${g.htmlQuote(recordName.name)}&ensp;
+                                                                                </c:if>
+                                                                            </td>
+                                                                        </c:forEach>
+
+                                                                        <td><span class="data-detail-trigger">${recordName.record.total}</span></td>
+                                                                        <td><span class="data-detail-trigger">${recordName.record.onlyRead}</span></td>
+                                                                        <td><span class="data-detail-trigger">${recordName.record.connReq}</span></td>
+                                                                        <td><span class="data-detail-trigger">${recordName.record.success}</span></td>
+                                                                        <td><span class="data-detail-trigger">${recordName.record.cancel}</span></td>
+
+                                                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(recordName.record.billSecAvg)}</td>
+                                                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(recordName.record.waitAvg)}</td>
+                                                                        <td>${recordName.record.responseRate}%</td>
+                                                                        <td>${recordName.record.svcLevelAvg}%</td>
+                                                                        <td>${recordName.record.ivrAvg}%</td>
+
+                                                                        <td>${recordName.record.waitSucc_0_10}</td>
+                                                                        <td>${recordName.record.waitSucc_10_20}</td>
+                                                                        <td>${recordName.record.waitSucc_20_30}</td>
+                                                                        <td>${recordName.record.waitSucc_30_40}</td>
+                                                                        <td>${recordName.record.waitSucc_40}</td>
+                                                                    </tr>
+                                                                </c:forEach>
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <c:forEach var="i" begin="0" end="${maxLevel+15}">
+                                                                    <td></td>
+                                                                </c:forEach>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <c:forEach var="i" begin="0" end="${maxLevel+15}">
+                                                        <td></td>
+                                                    </c:forEach>
+                                                    <tr></tr>
+                                                </c:otherwise>
+                                            </c:choose>
                                             </tr>
-                                            </tbody>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </table>
-                            </div>
+                                        </c:forEach>
+                                        </tbody>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <tbody>
+                                        <tr>
+                                            <td colspan="21" class="null-data">조회된 데이터가 없습니다.</td>
+                                        </tr>
+                                        </tbody>
+                                    </c:otherwise>
+                                </c:choose>
+                            </table>
                         </div>
                     </div>
                 </div>

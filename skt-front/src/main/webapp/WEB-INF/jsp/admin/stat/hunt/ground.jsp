@@ -19,9 +19,7 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">
-                            상담그룹별통계
-                        </div>
+                        <div class="panel-label">상담그룹별통계</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">
@@ -127,90 +125,81 @@
                 </div>
             </form:form>
             <div class="panel panel-statstics">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
-                    </div>
-                </div>
                 <div class="panel-body">
                     <div class="panel-section">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <text class="content">
-                                    큐(그룹)별통계
-                                    <div class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</div>
-                                </text>
+                        <div class="panel-section-title">
+                            <div class="title-txt">
+                                큐(그룹)별통계  <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
                             </div>
-                            <div class="panel-body pd-1em">
-                                <table class="ui celled table compact unstackable structured border-top">
-                                    <thead>
-                                    <tr>
-                                        <th rowspan="2">날짜/시간</th>
-                                        <th rowspan="2">큐그룹</th>
-                                        <th colspan="8">I/B</th>
-                                    </tr>
-                                    <tr>
-                                        <th>I/B 연결요청</th>
-                                        <th>응대호</th>
-                                        <th>포기호</th>
-                                        <th>콜백</th>
-                                        <th>I/B 총통화시간</th>
-                                        <th>평균통화시간</th>
-                                        <th>응답률</th>
-                                        <th>서비스레벨 호응답률</th>
-                                    </tr>
-                                    </thead>
-                                    <c:choose>
-                                        <c:when test="${list.size() > 0}">
-                                            <tbody>
-                                            <c:forEach var="element" items="${list}">
-                                                <c:if test="${element.statQueueInboundResponses.size() > 0}">
-                                                    <tr>
-                                                    <td rowspan="${element.statQueueInboundResponses.size() + 1}">${g.htmlQuote(element.timeInformation)}</td>
-                                                    <c:forEach var="e" items="${element.statQueueInboundResponses}">
-                                                        <tr>
-                                                            <td>${g.htmlQuote(e.queueName)}</td>
-
-                                                            <td>${e.inTotal}</td>
-                                                            <td>${e.inSuccess}</td>
-                                                            <td>${e.cancel}</td>
-                                                            <td>${e.callbackCount}</td>
-                                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inBillSecSum)}</td>
-                                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.avgBillSec)}</td>
-                                                            <td>${e.avgRateValue}%</td>
-                                                            <td>${e.serviceLevelOk}</td>
-                                                        </tr>
-                                                    </c:forEach>
-                                                    </tr>
-                                                </c:if>
-                                            </c:forEach>
-                                            </tbody>
-                                            <tfoot>
-                                            <tr>
-                                                <td colspan="2">합계</td>
-
-                                                <td>${total.inTotal}</td>
-                                                <td>${total.inSuccess}</td>
-                                                <td>${total.cancel}</td>
-                                                <td>${total.callbackCount}</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inBillSecSum)}</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.avgBillSec)}</td>
-                                                <td>${String.format("%.1f", total.avgRateValue)}%</td>
-                                                <td>${total.serviceLevelOk}</td>
-                                            </tr>
-                                            </tfoot>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <tbody>
-                                            <tr>
-                                                <td colspan="9" class="null-data">조회된 데이터가 없습니다.</td>
-                                            </tr>
-                                            </tbody>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </table>
-                            </div>
+                            <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
+                        <table class="ui celled table compact unstackable structured border-top">
+                                <thead>
+                                <tr>
+                                    <th rowspan="2">날짜/시간</th>
+                                    <th rowspan="2">큐그룹</th>
+                                    <th colspan="8">I/B</th>
+                                </tr>
+                                <tr>
+                                    <th>I/B 연결요청</th>
+                                    <th>응대호</th>
+                                    <th>포기호</th>
+                                    <th>콜백</th>
+                                    <th>I/B 총통화시간</th>
+                                    <th>평균통화시간</th>
+                                    <th>응답률</th>
+                                    <th>서비스레벨 호응답률</th>
+                                </tr>
+                                </thead>
+                                <c:choose>
+                                    <c:when test="${list.size() > 0}">
+                                        <tbody>
+                                        <c:forEach var="element" items="${list}">
+                                            <c:if test="${element.statQueueInboundResponses.size() > 0}">
+                                                <tr>
+                                                <td rowspan="${element.statQueueInboundResponses.size() + 1}">${g.htmlQuote(element.timeInformation)}</td>
+                                                <c:forEach var="e" items="${element.statQueueInboundResponses}">
+                                                    <tr>
+                                                        <td>${g.htmlQuote(e.queueName)}</td>
+
+                                                        <td>${e.inTotal}</td>
+                                                        <td>${e.inSuccess}</td>
+                                                        <td>${e.cancel}</td>
+                                                        <td>${e.callbackCount}</td>
+                                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inBillSecSum)}</td>
+                                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.avgBillSec)}</td>
+                                                        <td>${e.avgRateValue}%</td>
+                                                        <td>${e.serviceLevelOk}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                                </tr>
+                                            </c:if>
+                                        </c:forEach>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr>
+                                            <td colspan="2">합계</td>
+
+                                            <td>${total.inTotal}</td>
+                                            <td>${total.inSuccess}</td>
+                                            <td>${total.cancel}</td>
+                                            <td>${total.callbackCount}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inBillSecSum)}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.avgBillSec)}</td>
+                                            <td>${String.format("%.1f", total.avgRateValue)}%</td>
+                                            <td>${total.serviceLevelOk}</td>
+                                        </tr>
+                                        </tfoot>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <tbody>
+                                        <tr>
+                                            <td colspan="9" class="null-data">조회된 데이터가 없습니다.</td>
+                                        </tr>
+                                        </tbody>
+                                    </c:otherwise>
+                                </c:choose>
+                            </table>
                     </div>
                     <div class="panel-section">
                         <div class="panel">

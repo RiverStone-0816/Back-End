@@ -106,137 +106,130 @@
 
 
             <div class="panel panel-statstics">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
-                    </div>
-                </div>
                 <div class="panel-body">
                     <div class="panel-section">
-                        <div class="panel">
-                            <div class="panel-heading">
-                                <text class="content">
-                                    인바운드 통계
-                                    <div class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</div>
-                                </text>
+                        <div class="panel-section-title">
+                            <div class="title-txt">
+                                인바운드 통계  <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
                             </div>
-                            <div class="panel-body pd-1em">
-                                <table class="ui celled table compact unstackable structured border-top">
-                                    <thead>
+                            <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
+                        </div>
+                        <div class="table-scroll-wrap">
+                            <table class="ui celled table compact unstackable structured border-top">
+                                <thead>
+                                <tr>
+                                    <th rowspan="2">날짜/시간</th>
+                                    <th colspan="6">I/B 콜 현황</th>
+                                    <th colspan="6">성과지표</th>
+                                    <th colspan="5">응대호 대기시간 분석</th>
+                                    <th colspan="5">포기호 대기시간 분석</th>
+                                </tr>
+                                <tr>
+                                    <th>I/B<br>전체콜</th>
+                                    <th>단순조회</th>
+                                    <th>연결요청</th>
+                                    <th>응대호</th>
+                                    <th>포기호</th>
+                                    <th>콜백</th>
+
+                                    <th>I/B<br>총통화시간</th>
+                                    <th>평균통화시간</th>
+                                    <th>평균대기시간</th>
+                                    <th>호응답률</th>
+                                    <th>서비스레벨<br>호응답률</th>
+                                    <th>단순조회율</th>
+
+                                    <th>~10(초)</th>
+                                    <th>~20(초)</th>
+                                    <th>~30(초)</th>
+                                    <th>~40(초)</th>
+                                    <th>40~(초)</th>
+                                    <th>~10(초)</th>
+                                    <th>~20(초)</th>
+                                    <th>~30(초)</th>
+                                    <th>~40(초)</th>
+                                    <th>40~(초)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:choose>
+                                <c:when test="${list.size() > 0}">
+                                <tbody>
+                                <c:forEach var="element" items="${list}">
+                                    <c:set var="e" value="${element.inboundStat}"/>
                                     <tr>
-                                        <th rowspan="2">날짜/시간</th>
-                                        <th colspan="6">I/B 콜 현황</th>
-                                        <th colspan="6">성과지표</th>
-                                        <th colspan="5">응대호 대기시간 분석</th>
-                                        <th colspan="5">포기호 대기시간 분석</th>
+                                        <td>${g.htmlQuote(element.timeInformation)}</td>
+
+                                        <td><span class="data-detail-trigger">${e.total}</span></td>
+                                        <td><span class="data-detail-trigger">${e.onlyRead}</span></td>
+                                        <td><span class="data-detail-trigger">${e.connReq}</span></td>
+                                        <td><span class="data-detail-trigger">${e.success}</span></td>
+                                        <td><span class="data-detail-trigger">${e.cancel}</span></td>
+                                        <td><span class="data-detail-trigger">${e.callbackSuccess}</span></td>
+
+                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecSum)}</td>
+                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecAvg)}</td>
+                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.waitAvg)}</td>
+                                        <td>${e.responseRate}%</td>
+                                        <td>${e.svcLevelAvg}%</td>
+                                        <td>${e.ivrAvg}%</td>
+
+                                        <td>${e.waitSucc_0_10}</td>
+                                        <td>${e.waitSucc_10_20}</td>
+                                        <td>${e.waitSucc_20_30}</td>
+                                        <td>${e.waitSucc_30_40}</td>
+                                        <td>${e.waitSucc_40}</td>
+
+                                        <td>${e.waitCancel_0_10}</td>
+                                        <td>${e.waitCancel_10_20}</td>
+                                        <td>${e.waitCancel_20_30}</td>
+                                        <td>${e.waitCancel_30_40}</td>
+                                        <td>${e.waitCancel_40}</td>
                                     </tr>
+                                </c:forEach>
+                                </tbody>
+
+                                <tfoot>
+                                <tr>
+                                    <td>합계</td>
+
+                                    <td>${total.total}</td>
+                                    <td>${total.onlyRead}</td>
+                                    <td>${total.connReq}</td>
+                                    <td>${total.success}</td>
+                                    <td>${total.cancel}</td>
+                                    <td>${total.callbackSuccess}</td>
+
+                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecSum)}</td>
+                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecAvg)}</td>
+                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.waitAvg)}</td>
+                                    <td>${String.format("%.1f", total.responseRate)}%</td>
+                                    <td>${String.format("%.1f", total.svcLevelAvg)}%</td>
+                                    <td>${String.format("%.1f", total.ivrAvg)}%</td>
+
+                                    <td>${total.waitSucc_0_10}</td>
+                                    <td>${total.waitSucc_10_20}</td>
+                                    <td>${total.waitSucc_20_30}</td>
+                                    <td>${total.waitSucc_30_40}</td>
+                                    <td>${total.waitSucc_40}</td>
+
+                                    <td>${total.waitCancel_0_10}</td>
+                                    <td>${total.waitCancel_10_20}</td>
+                                    <td>${total.waitCancel_20_30}</td>
+                                    <td>${total.waitCancel_30_40}</td>
+                                    <td>${total.waitCancel_40}</td>
+                                </tr>
+                                </tfoot>
+                                </c:when>
+                                <c:otherwise>
+                                    <tbody>
                                     <tr>
-                                        <th>I/B<br>전체콜</th>
-                                        <th>단순조회</th>
-                                        <th>연결요청</th>
-                                        <th>응대호</th>
-                                        <th>포기호</th>
-                                        <th>콜백</th>
-
-                                        <th>I/B<br>총통화시간</th>
-                                        <th>평균통화시간</th>
-                                        <th>평균대기시간</th>
-                                        <th>호응답률</th>
-                                        <th>서비스레벨<br>호응답률</th>
-                                        <th>단순조회율</th>
-
-                                        <th>~10(초)</th>
-                                        <th>~20(초)</th>
-                                        <th>~30(초)</th>
-                                        <th>~40(초)</th>
-                                        <th>40~(초)</th>
-                                        <th>~10(초)</th>
-                                        <th>~20(초)</th>
-                                        <th>~30(초)</th>
-                                        <th>~40(초)</th>
-                                        <th>40~(초)</th>
+                                        <td colspan="22" class="null-data">조회된 데이터가 없습니다.</td>
                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:choose>
-                                    <c:when test="${list.size() > 0}">
-                                    <tbody>
-                                    <c:forEach var="element" items="${list}">
-                                        <c:set var="e" value="${element.inboundStat}"/>
-                                        <tr>
-                                            <td>${g.htmlQuote(element.timeInformation)}</td>
-
-                                            <td><span class="data-detail-trigger">${e.total}</span></td>
-                                            <td><span class="data-detail-trigger">${e.onlyRead}</span></td>
-                                            <td><span class="data-detail-trigger">${e.connReq}</span></td>
-                                            <td><span class="data-detail-trigger">${e.success}</span></td>
-                                            <td><span class="data-detail-trigger">${e.cancel}</span></td>
-                                            <td><span class="data-detail-trigger">${e.callbackSuccess}</span></td>
-
-                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecSum)}</td>
-                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecAvg)}</td>
-                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.waitAvg)}</td>
-                                            <td>${e.responseRate}%</td>
-                                            <td>${e.svcLevelAvg}%</td>
-                                            <td>${e.ivrAvg}%</td>
-
-                                            <td>${e.waitSucc_0_10}</td>
-                                            <td>${e.waitSucc_10_20}</td>
-                                            <td>${e.waitSucc_20_30}</td>
-                                            <td>${e.waitSucc_30_40}</td>
-                                            <td>${e.waitSucc_40}</td>
-
-                                            <td>${e.waitCancel_0_10}</td>
-                                            <td>${e.waitCancel_10_20}</td>
-                                            <td>${e.waitCancel_20_30}</td>
-                                            <td>${e.waitCancel_30_40}</td>
-                                            <td>${e.waitCancel_40}</td>
-                                        </tr>
-                                    </c:forEach>
                                     </tbody>
-
-                                    <tfoot>
-                                    <tr>
-                                        <td>합계</td>
-
-                                        <td>${total.total}</td>
-                                        <td>${total.onlyRead}</td>
-                                        <td>${total.connReq}</td>
-                                        <td>${total.success}</td>
-                                        <td>${total.cancel}</td>
-                                        <td>${total.callbackSuccess}</td>
-
-                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecSum)}</td>
-                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecAvg)}</td>
-                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.waitAvg)}</td>
-                                        <td>${String.format("%.1f", total.responseRate)}%</td>
-                                        <td>${String.format("%.1f", total.svcLevelAvg)}%</td>
-                                        <td>${String.format("%.1f", total.ivrAvg)}%</td>
-
-                                        <td>${total.waitSucc_0_10}</td>
-                                        <td>${total.waitSucc_10_20}</td>
-                                        <td>${total.waitSucc_20_30}</td>
-                                        <td>${total.waitSucc_30_40}</td>
-                                        <td>${total.waitSucc_40}</td>
-
-                                        <td>${total.waitCancel_0_10}</td>
-                                        <td>${total.waitCancel_10_20}</td>
-                                        <td>${total.waitCancel_20_30}</td>
-                                        <td>${total.waitCancel_30_40}</td>
-                                        <td>${total.waitCancel_40}</td>
-                                    </tr>
-                                    </tfoot>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <tbody>
-                                        <tr>
-                                            <td colspan="22" class="null-data">조회된 데이터가 없습니다.</td>
-                                        </tr>
-                                        </tbody>
-                                    </c:otherwise>
-                                    </c:choose>
-                                </table>
-                            </div>
+                                </c:otherwise>
+                                </c:choose>
+                            </table>
                         </div>
                     </div>
                     <div class="panel-section">
