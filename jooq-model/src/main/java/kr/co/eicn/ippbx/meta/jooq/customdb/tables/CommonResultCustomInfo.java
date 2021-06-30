@@ -275,57 +275,57 @@ public class CommonResultCustomInfo extends TableImpl<ResultCustomInfoRecord> {
 	/**
 	 * The column <code>CUSTOMDB.result_custom_info.RS_STRING_10</code>.
 	 */
-	public final TableField<ResultCustomInfoRecord, String> RS_STRING_10 = createField(DSL.name("RS_STRING_10"), org.jooq.impl.SQLDataType.VARCHAR(1000).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+	public final TableField<ResultCustomInfoRecord, String> RS_STRING_10 = createField(DSL.name("RS_STRING_10"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
 	/**
 	 * The column <code>CUSTOMDB.result_custom_info.RS_STRING_11</code>.
 	 */
-	public final TableField<ResultCustomInfoRecord, String> RS_STRING_11 = createField(DSL.name("RS_STRING_11"), org.jooq.impl.SQLDataType.VARCHAR(1000).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+	public final TableField<ResultCustomInfoRecord, String> RS_STRING_11 = createField(DSL.name("RS_STRING_11"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
 	/**
 	 * The column <code>CUSTOMDB.result_custom_info.RS_STRING_12</code>.
 	 */
-	public final TableField<ResultCustomInfoRecord, String> RS_STRING_12 = createField(DSL.name("RS_STRING_12"), org.jooq.impl.SQLDataType.VARCHAR(1000).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+	public final TableField<ResultCustomInfoRecord, String> RS_STRING_12 = createField(DSL.name("RS_STRING_12"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
 	/**
 	 * The column <code>CUSTOMDB.result_custom_info.RS_STRING_13</code>.
 	 */
-	public final TableField<ResultCustomInfoRecord, String> RS_STRING_13 = createField(DSL.name("RS_STRING_13"), org.jooq.impl.SQLDataType.VARCHAR(1000).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+	public final TableField<ResultCustomInfoRecord, String> RS_STRING_13 = createField(DSL.name("RS_STRING_13"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
 	/**
 	 * The column <code>CUSTOMDB.result_custom_info.RS_STRING_14</code>.
 	 */
-	public final TableField<ResultCustomInfoRecord, String> RS_STRING_14 = createField(DSL.name("RS_STRING_14"), org.jooq.impl.SQLDataType.VARCHAR(1000).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+	public final TableField<ResultCustomInfoRecord, String> RS_STRING_14 = createField(DSL.name("RS_STRING_14"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
 	/**
 	 * The column <code>CUSTOMDB.result_custom_info.RS_STRING_15</code>.
 	 */
-	public final TableField<ResultCustomInfoRecord, String> RS_STRING_15 = createField(DSL.name("RS_STRING_15"), org.jooq.impl.SQLDataType.VARCHAR(1000).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+	public final TableField<ResultCustomInfoRecord, String> RS_STRING_15 = createField(DSL.name("RS_STRING_15"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
 	/**
 	 * The column <code>CUSTOMDB.result_custom_info.RS_STRING_16</code>.
 	 */
-	public final TableField<ResultCustomInfoRecord, String> RS_STRING_16 = createField(DSL.name("RS_STRING_16"), org.jooq.impl.SQLDataType.VARCHAR(1000).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+	public final TableField<ResultCustomInfoRecord, String> RS_STRING_16 = createField(DSL.name("RS_STRING_16"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
 	/**
 	 * The column <code>CUSTOMDB.result_custom_info.RS_STRING_17</code>.
 	 */
-	public final TableField<ResultCustomInfoRecord, String> RS_STRING_17 = createField(DSL.name("RS_STRING_17"), org.jooq.impl.SQLDataType.VARCHAR(1000).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+	public final TableField<ResultCustomInfoRecord, String> RS_STRING_17 = createField(DSL.name("RS_STRING_17"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
 	/**
 	 * The column <code>CUSTOMDB.result_custom_info.RS_STRING_18</code>.
 	 */
-	public final TableField<ResultCustomInfoRecord, String> RS_STRING_18 = createField(DSL.name("RS_STRING_18"), org.jooq.impl.SQLDataType.VARCHAR(1000).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+	public final TableField<ResultCustomInfoRecord, String> RS_STRING_18 = createField(DSL.name("RS_STRING_18"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
 	/**
 	 * The column <code>CUSTOMDB.result_custom_info.RS_STRING_19</code>.
 	 */
-	public final TableField<ResultCustomInfoRecord, String> RS_STRING_19 = createField(DSL.name("RS_STRING_19"), org.jooq.impl.SQLDataType.VARCHAR(1000).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+	public final TableField<ResultCustomInfoRecord, String> RS_STRING_19 = createField(DSL.name("RS_STRING_19"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
 	/**
 	 * The column <code>CUSTOMDB.result_custom_info.RS_STRING_20</code>.
 	 */
-	public final TableField<ResultCustomInfoRecord, String> RS_STRING_20 = createField(DSL.name("RS_STRING_20"), org.jooq.impl.SQLDataType.VARCHAR(1000).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+	public final TableField<ResultCustomInfoRecord, String> RS_STRING_20 = createField(DSL.name("RS_STRING_20"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
 	/**
 	 * The column <code>CUSTOMDB.result_custom_info.RS_CODE_1</code>.
