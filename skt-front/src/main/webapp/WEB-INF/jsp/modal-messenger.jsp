@@ -63,7 +63,7 @@
                 <text class="-chatroom-name"></text>
                 <i class="x icon -close-room" style="position: absolute; right: 10px; top: 10px;"></i>
             </div>
-            <div class="chat-body" style="height: calc(100% - 170px);"></div>
+            <div class="chat-body -overlay-scroll" style="height: calc(100% - 170px);"></div>
             <div class="write-chat">
                 <div class="write-menu">
                     <button type="button" class="mini ui button icon compact -upload-file" title="파일전송"><i class="paperclip icon"></i></button>

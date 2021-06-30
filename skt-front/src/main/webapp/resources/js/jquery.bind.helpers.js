@@ -116,6 +116,7 @@
                     });
             });
         });
+        findAndMe(".-overlay-scroll", this).overlayScrollbars({});
         findAndMe('audio', this).each(function () {
             maudio({obj: this});
         });

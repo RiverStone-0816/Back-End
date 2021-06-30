@@ -216,7 +216,6 @@
             $('#etc-panel').removeClass('expand-panel');
             $('#talk-panel').addClass('reduce-panel');
             $('#etc-panel').addClass('expand-panel');
-            $("#etc-panel .os-content").show();
         }
 
         function callExpandEtcPanel() {
@@ -225,7 +224,6 @@
             $('#etc-panel').removeClass('reduce-panel');
             $('#talk-panel').removeClass('reduce-panel');
             $('#etc-panel').removeClass('expand-panel');
-            $("#etc-panel .os-content").show();
         }
 
         function reduceEtcPanel() {
@@ -234,7 +232,6 @@
             $('#etc-panel').removeClass('expand-panel');
             $('#talk-panel').addClass('expand-panel');
             $('#etc-panel').addClass('reduce-panel');
-            $("#etc-panel .os-content").hide();
         }
 
         $('#etc-panel-resizer').click(function () {
@@ -343,8 +340,6 @@
                 $('.-configured-indicator.active').click();
             }
         }
-
-        $("#etc-panel .segment").overlayScrollbars({});
 
         function loadCoworkerNavigation() {
             replaceReceivedHtmlInSilence('/counsel/coworker-navigation', '#counsel-nav');

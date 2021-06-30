@@ -54,12 +54,10 @@
                                     <span class="customer -custom-name">${e.maindbCustomName != null ? g.htmlQuote(e.maindbCustomName) : '미등록고객'}</span>
                                 </div>
                                 <div class="right -user-name">상담원 : ${g.htmlQuote(e.userName)}</div>
-                                <%-- todo: 읽지 않은 메세지 갯수 출력 ui 없음
-                                <span class="ui mini label circular -indicator-new-message" style="display: none"> N </span>
-                                --%>
                             </div>
                             <div class="content">
                                 <div class="left">
+                                    <span class="ui mini label circular -indicator-new-message" style="display: none"> N </span>
                                     <c:choose>
                                         <c:when test="${e.type == 'photo' && e.send_receive == 'S'}">
                                             <i>사진 전송됨</i>
@@ -155,6 +153,6 @@
 
             return (result ? 1 : -1);
         });
-        ui.find('.-talk-list-wrap  ul').append(sorted.detach());
+        ui.find('.-talk-list-wrap ul').append(sorted.detach());
     }).change();
 </script>
