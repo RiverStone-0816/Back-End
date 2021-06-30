@@ -2,9 +2,12 @@ package kr.co.eicn.ippbx.front.config;
 
 import kr.co.eicn.ippbx.front.interceptor.LoginRequireInterceptor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -13,8 +16,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
+@Slf4j
 @RequiredArgsConstructor
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -59,5 +65,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
         final LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
         interceptor.setParamName("$lang");
         return interceptor;
+    }
+
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> messageConverters) {
+        for (int i = 0; i < messageConverters.size(); i++) {
+            val converter = messageConverters.get(i);
+            if (Objects.equals(converter.getClass(), JsonResultMessageConverter.class)) {
+                messageConverters.remove(i);
+                messageConverters.add(0, converter);
+                break;
+            }
+        }
     }
 }
