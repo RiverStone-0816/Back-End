@@ -20,9 +20,8 @@ import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse;
 import kr.co.eicn.ippbx.model.enums.IdType;
 import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -147,18 +146,29 @@ public class AuthApiController extends BaseController {
         final Map<String, String> socketMap = g.getSocketList();
         final ServerInfo serverInfo = companyApiInterface.pbxServerInfo();
         final boolean isMulti = companyApiInterface.checkService("MUL");
-        return new SocketIoInformation(
-                socketMap.get(adminSocketId), socketMap.get(callControlSocketId), socketMap.get(talkSocketId), socketMap.get(pdsSocketId), socketMap.get(messengerSocketId),
-                serverInfo == null ? "" : serverInfo.getHost(), serverInfo == null ? "" : serverInfo.getIp(),
-                user.getId(), user.getIdName(), loginForm.getPassword(), user.getCompanyId(),
-                loginForm.getExtension(), user.getIdType(),
-                organization.getGroupCode(), organization.getGroupTreeName(), organization.getGroupLevel()
-                , isMulti ? "Y" : "N"
-        );
+
+        return SocketIoInformation.builder()
+                .adminSocketUrl(socketMap.get(adminSocketId))
+                .callControlSocketUrl(socketMap.get(callControlSocketId))
+                .talkSocketUrl(socketMap.get(talkSocketId))
+                .pdsSocketUrl(socketMap.get(pdsSocketId))
+                .messengerSocketUrl(socketMap.get(messengerSocketId))
+                .pbxName(serverInfo == null ? "" : serverInfo.getHost())
+                .pbxHost(serverInfo == null ? "" : serverInfo.getIp())
+                .userId(user.getId())
+                .userName(user.getIdName())
+                .password(loginForm.getPassword())
+                .companyId(user.getCompanyId())
+                .extension(loginForm.getExtension())
+                .idType(user.getIdType())
+                .groupCode(organization.getGroupCode())
+                .groupTreeName(organization.getGroupTreeName())
+                .groupLevel(organization.getGroupLevel())
+                .isMulti(isMulti ? "Y" : "N")
+                .build();
     }
 
-    @NoArgsConstructor
-    @AllArgsConstructor
+    @Builder
     @Data
     public static class SocketIoInformation {
         private String adminSocketUrl;

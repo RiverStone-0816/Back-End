@@ -334,7 +334,7 @@
                     <div class="chat-header">
                         [타상담]-대화방TVbHHGl8Y3Wx
                     </div>
-                    <div class="chat-body">
+                    <div class="chat-body -overlay-scroll">
                         <div class="chat-item chat-me">
                             <div class="wrap-content">
                                 <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>

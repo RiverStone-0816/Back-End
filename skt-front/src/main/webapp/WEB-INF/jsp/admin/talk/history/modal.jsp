@@ -23,7 +23,7 @@
                 <div class="chat-header">
                     ${g.htmlQuote(entity.roomName)}
                 </div>
-                <div class="chat-body">
+                <div class="chat-body -overlay-scroll">
                     <c:forEach var="e" items="${messageHistory}">
                         <c:choose>
                             <c:when test="${e.sendReceive == 'SZ' || e.sendReceive == 'SG'}"></c:when>

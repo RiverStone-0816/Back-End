@@ -418,9 +418,9 @@
 
         ui.find('.-channel-container').append($('<div/>', {
             class: 'ui label -channel',
-            'data-value': (channelType === 'PHONE' ? channelData : talkServiceSenderKey + '_' + channelData),
+            'data-value': (channelType === 'TALK' ? talkServiceSenderKey + '_' + channelData : channelData),
             'data-type': channelType,
-            text: '[' + (channelType === 'PHONE' ? channelTypeName : talkServiceName) + '] ' + channelData
+            text: '[' + (channelType === 'TALK' ? talkServiceName : channelTypeName) + '] ' + channelData
         }).append($('<i/>', {class: 'icon close', onclick: "$(this).closest('.-channel').remove()"})));
     });
 
