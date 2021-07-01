@@ -85,6 +85,7 @@
                 loadTalkList('END');
                 replaceReceivedHtmlInSilence('/counsel/talk/room/empty', '#talk-chat-body').done(function () {
                     $('#talk-chat-header').text('');
+                    $('.-talk-list').removeClass('active');
                 });
             });
         }
@@ -96,7 +97,8 @@
         function loadTalkRoom(roomId, senderKey, userKey) {
             replaceReceivedHtmlInSilence('/counsel/talk/room/' + encodeURIComponent(roomId), '#talk-chat-body').done(function () {
                 const body = $('#talk-chat-body');
-                $('#talk-chat-header').text('['+  body.attr('data-status') + ']-' + body.attr('data-room-name'));
+                $('#talk-chat-header').text('[' + body.attr('data-status') + ']-' + body.attr('data-room-name'));
+                $('.-talk-list').removeClass('active').filter('[data-id="' + roomId + '"]').addClass('active');
             });
             loadTalkCustomInput(null, null, roomId, senderKey, userKey);
         }

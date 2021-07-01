@@ -155,4 +155,6 @@
         });
         ui.find('.-talk-list-wrap ul').append(sorted.detach());
     }).change();
+
+    $('.-talk-list').removeClass('active').filter('[data-id="' + $('#talk-chat-body').attr('data-id') + '"]').addClass('active');
 </script>
