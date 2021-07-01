@@ -17,7 +17,7 @@
 <div class="prv-wrapper">
     <div class="prv-left-panel">
         <div class="content-wrapper-frame">
-            <div id="preview-list-body">
+            <div id="preview-list-body" class="full-height">
                 <jsp:include page="/counsel/preview/list-body"/>
             </div>
         </div>

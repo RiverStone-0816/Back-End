@@ -99,13 +99,13 @@
                             <a href="javascript: chnageCategory(${e.key})" class="item ${search.categoryId == e.key ? 'active' : null}">${g.htmlQuote(e.value)}</a>
                         </c:forEach>
                     </div>
-                    <table class="ui celled table compact unstackable fixed ${pagination.rows.size() > 0 ? 'selectable-only' : null}" data-entity="TaskScript">
+                    <table class="ui celled table num-tbl unstackable fixed ${pagination.rows.size() > 0 ? 'selectable-only' : null}" data-entity="TaskScript">
                         <thead>
                         <tr>
-                            <th class="one wide">번호</th>
+                            <th>번호</th>
                             <th class="nine wide">제목</th>
                             <th class="five wide">태그</th>
-                            <th class="one wide">등록일</th>
+                            <th>등록일</th>
                         </tr>
                         </thead>
                         <tbody>

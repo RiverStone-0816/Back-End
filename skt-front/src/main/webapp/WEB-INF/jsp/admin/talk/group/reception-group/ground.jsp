@@ -39,10 +39,10 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable fixed ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkReceptionGroup">
+                    <table class="ui celled table num-tbl unstackable fixed ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkReceptionGroup">
                         <thead>
                         <tr>
-                            <th class="one wide">번호</th>
+                            <th>번호</th>
                             <th class="two wide">상담톡그룹명</th>
                             <th class="two wide">관련상담톡서비스</th>
                             <th class="one wide">멤버수</th>

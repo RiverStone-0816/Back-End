@@ -70,10 +70,10 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable">
+                    <table class="ui celled table num-tbl unstackable">
                         <thead>
                         <tr>
-                            <th class="one wide">번호</th>
+                            <th>번호</th>
                             <th>내선번호</th>
                             <th>지역번호</th>
                             <th>CID</th>

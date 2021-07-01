@@ -227,7 +227,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured border-top compact unstackable ${pagination.rows.size() > 0 ? "selectable" : null}" data-entity="RecordHistory">
+                    <table class="ui celled table border-top num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable" : null}" data-entity="RecordHistory">
                         <thead>
                         <tr>
                             <th>번호</th>

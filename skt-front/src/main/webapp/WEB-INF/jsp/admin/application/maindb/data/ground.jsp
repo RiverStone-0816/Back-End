@@ -114,7 +114,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured border-top compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbData">
+                    <table class="ui celled table structured border-top num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbData">
                         <thead>
                         <tr>
                             <th rowspan="2">번호</th>

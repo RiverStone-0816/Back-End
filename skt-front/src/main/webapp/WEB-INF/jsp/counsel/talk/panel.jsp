@@ -13,7 +13,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
-<div class="ui bottom attached tab segment remove-margin" data-tab="talk-panel">
+<div class="ui bottom attached tab segment remove-margin border-top-none" data-tab="talk-panel">
     <div class="display-flex flex-flow-column full-height">
         <div class="top-chat-list-wrap">
             <div class="ui top attached tabular menu light flex">
@@ -36,7 +36,7 @@
                 <div id="talk-list-container-END"></div>
             </div>
         </div>
-        <div class="btm-room-wrap flex-100">
+        <div class="btm-room-wrap">
             <div class="chat-container">
                 <div class="room">
                     <div class="chat-header" id="talk-chat-header"></div>

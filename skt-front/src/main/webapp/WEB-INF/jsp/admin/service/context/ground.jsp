@@ -35,10 +35,10 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable fixed ${list.size() > 0 ? "selectable-only" : null}" data-entity="Context">
+                    <table class="ui celled table num-tbl unstackable fixed ${list.size() > 0 ? "selectable-only" : null}" data-entity="Context">
                         <thead>
                         <tr>
-                            <th class="one wide">번호</th>
+                            <th>번호</th>
                             <th>컨텍스트명</th>
                             <th>컨텍스트</th>
                             <th class="two wide">보이는 ARS</th>

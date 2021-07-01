@@ -82,10 +82,10 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured border-top compact unstackable ${pagination.rows.size() > 0 ? 'selectable-only' : null}" data-entity="PdsUpload">
+                    <table class="ui celled table structured border-top num-tbl unstackable ${pagination.rows.size() > 0 ? 'selectable-only' : null}" data-entity="PdsUpload">
                         <thead>
                         <tr>
-                            <th class="one wide">번호</th>
+                            <th>번호</th>
                             <th>그룹명</th>
                             <th>업로드일</th>
                             <th>업로드화일명</th>

@@ -62,10 +62,10 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui structured celled table compact unstackable border-top">
+                    <table class="ui structured celled table num-tbl unstackable border-top">
                         <thead>
                         <tr>
-                            <th class="one wide">번호</th>
+                            <th>번호</th>
                             <th>문항제목</th>
                             <th>음원유형</th>
                             <th>소속</th>

@@ -35,10 +35,10 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable fixed ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkComment">
+                    <table class="ui celled table num-tbl unstackable fixed ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkComment">
                         <thead>
                         <tr>
-                            <th class="one wide">번호</th>
+                            <th>번호</th>
                             <th class="two wide">멘트명</th>
                             <th>멘트</th>
                         </tr>

@@ -130,7 +130,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured compact border-top unstackable fixed ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PdsResult">
+                    <table class="ui celled table structured num-tbl border-top fixed unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PdsResult">
                         <thead>
                         <tr>
                             <th rowspan="2">번호</th>

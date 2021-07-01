@@ -51,7 +51,7 @@
                 <c:set var="chargedColCount" value="${0}"/>
 
                 <c:if test="${talk != null}">
-                    <td>진행정보</td>
+                    <th>진행정보</th>
                     <td colspan="3">
                         [${g.htmlQuote(g.messageOf('RoomStatus', talk.roomStatus))}]
                             ${g.timestampFormat(talk.roomStartTime)} ~ ${talk.roomStatus == 'E' ? g.timestampFormat(talk.roomLastTime) : ''}

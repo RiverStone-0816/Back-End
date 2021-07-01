@@ -107,11 +107,11 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable -sortable-table ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PersonList"
+                    <table class="ui celled table num-tbl unstackable -sortable-table ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PersonList"
                            data-search-form="#search-form" data-order-field="order">
                         <thead>
                         <tr>
-                            <th class="one wide">번호</th>
+                            <th>번호</th>
                             <th data-sortable-value="NAME">성명-[아이디]
                                 <c:if test="${search.sort.name() == 'NAME'}">
                                     <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>

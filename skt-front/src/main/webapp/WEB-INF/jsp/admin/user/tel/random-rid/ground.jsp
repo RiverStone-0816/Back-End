@@ -108,10 +108,10 @@
                 </div>
 
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="RandomRid">
+                    <table class="ui celled table num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="RandomRid">
                         <thead>
                         <tr>
-                            <th class="one wide">-</th>
+                            <th>-</th>
                             <th>번호</th>
                             <th>단축번호</th>
                             <th>부서</th>

@@ -145,7 +145,7 @@
                     </div>
                 </div>
                 <div class="panel-body" style="overflow-x: auto;">
-                    <table class="ui celled table structured compact border-top unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbResult">
+                    <table class="ui celled table structured num-tbl border-top unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbResult">
                         <thead>
                         <tr>
                             <th rowspan="2">번호</th>

@@ -38,10 +38,10 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui structured celled table compact border-top unstackable ${pagination.rows.size() > 0 ? 'selectable-only' : null}" data-entity="VocGroup">
+                    <table class="ui structured celled table num-tbl border-top unstackable ${pagination.rows.size() > 0 ? 'selectable-only' : null}" data-entity="VocGroup">
                         <thead>
                         <tr>
-                            <th class="one wide">번호</th>
+                            <th>번호</th>
                             <th>VOC/해피콜명</th>
                             <th>진행여부/기한</th>
                             <th>진행종류(설문명)</th>

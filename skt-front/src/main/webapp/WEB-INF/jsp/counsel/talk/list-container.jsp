@@ -41,7 +41,7 @@
             </div>
         </div>
     </div>
-    <div class="talk-list-container -talk-list-wrap">
+    <div class="talk-list-container -talk-list-wrap overflow-auto">
         <c:choose>
             <c:when test="${talkList.size() > 0}">
                 <ul>
@@ -57,7 +57,7 @@
                             </div>
                             <div class="content">
                                 <div class="left">
-                                    <span class="ui mini label circular -indicator-new-message" style="display: none"> N </span>
+                                    <span class="ui mini brand label circular -indicator-new-message" style="display: none"> N </span>
                                     <c:choose>
                                         <c:when test="${e.type == 'photo' && e.send_receive == 'S'}">
                                             <i>사진 전송됨</i>

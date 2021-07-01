@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable num-tbl fixed ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="RecordEnc">
+                    <table class="ui celled table num-tbl unstackable num-tbl fixed ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="RecordEnc">
                         <thead>
                         <tr>
                             <th>번호</th>

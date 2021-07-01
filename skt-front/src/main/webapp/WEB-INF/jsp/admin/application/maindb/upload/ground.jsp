@@ -85,10 +85,10 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable ${pagination.rows.size() > 0 ? 'selectable-only' : null}" data-entity="MaindbUpload">
+                    <table class="ui celled table num-tbl unstackable ${pagination.rows.size() > 0 ? 'selectable-only' : null}" data-entity="MaindbUpload">
                         <thead>
                         <tr>
-                            <th class="one wide">번호</th>
+                            <th>번호</th>
                             <th>고객DB그룹명</th>
                             <th>업로드일</th>
                             <th>업로드화일명</th>

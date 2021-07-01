@@ -73,7 +73,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable num-tbl ${list.size() > 0 ? "selectable-only" : null}" data-entity="Record">
+                    <table class="ui celled table unstackable num-tbl ${list.size() > 0 ? "selectable-only" : null}" data-entity="Record">
                         <thead>
                         <tr>
                             <th>번호</th>

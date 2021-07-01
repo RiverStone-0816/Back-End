@@ -126,7 +126,7 @@
                     </div>
                 </div>
                 <div class="panel-body" style="overflow-x: auto;">
-                    <table class="ui celled table border-top structured compact unstackable ${pagination.rows.size() > 0 ? "selectable" : null}" data-entity="PreviewData">
+                    <table class="ui celled table border-top structured num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable" : null}" data-entity="PreviewData">
                         <thead>
                         <tr>
                             <th rowspan="2">번호</th>

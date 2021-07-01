@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="Queue">
+                    <table class="ui celled table num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="Queue">
                         <thead>
                         <tr>
                             <th>번호</th>

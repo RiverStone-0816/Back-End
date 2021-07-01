@@ -82,7 +82,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui structured celled table compact unstackable border-top">
+                    <table class="ui structured celled table num-tbl unstackable border-top">
                         <thead>
                         <tr>
                             <th rowspan="2">번호</th>

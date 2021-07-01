@@ -14,7 +14,7 @@
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
-<div class="sub-content ui container fluid unstackable">
+<div class="sub-content ui container fluid unstackable full-height">
     <form:form id="search-preview-form" modelAttribute="search" method="get" class="panel panel-search -ajax-loader"
                action="${pageContext.request.contextPath}/counsel/preview/list-body"
                data-target="#preview-list-body">
@@ -122,7 +122,7 @@
         </div>
     </form:form>
     <div class="panel">
-        <div class="panel-heading">
+        <div class="panel-heading remove-pb border-bottom-none">
             <div class="pull-left">
                 <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span>건</h3>
             </div>
@@ -132,7 +132,7 @@
             </div>
         </div>
         <div class="panel-body">
-            <table class="ui celled table border structured compact unstackable" data-entity="PreviewData">
+            <table class="ui celled table border-top structured num-tbl unstackable" data-entity="PreviewData">
                 <thead>
                 <tr>
                     <th rowspan="2">번호</th>

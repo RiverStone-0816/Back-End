@@ -31,14 +31,14 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui structured celled table compact unstackable border-top">
+                    <table class="ui structured celled table compact unstackable border-top fixed">
                         <thead>
                         <tr>
                             <th class="two wide">유형명</th>
                             <th colspan="2">시간</th>
                             <th>수행유형</th>
                             <th>수행데이터</th>
-                            <th class="one wide">관리</th>
+                            <th class="two wide">관리</th>
                             <th class="one wide">추가</th>
                         </tr>
                         </thead>

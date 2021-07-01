@@ -113,7 +113,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured compact border-top unstackable fixed ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PdsCustominfo">
+                    <table class="ui celled table structured num-tbl border-top unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PdsCustominfo">
                         <thead>
                         <tr>
                             <th rowspan="${pdsType.fields.size() == 0 ? "1" : "2"}" style="width: 5em;">번호</th>

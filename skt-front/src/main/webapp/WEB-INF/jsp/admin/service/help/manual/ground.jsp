@@ -85,14 +85,14 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable fixed ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="Manual">
+                    <table class="ui table celled num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="Manual">
                         <thead>
                         <tr>
-                            <th class="one wide">번호</th>
+                            <th>번호</th>
                             <th class="nine wide">제목</th>
                             <th class="two wide">등록일</th>
                             <th class="two wide">작성자</th>
-                            <th class="one wide">조회수</th>
+                            <th>조회수</th>
                         </tr>
                         </thead>
                         <tbody>

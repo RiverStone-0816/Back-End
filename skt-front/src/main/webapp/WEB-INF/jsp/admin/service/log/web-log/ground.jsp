@@ -106,7 +106,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable num-tbl ${pagination.rows.size() > 0 ? "selectable" : null}" data-entity="WebSecurity">
+                    <table class="ui celled table unstackable num-tbl ${pagination.rows.size() > 0 ? "selectable" : null}" data-entity="WebSecurity">
                         <thead>
                         <tr>
                             <th>번호</th>

@@ -79,7 +79,7 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-total-count">전체 <span class="text-primary">${list.size()}</span> 건</h3>
+                        <h3 class="panel-total-count">전체 <span>${list.size()}</span> 건</h3>
                         <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         <div class="ui basic buttons">
                             <button class="ui button -control-entity" data-entity="PdsResearchResult" style="display: none;" onclick="popupModal(getEntityId('PdsResearchResult'))">수정</button>
@@ -88,7 +88,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured compact unstackable border-top" data-entity="PdsResearchResult">
+                    <table class="ui celled table structured num-tbl unstackable border-top" data-entity="PdsResearchResult">
                         <thead>
                         <tr>
                             <th rowspan="2">번호</th>

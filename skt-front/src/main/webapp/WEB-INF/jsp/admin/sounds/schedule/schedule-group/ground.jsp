@@ -39,7 +39,7 @@
                             <th>수행유형</th>
                             <th>수행데이터</th>
                             <th>음원</th>
-                            <th class="one wide">관리</th>
+                            <th class="two wide">관리</th>
                             <th class="one wide">추가</th>
                         </tr>
                         </thead>

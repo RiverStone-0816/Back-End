@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="ui tab active" data-tab="first">
-                        <table class="ui celled table compact unstackable">
+                        <table class="ui celled table num-tbl unstackable">
                             <thead>
                             <tr>
                                 <th>No.</th>

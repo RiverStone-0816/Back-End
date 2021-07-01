@@ -66,10 +66,10 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured border-top compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="Research">
+                    <table class="ui celled table structured border-top num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="Research">
                         <thead>
                         <tr>
-                            <th class="one wide">번호</th>
+                            <th>번호</th>
                             <th>설문명</th>
                             <th>시나리오</th>
                             <th>등록일</th>
