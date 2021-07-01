@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 import java.util.Comparator;
 import java.util.TreeSet;
 
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @Data
-@NoArgsConstructor
 public class OrganizationTree extends Organization {
     private TreeSet<OrganizationTree> children = new TreeSet<>(Comparator.comparing(CompanyTree::getGroupName));
 

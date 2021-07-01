@@ -62,6 +62,9 @@ function failFunction(defaultMessage) {
     return function (response) {
         if (response.responseText) {
             try {
+                if (response.status === 401)
+                    location.href = 'main';
+
                 return alert(getDefaultReason(JSON.parse(response.responseText)));
             } catch (e) {
                 return console.error(e);

@@ -2,11 +2,13 @@ package kr.co.eicn.ippbx.model.dto.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 
-@Data
+@NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class MonthResponse {
     private Date startDateOfMonth;  //해당 건수의 리스트 팝업 표시에 필요한 데이터
     private Date endDateOfMonth;    //해당 건수의 리스트 팝업 표시에 필요한 데이터
