@@ -4,6 +4,7 @@ import com.ibm.icu.util.ChineseCalendar;
 import kr.co.eicn.ippbx.model.entity.eicn.UserScheduleEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -45,6 +46,7 @@ public class UserScheduleDay {
         return e.getEnd();
     }
 
+    @NoArgsConstructor
     @AllArgsConstructor
     @Data
     public static class LunarDate {

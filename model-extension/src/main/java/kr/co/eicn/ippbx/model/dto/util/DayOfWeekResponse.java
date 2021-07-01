@@ -2,9 +2,11 @@ package kr.co.eicn.ippbx.model.dto.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class DayOfWeekResponse {

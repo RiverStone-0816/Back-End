@@ -85,8 +85,8 @@ public class MaindbCustomInfoFormRequest extends BaseForm {
         return super.validate(bindingResult);
     }
 
-    @AllArgsConstructor
     @NoArgsConstructor
+    @AllArgsConstructor
     @EqualsAndHashCode(callSuper = true)
     @Data
     public static class ChannelForm extends BaseForm {
