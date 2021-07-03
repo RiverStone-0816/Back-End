@@ -20,7 +20,7 @@
             <form class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">모니터링[부서별]</div>
+                        <div class="panel-label">센터현황관리[부서별]</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">

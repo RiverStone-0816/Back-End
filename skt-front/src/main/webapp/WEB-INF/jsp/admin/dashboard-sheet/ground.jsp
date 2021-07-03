@@ -57,12 +57,12 @@
                                         <div class="chart-wrap" id="inbound-chart"></div>
                                         <div class="chart-label-wrap-bar">
                                             <ul>
-                                                <li><span class="symbol bcolor-bar1"></span><span class="text">I/B전체</span></li>
-                                                <li><span class="symbol bcolor-bar2"></span><span class="text">단순조회</span></li>
-                                                <li><span class="symbol bcolor-bar3"></span><span class="text">연결요청</span></li>
-                                                <li><span class="symbol bcolor-bar4"></span><span class="text">응대호</span></li>
-                                                <li><span class="symbol bcolor-bar5"></span><span class="text">포기호</span></li>
-                                                <li><span class="symbol bcolor-bar6"></span><span class="text">콜백</span></li>
+                                                <li><span class="symbol bcolor-bar1" style="background-color: #D81159 !important;"></span><span class="text">I/B전체</span></li>
+                                                <li><span class="symbol bcolor-bar2" style="background-color: #218380 !important;"></span><span class="text">단순조회</span></li>
+                                                <li><span class="symbol bcolor-bar3" style="background-color: #FFBC42 !important;"></span><span class="text">연결요청</span></li>
+                                                <li><span class="symbol bcolor-bar4" style="background-color: #F7AA97 !important;"></span><span class="text">응대호</span></li>
+                                                <li><span class="symbol bcolor-bar5" style="background-color: #808080 !important;"></span><span class="text">포기호</span></li>
+                                                <li><span class="symbol bcolor-bar6" style="background-color: #4F86C6 !important;"></span><span class="text">콜백</span></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -148,15 +148,16 @@
                         <div class="panel-body">
                             <div class="ui grid">
                                 <div class="six wide column">
-                                    <div class="chart-wrap">
-                                        <svg id="pie-consultant-status" style="width: 100%; height: 100%;"></svg>
+                                    <div class="chart-wrap" style="padding: 30px;">
+                                        <div id="pie-consultant-status"></div>
                                     </div>
                                     <div class="chart-label-wrap-circle">
                                         <ul>
-                                            <c:forEach var="status" items="${statuses}">
+                                            <c:set var="picColors" value="${['#D81159', '#218380', '#FFBC42', '#4F86C6', '#F7AA97', '#808080', '#00802F', '#9055A2', '#D499B9', '#2E294F']}"/>
+                                            <c:forEach var="status" items="${statuses}" varStatus="vStatus">
                                                 <c:if test="${status.key != 9}">
                                                     <li>
-                                                        <span class="symbol bcolor-bar${status.key + 1}"></span>
+                                                        <span class="symbol bcolor-bar${status.key + 1}" style="background-color: ${picColors[vStatus.index]} !important;"></span>
                                                         <span class="text">${g.htmlQuote(status.value)}</span>
                                                     </li>
                                                 </c:if>
@@ -290,13 +291,13 @@
 
             $(window).on('load', loadInboundData);
 
-            drawDonutChart('#pie-consultant-status', [
+            chartjs.drawDonutChart('#pie-consultant-status', [
                 <c:choose>
                 <c:when test="${statusCountMapSum > 0}">
 
                 <c:forEach var="status" items="${statuses}">
                 <c:if test="${status.key != 9}">
-                ${statusCountMap.getOrDefault(status.key, 0) / statusCountMapSum},
+                ${statusCountMap.getOrDefault(status.key, 0)},
                 </c:if>
                 </c:forEach>
 
@@ -312,7 +313,7 @@
 
                     <c:forEach var="status" items="${statuses}">
                     <c:if test="${status.key != 9}">
-                    'bcolor-bar${status.key+ 1}',
+                    'bcolor-bar${status.key + 1}',
                     </c:if>
                     </c:forEach>
 
@@ -321,7 +322,35 @@
                     'bcolor-bar0'
                     </c:otherwise>
                     </c:choose>
-                ]
+                ],
+                colors: [
+                    <c:choose>
+                    <c:when test="${statusCountMapSum > 0}">
+
+                    <c:forEach var="status" items="${statuses}" varStatus="vStatus">
+                    '${g.escapeQuote(picColors[vStatus.index])}',
+                    </c:forEach>
+
+                    </c:when>
+                    <c:otherwise>
+                    '#AAAAAA'
+                    </c:otherwise>
+                    </c:choose>
+                ],
+                labels: [
+                    <c:choose>
+                    <c:when test="${statusCountMapSum > 0}">
+
+                    <c:forEach var="status" items="${statuses}">
+                    '${g.escapeQuote(status.value)}',
+                    </c:forEach>
+
+                    </c:when>
+                    <c:otherwise>
+                    ''
+                    </c:otherwise>
+                    </c:choose>
+                ],
             });
 
             const consultantRecords = [
@@ -414,7 +443,7 @@
             const inboundChartData = [
                 <c:forEach var="e" items="${inboundChart}">
                 {
-                    hour: ${e.key},
+                    hour: ${e.key} +'시',
                     totalCnt: ${e.value != null ? e.value.totalCnt : 0},
                     onlyReadCnt: ${e.value != null ? e.value.onlyReadCnt : 0},
                     connReqCnt: ${e.value != null ? e.value.connReqCnt : 0},
@@ -425,12 +454,19 @@
                 </c:forEach>
             ];
 
-            drawLineChart(
+            chartjs.drawLineChart(
                 document.getElementById('inbound-chart'),
                 inboundChartData,
                 'hour',
                 ['totalCnt', 'onlyReadCnt', 'connReqCnt', 'successCnt', 'cancelCnt', 'callbackCnt',],
-                {ticks: 4, yLabel: '', unitWidth: 30, colorClasses: ['bcolor-bar1', 'bcolor-bar2', 'bcolor-bar3', 'bcolor-bar4', 'bcolor-bar5', 'bcolor-bar6']}
+                {
+                    ticks: 4,
+                    yLabel: '',
+                    unitWidth: 30,
+                    colorClasses: ['bcolor-bar1', 'bcolor-bar2', 'bcolor-bar3', 'bcolor-bar4', 'bcolor-bar5', 'bcolor-bar6'],
+                    colors: ['#D81159', '#218380', '#FFBC42', '#F7AA97', '#808080', '#4F86C6'],
+                    labels: ['I/B전체', '단순조회', '연결요청', '응대호', '포기호', '콜백']
+                }
             );
         </script>
     </tags:scripts>

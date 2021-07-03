@@ -1062,3 +1062,168 @@ function prompt(text, isPassword) {
 
     return deferred.promise();
 }
+
+/**
+ * chart js 필수
+ **/
+const chartjs = {
+    drawBarChart: function (container, data, xAxisField, yAxisFields, options) {
+        function draw() {
+            const colors = (options && options.colors) || ['#AAAAAA'];
+
+            const labels = [];
+            const datasets = [];
+
+            for (let i = 0; i < yAxisFields.length; i++)
+                datasets.push({data: [], label: options.labels && options.labels[i]});
+
+            data.map(function (d) {
+                labels.push(d[xAxisField]);
+
+                for (let i = 0; i < yAxisFields.length; i++) {
+                    datasets[i].data.push(d[yAxisFields[i]]);
+                    datasets[i].backgroundColor = colors[i % colors.length];
+                    datasets[i].borderColor = colors[i % colors.length];
+                }
+            });
+
+            return new Chart(
+                $('<canvas/>').appendTo($(container).empty())[0],
+                {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: false,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        if (!container)
+            return;
+
+        let containerWidth;
+        let containerHeight;
+        let chart;
+
+        const jobId = setInterval(function () {
+            let newContainerWidth = parseFloat(window.getComputedStyle(container, null).getPropertyValue("width"));
+            let newContainerHeight = parseFloat(window.getComputedStyle(container, null).getPropertyValue("height"));
+
+            if (containerWidth !== newContainerWidth || containerHeight !== newContainerHeight) {
+                containerWidth = newContainerWidth;
+                containerHeight = newContainerHeight;
+
+                if (!containerWidth || !containerHeight) {
+                    clearInterval(jobId);
+                    return;
+                }
+
+                chart = draw();
+                chart.resize(containerWidth, containerHeight);
+            }
+        }, 1000);
+    },
+    drawLineChart: function (container, data, xAxisField, yAxisFields, options) {
+        function draw() {
+            const colors = (options && options.colors) || ['#AAAAAA'];
+
+            const labels = [];
+            const datasets = [];
+
+            for (let i = 0; i < yAxisFields.length; i++)
+                datasets.push({data: [], label: options.labels && options.labels[i]});
+
+            data.map(function (d) {
+                labels.push(d[xAxisField]);
+
+                for (let i = 0; i < yAxisFields.length; i++) {
+                    datasets[i].data.push(d[yAxisFields[i]]);
+                    datasets[i].backgroundColor = colors[i % colors.length];
+                    datasets[i].borderColor = colors[i % colors.length];
+                }
+            });
+
+            return new Chart(
+                $('<canvas/>').appendTo($(container).empty())[0],
+                {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: false,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        if (!container)
+            return;
+
+        let containerWidth;
+        let containerHeight;
+        let chart;
+
+        const jobId = setInterval(function () {
+            let newContainerWidth = parseFloat(window.getComputedStyle(container, null).getPropertyValue("width"));
+            let newContainerHeight = parseFloat(window.getComputedStyle(container, null).getPropertyValue("height"));
+
+            if (containerWidth !== newContainerWidth || containerHeight !== newContainerHeight) {
+                containerWidth = newContainerWidth;
+                containerHeight = newContainerHeight;
+
+                if (!containerWidth || !containerHeight) {
+                    clearInterval(jobId);
+                    return;
+                }
+
+                chart = draw();
+                chart.resize(containerWidth, containerHeight);
+            }
+        }, 1000);
+    },
+    drawDonutChart: function (container, rates, options) {
+        function draw() {
+            return new Chart(
+                $('<canvas/>').appendTo($(container).empty())[0],
+                {
+                    type: 'doughnut',
+                    data: {
+                        labels: options.labels,
+                        datasets: [{
+                            data: rates,
+                            backgroundColor:  (options && options.colors) || ['#AAAAAA'],
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            );
+        }
+
+        return draw();
+    },
+};

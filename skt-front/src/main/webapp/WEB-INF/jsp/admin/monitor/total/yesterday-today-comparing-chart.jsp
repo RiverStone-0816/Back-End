@@ -22,8 +22,8 @@
                 </div>
                 <div class="chart-label-wrap-bar">
                     <ul>
-                        <li><span class="symbol bcolor-bar2"></span><span class="text">어제</span></li>
-                        <li><span class="symbol bcolor-bar1"></span><span class="text">오늘</span></li>
+                        <li><span class="symbol bcolor-bar2" style="background-color: #F37402 !important;"></span><span class="text">어제</span></li>
+                        <li><span class="symbol bcolor-bar1" style="background-color: #00802F !important;"></span><span class="text">오늘</span></li>
                     </ul>
                 </div>
             </div>
@@ -36,8 +36,8 @@
                 </div>
                 <div class="chart-label-wrap-bar">
                     <ul>
-                        <li><span class="symbol bcolor-bar2"></span><span class="text">어제</span></li>
-                        <li><span class="symbol bcolor-bar1"></span><span class="text">오늘</span></li>
+                        <li><span class="symbol bcolor-bar2" style="background-color: #F37402 !important;"></span><span class="text">어제</span></li>
+                        <li><span class="symbol bcolor-bar1" style="background-color: #00802F !important;"></span><span class="text">오늘</span></li>
                     </ul>
                 </div>
             </div>
@@ -46,7 +46,7 @@
 </div>
 
 <script>
-    drawLineChart($('#today-and-yesterday-inbound-comparing-chart')[0], [
+    chartjs.drawLineChart($('#today-and-yesterday-inbound-comparing-chart')[0], [
         <c:forEach var="hour" begin="${0}" end="${23}" >
         {
             yesterday: ${(data.get(hour) != null && data.get(hour).left != null ? data.get(hour).left.total : 0)},
@@ -55,10 +55,12 @@
         },
         </c:forEach>
     ], 'time', ['yesterday', 'today'], {
-        ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['bcolor-bar2', 'bcolor-bar1']
+        ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['bcolor-bar2', 'bcolor-bar1'],
+        colors: ['#F37402', '#00802F'],
+        labels: ['어제', '오늘']
     });
 
-    drawLineChart($('#today-and-yesterday-response-rate-comparing-chart')[0], [
+    chartjs.drawLineChart($('#today-and-yesterday-response-rate-comparing-chart')[0], [
         <c:forEach var="hour" begin="${0}" end="${23}" >
         {
             yesterday: ${(data.get(hour) != null && data.get(hour).left != null ? data.get(hour).left.responseRate : 0)},
@@ -67,6 +69,8 @@
         },
         </c:forEach>
     ], 'time', ['yesterday', 'today'], {
-        ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['bcolor-bar2', 'bcolor-bar1']
+        ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['bcolor-bar2', 'bcolor-bar1'],
+        colors: ['#F37402', '#00802F'],
+        labels: ['어제', '오늘']
     });
 </script>

@@ -71,16 +71,16 @@
                 </div>
 
                 <div class="sixteen wide column" style="height:58%">
-                    <div class="billboard-chart-wrap" >
-                        <div class="billboard-chart-container" id="chart" >
+                    <div class="billboard-chart-wrap">
+                        <div class="billboard-chart-container" id="chart">
 
                         </div>
                         <div class="billboard-chart-label-wrap">
                             <ul>
-                                <li><span class="symbol bcolor-bar1"></span><span class="text">I/B전체</span></li>
-                                <li><span class="symbol bcolor-bar2"></span><span class="text">연결요청</span></li>
-                                <li><span class="symbol bcolor-bar3"></span><span class="text">응대호</span></li>
-                                <li><span class="symbol bcolor-bar4"></span><span class="text">포기호</span></li>
+                                <li><span class="symbol bcolor-bar1" style="background-color: #D81159 !important;"></span><span class="text">I/B전체</span></li>
+                                <li><span class="symbol bcolor-bar2" style="background-color: #4FB0C6 !important;"></span><span class="text">연결요청</span></li>
+                                <li><span class="symbol bcolor-bar3" style="background-color: #FFA500 !important;"></span><span class="text">응대호</span></li>
+                                <li><span class="symbol bcolor-bar4" style="background-color: #ABABAB !important;"></span><span class="text">포기호</span></li>
                             </ul>
                         </div>
                     </div>
@@ -143,14 +143,18 @@
                     const inboundChat = [];
 
                     for (let i = 0; i < 24; i++)
-                        inboundChat.push(data[i] || {statHour: i, totalCnt: 0, connReqCnt: 0, successCnt: 0, cancelCnt: 0});
+                        inboundChat.push(data[i] || {statHour: i + '시', totalCnt: 0, connReqCnt: 0, successCnt: 0, cancelCnt: 0});
 
-                    drawLineChart(
+                    chartjs.drawLineChart(
                         document.getElementById('chart'),
                         inboundChat,
                         'statHour',
                         ['totalCnt', 'connReqCnt', 'successCnt', 'cancelCnt'],
-                        {ticks: 4, yLabel: '', unitWidth: 30, colorClasses: ['bcolor-bar1', 'bcolor-bar2', 'bcolor-bar3', 'bcolor-bar4', 'bcolor-bar5', 'bcolor-bar6']}
+                        {
+                            ticks: 4, yLabel: '', unitWidth: 30, colorClasses: ['bcolor-bar1', 'bcolor-bar2', 'bcolor-bar3', 'bcolor-bar4', 'bcolor-bar5', 'bcolor-bar6'],
+                            colors: ['#D81159', '#4FB0C6', '#FFA500', '#ABABAB'],
+                            labels: ['I/B전체', '연결요청', '응대호', '포기호'],
+                        }
                     );
                 });
             }

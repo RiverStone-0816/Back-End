@@ -209,8 +209,8 @@
                             <div class="panel-body pd-1em">
                                 <div class="-chart" id="total-call-chart" style="height: 300px;"></div>
                                 <div style="text-align: center; padding: 2em 0;">
-                                    <text style="display: inline-block;"><i class="circle color-red"></i>응대호</text>
-                                    <text style="display: inline-block;"><i class="circle color-blue"></i>포기호</text>
+                                    <text style="display: inline-block;"><i class="circle color-red" style="background-color: #F37402 !important;"></i>응대호</text>
+                                    <text style="display: inline-block;"><i class="circle color-blue" style="background-color: #00802F !important;"></i>포기호</text>
                                 </div>
                             </div>
                         </div>
@@ -222,7 +222,6 @@
 
     <tags:scripts>
         <script>
-
             <c:if test="${list.size() > 0}">
             const data = [
                     <c:forEach var="element" items="${list}">{
@@ -231,8 +230,10 @@
                     cancel: ${element.statQueueInboundResponses.stream().map(e -> e.cancel).sum()},
                 }, </c:forEach>
             ];
-            drawLineChart($('#total-call-chart')[0], data, 'time', ['success', 'cancel'], {
-                ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue']
+            chartjs.drawLineChart($('#total-call-chart')[0], data, 'time', ['success', 'cancel'], {
+                ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue'],
+                colors: ['#F37402', '#00802F'],
+                labels: ['응대호', '포기호'],
             });
             </c:if>
 

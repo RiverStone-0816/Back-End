@@ -30,6 +30,7 @@
 <script src="<c:url value="/resources/vendors/moment-lunar/moment-lunar.min.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/socket.io/2.1.1/socket.io.js?version=${version}"/>"></script>
 <script src="<c:url value="/resources/vendors/sha512.js?version=${version}"/>"></script>
+<script src="<c:url value="/resources/vendors/chart.js/3.4.0/dist/chart.js?version=${version}"/>"></script>
 
 <script src="<c:url value="/resources/vendors/flexslider/2.7.2/jquery.flexslider.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/tablesort/0.0.11/tablesort.js?version=${version}"/>" data-type="library"></script>
