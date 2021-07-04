@@ -32,7 +32,7 @@
         <form:hidden path="groupKind"/>
         <form:hidden path="clickKey"/>
 
-        <table class="ui celled table border structured compact unstackable">
+        <table class="ui celled table unstackable border-top-default">
             <tbody>
             <c:forEach var="field" items="${resultType.fields}">
                 <c:set var="name" value="${field.fieldId.substring(resultType.kind.length() + '_'.length()).toLowerCase()}"/>

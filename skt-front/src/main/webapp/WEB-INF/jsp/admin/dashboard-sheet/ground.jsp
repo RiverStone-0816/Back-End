@@ -153,7 +153,7 @@
                                     </div>
                                     <div class="chart-label-wrap-circle">
                                         <ul>
-                                            <c:set var="picColors" value="${['#D81159', '#218380', '#FFBC42', '#4F86C6', '#F7AA97', '#808080', '#00802F', '#9055A2', '#D499B9', '#2E294F']}"/>
+                                            <c:set var="picColors" value="${['#218380', '#d81159', '#ffbc42', '#4F86C6', '#f7aa97', '#808080', '#4f86c6', '#9055A2', '#D499B9', '#2E294F']}"/>
                                             <c:forEach var="status" items="${statuses}" varStatus="vStatus">
                                                 <c:if test="${status.key != 9}">
                                                     <li>

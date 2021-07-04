@@ -99,15 +99,17 @@
                         </td>
                         <th>검색어</th>
                         <td>
-                            <div class="ui action input calendar-area -search-type-sub-input" data-type="DATE">
-                                <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
-                                <span class="tilde">~</span>
-                                <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
-                            </div>
-                            <div class="ui form -search-type-sub-input">
-                                <form:input path="keyword"/>
+                            <div class="ui form flex">
+                                <div class="ui action input calendar-area -search-type-sub-input" data-type="DATE">
+                                    <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                                    <span class="tilde">~</span>
+                                    <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                                </div>
+                                <div class="-search-type-sub-input">
+                                    <form:input path="keyword"/>
+                                </div>
                             </div>
                         </td>
                     </tr>

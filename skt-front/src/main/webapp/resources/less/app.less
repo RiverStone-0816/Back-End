@@ -1253,7 +1253,7 @@ pre {
     bottom: -1px;
     &:after {
       content: '▼';
-      right: -9px;
+      right: -1px;
       top: 5px;
       position: absolute;
       width: 18px;
@@ -1268,7 +1268,7 @@ pre {
     }
     &:before {
       content: '▲';
-      right: -9px;
+      right: -1px;
       bottom: 5px;
       position: absolute;
       width: 18px;
@@ -1665,7 +1665,7 @@ ul.ui.list li:first-child, ol.ui.list li:first-child, .ui.list .list > .item:fir
     }
   }
   .circular.ui.button {
-    margin: 0 0 0 2px;
+    margin: 5px 0 0 2px;
     font-size: 0.6em;
     vertical-align: top;
     > i {
@@ -2377,7 +2377,7 @@ label.control-label {
 
 .ui.steps.mini.fluid {
   border-radius: 0;
-  margin: 9px 0 0 0;
+  margin: 21px 0 0 0;
   border-top:1px solid darken(@color-border,20%);
   line-height: 1em;
 }
@@ -4026,7 +4026,8 @@ g {
 .pie-chart-container {
   position: relative;
   height: 300px;
-  width: 400px;
+  width: 100%;
+  padding: 12px 0;
   .inner-label {
     position: absolute;
     transform: translate(-50%, -50%);
@@ -4437,7 +4438,7 @@ g {
     margin:0 .5em 0 0;
   }
   .ui.action.input {
-    margin:0 0 .7em 0;
+    margin:0 0 .7em 1em;
   }
   .ui.basic.button {
     background:@color-white!important;
@@ -4684,7 +4685,7 @@ g {
       background:@color-brand;
       text-align: center;
       font-size: 2em;
-      padding: .8em 1em;
+      padding: .4em 1em;
       justify-content: center;
       height: auto;
     }
@@ -4692,10 +4693,10 @@ g {
       border:1px solid darken(@color-border,20%);
       border-top: 0;
       text-align: center;
-      padding: 1.5em 1em;
+      padding: 1.7em 1em;
       color:@color-darkgray;
       .num {
-        font-size: 3.5em;
+        font-size: 4em;
         color: lighten(@color-darkgray, 15%);
       }
     }
@@ -4837,11 +4838,13 @@ g {
       .top-area {
         .panel-resizable {
           height:180px;
+          min-height: 58px;
         }
       }
       .middle-area {
         .panel-resizable {
           height:180px;
+          min-height: 58px;
         }
       }
     }

@@ -16,7 +16,7 @@
     <i class="close icon"></i>
     <div class="header">즐겨찾기</div>
     <div class="content">
-        <table class="ui celled table unstackable">
+        <table class="ui celled table unstackable border-top-default">
             <tbody id="link-form-body">
             <c:forEach var="i" items="${[0,1,2,3,4,5,6,7,8]}">
                 <tr>
