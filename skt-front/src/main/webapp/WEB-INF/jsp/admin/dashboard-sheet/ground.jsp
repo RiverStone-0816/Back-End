@@ -148,7 +148,7 @@
                         <div class="panel-body">
                             <div class="ui grid">
                                 <div class="six wide column">
-                                    <div class="chart-wrap" style="padding: 30px;">
+                                    <div class="chart-wrap" style="padding: 0 30px;">
                                         <div id="pie-consultant-status"></div>
                                     </div>
                                     <div class="chart-label-wrap-circle">
@@ -405,13 +405,15 @@
                     usingContentIndices.push(parseInt($('#' + e).attr('data-index')));
                 });
 
-                const currentContentIndex = (function extract() {
-                    const currentContentIndex = (parseInt(title.attr('data-index')) + move) % rankingKeywords.length;
-                    title.attr('data-index', currentContentIndex);
+                const currentContentIndex = (function () {
+                    let currentContentIndex = (parseInt(title.attr('data-index')) + move) % rankingKeywords.length;
 
                     if (usingContentIndices.indexOf(currentContentIndex) >= 0)
-                        return extract();
+                        currentContentIndex = currentContentIndex + (move >= 0 ? 1 : -1);
 
+                    currentContentIndex = currentContentIndex >= 0 ? currentContentIndex : currentContentIndex + (Math.abs(parseInt(currentContentIndex / rankingKeywords.length)) + 1) * rankingKeywords.length;
+
+                    title.attr('data-index', currentContentIndex);
                     return currentContentIndex;
                 })();
 

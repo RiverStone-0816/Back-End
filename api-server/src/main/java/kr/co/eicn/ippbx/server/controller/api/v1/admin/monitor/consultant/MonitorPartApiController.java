@@ -303,8 +303,8 @@ public class MonitorPartApiController extends ApiBaseController {
 
                 row.setPerson(person);
                 row.setIsPhone(PhoneInfoStatus.REGISTERED.getCode().equals(phoneInfoMap.get(person.getPeer())) ? "Y" : "N");
-                row.setQueueName(queueMemberTable2.getQueueName());
-                row.setQueueHanName(queueNameMap.get(queueMemberTable2.getQueueName()));
+                row.setQueueName(queueMemberTable2 != null ? queueMemberTable2.getQueueName() : "");
+                row.setQueueHanName(queueMemberTable2 != null ? queueNameMap.get(queueMemberTable2.getQueueName()) : "");
 
                 final StatUserInboundEntity inboundStat = individualInboundStat.get(person.getId());
                 final StatUserOutboundEntity outboundStat = individualOutboundStat.get(person.getId());
