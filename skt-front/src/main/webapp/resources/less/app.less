@@ -800,6 +800,11 @@ pre {
     flex-flow:column;
     width: 33%;
     padding-right:10px;
+    .call-bottom-area {
+      height: 508px;
+      overflow: auto;
+      margin: 1em 0 0 0;
+    }
     .ui.bottom.attached.tab.segment {
       flex:1;
       overflow: hidden;
@@ -809,13 +814,17 @@ pre {
     width: 67%;
     overflow: hidden;
     .top-area {
-
+      .panel-body {
+        margin: 53px 0 0 0;
+      }
       .panel-resizable {
         height:300px;
       }
     }
     .middle-area {
-
+      .panel-body {
+        margin: 53px 0 0 0;
+      }
       .panel-resizable {
         height:300px;
         .panel {
@@ -1950,7 +1959,7 @@ label.control-label {
   text-align: center!important;
 }
 .align-left {
-  text-align: left;
+  text-align: left!important;
 }
 .align-right {
   text-align: right;
@@ -2291,6 +2300,15 @@ label.control-label {
     line-height: 28px;
     color: @color-darkgray;
   }
+  .piece {
+    input[type="text"] {
+      height: 34px;
+    }
+    text {
+      font-weight: 500;
+      margin: 0 0.4em;
+    }
+  }
 }
 
 
@@ -2479,6 +2497,14 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
   padding:9px 9px;
 }
 
+.ui.attached.tabular.menu.flex.line {
+  .item {
+    border: 1px solid #e3e3e3;
+    border-bottom: 0;
+    background: #f1f1f1;
+  }
+}
+
 .ui.attached.tabular.menu.flex {
   display:flex;
   .item {
@@ -2560,6 +2586,7 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
   }
   input[type="text"] {
     flex:1;
+    height: 34px;
   }
   .field {
     margin:0;
@@ -4047,7 +4074,15 @@ g {
   .close.icon {
     cursor: pointer;
     position: absolute;
-    right: 9px;
+    width: 14px;
+    height: 14px;
+    top: 15px;
+    right: 12px;
+    background-image: url("../images/close-black.svg");
+    background-repeat: no-repeat;
+    &:before {
+      display:none
+    }
   }
   .content {
     text-align: center;
@@ -4438,7 +4473,7 @@ g {
     margin:0 .5em 0 0;
   }
   .ui.action.input {
-    margin:0 0 .7em 1em;
+    margin: .6em 0 .7em 1em;
   }
   .ui.basic.button {
     background:@color-white!important;
@@ -4667,6 +4702,14 @@ g {
       height: 410px;
     }
   }
+}
+
+.panel-heading.fixed {
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background: @color-white;
 }
 
 .panel.panel-dashboard {

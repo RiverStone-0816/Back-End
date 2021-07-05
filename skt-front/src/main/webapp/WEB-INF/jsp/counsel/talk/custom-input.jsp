@@ -15,7 +15,7 @@
 <form:form id="talk-custom-input" modelAttribute="form" cssClass="-json-submit" data-method="${entity != null ? 'put' : 'post'}"
            action="${pageContext.request.contextPath}/api/maindb-data/${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : null}"
            data-before="prepareTalkCustomInfoFormData" data-done="donePostTalkCustomInfo">
-    <div class="panel-heading">
+    <div class="panel-heading fixed">
         <div class="pull-left">
             <label class="panel-label">고객정보</label>
             <c:if test="${vip}">

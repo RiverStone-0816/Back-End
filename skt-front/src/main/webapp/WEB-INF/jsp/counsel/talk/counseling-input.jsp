@@ -16,7 +16,7 @@
            action="${pageContext.request.contextPath}/api/maindb-result/"
            data-before="prepareTalkCounselingInfoFormData" data-done="donePostTalkCounselingInfo">
 
-    <div class="panel-heading">
+    <div class="panel-heading fixed">
         <div class="pull-left">
             <label class="panel-label">상담결과 입력</label>
             <div class="ui checkbox ml10">

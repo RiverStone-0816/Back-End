@@ -26,13 +26,15 @@
                         <th>${g.htmlQuote(e.value)}</th>
                     </c:forEach>
                 </tr>
-                <tr>
-                    <td>${integrationData.constantStatusCounts.values().stream().sum()}</td>
-                    <c:forEach var="e" items="${statusCodes}">
-                        <td>${integrationData.constantStatusCounts.getOrDefault(e.key, 0)}</td>
-                    </c:forEach>
-                </tr>
                 </thead>
+                <tbody>
+                    <tr>
+                        <td>${integrationData.constantStatusCounts.values().stream().sum()}</td>
+                        <c:forEach var="e" items="${statusCodes}">
+                            <td>${integrationData.constantStatusCounts.getOrDefault(e.key, 0)}</td>
+                        </c:forEach>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>

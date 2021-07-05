@@ -44,12 +44,15 @@
                         </td>
                         <th>데이터생성일</th>
                         <td>
-                            <div class="ui action input calendar-area">
-                                <form:input path="createdStartDate" cssClass="-datepicker" placeholder="시작일"/>
-                                <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
-                                <span class="tilde">~</span>
-                                <form:input path="createdEndDate" cssClass="-datepicker" placeholder="종료일"/>
-                                <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                            <div class="ui form flex">
+                                <div class="ui action input calendar-area flex-200">
+                                    <form:input path="createdStartDate" cssClass="-datepicker" placeholder="시작일"/>
+                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                                    <span class="tilde">~</span>
+                                    <form:input path="createdEndDate" cssClass="-datepicker" placeholder="종료일"/>
+                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                                </div>
+                                <div class="flex-100"></div>
                             </div>
                         </td>
                     </tr>
@@ -65,12 +68,15 @@
                         </td>
                         <th>마지막상담일</th>
                         <td>
-                            <div class="ui action input calendar-area">
-                                <form:input path="lastResultStartDate" cssClass="-datepicker" placeholder="시작일"/>
-                                <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
-                                <span class="tilde">~</span>
-                                <form:input path="lastResultEndDate" cssClass="-datepicker" placeholder="종료일"/>
-                                <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                            <div class="ui form flex">
+                                <div class="ui action input calendar-area flex-200">
+                                    <form:input path="lastResultStartDate" cssClass="-datepicker" placeholder="시작일"/>
+                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                                    <span class="tilde">~</span>
+                                    <form:input path="lastResultEndDate" cssClass="-datepicker" placeholder="종료일"/>
+                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                                </div>
+                                <div class="flex-100"></div>
                             </div>
                         </td>
                     </tr>
@@ -100,14 +106,14 @@
                         <th>검색어</th>
                         <td>
                             <div class="ui form flex">
-                                <div class="ui action input calendar-area -search-type-sub-input" data-type="DATE">
+                                <div class="ui action input calendar-area -search-type-sub-input flex-200" data-type="DATE">
                                     <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
                                     <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
                                     <span class="tilde">~</span>
                                     <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
                                     <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
                                 </div>
-                                <div class="-search-type-sub-input">
+                                <div class="-search-type-sub-input flex-100">
                                     <form:input path="keyword"/>
                                 </div>
                             </div>

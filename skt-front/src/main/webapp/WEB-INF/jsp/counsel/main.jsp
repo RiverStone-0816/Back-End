@@ -61,7 +61,7 @@
         </div>
 
         <div class="flex-100 bottom-area">
-            <div class="ui top attached tabular menu light flex remove-margin">
+            <div class="ui top attached tabular menu line light flex remove-margin">
                 <button class="item active" data-tab="todo">To-Do</button>
                 <button class="item" data-tab="consult-history">상담이력</button>
                 <%--FIXME:필요시 다음과 같이 추가--%>

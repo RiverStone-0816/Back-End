@@ -17,93 +17,66 @@
            data-before="prepareUserScheduleForm" data-done="doneSubmitUserSchedule">
 
     <i class="close icon"></i>
-    <div class="header">일정[${entity != null ? '수정' : '추가'}]</div>
+    <div class="header">일정 ${entity != null ? '수정' : '추가'}</div>
 
     <div class="content rows scrolling">
-        <div class="ui grid">
-            <div class="row">
-                <div class="four wide column"><label class="control-label">제목</label></div>
-                <div class="twelve wide column">
-                    <div class="ui input fluid"><form:input path="title"/></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="four wide column"><label class="control-label">종류</label></div>
-                <div class="twelve wide column">
+        <table class="ui celled table compact unstackable border-top-default">
+            <tr>
+                <th>제목</th>
+                <td colspan="2">
+                    <div class="ui form"><form:input path="title"/></div>
+                </td>
+            </tr>
+            <tr>
+                <th>종류</th>
+                <td colspan="2">
                     <div class="ui form"><form:select path="type" items="${types}"/></div>
-                </div>
-            </div>
-            <div class="row">
-                <fmt:formatDate var="startDate" value="${form.start}" pattern="yyyy-MM-dd"/>
-                <fmt:formatDate var="startHour" value="${form.start}" pattern="HH"/>
-                <fmt:formatDate var="startMinute" value="${form.start}" pattern="mm"/>
-                <div class="four wide column"><label class="control-label">일시</label></div>
-                <div class="six wide column">
-                    <div class="ui input fluid">
-                        <input type="text" name="_startDate" class="-datepicker" value="${startDate}"/>
+                </td>
+            </tr>
+            <tr>
+                <th>일시</th>
+                <td class="align-left">
+                    <div class="ui action input calendar-area">
+                        <fmt:formatDate var="startDate" value="${form.start}" pattern="yyyy-MM-dd"/>
+                        <fmt:formatDate var="startHour" value="${form.start}" pattern="HH"/>
+                        <fmt:formatDate var="startMinute" value="${form.start}" pattern="mm"/>
+                        <input name="_startDate" class="-datepicker hasDatepicker" placeholder="시작일" type="text" value="${startDate}"  autocomplete="off" size="15">
+                        <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                        <span class="piece"><input type="text" name="_startHour" class="-input-numerical ml5" value="${startHour}" placeholder="시" size="1"> <text>시</text></span>
+                        <span class="piece"><input type="text" name="_startMinute" class="-input-numerical ml5" value="${startMinute}" placeholder="분" size="1"> <text>분</text></span>
+                        <span class="tilde">~</span>
+                        <fmt:formatDate var="endDate" value="${form.end}" pattern="yyyy-MM-dd"/>
+                        <fmt:formatDate var="endHour" value="${form.end}" pattern="HH"/>
+                        <fmt:formatDate var="endMinute" value="${form.end}" pattern="mm"/>
+                        <input name="_endDate" class="-datepicker hasDatepicker" placeholder="종료일" type="text" value="${endDate}"  autocomplete="off" size="15">
+                        <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                        <span class="piece"><input type="text" name="_endHour" class="-input-numerical ml5" value="${endHour}" placeholder="시" size="1"> <text>시</text></span>
+                        <span class="piece"><input type="text" name="_endMinute" class="-input-numerical ml5" value="${endMinute}" placeholder="분" size="1"> <text>분</text></span>
                     </div>
-                </div>
-                <div class="three wide column">
-                    <div class="ui input fluid">
-                        <input type="text" name="_startHour" class="-input-numerical" value="${startHour}" placeholder="시">
+                </td>
+                <td class="one wide">
+                    <div class="ui checkbox">
+                        <input type="checkbox" name="_isWholeDay" ${entity != null && entity.wholeDay ? 'checked' : ''}/>
+                        <label>종일</label>
                     </div>
-                </div>
-                <div class="three wide column">
-                    <div class="ui input fluid">
-                        <input type="text" name="_startMinute" class="-input-numerical" value="${startMinute}" placeholder="분">
+                    <div class="ui checkbox">
+                        <form:checkbox path="important" value="${true}"/>
+                        <label>중요</label>
                     </div>
-                </div>
-                <fmt:formatDate var="endDate" value="${form.end}" pattern="yyyy-MM-dd"/>
-                <fmt:formatDate var="endHour" value="${form.end}" pattern="HH"/>
-                <fmt:formatDate var="endMinute" value="${form.end}" pattern="mm"/>
-                <div class="four wide column"></div>
-                <div class="six wide column">
-                    <div class="ui input fluid">
-                        <input type="text" name="_endDate" class="-datepicker" value="${endDate}"/>
-                    </div>
-                </div>
-                <div class="three wide column">
-                    <div class="ui input fluid">
-                        <input type="text" name="_endHour" class="-input-numerical" value="${endHour}" placeholder="시">
-                    </div>
-                </div>
-                <div class="three wide column">
-                    <div class="ui input fluid">
-                        <input type="text" name="_endMinute" class="-input-numerical" value="${endMinute}" placeholder="분">
-                    </div>
-                </div>
-
-                <div class="four wide column"></div>
-                <div class="twelve wide column">
-                    <div class="ui form">
-                        <div class="inline fields">
-                            <div class="field">
-                                <input type="checkbox" name="_isWholeDay" ${entity != null && entity.wholeDay ? 'checked' : ''}/>
-                                <label>종일</label>
-                            </div>
-                            <div class="field">
-                                <form:checkbox path="important" value="${true}"/>
-                                <label>중요</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="four wide column">
-                    <label class="control-label">추가정보</label>
-                </div>
-                <div class="twelve wide column">
+                </td>
+            </tr>
+            <tr>
+                <th>추가정보</th>
+                <td colspan="2">
                     <div class="ui form">
                         <div class="field">
                             <form:textarea path="contents" rows="5"/>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
+                </td>
+            </tr>
+        </table>
     </div>
-
     <div class="actions">
         <button type="button" class="ui button modal-close">취소</button>
         <button type="submit" class="ui orange button">확인</button>

@@ -1026,7 +1026,7 @@ function prompt(text, isPassword) {
         '<i class="close icon"></i>' +
         '<div class="content"></div>' +
         '<div class="ui input fluid" style="margin-bottom: 1em;"><input type="' + (isPassword ? 'password' : 'text') + '" name="text" style="width: 100%;"/></div>' +
-        '<div class="actions" style="text-align: center;"><button class="ui button blue -confirm">확인</button><button class="ui button -cancel">취소</button></div>' +
+        '<div class="actions" style="text-align: center;"><button class="ui button -cancel">취소</button><button class="ui button orange -confirm">확인</button></div>' +
         '<div/>', {
         id: 'alert-modal',
         class: 'alert-modal',

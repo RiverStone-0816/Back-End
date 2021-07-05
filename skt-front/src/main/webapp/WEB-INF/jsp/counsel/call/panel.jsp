@@ -12,7 +12,7 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<div class="ui bottom attached tab segment overflow-auto remove-margin active" data-tab="call-panel">
+<div class="ui bottom attached tab segment remove-margin active" data-tab="call-panel">
     <div class="panel remove-margin">
         <div class="panel-heading">
             <div class="pull-left"><label class="panel-label">수발신정보</label></div>
@@ -76,16 +76,17 @@
                     </td>
                 </tr>
             </table>
-
-            <div class="ui top attached tabular menu light flex">
-                <button class="item active" data-tab="monitoring">모니터링</button>
-                <button class="item" data-tab="statistics">통계</button>
-            </div>
-            <div class="ui bottom attached tab segment active remove-padding remove-margin" data-tab="monitoring">
-                <jsp:include page="/counsel/call/consultant-status"/>
-            </div>
-            <div class="ui bottom attached tab segment remove-margin overflow-auto" data-tab="statistics">
-                <div class="statistics-inner" id="my-call-time"></div>
+            <div class="call-bottom-area">
+                <div class="ui top attached tabular menu light flex">
+                    <button class="item active" data-tab="monitoring">모니터링</button>
+                    <button class="item" data-tab="statistics">통계</button>
+                </div>
+                <div class="ui bottom attached tab segment active remove-padding remove-margin" data-tab="monitoring">
+                    <jsp:include page="/counsel/call/consultant-status"/>
+                </div>
+                <div class="ui bottom attached tab segment remove-margin overflow-auto" data-tab="statistics">
+                    <div class="statistics-inner" id="my-call-time"></div>
+                </div>
             </div>
         </div>
     </div>
