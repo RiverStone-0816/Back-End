@@ -33,6 +33,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -154,7 +155,7 @@ public class UserApiController extends ApiBaseController {
         Integer pds = form.getIsPds().equals("Y") ? licence.getPdsLicense().getCurrentLicence()+1 : licence.getPdsLicense().getCurrentLicence();
         Integer stat = form.getIsStat().equals("Y") ? licence.getStatLicence().getCurrentLicence()+1 : licence.getStatLicence().getCurrentLicence();
         Integer talk = form.getIsTalk().equals("Y") ? licence.getTalkLicense().getCurrentLicence()+1 : licence.getTalkLicense().getCurrentLicence();
-        Integer email = form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
+        Integer email = Objects.nonNull(form.getIsEmail()) && form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
 
         if((licence.getPdsLicense().getLicence() < pds && form.getIsPds().equals("Y"))
                 || (licence.getStatLicence().getLicence() < stat && form.getIsStat().equals("Y"))
@@ -194,14 +195,14 @@ public class UserApiController extends ApiBaseController {
         Integer pds = form.getIsPds().equals("Y") ? licence.getPdsLicense().getCurrentLicence()+1 : licence.getPdsLicense().getCurrentLicence();
         Integer stat = form.getIsStat().equals("Y") ? licence.getStatLicence().getCurrentLicence()+1 : licence.getStatLicence().getCurrentLicence();
         Integer talk = form.getIsTalk().equals("Y") ? licence.getTalkLicense().getCurrentLicence()+1 : licence.getTalkLicense().getCurrentLicence();
-        Integer email = form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
-        Integer chatt = form.getIsChatt().equals("Y") ? licence.getChattLicense().getCurrentLicence()+1 : licence.getChattLicense().getCurrentLicence();
+        Integer email = Objects.nonNull(form.getIsEmail()) && form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
+        Integer chatt = Objects.nonNull(form.getIsChatt()) && form.getIsChatt().equals("Y") ? licence.getChattLicense().getCurrentLicence()+1 : licence.getChattLicense().getCurrentLicence();
 
         if(detail.getIsPds().equals("Y")) pds = pds-1;
         if(detail.getIsStat().equals("Y")) stat = stat-1;
         if(detail.getIsTalk().equals("Y")) talk = talk-1;
-        if(detail.getIsEmail().equals("Y")) email = email-1;
-        if(detail.getIsChatt().equals("Y")) chatt = chatt-1;
+        if(Objects.nonNull(form.getIsEmail()) && detail.getIsEmail().equals("Y")) email = email-1;
+        if(Objects.nonNull(form.getIsEmail()) && detail.getIsChatt().equals("Y")) chatt = chatt-1;
 
         if((licence.getPdsLicense().getLicence() < pds && form.getIsPds().equals("Y"))
                 || (licence.getStatLicence().getLicence() < stat && form.getIsStat().equals("Y"))
