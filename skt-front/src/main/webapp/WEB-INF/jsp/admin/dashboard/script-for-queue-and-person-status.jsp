@@ -181,8 +181,8 @@
                 }
 
                 $(this).css({
-                    backgroundColor: peerStatus.status === 0 ? 'skyblue' : peerStatus.status === 1 ? 'yellow' : peerStatus.status === 2 ? 'orange' :
-                        peerStatus.status === 3 ? '#FF7171' : peerStatus.status === 4 ? '#86E57F' : peerStatus.status === 8 ? '#C98AFF' : '#ABABAB'
+                    backgroundColor: peerStatus.status === 0 ? '#218380' : peerStatus.status === 1 ? 'yellow' : peerStatus.status === 2 ? '#FFBC42' :
+                        peerStatus.status === 3 ? '#808080' : peerStatus.status === 4 ? '#4F86C6' : peerStatus.status === 8 ? '#F7AA97' : '#D499B9'
                 });
             });
 

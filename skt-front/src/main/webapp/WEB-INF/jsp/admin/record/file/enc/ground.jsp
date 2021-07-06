@@ -113,7 +113,7 @@
         </div>
         <div class="actions">
             <button class="ui button modal-close">취소</button>
-            <button class="ui blue button" onclick="updateCurrentEncryptionType()">저장</button>
+            <button class="ui orange button" onclick="updateCurrentEncryptionType()">저장</button>
         </div>
     </div>
 

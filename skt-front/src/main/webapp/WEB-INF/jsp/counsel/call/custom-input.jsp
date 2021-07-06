@@ -193,7 +193,7 @@
                             <div class="ui form flex">
                                 <input name="${name}" type="hidden" value="">
                                 <div class="file-upload-header">
-                                    <label for="file" class="ui button blue mini compact">파일찾기</label>
+                                    <label for="file" class="ui button orange mini compact">파일찾기</label>
                                     <input type="file" id="file" data-value="${name}">
                                     <span class="file-name">No file selected</span>
                                 </div>

@@ -54,7 +54,7 @@
                     <form:hidden path="filePath"/>
                     <form:hidden path="originalName"/>
                     <div class="file-upload-header">
-                        <label for="file" class="ui button blue mini compact">파일찾기</label>
+                        <label for="file" class="ui button orange mini compact">파일찾기</label>
                         <input type="file" id="file">
                         <span class="file-name">No file selected</span>
                     </div>

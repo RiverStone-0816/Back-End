@@ -88,10 +88,8 @@
                                             <c:forEach var="person" items="${e.person}">
                                                 <tr>
                                                     <td>${g.htmlQuote(person.idName)}(${g.htmlQuote(person.extension)})</td>
-                                                    <td>
-                                                        <span data-peer="${g.htmlQuote(person.peer)}"
-                                                              class="-status-label ui small label ${person.paused != null && person.paused == 0 ? 'blue' : null} -consultant-status"> ${g.htmlQuote(statusCodes.get(person.paused))} </span>
-                                                    </td>
+                                                    <td data-peer="${g.htmlQuote(person.peer)}"
+                                                          class="tbl-status-td -status-label ${person.paused != null && person.paused == 0 ? '' : null} -consultant-status"> ${g.htmlQuote(statusCodes.get(person.paused))} </td>
                                                     <td>
                                                         <div class="ui form">
                                                             <select onchange="updatePersonPausedStatus('${g.htmlQuote(person.peer)}', $(this).val())">

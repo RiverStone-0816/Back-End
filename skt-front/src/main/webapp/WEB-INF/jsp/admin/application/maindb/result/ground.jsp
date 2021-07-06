@@ -144,180 +144,182 @@
                         <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/application/maindb/result/" pageForm="${search}"/>
                     </div>
                 </div>
-                <div class="panel-body" style="overflow-x: auto;">
-                    <table class="ui celled table structured num-tbl border-top unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbResult">
-                        <thead>
-                        <tr>
-                            <th rowspan="2">번호</th>
-                            <th colspan="7">상담기본정보</th>
-                            <th colspan="${resultType.fields.size()}">상담결과필드</th>
-                            <th colspan="${customDbType.fields.size()}">고객정보필드</th>
-                            <th colspan="3">채널정보</th>
-                        </tr>
-                        <tr>
-                            <th>채널</th>
-                            <th>수/발신</th>
-                            <th>상담등록시간</th>
-                            <th>상담원</th>
-                            <th>이관상담원</th>
-                            <th>고객채널정보</th>
-                            <th>플레이</th>
+                <div class="panel-body">
+                    <div class="overflow-auto">
+                        <table class="ui celled table structured num-tbl border-top unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbResult">
+                            <thead>
+                            <tr>
+                                <th rowspan="2">번호</th>
+                                <th colspan="7">상담기본정보</th>
+                                <th colspan="${resultType.fields.size()}">상담결과필드</th>
+                                <th colspan="${customDbType.fields.size()}">고객정보필드</th>
+                                <th colspan="3">채널정보</th>
+                            </tr>
+                            <tr>
+                                <th>채널</th>
+                                <th>수/발신</th>
+                                <th>상담등록시간</th>
+                                <th>상담원</th>
+                                <th>이관상담원</th>
+                                <th>고객채널정보</th>
+                                <th>플레이</th>
 
-                            <c:forEach var="field" items="${resultType.fields}">
-                                <th title="${g.htmlQuote(field.fieldInfo)}">${g.htmlQuote(field.fieldInfo)}</th>
-                            </c:forEach>
-
-                            <c:forEach var="field" items="${customDbType.fields}">
-                                <th>${g.htmlQuote(field.fieldInfo)}</th>
-                            </c:forEach>
-
-                            <th>전화번호</th>
-                            <th>이메일</th>
-                            <th>상담톡아이디</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:choose>
-                            <c:when test="${pagination.rows.size() > 0}">
-                                <c:forEach var="e" items="${pagination.rows}" varStatus="status">
-                                    <tr data-id="${g.htmlQuote(e.seq)}">
-                                        <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
-
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="${e.groupKind == 'PHONE'}">통화</c:when>
-                                                <c:when test="${e.groupKind == 'EMAIL'}">이메일</c:when>
-                                                <c:when test="${e.groupKind == 'TALK'}">상담톡</c:when>
-                                            </c:choose>
-                                        </td>
-                                        <td>${g.htmlQuote(e.eicnCdr.inOut == 'I' ? '수신' : e.eicnCdr.inOut == 'O' ? '발신' : '')}</td>
-                                        <td><fmt:formatDate value="${e.resultDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                        <td>${g.htmlQuote(e.userName)}</td>
-                                        <td>${g.htmlQuote(e.userTrName)}</td>
-                                        <td>${g.htmlQuote(e.customNumber)}</td>
-                                        <td class="popup-td">
-                                            <c:choose>
-                                                <c:when test="${e.groupKind == 'PHONE'}">
-                                                    <div class="popup-element-wrap">
-                                                        <c:if test="${!user.listeningRecordingAuthority.equals('NO')}">
-                                                            <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)}">
-                                                                <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                                    <i class="volume up icon"></i>
-                                                                </button>
-                                                            </c:if>
-                                                            <c:if test="${user.listeningRecordingAuthority.equals('ALL')}">
-                                                                <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                                    <i class="volume up icon"></i>
-                                                                </button>
-                                                            </c:if>
-                                                        </c:if>
-                                                    </div>
-                                                </c:when>
-                                                <c:when test="${e.groupKind == 'TALK'}">
-                                                    <button type="button" class="ui icon button mini compact" onclick="consultingHistoryTalkView('${e.hangupMsg}')"><i
-                                                            class="comment alternate icon"></i></button>
-                                                </c:when>
-                                            </c:choose>
-                                        </td>
-
-                                        <c:forEach var="field" items="${resultType.fields}">
-                                            <c:set var="value" value="${seqToFieldNameToValueMap.get(e.seq).get(field.fieldId)}"/>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${field.fieldType == 'CODE'}">
-                                                        ${field.codes.stream().filter(e -> e.codeId == value).map(e -> e.codeName).findFirst().orElse('')}
-                                                    </c:when>
-                                                    <c:when test="${field.fieldType == 'MULTICODE'}">
-                                                        <c:forEach var="v" items="${value.split(',')}">
-                                                            ${field.codes.stream().filter(e -> e.codeId == v).map(e -> e.codeName).findFirst().orElse('')}&ensp;
-                                                        </c:forEach>
-                                                    </c:when>
-                                                    <c:when test="${field.fieldType == 'IMG'}">
-                                                        <c:choose>
-                                                            <c:when test="${value.length() > 0}">
-                                                                <img class="profile-picture"
-                                                                     src="${apiServerUrl}/api/v1/admin/application/maindb/custominfo/resource?path=${g.urlEncode(value)}&token=${accessToken}"
-                                                                     style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden;"/>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <img class="profile-picture" src="<c:url value="/resources/ipcc-messenger/images/person.png"/>"
-                                                                     style="border-radius: 50%; width: 21px; overflow: hidden;"/>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        ${g.htmlQuote(value)}
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                        </c:forEach>
-
-                                        <c:forEach var="field" items="${customDbType.fields}">
-                                            <c:set var="value" value="${customIdToFieldNameToValueMap.get(e.customId).get(field.fieldId)}"/>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${field.fieldType == 'CODE'}">
-                                                        ${field.codes.stream().filter(e -> e.codeId == value).map(e -> e.codeName).findFirst().orElse('')}
-                                                    </c:when>
-                                                    <c:when test="${field.fieldType == 'MULTICODE'}">
-                                                        <c:forEach var="v" items="${value.split(',')}">
-                                                            ${field.codes.stream().filter(e -> e.codeId == v).map(e -> e.codeName).findFirst().orElse('')}&ensp;
-                                                        </c:forEach>
-                                                    </c:when>
-                                                    <c:when test="${field.fieldType == 'IMG'}">
-                                                        <c:choose>
-                                                            <c:when test="${value.length() > 0}">
-                                                                <img class="profile-picture"
-                                                                     src="${apiServerUrl}/api/v1/admin/application/maindb/custominfo/resource?path=${g.urlEncode(value)}&token=${accessToken}"
-                                                                     style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden;"/>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <img class="profile-picture" src="<c:url value="/resources/ipcc-messenger/images/person.png"/>"
-                                                                     style="border-radius: 50%; width: 21px; overflow: hidden;"/>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        ${g.htmlQuote(value)}
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                        </c:forEach>
-
-                                        <c:set var="value" value="${''}"/>
-                                        <c:forEach var="field" items="${e.multichannelList}">
-                                            <c:if test="${field.channelType == 'PHONE'}">
-                                                <c:set var="value" value="${value.concat(field.channelData).concat(' ')}"/>
-                                            </c:if>
-                                        </c:forEach>
-                                        <td>${g.htmlQuote(value)}</td>
-
-                                        <c:set var="value" value="${''}"/>
-                                        <c:forEach var="field" items="${e.multichannelList}">
-                                            <c:if test="${field.channelType == 'EMAIL'}">
-                                                <c:set var="value" value="${value.concat(field.channelData).concat(' ')}"/>
-                                            </c:if>
-                                        </c:forEach>
-                                        <td>${g.htmlQuote(value)}</td>
-
-                                        <c:set var="value" value="${''}"/>
-                                        <c:forEach var="field" items="${e.multichannelList}">
-                                            <c:if test="${field.channelType == 'TALK'}">
-                                                <c:set var="value" value="${value.concat(field.channelData).concat(' ')}"/>
-                                            </c:if>
-                                        </c:forEach>
-                                        <td>${g.htmlQuote(value)}</td>
-                                    </tr>
+                                <c:forEach var="field" items="${resultType.fields}">
+                                    <th title="${g.htmlQuote(field.fieldInfo)}">${g.htmlQuote(field.fieldInfo)}</th>
                                 </c:forEach>
-                            </c:when>
-                            <c:otherwise>
-                                <tr>
-                                    <td colspan="${11 + customDbType.fields.size() + resultType.fields.size()}" class="null-data">조회된 데이터가 없습니다.</td>
-                                </tr>
-                            </c:otherwise>
-                        </c:choose>
-                        </tbody>
-                    </table>
+
+                                <c:forEach var="field" items="${customDbType.fields}">
+                                    <th>${g.htmlQuote(field.fieldInfo)}</th>
+                                </c:forEach>
+
+                                <th>전화번호</th>
+                                <th>이메일</th>
+                                <th>상담톡아이디</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:choose>
+                                <c:when test="${pagination.rows.size() > 0}">
+                                    <c:forEach var="e" items="${pagination.rows}" varStatus="status">
+                                        <tr data-id="${g.htmlQuote(e.seq)}">
+                                            <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
+
+                                            <td>
+                                                <c:choose>
+                                                    <c:when test="${e.groupKind == 'PHONE'}">통화</c:when>
+                                                    <c:when test="${e.groupKind == 'EMAIL'}">이메일</c:when>
+                                                    <c:when test="${e.groupKind == 'TALK'}">상담톡</c:when>
+                                                </c:choose>
+                                            </td>
+                                            <td>${g.htmlQuote(e.eicnCdr.inOut == 'I' ? '수신' : e.eicnCdr.inOut == 'O' ? '발신' : '')}</td>
+                                            <td><fmt:formatDate value="${e.resultDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                            <td>${g.htmlQuote(e.userName)}</td>
+                                            <td>${g.htmlQuote(e.userTrName)}</td>
+                                            <td>${g.htmlQuote(e.customNumber)}</td>
+                                            <td class="popup-td">
+                                                <c:choose>
+                                                    <c:when test="${e.groupKind == 'PHONE'}">
+                                                        <div class="popup-element-wrap">
+                                                            <c:if test="${!user.listeningRecordingAuthority.equals('NO')}">
+                                                                <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)}">
+                                                                    <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
+                                                                        <i class="volume up icon"></i>
+                                                                    </button>
+                                                                </c:if>
+                                                                <c:if test="${user.listeningRecordingAuthority.equals('ALL')}">
+                                                                    <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
+                                                                        <i class="volume up icon"></i>
+                                                                    </button>
+                                                                </c:if>
+                                                            </c:if>
+                                                        </div>
+                                                    </c:when>
+                                                    <c:when test="${e.groupKind == 'TALK'}">
+                                                        <button type="button" class="ui icon button mini compact" onclick="consultingHistoryTalkView('${e.hangupMsg}')"><i
+                                                                class="comment alternate icon"></i></button>
+                                                    </c:when>
+                                                </c:choose>
+                                            </td>
+
+                                            <c:forEach var="field" items="${resultType.fields}">
+                                                <c:set var="value" value="${seqToFieldNameToValueMap.get(e.seq).get(field.fieldId)}"/>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${field.fieldType == 'CODE'}">
+                                                            ${field.codes.stream().filter(e -> e.codeId == value).map(e -> e.codeName).findFirst().orElse('')}
+                                                        </c:when>
+                                                        <c:when test="${field.fieldType == 'MULTICODE'}">
+                                                            <c:forEach var="v" items="${value.split(',')}">
+                                                                ${field.codes.stream().filter(e -> e.codeId == v).map(e -> e.codeName).findFirst().orElse('')}&ensp;
+                                                            </c:forEach>
+                                                        </c:when>
+                                                        <c:when test="${field.fieldType == 'IMG'}">
+                                                            <c:choose>
+                                                                <c:when test="${value.length() > 0}">
+                                                                    <img class="profile-picture"
+                                                                         src="${apiServerUrl}/api/v1/admin/application/maindb/custominfo/resource?path=${g.urlEncode(value)}&token=${accessToken}"
+                                                                         style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden;"/>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <img class="profile-picture" src="<c:url value="/resources/ipcc-messenger/images/person.png"/>"
+                                                                         style="border-radius: 50%; width: 21px; overflow: hidden;"/>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${g.htmlQuote(value)}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </c:forEach>
+
+                                            <c:forEach var="field" items="${customDbType.fields}">
+                                                <c:set var="value" value="${customIdToFieldNameToValueMap.get(e.customId).get(field.fieldId)}"/>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${field.fieldType == 'CODE'}">
+                                                            ${field.codes.stream().filter(e -> e.codeId == value).map(e -> e.codeName).findFirst().orElse('')}
+                                                        </c:when>
+                                                        <c:when test="${field.fieldType == 'MULTICODE'}">
+                                                            <c:forEach var="v" items="${value.split(',')}">
+                                                                ${field.codes.stream().filter(e -> e.codeId == v).map(e -> e.codeName).findFirst().orElse('')}&ensp;
+                                                            </c:forEach>
+                                                        </c:when>
+                                                        <c:when test="${field.fieldType == 'IMG'}">
+                                                            <c:choose>
+                                                                <c:when test="${value.length() > 0}">
+                                                                    <img class="profile-picture"
+                                                                         src="${apiServerUrl}/api/v1/admin/application/maindb/custominfo/resource?path=${g.urlEncode(value)}&token=${accessToken}"
+                                                                         style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden;"/>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <img class="profile-picture" src="<c:url value="/resources/ipcc-messenger/images/person.png"/>"
+                                                                         style="border-radius: 50%; width: 21px; overflow: hidden;"/>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${g.htmlQuote(value)}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </c:forEach>
+
+                                            <c:set var="value" value="${''}"/>
+                                            <c:forEach var="field" items="${e.multichannelList}">
+                                                <c:if test="${field.channelType == 'PHONE'}">
+                                                    <c:set var="value" value="${value.concat(field.channelData).concat(' ')}"/>
+                                                </c:if>
+                                            </c:forEach>
+                                            <td>${g.htmlQuote(value)}</td>
+
+                                            <c:set var="value" value="${''}"/>
+                                            <c:forEach var="field" items="${e.multichannelList}">
+                                                <c:if test="${field.channelType == 'EMAIL'}">
+                                                    <c:set var="value" value="${value.concat(field.channelData).concat(' ')}"/>
+                                                </c:if>
+                                            </c:forEach>
+                                            <td>${g.htmlQuote(value)}</td>
+
+                                            <c:set var="value" value="${''}"/>
+                                            <c:forEach var="field" items="${e.multichannelList}">
+                                                <c:if test="${field.channelType == 'TALK'}">
+                                                    <c:set var="value" value="${value.concat(field.channelData).concat(' ')}"/>
+                                                </c:if>
+                                            </c:forEach>
+                                            <td>${g.htmlQuote(value)}</td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                    <tr>
+                                        <td colspan="${11 + customDbType.fields.size() + resultType.fields.size()}" class="null-data">조회된 데이터가 없습니다.</td>
+                                    </tr>
+                                </c:otherwise>
+                            </c:choose>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

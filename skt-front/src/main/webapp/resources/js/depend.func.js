@@ -981,7 +981,7 @@ function confirm(text) {
         '<i class="close icon"></i>' +
         '<i class="exclamation icon"></i>' +
         '<div class="content"></div>' +
-        '<div class="actions" style="text-align: center;"><button class="ui button blue -confirm">확인</button><button class="ui button -cancel">취소</button></div>' +
+        '<div class="actions" style="text-align: center;"><button class="ui button orange -confirm">확인</button><button class="ui button -cancel">취소</button></div>' +
         '<div/>', {
         id: 'alert-modal',
         class: 'alert-modal',

@@ -148,7 +148,7 @@
                                         <div class="four wide column">
                                             <div class="label-container"><label class="control-label">평균통계</label><span class="ui label small">일별</span></div>
                                             <div class="pie-chart-container">
-                                                <div id="outer-pie-chart" class="full-width full-height" style="padding: 0 50px;"></div>
+                                                <div id="outer-pie-chart" class="full-width" style="padding: 0 50px;"></div>
 
                                                 <div class="inner-label">
                                                     <span class="ui label">TOTAL</span> ${total.success + total.cancel}
