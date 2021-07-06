@@ -41,7 +41,7 @@
                         <fmt:formatDate var="startHour" value="${form.start}" pattern="HH"/>
                         <fmt:formatDate var="startMinute" value="${form.start}" pattern="mm"/>
                         <input name="_startDate" class="-datepicker hasDatepicker" placeholder="시작일" type="text" value="${startDate}"  autocomplete="off" size="15">
-                        <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                         <span class="piece"><input type="text" name="_startHour" class="-input-numerical ml5" value="${startHour}" placeholder="시" size="1"> <text>시</text></span>
                         <span class="piece"><input type="text" name="_startMinute" class="-input-numerical ml5" value="${startMinute}" placeholder="분" size="1"> <text>분</text></span>
                         <span class="tilde">~</span>
@@ -49,7 +49,7 @@
                         <fmt:formatDate var="endHour" value="${form.end}" pattern="HH"/>
                         <fmt:formatDate var="endMinute" value="${form.end}" pattern="mm"/>
                         <input name="_endDate" class="-datepicker hasDatepicker" placeholder="종료일" type="text" value="${endDate}"  autocomplete="off" size="15">
-                        <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                         <span class="piece"><input type="text" name="_endHour" class="-input-numerical ml5" value="${endHour}" placeholder="시" size="1"> <text>시</text></span>
                         <span class="piece"><input type="text" name="_endMinute" class="-input-numerical ml5" value="${endMinute}" placeholder="분" size="1"> <text>분</text></span>
                     </div>

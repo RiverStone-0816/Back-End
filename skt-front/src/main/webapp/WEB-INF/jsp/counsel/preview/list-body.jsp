@@ -123,7 +123,7 @@
                 <div class="button-area remove-mb">
                     <div class="align-right">
                         <button type="submit" class="ui button sharp brand large">검색</button>
-                        <%--<button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>--%>
+                            <%--<button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>--%>
                     </div>
                 </div>
             </div>
@@ -267,6 +267,7 @@
                 ipccCommunicator.clickByCampaign(cid, customNumber, 'PRV', previewGroupId, previewCustomId);
             }
         }
+
         <c:if test="${g.user.idType eq 'M'}">
         $('#personIdInCharge').attr('disabled', 'true');
         </c:if>

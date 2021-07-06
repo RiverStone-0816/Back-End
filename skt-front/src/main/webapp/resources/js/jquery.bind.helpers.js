@@ -117,7 +117,12 @@
             });
         });
         findAndMe(".-overlay-scroll", this).overlayScrollbars({});
-        findAndMe(".call-bottom-area", this).overlayScrollbars({});
+        findAndMe(".-vertical-resizable", this).each(function () {
+            $(this).resizable({
+                minHeight: parseInt($(this).attr('data-resizable-min-height') || 58),
+                maxHeight: parseInt($(this).attr('data-resizable-max-height') || 610)
+            });
+        });
         findAndMe('audio', this).each(function () {
             maudio({obj: this});
         });
@@ -207,11 +212,6 @@
             });
         });
         /* 태헌씨 스크립트 */
-
-        findAndMe(".panel-resizable", this).resizable({
-            minHeight: 58,
-            maxHeight: 610
-        });
 
         findAndMe("select.level", this).each(function () {
             for (let i = 1; i < 11; i++) {

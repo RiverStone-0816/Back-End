@@ -76,7 +76,7 @@
                     </td>
                 </tr>
             </table>
-            <div class="call-bottom-area">
+            <div class="call-bottom-area -overlay-scroll">
                 <div class="ui top attached tabular menu light flex">
                     <button class="item active" data-tab="monitoring">모니터링</button>
                     <button class="item" data-tab="statistics">통계</button>
