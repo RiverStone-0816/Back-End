@@ -17,13 +17,13 @@
     <div class="sort-wrap">
         <div class="ui form">
             <div class="fields">
-                <div class="four wide field">
+                <div class="five wide field">
                     <select class="-search-type">
                         <option value="customName" selected>고객명</option>
                         <option value="userName">상담원명</option>
                     </select>
                 </div>
-                <div class="nine wide field">
+                <div class="six wide field">
                     <div class="ui action input">
                         <input type="text" class="-search-value">
                         <button type="button" class="ui icon button -search-button">
@@ -31,7 +31,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="three wide field">
+                <div class="five wide field">
                     <select class="-orderby">
                         <option value="lastMessageTime" selected>최근시간</option>
                         <option value="customName">고객명</option>
@@ -45,19 +45,124 @@
         <c:choose>
             <c:when test="${talkList.size() > 0}">
                 <ul>
+                    <li class="item -talk-list">
+                        <div class="header">
+                            <div class="left">
+                                <div class="profile-image">
+                                    <img src="<c:url value="/resources/images/profile2.png"/>">
+                                </div>
+                                <div class="profile-txt">
+                                    <div class="label">eicn_test</div>
+                                    <div class="customer -custom-name"></div>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <div class="user-name -user-name"> <span class="notread-txt">1</span> 상담원 : 지정안됨</div>
+                                <div class="last-time -time">2021-07-12 17:28:15</div>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="inner">
+                                <span class="ui mini brand label circular -indicator-new-message" style="display: none"> N </span>
+                                마지막 메시지가 나오는 곳 입니다.
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="item -talk-list">
+                        <div class="header">
+                            <div class="left">
+                                <div class="profile-image">
+                                    <img src="<c:url value="/resources/images/profile3.png"/>">
+                                </div>
+                                <div class="profile-txt">
+                                    <div class="label">eicn_test</div>
+                                    <div class="customer -custom-name"></div>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <div class="user-name -user-name"> <span class="notread-txt">1</span> 상담원 : 지정안됨</div>
+                                <div class="last-time -time">2021-07-12 17:28:15</div>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="inner">
+                                <span class="ui mini brand label circular -indicator-new-message" style="display: none"> N </span>
+                                마지막 메시지가 나오는 곳 입니다.
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="item -talk-list active">
+                        <div class="header">
+                            <div class="left">
+                                <div class="profile-image">
+                                    <img src="<c:url value="/resources/images/profile4.png"/>">
+                                </div>
+                                <div class="profile-txt">
+                                    <div class="label">eicn_test</div>
+                                    <div class="customer -custom-name"></div>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <div class="user-name -user-name"> <span class="notread-txt">1</span> 상담원 : 지정안됨</div>
+                                <div class="last-time -time">2021-07-12 17:28:15</div>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="inner">
+                                <span class="ui mini brand label circular -indicator-new-message" style="display: none"> N </span>
+                                마지막 메시지가 나오는 곳 입니다.
+                            </div>
+                        </div>
+                    </li>
+
+                    <li class="item -talk-list">
+                        <div class="header">
+                            <div class="left">
+                                <div class="profile-image">
+                                    <img src="<c:url value="/resources/images/profile5.png"/>">
+                                </div>
+                                <div class="profile-txt">
+                                    <div class="label">eicn_test</div>
+                                    <div class="customer -custom-name"></div>
+                                </div>
+                            </div>
+                            <div class="right">
+                                <div class="user-name -user-name"> <span class="notread-txt">1</span> 상담원 : 지정안됨</div>
+                                <div class="last-time -time">2021-07-12 17:28:15</div>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <div class="inner">
+                                <span class="ui mini brand label circular -indicator-new-message" style="display: none"> N </span>
+                                마지막 메시지가 나오는 곳 입니다.
+                            </div>
+                        </div>
+                    </li>
+
                     <c:forEach var="e" items="${talkList}">
                         <li class="item -talk-list" data-id="${g.htmlQuote(e.roomId)}" data-sender-key="${g.htmlQuote(e.senderKey)}" data-user-key="${g.htmlQuote(e.userKey)}">
 
                             <div class="header">
                                 <div class="left">
-                                    <span class="label">${g.htmlQuote(e.svcName)}</span>
-                                    <span class="customer -custom-name">${e.maindbCustomName != null ? g.htmlQuote(e.maindbCustomName) : '미등록고객'}</span>
+                                    <div class="profile-image">
+                                        <img src="<c:url value="/resources/images/profile1.png"/>">
+                                    </div>
+                                    <div class="profile-txt">
+                                        <div class="label">${g.htmlQuote(e.svcName)}</div>
+                                        <div class="customer -custom-name">${e.maindbCustomName != null ? g.htmlQuote(e.maindbCustomName) : '미등록고객'}</div>
+                                    </div>
                                 </div>
-                                <div class="right -user-name">상담원 : ${g.htmlQuote(e.userName)}</div>
+                                <div class="right">
+                                    <div class="user-name -user-name"> <span class="notread-txt">1</span> 상담원 : ${g.htmlQuote(e.userName)}</div>
+                                    <div class="last-time -time"><fmt:formatDate value="${e.roomLastTime}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
+                                </div>
                             </div>
                             <div class="content">
-                                <div class="left">
+                                <div class="inner">
                                     <span class="ui mini brand label circular -indicator-new-message" style="display: none"> N </span>
+                                    마지막 메시지가 나오는 곳 입니다.
                                     <c:choose>
                                         <c:when test="${e.type == 'photo' && e.send_receive == 'S'}">
                                             <i>사진 전송됨</i>
@@ -82,7 +187,6 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
-                                <div class="right -time"><fmt:formatDate value="${e.roomLastTime}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
                             </div>
                         </li>
                     </c:forEach>

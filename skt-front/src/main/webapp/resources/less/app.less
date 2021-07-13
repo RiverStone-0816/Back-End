@@ -584,7 +584,6 @@ pre {
           &:hover {
             color: #333;
             font-weight: 800;
-            box-shadow: #ff7902 0px -4px 0px inset;
           }
         }
       }
@@ -776,7 +775,7 @@ pre {
 
 .consult-wrapper {
   height:100%;
-  padding:0 10px 10px 10px;
+  padding:0 10px 10px 0;
   overflow: hidden;
   .ui.celled.table {
     tr {
@@ -796,9 +795,137 @@ pre {
   }
   .flex();
   .consult-left-panel {
+    width: 15%;
+    .consult-organization-panel {
+      .panel-heading {
+        .ui.button.active {
+          background:@color-brand!important;
+          color: @color-white !important;
+        }
+      }
+    }
+    .ui.list.consult-organization {
+      margin: 0;
+
+    }
+    .ui.list.consult-organization {
+
+      .user-wrap {
+        padding-left: 10px;
+        .folder.open.icon {
+          color: #888888;
+          font-size: 17px;
+        }
+        .team {
+          font-weight:800;
+          font-size:14px;
+        }
+        .item {
+          white-space: nowrap;
+          margin: 7px 0 7px -13px;
+          cursor: pointer;
+          .content {
+
+          }
+        }
+        .item.active {
+          background: #f3f3f3;
+          padding-left: 6px;
+          .user.icon {
+            color:@color-brand;
+          }
+        }
+      }
+      .btn-wrap {
+        padding-left: 10px;
+        .team {
+          opacity:0;
+        }
+        .ui.icon.button {
+          font-size: 7px;
+          padding: 0 7px;
+          text-align: center;
+          height: 17px;
+          &:hover {
+            i {
+              color:#fff;
+            }
+          }
+          i {
+            color:#333;
+          }
+        }
+        .item {
+          text-align: right;
+          margin: 5px 0;
+
+          .ui.mini.label {
+            color:@color-white;
+            font-weight:200;
+            padding: 2.5px 0;
+            text-align:center;
+            width: 42px;
+            white-space: nowrap;
+            letter-spacing: -1px;
+          }
+          .ui.mini.label.call-state {
+            background: @color-state-call;
+          }
+          .ui.mini.label.after-state {
+            background: @color-state-etc2;
+          }
+          .ui.mini.label.logout-state {
+            background: @color-state-etc2;
+          }
+          .ui.mini.label.wait-state {
+            background: @color-state-wait;
+          }
+          .ui.mini.label.bell-state {
+            background: @color-state-call;
+          }
+        }
+      }
+    }
+    .panel.consult-organization-panel {
+      .panel-segment {
+        margin: 0 0 15px 0;
+        .ui.basic.button {
+          border-radius: 0;
+          outline: 0;
+          box-shadow: none;
+        }
+        .panel-segment-header {
+          position: relative;
+          background: #E3E3E3;
+          border-left: 6px solid #514F65;
+          padding: 0 0 0 16px;
+          height: 32px;
+          line-height: 32px;
+          .ui.basic.button {
+            position: absolute;
+            right: -2px;
+            top: 1px;
+            background: @color-white!important;
+          }
+        }
+        .panel-segment-body {
+          .flex();
+          flex-flow: row;
+          .area {
+            white-space: nowrap;
+          }
+          .area:first-child {
+            width: 50%;
+            overflow: auto;
+          }
+        }
+      }
+    }
+  }
+  .consult-center-panel {
     .flex();
     flex-flow:column;
-    width: 33%;
+    width: 35%;
     padding-right:10px;
     .call-bottom-area {
       height: 508px;
@@ -811,7 +938,7 @@ pre {
     }
   }
   .consult-right-panel {
-    width: 67%;
+    width: 50%;
     overflow: hidden;
     .top-area {
       .panel-body {
@@ -875,19 +1002,27 @@ pre {
 }
 
 .top-chat-list-wrap {
-  height: 322px;
+  width: 40%;
+  margin: 10px;
+  .ui.attached.tabular.menu.flex {
+    min-height: 30px;
+    .item {
+      font-size: @font-size-xxsmall;
+      padding: 0;
+    }
+  }
   .tab.segment {
     width: 100%;
   }
   .talk-list-container {
-    height: 216px
   }
   .ui.bottom.attached.tab.segment {
-    height: ~"calc(100% - 45px);"
+    height: ~"calc(100% - 30px);"
   }
 }
 .btm-room-wrap {
-  flex: 1;
+  width: 60%;
+  margin: -1px;
 }
 
 .ui.bottom.attached.tab.segment {
@@ -895,14 +1030,12 @@ pre {
 }
 
 .ui.tabular.menu {
-
   .item {
     border-radius: 0!important;
     cursor: pointer;
     background:darken(@color-gray, 6.3%);
     color:darken(@color-gray, 45%);
-    padding: 1.1em 2.8em;
-    font-size:16px;
+    padding: 14px 27px;
     &:hover {
       background:darken(@color-gray, 6.3%);
       color:darken(@color-gray, 45%);
@@ -1362,7 +1495,7 @@ pre {
     .flex();
     align-items:center;
     white-space: nowrap;
-    min-height: 53px;
+    min-height: 44px;
     .pull-left {
       margin-right: auto;
       float:none;
@@ -2055,6 +2188,9 @@ label.control-label {
 .flex-flow-column {
   flex-flow: column!important;
 }
+.flex-flow-row {
+  flex-flow: row!important;
+}
 .flex-200 {
   flex:2!important;
 }
@@ -2327,8 +2463,9 @@ label.control-label {
     }
     select {
       padding: 0;
-      height: 34px;
+      height: 29px;
       border-radius: 0;
+      font-size: @font-size-xxsmall;
     }
     input[type="text"], input[type="password"] {
       padding: 5.5px 11px;
@@ -3467,7 +3604,6 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
 
 
 .chat-container {
-  padding:10px 0 0 0;
   height:100%;
   border:0;
   .room {
@@ -3477,19 +3613,30 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
     border:1px solid @color-border;
     .chat-header {
       background: #616b77;
-      padding: 9px 8px;
       color: #fff;
       width: 100%;
-      height: 32px;
+      height: 41px;
+      line-height: 41px;
+      padding: 0 9px;
+    }
+    .chat-end-btn-wrap {
+      position: absolute;
+      right: 6px;
+      top: 8px;
     }
     .chat-body {
       font-size: 10pt;
-      height: ~"calc(100% - 134px)";
+      height: ~"calc(100% - 143px)";
       .chat-item {
         overflow: hidden;
         position: relative;
         padding: 0 75px 20px 12px;
         .wrap-content {
+          .flex();
+          justify-content: flex-start;
+          .profile-image {
+            margin: 0 10px 0 0;
+          }
           .chat {
             display: block;
             overflow: hidden;
@@ -3498,7 +3645,8 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
               background: #fff;
               box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.10);
               -webkit-box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.10);
-              margin: 0 0 2px 0;
+              margin: 3px 0 2px 0;
+              border-radius: 5px;
               .txt_chat {
                 padding: 9px;
                 font-size: 13px;
@@ -3545,6 +3693,11 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
         padding-left: 75px;
         padding-right: 12px;
         .wrap-content {
+          .flex();
+          justify-content: flex-end;
+          .profile-image {
+            display: none;
+          }
           .chat {
             .bubble {
               float:right;
@@ -4564,26 +4717,55 @@ g {
       .left {
         .flex();
         align-items: center;
+        .profile-image {
+          padding: 3px 6px 3px 3px;
+        }
+        .profile-txt {
+          font-size: @font-size-xxsmall;
+          line-height: 21px;
+        }
         .label {
-          background: @color-navy;
-          color:@color-white;
-          padding: 8px 26px;
-          display: inline-block;
           margin: -1px 0 0 -1px;
-          width: 126px;
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
           text-align: center;
         }
         .customer {
-          padding:0 12px;
+          white-space: nowrap;
+          overflow: hidden;
         }
       }
       .right {
-        padding: 0 10px 0 0;
         .flex();
-        align-items: center;
+        flex-flow: column;
+        align-items: flex-end;
+        font-size: @font-size-xxsmall;
+        line-height: 21px;
+        padding: 0 5px 0 0;
+        .user-name {
+          white-space: nowrap;
+          font-weight: 500;
+          .notread-txt {
+            width:16px;
+            height:16px;
+            background:@color-brand;
+            color: @color-white;
+            background: #FF7902;
+            border-radius: 50%;
+            display: inline-block;
+            line-height: 15px;
+            text-align: center;
+            font-size: 9px;
+            vertical-align: top;
+            top: 3px;
+            position: relative;
+          }
+        }
+        .last-time {
+          white-space: nowrap;
+          font-weight: 300;
+        }
         .notread-message {
           background: @color-brand;
           color: @color-white;
@@ -4599,14 +4781,16 @@ g {
       }
     }
     .content {
-      padding:10px;
+      padding:7px 5px;
+      border-top: 1px solid @color-border;
       .flex();
       justify-content: space-between;
-      .left {
-        width: 70%;
+      .inner {
+        width: 100%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-size: @font-size-xxsmall;
         .ui.label {
           position: relative;
           top: -1.5px;
@@ -4624,13 +4808,8 @@ g {
     }
   }
   .item.active {
-    background: #fbfbfb;
     .header {
-      .left {
-        .label {
-          background: @color-brand;
-        }
-      }
+      background: darken(@color-gray, 4%);
     }
   }
 }

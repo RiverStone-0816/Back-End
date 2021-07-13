@@ -26,6 +26,10 @@
             <c:when test="${e.sendReceive == 'AF' || e.sendReceive == 'AS' || e.sendReceive == 'S' || e.sendReceive == 'R'}">
                 <div class="chat-item ${e.sendReceive == 'AF' || e.sendReceive == 'AS' || e.sendReceive == 'S' ? 'chat-me' : ''}">
                     <div class="wrap-content">
+                        <div class="profile-image">
+                            <img src="<c:url value="/resources/images/profile1.png"/>">
+                        </div>
+                        <div class="txt-segment">
                         <c:set var="name" value="${e.sendReceive == 'AF' || e.sendReceive == 'AS' ||  e.sendReceive == 'S' ? e.userName : talk.customName}"/>
                         <div class="txt-time">
                             <c:if test="${name != null && name != ''}">[${g.htmlQuote(name)}]</c:if> <fmt:formatDate value="${e.insertTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
@@ -70,6 +74,7 @@
                                 </div>
                             </c:otherwise>
                         </c:choose>
+                        </div>
                     </div>
                 </div>
             </c:when>

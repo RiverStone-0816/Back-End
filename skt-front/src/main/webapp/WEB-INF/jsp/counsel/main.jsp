@@ -15,7 +15,530 @@
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
 <div class="consult-wrapper -counsel-panel">
-    <div class="-counsel-content-panel consult-left-panel" data-type="COUNSEL" style="display: none;">
+
+    <div class="ui modal tiny" id="user-info-popup">
+        <i class="close icon"></i>
+        <div class="header">유저정보</div>
+        <div class="content">
+            <table class="ui table celled unstackable border-top-default">
+                <tr>
+                    <th>이름</th>
+                    <td>홍길동</td>
+                </tr>
+                <tr>
+                    <th>부서명</th>
+                    <td>개발팀</td>
+                </tr>
+                <tr>
+                    <th>메일주소</th>
+                    <td>hong@eicn.co.kr</td>
+                </tr>
+                <tr>
+                    <th>휴대전화</th>
+                    <td>010-0000-0000  <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>"></td>
+                </tr>
+                <tr>
+                    <th>전화번호</th>
+                    <td>070-0000-0000  <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>"></td></td>
+                </tr>
+                <tr>
+                    <th>내선번호</th>
+                    <td>0000  <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>"></td></td>
+                </tr>
+            </table>
+        </div>
+        <div class="actions">
+            <button type="button" class="ui button modal-close">닫기</button>
+        </div>
+    </div>
+
+    <div class="ui modal tiny" id="organi-chat-create-popup">
+        <i class="close icon"></i>
+        <div class="header">새로운 채팅방 만들기</div>
+        <div class="content">
+            <div style="text-align:center">
+                <img style="width:340px;" src="<c:url value="/resources/images/chat-create-img-temp.JPG"/>">
+            </div>
+        </div>
+        <div class="actions">
+            <button type="button" class="ui button modal-close">취소</button>
+            <button type="button" class="ui orange button modal-close">생성</button>
+        </div>
+    </div>
+
+    <div class="ui modal tiny" id="organi-chat-room-popup">
+        <i class="close icon"></i>
+        <div class="header"><span style="cursor:pointer" onclick="chatTitleModifyBtn()">대화방이름</span></div>
+        <div class="content">
+            <div style="text-align:center;position:relative">
+                <img style="width:100%;" src="<c:url value="/resources/images/organi-pop3.jpg"/>">
+                <img class="chat-title-modify" style="position:absolute;top:0;left:0;width:100%;" src="<c:url value="/resources/images/organi-pop4.jpg"/>">
+            </div>
+        </div>
+    </div>
+
+    <div class="ui modal tiny" id="organi-favor-popup">
+        <i class="close icon"></i>
+        <div class="header">즐겨찾기 편집</div>
+        <div class="content">
+            <div style="text-align:center">
+                <img style="width:496px;" src="<c:url value="/resources/images/organi-favor-temp.jpg"/>">
+            </div>
+        </div>
+        <div class="actions">
+            <button type="button" class="ui button modal-close">취소</button>
+            <button type="button" class="ui orange button modal-close">생성</button>
+        </div>
+    </div>
+
+
+
+    <div class="consult-left-panel" style="position:relative">
+        <div class="organi-pop-wrap">
+            <div class="organi-pop-first" style="display:none;position: absolute; z-index: 555; right: -120px; background: #fff; height: 100%; float: left; box-shadow: rgb(0 0 0 / 20%) 7px 1px 5px -3px;"> <img  style="width: 121px;" src="<c:url value="/resources/images/organi-pop1.jpg"/>"></div>
+            <div class="organi-pop-second" style="display:none;position: absolute; right: -559px; z-index: 556; background: #fff; height: 100%; /* position: relative; */ float: left; box-shadow: rgb(0 0 0 / 20%) 7px 1px 5px -3px;">
+                <div class="trans-area" onclick="organiChatRoom()" style="position: absolute; width: 100%; height: 282px; top: 143px; cursor: pointer;"></div>
+                <img  style="width: 440px; " src="<c:url value="/resources/images/organi-pop2.jpg"/>">
+            </div>
+        </div>
+        <div class="panel consult-organization-panel full-height" >
+            <div class="panel-heading">조직도
+                <div style="position:absolute;right:10px">
+                    <button class="ui basic button organi-state">현황</button>
+                    <button class="ui basic button organi-room">조직대화방</button>
+                </div>
+            </div>
+            <div class="panel-body remove-pl">
+                <div class="panel-segment">
+                    <div class="panel-segment-header">
+                        즐겨찾기
+                        <button type="button" class="ui basic button" onclick="organiFavor()">편집</button>
+                    </div>
+                    <div class="panel-segment-body">
+                        <div class="area">
+                            <div class="ui list consult-organization">
+                                <div class="item user-wrap">
+                                    <i class="folder open icon"></i>
+                                    <div class="content">
+                                        <div class="team">개발</div>
+                                        <div class="list">
+                                            <div class="item active">
+                                                <i class="user icon"></i>
+                                                <div class="content">
+                                                    <div class="user">홍길동</div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="user icon"></i>
+                                                <div class="content">
+                                                    <div class="user">홍길동</div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="user icon"></i>
+                                                <div class="content">
+                                                    <div class="user">홍길동</div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="user icon"></i>
+                                                <div class="content">
+                                                    <div class="user">홍길동</div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="area">
+                            <div class="ui list consult-organization">
+                                <div class="item btn-wrap" >
+                                    <div class="content">
+                                        <div class="team">개발</div>
+                                        <div class="list">
+                                            <div class="item">
+                                                <div class="content">
+                                                    <span class="ui mini label call-state">통화중</span>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="arrow right icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="comment icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                        <i class="info icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="content">
+                                                    <span class="ui mini label after-state">후처리</span>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="arrow right icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="comment icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                        <i class="info icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="content">
+                                                    <span class="ui mini label bell-state">벨울림</span>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="arrow right icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="comment icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                        <i class="info icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="content">
+                                                    <span class="ui mini label bell-state">벨울림</span>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="arrow right icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="comment icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                        <i class="info icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-segment">
+                    <div class="panel-segment-header">
+                        조직도
+                        <button type="button" class="ui basic button" onclick="organiChatCreate()">대화방 생성</button>
+                    </div>
+                    <div class="panel-segment-body">
+                        <div class="area">
+                            <div class="ui list consult-organization">
+                                <div class="item user-wrap">
+                                    <i class="folder open icon"></i>
+                                    <div class="content">
+                                        <div class="team">개발</div>
+                                        <div class="list">
+                                            <div class="item active">
+                                                <i class="user icon"></i>
+                                                <div class="content">
+                                                    <div class="user">홍길동</div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="user icon"></i>
+                                                <div class="content">
+                                                    <div class="user">홍길동</div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="user icon"></i>
+                                                <div class="content">
+                                                    <div class="user">홍길동</div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="user icon"></i>
+                                                <div class="content">
+                                                    <div class="user">홍길동</div>
+                                                    <div class="list">
+                                                        <div class="item">
+                                                            <i class="folder open icon"></i>
+                                                            <div class="content">
+                                                                <div class="team">개발팀</div>
+                                                                <div class="list">
+                                                                    <div class="item">
+                                                                        <i class="user icon"></i>
+                                                                        <div class="content">
+                                                                            <div class="user">홍길동</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="item">
+                                                                        <i class="user icon"></i>
+                                                                        <div class="content">
+                                                                            <div class="user">홍길동</div>
+                                                                            <div class="list">
+                                                                                <div class="item">
+                                                                                    <i class="folder open icon"></i>
+                                                                                    <div class="content">
+                                                                                        <div class="team">개발팀</div>
+                                                                                        <div class="list">
+                                                                                            <div class="item">
+                                                                                                <i class="user icon"></i>
+                                                                                                <div class="content">
+                                                                                                    <div class="user">홍길동</div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="item">
+                                                                                                <i class="user icon"></i>
+                                                                                                <div class="content">
+                                                                                                    <div class="user">홍길동</div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item user-wrap">
+                                    <i class="folder open icon"></i>
+                                    <div class="content">
+                                        <div class="team">개발</div>
+                                        <div class="list">
+                                            <div class="item active">
+                                                <i class="user icon"></i>
+                                                <div class="content">
+                                                    <div class="user">홍길동</div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="user icon"></i>
+                                                <div class="content">
+                                                    <div class="user">홍길동</div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="user icon"></i>
+                                                <div class="content">
+                                                    <div class="user">홍길동</div>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <i class="user icon"></i>
+                                                <div class="content">
+                                                    <div class="user">홍길동</div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="area">
+                            <div class="ui list consult-organization">
+                                <div class="item btn-wrap">
+                                    <div class="content">
+                                        <div class="team">개발</div>
+                                        <div class="list">
+                                            <div class="item">
+                                                <div class="content">
+                                                    <span class="ui mini label call-state">통화중</span>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="arrow right icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="comment icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                        <i class="info icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="content">
+                                                    <span class="ui mini label after-state">후처리</span>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="arrow right icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="comment icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                        <i class="info icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="content">
+                                                    <span class="ui mini label bell-state">벨울림</span>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="arrow right icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="comment icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                        <i class="info icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="content">
+                                                    <span class="ui mini label bell-state">벨울림</span>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="arrow right icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="comment icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                        <i class="info icon"></i>
+                                                    </button>
+                                                    <div class="team" style="    height: 29px;">개발</div>
+                                                    <div class="list">
+                                                        <div class="item">
+                                                            <div class="content">
+                                                                <span class="ui mini label wait-state">대기</span>
+                                                                <button type="button" class="ui mini icon button">
+                                                                    <i class="arrow right icon"></i>
+                                                                </button>
+                                                                <button type="button" class="ui mini icon button">
+                                                                    <i class="comment icon"></i>
+                                                                </button>
+                                                                <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                                    <i class="info icon"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="item">
+                                                            <div class="content">
+                                                                <span class="ui mini label wait-state">대기</span>
+                                                                <button type="button" class="ui mini icon button">
+                                                                    <i class="arrow right icon"></i>
+                                                                </button>
+                                                                <button type="button" class="ui mini icon button">
+                                                                    <i class="comment icon"></i>
+                                                                </button>
+                                                                <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                                    <i class="info icon"></i>
+                                                                </button>
+                                                                <div class="team" style="    height: 29px;">개발</div>
+                                                                <div class="list">
+                                                                    <div class="item">
+                                                                        <div class="content">
+                                                                            <span class="ui mini label wait-state">대기</span>
+                                                                            <button type="button" class="ui mini icon button">
+                                                                                <i class="arrow right icon"></i>
+                                                                            </button>
+                                                                            <button type="button" class="ui mini icon button">
+                                                                                <i class="comment icon"></i>
+                                                                            </button>
+                                                                            <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                                                <i class="info icon"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="item">
+                                                                        <div class="content">
+                                                                            <span class="ui mini label wait-state">대기</span>
+                                                                            <button type="button" class="ui mini icon button">
+                                                                                <i class="arrow right icon"></i>
+                                                                            </button>
+                                                                            <button type="button" class="ui mini icon button">
+                                                                                <i class="comment icon"></i>
+                                                                            </button>
+                                                                            <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                                                <i class="info icon"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="item btn-wrap" style="margin: 46px 0 0 0;">
+                                    <div class="content">
+                                        <div class="team">개발</div>
+                                        <div class="list">
+                                            <div class="item">
+                                                <div class="content">
+                                                    <span class="ui mini label call-state">통화중</span>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="arrow right icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="comment icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                        <i class="info icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="content">
+                                                    <span class="ui mini label after-state">후처리</span>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="arrow right icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="comment icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                        <i class="info icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="content">
+                                                    <span class="ui mini label bell-state">벨울림</span>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="arrow right icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="comment icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                        <i class="info icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="item">
+                                                <div class="content">
+                                                    <span class="ui mini label bell-state">벨울림</span>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="arrow right icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button">
+                                                        <i class="comment icon"></i>
+                                                    </button>
+                                                    <button type="button" class="ui mini icon button" onclick="userinfoModal()">
+                                                        <i class="info icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="-counsel-content-panel consult-center-panel" data-type="COUNSEL" style="display: none;">
         <div class="ui top attached tabular menu">
             <button class="item active" data-tab="call-panel" onclick="viewCallPanel()">전화</button>
             <c:if test="${user.isTalk.equals('Y')}">
@@ -394,6 +917,39 @@
         });
     </script>
     <script>
+
+        $('.consult-organization-panel .panel-heading .ui.basic.button').click(function(){
+            $(this).toggleClass('active');
+        });
+
+        function userinfoModal() {
+            $('#user-info-popup').dragModalShow();
+        }
+
+        $('.organi-state').click(function(){
+            $('.organi-pop-first').toggle();
+        });
+
+        $('.organi-room').click(function(){
+            $('.organi-pop-second').toggle();
+        });
+
+        function chatTitleModifyBtn() {
+            $('.chat-title-modify').toggle();
+        }
+
+        function organiChatCreate() {
+            $('#organi-chat-create-popup').dragModalShow();
+        }
+
+        function organiFavor() {
+            $('#organi-favor-popup').dragModalShow();
+        }
+
+        function organiChatRoom() {
+            $('#organi-chat-room-popup').dragModalShow();
+        }
+
         const services = {<c:forEach var="e" items="${services}">'${g.escapeQuote(e.key)}': '${g.escapeQuote(e.value)}', </c:forEach>};
 
         let currentUserStatus = null;

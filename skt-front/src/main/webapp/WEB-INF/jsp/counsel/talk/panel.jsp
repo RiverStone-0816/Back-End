@@ -13,8 +13,8 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
-<div class="ui bottom attached tab segment remove-margin border-top-none" data-tab="talk-panel">
-    <div class="display-flex flex-flow-column full-height">
+<div class="ui bottom attached tab segment remove-margin remove-padding border-top-none" data-tab="talk-panel">
+    <div class="display-flex flex-flow-row full-height">
         <div class="top-chat-list-wrap">
             <div class="ui top attached tabular menu light flex">
                 <button class="item active" data-tab="talk-list-type-MY" onclick="$(this).removeClass('newImg_c')">상담중(<span></span>)</button>
@@ -40,6 +40,12 @@
             <div class="chat-container">
                 <div class="room">
                     <div class="chat-header" id="talk-chat-header"></div>
+                    <div class="chat-end-btn-wrap">
+                        <button type="button" class="mini ui button compact pull-right -downRoom" style="display: none;"
+                                onclick="talkCommunicator.deleteRoom($('#talk-chat-body').attr('data-id'), $('#talk-chat-body').attr('data-sender-key'), $('#talk-chat-body').attr('data-user-key'))">
+                            대화종료
+                        </button>
+                    </div>
                     <div class="chat-body -overlay-scroll" id="talk-chat-body"></div>
                     <div class="write-chat">
                         <div class="write-menu">
@@ -56,10 +62,6 @@
                             <button type="button" class="mini ui button compact pull-right -deleteRoom" style="display: none;"
                                     onclick="deleteRoom($('#talk-chat-body').attr('data-id'))">
                                 대화방내리기
-                            </button>
-                            <button type="button" class="mini ui button compact pull-right -downRoom" style="display: none;"
-                                    onclick="talkCommunicator.deleteRoom($('#talk-chat-body').attr('data-id'), $('#talk-chat-body').attr('data-sender-key'), $('#talk-chat-body').attr('data-user-key'))">
-                                대화방종료
                             </button>
                         </div>
                         <div class="wrap-inp">
