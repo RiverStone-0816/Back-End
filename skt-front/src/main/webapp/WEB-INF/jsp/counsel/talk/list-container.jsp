@@ -45,7 +45,7 @@
         <c:choose>
             <c:when test="${talkList.size() > 0}">
                 <ul>
-                    <li class="item -talk-list">
+                  <%--  <li class="item -talk-list">
                         <div class="header">
                             <div class="left">
                                 <div class="profile-image">
@@ -140,7 +140,7 @@
                             </div>
                         </div>
                     </li>
-
+--%>
                     <c:forEach var="e" items="${talkList}">
                         <li class="item -talk-list" data-id="${g.htmlQuote(e.roomId)}" data-sender-key="${g.htmlQuote(e.senderKey)}" data-user-key="${g.htmlQuote(e.userKey)}">
 
@@ -155,14 +155,13 @@
                                     </div>
                                 </div>
                                 <div class="right">
-                                    <div class="user-name -user-name"><span class="notread-txt">1</span> 상담원 : ${g.htmlQuote(e.userName)}</div>
+                                    <div class="user-name -user-name"><%--<span class="notread-txt">1</span>--%> 상담원 : ${g.htmlQuote(e.userName)}</div>
                                     <div class="last-time -time"><fmt:formatDate value="${e.roomLastTime}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
                                 </div>
                             </div>
                             <div class="content">
                                 <div class="inner">
                                     <span class="ui mini brand label circular -indicator-new-message" style="display: none"> N </span>
-                                    마지막 메시지가 나오는 곳 입니다.
                                     <c:choose>
                                         <c:when test="${e.type == 'photo' && e.send_receive == 'S'}">
                                             <i>사진 전송됨</i>
