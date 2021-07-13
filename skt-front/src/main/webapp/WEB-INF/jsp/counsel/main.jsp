@@ -143,7 +143,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="area">
+                        <div class="area" style="margin-left: 30px;">
                             <div class="ui list consult-organization">
                                 <div class="item btn-wrap">
                                     <div class="content">
@@ -331,7 +331,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="area">
+                        <div class="area" style="margin-left: 30px;">
                             <div class="ui list consult-organization">
                                 <div class="item btn-wrap">
                                     <div class="content">

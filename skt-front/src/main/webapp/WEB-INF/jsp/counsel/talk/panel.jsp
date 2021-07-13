@@ -168,7 +168,11 @@
                     const myMessage = ['AF', 'S'].indexOf(data.send_receive) >= 0;
 
                     const item = $('<div/>', {class: 'chat-item ' + (myMessage ? 'chat-me' : '')}).appendTo(chatBody);
-                    const content = $('<div/>', {class: 'wrap-content'}).appendTo(item)
+
+                    const contentContainer = $('<div class="wrap-content">').appendTo(item);
+                    contentContainer.append('<div class="profile-image"><img src="/resources/images/profile1.png"></div>')
+
+                    const content =   $('<div/>', {class: 'txt-segment'}).appendTo(contentContainer)
                         .append($('<div/>', {class: 'txt-time', text: '[' + (myMessage ? data.username : data.customname) + '] ' + data.cur_timestr}));
 
                     const url = $.addQueryString(data.content, {token: '${g.escapeQuote(accessToken)}'});
@@ -176,7 +180,7 @@
                     if (data.type === 'photo') {
                         content.append('<div class="chat">' +
                             '    <div class="bubble">' +
-                            '        <p class="txt_chat">' +
+                            '        <p class="txt_chat" style="width: 118px">' + <%--todo: 코드 정리--%>
                             '            <img src="' + url + '">' +
                             '        </p>' +
                             '    </div>' +
