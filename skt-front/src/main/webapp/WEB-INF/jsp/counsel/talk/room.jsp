@@ -30,50 +30,50 @@
                             <img src="<c:url value="/resources/images/profile1.png"/>">
                         </div>
                         <div class="txt-segment">
-                        <c:set var="name" value="${e.sendReceive == 'AF' || e.sendReceive == 'AS' ||  e.sendReceive == 'S' ? e.userName : talk.customName}"/>
-                        <div class="txt-time">
-                            <c:if test="${name != null && name != ''}">[${g.htmlQuote(name)}]</c:if> <fmt:formatDate value="${e.insertTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
-                        </div>
-                        <c:set var="url" value="${g.htmlQuote(g.addQueryString(e.content, 'token='.concat(accessToken)))}"/>
-                        <c:choose>
-                            <c:when test="${e.type == 'photo'}">
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <p class="txt_chat">
-                                            <img src="${url}">
-                                        </p>
+                            <c:set var="name" value="${e.sendReceive == 'AF' || e.sendReceive == 'AS' ||  e.sendReceive == 'S' ? e.userName : talk.customName}"/>
+                            <div class="txt-time">
+                                <c:if test="${name != null && name != ''}">[${g.htmlQuote(name)}]</c:if> <fmt:formatDate value="${e.insertTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
+                            </div>
+                            <c:set var="url" value="${g.htmlQuote(g.addQueryString(e.content, 'token='.concat(accessToken)))}"/>
+                            <c:choose>
+                                <c:when test="${e.type == 'photo'}">
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <p class="txt_chat">
+                                                <img src="${url}">
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <a href="${url}" target="_blank">저장하기</a>
-                            </c:when>
-                            <c:when test="${e.type == 'audio'}">
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <p class="txt_chat">
-                                            <audio controls src="${url}"></audio>
-                                        </p>
+                                    <a href="${url}" target="_blank">저장하기</a>
+                                </c:when>
+                                <c:when test="${e.type == 'audio'}">
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <p class="txt_chat">
+                                                <audio controls src="${url}"></audio>
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <a href="${url}" target="_blank">저장하기</a>
-                            </c:when>
-                            <c:when test="${e.type == 'file'}">
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <p class="txt_chat">
-                                            <a href="${url}" target="_blank">${url}</a>
-                                        </p>
+                                    <a href="${url}" target="_blank">저장하기</a>
+                                </c:when>
+                                <c:when test="${e.type == 'file'}">
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <p class="txt_chat">
+                                                <a href="${url}" target="_blank">${url}</a>
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                                <a href="${url}" target="_blank">저장하기</a>
-                            </c:when>
-                            <c:otherwise>
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <pre class="txt_chat">${g.htmlQuote(e.content)}</pre>
+                                    <a href="${url}" target="_blank">저장하기</a>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <pre class="txt_chat">${g.htmlQuote(e.content)}</pre>
+                                        </div>
                                     </div>
-                                </div>
-                            </c:otherwise>
-                        </c:choose>
+                                </c:otherwise>
+                            </c:choose>
                         </div>
                     </div>
                 </div>

@@ -57,7 +57,7 @@
                                 </div>
                             </div>
                             <div class="right">
-                                <div class="user-name -user-name"> <span class="notread-txt">1</span> 상담원 : 지정안됨</div>
+                                <div class="user-name -user-name"><span class="notread-txt">1</span> 상담원 : 지정안됨</div>
                                 <div class="last-time -time">2021-07-12 17:28:15</div>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                                 </div>
                             </div>
                             <div class="right">
-                                <div class="user-name -user-name"> <span class="notread-txt">1</span> 상담원 : 지정안됨</div>
+                                <div class="user-name -user-name"><span class="notread-txt">1</span> 상담원 : 지정안됨</div>
                                 <div class="last-time -time">2021-07-12 17:28:15</div>
                             </div>
                         </div>
@@ -105,7 +105,7 @@
                                 </div>
                             </div>
                             <div class="right">
-                                <div class="user-name -user-name"> <span class="notread-txt">1</span> 상담원 : 지정안됨</div>
+                                <div class="user-name -user-name"><span class="notread-txt">1</span> 상담원 : 지정안됨</div>
                                 <div class="last-time -time">2021-07-12 17:28:15</div>
                             </div>
                         </div>
@@ -129,7 +129,7 @@
                                 </div>
                             </div>
                             <div class="right">
-                                <div class="user-name -user-name"> <span class="notread-txt">1</span> 상담원 : 지정안됨</div>
+                                <div class="user-name -user-name"><span class="notread-txt">1</span> 상담원 : 지정안됨</div>
                                 <div class="last-time -time">2021-07-12 17:28:15</div>
                             </div>
                         </div>
@@ -155,7 +155,7 @@
                                     </div>
                                 </div>
                                 <div class="right">
-                                    <div class="user-name -user-name"> <span class="notread-txt">1</span> 상담원 : ${g.htmlQuote(e.userName)}</div>
+                                    <div class="user-name -user-name"><span class="notread-txt">1</span> 상담원 : ${g.htmlQuote(e.userName)}</div>
                                     <div class="last-time -time"><fmt:formatDate value="${e.roomLastTime}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
                                 </div>
                             </div>

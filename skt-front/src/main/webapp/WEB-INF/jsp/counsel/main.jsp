@@ -35,15 +35,15 @@
                 </tr>
                 <tr>
                     <th>휴대전화</th>
-                    <td>010-0000-0000  <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>"></td>
+                    <td>010-0000-0000 <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>"></td>
                 </tr>
                 <tr>
                     <th>전화번호</th>
-                    <td>070-0000-0000  <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>"></td></td>
+                    <td>070-0000-0000 <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>"></td>
                 </tr>
                 <tr>
                     <th>내선번호</th>
-                    <td>0000  <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>"></td></td>
+                    <td>0000 <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>"></td>
                 </tr>
             </table>
         </div>
@@ -91,17 +91,8 @@
         </div>
     </div>
 
-
-
-    <div class="consult-left-panel" style="position:relative">
-        <div class="organi-pop-wrap">
-            <div class="organi-pop-first" style="display:none;position: absolute; z-index: 555; right: -120px; background: #fff; height: 100%; float: left; box-shadow: rgb(0 0 0 / 20%) 7px 1px 5px -3px;"> <img  style="width: 121px;" src="<c:url value="/resources/images/organi-pop1.jpg"/>"></div>
-            <div class="organi-pop-second" style="display:none;position: absolute; right: -559px; z-index: 556; background: #fff; height: 100%; /* position: relative; */ float: left; box-shadow: rgb(0 0 0 / 20%) 7px 1px 5px -3px;">
-                <div class="trans-area" onclick="organiChatRoom()" style="position: absolute; width: 100%; height: 282px; top: 143px; cursor: pointer;"></div>
-                <img  style="width: 440px; " src="<c:url value="/resources/images/organi-pop2.jpg"/>">
-            </div>
-        </div>
-        <div class="panel consult-organization-panel full-height" >
+    <div class="consult-left-panel" style="position:relative; width: 350px !important; min-width: 350px !important;">
+        <div class="panel consult-organization-panel full-height">
             <div class="panel-heading">조직도
                 <div style="position:absolute;right:10px">
                     <button class="ui basic button organi-state">현황</button>
@@ -154,7 +145,7 @@
                         </div>
                         <div class="area">
                             <div class="ui list consult-organization">
-                                <div class="item btn-wrap" >
+                                <div class="item btn-wrap">
                                     <div class="content">
                                         <div class="team">개발</div>
                                         <div class="list">
@@ -535,6 +526,17 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="organi-pop-wrap" style="position: absolute; z-index: 555; left: 350px; background: #fff; top: 123px; bottom: 11px; overflow-y: hidden;">
+        <div class="organi-pop-first"
+             style="display:none; float: left; box-shadow: rgba(0, 0, 0, 0.2) 7px 1px 5px -3px;">
+            <img style="width: 121px;" src="<c:url value="/resources/images/organi-pop1.jpg"/>">
+        </div>
+        <div class="organi-pop-second"
+             style="display:none; float: left; box-shadow: rgba(0, 0, 0, 0.2) 7px 1px 5px -3px;">
+            <div class="trans-area" onclick="organiChatRoom()" style="position: absolute; width: 100%; height: 282px; top: 143px; cursor: pointer;"></div>
+            <img style="width: 440px; " src="<c:url value="/resources/images/organi-pop2.jpg"/>">
         </div>
     </div>
 
@@ -918,7 +920,7 @@
     </script>
     <script>
 
-        $('.consult-organization-panel .panel-heading .ui.basic.button').click(function(){
+        $('.consult-organization-panel .panel-heading .ui.basic.button').click(function () {
             $(this).toggleClass('active');
         });
 
@@ -926,11 +928,11 @@
             $('#user-info-popup').dragModalShow();
         }
 
-        $('.organi-state').click(function(){
+        $('.organi-state').click(function () {
             $('.organi-pop-first').toggle();
         });
 
-        $('.organi-room').click(function(){
+        $('.organi-room').click(function () {
             $('.organi-pop-second').toggle();
         });
 
@@ -939,7 +941,7 @@
         }
 
         function organiChatCreate() {
-            $('#organi-chat-create-popup').dragModalShow();
+            $('#organi-chat-create-popup').css({'z-index': 1003}).dragModalShow();
         }
 
         function organiFavor() {
@@ -947,7 +949,7 @@
         }
 
         function organiChatRoom() {
-            $('#organi-chat-room-popup').dragModalShow();
+            $('#organi-chat-room-popup').css({'z-index': 1003}).dragModalShow();
         }
 
         const services = {<c:forEach var="e" items="${services}">'${g.escapeQuote(e.key)}': '${g.escapeQuote(e.value)}', </c:forEach>};
