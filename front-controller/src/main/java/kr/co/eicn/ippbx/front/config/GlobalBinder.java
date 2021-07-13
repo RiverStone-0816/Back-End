@@ -52,7 +52,7 @@ public class GlobalBinder {
     }
 
     @ModelAttribute("apiServerUrl")
-    public String apiServerUrl(@Value("${eicn.debugging}") String apiServerUrl) {
+    public String apiServerUrl(@Value("${eicn.apiserver}") String apiServerUrl) {
         return apiServerUrl;
     }
 
