@@ -52,12 +52,12 @@
         </div>
     </div>
 
-    <div class="ui modal tiny" id="organi-chat-create-popup">
+    <div class="ui modal tiny" id="organi-chat-create-popup" style="width: 400px;">
         <i class="close icon"></i>
         <div class="header">새로운 채팅방 만들기</div>
         <div class="content">
             <div style="text-align:center">
-                <img style="width:340px;" src="<c:url value="/resources/images/chat-create-img-temp.JPG"/>">
+                <img style="width: 400px;" src="<c:url value="/resources/images/chat-create-img-temp.png"/>">
             </div>
         </div>
         <div class="actions">
@@ -66,10 +66,10 @@
         </div>
     </div>
 
-    <div class="ui modal tiny" id="organi-chat-room-popup">
+    <div class="ui modal tiny" id="organi-chat-room-popup" style="width: 450px;">
         <i class="close icon"></i>
         <div class="header"><span style="cursor:pointer" onclick="chatTitleModifyBtn()">대화방이름</span></div>
-        <div class="content">
+        <div class="content" style="overflow-y: auto; height: 643px; padding: 0;">
             <div style="text-align:center;position:relative">
                 <img style="width:100%;" src="<c:url value="/resources/images/organi-pop3.jpg"/>">
                 <img class="chat-title-modify" style="position:absolute;top:0;left:0;width:100%;" src="<c:url value="/resources/images/organi-pop4.jpg"/>">
