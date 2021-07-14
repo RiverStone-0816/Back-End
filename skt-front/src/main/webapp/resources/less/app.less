@@ -804,85 +804,175 @@ pre {
         }
       }
     }
-    .ui.list.consult-organization {
-      margin: 0;
-
+    .ui.list.consult-organization.active {
+     //&:before {
+     //  background: #f5f5f5;
+     //  content: '';
+     //  position: absolute;
+     //  width: calc(100% + 15px);
+     //  height: 22px;
+     //  left: 0;
+     //}
+     // &:after {
+     //   background: #333;
+     //   content: '';
+     //   position: absolute;
+     //   width: calc(100% + 15px);
+     //   height: 22px;
+     //   left: 0;
+     // }
     }
     .ui.list.consult-organization {
-
-      .user-wrap {
-        padding-left: 10px;
-        .folder.open.icon {
-          color: #888888;
-          font-size: 17px;
-        }
-        .team {
-          font-weight:800;
-          font-size:14px;
-        }
-        .item {
-          white-space: nowrap;
-          margin: 7px 0 7px -13px;
-          cursor: pointer;
-          .content {
-
+      margin: 0;
+      > .item {
+        padding: 1em;
+      }
+      .list {
+        margin: 0 0 0 -15px;
+      }
+     .user.icon {
+       background-image:url("../images/user3.svg");
+       background-position: 0px -2px;
+       background-repeat: no-repeat;
+       width: 12px;
+       height: 15px;
+       background-size: 100%;
+       vertical-align: top;
+       &:before {
+         display:none;
+       }
+      }
+      .user.icon.active {
+        background-image:url("../images/user3-active.svg");
+      }
+      .user {
+        font-weight: 300;
+      }
+      .folder.open.icon {
+        color: #888888;
+        font-size: 17px;
+        padding: 3px 2px 0 0;
+      }
+      .team {
+        font-weight:800;
+        font-size:14px;
+        margin: 4px 0;
+      }
+      .user-overflow-wrap {
+      }
+      .item {
+        white-space: nowrap;
+        cursor: pointer;
+        .content {
+          .user-wrap {
+            position:relative;
+            display: inline-block;
+            width: 100%;
+            padding: 3px 0 0 0;
           }
-        }
-        .item.active {
-          background: #f3f3f3;
-          padding-left: 6px;
-          .user.icon {
-            color:@color-brand;
+          .btn-wrap {
+            display: inline-block;
+            position: absolute;
+            right: 14px;
+            .button {
+              top: 4px;
+              position: relative;
+            }
+            .arrow.button {
+              cursor: pointer;
+              background-image:url("../images/move2.svg");
+              background-repeat: no-repeat;
+              outline: 0;
+              border: 0;
+              height: 15px;
+              width: 17px;
+              padding: 0;
+            }
+            .talk.button {
+              cursor: pointer;
+              background-image:url("../images/talk.svg");
+              background-repeat: no-repeat;
+              outline: 0;
+              border: 0;
+              height: 15px;
+              width: 17px;
+              padding: 0;
+            }
+            .info.button {
+              cursor: pointer;
+              background-image:url("../images/info.svg");
+              background-repeat: no-repeat;
+              outline: 0;
+              border: 0;
+              height: 15px;
+              width: 17px;
+              padding: 0;
+            }
+          }
+          .state-wrap {
+            display: inline-block;
+            position: absolute;
+            right: -88px;
+            z-index: 9999;
           }
         }
       }
-      .btn-wrap {
-        padding-left: 10px;
-        .team {
-          opacity:0;
+      .item.active {
+        &:after {
+          content: '';
+          position: absolute;
+          left: 0;
+          border-left: 6px solid #FF7902;
+          margin: -19px 0 0 0;
+          height: 22px;
         }
-        .ui.icon.button {
-          font-size: 7px;
-          padding: 0 7px;
-          text-align: center;
-          height: 17px;
-          &:hover {
-            i {
-              color:#fff;
-            }
-          }
+        &:before {
+          background: #f5f5f5;
+          content: '';
+          position: absolute;
+          width: ~"calc(100% + 15px)";
+          height: 22px;
+          left: 0;
+        }
+      }
+      .ui.icon.button {
+        font-size: 7px;
+        padding: 0 7px;
+        text-align: center;
+        height: 17px;
+        &:hover {
           i {
-            color:#333;
+            color:#fff;
           }
         }
-        .item {
-          text-align: right;
-          margin: 5px 0;
-
-          .ui.mini.label {
-            color:@color-white;
-            font-weight:200;
-            padding: 2.5px 0;
-            text-align:center;
-            width: 42px;
-            white-space: nowrap;
-            letter-spacing: -1px;
-          }
-          .ui.mini.label.call-state {
-            background: @color-state-call;
-          }
-          .ui.mini.label.after-state {
-            background: @color-state-etc2;
-          }
-          .ui.mini.label.logout-state {
-            background: @color-state-etc2;
-          }
-          .ui.mini.label.wait-state {
-            background: @color-state-wait;
-          }
-          .ui.mini.label.bell-state {
-            background: @color-state-call;
-          }
+        i {
+          color:#333;
+        }
+      }
+      .item {
+        .ui.mini.label {
+          color:@color-white;
+          font-weight:200;
+          padding: 2.5px 0;
+          text-align:center;
+          width: 42px;
+          white-space: nowrap;
+          letter-spacing: -1px;
+        }
+        .ui.mini.label.call-state {
+          background: @color-state-call;
+        }
+        .ui.mini.label.after-state {
+          background: @color-state-etc2;
+        }
+        .ui.mini.label.logout-state {
+          background: @color-state-etc2;
+        }
+        .ui.mini.label.wait-state {
+          background: @color-state-wait;
+        }
+        .ui.mini.label.bell-state {
+          background: @color-state-call;
         }
       }
     }
@@ -909,13 +999,8 @@ pre {
           }
         }
         .panel-segment-body {
-          .flex();
-          flex-flow: row;
           .area {
-            white-space: nowrap;
-          }
-          .area:first-child {
-            width: 50%;
+            width: 57%;
             overflow: auto;
           }
         }

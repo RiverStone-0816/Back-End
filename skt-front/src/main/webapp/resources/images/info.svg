@@ -1,14 +1,9 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
- "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="71.000000pt" height="62.000000pt" viewBox="0 0 71.000000 62.000000"
- preserveAspectRatio="xMidYMid meet">
-
-<g transform="translate(0.000000,62.000000) scale(0.100000,-0.100000)"
-fill="#000000" stroke="none">
-<path d="M330 465 c0 -32 2 -35 30 -35 28 0 30 3 30 35 0 32 -2 35 -30 35 -28
-0 -30 -3 -30 -35z"/>
-<path d="M330 260 l0 -140 30 0 30 0 0 140 0 140 -30 0 -30 0 0 -140z"/>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" width="17" height="15" viewBox="0 0 17 15">
+  <g id="그룹_703" data-name="그룹 703" transform="translate(-5702 432)">
+    <rect id="사각형_4861" data-name="사각형 4861" width="17" height="15" rx="3" transform="translate(5702 -432)" fill="#ccc"/>
+    <g id="Icon_feather-info" data-name="Icon feather-info" transform="translate(5701.036 -434.464)">
+      <path id="패스_590" data-name="패스 590" d="M18,20.586V18" transform="translate(-8.536 -7.536)" fill="none" stroke="#39374d" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+      <path id="패스_591" data-name="패스 591" d="M18,12h0" transform="translate(-8.536 -4.535)" fill="none" stroke="#39374d" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/>
+    </g>
+  </g>
 </svg>
