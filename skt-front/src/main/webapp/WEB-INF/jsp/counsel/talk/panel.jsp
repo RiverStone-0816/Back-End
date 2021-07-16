@@ -23,16 +23,16 @@
                 <button class="item" data-tab="talk-list-type-END" onclick="$(this).removeClass('newImg_c')">종료(<span></span>)</button>
             </div>
 
-            <div class="ui bottom attached tab segment remove-margin active" data-tab="talk-list-type-MY">
+            <div class="ui bottom attached tab segment remove-margin remove-padding active" data-tab="talk-list-type-MY">
                 <div id="talk-list-container-MY"></div>
             </div>
-            <div class="ui bottom attached tab segment remove-margin" data-tab="talk-list-type-TOT">
+            <div class="ui bottom attached tab segment remove-margin remove-padding" data-tab="talk-list-type-TOT">
                 <div id="talk-list-container-TOT"></div>
             </div>
-            <div class="ui bottom attached tab segment remove-margin" data-tab="talk-list-type-OTH">
+            <div class="ui bottom attached tab segment remove-margin remove-padding" data-tab="talk-list-type-OTH">
                 <div id="talk-list-container-OTH"></div>
             </div>
-            <div class="ui bottom attached tab segment remove-margin" data-tab="talk-list-type-END">
+            <div class="ui bottom attached tab segment remove-margin remove-padding" data-tab="talk-list-type-END">
                 <div id="talk-list-container-END"></div>
             </div>
         </div>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35">
+  <g id="그룹_719" data-name="그룹 719" transform="translate(-2527 741)">
+    <g id="그룹_717" data-name="그룹 717" transform="translate(7 -63)">
+      <g id="그룹_713" data-name="그룹 713" transform="translate(-442 191)">
+        <rect id="사각형_4725" data-name="사각형 4725" width="35" height="35" rx="7" transform="translate(2962 -869)" fill="#f1f1f1"/>
+      </g>
+      <path id="path" d="M645.522,1046a1.823,1.823,0,0,1,1.778,1.778v12.444a1.823,1.823,0,0,1-1.778,1.778H633.078a1.614,1.614,0,0,1-1.245-.533,1.755,1.755,0,0,1-.533-1.245v-3.556h1.778v3.556h12.444v-12.444H633.078v3.556H631.3v-3.556a1.823,1.823,0,0,1,1.778-1.778Zm-7.911,11.2,2.311-2.311H631.3v-1.778h8.622l-2.311-2.311,1.245-1.245L643.3,1054l-4.444,4.444Z" transform="translate(1898 -1714)" fill="#6b6b6b"/>
+    </g>
+  </g>
+</svg>

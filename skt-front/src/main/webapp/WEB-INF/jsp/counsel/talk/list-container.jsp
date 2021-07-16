@@ -147,7 +147,7 @@
                             <div class="header">
                                 <div class="left">
                                     <div class="profile-image">
-                                        <img src="<c:url value="/resources/images/profile1.png"/>">
+
                                     </div>
                                     <div class="profile-txt">
                                         <div class="label">${g.htmlQuote(e.svcName)}</div>
@@ -201,6 +201,11 @@
 </div>
 
 <script>
+    function rand(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+    let randNum = rand(1,25);
+    $('.profile-image').html("<img src='../resources/images/kd_" + randNum + ".png'>");
     $('.item[data-tab="talk-list-type-${search.mode}"] span').text(${talkList.size()});
     ui.find(".-talk-list-wrap").overlayScrollbars({});
     ui.find('.-talk-list').click(function () {

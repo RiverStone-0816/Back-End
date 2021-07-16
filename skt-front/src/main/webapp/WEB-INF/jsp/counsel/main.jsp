@@ -52,27 +52,377 @@
         </div>
     </div>
 
-    <div class="ui modal tiny" id="organi-chat-create-popup" style="width: 400px;">
+    <div class="ui modal" id="organi-chat-create-popup">
         <i class="close icon"></i>
         <div class="header">새로운 채팅방 만들기</div>
         <div class="content">
-            <div style="text-align:center">
-                <img style="width: 400px;" src="<c:url value="/resources/images/chat-create-img-temp.png"/>">
+            <div class="organization-ul-wrap">
+                <ul class="organization-ul modal">
+                    <div class="title">조직명
+                        <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13 </div>
+                    </div>
+                    <li class="belong">
+                        <div class="user-wrap">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="example">
+                                <label>본사>본부>서울지사</label>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="active">
+                        <div class="user-wrap">
+                            <span class="user-icon active"></span>홍길동
+                        </div>
+                        <div class="btn-wrap">
+                            <span class="ui mini label after-state">후처리</span>
+                            <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                        </div>
+                        <div class="state-wrap">
+                            전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="user-wrap">
+                            <span class="user-icon"></span>홍길동
+                        </div>
+                        <div class="btn-wrap">
+                            <span class="ui mini label wait-state">대기</span>
+                            <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                        </div>
+                        <div class="state-wrap">
+                            전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="user-wrap">
+                            <span class="user-icon"></span>홍길동
+                        </div>
+                        <div class="btn-wrap">
+                            <span class="ui mini label bell-state">벨울림</span>
+                            <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                        </div>
+                        <div class="state-wrap">
+                            전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="organization-ul modal">
+                    <div class="title">조직명
+                        <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13 </div>
+                    </div>
+                    <li class="belong">
+                        <div class="user-wrap">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="example">
+                                <label>본사>본부>서울지사</label>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="active">
+                        <div class="user-wrap">
+                            <span class="user-icon active"></span>홍길동
+                        </div>
+                        <div class="btn-wrap">
+                            <span class="ui mini label after-state">후처리</span>
+                            <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                        </div>
+                        <div class="state-wrap">
+                            전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="user-wrap">
+                            <span class="user-icon"></span>홍길동
+                        </div>
+                        <div class="btn-wrap">
+                            <span class="ui mini label wait-state">대기</span>
+                            <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                        </div>
+                        <div class="state-wrap">
+                            전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="user-wrap">
+                            <span class="user-icon"></span>홍길동
+                        </div>
+                        <div class="btn-wrap">
+                            <span class="ui mini label bell-state">벨울림</span>
+                            <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                        </div>
+                        <div class="state-wrap">
+                            전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="organization-ul modal">
+                    <div class="title">조직명
+                        <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13 </div>
+                    </div>
+                    <li class="belong">
+                        <div class="user-wrap">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="example">
+                                <label>본사>본부>서울지사</label>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="active">
+                        <div class="user-wrap">
+                            <span class="user-icon active"></span>홍길동
+                        </div>
+                        <div class="btn-wrap">
+                            <span class="ui mini label after-state">후처리</span>
+                            <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                        </div>
+                        <div class="state-wrap">
+                            전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="user-wrap">
+                            <span class="user-icon"></span>홍길동
+                        </div>
+                        <div class="btn-wrap">
+                            <span class="ui mini label wait-state">대기</span>
+                            <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                        </div>
+                        <div class="state-wrap">
+                            전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="user-wrap">
+                            <span class="user-icon"></span>홍길동
+                        </div>
+                        <div class="btn-wrap">
+                            <span class="ui mini label bell-state">벨울림</span>
+                            <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                        </div>
+                        <div class="state-wrap">
+                            전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="organization-ul modal">
+                    <div class="title">조직명
+                        <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13 </div>
+                    </div>
+                    <li class="belong">
+                        <div class="user-wrap">
+                            <div class="ui checkbox">
+                                <input type="checkbox" name="example">
+                                <label>본사>본부>서울지사</label>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="active">
+                        <div class="user-wrap">
+                            <span class="user-icon active"></span>홍길동
+                        </div>
+                        <div class="btn-wrap">
+                            <span class="ui mini label after-state">후처리</span>
+                            <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                        </div>
+                        <div class="state-wrap">
+                            전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="user-wrap">
+                            <span class="user-icon"></span>홍길동
+                        </div>
+                        <div class="btn-wrap">
+                            <span class="ui mini label wait-state">대기</span>
+                            <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                        </div>
+                        <div class="state-wrap">
+                            전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="user-wrap">
+                            <span class="user-icon"></span>홍길동
+                        </div>
+                        <div class="btn-wrap">
+                            <span class="ui mini label bell-state">벨울림</span>
+                            <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                        </div>
+                        <div class="state-wrap">
+                            전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="actions">
+            <span class="left-txt">선택된 조직원 00명</span>
             <button type="button" class="ui button modal-close">취소</button>
             <button type="button" class="ui orange button modal-close">생성</button>
         </div>
     </div>
 
-    <div class="ui modal tiny" id="organi-chat-room-popup" style="width: 450px;">
+    <div class="ui modal tiny" id="organi-chat-room-popup">
         <i class="close icon"></i>
         <div class="header"><span style="cursor:pointer" onclick="chatTitleModifyBtn()">대화방이름</span></div>
-        <div class="content" style="overflow-y: auto; height: 643px; padding: 0;">
-            <div style="text-align:center;position:relative">
-                <img style="width:100%;" src="<c:url value="/resources/images/organi-pop3.jpg"/>">
-                <img class="chat-title-modify" style="position:absolute;top:0;left:0;width:100%;" src="<c:url value="/resources/images/organi-pop4.jpg"/>">
+        <div class="content">
+            <div class="organi-chat-room-container">
+                <div class="organi-chat-room-header">
+                    <div class="default-inner">
+                        <div class="search-wrap">
+                            <div class="ui icon input">
+                                <input type="text">
+                                <i class="search link icon"></i>
+                            </div>
+                            <div class="search-count">
+                                0 / 0
+                            </div>
+                        </div>
+                        <div class="btn-wrap">
+                            <button type="button"><img src="<c:url value="/resources/images/chat-search-up.svg"/>"></button>
+                            <button type="button"><img src="<c:url value="/resources/images/chat-search-down.svg"/>"></button>
+                            <button type="button"><img src="<c:url value="/resources/images/chat-file.svg"/>"></button>
+                            <button type="button"><img src="<c:url value="/resources/images/chat-user-add.svg"/>"></button>
+                            <button type="button"><img src="<c:url value="/resources/images/chat-exit.svg"/>"></button>
+                        </div>
+                    </div>
+                    <div class="modify-inner">
+                        <div class="input-wrap">
+                            <div class="ui fluid input">
+                                <input type="text">
+                            </div>
+                        </div>
+                        <div class="btn-wrap">
+                            <div class="ui button">취소</div>
+                            <div class="ui orange button">변경</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="organi-chat-room-content">
+                    <div class="chat-body">
+                        <p class="event-txt">[00-00 00:00] 이벤트 문구</p>
+                        <div class="chat-item">
+                            <div class="wrap-content">
+                                <div class="txt-segment">
+                                    <div class="txt-time">
+                                        참여자 [00-00 00:00]
+                                    </div>
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <div class="txt_chat">대화내용대화내용대화내용</div>
+                                            <span class="count">3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-item">
+                            <div class="wrap-content">
+                                <div class="txt-segment">
+                                    <div class="txt-time">
+                                        참여자 [00-00 00:00]
+                                    </div>
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <div class="txt_chat">
+                                                <div class="file-wrap"><img src="<c:url value="/resources/images/chat-folder.svg"/>">첨부파일이름첨부파일이름.zip</div>
+                                                <div class="file-size-wrap">용량 : 1563.KB</div>
+                                            </div>
+                                            <span class="count">3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-item">
+                            <div class="wrap-content">
+                                <div class="txt-segment">
+                                    <div class="txt-time">
+                                        참여자 [00-00 00:00]
+                                    </div>
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <div class="txt_chat">
+                                                <div class="file-wrap"><img src="<c:url value="/resources/images/chat-audio.svg"/>">첨부파일이름첨부파일이름.mp3</div>
+                                                <div class="file-size-wrap">용량 : 1563.KB</div>
+                                            </div>
+                                            <span class="count">3</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-item">
+                            <div class="wrap-content">
+                                <div class="txt-segment">
+                                    <div class="txt-time">
+                                        참여자 [00-00 00:00]
+                                    </div>
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <div class="txt_chat"><img src="http://dn-m.talk.kakao.com/talkm/oYsrn2lMaM/AbUPsuGnGZVKP1xHwZXYs0/i_fd0196c4dd8e.jpeg?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImNvbXBhbnlJZCI6InNrZGV2IiwiZXh0ZW5zaW9uIjoiMTAwMCIsImlkVHlwZSI6IkEiLCJleHAiOjE2MjYzOTE2ODMsImlhdCI6MTYyNjMwNTI4M30.Czop2V7xeToXiOR3ScQ3vPs6nI0eAR2MbtwDAYo3_lA0Ro2FpT6CwnsV4qFmB1d-NXZWKk2wzBXZYRWPcePBKw"></div>
+                                            <span class="count">3</span>
+                                        </div>
+                                    </div>
+                                    <div class="save">
+                                        <a href="#">저장하기</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-item chat-me">
+                            <div class="wrap-content">
+                                <div class="txt-segment">
+                                    <div class="txt-time">
+                                        참여자 [00-00 00:00]
+                                    </div>
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <div class="txt_chat"><img src="http://dn-m.talk.kakao.com/talkm/oYsrn2lMaM/AbUPsuGnGZVKP1xHwZXYs0/i_fd0196c4dd8e.jpeg?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImNvbXBhbnlJZCI6InNrZGV2IiwiZXh0ZW5zaW9uIjoiMTAwMCIsImlkVHlwZSI6IkEiLCJleHAiOjE2MjYzOTE2ODMsImlhdCI6MTYyNjMwNTI4M30.Czop2V7xeToXiOR3ScQ3vPs6nI0eAR2MbtwDAYo3_lA0Ro2FpT6CwnsV4qFmB1d-NXZWKk2wzBXZYRWPcePBKw"></div>
+                                            <span class="count">3</span>
+                                        </div>
+                                    </div>
+                                    <div class="save">
+                                        <a href="#">저장하기</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-item chat-me">
+                            <div class="wrap-content">
+                                <div class="txt-segment">
+                                    <div class="txt-time">
+                                        참여자 [00-00 00:00]
+                                    </div>
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <div class="txt_chat">대화내용대화내용대화내용</div>
+                                            <span class="count">99</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-item system">
+                            <div class="wrap-content">
+                                <div class="txt-segment">
+                                    <div class="txt-time">
+                                        시스템 [00-00 00:00]
+                                    </div>
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <div class="txt_chat">대화내용대화내용대화내용대화내용대화내용대화내용대화내용대화내용대화내용대화내용</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="write-chat">
+                        <textarea></textarea>
+                        <button class="send-btn">전송</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -91,176 +441,250 @@
         </div>
     </div>
 
-    <div class="consult-left-panel" style="position:relative; width: 350px !important; min-width: 350px !important;">
+    <div class="consult-left-panel">
         <div class="panel consult-organization-panel full-height">
             <div class="panel-heading">조직도
-                <div style="position:absolute;right:10px">
-                    <button class="ui basic button organi-state">현황</button>
-                    <button class="ui basic button organi-room">조직대화방</button>
+                <div class="btn-wrap">
+                    <button type="button" class="ui basic button organi-state">현황</button>
+                    <button type="button" class="ui basic button organi-room">대화방</button>
                 </div>
+                <div class="state-header">현황</div>
+                <button class="state-header-close"></button>
             </div>
-            <div class="panel-body remove-pl">
-                <div class="panel-segment">
+            <div class="panel-body remove-pl remove-pr">
+                <div class="panel-segment overflow-auto -vertical-resizable">
                     <div class="panel-segment-header">
                         즐겨찾기
-                        <button type="button" class="ui basic button" onclick="organiFavor()">편집</button>
+                        <button type="button" class="ui basic mini button" onclick="organiFavor()">편집</button>
                     </div>
                     <div class="panel-segment-body">
-
+                        <div class="area mt15">
+                            <ul class="organization-ul border-bottom-none remove-padding">
+                                <li class="active">
+                                    <div class="user-wrap">
+                                        <span class="user-icon active"></span>홍길동
+                                    </div>
+                                    <div class="btn-wrap">
+                                        <span class="ui mini label after-state">후처리</span>
+                                        <div class="buttons">
+                                            <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
+                                            <button type="button" class="talk off button"></button>
+                                            <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
+                                        </div>
+                                    </div>
+                                    <div class="state-wrap">
+                                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="user-wrap">
+                                        <span class="user-icon"></span>홍길동
+                                    </div>
+                                    <div class="btn-wrap">
+                                        <span class="ui mini label wait-state">대기</span>
+                                        <div class="buttons">
+                                            <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
+                                            <button type="button" class="talk button" data-inverted="" data-tooltip="상담톡" data-position="bottom center"></button>
+                                            <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
+                                        </div>
+                                    </div>
+                                    <div class="state-wrap">
+                                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="user-wrap">
+                                        <span class="user-icon"></span>홍길동
+                                    </div>
+                                    <div class="btn-wrap">
+                                        <span class="ui mini label bell-state">벨울림</span>
+                                        <div class="buttons">
+                                            <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
+                                            <button type="button" class="talk button" data-inverted="" data-tooltip="상담톡" data-position="bottom center"></button>
+                                            <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
+                                        </div>
+                                    </div>
+                                    <div class="state-wrap">
+                                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-                <div class="panel-segment">
+                <div class="panel-segment overflow-auto flex-100">
                     <div class="panel-segment-header">
                         조직도
-                        <button type="button" class="ui basic button" onclick="organiChatCreate()">대화방 생성</button>
+                        <button type="button" class="ui basic mini button" onclick="organiChatCreate()">선택대화</button>
                     </div>
                     <div class="panel-segment-body">
                         <div class="area">
-                            <div class="ui list consult-organization">
-                                <div class="item user-overflow-wrap">
-                                    <i class="folder open icon"></i>
-                                    <div class="content">
-                                        <div class="team">개발</div>
-                                        <div class="list">
-                                            <div class="item active">
-                                                <div class="content">
-                                                    <div class="user-wrap">
-                                                        <i class="user icon"></i>
-                                                        <span class="user">홍길동홍길동홍길동홍길동홍길동홍길동홍길동홍길동</span>
-                                                    </div>
-                                                    <div class="btn-wrap">
-                                                        <span class="ui mini label after-state">후처리</span>
-                                                        <button type="button" class="arrow button"></button>
-                                                        <button type="button" class="talk button"></button>
-                                                        <button type="button" class="info button" onclick="userinfoModal()"></button>
-                                                    </div>
-                                                    <div class="state-wrap">
-                                                        전화 채팅
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="item">
-                                                <div class="content">
-                                                    <div class="user-wrap">
-                                                        <i class="user icon"></i>
-                                                        <span class="user">홍길동홍길동홍길동홍길동홍길동홍길동홍길동홍길동</span>
-                                                    </div>
-                                                    <div class="btn-wrap">
-                                                        <span class="ui mini label after-state">후처리</span>
-                                                        <button type="button" class="arrow button"></button>
-                                                        <button type="button" class="talk button"></button>
-                                                        <button type="button" class="info button" onclick="userinfoModal()"></button>
-                                                    </div>
-                                                    <div class="state-wrap">
-                                                        전화 채팅
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="item">
-                                                <i class="folder open icon"></i>
-                                                <div class="content">
-                                                    <div class="team">개발</div>
-                                                    <div class="list">
-                                                        <div class="item active">
-                                                            <div class="content">
-                                                                <div class="user-wrap">
-                                                                    <i class="user icon"></i>
-                                                                    <span class="user">홍길동홍길동홍길동홍길동홍길동홍길동홍길동홍길동</span>
-                                                                </div>
-                                                                <div class="btn-wrap">
-                                                                    <span class="ui mini label after-state">후처리</span>
-                                                                    <button type="button" class="arrow button"></button>
-                                                                    <button type="button" class="talk button"></button>
-                                                                    <button type="button" class="info button" onclick="userinfoModal()"></button>
-                                                                </div>
-                                                                <div class="state-wrap">
-                                                                    전화 채팅
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="item active">
-                                                            <div class="content">
-                                                                <div class="user-wrap">
-                                                                    <i class="user icon active"></i>
-                                                                    <span class="user">홍길동홍길동홍길동홍길동홍길동홍길동홍길동홍길동</span>
-                                                                </div>
-                                                                <div class="btn-wrap">
-                                                                    <span class="ui mini label after-state">후처리</span>
-                                                                    <button type="button" class="arrow button"></button>
-                                                                    <button type="button" class="talk button"></button>
-                                                                    <button type="button" class="info button" onclick="userinfoModal()"></button>
-                                                                </div>
-                                                                <div class="state-wrap">
-                                                                    전화 채팅
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                            <ul class="organization-ul">
+                                <div class="title">
+                                    <span class="team-name">조직명조직명조직명조직명명</span>
+                                    <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13 </div>
+                                </div>
+                                <li class="belong">
+                                    <div class="user-wrap">
+                                        <div class="ui checkbox">
+                                            <input type="checkbox" name="example">
+                                            <label>본사>본부>서울지사</label>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="ui list consult-organization active">
-                                <div class="item user-overflow-wrap">
-                                    <i class="folder open icon"></i>
-                                    <div class="content">
-                                        <div class="team">개발</div>
-                                        <div class="list">
-                                            <div class="item">
-                                                <div class="content">
-                                                    <div class="user-wrap">
-                                                        <i class="user icon"></i>
-                                                        <span class="user">홍길동홍길동홍길동홍길동홍길동홍길동홍길동홍길동</span>
-                                                    </div>
-                                                    <div class="btn-wrap">
-                                                        <span class="ui mini label after-state">후처리</span>
-                                                        <button type="button" class="arrow button"></button>
-                                                        <button type="button" class="talk button"></button>
-                                                        <button type="button" class="info button" onclick="userinfoModal()"></button>
-                                                    </div>
-                                                    <div class="state-wrap">
-                                                        전화 채팅
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="item">
-                                                <div class="content">
-                                                    <div class="user-wrap">
-                                                        <i class="user icon"></i>
-                                                        <span class="user">홍길동홍길동홍길동홍길동홍길동홍길동홍길동홍길동</span>
-                                                    </div>
-                                                    <div class="btn-wrap">
-                                                        <span class="ui mini label bell-state">벨울림</span>
-                                                        <button type="button" class="arrow button"></button>
-                                                        <button type="button" class="talk button"></button>
-                                                        <button type="button" class="info button" onclick="userinfoModal()"></button>
-                                                    </div>
-                                                    <div class="state-wrap">
-                                                        전화 채팅
-                                                    </div>
-                                                </div>
-                                            </div>
+                                </li>
+                                <li class="active">
+                                    <div class="user-wrap">
+                                        <span class="user-icon active"></span>홍길동
+                                    </div>
+                                    <div class="btn-wrap">
+                                        <span class="ui mini label after-state">후처리</span>
+                                        <div class="buttons">
+                                            <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
+                                            <button type="button" class="talk off button"></button>
+                                            <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
+                                    <div class="state-wrap">
+                                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="user-wrap">
+                                        <span class="user-icon"></span>홍길동
+                                    </div>
+                                    <div class="btn-wrap">
+                                        <span class="ui mini label wait-state">대기</span>
+                                        <div class="buttons">
+                                            <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
+                                            <button type="button" class="talk button" data-inverted="" data-tooltip="상담톡" data-position="bottom center"></button>
+                                            <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
+                                        </div>
+                                    </div>
+                                    <div class="state-wrap">
+                                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="user-wrap">
+                                        <span class="user-icon"></span>홍길동
+                                    </div>
+                                    <div class="btn-wrap">
+                                        <span class="ui mini label bell-state">벨울림</span>
+                                        <div class="buttons">
+                                            <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
+                                            <button type="button" class="talk button" data-inverted="" data-tooltip="상담톡" data-position="bottom center"></button>
+                                            <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
+                                        </div>
+                                    </div>
+                                    <div class="state-wrap">
+                                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="user-wrap">
+                                        <span class="user-icon"></span>홍길동
+                                    </div>
+                                    <div class="btn-wrap">
+                                        <span class="ui mini label logout-state">로그아웃</span>
+                                        <div class="buttons">
+                                            <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
+                                            <button type="button" class="talk button" data-inverted="" data-tooltip="상담톡" data-position="bottom center"></button>
+                                            <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
+                                        </div>
+                                    </div>
+                                    <div class="state-wrap">
+                                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="user-wrap">
+                                        <span class="user-icon"></span>홍길동
+                                    </div>
+                                    <div class="btn-wrap">
+                                        <span class="ui mini label call-state">통화중</span>
+                                        <div class="buttons">
+                                            <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
+                                            <button type="button" class="talk button" data-inverted="" data-tooltip="상담톡" data-position="bottom center"></button>
+                                            <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
+                                        </div>
+                                    </div>
+                                    <div class="state-wrap">
+                                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="organi-pop-wrap" style="position: absolute; z-index: 555; left: 350px; background: #fff; top: 123px; bottom: 11px; overflow-y: hidden;">
-        <div class="organi-pop-first"
-             style="display:none; float: left; box-shadow: rgba(0, 0, 0, 0.2) 7px 1px 5px -3px;">
-            <img style="width: 121px;" src="<c:url value="/resources/images/organi-pop1.jpg"/>">
-        </div>
-        <div class="organi-pop-second"
-             style="display:none; float: left; box-shadow: rgba(0, 0, 0, 0.2) 7px 1px 5px -3px;">
-            <div class="trans-area" onclick="organiChatRoom()" style="position: absolute; width: 100%; height: 282px; top: 143px; cursor: pointer;"></div>
-            <img style="width: 440px; " src="<c:url value="/resources/images/organi-pop2.jpg"/>">
+    <div class="organi-pop-wrap">
+        <div class="organi-pop-second">
+            <div class="panel full-height">
+                <div class="panel-heading">조직 대화방 <button type="button" class="panel-close"></button></div>
+                <div class="panel-body full-height remove-padding">
+                    <div class="pd10 panel-border-bottom">
+                        <div class="ui fluid icon input">
+                            <input type="text" placeholder="검색어 입력">
+                            <i class="search link icon"></i>
+                        </div>
+                    </div>
+                    <div class="pd10 full-height">
+                        <div class="organization-chat-list-wrap">
+                            <div class="chat-list-header">
+                                조직 대화방 목록 <button type="button" class="ui basic right floated button" onclick="organiChatCreate()">추가</button>
+                            </div>
+                            <div class="chat-list-body">
+                                <div class="chat-list-container">
+                                    <ul>
+                                        <li class="item" onclick="organiChatRoom()">
+                                            <div class="item-header">
+                                                <div class="chat-item-title">대화방 이름</div>
+                                                <div class="chat-unread">23</div>
+                                            </div>
+                                            <div class="item-content">
+                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-img.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                                <div class="last-time">2021-05-21 09:00:00</div>
+                                            </div>
+                                        </li>
+                                        <li class="item" onclick="organiChatRoom()">
+                                            <div class="item-header">
+                                                <div class="chat-item-title">대화방 이름</div>
+                                                <div class="chat-unread">23</div>
+                                            </div>
+                                            <div class="item-content">
+                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-audio.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                                <div class="last-time">2021-05-21 09:00:00</div>
+                                            </div>
+                                        </li>
+                                        <li class="item active" onclick="organiChatRoom()">
+                                            <div class="item-header">
+                                                <div class="chat-item-title">대화방 이름</div>
+                                                <div class="chat-unread">23</div>
+                                            </div>
+                                            <div class="item-content">
+                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-system.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                                <div class="last-time">2021-05-21 09:00:00</div>
+                                            </div>
+                                        </li>
+                                        <li class="item" onclick="organiChatRoom()">
+                                            <div class="item-header">
+                                                <div class="chat-item-title">대화방 이름</div>
+                                                <div class="chat-unread">23</div>
+                                            </div>
+                                            <div class="item-content">
+                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-folder.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                                <div class="last-time">2021-05-21 09:00:00</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -644,6 +1068,14 @@
     </script>
     <script>
 
+        $('.organization-ul .title').click(function(){
+            $(this).siblings().toggle();
+        });
+
+        $(".organization-ul li:not('.belong')").click(function(){
+            $(this).toggleClass('active');
+        });
+
         $('.consult-organization-panel .panel-heading .ui.basic.button').click(function () {
             $(this).toggleClass('active');
         });
@@ -653,15 +1085,35 @@
         }
 
         $('.organi-state').click(function () {
-            $('.organi-pop-first').toggle();
+            $('.consult-left-panel').toggleClass('wide');
+            $('.consult-wrapper .consult-center-panel').toggleClass('control');
+            if($('.consult-left-panel').hasClass('wide') === true) {
+                $('.organi-pop-wrap').css('left','460px');
+            } else {
+                $('.organi-pop-wrap').css('left','326px');
+            }
         });
 
         $('.organi-room').click(function () {
+            if($('.consult-left-panel').hasClass('wide') === true) {
+                $('.organi-pop-wrap').css('left','460px');
+            } else {
+                $('.organi-pop-wrap').css('left','326px');
+            };
             $('.organi-pop-second').toggle();
         });
 
+        let organiChatTitleDefault = $('.organi-chat-room-header .default-inner');
+        let organiChatTitleModify = $('.organi-chat-room-header .modify-inner');
+
         function chatTitleModifyBtn() {
-            $('.chat-title-modify').toggle();
+            if(organiChatTitleModify.css('display') === 'none') {
+                $(organiChatTitleModify).css('display','flex');
+                $(organiChatTitleDefault).css('display','none');
+            } else {
+                $(organiChatTitleModify).css('display','none');
+                $(organiChatTitleDefault).css('display','flex');
+            }
         }
 
         function organiChatCreate() {

@@ -27,7 +27,7 @@
                 <div class="chat-item ${e.sendReceive == 'AF' || e.sendReceive == 'AS' || e.sendReceive == 'S' ? 'chat-me' : ''}">
                     <div class="wrap-content">
                         <div class="profile-image">
-                            <img src="<c:url value="/resources/images/profile1.png"/>">
+                            <img src="<c:url value="/resources/images/kd_2.png"/>">
                         </div>
                         <div class="txt-segment">
                             <c:set var="name" value="${e.sendReceive == 'AF' || e.sendReceive == 'AS' ||  e.sendReceive == 'S' ? e.userName : talk.customName}"/>
