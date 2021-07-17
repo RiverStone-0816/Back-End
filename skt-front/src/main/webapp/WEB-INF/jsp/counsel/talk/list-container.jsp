@@ -45,102 +45,6 @@
         <c:choose>
             <c:when test="${talkList.size() > 0}">
                 <ul>
-                  <%--  <li class="item -talk-list">
-                        <div class="header">
-                            <div class="left">
-                                <div class="profile-image">
-                                    <img src="<c:url value="/resources/images/profile2.png"/>">
-                                </div>
-                                <div class="profile-txt">
-                                    <div class="label">eicn_test</div>
-                                    <div class="customer -custom-name"></div>
-                                </div>
-                            </div>
-                            <div class="right">
-                                <div class="user-name -user-name"><span class="notread-txt">1</span> 상담원 : 지정안됨</div>
-                                <div class="last-time -time">2021-07-12 17:28:15</div>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <div class="inner">
-                                <span class="ui mini brand label circular -indicator-new-message" style="display: none"> N </span>
-                                마지막 메시지가 나오는 곳 입니다.
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="item -talk-list">
-                        <div class="header">
-                            <div class="left">
-                                <div class="profile-image">
-                                    <img src="<c:url value="/resources/images/profile3.png"/>">
-                                </div>
-                                <div class="profile-txt">
-                                    <div class="label">eicn_test</div>
-                                    <div class="customer -custom-name"></div>
-                                </div>
-                            </div>
-                            <div class="right">
-                                <div class="user-name -user-name"><span class="notread-txt">1</span> 상담원 : 지정안됨</div>
-                                <div class="last-time -time">2021-07-12 17:28:15</div>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <div class="inner">
-                                <span class="ui mini brand label circular -indicator-new-message" style="display: none"> N </span>
-                                마지막 메시지가 나오는 곳 입니다.
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="item -talk-list active">
-                        <div class="header">
-                            <div class="left">
-                                <div class="profile-image">
-                                    <img src="<c:url value="/resources/images/profile4.png"/>">
-                                </div>
-                                <div class="profile-txt">
-                                    <div class="label">eicn_test</div>
-                                    <div class="customer -custom-name"></div>
-                                </div>
-                            </div>
-                            <div class="right">
-                                <div class="user-name -user-name"><span class="notread-txt">1</span> 상담원 : 지정안됨</div>
-                                <div class="last-time -time">2021-07-12 17:28:15</div>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <div class="inner">
-                                <span class="ui mini brand label circular -indicator-new-message" style="display: none"> N </span>
-                                마지막 메시지가 나오는 곳 입니다.
-                            </div>
-                        </div>
-                    </li>
-
-                    <li class="item -talk-list">
-                        <div class="header">
-                            <div class="left">
-                                <div class="profile-image">
-                                    <img src="<c:url value="/resources/images/profile5.png"/>">
-                                </div>
-                                <div class="profile-txt">
-                                    <div class="label">eicn_test</div>
-                                    <div class="customer -custom-name"></div>
-                                </div>
-                            </div>
-                            <div class="right">
-                                <div class="user-name -user-name"><span class="notread-txt">1</span> 상담원 : 지정안됨</div>
-                                <div class="last-time -time">2021-07-12 17:28:15</div>
-                            </div>
-                        </div>
-                        <div class="content">
-                            <div class="inner">
-                                <span class="ui mini brand label circular -indicator-new-message" style="display: none"> N </span>
-                                마지막 메시지가 나오는 곳 입니다.
-                            </div>
-                        </div>
-                    </li>
---%>
                     <c:forEach var="e" items="${talkList}">
                         <li class="item -talk-list" data-id="${g.htmlQuote(e.roomId)}" data-sender-key="${g.htmlQuote(e.senderKey)}" data-user-key="${g.htmlQuote(e.userKey)}">
 
@@ -204,7 +108,8 @@
     function rand(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
     }
-    let randNum = rand(1,25);
+
+    let randNum = rand(1, 25);
     $('.profile-image').html("<img src='../resources/images/kd_" + randNum + ".png'>");
     $('.item[data-tab="talk-list-type-${search.mode}"] span').text(${talkList.size()});
     ui.find(".-talk-list-wrap").overlayScrollbars({});

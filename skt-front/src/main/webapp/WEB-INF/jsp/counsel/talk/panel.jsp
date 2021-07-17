@@ -172,20 +172,22 @@
                     const contentContainer = $('<div class="wrap-content">').appendTo(item);
                     contentContainer.append('<div class="profile-image"><img src="/resources/images/profile1.png"></div>')
 
-                    const content =   $('<div/>', {class: 'txt-segment'}).appendTo(contentContainer)
+                    const content = $('<div/>', {class: 'txt-segment'}).appendTo(contentContainer)
                         .append($('<div/>', {class: 'txt-time', text: '[' + (myMessage ? data.username : data.customname) + '] ' + data.cur_timestr}));
 
                     const url = $.addQueryString(data.content, {token: '${g.escapeQuote(accessToken)}'});
 
                     if (data.type === 'photo') {
-                        content.append('<div class="chat">' +
-                            '    <div class="bubble">' +
-                            '        <p class="txt_chat" style="width: 118px">' + <%--todo: 코드 정리--%>
-                            '            <img src="' + url + '">' +
-                            '        </p>' +
-                            '    </div>' +
-                            '</div>' +
-                            '<a href="' + url + '" target="_blank">저장하기</a>');
+                        <%--todo: 코드 정리--%>
+                        content
+                            .append('<div class="chat">' +
+                                '    <div class="bubble">' +
+                                '        <p class="txt_chat" style="width: 118px">' +
+                                '            <img src="' + url + '">' +
+                                '        </p>' +
+                                '    </div>' +
+                                '</div>')
+                            .append('<a href="' + url + '" target="_blank">저장하기</a>');
                     } else if (data.type === 'audio') {
                         content.append('<div class="chat">' +
                             '    <div class="bubble">' +
