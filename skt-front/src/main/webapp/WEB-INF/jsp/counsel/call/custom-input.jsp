@@ -39,126 +39,29 @@
         </div>
     </div>
     <div class="panel-body overflow-auto">
-
-        <div class="float-field-wrap">
-            <div class="float-field inline">
-                <div class="label">Short text</div>
-                <div class="content">
-                    <input type="text">
-                </div>
-            </div>
-            <div class="float-field inline">
-                <div class="label">select</div>
-                <div class="content">
-                    <div class="ui form flex">
-                        <select>
-                            <option>1</option>
-                        </select>
-                        <button type="button" class="ui button sharp navy ml5">TIP</button>
-                    </div>
-                </div>
-            </div>
-            <div class="float-field inline">
-                <div class="label">고객DB</div>
-                <div class="content">
-                    <div class="ui form flex">
-                        <select>
-                            <option>1</option>
-                        </select>
-                        <select class="ml5">
-                            <option>1</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="float-field fluid">
-                <div class="label">long text</div>
-                <div class="content">
-                    <input type="text">
-                </div>
-            </div>
-            <div class="float-field fluid">
-                <div class="label">long text</div>
-                <div class="content">
-                    <div class="ui form flex">
-                        <select name="skills" multiple="" class="ui fluid dropdown">
-                            <option value="">Skills</option>
-                            <option value="angular">Angular</option>
-                            <option value="css">CSS</option>
-                            <option value="design">Graphic Design</option>
-                        </select>
-                        <button type="button" class="ui button sharp navy ml5">TIP</button>
-                    </div>
-                </div>
-            </div>
-            <div class="float-field fluid">
-                <div class="label">멀티채널추가</div>
-                <div class="content">
-                    <div class="ui form flex">
-                        <select name="channelType" style="flex: 1">
-                            <c:forEach var="channel" items="${channelTypes}">
-                                <option value="${g.htmlQuote(channel.key)}">${g.htmlQuote(channel.value)}</option>
-                            </c:forEach>
-                        </select>
-                        <div class="field ml5" style="flex: 1; display: none;">
-                            <select name="channelDataTalkService">
-                                <c:forEach var="talk" items="${talkServices}">
-                                    <option value="${g.htmlQuote(talk.key)}">${g.htmlQuote(talk.value)}</option>
+            <div class="float-field-wrap">
+                <div class="float-field inline">
+                    <div class="label">고객DB</div>
+                    <div class="content">
+                        <div class="ui form flex">
+                            <select onchange="loadCustomInput(${form.groupSeq}, $(this).val() === 'insert' ? null : '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(phoneNumber)}')">
+                                <option value="insert" ${entity == null ? 'selected' : ''}>새로운 고객으로 등록</option>
+                                <option value="update" ${entity != null ? 'selected' : ''}>고객정보 갱신</option>
+                            </select>
+                            <select class="ml5" onchange="loadCustomInput($(this).val(), null, '${g.htmlQuote(phoneNumber)}')">
+                                <c:forEach var="e" items="${maindbGroups}">
+                                    <option value="${e.seq}" ${e.seq == form.groupSeq ? 'selected' : ''}>${g.htmlQuote(e.name)}</option>
                                 </c:forEach>
                             </select>
                         </div>
-                        <input type="text" class="flex-200 ml5" name="channelData" style="flex: 1">
-                        <button type="button" class="ui button sharp navy ml5 -add-channel">추가</button>
-                    </div>
-                </div>
-            </div>
-            <div class="float-field fluid">
-                <div class="label">멀티채널리스트</div>
-                <div class="content">
-                    <div class="ui labels multi-list-wrap -channel-container">
-                        <c:set var="existRoomIdInMultichannelList" value="${false}"/>
-                        <c:forEach var="channel" items="${entity.multichannelList}">
-                            <c:set var="existRoomIdInMultichannelList" value="${existRoomIdInMultichannelList || channel.channelData == senderKey.concat('_').concat(userKey)}"/>
-                            <div class="ui label -channel" data-value="${g.escapeQuote(channel.channelData)}" data-type="${g.escapeQuote(channel.channelType)}">
-                                [${channel.channelType == 'TALK' ? g.htmlQuote(talkServices.get(channel.channelData.split('[_]')[0])) : g.htmlQuote(channelTypes.get(channel.channelType))}]
-                                    ${g.htmlQuote(channel.channelType == 'TALK' ? channel.channelData.split('[_]')[1] : channel.channelData)}
-                                <i class="icon close" onclick="$(this).closest('.-channel').remove()"></i>
-                            </div>
-                        </c:forEach>
 
-                        <c:if test="${senderKey != null && senderKey != '' && userKey != null && userKey != '' && talkServices != null && talkServices.get(senderKey) != null && !existRoomIdInMultichannelList}">
-                            <div class="ui label -channel" data-value="${g.htmlQuote(senderKey.concat('_').concat(userKey))}" data-type="TALK">
-                                [${g.htmlQuote(talkServices.get(senderKey))}] ${g.htmlQuote(userKey)}
-                                <i class="icon close" onclick="$(this).closest('.-channel').remove()"></i>
-                            </div>
+                        <c:if test="${entity != null}">
+                            <div style="display: none;" class="-custom-id">${g.htmlQuote(entity.maindbSysCustomId)}</div>
                         </c:if>
+                        <form:hidden path="groupSeq"/>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <table class="ui celled table compact unstackable border-top-default">
-            <tbody>
-            <tr>
-                <th>고객DB</th>
-                <td colspan="3">
-                    <div class="ui form flex">
-                        <select onchange="loadCustomInput(${form.groupSeq}, $(this).val() === 'insert' ? null : '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(phoneNumber)}')">
-                            <option value="insert" ${entity == null ? 'selected' : ''}>새로운 고객으로 등록</option>
-                            <option value="update" ${entity != null ? 'selected' : ''}>고객정보 갱신</option>
-                        </select>
-                        <select class="ml5" onchange="loadCustomInput($(this).val(), null, '${g.htmlQuote(phoneNumber)}')">
-                            <c:forEach var="e" items="${maindbGroups}">
-                                <option value="${e.seq}" ${e.seq == form.groupSeq ? 'selected' : ''}>${g.htmlQuote(e.name)}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-
-                    <c:if test="${entity != null}">
-                        <div style="display: none;" class="-custom-id">${g.htmlQuote(entity.maindbSysCustomId)}</div>
-                    </c:if>
-                    <form:hidden path="groupSeq"/>
-                </td>
 
                 <c:set var="chargedColCount" value="${4}"/>
                 <c:forEach var="field" items="${customDbType.fields}" varStatus="status">
@@ -167,209 +70,220 @@
 
                 <c:choose>
                     <c:when test="${field.fieldType == 'MULTICODE'}">
-                        <c:if test="${chargedColCount > 0}">
-                            <td colspan="${8 - chargedColCount}" class="border-left-none"></td>
-                            ${'</tr><tr>'}
-                        </c:if>
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="7">
-                            <div class="ui form flex">
-                                <select name="${name}" id="${name}" data-type="select"
-                                        data-text="${g.htmlQuote(field.fieldInfo)}"
-                                        data-value="${field.isneed}" multiple="multiple"
-                                        class="ui fluid dropdown">
-                                    <option value=""></option>
-                                    <c:forEach var="e" items="${field.codes}">
-                                        <c:set var="contains" value="${false}"/>
-                                        <c:if test="${value != null}">
-                                            <c:forEach var="e2" items="${value.split(',')}">
-                                                <c:if test="${!contains}">
-                                                    <c:set var="contains"
-                                                           value="${e2 == e.codeId}"/>
-                                                </c:if>
-                                            </c:forEach>
-                                        </c:if>
-                                        <option value="${g.htmlQuote(e.codeId)}" ${contains ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
-                                    </c:forEach>
-                                </select>
-                                <button type="button" class="ui button sharp navy ml5"
-                                        onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-custom-input').find('#${name}').val())">TIP
-                                </button>
+                        <div class="float-field inline">
+                            <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                            <div class="content">
+                                <div class="ui form flex">
+                                    <select name="${name}" id="${name}" data-type="select"
+                                            data-text="${g.htmlQuote(field.fieldInfo)}"
+                                            data-value="${field.isneed}" multiple="multiple"
+                                            class="ui fluid dropdown">
+                                        <option value=""></option>
+                                        <c:forEach var="e" items="${field.codes}">
+                                            <c:set var="contains" value="${false}"/>
+                                            <c:if test="${value != null}">
+                                                <c:forEach var="e2" items="${value.split(',')}">
+                                                    <c:if test="${!contains}">
+                                                        <c:set var="contains"
+                                                               value="${e2 == e.codeId}"/>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </c:if>
+                                            <option value="${g.htmlQuote(e.codeId)}" ${contains ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <button type="button" class="ui button sharp navy ml5"
+                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-custom-input').find('#${name}').val())">TIP
+                                    </button>
+                                </div>
                             </div>
-                        </td>
+                        </div>
                         <c:set var="chargedColCount" value="${8}"/>
                     </c:when>
                     <c:when test="${field.fieldType == 'CODE'}">
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="3">
-                            <div class="ui form flex">
-                                <select name="${name}" id="${name}" data-type="select" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}">
-                                    <option value=""></option>
-                                    <c:forEach var="e" items="${field.codes}">
-                                        <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
-                                    </c:forEach>
-                                </select>
-                                <button type="button" class="ui button sharp navy ml5"
-                                        onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-custom-input').find('#${name}').val())">TIP
-                                </button>
+                        <div class="float-field inline">
+                            <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                            <div class="content">
+                                <div class="ui form flex">
+                                    <select name="${name}" id="${name}" data-type="select" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}">
+                                        <option value=""></option>
+                                        <c:forEach var="e" items="${field.codes}">
+                                            <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
+                                        </c:forEach>
+                                    </select>
+                                    <button type="button" class="ui button sharp navy ml5"
+                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-custom-input').find('#${name}').val())">TIP
+                                    </button>
+                                </div>
                             </div>
-                        </td>
+                        </div>
                         <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
                     </c:when>
                     <c:when test="${field.fieldType == 'INT' || field.fieldType == 'NUMBER'}">
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="3">
-                            <div class="ui form">
-                                <input type="text" name="${name}" id="${name}" data-type="text"
-                                       data-text="${g.htmlQuote(field.fieldInfo)}"
-                                       data-value="${field.isneed}" class="-input-numerical"
-                                       value="${g.htmlQuote(value)}"/>
+                        <div class="float-field inline">
+                            <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                            <div class="content">
+                                <div class="ui form">
+                                    <input type="text" name="${name}" id="${name}" data-type="text"
+                                           data-text="${g.htmlQuote(field.fieldInfo)}"
+                                           data-value="${field.isneed}" class="-input-numerical"
+                                           value="${g.htmlQuote(value)}"/>
+                                </div>
                             </div>
-                        </td>
+                        </div>
                         <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
                     </c:when>
                     <c:when test="${field.fieldType == 'DATETIME'}">
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="3">
-                            <div class="ui form flex">
-                                <input type="text" name="${name}" id="${name}" data-type="text"
-                                       data-text="${g.htmlQuote(field.fieldInfo)}"
-                                       data-value="${field.isneed}" multiple="multiple"
-                                       value="${value != null ? g.dateFormat(value) : null}"
-                                       class="-datepicker" style="width: 130px"/>&ensp;
-                                <input type="text" name="${name}" id="${name}" data-type="text"
-                                       data-text="${g.htmlQuote(field.fieldInfo)}"
-                                       data-value="${field.isneed}" multiple="multiple"
-                                       value="${value != null ? value.hours : null}"
-                                       class="-input-numeric" style="width: 50px"/>
-                                <text style="line-height: 30px">시</text>
-                                <input type="text" name="${name}" id="${name}" data-type="text"
-                                       data-text="${g.htmlQuote(field.fieldInfo)}"
-                                       data-value="${field.isneed}" multiple="multiple"
-                                       value="${value != null ? value.minutes : null}"
-                                       class="-input-numeric" style="width: 50px"/>
-                                <text style="line-height: 30px">분</text>
-                                <input type="hidden" name="${name}" id="${name}" data-type="text"
-                                       data-text="${g.htmlQuote(field.fieldInfo)}"
-                                       data-value="${field.isneed}" multiple="multiple"
-                                       value="00" class="-input-numeric"/>
+                        <div class="float-field inline">
+                            <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                            <div class="content">
+                                <div class="ui form flex">
+                                    <input type="text" name="${name}" id="${name}" data-type="text"
+                                           data-text="${g.htmlQuote(field.fieldInfo)}"
+                                           data-value="${field.isneed}" multiple="multiple"
+                                           value="${value != null ? g.dateFormat(value) : null}"
+                                           class="-datepicker" style="width: 130px"/>&ensp;
+                                    <input type="text" name="${name}" id="${name}" data-type="text"
+                                           data-text="${g.htmlQuote(field.fieldInfo)}"
+                                           data-value="${field.isneed}" multiple="multiple"
+                                           value="${value != null ? value.hours : null}"
+                                           class="-input-numeric" style="width: 50px"/>
+                                    <text style="line-height: 30px">시</text>
+                                    <input type="text" name="${name}" id="${name}" data-type="text"
+                                           data-text="${g.htmlQuote(field.fieldInfo)}"
+                                           data-value="${field.isneed}" multiple="multiple"
+                                           value="${value != null ? value.minutes : null}"
+                                           class="-input-numeric" style="width: 50px"/>
+                                    <text style="line-height: 30px">분</text>
+                                    <input type="hidden" name="${name}" id="${name}" data-type="text"
+                                           data-text="${g.htmlQuote(field.fieldInfo)}"
+                                           data-value="${field.isneed}" multiple="multiple"
+                                           value="00" class="-input-numeric"/>
+                                </div>
                             </div>
-                        </td>
+                        </div>
                         <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
                     </c:when>
                     <c:when test="${field.fieldType == 'DATE' || field.fieldType == 'DAY'}">
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="3">
-                            <div class="ui form">
-                                <input type="text" name="${name}" id="${name}" data-type="text"
-                                       data-text="${g.htmlQuote(field.fieldInfo)}"
-                                       data-value="${field.isneed}" value="${value}"
-                                       class="-datepicker"/>
+                        <div class="float-field inline">
+                            <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                            <div class="content" colspan="3">
+                                <div class="ui form">
+                                    <input type="text" name="${name}" id="${name}" data-type="text"
+                                           data-text="${g.htmlQuote(field.fieldInfo)}"
+                                           data-value="${field.isneed}" value="${value}"
+                                           class="-datepicker"/>
+                                </div>
                             </div>
-                        </td>
+                        </div>
                         <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
                     </c:when>
                     <c:when test="${field.fieldType == 'STRING' && field.fieldSize > 50}">
-                        <c:if test="${chargedColCount > 0}">
-                            <td colspan="${8 - chargedColCount}" class="border-left-none"></td>
-                            ${'</tr><tr>'}
-                        </c:if>
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="7">
-                            <div class="ui form">
-                                <input type="text" name="${name}" id="${name}" data-type="text"
-                                       data-text="${g.htmlQuote(field.fieldInfo)}"
-                                       data-value="${field.isneed}"
-                                       maxlength="${field.fieldSize}" value="${g.escapeQuote(value)}"/>
+                        <div class="float-field inline">
+                            <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                            <div class="content">
+                                <div class="ui form">
+                                    <input type="text" name="${name}" id="${name}" data-type="text"
+                                           data-text="${g.htmlQuote(field.fieldInfo)}"
+                                           data-value="${field.isneed}"
+                                           maxlength="${field.fieldSize}" value="${g.escapeQuote(value)}"/>
+                                </div>
                             </div>
-                        </td>
+                        </div>
                         <c:set var="chargedColCount" value="${8}"/>
                     </c:when>
                     <c:when test="${field.fieldType == 'IMG'}">
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="3">
-                            <div class="ui form flex">
-                                <input name="${name}" type="hidden" value="">
-                                <div class="file-upload-header">
-                                    <label for="file" class="ui button orange mini compact">파일찾기</label>
-                                    <input type="file" id="file" data-value="${name}">
-                                    <span class="file-name">No file selected</span>
+                        <div class="float-field inline">
+                            <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                            <div class="content" colspan="3">
+                                <div class="ui form flex">
+                                    <input name="${name}" type="hidden" value="">
+                                    <div class="file-upload-header">
+                                        <label for="file" class="ui button orange mini compact">파일찾기</label>
+                                        <input type="file" id="file" data-value="${name}">
+                                        <span class="file-name">No file selected</span>
+                                    </div>
+                                        <%--<div>
+                                            <progress value="0" max="100" style="width:100%"></progress>
+                                        </div>--%>
                                 </div>
-                                    <%--<div>
-                                        <progress value="0" max="100" style="width:100%"></progress>
-                                    </div>--%>
                             </div>
-                        </td>
+                        </div>
                         <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
                     </c:when>
                     <c:otherwise>
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="3">
-                            <div class="ui input fluid">
-                                <input type="text" name="${name}" id="${name}" data-type="text"
-                                       data-text="${g.htmlQuote(field.fieldInfo)}"
-                                       data-value="${field.isneed}" maxlength="${field.fieldSize}"
-                                       value="${g.htmlQuote(value)}" placeholder="${field.fieldSize > 0 ? '최대길이:'.concat(field.fieldSize).concat(' Bytes') : ''}"/>
+                        <div class="float-field inline">
+                            <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                            <div class="content">
+                                <div class="ui input fluid">
+                                    <input type="text" name="${name}" id="${name}" data-type="text"
+                                           data-text="${g.htmlQuote(field.fieldInfo)}"
+                                           data-value="${field.isneed}" maxlength="${field.fieldSize}"
+                                           value="${g.htmlQuote(value)}" placeholder="${field.fieldSize > 0 ? '최대길이:'.concat(field.fieldSize).concat(' Bytes') : ''}"/>
+                                </div>
                             </div>
-                        </td>
+                        </div>
                         <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
                     </c:otherwise>
                 </c:choose>
 
                 <c:if test="${chargedColCount >= 8 || status.last}">
-            </tr>
-            <tr>
+
+
                 <c:set var="chargedColCount" value="${0}"/>
                 </c:if>
                 </c:forEach>
 
                 <c:if test="${customDbType.fields == null}">
-            </tr>
-            <tr>
+
                 </c:if>
 
-                <th>멀티채널추가</th>
-                <td colspan="7">
-                    <div class="ui form flex">
-                        <select name="channelType" style="flex: 1">
-                            <c:forEach var="channel" items="${channelTypes}">
-                                <option value="${g.htmlQuote(channel.key)}">${g.htmlQuote(channel.value)}</option>
-                            </c:forEach>
-                        </select>
-                        <div class="field ml5" style="flex: 1; display: none;">
-                            <select name="channelDataTalkService">
-                                <c:forEach var="talk" items="${talkServices}">
-                                    <option value="${g.htmlQuote(talk.key)}">${g.htmlQuote(talk.value)}</option>
+                <div class="float-field fluid">
+                    <div class="label">멀티채널추가</div>
+                    <div class="content">
+                        <div class="ui form flex">
+                            <select name="channelType" style="flex: 1">
+                                <c:forEach var="channel" items="${channelTypes}">
+                                    <option value="${g.htmlQuote(channel.key)}">${g.htmlQuote(channel.value)}</option>
                                 </c:forEach>
                             </select>
+                            <div class="field ml5" style="flex: 1; display: none;">
+                                <select name="channelDataTalkService">
+                                    <c:forEach var="talk" items="${talkServices}">
+                                        <option value="${g.htmlQuote(talk.key)}">${g.htmlQuote(talk.value)}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                            <input type="text" class="flex-200 ml5" name="channelData" style="flex: 1">
+                            <button type="button" class="ui button sharp navy ml5 -add-channel">추가</button>
                         </div>
-                        <input type="text" class="flex-200 ml5" name="channelData" style="flex: 1">
-                        <button type="button" class="ui button sharp navy ml5 -add-channel">추가</button>
                     </div>
-                </td>
-            </tr>
-            <tr>
-                <th>멀티채널리스트</th>
-                <td colspan="7">
-                    <div class="ui labels multi-list-wrap -channel-container">
-                        <c:forEach var="channel" items="${entity.multichannelList}">
-                            <div class="ui label -channel" data-value="${g.escapeQuote(channel.channelData)}" data-type="${g.escapeQuote(channel.channelType)}">
-                                [${channel.channelType == 'TALK' ? g.htmlQuote(talkServices.get(channel.channelData.split('[_]')[0])) : g.htmlQuote(channelTypes.get(channel.channelType))}]
-                                    ${g.htmlQuote(channel.channelType == 'TALK' ? channel.channelData.split('[_]')[1] : channel.channelData)}
-                                <i class="icon close" onclick="$(this).closest('.-channel').remove()"></i>
-                            </div>
-                        </c:forEach>
-                        <c:if test="${phoneNumber != null && phoneNumber != '' && (entity == null || entity.multichannelList.stream().map(e -> e.channelData == phoneNumber).count() == 0)}">
-                            <div class="ui label -channel" data-value="${g.escapeQuote(phoneNumber)}" data-type="PHONE">
-                                [${g.htmlQuote(channelTypes.get('PHONE'))}] ${g.htmlQuote(phoneNumber)}
-                                <i class="icon close" onclick="$(this).closest('.-channel').remove()"></i>
-                            </div>
-                        </c:if>
+                </div>
+
+                <div class="float-field fluid">
+                    <div class="label">멀티채널리스트</div>
+                    <div class="content">
+                        <div class="ui labels multi-list-wrap -channel-container">
+                            <c:forEach var="channel" items="${entity.multichannelList}">
+                                <div class="ui label -channel" data-value="${g.escapeQuote(channel.channelData)}" data-type="${g.escapeQuote(channel.channelType)}">
+                                    [${channel.channelType == 'TALK' ? g.htmlQuote(talkServices.get(channel.channelData.split('[_]')[0])) : g.htmlQuote(channelTypes.get(channel.channelType))}]
+                                        ${g.htmlQuote(channel.channelType == 'TALK' ? channel.channelData.split('[_]')[1] : channel.channelData)}
+                                    <i class="icon close" onclick="$(this).closest('.-channel').remove()"></i>
+                                </div>
+                            </c:forEach>
+                            <c:if test="${phoneNumber != null && phoneNumber != '' && (entity == null || entity.multichannelList.stream().map(e -> e.channelData == phoneNumber).count() == 0)}">
+                                <div class="ui label -channel" data-value="${g.escapeQuote(phoneNumber)}" data-type="PHONE">
+                                    [${g.htmlQuote(channelTypes.get('PHONE'))}] ${g.htmlQuote(phoneNumber)}
+                                    <i class="icon close" onclick="$(this).closest('.-channel').remove()"></i>
+                                </div>
+                            </c:if>
+                        </div>
                     </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                </div>
+
+            </div>
+
+
     </div>
 </form:form>
 
