@@ -107,7 +107,6 @@ pre {
   background-color:darken(@color-gray,30%);
   color:@color-white;
   font-size:@font-size-xsmall;
-  border-radius: 0;
   font-weight: 300;
   padding: 0.57em .73em;
   &:hover {
@@ -121,7 +120,6 @@ pre {
   border: 1px solid @color-brand;
   color:@color-white;
   font-size:@font-size-xsmall;
-  border-radius: 0;
   font-weight: 300;
   padding: 0.57em .73em;
 }
@@ -129,10 +127,9 @@ pre {
 .ui.button.sharp.light {
   background-color:@color-gray-btn;
   color:@color-darkgray;
-  font-size:@font-size-xsmall;
-  border-radius: 0;
+  font-size:@font-size-xxsmall;
   font-weight: 300;
-  padding: 0.57em .73em;
+  padding: 0.48em .73em;
   border:1px solid @color-border;
   &:hover {
     background:darken(@color-gray-btn,3%);
@@ -175,7 +172,6 @@ pre {
   background-color:@color-navy;
   color:@color-white;
   font-size:@font-size-xsmall;
-  border-radius: 0;
   font-weight: 300;
   padding: 0.57em .73em;
   &:hover {
@@ -739,6 +735,52 @@ pre {
   display: none;
 }
 
+
+.float-field-wrap {
+  .float-field.fluid {
+    width: 100%;
+  }
+  .float-field.inline.last{
+    clear:both;
+  }
+  .float-field {
+    border:1px solid @color-border;
+    background: @color-white;
+    width: 452px;
+    float: left;
+    .flex();
+    flex-flow: row;
+    margin: 0 0 -1px -1px;
+    > .label {
+      .flex();
+      align-items: center;
+      justify-content: center;
+      width: 107px;
+      text-align: center;
+      background: @color-th;
+      white-space: nowrap;
+      line-height: 43px;
+      padding: 0 13px;
+      font-size: 12px;
+      font-weight: 900;
+      overflow: hidden;
+    }
+    > .content {
+      padding: 7px;
+      flex: 1;
+      input[type="text"] {
+        width: 100%;
+      }
+    }
+  }
+
+}
+
+
+
+
+
+
 #main.change-mode {
   .manage-side {
     display: none;
@@ -1175,6 +1217,9 @@ pre {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    .ui.checkbox {
+      font-size:@font-size-small;
+    }
     .user-icon {
       display:inline-block;
       background-image:url("../images/user3.svg");
@@ -1353,7 +1398,7 @@ pre {
   .ui.celled.table {
     tr {
       th,td {
-        height: 45px;
+        height: 34px;
       }
     }
   }
@@ -1475,11 +1520,27 @@ pre {
     }
     .panel.consult-organization-panel {
       .panel-body {
-        display: flex;
+        height: 100%;
+        overflow: hidden;
+        .flex();
         flex-flow: column;
-        height: ~"calc(100% - 34px)";
+        .panel-segment.favor {
+          height: 30%;
+          .panel-segment-body {
+            height: 100%;
+            overflow: auto;
+          }
+        }
+        .panel-segment.list {
+          height: 70%;
+          .panel-segment-body {
+            height: 100%;
+            overflow: auto;
+          }
+        }
       }
       .panel-segment {
+        position: relative;
         -ms-user-select: none;
         -moz-user-select: -moz-none;
         -khtml-user-select: none;
@@ -1504,7 +1565,10 @@ pre {
           background: @color-white!important;
         }
         .panel-segment-header {
-          position: relative;
+          position: absolute;
+          top: -2px;
+          z-index: 555;
+          width: 100%;
           background: #F5f5f5;
           border-left: 6px solid #514F65;
           padding: 0 0 0 16px;
@@ -1512,7 +1576,9 @@ pre {
           line-height: 32px;
         }
         .panel-segment-body {
-
+          .area {
+            margin: 32px 0 0 0;
+          }
         }
       }
     }
@@ -1527,7 +1593,7 @@ pre {
     padding-right:10px;
     margin: 0 0 0 -1px;
     .call-bottom-area {
-      height: 508px;
+      height: 546px;
       overflow: auto;
       margin: 1em 0 0 0;
     }
@@ -1541,7 +1607,7 @@ pre {
     overflow: hidden;
     .top-area {
       .panel-body {
-        margin: 53px 0 0 0;
+        margin: 50px 0 0 0;
       }
       .panel-resizable {
         height:300px;
@@ -1549,7 +1615,7 @@ pre {
     }
     .middle-area {
       .panel-body {
-        margin: 53px 0 0 0;
+        margin: 50px 0 0 0;
       }
       .panel-resizable {
         height:300px;
@@ -2095,6 +2161,21 @@ pre {
       flex: 1;
     }
   }
+  .panel-title-info {
+    display: inline-block;
+    font-size: @font-size-xxsmall - 1px;
+    margin: 4px 0;
+    span {
+      margin: 0 3px 0 0;
+      display: inline-block;
+    }
+    .label {
+      background: @color-navy;
+      color: @color-white;
+      border-radius: 3px;
+      padding: 3px 5px;
+    }
+  }
   .panel-heading {
     padding: 10px 14px;
     .panel-close {
@@ -2112,7 +2193,6 @@ pre {
     }
     .flex();
     align-items:center;
-    white-space: nowrap;
     min-height: 44px;
     .pull-left {
       margin-right: auto;
@@ -2124,6 +2204,7 @@ pre {
     .pull-right {
       margin-left: auto;
       float:none;
+      white-space: nowrap;
       .ui.slider.checkbox {
         margin: 0 10px 0 0;
       }
@@ -2341,9 +2422,10 @@ pre {
 }
 
 .panel-label {
-  font-size:@font-size-default - 1px;
+  font-size:@font-size-xsmall;
   font-weight:500;
   white-space: nowrap;
+  letter-spacing: -1px;
 }
 
 .panel-sub-title {
@@ -2755,6 +2837,9 @@ label.control-label {
 .remove-pb {
   padding-bottom: 0 !important;
 }
+.remove-pt {
+  padding-top: 0 !important;
+}
 .border-top-default {
   border: 1px solid rgba(34, 36, 38, 0.15)!important;
 }
@@ -2879,6 +2964,12 @@ label.control-label {
   }
 }
 
+.ui.multiple.dropdown > .label {
+  height: 24px;
+  padding: 0 10px;
+  font-size: @font-size-xxsmall;
+}
+
 .ui.form textarea.fluid {
   height: 2em;
   min-height: inherit;
@@ -2974,7 +3065,7 @@ label.control-label {
   }
 }
 .ui.buttons .button, .ui.buttons .or, .ui.button {
-  font-size:@font-size-xsmall;
+  font-size:@font-size-xxsmall;
 }
 .ui-datepicker-trigger {
   position: absolute;
@@ -3006,6 +3097,10 @@ label.control-label {
   flex-flow: row;
   width: 100%;
   margin: 3px 0;
+  height: 292px;
+  .title {
+    text-align:center;
+  }
   select {
     width: 100%;
     min-height: 185px;
@@ -3029,6 +3124,20 @@ label.control-label {
     padding: 0 6px;
     width: 30px;
     flex-flow: column;
+    margin: 0 15px;
+    .btn-move-selected-right {
+      background-image: url("../images/long-arrow-btn.svg");
+      background-repeat: no-repeat;
+      background-position: 0;
+    }
+    .btn-move-selected-left {
+      background-image: url("../images/long-arrow-btn.svg");
+      background-repeat: no-repeat;
+      background-position: 0;
+      transform: rotate(
+              180deg
+      );
+    }
     button {
       background: transparent;
       outline: 0;
@@ -3036,7 +3145,9 @@ label.control-label {
       font-size: 22pt;
       cursor: pointer;
       line-height: 0;
-      height: 36px;
+      height: 130px;
+      width: 45px;
+      text-indent: -9999px;
       color: lighten(@color-darkgray, 30%);
       &:hover {
         color: @color-darkgray;
@@ -3066,7 +3177,7 @@ label.control-label {
   }
   .piece {
     input[type="text"] {
-      height: 34px;
+      height: 30px;
     }
     text {
       font-weight: 500;
@@ -3336,6 +3447,7 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
 
 .ui.checkbox {
   margin: 0 3px 0 0;
+  font-size: @font-size-xxsmall;
 }
 
 .ui.form {
@@ -3348,10 +3460,12 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
   align-items: center;
   select {
     flex: 1;
+    height: 29px;
+    padding: 0;
   }
   input[type="text"] {
     flex:1;
-    height: 34px;
+    height: 30px;
   }
   .field {
     margin:0;

@@ -39,6 +39,104 @@
         </div>
     </div>
     <div class="panel-body overflow-auto">
+
+        <div class="float-field-wrap">
+            <div class="float-field inline">
+                <div class="label">Short text</div>
+                <div class="content">
+                    <input type="text">
+                </div>
+            </div>
+            <div class="float-field inline">
+                <div class="label">select</div>
+                <div class="content">
+                    <div class="ui form flex">
+                        <select>
+                            <option>1</option>
+                        </select>
+                        <button type="button" class="ui button sharp navy ml5">TIP</button>
+                    </div>
+                </div>
+            </div>
+            <div class="float-field inline">
+                <div class="label">고객DB</div>
+                <div class="content">
+                    <div class="ui form flex">
+                        <select>
+                            <option>1</option>
+                        </select>
+                        <select class="ml5">
+                            <option>1</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="float-field fluid">
+                <div class="label">long text</div>
+                <div class="content">
+                    <input type="text">
+                </div>
+            </div>
+            <div class="float-field fluid">
+                <div class="label">long text</div>
+                <div class="content">
+                    <div class="ui form flex">
+                        <select name="skills" multiple="" class="ui fluid dropdown">
+                            <option value="">Skills</option>
+                            <option value="angular">Angular</option>
+                            <option value="css">CSS</option>
+                            <option value="design">Graphic Design</option>
+                        </select>
+                        <button type="button" class="ui button sharp navy ml5">TIP</button>
+                    </div>
+                </div>
+            </div>
+            <div class="float-field fluid">
+                <div class="label">멀티채널추가</div>
+                <div class="content">
+                    <div class="ui form flex">
+                        <select name="channelType" style="flex: 1">
+                            <c:forEach var="channel" items="${channelTypes}">
+                                <option value="${g.htmlQuote(channel.key)}">${g.htmlQuote(channel.value)}</option>
+                            </c:forEach>
+                        </select>
+                        <div class="field ml5" style="flex: 1; display: none;">
+                            <select name="channelDataTalkService">
+                                <c:forEach var="talk" items="${talkServices}">
+                                    <option value="${g.htmlQuote(talk.key)}">${g.htmlQuote(talk.value)}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <input type="text" class="flex-200 ml5" name="channelData" style="flex: 1">
+                        <button type="button" class="ui button sharp navy ml5 -add-channel">추가</button>
+                    </div>
+                </div>
+            </div>
+            <div class="float-field fluid">
+                <div class="label">멀티채널리스트</div>
+                <div class="content">
+                    <div class="ui labels multi-list-wrap -channel-container">
+                        <c:set var="existRoomIdInMultichannelList" value="${false}"/>
+                        <c:forEach var="channel" items="${entity.multichannelList}">
+                            <c:set var="existRoomIdInMultichannelList" value="${existRoomIdInMultichannelList || channel.channelData == senderKey.concat('_').concat(userKey)}"/>
+                            <div class="ui label -channel" data-value="${g.escapeQuote(channel.channelData)}" data-type="${g.escapeQuote(channel.channelType)}">
+                                [${channel.channelType == 'TALK' ? g.htmlQuote(talkServices.get(channel.channelData.split('[_]')[0])) : g.htmlQuote(channelTypes.get(channel.channelType))}]
+                                    ${g.htmlQuote(channel.channelType == 'TALK' ? channel.channelData.split('[_]')[1] : channel.channelData)}
+                                <i class="icon close" onclick="$(this).closest('.-channel').remove()"></i>
+                            </div>
+                        </c:forEach>
+
+                        <c:if test="${senderKey != null && senderKey != '' && userKey != null && userKey != '' && talkServices != null && talkServices.get(senderKey) != null && !existRoomIdInMultichannelList}">
+                            <div class="ui label -channel" data-value="${g.htmlQuote(senderKey.concat('_').concat(userKey))}" data-type="TALK">
+                                [${g.htmlQuote(talkServices.get(senderKey))}] ${g.htmlQuote(userKey)}
+                                <i class="icon close" onclick="$(this).closest('.-channel').remove()"></i>
+                            </div>
+                        </c:if>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <table class="ui celled table compact unstackable border-top-default">
             <tbody>
             <tr>

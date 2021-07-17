@@ -126,6 +126,9 @@
         findAndMe('audio', this).each(function () {
             maudio({obj: this});
         });
+        findAndMe(".float-field-wrap", this).each(function() {
+            $('.float-field.inline').last().addClass('last');
+        });
         findAndMe(".-slider-time", this).each(function () {
             $(this).slider({
                 range: true, min: 0, max: 24 * 60 - 1, disabled: $(this).attr('data-key') == null, step: 1, values: [$(this).attr('data-start'), $(this).attr('data-end')], slide: function (e, ui) {
