@@ -11,20 +11,19 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<form:form modelAttribute="form" cssClass="ui modal -json-submit" data-method="put"
+<form:form modelAttribute="form" cssClass="ui modal tiny -json-submit" data-method="put"
            action="${pageContext.request.contextPath}/api/chatt/bookmark"
            data-before="prepareWriteMessengerBookmarkFormData" data-done="doneSubmitMessengerBookmarkFormData">
 
     <i class="close icon"></i>
-    <div class="header">북마크 편집</div>
-
-    <div class="content rows scrolling">
+    <div class="header">즐겨찾기 편집</div>
+    <div class="content">
         <div class="ui grid">
-            <div class="row">
-                <div class="eight wide column"><label class="control-label">사용자리스트</label></div>
-                <div class="eight wide column"><label class="control-label">추가된사용자</label></div>
+            <div class="row remove-pb">
+                <div class="eight wide column align-center"><label class="control-label">사용자 리스트</label></div>
+                <div class="eight wide column align-center"><label class="control-label">추가된 사용자</label></div>
             </div>
-            <div class="row">
+            <div class="row remove-pt">
                 <div class="sixteen wide column">
                     <div class="jp-multiselect -moving-container">
                         <div class="from-panel">

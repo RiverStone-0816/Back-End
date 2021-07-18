@@ -119,7 +119,7 @@ public class MainController extends BaseController {
     @LoginRequired
     @GetMapping("messenger")
     public String messenger() {
-        return "modal-messenger";
+        return "messenger";
     }
 
     @SneakyThrows
