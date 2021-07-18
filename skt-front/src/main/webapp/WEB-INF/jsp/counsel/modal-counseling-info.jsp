@@ -55,7 +55,7 @@
                 <c:when test="${entity.groupKind == 'TALK'}">
                     <tr>
                         <td class="three wide">채널</td>
-                        <td class="left aligned">상담톡
+                        <td class="left aligned">채팅상담
                             <button class="ui button mini compact right floated" onclick="talkHistoryView('${entity.hangupMsg}')">상담이력확인</button>
                         </td>
                     </tr>

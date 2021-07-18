@@ -17,18 +17,18 @@
            data-before="prepareWriteFormData" data-done="reload">
 
     <i class="close icon"></i>
-    <div class="header">상담톡그룹[${entity != null ? '수정' : '추가'}]</div>
+    <div class="header">채팅상담그룹[${entity != null ? '수정' : '추가'}]</div>
 
     <div class="scrolling content rows">
         <div class="ui grid">
             <div class="row">
-                <div class="four wide column"><label class="control-label">상담톡그룹명</label></div>
+                <div class="four wide column"><label class="control-label">채팅상담그룹명</label></div>
                 <div class="four wide column">
                     <div class="ui form">
                         <form:input path="groupName"/>
                     </div>
                 </div>
-                <div class="four wide column"><label class="control-label">관련상담톡서비스</label></div>
+                <div class="four wide column"><label class="control-label">관련채팅상담서비스</label></div>
                 <div class="four wide column">
                     <div class="ui form">
                         <form:select path="senderKey">
@@ -40,7 +40,7 @@
             </div>
             <div class="row">
                 <div class="eight wide column"><label class="control-label">사용자 리스트</label></div>
-                <div class="eight wide column"><label class="control-label">추가된 사용자</label></div>
+                <div class="eight wide column"><label class="control-label">채팅상담그룹 사용자</label></div>
             </div>
             <div class="row">
                 <div class="sixteen wide column">

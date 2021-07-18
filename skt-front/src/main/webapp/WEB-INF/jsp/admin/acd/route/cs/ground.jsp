@@ -36,7 +36,7 @@
                     <div class="search-area">
                         <div class="ui grid">
                             <div class="row">
-                                <div class="two wide column"><label class="control-label">큐(그룹)명</label></div>
+                                <div class="two wide column"><label class="control-label">수신그룹명</label></div>
                                 <div class="two wide column">
                                     <div class="ui input fluid">
                                         <form:select path="huntNumber">
@@ -66,7 +66,7 @@
                         <thead>
                         <tr>
                             <th class="one wide">번호</th>
-                            <th>큐그룹명(큐번호)</th>
+                            <th>수신그룹명(수신그룹번호)</th>
                             <th>검색주기</th>
                         </tr>
                         </thead>

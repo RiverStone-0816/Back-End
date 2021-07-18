@@ -16,8 +16,8 @@
     <table class="ui table celled fixed structured">
         <thead>
         <tr>
-            <th>큐(그룹)명</th>
-            <th>인입호수</th>
+            <th>수신그룹명</th>
+            <th>수신콜</th>
             <th>연결요청</th>
             <th>응답호</th>
             <th>포기호</th>

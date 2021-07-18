@@ -22,7 +22,7 @@
     <div class="content rows scrolling">
         <div class="ui grid">
             <div class="row">
-                <div class="four wide column"><label class="control-label">큐(그룹)명</label></div>
+                <div class="four wide column"><label class="control-label">수신그룹명</label></div>
                 <div class="four wide column">
                     <div class="ui input fluid">
                         <form:input path="hanName"/>

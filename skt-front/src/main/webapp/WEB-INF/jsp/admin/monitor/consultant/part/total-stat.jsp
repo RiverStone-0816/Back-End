@@ -22,9 +22,9 @@
             <tr>
                 <th colspan="2">응대율</th>
                 <td class="positive" colspan="2">${String.format("%.1f", stat.rateValue)}%</td>
-                <th>인입호수(대표/직통)</th>
+                <th>수신콜(대표/직통)</th>
                 <td class="negative">${stat.serviceTotal + stat.directTotal}(${stat.serviceTotal}/${stat.directTotal})</td>
-                <th>단순조회</th>
+                <th>무효콜</th>
                 <td>${stat.viewCount}</td>
                 <th>연결요청(대표/직통)</th>
                 <td>${stat.serviceConnectionRequest + stat.directTotal}(${stat.serviceConnectionRequest}/${stat.directTotal})</td>

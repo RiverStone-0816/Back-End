@@ -43,10 +43,10 @@
                         <thead>
                         <tr>
                             <th>번호</th>
-                            <th>음원명</th>
-                            <th>음원파일</th>
+                            <th class="two wide">음원명</th>
+                            <th class="two wide">업로드 파일명</th>
                             <th>음원문구</th>
-                            <th>듣기/다운로드</th>
+                            <th class="one wide">듣기/다운로드</th>
                         </tr>
                         </thead>
                         <tbody>

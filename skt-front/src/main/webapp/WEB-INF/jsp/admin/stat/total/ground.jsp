@@ -121,7 +121,7 @@
                                     <th>O/B<br>총통화시간</th>
                                     <th>O/B<br>평균통화시간</th>
                                     <th>I/B<br>전체콜</th>
-                                    <th>단순조회</th>
+                                    <th>무효콜</th>
                                     <th>연결요청</th>
                                     <th>응대호</th>
                                     <th>포기호</th>
@@ -130,7 +130,7 @@
                                     <th>평균<br>통화시간</th>
                                     <th>평균<br>대기시간</th>
                                     <th>호응답률</th>
-                                    <th>단순조회율</th>
+                                    <th>무효콜율</th>
                                 </tr>
                                 </thead>
                                 <c:choose>

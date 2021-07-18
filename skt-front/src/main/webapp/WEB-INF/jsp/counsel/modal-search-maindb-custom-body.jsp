@@ -45,7 +45,7 @@
                                 <form:select path="channelType">
                                     <form:option value="PHONE" label="전화번호"/>
                                     <form:option value="EMAIL" label="이메일"/>
-                                    <form:option value="TALK" label="상담톡"/>
+                                    <form:option value="TALK" label="채팅상담"/>
                                 </form:select>
                             </div>
                         </div>
@@ -113,7 +113,7 @@
                     <th rowspan="2">번호</th>
                     <th>기본정보</th>
                     <th colspan="${customDbType.fields.size()}">고객정보필드</th>
-                    <th colspan="3">멀티채널정보(전화번호,상담톡아이디)</th>
+                    <th colspan="3">멀티채널정보(전화번호,채팅상담아이디)</th>
                 </tr>
                 <tr>
                     <th class="one wide" title="데이터생성일">데이터생성일</th>
@@ -124,7 +124,7 @@
 
                     <th type="전화번호">전화번호</th>
                     <th type="이메일">이메일</th>
-                    <th type="상담톡아이디">상담톡아이디</th>
+                    <th type="채팅상담아이디">채팅상담아이디</th>
                 </tr>
                 </thead>
                 <tbody>

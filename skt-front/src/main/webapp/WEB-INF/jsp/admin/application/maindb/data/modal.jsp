@@ -132,7 +132,7 @@
             </c:forEach>
 
             <div class="row">
-                <div class="twelve wide column"><label class="control-label">멀티채널(전화번호,상담톡) 추가</label></div>
+                <div class="twelve wide column"><label class="control-label">채널 추가</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <select name="channels" multiple="multiple" class="one-multiselect">

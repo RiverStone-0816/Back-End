@@ -16,7 +16,7 @@
     <table class="ui celled table compact unstackable">
         <thead>
         <tr>
-            <th>큐그룹명</th>
+            <th>수신그룹명</th>
             <th>고객대기</th>
             <c:forEach var="status" items="${memberStatuses}">
                 <c:if test="${status.key != 9}">

@@ -62,7 +62,7 @@
                                         </form:select>
                                     </div>
                                 </td>
-                                <th>큐선택</th>
+                                <th>수신그룹</th>
                                 <td colspan="3">
                                     <div class="ui form">
                                         <form:select path="queueNumbers" multiple="multiple" class="ui fluid dropdown">
@@ -121,12 +121,12 @@
                                     <th rowspan="2">날짜/시간</th>
                                     <th colspan="6">I/B 콜 현황</th>
                                     <th colspan="6">성과지표</th>
-                                    <th colspan="5">응대호 대기시간 분석</th>
-                                    <th colspan="5">포기호 대기시간 분석</th>
+                                    <th colspan="5">응대시간 분포시간 분포</th>
+                                    <th colspan="5">응대시간 포기시간 분포</th>
                                 </tr>
                                 <tr>
                                     <th>I/B<br>전체콜</th>
-                                    <th>단순조회</th>
+                                    <th>무효콜</th>
                                     <th>연결요청</th>
                                     <th>응대호</th>
                                     <th>포기호</th>
@@ -137,7 +137,7 @@
                                     <th>평균대기시간</th>
                                     <th>호응답률</th>
                                     <th>서비스레벨<br>호응답률</th>
-                                    <th>단순조회율</th>
+                                    <th>무효콜율</th>
 
                                     <th>~10(초)</th>
                                     <th>~20(초)</th>

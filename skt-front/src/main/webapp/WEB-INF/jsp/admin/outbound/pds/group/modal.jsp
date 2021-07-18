@@ -120,7 +120,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">부서선택</label></div>
+                <div class="four wide column"><label class="control-label">부서조회</label></div>
                 <div class="twelve wide column">
                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group" data-clear=".-clear-group">
                         <button type="button" class="ui icon button mini orange compact -select-group">
@@ -138,7 +138,7 @@
                                     </c:forEach>
                                 </c:when>
                                 <c:otherwise>
-                                    <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                                    <span class="section">부서를 선택해 주세요.</span>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -176,7 +176,7 @@
                 </div>
             </c:if>
             <div class="row">
-                <div class="four wide column"><label class="control-label label-required">콜시도할전화번호필드</label></div>
+                <div class="four wide column"><label class="control-label label-required">실행할 전화번호필드</label></div>
                 <div class="four wide column">
                     <div class="ui form">
                         <form:select path="numberField">
@@ -192,7 +192,7 @@
                 <div class="eight wide column">(기본항목 설정의 업로드유형을 선택한 후 사용 가능)</div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label label-required">RID(발신번호) 설정</label></div>
+                <div class="four wide column"><label class="control-label label-required">발신표시번호 설정</label></div>
                 <div class="three wide column">
                     <div class="ui radio checkbox">
                         <form:radiobutton path="ridKind" value="CAMPAIGN"/>

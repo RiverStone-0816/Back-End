@@ -20,6 +20,15 @@
                 <div class="panel-heading">
                     <div class="pull-left">
                         <div class="panel-label">발신번호설정</div>
+                        <span class="ui black circular mini label help-info-btn">?</span>
+                        <div class="ui flowing popup top left transition hidden help-info">
+                            <dl>
+                                <dd class="font-weight-bold">사용방법</dd>
+                                <dd>1. 전체 발신표시번호를 사용할때 : 99+고객전화번호</dd>
+                                <dd>2. 팀내부 발신표시번호를 사용할때 : 98+단축1자리+고객전화번호</dd>
+                                <dd>3. 개인 발신표시번호를 사용할때 : 97 + 단축1자리+고객전화번호</dd>
+                            </dl>
+                        </div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">
@@ -32,7 +41,7 @@
                     <div class="search-area">
                         <table class="ui celled table compact unstackable">
                             <tr>
-                                <th>부서선택</th>
+                                <th>부서조회</th>
                                 <td>
                                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
                                          data-clear=".-clear-group">
@@ -51,7 +60,7 @@
                                                     </c:forEach>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                                                    <span class="section">부서를 선택해 주세요.</span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>
@@ -70,23 +79,6 @@
                             <div class="align-right">
                                 <button type="submit" class="ui button sharp brand large">검색</button>
                                 <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="ui border-box">
-                        <div class="ui list">
-                            <div class="item">
-                                사용방법 <span class="ui circular label tiny">1</span> - 전체 RID번호를 사용할때 : 99+고객전화번호
-                            </div>
-                        </div>
-                        <div class="ui list">
-                            <div class="item">
-                                사용방법 <span class="ui circular label tiny">2</span> - 팀내부 RID번호를 사용할때 : 98+단축1자리+고객전화번호
-                            </div>
-                        </div>
-                        <div class="ui list">
-                            <div class="item">
-                                사용방법 <span class="ui circular label tiny">3</span> - 개인 RID번호를 사용할때 : 97 + 단축1자리+고객전화번호
                             </div>
                         </div>
                     </div>
@@ -151,6 +143,12 @@
 
     <tags:scripts>
         <script>
+
+            $('.help-info-btn').popup({
+                popup: $('.help-info'),
+                on: 'hover'
+            });
+
             function popupModal(seq) {
                 popupReceivedHtml('/admin/user/tel/random-rid/' + (seq || 'new') + '/modal', 'modal-random-rid');
             }

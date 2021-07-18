@@ -21,6 +21,55 @@
                     <div class="pull-left">
                         <div class="panel-label">채팅상담템플릿설정</div>
                     </div>
+                    <div class="pull-right">
+                        <div class="ui slider checkbox checked">
+                            <label>검색옵션 전체보기</label>
+                            <input type="checkbox" name="newsletter" id="_newsletter" checked>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="search-area">
+                        <%--todo: 검색기능 적용 요청--%>
+                        <table class="ui celled table compact unstackable">
+                           <tr>
+                               <th>유형</th>
+                               <td colspan="3">
+                                   <div class="ui form">
+                                       <select>
+                                           <option>개인</option>
+                                           <option>그룹</option>
+                                           <option>회사전체</option>
+                                       </select>
+                                   </div>
+                               </td>
+                               <th>유형데이터</th>
+                               <td colspan="3">
+                                   <div class="ui form">
+                                       <input type="text">
+                                   </div>
+                               </td>
+                               <th>작성자</th>
+                               <td colspan="3">
+                                   <div class="ui form">
+                                       <input type="text">
+                                   </div>
+                               </td>
+                               <th>템플릿명</th>
+                               <td colspan="3">
+                                   <div class="ui form">
+                                       <input type="text">
+                                   </div>
+                               </td>
+                           </tr>
+                        </table>
+                        <div class="button-area remove-mb">
+                            <div class="align-right">
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

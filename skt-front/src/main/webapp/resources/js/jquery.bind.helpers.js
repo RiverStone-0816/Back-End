@@ -191,7 +191,7 @@
             });
             $(this).find($(this).attr('data-clear')).click(function () {
                 input.val('').change();
-                name.html('<span class="section">버튼을 눌러 소속을 선택하세요.</span>');
+                name.html('<span class="section">부서를 선택해 주세요.</span>');
             });
         });
         findAndMe(".-buttons-set-range-container", this).each(function () {

@@ -78,7 +78,7 @@
                                 <form:select path="channelType">
                                     <form:option value="PHONE" label="전화번호"/>
                                     <form:option value="EMAIL" label="이메일"/>
-                                    <form:option value="TALK" label="상담톡"/>
+                                    <form:option value="TALK" label="채팅상담"/>
                                 </form:select>
                             </div>
                         </div>
@@ -178,7 +178,7 @@
 
                     <th>전화번호</th>
                     <th>이메일</th>
-                    <th>상담톡아이디</th>
+                    <th>채팅상담아이디</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -192,7 +192,7 @@
                                     <c:choose>
                                         <c:when test="${e.groupKind == 'PHONE'}">통화</c:when>
                                         <c:when test="${e.groupKind == 'EMAIL'}">이메일</c:when>
-                                        <c:when test="${e.groupKind == 'TALK'}">상담톡</c:when>
+                                        <c:when test="${e.groupKind == 'TALK'}">채팅상담</c:when>
                                     </c:choose>
                                 </td>
                                 <td>${e.eicnCdr.inOut.equals("O") ? "발신" : e.eicnCdr.inOut.equals("I") ? "수신" : ""}</td>

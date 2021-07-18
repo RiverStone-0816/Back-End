@@ -36,7 +36,7 @@
                 <div class="panel-body">
                     <div class="ui secondary menu">
                         <a class="item ${type == NumberType.SERVICE ? 'active' : null} -number-tab-label" data-type="SERVICE">대표번호</a>
-                        <a class="item ${type == NumberType.HUNT ? 'active' : null} -number-tab-label" data-type="HUNT">큐번호</a>
+                        <a class="item ${type == NumberType.HUNT ? 'active' : null} -number-tab-label" data-type="HUNT">수신그룹번호</a>
                         <a class="item ${type == NumberType.PERSONAL ? 'active' : null} -number-tab-label" data-type="PERSONAL">개인번호</a>
                     </div>
 
@@ -71,7 +71,7 @@
                                                             <button onclick="updateNumberType('${g.htmlQuote(e.number)}', 'SERVICE')" class="ui button mini compact">대표번호</button>
                                                         </c:if>
                                                         <c:if test="${NumberType.of(e.type) != NumberType.HUNT}">
-                                                            <button onclick="updateNumberType('${g.htmlQuote(e.number)}', 'HUNT')" class="ui button mini compact">큐번호</button>
+                                                            <button onclick="updateNumberType('${g.htmlQuote(e.number)}', 'HUNT')" class="ui button mini compact">수신그룹번호</button>
                                                         </c:if>
                                                         <c:if test="${NumberType.of(e.type) != NumberType.PERSONAL}">
                                                             <button onclick="updateNumberType('${g.htmlQuote(e.number)}', 'PERSONAL')" class="ui button mini compact">개인번호</button>

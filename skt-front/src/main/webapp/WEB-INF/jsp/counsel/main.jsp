@@ -508,7 +508,7 @@
                                             <span class="ui mini label wait-state">대기</span>
                                             <div class="buttons">
                                                 <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
-                                                <button type="button" class="talk button" data-inverted="" data-tooltip="상담톡" data-position="bottom center"></button>
+                                                <button type="button" class="talk button" data-inverted="" data-tooltip="채팅상담" data-position="bottom center"></button>
                                                 <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
                                             </div>
                                         </div>
@@ -524,7 +524,7 @@
                                             <span class="ui mini label bell-state">벨울림</span>
                                             <div class="buttons">
                                                 <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
-                                                <button type="button" class="talk button" data-inverted="" data-tooltip="상담톡" data-position="bottom center"></button>
+                                                <button type="button" class="talk button" data-inverted="" data-tooltip="채팅상담" data-position="bottom center"></button>
                                                 <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
                                             </div>
                                         </div>
@@ -582,7 +582,7 @@
                                             <span class="ui mini label wait-state">대기</span>
                                             <div class="buttons">
                                                 <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
-                                                <button type="button" class="talk button" data-inverted="" data-tooltip="상담톡" data-position="bottom center"></button>
+                                                <button type="button" class="talk button" data-inverted="" data-tooltip="채팅상담" data-position="bottom center"></button>
                                                 <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
                                             </div>
                                         </div>
@@ -598,7 +598,7 @@
                                             <span class="ui mini label bell-state">벨울림</span>
                                             <div class="buttons">
                                                 <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
-                                                <button type="button" class="talk button" data-inverted="" data-tooltip="상담톡" data-position="bottom center"></button>
+                                                <button type="button" class="talk button" data-inverted="" data-tooltip="채팅상담" data-position="bottom center"></button>
                                                 <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
                                             </div>
                                         </div>
@@ -614,7 +614,7 @@
                                             <span class="ui mini label logout-state">로그아웃</span>
                                             <div class="buttons">
                                                 <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
-                                                <button type="button" class="talk button" data-inverted="" data-tooltip="상담톡" data-position="bottom center"></button>
+                                                <button type="button" class="talk button" data-inverted="" data-tooltip="채팅상담" data-position="bottom center"></button>
                                                 <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
                                             </div>
                                         </div>
@@ -630,7 +630,7 @@
                                             <span class="ui mini label call-state">통화중</span>
                                             <div class="buttons">
                                                 <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
-                                                <button type="button" class="talk button" data-inverted="" data-tooltip="상담톡" data-position="bottom center"></button>
+                                                <button type="button" class="talk button" data-inverted="" data-tooltip="채팅상담" data-position="bottom center"></button>
                                                 <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
                                             </div>
                                         </div>
@@ -720,7 +720,7 @@
             <button class="item active" data-tab="call-panel" onclick="viewCallPanel()">전화</button>
             <c:if test="${user.isTalk.equals('Y')}">
                 <button class="item" data-tab="talk-panel" onclick="viewTalkPanel(); $(this).removeClass('highlight'); $(this).removeClass('newImg');">
-                    <text>상담톡</text>
+                    <text>채팅상담</text>
                     <div></div>
                 </button>
             </c:if>
@@ -780,7 +780,7 @@
                         <th>수/발신</th>
                         <th>상담등록시간</th>
                         <th>전화번호</th>
-                        <th>상담톡아이디</th>
+                        <th>채팅상담아이디</th>
                         <th>상담원</th>
                         <th>자세히</th>
                     </tr>

@@ -16,7 +16,7 @@
      <table class="ui table celled fixed structured">
             <thead>
             <tr>
-                <th>큐그룹명</th>
+                <th>수신그룹명</th>
                 <th>고객대기</th>
 
                 <c:forEach var="status" items="${statuses}">

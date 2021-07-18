@@ -15,7 +15,7 @@
 <div class="ui modal tiny">
     <i class="close icon"></i>
     <div class="header">
-        상담톡대화방메시지
+        채팅상담대화방메시지
     </div>
     <div class="scrolling content rows">
         <div class="chat-container">

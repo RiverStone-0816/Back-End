@@ -31,7 +31,7 @@
             </div>
             <div class="row">
                 <div class="eight wide column"><label class="control-label">추가 가능한 사용자</label></div>
-                <div class="eight wide column"><label class="control-label">추가된 사용자</label></div>
+                <div class="eight wide column"><label class="control-label">픽업그룹 사용자</label></div>
             </div>
             <div class="row">
                 <div class="sixteen wide column">

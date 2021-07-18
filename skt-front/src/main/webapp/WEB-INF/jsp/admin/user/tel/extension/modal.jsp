@@ -82,7 +82,7 @@
                 <div class="four wide column">
                     <div class="ui input fluid"><form:password path="passwd" placeholder="패스워드 변경시 입력"/></div>
                 </div>
-                <div class="four wide column"><label class="control-label">CID</label></div>
+                <div class="four wide column"><label class="control-label">발신표시번호</label></div>
                 <div class="four wide column">
                     <div class="ui form">
                         <form:select path="cid">

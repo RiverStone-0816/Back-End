@@ -56,7 +56,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>부서선택</th>
+                                <th>부서조회</th>
                                 <td colspan="3">
                                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
                                          data-clear=".-clear-group">
@@ -75,7 +75,7 @@
                                                     </c:forEach>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                                                    <span class="section">부서를 선택해 주세요.</span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>
@@ -84,7 +84,7 @@
                                         </button>
                                     </div>
                                 </td>
-                                <th>통화자</th>
+                                <th>상담원</th>
                                 <td>
                                     <div class="ui form">
                                         <select name="userId">
@@ -127,7 +127,7 @@
                                         </form:select>
                                     </div>
                                 </td>
-                                <th>헌트경로</th>
+                                <th>수신그룹</th>
                                 <td>
                                     <div class="ui form">
                                         <form:select path="secondNum">
@@ -138,7 +138,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>기타선택</th>
+                                <th>기타정보</th>
                                 <td colspan="${serviceKind.contains('SC') ? '3' : '7'}">
                                     <div class="ui form flex">
                                         <form:select path="callType">
@@ -198,7 +198,7 @@
                                 <c:if test="${g.user.downloadRecordingAuthority.equals('ALL')}">
                                     <form:checkbox path="batchDownloadMode" cssStyle="display: none;"/>
                                     <button type="button" class="ui button sharp light large check ${search.batchDownloadMode == true ? 'active' : ''}"
-                                            onclick="$(this).toggleClass('active'); $('[name=batchDownloadMode]').prop('checked', $(this).hasClass('active'))">녹취 일괄 다운로드 모드
+                                            onclick="$(this).toggleClass('active'); $('[name=batchDownloadMode]').prop('checked', $(this).hasClass('active'))">일자별 녹취 다운
                                     </button>
                                 </c:if>
                                 <c:if test="${company.isServiceAvailable('QA') && !g.user.idType.equals('M')}">
@@ -207,6 +207,7 @@
                                             onclick="$(this).toggleClass('active'); $('[name=batchEvaluationMode]').prop('checked', $(this).hasClass('active'))">상담원 일괄 평가모드
                                     </button>
                                 </c:if>
+                                <span class="inline-txt">* 일자별 녹취 다운은 최대 1일씩 다운이 가능합니다.</span>
                             </div>
                             <div class="align-right">
                                 <button type="submit" class="ui button sharp brand large">검색</button>
@@ -231,7 +232,7 @@
                         <thead>
                         <tr>
                             <th>번호</th>
-                            <th>대표서비스</th>
+                            <th>서비스명</th>
                             <th>발신번호</th>
                             <th>수신번호</th>
                             <th>시간</th>

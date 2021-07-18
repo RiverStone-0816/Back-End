@@ -156,7 +156,7 @@
                             </c:forEach>
                                 <%--<th title="">전화번호</th>
                                 <th title="">이메일</th>
-                                <th title="">상담톡아이디</th>--%>
+                                <th title="">채팅상담아이디</th>--%>
                         </tr>
                         </thead>
                         <tbody>

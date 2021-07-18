@@ -22,7 +22,7 @@
     <div class="content rows">
         <div class="ui grid">
             <div class="row">
-                <div class="four wide column"><label class="control-label">큐번호선택</label></div>
+                <div class="four wide column"><label class="control-label">수신그룹번호</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <form:select path="queueNumber">

@@ -70,7 +70,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">부서선택</label></div>
+                <div class="four wide column"><label class="control-label">부서조회</label></div>
                 <div class="twelve wide column">
                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group" data-clear=".-clear-group">
                         <button type="button" class="ui icon button mini orange compact -select-group">
@@ -88,7 +88,7 @@
                                     </c:forEach>
                                 </c:when>
                                 <c:otherwise>
-                                    <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                                    <span class="section">부서를 선택해 주세요.</span>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -100,7 +100,7 @@
             </div>
 
             <div class="row">
-                <div class="four wide column"><label class="control-label">아이디유형구분</label></div>
+                <div class="four wide column"><label class="control-label">계정 유형</label></div>
                 <div class="four wide column">
                     <div class="ui form">
                         <form:select path="idType">
@@ -136,9 +136,55 @@
                     </div>
                 </div>
             </div>
+            <c:if test="${services.contains('APP') || services.contains('API')}">
+                <div class="row">
+                    <div class="four wide column"><label class="control-label">CTI</label></div>
+                    <div class="twelve wide column">
+                        <div class="ui form">
+                            <div class="inline fields">
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <form:radiobutton path="isStat" value="Y"/>
+                                        <label>사용</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <form:radiobutton path="isStat" value="N"/>
+                                        <label>사용안함 (라이센스:${license.statLicence.currentLicence}/${license.statLicence.licence})</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </c:if>
+            <c:if test="${services.contains('TALK')}">
+                <div class="row">
+                    <div class="four wide column"><label class="control-label">채팅상담</label></div>
+                    <div class="twelve wide column">
+                        <div class="ui form">
+                            <div class="inline fields">
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <form:radiobutton path="isTalk" value="Y"/>
+                                        <label>사용</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <form:radiobutton path="isTalk" value="N"/>
+                                        <label>사용안함 (라이센스:${license.talkLicense.currentLicence}/${license.talkLicense.licence})</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </c:if>
             <c:if test="${services.contains('PDS')}">
             <div class="row">
-                <div class="four wide column"><label class="control-label">${serviceKind.equals("SC") ? 'PDS' : 'Auto IVR'} 여부</label></div>
+                <div class="four wide column"><label class="control-label">${serviceKind.equals("SC") ? 'PDS' : 'Auto IVR'}</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <div class="inline fields">
@@ -152,29 +198,6 @@
                                 <div class="ui radio checkbox">
                                     <form:radiobutton path="isPds" value="N"/>
                                     <label>사용안함 (라이센스:${license.pdsLicense.currentLicence}/${license.pdsLicense.licence})</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </c:if>
-            <c:if test="${services.contains('TALK')}">
-            <div class="row">
-                <div class="four wide column"><label class="control-label">상담톡여부</label></div>
-                <div class="twelve wide column">
-                    <div class="ui form">
-                        <div class="inline fields">
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <form:radiobutton path="isTalk" value="Y"/>
-                                    <label>사용</label>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <form:radiobutton path="isTalk" value="N"/>
-                                    <label>사용안함 (라이센스:${license.talkLicense.currentLicence}/${license.talkLicense.licence})</label>
                                 </div>
                             </div>
                         </div>
@@ -206,29 +229,6 @@
                 </div>
             </div>
                 </c:if>
-            </c:if>
-            <c:if test="${services.contains('APP') || services.contains('API')}">
-            <div class="row">
-                <div class="four wide column"><label class="control-label">통계,모니터링,상담화면 여부</label></div>
-                <div class="twelve wide column">
-                    <div class="ui form">
-                        <div class="inline fields">
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <form:radiobutton path="isStat" value="Y"/>
-                                    <label>사용</label>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <form:radiobutton path="isStat" value="N"/>
-                                    <label>사용안함 (라이센스:${license.statLicence.currentLicence}/${license.statLicence.licence}) 설명:상담원화면 외부 연동일경우 API 연결갯수</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             </c:if>
             <c:if test="${services.contains('CHATT') || services.contains('CHATWIN') || services.contains('CHATMEMO')}">
             <div class="row">
@@ -279,23 +279,6 @@
                                 <div class="field">
                                     <div class="ui radio checkbox">
                                         <form:radiobutton path="downloadRecordingAuthority" value="${RecordingAuthorityType.of(e.key).code}"/>
-                                        <label>${g.htmlQuote(e.value)}</label>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="four wide column"><label class="control-label">녹취권한-삭제</label></div>
-                <div class="twelve wide column">
-                    <div class="ui form">
-                        <div class="inline fields">
-                            <c:forEach var="e" items="${recordingAuthorityTypes}">
-                                <div class="field">
-                                    <div class="ui radio checkbox">
-                                        <form:radiobutton path="removeRecordingAuthority" value="${RecordingAuthorityType.of(e.key).code}"/>
                                         <label>${g.htmlQuote(e.value)}</label>
                                     </div>
                                 </div>

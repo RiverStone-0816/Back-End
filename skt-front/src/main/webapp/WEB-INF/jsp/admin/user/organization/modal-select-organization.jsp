@@ -17,7 +17,7 @@
 <div class="ui modal">
 
     <i class="close icon"></i>
-    <div class="header">부서선택</div>
+    <div class="header">부서조회</div>
 
     <div class="content rows scrolling">
         <div class="ui action input fluid">

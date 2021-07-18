@@ -63,7 +63,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>부서선택</th>
+                                <th>부서조회</th>
                                 <td colspan="11">
                                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
                                          data-clear=".-clear-group">
@@ -82,7 +82,7 @@
                                                     </c:forEach>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                                                    <span class="section">부서를 선택해 주세요.</span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>
@@ -116,11 +116,11 @@
                         <thead>
                         <tr>
                             <th>번호</th>
-                            <th>대표서비스</th>
-                            <th>원번호</th>
+                            <th>서비스명</th>
+                            <th>원시내번호</th>
                             <th>소속</th>
                             <th>요일</th>
-                            <th>유형</th>
+                            <th>스케쥴유형</th>
                             <th class="one wide">유형보기</th>
                             <th class="one wide">관리</th>
                         </tr>

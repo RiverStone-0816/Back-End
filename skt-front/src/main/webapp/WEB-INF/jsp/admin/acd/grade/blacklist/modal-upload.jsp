@@ -31,9 +31,9 @@
                 <text style="display: inline-block; margin-right: 1em;">고객명[STRING]</text>
                 <text style="display: inline-block; margin-right: 1em;">전화번호[NUMBER]</text>
                 <text style="display: inline-block; margin-right: 1em;">인입방법[STRING]</text>
-                <text style="display: inline-block; margin-right: 1em;">큐번호[NUMBER]</text>
+                <text style="display: inline-block; margin-right: 1em;">수신그룹번호[NUMBER]</text>
                 <div class="twelve wide column">
-                * 특정큐 선택시 큐번호 입력
+                * 특정큐 선택시 수신그룹번호 입력
                 </div>
             </div>
         </div>

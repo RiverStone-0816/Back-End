@@ -25,7 +25,7 @@
             <form:form id="search-form" modelAttribute="search" class="panel panel-search" method="get">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">개인정보설정</div>
+                        <div class="panel-label">수신그룹명</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">
@@ -44,7 +44,7 @@
                                 <td><div class="ui form"><form:input path="voipTel"/></div></td>
                                 <th>지역번호</th>
                                 <td><div class="ui form"><form:input path="localPrefix"/></div></td>
-                                <th>CID번호</th>
+                                <th>발신표시번호</th>
                                 <td><div class="ui form"><form:input path="cid"/></div></td>
                             </tr>
                         </table>
@@ -83,7 +83,7 @@
                             <th>개인070(교환기)</th>
                             <th>번호이동원번호</th>
                             <th>지역번호</th>
-                            <th>CID</th>
+                            <th>발신표시번호</th>
                             <th>녹취여부(${licenseInfo.currentLicence} / ${licenseInfo.licence})</th>
                             <th>착신전환</th>
                         </tr>

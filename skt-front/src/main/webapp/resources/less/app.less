@@ -150,7 +150,7 @@ pre {
   background-image:url("../images/microsoftexcel.svg");
   background-repeat: no-repeat;
   background-position: 15px center;
-  background-size: 20px 20px;
+  background-size: 15px 20px;
   margin:0 8px 0 0;
 }
 
@@ -159,7 +159,7 @@ pre {
   background-image:url("../images/modecheck.svg");
   background-repeat: no-repeat;
   background-position: 14px center;
-  background-size: 13px 13px;
+  background-size: 13px 10px;
 }
 
 .ui.button.sharp.light.large.check.active {
@@ -514,7 +514,7 @@ pre {
       display: block;
     }
     img {
-      height: 40px;
+      height: 34px;
       vertical-align: bottom;
     }
   }
@@ -561,8 +561,11 @@ pre {
       background: transparent;
       cursor: pointer;
       height: 100%;
-      padding: 12px 25px;
+      padding: 6px 25px;
       float: left;
+      .material-icons {
+        line-height: unset;
+      }
     }
     .gnb-ul2 {
       display: inline-block;
@@ -573,7 +576,7 @@ pre {
           cursor:pointer;
           white-space: nowrap;
           display: block;
-          padding: 17px 0;
+          padding: 10.2px 7.5px 14.2px 7.5px;
           font-size: @font-size-xsmall;
           color: #9A9A9A;
           line-height: 17px;
@@ -587,7 +590,9 @@ pre {
         a {
           color:#333;
           font-weight: 800;
-          box-shadow: @color-brand 0px -4px 0px inset;
+          background: @color-menu-bg;
+          color: @color-white;
+          box-shadow: @color-brand 0px -3px 0px inset;
         }
       }
     }
@@ -1756,7 +1761,7 @@ pre {
   }
   .prof-info {
     display: inline-block;
-    padding:23px 0;
+    padding: 18.76px 0;
   }
   i {
     color: darken(@color-gray, 23%);
@@ -2178,6 +2183,11 @@ pre {
   }
   .panel-heading {
     padding: 10px 14px;
+    white-space: nowrap;
+    .ui.circular.label {
+      position: relative;
+      top: -1px;
+    }
     .panel-close {
       outline: 0;
       border: 0;
@@ -2224,8 +2234,8 @@ pre {
       .ui.button {
         padding: 0.57em 1.4em;
         border:1px solid @color-border;
-        border-radius: 0;
         margin:0 5px 0 0;
+        border-radius: 0.28571429rem;
       }
     }
     .panel-total-count {
@@ -2383,6 +2393,10 @@ pre {
     border-bottom: 1px solid @color-border;
     padding:14px;
   }
+  .inline-txt {
+    color: @color-red;
+    font-size: @font-size-xxsmall;
+  }
 }
 
 .panel.flex-flow-row {
@@ -2422,6 +2436,7 @@ pre {
 }
 
 .panel-label {
+  display: inline-block;
   font-size:@font-size-xsmall;
   font-weight:500;
   white-space: nowrap;
@@ -2568,7 +2583,6 @@ ul.ui.list ul li, ol.ui.list ol li, .ui.list .list > .item {
 label.control-label {
   margin: 0 5px 0 0;
   white-space: nowrap;
-  vertical-align: sub;
 }
 .label-container {
   line-height: 35px;
@@ -2694,9 +2708,10 @@ label.control-label {
     align-items: center;
     .link-txt {
       flex: 1;
+      color: @color-menu-bg;
       padding: 8px 5px 8px 15px;
       line-height: 17px;
-      font-size:@font-size-xsmall - 1px;
+      font-size:@font-size-xsmall;
       &:hover {
         background: @color-menu-bg;
         color: @color-white;
@@ -2706,6 +2721,7 @@ label.control-label {
     .link-new {
       font-size:@font-size-small;
       padding: 8px 0 8px 10px;
+      color: @color-menu-bg;
       &:hover {
         color:@color-brand;
       }
@@ -2803,6 +2819,9 @@ label.control-label {
 }
 .remove-padding {
   padding: 0 !important;
+}
+.font-weight-bold {
+  font-weight: bold!important;
 }
 .border-bottom-none {
   border-bottom:0!important;
@@ -3098,7 +3117,7 @@ label.control-label {
   flex-flow: row;
   width: 100%;
   margin: 3px 0;
-  height: 292px;
+  height: 260px;
   .title {
     text-align:center;
   }
@@ -3121,7 +3140,7 @@ label.control-label {
     display: flex;
     display: -ms-flexbox;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     padding: 0 6px;
     width: 30px;
     flex-flow: column;
@@ -3140,6 +3159,7 @@ label.control-label {
       );
     }
     button {
+      overflow: hidden;
       background: transparent;
       outline: 0;
       border: 0;
@@ -4380,6 +4400,7 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
         padding: 0 75px 20px 12px;
         .wrap-content {
           .flex();
+          flex-flow: column;
           justify-content: flex-start;
           .profile-image {
             margin: 0 10px 0 0;

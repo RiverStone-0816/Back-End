@@ -18,12 +18,12 @@
 <form:form modelAttribute="form" cssClass="ui modal -json-submit" data-method="post" action="${pageContext.request.contextPath}/api/pickup-group/" data-done="reload">
 
     <i class="close icon"></i>
-    <div class="header">당겨받기그룹[추가]</div>
+    <div class="header">픽업그룹[추가]</div>
 
     <div class="content rows">
         <div class="ui grid">
             <div class="row">
-                <div class="four wide column"><label class="control-label">부서선택</label></div>
+                <div class="four wide column"><label class="control-label">부서조회</label></div>
                 <div class="twelve wide column">
                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group" data-clear=".-clear-group">
                         <button type="button" class="ui icon button mini orange compact -select-group">
@@ -31,7 +31,7 @@
                         </button>
                         <form:hidden path="groupCode"/>
                         <div class="ui breadcrumb -group-name">
-                            <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                            <span class="section">부서를 선택해 주세요.</span>
                         </div>
                         <button type="button" class="ui icon button mini compact -clear-group">
                             <i class="undo icon"></i>
@@ -56,7 +56,7 @@
                         </c:choose>
                     </div>
                 </div>
-                <div class="four wide column"><label class="control-label">당겨받기명</label></div>
+                <div class="four wide column"><label class="control-label">픽업그룹명</label></div>
                 <div class="four wide column">
                     <div class="ui input fluid"><form:input path="groupname"/></div>
                 </div>

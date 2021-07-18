@@ -19,7 +19,7 @@
             <div class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">상담톡스케쥴유형</div>
+                        <div class="panel-label">채팅상담스케쥴유형</div>
                     </div>
                 </div>
             </div>

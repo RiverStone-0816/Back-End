@@ -40,7 +40,7 @@
             <div class="row">
                 <div class="four wide column"><label class="control-label">멀티채널데이터</label></div>
                 <div class="twelve wide column">
-                    [ 전화번호<c:if test="${company.service.indexOf('EMAIL') >= 0}">, 이메일</c:if><c:if test="${company.service.indexOf('TALK') >= 0}">, 상담톡아이디</c:if> ] 각각 여러개 컬럼 업로드가능
+                    [ 전화번호<c:if test="${company.service.indexOf('EMAIL') >= 0}">, 이메일</c:if><c:if test="${company.service.indexOf('TALK') >= 0}">, 채팅상담아이디</c:if> ] 각각 여러개 컬럼 업로드가능
                 </div>
             </div>
             <div class="row">

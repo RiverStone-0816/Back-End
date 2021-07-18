@@ -16,7 +16,7 @@
            action="${pageContext.request.contextPath}/api/talk-auto-comment/${entity == null ? null : entity.seq}" data-done="reload">
 
     <i class="close icon"></i>
-    <div class="header">상담톡자동멘트[${entity != null ? '수정' : '추가'}]</div>
+    <div class="header">채팅상담자동멘트[${entity != null ? '수정' : '추가'}]</div>
 
     <div class="scrolling content rows">
         <div class="ui grid">

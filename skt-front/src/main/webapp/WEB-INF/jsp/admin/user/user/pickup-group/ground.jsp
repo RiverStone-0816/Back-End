@@ -35,7 +35,7 @@
                     <div class="search-area">
                         <table class="ui celled table compact unstackable">
                             <tr>
-                                <th>부서선택</th>
+                                <th>부서조회</th>
                                 <td colspan="7">
                                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
                                          data-clear=".-clear-group">
@@ -54,7 +54,7 @@
                                                     </c:forEach>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                                                    <span class="section">부서를 선택해 주세요.</span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>
@@ -93,7 +93,7 @@
                         <thead>
                         <tr>
                             <th>번호</th>
-                            <th>당겨받기그룹명</th>
+                            <th>픽업그룹명</th>
                             <th>소속</th>
                             <th>소속교환기</th>
                             <th>구성인원수</th>

@@ -67,7 +67,7 @@
                                         <form:select path="roomStatus" items="${roomStatuses}"/>
                                     </div>
                                 </td>
-                                <th>상담톡서비스</th>
+                                <th>채팅상담서비스</th>
                                 <td colspan="3">
                                     <div class="ui form">
                                         <form:select path="senderKey">
@@ -129,7 +129,7 @@
                         <tr>
                             <th>번호</th>
                             <th>대화방명</th>
-                            <th>상담톡서비스</th>
+                            <th>채팅상담서비스</th>
                             <th>대화방상태</th>
                             <th>상담원</th>
                             <th>시작시간</th>

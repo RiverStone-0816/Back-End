@@ -32,7 +32,7 @@
                     <div class="search-area">
                         <table class="ui celled table compact unstackable">
                             <tr>
-                                <th>큐그룹</th>
+                                <th>수신그룹명</th>
                                 <td colspan="11">
                                     <div class="ui form">
                                         <select onchange="filterQueue($(this).val())">

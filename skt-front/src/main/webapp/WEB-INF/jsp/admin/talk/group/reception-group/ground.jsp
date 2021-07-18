@@ -43,8 +43,8 @@
                         <thead>
                         <tr>
                             <th>번호</th>
-                            <th class="two wide">상담톡그룹명</th>
-                            <th class="two wide">관련상담톡서비스</th>
+                            <th class="two wide">채팅상담그룹명</th>
+                            <th class="two wide">관련채팅상담서비스</th>
                             <th class="one wide">멤버수</th>
                             <th>그룹멤버</th>
                         </tr>

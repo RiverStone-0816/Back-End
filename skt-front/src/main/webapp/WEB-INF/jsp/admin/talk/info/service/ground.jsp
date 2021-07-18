@@ -19,7 +19,7 @@
             <div class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">상담톡정보관리</div>
+                        <div class="panel-label">채팅상담정보관리</div>
                     </div>
                 </div>
             </div>
@@ -39,9 +39,9 @@
                         <thead>
                         <tr>
                             <th>번호</th>
-                            <th>상담톡서비스명</th>
-                            <th>상담톡아이디</th>
-                            <th>상담톡키</th>
+                            <th>채팅상담서비스명</th>
+                            <th>채팅상담아이디</th>
+                            <th>채팅상담키</th>
                             <th>상담창활성화</th>
                         </tr>
                         </thead>

@@ -21,21 +21,21 @@
     <div class="content rows">
         <div class="ui grid">
             <div class="row">
-                <div class="three wide column"><label class="control-label">상담톡서비스명</label></div>
+                <div class="three wide column"><label class="control-label">채팅상담서비스명</label></div>
                 <div class="five wide column">
                     <div class="ui input fluid"><form:input path="kakaoServiceName"/></div>
                 </div>
-                <div class="three wide column"><label class="control-label">상담톡아이디</label></div>
+                <div class="three wide column"><label class="control-label">채팅상담아이디</label></div>
                 <div class="five wide column">
                     <div class="ui input fluid"><form:input path="kakaoServiceId"/></div>
                 </div>
             </div>
             <div class="row">
-                <div class="three wide column"><label class="control-label">상담톡키</label></div>
+                <div class="three wide column"><label class="control-label">채팅상담키</label></div>
                 <div class="five wide column">
                     <div class="ui input fluid"><form:input path="senderKey"/></div>
                 </div>
-                <div class="three wide column"><label class="control-label">상담톡활성화</label></div>
+                <div class="three wide column"><label class="control-label">채팅상담활성화</label></div>
                 <div class="five wide column">
                     <div class="ui form">
                         <div class="inline fields">

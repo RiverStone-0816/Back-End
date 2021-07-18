@@ -49,7 +49,7 @@
                             <c:otherwise>
                                 <tr>
                                     <td colspan="2">
-                                        <div class="null-data">등록된 상담톡 템플릿이 없습니다.</div>
+                                        <div class="null-data">등록된 채팅상담 템플릿이 없습니다.</div>
                                     </td>
                                 </tr>
                             </c:otherwise>

@@ -41,7 +41,7 @@
                                         </button>
                                         <input id="groupCode" name="groupCode" type="hidden" value="" onchange="console.log(1); filterGroup($(this).val())">
                                         <div class="ui breadcrumb -group-name">
-                                            <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                                            <span class="section">부서를 선택해 주세요.</span>
                                         </div>
                                         <button type="button" class="ui icon button mini compact -clear-group">
                                             <i class="undo icon"></i>

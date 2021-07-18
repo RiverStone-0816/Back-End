@@ -17,18 +17,18 @@
            data-before="prepareWriteFormData" data-done="reload">
 
     <i class="close icon"></i>
-    <div class="header">큐(그룹)[${entity != null ? '수정' : '추가'}]<span> ※ 큐는 유저 아이디가 아닌 내선기준입니다.</span></div>
+    <div class="header">수신(그룹)[${entity != null ? '수정' : '추가'}]<span> ※ 수신는 유저 아이디가 아닌 내선기준입니다.</span></div>
 
     <div class="content rows scrolling">
         <div class="ui grid">
             <div class="row">
-                <div class="four wide column"><label class="control-label label-required">큐그룹명</label></div>
+                <div class="four wide column"><label class="control-label label-required">수신그룹명</label></div>
                 <div class="four wide column">
                     <div class="ui input fluid"><form:input path="hanName"/></div>
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label label-required">큐번호</label></div>
+                <div class="four wide column"><label class="control-label label-required">수신그룹번호</label></div>
                 <div class="four wide column">
                     <div class="ui form">
                         <form:select path="number">
@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label label-required">부서선택</label></div>
+                <div class="four wide column"><label class="control-label label-required">부서조회</label></div>
                 <div class="twelve wide column">
                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group" data-clear=".-clear-group">
                         <button type="button" class="ui icon button mini orange compact -select-group">
@@ -68,7 +68,7 @@
                                     </c:forEach>
                                 </c:when>
                                 <c:otherwise>
-                                    <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                                    <span class="section">부서를 선택해 주세요.</span>
                                 </c:otherwise>
                             </c:choose>
                         </div>
@@ -91,24 +91,24 @@
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label label-required">최대대기자명수</label></div>
+                <div class="four wide column"><label class="control-label label-required">최대대기자</label></div>
                 <div class="four wide column">
                     <div class="ui input fluid"><form:input path="maxlen" cssClass="-input-numerical"/><span>명</span></div>
                 </div>
                 <div class="eight wide column"></div>
                 <div class="four wide column"></div>
                 <div class="twelve wide column">
-                    주의: 값을 0으로 셋팅하면 모든상담원이 대기가 아닐때 예비큐/콜백으로 바로 넘어감
+                    주의: 값을 0으로 셋팅하면 모든상담원이 대기가 아닐때 2차연결그룹/콜백으로 바로 넘어감
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label label-required">큐 총대기시간</label></div>
+                <div class="four wide column"><label class="control-label label-required">수신 총대기시간</label></div>
                 <div class="four wide column">
                     <div class="ui input fluid"><form:input path="queueTimeout" cssClass="-input-numerical"/><span>초</span></div>
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label label-required">사용자별 대기시간</label></div>
+                <div class="four wide column"><label class="control-label label-required">내선별 대기시간</label></div>
                 <div class="four wide column">
                     <div class="ui input fluid"><form:input path="timeout" cssClass="-input-numerical"/><span>초 (15초이상)</span></div>
                 </div>
@@ -133,7 +133,7 @@
                 <div class="four wide column">(컬러링 음원 관리에 등록)</div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">재시도 여부</label></div>
+                <div class="four wide column"><label class="control-label">재시도</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <div class="inline fields">
@@ -217,7 +217,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">비연결시 행동</label></div>
+                <div class="four wide column"><label class="control-label">비연결시</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <div class="inline fields">
@@ -236,7 +236,7 @@
                             <div class="field">
                                 <div class="ui radio checkbox">
                                     <form:radiobutton path="noConnectKind" value="HUNT"/>
-                                    <label>예비큐 연결</label>
+                                    <label>다른 수신그룹 연결</label>
                                 </div>
                             </div>
                         </div>
@@ -305,7 +305,7 @@
             </div>
             <div class="row">
                 <div class="eight wide column"><label class="control-label">사용자 리스트</label></div>
-                <div class="eight wide column"><label class="control-label">추가된 사용자</label></div>
+                <div class="eight wide column"><label class="control-label">수신그룹 사용자</label></div>
             </div>
             <div class="row">
                 <div class="sixteen wide column">
@@ -514,7 +514,7 @@
             </c:forEach>
         } else if (radio === "HUNT") {
             modal.find('.-connect-data').show();
-            select.append($('<option/>', {value: '', text: '예비큐 선택'}));
+            select.append($('<option/>', {value: '', text: '2차연결그룹 선택'}));
             <c:forEach var="e" items="${subGroups}">
                 select.append($('<option/>', {value: '${e.key}', text: '${e.value}'}).prop('selected', "${entity.noConnectData.equals(e.key) ? 'selected' : ''}"));
             </c:forEach>

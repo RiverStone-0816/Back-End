@@ -70,7 +70,7 @@
                                             <form:select path="channelType">
                                                 <form:option value="PHONE" label="전화번호"/>
                                                 <form:option value="EMAIL" label="이메일"/>
-                                                <form:option value="TALK" label="상담톡"/>
+                                                <form:option value="TALK" label="채팅상담"/>
                                             </form:select>
                                         </div>
                                         <div class="ip-wrap ml5">
@@ -150,9 +150,9 @@
                             <thead>
                             <tr>
                                 <th rowspan="2">번호</th>
-                                <th colspan="7">상담기본정보</th>
-                                <th colspan="${resultType.fields.size()}">상담결과필드</th>
-                                <th colspan="${customDbType.fields.size()}">고객정보필드</th>
+                                <th colspan="7">기본정보</th>
+                                <th colspan="${resultType.fields.size()}">상담결과</th>
+                                <th colspan="${customDbType.fields.size()}">고객정보</th>
                                 <th colspan="3">채널정보</th>
                             </tr>
                             <tr>
@@ -161,7 +161,7 @@
                                 <th>상담등록시간</th>
                                 <th>상담원</th>
                                 <th>이관상담원</th>
-                                <th>고객채널정보</th>
+                                <th>채널정보</th>
                                 <th>플레이</th>
 
                                 <c:forEach var="field" items="${resultType.fields}">
@@ -174,7 +174,7 @@
 
                                 <th>전화번호</th>
                                 <th>이메일</th>
-                                <th>상담톡아이디</th>
+                                <th>채팅상담아이디</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -188,7 +188,7 @@
                                                 <c:choose>
                                                     <c:when test="${e.groupKind == 'PHONE'}">통화</c:when>
                                                     <c:when test="${e.groupKind == 'EMAIL'}">이메일</c:when>
-                                                    <c:when test="${e.groupKind == 'TALK'}">상담톡</c:when>
+                                                    <c:when test="${e.groupKind == 'TALK'}">채팅상담</c:when>
                                                 </c:choose>
                                             </td>
                                             <td>${g.htmlQuote(e.eicnCdr.inOut == 'I' ? '수신' : e.eicnCdr.inOut == 'O' ? '발신' : '')}</td>
@@ -328,7 +328,7 @@
     <div class="ui modal tiny" id="modal-consulting-history-talk-view">
         <i class="close icon"></i>
         <div class="header">
-            상담톡대화방메시지
+            채팅상담대화방메시지
         </div>
         <div class="scrolling content rows">
             <div class="chat-container">

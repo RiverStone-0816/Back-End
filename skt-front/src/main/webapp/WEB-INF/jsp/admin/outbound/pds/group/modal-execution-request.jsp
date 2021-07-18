@@ -57,7 +57,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">콜시도할전화번호필드</label></div>
+                <div class="four wide column"><label class="control-label">실행할 전화번호필드</label></div>
                 <div class="four wide column">
                     <div class="ui form">
                         <select name="numberField">
@@ -80,7 +80,7 @@
                 <div class="eight wide column">(기본항목 설정의 업로드유형을 선택한 후 사용 가능)</div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">RID(발신번호) 설정</label></div>
+                <div class="four wide column"><label class="control-label">발신표시번호 설정</label></div>
 
                 <div class="three wide column">
                     <div class="ui radio checkbox">

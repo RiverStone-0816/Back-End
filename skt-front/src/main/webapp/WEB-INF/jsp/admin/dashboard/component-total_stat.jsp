@@ -16,7 +16,7 @@
 <table class="ui celled table striped small compact fixed">
     <tbody>
     <tr>
-        <td>인입호수</td>
+        <td>수신콜</td>
         <td>${stat.totalCnt}</td>
     </tr>
     <tr>

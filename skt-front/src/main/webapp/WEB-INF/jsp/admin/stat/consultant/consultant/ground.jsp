@@ -80,7 +80,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>부서선택</th>
+                                <th>부서조회</th>
                                 <td colspan="3">
                                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group" data-clear=".-clear-group">
                                         <button type="button" class="ui icon button mini orange compact -select-group">
@@ -98,7 +98,7 @@
                                                     </c:forEach>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                                                    <span class="section">부서를 선택해 주세요.</span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>

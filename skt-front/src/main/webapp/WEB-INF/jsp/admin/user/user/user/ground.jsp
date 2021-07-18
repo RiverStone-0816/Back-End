@@ -37,8 +37,8 @@
                     <div class="search-area">
                         <table class="ui celled table compact unstackable">
                             <tr>
-                                <th>부서선택</th>
-                                <td colspan="7">
+                                <th>부서조회</th>
+                                <td>
                                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
                                          data-clear=".-clear-group">
                                         <button type="button" class="ui icon button mini orange compact -select-group">
@@ -56,7 +56,7 @@
                                                     </c:forEach>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span class="section">버튼을 눌러 소속을 선택하세요.</span>
+                                                    <span class="section">부서를 선택해 주세요.</span>
                                                 </c:otherwise>
                                             </c:choose>
                                         </div>
@@ -65,8 +65,6 @@
                                         </button>
                                     </div>
                                 </td>
-                            </tr>
-                            <tr>
                                 <th>아이디</th>
                                 <td colspan="3">
                                     <div class="ui form"><form:input path="id"/></div>
@@ -107,40 +105,37 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table num-tbl unstackable -sortable-table ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PersonList"
+                    <table class="ui celled structured table num-tbl unstackable -sortable-table ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PersonList"
                            data-search-form="#search-form" data-order-field="order">
                         <thead>
                         <tr>
-                            <th>번호</th>
-                            <th data-sortable-value="NAME">성명-[아이디]
+                            <th rowspan="2">번호</th>
+                            <th rowspan="2"  data-sortable-value="NAME">성명-[아이디]
                                 <c:if test="${search.sort.name() == 'NAME'}">
                                     <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
                                 </c:if>
                             </th>
-                            <th>아이디유형</th>
-                            <th>내선</th>
-                            <th data-sortable-value="GROUP">소속
+                            <th rowspan="2">계정유형</th>
+                            <th rowspan="2">내선</th>
+                            <th rowspan="2" data-sortable-value="GROUP">소속
                                 <c:if test="${search.sort.name() == 'GROUP'}">
                                     <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
                                 </c:if>
                             </th>
-                            <th>녹취권한[듣기][다운][삭제]</th>
-                            <c:if test="${services.contains('PDS')}">
-                            <th data-sortable-value="PDS">${serviceKind.equals("SC") ? 'PDS' : 'Auto IVR'} 여부<br>(라이센스:${license.pdsLicense.currentLicence}/${license.pdsLicense.licence})
-                                <c:if test="${search.sort.name() == 'PDS'}">
-                                    <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
-                                </c:if>
-                            </th>
-                            </c:if>
+                            <th rowspan="2">녹취권한[듣기][다운][삭제]</th>
+                            <th colspan="3">라이센스 할당 여부</th>
+                        </tr>
+                        <tr>
+
                             <c:if test="${services.contains('APP') || services.contains('API')}">
-                            <th data-sortable-value="STAT">통계,모니터링,상담원연결여부<br>(라이센스:${license.statLicence.currentLicence}/${license.statLicence.licence})
+                            <th data-sortable-value="STAT">CTI<br>(라이센스:${license.statLicence.currentLicence}/${license.statLicence.licence})
                                 <c:if test="${search.sort.name() == 'STAT'}">
                                     <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
                                 </c:if>
                             </th>
                             </c:if>
                             <c:if test="${services.contains('TALK')}">
-                            <th data-sortable-value="TALK">상담톡여부<br>(라이센스:${license.talkLicense.currentLicence}/${license.talkLicense.licence})
+                            <th data-sortable-value="TALK">채팅상담<br>(라이센스:${license.talkLicense.currentLicence}/${license.talkLicense.licence})
                                 <c:if test="${search.sort.name() == 'TALK'}">
                                     <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
                                 </c:if>
@@ -157,6 +152,13 @@
                                     <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
                                 </c:if>
                             </th>
+                            </c:if>
+                            <c:if test="${services.contains('PDS')}">
+                                <th data-sortable-value="PDS">${serviceKind.equals("SC") ? 'PDS' : 'Auto IVR'} <br>(라이센스:${license.pdsLicense.currentLicence}/${license.pdsLicense.licence})
+                                    <c:if test="${search.sort.name() == 'PDS'}">
+                                        <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
+                                    </c:if>
+                                </th>
                             </c:if>
                         </tr>
                         </thead>
@@ -184,9 +186,6 @@
                                             <span>${g.htmlQuote(g.messageOf('RecordingAuthorityType', e.downloadRecordingAuthority))}</span>
                                             <span>${g.htmlQuote(g.messageOf('RecordingAuthorityType', e.removeRecordingAuthority))}</span>
                                         </td>
-                                        <c:if test="${services.contains('PDS')}">
-                                        <td>${e.isPds == 'Y' ? '허용됨' : '허용되지 않음'}</td>
-                                        </c:if>
                                         <c:if test="${services.contains('APP') || services.contains('API')}">
                                         <td>${e.isStat == 'Y' ? '허용됨' : '허용되지 않음'}</td>
                                         </c:if>
@@ -200,6 +199,9 @@
                                         </c:if>
                                         <c:if test="${services.contains('CHATT') || services.contains('CHATWIN') || services.contains('CHATMEMO')}">
                                         <td>${e.isChatt == 'Y' ? '허용됨' : '허용되지 않음'}</td>
+                                        </c:if>
+                                        <c:if test="${services.contains('PDS')}">
+                                            <td>${e.isPds == 'Y' ? '허용됨' : '허용되지 않음'}</td>
                                         </c:if>
                                     </tr>
                                 </c:forEach>

@@ -157,7 +157,7 @@
             <c:if test="${[CONNECT_HUNT_NUMBER,
                             CONNECT_HUNT_NUMBER_AFTER_DONE_EXCEPTION].contains(form.type)}">
                 <div class="row">
-                    <div class="four wide column"><label class="control-label">큐번호선택(*)</label></div>
+                    <div class="four wide column"><label class="control-label">수신그룹번호선택(*)</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
                             <select name="typeDataStrings" data-multiple="multiple">
