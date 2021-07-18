@@ -12,9 +12,565 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
-<div id="messenger-button">
-    <text class="message-indicator">0</text>
+<div class="ui modal tiny" id="user-info-popup">
+    <i class="close icon"></i>
+    <div class="header">유저정보</div>
+    <div class="content">
+        <table class="ui table celled unstackable border-top-default">
+            <tr>
+                <th>이름</th>
+                <td class="-field" data-name="idName"></td>
+            </tr>
+            <tr>
+                <th>부서명</th>
+                <td class="-field" data-name="groupTreeName"></td>
+            </tr>
+            <tr>
+                <th>메일주소</th>
+                <td class="-field" data-name="emailInfo"></td>
+            </tr>
+            <tr>
+                <th>전화번호</th>
+                <td>
+                    <text class="-field" data-name="hpNumber"></text>
+                    <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>">
+                </td>
+            </tr>
+            <tr>
+                <th>내선번호</th>
+                <td>
+                    <text class="-field" data-name="extension"></text>
+                    <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="actions">
+        <button type="button" class="ui button modal-close">닫기</button>
+    </div>
 </div>
+
+<div class="ui modal" id="organi-chat-create-popup">
+    <i class="close icon"></i>
+    <div class="header">새로운 채팅방 만들기</div>
+    <div class="content">
+        <div class="organization-ul-wrap">
+            <ul class="organization-ul modal">
+                <div class="title">조직명
+                    <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13</div>
+                </div>
+                <li class="belong">
+                    <div class="user-wrap">
+                        <div class="ui checkbox">
+                            <input type="checkbox" name="example">
+                            <label>본사>본부>서울지사</label>
+                        </div>
+                    </div>
+                </li>
+                <li class="active">
+                    <div class="user-wrap">
+                        <span class="user-icon active"></span>홍길동
+                    </div>
+                    <div class="btn-wrap">
+                        <span class="ui mini label after-state">후처리</span>
+                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                    </div>
+                    <div class="state-wrap">
+                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="user-wrap">
+                        <span class="user-icon"></span>홍길동
+                    </div>
+                    <div class="btn-wrap">
+                        <span class="ui mini label wait-state">대기</span>
+                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                    </div>
+                    <div class="state-wrap">
+                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="user-wrap">
+                        <span class="user-icon"></span>홍길동
+                    </div>
+                    <div class="btn-wrap">
+                        <span class="ui mini label bell-state">벨울림</span>
+                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                    </div>
+                    <div class="state-wrap">
+                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                    </div>
+                </li>
+            </ul>
+            <ul class="organization-ul modal">
+                <div class="title">조직명
+                    <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13</div>
+                </div>
+                <li class="belong">
+                    <div class="user-wrap">
+                        <div class="ui checkbox">
+                            <input type="checkbox" name="example">
+                            <label>본사>본부>서울지사</label>
+                        </div>
+                    </div>
+                </li>
+                <li class="active">
+                    <div class="user-wrap">
+                        <span class="user-icon active"></span>홍길동
+                    </div>
+                    <div class="btn-wrap">
+                        <span class="ui mini label after-state">후처리</span>
+                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                    </div>
+                    <div class="state-wrap">
+                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="user-wrap">
+                        <span class="user-icon"></span>홍길동
+                    </div>
+                    <div class="btn-wrap">
+                        <span class="ui mini label wait-state">대기</span>
+                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                    </div>
+                    <div class="state-wrap">
+                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="user-wrap">
+                        <span class="user-icon"></span>홍길동
+                    </div>
+                    <div class="btn-wrap">
+                        <span class="ui mini label bell-state">벨울림</span>
+                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                    </div>
+                    <div class="state-wrap">
+                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                    </div>
+                </li>
+            </ul>
+            <ul class="organization-ul modal">
+                <div class="title">조직명
+                    <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13</div>
+                </div>
+                <li class="belong">
+                    <div class="user-wrap">
+                        <div class="ui checkbox">
+                            <input type="checkbox" name="example">
+                            <label>본사>본부>서울지사</label>
+                        </div>
+                    </div>
+                </li>
+                <li class="active">
+                    <div class="user-wrap">
+                        <span class="user-icon active"></span>홍길동
+                    </div>
+                    <div class="btn-wrap">
+                        <span class="ui mini label after-state">후처리</span>
+                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                    </div>
+                    <div class="state-wrap">
+                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="user-wrap">
+                        <span class="user-icon"></span>홍길동
+                    </div>
+                    <div class="btn-wrap">
+                        <span class="ui mini label wait-state">대기</span>
+                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                    </div>
+                    <div class="state-wrap">
+                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="user-wrap">
+                        <span class="user-icon"></span>홍길동
+                    </div>
+                    <div class="btn-wrap">
+                        <span class="ui mini label bell-state">벨울림</span>
+                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                    </div>
+                    <div class="state-wrap">
+                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                    </div>
+                </li>
+            </ul>
+            <ul class="organization-ul modal">
+                <div class="title">조직명
+                    <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13</div>
+                </div>
+                <li class="belong">
+                    <div class="user-wrap">
+                        <div class="ui checkbox">
+                            <input type="checkbox" name="example">
+                            <label>본사>본부>서울지사</label>
+                        </div>
+                    </div>
+                </li>
+                <li class="active">
+                    <div class="user-wrap">
+                        <span class="user-icon active"></span>홍길동
+                    </div>
+                    <div class="btn-wrap">
+                        <span class="ui mini label after-state">후처리</span>
+                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                    </div>
+                    <div class="state-wrap">
+                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="user-wrap">
+                        <span class="user-icon"></span>홍길동
+                    </div>
+                    <div class="btn-wrap">
+                        <span class="ui mini label wait-state">대기</span>
+                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                    </div>
+                    <div class="state-wrap">
+                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="user-wrap">
+                        <span class="user-icon"></span>홍길동
+                    </div>
+                    <div class="btn-wrap">
+                        <span class="ui mini label bell-state">벨울림</span>
+                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
+                    </div>
+                    <div class="state-wrap">
+                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="actions">
+        <span class="left-txt">선택된 조직원 00명</span>
+        <button type="button" class="ui button modal-close">취소</button>
+        <button type="button" class="ui orange button modal-close">생성</button>
+    </div>
+</div>
+
+<div class="ui modal tiny" id="organi-chat-room-popup">
+    <i class="close icon"></i>
+    <div class="header"><span style="cursor:pointer" onclick="chatTitleModifyBtn()">대화방이름</span></div>
+    <div class="content">
+        <div class="organi-chat-room-container">
+            <div class="organi-chat-room-header">
+                <div class="default-inner">
+                    <div class="search-wrap">
+                        <div class="ui icon input">
+                            <input type="text">
+                            <i class="search link icon"></i>
+                        </div>
+                        <div class="search-count">
+                            0 / 0
+                        </div>
+                    </div>
+                    <div class="btn-wrap">
+                        <button type="button"><img src="<c:url value="/resources/images/chat-search-up.svg"/>"></button>
+                        <button type="button"><img src="<c:url value="/resources/images/chat-search-down.svg"/>"></button>
+                        <button type="button"><img src="<c:url value="/resources/images/chat-file.svg"/>"></button>
+                        <button type="button"><img src="<c:url value="/resources/images/chat-user-add.svg"/>"></button>
+                        <button type="button"><img src="<c:url value="/resources/images/chat-exit.svg"/>"></button>
+                    </div>
+                </div>
+                <div class="modify-inner">
+                    <div class="input-wrap">
+                        <div class="ui fluid input">
+                            <input type="text">
+                        </div>
+                    </div>
+                    <div class="btn-wrap">
+                        <div class="ui button">취소</div>
+                        <div class="ui orange button">변경</div>
+                    </div>
+                </div>
+            </div>
+            <div class="organi-chat-room-content">
+                <div class="chat-body">
+                    <p class="event-txt">[00-00 00:00] 이벤트 문구</p>
+                    <div class="chat-item">
+                        <div class="wrap-content">
+                            <div class="txt-segment">
+                                <div class="txt-time">
+                                    참여자 [00-00 00:00]
+                                </div>
+                                <div class="chat">
+                                    <div class="bubble">
+                                        <div class="txt_chat">대화내용대화내용대화내용</div>
+                                        <span class="count">3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-item">
+                        <div class="wrap-content">
+                            <div class="txt-segment">
+                                <div class="txt-time">
+                                    참여자 [00-00 00:00]
+                                </div>
+                                <div class="chat">
+                                    <div class="bubble">
+                                        <div class="txt_chat">
+                                            <div class="file-wrap"><img src="<c:url value="/resources/images/chat-folder.svg"/>">첨부파일이름첨부파일이름.zip</div>
+                                            <div class="file-size-wrap">용량 : 1563.KB</div>
+                                        </div>
+                                        <span class="count">3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-item">
+                        <div class="wrap-content">
+                            <div class="txt-segment">
+                                <div class="txt-time">
+                                    참여자 [00-00 00:00]
+                                </div>
+                                <div class="chat">
+                                    <div class="bubble">
+                                        <div class="txt_chat">
+                                            <div class="file-wrap"><img src="<c:url value="/resources/images/chat-audio.svg"/>">첨부파일이름첨부파일이름.mp3</div>
+                                            <div class="file-size-wrap">용량 : 1563.KB</div>
+                                        </div>
+                                        <span class="count">3</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-item">
+                        <div class="wrap-content">
+                            <div class="txt-segment">
+                                <div class="txt-time">
+                                    참여자 [00-00 00:00]
+                                </div>
+                                <div class="chat">
+                                    <div class="bubble">
+                                        <div class="txt_chat"><img
+                                                src="http://dn-m.talk.kakao.com/talkm/oYsrn2lMaM/AbUPsuGnGZVKP1xHwZXYs0/i_fd0196c4dd8e.jpeg?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImNvbXBhbnlJZCI6InNrZGV2IiwiZXh0ZW5zaW9uIjoiMTAwMCIsImlkVHlwZSI6IkEiLCJleHAiOjE2MjYzOTE2ODMsImlhdCI6MTYyNjMwNTI4M30.Czop2V7xeToXiOR3ScQ3vPs6nI0eAR2MbtwDAYo3_lA0Ro2FpT6CwnsV4qFmB1d-NXZWKk2wzBXZYRWPcePBKw">
+                                        </div>
+                                        <span class="count">3</span>
+                                    </div>
+                                </div>
+                                <div class="save">
+                                    <a href="#">저장하기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-item chat-me">
+                        <div class="wrap-content">
+                            <div class="txt-segment">
+                                <div class="txt-time">
+                                    참여자 [00-00 00:00]
+                                </div>
+                                <div class="chat">
+                                    <div class="bubble">
+                                        <div class="txt_chat"><img
+                                                src="http://dn-m.talk.kakao.com/talkm/oYsrn2lMaM/AbUPsuGnGZVKP1xHwZXYs0/i_fd0196c4dd8e.jpeg?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImNvbXBhbnlJZCI6InNrZGV2IiwiZXh0ZW5zaW9uIjoiMTAwMCIsImlkVHlwZSI6IkEiLCJleHAiOjE2MjYzOTE2ODMsImlhdCI6MTYyNjMwNTI4M30.Czop2V7xeToXiOR3ScQ3vPs6nI0eAR2MbtwDAYo3_lA0Ro2FpT6CwnsV4qFmB1d-NXZWKk2wzBXZYRWPcePBKw">
+                                        </div>
+                                        <span class="count">3</span>
+                                    </div>
+                                </div>
+                                <div class="save">
+                                    <a href="#">저장하기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-item chat-me">
+                        <div class="wrap-content">
+                            <div class="txt-segment">
+                                <div class="txt-time">
+                                    참여자 [00-00 00:00]
+                                </div>
+                                <div class="chat">
+                                    <div class="bubble">
+                                        <div class="txt_chat">대화내용대화내용대화내용</div>
+                                        <span class="count">99</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-item system">
+                        <div class="wrap-content">
+                            <div class="txt-segment">
+                                <div class="txt-time">
+                                    시스템 [00-00 00:00]
+                                </div>
+                                <div class="chat">
+                                    <div class="bubble">
+                                        <div class="txt_chat">대화내용대화내용대화내용대화내용대화내용대화내용대화내용대화내용대화내용대화내용</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="write-chat">
+                    <textarea></textarea>
+                    <button class="send-btn">전송</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="consult-left-panel">
+    <div class="panel consult-organization-panel full-height">
+        <div class="panel-heading">조직도
+            <div class="btn-wrap">
+                <button type="button" class="ui basic button organi-state">현황</button>
+                <button type="button" class="ui basic button organi-room">대화방</button>
+            </div>
+            <div class="state-header">현황</div>
+            <button class="state-header-close"></button>
+        </div>
+        <div class="panel-body remove-pl remove-pr">
+
+            <div class="panel-segment favor">
+                <div class="panel-segment-header">
+                    즐겨찾기
+                    <button type="button" class="ui basic mini button" onclick="messenger.popupBookmarkModal()">편집</button>
+                </div>
+                <div class="panel-segment-body overflow-auto">
+                    <div class="area">
+                        <ul class="organization-ul border-bottom-none remove-padding" id="messenger-bookmark-panel"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-segment list">
+                <div class="panel-segment-header">
+                    조직도
+                    <button type="button" class="ui basic mini button" onclick="organiChatCreate()">선택대화</button>
+                </div>
+                <div class="panel-segment-body">
+                    <div class="area">
+                        <ul class="organization-ul">
+                            <div class="title">
+                                <span class="team-name">조직명조직명조직명조직명명</span>
+                                <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13</div>
+                            </div>
+                            <li class="belong">
+                                <div class="user-wrap">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="example">
+                                        <label>본사>본부>서울지사</label>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="active">
+                                <div class="user-wrap">
+                                    <span class="user-icon active"></span>홍길동
+                                </div>
+                                <div class="btn-wrap">
+                                    <span class="ui mini label after-state">후처리</span>
+                                    <div class="buttons">
+                                        <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
+                                        <button type="button" class="talk off button"></button>
+                                        <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
+                                    </div>
+                                </div>
+                                <div class="state-wrap">
+                                    전화 <span class="num">15</span> 채팅 <span class="num">15</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="organi-pop-wrap">
+    <div class="organi-pop-second">
+        <div class="panel full-height">
+            <div class="panel-heading">조직 대화방
+                <button type="button" class="panel-close"></button>
+            </div>
+            <div class="panel-body full-height remove-padding">
+                <div class="pd10 panel-border-bottom">
+                    <div class="ui fluid icon input">
+                        <input type="text" placeholder="검색어 입력">
+                        <i class="search link icon"></i>
+                    </div>
+                </div>
+                <div class="pd10 full-height">
+                    <div class="organization-chat-list-wrap">
+                        <div class="chat-list-header">
+                            조직 대화방 목록
+                            <button type="button" class="ui basic right floated button" onclick="organiChatCreate()">추가</button>
+                        </div>
+                        <div class="chat-list-body">
+                            <div class="chat-list-container">
+                                <ul>
+                                    <li class="item" onclick="organiChatRoom()">
+                                        <div class="item-header">
+                                            <div class="chat-item-title">대화방 이름</div>
+                                            <div class="chat-unread">23</div>
+                                        </div>
+                                        <div class="item-content">
+                                            <div class="last-chat"><img src="<c:url value="/resources/images/chat-img.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                            <div class="last-time">2021-05-21 09:00:00</div>
+                                        </div>
+                                    </li>
+                                    <li class="item" onclick="organiChatRoom()">
+                                        <div class="item-header">
+                                            <div class="chat-item-title">대화방 이름</div>
+                                            <div class="chat-unread">23</div>
+                                        </div>
+                                        <div class="item-content">
+                                            <div class="last-chat"><img src="<c:url value="/resources/images/chat-audio.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                            <div class="last-time">2021-05-21 09:00:00</div>
+                                        </div>
+                                    </li>
+                                    <li class="item active" onclick="organiChatRoom()">
+                                        <div class="item-header">
+                                            <div class="chat-item-title">대화방 이름</div>
+                                            <div class="chat-unread">23</div>
+                                        </div>
+                                        <div class="item-content">
+                                            <div class="last-chat"><img src="<c:url value="/resources/images/chat-system.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                            <div class="last-time">2021-05-21 09:00:00</div>
+                                        </div>
+                                    </li>
+                                    <li class="item" onclick="organiChatRoom()">
+                                        <div class="item-header">
+                                            <div class="chat-item-title">대화방 이름</div>
+                                            <div class="chat-unread">23</div>
+                                        </div>
+                                        <div class="item-content">
+                                            <div class="last-chat"><img src="<c:url value="/resources/images/chat-folder.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                            <div class="last-time">2021-05-21 09:00:00</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%--todo--%>
+<%--<text class="message-indicator">0</text>--%>
+
 <div id="messenger-modal" class="ui modal large" style="width: 500px;">
     <i class="close icon"></i>
     <div class="header">메신저</div>
@@ -42,7 +598,6 @@
             </div>
             <div id="messenger-content-panel">
                 <div class="inner">
-                    <div class="ui list" id="messenger-bookmark-panel"></div>
                     <div class="ui list" id="messenger-organization-panel"></div>
                     <div class="ui list" id="messenger-chat-container"></div>
                 </div>
@@ -50,7 +605,6 @@
         </div>
     </div>
     <div id="messenger-control-panel" class="actions">
-        <button type="button" class="ui button" onclick="messenger.popupBookmarkModal()">즐겨찾기 편집</button>
         <button type="button" class="ui button blue" onclick="messenger.openRoom()">대화방 열기</button>
     </div>
 
@@ -110,7 +664,6 @@
             messenger.accessToken = '${g.escapeQuote(accessToken)}';
 
             messenger.ui = {
-                button: $('#messenger-button'),
                 modal: $('#messenger-modal'),
                 filterInput: $('#messenger-filter-text'),
                 organizationPanel: $('#messenger-organization-panel'),
@@ -613,18 +1166,38 @@
                     if (e.id === messenger.me)
                         return;
 
-                    let text = '';
-                    if (e.extension) text += ' / 내선:' + e.extension;
-                    if (e.hpNumber) text += ' / 휴대폰:' + e.hpNumber;
-                    if (e.emailInfo) text += ' / 이메일:' + e.emailInfo;
-                    if (text.indexOf(' / ') === 0) text = text.substr(3);
-                    const info = text !== '' ? $('<span/>', {style: 'margin-left: 1em; font-size: 90%; color: #aaa;', text: '[' + text + ']'}) : '';
+                    console.log(e.peer); /*todo: peer 값 전달되는지 확인*/
 
-                    $('<div/>', {class: 'item -messenger-bookmark', 'data-id': e.id})
+                    $('<li/>', {class: '-messenger-bookmark', 'data-id': e.id})
                         .append(
-                            $('<div/>', {class: 'header'})
-                                .append($('<i/>', {class: 'user outline icon', style: 'color: ' + (e.isLoginChatt === 'L' ? '#c60452' : 'black') + ';'}))
-                                .append($('<text/>', {text: e.idName}).append(info))
+                            $('<div/>', {class: 'user-wrap'})
+                                .append($('<span/>', {class: 'user-icon ' + (e.isLoginChatt === 'L' ? 'active' : '')})) /*todo: 로그인변화 대응 확인*/
+                                .append($('<text/>', {text: e.idName}))
+                        )
+                        .append(
+                            $('<div/>', {class: 'btn-wrap'})
+                                .append($('<span/>', {class: 'ui mini label -consultant-status-with-color', 'data-peer': e.peer})) /*todo: 초기값 세팅*/
+                                .append(
+                                    $('<div/>', {class: 'buttons'})
+                                        .append($('<button/>', {type: 'button', class: 'arrow button', 'data-inverted': '', 'data-tooltip': '호전환', 'data-position': 'bottom center'}))
+                                        .append($('<button/>', {type: 'button', class: 'talk off button'}))
+                                        .append($('<button/>', {
+                                            type: 'button', class: 'info button', 'data-inverted': '', 'data-tooltip': '정보', 'data-position': 'bottom center', click: function () {
+                                                const modal = $('#user-info-popup');
+                                                modal.find('.-field').each(function () { /*todo: groupTreeName 값있는지 확인*/
+                                                    $(this).text(e[$(this).attr('data-name')]);
+                                                });
+                                                modal.dragModalShow();
+                                            }
+                                        }))
+                                )
+                        )
+                        .append(
+                            $('<div/>', {class: 'state-wrap'})
+                                .append($('<text/>', {text: '전화'}))
+                                .append($('<span/>', {class: 'num', text: '0'})) /*todo: 기능 확인*/
+                                .append($('<text/>', {text: '채팅'}))
+                                .append($('<span/>', {class: 'num', text: '0'})) /*todo: 기능 확인*/
                         )
                         .appendTo(messenger.ui.bookmarkPanel)
                         .click(function (event) {
@@ -1009,14 +1582,6 @@
         Messenger.prototype.init = function () {
             const messenger = this;
 
-            messenger.ui.button.draggable({iframeFix: true, containment: 'body'}).click(function () {
-                messenger.ui.modal.show();
-                $(this).hide();
-            }).css('position', '');
-            setTimeout(function () {
-                messenger.ui.button.css({left: $(window).width() - messenger.ui.button.width() - 50, top: $(window).height() - messenger.ui.button.height() - 50});
-            }, 100);
-
             messenger.ui.modal
                 .dragModalShow('#header:first')
                 .resizable({
@@ -1034,10 +1599,6 @@
             setTimeout(function () {
                 messenger.ui.modal.css('max-height', 'none');
             }, 100);
-
-            messenger.ui.modal.find('.close.icon').click(function () {
-                messenger.ui.button.show();
-            });
 
             messenger.ui.modal.find('.-messenger-container-selector').click(function () {
                 messenger.ui.modal.find('.-messenger-container-selector').removeClass('active');
@@ -1219,15 +1780,6 @@
 
         $(window).on('load', function () {
             messenger.init();
-        });
-
-        $(window).resize(function () {
-            const left = parseInt(messenger.ui.button.css('left'));
-            const top = parseInt(messenger.ui.button.css('top'));
-
-            if (left > $(window).width() - messenger.ui.button.width() - 50
-                || top > $(window).height() - messenger.ui.button.height() - 50)
-                messenger.ui.button.css({left: $(window).width() - messenger.ui.button.width() - 50, top: $(window).height() - messenger.ui.button.height() - 50});
         });
     </script>
 </tags:scripts>
