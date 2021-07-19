@@ -1,10 +1,12 @@
 package kr.co.eicn.ippbx.server.controller.api.v1;
 
+import kr.co.eicn.ippbx.model.search.ChattingMemberSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
 import kr.co.eicn.ippbx.model.form.ChattingMemberFormRequest;
 import kr.co.eicn.ippbx.model.search.ChattingSearchRequest;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
@@ -93,4 +95,21 @@ public class ChattingRoomApiControllerTest extends BaseControllerTest {
 //                ))
                 .andReturn();
     }
+
+//    @Test
+    protected void bookmark_list() throws Exception {
+        final ChattingMemberSearchRequest form = new ChattingMemberSearchRequest();
+        final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL + "/bookmark-list")
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+//                .param("newRoomName", "단체")
+//                .content(mapper.writeValueAsString(form))
+                .with(new JwtRequestPostProcessor()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        log.info("result : " + result);
+    }
+
+
 }

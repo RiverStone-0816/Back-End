@@ -1,8 +1,10 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
+import kr.co.eicn.ippbx.model.search.ChattingMemberSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
 import kr.co.eicn.ippbx.model.form.MonitControlChangeRequest;
 import lombok.extern.log4j.Log4j2;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -88,6 +90,21 @@ public class MonitControlApiControllerTest extends BaseControllerTest {
                 .andReturn();
 
         log.info(result);
+    }
+
+//    @Test
+    protected void monit() throws Exception {
+        final ChattingMemberSearchRequest form = new ChattingMemberSearchRequest();
+        final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL)
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+//                .param("newRoomName", "단체")
+//                .content(mapper.writeValueAsString(form))
+                .with(new JwtRequestPostProcessor()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        log.info("result : " + result);
     }
 
 }
