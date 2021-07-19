@@ -149,6 +149,7 @@
                         <table class="ui celled table structured num-tbl border-top unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbResult">
                             <thead>
                             <tr>
+                                <th rowspan="2">선택</th>
                                 <th rowspan="2">번호</th>
                                 <th colspan="7">기본정보</th>
                                 <th colspan="${resultType.fields.size()}">상담결과</th>
@@ -182,8 +183,12 @@
                                 <c:when test="${pagination.rows.size() > 0}">
                                     <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                         <tr data-id="${g.htmlQuote(e.seq)}">
+                                            <td>
+                                                <div class="ui radio checkbox">
+                                                    <input type="radio" name="radio">
+                                                </div>
+                                            </td>
                                             <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
-
                                             <td>
                                                 <c:choose>
                                                     <c:when test="${e.groupKind == 'PHONE'}">통화</c:when>

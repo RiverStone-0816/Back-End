@@ -75,6 +75,7 @@
                     <table class="ui celled table structured border-top num-tbl unstackable num-tbl ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbGroup">
                         <thead>
                         <tr>
+                            <th rowspan="2">선택</th>
                             <th rowspan="2">번호</th>
                             <th colspan="6">그룹기본정보</th>
                             <th colspan="3">데이터중복체크정보</th>
@@ -103,6 +104,11 @@
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${e.seq}">
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
 
                                         <td>${g.htmlQuote(e.name)}</td>

@@ -109,6 +109,7 @@
                            data-search-form="#search-form" data-order-field="order">
                         <thead>
                         <tr>
+                            <th rowspan="2">선택</th>
                             <th rowspan="2">번호</th>
                             <th rowspan="2"  data-sortable-value="NAME">성명-[아이디]
                                 <c:if test="${search.sort.name() == 'NAME'}">
@@ -123,10 +124,9 @@
                                 </c:if>
                             </th>
                             <th rowspan="2">녹취권한[듣기][다운][삭제]</th>
-                            <th colspan="3">라이센스 할당 여부</th>
+                            <th colspan="4">라이센스 할당 여부</th>
                         </tr>
                         <tr>
-
                             <c:if test="${services.contains('APP') || services.contains('API')}">
                             <th data-sortable-value="STAT">CTI<br>(라이센스:${license.statLicence.currentLicence}/${license.statLicence.licence})
                                 <c:if test="${search.sort.name() == 'STAT'}">
@@ -167,6 +167,11 @@
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${g.htmlQuote(e.id)}">
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.idName)}-[${g.htmlQuote(e.id)}]</td>
                                         <td>${g.htmlQuote(g.messageOf('IdType', e.idType))}</td>

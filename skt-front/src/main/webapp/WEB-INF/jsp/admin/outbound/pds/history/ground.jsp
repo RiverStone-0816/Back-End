@@ -90,6 +90,7 @@
                     <table class="ui celled table num-tbl unstackable ${pagination.rows.size() > 0 ? 'selectable-only' : null}" data-entity="PdsHistory">
                         <thead>
                         <tr>
+                            <th>선택</th>
                             <th>번호</th>
                             <th>실행명</th>
                             <th>그룹명</th>
@@ -107,6 +108,11 @@
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${g.htmlQuote(e.executeId)}">
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.executeName)}</td>
                                         <td>${g.htmlQuote(e.pdsName)}</td>

@@ -39,9 +39,10 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table num-tbl unstackable fixed ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkReceptionGroup">
+                    <table class="ui celled table num-tbl unstackable ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkReceptionGroup">
                         <thead>
                         <tr>
+                            <th>선택</th>
                             <th>번호</th>
                             <th class="two wide">채팅상담그룹명</th>
                             <th class="two wide">관련채팅상담서비스</th>
@@ -54,6 +55,11 @@
                             <c:when test="${list.size() > 0}">
                                 <c:forEach var="e" items="${list}" varStatus="status">
                                     <tr data-id="${e.groupId}">
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(e.groupName)}</td>
                                         <td>${g.htmlQuote(e.kakaoServiceName)}</td>

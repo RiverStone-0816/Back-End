@@ -38,6 +38,7 @@
                     <table class="ui celled table num-tbl unstackable ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkService">
                         <thead>
                         <tr>
+                            <th>선택</th>
                             <th>번호</th>
                             <th>채팅상담서비스명</th>
                             <th>채팅상담아이디</th>
@@ -50,6 +51,11 @@
                             <c:when test="${list.size() > 0}">
                                 <c:forEach var="e" items="${list}" varStatus="status">
                                     <tr data-id="${e.seq}">
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(e.kakaoServiceName)}</td>
                                         <td>${g.htmlQuote(e.kakaoServiceId)}</td>

@@ -38,6 +38,7 @@
                     <table class="ui celled table num-tbl unstackable ${list.size() > 0 ? "selectable-only" : null}" data-entity="Holiday">
                         <thead>
                         <tr>
+                            <th>선택</th>
                             <th>번호</th>
                             <th>휴일</th>
                             <th>양력/음력</th>
@@ -49,6 +50,11 @@
                             <c:when test="${list.size() > 0}">
                                 <c:forEach var="e" items="${list}" varStatus="status">
                                     <tr data-id="${g.htmlQuote(e.seq)}">
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(e.holyName)}</td>
                                         <td>${e.lunarYn == 'Y' ? '음력' : '양력'}</td>

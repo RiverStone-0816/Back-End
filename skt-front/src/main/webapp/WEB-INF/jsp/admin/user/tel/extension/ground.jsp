@@ -58,7 +58,6 @@
                 </div>
             </form:form>
             <div class="panel">
-
                 <div class="panel-heading">
                     <div class="pull-left">
                         <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span> 건</h3>
@@ -78,6 +77,7 @@
                     <table class="ui celled table num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="Extension">
                         <thead>
                         <tr>
+                            <th>선택</th>
                             <th>No.</th>
                             <th>내선</th>
                             <th>개인070(교환기)</th>
@@ -93,6 +93,11 @@
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${g.htmlQuote(e.peer)}">
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.extension)}</td>
                                         <td>${g.htmlQuote(e.voipTel)}</td>

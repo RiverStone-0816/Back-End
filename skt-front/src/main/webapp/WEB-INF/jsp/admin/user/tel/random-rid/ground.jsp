@@ -103,7 +103,8 @@
                     <table class="ui celled table num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="RandomRid">
                         <thead>
                         <tr>
-                            <th>-</th>
+                            <th>선택</th>
+                            <th>No.</th>
                             <th>번호</th>
                             <th>단축번호</th>
                             <th>부서</th>
@@ -114,6 +115,11 @@
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${g.htmlQuote(e.seq)}">
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.number)}</td>
                                         <td>${g.htmlQuote(e.shortNum)}</td>

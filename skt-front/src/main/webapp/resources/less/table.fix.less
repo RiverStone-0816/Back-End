@@ -148,8 +148,18 @@
 }
 
 .ui.table.selectable, .ui.table.selectable-only {
+  .ui.checkbox {
+    margin: 0;
+    width: 15px;
+  }
   tbody {
     tr {
+      th, td {
+
+        &:first-child {
+          width: 48px;
+        }
+      }
       &:hover {
         cursor: pointer;
       }
@@ -157,6 +167,29 @@
     tr.active {
       td {
         background:#FFF7EF
+      }
+    }
+  }
+}
+
+.table.num-tbl {
+  tr {
+    th, td {
+      &:nth-child(2) {
+        width: 70px;
+      }
+    }
+  }
+}
+
+.table.num-tbl:not(.selectable-only) {
+  tr {
+    th, td {
+      &:first-child {
+        width: 48px;
+      }
+      &:nth-child(2) {
+        width: auto;
       }
     }
   }
@@ -242,15 +275,7 @@ table.scroll tbody tr {
   }
 }
 
-.table.num-tbl {
-  tr {
-    th, td {
-      &:first-child {
-        width: 70px;
-      }
-    }
-  }
-}
+
 
 .table.ui.celled.linebreak {
   tr {

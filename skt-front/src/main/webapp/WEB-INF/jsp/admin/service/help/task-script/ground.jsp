@@ -99,13 +99,14 @@
                             <a href="javascript: chnageCategory(${e.key})" class="item ${search.categoryId == e.key ? 'active' : null}">${g.htmlQuote(e.value)}</a>
                         </c:forEach>
                     </div>
-                    <table class="ui celled table num-tbl unstackable fixed ${pagination.rows.size() > 0 ? 'selectable-only' : null}" data-entity="TaskScript">
+                    <table class="ui celled table num-tbl unstackable ${pagination.rows.size() > 0 ? 'selectable-only' : null}" data-entity="TaskScript">
                         <thead>
                         <tr>
+                            <th>선택</th>
                             <th>번호</th>
-                            <th class="nine wide">제목</th>
+                            <th>제목</th>
                             <th class="five wide">태그</th>
-                            <th>등록일</th>
+                            <th class="two wide">등록일</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -113,6 +114,11 @@
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${e.id}">
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.title)}</td>
                                         <td>

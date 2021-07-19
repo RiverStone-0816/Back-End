@@ -109,6 +109,7 @@
                     <table class="ui celled table unstackable num-tbl ${pagination.rows.size() > 0 ? "selectable" : null}" data-entity="WebSecurity">
                         <thead>
                         <tr>
+                            <th>선택</th>
                             <th>번호</th>
                             <th>실행자명(아이디)</th>
                             <th>시간</th>
@@ -125,6 +126,11 @@
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${e.seq}">
+                                        <td>
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" name="checkbox">
+                                            </div>
+                                        </td>
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.userName)}(${g.htmlQuote(e.userId)})</td>
                                         <td>${g.htmlQuote(e.insertDate)}</td>

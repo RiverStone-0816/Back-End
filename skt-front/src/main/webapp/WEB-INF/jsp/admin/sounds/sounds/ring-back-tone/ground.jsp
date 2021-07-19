@@ -42,6 +42,7 @@
                     <table class="ui celled table unstackable num-tbl ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="Moh">
                         <thead>
                         <tr>
+                            <th>선택</th>
                             <th>번호</th>
                             <th>음원명</th>
                             <th>업로드 파일명</th>
@@ -53,6 +54,11 @@
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${g.htmlQuote(e.category)}">
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.mohName)}</td>
                                         <td>${g.htmlQuote(e.fileName)}</td>

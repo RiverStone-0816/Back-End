@@ -88,6 +88,7 @@
                     <table class="ui celled table num-tbl unstackable ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkTemplate">
                         <thead>
                         <tr>
+                            <th>선택</th>
                             <th>번호</th>
                             <th>유형</th>
                             <th>유형데이터</th>
@@ -101,6 +102,11 @@
                             <c:when test="${list.size() > 0}">
                                 <c:forEach var="e" items="${list}" varStatus="status">
                                     <tr data-id="${e.seq}">
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(templateTypes.get(e.type))}</td>
                                         <c:choose>

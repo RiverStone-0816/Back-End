@@ -92,6 +92,7 @@
                     <table class="ui celled table num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PickupGroup">
                         <thead>
                         <tr>
+                            <th>선택</th>
                             <th>번호</th>
                             <th>픽업그룹명</th>
                             <th>소속</th>
@@ -104,6 +105,11 @@
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${e.groupcode}">
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.groupname)}</td>
                                         <td class="five wide">

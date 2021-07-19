@@ -35,9 +35,10 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table num-tbl unstackable fixed ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkComment">
+                    <table class="ui celled table num-tbl unstackable ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkComment">
                         <thead>
                         <tr>
+                            <th>선택</th>
                             <th>번호</th>
                             <th class="two wide">멘트명</th>
                             <th>멘트</th>
@@ -48,6 +49,11 @@
                             <c:when test="${list.size() > 0}">
                                 <c:forEach var="e" items="${list}" varStatus="status">
                                     <tr data-id="${e.seq}">
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(e.mentName)}</td>
                                         <td style="white-space: pre-line;">${g.htmlQuote(e.ment)}</td>
