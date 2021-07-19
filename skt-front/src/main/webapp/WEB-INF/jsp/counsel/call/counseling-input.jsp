@@ -54,23 +54,20 @@
         <form:hidden path="resultType"/>
         <form:hidden path="groupId"/>
         <form:hidden path="clickKey"/>
+       <div class="float-field-wrap">
+            <c:set var="chargedColCount" value="${0}"/>
+            <c:forEach var="field" items="${resultType.fields}" varStatus="status">
+            <c:set var="name" value="${field.fieldId.substring(resultType.kind.length() + '_'.length()).toLowerCase()}"/>
+            <c:set var="value" value="${fieldNameToValueMap.get(field.fieldId)}"/>
 
-        <table class="ui celled table compact unstackable border-top-default">
-            <tbody>
-            <tr>
-                <c:set var="chargedColCount" value="${0}"/>
-                <c:forEach var="field" items="${resultType.fields}" varStatus="status">
-                <c:set var="name" value="${field.fieldId.substring(resultType.kind.length() + '_'.length()).toLowerCase()}"/>
-                <c:set var="value" value="${fieldNameToValueMap.get(field.fieldId)}"/>
+            <c:choose>
+                <c:when test="${field.fieldType == 'MULTICODE'}">
 
-                <c:choose>
-                    <c:when test="${field.fieldType == 'MULTICODE'}">
-                        <c:if test="${chargedColCount > 0}">
-                            <td colspan="${8 - chargedColCount}" class="border-left-none"></td>
-                            ${'</tr><tr>'}
-                        </c:if>
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="7">
+
+
+                    <div class="float-field fluid">
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
                             <div class="ui form flex">
                                 <select name="${name}" id="${name}" data-type="select"
                                         data-text="${g.htmlQuote(field.fieldInfo)}"
@@ -94,12 +91,13 @@
                                         onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-counseling-input').find('#${name}').val()) ">TIP
                                 </button>
                             </div>
-                        </td>
-                        <c:set var="chargedColCount" value="${8}"/>
-                    </c:when>
-                    <c:when test="${field.fieldType == 'CODE'}">
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="3">
+                        </div>
+                    </div>
+                </c:when>
+                <c:when test="${field.fieldType == 'CODE'}">
+                    <div class="float-field inline">
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
                             <div class="ui form flex">
                                 <select name="${name}" id="${name}" data-type="select" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}">
                                     <option value=""></option>
@@ -111,24 +109,26 @@
                                         onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', [$('#call-counseling-input').find('#${name}').val()])">TIP
                                 </button>
                             </div>
-                        </td>
-                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
-                    </c:when>
-                    <c:when test="${field.fieldType == 'INT' || field.fieldType == 'NUMBER'}">
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="3">
+                        </div>
+                    </div>
+                </c:when>
+                <c:when test="${field.fieldType == 'INT' || field.fieldType == 'NUMBER'}">
+                    <div class="float-field inline">
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
                             <div class="ui form">
                                 <input type="text" name="${name}" id="${name}" data-type="text"
                                        data-text="${g.htmlQuote(field.fieldInfo)}"
                                        data-value="${field.isneed}" class="-input-numerical"
                                        value="${g.htmlQuote(value)}"/>
                             </div>
-                        </td>
-                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
-                    </c:when>
-                    <c:when test="${field.fieldType == 'DATETIME'}">
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="3">
+                        </div>
+                    </div>
+                </c:when>
+                <c:when test="${field.fieldType == 'DATETIME'}">
+                    <div class="float-field inline">
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
                             <div class="ui form flex">
                                 <input type="text" name="${name}" id="${name}" data-type="text"
                                        data-text="${g.htmlQuote(field.fieldInfo)}"
@@ -153,39 +153,38 @@
                                        value="00" class="-input-numeric"/>
                             </div>
                         </td>
-                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
-                    </c:when>
-                    <c:when test="${field.fieldType == 'DATE' || field.fieldType == 'DAY'}">
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="3">
+                    </div>
+                </c:when>
+                <c:when test="${field.fieldType == 'DATE' || field.fieldType == 'DAY'}">
+                    <div class="float-field inline">
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
                             <div class="ui form">
                                 <input type="text" name="${name}" id="${name}" data-type="text"
                                        data-text="${g.htmlQuote(field.fieldInfo)}"
                                        data-value="${field.isneed}" value="${value}"
                                        class="-datepicker"/>
                             </div>
-                        </td>
-                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
-                    </c:when>
-                    <c:when test="${field.fieldType == 'STRING' && field.fieldSize > 50}">
-                        <c:if test="${chargedColCount > 0}">
-                            <td colspan="${8 - chargedColCount}" class="border-left-none"></td>
-                            ${'</tr><tr>'}
-                        </c:if>
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="7">
+                        </div>
+                    </div>
+                </c:when>
+                <c:when test="${field.fieldType == 'STRING' && field.fieldSize > 50}">
+                    <div class="float-field fluid">
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
                             <div class="ui form">
                                 <input type="text" name="${name}" id="${name}" data-type="text"
                                        data-text="${g.htmlQuote(field.fieldInfo)}"
                                        data-value="${field.isneed}"
                                        maxlength="${field.fieldSize}" value="${g.escapeQuote(value)}"/>
                             </div>
-                        </td>
-                        <c:set var="chargedColCount" value="${8}"/>
-                    </c:when>
-                    <c:when test="${field.fieldType == 'IMG'}">
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="3">
+                        </div>
+                    </div>
+                </c:when>
+                <c:when test="${field.fieldType == 'IMG'}">
+                    <div class="float-field inline">
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
                             <div class="ui form flex">
                                 <input name="${name}" type="hidden" value="">
                                 <div class="file-upload-header">
@@ -197,34 +196,34 @@
                                         <progress value="0" max="100" style="width:100%"></progress>
                                     </div>--%>
                             </div>
-                        </td>
-                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
-                    </c:when>
-                    <c:otherwise>
-                        <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                        <td colspan="3">
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="float-field inline">
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
                             <div class="ui input fluid">
                                 <input type="text" name="${name}" id="${name}" data-type="text"
                                        data-text="${g.htmlQuote(field.fieldInfo)}"
                                        data-value="${field.isneed}" maxlength="${field.fieldSize}"
                                        value="${g.htmlQuote(value)}" placeholder="${field.fieldSize > 0 ? '최대길이:'.concat(field.fieldSize).concat(' Bytes') : ''}"/>
                             </div>
-                        </td>
-                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
-                    </c:otherwise>
-                </c:choose>
+                        </div>
+                    </div>
+                </c:otherwise>
+            </c:choose>
 
-                <c:if test="${chargedColCount >= 8 || status.last}">
-            </tr>
-                ${!status.last ? '<tr>' : ''}
-            <c:set var="chargedColCount" value="${0}"/>
-            </c:if>
-            </c:forEach>
+            <c:if test="${chargedColCount >= 8 || status.last}">
 
+            ${!status.last ? '<tr>' : ''}
+        <c:set var="chargedColCount" value="${0}"/>
+        </c:if>
+        </c:forEach>
             <c:if test="${todoList != null && todoList.size() > 0}">
-                <tr>
-                    <td>TODO 처리</td>
-                    <td colspan="7">
+                <div class="float-field fluid">
+                    <div class="label">TODO 처리</div>
+                    <div class="content">
                         <c:forEach var="e" items="${todoList}">
                             <input type="hidden" name="todoSequences" data-multiple="true" value="${e.seq}"/>
                         </c:forEach>
@@ -235,14 +234,14 @@
                                 </c:forEach>
                             </select>
                         </div>
-                    </td>
-                </tr>
+                    </div>
+                </div>
             </c:if>
             <c:if test="${serviceKind.equals('SC')}">
                 <c:if test="${smsVocGroups != null && smsVocGroups.size() > 0}">
-                    <tr>
-                        <td>VOC/해피콜</td>
-                        <td colspan="7">
+                    <div class="float-field fluid">
+                        <div class="label">VOC/해피콜</div>
+                        <div class="content">
                             <div class="ui grid" style="padding: 0.5rem 0;">
                                 <div class="row">
                                     <div class="eight wide column">
@@ -267,13 +266,13 @@
                                     </div>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                 </c:if>
                 <c:if test="${vocGroups != null && vocGroups.size() > 0}">
-                    <tr>
-                        <td>VOC/해피콜</td>
-                        <td colspan="7">
+                    <div class="float-field fluid">
+                        <div class="label">VOC/해피콜</div>
+                        <div class="content">
                             <div class="ui grid" style="padding: 0.5rem 0;">
                                 <div class="row">
                                     <div class="eight wide column">
@@ -308,12 +307,11 @@
                                     </div>
                                 </div>
                             </div>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                 </c:if>
             </c:if>
-            </tbody>
-        </table>
+        </div>
     </div>
 </form:form>
 
