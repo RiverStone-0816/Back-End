@@ -30,7 +30,7 @@
         </div>
         <div class="call-btn-wrap">
             <button class="ui grey button" onclick="removeLastDialNumber()">지우기</button>
-            <button class="ui orange button" onclick="tryDialByDialPadInput();">전화걸기</button>
+            <button class="ui brand button" onclick="tryDialByDialPadInput();">전화걸기</button>
         </div>
     </div>
 </div>

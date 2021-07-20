@@ -65,7 +65,7 @@
                                 <td colspan="11">
                                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
                                          data-clear=".-clear-group">
-                                        <button type="button" class="ui icon button mini orange compact -select-group">
+                                        <button type="button" class="ui icon button mini brand compact -select-group">
                                             <i class="search icon"></i>
                                         </button>
                                         <form:hidden path="groupCode"/>

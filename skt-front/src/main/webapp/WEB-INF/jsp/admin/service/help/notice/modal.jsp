@@ -63,7 +63,7 @@
                 <div class="three wide column"><label class="control-label">파일선택</label></div>
                 <div class="thirteen wide column">
                     <div class="file-upload-header">
-                        <label for="file" class="ui button orange mini compact">파일찾기</label>
+                        <label for="file" class="ui button brand mini compact">파일찾기</label>
                         <input type="file" id="file" onchange="uploadFile(this.files[0])">
                         <span class="file-name">No file selected</span>
                     </div>
@@ -87,7 +87,7 @@
 
     <div class="actions">
         <button type="button" class="ui button modal-close">취소</button>
-        <button type="submit" class="ui orange button">확인</button>
+        <button type="submit" class="ui brand button">확인</button>
     </div>
 </form:form>
 

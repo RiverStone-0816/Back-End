@@ -51,7 +51,7 @@
 
     <div class="actions">
         <button type="button" class="ui button modal-close">취소</button>
-        <button type="submit" class="ui orange button">확인</button>
+        <button type="submit" class="ui brand button">확인</button>
     </div>
 </form:form>
 

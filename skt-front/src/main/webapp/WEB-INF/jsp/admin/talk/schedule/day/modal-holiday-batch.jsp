@@ -25,7 +25,7 @@
                 <div class="four wide column"><label class="control-label">부서조회</label></div>
                 <div class="twelve wide column">
                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group" data-clear=".-clear-group">
-                        <button type="button" class="ui icon button mini orange compact -select-group">
+                        <button type="button" class="ui icon button mini brand compact -select-group">
                             <i class="search icon"></i>
                         </button>
                         <form:hidden path="groupCode"/>
@@ -117,7 +117,7 @@
 
     <div class="actions">
         <button type="button" class="ui button modal-close">취소</button>
-        <button type="submit" class="ui orange button">확인</button>
+        <button type="submit" class="ui brand button">확인</button>
     </div>
 </form:form>
 

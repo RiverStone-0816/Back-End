@@ -122,7 +122,7 @@
             <%--적용상태 미리보기 - PC 웹상에서 mobile 미리보기 view(추후) --%>
             <%--<button type="button" class="ui left floated button" onclick="webVoiceView()">적용상태 미리보기</button>--%>
         <button type="button" class="ui button modal-close">취소</button>
-        <button type="submit" class="ui orange button">확인</button>
+        <button type="submit" class="ui brand button">확인</button>
     </div>
 </form:form>
 

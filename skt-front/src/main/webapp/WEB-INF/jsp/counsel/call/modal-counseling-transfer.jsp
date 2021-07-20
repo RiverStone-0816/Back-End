@@ -47,7 +47,7 @@
     </div>
     <div class="actions">
         <button type="button" class="ui button modal-close" onclick="clearTransferredUser()">취소</button>
-        <button type="button" class="ui blue button modal-close">확인</button>
+        <button type="button" class="ui brand button modal-close">확인</button>
     </div>
 </div>
 

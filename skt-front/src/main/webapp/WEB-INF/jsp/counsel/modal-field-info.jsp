@@ -31,6 +31,6 @@
         </table>
     </div>
     <div class="actions">
-        <button type="submit" class="ui orange button modal-close">확인</button>
+        <button type="submit" class="ui brand button modal-close">확인</button>
     </div>
 </div>

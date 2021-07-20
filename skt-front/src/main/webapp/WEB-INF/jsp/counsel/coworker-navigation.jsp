@@ -17,7 +17,7 @@
 <div class="content" id="counsel-nav">
     <c:if test="${serviceKind.equals('SC')}">
         <div class="counsel-trans-wrap">
-            <button type="button" class="ui orange fluid button" onclick="popupArsModal()">>ARS로 돌려주기</button>
+            <button type="button" class="ui brand fluid button" onclick="popupArsModal()">>ARS로 돌려주기</button>
         </div>
     </c:if>
 

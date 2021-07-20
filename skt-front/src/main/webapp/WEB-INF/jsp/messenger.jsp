@@ -292,7 +292,7 @@
                     </div>
                     <div class="btn-wrap">
                         <div class="ui button">취소</div>
-                        <div class="ui orange button">변경</div>
+                        <div class="ui brand button">변경</div>
                     </div>
                 </div>
             </div>

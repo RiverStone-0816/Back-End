@@ -1192,7 +1192,7 @@ pre {
     justify-content: space-between;
     align-items: center;
     line-height: 23px;
-    padding: 10px 11px 8px 15px;
+    padding: 9px 11px 9px 15px;
     .team-name {
     }
   }
@@ -1202,12 +1202,9 @@ pre {
     .flex();
     align-items: center;
     padding: 7px 10px 7px 15px;
-    &:last-child {
-      padding-bottom: 14px;
-    }
   }
   li.belong {
-    margin: -10px 0px 0px;
+    margin: -10px 0 0;
     label {
       color: #464646;
       font-weight: 200;
@@ -1583,7 +1580,7 @@ pre {
         }
         .panel-segment-body {
           .area {
-            margin: 32px 0 0 0;
+            margin: 37px 0 0 0;
           }
         }
       }
@@ -3356,6 +3353,16 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
 }
 
 .ui.orange.buttons .button, .ui.orange.button {
+  background-color: @color-brand!important;
+  color: #FFFFFF;
+  text-shadow: none;
+  background-image: none;
+  &:hover {
+    background:darken(@color-brand, 4%)!important;
+  }
+}
+
+.ui.brand.buttons .button, .ui.brand.button {
   background-color: @color-brand!important;
   color: #FFFFFF;
   text-shadow: none;
@@ -5182,7 +5189,7 @@ g {
 
 #messenger-bookmark-panel, #messenger-organization-panel, #messenger-chat-container, #messenger-room-members {
   &:before {
-    display: inline-block;
+    display: none;
     font-weight: 600;
     font-size: 13px;
     background: #252525;
@@ -5213,15 +5220,7 @@ g {
 #messenger-bookmark-panel {
   position: relative;
   display: block; padding-bottom: 20px;
-  &:after {
-    position: absolute;
-    content: '';
-    display: block;
-    width: 98%;
-    background: #eee;
-    height: 1px;
-    bottom: 4px;
-  }
+
   &:before {
     content: '즐겨찾기';
   }
