@@ -15,9 +15,7 @@
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
 <div class="consult-wrapper -counsel-panel">
-    <c:if test="${serviceKind.equals('SC') && usingServices.contains('CHATT')}">
-        <jsp:include page="/messenger"/>
-    </c:if>
+    <jsp:include page="/messenger"/>
 
     <div class="-counsel-content-panel consult-center-panel" data-type="COUNSEL" style="display: none;">
         <div class="ui top attached tabular menu">
@@ -398,60 +396,6 @@
         });
     </script>
     <script>
-
-        $('.organization-ul .title').click(function () {
-            $(this).siblings().toggle();
-        });
-
-        $(".organization-ul li:not('.belong')").click(function () {
-            $(this).toggleClass('active');
-        });
-
-        $('.consult-organization-panel .panel-heading .ui.basic.button').click(function () {
-            $(this).toggleClass('active');
-        });
-
-        $('.organi-state').click(function () {
-            $('.consult-left-panel').toggleClass('wide');
-            $('.consult-wrapper .consult-center-panel').toggleClass('control');
-            if ($('.consult-left-panel').hasClass('wide') === true) {
-                $('.organi-pop-wrap').css('left', '460px');
-            } else {
-                $('.organi-pop-wrap').css('left', '326px');
-            }
-        });
-
-        $('.organi-room').click(function () {
-            if ($('.consult-left-panel').hasClass('wide') === true) {
-                $('.organi-pop-wrap').css('left', '460px');
-            } else {
-                $('.organi-pop-wrap').css('left', '326px');
-            }
-            ;
-            $('.organi-pop-second').toggle();
-        });
-
-        let organiChatTitleDefault = $('.organi-chat-room-header .default-inner');
-        let organiChatTitleModify = $('.organi-chat-room-header .modify-inner');
-
-        function chatTitleModifyBtn() {
-            if (organiChatTitleModify.css('display') === 'none') {
-                $(organiChatTitleModify).css('display', 'flex');
-                $(organiChatTitleDefault).css('display', 'none');
-            } else {
-                $(organiChatTitleModify).css('display', 'none');
-                $(organiChatTitleDefault).css('display', 'flex');
-            }
-        }
-
-        function organiChatCreate() {
-            $('#organi-chat-create-popup').css({'z-index': 1003}).dragModalShow();
-        }
-
-        function organiChatRoom() {
-            $('#organi-chat-room-popup').css({'z-index': 1003}).dragModalShow();
-        }
-
         const services = {<c:forEach var="e" items="${services}">'${g.escapeQuote(e.key)}': '${g.escapeQuote(e.value)}', </c:forEach>};
 
         let currentUserStatus = null;

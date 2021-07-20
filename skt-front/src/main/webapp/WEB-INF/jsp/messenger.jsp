@@ -11,6 +11,10 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
+<%--@elvariable id="usingServices" type="java.lang.String"--%>
+<%--@elvariable id="serviceKind" type="java.lang.String"--%>
+
+<c:set var="CHATTABLE" value="${serviceKind.equals('SC') && usingServices.contains('CHATT')}"/>
 
 <div class="ui modal tiny" id="user-info-popup">
     <i class="close icon"></i>
@@ -23,7 +27,7 @@
             </tr>
             <tr>
                 <th>부서명</th>
-                <td class="-field" data-name="groupTreeName"></td>
+                <td class="-field" data-name="groupName"></td>
             </tr>
             <tr>
                 <th>메일주소</th>
@@ -435,8 +439,8 @@
     <div class="panel consult-organization-panel full-height">
         <div class="panel-heading">조직도
             <div class="btn-wrap">
-                <button type="button" class="ui basic button organi-state">현황</button>
-                <button type="button" class="ui basic button organi-room">
+                <button type="button" class="ui basic button" id="organi-state">현황</button>
+                <button type="button" class="ui basic button" id="organi-room">
                     <text class="message-indicator">0</text>
                     대화방
                 </button>
@@ -628,6 +632,55 @@
 <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
 <tags:scripts>
     <script>
+        const userToGroupNames = {};
+
+        $('#organi-state').click(function () {
+            $('.consult-left-panel').toggleClass('wide');
+            $('.consult-wrapper .consult-center-panel').toggleClass('control');
+            if ($('.consult-left-panel').hasClass('wide') === true) {
+                $('.organi-pop-wrap').css('left', '460px');
+            } else {
+                $('.organi-pop-wrap').css('left', '326px');
+            }
+        });
+
+        let organiChatTitleDefault = $('.organi-chat-room-header .default-inner');
+        let organiChatTitleModify = $('.organi-chat-room-header .modify-inner');
+
+        function chatTitleModifyBtn() {
+            if (organiChatTitleModify.css('display') === 'none') {
+                $(organiChatTitleModify).css('display', 'flex');
+                $(organiChatTitleDefault).css('display', 'none');
+            } else {
+                $(organiChatTitleModify).css('display', 'none');
+                $(organiChatTitleDefault).css('display', 'flex');
+            }
+        }
+
+        function organiChatCreate() {
+            $('#organi-chat-create-popup').css({'z-index': 1003}).dragModalShow();
+        }
+
+        function organiChatRoom() {
+            $('#organi-chat-room-popup').css({'z-index': 1003}).dragModalShow();
+        }
+
+        $('#organi-room').click(function () {
+            <c:choose>
+            <c:when test="${CHATTABLE}">
+            if ($('.consult-left-panel').hasClass('wide') === true) {
+                $('.organi-pop-wrap').css('left', '460px');
+            } else {
+                $('.organi-pop-wrap').css('left', '326px');
+            }
+            $('.organi-pop-second').toggle();
+            </c:when>
+            <c:otherwise>
+            alert('메신저 라이센스가 없습니다.');
+            </c:otherwise>
+            </c:choose>
+        });
+
         function Messenger() {
             const messenger = this;
 
@@ -1137,8 +1190,6 @@
                     if (e.id === messenger.me)
                         return;
 
-                    console.log(e.peer); /*todo: peer 값 전달되는지 확인*/
-
                     $('<li/>', {class: '-messenger-bookmark', 'data-id': e.id})
                         .append(
                             $('<div/>', {class: 'user-wrap'})
@@ -1151,10 +1202,11 @@
                                 .append(
                                     $('<div/>', {class: 'buttons'})
                                         .append($('<button/>', {type: 'button', class: 'arrow button', 'data-inverted': '', 'data-tooltip': '호전환', 'data-position': 'bottom center'}))
-                                        .append($('<button/>', {type: 'button', class: 'talk off button'}))
+                                        .append($('<button/>', {type: 'button', class: 'talk ${CHATTABLE ? 'on' : 'off'} button'}))
                                         .append($('<button/>', {
                                             type: 'button', class: 'info button', 'data-inverted': '', 'data-tooltip': '정보', 'data-position': 'bottom center', click: function () {
                                                 const modal = $('#user-info-popup');
+                                                e.groupName = userToGroupNames[e.id];
                                                 modal.find('.-field').each(function () { /*todo: groupTreeName 값있는지 확인*/
                                                     $(this).text(e[$(this).attr('data-name')]);
                                                 });
@@ -1235,7 +1287,10 @@
                         )
                         .appendTo(messenger.ui.organizationPanel);
 
+                    const groupName = e.groupName;
                     e.personList.map(function (e) {
+                        e.groupName = groupName;
+                        userToGroupNames[e.id] = groupName;
                         attachPerson(item, e);
                     });
                 }
@@ -1262,7 +1317,7 @@
                             .append(
                                 $('<div/>', {class: 'buttons'})
                                     .append($('<button/>', {type: 'button', class: 'arrow button', 'data-inverted': '', 'data-tooltip': '호전환', 'data-position': 'bottom center'}))
-                                    .append($('<button/>', {type: 'button', class: 'talk off button'}))
+                                    .append($('<button/>', {type: 'button', class: 'talk ${CHATTABLE ? 'on' : 'off'} button'}))
                                     .append($('<button/>', {
                                         type: 'button', class: 'info button', 'data-inverted': '', 'data-tooltip': '정보', 'data-position': 'bottom center', click: function () {
                                             const modal = $('#user-info-popup');

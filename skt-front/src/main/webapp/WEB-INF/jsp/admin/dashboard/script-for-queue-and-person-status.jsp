@@ -190,7 +190,7 @@
                 const _this = $(this);
                 const peer = _this.attr('data-peer');
                 if (!peerStatuses[peer])
-                    return console.info({message: 'invalid peer value', peer: peer, this: this});
+                    return /*console.info({message: 'invalid peer value', peer: peer, this: this})*/;
 
                 const status = peerStatuses[peer].status;
                 _this.text(statusCodes[status]);
