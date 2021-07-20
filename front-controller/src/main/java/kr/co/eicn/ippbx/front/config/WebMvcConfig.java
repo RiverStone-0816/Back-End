@@ -1,12 +1,15 @@
 package kr.co.eicn.ippbx.front.config;
 
+import kr.co.eicn.ippbx.front.interceptor.CookieInterceptorAdapter;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequireInterceptor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
@@ -16,6 +19,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+import javax.servlet.http.HttpServletResponse;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -26,6 +31,7 @@ import java.util.Objects;
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final LoginRequireInterceptor loginRequireInterceptor;
+    private final CookieInterceptorAdapter cookieInterceptorAdapter;
 
     @Value("${eicn.debugging}")
     private Boolean debugging;
@@ -51,6 +57,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginRequireInterceptor);
+        registry.addInterceptor(cookieInterceptorAdapter);
     }
 
     @Bean

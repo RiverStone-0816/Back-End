@@ -104,7 +104,6 @@
         const important = $(this).attr('data-important') === 'true';
         const idCheckKey = $(this).attr('data-id-check-key');
 
-        console.log(idCheckKey);
         $(this).popup({
             html: $('<div/>', {style: 'width: 280px;'})
                 .append($('<h3/>')
