@@ -31,18 +31,18 @@
             </tr>
             <tr>
                 <th>전화번호</th>
-                <td>
+                <td class="row-btn-wrap">
                     <text class="-field" data-name="hpNumber"></text>
                     <%--TODO: 전화돌려주기 기능 붙여야할지도. --%>
-                    <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>">
+                    <button></button>
                 </td>
             </tr>
             <tr>
                 <th>내선번호</th>
-                <td>
+                <td class="row-btn-wrap">
                     <text class="-field" data-name="extension"></text>
                     <%--TODO: 전화돌려주기 기능 붙여야할지도. --%>
-                    <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>">
+                    <button></button>
                 </td>
             </tr>
         </table>
@@ -432,6 +432,77 @@
 </div>
 
 <div class="consult-left-panel">
+    <div class="organi-pop-wrap">
+        <div class="organi-pop-second">
+            <div class="panel full-height">
+                <div class="panel-heading">조직 대화방
+                    <button type="button" class="panel-close"></button>
+                </div>
+                <div class="panel-body full-height remove-padding">
+                    <div class="pd10 panel-border-bottom">
+                        <div class="ui fluid icon input">
+                            <input type="text" placeholder="검색어 입력">
+                            <i class="search link icon"></i>
+                        </div>
+                    </div>
+                    <div class="pd10 full-height">
+                        <div class="organization-chat-list-wrap">
+                            <div class="chat-list-header">
+                                조직 대화방 목록
+                                <button type="button" class="ui basic right floated button" onclick="organiChatCreate()">추가</button>
+                            </div>
+                            <div class="chat-list-body">
+                                <div class="chat-list-container">
+                                    <ul>
+                                        <li class="item" onclick="organiChatRoom()">
+                                            <div class="item-header">
+                                                <div class="chat-item-title">대화방 이름</div>
+                                                <div class="chat-unread">23</div>
+                                            </div>
+                                            <div class="item-content">
+                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-img.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                                <div class="last-time">2021-05-21 09:00:00</div>
+                                            </div>
+                                        </li>
+                                        <li class="item" onclick="organiChatRoom()">
+                                            <div class="item-header">
+                                                <div class="chat-item-title">대화방 이름</div>
+                                                <div class="chat-unread">23</div>
+                                            </div>
+                                            <div class="item-content">
+                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-audio.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                                <div class="last-time">2021-05-21 09:00:00</div>
+                                            </div>
+                                        </li>
+                                        <li class="item active" onclick="organiChatRoom()">
+                                            <div class="item-header">
+                                                <div class="chat-item-title">대화방 이름</div>
+                                                <div class="chat-unread">23</div>
+                                            </div>
+                                            <div class="item-content">
+                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-system.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                                <div class="last-time">2021-05-21 09:00:00</div>
+                                            </div>
+                                        </li>
+                                        <li class="item" onclick="organiChatRoom()">
+                                            <div class="item-header">
+                                                <div class="chat-item-title">대화방 이름</div>
+                                                <div class="chat-unread">23</div>
+                                            </div>
+                                            <div class="item-content">
+                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-folder.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                                <div class="last-time">2021-05-21 09:00:00</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="panel consult-organization-panel full-height">
         <div class="panel-heading">조직도
             <div class="btn-wrap">
@@ -441,7 +512,7 @@
             <div class="state-header">현황</div>
             <button class="state-header-close"></button>
         </div>
-        <div class="panel-body remove-pl remove-pr">
+        <div class="panel-body remove-padding">
 
             <div class="panel-segment favor">
                 <div class="panel-segment-header">
@@ -462,78 +533,6 @@
                 </div>
                 <div class="panel-segment-body">
                     <div class="area" id="messenger-organization-panel"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="organi-pop-wrap">
-    <div class="organi-pop-second">
-        <div class="panel full-height">
-            <div class="panel-heading">조직 대화방
-                <button type="button" class="panel-close"></button>
-            </div>
-            <div class="panel-body full-height remove-padding">
-                <div class="pd10 panel-border-bottom">
-                    <div class="ui fluid icon input">
-                        <input type="text" placeholder="검색어 입력">
-                        <i class="search link icon"></i>
-                    </div>
-                </div>
-                <div class="pd10 full-height">
-                    <div class="organization-chat-list-wrap">
-                        <div class="chat-list-header">
-                            조직 대화방 목록
-                            <button type="button" class="ui basic right floated button" onclick="organiChatCreate()">추가</button>
-                        </div>
-                        <div class="chat-list-body">
-                            <div class="chat-list-container">
-                                <ul>
-                                    <li class="item" onclick="organiChatRoom()">
-                                        <div class="item-header">
-                                            <div class="chat-item-title">대화방 이름</div>
-                                            <div class="chat-unread">23</div>
-                                        </div>
-                                        <div class="item-content">
-                                            <div class="last-chat"><img src="<c:url value="/resources/images/chat-img.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
-                                            <div class="last-time">2021-05-21 09:00:00</div>
-                                        </div>
-                                    </li>
-                                    <li class="item" onclick="organiChatRoom()">
-                                        <div class="item-header">
-                                            <div class="chat-item-title">대화방 이름</div>
-                                            <div class="chat-unread">23</div>
-                                        </div>
-                                        <div class="item-content">
-                                            <div class="last-chat"><img src="<c:url value="/resources/images/chat-audio.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
-                                            <div class="last-time">2021-05-21 09:00:00</div>
-                                        </div>
-                                    </li>
-                                    <li class="item active" onclick="organiChatRoom()">
-                                        <div class="item-header">
-                                            <div class="chat-item-title">대화방 이름</div>
-                                            <div class="chat-unread">23</div>
-                                        </div>
-                                        <div class="item-content">
-                                            <div class="last-chat"><img src="<c:url value="/resources/images/chat-system.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
-                                            <div class="last-time">2021-05-21 09:00:00</div>
-                                        </div>
-                                    </li>
-                                    <li class="item" onclick="organiChatRoom()">
-                                        <div class="item-header">
-                                            <div class="chat-item-title">대화방 이름</div>
-                                            <div class="chat-unread">23</div>
-                                        </div>
-                                        <div class="item-content">
-                                            <div class="last-chat"><img src="<c:url value="/resources/images/chat-folder.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
-                                            <div class="last-time">2021-05-21 09:00:00</div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

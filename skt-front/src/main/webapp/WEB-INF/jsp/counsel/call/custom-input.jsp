@@ -31,7 +31,7 @@
             <button class="ui basic button" type="button" onclick="popupSearchMaindbCustomModal()">고객검색</button>
             <c:if test="${serviceKind.equals('SC')}">
                 <button class="ui basic button" type="button" onclick="popupGradeAppModal()">고객등급</button>
-                <button type="button" class="ui button mini compact" onclick="popupCmsModal()">CMS</button>
+                <button type="button" class="ui basic button" onclick="popupCmsModal()">CMS</button>
             </c:if>
             <button type="button" class="ui button sharp light" id="call-submitButton">
                 <img src="<c:url value="/resources/images/save.svg"/>">${entity != null ? '고객수정' : '신규등록'}

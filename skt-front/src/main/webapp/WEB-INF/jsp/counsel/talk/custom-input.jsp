@@ -182,15 +182,15 @@
                     <c:when test="${field.fieldType == 'STRING' && field.fieldSize > 50}">
 
                         <div class="float-field inline">
-                            <th><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></th>
-                            <td colspan="7">
+                            <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                            <div class="content">
                                 <div class="ui form">
                                     <input type="text" name="${name}" id="${name}" data-type="text"
                                            data-text="${g.htmlQuote(field.fieldInfo)}"
                                            data-value="${field.isneed}"
                                            maxlength="${field.fieldSize}" value="${g.escapeQuote(value)}"/>
                                 </div>
-                            </td>
+                            </div>
                         </div>
                         <c:set var="chargedColCount" value="${8}"/>
                     </c:when>

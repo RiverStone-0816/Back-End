@@ -71,10 +71,10 @@
                 <%--FIXME:필요시 다음과 같이 추가--%>
                 <%--<button class="item" data-tab="etc-lookup">기타조회</button>--%>
             </div>
-            <div class="ui bottom attached tab segment remove-margin active" data-tab="todo">
+            <div class="ui bottom attached tab segment remove-margin overflow-auto active" data-tab="todo">
                 <jsp:include page="/counsel/todo-list"/>
             </div>
-            <div class="ui bottom attached tab segment remove-margin" data-tab="consult-history">
+            <div class="ui bottom attached tab segment remove-margin overflow-auto" data-tab="consult-history">
                 <table class="ui celled table unstackable">
                     <thead>
                     <tr>
@@ -399,6 +399,12 @@
     </script>
     <script>
 
+        $('.consult-organization-panel .state-header-close').click(function(){
+           $('.consult-organization-panel .organi-state').removeClass('active');
+           $('.consult-left-panel').removeClass('wide');
+           $('.consult-wrapper .consult-center-panel').removeClass('control');
+        });
+
         $('.organization-ul .title').click(function () {
             $(this).siblings().toggle();
         });
@@ -415,19 +421,18 @@
             $('.consult-left-panel').toggleClass('wide');
             $('.consult-wrapper .consult-center-panel').toggleClass('control');
             if ($('.consult-left-panel').hasClass('wide') === true) {
-                $('.organi-pop-wrap').css('left', '460px');
+                $('.content-inner.-counsel-content-panel').addClass('control');
             } else {
-                $('.organi-pop-wrap').css('left', '326px');
+                $('.content-inner.-counsel-content-panel').removeClass('control');
             }
         });
 
         $('.organi-room').click(function () {
             if ($('.consult-left-panel').hasClass('wide') === true) {
-                $('.organi-pop-wrap').css('left', '460px');
+                $('.content-inner.-counsel-content-panel').addClass('control');
             } else {
-                $('.organi-pop-wrap').css('left', '326px');
-            }
-            ;
+                $('.content-inner.-counsel-content-panel').removeClass('control');
+            };
             $('.organi-pop-second').toggle();
         });
 
