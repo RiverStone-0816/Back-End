@@ -436,7 +436,10 @@
         <div class="panel-heading">조직도
             <div class="btn-wrap">
                 <button type="button" class="ui basic button organi-state">현황</button>
-                <button type="button" class="ui basic button organi-room"><text class="message-indicator">0</text>대화방</button>
+                <button type="button" class="ui basic button organi-room">
+                    <text class="message-indicator">0</text>
+                    대화방
+                </button>
             </div>
             <div class="state-header">현황</div>
             <button class="state-header-close"></button>
@@ -539,9 +542,6 @@
         </div>
     </div>
 </div>
-
-<%--todo--%>
-<%----%>
 
 <div id="messenger-modal" class="ui modal large" style="width: 500px;">
     <i class="close icon"></i>
@@ -1209,35 +1209,36 @@
             }
 
             function attachFolder(e, upperOrganizationNames) {
-                const item = $('<ul/>', {class: 'organization-ul -messenger-folder'})
-                    .append(
-                        $('<div/>', {class: 'title'})
-                            .append($('<span/>', {class: 'team-name', text: e.groupName}))
-                            .append(
-                                $('<div/>', {class: 'dot-label-wrap'})
-                                    .append($('<span/>', {class: 'dot-label'}))
-                                    .append($('<text/>', {text: 0}))        /*todo: 비로그인 사용자 카운트*/
-                                    .append($('<span/>', {class: 'dot-label active'}))
-                                    .append($('<text/>', {text: 0}))       /*todo: 로그인 사용자 카운트*/
-                            )
-                    )
-                    .append(
-                        $('<li/>', {class: 'belong'})
-                            .append(
-                                $('<div/>', {class: 'user-wrap'})
-                                    .append(
-                                        $('<div/>', {class: 'ui checkbox'})
-                                            .append($('<input/>', {type: 'checkbox'})) /*todo: active 상태 기능 변경*/
-                                            .append($('<label/>', {text: hierarchicalOrganizationString(upperOrganizationNames, e.groupName)}))
-                                    )
-                            )
-                    )
-                    .appendTo(messenger.ui.organizationPanel);
+                if (e.personList && e.personList.length) {
+                    const item = $('<ul/>', {class: 'organization-ul -messenger-folder'})
+                        .append(
+                            $('<div/>', {class: 'title'})
+                                .append($('<span/>', {class: 'team-name', text: e.groupName}))
+                                .append(
+                                    $('<div/>', {class: 'dot-label-wrap'})
+                                        .append($('<span/>', {class: 'dot-label'}))
+                                        .append($('<text/>', {text: 0})) /*todo: 비로그인 사용자 카운트*/
+                                        .append($('<span/>', {class: 'dot-label active'}))
+                                        .append($('<text/>', {text: 0})) /*todo: 로그인 사용자 카운트*/
+                                )
+                        )
+                        .append(
+                            $('<li/>', {class: 'belong'})
+                                .append(
+                                    $('<div/>', {class: 'user-wrap'})
+                                        .append(
+                                            $('<div/>', {class: 'ui checkbox'})
+                                                .append($('<input/>', {type: 'checkbox'})) /*todo: active 상태 기능 변경*/
+                                                .append($('<label/>', {text: hierarchicalOrganizationString(upperOrganizationNames, e.groupName)}))
+                                        )
+                                )
+                        )
+                        .appendTo(messenger.ui.organizationPanel);
 
-                if (e.personList)
                     e.personList.map(function (e) {
                         attachPerson(item, e);
                     });
+                }
 
                 const newUpperOrganizationNames = upperOrganizationNames.slice();
                 newUpperOrganizationNames.push(e.groupName);
