@@ -48,11 +48,11 @@
     </div>
 
     <div class="panel-body overflow-auto">
-        <form:hidden path="groupKind"/>
-        <form:hidden path="customId"/>
-        <form:hidden path="maindbType"/>
-        <form:hidden path="resultType"/>
-        <form:hidden path="groupId"/>
+        <form:hidden path="groupKind" id="call-counseling-input-groupKind"/>
+        <form:hidden path="customId" id="call-counseling-input-customId"/>
+        <form:hidden path="maindbType" id="call-counseling-input-maindbType"/>
+        <form:hidden path="resultType" id="call-counseling-input-resultType"/>
+        <form:hidden path="groupId" id="call-counseling-input-groupId"/>
         <form:hidden path="clickKey" id="call-counseling-input-clickKey"/>
        <div class="float-field-wrap">
             <c:set var="chargedColCount" value="${0}"/>
@@ -88,7 +88,7 @@
                                     </c:forEach>
                                 </select>
                                 <button type="button" class="ui button sharp navy ml5"
-                                        onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-counseling-input').find('#${name}').val()) ">TIP
+                                        onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-counseling-input').find('[name=${name}]').val()) ">TIP
                                 </button>
                             </div>
                         </div>
@@ -106,7 +106,7 @@
                                     </c:forEach>
                                 </select>
                                 <button type="button" class="ui button sharp navy ml5"
-                                        onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', [$('#call-counseling-input').find('#${name}').val()])">TIP
+                                        onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-counseling-input').find('[name=${name}]').val())">TIP
                                 </button>
                             </div>
                         </div>

@@ -25,11 +25,11 @@
         </div>
     </div>
     <div class="panel-body">
-        <form:hidden path="maindbType"/>
-        <form:hidden path="resultType"/>
-        <form:hidden path="groupId"/>
-        <form:hidden path="customId"/>
-        <form:hidden path="groupKind"/>
+        <form:hidden path="maindbType" id="preview-counseling-input-maindbType"/>
+        <form:hidden path="resultType" id="preview-counseling-input-resultType"/>
+        <form:hidden path="groupId" id="preview-counseling-input-groupId"/>
+        <form:hidden path="customId" id="preview-counseling-input-customId"/>
+        <form:hidden path="groupKind" id="preview-counseling-input-groupKind"/>
         <form:hidden path="clickKey" id="preview-counseling-input-clickKey"/>
 
         <table class="ui celled table unstackable border-top-default">
@@ -62,7 +62,7 @@
                                         </c:forEach>
                                     </select>
                                     <button type="button" class="ui button sharp navy ml5"
-                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#preview-counseling-input').find('#${name}').val())">TIP
+                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#preview-counseling-input').find('[name=${name}]').val())">TIP
                                     </button>
                                 </div>
                             </td>
@@ -78,7 +78,7 @@
                                         </c:forEach>
                                     </select>
                                     <button type="button" class="ui button sharp navy ml5"
-                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#preview-counseling-input').find('#${name}').val())">TIP
+                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#preview-counseling-input').find('[name=${name}]').val())">TIP
                                     </button>
                                 </div>
                             </td>

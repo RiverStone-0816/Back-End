@@ -42,14 +42,14 @@
     </div>
 
     <div class="panel-body overflow-auto">
-        <form:hidden path="hangupMsg"/>
         <form:hidden path="clickKey" id="talk-counseling-input-clickKey"/>
-        <form:hidden path="customNumber"/>
-        <form:hidden path="groupKind"/>
-        <form:hidden path="customId"/>
-        <form:hidden path="maindbType"/>
-        <form:hidden path="resultType"/>
-        <form:hidden path="groupId"/>
+        <form:hidden path="hangupMsg" id="talk-counseling-input-hangupMsg"/>
+        <form:hidden path="customNumber" id="talk-counseling-input-customNumber"/>
+        <form:hidden path="groupKind" id="talk-counseling-input-groupKind"/>
+        <form:hidden path="customId" id="talk-counseling-input-customId"/>
+        <form:hidden path="maindbType" id="talk-counseling-input-maindbType"/>
+        <form:hidden path="resultType" id="talk-counseling-input-resultType"/>
+        <form:hidden path="groupId" id="talk-counseling-input-groupId"/>
 
         <div class="float-field-wrap">
 
@@ -101,7 +101,7 @@
                                         </c:forEach>
                                     </select>
                                     <button type="button" class="ui button sharp navy ml5"
-                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#talk-counseling-input').find('#${name}').val())">TIP
+                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#talk-counseling-input').find('[name=${name}]').val())">TIP
                                     </button>
                                 </div>
                             </div>
@@ -119,7 +119,7 @@
                                         </c:forEach>
                                     </select>
                                     <button type="button" class="ui button sharp navy ml5"
-                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#talk-counseling-input').find('#${name}').val())">TIP
+                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#talk-counseling-input').find('[name=${name}]').val())">TIP
                                     </button>
                                 </div>
                             </div>

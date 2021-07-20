@@ -93,7 +93,7 @@
                                         </c:forEach>
                                     </select>
                                     <button type="button" class="ui button sharp navy ml5"
-                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-custom-input').find('#${name}').val())">TIP
+                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-custom-input').find('[name=${name}]').val())">TIP
                                     </button>
                                 </div>
                             </div>
@@ -112,7 +112,7 @@
                                         </c:forEach>
                                     </select>
                                     <button type="button" class="ui button sharp navy ml5"
-                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-custom-input').find('#${name}').val())">TIP
+                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-custom-input').find('[name=${name}]').val())">TIP
                                     </button>
                                 </div>
                             </div>
