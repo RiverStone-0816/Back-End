@@ -364,8 +364,7 @@
                                 </div>
                                 <div class="chat">
                                     <div class="bubble">
-                                        <div class="txt_chat"><img
-                                                src="http://dn-m.talk.kakao.com/talkm/oYsrn2lMaM/AbUPsuGnGZVKP1xHwZXYs0/i_fd0196c4dd8e.jpeg?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImNvbXBhbnlJZCI6InNrZGV2IiwiZXh0ZW5zaW9uIjoiMTAwMCIsImlkVHlwZSI6IkEiLCJleHAiOjE2MjYzOTE2ODMsImlhdCI6MTYyNjMwNTI4M30.Czop2V7xeToXiOR3ScQ3vPs6nI0eAR2MbtwDAYo3_lA0Ro2FpT6CwnsV4qFmB1d-NXZWKk2wzBXZYRWPcePBKw">
+                                        <div class="txt_chat"><img src="">
                                         </div>
                                         <span class="count">3</span>
                                     </div>
@@ -384,8 +383,7 @@
                                 </div>
                                 <div class="chat">
                                     <div class="bubble">
-                                        <div class="txt_chat"><img
-                                                src="http://dn-m.talk.kakao.com/talkm/oYsrn2lMaM/AbUPsuGnGZVKP1xHwZXYs0/i_fd0196c4dd8e.jpeg?token=eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMSIsImNvbXBhbnlJZCI6InNrZGV2IiwiZXh0ZW5zaW9uIjoiMTAwMCIsImlkVHlwZSI6IkEiLCJleHAiOjE2MjYzOTE2ODMsImlhdCI6MTYyNjMwNTI4M30.Czop2V7xeToXiOR3ScQ3vPs6nI0eAR2MbtwDAYo3_lA0Ro2FpT6CwnsV4qFmB1d-NXZWKk2wzBXZYRWPcePBKw">
+                                        <div class="txt_chat"><img src="">
                                         </div>
                                         <span class="count">3</span>
                                     </div>
