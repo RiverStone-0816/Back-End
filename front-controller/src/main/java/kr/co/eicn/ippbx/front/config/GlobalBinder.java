@@ -57,7 +57,7 @@ public class GlobalBinder {
     }
 
     @ModelAttribute("serviceKind")
-    public String serviceKind(@Value("${eicn.debugging}") String serviceKind) {
+    public String serviceKind(@Value("${eicn.service.servicekind}") String serviceKind) {
         return serviceKind;
     }
 

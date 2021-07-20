@@ -33,6 +33,7 @@
                 <th>전화번호</th>
                 <td>
                     <text class="-field" data-name="hpNumber"></text>
+                    <%--TODO: 전화돌려주기 기능 붙여야할지도. --%>
                     <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>">
                 </td>
             </tr>
@@ -40,6 +41,7 @@
                 <th>내선번호</th>
                 <td>
                     <text class="-field" data-name="extension"></text>
+                    <%--TODO: 전화돌려주기 기능 붙여야할지도. --%>
                     <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>">
                 </td>
             </tr>
@@ -434,7 +436,7 @@
         <div class="panel-heading">조직도
             <div class="btn-wrap">
                 <button type="button" class="ui basic button organi-state">현황</button>
-                <button type="button" class="ui basic button organi-room">대화방</button>
+                <button type="button" class="ui basic button organi-room"><text class="message-indicator">0</text>대화방</button>
             </div>
             <div class="state-header">현황</div>
             <button class="state-header-close"></button>
@@ -459,43 +461,13 @@
                     <button type="button" class="ui basic mini button" onclick="organiChatCreate()">선택대화</button>
                 </div>
                 <div class="panel-segment-body">
-                    <div class="area">
-                        <ul class="organization-ul">
-                            <div class="title">
-                                <span class="team-name">조직명조직명조직명조직명명</span>
-                                <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13</div>
-                            </div>
-                            <li class="belong">
-                                <div class="user-wrap">
-                                    <div class="ui checkbox">
-                                        <input type="checkbox" name="example">
-                                        <label>본사>본부>서울지사</label>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="active">
-                                <div class="user-wrap">
-                                    <span class="user-icon active"></span>홍길동
-                                </div>
-                                <div class="btn-wrap">
-                                    <span class="ui mini label after-state">후처리</span>
-                                    <div class="buttons">
-                                        <button type="button" class="arrow button" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
-                                        <button type="button" class="talk off button"></button>
-                                        <button type="button" class="info button" data-inverted="" data-tooltip="정보" data-position="bottom center" onclick="userinfoModal()"></button>
-                                    </div>
-                                </div>
-                                <div class="state-wrap">
-                                    전화 <span class="num">15</span> 채팅 <span class="num">15</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    <div class="area" id="messenger-organization-panel"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <div class="organi-pop-wrap">
     <div class="organi-pop-second">
         <div class="panel full-height">
@@ -569,7 +541,7 @@
 </div>
 
 <%--todo--%>
-<%--<text class="message-indicator">0</text>--%>
+<%----%>
 
 <div id="messenger-modal" class="ui modal large" style="width: 500px;">
     <i class="close icon"></i>
@@ -598,7 +570,6 @@
             </div>
             <div id="messenger-content-panel">
                 <div class="inner">
-                    <div class="ui list" id="messenger-organization-panel"></div>
                     <div class="ui list" id="messenger-chat-container"></div>
                 </div>
             </div>
@@ -1176,7 +1147,7 @@
                         )
                         .append(
                             $('<div/>', {class: 'btn-wrap'})
-                                .append($('<span/>', {class: 'ui mini label -consultant-status-with-color', 'data-peer': e.peer})) /*todo: 초기값 세팅*/
+                                .append($('<span/>', {class: 'ui mini label -consultant-status-with-color', 'data-peer': e.peer, css: {visibility: e.peer ? 'visible' : 'hidden'}})) /*todo: 초기값 세팅*/
                                 .append(
                                     $('<div/>', {class: 'buttons'})
                                         .append($('<button/>', {type: 'button', class: 'arrow button', 'data-inverted': '', 'data-tooltip': '호전환', 'data-position': 'bottom center'}))
@@ -1225,63 +1196,89 @@
         Messenger.prototype._loadOrganization = function (response) {
             const messenger = this;
 
-            function attachFolder(container, e) {
-                const item = $('<div/>', {class: 'item -messenger-folder'})
-                    .append($('<i/>', {class: 'folder icon'}))
-                    .appendTo(container);
+            function hierarchicalOrganizationString(upperOrganizationNames, groupName) {
+                let string = '';
 
-                const content = $('<div/>', {class: 'content'})
+                upperOrganizationNames.map(function (name) {
+                    if (string) string += '>';
+                    string += name;
+                });
+
+                if (string) string += '>';
+                return string + groupName;
+            }
+
+            function attachFolder(e, upperOrganizationNames) {
+                const item = $('<ul/>', {class: 'organization-ul -messenger-folder'})
                     .append(
-                        $('<div/>', {class: 'header', text: e.groupName})
-                            .click(function (event) {
-                                const item = $(this).closest('.item');
-                                if (event.ctrlKey) {
-                                    item.toggleClass('active');
-                                } else {
-                                    messenger.ui.organizationPanel.find('.-messenger-user').removeClass('active');
-                                    messenger.ui.bookmarkPanel.find('.-messenger-bookmark').removeClass('active');
-                                    messenger.ui.organizationPanel.find('.-messenger-folder').removeClass('active');
-                                    item.addClass('active');
-                                }
-                            })
-                            .dblclick(function () {
-                                const item = $(this).closest('.item');
-                                messenger.ui.organizationPanel.find('.-messenger-user').removeClass('active');
-                                messenger.ui.bookmarkPanel.find('.-messenger-bookmark').removeClass('active');
-                                messenger.ui.organizationPanel.find('.-messenger-folder').removeClass('active');
-                                item.addClass('active');
-                                messenger.openRoom();
-                            })
+                        $('<div/>', {class: 'title'})
+                            .append($('<span/>', {class: 'team-name', text: e.groupName}))
+                            .append(
+                                $('<div/>', {class: 'dot-label-wrap'})
+                                    .append($('<span/>', {class: 'dot-label'}))
+                                    .append($('<text/>', {text: 0}))        /*todo: 비로그인 사용자 카운트*/
+                                    .append($('<span/>', {class: 'dot-label active'}))
+                                    .append($('<text/>', {text: 0}))       /*todo: 로그인 사용자 카운트*/
+                            )
                     )
-                    .appendTo(item);
-
-                const childrenContainer = $('<div/>', {class: 'list'})
-                    .appendTo(content);
+                    .append(
+                        $('<li/>', {class: 'belong'})
+                            .append(
+                                $('<div/>', {class: 'user-wrap'})
+                                    .append(
+                                        $('<div/>', {class: 'ui checkbox'})
+                                            .append($('<input/>', {type: 'checkbox'})) /*todo: active 상태 기능 변경*/
+                                            .append($('<label/>', {text: hierarchicalOrganizationString(upperOrganizationNames, e.groupName)}))
+                                    )
+                            )
+                    )
+                    .appendTo(messenger.ui.organizationPanel);
 
                 if (e.personList)
                     e.personList.map(function (e) {
-                        attachPerson(childrenContainer, e);
+                        attachPerson(item, e);
                     });
+
+                const newUpperOrganizationNames = upperOrganizationNames.slice();
+                newUpperOrganizationNames.push(e.groupName);
 
                 if (e.organizationMetaChatt)
                     e.organizationMetaChatt.map(function (e) {
-                        attachFolder(childrenContainer, e);
+                        attachFolder(e, newUpperOrganizationNames);
                     });
             }
 
             function attachPerson(container, e) {
-                let text = '';
-                if (e.extension) text += ' / 내선:' + e.extension;
-                if (e.hpNumber) text += ' / 휴대폰:' + e.hpNumber;
-                if (e.emailInfo) text += ' / 이메일:' + e.emailInfo;
-                if (text.indexOf(' / ') === 0) text = text.substr(3);
-                const info = text !== '' ? $('<span/>', {style: 'margin-left: 1em; font-size: 90%; color: #aaa;', text: '[' + text + ']'}) : '';
-
-                $('<div/>', {class: 'item -messenger-user', 'data-id': e.id})
+                $('<li/>', {class: '-messenger-user', 'data-id': e.id})
                     .append(
-                        $('<div/>', {class: 'header'})
-                            .append($('<i/>', {class: 'user outline icon', style: 'color: ' + (e.isLoginChatt === 'L' ? '#c60452' : 'black') + ';'}))
-                            .append($('<text/>', {text: e.idName}).append(info))
+                        $('<div/>', {class: 'user-wrap'})
+                            .append($('<span/>', {class: 'user-icon ' + (e.isLoginChatt === 'L' ? 'active' : '')})) /*todo: 로그인변화 대응 확인*/
+                            .append($('<text/>', {text: e.idName}))
+                    )
+                    .append(
+                        $('<div/>', {class: 'btn-wrap'})
+                            .append($('<span/>', {class: 'ui mini label -consultant-status-with-color', 'data-peer': e.peer, css: {visibility: e.peer ? 'visible' : 'hidden'}})) /*todo: 초기값 세팅*/
+                            .append(
+                                $('<div/>', {class: 'buttons'})
+                                    .append($('<button/>', {type: 'button', class: 'arrow button', 'data-inverted': '', 'data-tooltip': '호전환', 'data-position': 'bottom center'}))
+                                    .append($('<button/>', {type: 'button', class: 'talk off button'}))
+                                    .append($('<button/>', {
+                                        type: 'button', class: 'info button', 'data-inverted': '', 'data-tooltip': '정보', 'data-position': 'bottom center', click: function () {
+                                            const modal = $('#user-info-popup');
+                                            modal.find('.-field').each(function () { /*todo: groupTreeName 값있는지 확인*/
+                                                $(this).text(e[$(this).attr('data-name')]);
+                                            });
+                                            modal.dragModalShow();
+                                        }
+                                    }))
+                            )
+                    )
+                    .append(
+                        $('<div/>', {class: 'state-wrap'})
+                            .append($('<text/>', {text: '전화'}))
+                            .append($('<span/>', {class: 'num', text: '0'})) /*todo: 기능 확인*/
+                            .append($('<text/>', {text: '채팅'}))
+                            .append($('<span/>', {class: 'num', text: '0'})) /*todo: 기능 확인*/
                     )
                     .appendTo(container)
                     .click(function (event) {
@@ -1337,7 +1334,7 @@
             }
 
             response.data.map(function (e) {
-                attachFolder(messenger.ui.organizationPanel, e);
+                attachFolder(e, []);
             });
 
             messenger.filterItem();

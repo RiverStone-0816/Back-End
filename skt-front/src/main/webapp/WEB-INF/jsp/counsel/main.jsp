@@ -15,10 +15,9 @@
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
 <div class="consult-wrapper -counsel-panel">
-
-    <%--<c:if test="${serviceKind.equals('SC') && usingServices.contains('CHATT')}">--%>
-    <jsp:include page="/messenger"/>
-    <%--</c:if>--%>
+    <c:if test="${serviceKind.equals('SC') && usingServices.contains('CHATT')}">
+        <jsp:include page="/messenger"/>
+    </c:if>
 
     <div class="-counsel-content-panel consult-center-panel" data-type="COUNSEL" style="display: none;">
         <div class="ui top attached tabular menu">
