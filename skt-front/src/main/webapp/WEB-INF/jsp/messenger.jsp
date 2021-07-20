@@ -35,18 +35,18 @@
             </tr>
             <tr>
                 <th>전화번호</th>
-                <td>
+                <td class="row-btn-wrap">
                     <text class="-field" data-name="hpNumber"></text>
                     <%--TODO: 전화돌려주기 기능 붙여야할지도. --%>
-                    <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>">
+                    <button></button>
                 </td>
             </tr>
             <tr>
                 <th>내선번호</th>
-                <td>
+                <td class="row-btn-wrap">
                     <text class="-field" data-name="extension"></text>
                     <%--TODO: 전화돌려주기 기능 붙여야할지도. --%>
-                    <img style="float: right; width: 32px; border-radius: 5px;" src="<c:url value="/resources/images/call-img-temp.JPG"/>">
+                    <button></button>
                 </td>
             </tr>
         </table>
@@ -471,71 +471,70 @@
             </div>
         </div>
     </div>
-</div>
-
-<div class="organi-pop-wrap">
-    <div class="organi-pop-second">
-        <div class="panel full-height">
-            <div class="panel-heading">조직 대화방
-                <button type="button" class="panel-close"></button>
-            </div>
-            <div class="panel-body full-height remove-padding">
-                <div class="pd10 panel-border-bottom">
-                    <div class="ui fluid icon input">
-                        <input type="text" placeholder="검색어 입력">
-                        <i class="search link icon"></i>
-                    </div>
+    <div class="organi-pop-wrap">
+        <div class="organi-pop-second">
+            <div class="panel full-height">
+                <div class="panel-heading">조직 대화방
+                    <button type="button" class="panel-close"></button>
                 </div>
-                <div class="pd10 full-height">
-                    <div class="organization-chat-list-wrap">
-                        <div class="chat-list-header">
-                            조직 대화방 목록
-                            <button type="button" class="ui basic right floated button" onclick="organiChatCreate()">추가</button>
+                <div class="panel-body full-height remove-padding">
+                    <div class="pd10 panel-border-bottom">
+                        <div class="ui fluid icon input">
+                            <input type="text" placeholder="검색어 입력">
+                            <i class="search link icon"></i>
                         </div>
-                        <div class="chat-list-body">
-                            <div class="chat-list-container">
-                                <ul>
-                                    <li class="item" onclick="organiChatRoom()">
-                                        <div class="item-header">
-                                            <div class="chat-item-title">대화방 이름</div>
-                                            <div class="chat-unread">23</div>
-                                        </div>
-                                        <div class="item-content">
-                                            <div class="last-chat"><img src="<c:url value="/resources/images/chat-img.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
-                                            <div class="last-time">2021-05-21 09:00:00</div>
-                                        </div>
-                                    </li>
-                                    <li class="item" onclick="organiChatRoom()">
-                                        <div class="item-header">
-                                            <div class="chat-item-title">대화방 이름</div>
-                                            <div class="chat-unread">23</div>
-                                        </div>
-                                        <div class="item-content">
-                                            <div class="last-chat"><img src="<c:url value="/resources/images/chat-audio.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
-                                            <div class="last-time">2021-05-21 09:00:00</div>
-                                        </div>
-                                    </li>
-                                    <li class="item active" onclick="organiChatRoom()">
-                                        <div class="item-header">
-                                            <div class="chat-item-title">대화방 이름</div>
-                                            <div class="chat-unread">23</div>
-                                        </div>
-                                        <div class="item-content">
-                                            <div class="last-chat"><img src="<c:url value="/resources/images/chat-system.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
-                                            <div class="last-time">2021-05-21 09:00:00</div>
-                                        </div>
-                                    </li>
-                                    <li class="item" onclick="organiChatRoom()">
-                                        <div class="item-header">
-                                            <div class="chat-item-title">대화방 이름</div>
-                                            <div class="chat-unread">23</div>
-                                        </div>
-                                        <div class="item-content">
-                                            <div class="last-chat"><img src="<c:url value="/resources/images/chat-folder.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
-                                            <div class="last-time">2021-05-21 09:00:00</div>
-                                        </div>
-                                    </li>
-                                </ul>
+                    </div>
+                    <div class="pd10 full-height">
+                        <div class="organization-chat-list-wrap">
+                            <div class="chat-list-header">
+                                조직 대화방 목록
+                                <button type="button" class="ui basic right floated button" onclick="organiChatCreate()">추가</button>
+                            </div>
+                            <div class="chat-list-body">
+                                <div class="chat-list-container">
+                                    <ul>
+                                        <li class="item" onclick="organiChatRoom()">
+                                            <div class="item-header">
+                                                <div class="chat-item-title">대화방 이름</div>
+                                                <div class="chat-unread">23</div>
+                                            </div>
+                                            <div class="item-content">
+                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-img.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                                <div class="last-time">2021-05-21 09:00:00</div>
+                                            </div>
+                                        </li>
+                                        <li class="item" onclick="organiChatRoom()">
+                                            <div class="item-header">
+                                                <div class="chat-item-title">대화방 이름</div>
+                                                <div class="chat-unread">23</div>
+                                            </div>
+                                            <div class="item-content">
+                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-audio.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                                <div class="last-time">2021-05-21 09:00:00</div>
+                                            </div>
+                                        </li>
+                                        <li class="item active" onclick="organiChatRoom()">
+                                            <div class="item-header">
+                                                <div class="chat-item-title">대화방 이름</div>
+                                                <div class="chat-unread">23</div>
+                                            </div>
+                                            <div class="item-content">
+                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-system.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                                <div class="last-time">2021-05-21 09:00:00</div>
+                                            </div>
+                                        </li>
+                                        <li class="item" onclick="organiChatRoom()">
+                                            <div class="item-header">
+                                                <div class="chat-item-title">대화방 이름</div>
+                                                <div class="chat-unread">23</div>
+                                            </div>
+                                            <div class="item-content">
+                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-folder.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
+                                                <div class="last-time">2021-05-21 09:00:00</div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -544,6 +543,8 @@
         </div>
     </div>
 </div>
+
+
 
 <div id="messenger-modal" class="ui modal large" style="width: 500px;">
     <i class="close icon"></i>
@@ -636,10 +637,14 @@
             $('.consult-left-panel').toggleClass('wide');
             $('.consult-wrapper .consult-center-panel').toggleClass('control');
             if ($('.consult-left-panel').hasClass('wide') === true) {
-                $('.organi-pop-wrap').css('left', '460px');
+                $('.content-inner.-counsel-content-panel').addClass('control');
             } else {
-                $('.organi-pop-wrap').css('left', '326px');
+                $('.content-inner.-counsel-content-panel').removeClass('control');
             }
+        });
+
+        $('.consult-organization-panel .panel-heading .ui.basic.button').click(function () {
+            $(this).toggleClass('active');
         });
 
         let organiChatTitleDefault = $('.organi-chat-room-header .default-inner');
@@ -663,13 +668,24 @@
             $('#organi-chat-room-popup').css({'z-index': 1003}).dragModalShow();
         }
 
+        $('.consult-organization-panel .state-header-close').click(function(){
+            $('.consult-organization-panel #organi-state').removeClass('active');
+            $('.consult-left-panel').removeClass('wide');
+            $('.consult-wrapper .consult-center-panel').removeClass('control');
+        });
+
+        $('.organi-pop-second .panel-close').click(function(){
+            $('.consult-organization-panel #organi-room').removeClass('active');
+            $(this).parents('.organi-pop-second').hide();
+        });
+
         $('#organi-room').click(function () {
             <c:choose>
             <c:when test="${CHATTABLE}">
             if ($('.consult-left-panel').hasClass('wide') === true) {
-                $('.organi-pop-wrap').css('left', '460px');
+
             } else {
-                $('.organi-pop-wrap').css('left', '326px');
+
             }
             $('.organi-pop-second').toggle();
             </c:when>
