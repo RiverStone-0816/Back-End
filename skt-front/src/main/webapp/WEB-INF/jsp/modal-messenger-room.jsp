@@ -227,16 +227,10 @@
             }
     });
 
-    (function () {
-        const scrollContainer = modal.find('.chat-body');
-
-        scrollContainer.scroll(function () {
-            if ($(this).scrollTop())
-                return;
-
-            if (messenger.currentRoom)
-                messenger.loadMessages({startMessageId: messenger.currentRoom.startMessageId, limit: messenger.READ_LIMIT + 1})
+    setTimeout(function () {
+        const scrollBody = modal.find('.chat-body');
+        messenger.loadMessages({startMessageId: messenger.currentRoom.startMessageId, limit: messenger.READ_LIMIT + 1}).done(function () {
+            scrollBody.animate({scrollTop: scrollBody[0].scrollHeight}, 400);
         });
-    })();
-
+    }, 100);
 </script>
