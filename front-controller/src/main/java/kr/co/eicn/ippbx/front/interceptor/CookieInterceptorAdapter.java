@@ -19,13 +19,16 @@ public class CookieInterceptorAdapter extends HandlerInterceptorAdapter {
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
         super.postHandle(request, response, handler, modelAndView);
 
-        final ResponseCookie cookie = ResponseCookie.from("JSESSIONID", request.getSession().getId())
-                .sameSite("Strict")
-                .secure(false)
-                .path("/")
-                .httpOnly(true)
-                .build();
+        try {
+            final ResponseCookie cookie = ResponseCookie.from("JSESSIONID", request.getSession().getId())
+                    .sameSite("Strict")
+                    .secure(false)
+                    .path("/")
+                    .httpOnly(true)
+                    .build();
 
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        } catch (Exception ignored) {
+        }
     }
 }
