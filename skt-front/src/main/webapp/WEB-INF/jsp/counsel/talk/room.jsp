@@ -39,7 +39,7 @@
                                 <c:when test="${e.type == 'photo'}">
                                     <div class="chat">
                                         <div class="bubble">
-                                            <p class="txt_chat"> <%--todo: 코드 정리--%>
+                                            <p class="txt_chat">
                                                 <img src="${url}">
                                             </p>
                                         </div>

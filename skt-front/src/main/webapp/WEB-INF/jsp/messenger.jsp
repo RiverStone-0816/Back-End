@@ -56,6 +56,7 @@
     </div>
 </div>
 
+<%--채팅방 만들기--%>
 <div class="ui modal" id="organi-chat-create-popup">
     <i class="close icon"></i>
     <div class="header">새로운 채팅방 만들기</div>
@@ -266,6 +267,7 @@
     </div>
 </div>
 
+<%--채팅방--%>
 <div class="ui modal tiny" id="organi-chat-room-popup">
     <i class="close icon"></i>
     <div class="header"><span style="cursor:pointer" onclick="chatTitleModifyBtn()">대화방이름</span></div>
@@ -492,48 +494,7 @@
                             </div>
                             <div class="chat-list-body">
                                 <div class="chat-list-container">
-                                    <ul>
-                                        <li class="item" onclick="organiChatRoom()">
-                                            <div class="item-header">
-                                                <div class="chat-item-title">대화방 이름</div>
-                                                <div class="chat-unread">23</div>
-                                            </div>
-                                            <div class="item-content">
-                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-img.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
-                                                <div class="last-time">2021-05-21 09:00:00</div>
-                                            </div>
-                                        </li>
-                                        <li class="item" onclick="organiChatRoom()">
-                                            <div class="item-header">
-                                                <div class="chat-item-title">대화방 이름</div>
-                                                <div class="chat-unread">23</div>
-                                            </div>
-                                            <div class="item-content">
-                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-audio.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
-                                                <div class="last-time">2021-05-21 09:00:00</div>
-                                            </div>
-                                        </li>
-                                        <li class="item active" onclick="organiChatRoom()">
-                                            <div class="item-header">
-                                                <div class="chat-item-title">대화방 이름</div>
-                                                <div class="chat-unread">23</div>
-                                            </div>
-                                            <div class="item-content">
-                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-system.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
-                                                <div class="last-time">2021-05-21 09:00:00</div>
-                                            </div>
-                                        </li>
-                                        <li class="item" onclick="organiChatRoom()">
-                                            <div class="item-header">
-                                                <div class="chat-item-title">대화방 이름</div>
-                                                <div class="chat-unread">23</div>
-                                            </div>
-                                            <div class="item-content">
-                                                <div class="last-chat"><img src="<c:url value="/resources/images/chat-folder.svg"/>"> 마지막메시지가 나오는 곳 입니다.</div>
-                                                <div class="last-time">2021-05-21 09:00:00</div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                    <ul id="messenger-chat-container"></ul>
                                 </div>
                             </div>
                         </div>
@@ -544,8 +505,6 @@
     </div>
 </div>
 
-
-
 <div id="messenger-modal" class="ui modal large" style="width: 500px;">
     <i class="close icon"></i>
     <div class="header">메신저</div>
@@ -554,28 +513,6 @@
         <div class="ui fluid icon input mb15">
             <input id="messenger-filter-text" placeholder="검색" onkeyup="messenger.filterItem(); return false;"/>
             <i class="search icon"></i>
-        </div>
-        <div class="messenger-panel-wrap">
-            <div id="messenger-left-panel">
-                <div class="mb10 align-center">
-                    <button class="ui icon button -messenger-container-selector active" onclick="messenger.showPersonPanel()" title="조직도">
-                        <i class="list icon large"></i>
-                    </button>
-                    <span>조직도</span>
-                </div>
-                <div class="align-center">
-                    <button class="ui icon button -messenger-container-selector" onclick="messenger.showChatPanel()" title="채팅방" style="position: relative;">
-                        <i class="comments icon large"></i>
-                        <text class="message-indicator" style="font-size: 10px; line-height: 20px; width: 20px; height: 20px; border-radius: 20px;">0</text>
-                    </button>
-                    <span>채팅방</span>
-                </div>
-            </div>
-            <div id="messenger-content-panel">
-                <div class="inner">
-                    <div class="ui list" id="messenger-chat-container"></div>
-                </div>
-            </div>
         </div>
     </div>
     <div id="messenger-control-panel" class="actions">
@@ -668,13 +605,13 @@
             $('#organi-chat-room-popup').css({'z-index': 1003}).dragModalShow();
         }
 
-        $('.consult-organization-panel .state-header-close').click(function(){
+        $('.consult-organization-panel .state-header-close').click(function () {
             $('.consult-organization-panel #organi-state').removeClass('active');
             $('.consult-left-panel').removeClass('wide');
             $('.consult-wrapper .consult-center-panel').removeClass('control');
         });
 
-        $('.organi-pop-second .panel-close').click(function(){
+        $('.organi-pop-second .panel-close').click(function () {
             $('.consult-organization-panel #organi-room').removeClass('active');
             $(this).parents('.organi-pop-second').hide();
         });
@@ -820,9 +757,7 @@
                 })
                 .on('svc_roomname_change', function (data) {
                     const roomId = data.room_id;
-                    const roomName = data.change_room_name;
-
-                    messenger.rooms[roomId].roomName = roomName;
+                    messenger.rooms[roomId].roomName = data.change_room_name;
 
                     const chattingRoomElement = messenger.ui.modal.find('.-messenger-chat-item').filter(function () {
                         return $(this).attr('data-id') === roomId;
@@ -863,13 +798,6 @@
                 });
                 chattingRoomElement.find('.-room-name').text(messenger.rooms[roomId].roomName);
             });
-        };
-        Messenger.prototype.showPersonPanel = function () {
-            this.ui.modal.removeClass('show-rooms');
-        };
-        Messenger.prototype.showChatPanel = function () {
-            this.ui.modal.addClass('show-rooms');
-            this.ui.chatContainer.show();
         };
         Messenger.prototype.sendMessage = function () {
             const messenger = this;
@@ -1042,17 +970,17 @@
                 existChatItem.find('.-room-name').text(roomName);
                 existChatItem.find('.-last-message-time').text(timeString).attr('data-value', lastTime);
                 const split = /^([^|]+)\|([^|]+)\|([^|]+)\|([^|]+)$/.exec(lastMsg);
-                existChatItem.find('.preview').text(split ? '[파일전송]' + split[2] : lastMsg);
-                existChatItem.find('.number').text(unreadMessageTotalCount).css('display', !unreadMessageTotalCount ? 'none' : '');
+                existChatItem.find('.-last-message').text(split ? '[파일전송]' + split[2] : lastMsg);
+                existChatItem.find('.-unread-count').text(unreadMessageTotalCount).css('display', !unreadMessageTotalCount ? 'none' : '');
                 return;
             }
 
-            $('<div/>', {class: 'item -messenger-chat-item', 'data-id': roomId})
+            $('<li/>', {class: 'item -messenger-chat-item', 'data-id': roomId}) /*todo: active class 확인*/
                 .append(
-                    $('<div/>', {class: 'header'})
-                        .append($('<i/>', {class: 'comments icon'}))
-                        .append($('<text/>', {
-                            class: '-room-name', text: roomName, onclick: 'return false;', click: function () {
+                    $('<div/>', {class: 'item-header'})
+                        .append($('<div/>', {
+                            class: 'chat-item-title -room-name', text: roomName, onclick: 'return false;', click: function () {
+                                // todo: 퍼블: organiChatRoom()
                                 const $this = $(this);
                                 prompt('채팅방 이름 변경').done(function (text) {
                                     text = text.trim();
@@ -1066,12 +994,16 @@
                                 return false;
                             }
                         }))
-                        .append($('<text/>', {class: '-last-message-time', text: timeString, 'data-value': lastTime}))
+                        .append($('<div/>', {class: 'chat-unread -unread-count', text: unreadMessageTotalCount, style: 'display: ' + (!unreadMessageTotalCount ? 'none' : '')}))
                 )
                 .append(
-                    $('<div/>', {class: 'content'})
-                        .append($('<div/>', {class: 'preview', text: lastMsg}))
-                        .append($('<div/>', {class: 'number', text: unreadMessageTotalCount, style: 'display: ' + (!unreadMessageTotalCount ? 'none' : '')}))
+                    $('<div/>', {class: 'item-content'})
+                        .append(
+                            $('<div/>', {class: 'last-chat', text: lastMsg})
+                                .append($('<img/>', {src: '<c:url value="/resources/images/chat-system.svg"/>'}))
+                                .append($('<text/>', {class: '-last-message', text: lastMsg}))
+                        )
+                        .append($('<div/>', {class: 'last-time -last-message-time', text: timeString, 'data-value': lastTime}))
                 )
                 .appendTo(messenger.ui.chatContainer)
                 .click(function () {
@@ -1666,11 +1598,6 @@
             setTimeout(function () {
                 messenger.ui.modal.css('max-height', 'none');
             }, 100);
-
-            messenger.ui.modal.find('.-messenger-container-selector').click(function () {
-                messenger.ui.modal.find('.-messenger-container-selector').removeClass('active');
-                $(this).addClass('active');
-            });
 
             messenger.ui.room.find('.-hide-panel').click(hideInvitationPanel);
             messenger.ui.modal.find('.-toggle-invitation-panel').click(hideInvitationPanel);
