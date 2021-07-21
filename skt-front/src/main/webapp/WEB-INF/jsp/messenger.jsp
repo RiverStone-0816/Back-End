@@ -63,7 +63,7 @@
         </div>
     </div>
     <div class="actions">
-        <span class="left-txt">선택된 조직원 <text><%--todo--%>0</text>명</span>
+        <span class="left-txt">선택된 조직원 <text class="-selected-user-count">0</text>명</span>
         <button type="button" class="ui button modal-close">취소</button>
         <button type="button" class="ui orange button modal-close" onclick="messenger.openRoom();">생성</button>
     </div>
@@ -396,6 +396,8 @@
                         item.addClass('active');
                 });
             }
+
+            showRoomCreationOrganizationModalSelectedUserCount();
         };
         // 조직도에서 대화방 열기를 시도한다.. 함수 이름 변경좀....
         Messenger.prototype.openRoom = function () {
@@ -539,8 +541,6 @@
         // 채팅방 리스트의 아이템 추가
         Messenger.prototype._appendChatListItem = function (roomId) {
             const messenger = this;
-
-            console.log(messenger.rooms[roomId])
 
             const roomName = messenger.rooms[roomId].roomName;
             const lastMsg = messenger.rooms[roomId].lastMsg;
@@ -762,6 +762,10 @@
             return string + groupName;
         }
 
+        function showRoomCreationOrganizationModalSelectedUserCount() {
+            $('#room-creation-organization-modal').find('.-selected-user-count').text(messenger.ui.roomCreationOrganizationPanel.find('.-messenger-user.active').length);
+        }
+
         Messenger.prototype._loadRoomCreationOrganization = function (response) {
             const messenger = this;
             const panel = messenger.ui.roomCreationOrganizationPanel;
@@ -830,45 +834,49 @@
                     )
                     .appendTo(container)
                     .click(function (event) {
-                        if (event.ctrlKey) {
-                            $(this).toggleClass('active');
+                        (function () {
+                            if (event.ctrlKey) {
+                                $(this).toggleClass('active');
 
-                            if ($(this).hasClass('active')) {
+                                if ($(this).hasClass('active')) {
+                                    messenger.lastActiveRoomCreationElement = this;
+                                }
+
+                                return;
+                            }
+                            if (event.shiftKey && messenger.lastActiveRoomCreationElement) {
+                                panel.find('.-messenger-user').removeClass('active');
+                                panel.find('.-messenger-folder').removeClass('active');
+                                $(messenger.lastActiveRoomCreationElement).addClass('active');
+
+                                const _this = this;
+
+                                if (_this === messenger.lastActiveRoomCreationElement)
+                                    return;
+
+                                let meetActiveElement = false;
+                                let meetMe = false;
+                                panel.find('.-messenger-user').each(function () {
+                                    if (this === messenger.lastActiveRoomCreationElement) {
+                                        $(this).addClass('active');
+                                        meetActiveElement = true;
+                                    } else if (this === _this) {
+                                        $(this).addClass('active');
+                                        meetMe = true;
+                                    } else {
+                                        if (meetActiveElement ^ meetMe)
+                                            $(this).addClass('active');
+                                    }
+                                });
+                            } else {
+                                panel.find('.-messenger-user').removeClass('active');
+                                panel.find('.-messenger-folder').removeClass('active');
+                                $(this).addClass('active');
                                 messenger.lastActiveRoomCreationElement = this;
                             }
+                        }).apply(this, []);
 
-                            return;
-                        }
-                        if (event.shiftKey && messenger.lastActiveRoomCreationElement) {
-                            panel.find('.-messenger-user').removeClass('active');
-                            panel.find('.-messenger-folder').removeClass('active');
-                            $(messenger.lastActiveRoomCreationElement).addClass('active');
-
-                            const _this = this;
-
-                            if (_this === messenger.lastActiveRoomCreationElement)
-                                return;
-
-                            let meetActiveElement = false;
-                            let meetMe = false;
-                            panel.find('.-messenger-user').each(function () {
-                                if (this === messenger.lastActiveRoomCreationElement) {
-                                    $(this).addClass('active');
-                                    meetActiveElement = true;
-                                } else if (this === _this) {
-                                    $(this).addClass('active');
-                                    meetMe = true;
-                                } else {
-                                    if (meetActiveElement ^ meetMe)
-                                        $(this).addClass('active');
-                                }
-                            });
-                        } else {
-                            panel.find('.-messenger-user').removeClass('active');
-                            panel.find('.-messenger-folder').removeClass('active');
-                            $(this).addClass('active');
-                            messenger.lastActiveRoomCreationElement = this;
-                        }
+                        showRoomCreationOrganizationModalSelectedUserCount();
                     });
             }
 
