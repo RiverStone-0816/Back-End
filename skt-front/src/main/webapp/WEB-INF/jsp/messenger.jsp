@@ -16,7 +16,7 @@
 
 <c:set var="CHATTABLE" value="${serviceKind.equals('SC') && usingServices.contains('CHATT')}"/>
 
-<div class="ui modal tiny" id="user-info-popup">
+<div class="ui modal tiny" id="user-info-modal">
     <i class="close icon"></i>
     <div class="header">유저정보</div>
     <div class="content">
@@ -56,214 +56,18 @@
     </div>
 </div>
 
-<%--채팅방 만들기--%>
-<div class="ui modal" id="organi-chat-create-popup">
+<div class="ui modal" id="room-creation-organization-modal">
     <i class="close icon"></i>
     <div class="header">새로운 채팅방 만들기</div>
     <div class="content">
-        <div class="organization-ul-wrap">
-            <ul class="organization-ul modal">
-                <div class="title">조직명
-                    <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13</div>
-                </div>
-                <li class="belong">
-                    <div class="user-wrap">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="example">
-                            <label>본사>본부>서울지사</label>
-                        </div>
-                    </div>
-                </li>
-                <li class="active">
-                    <div class="user-wrap">
-                        <span class="user-icon active"></span>홍길동
-                    </div>
-                    <div class="btn-wrap">
-                        <span class="ui mini label after-state">후처리</span>
-                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
-                    </div>
-                    <div class="state-wrap">
-                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="user-wrap">
-                        <span class="user-icon"></span>홍길동
-                    </div>
-                    <div class="btn-wrap">
-                        <span class="ui mini label wait-state">대기</span>
-                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
-                    </div>
-                    <div class="state-wrap">
-                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="user-wrap">
-                        <span class="user-icon"></span>홍길동
-                    </div>
-                    <div class="btn-wrap">
-                        <span class="ui mini label bell-state">벨울림</span>
-                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
-                    </div>
-                    <div class="state-wrap">
-                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
-                    </div>
-                </li>
-            </ul>
-            <ul class="organization-ul modal">
-                <div class="title">조직명
-                    <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13</div>
-                </div>
-                <li class="belong">
-                    <div class="user-wrap">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="example">
-                            <label>본사>본부>서울지사</label>
-                        </div>
-                    </div>
-                </li>
-                <li class="active">
-                    <div class="user-wrap">
-                        <span class="user-icon active"></span>홍길동
-                    </div>
-                    <div class="btn-wrap">
-                        <span class="ui mini label after-state">후처리</span>
-                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
-                    </div>
-                    <div class="state-wrap">
-                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="user-wrap">
-                        <span class="user-icon"></span>홍길동
-                    </div>
-                    <div class="btn-wrap">
-                        <span class="ui mini label wait-state">대기</span>
-                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
-                    </div>
-                    <div class="state-wrap">
-                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="user-wrap">
-                        <span class="user-icon"></span>홍길동
-                    </div>
-                    <div class="btn-wrap">
-                        <span class="ui mini label bell-state">벨울림</span>
-                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
-                    </div>
-                    <div class="state-wrap">
-                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
-                    </div>
-                </li>
-            </ul>
-            <ul class="organization-ul modal">
-                <div class="title">조직명
-                    <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13</div>
-                </div>
-                <li class="belong">
-                    <div class="user-wrap">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="example">
-                            <label>본사>본부>서울지사</label>
-                        </div>
-                    </div>
-                </li>
-                <li class="active">
-                    <div class="user-wrap">
-                        <span class="user-icon active"></span>홍길동
-                    </div>
-                    <div class="btn-wrap">
-                        <span class="ui mini label after-state">후처리</span>
-                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
-                    </div>
-                    <div class="state-wrap">
-                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="user-wrap">
-                        <span class="user-icon"></span>홍길동
-                    </div>
-                    <div class="btn-wrap">
-                        <span class="ui mini label wait-state">대기</span>
-                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
-                    </div>
-                    <div class="state-wrap">
-                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="user-wrap">
-                        <span class="user-icon"></span>홍길동
-                    </div>
-                    <div class="btn-wrap">
-                        <span class="ui mini label bell-state">벨울림</span>
-                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
-                    </div>
-                    <div class="state-wrap">
-                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
-                    </div>
-                </li>
-            </ul>
-            <ul class="organization-ul modal">
-                <div class="title">조직명
-                    <div class="dot-label-wrap"><span class="dot-label"></span>13 <span class="dot-label active"></span>13</div>
-                </div>
-                <li class="belong">
-                    <div class="user-wrap">
-                        <div class="ui checkbox">
-                            <input type="checkbox" name="example">
-                            <label>본사>본부>서울지사</label>
-                        </div>
-                    </div>
-                </li>
-                <li class="active">
-                    <div class="user-wrap">
-                        <span class="user-icon active"></span>홍길동
-                    </div>
-                    <div class="btn-wrap">
-                        <span class="ui mini label after-state">후처리</span>
-                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
-                    </div>
-                    <div class="state-wrap">
-                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="user-wrap">
-                        <span class="user-icon"></span>홍길동
-                    </div>
-                    <div class="btn-wrap">
-                        <span class="ui mini label wait-state">대기</span>
-                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
-                    </div>
-                    <div class="state-wrap">
-                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
-                    </div>
-                </li>
-                <li>
-                    <div class="user-wrap">
-                        <span class="user-icon"></span>홍길동
-                    </div>
-                    <div class="btn-wrap">
-                        <span class="ui mini label bell-state">벨울림</span>
-                        <span class="user-num">내선:000 / 휴대폰:010-0000-0000</span>
-                    </div>
-                    <div class="state-wrap">
-                        전화 <span class="num">15</span> 채팅 <span class="num">15</span>
-                    </div>
-                </li>
-            </ul>
+        <div class="organization-ul-wrap" id="room-creation-organization-panel">
+            <ul class="organization-ul modal"></ul>
         </div>
     </div>
     <div class="actions">
-        <span class="left-txt">선택된 조직원 00명</span>
+        <span class="left-txt">선택된 조직원 00명</span><%--todo--%>
         <button type="button" class="ui button modal-close">취소</button>
-        <button type="button" class="ui orange button modal-close">생성</button>
+        <button type="button" class="ui orange button modal-close" onclick="messenger.openRoom()">생성</button>
     </div>
 </div>
 
@@ -465,7 +269,7 @@
             <div class="panel-segment list">
                 <div class="panel-segment-header">
                     조직도
-                    <button type="button" class="ui basic mini button" onclick="organiChatCreate()">선택대화</button>
+                    <button type="button" class="ui basic mini button" onclick="messenger.popupRoomCreationOrganizationModal(true)">선택대화</button>
                 </div>
                 <div class="panel-segment-body">
                     <div class="area" id="messenger-organization-panel"></div>
@@ -490,7 +294,7 @@
                         <div class="organization-chat-list-wrap">
                             <div class="chat-list-header">
                                 조직 대화방 목록
-                                <button type="button" class="ui basic right floated button" onclick="organiChatCreate()">추가</button>
+                                <button type="button" class="ui basic right floated button" onclick="messenger.popupRoomCreationOrganizationModal()">추가</button>
                             </div>
                             <div class="chat-list-body">
                                 <div class="chat-list-container">
@@ -565,6 +369,7 @@
         </div>
     </div>
 </div>
+
 <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
 <tags:scripts>
     <script>
@@ -597,12 +402,8 @@
             }
         }
 
-        function organiChatCreate() {
-            $('#organi-chat-create-popup').css({'z-index': 1003}).dragModalShow();
-        }
-
         function organiChatRoom() {
-            $('#organi-chat-room-popup').css({'z-index': 1003}).dragModalShow();
+            $('#organi-chat-room-popup').dragModalShow();
         }
 
         $('.consult-organization-panel .state-header-close').click(function () {
@@ -645,6 +446,7 @@
                 bookmarkPanel: $('#messenger-bookmark-panel'),
                 chatContainer: $('#messenger-chat-container'),
                 messageInput: $('#messenger-message'),
+                roomCreationOrganizationPanel: $('#room-creation-organization-panel'),
             };
             messenger.ui.room = $('#messenger-room');
             messenger.ui.roomName = messenger.ui.room.find('.-chatroom-name');
@@ -816,29 +618,52 @@
         Messenger.prototype.popupBookmarkModal = function () {
             popupReceivedHtml('/modal-messenger-bookmark', 'modal-messenger-bookmark');
         };
-        // 조직도에서 대화방 열기를 시도한다.. 메서드 이름 변경좀....
+        Messenger.prototype.popupRoomCreationOrganizationModal = function (withSelectedOfOrganization) {
+            const modal = $('#room-creation-organization-modal').dragModalShow();
+
+            modal.find('.-messenger-folder input[type=checkbox]:first').prop('checked', false);
+            modal.find('.-messenger-user').removeClass('active');
+
+            if (withSelectedOfOrganization) {
+                messenger.ui.organizationPanel.find('.-messenger-folder').each(function () {
+                    modal.find('.-messenger-folder[data-id="' + $(this).attr('data-id') + '"] input[type=checkbox]:first').prop('checked', $(this).find('input[type=checkbox]:first').is(':checked'));
+                });
+
+                messenger.ui.organizationPanel.find('.-messenger-user').each(function () {
+                    const item = modal.find('.-messenger-user[data-id="' + $(this).attr('data-id') + '"]');
+                    if ($(this).hasClass('active'))
+                        item.addClass('active');
+                    else
+                        item.removeClass('active');
+                });
+
+                messenger.ui.bookmarkPanel.find('.-messenger-bookmark').each(function () {
+                    const item = modal.find('.-messenger-user[data-id="' + $(this).attr('data-id') + '"]');
+                    if ($(this).hasClass('active'))
+                        item.addClass('active');
+                });
+            }
+        };
+        // 조직도에서 대화방 열기를 시도한다.. 함수 이름 변경좀....
         Messenger.prototype.openRoom = function () {
             const messenger = this;
-
             const users = [];
 
-            messenger.ui.organizationPanel.find('.-messenger-folder').filter('.active').removeClass('active').each(function () {
-                $(this).find('.-messenger-user').each(function () {
-                    const id = $(this).attr('data-id');
-                    if (users.indexOf(id) >= 0)
-                        return;
-                    users.push(id);
+            messenger.ui.roomCreationOrganizationPanel.find('.-messenger-folder').filter(function () {
+                return $(this).find('input[type=checkbox]:first').is(':checked');
+            }).each(function () {
+                const groupCode = $(this).attr('data-id');
+                messenger.ui.roomCreationOrganizationPanel.find('.-messenger-user[data-group="' + groupCode + '"]').each(function () {
+                    $(this).find('.-messenger-user').each(function () {
+                        const id = $(this).attr('data-id');
+                        if (users.indexOf(id) >= 0)
+                            return;
+                        users.push(id);
+                    });
                 });
             });
 
-            messenger.ui.organizationPanel.find('.-messenger-user').filter('.active').removeClass('active').each(function () {
-                const id = $(this).attr('data-id');
-                if (users.indexOf(id) >= 0)
-                    return;
-                users.push(id);
-            });
-
-            messenger.ui.bookmarkPanel.find('.-messenger-bookmark').filter('.active').removeClass('active').each(function () {
+            messenger.ui.roomCreationOrganizationPanel.find('.-messenger-user.active').each(function () {
                 const id = $(this).attr('data-id');
                 if (users.indexOf(id) >= 0)
                     return;
@@ -846,7 +671,7 @@
             });
 
             if (!users.length)
-                return;
+                return alert('선택된 사용자가 없습니다.');
 
             users.push(messenger.me);
 
@@ -1144,16 +969,16 @@
                         )
                         .append(
                             $('<div/>', {class: 'btn-wrap'})
-                                .append($('<span/>', {class: 'ui mini label -consultant-status-with-color', 'data-peer': e.peer, css: {visibility: e.peer ? 'visible' : 'hidden'}})) /*todo: 초기값 세팅*/
+                                .append($('<span/>', {class: 'ui mini label -consultant-status-with-color', 'data-peer': e.peer, css: {visibility: e.peer ? 'visible' : 'hidden'}}))
                                 .append(
                                     $('<div/>', {class: 'buttons'})
                                         .append($('<button/>', {type: 'button', class: 'arrow button', 'data-inverted': '', 'data-tooltip': '호전환', 'data-position': 'bottom center'}))
                                         .append($('<button/>', {type: 'button', class: 'talk ${CHATTABLE ? 'on' : 'off'} button'}))
                                         .append($('<button/>', {
                                             type: 'button', class: 'info button', 'data-inverted': '', 'data-tooltip': '정보', 'data-position': 'bottom center', click: function () {
-                                                const modal = $('#user-info-popup');
+                                                const modal = $('#user-info-modal');
                                                 e.groupName = userToGroupNames[e.id];
-                                                modal.find('.-field').each(function () { /*todo: groupTreeName 값있는지 확인*/
+                                                modal.find('.-field').each(function () {
                                                     $(this).text(e[$(this).attr('data-name')]);
                                                 });
                                                 modal.dragModalShow();
@@ -1191,24 +1016,139 @@
             });
         };
 
-        Messenger.prototype._loadOrganization = function (response) {
-            const messenger = this;
+        function hierarchicalOrganizationString(upperOrganizationNames, groupName) {
+            let string = '';
 
-            function hierarchicalOrganizationString(upperOrganizationNames, groupName) {
-                let string = '';
-
-                upperOrganizationNames.map(function (name) {
-                    if (string) string += '>';
-                    string += name;
-                });
-
+            upperOrganizationNames.map(function (name) {
                 if (string) string += '>';
-                return string + groupName;
-            }
+                string += name;
+            });
+
+            if (string) string += '>';
+            return string + groupName;
+        }
+
+        Messenger.prototype._loadRoomCreationOrganization = function (response) {
+            const messenger = this;
+            const panel = messenger.ui.roomCreationOrganizationPanel;
 
             function attachFolder(e, upperOrganizationNames) {
                 if (e.personList && e.personList.length) {
-                    const item = $('<ul/>', {class: 'organization-ul -messenger-folder'})
+                    const item = $('<ul/>', {class: 'organization-ul modal -messenger-folder', 'data-id': e.groupCode})
+                        .append(
+                            $('<div/>', {class: 'title'})
+                                .append($('<span/>', {class: '', text: e.groupName}))
+                                .append(
+                                    $('<div/>', {class: 'dot-label-wrap'})
+                                        .append($('<span/>', {class: 'dot-label'}))
+                                        .append($('<text/>', {text: 0})) /*todo: 비로그인 사용자 카운트*/
+                                        .append($('<span/>', {class: 'dot-label active'}))
+                                        .append($('<text/>', {text: 0})) /*todo: 로그인 사용자 카운트*/
+                                )
+                        )
+                        .append(
+                            $('<li/>', {class: 'belong'})
+                                .append(
+                                    $('<div/>', {class: 'user-wrap'})
+                                        .append(
+                                            $('<div/>', {class: 'ui checkbox'})
+                                                .append($('<input/>', {type: 'checkbox'})) /*todo: active 상태 기능 변경*/
+                                                .append($('<label/>', {text: hierarchicalOrganizationString(upperOrganizationNames, e.groupName)}))
+                                        )
+                                )
+                        )
+                        .appendTo(panel);
+
+                    const groupName = e.groupName;
+                    e.personList.map(function (e) {
+                        e.groupName = groupName;
+                        userToGroupNames[e.id] = groupName;
+                        attachPerson(item, e);
+                    });
+                }
+
+                const newUpperOrganizationNames = upperOrganizationNames.slice();
+                newUpperOrganizationNames.push(e.groupName);
+
+                if (e.organizationMetaChatt)
+                    e.organizationMetaChatt.map(function (e) {
+                        attachFolder(e, newUpperOrganizationNames);
+                    });
+            }
+
+            function attachPerson(container, e) {
+                let text = '';
+                if (e.extension) text += ' / 내선:' + e.extension;
+                if (e.hpNumber) text += ' / 휴대폰:' + e.hpNumber;
+                if (e.emailInfo) text += ' / 이메일:' + e.emailInfo;
+                if (text.indexOf(' / ') === 0) text = text.substr(3);
+
+                $('<li/>', {class: '-messenger-user', 'data-id': e.id, 'data-group': e.groupCode})
+                    .append(
+                        $('<div/>', {class: 'user-wrap'})
+                            .append($('<span/>', {class: 'user-icon ' + (e.isLoginChatt === 'L' ? 'active' : '')})) /*todo: 로그인변화 대응 확인*/
+                            .append($('<text/>', {text: e.idName}))
+                    )
+                    .append(
+                        $('<div/>', {class: 'btn-wrap'})
+                            .append($('<span/>', {class: 'ui mini label -consultant-status-with-color', 'data-peer': e.peer, css: {visibility: e.peer ? 'visible' : 'hidden'}}))
+                            .append($('<span/>', {class: 'user-num', text: text}))
+                    )
+                    .appendTo(container)
+                    .click(function (event) {
+                        if (event.ctrlKey) {
+                            $(this).toggleClass('active');
+
+                            if ($(this).hasClass('active')) {
+                                messenger.lastActiveRoomCreationElement = this;
+                            }
+
+                            return;
+                        }
+                        if (event.shiftKey && messenger.lastActiveRoomCreationElement) {
+                            panel.find('.-messenger-user').removeClass('active');
+                            panel.find('.-messenger-folder').removeClass('active');
+                            $(messenger.lastActiveRoomCreationElement).addClass('active');
+
+                            const _this = this;
+
+                            if (_this === messenger.lastActiveRoomCreationElement)
+                                return;
+
+                            let meetActiveElement = false;
+                            let meetMe = false;
+                            panel.find('.-messenger-user').each(function () {
+                                if (this === messenger.lastActiveRoomCreationElement) {
+                                    $(this).addClass('active');
+                                    meetActiveElement = true;
+                                } else if (this === _this) {
+                                    $(this).addClass('active');
+                                    meetMe = true;
+                                } else {
+                                    if (meetActiveElement ^ meetMe)
+                                        $(this).addClass('active');
+                                }
+                            });
+                        } else {
+                            panel.find('.-messenger-user').removeClass('active');
+                            panel.find('.-messenger-folder').removeClass('active');
+                            $(this).addClass('active');
+                            messenger.lastActiveRoomCreationElement = this;
+                        }
+                    });
+            }
+
+            response.data.map(function (e) {
+                attachFolder(e, []);
+            });
+        };
+
+        Messenger.prototype._loadOrganization = function (response) {
+            const messenger = this;
+
+            function attachFolder(e, upperOrganizationNames) {
+                if (e.personList && e.personList.length) {
+                    const item = $('<ul/>', {class: 'organization-ul -messenger-folder', 'data-id': e.groupCode})
                         .append(
                             $('<div/>', {class: 'title'})
                                 .append($('<span/>', {class: 'team-name', text: e.groupName}))
@@ -1251,7 +1191,7 @@
             }
 
             function attachPerson(container, e) {
-                $('<li/>', {class: '-messenger-user', 'data-id': e.id})
+                $('<li/>', {class: '-messenger-user', 'data-id': e.id, 'data-group': e.groupCode})
                     .append(
                         $('<div/>', {class: 'user-wrap'})
                             .append($('<span/>', {class: 'user-icon ' + (e.isLoginChatt === 'L' ? 'active' : '')})) /*todo: 로그인변화 대응 확인*/
@@ -1259,15 +1199,15 @@
                     )
                     .append(
                         $('<div/>', {class: 'btn-wrap'})
-                            .append($('<span/>', {class: 'ui mini label -consultant-status-with-color', 'data-peer': e.peer, css: {visibility: e.peer ? 'visible' : 'hidden'}})) /*todo: 초기값 세팅*/
+                            .append($('<span/>', {class: 'ui mini label -consultant-status-with-color', 'data-peer': e.peer, css: {visibility: e.peer ? 'visible' : 'hidden'}}))
                             .append(
                                 $('<div/>', {class: 'buttons'})
                                     .append($('<button/>', {type: 'button', class: 'arrow button', 'data-inverted': '', 'data-tooltip': '호전환', 'data-position': 'bottom center'}))
                                     .append($('<button/>', {type: 'button', class: 'talk ${CHATTABLE ? 'on' : 'off'} button'}))
                                     .append($('<button/>', {
                                         type: 'button', class: 'info button', 'data-inverted': '', 'data-tooltip': '정보', 'data-position': 'bottom center', click: function () {
-                                            const modal = $('#user-info-popup');
-                                            modal.find('.-field').each(function () { /*todo: groupTreeName 값있는지 확인*/
+                                            const modal = $('#user-info-modal');
+                                            modal.find('.-field').each(function () {
                                                 $(this).text(e[$(this).attr('data-name')]);
                                             });
                                             modal.dragModalShow();
@@ -1338,8 +1278,6 @@
             response.data.map(function (e) {
                 attachFolder(e, []);
             });
-
-            messenger.filterItem();
         };
 
         Messenger.prototype.loadOrganization = function () {
@@ -1420,7 +1358,7 @@
             const messenger = this;
 
             function attachFolder(container, e) {
-                const item = $('<div/>', {class: 'item -messenger-folder'})
+                const item = $('<div/>', {class: 'item -messenger-folder', 'data-id': e.groupCode})
                     .append($('<i/>', {class: 'folder icon'}))
                     .appendTo(container);
 
@@ -1453,7 +1391,7 @@
                 if (text.indexOf(' / ') === 0) text = text.substr(3);
                 const info = text !== '' ? $('<span/>', {style: 'margin-left: 1em; font-size: 90%; color: #aaa;', text: '[' + text + ']'}) : '';
 
-                $('<div/>', {class: 'item -messenger-user', 'data-id': e.id})
+                $('<div/>', {class: 'item -messenger-user', 'data-id': e.id, 'data-group': e.groupCode})
                     .append(
                         $('<div/>', {class: 'header'})
                             .append($('<i/>', {class: 'user outline icon', style: 'color: ' + (e.isLoginChatt === 'L' ? '#c60452' : 'black') + ';'}))
@@ -1763,6 +1701,7 @@
             restSelf.get('/api/chatt/', null, null, true).done(function (response) {
                 messenger._loadOrganization(response);
                 messenger._loadInvitablePersons(response);
+                messenger._loadRoomCreationOrganization(response);
             });
 
             restSelf.get('/api/auth/socket-info').done(function (response) {
