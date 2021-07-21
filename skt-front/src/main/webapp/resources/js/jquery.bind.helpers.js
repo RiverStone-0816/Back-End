@@ -41,6 +41,8 @@
             if (!$(this).attr('data-id')) return;
 
             $(this).siblings().removeClass('active');
+            $(this).siblings().find('input[type=radio]:first').prop('checked', false);
+            $(this).find('input[type=radio]:first').prop('checked', true);
 
             if ($(this).hasClass('active')) {
                 $(this).removeClass('active');
@@ -53,9 +55,13 @@
         findAndMe('.selectable tr', this).not('.ui').click(function () {
             if (!$(this).attr('data-id')) return;
 
+
             const table = $(this).closest('table');
             const entityName = table.attr('data-entity');
+
             $(this).toggleClass('active');
+            $(this).find('input[type=checkbox]:first').prop('checked', $(this).hasClass('active'));
+
             const activeTrList = table.find('tr.active');
             if (activeTrList.length > 0) {
                 $('.-control-entity[data-entity="' + entityName + '"]').show();
