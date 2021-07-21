@@ -101,7 +101,7 @@
                     <text>조직도</text>
                     <button type="button" class="ui basic mini button" onclick="messenger.popupRoomCreationOrganizationModal(true)">선택대화</button>
                 </div>
-                <div class="panel-segment-body">
+                <div class="panel-segment-body overflow-auto">
                     <div class="area" id="messenger-organization-panel"></div>
                 </div>
             </div>
@@ -140,6 +140,21 @@
     </div>
 </div>
 
+<div class="ui modal" id="invite-to-room-modal">
+    <i class="close icon"></i>
+    <div class="header">사용자 초대하기</div>
+    <div class="content">
+        <div class="organization-ul-wrap">
+            <ul class="organization-ul modal"></ul>
+        </div>
+    </div>
+    <div class="actions">
+        <span class="left-txt">선택된 조직원 <text class="-selected-user-count">0</text>명</span>
+        <button type="button" class="ui button modal-close">취소</button>
+        <button type="button" class="ui orange button modal-close" onclick="messenger.openRoom();">초대</button>
+    </div>
+</div>
+
 <%--todo: 지워질 이전 소스--%>
 <div id="messenger-modal" class="ui modal large">
     <div class="chat-container" id="messenger-room">
@@ -153,6 +168,10 @@
 <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
 <tags:scripts>
     <script>
+        function inviteToRoom() {
+            $('#invite-to-room-modal').dragModalShow();
+        }
+
         const userToGroupNames = {};
 
         const leftPanel = $('.consult-left-panel');
@@ -164,6 +183,10 @@
             } else {
                 $('.content-inner.-counsel-content-panel').removeClass('control');
             }
+        });
+
+        $('.panel-segment.favor').resizable({
+            minHeight: 32
         });
 
         $('.consult-organization-panel .panel-heading .ui.basic.button').click(function () {
@@ -599,8 +622,8 @@
             $('<li/>', {class: 'item -messenger-chat-item', 'data-id': roomId})
                 .append(
                     $('<div/>', {class: 'item-header'})
-                        .append($('<div/>', {
-                            class: 'chat-item-title -room-name', text: roomName, onclick: 'return false;', click: function () {
+                        .append($('<button/>', {
+                            class: 'chat-item-title -room-name', text: roomName, type:'button', onclick: 'return false;', click: function () {
                                 const $this = $(this);
                                 prompt('채팅방 이름 변경').done(function (text) {
                                     text = text.trim();

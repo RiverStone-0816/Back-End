@@ -529,7 +529,7 @@ pre {
     .ui.button {
       border-radius: 10px;
       margin: 0 0 0 10px;
-      font-size: 14px;
+      font-size: @font-size-xsmall;
       font-weight: 500;
       color: darken(@color-gray, 30%);
       padding: 8px 11px;
@@ -816,6 +816,13 @@ pre {
     width: 33%;
   }
 }
+.room-title {
+  cursor: pointer;
+  outline: 0;
+  border: 0;
+  background: transparent;
+  color: @color-white;
+}
 #modal-messenger-room {
   width: 430px;
   .content {
@@ -893,6 +900,7 @@ pre {
       background: #dce6f2;
       overflow: auto;
       height: 100%;
+      padding: 10px 0 0 0;
       .event-txt {
         background: #616B77;
         color: @color-white;
@@ -1087,6 +1095,8 @@ pre {
         position: relative;
         padding: 3px;
         .chat-item-title {
+          outline: 0;
+          border: 0;
           background: #808080;
           color: @color-white;
           display: inline-block;
@@ -1165,7 +1175,7 @@ pre {
   }
 }
 
-#room-creation-organization-modal {
+#room-creation-organization-modal, #invite-to-room-modal {
   width: 495px;
 }
 
@@ -1543,19 +1553,18 @@ pre {
         overflow: hidden;
         .flex();
         flex-flow: column;
-        .panel-segment.favor {
-          height: 30%;
+        .panel-segment {
           .panel-segment-body {
-            height: 100%;
-            overflow: auto;
+            height: ~"calc(100% - 32px)";
           }
         }
+        .panel-segment.favor {
+          overflow: hidden;
+        }
         .panel-segment.list {
-          height: 70%;
-          .panel-segment-body {
-            height: 100%;
-            overflow: auto;
-          }
+          overflow: auto;
+          flex: 1;
+          height: 100%;
         }
       }
       .panel-segment {
@@ -1582,7 +1591,7 @@ pre {
           background: @color-white !important;
         }
         .panel-segment-header {
-          position: absolute;
+
           top: -2px;
           z-index: 3;
           width: 100%;
@@ -1594,7 +1603,7 @@ pre {
         }
         .panel-segment-body {
           .area {
-            margin: 37px 0 0 0;
+            margin: 10px 0;
           }
         }
       }
@@ -5342,7 +5351,6 @@ g {
     height: 2em;
 
     .buttons {
-      display: -webkit-inline-box;
       display: -ms-inline-flexbox;
       display: inline-flex;
       visibility: hidden;

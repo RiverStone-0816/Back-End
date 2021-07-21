@@ -16,7 +16,7 @@
 
 <div class="ui modal tiny" id="modal-messenger-room">
     <i class="close icon -close-room"></i>
-    <div class="header"><span style="cursor: pointer;" class="-chatroom-name">대화방이름</span></div>
+    <div class="header"><button type="button" class="room-title -chatroom-name">대화방이름</button></div>
     <div class="content">
         <div class="organi-chat-room-container">
             <div class="organi-chat-room-header">
@@ -34,7 +34,7 @@
                         <button type="button" class="-move-to-prev-text"><img src="<c:url value="/resources/images/chat-search-up.svg"/>" alt="이전 검색단어"></button>
                         <button type="button" class="-move-to-next-text"><img src="<c:url value="/resources/images/chat-search-down.svg"/>" alt="다음 검색단어"></button>
                         <button type="button" class="-upload-file"><img src="<c:url value="/resources/images/chat-file.svg"/>" alt="파일 전송"></button>
-                        <button type="button" class="-invite-to-room"><img src="<c:url value="/resources/images/chat-user-add.svg"/>" alt="초대"></button>
+                        <button type="button" class="-invite-to-room" onclick="inviteToRoom()"><img src="<c:url value="/resources/images/chat-user-add.svg"/>" alt="초대"></button>
                         <button type="button" class="-leave-room"><img src="<c:url value="/resources/images/chat-exit.svg"/>" alt="나가기"></button>
                     </div>
                 </div>
@@ -60,6 +60,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
     function hideInvitationPanel() {
