@@ -65,198 +65,30 @@
         </div>
     </div>
     <div class="actions">
-        <span class="left-txt">선택된 조직원 00명</span><%--todo--%>
+        <span class="left-txt">선택된 조직원 <text><%--todo--%>0</text>명</span>
         <button type="button" class="ui button modal-close">취소</button>
-        <button type="button" class="ui orange button modal-close" onclick="messenger.openRoom()">생성</button>
-    </div>
-</div>
-
-<%--채팅방--%>
-<div class="ui modal tiny" id="organi-chat-room-popup">
-    <i class="close icon"></i>
-    <div class="header"><span style="cursor:pointer" onclick="chatTitleModifyBtn()">대화방이름</span></div>
-    <div class="content">
-        <div class="organi-chat-room-container">
-            <div class="organi-chat-room-header">
-                <div class="default-inner">
-                    <div class="search-wrap">
-                        <div class="ui icon input">
-                            <input type="text">
-                            <i class="search link icon"></i>
-                        </div>
-                        <div class="search-count">
-                            0 / 0
-                        </div>
-                    </div>
-                    <div class="btn-wrap">
-                        <button type="button"><img src="<c:url value="/resources/images/chat-search-up.svg"/>"></button>
-                        <button type="button"><img src="<c:url value="/resources/images/chat-search-down.svg"/>"></button>
-                        <button type="button"><img src="<c:url value="/resources/images/chat-file.svg"/>"></button>
-                        <button type="button"><img src="<c:url value="/resources/images/chat-user-add.svg"/>"></button>
-                        <button type="button"><img src="<c:url value="/resources/images/chat-exit.svg"/>"></button>
-                    </div>
-                </div>
-                <div class="modify-inner">
-                    <div class="input-wrap">
-                        <div class="ui fluid input">
-                            <input type="text">
-                        </div>
-                    </div>
-                    <div class="btn-wrap">
-                        <div class="ui button">취소</div>
-                        <div class="ui brand button">변경</div>
-                    </div>
-                </div>
-            </div>
-            <div class="organi-chat-room-content">
-                <div class="chat-body">
-                    <p class="event-txt">[00-00 00:00] 이벤트 문구</p>
-                    <div class="chat-item">
-                        <div class="wrap-content">
-                            <div class="txt-segment">
-                                <div class="txt-time">
-                                    참여자 [00-00 00:00]
-                                </div>
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <div class="txt_chat">대화내용대화내용대화내용</div>
-                                        <span class="count">3</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chat-item">
-                        <div class="wrap-content">
-                            <div class="txt-segment">
-                                <div class="txt-time">
-                                    참여자 [00-00 00:00]
-                                </div>
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <div class="txt_chat">
-                                            <div class="file-wrap"><img src="<c:url value="/resources/images/chat-folder.svg"/>">첨부파일이름첨부파일이름.zip</div>
-                                            <div class="file-size-wrap">용량 : 1563.KB</div>
-                                        </div>
-                                        <span class="count">3</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chat-item">
-                        <div class="wrap-content">
-                            <div class="txt-segment">
-                                <div class="txt-time">
-                                    참여자 [00-00 00:00]
-                                </div>
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <div class="txt_chat">
-                                            <div class="file-wrap"><img src="<c:url value="/resources/images/chat-audio.svg"/>">첨부파일이름첨부파일이름.mp3</div>
-                                            <div class="file-size-wrap">용량 : 1563.KB</div>
-                                        </div>
-                                        <span class="count">3</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chat-item">
-                        <div class="wrap-content">
-                            <div class="txt-segment">
-                                <div class="txt-time">
-                                    참여자 [00-00 00:00]
-                                </div>
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <div class="txt_chat"><img src="">
-                                        </div>
-                                        <span class="count">3</span>
-                                    </div>
-                                </div>
-                                <div class="save">
-                                    <a href="#">저장하기</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chat-item chat-me">
-                        <div class="wrap-content">
-                            <div class="txt-segment">
-                                <div class="txt-time">
-                                    참여자 [00-00 00:00]
-                                </div>
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <div class="txt_chat"><img src="">
-                                        </div>
-                                        <span class="count">3</span>
-                                    </div>
-                                </div>
-                                <div class="save">
-                                    <a href="#">저장하기</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chat-item chat-me">
-                        <div class="wrap-content">
-                            <div class="txt-segment">
-                                <div class="txt-time">
-                                    참여자 [00-00 00:00]
-                                </div>
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <div class="txt_chat">대화내용대화내용대화내용</div>
-                                        <span class="count">99</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="chat-item system">
-                        <div class="wrap-content">
-                            <div class="txt-segment">
-                                <div class="txt-time">
-                                    시스템 [00-00 00:00]
-                                </div>
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <div class="txt_chat">대화내용대화내용대화내용대화내용대화내용대화내용대화내용대화내용대화내용대화내용</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="write-chat">
-                    <textarea></textarea>
-                    <button class="send-btn">전송</button>
-                </div>
-            </div>
-        </div>
+        <button type="button" class="ui orange button modal-close" onclick="messenger.openRoom();">생성</button>
     </div>
 </div>
 
 <div class="consult-left-panel">
     <div class="panel consult-organization-panel full-height">
-        <div class="panel-heading">조직도
+        <div class="panel-heading">
+            <text>조직도</text>
             <div class="btn-wrap">
                 <button type="button" class="ui basic button" id="organi-state">현황</button>
                 <button type="button" class="ui basic button" id="organi-room">
                     <text class="message-indicator">0</text>
-                    대화방
+                    <text>대화방</text>
                 </button>
             </div>
             <div class="state-header">현황</div>
             <button class="state-header-close"></button>
         </div>
         <div class="panel-body remove-pl remove-pr">
-
             <div class="panel-segment favor">
                 <div class="panel-segment-header">
-                    즐겨찾기
+                    <text>즐겨찾기</text>
                     <button type="button" class="ui basic mini button" onclick="messenger.popupBookmarkModal()">편집</button>
                 </div>
                 <div class="panel-segment-body overflow-auto">
@@ -268,7 +100,7 @@
 
             <div class="panel-segment list">
                 <div class="panel-segment-header">
-                    조직도
+                    <text>조직도</text>
                     <button type="button" class="ui basic mini button" onclick="messenger.popupRoomCreationOrganizationModal(true)">선택대화</button>
                 </div>
                 <div class="panel-segment-body">
@@ -280,20 +112,21 @@
     <div class="organi-pop-wrap">
         <div class="organi-pop-second">
             <div class="panel full-height">
-                <div class="panel-heading">조직 대화방
+                <div class="panel-heading">
+                    <text>조직 대화방</text>
                     <button type="button" class="panel-close"></button>
                 </div>
                 <div class="panel-body full-height remove-padding">
                     <div class="pd10 panel-border-bottom">
                         <div class="ui fluid icon input">
-                            <input type="text" placeholder="검색어 입력">
+                            <input id="messenger-filter-text" type="text" placeholder="검색어 입력" onkeyup="messenger.filterItem(); return false;"/>
                             <i class="search link icon"></i>
                         </div>
                     </div>
                     <div class="pd10 full-height">
                         <div class="organization-chat-list-wrap">
                             <div class="chat-list-header">
-                                조직 대화방 목록
+                                <text>조직 대화방 목록</text>
                                 <button type="button" class="ui basic right floated button" onclick="messenger.popupRoomCreationOrganizationModal()">추가</button>
                             </div>
                             <div class="chat-list-body">
@@ -309,63 +142,12 @@
     </div>
 </div>
 
-<div id="messenger-modal" class="ui modal large" style="width: 500px;">
-    <i class="close icon"></i>
-    <div class="header">메신저</div>
-
-    <div class="content rows">
-        <div class="ui fluid icon input mb15">
-            <input id="messenger-filter-text" placeholder="검색" onkeyup="messenger.filterItem(); return false;"/>
-            <i class="search icon"></i>
-        </div>
-    </div>
-    <div id="messenger-control-panel" class="actions">
-        <button type="button" class="ui button blue" onclick="messenger.openRoom()">대화방 열기</button>
-    </div>
-
+<%--todo: 지워질 이전 소스--%>
+<div id="messenger-modal" class="ui modal large">
     <div class="chat-container" id="messenger-room">
-        <div class="room">
-            <div class="chat-header" title="">
-                <button type="button" class="ui mini compact icon button -toggle-invitation-panel">
-                    <i class="user plus icon"></i>
-                </button>
-                <text class="-chatroom-name"></text>
-                <i class="x icon -close-room" style="position: absolute; right: 10px; top: 10px;"></i>
-            </div>
-            <div class="chat-body -overlay-scroll" style="height: calc(100% - 170px);"></div>
-            <div class="write-chat">
-                <div class="write-menu">
-                    <button type="button" class="mini ui button icon compact -upload-file" title="파일전송"><i class="paperclip icon"></i></button>
-
-                    <div class="ui small action input">
-                        <input type="text" placeholder="Search...">
-                        <button class="ui icon button -search-text">
-                            <i class="search icon"></i>
-                        </button>
-                    </div>
-
-                    <text data-total="0" data-index="0" class="-text-count" style="margin-right: 0.5em;">0/0</text>
-                    <button type="button" class="mini ui button icon compact -move-to-prev-text"><i class="angle up icon"></i></button>
-                    <button type="button" class="mini ui button icon compact -move-to-next-text"><i class="angle down icon"></i></button>
-                    <button type="button" class="mini ui button compact pull-right -leave-room" style="margin-top: 3px;">나가기</button>
-
-                </div>
-                <div class="wrap-inp">
-                    <div class="inp-box">
-                        <textarea id="messenger-message" placeholder="전송하실 메시지를 입력하세요."></textarea>
-                    </div>
-                    <button type="button" class="send-btn" onclick="messenger.sendMessage()">전송</button>
-                </div>
-            </div>
-        </div>
-        <div class="invitation-panel"
-             style="display: none; position: absolute; top: 44px; bottom: 180px; left: 1px; width: 400px; background: rgba(255,255,255,0.9); padding: 15px; overflow: hidden; z-index: 1;">
-            <div class="" style="position: absolute; top: 15px; left: 15px; right: 0; bottom: 30px; overflow: auto;">
-                <div id="messenger-room-members"></div>
-                <div class="organization-panel ui list"></div>
-            </div>
-            <button type="button" class="ui button mini compact -invite-to-room" style="position: absolute; bottom: 1px; right: 55px;">초대</button>
-            <button type="button" class="ui button mini compact -hide-panel" style="position: absolute; bottom: 1px; right: 1px;">닫기</button>
+        <div class="invitation-panel">
+            <div id="messenger-room-members"></div>
+            <div class="organization-panel ui list"></div>
         </div>
     </div>
 </div>
@@ -375,10 +157,11 @@
     <script>
         const userToGroupNames = {};
 
+        const leftPanel = $('.consult-left-panel');
         $('#organi-state').click(function () {
-            $('.consult-left-panel').toggleClass('wide');
+            leftPanel.toggleClass('wide');
             $('.consult-wrapper .consult-center-panel').toggleClass('control');
-            if ($('.consult-left-panel').hasClass('wide') === true) {
+            if (leftPanel.hasClass('wide') === true) {
                 $('.content-inner.-counsel-content-panel').addClass('control');
             } else {
                 $('.content-inner.-counsel-content-panel').removeClass('control');
@@ -403,12 +186,12 @@
         }
 
         function organiChatRoom() {
-            $('#organi-chat-room-popup').dragModalShow();
+            $('#modal-messenger-room').dragModalShow();
         }
 
         $('.consult-organization-panel .state-header-close').click(function () {
             $('.consult-organization-panel #organi-state').removeClass('active');
-            $('.consult-left-panel').removeClass('wide');
+            leftPanel.removeClass('wide');
             $('.consult-wrapper .consult-center-panel').removeClass('control');
         });
 
@@ -418,19 +201,13 @@
         });
 
         $('#organi-room').click(function () {
-            <c:choose>
-            <c:when test="${CHATTABLE}">
-            if ($('.consult-left-panel').hasClass('wide') === true) {
-
-            } else {
-
-            }
+            <c:if test="${CHATTABLE}">
             $('.organi-pop-second').toggle();
-            </c:when>
-            <c:otherwise>
+            </c:if>
+
+            <c:if test="${!CHATTABLE}">
             alert('메신저 라이센스가 없습니다.');
-            </c:otherwise>
-            </c:choose>
+            </c:if>
         });
 
         function Messenger() {
@@ -440,19 +217,12 @@
             messenger.accessToken = '${g.escapeQuote(accessToken)}';
 
             messenger.ui = {
-                modal: $('#messenger-modal'),
                 filterInput: $('#messenger-filter-text'),
                 organizationPanel: $('#messenger-organization-panel'),
                 bookmarkPanel: $('#messenger-bookmark-panel'),
                 chatContainer: $('#messenger-chat-container'),
-                messageInput: $('#messenger-message'),
                 roomCreationOrganizationPanel: $('#room-creation-organization-panel'),
             };
-            messenger.ui.room = $('#messenger-room');
-            messenger.ui.roomName = messenger.ui.room.find('.-chatroom-name');
-            messenger.ui.invitationPanel = messenger.ui.room.find('.organization-panel');
-            messenger.ui.searchingTextCountExpression = messenger.ui.room.find('.-text-count');
-            messenger.ui.roomMembers = $('#messenger-room-members');
 
             function receiveMessage(data) {
                 const roomId = data.room_id;
@@ -537,7 +307,7 @@
                         if (messenger.currentRoom && messenger.currentRoom.id === roomId)
                             messenger.closeRoom();
 
-                        messenger.ui.modal.find('.-messenger-chat-item').filter(function () {
+                        messenger.ui.chatContainer.find('.-messenger-chat-item').filter(function () {
                             return $(this).attr('data-id') === roomId;
                         }).remove();
                     } else {
@@ -561,7 +331,7 @@
                     const roomId = data.room_id;
                     messenger.rooms[roomId].roomName = data.change_room_name;
 
-                    const chattingRoomElement = messenger.ui.modal.find('.-messenger-chat-item').filter(function () {
+                    const chattingRoomElement = messenger.ui.chatContainer.find('.-messenger-chat-item').filter(function () {
                         return $(this).attr('data-id') === roomId;
                     });
                     chattingRoomElement.find('.-room-name').text(messenger.rooms[roomId].roomName);
@@ -595,7 +365,7 @@
             restSelf.get('/api/chatt/' + roomId, null, null, true).done(function (response) {
                 messenger._inputRoomInfo(response.data);
 
-                const chattingRoomElement = messenger.ui.modal.find('.-messenger-chat-item').filter(function () {
+                const chattingRoomElement = messenger.ui.chatContainer.find('.-messenger-chat-item').filter(function () {
                     return $(this).attr('data-id') === roomId;
                 });
                 chattingRoomElement.find('.-room-name').text(messenger.rooms[roomId].roomName);
@@ -673,7 +443,8 @@
             if (!users.length)
                 return alert('선택된 사용자가 없습니다.');
 
-            users.push(messenger.me);
+            if (users.indexOf(messenger.me) < 0)
+                users.push(messenger.me);
 
             restSelf.post('/api/chatt/', {memberList: users}).done(function (response) {
                 messenger.loadRoom(response.data);
@@ -696,38 +467,45 @@
                     return $('<div/>', {class: '-chat-message -ignored-message', 'data-id': messageId, 'data-time': time});
 
                 if (['SE', 'RE'].indexOf(sendReceive) >= 0)
-                    return $('<p/>', {class: 'info-msg -chat-message -system-message ', text: '[' + timeString + '] ' + contents, 'data-id': messageId, 'data-time': time});
+                    return $('<div/>', {class: 'event-txt -chat-message -system-message', text: '[' + timeString + '] ' + contents, 'data-id': messageId, 'data-time': time});
 
                 if (['AF', 'S', 'R'].indexOf(sendReceive) >= 0) {
-                    if (messageType === 'info') {
-                        return $('<p/>', {class: 'info-msg -chat-message -system-message ', text: '[' + timeString + '] ' + contents, 'data-id': messageId, 'data-time': time});
-                    }
-
-                    const item = $('<div/>', {class: 'chat-item -chat-message ' + (myMessage ? 'chat-me' : ''), 'data-id': messageId, 'data-time': time});
-                    const contentInfo = messageType !== 'info' ? $('<div/>', {class: 'txt-time', text: '[' + username + '] ' + timeString}) : '';
-                    const content = $('<div/>', {class: 'wrap-content'}).appendTo(messageType === 'info' ? item.css('display', 'inline') : item)
-                        .append(contentInfo);
-
-                    const url = $.addQueryString(contents, {token: messenger.accessToken});
-
-                    const chat = $('<div class="chat">').appendTo(content);
-                    const bubble = $('<div class="bubble">')
-                        .append($('<div/>', {class: 'outer-unread-count', text: unreadCount || ''}))
-                        .appendTo(chat);
+                    const item = $('<div/>', {
+                        class: 'chat-item -chat-message ' + (messageType === 'info' ? 'system -system-message ' : '') + (myMessage ? 'chat-me' : ''),
+                        'data-id': messageId,
+                        'data-time': time
+                    });
+                    const wrapContent = $('<div/>', {class: 'wrap-content'}).appendTo(item);
+                    const txtSegment = $('<div/>', {class: 'txt-segment'}).appendTo(wrapContent)
+                        .append($('<div/>', {class: 'txt-time', text: '[' + (messageType === 'info' ? '시스템' : username) + '] ' + timeString}));
+                    const chat = $('<div class="chat">').appendTo(txtSegment);
+                    const bubble = $('<div class="bubble">').appendTo(chat)
+                        .append($('<span/>', {class: 'count -unread-count', text: unreadCount || ''}));
+                    const txtChat = $('<div class="txt-chat">').appendTo(bubble);
 
                     if (messageType === 'file') {
                         const split = /^([^|]+)\|([^|]+)\|([^|]+)\|([^|]+)$/.exec(contents);
-                        const url2 = $.addQueryString(split && split[4] || '', {token: messenger.accessToken});
+                        // const url = $.addQueryString(contents, {token: messenger.accessToken});
+                        const url = $.addQueryString(split && split[4] || '', {token: messenger.accessToken});
 
                         if (split[1].endsWith('g'))
-                            bubble.append('<p class="txt_chat"><img src="' + url2 + '"></p>');
+                            txtChat.append($('<img/>', {src: url}));
                         else if (split[1].contains('wav') || split[1].contains('mp'))
-                            bubble.append('<p class="txt_chat"><audio controls src="' + url2 + '" style="height: 35px;"></audio></p>');
+                            txtChat.append($('<audio/>', {controls: 'controls', src: url, css: {height: '35px'}}));
                         else
-                            bubble.append('<p class="txt_chat"><a href="' + url2 + '" target="_blank"><i class="paperclip icon"></i> ' + (split && split[2] || '') + '<p style="opacity: 50%; font-size: smaller; padding: 0 0.5em 1em;"> 용량: ' + (split && split[3] || '') + '</p></a></p>');
-                        content.append('<a href="' + url2 + '" target="_blank">저장하기</a>');
+                            txtChat.append(
+                                $('<a/>', {href: url, target: '_blank'})
+                                    .append('<i class="paperclip icon"></i>')
+                                    .append($('<text/>', {text: ' ' + (split && split[2] || '')}))
+                                    .append('<div style="opacity: 50%; font-size: smaller; padding: 0 0.5em 1em;">')
+                                    .append($('<text/>', {text: ' ' + (split && split[3] || '')}))
+                            )
+                        $('<a/>', {href: url, target: '_blank'})
+                            .append($('<i/>', {class: 'file icon'}))
+                            .append($('<text/>', {text: '저장하기'}))
+                            .appendTo(txtSegment);
                     } else {
-                        bubble.append('<p class="txt_chat">' + htmlQuote(contents) + '</p>');
+                        txtChat.text(contents);
                     }
 
                     return item;
@@ -738,7 +516,7 @@
                     .append($('<text/>', {text: contents}));
             })();
 
-            const chatBody = messenger.ui.room.find('.chat-body .os-content');
+            const chatBody = messenger.ui.room.find('.chat-body');
 
             if (messenger.currentRoom.startMessageTime >= time) {
                 messenger.currentRoom.startMessageTime = time;
@@ -749,7 +527,7 @@
                 messenger.currentRoom.endMessageId = messageId;
                 chatBody.append(item);
 
-                const scrollBody = messenger.ui.room.find('.chat-body .os-viewport');
+                const scrollBody = messenger.ui.room.find('.chat-body');
                 scrollBody.scrollTop(scrollBody[0].scrollHeight);
             } else {
                 (function () {
@@ -779,6 +557,8 @@
         Messenger.prototype._appendChatListItem = function (roomId) {
             const messenger = this;
 
+            console.log(messenger.rooms[roomId])
+
             const roomName = messenger.rooms[roomId].roomName;
             const lastMsg = messenger.rooms[roomId].lastMsg;
             const lastTime = messenger.rooms[roomId].lastTime;
@@ -786,10 +566,10 @@
 
             const timeString = moment(lastTime).format('MM-DD HH:mm');
 
-            const existChatItem = messenger.ui.modal.find('.-messenger-chat-item').filter(function () {
+            const existChatItem = messenger.ui.chatContainer.find('.-messenger-chat-item').filter(function () {
                 return $(this).attr('data-id') === roomId;
             });
-            messenger.ui.roomName.text(roomName);
+            // messenger.ui.roomName.text(roomName); // todo: 이 구문이 왜 필요하지??
 
             if (existChatItem.length > 0) {
                 existChatItem.find('.-room-name').text(roomName);
@@ -824,8 +604,8 @@
                 .append(
                     $('<div/>', {class: 'item-content'})
                         .append(
-                            $('<div/>', {class: 'last-chat', text: lastMsg})
-                                .append($('<img/>', {src: '<c:url value="/resources/images/chat-system.svg"/>'}))
+                            $('<div/>', {class: 'last-chat'})
+                                // .append($('<img/>', {src: '<c:url value="/resources/images/chat-system.svg"/>'}))
                                 .append($('<text/>', {class: '-last-message', text: lastMsg}))
                         )
                         .append($('<div/>', {class: 'last-time -last-message-time', text: timeString, 'data-value': lastTime}))
@@ -839,40 +619,12 @@
             const messenger = this;
 
             const text = messenger.ui.filterInput.val().trim();
-            messenger.ui.modal.find('.-messenger-chat-item,.-messenger-bookmark').each(function () {
+            messenger.ui.chatContainer.find('.-messenger-chat-item').each(function () {
                 if ($(this).text().indexOf(text) >= 0) {
                     $(this).show();
                 } else {
                     $(this).hide();
                 }
-            });
-
-            messenger.ui.organizationPanel.find('.-messenger-folder').show().filter(function () {
-                return $(this).parent()[0] === messenger.ui.organizationPanel[0];
-            }).each(function () {
-                function renderAndReturnContainsText(element) {
-                    let containsText = false;
-
-                    if (element.hasClass('-messenger-folder')) {
-                        containsText = element.children('.content').children('.header').text().indexOf(text) >= 0;
-
-                        element.children('.content').children('.list').children().map(function () {
-                            containsText |= renderAndReturnContainsText($(this));
-                        });
-                    } else {
-                        containsText = element.text().indexOf(text) >= 0;
-                    }
-
-                    if (containsText) {
-                        element.show();
-                        return true;
-                    } else {
-                        element.hide();
-                        return false;
-                    }
-                }
-
-                renderAndReturnContainsText($(this));
             });
         };
         // 떠다니는 버튼 옆에 안 읽은 메세지 총 갯수를 적는다.
@@ -883,15 +635,16 @@
             values(messenger.rooms).map(function (e) {
                 unreadCount += e.unreadMessageTotalCount;
             });
-            $('.message-indicator').show().text(unreadCount);
+            const indicator = $('.message-indicator');
+            indicator.show().text(unreadCount);
             if (!unreadCount)
-                $('.message-indicator').hide();
+                indicator.hide();
         };
         Messenger.prototype._sortChatListItem = function () {
             const messenger = this;
 
             let items = [];
-            messenger.ui.modal.find('.-messenger-chat-item').detach().each(function () {
+            messenger.ui.chatContainer.find('.-messenger-chat-item').detach().each(function () {
                 items.push($(this));
             });
             items.sort(function (a, b) {
@@ -921,20 +674,15 @@
         Messenger.prototype.closeRoom = function () {
             const messenger = this;
 
-            messenger.ui.modal.removeClass('show-room');
-
-            (function reduceWidth() {
-                setTimeout(function () {
-                    if (!messenger.ui.room.is(':hidden'))
-                        return reduceWidth();
-                    messenger.ui.modal.css('width', messenger.ui.modal.width() / 2);
-                }, 10);
-            })();
-
             messenger.clearSearching();
             delete messenger.currentRoom;
-            messenger.ui.room.find('.-chat-message').remove();
-            messenger.ui.room.find('.-chatroom-name').text('');
+
+            delete messenger.ui.room.remove();
+            delete messenger.ui.roomName;
+            delete messenger.ui.searchingTextCountExpression;
+            delete messenger.ui.messageInput;
+            delete messenger.ui.invitationPanel;
+            delete messenger.ui.roomMembers;
         };
         Messenger.prototype.loadRooms = function () {
             const messenger = this;
@@ -1291,70 +1039,62 @@
         Messenger.prototype.loadRoom = function (roomId) {
             const messenger = this;
 
-            const hasClass = messenger.ui.modal.hasClass('show-room');
-            messenger.ui.modal.addClass('show-room');
+            popupDraggableModalFromReceivedHtml('/modal-messenger-room/' + roomId, 'modal-messenger-room').done(function () {
+                messenger.ui.room = $('#modal-messenger-room');
+                messenger.ui.roomName = messenger.ui.room.find('.-chatroom-name');
+                messenger.ui.searchingTextCountExpression = messenger.ui.room.find('.-text-count');
+                messenger.ui.messageInput = messenger.ui.room.find('.-messenger-message');
+                messenger.ui.invitationPanel = messenger.ui.room.find('.organization-panel');  // todo
+                messenger.ui.roomMembers = $('#messenger-room-members');   // todo
 
-            (function extendWidth() {
-                if (hasClass)
-                    return;
+                restSelf.get('/api/chatt/' + roomId + '/chatting', {limit: messenger.READ_LIMIT}).done(function (response) {
+                    messenger.ui.room.find('.-chat-message').remove();
 
-                setTimeout(function () {
-                    if (messenger.ui.room.is(':hidden'))
-                        return extendWidth();
-                    messenger.ui.modal.css('width', Math.min($(window).width(), messenger.ui.modal.width() * 2));
-                }, 10);
-            })();
+                    const entity = response.data;
+                    messenger._inputRoomInfo(entity, 0);
+                    messenger._showMessageIndicator();
 
-            restSelf.get('/api/chatt/' + roomId + '/chatting', {limit: messenger.READ_LIMIT}).done(function (response) {
+                    messenger.currentRoom = {
+                        id: roomId,
+                        roomName: entity.roomName,
+                        members: {},
+                        messages: {},
+                        searchingMessage: null,
+                        searchingMessages: [],
+                        startMessageTime: entity.chattingMessages.length > 0 ? entity.chattingMessages[0].insertTime : null,
+                        startMessageId: entity.chattingMessages.length > 0 ? entity.chattingMessages[0].messageId : null,
+                        endMessageTime: entity.chattingMessages.length > 0 ? entity.chattingMessages[entity.chattingMessages.length - 1].insertTime : null,
+                        endMessageId: entity.chattingMessages.length > 0 ? entity.chattingMessages[entity.chattingMessages.length - 1].messageId : null,
+                    };
 
-                messenger.ui.room.find('.-chat-message').remove();
+                    entity.chattingMembers.map(function (e) {
+                        messenger.currentRoom.members[e.userid] = e;
+                    });
 
-                const entity = response.data;
-                messenger._inputRoomInfo(entity, 0);
-                messenger._showMessageIndicator();
+                    messenger.showRoomTitle();
 
-                messenger.currentRoom = {
-                    id: roomId,
-                    roomName: entity.roomName,
-                    members: {},
-                    messages: {},
-                    searchingMessage: null,
-                    searchingMessages: [],
-                    startMessageTime: entity.chattingMessages.length > 0 ? entity.chattingMessages[0].insertTime : null,
-                    startMessageId: entity.chattingMessages.length > 0 ? entity.chattingMessages[0].messageId : null,
-                    endMessageTime: entity.chattingMessages.length > 0 ? entity.chattingMessages[entity.chattingMessages.length - 1].insertTime : null,
-                    endMessageId: entity.chattingMessages.length > 0 ? entity.chattingMessages[entity.chattingMessages.length - 1].messageId : null,
-                };
+                    entity.chattingMessages.sort(function (a, b) {
+                        return a.insertTime - b.insertTime;
+                    });
 
-                entity.chattingMembers.map(function (e) {
-                    messenger.currentRoom.members[e.userid] = e;
+                    entity.chattingMessages.map(function (e) {
+                        messenger._appendMessage(e.roomId, e.messageId, e.insertTime, e.type, e.sendReceive, e.content, e.userid, e.userName, e.unreadMessageCount);
+                    });
+
+                    const scrollBody = messenger.ui.room.find('.chat-body');
+                    scrollBody.scrollTop(scrollBody[0].scrollHeight);
+
+                    if (messenger.currentRoom.endMessageId)
+                        messenger.communicator.confirmMessage(messenger.currentRoom.id, messenger.currentRoom.endMessageId);
+                }).done(function () {
+                    messenger.ui.chatContainer.find('.-messenger-chat-item').filter(function () {
+                        return $(this).attr('data-id') === roomId;
+                    }).find('.-unread-message').text(0);
+                    messenger._showMessageIndicator();
                 });
-
-                messenger.showRoomTitle();
-
-                entity.chattingMessages.sort(function (a, b) {
-                    return a.insertTime - b.insertTime;
-                });
-
-                entity.chattingMessages.map(function (e) {
-                    messenger._appendMessage(e.roomId, e.messageId, e.insertTime, e.type, e.sendReceive, e.content, e.userid, e.userName, e.unreadMessageCount);
-                });
-
-                const scrollBody = messenger.ui.room.find('.chat-body .os-viewport');
-                scrollBody.scrollTop(scrollBody[0].scrollHeight);
-
-                if (messenger.currentRoom.endMessageId)
-                    messenger.communicator.confirmMessage(messenger.currentRoom.id, messenger.currentRoom.endMessageId);
-
-
-            }).done(function () {
-                messenger.ui.modal.find('.-messenger-chat-item').filter(function () {
-                    return $(this).attr('data-id') === roomId;
-                }).find('.-unread-message').text(0);
-                messenger._showMessageIndicator();
             });
         };
-        Messenger.prototype._loadInvitablePersons = function (response) {
+        Messenger.prototype._loadInvitablePersons = function (response) { // todo
             const messenger = this;
 
             function attachFolder(container, e) {
@@ -1381,8 +1121,7 @@
             }
 
             function attachPerson(container, e) {
-                /*if (memberIds.indexOf(e.id) >= 0)
-                    return;*/
+                // if (memberIds.indexOf(e.id) >= 0) return;
 
                 let text = '';
                 if (e.extension) text += ' / 내선:' + e.extension;
@@ -1425,8 +1164,8 @@
             if (messenger.currentRoom) {
                 messenger.currentRoom.searchingMessage = null;
                 messenger.currentRoom.searchingMessages = [];
-                messenger.ui.searchingTextCountExpression.attr('data-total', 0).text('0/0');
-                $('.-chat-message').removeClass('active');
+                messenger.ui.searchingTextCountExpression.attr('data-total', 0).text('0 / 0');
+                messenger.ui.room.find('.-chat-message').removeClass('active');
             }
         };
         Messenger.prototype.loadMessages = function (option) {
@@ -1464,12 +1203,12 @@
             index = (index + total) % total;
             if (total === 0 || isNaN(index)) {
                 parseInt(messenger.ui.searchingTextCountExpression.attr('data-index', 0));
-                messenger.ui.searchingTextCountExpression.text('0/0');
+                messenger.ui.searchingTextCountExpression.text('0 / 0');
                 return;
             }
 
             messenger.ui.searchingTextCountExpression.attr('data-index', index + 1);
-            messenger.ui.searchingTextCountExpression.text((index + 1) + '/' + total);
+            messenger.ui.searchingTextCountExpression.text((index + 1) + ' / ' + total);
             const messageId = messenger.currentRoom.searchingMessages[index].messageId;
             // const messageTime = messenger.currentRoom.searchingMessages[index].messageTime;
 
@@ -1477,7 +1216,7 @@
                 return messageId === $(this).attr('data-id');
             });
             if (messageElement.length > 0)
-                return messageElement.addClass('active').closest('.os-viewport').animate({scrollTop: messageElement.position().top}, 400);
+                return messageElement.addClass('active').closest('.chat-body').animate({scrollTop: messageElement.position().top}, 400);
 
             messenger.loadMessages({
                 endMessageId: messageId,
@@ -1487,7 +1226,7 @@
                     return messageId === $(this).attr('data-id');
                 });
                 if (messageElement.length > 0)
-                    messageElement.addClass('active').closest('.os-viewport').animate({scrollTop: messageElement.position().top}, 400);
+                    messageElement.addClass('active').closest('.chat-body').animate({scrollTop: messageElement.position().top}, 400);
             });
         };
         // 대화방 안에서의 안읽은 메세지 카운트 갱신
@@ -1504,13 +1243,13 @@
                     : (messenger.currentRoom.startMessageTime || 0) - 1;
             });
 
-            messenger.ui.room.find('.chat-item').each(function () {
+            messenger.ui.room.find('.-chat-message').each(function () {
                 const messageId = $(this).attr('data-id');
                 const message = messenger.currentRoom.messages[messageId];
                 if (!message)
                     throw 'ui에 표시된 message인데, 정보가 없다는 건 messages 관리하는 로직에 문제가 있다는 뜻.';
 
-                $(this).find('.outer-unread-count').text(memberIds.filter(function (userid) {
+                $(this).find('.-unread-count').text(memberIds.filter(function (userid) {
                     return lastReadMessageTimesOfEachMember[userid] < message.insertTime;
                 }).length || '');
             });
@@ -1518,182 +1257,6 @@
 
         Messenger.prototype.init = function () {
             const messenger = this;
-
-            messenger.ui.modal
-                .dragModalShow('#header:first')
-                .resizable({
-                    helper: "ui-resizable-helper",
-                    minWidth: 500,
-                    minHeight: 500,
-                    start: function (event, ui) {
-                        $('iframe').css('pointer-events', 'none');
-                    },
-                    stop: function (event, ui) {
-                        $('iframe').css('pointer-events', 'auto');
-                    }
-                })
-                .hide();
-            setTimeout(function () {
-                messenger.ui.modal.css('max-height', 'none');
-            }, 100);
-
-            messenger.ui.room.find('.-hide-panel').click(hideInvitationPanel);
-            messenger.ui.modal.find('.-toggle-invitation-panel').click(hideInvitationPanel);
-
-            function hideInvitationPanel() {
-                const panel = messenger.ui.room.find('.invitation-panel');
-                if (panel.is(':visible')) {
-                    panel.hide();
-                } else {
-                    if (messenger.currentRoom) {
-                        restSelf.get('/api/chatt/' + messenger.currentRoom.id + '/chatting', {limit: 0}, null, null, true).done(function (response) {
-                            messenger.ui.roomMembers.empty();
-                            response.data.chattingMembers.map(function (e) {
-                                messenger.ui.invitationPanel.find('.-messenger-user').filter(function () {
-                                    return e.userid === $(this).attr('data-id');
-                                }).clone().css('margin-top', '0.5em').appendTo(messenger.ui.roomMembers);
-                            });
-
-                            panel.show();
-                        });
-                    } else {
-                        panel.show();
-                    }
-
-                }
-            }
-
-            messenger.ui.room.find('.-invite-to-room').click(function () {
-                const users = [];
-                const userNames = [];
-                const userMap = {};
-
-                messenger.ui.room.find('.-messenger-user').filter('.active').removeClass('active').each(function () {
-                    const id = $(this).attr('data-id');
-                    const name = $(this).find('[data-name]').attr('data-name');
-
-                    if (users.indexOf(id) >= 0)
-                        return;
-
-                    if (keys(messenger.currentRoom.members).filter(function (userid) {
-                        return userid === id;
-                    }).length > 0)
-                        return;
-
-                    users.push(id);
-                    userNames.push(name);
-                    userMap[id] = name;
-                });
-
-                if (!users.length)
-                    return;
-
-                messenger.communicator.invite(messenger.currentRoom.id, users, userNames);
-                restSelf.put('/api/chatt/' + encodeURIComponent(messenger.currentRoom.id) + '/chatt-member', {memberList: users}).done(function () {
-                    users.map(function (e) {
-                        if (!messenger.currentRoom.members[e])
-                            messenger.currentRoom.members[e] = {}
-
-                        messenger.currentRoom.members[e].userid = e;
-                        messenger.currentRoom.members[e].userName = userMap[e];
-                    });
-                    messenger.showRoomTitle();
-
-                    messenger._loadRoomName(messenger.currentRoom.id);
-                });
-            });
-
-            messenger.ui.room.find('.-close-room').click(function () {
-                messenger.closeRoom();
-            });
-
-            messenger.ui.room.find('.-leave-room').click(function () {
-                if (!messenger.currentRoom)
-                    return;
-
-                confirm('채팅방을 나가시겠습니까?').done(function () {
-                    restSelf.delete('/api/chatt/' + encodeURIComponent(messenger.currentRoom.id), null, null, true).done(function () {
-                        $('.-messenger-chat-item').filter(function () {
-                            return $(this).attr('data-id') === messenger.currentRoom.id;
-                        }).remove();
-                        messenger.communicator.leave(messenger.currentRoom.id);
-                        messenger.closeRoom();
-                    });
-                });
-            });
-
-            messenger.ui.room.find('.-search-text').click(function () {
-                const keyword = $(this).prev().val().trim();
-                if (!keyword) {
-                    messenger.clearSearching();
-                    return;
-                }
-                // if (keyword === messenger.currentRoom.searchingMessage)
-                //     return messenger.ui.room.find('.-move-to-next-text').click();
-
-                messenger.currentRoom.searchingMessage = keyword;
-                restSelf.get('/api/chatt/' + encodeURIComponent(messenger.currentRoom.id) + '/chatting', {
-                    message: keyword,
-                    limit: messenger.READ_LIMIT
-                }).done(function (response) {
-                    messenger._inputRoomInfo(response.data);
-
-                    messenger.currentRoom.searchingMessages = [];
-
-                    response.data.chattingMessages.sort(function (a, b) {
-                        return b.insertTime - a.insertTime;
-                    });
-
-                    response.data.chattingMessages.map(function (e) {
-                        messenger.currentRoom.searchingMessages.push({messageId: e.messageId, messageTime: e.insertTime});
-                    });
-
-                    messenger.ui.searchingTextCountExpression.attr('data-total', messenger.currentRoom.searchingMessages.length);
-                    messenger._moveToText(0);
-                });
-            });
-
-            messenger.ui.room.find('.-move-to-prev-text').click(function () {
-                messenger._moveToText(parseInt(messenger.ui.searchingTextCountExpression.attr('data-index')));
-            });
-
-            messenger.ui.room.find('.-move-to-next-text').click(function () {
-                messenger._moveToText(parseInt(messenger.ui.searchingTextCountExpression.attr('data-index')) - 2);
-            });
-
-            messenger.ui.room.find('.-upload-file').click(function () {
-                if (messenger.currentRoom) {
-                    window.open($.addQueryString(contextPath + '/messenger-upload-file', {
-                        roomId: messenger.currentRoom.id,
-                        messengerSocketUrl: messenger.communicator.request.url
-                    }), '_blank', 'toolbar=0,location=0,menubar=0,height=100,width=200,left=100,top=100');
-                }
-            });
-
-            messenger.ui.messageInput.keydown(function (key) {
-                if (key.keyCode === 13)
-                    if (!key.shiftKey) {
-                        messenger.sendMessage();
-                        return false;
-                    }
-            });
-
-            // overflow scroll이 생성된 상태까지 기다려서. 생성된 scroll에 scroll event에 대한 액션을 설정한다.
-            (function setScrollEvent() {
-                setTimeout(function () {
-                    const scrollContainer = messenger.ui.room.find('.os-viewport');
-                    if (!scrollContainer.length)
-                        return setScrollEvent();
-
-                    scrollContainer.scroll(function () {
-                        if ($(this).scrollTop())
-                            return;
-
-                        if (messenger.currentRoom)
-                            messenger.loadMessages({startMessageId: messenger.currentRoom.startMessageId, limit: messenger.READ_LIMIT + 1})
-                    });
-                }, 100);
-            })();
 
             messenger.loadBookmarks();
             messenger.loadRooms();

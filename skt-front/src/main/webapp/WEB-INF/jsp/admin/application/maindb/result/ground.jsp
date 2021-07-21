@@ -347,7 +347,7 @@
                                 <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
                                 <div class="chat">
                                     <div class="bubble">
-                                        <p class="txt_chat">테스트</p>
+                                        <p class="txt-chat">테스트</p>
                                     </div>
                                 </div>
                             </div>
@@ -357,7 +357,7 @@
                                 <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
                                 <div class="chat">
                                     <div class="bubble">
-                                        <p class="txt_chat">
+                                        <p class="txt-chat">
                                             <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Yuumi_0.jpg">
                                         </p>
                                     </div>
@@ -370,7 +370,7 @@
                                 <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
                                 <div class="chat">
                                     <div class="bubble">
-                                        <p class="txt_chat">TEST TEST TEST TEST TEST TEST TEST TEST TEST
+                                        <p class="txt-chat">TEST TEST TEST TEST TEST TEST TEST TEST TEST
                                             TEST TEST TEST TEST TEST TEST </p>
                                     </div>
                                 </div>
@@ -382,7 +382,7 @@
                                 <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
                                 <div class="chat">
                                     <div class="bubble">
-                                        <p class="txt_chat">
+                                        <p class="txt-chat">
                                             <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Yuumi_0.jpg">
                                         </p>
                                     </div>

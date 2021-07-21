@@ -182,7 +182,7 @@
                         content
                             .append('<div class="chat">' +
                                 '    <div class="bubble">' +
-                                '        <p class="txt_chat" style="width: 118px">' +
+                                '        <p class="txt-chat" style="width: 118px">' +
                                 '            <img src="' + url + '">' +
                                 '        </p>' +
                                 '    </div>' +
@@ -191,7 +191,7 @@
                     } else if (data.type === 'audio') {
                         content.append('<div class="chat">' +
                             '    <div class="bubble">' +
-                            '        <p class="txt_chat">' +
+                            '        <p class="txt-chat">' +
                             '            <audio controls src="' + url + '"></audio>' +
                             '        </p>' +
                             '    </div>' +
@@ -200,7 +200,7 @@
                     } else if (data.type === 'file') {
                         content.append('<div class="chat">' +
                             '    <div class="bubble">' +
-                            '        <p class="txt_chat">' +
+                            '        <p class="txt-chat">' +
                             '            <a href="' + url + '" target="_blank">' + url + '</a>' +
                             '        </p>' +
                             '    </div>' +
@@ -209,7 +209,7 @@
                     } else {
                         content.append('<div class="chat">' +
                             '    <div class="bubble">' +
-                            '        <p class="txt_chat">' + data.content + '</p>' +
+                            '        <p class="txt-chat">' + data.content + '</p>' +
                             '    </div>' +
                             '</div>');
                     }

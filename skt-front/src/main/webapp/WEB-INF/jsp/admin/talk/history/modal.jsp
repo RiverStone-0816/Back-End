@@ -39,7 +39,7 @@
                                             <c:when test="${e.type == 'photo'}">
                                                 <div class="chat">
                                                     <div class="bubble">
-                                                        <p class="txt_chat">
+                                                        <p class="txt-chat">
                                                             <img src="${g.htmlQuote(e.content)}">
                                                         </p>
                                                     </div>
@@ -49,7 +49,7 @@
                                             <c:when test="${e.type == 'audio'}">
                                                 <div class="chat">
                                                     <div class="bubble">
-                                                        <p class="txt_chat">
+                                                        <p class="txt-chat">
                                                             <audio controls src="${g.htmlQuote(e.content)}"></audio>
                                                         </p>
                                                     </div>
@@ -59,7 +59,7 @@
                                             <c:when test="${e.type == 'file'}">
                                                 <div class="chat">
                                                     <div class="bubble">
-                                                        <p class="txt_chat">
+                                                        <p class="txt-chat">
                                                             <a href="${g.htmlQuote(e.content)}" target="_blank">${g.htmlQuote(e.content)}</a>
                                                         </p>
                                                     </div>
@@ -69,7 +69,7 @@
                                             <c:otherwise>
                                                 <div class="chat">
                                                     <div class="bubble">
-                                                        <p class="txt_chat">${g.htmlQuote(e.content)}</p>
+                                                        <p class="txt-chat">${g.htmlQuote(e.content)}</p>
                                                     </div>
                                                 </div>
                                             </c:otherwise>

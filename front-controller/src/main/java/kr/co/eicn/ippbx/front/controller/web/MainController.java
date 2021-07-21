@@ -11,20 +11,16 @@ import kr.co.eicn.ippbx.front.service.api.talk.group.TalkReceptionGroupApiInterf
 import kr.co.eicn.ippbx.model.dto.eicn.PersonSummaryResponse;
 import kr.co.eicn.ippbx.model.form.ChattingMemberFormRequest;
 import kr.co.eicn.ippbx.model.search.ChattingMemberSearchRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.io.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +29,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -40,14 +37,12 @@ import java.util.Objects;
  * @author tinywind
  */
 @Slf4j
+@RequiredArgsConstructor
 @Controller
 public class MainController extends BaseController {
-    @Autowired
-    private DaemonInfoInterface daemonInfoInterface;
-    @Autowired
-    private TalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
-    @Autowired
-    private ChattingApiInterface chattingApiInterface;
+    private final DaemonInfoInterface daemonInfoInterface;
+    private final TalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
+    private final ChattingApiInterface chattingApiInterface;
 
     @Value("${eicn.admin.socket.id}")
     private String adminSocketId;
@@ -120,6 +115,15 @@ public class MainController extends BaseController {
     @GetMapping("messenger")
     public String messenger() {
         return "messenger";
+    }
+
+    @LoginRequired
+    @GetMapping("modal-messenger-room/{roomId}")
+    public String messenger(Model model, @PathVariable String roomId) {
+        val room = chattingApiInterface.getChattingRoom(roomId);
+        model.addAttribute("room", room);
+
+        return "modal-messenger-room";
     }
 
     @SneakyThrows
