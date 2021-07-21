@@ -40,7 +40,7 @@
                                          style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden; padding-top: 5px;"/>
                                 </c:when>
                                 <c:otherwise>
-                                    <img src="<c:url value="/resources/ipcc-messenger/images/person.png"/>" style="border-radius: 50%; width: 21px; overflow: hidden; padding-top: 5px;"/>
+                                    <img src="<c:url value="/resources/images/person.png"/>" style="border-radius: 50%; width: 21px; overflow: hidden; padding-top: 5px;"/>
                                 </c:otherwise>
                             </c:choose>
                         </c:when>

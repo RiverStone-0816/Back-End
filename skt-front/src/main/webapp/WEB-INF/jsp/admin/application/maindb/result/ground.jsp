@@ -246,7 +246,7 @@
                                                                          style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden;"/>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <img class="profile-picture" src="<c:url value="/resources/ipcc-messenger/images/person.png"/>"
+                                                                    <img class="profile-picture" src="<c:url value="/resources/images/person.png"/>"
                                                                          style="border-radius: 50%; width: 21px; overflow: hidden;"/>
                                                                 </c:otherwise>
                                                             </c:choose>
@@ -278,7 +278,7 @@
                                                                          style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden;"/>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <img class="profile-picture" src="<c:url value="/resources/ipcc-messenger/images/person.png"/>"
+                                                                    <img class="profile-picture" src="<c:url value="/resources/images/person.png"/>"
                                                                          style="border-radius: 50%; width: 21px; overflow: hidden;"/>
                                                                 </c:otherwise>
                                                             </c:choose>
