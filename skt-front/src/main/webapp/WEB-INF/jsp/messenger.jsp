@@ -37,16 +37,14 @@
                 <th>전화번호</th>
                 <td class="row-btn-wrap">
                     <text class="-field" data-name="hpNumber"></text>
-                    <%--TODO: 전화돌려주기 기능 붙여야할지도. --%>
-                    <button></button>
+                    <button type="button" class="-hp-number"></button>
                 </td>
             </tr>
             <tr>
                 <th>내선번호</th>
                 <td class="row-btn-wrap">
                     <text class="-field" data-name="extension"></text>
-                    <%--TODO: 전화돌려주기 기능 붙여야할지도. --%>
-                    <button></button>
+                    <button type="button" class="-extension"></button>
                 </td>
             </tr>
         </table>
@@ -171,23 +169,6 @@
         $('.consult-organization-panel .panel-heading .ui.basic.button').click(function () {
             $(this).toggleClass('active');
         });
-
-        let organiChatTitleDefault = $('.organi-chat-room-header .default-inner');
-        let organiChatTitleModify = $('.organi-chat-room-header .modify-inner');
-
-        function chatTitleModifyBtn() {
-            if (organiChatTitleModify.css('display') === 'none') {
-                $(organiChatTitleModify).css('display', 'flex');
-                $(organiChatTitleDefault).css('display', 'none');
-            } else {
-                $(organiChatTitleModify).css('display', 'none');
-                $(organiChatTitleDefault).css('display', 'flex');
-            }
-        }
-
-        function organiChatRoom() {
-            $('#modal-messenger-room').dragModalShow();
-        }
 
         $('.consult-organization-panel .state-header-close').click(function () {
             $('.consult-organization-panel #organi-state').removeClass('active');
@@ -335,6 +316,8 @@
                         return $(this).attr('data-id') === roomId;
                     });
                     chattingRoomElement.find('.-room-name').text(messenger.rooms[roomId].roomName);
+                    if (messenger.currentRoom && messenger.currentRoom.id === roomId && messenger.ui.roomName)
+                        messenger.ui.roomName.text(messenger.rooms[roomId].roomName);
                 });
         }
 
@@ -569,7 +552,9 @@
             const existChatItem = messenger.ui.chatContainer.find('.-messenger-chat-item').filter(function () {
                 return $(this).attr('data-id') === roomId;
             });
-            // messenger.ui.roomName.text(roomName); // todo: 이 구문이 왜 필요하지??
+
+            if (messenger.currentRoom && messenger.currentRoom.id === roomId && messenger.ui.roomName)
+                messenger.ui.roomName.text(roomName);
 
             if (existChatItem.length > 0) {
                 existChatItem.find('.-room-name').text(roomName);
@@ -580,12 +565,11 @@
                 return;
             }
 
-            $('<li/>', {class: 'item -messenger-chat-item', 'data-id': roomId}) /*todo: active class 확인*/
+            $('<li/>', {class: 'item -messenger-chat-item', 'data-id': roomId})
                 .append(
                     $('<div/>', {class: 'item-header'})
                         .append($('<div/>', {
                             class: 'chat-item-title -room-name', text: roomName, onclick: 'return false;', click: function () {
-                                // todo: 퍼블: organiChatRoom()
                                 const $this = $(this);
                                 prompt('채팅방 이름 변경').done(function (text) {
                                     text = text.trim();
@@ -729,6 +713,8 @@
                                                 modal.find('.-field').each(function () {
                                                     $(this).text(e[$(this).attr('data-name')]);
                                                 });
+                                                modal.find('.-extension').attr('onclick', e.extension ? 'ipccCommunicator.redirect("' + e.extension + '")' : '');
+                                                modal.find('.-hp-number').attr('onclick', e.hpNumber ? 'ipccCommunicator.redirectHunt("' + e.hpNumber + '")' : '');
                                                 modal.dragModalShow();
                                             }
                                         }))
@@ -958,6 +944,8 @@
                                             modal.find('.-field').each(function () {
                                                 $(this).text(e[$(this).attr('data-name')]);
                                             });
+                                            modal.find('.-extension').attr('onclick', e.extension ? 'ipccCommunicator.redirect("' + e.extension + '")' : '');
+                                            modal.find('.-hp-number').attr('onclick', e.hpNumber ? 'ipccCommunicator.redirectHunt("' + e.hpNumber + '")' : '');
                                             modal.dragModalShow();
                                         }
                                     }))

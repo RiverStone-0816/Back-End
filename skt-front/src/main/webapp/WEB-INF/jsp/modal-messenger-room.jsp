@@ -16,7 +16,7 @@
 
 <div class="ui modal tiny" id="modal-messenger-room">
     <i class="close icon -close-room"></i>
-    <div class="header"><span style="cursor: pointer;" onclick="chatTitleModifyBtn()" class="-chatroom-name">대화방이름</span></div>
+    <div class="header"><span style="cursor: pointer;" class="-chatroom-name">대화방이름</span></div>
     <div class="content">
         <div class="organi-chat-room-container">
             <div class="organi-chat-room-header">
@@ -41,12 +41,12 @@
                 <div class="modify-inner">
                     <div class="input-wrap">
                         <div class="ui fluid input">
-                            <input type="text">
+                            <input type="text" class="-chatroom-name-input">
                         </div>
                     </div>
                     <div class="btn-wrap">
-                        <div class="ui button">취소</div>
-                        <div class="ui brand button">변경</div>
+                        <button type="button" class="ui button -cancel-chatroom-name">취소</button>
+                        <button type="button" class="ui brand button -change-chatroom-name">변경</button>
                     </div>
                 </div>
             </div>
@@ -62,7 +62,6 @@
 </div>
 
 <script>
-
     function hideInvitationPanel() {
         const panel = modal.find('.invitation-panel');
         if (panel.is(':visible')) {
@@ -82,9 +81,33 @@
             } else {
                 panel.show();
             }
-
         }
     }
+
+    function chatTitleModifyBtn() {
+        const organiChatTitleDefault = modal.find('.default-inner');
+        const organiChatTitleModify = modal.find('.modify-inner');
+
+        if (organiChatTitleModify.css('display') === 'none') {
+            organiChatTitleModify.css('display', 'flex');
+            organiChatTitleDefault.css('display', 'none');
+        } else {
+            organiChatTitleModify.css('display', 'none');
+            organiChatTitleDefault.css('display', 'flex');
+            modal.find('.-chatroom-name-input').val('');
+        }
+    }
+
+    modal.find('.-chatroom-name,.-cancel-change-chatroom-name').click(chatTitleModifyBtn);
+
+    modal.find('.-change-chatroom-name').click(function () {
+        const text = modal.find('.-chatroom-name-input').trim();
+        restSelf.put('/api/chatt/' + messenger.currentRoom.id + '/room-name?newRoomName=' + encodeURIComponent(text)).done(function () {
+            $this.text(text);
+            messenger.communicator.changeRoomName(roomId, text);
+            chatTitleModifyBtn();
+        });
+    });
 
     modal.find('.-invite-to-room').click(function () {
         const users = [];

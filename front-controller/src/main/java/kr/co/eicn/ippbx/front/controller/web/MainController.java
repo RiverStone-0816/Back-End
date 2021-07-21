@@ -120,8 +120,8 @@ public class MainController extends BaseController {
     @LoginRequired
     @GetMapping("modal-messenger-room/{roomId}")
     public String messenger(Model model, @PathVariable String roomId) {
-        val room = chattingApiInterface.getChattingRoom(roomId);
-        model.addAttribute("room", room);
+        // val room = chattingApiInterface.getChattingRoom(roomId);
+        // model.addAttribute("room", room);
 
         return "modal-messenger-room";
     }
