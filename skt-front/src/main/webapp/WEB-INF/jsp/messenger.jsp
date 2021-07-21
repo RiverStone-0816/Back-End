@@ -196,6 +196,8 @@
 
             messenger.me = '${g.escapeQuote(user.id)}';
             messenger.accessToken = '${g.escapeQuote(accessToken)}';
+            messenger.groupToUsers = {};
+            messenger.users = {};
 
             messenger.ui = {
                 filterInput: $('#messenger-filter-text'),
@@ -233,6 +235,25 @@
                 }
             }
 
+            function writeGroupLogInOutUserCount(userid) {
+                if (!messenger.users[userid])
+                    return;
+
+                const group = messenger.groupToUsers[messenger.users[userid].groupCode];
+                if (group) {
+                    let logoutCount = 0;
+                    let loginCount = 0;
+
+                    group.map(function (e) {
+                        if (messenger.users[e].isLoginChatt === 'L') loginCount++;
+                        else logoutCount++;
+                    });
+
+                    $('.-group-logout-user-count[data-group="' + messenger.users[userid].groupCode + '"]').text(logoutCount);
+                    $('.-group-login-user-count[data-group="' + messenger.users[userid].groupCode + '"]').text(loginCount);
+                }
+            }
+
             messenger.communicator = new MessengerCommunicator()
                 .on('svc_login', function (data) {
                     const userid = data.userid;
@@ -245,6 +266,11 @@
 
                         $this.find('.user-icon').addClass('active');
                     });
+
+                    if (messenger.users[userid])
+                        messenger.users[userid].isLoginChatt = 'L';
+
+                    writeGroupLogInOutUserCount(userid);
                 })
                 .on('svc_logout', function (data) {
                     const userid = data.userid;
@@ -257,6 +283,11 @@
 
                         $this.find('.user-icon').removeClass('active');
                     });
+
+                    if (messenger.users[userid])
+                        messenger.users[userid].isLoginChatt = 'N';
+
+                    writeGroupLogInOutUserCount(userid);
                 })
                 .on('svc_msg', receiveMessage)
                 .on('svc_join_msg', function (data) {
@@ -723,9 +754,9 @@
                         .append(
                             $('<div/>', {class: 'state-wrap'})
                                 .append($('<text/>', {text: '전화'}))
-                                .append($('<span/>', {class: 'num', text: '0'})) /*todo: 기능 확인*/
+                                .append($('<span/>', {class: 'num', text: '0'})) /*todo: 상담원의 현재일의 전화 건수*/
                                 .append($('<text/>', {text: '채팅'}))
-                                .append($('<span/>', {class: 'num', text: '0'})) /*todo: 기능 확인*/
+                                .append($('<span/>', {class: 'num', text: '0'})) /*todo: 상담원의 현재일의 채팅 건수*/
                         )
                         .appendTo(messenger.ui.bookmarkPanel)
                         .click(function (event) {
@@ -772,6 +803,12 @@
 
             function attachFolder(e, upperOrganizationNames) {
                 if (e.personList && e.personList.length) {
+                    let logoutCount = 0, loginCount = 0;
+                    e.personList.map(function (e) {
+                        if (e.isLoginChatt === 'L') loginCount++;
+                        else logoutCount++;
+                    });
+
                     const item = $('<ul/>', {class: 'organization-ul modal -messenger-folder', 'data-id': e.groupCode})
                         .append(
                             $('<div/>', {class: 'title'})
@@ -779,9 +816,9 @@
                                 .append(
                                     $('<div/>', {class: 'dot-label-wrap'})
                                         .append($('<span/>', {class: 'dot-label'}))
-                                        .append($('<text/>', {text: 0})) /*todo: 비로그인 사용자 카운트*/
+                                        .append($('<text/>', {class: '-group-logout-user-count', 'data-group': e.groupCode, text: logoutCount}))
                                         .append($('<span/>', {class: 'dot-label active'}))
-                                        .append($('<text/>', {text: 0})) /*todo: 로그인 사용자 카운트*/
+                                        .append($('<text/>', {class: '-group-login-user-count', 'data-group': e.groupCode, text: loginCount}))
                                 )
                         )
                         .append(
@@ -790,7 +827,7 @@
                                     $('<div/>', {class: 'user-wrap'})
                                         .append(
                                             $('<div/>', {class: 'ui checkbox'})
-                                                .append($('<input/>', {type: 'checkbox'})) /*todo: active 상태 기능 변경*/
+                                                .append($('<input/>', {type: 'checkbox'}))
                                                 .append($('<label/>', {text: hierarchicalOrganizationString(upperOrganizationNames, e.groupName)}))
                                         )
                                 )
@@ -890,6 +927,12 @@
 
             function attachFolder(e, upperOrganizationNames) {
                 if (e.personList && e.personList.length) {
+                    let logoutCount = 0, loginCount = 0;
+                    e.personList.map(function (e) {
+                        if (e.isLoginChatt === 'L') loginCount++;
+                        else logoutCount++;
+                    });
+
                     const item = $('<ul/>', {class: 'organization-ul -messenger-folder', 'data-id': e.groupCode})
                         .append(
                             $('<div/>', {class: 'title'})
@@ -897,9 +940,9 @@
                                 .append(
                                     $('<div/>', {class: 'dot-label-wrap'})
                                         .append($('<span/>', {class: 'dot-label'}))
-                                        .append($('<text/>', {text: 0})) /*todo: 비로그인 사용자 카운트*/
+                                        .append($('<text/>', {class: '-group-logout-user-count', 'data-group': e.groupCode, text: logoutCount}))
                                         .append($('<span/>', {class: 'dot-label active'}))
-                                        .append($('<text/>', {text: 0})) /*todo: 로그인 사용자 카운트*/
+                                        .append($('<text/>', {class: '-group-login-user-count', 'data-group': e.groupCode, text: loginCount}))
                                 )
                         )
                         .append(
@@ -908,7 +951,7 @@
                                     $('<div/>', {class: 'user-wrap'})
                                         .append(
                                             $('<div/>', {class: 'ui checkbox'})
-                                                .append($('<input/>', {type: 'checkbox'})) /*todo: active 상태 기능 변경*/
+                                                .append($('<input/>', {type: 'checkbox'}))
                                                 .append($('<label/>', {text: hierarchicalOrganizationString(upperOrganizationNames, e.groupName)}))
                                         )
                                 )
@@ -962,9 +1005,9 @@
                     .append(
                         $('<div/>', {class: 'state-wrap'})
                             .append($('<text/>', {text: '전화'}))
-                            .append($('<span/>', {class: 'num', text: '0'})) /*todo: 기능 확인*/
+                            .append($('<span/>', {class: 'num', text: '0'})) /*todo: 상담원의 현재일의 전화 건수*/
                             .append($('<text/>', {text: '채팅'}))
-                            .append($('<span/>', {class: 'num', text: '0'})) /*todo: 기능 확인*/
+                            .append($('<span/>', {class: 'num', text: '0'})) /*todo: 상담원의 현재일의 채팅 건수*/
                     )
                     .appendTo(container)
                     .click(function (event) {
@@ -1040,8 +1083,8 @@
                 messenger.ui.roomName = messenger.ui.room.find('.-chatroom-name');
                 messenger.ui.searchingTextCountExpression = messenger.ui.room.find('.-text-count');
                 messenger.ui.messageInput = messenger.ui.room.find('.-messenger-message');
-                messenger.ui.invitationPanel = messenger.ui.room.find('.organization-panel');  // todo
-                messenger.ui.roomMembers = $('#messenger-room-members');   // todo
+                messenger.ui.invitationPanel = messenger.ui.room.find('.organization-panel');  // todo: 채팅방 안의 초대 모달, 디자인 나와야 함.
+                messenger.ui.roomMembers = $('#messenger-room-members');   // todo: 초대 모달 안의 현재 방의 사용자 리스트
 
                 restSelf.get('/api/chatt/' + roomId + '/chatting', {limit: messenger.READ_LIMIT}).done(function (response) {
                     messenger.ui.room.find('.-chat-message').remove();
@@ -1258,9 +1301,28 @@
             messenger.loadRooms();
 
             restSelf.get('/api/chatt/', null, null, true).done(function (response) {
+                function checkGroup(e) {
+                    if (e.personList && e.personList.length) {
+                        const group = messenger.groupToUsers[e.groupCode] = [];
+                        e.personList.map(function (e) {
+                            group.push(e.id);
+                            messenger.users[e.id] = e;
+                        });
+                    }
+
+                    if (e.organizationMetaChatt)
+                        e.organizationMetaChatt.map(function (e) {
+                            checkGroup(e);
+                        });
+                }
+
+                response.data.map(function (e) {
+                    checkGroup(e);
+                });
+
                 messenger._loadOrganization(response);
-                messenger._loadInvitablePersons(response);
                 messenger._loadRoomCreationOrganization(response);
+                messenger._loadInvitablePersons(response);
             });
 
             restSelf.get('/api/auth/socket-info').done(function (response) {
