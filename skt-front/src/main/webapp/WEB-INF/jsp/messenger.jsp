@@ -243,7 +243,7 @@
                         if ($this.attr('data-id') !== userid)
                             return;
 
-                        $this.find('.icon').css('color', '#c60452');
+                        $this.find('.user-icon').addClass('active');
                     });
                 })
                 .on('svc_logout', function (data) {
@@ -255,7 +255,7 @@
                         if ($this.attr('data-id') !== userid)
                             return;
 
-                        $this.find('.icon').css('color', 'black');
+                        $this.find('.user-icon').removeClass('active');
                     });
                 })
                 .on('svc_msg', receiveMessage)
@@ -696,7 +696,7 @@
                     $('<li/>', {class: '-messenger-bookmark', 'data-id': e.id})
                         .append(
                             $('<div/>', {class: 'user-wrap'})
-                                .append($('<span/>', {class: 'user-icon ' + (e.isLoginChatt === 'L' ? 'active' : '')})) /*todo: 로그인변화 대응 확인*/
+                                .append($('<span/>', {class: 'user-icon ' + (e.isLoginChatt === 'L' ? 'active' : '')}))
                                 .append($('<text/>', {text: e.idName}))
                         )
                         .append(
@@ -824,7 +824,7 @@
                 $('<li/>', {class: '-messenger-user', 'data-id': e.id, 'data-group': e.groupCode})
                     .append(
                         $('<div/>', {class: 'user-wrap'})
-                            .append($('<span/>', {class: 'user-icon ' + (e.isLoginChatt === 'L' ? 'active' : '')})) /*todo: 로그인변화 대응 확인*/
+                            .append($('<span/>', {class: 'user-icon ' + (e.isLoginChatt === 'L' ? 'active' : '')}))
                             .append($('<text/>', {text: e.idName}))
                     )
                     .append(
@@ -936,7 +936,7 @@
                 $('<li/>', {class: '-messenger-user', 'data-id': e.id, 'data-group': e.groupCode})
                     .append(
                         $('<div/>', {class: 'user-wrap'})
-                            .append($('<span/>', {class: 'user-icon ' + (e.isLoginChatt === 'L' ? 'active' : '')})) /*todo: 로그인변화 대응 확인*/
+                            .append($('<span/>', {class: 'user-icon ' + (e.isLoginChatt === 'L' ? 'active' : '')}))
                             .append($('<text/>', {text: e.idName}))
                     )
                     .append(
@@ -1090,7 +1090,7 @@
                 });
             });
         };
-        Messenger.prototype._loadInvitablePersons = function (response) { // todo
+        Messenger.prototype._loadInvitablePersons = function (response) { // todo: 채팅방 안의 초대 모달..
             const messenger = this;
 
             function attachFolder(container, e) {
