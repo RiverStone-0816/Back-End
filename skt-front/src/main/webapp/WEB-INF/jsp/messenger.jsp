@@ -881,10 +881,10 @@
                                 .append($('<span/>', {class: '', text: e.groupName}))
                                 .append(
                                     $('<div/>', {class: 'dot-label-wrap'})
-                                        .append($('<span/>', {class: 'dot-label'}))
-                                        .append($('<text/>', {class: '-group-logout-user-count', 'data-group': e.groupCode, text: logoutCount}))
                                         .append($('<span/>', {class: 'dot-label active'}))
                                         .append($('<text/>', {class: '-group-login-user-count', 'data-group': e.groupCode, text: loginCount}))
+                                        .append($('<span/>', {class: 'dot-label'}))
+                                        .append($('<text/>', {class: '-group-logout-user-count', 'data-group': e.groupCode, text: logoutCount}))
                                 )
                         )
                         .append(
@@ -1003,10 +1003,10 @@
                                 .append($('<span/>', {class: 'team-name', text: e.groupName}))
                                 .append(
                                     $('<div/>', {class: 'dot-label-wrap'})
-                                        .append($('<span/>', {class: 'dot-label'}))
-                                        .append($('<text/>', {class: '-group-logout-user-count', 'data-group': e.groupCode, text: logoutCount}))
                                         .append($('<span/>', {class: 'dot-label active'}))
                                         .append($('<text/>', {class: '-group-login-user-count', 'data-group': e.groupCode, text: loginCount}))
+                                        .append($('<span/>', {class: 'dot-label'}))
+                                        .append($('<text/>', {class: '-group-logout-user-count', 'data-group': e.groupCode, text: logoutCount}))
                                 )
                         )
                         .append(
