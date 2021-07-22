@@ -56,7 +56,9 @@
 
 <div class="ui modal" id="room-creation-organization-modal">
     <i class="close icon"></i>
-    <div class="header"><text class="-modal-title"></text></div>
+    <div class="header">
+        <text class="-modal-title"></text>
+    </div>
     <div class="content">
         <div class="organization-ul-wrap" id="room-creation-organization-panel">
             <ul class="organization-ul modal"></ul>
@@ -792,9 +794,9 @@
                         .append(
                             $('<div/>', {class: 'state-wrap'})
                                 .append($('<text/>', {text: '전화'}))
-                                .append($('<span/>', {class: 'num', text: '0'})) /*todo: 상담원의 현재일의 전화 건수*/
+                                .append($('<span/>', {class: 'num -user-total-call-count', 'data-id': e.id, text: '0'}))
                                 .append($('<text/>', {text: '채팅'}))
-                                .append($('<span/>', {class: 'num', text: '0'})) /*todo: 상담원의 현재일의 채팅 건수*/
+                                .append($('<span/>', {class: 'num -user-total-chat-count', 'data-id': e.id, text: '0'}))
                         )
                         .appendTo(messenger.ui.bookmarkPanel)
                         .click(function (event) {
@@ -1046,9 +1048,9 @@
                     .append(
                         $('<div/>', {class: 'state-wrap'})
                             .append($('<text/>', {text: '전화'}))
-                            .append($('<span/>', {class: 'num', text: '0'})) /*todo: 상담원의 현재일의 전화 건수*/
+                            .append($('<span/>', {class: 'num -user-total-call-count', 'data-id': e.id, text: '0'}))
                             .append($('<text/>', {text: '채팅'}))
-                            .append($('<span/>', {class: 'num', text: '0'})) /*todo: 상담원의 현재일의 채팅 건수*/
+                            .append($('<span/>', {class: 'num -user-total-chat-count', 'data-id': e.id, text: '0'}))
                     )
                     .appendTo(container)
                     .click(function (event) {
@@ -1313,6 +1315,15 @@
 
         $(window).on('load', function () {
             messenger.init();
+
+            setInterval(function () {
+                restSelf.get('/api/chatt/user-score-moniter', null, null, true).done(function (response) {
+                    response.data.map(function (e) {
+                        $('.-user-total-call-count[data-id="' + e.userId + '"]').text(e.totalCnt);
+                        $('.-user-total-chat-count[data-id="' + e.userId + '"]').text(e.talkCnt);
+                    });
+                });
+            }, 1000 * 60);
         });
     </script>
 </tags:scripts>

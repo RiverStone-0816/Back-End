@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.service.api.ChattingApiInterface;
 import kr.co.eicn.ippbx.model.dto.configdb.ChattRoomResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.ScoreMonitorResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.ChattRoomEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.OrganizationMetaChatt;
 import kr.co.eicn.ippbx.model.form.ChattingMemberFormRequest;
@@ -95,6 +96,12 @@ public class ChattingApiController extends BaseController {
     @GetMapping("bookmark")
     public List<PersonDetailResponse> getOrganizationMetaBookmark() {
         return apiInterface.getOrganizationMetaBookmark();
+    }
+
+    @SneakyThrows
+    @GetMapping("user-score-moniter")
+    public List<ScoreMonitorResponse> userScoreMoniter() {
+        return apiInterface.userScoreMoniter();
     }
 
 }
