@@ -56,7 +56,7 @@
 
 <div class="ui modal" id="room-creation-organization-modal">
     <i class="close icon"></i>
-    <div class="header">새로운 채팅방 만들기</div>
+    <div class="header"><text class="-modal-title"></text></div>
     <div class="content">
         <div class="organization-ul-wrap" id="room-creation-organization-panel">
             <ul class="organization-ul modal"></ul>
@@ -65,7 +65,7 @@
     <div class="actions">
         <span class="left-txt">선택된 조직원 <text class="-selected-user-count">0</text>명</span>
         <button type="button" class="ui button modal-close">취소</button>
-        <button type="button" class="ui orange button modal-close" onclick="messenger.openRoom();">생성</button>
+        <button type="button" class="ui orange button modal-close -submit">확인</button>
     </div>
 </div>
 
@@ -99,7 +99,7 @@
             <div class="panel-segment list">
                 <div class="panel-segment-header">
                     <text>조직도</text>
-                    <button type="button" class="ui basic mini button" onclick="messenger.popupRoomCreationOrganizationModal(true)">선택대화</button>
+                    <button type="button" class="ui basic mini button" onclick="messenger.popupRoomCreationOrganizationModal(true, true)">선택대화</button>
                 </div>
                 <div class="panel-segment-body overflow-auto">
                     <div class="area" id="messenger-organization-panel"></div>
@@ -125,7 +125,7 @@
                         <div class="organization-chat-list-wrap">
                             <div class="chat-list-header">
                                 <text>조직 대화방 목록</text>
-                                <button type="button" class="ui basic right floated button" onclick="messenger.popupRoomCreationOrganizationModal()">추가</button>
+                                <button type="button" class="ui basic right floated button" onclick="messenger.popupRoomCreationOrganizationModal(true, false)">추가</button>
                             </div>
                             <div class="chat-list-body">
                                 <div class="chat-list-container">
@@ -140,40 +140,9 @@
     </div>
 </div>
 
-<div class="ui modal" id="invite-to-room-modal">
-    <i class="close icon"></i>
-    <div class="header">사용자 초대하기</div>
-    <div class="content">
-        <div class="organization-ul-wrap">
-            <ul class="organization-ul modal"></ul>
-        </div>
-    </div>
-    <div class="actions">
-        <span class="left-txt">선택된 조직원 <text class="-selected-user-count">0</text>명</span>
-        <button type="button" class="ui button modal-close">취소</button>
-        <button type="button" class="ui orange button modal-close" onclick="messenger.openRoom();">초대</button>
-    </div>
-</div>
-
-<%--todo: 지워질 이전 소스--%>
-<div id="messenger-modal" class="ui modal large">
-    <div class="chat-container" id="messenger-room">
-        <div class="invitation-panel">
-            <div id="messenger-room-members"></div>
-            <div class="organization-panel ui list"></div>
-        </div>
-    </div>
-</div>
-
 <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
 <tags:scripts>
     <script>
-        function inviteToRoom() {
-            $('#invite-to-room-modal').dragModalShow();
-        }
-
-        const userToGroupNames = {};
-
         const leftPanel = $('.consult-left-panel');
         $('#organi-state').click(function () {
             leftPanel.toggleClass('wide');
@@ -185,9 +154,7 @@
             }
         });
 
-        $('.panel-segment.favor').resizable({
-            minHeight: 32
-        });
+        $('.panel-segment.favor').resizable({minHeight: 32});
 
         $('.consult-organization-panel .panel-heading .ui.basic.button').click(function () {
             $(this).toggleClass('active');
@@ -425,11 +392,13 @@
         Messenger.prototype.popupBookmarkModal = function () {
             popupReceivedHtml('/modal-messenger-bookmark', 'modal-messenger-bookmark');
         };
-        Messenger.prototype.popupRoomCreationOrganizationModal = function (withSelectedOfOrganization) {
+        Messenger.prototype.popupRoomCreationOrganizationModal = function (isCreatingNewRoom, withSelectedOfOrganization) {
             const modal = $('#room-creation-organization-modal').dragModalShow();
 
             modal.find('.-messenger-folder input[type=checkbox]:first').prop('checked', false);
             modal.find('.-messenger-user').removeClass('active');
+            modal.find('.-modal-title').text(isCreatingNewRoom ? '새로운 채팅방 만들기' : '사용자 초대하기');
+            modal.find('.-submit').attr('onclick', isCreatingNewRoom ? 'messenger.openRoom()' : 'messenger.inviteNewUsers()');
 
             if (withSelectedOfOrganization) {
                 messenger.ui.organizationPanel.find('.-messenger-folder').each(function () {
@@ -453,7 +422,53 @@
 
             showRoomCreationOrganizationModalSelectedUserCount();
         };
-        // 조직도에서 대화방 열기를 시도한다.. 함수 이름 변경좀....
+        Messenger.prototype.inviteNewUsers = function () {
+            const messenger = this;
+            const users = [];
+            const userNames = [];
+            const userMap = {};
+
+            messenger.ui.roomCreationOrganizationPanel.find('.-messenger-folder').filter(function () {
+                return $(this).find('input[type=checkbox]:first').is(':checked');
+            }).each(function () {
+                const groupCode = $(this).attr('data-id');
+                messenger.ui.roomCreationOrganizationPanel.find('.-messenger-user[data-group="' + groupCode + '"]').each(function () {
+                    $(this).find('.-messenger-user').each(function () {
+                        const id = $(this).attr('data-id');
+                        if (users.indexOf(id) >= 0)
+                            return;
+                        users.push(id);
+                    });
+                });
+            });
+
+            messenger.ui.roomCreationOrganizationPanel.find('.-messenger-user.active').each(function () {
+                const id = $(this).attr('data-id');
+                if (users.indexOf(id) >= 0)
+                    return;
+                users.push(id);
+                userNames.push(messenger.users[id].idName);
+                userMap[id] = messenger.users[id].idName;
+            });
+
+            if (!users.length)
+                return alert('선택된 사용자가 없습니다.');
+
+            messenger.communicator.invite(messenger.currentRoom.id, users, userNames);
+            restSelf.put('/api/chatt/' + encodeURIComponent(messenger.currentRoom.id) + '/chatt-member', {memberList: users}).done(function () {
+                users.map(function (e) {
+                    if (!messenger.currentRoom.members[e])
+                        messenger.currentRoom.members[e] = {}
+
+                    messenger.currentRoom.members[e].userid = e;
+                    messenger.currentRoom.members[e].userName = userMap[e];
+                });
+                messenger.showRoomTitle();
+
+                messenger._loadRoomName(messenger.currentRoom.id);
+            });
+        };
+        // 조직도에서 대화방 열기를 시도한다.
         Messenger.prototype.openRoom = function () {
             const messenger = this;
             const users = [];
@@ -623,7 +638,7 @@
                 .append(
                     $('<div/>', {class: 'item-header'})
                         .append($('<button/>', {
-                            class: 'chat-item-title -room-name', text: roomName, type:'button', onclick: 'return false;', click: function () {
+                            class: 'chat-item-title -room-name', text: roomName, type: 'button', onclick: 'return false;', click: function () {
                                 const $this = $(this);
                                 prompt('채팅방 이름 변경').done(function (text) {
                                     text = text.trim();
@@ -665,7 +680,7 @@
                 }
             });
         };
-        // 떠다니는 버튼 옆에 안 읽은 메세지 총 갯수를 적는다.
+        // 안 읽은 메세지 총 갯수를 적는다.
         Messenger.prototype._showMessageIndicator = function () {
             const messenger = this;
 
@@ -719,9 +734,9 @@
             delete messenger.ui.roomName;
             delete messenger.ui.searchingTextCountExpression;
             delete messenger.ui.messageInput;
-            delete messenger.ui.invitationPanel;
             delete messenger.ui.roomMembers;
         };
+        // 채팅방 목록을 불러온다.
         Messenger.prototype.loadRooms = function () {
             const messenger = this;
 
@@ -763,7 +778,7 @@
                                         .append($('<button/>', {
                                             type: 'button', class: 'info button', 'data-inverted': '', 'data-tooltip': '정보', 'data-position': 'bottom center', click: function () {
                                                 const modal = $('#user-info-modal');
-                                                e.groupName = userToGroupNames[e.id];
+                                                e.groupName = messenger.users[e.id].groupName;
                                                 modal.find('.-field').each(function () {
                                                     $(this).text(e[$(this).attr('data-name')]);
                                                 });
@@ -860,7 +875,6 @@
                     const groupName = e.groupName;
                     e.personList.map(function (e) {
                         e.groupName = groupName;
-                        userToGroupNames[e.id] = groupName;
                         attachPerson(item, e);
                     });
                 }
@@ -944,7 +958,6 @@
                 attachFolder(e, []);
             });
         };
-
         Messenger.prototype._loadOrganization = function (response) {
             const messenger = this;
 
@@ -984,7 +997,6 @@
                     const groupName = e.groupName;
                     e.personList.map(function (e) {
                         e.groupName = groupName;
-                        userToGroupNames[e.id] = groupName;
                         attachPerson(item, e);
                     });
                 }
@@ -1089,7 +1101,6 @@
                 attachFolder(e, []);
             });
         };
-
         Messenger.prototype.loadOrganization = function () {
             const messenger = this;
 
@@ -1106,7 +1117,6 @@
                 messenger.ui.roomName = messenger.ui.room.find('.-chatroom-name');
                 messenger.ui.searchingTextCountExpression = messenger.ui.room.find('.-text-count');
                 messenger.ui.messageInput = messenger.ui.room.find('.-messenger-message');
-                messenger.ui.invitationPanel = messenger.ui.room.find('.organization-panel');  // todo: 채팅방 안의 초대 모달, 디자인 나와야 함.
                 messenger.ui.roomMembers = $('#messenger-room-members');   // todo: 초대 모달 안의 현재 방의 사용자 리스트
 
                 restSelf.get('/api/chatt/' + roomId + '/chatting', {limit: messenger.READ_LIMIT}).done(function (response) {
@@ -1154,70 +1164,6 @@
                     }).find('.-unread-message').text(0);
                     messenger._showMessageIndicator();
                 });
-            });
-        };
-        Messenger.prototype._loadInvitablePersons = function (response) { // todo: 채팅방 안의 초대 모달..
-            const messenger = this;
-
-            function attachFolder(container, e) {
-                const item = $('<div/>', {class: 'item -messenger-folder', 'data-id': e.groupCode})
-                    .append($('<i/>', {class: 'folder icon'}))
-                    .appendTo(container);
-
-                const content = $('<div/>', {class: 'content'})
-                    .append($('<div/>', {class: 'header', text: e.groupName}))
-                    .appendTo(item);
-
-                const childrenContainer = $('<div/>', {class: 'list'})
-                    .appendTo(content);
-
-                if (e.personList)
-                    e.personList.map(function (e) {
-                        attachPerson(childrenContainer, e);
-                    });
-
-                if (e.organizationMetaChatt)
-                    e.organizationMetaChatt.map(function (e) {
-                        attachFolder(childrenContainer, e);
-                    });
-            }
-
-            function attachPerson(container, e) {
-                // if (memberIds.indexOf(e.id) >= 0) return;
-
-                let text = '';
-                if (e.extension) text += ' / 내선:' + e.extension;
-                if (e.hpNumber) text += ' / 휴대폰:' + e.hpNumber;
-                if (e.emailInfo) text += ' / 이메일:' + e.emailInfo;
-                if (text.indexOf(' / ') === 0) text = text.substr(3);
-                const info = text !== '' ? $('<span/>', {style: 'margin-left: 1em; font-size: 90%; color: #aaa;', text: '[' + text + ']'}) : '';
-
-                $('<div/>', {class: 'item -messenger-user', 'data-id': e.id, 'data-group': e.groupCode})
-                    .append(
-                        $('<div/>', {class: 'header'})
-                            .append($('<i/>', {class: 'user outline icon', style: 'color: ' + (e.isLoginChatt === 'L' ? '#c60452' : 'black') + ';'}))
-                            .append($('<text/>', {text: e.idName, 'data-name': e.idName}).append(info))
-                    )
-                    .appendTo(container)
-                    .click(function (event) {
-                        if (event.shiftKey) {
-                            $(this).toggleClass('active');
-                        } else {
-                            messenger.ui.room.find('.-messenger-user').removeClass('active');
-                            $(this).addClass('active');
-                        }
-                    });
-            }
-
-            response.data.map(function (e) {
-                attachFolder(messenger.ui.invitationPanel, e);
-            });
-        };
-        Messenger.prototype.loadInvitablePersons = function () {
-            const messenger = this;
-
-            restSelf.get('/api/chatt/', null, null, true).done(function (response) {
-                messenger._loadInvitablePersons(response);
             });
         };
         Messenger.prototype.clearSearching = function () {
@@ -1316,7 +1262,6 @@
                 }).length || '');
             });
         };
-
         Messenger.prototype.init = function () {
             const messenger = this;
 
@@ -1345,7 +1290,6 @@
 
                 messenger._loadOrganization(response);
                 messenger._loadRoomCreationOrganization(response);
-                messenger._loadInvitablePersons(response);
             });
 
             restSelf.get('/api/auth/socket-info').done(function (response) {
