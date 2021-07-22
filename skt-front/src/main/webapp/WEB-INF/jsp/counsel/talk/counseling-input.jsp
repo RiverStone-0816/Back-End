@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <div class="panel-body overflow-auto">
+    <div class="panel-body overflow-overlay">
         <form:hidden path="clickKey" id="talk-counseling-input-clickKey"/>
         <form:hidden path="hangupMsg" id="talk-counseling-input-hangupMsg"/>
         <form:hidden path="customNumber" id="talk-counseling-input-customNumber"/>

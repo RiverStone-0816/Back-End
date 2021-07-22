@@ -116,7 +116,7 @@
                 .append($('<div/>', {text: contents}))
                 .append($('<div/>', {style: 'text-align: right;'})
                     .append($('<button/>', {
-                        class: 'mini ui blue button',
+                        class: 'mini ui orange button',
                         text: '수정',
                         onclick: 'userSchedule.popupItem(' + seq + ')',
                         disabled: parseInt(idCheckKey) !== 0

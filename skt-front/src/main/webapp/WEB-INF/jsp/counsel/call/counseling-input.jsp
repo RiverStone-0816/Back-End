@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <div class="panel-body overflow-auto">
+    <div class="panel-body overflow-overlay">
         <form:hidden path="groupKind" id="call-counseling-input-groupKind"/>
         <form:hidden path="customId" id="call-counseling-input-customId"/>
         <form:hidden path="maindbType" id="call-counseling-input-maindbType"/>

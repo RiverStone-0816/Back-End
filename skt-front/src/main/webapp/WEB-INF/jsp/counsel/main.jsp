@@ -69,10 +69,10 @@
                 <%--FIXME:필요시 다음과 같이 추가--%>
                 <%--<button class="item" data-tab="etc-lookup">기타조회</button>--%>
             </div>
-            <div class="ui bottom attached tab segment remove-margin overflow-auto active" data-tab="todo">
+            <div class="ui bottom attached tab segment remove-margin overflow-overlay active" data-tab="todo">
                 <jsp:include page="/counsel/todo-list"/>
             </div>
-            <div class="ui bottom attached tab segment remove-margin overflow-auto" data-tab="consult-history">
+            <div class="ui bottom attached tab segment remove-margin overflow-overlay" data-tab="consult-history">
                 <table class="ui celled table unstackable">
                     <thead>
                     <tr>

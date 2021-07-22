@@ -107,7 +107,7 @@ pre {
 .ui.button.sharp {
   background-color: darken(@color-gray, 30%);
   color: @color-white;
-  font-size: @font-size-xsmall;
+  font-size: @font-size-xxsmall;
   font-weight: 300;
   padding: 0.57em .73em;
   &:hover {
@@ -120,7 +120,7 @@ pre {
   background-color: @color-brand;
   border: 1px solid @color-brand;
   color: @color-white;
-  font-size: @font-size-xsmall;
+  font-size: @font-size-xxsmall;
   font-weight: 300;
   padding: 0.57em .73em;
 }
@@ -551,7 +551,7 @@ pre {
       border-radius: 10px;
       margin: 0 6px;
       background: lighten(@color-gray, 4%) !important;
-      font-weight: 900;
+      font-weight: 500;
     }
   }
   .start {
@@ -573,12 +573,12 @@ pre {
       display: inline-block;
       li {
         display: inline-block;
-        margin: 0 20px;
+        margin: 0 10px;
         a {
           cursor: pointer;
           white-space: nowrap;
           display: block;
-          padding: 10.2px 7.5px 14.2px 7.5px;
+          padding: 10.2px 15px 14.2px 15px;
           font-size: @font-size-xsmall;
           color: #9A9A9A;
           line-height: 17px;
@@ -751,7 +751,7 @@ pre {
   .float-field {
     border: 1px solid @color-border;
     background: @color-white;
-    width: 450px;
+    width: 452.5px;
     float: left;
     .flex();
     flex-flow: row;
@@ -767,7 +767,7 @@ pre {
       line-height: 43px;
       padding: 0 13px;
       font-size: 12px;
-      font-weight: 900;
+      font-weight: 500;
       overflow: hidden;
     }
     > .content {
@@ -1182,13 +1182,11 @@ pre {
 .organization-ul {
   position: relative;
   border-bottom: 1px solid @color-border;
-  min-width: 324px;
+  min-width: 304px;
   background: @color-white;
-
   -ms-user-select: none;
   -webkit-user-select: none;
   user-select: none;
-
   .title {
     cursor: pointer;
     .team-name {
@@ -1201,7 +1199,7 @@ pre {
     justify-content: space-between;
     align-items: center;
     line-height: 23px;
-    padding: 9px 17px 9px 15px;
+    padding: 9px 10px 9px 15px;
     .team-name {
     }
   }
@@ -1221,11 +1219,11 @@ pre {
     }
   }
   li.active {
-    background: #f7f7f7;
+    background: @color-list-active;
   }
   .user-wrap {
     display: inline-block;
-    width: 170px;
+    width: 157px;
     line-height: 18px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1436,12 +1434,12 @@ pre {
       .panel-heading {
         .btn-wrap {
           position: absolute;
-          right: 145px;
+          right: 160px;
         }
         .state-header {
           display: inline-block;
           position: absolute;
-          right: 97px;
+          right: 108px;
         }
         .state-header-close {
           display: inline-block;
@@ -1461,14 +1459,14 @@ pre {
       .panel-body {
         .organization-ul {
           .title {
-            padding: 9px 151px 9px 15px;
+            padding: 9px 163px 9px 15px;
           }
         }
         .panel-segment {
           .panel-segment-header {
             .ui.basic.button {
               position: absolute;
-              right: 149px;
+              right: 162px;
               top: 3px;
               margin: 0;
             }
@@ -1480,7 +1478,7 @@ pre {
         width: 1px;
         height: 100%;
         position: absolute;
-        right: 133px;
+        right: 151.5px;
         background: @color-border;
         z-index: 4;
       }
@@ -1488,12 +1486,12 @@ pre {
   }
   .consult-left-panel ~ .consult-center-panel {
     width: 35%;
-    margin: 0 0 0 -11px;
+    margin: 0 0 0 -6px;
   }
   .consult-left-panel {
     z-index: 200;
     position: relative;
-    margin: 0 10px 0 0;
+    margin: 0 5px 0 0;
     .consult-organization-panel {
       .panel-heading {
         .state-header {display: none;}
@@ -1501,6 +1499,9 @@ pre {
         .btn-wrap {
           position: absolute;
           right: 11px;
+          #organi-room {
+            margin: 0;
+          }
           .message-indicator {
             background: #ff0000;
             width: auto;
@@ -1509,7 +1510,7 @@ pre {
             z-index: 20;
             line-height: 17px;
             font-size: 10px;
-            right: -3px;
+            right: -8px;
             padding: 0 5.73px;
             display: inline-block;
             text-align: center;
@@ -1583,7 +1584,7 @@ pre {
         }
         .ui.basic.button {
           position: absolute;
-          right: 15px;
+          right: 9px;
           top: 3px;
           margin: 0;
           outline: 0;
@@ -1591,19 +1592,20 @@ pre {
           background: @color-white !important;
         }
         .panel-segment-header {
-
-          top: -2px;
           z-index: 3;
           width: 100%;
           background: #F5f5f5;
           border-left: 6px solid #514F65;
-          padding: 0 0 0 16px;
+          padding: 0 10px 0 16px;
           height: 32px;
           line-height: 32px;
         }
         .panel-segment-body {
           .area {
             margin: 10px 0;
+            .empty {
+              padding: 9px 15px;
+            }
           }
         }
       }
@@ -2258,7 +2260,7 @@ pre {
     .ui.basic.button {
       box-shadow: none;
       border: 1px solid @color-border;
-      padding: .54em 1.33em;
+      padding: .54em 0.6em;
     }
     .ui.buttons {
       border-radius: 0;
@@ -2470,10 +2472,6 @@ pre {
 
 .panel-label {
   display: inline-block;
-  font-size: @font-size-xsmall;
-  font-weight: 500;
-  white-space: nowrap;
-  letter-spacing: -1px;
 }
 
 .panel-sub-title {
@@ -3008,6 +3006,9 @@ label.control-label {
 }
 .overflow-y-auto {
   overflow-y: auto !important;
+}
+.overflow-overlay {
+  overflow: overlay !important;
 }
 .progress-wrap {
   width: 354px;

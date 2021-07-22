@@ -91,9 +91,10 @@
                     <text>즐겨찾기</text>
                     <button type="button" class="ui basic mini button" onclick="messenger.popupBookmarkModal()">편집</button>
                 </div>
-                <div class="panel-segment-body overflow-auto">
+                <div class="panel-segment-body overflow-overlay">
                     <div class="area">
                         <ul class="organization-ul border-bottom-none remove-padding" id="messenger-bookmark-panel"></ul>
+                        <div class="empty">즐겨찾기가 없습니다.</div>
                     </div>
                 </div>
             </div>
@@ -103,7 +104,7 @@
                     <text>조직도</text>
                     <button type="button" class="ui basic mini button" onclick="messenger.popupRoomCreationOrganizationModal(true, true)">선택대화</button>
                 </div>
-                <div class="panel-segment-body overflow-auto">
+                <div class="panel-segment-body overflow-overlay">
                     <div class="area" id="messenger-organization-panel"></div>
                 </div>
             </div>

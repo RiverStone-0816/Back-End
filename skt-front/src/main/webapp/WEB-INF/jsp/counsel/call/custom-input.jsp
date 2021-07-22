@@ -38,7 +38,7 @@
             </button>
         </div>
     </div>
-    <div class="panel-body overflow-auto">
+    <div class="panel-body overflow-overlay">
         <div class="float-field-wrap">
             <div class="float-field inline">
                 <div class="label">고객DB</div>
