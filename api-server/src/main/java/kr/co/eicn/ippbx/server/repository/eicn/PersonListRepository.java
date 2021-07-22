@@ -213,4 +213,13 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
                 .and(PERSON_LIST.ID.eq(userId))
                 .execute();
     }
+
+    public List<String> personAllId(){
+        return dsl.select(PERSON_LIST.ID)
+                .from(PERSON_LIST)
+                .where(compareCompanyId())
+                .and(PERSON_LIST.ID_TYPE.notEqual("B"))
+                .and(PERSON_LIST.ID_STATUS.isNull().or(PERSON_LIST.ID_STATUS.eq("")))
+                .fetchInto(String.class);
+    }
 }

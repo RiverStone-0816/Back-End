@@ -15,9 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import static org.jooq.impl.DSL.ifnull;
-import static org.jooq.impl.DSL.sum;
+import static org.jooq.impl.DSL.*;
+import static org.jooq.impl.DSL.field;
 
 @Getter
 public class TalkStatisticsRepository extends StatDBBaseRepository<CommonStatTalk, StatTalkEntity, Integer> {
@@ -91,5 +92,16 @@ public class TalkStatisticsRepository extends StatDBBaseRepository<CommonStatTal
             conditions.add(TABLE.SENDER_KEY.eq(search.getSenderKey()));
 
         return conditions;
+    }
+
+    public Map<String, Object> findChatUserTalkMonitor(List<String> person){
+        return dsl.select(TABLE.USERID
+                , ifnull(sum(TABLE.END_ROOM_CNT), 0).as("talk_success"))
+                .from(TABLE)
+                .where(compareCompanyId())
+                .and(TABLE.STAT_DATE.eq(currentDate()))
+                .and(TABLE.USERID.in(person))
+                .groupBy(TABLE.USERID)
+                .fetchMap(TABLE.USERID,field("talk_success"));
     }
 }

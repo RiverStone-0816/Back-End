@@ -111,5 +111,17 @@ public class ChattingRoomApiControllerTest extends BaseControllerTest {
         log.info("result : " + result);
     }
 
+//    @Test
+    protected void user_score_moniter() throws Exception {
+        final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL + "/user-score-moniter")
+                .contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)
+//                .param("newRoomName", "단체")
+//                .content(mapper.writeValueAsString(form))
+                .with(new JwtRequestPostProcessor()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
 
+        log.info("result : " + result);
+    }
 }

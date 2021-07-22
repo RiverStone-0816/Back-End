@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.messenger;
 
+import kr.co.eicn.ippbx.model.dto.eicn.ScoreMonitorResponse;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.model.dto.customdb.ChattRoomResponse;
@@ -23,9 +24,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -45,6 +48,10 @@ public class ChattingApiController extends ApiBaseController {
     private final OrganizationService organizationService;
     private final PersonListRepository personListRepository;
     private final FileSystemStorageService fileSystemStorageService;
+    private final StatUserInboundService statUserInboundService;
+    private final StatUserOutboundService statUserOutboundService;
+    private final TalkStatisticsService talkStatisticsService;
+
     @Value("${file.path.chatt}")
     private String savePath;
 
@@ -155,5 +162,25 @@ public class ChattingApiController extends ApiBaseController {
                 .headers(header -> header.add(HttpHeaders.CONTENT_DISPOSITION,
                         ContentDisposition.builder("attachment").filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8).build().toString()))
                 .body(resource);
+    }
+
+    @GetMapping("user-score-moniter")
+    public ResponseEntity<JsonResult<List<ScoreMonitorResponse>>> userScoreMoniter(){
+        final List<String> person = personListRepository.personAllId();
+        final Map<String, Object> inbound = statUserInboundService.getRepository().findChatUserInboundMonitor(person);
+        final Map<String, Object> outbound = statUserOutboundService.getRepository().findChatUserOutboundMonitor(person);
+        final Map<String, Object> talk = talkStatisticsService.getRepository().findChatUserTalkMonitor(person);
+
+        List<ScoreMonitorResponse> list = person.stream().map(e -> {
+            ScoreMonitorResponse response = new ScoreMonitorResponse();
+            response.setUserId(e);
+            response.setInCnt(Objects.nonNull(inbound.get(e)) ? Integer.parseInt(String.valueOf(inbound.get(e))) : 0);
+            response.setOutCnt(Objects.nonNull(outbound.get(e)) ? Integer.parseInt(String.valueOf(outbound.get(e))) : 0);
+            response.setTalkCnt(Objects.nonNull(talk.get(e)) ? Integer.parseInt(String.valueOf(talk.get(e))) : 0);
+            response.setTotalCnt(response.getInCnt()+response.getOutCnt());
+            return response;
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(data(list));
     }
 }

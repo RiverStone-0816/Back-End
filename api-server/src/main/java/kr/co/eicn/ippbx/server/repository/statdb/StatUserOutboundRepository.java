@@ -139,4 +139,15 @@ public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatU
                 .groupBy(TABLE.USERID)
                 .fetchOneInto(StatUserOutboundEntity.class);
     }
+
+    public Map<String, Object> findChatUserOutboundMonitor(List<String> person){
+        return dsl.select(TABLE.USERID
+                , ifnull(sum(TABLE.OUT_SUCCESS), 0).as("out_success"))
+                .from(TABLE)
+                .where(compareCompanyId())
+                .and(TABLE.STAT_DATE.eq(currentDate()))
+                .and(TABLE.USERID.in(person))
+                .groupBy(TABLE.USERID)
+                .fetchMap(TABLE.USERID,field("out_success"));
+    }
 }
