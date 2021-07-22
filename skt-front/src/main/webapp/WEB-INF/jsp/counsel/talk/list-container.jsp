@@ -21,6 +21,7 @@
                     <select class="-search-type">
                         <option value="customName" selected>고객명</option>
                         <option value="userName">상담원명</option>
+                        <option value="userId">상담원아이디</option>
                     </select>
                 </div>
                 <div class="six wide field">
@@ -61,6 +62,7 @@
                                 <div class="right">
                                     <div class="user-name -user-name"><%--<span class="notread-txt">1</span>--%> 상담원 : ${g.htmlQuote(e.userName)}</div>
                                     <div class="last-time -time"><fmt:formatDate value="${e.roomLastTime}" pattern="yyyy-MM-dd HH:mm:ss"/></div>
+                                    <div class="-user-id" style="display: none;">${g.htmlQuote(e.userId)}</div>
                                 </div>
                             </div>
                             <div class="content">
@@ -130,7 +132,7 @@
         searchValue = ui.find('.-search-value').val();
 
         ui.find('.-talk-list').hide().filter(function () {
-            return $(this).find(searchType === 'userName' ? '.-user-name' : '.-custom-name').text().indexOf(searchValue) >= 0;
+            return $(this).find(searchType === 'userName' ? '.-user-name' : searchType === 'customName' ? '.-custom-name' : '.-user-id').text().indexOf(searchValue) >= 0;
         }).show();
     });
 

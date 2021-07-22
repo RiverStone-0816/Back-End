@@ -15,7 +15,7 @@
 
 <div class="ui bottom attached tab segment remove-margin remove-padding border-top-none" data-tab="talk-panel">
     <div class="display-flex flex-flow-row full-height">
-        <div class="top-chat-list-wrap">
+        <div class="top-chat-list-wrap" id="talk-list-panel">
             <div class="ui top attached tabular menu light flex">
                 <button class="item active" data-tab="talk-list-type-MY" onclick="$(this).removeClass('newImg_c')">상담중(<span></span>)</button>
                 <button class="item" data-tab="talk-list-type-TOT" onclick="$(this).removeClass('newImg_c')">비접수(<span></span>)</button>

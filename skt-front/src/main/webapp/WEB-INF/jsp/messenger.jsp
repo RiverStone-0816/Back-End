@@ -776,7 +776,27 @@
                                 .append(
                                     $('<div/>', {class: 'buttons'})
                                         .append($('<button/>', {type: 'button', class: 'arrow button', 'data-inverted': '', 'data-tooltip': '호전환', 'data-position': 'bottom center'}))
-                                        .append($('<button/>', {type: 'button', class: 'talk ${CHATTABLE ? 'on' : 'off'} button'}))
+                                        .append($('<button/>', {
+                                            type: 'button', class: 'talk ${user.isTalk.equals('Y') ? 'on' : 'off'} button', click: function () {
+                                                <c:if test="${user.isTalk.equals('Y')}">
+                                                if ($('#organi-state').hasClass('active'))
+                                                    $('#organi-state').click();
+                                                if ($('#organi-room').hasClass('active'))
+                                                    $('#organi-room').click();
+
+                                                $('.-counsel-content-panel .item[data-tab="talk-panel"]').click();
+                                                $('.item[data-tab="talk-list-type-OTH"]').click();
+
+                                                const ui = $('#talk-list-panel');
+                                                ui.find('.-search-type').val('userId');
+                                                ui.find('.-search-value').val(e.id);
+                                                ui.find('.-search-button').click();
+                                                </c:if>
+                                                <c:if test="${!user.isTalk.equals('Y')}">
+                                                alert('상담톡 권한이 없습니다.');
+                                                </c:if>
+                                            }
+                                        }))
                                         .append($('<button/>', {
                                             type: 'button', class: 'info button', 'data-inverted': '', 'data-tooltip': '정보', 'data-position': 'bottom center', click: function () {
                                                 const modal = $('#user-info-modal');
@@ -1031,7 +1051,27 @@
                             .append(
                                 $('<div/>', {class: 'buttons'})
                                     .append($('<button/>', {type: 'button', class: 'arrow button', 'data-inverted': '', 'data-tooltip': '호전환', 'data-position': 'bottom center'}))
-                                    .append($('<button/>', {type: 'button', class: 'talk ${CHATTABLE ? 'on' : 'off'} button'}))
+                                    .append($('<button/>', {
+                                        type: 'button', class: 'talk ${user.isTalk.equals('Y') ? 'on' : 'off'} button', click: function () {
+                                            <c:if test="${user.isTalk.equals('Y')}">
+                                            if ($('#organi-state').hasClass('active'))
+                                                $('#organi-state').click();
+                                            if ($('#organi-room').hasClass('active'))
+                                                $('#organi-room').click();
+
+                                            $('.-counsel-content-panel .item[data-tab="talk-panel"]').click();
+                                            $('.item[data-tab="talk-list-type-OTH"]').click();
+
+                                            const ui = $('#talk-list-panel');
+                                            ui.find('.-search-type').val('userId');
+                                            ui.find('.-search-value').val(e.id);
+                                            ui.find('.-search-button').click();
+                                            </c:if>
+                                            <c:if test="${!user.isTalk.equals('Y')}">
+                                            alert('상담톡 권한이 없습니다.');
+                                            </c:if>
+                                        }
+                                    }))
                                     .append($('<button/>', {
                                         type: 'button', class: 'info button', 'data-inverted': '', 'data-tooltip': '정보', 'data-position': 'bottom center', click: function () {
                                             const modal = $('#user-info-modal');
