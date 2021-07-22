@@ -24,7 +24,7 @@
                     <div class="search-wrap">
                         <div class="ui icon input">
                             <input type="text" class="-search-text">
-                            <i class="search link icon"></i>
+                            <i class="search link icon -search-icon" style="cursor: pointer;"></i>
                         </div>
                         <div class="search-count">
                             <text class="-text-count">0 / 0</text>
@@ -102,11 +102,8 @@
         });
     });
 
-    modal.find('.-search-text').keyup(function (event) {
-        if (event.keyCode !== 13)
-            return;
-
-        const keyword = $(this).val().trim();
+    function search() {
+        const keyword = modal.find('.-search-text').val().trim();
         if (!keyword) {
             messenger.clearSearching();
             return;
@@ -134,6 +131,16 @@
             messenger.ui.searchingTextCountExpression.attr('data-total', messenger.currentRoom.searchingMessages.length);
             messenger._moveToText(0);
         });
+    }
+
+    modal.find('.-search-text').keyup(function (event) {
+        if (event.keyCode !== 13)
+            return;
+        search();
+    });
+
+    modal.find('.-search-icon').click(function () {
+        search();
     });
 
     modal.find('.-move-to-prev-text').click(function () {
@@ -161,10 +168,11 @@
             }
     });
 
-    setTimeout(function () {
-        const scrollBody = modal.find('.chat-body');
-        messenger.loadMessages({startMessageId: messenger.currentRoom.startMessageId, limit: messenger.READ_LIMIT + 1}).done(function () {
-            scrollBody.animate({scrollTop: scrollBody[0].scrollHeight}, 400);
-        });
-    }, 100);
+    modal.find('.chat-body').scroll(function () {
+        if ($(this).scrollTop())
+            return;
+
+        if (messenger.currentRoom)
+            messenger.loadMessages({startMessageId: messenger.currentRoom.startMessageId, limit: messenger.READ_LIMIT + 1})
+    });
 </script>
