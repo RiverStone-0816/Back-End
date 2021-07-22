@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.front.service.api;
 import kr.co.eicn.ippbx.front.service.ResultFailException;
 import kr.co.eicn.ippbx.model.dto.configdb.ChattRoomResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.ScoreMonitorResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.ChattRoomEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.OrganizationMetaChatt;
 import kr.co.eicn.ippbx.model.form.ChattingMemberFormRequest;
@@ -13,10 +14,17 @@ import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 @Slf4j
 @Service
@@ -79,4 +87,10 @@ public class ChattingApiInterface extends ApiServerInterface {
     public List<PersonDetailResponse> getOrganizationMetaBookmark() {
         return getList(subUrl + "bookmark", null, PersonDetailResponse.class).getData();
     }
+
+    @SneakyThrows
+    public List<ScoreMonitorResponse> userScoreMoniter(){
+        return getList(subUrl + "user-score-moniter", null, ScoreMonitorResponse.class).getData();
+    }
+
 }
