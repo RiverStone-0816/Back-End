@@ -29,12 +29,6 @@
                 <input type="checkbox" name="saveWaitStatusAfterPostCounselingInfo" class="options" checked>
                 <label>저장 후 대기</label>
             </div>
-            <div class="panel-title-info">
-                <span class="label">진행정보</span>
-                <span>2021-05-21 09:00:00</span>
-                <span class="label">대화방명</span>
-                <span>대화방!!@#!</span>
-            </div>
         </div>
         <div class="pull-right">
             <button type="button" class="ui basic button" onclick="popupSearchCounselingHistoryModal()">상담이력</button>

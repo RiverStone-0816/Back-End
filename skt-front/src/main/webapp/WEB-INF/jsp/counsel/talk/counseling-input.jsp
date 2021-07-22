@@ -28,10 +28,12 @@
                 <label>저장 후 대기</label>
             </div>
             <div class="panel-title-info">
-                <span class="label">진행정보</span>
-                <span>2021-05-21 09:00:00</span>
+                <c:if test="${talk != null}">
+                    <span class="label">진행정보</span>
+                    <span><c:if test="${talk.roomStatus != null && talk.roomStatus != ''}">[${g.htmlQuote(g.messageOf('RoomStatus', talk.roomStatus))}] </c:if>${g.timestampFormat(talk.roomStartTime)} ~ ${talk.roomStatus == 'E' ? g.timestampFormat(talk.roomLastTime) : ''}</span>
+                </c:if>
                 <span class="label">대화방명</span>
-                <span>대화방!!@#!</span>
+                <span><form:input path="roomName"/></span>
             </div>
         </div>
         <div class="pull-right">
@@ -52,27 +54,7 @@
         <form:hidden path="groupId" id="talk-counseling-input-groupId"/>
 
         <div class="float-field-wrap">
-
-                <c:if test="${talk != null}">
-                    <div class="float-field inline">
-                        <div class="label">진행정보</div>
-                        <div class="content">
-                            [${g.htmlQuote(g.messageOf('RoomStatus', talk.roomStatus))}]
-                                ${g.timestampFormat(talk.roomStartTime)} ~ ${talk.roomStatus == 'E' ? g.timestampFormat(talk.roomLastTime) : ''}
-                        </div>
-                    </div>
-                </c:if>
-
-                <div class="float-field inline">
-                    <div class="label">대화방명</div>
-                    <div class="content">
-                        <div class="ui form">
-                            <form:input path="roomName"/>
-                        </div>
-                    </div>
-                </div>
-
-                <c:forEach var="field" items="${resultType.fields}" varStatus="status">
+            <c:forEach var="field" items="${resultType.fields}" varStatus="status">
                 <c:set var="name" value="${field.fieldId.substring(resultType.kind.length() + '_'.length()).toLowerCase()}"/>
                 <c:set var="value" value=""/>
 
