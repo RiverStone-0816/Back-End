@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.List;
@@ -173,9 +174,9 @@ public class ChattingApiController extends ApiBaseController {
         List<ScoreMonitorResponse> list = person.stream().map(e -> {
             ScoreMonitorResponse response = new ScoreMonitorResponse();
             response.setUserId(e);
-            response.setInCnt(Objects.nonNull(inbound.get(e)) ? (Integer) inbound.get(e) : 0);
-            response.setOutCnt(Objects.nonNull(outbound.get(e)) ? (Integer) outbound.get(e) : 0);
-            response.setTalkCnt(Objects.nonNull(talk.get(e)) ? (Integer) talk.get(e) : 0);
+            response.setInCnt(Objects.nonNull(inbound.get(e)) ? Integer.parseInt(String.valueOf(inbound.get(e))) : 0);
+            response.setOutCnt(Objects.nonNull(outbound.get(e)) ? Integer.parseInt(String.valueOf(outbound.get(e))) : 0);
+            response.setTalkCnt(Objects.nonNull(talk.get(e)) ? Integer.parseInt(String.valueOf(talk.get(e))) : 0);
             response.setTotalCnt(response.getInCnt()+response.getOutCnt());
             return response;
         }).collect(Collectors.toList());
