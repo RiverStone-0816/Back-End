@@ -16,12 +16,4 @@ import java.util.List;
 @AllArgsConstructor
 public class ChattingMemberFormRequest extends BaseForm {
     private List<String> memberList = new ArrayList<>();
-
-    @Override
-    public boolean validate(BindingResult bindingResult) {
-        if (memberList.size() < 2)
-            reject(bindingResult, "memberList", "{맴버가 2명이상이어야 합니다.}");
-
-        return super.validate(bindingResult);
-    }
 }
