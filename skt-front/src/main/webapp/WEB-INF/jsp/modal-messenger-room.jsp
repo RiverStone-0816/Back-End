@@ -79,7 +79,7 @@
     modal.find('.-chatroom-name,.-cancel-chatroom-name').click(chatTitleModifyBtn);
 
     modal.find('.-change-chatroom-name').click(function () {
-        const text = modal.find('.-chatroom-name-input').trim();
+        const text = modal.find('.-chatroom-name-input').val().trim();
         restSelf.put('/api/chatt/' + messenger.currentRoom.id + '/room-name?newRoomName=' + encodeURIComponent(text)).done(function () {
             $this.text(text);
             messenger.communicator.changeRoomName(roomId, text);
