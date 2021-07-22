@@ -808,11 +808,17 @@
                             }
                         })
                         .dblclick(function () {
-                            messenger.ui.organizationPanel.find('.-messenger-user').removeClass('active');
-                            messenger.ui.bookmarkPanel.find('.-messenger-bookmark').removeClass('active');
-                            messenger.ui.organizationPanel.find('.-messenger-folder').removeClass('active');
-                            $(this).addClass('active');
-                            messenger.openRoom();
+                            const user = $(this).attr('data-id');
+                            if (user === messenger.me)
+                                return;
+
+                            const users = [];
+                            users.push($(this).attr('data-id'));
+                            users.push(messenger.me);
+
+                            restSelf.post('/api/chatt/', {memberList: users}).done(function (response) {
+                                messenger.loadRoom(response.data);
+                            });
                         });
                 });
                 messenger.filterItem();
@@ -1089,11 +1095,17 @@
                         }
                     })
                     .dblclick(function () {
-                        messenger.ui.organizationPanel.find('.-messenger-user').removeClass('active');
-                        messenger.ui.bookmarkPanel.find('.-messenger-bookmark').removeClass('active');
-                        messenger.ui.organizationPanel.find('.-messenger-folder').removeClass('active');
-                        $(this).addClass('active');
-                        messenger.openRoom();
+                        const user = $(this).attr('data-id');
+                        if (user === messenger.me)
+                            return;
+
+                        const users = [];
+                        users.push($(this).attr('data-id'));
+                        users.push(messenger.me);
+
+                        restSelf.post('/api/chatt/', {memberList: users}).done(function (response) {
+                            messenger.loadRoom(response.data);
+                        });
                     });
             }
 
