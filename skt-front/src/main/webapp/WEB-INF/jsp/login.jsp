@@ -146,8 +146,8 @@
 
     <div class="actions">
         <button type="submit" class="ui orange button" id="confirm-login">확인</button>
-        <button type="button" class="ui grey button" id="password-change">취소</button>
-        <button type="button" class="ui orange button" id="cancel-login">변경</button>
+        <button type="button" class="ui grey button" id="cancel-login">취소</button>
+        <button type="button" class="ui orange button" id="password-change">변경</button>
     </div>
 </div>
 
