@@ -810,7 +810,7 @@ pre {
   overflow: hidden;
   .prv-left-panel {
     width: 67%;
-    padding-right: 10px;
+    padding-right: 5px;
   }
   .prv-right-panel {
     width: 33%;
@@ -1156,7 +1156,7 @@ pre {
 }
 
 .content-inner.-counsel-content-panel.control {
-  margin: 0 0 0 -134px;
+  margin: 0 0 0 -137px;
 }
 
 .organi-pop-wrap {
@@ -1182,7 +1182,7 @@ pre {
 .organization-ul {
   position: relative;
   border-bottom: 1px solid @color-border;
-  min-width: 304px;
+  min-width: 299px;
   background: @color-white;
   -ms-user-select: none;
   -webkit-user-select: none;
@@ -1208,16 +1208,20 @@ pre {
     cursor: pointer;
     .flex();
     align-items: center;
-    padding: 7px 10px 7px 15px;
+    padding: 7px 10px 7px 10px;
   }
   li.belong {
     margin: -10px 0 0;
+    .user-wrap {
+      width: 279px;
+    }
     label {
       color: #464646;
       font-weight: 200;
       white-space: normal;
     }
   }
+  .belong {}
   li.active {
     background: @color-list-active;
   }
@@ -1296,7 +1300,8 @@ pre {
       position: relative;
       &:after {
         font-size: 9px;
-        padding: 8px;
+        padding: 2px 8px;
+        z-index: 6;
       }
       &:before {
         left: 14%;
@@ -1364,12 +1369,13 @@ pre {
     .num {
       background: #dadada;
       margin: 0 7px;
-      padding: 0 6px;
       border-radius: 3px;
       font-size: 10px;
+      text-align: center;
       height: 15px;
       display: inline-block;
       color: #545454;
+      min-width: 19px;
       &:last-child {
         margin-right: 0;
       }
@@ -1424,7 +1430,7 @@ pre {
     box-shadow: rgba(0, 0, 0, .15) 6px -1px 6px -2px;
     .panel.consult-organization-panel.full-height {
       .organization-ul {
-        min-width: 458px;
+        min-width: 436px;
         li {
           .state-wrap {
             display: inline-flex;
@@ -1434,12 +1440,12 @@ pre {
       .panel-heading {
         .btn-wrap {
           position: absolute;
-          right: 160px;
+          right: 146.5px;
         }
         .state-header {
           display: inline-block;
           position: absolute;
-          right: 108px;
+          right: 94px;
         }
         .state-header-close {
           display: inline-block;
@@ -1459,14 +1465,14 @@ pre {
       .panel-body {
         .organization-ul {
           .title {
-            padding: 9px 163px 9px 15px;
+            padding: 9px 146px 9px 15px;
           }
         }
         .panel-segment {
           .panel-segment-header {
             .ui.basic.button {
               position: absolute;
-              right: 162px;
+              right: 146.5px;
               top: 3px;
               margin: 0;
             }
@@ -1478,8 +1484,8 @@ pre {
         width: 1px;
         height: 100%;
         position: absolute;
-        right: 151.5px;
-        background: @color-border;
+        right: 135px;
+        border-left: 1px solid @color-border;
         z-index: 4;
       }
     }
@@ -1498,7 +1504,7 @@ pre {
         .state-header-close {display: none;}
         .btn-wrap {
           position: absolute;
-          right: 11px;
+          right: 10px;
           #organi-room {
             margin: 0;
           }
@@ -1560,10 +1566,9 @@ pre {
           }
         }
         .panel-segment.favor {
-          overflow: hidden;
         }
         .panel-segment.list {
-          overflow: auto;
+          overflow: hidden;
           flex: 1;
           height: 100%;
         }
@@ -1584,7 +1589,7 @@ pre {
         }
         .ui.basic.button {
           position: absolute;
-          right: 9px;
+          right: 10px;
           top: 3px;
           margin: 0;
           outline: 0;
@@ -1602,7 +1607,7 @@ pre {
         }
         .panel-segment-body {
           .area {
-            margin: 10px 0;
+            margin: 12px 0;
             .empty {
               padding: 9px 15px;
             }
@@ -1612,7 +1617,7 @@ pre {
     }
   }
   .consult-center-panel.control {
-    margin: 0 0 0 -145px;
+    margin: 0 0 0 -142px;
   }
   .consult-center-panel {
     .flex();
@@ -1638,14 +1643,22 @@ pre {
     }
   }
   .panel-body {
-    height: ~"calc(100% - 46px)";
+    height: 100%;
+  }
+  #call-custom-input-container, #call-counseling-input-container, #talk-custom-input-container, #talk-counseling-input-container {
+    height: 100%;
+    overflow: overlay;
+    > form {
+      height: ~"calc(100% - 50px)";
+    }
   }
   .consult-right-panel {
     width: 50%;
     overflow: hidden;
     .top-area {
       .panel-body {
-        margin: 50px 0 0 0;
+        margin: 47px 0 0 0;
+        padding: 10px 14px 14px 14px;
       }
       .panel-resizable {
         height: 300px;
@@ -1653,7 +1666,8 @@ pre {
     }
     .middle-area {
       .panel-body {
-        margin: 50px 0 0 0;
+        margin: 47px 0 0 0;
+        padding: 10px 14px 14px 14px;
       }
       .panel-resizable {
         height: 300px;
@@ -1667,7 +1681,6 @@ pre {
       overflow-y: auto;
       .ui.bottom.attached.tab.segment {
         height: ~"calc(100% - 44px)";
-
       }
     }
     .flex();

@@ -38,11 +38,11 @@
     <div class="-counsel-content-panel consult-right-panel" data-type="COUNSEL" style="display: none;">
         <div id="custom-input-panel" class="top-area">
             <div class="panel top remove-mb panel-resizable -vertical-resizable">
-                <div id="call-custom-input-container" style="overflow-y: auto;">
+                <div id="call-custom-input-container">
                     <div id="call-custom-input"></div>
                 </div>
                 <c:if test="${user.isTalk.equals('Y')}">
-                    <div id="talk-custom-input-container" style="overflow-y: auto; display: none;">
+                    <div id="talk-custom-input-container" style="display: none;">
                         <div id="talk-custom-input"></div>
                     </div>
                 </c:if>
@@ -51,11 +51,11 @@
 
         <div id="counseling-input-panel" class="middle-area">
             <div class="panel remove-mb panel-resizable -vertical-resizable">
-                <div id="call-counseling-input-container" style="overflow-y: auto;">
+                <div id="call-counseling-input-container">
                     <div id="call-counseling-input"></div>
                 </div>
                 <c:if test="${user.isTalk.equals('Y')}">
-                    <div id="talk-counseling-input-container" style="overflow-y: auto; display: none;">
+                    <div id="talk-counseling-input-container" style="display: none;">
                         <div id="talk-counseling-input"></div>
                     </div>
                 </c:if>
