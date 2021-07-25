@@ -157,7 +157,7 @@
             }
         });
 
-        $('.panel-segment.favor').resizable({minHeight: 32});
+        $('.panel-segment.favor').resizable({minHeight: 88});
 
         $('.consult-organization-panel .panel-heading .ui.basic.button').click(function () {
             $(this).toggleClass('active');

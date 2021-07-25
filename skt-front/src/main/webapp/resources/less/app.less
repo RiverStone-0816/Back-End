@@ -584,13 +584,13 @@ pre {
           line-height: 17px;
           &:hover {
             color: #333;
-            font-weight: 800;
+            font-weight: 400;
           }
         }
       }
       li.active {
         a {
-          font-weight: 800;
+          font-weight: 400;
           background: @color-menu-bg;
           color: @color-white;
           box-shadow: @color-brand 0px -3px 0px inset;
@@ -1721,9 +1721,12 @@ pre {
   width: 40%;
   margin: 10px;
   .sort-wrap {
-    padding: 10px 10px 0 10px;
+    padding: 5px;
     .fields {
-      margin-bottom: 8px;
+      margin: 0;
+      input[type="text"] {
+        padding: 6.5px 5px;
+      }
     }
   }
   .ui.attached.tabular.menu.flex {
@@ -1761,7 +1764,7 @@ pre {
     cursor: pointer;
     background: darken(@color-gray, 6.3%);
     color: darken(@color-gray, 45%);
-    padding: 16px 27px;
+    padding: 15.5px 27px;
     &:hover {
       background: darken(@color-gray, 6.3%);
       color: darken(@color-gray, 45%);
@@ -5709,7 +5712,7 @@ g {
   flex-flow: column;
   overflow: auto;
   .top {
-    margin: 0 0 10px 0;
+    margin: 0 0 5px 0;
     min-width: 1620px;
     .panel-body {
       overflow: hidden;
@@ -5738,7 +5741,7 @@ g {
     }
     .rank-area {
       flex: 1;
-      margin: 0 0 0 10px;
+      margin: 0 0 0 5px;
     }
     .panel-body {
       overflow: auto;

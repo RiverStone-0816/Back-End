@@ -17,14 +17,14 @@
     <div class="sort-wrap">
         <div class="ui form">
             <div class="fields">
-                <div class="five wide field">
+                <div class="five wide field remove-pl">
                     <select class="-search-type">
                         <option value="customName" selected>고객명</option>
                         <option value="userName">상담원명</option>
                         <option value="userId">상담원아이디</option>
                     </select>
                 </div>
-                <div class="six wide field">
+                <div class="six wide field remove-padding">
                     <div class="ui action input">
                         <input type="text" class="-search-value">
                         <button type="button" class="ui icon button -search-button">
@@ -32,7 +32,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="five wide field">
+                <div class="five wide field remove-pr">
                     <select class="-orderby">
                         <option value="lastMessageTime" selected>최근시간</option>
                         <option value="customName">고객명</option>
