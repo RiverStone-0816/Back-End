@@ -103,6 +103,89 @@
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
                         <div class="table-scroll-wrap">
+                            <%--todo: 값 적용 요청--%>
+                            <table class="ui celled table compact unstackable structured border-top">
+                                <thead>
+                                <tr>
+                                    <th rowspan="2">날짜/시간</th>
+                                    <th colspan="4">O/B 건수 통계</th>
+                                    <th colspan="8">I/B 건수 통계</th>
+                                    <th rowspan="2">총 통화<br>성공 건수</th>
+                                    <th colspan="3">O/B 시간통계</th>
+                                    <th colspan="3">I/B 시간통계</th>
+                                    <th rowspan="2">총시간</th>
+                                </tr>
+                                <tr>
+                                    <th>총시도콜</th>
+                                    <th>O/B건수</th>
+                                    <th>비수신</th>
+                                    <th>통화성공률</th>
+                                    <th>I/B 전체콜</th>
+                                    <th>단순조회</th>
+                                    <th>연결요청</th>
+                                    <th>응대호</th>
+                                    <th>포기호</th>
+                                    <th>콜백</th>
+                                    <th>호응답률</th>
+                                    <th>단순조회율</th>
+                                    <th>O/B 총통화시간</th>
+                                    <th>O/B 평균통화시간</th>
+                                    <th>평균 대기시간</th>
+                                    <th>I/B 총통화시간</th>
+                                    <th>평균 통화 시간</th>
+                                    <th>평균 대기시간</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>2021-07-13</td>
+                                    <td>78</td>
+                                    <td>54</td>
+                                    <td>24</td>
+                                    <td>69.20%</td>
+                                    <td>144</td>
+                                    <td>49</td>
+                                    <td>95</td>
+                                    <td>89</td>
+                                    <td>15</td>
+                                    <td>1</td>
+                                    <td>93%</td>
+                                    <td>34%</td>
+                                    <td>143</td>
+                                    <td>1:32:29</td>
+                                    <td>0:01:42</td>
+                                    <td></td>
+                                    <td>3:22:57</td>
+                                    <td>0:02:16</td>
+                                    <td>0:00:13</td>
+                                    <td>4:55:26</td>
+                                </tr>
+                                <tr>
+                                    <td>합계</td>
+                                    <td>78</td>
+                                    <td>54</td>
+                                    <td>24</td>
+                                    <td>69.20%</td>
+                                    <td>144</td>
+                                    <td>49</td>
+                                    <td>95</td>
+                                    <td>89</td>
+                                    <td>15</td>
+                                    <td>1</td>
+                                    <td>93%</td>
+                                    <td>34%</td>
+                                    <td>143</td>
+                                    <td>1:32:29</td>
+                                    <td>0:01:42</td>
+                                    <td></td>
+                                    <td>3:22:57</td>
+                                    <td>0:02:16</td>
+                                    <td>0:00:13</td>
+                                    <td>4:55:26</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
                             <table class="ui celled table compact unstackable structured border-top">
                                 <thead>
                                 <tr>
@@ -200,49 +283,36 @@
                     <c:if test="${list.size() > 0}">
                         <div class="panel-section">
                             <div class="panel">
-                                <div class="panel-heading">총통화그래프</div>
-                                <div class="panel-body pd-1em">
-                                    <div class="-chart basic-chart-container" id="total-call-chart"></div>
-                                    <div class="chart-label-container">
-                                        <div class="ui segment secondary">
-                                            <text class="label-list"><i class="point color-red" style="background-color: #F37402 !important;"></i>인바운드</text>
-                                            <text class="label-list"><i class="point color-blue" style="background-color: #00802F !important;"></i>아웃바운드</text>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel-section">
-                            <div class="panel">
                                 <div class="panel-heading">아웃바운드 통계 그래프</div>
                                 <div class="panel-body pd-1em">
-                                    <div class="ui grid">
+                                    <div class="ui middle aligned grid">
                                         <div class="four wide column">
-                                            <div class="label-container"><label class="control-label">평균통계</label></div>
-                                            <div class="pie-chart-container">
-                                                <div id="outbound-outer-pie-chart" class="full-width full-height" style="padding: 0 50px"></div>
-                                                <div class="inner-label">
-                                                    <span class="ui label">TOTAL</span> ${total.outboundStat.success + total.outboundStat.cancel}
+                                            <div class="ui segments pie-chart">
+                                                <div class="ui segment pie-chart-bg">
+                                                    <div class="label-container">O/B 통계</div>
+                                                    <div class="pie-chart-container">
+                                                        <div id="outbound-outer-pie-chart" class="full-width full-height" style="padding: 0 50px"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="ui secondary segment">
+                                                    <div class="chart-label-container">
+                                                        <div>
+                                                            <text class="label-list"><span class="symbol-square symbol-blue"></span>O/B 건수</text>
+                                                            <text class="label-list"><span class="symbol-square symbol-orange"></span>비수신</text>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-
-                                            <div class="chart-label-container">
-                                                <div class="ui segment secondary">
-                                                    <text class="label-list">응대호 <span class="color-bar1" style="color: #F37402 !important;">${total.outboundStat.success}</span></text>
-                                                    <text class="label-list">포기호 <span class="color-bar2" style="color: #00802F !important;">${total.outboundStat.cancel}</span></text>
-                                                </div>
-                                            </div>
-
                                         </div>
                                         <div class="twelve wide column">
                                             <div class="label-container">
-                                                <label class="control-label">O/B비교통계</label>
+                                                <label class="control-label">O/B 통계</label>
                                             </div>
                                             <div class="-chart basic-chart-container" id="outbound-chart"></div>
                                             <div class="chart-label-container">
-                                                <div class="ui segment secondary">
-                                                    <text class="label-list"><span class="point color-red" style="background-color: #F37402 !important;"></span>응대호</text>
-                                                    <text class="label-list"><span class="point color-blue" style="background-color: #00802F !important;"></span>포기호</text>
+                                                <div>
+                                                    <text class="label-list"><span class="symbol-square symbol-blue"></span>O/B 건수</text>
+                                                    <text class="label-list"><span class="symbol-square symbol-orange"></span>비수신</text>
                                                 </div>
                                             </div>
                                         </div>
@@ -254,33 +324,36 @@
                             <div class="panel">
                                 <div class="panel-heading">인바운드 통계 그래프</div>
                                 <div class="panel-body pd-1em">
-                                    <div class="ui grid">
+                                    <div class="ui middle aligned grid">
                                         <div class="four wide column">
-                                            <div class="label-container"><label class="control-label">평균통계</label></div>
-                                            <div class="pie-chart-container">
-                                                <div id="inbound-outer-pie-chart" class="full-width full-height" style="padding: 0 50px"></div>
-
-                                                <div class="inner-label">
-                                                    <span class="ui label">TOTAL</span> ${total.inboundStat.success + total.inboundStat.cancel}
+                                            <div class="ui segments pie-chart">
+                                                <div class="ui segment pie-chart-bg">
+                                                    <div class="label-container">I/B 통계</div>
+                                                    <div class="pie-chart-container">
+                                                        <div id="inbound-outer-pie-chart" class="full-width full-height" style="padding: 0 50px"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="ui secondary segment">
+                                                    <div class="chart-label-container">
+                                                        <div>
+                                                            <text class="label-list"><span class="symbol-square symbol-blue"></span>응대호</text>
+                                                            <text class="label-list"><span class="symbol-square symbol-orange"></span>포기호</text>
+                                                            <text class="label-list"><span class="symbol-square symbol-grey"></span>콜백</text>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="chart-label-container">
-                                                <div class="ui segment secondary">
-                                                    <text class="label-list">성공호 <span class="color-bar1" style="color: #F37402 !important;">${total.inboundStat.success}</span></text>
-                                                    <text class="label-list">비수신 <span class="color-bar2" style="color: #00802F !important;">${total.inboundStat.cancel}</span></text>
-                                                </div>
-                                            </div>
-
                                         </div>
                                         <div class="twelve wide column">
                                             <div class="label-container">
-                                                <label class="control-label">I/B비교통계</label>
+                                                <label class="control-label">I/B 통계</label>
                                             </div>
                                             <div class="-chart basic-chart-container" id="inbound-chart"></div>
                                             <div class="chart-label-container">
-                                                <div class="ui segment secondary">
-                                                    <text class="label-list"><span class="point color-red" style="background-color: #F37402 !important;"></span>성공호</text>
-                                                    <text class="label-list"><span class="point color-blue" style="background-color: #00802F !important;"></span>비수신</text>
+                                                <div>
+                                                    <text class="label-list"><span class="symbol-square symbol-blue"></span>응대호</text>
+                                                    <text class="label-list"><span class="symbol-square symbol-orange"></span>포기호</text>
+                                                    <text class="label-list"><span class="symbol-square symbol-grey"></span>콜백</text>
                                                 </div>
                                             </div>
                                         </div>

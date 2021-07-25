@@ -106,6 +106,100 @@
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
                         <div class="table-scroll-wrap">
+                            <%--todo: 값 적용 요청--%>
+                            <table class="ui celled table compact unstackable structured border-top">
+                                <thead>
+                                <tr>
+                                    <th rowspan="2">날짜/시간</th>
+                                    <th rowspan="2">서비스</th>
+                                    <th rowspan="2">IVR</th>
+                                    <th colspan="2">인입경로</th>
+                                    <th colspan="5">I/B 콜 현황</th>
+                                    <th colspan="7">응답호 분석</th>
+                                    <th colspan="3">통화시간 분석</th>
+                                </tr>
+                                <tr>
+                                    <th>1th</th>
+                                    <th>2th</th>
+                                    <th>인입콜수</th>
+                                    <th>단순조회</th>
+                                    <th>연결요청</th>
+                                    <th>응대호</th>
+                                    <th>포기호</th>
+                                    <th>호응답률</th>
+                                    <th>서비스레벨 호응답률</th>
+                                    <th>~10(초)</th>
+                                    <th>~20(초)</th>
+                                    <th>~30(초)</th>
+                                    <th>~40(초)</th>
+                                    <th>40~(초)</th>
+                                    <th>I/B 총통화시간</th>
+                                    <th>평균 통화시간</th>
+                                    <th>평균 대기시간</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td rowspan="3">2021-07-13</td>
+                                    <td rowspan="3">070-7839-0996</td>
+                                    <td rowspan="3">테스트 루트</td>
+                                    <td>m1</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0.00%</td>
+                                    <td>0.00%</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0:00:00</td>
+                                    <td>0:00:00</td>
+                                    <td>0:00:00</td>
+                                </tr>
+                                <tr>
+                                    <td>m1</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0.00%</td>
+                                    <td>0.00%</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0:00:00</td>
+                                    <td>0:00:00</td>
+                                    <td>0:00:00</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">m1</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0.00%</td>
+                                    <td>0.00%</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0:00:00</td>
+                                    <td>0:00:00</td>
+                                    <td>0:00:00</td>
+                                </tr>
+                                </tbody>
+                            </table>
                             <table class="ui celled table compact unstackable structured border-top">
                                 <thead>
                                 <tr>

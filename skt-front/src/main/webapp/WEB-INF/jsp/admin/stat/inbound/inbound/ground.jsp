@@ -115,6 +115,98 @@
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
                         <div class="table-scroll-wrap">
+                            <%--todo: 값 적용 요청--%>
+                            <table class="ui celled table compact unstackable structured border-top">
+                                <thead>
+                                <tr>
+                                    <th rowspan="2">날짜/시간</th>
+                                    <th colspan="6">I/B 콜 현황</th>
+                                    <th colspan="7">응답호 분석</th>
+                                    <th colspan="6">포기호 분석</th>
+                                    <th colspan="4">기타 분석</th>
+                                </tr>
+                                <tr>
+                                    <th>I/B 전체콜</th>
+                                    <th>단순조회</th>
+                                    <th>연결요청</th>
+                                    <th>응대호</th>
+                                    <th>포기호</th>
+                                    <th>콜백</th>
+                                    <th>호응답률</th>
+                                    <th>서비스레벨 호응답률</th>
+                                    <th>~10(초)</th>
+                                    <th>~20(초)</th>
+                                    <th>~30(초)</th>
+                                    <th>~40(초)</th>
+                                    <th>40~(초)</th>
+                                    <th>호 포기율</th>
+                                    <th>~10(초)</th>
+                                    <th>~20(초)</th>
+                                    <th>~30(초)</th>
+                                    <th>~40(초)</th>
+                                    <th>40~(초)</th>
+                                    <th>단순조회율</th>
+                                    <th>I/B 총통화시간</th>
+                                    <th>평균통화시간</th>
+                                    <th>평균대기시간</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>2021-07-13</td>
+                                    <td>144</td>
+                                    <td>49</td>
+                                    <td>95</td>
+                                    <td>89</td>
+                                    <td>15</td>
+                                    <td>1</td>
+                                    <td>93.70%</td>
+                                    <td>88.40%</td>
+                                    <td>81</td>
+                                    <td>3</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>5</td>
+                                    <td>15.79%</td>
+                                    <td>2</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>3</td>
+                                    <td>34.00%</td>
+                                    <td>3:22:57</td>
+                                    <td>0:02:16</td>
+                                    <td>0:00:13</td>
+                                </tr>
+                                <tr>
+                                    <td>합계</td>
+                                    <td>144</td>
+                                    <td>49</td>
+                                    <td>95</td>
+                                    <td>89</td>
+                                    <td>15</td>
+                                    <td>1</td>
+                                    <td>93.70%</td>
+                                    <td>88.40%</td>
+                                    <td>81</td>
+                                    <td>3</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>5</td>
+                                    <td>15.79%</td>
+                                    <td>2</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>3</td>
+                                    <td>34.00%</td>
+                                    <td>3:22:57</td>
+                                    <td>0:02:16</td>
+                                    <td>0:00:13</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
                             <table class="ui celled table compact unstackable structured border-top">
                                 <thead>
                                 <tr>
@@ -236,33 +328,37 @@
                         <div class="panel">
                             <div class="panel-heading">통계그래프</div>
                             <div class="panel-body pd-1em">
-                                <div class="ui grid">
+                                <div class="ui middle aligned grid">
                                     <c:if test="${list.size() > 0}">
                                         <div class="four wide column">
-                                            <div class="label-container"><label class="control-label">평균통계</label></div>
-                                            <div class="pie-chart-container">
-                                                <div id="inbound-outer-pie-chart" class="full-width full-height" style="padding: 0 50px;"></div>
-
-                                                <div class="inner-label">
-                                                    <span class="ui label">TOTAL</span> ${total.success + total.cancel}
+                                            <div class="ui segments pie-chart">
+                                                <div class="ui segment pie-chart-bg">
+                                                    <div class="label-container"><label class="control-label">IB 통계</label></div>
+                                                    <div class="pie-chart-container">
+                                                        <div id="inbound-outer-pie-chart" class="full-width full-height" style="padding: 0 50px;"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="chart-label-container">
-                                                <div class="ui segment secondary">
-                                                    <text class="label-list">응대호 <span class="color-bar1" style="color: #F37402 !important;">${total.success}</span></text>
-                                                    <text class="label-list">포기호 <span class="color-bar2" style="color: #00802F !important;">${total.cancel}</span></text>
+                                                <div class="ui secondary segment">
+                                                    <div class="chart-label-container">
+                                                        <div>
+                                                            <text class="label-list"><span class="symbol-square symbol-blue"></span>응대호</text>
+                                                            <text class="label-list"><span class="symbol-square symbol-orange"></span>포기호</text>
+                                                            <text class="label-list"><span class="symbol-square symbol-grey"></span>콜백</text>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="twelve wide column">
                                             <div class="label-container">
-                                                <label class="control-label">I/B비교통계</label>
+                                                <label class="control-label">I/B 통계</label>
                                             </div>
                                             <div class="-chart basic-chart-container" id="inbound-chart"></div>
                                             <div class="chart-label-container">
-                                                <div class="ui segment secondary">
-                                                    <text class="label-list"><span class="point color-red" style="background-color: #F37402 !important;"></span>응대호</text>
-                                                    <text class="label-list"><span class="point color-blue" style="background-color: #00802F !important;"></span>포기호</text>
+                                                <div>
+                                                    <text class="label-list"><span class="symbol-square symbol-blue"></span>응대호</text>
+                                                    <text class="label-list"><span class="symbol-square symbol-orange"></span>포기호</text>
+                                                    <text class="label-list"><span class="symbol-square symbol-grey"></span>콜백</text>
                                                 </div>
                                             </div>
                                         </div>

@@ -85,8 +85,8 @@
                             <thead>
                             <tr>
                                 <th rowspan="2">날짜/시간</th>
-                                <th colspan="3">O/B</th>
-                                <th colspan="3">성과지표</th>
+                                <th colspan="4">O/B 콜 현황</th>
+                                <th colspan="2">통화시간 분석</th>
                             </tr>
                             <tr>
                                 <th>총 시도콜</th>
@@ -98,7 +98,6 @@
                                 <th>O/B 평균통화시간</th>
                             </tr>
                             </thead>
-
                             <c:choose>
                                 <c:when test="${list.size() > 0}">
                                     <tbody>
@@ -144,32 +143,34 @@
                                     <text class="content">아웃바운드 통계 그래프</text>
                                 </div>
                                 <div class="panel-body pd-1em">
-                                    <div class="ui grid">
+                                    <div class="ui middle aligned grid">
                                         <div class="four wide column">
-                                            <div class="label-container"><label class="control-label">평균통계</label><span class="ui label small">일별</span></div>
-                                            <div class="pie-chart-container">
-                                                <div id="outer-pie-chart" class="full-width" style="padding: 0 50px;"></div>
-
-                                                <div class="inner-label">
-                                                    <span class="ui label">TOTAL</span> ${total.success + total.cancel}
+                                            <div class="ui segments pie-chart">
+                                                <div class="ui segment pie-chart-bg">
+                                                    <div class="label-container">O/B 통계</div>
+                                                    <div class="pie-chart-container">
+                                                        <div id="outer-pie-chart" class="full-width full-height" style="padding: 0 50px"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="chart-label-container">
-                                                <div class="ui segment secondary">
-                                                    <text class="label-list">응대호 <span class="color-bar1" style="color: #F37402 !important;">${total.success}</span></text>
-                                                    <text class="label-list">포기호 <span class="color-bar2" style="color: #00802F !important;">${total.cancel}</span></text>
+                                                <div class="ui secondary segment">
+                                                    <div class="chart-label-container">
+                                                        <div>
+                                                            <text class="label-list"><span class="symbol-square symbol-blue"></span>O/B 건수</text>
+                                                            <text class="label-list"><span class="symbol-square symbol-orange"></span>비수신</text>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="twelve wide column">
                                             <div class="label-container">
-                                                <label class="control-label">O/B비교통계</label>
+                                                <label class="control-label">O/B 통계</label>
                                             </div>
                                             <div class="-chart basic-chart-container" id="chart"></div>
                                             <div class="chart-label-container">
-                                                <div class="ui segment secondary">
-                                                    <text class="label-list"><span class="point color-red" style="background-color: #F37402 !important;"></span>응대호</text>
-                                                    <text class="label-list"><span class="point color-blue" style="background-color: #00802F !important;"></span>포기호</text>
+                                                <div>
+                                                    <text class="label-list"><span class="symbol-square symbol-blue"></span>O/B 건수</text>
+                                                    <text class="label-list"><span class="symbol-square symbol-orange"></span>비수신</text>
                                                 </div>
                                             </div>
                                         </div>

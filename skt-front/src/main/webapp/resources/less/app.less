@@ -2634,6 +2634,9 @@ label.control-label {
 }
 .label-container {
   line-height: 35px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 500;
 }
 .panel-search {
   .panel-body {
@@ -4947,20 +4950,18 @@ progress[value]::-webkit-progress-value {
 
 .chart-label-container {
   text-align: center;
-  margin: 1.3em 1.5em;
-  line-height: 2em;
+  margin: 2em 1em 1em 1em;
   .label-list {
     display: inline-block;
     margin: 0 1em;
     font-weight: 500;
     color: @color-darkgray;
     .point {
-      border-radius: 81%;
       display: inline-block;
       width: 10px;
       height: 10px;
       overflow: hidden;
-      margin: 0 0.2em 0 0;
+      margin: 0 10px 0 0;
     }
   }
 }
@@ -4970,6 +4971,33 @@ g {
     font-size: 12px
   }
 }
+
+.ui.segments.pie-chart {
+  max-width: 386px;
+  max-height: 363px;
+  .chart-label-container {
+    margin: 0;
+  }
+}
+
+.ui.segment.pie-chart-bg {
+  background-image: url("../images/pie-chart-bg.png");
+  background-size: 100%;
+}
+
+
+.symbol-square {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  overflow: hidden;
+  margin: 0 10px 0 0;
+}
+
+.symbol-square.symbol-orange {background-color:#F37402!important;}
+.symbol-square.symbol-blue {background-color:#4472C4!important;}
+.symbol-square.symbol-grey {background-color:#A5A5A5!important;}
+
 
 .bcolor-bar1 {background: @color-state-wait !important; fill: @color-state-wait; stroke: @color-state-wait; color: @color-white;}
 .bcolor-bar2 {background: @color-state-after !important; fill: @color-state-after; stroke: @color-state-after; color: @color-white;}
@@ -5058,7 +5086,6 @@ g {
 .pie-chart-container {
   position: relative;
   width: 100%;
-  padding: 12px 0;
   #outer-pie-chart {
     height: 277px;
     .flex();

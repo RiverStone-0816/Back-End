@@ -84,6 +84,36 @@
                             </div>
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
+                            <%--todo: 값 적용 요청--%>
+                        <table class="ui celled table compact unstackable">
+                            <thead>
+                            <tr>
+                                <th colspan="2">문의유형</th>
+                                <th>2021-07-23</th>
+                                <th>2021-07-24</th>
+                                <th>2021-07-25</th>
+                                <th>2021-07-26</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>안녕</td>
+                                <td>190</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                            </tr>
+                            <tr>
+                                <td>하세</td>
+                                <td>209</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>0</td>
+                            </tr>
+                            </tbody>
+                        </table>
                         <table class="ui celled table compact unstackable">
                                     <thead>
                                     <tr>
