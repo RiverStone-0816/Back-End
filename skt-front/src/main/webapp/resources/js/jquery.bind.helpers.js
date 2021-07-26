@@ -125,7 +125,7 @@
         findAndMe(".-overlay-scroll", this).overlayScrollbars({});
         findAndMe(".-vertical-resizable", this).each(function () {
             $(this).resizable({
-                minHeight: parseInt($(this).attr('data-resizable-min-height') || 54),
+                minHeight: parseInt($(this).attr('data-resizable-min-height') || 53),
                 maxHeight: parseInt($(this).attr('data-resizable-max-height') || 610)
             });
         });
