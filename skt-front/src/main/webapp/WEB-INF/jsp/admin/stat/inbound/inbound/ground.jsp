@@ -115,7 +115,6 @@
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
                         <div class="table-scroll-wrap">
-                            <%--todo: 값 적용 요청--%>
                             <table class="ui celled table compact unstackable structured border-top">
                                 <thead>
                                 <tr>
@@ -151,175 +150,84 @@
                                     <th>평균대기시간</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td>2021-07-13</td>
-                                    <td>144</td>
-                                    <td>49</td>
-                                    <td>95</td>
-                                    <td>89</td>
-                                    <td>15</td>
-                                    <td>1</td>
-                                    <td>93.70%</td>
-                                    <td>88.40%</td>
-                                    <td>81</td>
-                                    <td>3</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>5</td>
-                                    <td>15.79%</td>
-                                    <td>2</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>3</td>
-                                    <td>34.00%</td>
-                                    <td>3:22:57</td>
-                                    <td>0:02:16</td>
-                                    <td>0:00:13</td>
-                                </tr>
-                                <tr>
-                                    <td>합계</td>
-                                    <td>144</td>
-                                    <td>49</td>
-                                    <td>95</td>
-                                    <td>89</td>
-                                    <td>15</td>
-                                    <td>1</td>
-                                    <td>93.70%</td>
-                                    <td>88.40%</td>
-                                    <td>81</td>
-                                    <td>3</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>5</td>
-                                    <td>15.79%</td>
-                                    <td>2</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>3</td>
-                                    <td>34.00%</td>
-                                    <td>3:22:57</td>
-                                    <td>0:02:16</td>
-                                    <td>0:00:13</td>
-                                </tr>
-                                </tbody>
-                            </table>
-
-                            <table class="ui celled table compact unstackable structured border-top">
-                                <thead>
-                                <tr>
-                                    <th rowspan="2">날짜/시간</th>
-                                    <th colspan="6">I/B 콜 현황</th>
-                                    <th colspan="6">성과지표</th>
-                                    <th colspan="5">응대시간 분포시간 분포</th>
-                                    <th colspan="5">응대시간 포기시간 분포</th>
-                                </tr>
-                                <tr>
-                                    <th>I/B<br>전체콜</th>
-                                    <th>무효콜</th>
-                                    <th>연결요청</th>
-                                    <th>응대호</th>
-                                    <th>포기호</th>
-                                    <th>콜백</th>
-
-                                    <th>I/B<br>총통화시간</th>
-                                    <th>평균통화시간</th>
-                                    <th>평균대기시간</th>
-                                    <th>호응답률</th>
-                                    <th>서비스레벨<br>호응답률</th>
-                                    <th>무효콜율</th>
-
-                                    <th>~10(초)</th>
-                                    <th>~20(초)</th>
-                                    <th>~30(초)</th>
-                                    <th>~40(초)</th>
-                                    <th>40~(초)</th>
-                                    <th>~10(초)</th>
-                                    <th>~20(초)</th>
-                                    <th>~30(초)</th>
-                                    <th>~40(초)</th>
-                                    <th>40~(초)</th>
-                                </tr>
-                                </thead>
-                                <tbody>
                                 <c:choose>
-                                <c:when test="${list.size() > 0}">
-                                <tbody>
-                                <c:forEach var="element" items="${list}">
-                                    <c:set var="e" value="${element.inboundStat}"/>
-                                    <tr>
-                                        <td>${g.htmlQuote(element.timeInformation)}</td>
+                                    <c:when test="${list.size() > 0}">
+                                        <tbody>
+                                        <c:forEach var="element" items="${list}">
+                                            <c:set var="e" value="${element.inboundStat}"/>
+                                            <tr>
+                                                <td>${g.htmlQuote(element.timeInformation)}</td>
 
-                                        <td><span class="data-detail-trigger">${e.total}</span></td>
-                                        <td><span class="data-detail-trigger">${e.onlyRead}</span></td>
-                                        <td><span class="data-detail-trigger">${e.connReq}</span></td>
-                                        <td><span class="data-detail-trigger">${e.success}</span></td>
-                                        <td><span class="data-detail-trigger">${e.cancel}</span></td>
-                                        <td><span class="data-detail-trigger">${e.callbackSuccess}</span></td>
+                                                <td>${e.total}</td>
+                                                <td>${e.onlyRead}</td>
+                                                <td>${e.connReq}</td>
+                                                <td>${e.success}</td>
+                                                <td>${e.cancel}</td>
+                                                <td>${e.callbackSuccess}</td>
 
-                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecSum)}</td>
-                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecAvg)}</td>
-                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.waitAvg)}</td>
-                                        <td>${e.responseRate}%</td>
-                                        <td>${e.svcLevelAvg}%</td>
-                                        <td>${e.ivrAvg}%</td>
+                                                <td>${e.responseRate}%</td>
+                                                <td>${e.svcLevelAvg}%</td>
+                                                <td>${e.waitSucc_0_10}</td>
+                                                <td>${e.waitSucc_10_20}</td>
+                                                <td>${e.waitSucc_20_30}</td>
+                                                <td>${e.waitSucc_30_40}</td>
+                                                <td>${e.waitSucc_40}</td>
 
-                                        <td>${e.waitSucc_0_10}</td>
-                                        <td>${e.waitSucc_10_20}</td>
-                                        <td>${e.waitSucc_20_30}</td>
-                                        <td>${e.waitSucc_30_40}</td>
-                                        <td>${e.waitSucc_40}</td>
+                                                <td><%--todo: 호포기율--%></td>
+                                                <td>${e.waitCancel_0_10}</td>
+                                                <td>${e.waitCancel_10_20}</td>
+                                                <td>${e.waitCancel_20_30}</td>
+                                                <td>${e.waitCancel_30_40}</td>
+                                                <td>${e.waitCancel_40}</td>
 
-                                        <td>${e.waitCancel_0_10}</td>
-                                        <td>${e.waitCancel_10_20}</td>
-                                        <td>${e.waitCancel_20_30}</td>
-                                        <td>${e.waitCancel_30_40}</td>
-                                        <td>${e.waitCancel_40}</td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
+                                                <td>${e.ivrAvg}%</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecSum)}</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecAvg)}</td>
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.waitAvg)}</td>
+                                            </tr>
+                                        </c:forEach>
+                                        </tbody>
 
-                                <tfoot>
-                                <tr>
-                                    <td>합계</td>
+                                        <tfoot>
+                                        <tr>
+                                            <td>합계</td>
 
-                                    <td>${total.total}</td>
-                                    <td>${total.onlyRead}</td>
-                                    <td>${total.connReq}</td>
-                                    <td>${total.success}</td>
-                                    <td>${total.cancel}</td>
-                                    <td>${total.callbackSuccess}</td>
+                                            <td>${total.total}</td>
+                                            <td>${total.onlyRead}</td>
+                                            <td>${total.connReq}</td>
+                                            <td>${total.success}</td>
+                                            <td>${total.cancel}</td>
+                                            <td>${total.callbackSuccess}</td>
 
-                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecSum)}</td>
-                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecAvg)}</td>
-                                    <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.waitAvg)}</td>
-                                    <td>${String.format("%.1f", total.responseRate)}%</td>
-                                    <td>${String.format("%.1f", total.svcLevelAvg)}%</td>
-                                    <td>${String.format("%.1f", total.ivrAvg)}%</td>
+                                            <td>${String.format("%.1f", total.responseRate)}%</td>
+                                            <td>${String.format("%.1f", total.svcLevelAvg)}%</td>
+                                            <td>${total.waitSucc_0_10}</td>
+                                            <td>${total.waitSucc_10_20}</td>
+                                            <td>${total.waitSucc_20_30}</td>
+                                            <td>${total.waitSucc_30_40}</td>
+                                            <td>${total.waitSucc_40}</td>
 
-                                    <td>${total.waitSucc_0_10}</td>
-                                    <td>${total.waitSucc_10_20}</td>
-                                    <td>${total.waitSucc_20_30}</td>
-                                    <td>${total.waitSucc_30_40}</td>
-                                    <td>${total.waitSucc_40}</td>
+                                            <td><%--todo: 호포기율--%></td>
+                                            <td>${total.waitCancel_0_10}</td>
+                                            <td>${total.waitCancel_10_20}</td>
+                                            <td>${total.waitCancel_20_30}</td>
+                                            <td>${total.waitCancel_30_40}</td>
+                                            <td>${total.waitCancel_40}</td>
 
-                                    <td>${total.waitCancel_0_10}</td>
-                                    <td>${total.waitCancel_10_20}</td>
-                                    <td>${total.waitCancel_20_30}</td>
-                                    <td>${total.waitCancel_30_40}</td>
-                                    <td>${total.waitCancel_40}</td>
-                                </tr>
-                                </tfoot>
-                                </c:when>
-                                <c:otherwise>
-                                    <tbody>
-                                    <tr>
-                                        <td colspan="22" class="null-data">조회된 데이터가 없습니다.</td>
-                                    </tr>
-                                    </tbody>
-                                </c:otherwise>
+                                            <td>${String.format("%.1f", total.ivrAvg)}%</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecSum)}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecAvg)}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.waitAvg)}</td>
+                                        </tr>
+                                        </tfoot>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <tbody>
+                                        <tr>
+                                            <td colspan="23" class="null-data">조회된 데이터가 없습니다.</td>
+                                        </tr>
+                                        </tbody>
+                                    </c:otherwise>
                                 </c:choose>
                             </table>
                         </div>
@@ -389,7 +297,8 @@
             chartjs.drawBarChart($('#inbound-chart')[0], data, 'time', ['inboundSuccess', 'inboundCancel'], {
                 ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue'],
                 colors: ['#F37402', '#00802F',],
-                labels: ['응대호', '포기호']
+                labels: ['응대호', '포기호'],
+                stacked: true
             });
 
             chartjs.drawDonutChart(
