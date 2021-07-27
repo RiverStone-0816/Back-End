@@ -29,4 +29,6 @@ public class StatInboundResponse {
     private Integer waitCancel_20_30 = 0;   //포기호 ~30초
     private Integer waitCancel_30_40 = 0;   //포기호 ~40초
     private Integer waitCancel_40 = 0;   //포기호 ~40초이후
+
+    private Double cancelAvg = 0d;  //호 포기율
 }
