@@ -1102,6 +1102,14 @@ const chartjs = {
                             legend: {
                                 display: false
                             }
+                        },
+                        scales: {
+                            x: {
+                                stacked: options.stacked || false,
+                            },
+                            y: {
+                                stacked: options.stacked || false
+                            }
                         }
                     }
                 }

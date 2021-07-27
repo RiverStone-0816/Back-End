@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.MaindbKeyInfoRecord;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
@@ -33,7 +34,7 @@ public class CommonMaindbKeyInfo extends TableImpl<MaindbKeyInfoRecord> {
      * Create a <code>CUSTOMDB.maindb_key_info</code> table reference
      */
     public CommonMaindbKeyInfo(String companyName) {
-        this(DSL.name("maindb_key_info_"+companyName), null);
+        this(DSL.name("maindb_key_info_" + companyName), null);
     }
 
     /**
@@ -89,12 +90,12 @@ public class CommonMaindbKeyInfo extends TableImpl<MaindbKeyInfoRecord> {
 
     @Override
     public UniqueKey<MaindbKeyInfoRecord> getPrimaryKey() {
-        return org.jooq.impl.Internal.createUniqueKey(this, "KEY_"+getName()+"_PRIMARY", this.KEY_VALUE);
+        return org.jooq.impl.Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.KEY_VALUE);
     }
 
     @Override
     public List<UniqueKey<MaindbKeyInfoRecord>> getKeys() {
-        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_"+getName()+"_PRIMARY", this.KEY_VALUE));
+        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.KEY_VALUE));
     }
 
     @Override

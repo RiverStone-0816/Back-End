@@ -240,6 +240,7 @@ project(':jooq-model') {
         jooqRuntime "mysql:mysql-connector-java:${mysqlVersion}"
         api "mysql:mysql-connector-java:${mysqlVersion}"
         api 'org.jooq:jooq'
+        api 'javax.persistence:javax.persistence-api:2.2'
     }
 }
 
