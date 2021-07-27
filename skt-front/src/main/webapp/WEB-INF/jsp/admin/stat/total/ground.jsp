@@ -103,7 +103,6 @@
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
                         <div class="table-scroll-wrap">
-                            <%--todo: 값 적용 요청--%>
                             <table class="ui celled table compact unstackable structured border-top">
                                 <thead>
                                 <tr>
@@ -136,143 +135,77 @@
                                     <th>평균 대기시간</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td>2021-07-13</td>
-                                    <td>78</td>
-                                    <td>54</td>
-                                    <td>24</td>
-                                    <td>69.20%</td>
-                                    <td>144</td>
-                                    <td>49</td>
-                                    <td>95</td>
-                                    <td>89</td>
-                                    <td>15</td>
-                                    <td>1</td>
-                                    <td>93%</td>
-                                    <td>34%</td>
-                                    <td>143</td>
-                                    <td>1:32:29</td>
-                                    <td>0:01:42</td>
-                                    <td></td>
-                                    <td>3:22:57</td>
-                                    <td>0:02:16</td>
-                                    <td>0:00:13</td>
-                                    <td>4:55:26</td>
-                                </tr>
-                                <tr>
-                                    <td>합계</td>
-                                    <td>78</td>
-                                    <td>54</td>
-                                    <td>24</td>
-                                    <td>69.20%</td>
-                                    <td>144</td>
-                                    <td>49</td>
-                                    <td>95</td>
-                                    <td>89</td>
-                                    <td>15</td>
-                                    <td>1</td>
-                                    <td>93%</td>
-                                    <td>34%</td>
-                                    <td>143</td>
-                                    <td>1:32:29</td>
-                                    <td>0:01:42</td>
-                                    <td></td>
-                                    <td>3:22:57</td>
-                                    <td>0:02:16</td>
-                                    <td>0:00:13</td>
-                                    <td>4:55:26</td>
-                                </tr>
-                                </tbody>
-                            </table>
-
-                            <table class="ui celled table compact unstackable structured border-top">
-                                <thead>
-                                <tr>
-                                    <th rowspan="2">날짜/시간</th>
-                                    <th colspan="2">총통화</th>
-                                    <th colspan="6">O/B</th>
-                                    <th colspan="11">I/B</th>
-                                </tr>
-                                <tr>
-                                    <th>총건수</th>
-                                    <th>총시간</th>
-                                    <th>총시도콜</th>
-                                    <th>O/B건수<br>(성공호)</th>
-                                    <th>비수신</th>
-                                    <th>통화성공률</th>
-                                    <th>O/B<br>총통화시간</th>
-                                    <th>O/B<br>평균통화시간</th>
-                                    <th>I/B<br>전체콜</th>
-                                    <th>무효콜</th>
-                                    <th>연결요청</th>
-                                    <th>응대호</th>
-                                    <th>포기호</th>
-                                    <th>콜백</th>
-                                    <th>I/B<br>총통화시간</th>
-                                    <th>평균<br>통화시간</th>
-                                    <th>평균<br>대기시간</th>
-                                    <th>호응답률</th>
-                                    <th>무효콜율</th>
-                                </tr>
-                                </thead>
                                 <c:choose>
                                     <c:when test="${list.size() > 0}">
                                         <tbody>
                                         <c:forEach var="e" items="${list}">
                                             <tr>
                                                 <td>${g.htmlQuote(e.timeInformation)}</td>
-                                                <td>${e.totalCount}</td>
-                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.totalBillSec)}</td>
-                                                <td><span class="data-detail-trigger">${e.outboundStat.total}</span></td>
+
+                                                <td>${e.outboundStat.total}</td>
                                                 <td>${e.outboundStat.success}</td>
-                                                <td><span class="data-detail-trigger">${e.outboundStat.cancel}</span></td>
+                                                <td>${e.outboundStat.cancel}</td>
                                                 <td>${e.outboundStat.successAvg}%</td>
+
+                                                <td>${e.inboundStat.total}</td>
+                                                <td>${e.inboundStat.onlyRead}</td>
+                                                <td>${e.inboundStat.connReq}</td>
+                                                <td>${e.inboundStat.success}</td>
+                                                <td>${e.inboundStat.cancel}</td>
+                                                <td>${e.inboundStat.callbackSuccess}</td>
+                                                <td>${e.inboundStat.responseRate}%</td>
+                                                <td>${e.inboundStat.ivrAvg}%</td>
+
+                                                <td>${e.totalCount}</td>
+
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.outboundStat.billSecSum)}</td>
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.outboundStat.billSecAvg)}</td>
-                                                <td><span class="data-detail-trigger">${e.inboundStat.total}</span></td>
-                                                <td><span class="data-detail-trigger">${e.inboundStat.onlyRead}</span></td>
-                                                <td><span class="data-detail-trigger">${e.inboundStat.connReq}</span></td>
-                                                <td><span class="data-detail-trigger">${e.inboundStat.success}</span></td>
-                                                <td><span class="data-detail-trigger">${e.inboundStat.cancel}</span></td>
-                                                <td>${e.inboundStat.callbackSuccess}</td>
+                                                <td></td>
+
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.billSecSum)}</td>
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.billSecAvg)}</td>
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.waitAvg)}</td>
-                                                <td>${e.inboundStat.responseRate}%</td>
-                                                <td>${e.inboundStat.ivrAvg}%</td>
+
+                                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.totalBillSec)}</td>
                                             </tr>
                                         </c:forEach>
                                         </tbody>
                                         <tfoot>
                                         <tr>
                                             <td>합계</td>
-                                            <td>${total.totalCount}</td>
-                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.totalBillSec)}</td>
+
                                             <td>${total.outboundStat.total}</td>
                                             <td>${total.outboundStat.success}</td>
                                             <td>${total.outboundStat.cancel}</td>
                                             <td>${String.format("%.1f", total.outboundStat.successAvg)}%</td>
-                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.outboundStat.billSecSum)}</td>
-                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.outboundStat.billSecAvg)}</td>
+
                                             <td>${total.inboundStat.total}</td>
                                             <td>${total.inboundStat.onlyRead}</td>
                                             <td>${total.inboundStat.connReq}</td>
                                             <td>${total.inboundStat.success}</td>
                                             <td>${total.inboundStat.cancel}</td>
                                             <td>${total.inboundStat.callbackSuccess}</td>
+                                            <td>${String.format("%.1f", total.inboundStat.responseRate)}%</td>
+                                            <td>${String.format("%.1f", total.inboundStat.ivrAvg)}%</td>
+
+                                            <td>${total.totalCount}</td>
+
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.outboundStat.billSecSum)}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.outboundStat.billSecAvg)}</td>
+                                            <td></td>
+
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecSum)}</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecAvg)}</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.waitAvg)}</td>
-                                            <td>${String.format("%.1f", total.inboundStat.responseRate)}%</td>
-                                            <td>${String.format("%.1f", total.inboundStat.ivrAvg)}%</td>
+
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.totalBillSec)}</td>
                                         </tr>
                                         </tfoot>
                                     </c:when>
                                     <c:otherwise>
                                         <tbody>
                                         <tr>
-                                            <td colspan="20" class="null-data">조회된 데이터가 없습니다.</td>
+                                            <td colspan="21" class="null-data">조회된 데이터가 없습니다.</td>
                                         </tr>
                                         </tbody>
                                     </c:otherwise>
@@ -368,64 +301,8 @@
         </div>
     </div>
 
-    <div class="ui modal" id="modal-data-detain-view">
-        <i class="close icon"></i>
-        <div class="header">
-            자세히
-        </div>
-        <div class="scrolling content rows">
-            <table class="ui table celled compact unstackable">
-                <thead>
-                <tr>
-                    <th>날짜</th>
-                    <th>시간</th>
-                    <th>번호</th>
-                    <th>수신번호</th>
-                    <th>대표번호</th>
-                    <th>IVR번호</th>
-                    <th>부서명</th>
-                    <th>호상태</th>
-                    <th>부가상태</th>
-                </thead>
-                <tbody>
-                    <%--<tr>
-                        <td colspan="9" class="null-data">조회된 데이터가 없습니다.</td>
-                    </tr>--%>
-                <tr>
-                    <td>2020-03-24</td>
-                    <td>11:14:49</td>
-                    <td>01011111111</td>
-                    <td>01022222222</td>
-                    <td>01033333333</td>
-                    <td>기타문의</td>
-                    <td>영업부</td>
-                    <td>비수신</td>
-                    <td>연결전끊음</td>
-                </tr>
-                <tr>
-                    <td>2020-03-24</td>
-                    <td>11:14:49</td>
-                    <td>01011111111</td>
-                    <td>01022222222</td>
-                    <td>01033333333</td>
-                    <td>기타문의</td>
-                    <td>영업부</td>
-                    <td>비수신</td>
-                    <td>연결전끊음</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
     <tags:scripts>
         <script>
-            /*
-            $('.data-detail-trigger').click(function () {
-                $('#modal-data-detain-view').modalShow();
-            });
-            */
-
             <c:if test="${list.size() > 0}">
             const data = [
                     <c:forEach var="e" items="${list}">{
@@ -447,13 +324,15 @@
             chartjs.drawBarChart($('#outbound-chart')[0], data, 'time', ['outboundSuccess', 'outboundCancel'], {
                 ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue'],
                 colors: ['#F37402', '#00802F'],
-                labels: ['응대호', '포기호']
+                labels: ['응대호', '포기호'],
+                stacked: true
             });
 
             chartjs.drawBarChart($('#inbound-chart')[0], data, 'time', ['inboundSuccess', 'inboundCancel'], {
                 ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue'],
                 colors: ['#F37402', '#00802F'],
-                labels: ['성공호', '비수신']
+                labels: ['성공호', '비수신'],
+                stacked: true
             });
 
             chartjs.drawDonutChart(
