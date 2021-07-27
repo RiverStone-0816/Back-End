@@ -173,7 +173,7 @@
                                                 <td>${e.waitSucc_30_40}</td>
                                                 <td>${e.waitSucc_40}</td>
 
-                                                <td><%--todo: 호포기율--%></td>
+                                                <td>${e.cancelAvg}%</td>
                                                 <td>${e.waitCancel_0_10}</td>
                                                 <td>${e.waitCancel_10_20}</td>
                                                 <td>${e.waitCancel_20_30}</td>
@@ -207,7 +207,7 @@
                                             <td>${total.waitSucc_30_40}</td>
                                             <td>${total.waitSucc_40}</td>
 
-                                            <td><%--todo: 호포기율--%></td>
+                                            <td>${total.cancelAvg}%</td>
                                             <td>${total.waitCancel_0_10}</td>
                                             <td>${total.waitCancel_10_20}</td>
                                             <td>${total.waitCancel_20_30}</td>
@@ -296,7 +296,7 @@
 
             chartjs.drawBarChart($('#inbound-chart')[0], data, 'time', ['inboundSuccess', 'inboundCancel'], {
                 ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue'],
-                colors: ['#F37402', '#00802F',],
+                colors: ['#F37402', '#4472C4',],
                 labels: ['응대호', '포기호'],
                 stacked: true
             });
@@ -318,7 +318,7 @@
                     outerRadius: 120,
                     innerLabel: ' ',
                     colorClasses: ['bcolor-bar2', 'bcolor-bar1'],
-                    colors: ['#00802F', '#F37402'],
+                    colors: ['#4472C4', '#F37402'],
                     labels: ['포기호', '응대호']
                 }
             );

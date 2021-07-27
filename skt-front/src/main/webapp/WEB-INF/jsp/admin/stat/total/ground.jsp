@@ -317,20 +317,20 @@
             ];
             chartjs.drawLineChart($('#total-call-chart')[0], data, 'time', ['inboundTotal', 'outboundTotal'], {
                 ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue'],
-                colors: ['#F37402', '#00802F'],
+                colors: ['#F37402', '#4472C4'],
                 labels: ['I/B', 'O/B']
             });
 
             chartjs.drawBarChart($('#outbound-chart')[0], data, 'time', ['outboundSuccess', 'outboundCancel'], {
                 ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue'],
-                colors: ['#F37402', '#00802F'],
+                colors: ['#F37402', '#4472C4'],
                 labels: ['응대호', '포기호'],
                 stacked: true
             });
 
             chartjs.drawBarChart($('#inbound-chart')[0], data, 'time', ['inboundSuccess', 'inboundCancel'], {
                 ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue'],
-                colors: ['#F37402', '#00802F'],
+                colors: ['#F37402', '#4472C4'],
                 labels: ['성공호', '비수신'],
                 stacked: true
             });
@@ -345,7 +345,7 @@
                     outerRadius: 120,
                     innerLabel: ' ',
                     colorClasses: ['bcolor-bar1', 'bcolor-bar2'],
-                    colors: ['#F37402', '#00802F'],
+                    colors: ['#F37402', '#4472C4'],
                     labels: ['응대호', '포기호']
                 }
             );
@@ -360,7 +360,7 @@
                     outerRadius: 120,
                     innerLabel: ' ',
                     colorClasses: ['bcolor-bar1', 'bcolor-bar2'],
-                    colors: ['#F37402', '#00802F'],
+                    colors: ['#F37402', '#4472C4'],
                     labels: ['성공호', '비수신']
                 }
             );
