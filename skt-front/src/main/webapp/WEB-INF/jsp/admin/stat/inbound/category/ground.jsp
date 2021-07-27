@@ -89,8 +89,8 @@
                         </table>
                         <div class="button-area remove-mb">
                             <div class="align-right">
-                                <button type="button" class="ui button sharp brand large">검색</button>
-                                <button type="submit" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
+                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
                     </div>
@@ -101,105 +101,11 @@
                     <div class="panel-section">
                         <div class="panel-section-title">
                             <div class="title-txt">
-                                인입경로별통계  <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
+                                인입경로별통계 <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
                             </div>
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
                         <div class="table-scroll-wrap">
-                            <%--todo: 값 적용 요청--%>
-                            <table class="ui celled table compact unstackable structured border-top">
-                                <thead>
-                                <tr>
-                                    <th rowspan="2">날짜/시간</th>
-                                    <th rowspan="2">서비스</th>
-                                    <th rowspan="2">IVR</th>
-                                    <th colspan="2">인입경로</th>
-                                    <th colspan="5">I/B 콜 현황</th>
-                                    <th colspan="7">응답호 분석</th>
-                                    <th colspan="3">통화시간 분석</th>
-                                </tr>
-                                <tr>
-                                    <th>1th</th>
-                                    <th>2th</th>
-                                    <th>인입콜수</th>
-                                    <th>단순조회</th>
-                                    <th>연결요청</th>
-                                    <th>응대호</th>
-                                    <th>포기호</th>
-                                    <th>호응답률</th>
-                                    <th>서비스레벨 호응답률</th>
-                                    <th>~10(초)</th>
-                                    <th>~20(초)</th>
-                                    <th>~30(초)</th>
-                                    <th>~40(초)</th>
-                                    <th>40~(초)</th>
-                                    <th>I/B 총통화시간</th>
-                                    <th>평균 통화시간</th>
-                                    <th>평균 대기시간</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td rowspan="3">2021-07-13</td>
-                                    <td rowspan="3">070-7839-0996</td>
-                                    <td rowspan="3">테스트 루트</td>
-                                    <td>m1</td>
-                                    <td>1</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0.00%</td>
-                                    <td>0.00%</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0:00:00</td>
-                                    <td>0:00:00</td>
-                                    <td>0:00:00</td>
-                                </tr>
-                                <tr>
-                                    <td>m1</td>
-                                    <td>1</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0.00%</td>
-                                    <td>0.00%</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0:00:00</td>
-                                    <td>0:00:00</td>
-                                    <td>0:00:00</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">m1</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0.00%</td>
-                                    <td>0.00%</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0:00:00</td>
-                                    <td>0:00:00</td>
-                                    <td>0:00:00</td>
-                                </tr>
-                                </tbody>
-                            </table>
                             <table class="ui celled table compact unstackable structured border-top">
                                 <thead>
                                 <tr>
@@ -208,31 +114,31 @@
                                     <th rowspan="2">IVR</th>
                                     <th colspan="${maxLevel+1}">인입경로</th>
                                     <th colspan="5">I/B 콜 현황</th>
-                                    <th colspan="5">성과지표</th>
-                                    <th colspan="5">응대시간 분포시간 분포</th>
+                                    <th colspan="7">응답호 분석</th>
+                                    <th colspan="3">통화시간 분석</th>
                                 </tr>
                                 <tr>
                                     <c:forEach var="i" begin="1" end="${maxLevel+1}">
                                         <th>${i}th</th>
                                     </c:forEach>
-
                                     <th>인입콜수</th>
-                                    <th>무효콜</th>
+                                    <th>단순조회</th>
                                     <th>연결요청</th>
                                     <th>응대호</th>
                                     <th>포기호</th>
 
-                                    <th>평균<br>통화시간</th>
-                                    <th>평균<br>대기시간</th>
                                     <th>호응답률</th>
-                                    <th>서비스레벨<br>호응답률</th>
-                                    <th>무효콜율</th>
+                                    <th>서비스레벨 호응답률</th>
 
                                     <th>~10(초)</th>
                                     <th>~20(초)</th>
                                     <th>~30(초)</th>
                                     <th>~40(초)</th>
                                     <th>40~(초)</th>
+
+                                    <th>I/B 총통화시간</th>
+                                    <th>평균 통화시간</th>
+                                    <th>평균 대기시간</th>
                                 </tr>
                                 </thead>
 
@@ -240,18 +146,23 @@
                                     <c:when test="${stat.size() > 0}">
                                         <tbody>
                                         <c:forEach var="stat" items="${stat}">
-                                            <tr>
+                                            <tr class="-lead-tr-service">
                                             <td rowspan="${stat.recordList.stream().map(e -> e.recordNameList.size()+1).sum()+1}">${g.htmlQuote(stat.timeInformation)}</td>
                                             <td rowspan="${stat.recordList.stream().map(e -> e.recordNameList.size()+1).sum()+1}">${g.htmlQuote(stat.svcName)}</td>
                                             <c:choose>
                                                 <c:when test="${stat.recordList.size() > 0}">
                                                     <c:forEach var="record" items="${stat.recordList}">
-                                                        <tr>
+                                                        <tr class="-lead-tr-ivr">
                                                         <td rowspan="${record.recordNameList.size()+1}">${g.htmlQuote(record.ivrName)}</td>
                                                         <c:choose>
                                                             <c:when test="${record.recordNameList.size() > 0}">
                                                                 <c:forEach var="recordName" items="${record.recordNameList}">
-                                                                    <tr>
+                                                                    <tr class="-tr-record-name"
+                                                                        data-service="${g.escapeQuote(stat.timeInformation)}|${g.escapeQuote(stat.svcName)}"
+                                                                        data-ivr="${g.escapeQuote(record.ivrName)}"
+                                                                        data-record-level="${recordName.level}"
+                                                                        data-record="${g.escapeQuote(recordName.name)}">
+
                                                                         <c:forEach var="i" begin="0" end="${maxLevel}">
                                                                             <td>
                                                                                 <c:if test="${recordName.level == i}">
@@ -260,23 +171,24 @@
                                                                             </td>
                                                                         </c:forEach>
 
-                                                                        <td><span class="data-detail-trigger">${recordName.record.total}</span></td>
-                                                                        <td><span class="data-detail-trigger">${recordName.record.onlyRead}</span></td>
-                                                                        <td><span class="data-detail-trigger">${recordName.record.connReq}</span></td>
-                                                                        <td><span class="data-detail-trigger">${recordName.record.success}</span></td>
-                                                                        <td><span class="data-detail-trigger">${recordName.record.cancel}</span></td>
+                                                                        <td>${recordName.record.total}</td>
+                                                                        <td>${recordName.record.onlyRead}</td>
+                                                                        <td>${recordName.record.connReq}</td>
+                                                                        <td>${recordName.record.success}</td>
+                                                                        <td>${recordName.record.cancel}</td>
 
-                                                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(recordName.record.billSecAvg)}</td>
-                                                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(recordName.record.waitAvg)}</td>
                                                                         <td>${recordName.record.responseRate}%</td>
                                                                         <td>${recordName.record.svcLevelAvg}%</td>
-                                                                        <td>${recordName.record.ivrAvg}%</td>
 
                                                                         <td>${recordName.record.waitSucc_0_10}</td>
                                                                         <td>${recordName.record.waitSucc_10_20}</td>
                                                                         <td>${recordName.record.waitSucc_20_30}</td>
                                                                         <td>${recordName.record.waitSucc_30_40}</td>
                                                                         <td>${recordName.record.waitSucc_40}</td>
+
+                                                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(recordName.record.billSecSum)}</td>
+                                                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(recordName.record.billSecAvg)}</td>
+                                                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(recordName.record.waitAvg)}</td>
                                                                     </tr>
                                                                 </c:forEach>
                                                             </c:when>
@@ -303,7 +215,7 @@
                                     <c:otherwise>
                                         <tbody>
                                         <tr>
-                                            <td colspan="21" class="null-data">조회된 데이터가 없습니다.</td>
+                                            <td colspan="${15 + maxLevel + 1}" class="null-data">조회된 데이터가 없습니다.</td>
                                         </tr>
                                         </tbody>
                                     </c:otherwise>
@@ -316,62 +228,8 @@
         </div>
     </div>
 
-    <div class="ui modal" id="modal-data-detain-view">
-        <i class="close icon"></i>
-        <div class="header">
-            자세히
-        </div>
-        <div class="scrolling content rows">
-            <table class="ui table celled compact unstackable">
-                <thead>
-                <tr>
-                    <th>날짜</th>
-                    <th>시간</th>
-                    <th>번호</th>
-                    <th>수신번호</th>
-                    <th>대표번호</th>
-                    <th>IVR번호</th>
-                    <th>부서명</th>
-                    <th>호상태</th>
-                    <th>부가상태</th>
-                </thead>
-                <tbody>
-                    <%--<tr>
-                        <td colspan="9" class="null-data">조회된 데이터가 없습니다.</td>
-                    </tr>--%>
-                <tr>
-                    <td>2020-03-24</td>
-                    <td>11:14:49</td>
-                    <td>01011111111</td>
-                    <td>01022222222</td>
-                    <td>01033333333</td>
-                    <td>기타문의</td>
-                    <td>영업부</td>
-                    <td>비수신</td>
-                    <td>연결전끊음</td>
-                </tr>
-                <tr>
-                    <td>2020-03-24</td>
-                    <td>11:14:49</td>
-                    <td>01011111111</td>
-                    <td>01022222222</td>
-                    <td>01033333333</td>
-                    <td>기타문의</td>
-                    <td>영업부</td>
-                    <td>비수신</td>
-                    <td>연결전끊음</td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
     <tags:scripts>
         <script>
-            /*$('.data-detail-trigger').click(function () {
-                $('#modal-data-detain-view').modalShow();
-            })*/
-
             $('.-button-time-unit').click(function () {
                 $('.-button-time-unit').removeClass('active');
                 $(this).addClass('active');
@@ -381,6 +239,114 @@
             function downloadExcel() {
                 window.open(contextPath + '/admin/stat/inbound/category/_excel?${g.escapeQuote(search.query)}', '_blank');
             }
+
+            (function () {
+                const rootPathStats = {
+                    <c:forEach var="stat" items="${stat}">
+                    '${g.escapeQuote(stat.timeInformation)}|${g.escapeQuote(stat.svcName)}': {
+                        <c:forEach var="record" items="${stat.recordList}">
+                        '${g.escapeQuote(record.ivrName)}': {
+
+                            <c:forEach var="recordName" items="${record.recordNameList}" varStatus="recordNameStatus">
+
+                            <c:if test="${recordName.level == 0}">
+
+                            ${!recordNameStatus.first ? '],' : ''}
+
+                            '${g.escapeQuote(recordName.name)}': [
+                                </c:if>
+                                {
+                                    total: ${recordName.record.total},
+                                    onlyRead: ${recordName.record.onlyRead},
+                                    connReq: ${recordName.record.connReq},
+                                    success: ${recordName.record.success},
+                                    cancel: ${recordName.record.cancel},
+                                    responseRate:${recordName.record.responseRate},
+                                    svcLevelAvg: ${recordName.record.svcLevelAvg},
+                                    waitSucc_0_10: ${recordName.record.waitSucc_0_10},
+                                    waitSucc_10_20: ${recordName.record.waitSucc_10_20},
+                                    waitSucc_20_30: ${recordName.record.waitSucc_20_30},
+                                    waitSucc_30_40: ${recordName.record.waitSucc_30_40},
+                                    waitSucc_40: ${recordName.record.waitSucc_40},
+                                    billSecSum: ${recordName.record.billSecSum},
+                                    billSecAvg: ${recordName.record.billSecAvg},
+                                    waitAvg: ${recordName.record.waitAvg},
+                                },
+
+                                <c:if test="${recordNameStatus.last}">
+                            ],
+                            </c:if>
+                            </c:forEach>
+                        },
+                        </c:forEach>
+                    },
+                    </c:forEach>
+                };
+
+                console.log(rootPathStats);
+
+                keys(rootPathStats).map(function (service) {
+                    const serviceStats = rootPathStats[service];
+                    keys(serviceStats).map(function (ivr) {
+                        const ivrStats = serviceStats[ivr];
+                        keys(ivrStats).map(function (rootRecord) {
+                            const rootRecordStats = ivrStats[rootRecord];
+                            const summary = {};
+                            rootRecordStats.map(function (recordValue) {
+                                keys(recordValue).map(function (key) {
+                                    summary[key] = (summary[key] === undefined ? 0 : summary[key]) + recordValue[key];
+                                });
+                            });
+
+                            const recordsLength = rootRecordStats.length;
+                            ['responseRate', 'svcLevelAvg', 'billSecAvg', 'waitAvg'].map(function (key) {
+                                summary[key] /= recordsLength;
+                            });
+
+                            function timeFormatFromSecondsWithoutSimpleDateFormat(sec) {
+                                return zeroPad((sec / (60 * 60)).toFixed(0), 2) + ":" + zeroPad((sec / 60 % 60).toFixed(0), 2) + ":" + zeroPad((sec % 60).toFixed(0), 2);
+                            }
+
+                            const element = $('<tr/>')
+                                .append($('<td/>', {colspan: ${maxLevel + 1}, text: rootRecord}))
+                                .append($('<td/>', {text: summary.total}))
+                                .append($('<td/>', {text: summary.onlyRead}))
+                                .append($('<td/>', {text: summary.connReq}))
+                                .append($('<td/>', {text: summary.success}))
+                                .append($('<td/>', {text: summary.cancel}))
+                                .append($('<td/>', {text: (summary.responseRate / recordsLength) + '%'}))
+                                .append($('<td/>', {text: (summary.svcLevelAvg / recordsLength) + '%'}))
+                                .append($('<td/>', {text: summary.waitSucc_0_10}))
+                                .append($('<td/>', {text: summary.waitSucc_10_20}))
+                                .append($('<td/>', {text: summary.waitSucc_20_30}))
+                                .append($('<td/>', {text: summary.waitSucc_30_40}))
+                                .append($('<td/>', {text: summary.waitSucc_40}))
+                                .append($('<td/>', {text: timeFormatFromSecondsWithoutSimpleDateFormat(summary.billSecSum)}))
+                                .append($('<td/>', {text: timeFormatFromSecondsWithoutSimpleDateFormat(summary.billSecAvg / recordsLength)}))
+                                .append($('<td/>', {text: timeFormatFromSecondsWithoutSimpleDateFormat(summary.waitAvg / recordsLength)}));
+
+                            const rootElement = $('.-tr-record-name[data-record-level="0"]').filter(function () {
+                                return $(this).attr('data-service') === service;
+                            }).filter(function () {
+                                return $(this).attr('data-ivr') === ivr;
+                            }).filter(function () {
+                                return $(this).attr('data-record') === rootRecord;
+                            });
+                            let beforeElement = rootElement;
+                            for (let i = 1; i < recordsLength; i++)
+                                beforeElement = beforeElement.next();
+                            beforeElement.after(element);
+
+                            rootElement.prevAll('.-lead-tr-service').first().children('[rowspan]').each(function () {
+                                $(this).attr('rowspan', parseInt($(this).attr('rowspan')) + 1);
+                            });
+                            rootElement.prevAll('.-lead-tr-ivr').first().children('[rowspan]').each(function () {
+                                $(this).attr('rowspan', parseInt($(this).attr('rowspan')) + 1);
+                            });
+                        });
+                    });
+                });
+            })();
         </script>
     </tags:scripts>
 </tags:tabContentLayout>

@@ -1063,6 +1063,11 @@ function prompt(text, isPassword) {
     return deferred.promise();
 }
 
+function zeroPad(nr, base) {
+    let len = (String(base).length - String(nr).length) + 1;
+    return len > 0 ? new Array(len).join('0') + nr : nr;
+}
+
 /**
  * chart js 필수
  **/
@@ -1217,7 +1222,7 @@ const chartjs = {
                         labels: options.labels,
                         datasets: [{
                             data: rates,
-                            backgroundColor:  (options && options.colors) || ['#AAAAAA'],
+                            backgroundColor: (options && options.colors) || ['#AAAAAA'],
                         }]
                     },
                     options: {
