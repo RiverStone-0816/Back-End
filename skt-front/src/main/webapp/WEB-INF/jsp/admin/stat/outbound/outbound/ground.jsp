@@ -75,6 +75,49 @@
             <div class="panel panel-statstics">
                 <div class="panel-body">
                     <div class="panel-section">
+                        <c:if test="${list.size() > 0}">
+                            <div class="panel">
+                                <div class="panel-heading">
+                                    <text class="content">아웃바운드 통계 그래프</text>
+                                </div>
+                                <div class="panel-body pd-1em">
+                                    <div class="ui middle aligned grid">
+                                        <div class="four wide column">
+                                            <div class="ui segments pie-chart">
+                                                <div class="ui segment pie-chart-bg">
+                                                    <div class="label-container">O/B 통계</div>
+                                                    <div class="pie-chart-container">
+                                                        <div id="outer-pie-chart" class="full-width full-height" style="padding: 0 50px"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="ui secondary segment">
+                                                    <div class="chart-label-container">
+                                                        <div>
+                                                            <text class="label-list"><span class="symbol-square symbol-blue"></span>O/B 건수</text>
+                                                            <text class="label-list"><span class="symbol-square symbol-orange"></span>비수신</text>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="twelve wide column">
+                                            <div class="label-container">
+                                                <label class="control-label">O/B 통계</label>
+                                            </div>
+                                            <div class="-chart basic-chart-container" id="chart"></div>
+                                            <div class="chart-label-container">
+                                                <div>
+                                                    <text class="label-list"><span class="symbol-square symbol-blue"></span>O/B 건수</text>
+                                                    <text class="label-list"><span class="symbol-square symbol-orange"></span>비수신</text>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:if>
+                    </div>
+                    <div class="panel-section">
                         <div class="panel-section-title">
                             <div class="title-txt">
                                 아웃바운드통계 <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
@@ -136,49 +179,6 @@
                             </c:choose>
                         </table>
                     </div>
-                    <div class="panel-section">
-                        <c:if test="${list.size() > 0}">
-                            <div class="panel">
-                                <div class="panel-heading">
-                                    <text class="content">아웃바운드 통계 그래프</text>
-                                </div>
-                                <div class="panel-body pd-1em">
-                                    <div class="ui middle aligned grid">
-                                        <div class="four wide column">
-                                            <div class="ui segments pie-chart">
-                                                <div class="ui segment pie-chart-bg">
-                                                    <div class="label-container">O/B 통계</div>
-                                                    <div class="pie-chart-container">
-                                                        <div id="outer-pie-chart" class="full-width full-height" style="padding: 0 50px"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="ui secondary segment">
-                                                    <div class="chart-label-container">
-                                                        <div>
-                                                            <text class="label-list"><span class="symbol-square symbol-blue"></span>O/B 건수</text>
-                                                            <text class="label-list"><span class="symbol-square symbol-orange"></span>비수신</text>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="twelve wide column">
-                                            <div class="label-container">
-                                                <label class="control-label">O/B 통계</label>
-                                            </div>
-                                            <div class="-chart basic-chart-container" id="chart"></div>
-                                            <div class="chart-label-container">
-                                                <div>
-                                                    <text class="label-list"><span class="symbol-square symbol-blue"></span>O/B 건수</text>
-                                                    <text class="label-list"><span class="symbol-square symbol-orange"></span>비수신</text>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </c:if>
-                    </div>
                 </div>
             </div>
         </div>
@@ -197,8 +197,9 @@
 
             chartjs.drawBarChart($('#chart')[0], data, 'time', ['success', 'cancel'], {
                 ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue'],
-                colors: ['#F37402', '#00802F', ],
-                labels: ['응대호', '포기호']
+                colors: ['#F37402', '#4472C4', ],
+                labels: ['응대호', '포기호'],
+                stacked: true,
             });
 
             chartjs.drawDonutChart(
@@ -218,7 +219,7 @@
                     outerRadius: 120,
                     innerLabel: ' ',
                     colorClasses: ['bcolor-bar2', 'bcolor-bar1'],
-                    colors: ['#00802F', '#F37402'],
+                    colors: ['#4472C4', '#F37402'],
                     labels: ['포기호', '응대호']
                 }
             );
