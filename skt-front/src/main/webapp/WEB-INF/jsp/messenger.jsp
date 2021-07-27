@@ -1172,7 +1172,7 @@
                 messenger.ui.roomName = messenger.ui.room.find('.-chatroom-name');
                 messenger.ui.searchingTextCountExpression = messenger.ui.room.find('.-text-count');
                 messenger.ui.messageInput = messenger.ui.room.find('.-messenger-message');
-                messenger.ui.roomMembers = $('#messenger-room-members');   // todo: 초대 모달 안의 현재 방의 사용자 리스트
+                messenger.ui.roomMembers = $('#messenger-room-members');   // fixme: 초대 모달 안의 현재 방의 사용자 리스트
 
                 restSelf.get('/api/chatt/' + roomId + '/chatting', {limit: messenger.READ_LIMIT}).done(function (response) {
                     messenger.ui.room.find('.-chat-message').remove();

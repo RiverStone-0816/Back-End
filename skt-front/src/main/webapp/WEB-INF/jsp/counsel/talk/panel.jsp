@@ -178,7 +178,7 @@
                     const url = $.addQueryString(data.content, {token: '${g.escapeQuote(accessToken)}'});
 
                     if (data.type === 'photo') {
-                        <%--todo: 코드 정리--%>
+                        <%--fixme: 코드 정리--%>
                         content
                             .append('<div class="chat">' +
                                 '    <div class="bubble">' +
