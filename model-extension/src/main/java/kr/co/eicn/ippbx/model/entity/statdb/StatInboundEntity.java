@@ -50,6 +50,10 @@ public class StatInboundEntity extends CommonStatInbound implements StatByTimeUn
         return getSuccess() == 0 ? 0L : getWaitSum() / getSuccess();
     }
 
+    public Double getCancelAvg() {
+        return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getCancel(), getConnreq())));
+    }
+
     public Double getResponseRate() {
         return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getSuccess(), getConnreq())));
     }

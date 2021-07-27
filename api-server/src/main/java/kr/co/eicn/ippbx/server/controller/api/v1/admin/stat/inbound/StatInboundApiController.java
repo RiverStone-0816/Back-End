@@ -83,6 +83,7 @@ public class StatInboundApiController extends ApiBaseController {
 
         result.setBillSecSum(entity.getBillsecSum());
         result.setWaitAvg(entity.getWaitAvg());
+        result.setCancelAvg(entity.getCancelAvg());
 
         return ResponseEntity.ok(data(result));
     }

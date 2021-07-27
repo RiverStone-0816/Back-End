@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="90" height="140" viewBox="0 0 16 14.5">
+  <g id="Icon_feather-user" data-name="Icon feather-user" transform="translate(0.66 0.5)">
+    <path id="패스_30" data-name="패스 30" d="M21,26.987v-1.5c0-1.652-1.679-2.991-3.75-2.991H9.75C7.679,22.5,6,23.839,6,25.491v1.5" transform="translate(-6.16 -12.987)" fill="#0b52ba" stroke="#0b52ba" stroke-width="1"/>
+    <path id="패스_31" data-name="패스 31" d="M17.983,7.491A2.991,2.991,0,1,1,14.991,4.5,2.991,2.991,0,0,1,17.983,7.491Z" transform="translate(-7.651 -4.5)" fill="#0b52ba" stroke="#0b52ba" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+  </g>
+</svg>
