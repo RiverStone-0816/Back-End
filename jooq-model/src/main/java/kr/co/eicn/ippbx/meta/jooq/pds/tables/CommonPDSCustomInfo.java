@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.meta.jooq.pds.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.pds.Keys;
 import kr.co.eicn.ippbx.meta.jooq.pds.Pds;
 import kr.co.eicn.ippbx.meta.jooq.pds.tables.records.PdsCustomInfoRecord;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;

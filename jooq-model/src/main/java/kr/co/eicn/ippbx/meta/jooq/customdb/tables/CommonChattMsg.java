@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.ChattMsgRecord;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
@@ -16,54 +17,38 @@ public class CommonChattMsg extends TableImpl<ChattMsgRecord> {
 
     public static final ChattMsg CHATT_MSG = new ChattMsg();
     /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<ChattMsgRecord> getRecordType() {
-        return ChattMsgRecord.class;
-    }
-
-    /**
      * The column <code>CUSTOMDB.chatt_msg.seq</code>.
      */
     public final TableField<ChattMsgRecord, Integer> SEQ = createField(DSL.name("seq"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_msg.room_id</code>.
      */
     public final TableField<ChattMsgRecord, String> ROOM_ID = createField(DSL.name("room_id"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_msg.userid</code>.
      */
     public final TableField<ChattMsgRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_msg.insert_time</code>.
      */
     public final TableField<ChattMsgRecord, Timestamp> INSERT_TIME = createField(DSL.name("insert_time"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("2009-07-01 00:00:00", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_msg.send_receive</code>.
      */
     public final TableField<ChattMsgRecord, String> SEND_RECEIVE = createField(DSL.name("send_receive"), org.jooq.impl.SQLDataType.CHAR(3).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.CHAR)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_msg.message_id</code>.
      */
     public final TableField<ChattMsgRecord, String> MESSAGE_ID = createField(DSL.name("message_id"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_msg.type</code>.
      */
     public final TableField<ChattMsgRecord, String> TYPE = createField(DSL.name("type"), org.jooq.impl.SQLDataType.VARCHAR(10).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_msg.content</code>.
      */
     public final TableField<ChattMsgRecord, String> CONTENT = createField(DSL.name("content"), org.jooq.impl.SQLDataType.VARCHAR(1100).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
     private String tableName;
-
     /**
      * Create a <code>CUSTOMDB.chatt_msg</code> table reference
      */
@@ -97,6 +82,14 @@ public class CommonChattMsg extends TableImpl<ChattMsgRecord> {
     public <O extends Record> CommonChattMsg(CommonChattMsg table, Table<O> child, ForeignKey<O, ChattMsgRecord> key) {
         super(child, key, table);
         this.tableName = table.getName();
+    }
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<ChattMsgRecord> getRecordType() {
+        return ChattMsgRecord.class;
     }
 
     @Override

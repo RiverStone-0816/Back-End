@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.meta.jooq.statdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.CommonStatUserRankingRecord;
-import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.StatUserRankingRecord;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;

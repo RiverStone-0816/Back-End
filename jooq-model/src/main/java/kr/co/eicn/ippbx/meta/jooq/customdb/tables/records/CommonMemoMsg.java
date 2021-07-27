@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonChattMsg;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.MemoMsg;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
@@ -52,6 +53,7 @@ public class CommonMemoMsg extends TableImpl<MemoMsgRecord> {
      */
     public final TableField<MemoMsgRecord, String> CONTENT = createField(DSL.name("content"), org.jooq.impl.SQLDataType.VARCHAR(1100).nullable(false).defaultValue(DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "메세지");
     private String tableName;
+
     /**
      * Create a <code>CUSTOMDB.memo_msg</code> table reference
      */

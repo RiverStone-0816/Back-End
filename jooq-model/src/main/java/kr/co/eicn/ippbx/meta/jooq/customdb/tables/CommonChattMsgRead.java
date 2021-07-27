@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.ChattMsgReadRecord;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
@@ -15,31 +16,19 @@ public class CommonChattMsgRead extends TableImpl<ChattMsgReadRecord> {
      * The reference instance of <code>CUSTOMDB.chatt_msg_read</code>
      */
     public static final ChattMsgRead CHATT_MSG_READ = new ChattMsgRead();
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<ChattMsgReadRecord> getRecordType() {
-        return ChattMsgReadRecord.class;
-    }
-
     /**
      * The column <code>CUSTOMDB.chatt_msg_read.message_id</code>.
      */
     public final TableField<ChattMsgReadRecord, String> MESSAGE_ID = createField(DSL.name("message_id"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_msg_read.room_id</code>.
      */
     public final TableField<ChattMsgReadRecord, String> ROOM_ID = createField(DSL.name("room_id"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_msg_read.userid</code>.
      */
     public final TableField<ChattMsgReadRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
     private String tableName;
-
     /**
      * Create a <code>CUSTOMDB.chatt_msg_read</code> table reference
      */
@@ -59,6 +48,14 @@ public class CommonChattMsgRead extends TableImpl<ChattMsgReadRecord> {
     public <O extends Record> CommonChattMsgRead(CommonChattMsgRead table, Table<O> child, ForeignKey<O, ChattMsgReadRecord> key) {
         super(child, key, table);
         this.tableName = table.getName();
+    }
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<ChattMsgReadRecord> getRecordType() {
+        return ChattMsgReadRecord.class;
     }
 
     @Override

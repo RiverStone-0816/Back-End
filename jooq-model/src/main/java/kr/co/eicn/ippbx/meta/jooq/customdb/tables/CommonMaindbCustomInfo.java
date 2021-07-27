@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.MaindbCustomInfoRecord;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
@@ -350,7 +351,7 @@ public class CommonMaindbCustomInfo extends TableImpl<MaindbCustomInfoRecord> {
      * Create a <code>CUSTOMDB.maindb_custom_info</code> table reference
      */
     public CommonMaindbCustomInfo(String companyName) {
-        this(DSL.name("maindb_custom_info_"+companyName), null);
+        this(DSL.name("maindb_custom_info_" + companyName), null);
     }
 
     /**
@@ -406,12 +407,12 @@ public class CommonMaindbCustomInfo extends TableImpl<MaindbCustomInfoRecord> {
 
     @Override
     public UniqueKey<MaindbCustomInfoRecord> getPrimaryKey() {
-        return Internal.createUniqueKey(this, "KEY_"+getName()+"_PRIMARY", this.MAINDB_SYS_CUSTOM_ID);
+        return Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.MAINDB_SYS_CUSTOM_ID);
     }
 
     @Override
     public List<UniqueKey<MaindbCustomInfoRecord>> getKeys() {
-        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_"+getName()+"_PRIMARY", this.MAINDB_SYS_CUSTOM_ID));
+        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.MAINDB_SYS_CUSTOM_ID));
     }
 
     @Override

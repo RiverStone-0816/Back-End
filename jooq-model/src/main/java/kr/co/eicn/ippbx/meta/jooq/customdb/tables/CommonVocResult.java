@@ -8,6 +8,7 @@ import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.VocResultRecord;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
@@ -108,7 +109,7 @@ public class CommonVocResult extends TableImpl<VocResultRecord> {
 
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.VOC_RESULT_RESEARCH_ID, Indexes.VOC_RESULT_TREE_PATH);
+        return Arrays.asList(Indexes.VOC_RESULT_RESEARCH_ID, Indexes.VOC_RESULT_TREE_PATH);
     }
 
     @Override
@@ -123,7 +124,7 @@ public class CommonVocResult extends TableImpl<VocResultRecord> {
 
     @Override
     public List<UniqueKey<VocResultRecord>> getKeys() {
-        return Arrays.<UniqueKey<VocResultRecord>>asList(Keys.KEY_VOC_RESULT_PRIMARY);
+        return Arrays.asList(Keys.KEY_VOC_RESULT_PRIMARY);
     }
 
     @Override

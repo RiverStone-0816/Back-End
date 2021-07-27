@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.meta.jooq.statdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.CommonStatOutboundRecord;
-import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.StatOutboundRecord;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
@@ -83,6 +83,7 @@ public class CommonStatOutbound extends TableImpl<CommonStatOutboundRecord> {
     public final TableField<CommonStatOutboundRecord, String> WORKTIME_YN = createField(DSL.name("worktime_yn"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("Y", org.jooq.impl.SQLDataType.CHAR)), this, "");
 
     private final String tableName;
+
     /**
      * Create a <code>STATDB.stat_outbound</code> table reference
      */
@@ -127,6 +128,7 @@ public class CommonStatOutbound extends TableImpl<CommonStatOutboundRecord> {
     public List<UniqueKey<CommonStatOutboundRecord>> getKeys() {
         return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ));
     }
+
     @Override
     public CommonStatOutbound as(String alias) {
         return new CommonStatOutbound(DSL.name(alias), this);

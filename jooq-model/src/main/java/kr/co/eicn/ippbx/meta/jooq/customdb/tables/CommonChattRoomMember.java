@@ -4,15 +4,13 @@ import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.ChattRoomMemberRecord;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.CommonChattRoomMemberRecord;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
-import org.jooq.impl.Internal;
 import org.jooq.impl.TableImpl;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class CommonChattRoomMember extends TableImpl<ChattRoomMemberRecord> {
@@ -21,66 +19,47 @@ public class CommonChattRoomMember extends TableImpl<ChattRoomMemberRecord> {
      * The reference instance of <code>CUSTOMDB.chatt_room_member</code>
      */
     public static final ChattRoomMember CHATT_ROOM_MEMBER = new ChattRoomMember();
-
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<ChattRoomMemberRecord> getRecordType() {
-        return ChattRoomMemberRecord.class;
-    }
-
     /**
      * The column <code>CUSTOMDB.chatt_room_member.room_id</code>.
      */
     public final TableField<ChattRoomMemberRecord, String> ROOM_ID = createField(DSL.name("room_id"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_room_member.userid</code>.
      */
     public final TableField<ChattRoomMemberRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(30).nullable(false), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_room_member.room_name</code>.
      */
     public final TableField<ChattRoomMemberRecord, String> ROOM_NAME = createField(DSL.name("room_name"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_room_member.member_md5</code>.
      */
     public final TableField<ChattRoomMemberRecord, String> MEMBER_MD5 = createField(DSL.name("member_md5"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_room_member.is_join</code>.
      */
     public final TableField<ChattRoomMemberRecord, String> IS_JOIN = createField(DSL.name("is_join"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.CHAR)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_room_member.invite_time</code>.
      */
     public final TableField<ChattRoomMemberRecord, Timestamp> INVITE_TIME = createField(DSL.name("invite_time"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("2019-04-01 00:00:00", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_room_member.last_msg</code>.
      */
     public final TableField<ChattRoomMemberRecord, String> LAST_MSG = createField(DSL.name("last_msg"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_room_member.last_type</code>.
      */
     public final TableField<ChattRoomMemberRecord, String> LAST_TYPE = createField(DSL.name("last_type"), org.jooq.impl.SQLDataType.VARCHAR(10).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_room_member.last_time</code>.
      */
     public final TableField<ChattRoomMemberRecord, Timestamp> LAST_TIME = createField(DSL.name("last_time"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("2019-04-01 00:00:00", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
-
     /**
      * The column <code>CUSTOMDB.chatt_room_member.read_time</code>.
      */
     public final TableField<ChattRoomMemberRecord, Timestamp> READ_TIME = createField(DSL.name("read_time"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("2019-04-01 00:00:00", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
     private String tableName;
-
     /**
      * Create a <code>CUSTOMDB.chatt_room_member</code> table reference
      */
@@ -100,6 +79,14 @@ public class CommonChattRoomMember extends TableImpl<ChattRoomMemberRecord> {
     public <O extends Record> CommonChattRoomMember(CommonChattRoomMember table, Table<O> child, ForeignKey<O, ChattRoomMemberRecord> key) {
         super(child, key, table);
         this.tableName = table.getName();
+    }
+
+    /**
+     * The class holding records for this type
+     */
+    @Override
+    public Class<ChattRoomMemberRecord> getRecordType() {
+        return ChattRoomMemberRecord.class;
     }
 
     @Override
