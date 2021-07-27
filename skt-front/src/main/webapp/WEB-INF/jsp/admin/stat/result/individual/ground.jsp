@@ -84,65 +84,36 @@
                             </div>
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
-                            <%--todo: 값 적용 요청--%>
                         <table class="ui celled table compact unstackable">
                             <thead>
                             <tr>
                                 <th colspan="2">문의유형</th>
-                                <th>2021-07-23</th>
-                                <th>2021-07-24</th>
-                                <th>2021-07-25</th>
-                                <th>2021-07-26</th>
+                                <c:forEach var="date" items="${dates}">
+                                    <th>${g.htmlQuote(date)}</th>
+                                </c:forEach>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>안녕</td>
-                                <td>190</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
-                            </tr>
-                            <tr>
-                                <td>하세</td>
-                                <td>209</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>0</td>
-                            </tr>
+                            <c:choose>
+                                <c:when test="${list.size() > 0}">
+                                    <c:forEach var="e" items="${list}">
+                                        <tr>
+                                            <td>${g.htmlQuote(e.codeName)}</td>
+                                            <td class="-code-sum" data-code="${g.escapeQuote(e.codeId)}"></td>
+                                            <c:forEach var="date" items="${dates}">
+                                                <td>${codeToDateToCountMap.get(e).getOrDefault(date, 0)}</td>
+                                            </c:forEach>
+                                        </tr>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                    <tr>
+                                        <td colspan="${2 + dates.size()}" class="null-data">조회된 데이터가 없습니다.</td>
+                                    </tr>
+                                </c:otherwise>
+                            </c:choose>
                             </tbody>
                         </table>
-                        <table class="ui celled table compact unstackable">
-                                    <thead>
-                                    <tr>
-                                        <th>문의유형</th>
-                                        <c:forEach var="date" items="${dates}">
-                                            <th>${g.htmlQuote(date)}</th>
-                                        </c:forEach>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <c:choose>
-                                        <c:when test="${list.size() > 0}">
-                                            <c:forEach var="e" items="${list}">
-                                                <tr>
-                                                    <td>${g.htmlQuote(e.codeName)}</td>
-                                                    <c:forEach var="date" items="${dates}">
-                                                        <td>${codeToDateToCountMap.get(e).getOrDefault(date, 0)}</td>
-                                                    </c:forEach>
-                                                </tr>
-                                            </c:forEach>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <tr>
-                                                <td colspan="${1 + dates.size()}" class="null-data">조회된 데이터가 없습니다.</td>
-                                            </tr>
-                                        </c:otherwise>
-                                    </c:choose>
-                                    </tbody>
-                                </table>
                     </div>
                 </div>
             </div>
@@ -151,6 +122,26 @@
 
     <tags:scripts>
         <script>
+            (function () {
+                const stat = {
+                    <c:forEach var="e" items="${list}">
+                    '${g.escapeQuote(e.codeId)}': [
+                        <c:forEach var="date" items="${dates}">
+                        ${codeToDateToCountMap.get(e).getOrDefault(date, 0)},
+                        </c:forEach>
+                    ],
+                    </c:forEach>
+                };
+
+                $('.-code-sum').each(function () {
+                    let sum = 0;
+                    stat[$(this).attr('data-code')].map(function (value) {
+                        sum += value;
+                    });
+                    $(this).text(sum);
+                });
+            })();
+
             function downloadExcel() {
                 window.open(contextPath + '/admin/stat/result/individual/_excel?${g.escapeQuote(search.query)}', '_blank');
             }
