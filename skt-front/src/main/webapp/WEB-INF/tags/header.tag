@@ -22,7 +22,7 @@
         <div class="start">
             <div class="logo">
                 <h1>
-                    <a href="<c:url value="/"/>"><%--<img src="<c:url value="/resources/images/logo.png"/>" alt="logo">--%><img src="<c:url value="/resources/images/logo_eicn.png"/>" alt="logo"></a>
+                    <a href="<c:url value="/"/>"><img src="<c:url value="/resources/images/logo.png"/>" alt="logo"><%--<img src="<c:url value="/resources/images/logo_eicn.png"/>" alt="logo">--%></a>
                 </h1>
             </div>
             <div class="side-box">
