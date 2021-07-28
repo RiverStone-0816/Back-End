@@ -35,7 +35,7 @@
                                 <th>수신그룹명</th>
                                 <td colspan="11">
                                     <div class="ui form">
-                                        <select onchange="filterQueue($(this).val())">
+                                        <select onchange="filterQueue($(this).val())" multiple="multiple" class="ui fluid dropdown">
                                             <option value="">전체</option>
                                             <c:forEach var="e" items="${queues}">
                                                 <option value="${g.escapeQuote(e.key)}">${g.htmlQuote(e.value)}</option>
@@ -159,7 +159,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <c:forEach var="i" begin="${queue.value.size() / 2}" end="${queue.value.size() - 1}">
+                                                <c:forEach var="i" begin="${(queue.value.size() + 1) / 2}" end="${queue.value.size() - 1}">
                                                     <c:set var="e" value="${queue.value.get(i)}"/>
                                                     <tr>
                                                         <td>${e.idName}</td>
@@ -204,9 +204,12 @@
     <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
     <tags:scripts>
         <script>
-            function filterQueue(queueName) {
-                if (queueName) {
-                    $('.-queue-section').hide().filter('[data-name="' + queueName + '"]').show();
+            function filterQueue(queueNames) {
+                if (queueNames.length > 0) {
+                    const sections = $('.-queue-section').hide();
+                    queueNames.map(function (queueName) {
+                        sections.filter('[data-name="' + queueName + '"]').show();
+                    });
                 } else {
                     $('.-queue-section').show();
                 }
