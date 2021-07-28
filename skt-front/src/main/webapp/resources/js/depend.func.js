@@ -1050,7 +1050,7 @@ function prompt(text, isPassword) {
         }, 10);
     });
 
-    const linker = $('<a/>', {href: '#alert-modal'}).leanModal({closeButton: '#alert-modal button'}).click();
+    const linker = $('<a/>', {href: '#alert-modal'}).leanModal({closeButton: '#alert-modal button,#alert-modal .close'}).click();
     $('.alert-modal').transition('bounce');
 
     function removeGarbage() {
