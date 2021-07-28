@@ -327,7 +327,7 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
         return findAll(compareCompanyId().and(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(EMPTY))).stream().collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable::getMembername, e -> e));
     }
 
-    public Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable> findAllQueueName() {
-        return findAll(compareCompanyId().and(QUEUE_MEMBER_TABLE.QUEUE_NAME.like("QUEUE%")).and(QUEUE_MEMBER_TABLE.USERID.isNotNull()).and(QUEUE_MEMBER_TABLE.USERID.notEqual(""))).stream().collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable::getMembername, e -> e));
+    public Map<UInteger, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable> findAllQueueName(String userid) {
+        return findAll(compareCompanyId().and(QUEUE_MEMBER_TABLE.QUEUE_NAME.like("QUEUE%")).and(QUEUE_MEMBER_TABLE.USERID.eq(userid)).and(QUEUE_MEMBER_TABLE.USERID.notEqual(""))).stream().collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable::getUniqueid, e -> e));
     }
 }
