@@ -344,22 +344,30 @@
                     <div class="chat-body -overlay-scroll">
                         <div class="chat-item chat-me">
                             <div class="wrap-content">
-                                <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <p class="txt-chat">테스트</p>
+                                <div class="profile-image">
+                                    <img src="<c:url value="/resources/images/kd_2.png"/>">
+                                </div>
+                                <div class="txt-segment">
+                                    <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <p class="txt-chat">테스트</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="chat-item chat-me">
                             <div class="wrap-content">
-                                <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <p class="txt-chat">
-                                            <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Yuumi_0.jpg">
-                                        </p>
+                                <div class="profile-image">
+                                    <img src="<c:url value="/resources/images/kd_2.png"/>">
+                                </div>
+                                <div class="txt-segment">
+                                    <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <p class="txt-chat">테스트</p>
+                                        </div>
                                     </div>
                                 </div>
                                 <a href="#">저장하기</a>
@@ -367,11 +375,15 @@
                         </div>
                         <div class="chat-item">
                             <div class="wrap-content">
-                                <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <p class="txt-chat">TEST TEST TEST TEST TEST TEST TEST TEST TEST
-                                            TEST TEST TEST TEST TEST TEST </p>
+                                <div class="profile-image">
+                                    <img src="<c:url value="/resources/images/kd_2.png"/>">
+                                </div>
+                                <div class="txt-segment">
+                                    <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <p class="txt-chat">테스트</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -379,12 +391,15 @@
                         <p class="info-msg">[2019-07-16 17:50:10] [김옥중어드민]상담건을 찜하였습니다. TEXT</p>
                         <div class="chat-item">
                             <div class="wrap-content">
-                                <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
-                                <div class="chat">
-                                    <div class="bubble">
-                                        <p class="txt-chat">
-                                            <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Yuumi_0.jpg">
-                                        </p>
+                                <div class="profile-image">
+                                    <img src="<c:url value="/resources/images/kd_2.png"/>">
+                                </div>
+                                <div class="txt-segment">
+                                    <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <p class="txt-chat">테스트</p>
+                                        </div>
                                     </div>
                                 </div>
                                 <a href="#">저장하기</a>
