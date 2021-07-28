@@ -87,7 +87,7 @@
                             <th>응대율</th>
                         </tr>
                         </thead>
-                        <c:forEach var="e" items="${huntData}" varStatus="status">
+                        <c:forEach var="e" items="${huntData.hunts  }" varStatus="status">
                             <c:if test="${status.index % 5 == 0}">
                                 <tbody class="-queue-div ${status.first ? 'active' : ''}">
                             </c:if>
