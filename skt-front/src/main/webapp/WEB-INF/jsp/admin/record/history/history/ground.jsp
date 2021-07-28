@@ -35,7 +35,7 @@
                 <div class="panel-body">
                     <div class="search-area">
                         <table class="ui celled table compact unstackable">
-                            <tr>
+                            <tr class="-detail-search-input" style="display: none;">
                                 <th>검색기간</th>
                                 <td colspan="7" class="-buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
                                     <div class="ui action input calendar-area">
@@ -55,7 +55,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr class="-detail-search-input" style="display: none;">
                                 <th>부서조회</th>
                                 <td colspan="3">
                                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
@@ -118,26 +118,6 @@
                                         <form:select path="sort" items="${sortTypes}"/>
                                     </div>
                                 </td>
-                                <th>대표번호</th>
-                                <td>
-                                    <div class="ui form">
-                                        <form:select path="iniNum">
-                                            <form:option value="" label="선택안함"/>
-                                            <form:options items="${services}" itemValue="svcNumber" itemLabel="svcName"/>
-                                        </form:select>
-                                    </div>
-                                </td>
-                                <th>수신그룹</th>
-                                <td>
-                                    <div class="ui form">
-                                        <form:select path="secondNum">
-                                            <form:option value="" label="선택안함"/>
-                                            <form:options items="${queues}"/>
-                                        </form:select>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
                                 <th>기타정보</th>
                                 <td colspan="${serviceKind.contains('SC') ? '3' : '7'}">
                                     <div class="ui form flex">
@@ -159,6 +139,26 @@
                                         </form:select>
                                         <form:select path="ivrKey" cssClass="ml5">
                                             <form:option value="${search.ivrKey}" label="${search.ivrKey}"/>
+                                        </form:select>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="-detail-search-input" style="display: none;">
+                                <th>대표번호</th>
+                                <td>
+                                    <div class="ui form">
+                                        <form:select path="iniNum">
+                                            <form:option value="" label="선택안함"/>
+                                            <form:options items="${services}" itemValue="svcNumber" itemLabel="svcName"/>
+                                        </form:select>
+                                    </div>
+                                </td>
+                                <th>수신그룹</th>
+                                <td>
+                                    <div class="ui form">
+                                        <form:select path="secondNum">
+                                            <form:option value="" label="선택안함"/>
+                                            <form:options items="${queues}"/>
                                         </form:select>
                                     </div>
                                 </td>
@@ -198,8 +198,10 @@
                                 <c:if test="${g.user.downloadRecordingAuthority.equals('ALL')}">
                                     <form:checkbox path="batchDownloadMode" cssStyle="display: none;"/>
                                     <button type="button" class="ui button sharp light large check ${search.batchDownloadMode == true ? 'active' : ''}"
-                                            onclick="$(this).toggleClass('active'); $('[name=batchDownloadMode]').prop('checked', $(this).hasClass('active'))">일자별 녹취 다운
+                                            onclick="$(this).toggleClass('active'); $('[name=batchDownloadMode]').prop('checked', $(this).hasClass('active')); $('.-batch-download-alert').show()">
+                                        일자별 녹취 다운
                                     </button>
+                                    <span class="inline-txt -batch-download-alert" style="display: none;">* 일자별 녹취 다운은 최대 1일씩 다운이 가능합니다.</span>
                                 </c:if>
                                 <c:if test="${company.isServiceAvailable('QA') && !g.user.idType.equals('M')}">
                                     <form:checkbox path="batchEvaluationMode" cssStyle="display: none;"/>
@@ -207,11 +209,13 @@
                                             onclick="$(this).toggleClass('active'); $('[name=batchEvaluationMode]').prop('checked', $(this).hasClass('active'))">상담원 일괄 평가모드
                                     </button>
                                 </c:if>
-                                <span class="inline-txt">* 일자별 녹취 다운은 최대 1일씩 다운이 가능합니다.</span>
                             </div>
                             <div class="align-right">
                                 <button type="submit" class="ui button sharp brand large">검색</button>
                                 <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
+                                <button type="button" class="ui button sharp light large" style="padding-left: 0.5em; padding-right: 0.5em;"
+                                        onclick="$('.-detail-search-input').show(); $(this).remove()">﹀
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -240,7 +244,7 @@
                             <c:if test="${serviceKind.equals('SC')}">
                                 <th>고객등급</th>
                             </c:if>
-                            <th>통화자</th>
+                            <th>상담원</th>
                             <th>호상태(초)</th>
                             <th>부가상태</th>
                             <th>IVR</th>

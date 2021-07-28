@@ -99,7 +99,7 @@
                                     </form:select>
                                 </div>
                             </div>--%>
-                        <div class="three wide column"><label class="control-label">통화자</label></div>
+                        <div class="three wide column"><label class="control-label">상담원</label></div>
                         <div class="three wide column">
                             <div class="ui form">
                                 <form:select path="userId">
@@ -233,7 +233,7 @@
                     <th>수신번호</th>
                     <th>시간</th>
                     <th>수/발신</th>
-                    <th>통화자</th>
+                    <th>상담원</th>
                     <th>호상태(초)</th>
                     <th>부가상태</th>
                     <th>IVR</th>
