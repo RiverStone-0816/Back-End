@@ -102,7 +102,7 @@
             <div class="panel-segment list">
                 <div class="panel-segment-header">
                     <text>조직도</text>
-                    <button type="button" class="ui basic mini button" onclick="messenger.popupRoomCreationOrganizationModal(true, true)">선택대화</button>
+                    <button type="button" class="ui basic mini button" onclick="messenger.openRoomFromOrganization()">선택대화</button>
                 </div>
                 <div class="panel-segment-body overflow-overlay">
                     <div class="area" id="messenger-organization-panel"></div>
@@ -476,7 +476,40 @@
                 messenger._loadRoomName(messenger.currentRoom.id);
             });
         };
-        // 조직도에서 대화방 열기를 시도한다.
+        // 조직도(left panel)에서 대화방 열기를 시도한다.
+        Messenger.prototype.openRoomFromOrganization = function () {
+            const messenger = this;
+            const users = [];
+
+            messenger.ui.organizationPanel.find('.-messenger-folder').filter(function () {
+                return $(this).find('input[type=checkbox]:first').is(':checked');
+            }).each(function () {
+                $(this).find('.-messenger-user').each(function () {
+                    const id = $(this).attr('data-id');
+                    if (users.indexOf(id) >= 0)
+                        return;
+                    users.push(id);
+                });
+            });
+
+            messenger.ui.organizationPanel.find('.-messenger-user.active').each(function () {
+                const id = $(this).attr('data-id');
+                if (users.indexOf(id) >= 0)
+                    return;
+                users.push(id);
+            });
+
+            if (!users.length)
+                return alert('선택된 사용자가 없습니다.');
+
+            if (users.indexOf(messenger.me) < 0)
+                users.push(messenger.me);
+
+            restSelf.post('/api/chatt/', {memberList: users}).done(function (response) {
+                messenger.loadRoom(response.data);
+            });
+        };
+        // 조직도(modal)에서 대화방 열기를 시도한다.
         Messenger.prototype.openRoom = function () {
             const messenger = this;
             const users = [];
@@ -1283,9 +1316,10 @@
             const messageElement = $('.-chat-message').removeClass('active').filter(function () {
                 return messageId === $(this).attr('data-id');
             });
-            if (messageElement.length > 0)
-                return messageElement.addClass('active').closest('.chat-body').animate({scrollTop: messageElement.position().top}, 400);
-
+            if (messageElement.length > 0) {
+                const chatBody = messageElement.addClass('active').closest('.chat-body');
+                return chatBody.animate({scrollTop: messageElement.position().top - messageElement.height() + chatBody.scrollTop()}, 400);
+            }
             messenger.loadMessages({
                 endMessageId: messageId,
                 startMessageId: messenger.currentRoom.startMessageId
@@ -1293,8 +1327,10 @@
                 const messageElement = $('.-chat-message').filter(function () {
                     return messageId === $(this).attr('data-id');
                 });
-                if (messageElement.length > 0)
-                    messageElement.addClass('active').closest('.chat-body').animate({scrollTop: messageElement.position().top}, 400);
+                if (messageElement.length > 0) {
+                    const chatBody = messageElement.addClass('active').closest('.chat-body');
+                    return chatBody.animate({scrollTop: messageElement.position().top - messageElement.height() + chatBody.scrollTop()}, 400);
+                }
             });
         };
         // 대화방 안에서의 안읽은 메세지 카운트 갱신

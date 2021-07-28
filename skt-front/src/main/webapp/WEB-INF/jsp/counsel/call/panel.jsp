@@ -32,6 +32,19 @@
                     </td>
                 </tr>
                 <tr>
+                    <th>발신표시</th>
+                    <td>
+                        <div class="ui form flex">
+                            <select id="cid">
+                                <option value="" label="">발신번호선택</option>
+                                <c:forEach var="e" items="${services}">
+                                    <option value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.value)}(${g.htmlQuote(e.key)})</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
                     <th>고객번호</th>
                     <td class="">
                         <div class="ui form flex">
@@ -59,19 +72,6 @@
                         <div class="ui form flex">
                             <jsp:include page="/counsel/call/user-call-history"/>
                             <button type="button" class="ui button sharp light ml5" onclick="popupSearchCallHistoryModal()">통화이력</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>발신표시</th>
-                    <td>
-                        <div class="ui form flex">
-                            <select id="cid">
-                                <option value="" label="">발신번호선택</option>
-                                <c:forEach var="e" items="${services}">
-                                    <option value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.value)}(${g.htmlQuote(e.key)})</option>
-                                </c:forEach>
-                            </select>
                         </div>
                     </td>
                 </tr>
