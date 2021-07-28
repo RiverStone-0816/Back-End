@@ -82,8 +82,8 @@ public class RecordApiController extends ApiBaseController {
             search.setEndTimestamp(Timestamp.valueOf(LocalDateTime.of(toDay, LocalTime.MAX)));
         if (search.getStartTimestamp().after(search.getEndTimestamp()))
             return ResponseEntity.ok(data(Collections.emptyList()));
-        if (search.getEndTimestamp().toLocalDateTime().minusMonths(LIMIT_INQUIRY_PERIOD.getMonths()).isAfter(search.getStartTimestamp().toLocalDateTime()))
-            return ResponseEntity.ok(data(Collections.emptyList()));
+        /*if (search.getEndTimestamp().toLocalDateTime().minusMonths(LIMIT_INQUIRY_PERIOD.getMonths()).isAfter(search.getStartTimestamp().toLocalDateTime()))
+            return ResponseEntity.ok(data(Collections.emptyList()));*/
         if (search.getBatchEvaluationMode()) {
             search.setStartTimestamp(null);
             search.setEndTimestamp(null);
