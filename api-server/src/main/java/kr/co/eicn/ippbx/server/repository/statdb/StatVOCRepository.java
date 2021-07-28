@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatVoc;
 import kr.co.eicn.ippbx.model.entity.statdb.StatVOCEntity;
 import kr.co.eicn.ippbx.model.search.StatDBVOCStatisticsSearchRequest;
 import lombok.Getter;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;

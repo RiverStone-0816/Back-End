@@ -17,6 +17,7 @@ import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -316,7 +317,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
 
     private String getSHA512(String str) {
         String rtnSHA = "";
-        try{
+        try {
             MessageDigest sh = MessageDigest.getInstance("SHA-512");
             sh.update(str.getBytes());
             byte[] byteData = sh.digest();
@@ -325,7 +326,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
                 sb.append(Integer.toString((byteDatum & 0xff) + 0x100, 16).substring(1));
             }
             rtnSHA = sb.toString();
-        }catch(NoSuchAlgorithmException e){
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             rtnSHA = null;
         }

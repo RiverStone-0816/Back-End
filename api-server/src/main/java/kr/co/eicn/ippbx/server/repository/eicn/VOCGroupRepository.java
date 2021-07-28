@@ -11,6 +11,7 @@ import kr.co.eicn.ippbx.model.search.VOCGroupSearchRequest;
 import kr.co.eicn.ippbx.server.service.*;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -19,7 +20,10 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ResearchList.RESEARCH_LIST;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.VocGroup.VOC_GROUP;

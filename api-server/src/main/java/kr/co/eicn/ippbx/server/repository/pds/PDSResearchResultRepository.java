@@ -10,8 +10,8 @@ import kr.co.eicn.ippbx.server.repository.eicn.HistoryPDSGroupRepository;
 import kr.co.eicn.ippbx.server.service.PDSCustomInfoService;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.jooq.Record;
 import org.jooq.*;
-import org.jooq.DSLContext;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,10 +65,10 @@ public class PDSResearchResultRepository extends PDSDbBaseRepository<CommonPDSRe
     }
 
     public int createTableIfNotExists(DSLContext dslContext) {
-		return dslContext.createTableIfNotExists(TABLE)
+        return dslContext.createTableIfNotExists(TABLE)
                 .columns(PDS_RESEARCH_RESULT.fields())
                 .constraint(DSL.constraint(TABLE.SEQ.getName()).primaryKey(TABLE.SEQ.getName()))
-				.indexes(PDS_RESEARCH_RESULT.getIndexes().stream().filter(index -> !"PRIMARY".equals(index.getName())).collect(Collectors.toList()))
+                .indexes(PDS_RESEARCH_RESULT.getIndexes().stream().filter(index -> !"PRIMARY".equals(index.getName())).collect(Collectors.toList()))
                 .storage("ENGINE=MyISAM")
                 .execute();
     }

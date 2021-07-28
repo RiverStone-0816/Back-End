@@ -20,6 +20,7 @@ import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -133,12 +134,12 @@ public class EvaluationResultRepository extends EicnBaseRepository<EvaluationRes
         final Map<Long, String> evaluationFormMap = evaluationFormRepository.findAll().stream().collect(Collectors.toMap(EvaluationForm::getId, EvaluationForm::getName));
 
         return dsl.select(EVALUATION_RESULT.TARGET_USERID
-                , EVALUATION_RESULT.EVALUATION_ID
-                , DSL.maxDistinct(EVALUATION_RESULT.EVALUATION_DATE).as("max_evaluation_date")
-                , count.as("cnt")
-                , sum.as("total")
-                , sum.divide(count).as("avg")
-        )
+                        , EVALUATION_RESULT.EVALUATION_ID
+                        , DSL.maxDistinct(EVALUATION_RESULT.EVALUATION_DATE).as("max_evaluation_date")
+                        , count.as("cnt")
+                        , sum.as("total")
+                        , sum.divide(count).as("avg")
+                )
                 .from(EVALUATION_RESULT)
                 .leftJoin(EVALUATION_ITEM_SCORE)
                 .on(EVALUATION_RESULT.EVALUATION_ID.eq(EVALUATION_ITEM_SCORE.EVALUATION_ID))

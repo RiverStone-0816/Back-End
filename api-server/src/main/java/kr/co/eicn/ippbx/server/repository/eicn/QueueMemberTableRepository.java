@@ -19,6 +19,7 @@ import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import kr.co.eicn.ippbx.util.EicnUtils;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.types.UInteger;
@@ -250,8 +251,8 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
 
     public List<QueueMemberLoginCountResponse> getIsLoginByQueueName() {
         return dsl.select(QUEUE_MEMBER_TABLE.QUEUE_NAME,
-                QUEUE_MEMBER_TABLE.IS_LOGIN,
-                count(QUEUE_MEMBER_TABLE.IS_LOGIN).as("count"))
+                        QUEUE_MEMBER_TABLE.IS_LOGIN,
+                        count(QUEUE_MEMBER_TABLE.IS_LOGIN).as("count"))
                 .from(QUEUE_MEMBER_TABLE)
                 .where(compareCompanyId())
                 .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.like("QUEUE%"))
@@ -289,13 +290,13 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
 
     public CenterMemberStatusCountEntity getCenterStatusCount() {
         return dsl.select(
-                count(when(QUEUE_MEMBER_TABLE.PAUSED.eq(0), 1)).as("waitCount"),
-                count(when(QUEUE_MEMBER_TABLE.PAUSED.eq(2), 1)).as("postProcessCount"),
-                count(when(QUEUE_MEMBER_TABLE.PAUSED.notEqual(0).and(QUEUE_MEMBER_TABLE.PAUSED.notEqual(1)).and(QUEUE_MEMBER_TABLE.PAUSED.notEqual(2)), 1)).as("etc_count"),
-                count(when(QUEUE_MEMBER_TABLE.PAUSED.ne(9), 1)).as("workingPerson"),
-                count(when(QUEUE_MEMBER_TABLE.IS_LOGIN.eq("Y"), 1)).as("loginCount"),
-                count(when(QUEUE_MEMBER_TABLE.IS_LOGIN.eq("N"), 1)).as("logoutCount")
-        )
+                        count(when(QUEUE_MEMBER_TABLE.PAUSED.eq(0), 1)).as("waitCount"),
+                        count(when(QUEUE_MEMBER_TABLE.PAUSED.eq(2), 1)).as("postProcessCount"),
+                        count(when(QUEUE_MEMBER_TABLE.PAUSED.notEqual(0).and(QUEUE_MEMBER_TABLE.PAUSED.notEqual(1)).and(QUEUE_MEMBER_TABLE.PAUSED.notEqual(2)), 1)).as("etc_count"),
+                        count(when(QUEUE_MEMBER_TABLE.PAUSED.ne(9), 1)).as("workingPerson"),
+                        count(when(QUEUE_MEMBER_TABLE.IS_LOGIN.eq("Y"), 1)).as("loginCount"),
+                        count(when(QUEUE_MEMBER_TABLE.IS_LOGIN.eq("N"), 1)).as("logoutCount")
+                )
                 .from(QUEUE_MEMBER_TABLE)
                 .where(compareCompanyId())
                 .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(EMPTY))
@@ -304,9 +305,9 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
 
     public List<QueueNameRepository.QueueMemberStatus> memberStatusesByPause() {
         return dsl.select(QUEUE_MEMBER_TABLE.PAUSED
-                , QUEUE_MEMBER_TABLE.IS_LOGIN
-                , DSL.count().as("cnt")
-        )
+                        , QUEUE_MEMBER_TABLE.IS_LOGIN
+                        , DSL.count().as("cnt")
+                )
                 .from(QUEUE_MEMBER_TABLE)
                 .where(compareCompanyId())
                 .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(EMPTY))

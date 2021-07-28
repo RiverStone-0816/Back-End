@@ -12,6 +12,7 @@ import kr.co.eicn.ippbx.model.search.StatTotalSearchRequest;
 import kr.co.eicn.ippbx.util.EicnUtils;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -145,13 +146,13 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
 
     public Map<String, MonitorMajorStatusResponse> findAllByHunt() {
         return dsl.select(QUEUE_NAME.NUMBER,
-                ifnull(sum(TABLE.TOTAL), 0).as(TABLE.TOTAL),
-                ifnull(sum(TABLE.SUCCESS), 0).as(TABLE.SUCCESS),
-                ifnull(sum(TABLE.CONNREQ), 0).as(TABLE.CONNREQ),
-                ifnull(sum(TABLE.ONLYREAD), 0).as(TABLE.ONLYREAD),
-                ifnull(sum(TABLE.CANCEL), 0).as(TABLE.CANCEL),
-                ifnull(sum(TABLE.CALLBACK), 0).as(TABLE.CALLBACK),
-                ifnull(sum(TABLE.CALLBACK_SUCCESS), 0).as(TABLE.CALLBACK_SUCCESS))
+                        ifnull(sum(TABLE.TOTAL), 0).as(TABLE.TOTAL),
+                        ifnull(sum(TABLE.SUCCESS), 0).as(TABLE.SUCCESS),
+                        ifnull(sum(TABLE.CONNREQ), 0).as(TABLE.CONNREQ),
+                        ifnull(sum(TABLE.ONLYREAD), 0).as(TABLE.ONLYREAD),
+                        ifnull(sum(TABLE.CANCEL), 0).as(TABLE.CANCEL),
+                        ifnull(sum(TABLE.CALLBACK), 0).as(TABLE.CALLBACK),
+                        ifnull(sum(TABLE.CALLBACK_SUCCESS), 0).as(TABLE.CALLBACK_SUCCESS))
                 .from(QUEUE_NAME)
                 .leftOuterJoin(TABLE)
                 .on(QUEUE_NAME.NUMBER.eq(TABLE.HUNT_NUMBER))
@@ -290,14 +291,14 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
         final Condition isCallback = TABLE.DCONTEXT.eq(ContextType.CALL_BACK.getCode());
 
         return dsl.select(ifnull(sum(when(isService, TABLE.TOTAL)), 0).as("serviceTotal"),
-                ifnull(sum(when(isDirect, TABLE.TOTAL)), 0).as("directTotal"),
-                ifnull(sum(when(isService, TABLE.ONLYREAD)), 0).as("viewCount"),
-                ifnull(sum(when(isService, TABLE.CONNREQ)), 0).as("serviceConnectionRequest"),
-                ifnull(sum(when(isService, TABLE.SUCCESS)), 0).as("serviceSuccess"),
-                ifnull(sum(when(isDirect, TABLE.SUCCESS)), 0).as("directSuccess"),
-                ifnull(sum(when(isService, TABLE.CANCEL)), 0).as("serviceCancel"),
-                ifnull(sum(when(isDirect, TABLE.CANCEL)), 0).as("directCancel"),
-                ifnull(sum(TABLE.CALLBACK_SUCCESS), 0).as(TABLE.CALLBACK_SUCCESS))
+                        ifnull(sum(when(isDirect, TABLE.TOTAL)), 0).as("directTotal"),
+                        ifnull(sum(when(isService, TABLE.ONLYREAD)), 0).as("viewCount"),
+                        ifnull(sum(when(isService, TABLE.CONNREQ)), 0).as("serviceConnectionRequest"),
+                        ifnull(sum(when(isService, TABLE.SUCCESS)), 0).as("serviceSuccess"),
+                        ifnull(sum(when(isDirect, TABLE.SUCCESS)), 0).as("directSuccess"),
+                        ifnull(sum(when(isService, TABLE.CANCEL)), 0).as("serviceCancel"),
+                        ifnull(sum(when(isDirect, TABLE.CANCEL)), 0).as("directCancel"),
+                        ifnull(sum(TABLE.CALLBACK_SUCCESS), 0).as(TABLE.CALLBACK_SUCCESS))
                 .from(TABLE)
                 .where(TABLE.STAT_DATE.eq(date(now())))
                 .fetchOneInto(TotalStatResponse.class);
@@ -310,10 +311,10 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
 
     public List<StatInboundEntity> getHourStatGraph(String queueAName, String queueBName) {
         return dsl.select(
-                TABLE.HUNT_NUMBER,
-                TABLE.STAT_HOUR,
-                sum(TABLE.SUCCESS).as("success")
-        ).from(TABLE)
+                        TABLE.HUNT_NUMBER,
+                        TABLE.STAT_HOUR,
+                        sum(TABLE.SUCCESS).as("success")
+                ).from(TABLE)
                 .join(QUEUE_NAME).on(TABLE.HUNT_NUMBER.eq(QUEUE_NAME.NUMBER))
                 .where(TABLE.STAT_DATE.eq(date(now())))
                 .and((StringUtils.isNotEmpty(queueAName) && StringUtils.isNotEmpty(queueBName)) ? QUEUE_NAME.NAME.eq(queueAName).or(QUEUE_NAME.NAME.eq(queueBName)) : noCondition())
@@ -326,10 +327,10 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
         instance.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
 
         return dsl.select(
-                TABLE.HUNT_NUMBER,
-                TABLE.STAT_HOUR,
-                sum(TABLE.SUCCESS).as("success")
-        ).from(TABLE)
+                        TABLE.HUNT_NUMBER,
+                        TABLE.STAT_HOUR,
+                        sum(TABLE.SUCCESS).as("success")
+                ).from(TABLE)
                 .join(QUEUE_NAME).on(TABLE.HUNT_NUMBER.eq(QUEUE_NAME.NUMBER))
                 .where(TABLE.STAT_DATE.ge(new Date(instance.getTimeInMillis())))
                 .and(QUEUE_NAME.NAME.eq(queueAName).or(QUEUE_NAME.NAME.eq(queueBName)))
@@ -384,10 +385,10 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
 
     public CenterStatResponse getCenterMonitoring() {
         return dsl.select(ifnull(sum(TABLE.SUCCESS), 0).as("success"),
-                ifnull(sum(when(TABLE.DCONTEXT.eq(ContextType.DIRECT_CALL.getCode()), TABLE.TOTAL).else_(TABLE.CONNREQ)), 0).as("connreq"),
-                ifnull(sum(TABLE.CALLBACK), 0).as("callback"),
-                ifnull(sum(TABLE.CALLBACK_SUCCESS), 0).as("callbackSuccess"),
-                ifnull(sum(TABLE.CANCEL_CALLBACK), 0).as("cancelCallback"))
+                        ifnull(sum(when(TABLE.DCONTEXT.eq(ContextType.DIRECT_CALL.getCode()), TABLE.TOTAL).else_(TABLE.CONNREQ)), 0).as("connreq"),
+                        ifnull(sum(TABLE.CALLBACK), 0).as("callback"),
+                        ifnull(sum(TABLE.CALLBACK_SUCCESS), 0).as("callbackSuccess"),
+                        ifnull(sum(TABLE.CANCEL_CALLBACK), 0).as("cancelCallback"))
                 .from(TABLE)
                 .where(compareCompanyId())
 //                .and(TABLE.DCONTEXT.notEqual("pers_context"))
@@ -417,27 +418,26 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
                 .fetchMap(TABLE.STAT_HOUR, DashServiceStatResponse.class);
     }
 
-    public DashInboundChartResponse getInboundChartResponseMap(){
+    public DashInboundChartResponse getInboundChartResponseMap() {
         final Map<Byte, DashInboundChartDataResponse> data =
                 dsl.select(TABLE.STAT_HOUR,
-                        ifnull(sum(TABLE.TOTAL), 0).as("totalCnt"),
-                        ifnull(sum(TABLE.ONLYREAD), 0).as("onlyReadCnt"),
-                        ifnull(sum(TABLE.CONNREQ), 0).as("connReqCnt"),
-                        ifnull(sum(TABLE.SUCCESS), 0).as("successCnt"),
-                        ifnull(sum(TABLE.CANCEL), 0).as("cancelCnt"),
-                        ifnull(sum(TABLE.CALLBACK_SUCCESS), 0).as("callbackCnt"))
-                .from(TABLE)
-                .where(TABLE.COMPANY_ID.eq(g.getUser().getCompanyId()))
-                .and(TABLE.STAT_DATE.eq(date(now())))
-                .and(TABLE.DCONTEXT.in("inbound","hunt_context","busy_context"))
-                .groupBy(TABLE.STAT_HOUR)
-                .fetchMap(TABLE.STAT_HOUR, DashInboundChartDataResponse.class);
-
+                                ifnull(sum(TABLE.TOTAL), 0).as("totalCnt"),
+                                ifnull(sum(TABLE.ONLYREAD), 0).as("onlyReadCnt"),
+                                ifnull(sum(TABLE.CONNREQ), 0).as("connReqCnt"),
+                                ifnull(sum(TABLE.SUCCESS), 0).as("successCnt"),
+                                ifnull(sum(TABLE.CANCEL), 0).as("cancelCnt"),
+                                ifnull(sum(TABLE.CALLBACK_SUCCESS), 0).as("callbackCnt"))
+                        .from(TABLE)
+                        .where(TABLE.COMPANY_ID.eq(g.getUser().getCompanyId()))
+                        .and(TABLE.STAT_DATE.eq(date(now())))
+                        .and(TABLE.DCONTEXT.in("inbound", "hunt_context", "busy_context"))
+                        .groupBy(TABLE.STAT_HOUR)
+                        .fetchMap(TABLE.STAT_HOUR, DashInboundChartDataResponse.class);
 
 
         DashInboundChartResponse res = new DashInboundChartResponse();
 
-        for (int i=0; i < 24; i++){
+        for (int i = 0; i < 24; i++) {
             byte hour = (byte) i;
             res.getInboundChat().put(hour, data.get(hour));
         }
@@ -454,11 +454,11 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
                 .fetchMap(TABLE.STAT_HOUR, TABLE.CONNREQ);
     }
 
-    public Map<?, BigDecimal> getSuccessPer(){
+    public Map<?, BigDecimal> getSuccessPer() {
 
         Table<?> A = table(select(
                 TABLE.HUNT_NUMBER.as("hunt_number")
-                ,ifnull(sum(TABLE.SUCCESS).divide(sum(TABLE.TOTAL)).mul(100),0).as("per")
+                , ifnull(sum(TABLE.SUCCESS).divide(sum(TABLE.TOTAL)).mul(100), 0).as("per")
         )
                 .from(TABLE)
                 .where(TABLE.COMPANY_ID.eq(g.getUser().getCompanyId()))
@@ -467,9 +467,9 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
                 .groupBy(TABLE.HUNT_NUMBER)).as("A");
 
         return dsl.select(
-                QUEUE_NAME.NUMBER
-                ,ifnull(A.field("per"),0).as("per")
-        )
+                        QUEUE_NAME.NUMBER
+                        , ifnull(A.field("per"), 0).as("per")
+                )
                 .from(QUEUE_NAME)
                 .leftJoin(A)
                 .on(QUEUE_NAME.NUMBER.eq((Field<String>) A.field("hunt_number")))

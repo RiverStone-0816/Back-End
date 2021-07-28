@@ -8,7 +8,8 @@ import kr.co.eicn.ippbx.model.form.PrvGroupFormRequest;
 import kr.co.eicn.ippbx.model.search.PrvGroupSearchRequest;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
-import org.jooq.*;
+import org.jooq.Condition;
+import org.jooq.Record;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -16,7 +17,8 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.*;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.COMMON_MEMBER;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.PRV_GROUP;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
@@ -29,7 +31,7 @@ public class PrvGroupRepository extends EicnBaseRepository<PrvGroup, kr.co.eicn.
     private final Number070Repository numberRepository;
 
     PrvGroupRepository(CommonMemberRepository commonMemberRepository, CompanyTreeRepository companyTreeRepository, Number070Repository numberRepository) {
-        super(PRV_GROUP,PRV_GROUP.SEQ,kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PrvGroup.class);
+        super(PRV_GROUP, PRV_GROUP.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PrvGroup.class);
         this.commonMemberRepository = commonMemberRepository;
         this.companyTreeRepository = companyTreeRepository;
         this.numberRepository = numberRepository;

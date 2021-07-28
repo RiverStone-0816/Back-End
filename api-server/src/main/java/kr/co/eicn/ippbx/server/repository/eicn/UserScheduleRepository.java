@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.model.entity.eicn.UserScheduleEntity;
 import kr.co.eicn.ippbx.model.form.UserScheduleFormRequest;
 import kr.co.eicn.ippbx.model.search.UserScheduleSearchRequest;
 import lombok.Getter;
+import org.jooq.Record;
 import org.jooq.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,12 +70,12 @@ public class UserScheduleRepository extends EicnBaseRepository<UserSchedule, Use
         calendar.set(Calendar.MONTH, search.getMonth() - 1);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         final Timestamp checkingStartTime = new Timestamp(calendar.getTimeInMillis());
-        System.out.println("search : "+checkingStartTime);
+        System.out.println("search : " + checkingStartTime);
 
         calendar.add(Calendar.MONTH, 1);
         calendar.add(Calendar.MILLISECOND, -1);
         final Timestamp checkingEndTime = new Timestamp(calendar.getTimeInMillis());
-        System.out.println("search : "+checkingEndTime);
+        System.out.println("search : " + checkingEndTime);
 
         // 날짜가 겹치는지 확인하는 로직: !((interval A's end < interval B's start) || (interval B's end < interval A's start))
         conditions.add((USER_SCHEDULE.END.lessThan(checkingStartTime).or(USER_SCHEDULE.START.greaterThan(checkingEndTime))).not());
@@ -109,7 +110,7 @@ public class UserScheduleRepository extends EicnBaseRepository<UserSchedule, Use
                 .execute();
     }
 
-    public void deleteSchedule(Integer seq){
+    public void deleteSchedule(Integer seq) {
         final List<Condition> conditions = new ArrayList<>();
         conditions.add(USER_SCHEDULE.SEQ.eq(seq));
         conditions.add(USER_SCHEDULE.USERID.eq(g.getUser().getId()));

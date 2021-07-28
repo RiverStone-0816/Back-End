@@ -8,6 +8,7 @@ import kr.co.eicn.ippbx.util.page.PageForm;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import kr.co.eicn.ippbx.util.spring.RequestMessage;
 import lombok.Data;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
