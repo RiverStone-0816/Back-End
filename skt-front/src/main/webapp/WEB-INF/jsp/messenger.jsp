@@ -164,9 +164,14 @@
         });
 
         $('.consult-organization-panel .state-header-close').click(function () {
-            $('.consult-organization-panel #organi-state').removeClass('active');
             leftPanel.removeClass('wide');
+            $('#organi-state').removeClass('active');
             $('.consult-wrapper .consult-center-panel').removeClass('control');
+            if (leftPanel.hasClass('wide') === true) {
+                $('.content-inner.-counsel-content-panel').addClass('control');
+            } else {
+                $('.content-inner.-counsel-content-panel').removeClass('control');
+            }
         });
 
         $('.organi-pop-second .panel-close').click(function () {
