@@ -10,5 +10,5 @@ public class TalkStatisticsHourlySearchRequest extends TalkStatisticsSearchReque
     @PageQueryable
     private Byte startHour;
     @PageQueryable
-    private Byte endHour;
+    private Byte endHour = 23;
 }

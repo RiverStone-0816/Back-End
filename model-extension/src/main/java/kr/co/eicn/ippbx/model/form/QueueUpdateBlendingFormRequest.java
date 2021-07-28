@@ -19,7 +19,7 @@ public class QueueUpdateBlendingFormRequest extends BaseForm {
     private Integer waitingKeepTime;    //기준고객 초과후 유지시간
     private Integer startHour;
     private Integer startMinute;
-    private Integer endHour;
+    private Integer endHour = 23;
     private Integer endMinute;
 
     private List<String> blendingUser;  //블랜딩 할 상담원

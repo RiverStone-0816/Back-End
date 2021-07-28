@@ -17,7 +17,7 @@ public class WebSecureHistorySearch extends PageForm {
     @PageQueryable
     private Date endDate;     //종료날짜
     @PageQueryable
-    private Integer endHour;
+    private Integer endHour = 23;
     @PageQueryable
     private String userName;       //상담자
     @PageQueryable
