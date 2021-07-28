@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.util.EnumUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class EnumConverter {
         EnumConverter converter = null;
         try {
             converter = new EnumConverter();
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException | URISyntaxException e) {
             log.error(e.getMessage(), e);
         }
         instance = converter;
@@ -28,7 +29,7 @@ public class EnumConverter {
     private final Map<String, Class<Enum<?>>> enumClassNameToEnumClass;
 
     @SuppressWarnings("unchecked")
-    private EnumConverter() throws IOException, ClassNotFoundException {
+    private EnumConverter() throws IOException, ClassNotFoundException, URISyntaxException {
         final Map<String, Class<Enum<?>>> map = new HashMap<>();
 
         for (String packageName : Constants.BASE_MODEL_PACKAGE) {

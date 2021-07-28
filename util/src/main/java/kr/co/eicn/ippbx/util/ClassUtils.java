@@ -2,7 +2,13 @@ package kr.co.eicn.ippbx.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -13,7 +19,7 @@ import java.util.stream.Collectors;
 public class ClassUtils {
 
     @SuppressWarnings("unchecked")
-    public static <E> List<Class<E>> getClasses(String packageName, Class<E> type) throws IOException, ClassNotFoundException {
+    public static <E> List<Class<E>> getClasses(String packageName, Class<E> type) throws IOException, ClassNotFoundException, URISyntaxException {
         return getClasses(packageName).stream()
                 .filter(klass -> klass.equals(type)
                         || type.isAnnotation()
@@ -73,7 +79,7 @@ public class ClassUtils {
         return false;
     }
 
-    public static List<Class<?>> getClasses() throws ClassNotFoundException, IOException {
+    public static List<Class<?>> getClasses() throws IOException, URISyntaxException {
         return getClasses("");
     }
 
@@ -84,7 +90,7 @@ public class ClassUtils {
      * @param packageName The base package
      * @return The classes
      */
-    public static List<Class<?>> getClasses(String packageName) throws ClassNotFoundException, IOException {
+    public static List<Class<?>> getClasses(String packageName) throws IOException, URISyntaxException {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         assert classLoader != null;
         String path = packageName.replace('.', '/');
@@ -110,11 +116,53 @@ public class ClassUtils {
      * @param packageName The package name for classes found inside the base directory
      * @return The classes
      */
-    private static List<Class<?>> findClasses(File directory, String packageName) {
-        List<Class<?>> classes = new ArrayList<>();
-        if (!directory.exists()) {
+    private static List<Class<?>> findClasses(File directory, String packageName) throws IOException, URISyntaxException {
+        if (directory.isDirectory())
+            return findClassesFromDirectory(directory, packageName);
+
+        if (directory.getAbsolutePath().replaceAll("\\\\", "/").contains(".jar!/"))
+            return findClassesFromJar(directory, packageName);
+
+        return new ArrayList<>();
+    }
+
+    private static List<Class<?>> findClassesFromJar(File jarFile, String packageName) throws IOException, URISyntaxException {
+        final List<Class<?>> classes = new ArrayList<>();
+        final String filePath = jarFile.toString().replaceAll("\\\\", "/");
+        if (!filePath.contains(".jar!/"))
             return classes;
+
+        final List<Path> paths = new ArrayList<>();
+        FileSystems.newFileSystem(Paths.get(filePath.substring("file:/".length(), filePath.lastIndexOf(".jar!/") + 4)), Thread.currentThread().getContextClassLoader())
+                .getRootDirectories()
+                .forEach(root -> {
+                    try {
+                        Files.walk(root).forEach(paths::add);
+                    } catch (IOException e) {
+                        throw new UncheckedIOException(e);
+                    }
+                });
+
+        for (Path path : paths) {
+            final String className = path.toString().substring(1).replaceAll("[\\\\/]", ".");
+            if (className.endsWith(".class") && className.startsWith(packageName + ".")) {
+                try {
+                    classes.add(Class.forName(className.substring(0, className.length() - 6)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.err.println(packageName);
+                    System.err.println(className.substring(0, className.length() - 6));
+                }
+            }
         }
+
+        return classes;
+    }
+
+    private static List<Class<?>> findClassesFromDirectory(File directory, String packageName) {
+        List<Class<?>> classes = new ArrayList<>();
+        if (!directory.isDirectory())
+            return classes;
 
         File[] files = directory.listFiles();
         if (files == null)
@@ -123,7 +171,7 @@ public class ClassUtils {
         for (File file : files) {
             if (file.isDirectory()) {
                 assert !file.getName().contains(".");
-                classes.addAll(findClasses(file, (packageName.length() > 0 ? packageName + '.' : "") + file.getName()));
+                classes.addAll(findClassesFromDirectory(file, (packageName.length() > 0 ? packageName + '.' : "") + file.getName()));
             } else if (file.getName().endsWith(".class")) {
                 try {
                     classes.add(Class.forName((packageName.length() > 0 ? packageName + '.' : "") + file.getName().substring(0, file.getName().length() - 6)));
