@@ -228,8 +228,7 @@
                 const interval = $(this).attr('data-interval');
                 const number = $(this).attr('data-number');
 
-                if (!endDate.val())
-                    endDate.val(moment().format('YYYY-MM-DD'));
+                endDate.val(moment().format('YYYY-MM-DD'));
 
                 startDate.val(moment(endDate.val()).add(parseInt(number) * -1, interval).add(1, 'days').format('YYYY-MM-DD'));
             });
