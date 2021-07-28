@@ -37,6 +37,20 @@
         findAndMe('.-click-prev', this).click(function () {
             $(this).prev().click();
         });
+        findAndMe('#_newsletter', this).change(function () {
+            const checked = $(this).is(':checked');
+            localStorage.setItem('_newsletter', checked);
+
+            if (checked)
+                $(this).closest('.panel').removeClass('hide');
+            else
+                $(this).closest('.panel').addClass('hide');
+        }).each(function () {
+            const checked = localStorage.getItem('_newsletter') === 'true';
+            const current = $(this).is(':checked');
+            if (current !== checked)
+                $(this).click();
+        });
         findAndMe('.selectable-only tr', this).not('.ui').click(function () {
             if (!$(this).attr('data-id')) return;
 
@@ -132,7 +146,7 @@
         findAndMe('audio', this).each(function () {
             maudio({obj: this});
         });
-        findAndMe(".float-field-wrap", this).each(function() {
+        findAndMe(".float-field-wrap", this).each(function () {
             $('.float-field.inline').last().addClass('last');
         });
         findAndMe(".-slider-time", this).each(function () {
@@ -228,9 +242,6 @@
             }
         });
         findAndMe('.ui.checkbox', this).checkbox();
-        findAndMe('.panel-heading .slider', this).on("click", function () {
-            $(this).parents('.panel').toggleClass('hide');
-        });
         findAndMe('.treeview-menu', this).each(function () { // 좌측네비게이션
             $(this)
                 .siblings()
