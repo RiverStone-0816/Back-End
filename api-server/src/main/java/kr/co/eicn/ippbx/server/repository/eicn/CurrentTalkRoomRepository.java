@@ -44,11 +44,11 @@ public class CurrentTalkRoomRepository extends EicnBaseRepository<CurrentTalkRoo
             conditions.add(CURRENT_TALK_ROOM.SENDER_KEY.eq(search.getSenderKey()));
         if (StringUtils.isNotEmpty(search.getRoomName()))
             conditions.add(CURRENT_TALK_ROOM.ROOM_NAME.like("%" + search.getRoomName() + "%"));
-
+        orderByFields.clear();
         if (search.getSequence().equals("asc"))
-            orderByFields.add(CURRENT_TALK_ROOM.field(search.getSort().field()).asc());
+            orderByFields.add(CURRENT_TALK_ROOM.field(search.getSorts().field()).asc());
         else
-            orderByFields.add(CURRENT_TALK_ROOM.field(search.getSort().field()).desc());
+            orderByFields.add(CURRENT_TALK_ROOM.field(search.getSorts().field()).desc());
 
         return conditions;
     }

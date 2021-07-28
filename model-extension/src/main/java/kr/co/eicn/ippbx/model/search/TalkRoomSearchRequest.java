@@ -31,19 +31,19 @@ public class TalkRoomSearchRequest extends PageForm {
     @PageQueryable
     private String roomName;    //대화방명
     @PageQueryable
-    private Sort sort;         //정렬데이터
+    private Sorts sorts;         //정렬데이터
     @PageQueryable
     private String sequence;    //정렬순서 desc | asc
 
     /**
      *  START_TIME : 시작시간, LAST_TIME : 마지막메시지시간
      * */
-    public enum Sort implements SortField {
+    public enum Sorts implements SortField {
         START_TIME("room_start_time"), LAST_TIME("room_last_time");
 
         private String field;
 
-        Sort(String field) { this.field = field;}
+        Sorts(String field) { this.field = field;}
 
         @Override
         public String field() {return this.field;}
