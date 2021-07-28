@@ -77,7 +77,7 @@
                                         </form:select>
                                     </div>
                                 </td>
-                                <th>상담자</th>
+                                <th>실행자명</th>
                                 <td colspan="3">
                                     <div class="ui form"><form:input path="userName"/></div>
                                 </td>
