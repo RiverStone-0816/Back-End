@@ -13,6 +13,21 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 
 <tags:tabContentLayout>
+    <style>
+        .orderable {
+            cursor: pointer !important;
+        }
+        .ordering {
+            position: relative;
+        }
+        .ordering:after {
+            content: '▼';
+            position: absolute;
+            right: 7px;
+            top: 3px;
+            transform: scale(0.5);
+        }
+    </style>
 
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/monitor/total/"/>
@@ -92,15 +107,15 @@
                                 </ul>
                             </div>
                             <div class="panel-body">
-                                <div class="ui grid stackable">
+                                <div class="ui grid stackable -ordering-group">
                                     <div class="eight wide column">
                                         <div class="table-scroll-wrap">
                                             <table class="ui celled table compact unstackable">
                                                 <thead>
                                                 <tr>
-                                                    <th>이름</th>
-                                                    <th>내선</th>
-                                                    <th>상태</th>
+                                                    <th class="orderable">이름</th>
+                                                    <th class="orderable">내선</th>
+                                                    <th class="orderable">상태</th>
                                                     <th>인입경로</th>
                                                     <th colspan="2">통화량</th>
                                                     <th>고객번호</th>
@@ -148,9 +163,9 @@
                                             <table class="ui celled table compact unstackable">
                                                 <thead>
                                                 <tr>
-                                                    <th>이름</th>
-                                                    <th>내선</th>
-                                                    <th>상태</th>
+                                                    <th class="orderable">이름</th>
+                                                    <th class="orderable">내선</th>
+                                                    <th class="orderable">상태</th>
                                                     <th>인입경로</th>
                                                     <th colspan="2">통화량</th>
                                                     <th>고객번호</th>
@@ -204,6 +219,36 @@
     <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
     <tags:scripts>
         <script>
+            $('.orderable').click(function () {
+                const group = $(this).closest('.-ordering-group');
+                const index = $(this).index();
+                group.find('.orderable').removeClass('ordering');
+                group.find('.orderable:nth-of-type(' + (index + 1) + ')').addClass('ordering');
+
+                const sorted = [];
+                group.find('td:nth-of-type(' + (index + 1) + ')').each(function () {
+                    sorted.push($(this));
+                });
+                sorted.sort(function (a, b) {
+                    return $(a).text().trim() > $(b).text().trim() ? 1 : -1;
+                });
+
+                const trs = group.find('tbody tr');
+                for (let i = 0; i < sorted.length; i++) {
+                    const target = $(trs[i]);
+                    const source = sorted[i].parent();
+
+                    if (target[0] === source[0])
+                        continue;
+
+                    const childrenOfTarget = target.children().detach();
+                    const childrenOfSource = source.children().detach();
+
+                    target.append(childrenOfSource);
+                    source.append(childrenOfTarget);
+                }
+            });
+
             function filterQueue(queueNames) {
                 if (queueNames.length > 0) {
                     const sections = $('.-queue-section').hide();
