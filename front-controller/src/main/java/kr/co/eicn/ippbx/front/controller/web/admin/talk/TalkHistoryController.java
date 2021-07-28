@@ -57,7 +57,7 @@ public class TalkHistoryController extends BaseController {
             search.setSequence("desc");
 
         if (search.getSort() == null)
-            search.setSort(TalkRoomSearchRequest.Sort.START_TIME);
+            search.setSorts(TalkRoomSearchRequest.Sorts.START_TIME);
 
         final Pagination<TalkRoomResponse> pagination = apiInterface.pagination(search);
         model.addAttribute("pagination", pagination);
@@ -73,7 +73,7 @@ public class TalkHistoryController extends BaseController {
         final Map<String, String> users = userApiController.pagination(personSearchRequest).getRows().stream().collect(Collectors.toMap(PersonSummaryResponse::getId, PersonSummaryResponse::getIdName));
         model.addAttribute("users", users);
 
-        final Map<String, String> orderTypes = FormUtils.options(false, TalkRoomSearchRequest.Sort.class);
+        final Map<String, String> orderTypes = FormUtils.options(false, TalkRoomSearchRequest.Sorts.class);
         model.addAttribute("orderTypes", orderTypes);
 
         return "admin/talk/history/ground";

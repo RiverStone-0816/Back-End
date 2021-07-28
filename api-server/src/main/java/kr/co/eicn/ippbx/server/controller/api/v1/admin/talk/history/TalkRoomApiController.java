@@ -61,7 +61,7 @@ public class TalkRoomApiController extends ApiBaseController {
             if (search.getStartDate().after(search.getEndDate()))
                 throw new IllegalArgumentException(message.getText("messages.validator.enddate.after.startdate"));
         if (Objects.isNull(search.getSort()))
-            search.setSort(TalkRoomSearchRequest.Sort.START_TIME);
+            search.setSorts(TalkRoomSearchRequest.Sorts.START_TIME);
         if (StringUtils.isEmpty(search.getSequence()))
             search.setSequence("desc");
 
