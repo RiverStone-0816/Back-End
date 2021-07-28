@@ -58,7 +58,7 @@
                                         <div class="chart-label-wrap-bar">
                                             <ul>
                                                 <li><span class="symbol bcolor-bar1" style="background-color: #D81159 !important;"></span><span class="text">I/B전체</span></li>
-                                                <li><span class="symbol bcolor-bar2" style="background-color: #218380 !important;"></span><span class="text">단순조회</span></li>
+                                                <li><span class="symbol bcolor-bar2" style="background-color: #218380 !important;"></span><span class="text">무효콜</span></li>
                                                 <li><span class="symbol bcolor-bar3" style="background-color: #FFBC42 !important;"></span><span class="text">연결요청</span></li>
                                                 <li><span class="symbol bcolor-bar4" style="background-color: #F7AA97 !important;"></span><span class="text">응대호</span></li>
                                                 <li><span class="symbol bcolor-bar5" style="background-color: #808080 !important;"></span><span class="text">포기호</span></li>
@@ -80,7 +80,7 @@
                             </tr>
                             <tr>
                                 <th>I/B<br>전체콜</th>
-                                <th>단순조회</th>
+                                <th>무효콜</th>
                                 <th>연결요청</th>
                                 <th>응대호</th>
                                 <th>포기호</th>
@@ -91,7 +91,7 @@
                                 <th>평균대기시간</th>
                                 <th>호응답률</th>
                                 <th>서비스레벨<br>호응답률</th>
-                                <th>단순조회율</th>
+                                <th>무효콜비율</th>
                                 <th>~10(초)</th>
                                 <th>~20(초)</th>
                                 <th>~30(초)</th>
@@ -467,7 +467,7 @@
                     unitWidth: 30,
                     colorClasses: ['bcolor-bar1', 'bcolor-bar2', 'bcolor-bar3', 'bcolor-bar4', 'bcolor-bar5', 'bcolor-bar6'],
                     colors: ['#D81159', '#218380', '#FFBC42', '#F7AA97', '#808080', '#4F86C6'],
-                    labels: ['I/B전체', '단순조회', '연결요청', '응대호', '포기호', '콜백']
+                    labels: ['I/B전체', '무효콜', '연결요청', '응대호', '포기호', '콜백']
                 }
             );
         </script>

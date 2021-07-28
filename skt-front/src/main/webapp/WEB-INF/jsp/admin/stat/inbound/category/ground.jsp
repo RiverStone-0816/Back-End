@@ -122,7 +122,7 @@
                                         <th>${i}th</th>
                                     </c:forEach>
                                     <th>인입콜수</th>
-                                    <th>단순조회</th>
+                                    <th>무효콜</th>
                                     <th>연결요청</th>
                                     <th>응대호</th>
                                     <th>포기호</th>

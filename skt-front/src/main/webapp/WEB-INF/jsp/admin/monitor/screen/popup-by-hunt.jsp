@@ -127,7 +127,7 @@
                                             <tr style="line-height: 80px">
                                                 <th>서비스명</th>
                                                 <th>인입호</th>
-                                                <th>단순조회</th>
+                                                <th>무효콜</th>
                                                 <th>연결요청</th>
                                                 <th>응답호</th>
                                                 <th>포기호</th>
@@ -189,7 +189,7 @@
                                             <tr style="line-height: 80px">
                                                 <th>서비스명</th>
                                                 <th>인입호</th>
-                                                <th>단순조회</th>
+                                                <th>무효콜</th>
                                                 <th>연결요청</th>
                                                 <th>응답호</th>
                                                 <th>포기호</th>
@@ -251,7 +251,7 @@
                                             <tr style="line-height: 80px">
                                                 <th>구분</th>
                                                 <th>인입호</th>
-                                                <th>단순조회</th>
+                                                <th>무효콜</th>
                                                 <th>연결요청</th>
                                                 <th>응답호</th>
                                                 <th>포기호</th>

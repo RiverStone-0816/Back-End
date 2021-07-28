@@ -66,7 +66,7 @@
                                 <td colspan="3">
                                     <div class="ui form">
                                         <form:select path="queueNumbers" multiple="multiple" class="ui fluid dropdown">
-                                            <form:option value="" label="큐선택"/>
+                                            <form:option value="" label="수신그룹선택"/>
                                             <form:options items="${queues}"/>
                                         </form:select>
                                     </div>
@@ -126,7 +126,7 @@
                                 </tr>
                                 <tr>
                                     <th>I/B 전체콜</th>
-                                    <th>단순조회</th>
+                                    <th>무효콜</th>
                                     <th>연결요청</th>
                                     <th>응대호</th>
                                     <th>포기호</th>
@@ -144,7 +144,7 @@
                                     <th>~30(초)</th>
                                     <th>~40(초)</th>
                                     <th>40~(초)</th>
-                                    <th>단순조회율</th>
+                                    <th>무효콜비율</th>
                                     <th>I/B 총통화시간</th>
                                     <th>평균통화시간</th>
                                     <th>평균대기시간</th>
