@@ -87,12 +87,12 @@
                                 <th>상담원</th>
                                 <td>
                                     <div class="ui form">
-                                        <select name="userId">
-                                            <option value="" label="선택안함"></option>
+                                        <form:select path="userId">
+                                            <form:option value="" label="선택안함"/>
                                             <c:forEach var="e" items="${persons}">
-                                                <option value="${g.htmlQuote(e.id)}">${g.htmlQuote(e.idName)}</option>
+                                                <form:option value="${e.id}" label="${e.idName}"/>
                                             </c:forEach>
-                                        </select>
+                                        </form:select>
                                     </div>
                                 </td>
                                 <th>내선번호</th>
