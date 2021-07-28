@@ -165,7 +165,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <c:forEach var="i" begin="${group.value.size() / 2}" end="${group.value.size() - 1}">
+                                                <c:forEach var="i" begin="${(group.value.size() + 1) / 2}" end="${group.value.size() - 1}">
                                                     <c:set var="e" value="${group.value.get(i)}"/>
                                                     <tr>
                                                         <td>${g.htmlQuote(e.idName)}</td>
