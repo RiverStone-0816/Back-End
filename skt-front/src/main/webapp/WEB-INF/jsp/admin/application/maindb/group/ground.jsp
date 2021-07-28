@@ -42,7 +42,7 @@
                                         </form:select>
                                     </div>
                                 </td>
-                                <th>그룹별</th>
+                                <th>그룹명</th>
                                 <td colspan="3">
                                     <div class="ui input fluid">
                                         <form:input path="name"/>
