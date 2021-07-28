@@ -66,7 +66,7 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span> 건</h3>
+                        <h3 class="panel-total-count">전체 <span>${list.size()}</span> 건</h3>
                     </div>
                     <div class="pull-right">
                         <button type="button" class="ui basic button -control-entity" style="display: none;" data-entity="Record" onclick="deleteEntity(getEntityId('Record'))">삭제</button>
