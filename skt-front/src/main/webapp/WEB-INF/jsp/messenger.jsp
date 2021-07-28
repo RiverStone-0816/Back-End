@@ -1311,9 +1311,10 @@
             const messageElement = $('.-chat-message').removeClass('active').filter(function () {
                 return messageId === $(this).attr('data-id');
             });
-            if (messageElement.length > 0)
-                return messageElement.addClass('active').closest('.chat-body').animate({scrollTop: messageElement.position().top}, 400);
-
+            if (messageElement.length > 0) {
+                const chatBody = messageElement.addClass('active').closest('.chat-body');
+                return chatBody.animate({scrollTop: messageElement.position().top - messageElement.height() + chatBody.scrollTop()}, 400);
+            }
             messenger.loadMessages({
                 endMessageId: messageId,
                 startMessageId: messenger.currentRoom.startMessageId
@@ -1321,8 +1322,10 @@
                 const messageElement = $('.-chat-message').filter(function () {
                     return messageId === $(this).attr('data-id');
                 });
-                if (messageElement.length > 0)
-                    messageElement.addClass('active').closest('.chat-body').animate({scrollTop: messageElement.position().top}, 400);
+                if (messageElement.length > 0) {
+                    const chatBody = messageElement.addClass('active').closest('.chat-body');
+                    return chatBody.animate({scrollTop: messageElement.position().top - messageElement.height() + chatBody.scrollTop()}, 400);
+                }
             });
         };
         // 대화방 안에서의 안읽은 메세지 카운트 갱신
