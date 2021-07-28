@@ -1,6 +1,5 @@
 package kr.co.eicn.ippbx.server.repository.pds;
 
-
 import kr.co.eicn.ippbx.meta.jooq.pds.tables.CommonPDSCustomInfo;
 import kr.co.eicn.ippbx.meta.jooq.pds.tables.CommonPDSResultCustomInfo;
 import kr.co.eicn.ippbx.meta.jooq.pds.tables.pojos.PdsCustomInfo;
@@ -14,6 +13,7 @@ import kr.co.eicn.ippbx.server.service.PDSCustomInfoService;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;

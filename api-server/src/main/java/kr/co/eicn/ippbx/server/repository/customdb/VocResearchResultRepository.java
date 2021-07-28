@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.model.entity.eicn.VocGroupEntity;
 import kr.co.eicn.ippbx.model.search.CustomDBVOCResultSearchRequest;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -16,11 +17,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.VocGroup.VOC_GROUP;
 import static kr.co.eicn.ippbx.meta.jooq.customdb.tables.VocResearchResult.VOC_RESEARCH_RESULT;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.VocGroup.VOC_GROUP;
 
 @Getter
-public class VocResearchResultRepository extends CustomDBBaseRepository<CommonVocResearchResult, VocResearchResultEntity, Integer>{
+public class VocResearchResultRepository extends CustomDBBaseRepository<CommonVocResearchResult, VocResearchResultEntity, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(VocResearchResultRepository.class);
 
     private final CommonVocResearchResult TABLE;

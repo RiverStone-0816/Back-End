@@ -12,6 +12,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.UserRepository;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -70,10 +71,10 @@ public class PrvCustomInfoRepository extends CustomDBBaseRepository<CommonPrvCus
     @Override
     protected SelectConditionStep<Record> query(SelectJoinStep<Record> query) {
 /**** 이전 join 문
-        return query
-                .leftJoin(resultTable).on(resultTable.CUSTOM_ID.eq(TABLE.PRV_SYS_CUSTOM_ID).and(TABLE.PRV_SYS_LAST_RESULT_ID.eq(resultTable.SEQ)))
-                .where();
-*/
+ return query
+ .leftJoin(resultTable).on(resultTable.CUSTOM_ID.eq(TABLE.PRV_SYS_CUSTOM_ID).and(TABLE.PRV_SYS_LAST_RESULT_ID.eq(resultTable.SEQ)))
+ .where();
+ */
         return query
                 .leftJoin(resultTable).on(resultTable.CUSTOM_ID.eq(TABLE.PRV_SYS_CUSTOM_ID).and(TABLE.PRV_SYS_LAST_CALL_UNIQUEID.eq(resultTable.UNIQUEID)).and(resultTable.GROUP_KIND.eq("PHONE")))
                 .where();

@@ -1,10 +1,11 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
-import kr.co.eicn.ippbx.server.config.Constants;
 import kr.co.eicn.ippbx.model.enums.ContextType;
 import kr.co.eicn.ippbx.model.enums.SearchCycle;
 import kr.co.eicn.ippbx.model.search.AbstractStatSearchRequest;
+import kr.co.eicn.ippbx.server.config.Constants;
 import kr.co.eicn.ippbx.server.repository.BaseRepository;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.TableImpl;
 import org.springframework.beans.factory.annotation.Autowired;

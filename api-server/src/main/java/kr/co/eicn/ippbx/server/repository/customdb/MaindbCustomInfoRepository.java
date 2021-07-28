@@ -24,6 +24,7 @@ import kr.co.eicn.ippbx.server.service.MaindbMultichannelInfoService;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -254,8 +255,7 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
                     final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
                     maindbCustomInfoService.uploadImgWithFileStore((String) invoked, null);
                     query.set((Field<String>) tableField, path.toString() + "/" + (String) invoked);
-                }
-                else
+                } else
                     query.set((Field<String>) tableField, (String) invoked);
             }
         }
@@ -350,8 +350,7 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
                     final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
                     maindbCustomInfoService.uploadImgWithFileStore((String) invoked, oldFileName);
                     query.set((Field<String>) tableField, path.toString() + "/" + (String) invoked);
-                }
-                else
+                } else
                     query.set((Field<String>) tableField, (String) invoked);
             }
         }

@@ -20,6 +20,7 @@ import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import kr.co.eicn.ippbx.util.StringUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
+import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -146,9 +147,9 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
         queueTableRecord.setMaxlen(form.getMaxlen());
         queueTableRecord.setStrategy(CallDistributionStrategy.RINGALL.getCode().equals(form.getStrategy())
                 ? CallDistributionStrategy.RINGALL.getCode()
-                    : CallDistributionStrategy.SKILL.getCode().equals(form.getStrategy()) || CallDistributionStrategy.CALLRATE.getCode().equals(form.getStrategy())
-                        ? CallDistributionStrategy.RRMEMORY.getCode()
-                            : form.getStrategy());
+                : CallDistributionStrategy.SKILL.getCode().equals(form.getStrategy()) || CallDistributionStrategy.CALLRATE.getCode().equals(form.getStrategy())
+                ? CallDistributionStrategy.RRMEMORY.getCode()
+                : form.getStrategy());
         queueTableRecord.setJoinempty("yes");
         queueTableRecord.setLeavewhenempty("no");   // 대기자가 있어도 기다림
         queueTableRecord.setEventmemberstatus(false);
@@ -332,9 +333,9 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
 
             modQueueTable.setStrategy(CallDistributionStrategy.RINGALL.getCode().equals(form.getStrategy())
                     ? CallDistributionStrategy.RINGALL.getCode()
-                        : CallDistributionStrategy.SKILL.getCode().equals(form.getStrategy()) || CallDistributionStrategy.CALLRATE.getCode().equals(form.getStrategy())
-                            ? CallDistributionStrategy.RRMEMORY.getCode()
-                                : form.getStrategy());
+                    : CallDistributionStrategy.SKILL.getCode().equals(form.getStrategy()) || CallDistributionStrategy.CALLRATE.getCode().equals(form.getStrategy())
+                    ? CallDistributionStrategy.RRMEMORY.getCode()
+                    : form.getStrategy());
             modQueueTable.setMaxlen(form.getMaxlen());
             modQueueTable.setMusiconhold(defaultString(form.getMusiconhold()));
             modQueueTable.setRinginuse(false);
@@ -474,7 +475,7 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
 
         dashboardInfoRepository.deleteByValue(queueEntity.getNumber());
 
-        webSecureHistoryRepository.insert(WebSecureActionType.QUEUE, WebSecureActionSubType.DEL,queueEntity.getHanName() + "(" + queueName + ")");
+        webSecureHistoryRepository.insert(WebSecureActionType.QUEUE, WebSecureActionSubType.DEL, queueEntity.getHanName() + "(" + queueName + ")");
 
         return r;
     }
