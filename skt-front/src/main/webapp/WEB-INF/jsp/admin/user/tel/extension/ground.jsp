@@ -25,7 +25,7 @@
             <form:form id="search-form" modelAttribute="search" class="panel panel-search" method="get">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">수신그룹명</div>
+                        <div class="panel-label">개인번호설정</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">

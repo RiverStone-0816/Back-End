@@ -164,11 +164,63 @@ public class EicnCdrEntity extends CommonEicnCdr {
             if (isEmpty(getTurnOverKind())) // 기존 etc3
                 result.append(EMPTY);
             else
-                result.append(SpringApplicationContextAware.requestMessage().getEnumText(Objects.requireNonNull(AdditionalState.of(getTurnOverKind())))).append(suffix); // 기존 etc3
+                result.append(TurnOverKindSearch(AdditionalState.of(getTurnOverKind()))).append(suffix); // 기존 etc3
         }
         return result.toString();
     }
 
+    private String TurnOverKindSearch(AdditionalState enums){
+        if(AdditionalState.HANGUP_BEFORE_CONNECT.equals(enums))
+            return "연결전끊음";
+        if(AdditionalState.CANCEL_CONNECT.equals(enums))
+            return "포기호(헌트대기중끊음)";
+        if(AdditionalState.PICKUPEE.equals(enums))
+            return "당겨짐";
+        if(AdditionalState.PICKUPER.equals(enums))
+            return "당겨받음";
+        if(AdditionalState.PROTECT.equals(enums))
+            return "ARS멘트";
+        if(AdditionalState.TRANSFEREE.equals(enums))
+            return "돌려받음";
+        if(AdditionalState.TRANSFERER.equals(enums))
+            return "돌려줌";
+        if(AdditionalState.FORWARD_TRANSFEREE.equals(enums))
+            return "내선설정포워딩됨";
+        if(AdditionalState.FORWARD_TRANSFERER.equals(enums))
+            return "내선설정포워딩함";
+        if(AdditionalState.SCD_TRANSFEREE.equals(enums))
+            return "스케쥴포워딩됨";
+        if(AdditionalState.SCD_TRANSFERER.equals(enums))
+            return "스케쥴포워딩함";
+        if(AdditionalState.LOCAL_TRANSFEREE.equals(enums))
+            return "전화기포워딩됨";
+        if(AdditionalState.LOCAL_TRANSFERER.equals(enums))
+            return "전화기포워딩함";
+        if(AdditionalState.ATTENDEDOUT_TRANSFEREE.equals(enums))
+            return "외부돌려받음";
+        if(AdditionalState.ATTENDEDOUT_TRANSFERER.equals(enums))
+            return "외부돌려줌";
+        if(AdditionalState.INNER_PICKUPER.equals(enums))
+            return "INNER_PICKUPER";
+        if(AdditionalState.INNER_TRANSFEREE.equals(enums))
+            return "내선포워딩됨";
+        if(AdditionalState.INNER_TRANSFERER.equals(enums))
+            return "내선포워딩함";
+        if(AdditionalState.INNER_TRANS_BACK.equals(enums))
+            return "내선되돌려받음";
+        if(AdditionalState.EXTEN_TRANSFERER.equals(enums))
+            return "EXTEN_TRANSFERER";
+        if(AdditionalState.REDIRECTOUT_TRANSFEREE.equals(enums))
+            return "외부돌려받음";
+        if(AdditionalState.REDIRECTOUT_TRANSFERER.equals(enums))
+            return "외부돌려줌";
+        if(AdditionalState.SPY.equals(enums))
+            return "엿듣기";
+        if(AdditionalState.TRANS_BACK.equals(enums))
+            return "되돌려받음";
+
+        return "";
+    }
     /**
      * 통화 종류
      */
