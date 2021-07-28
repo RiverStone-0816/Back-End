@@ -31,9 +31,9 @@ public class TalkRoomSearchRequest extends PageForm {
     @PageQueryable
     private String roomName;    //대화방명
     @PageQueryable
-    private Sorts sorts;         //정렬데이터
+    private Sorts sorts = Sorts.START_TIME;         //정렬데이터
     @PageQueryable
-    private String sequence;    //정렬순서 desc | asc
+    private String sequence = "desc";    //정렬순서 desc | asc
 
     /**
      *  START_TIME : 시작시간, LAST_TIME : 마지막메시지시간

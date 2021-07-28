@@ -87,7 +87,11 @@
                                 <th>정렬데이터</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <form:select path="sort" items="${orderTypes}"/>
+                                        <form:select path="sorts" >
+                                            <c:forEach var="e" items="${orderTypes}">
+                                                <form:option value="${e.key}" label="${e.value}"/>
+                                            </c:forEach>
+                                        </form:select>
                                     </div>
                                 </td>
                                 <th>정렬순서</th>

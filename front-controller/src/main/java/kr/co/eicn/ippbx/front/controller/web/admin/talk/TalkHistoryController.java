@@ -56,7 +56,7 @@ public class TalkHistoryController extends BaseController {
         if (StringUtils.isEmpty(search.getSequence()))
             search.setSequence("desc");
 
-        if (search.getSort() == null)
+        if (search.getSorts() == null)
             search.setSorts(TalkRoomSearchRequest.Sorts.START_TIME);
 
         final Pagination<TalkRoomResponse> pagination = apiInterface.pagination(search);
