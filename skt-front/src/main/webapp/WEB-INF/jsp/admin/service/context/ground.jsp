@@ -38,6 +38,7 @@
                     <table class="ui celled table num-tbl unstackable fixed ${list.size() > 0 ? "selectable-only" : null}" data-entity="Context">
                         <thead>
                         <tr>
+                            <th style="width: 48px;">선택</th>
                             <th>번호</th>
                             <th>컨텍스트명</th>
                             <th>컨텍스트</th>
@@ -49,6 +50,7 @@
                             <c:when test="${list.size() > 0}">
                                 <c:forEach var="e" items="${list}" varStatus="status">
                                     <tr data-id="${g.htmlQuote(e.context)}">
+                                        <td><input type="radio" name="radio" /></td>
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(e.name)}</td>
                                         <td>${g.htmlQuote(e.context)}</td>
