@@ -88,6 +88,7 @@
                     <table class="ui table celled num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="Manual">
                         <thead>
                         <tr>
+                            <th>선택</th>
                             <th>번호</th>
                             <th class="nine wide">제목</th>
                             <th class="two wide">등록일</th>
@@ -100,6 +101,7 @@
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${e.id}">
+                                        <td><input type="radio" name="radio" /></td>
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.title)}</td>
                                         <td><fmt:formatDate value="${e.createdAt}" pattern="yyyy-MM-dd"/></td>
