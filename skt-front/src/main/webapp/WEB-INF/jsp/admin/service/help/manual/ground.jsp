@@ -101,7 +101,11 @@
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${e.id}">
-                                        <td><input type="radio" name="radio" /></td>
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.title)}</td>
                                         <td><fmt:formatDate value="${e.createdAt}" pattern="yyyy-MM-dd"/></td>
