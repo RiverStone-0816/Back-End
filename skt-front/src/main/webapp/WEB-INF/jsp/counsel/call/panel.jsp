@@ -48,7 +48,7 @@
                     <th>고객번호</th>
                     <td class="">
                         <div class="ui form flex">
-                            <text style="display: none;" id="counseling-target"></text>
+                            <text style="display: none;" id="counseling-target" class="-calling-number"></text>
                             <input type="text" class="-calling-number" id="calling-number"/>
                             <button type="button" class="ui button sharp light ml5" onclick="tryDial('MAINDB')">전화걸기</button>
                         </div>
