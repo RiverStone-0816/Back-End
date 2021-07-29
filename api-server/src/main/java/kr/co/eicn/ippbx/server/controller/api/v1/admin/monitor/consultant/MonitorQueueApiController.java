@@ -1,5 +1,9 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.monitor.consultant;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable;
+import kr.co.eicn.ippbx.model.entity.statdb.StatUserInboundEntity;
+import kr.co.eicn.ippbx.model.entity.statdb.StatUserOutboundEntity;
+import kr.co.eicn.ippbx.model.enums.PhoneInfoStatus;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName;
@@ -9,20 +13,22 @@ import kr.co.eicn.ippbx.model.entity.eicn.MemberStatusOfHunt;
 import kr.co.eicn.ippbx.model.enums.Bool;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.StatInboundService;
+import kr.co.eicn.ippbx.server.service.StatOutboundService;
+import kr.co.eicn.ippbx.server.service.StatUserInboundService;
+import kr.co.eicn.ippbx.server.service.StatUserOutboundService;
 import kr.co.eicn.ippbx.util.EicnUtils;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
+import org.jooq.types.UInteger;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static kr.co.eicn.ippbx.util.JsonResult.data;
@@ -37,11 +43,14 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 public class MonitorQueueApiController extends ApiBaseController {
 
     private final StatInboundService statInboundService;
+    private final StatUserInboundService statUserInboundService;
+    private final StatUserOutboundService statUserOutboundService;
     private final PersonListRepository personListRepository;
     private final QueueMemberTableRepository queueMemberRepository;
     private final QueueNameRepository queueNameRepository;
     private final CmpMemberStatusCodeRepository cmpMemberStatusCodeRepository;
     private final CurrentMemberStatusRepository currentMemberStatusRepository;
+    private final PhoneInfoRepository phoneInfoRepository;
 
     /**
      * 요약 보기
@@ -166,5 +175,52 @@ public class MonitorQueueApiController extends ApiBaseController {
         statResponse.setCounselorStatus(majorResponse.getWaitPersonCnt(), majorResponse.getWorkingPersonCnt());
 
         return ResponseEntity.ok(data(statResponse));
+    }
+
+    @GetMapping("individual-stat")
+    public ResponseEntity<JsonResult<List<MonitorQueuePersonStatResponse>>> getIndividualStat() {
+        final List<MonitorQueuePersonStatResponse> rows = new ArrayList<>();
+        final Map<String, StatUserInboundEntity> individualInboundStat = statUserInboundService.getRepository().findAllUserIndividualStat();
+        final Map<String, StatUserOutboundEntity> individualOutboundStat = statUserOutboundService.getRepository().findAllUserIndividualStat();
+        final Map<String, String> phoneInfoMap = phoneInfoRepository.findAllPhoneStatus();
+        final Map<String, String> queueNameMap = queueNameRepository.getHuntNameMap();
+        final List<PersonList> personList = personListRepository.findAll().stream().filter(e -> StringUtils.isNotEmpty(e.getPeer())).collect(Collectors.toList());
+        final Map<String, QueueMemberTable> queueMemberMap = queueMemberRepository.findAllQueueMember();
+
+
+
+        for (PersonList personData : personList) {
+            final PersonListSummary person = convertDto(personData, PersonListSummary.class);
+            if (Objects.nonNull(queueMemberMap.get(person.getPeer()))) {
+                QueueMemberTable queueMemberTable = queueMemberMap.get(person.getPeer());
+
+                person.setPaused(queueMemberTable.getPaused());
+                person.setIsLogin(queueMemberTable.getIsLogin());
+
+                Map<UInteger, QueueMemberTable> queueMemberMap2 = queueMemberRepository.findAllQueueName(person.getId());
+                for(UInteger key : queueMemberMap2.keySet()){
+                    final MonitorQueuePersonStatResponse row = convertDto(queueMemberTable, MonitorQueuePersonStatResponse.class);
+                    row.setPerson(person);
+                    row.setIsPhone(PhoneInfoStatus.REGISTERED.getCode().equals(phoneInfoMap.get(person.getPeer())) ? "Y" : "N");
+                    row.setQueueName(queueMemberMap2.get(key).getQueueName());
+                    row.setQueueHanName(queueNameMap.get(queueMemberMap2.get(key).getQueueName()));
+
+                    final StatUserInboundEntity inboundStat = individualInboundStat.get(person.getId());
+                    final StatUserOutboundEntity outboundStat = individualOutboundStat.get(person.getId());
+
+                    row.setInboundSuccess(inboundStat != null ? inboundStat.getInSuccess() : 0);
+                    row.setOutboundSuccess(outboundStat != null ? outboundStat.getOutSuccess() : 0);
+                    row.setBillSecSum((inboundStat != null ? inboundStat.getInBillsecSum() : 0) + (outboundStat != null ? outboundStat.getOutBillsecSum() : 0));
+                    row.setTotalStat();
+                    row.setBillSecondAverage();
+
+                    rows.add(row);
+
+                }
+
+            }
+        }
+
+        return ResponseEntity.ok(data(rows));
     }
 }

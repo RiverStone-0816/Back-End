@@ -105,7 +105,7 @@ public class ConstantStatusMonitoringController extends BaseController {
 
     @GetMapping("queue")
     public String queue(Model model) throws IOException, ResultFailException {
-        final List<MonitorQueuePersonStatResponse> personStatuses = partMonitoringApiInterface.getIndividualStat();
+        final List<MonitorQueuePersonStatResponse> personStatuses = queueMonitoringApiInterface.getIndividualStat();
 
         final Map<String, String> queues = new HashMap<>();
         model.addAttribute("queues", queues);
