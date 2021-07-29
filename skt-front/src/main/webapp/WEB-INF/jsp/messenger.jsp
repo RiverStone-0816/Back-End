@@ -517,14 +517,11 @@
             messenger.ui.roomCreationOrganizationPanel.find('.-messenger-folder').filter(function () {
                 return $(this).find('input[type=checkbox]:first').is(':checked');
             }).each(function () {
-                const groupCode = $(this).attr('data-id');
-                messenger.ui.roomCreationOrganizationPanel.find('.-messenger-user[data-group="' + groupCode + '"]').each(function () {
-                    $(this).find('.-messenger-user').each(function () {
-                        const id = $(this).attr('data-id');
-                        if (users.indexOf(id) >= 0)
-                            return;
-                        users.push(id);
-                    });
+                $(this).find('.-messenger-user').each(function () {
+                    const id = $(this).attr('data-id');
+                    if (users.indexOf(id) >= 0)
+                        return;
+                    users.push(id);
                 });
             });
 
