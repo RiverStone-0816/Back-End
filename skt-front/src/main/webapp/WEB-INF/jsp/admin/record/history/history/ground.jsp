@@ -35,7 +35,7 @@
                 <div class="panel-body">
                     <div class="search-area">
                         <table class="ui celled table compact unstackable">
-                            <tr class="-detail-search-input" style="display: none;">
+                            <tr>
                                 <th>검색기간</th>
                                 <td colspan="7" class="-buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
                                     <div class="ui action input calendar-area">
@@ -214,7 +214,10 @@
                                 <button type="submit" class="ui button sharp brand large">검색</button>
                                 <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                                 <button type="button" class="ui button sharp light large" style="padding-left: 0.5em; padding-right: 0.5em;"
-                                        onclick="$('.-detail-search-input').show(); $(this).remove()">﹀
+                                        onclick="$('.-detail-search-input').show(); $(this).hide(); $(this).next().show()">﹀
+                                </button>
+                                <button type="button" class="ui button sharp light large" style="padding-left: 0.5em; padding-right: 0.5em; display: none;"
+                                        onclick="$('.-detail-search-input').hide(); $(this).hide(); $(this).prev().show()">︿
                                 </button>
                             </div>
                         </div>
