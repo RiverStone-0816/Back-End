@@ -134,7 +134,11 @@ public class ClassUtils {
             return classes;
 
         final List<Path> paths = new ArrayList<>();
-        FileSystems.newFileSystem(Paths.get(filePath.substring(filePath.indexOf("file:/") + "file:/".length(), filePath.lastIndexOf(".jar!/") + 4)), Thread.currentThread().getContextClassLoader())
+        FileSystems.newFileSystem(Paths.get(
+                        filePath.substring(
+                                filePath.lastIndexOf(":") + ":".length() + ((System.getProperty("os.name").toLowerCase().contains("win") ? -2 : 0)),
+                                filePath.lastIndexOf(".jar!/") + 4)
+                ), Thread.currentThread().getContextClassLoader())
                 .getRootDirectories()
                 .forEach(root -> {
                     try {
