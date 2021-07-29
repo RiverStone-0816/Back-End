@@ -33,7 +33,8 @@
                             <c:when test="${e.sendReceive == 'AF' || e.sendReceive == 'S' || e.sendReceive == 'R'}">
                                 <div class="chat-item ${e.sendReceive == 'AF' || e.sendReceive == 'S' ? 'chat-me' : ''}">
                                     <div class="wrap-content">
-                                        <div class="profile-image"></div>
+                                        <%--프로필 이미지 출력 시 .profile-image 클래스 내 코드 삽입--%>
+                                        <%--<div class="profile-image"></div>--%>
                                         <div class="txt-segment">
                                             <c:set var="name" value="${e.sendReceive == 'AF' || e.sendReceive == 'S' ? (e.idName == '' || e.idName == null ? '자동발신' : e.idName) : (entity.maindbCustomName == '' || entity.maindbCustomName == null ? '' : entity.maindbCustomName)}"/>
                                             <div class="txt-time">[${g.htmlQuote(name)}] ${e.insertTime}</div>
