@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled structured table num-tbl unstackable -sortable-table ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PersonList"
+                    <table class="ui celled structured table num-tbl border-top unstackable -sortable-table ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PersonList"
                            data-search-form="#search-form" data-order-field="order">
                         <thead>
                         <tr>

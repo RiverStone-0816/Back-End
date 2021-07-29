@@ -33,47 +33,51 @@
                             <c:when test="${e.sendReceive == 'AF' || e.sendReceive == 'S' || e.sendReceive == 'R'}">
                                 <div class="chat-item ${e.sendReceive == 'AF' || e.sendReceive == 'S' ? 'chat-me' : ''}">
                                     <div class="wrap-content">
-                                        <c:set var="name" value="${e.sendReceive == 'AF' || e.sendReceive == 'S' ? (e.idName == '' || e.idName == null ? '자동발신' : e.idName) : (entity.maindbCustomName == '' || entity.maindbCustomName == null ? '' : entity.maindbCustomName)}"/>
-                                        <div class="txt-time">[${g.htmlQuote(name)}] ${e.insertTime}</div>
-                                        <c:choose>
-                                            <c:when test="${e.type == 'photo'}">
-                                                <div class="chat">
-                                                    <div class="bubble">
-                                                        <p class="txt-chat">
-                                                            <img src="${g.htmlQuote(e.content)}">
-                                                        </p>
+                                        <%--프로필 이미지 출력 시 .profile-image 클래스 내 코드 삽입--%>
+                                        <%--<div class="profile-image"></div>--%>
+                                        <div class="txt-segment">
+                                            <c:set var="name" value="${e.sendReceive == 'AF' || e.sendReceive == 'S' ? (e.idName == '' || e.idName == null ? '자동발신' : e.idName) : (entity.maindbCustomName == '' || entity.maindbCustomName == null ? '' : entity.maindbCustomName)}"/>
+                                            <div class="txt-time">[${g.htmlQuote(name)}] ${e.insertTime}</div>
+                                            <c:choose>
+                                                <c:when test="${e.type == 'photo'}">
+                                                    <div class="chat">
+                                                        <div class="bubble">
+                                                            <p class="txt-chat">
+                                                                <img src="${g.htmlQuote(e.content)}">
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <a href="${g.htmlQuote(e.content)}" target="_blank">저장하기</a>
-                                            </c:when>
-                                            <c:when test="${e.type == 'audio'}">
-                                                <div class="chat">
-                                                    <div class="bubble">
-                                                        <p class="txt-chat">
-                                                            <audio controls src="${g.htmlQuote(e.content)}"></audio>
-                                                        </p>
+                                                    <a href="${g.htmlQuote(e.content)}" target="_blank">저장하기</a>
+                                                </c:when>
+                                                <c:when test="${e.type == 'audio'}">
+                                                    <div class="chat">
+                                                        <div class="bubble">
+                                                            <p class="txt-chat">
+                                                                <audio controls src="${g.htmlQuote(e.content)}"></audio>
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <a href="${g.htmlQuote(e.content)}" target="_blank">저장하기</a>
-                                            </c:when>
-                                            <c:when test="${e.type == 'file'}">
-                                                <div class="chat">
-                                                    <div class="bubble">
-                                                        <p class="txt-chat">
-                                                            <a href="${g.htmlQuote(e.content)}" target="_blank">${g.htmlQuote(e.content)}</a>
-                                                        </p>
+                                                    <a href="${g.htmlQuote(e.content)}" target="_blank">저장하기</a>
+                                                </c:when>
+                                                <c:when test="${e.type == 'file'}">
+                                                    <div class="chat">
+                                                        <div class="bubble">
+                                                            <p class="txt-chat">
+                                                                <a href="${g.htmlQuote(e.content)}" target="_blank">${g.htmlQuote(e.content)}</a>
+                                                            </p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <a href="${g.htmlQuote(e.content)}" target="_blank">저장하기</a>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <div class="chat">
-                                                    <div class="bubble">
-                                                        <p class="txt-chat">${g.htmlQuote(e.content)}</p>
+                                                    <a href="${g.htmlQuote(e.content)}" target="_blank">저장하기</a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <div class="chat">
+                                                        <div class="bubble">
+                                                            <p class="txt-chat">${g.htmlQuote(e.content)}</p>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </c:otherwise>
-                                        </c:choose>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
                                     </div>
                                 </div>
                             </c:when>

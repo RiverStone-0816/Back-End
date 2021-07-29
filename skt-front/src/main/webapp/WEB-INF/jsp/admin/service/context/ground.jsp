@@ -50,7 +50,11 @@
                             <c:when test="${list.size() > 0}">
                                 <c:forEach var="e" items="${list}" varStatus="status">
                                     <tr data-id="${g.htmlQuote(e.context)}">
-                                        <td><input type="radio" name="radio" /></td>
+                                        <td>
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" name="radio">
+                                            </div>
+                                        </td>
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(e.name)}</td>
                                         <td>${g.htmlQuote(e.context)}</td>
