@@ -840,8 +840,8 @@
                                                 modal.find('.-field').each(function () {
                                                     $(this).text(e[$(this).attr('data-name')]);
                                                 });
-                                                modal.find('.-extension').attr('onclick', e.extension ? 'ipccCommunicator.redirect("' + e.extension + '")' : '');
-                                                modal.find('.-hp-number').attr('onclick', e.hpNumber ? 'ipccCommunicator.redirectHunt("' + e.hpNumber + '")' : '');
+                                                modal.find('.-extension').attr('onclick', e.extension ? 'ipccCommunicator.clickDial("", "' + e.extension + '")' : '');
+                                                modal.find('.-hp-number').attr('onclick', e.hpNumber ? 'ipccCommunicator.clickDial("", "' + e.hpNumber + '")' : '');
                                                 modal.dragModalShow();
                                             }
                                         }))
@@ -1114,8 +1114,8 @@
                                             modal.find('.-field').each(function () {
                                                 $(this).text(e[$(this).attr('data-name')]);
                                             });
-                                            modal.find('.-extension').attr('onclick', e.extension ? 'ipccCommunicator.redirect("' + e.extension + '")' : '');
-                                            modal.find('.-hp-number').attr('onclick', e.hpNumber ? 'ipccCommunicator.redirectHunt("' + e.hpNumber + '")' : '');
+                                            modal.find('.-extension').attr('onclick', e.extension ? 'ipccCommunicator.clickDial("", "' + e.extension + '")' : '');
+                                            modal.find('.-hp-number').attr('onclick', e.hpNumber ? 'ipccCommunicator.clickDial("", "' + e.hpNumber + '")' : '');
                                             modal.dragModalShow();
                                         }
                                     }))
