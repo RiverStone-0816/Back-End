@@ -298,26 +298,21 @@ public class MonitorPartApiController extends ApiBaseController {
                 person.setPaused(queueMemberTable.getPaused());
                 person.setIsLogin(queueMemberTable.getIsLogin());
 
-                Map<UInteger, QueueMemberTable> queueMemberMap2 = queueMemberTableRepository.findAllQueueName(person.getId());
-                for(UInteger key : queueMemberMap2.keySet()){
-                    final MonitorQueuePersonStatResponse row = convertDto(queueMemberTable, MonitorQueuePersonStatResponse.class);
-                    row.setPerson(person);
-                    row.setIsPhone(PhoneInfoStatus.REGISTERED.getCode().equals(phoneInfoMap.get(person.getPeer())) ? "Y" : "N");
-                    row.setQueueName(queueMemberMap2.get(key).getQueueName());
-                    row.setQueueHanName(queueNameMap.get(queueMemberMap2.get(key).getQueueName()));
+                final MonitorQueuePersonStatResponse row = convertDto(queueMemberTable, MonitorQueuePersonStatResponse.class);
+                row.setPerson(person);
+                row.setIsPhone(PhoneInfoStatus.REGISTERED.getCode().equals(phoneInfoMap.get(person.getPeer())) ? "Y" : "N");
 
-                    final StatUserInboundEntity inboundStat = individualInboundStat.get(person.getId());
-                    final StatUserOutboundEntity outboundStat = individualOutboundStat.get(person.getId());
+                final StatUserInboundEntity inboundStat = individualInboundStat.get(person.getId());
+                final StatUserOutboundEntity outboundStat = individualOutboundStat.get(person.getId());
 
-                    row.setInboundSuccess(inboundStat != null ? inboundStat.getInSuccess() : 0);
-                    row.setOutboundSuccess(outboundStat != null ? outboundStat.getOutSuccess() : 0);
-                    row.setBillSecSum((inboundStat != null ? inboundStat.getInBillsecSum() : 0) + (outboundStat != null ? outboundStat.getOutBillsecSum() : 0));
-                    row.setTotalStat();
-                    row.setBillSecondAverage();
+                row.setInboundSuccess(inboundStat != null ? inboundStat.getInSuccess() : 0);
+                row.setOutboundSuccess(outboundStat != null ? outboundStat.getOutSuccess() : 0);
+                row.setBillSecSum((inboundStat != null ? inboundStat.getInBillsecSum() : 0) + (outboundStat != null ? outboundStat.getOutBillsecSum() : 0));
+                row.setTotalStat();
+                row.setBillSecondAverage();
 
-                    rows.add(row);
+                rows.add(row);
 
-                }
 
             }
         }

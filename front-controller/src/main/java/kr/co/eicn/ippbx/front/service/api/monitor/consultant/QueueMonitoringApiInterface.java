@@ -26,4 +26,8 @@ public class QueueMonitoringApiInterface extends ApiServerInterface {
     public MonitorQueueTotalResponse getStatSummary() throws IOException, ResultFailException {
         return getData(subUrl + "stat-summary", null, MonitorQueueTotalResponse.class).getData();
     }
+
+    public List<MonitorQueuePersonStatResponse> getIndividualStat() throws IOException, ResultFailException {
+        return getList(subUrl + "individual-stat", null, MonitorQueuePersonStatResponse.class).getData();
+    }
 }
