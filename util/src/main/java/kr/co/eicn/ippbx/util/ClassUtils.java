@@ -103,6 +103,7 @@ public class ClassUtils {
         dirs = dirs.stream().distinct().collect(Collectors.toList());
         ArrayList<Class<?>> classes = new ArrayList<>();
         for (File directory : dirs) {
+            System.out.println(directory.getAbsolutePath());
             classes.addAll(findClasses(directory, packageName));
         }
         return classes;
@@ -133,7 +134,7 @@ public class ClassUtils {
             return classes;
 
         final List<Path> paths = new ArrayList<>();
-        FileSystems.newFileSystem(Paths.get(filePath.substring("file:/".length(), filePath.lastIndexOf(".jar!/") + 4)), Thread.currentThread().getContextClassLoader())
+        FileSystems.newFileSystem(Paths.get(filePath.substring(filePath.indexOf("file:/") + "file:/".length(), filePath.lastIndexOf(".jar!/") + 4)), Thread.currentThread().getContextClassLoader())
                 .getRootDirectories()
                 .forEach(root -> {
                     try {

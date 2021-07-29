@@ -41,6 +41,10 @@ public class RequestGlobal {
     private final FileService fileService;
     private final SessionStorage sessionStorage;
 
+    static {
+        EnumConverter.instance.messageOf("DayOfWeek", "Mon");
+    }
+
     public CurrentUserMenu getMenus() {
         return sessionStorage.get(session.getId(), REQUEST_GLOBAL_CURRENT_USER_MENUS, CurrentUserMenu.class);
     }
