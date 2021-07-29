@@ -18,4 +18,13 @@ public enum TalkTemplate implements CodeHasable<String> {
 	public String getCode() {
 		return this.type;
 	}
+
+	public static TalkTemplate of (String value) {
+		for (TalkTemplate type : TalkTemplate.values()){
+			if (type.getCode().equals(value))
+				return type;
+		}
+
+		return null;
+	}
 }
