@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.template;
 
+import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyInfo;
@@ -48,12 +49,12 @@ public class TalkTemplateApiController extends ApiBaseController {
 
     //리스트
     @GetMapping("")
-    public ResponseEntity<JsonResult<List<TalkTemplateSummaryResponse>>> list() {
+    public ResponseEntity<JsonResult<List<TalkTemplateSummaryResponse>>> list(TemplateSearchRequest search) {
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
         final Map<String, String> companyInfoMap = companyInfoRepository.findAll().stream().collect(Collectors.toMap(CompanyInfo::getCompanyId, CompanyInfo::getCompanyName));
         final Map<String, CompanyTree> companyTreeMap = organizationService.getAllCompanyTrees().stream().collect(Collectors.toMap(CompanyTree::getGroupCode, e -> e));
 
-        final List<TalkTemplateSummaryResponse> list = repository.list().stream()
+        final List<TalkTemplateSummaryResponse> list = repository.list(search).stream()
                 .map((e) -> {
                     final TalkTemplateSummaryResponse talkTemplateSummaryResponse = convertDto(e, TalkTemplateSummaryResponse.class);
                     talkTemplateSummaryResponse.setWriteUserName(Objects.nonNull(personListMap.get(e.getWriteUserid()))
