@@ -15,7 +15,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @Data
 public class RandomCidFormRequest extends BaseForm {
 	@NotNull("발신번호")
-	@Length(min = 9, max = 11)
+	@Length(min = 8, max = 11)
 	private String  number;
 	private String  groupCode;
 	@NotNull("단축번호")
