@@ -175,3 +175,8 @@ ALTER TABLE `eicn`.`talk_template` MODIFY `type_data` VARCHAR(100);
 ALTER TABLE screen_config CHANGE expression_type expression_type VARCHAR(32) NOT NULL;
 ALTER TABLE screen_config CHANGE expression_type expression_type ENUM('INTEGRATION', 'BY_HUNT', 'BY_SERVICE', 'INTEGRATION_VARIATION', 'BY_HUNT_VARIATION', 'INBOUND_CHART', 'LIST_CONSULTANT') NOT NULL;
 ```
+
+* 2021-07-30 eicn.screen_config 테이블 sliding_sec 컬럼 추가
+```
+ALTER TABLE `screen_config` ADD COLUMN `sliding_sec` INT(11) NULL COMMENT '전광판전환슬라이딩(초)' AFTER `company_id`;
+```

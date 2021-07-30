@@ -19,6 +19,7 @@ public class ScreenConfigFormRequest extends BaseForm {
     private ScreenConfigExpressionType expressionType;
     private Boolean showSlidingText = false;
     private String slidingText;
+    private Integer slidingSec; //전광판 슬라이딩 (초)
 
     @Override
     public boolean validate(BindingResult bindingResult) {
