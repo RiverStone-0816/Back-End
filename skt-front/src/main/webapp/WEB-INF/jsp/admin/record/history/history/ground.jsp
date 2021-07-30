@@ -84,15 +84,10 @@
                                         </button>
                                     </div>
                                 </td>
-                                <th>상담원</th>
+                                <th>정렬순서</th>
                                 <td>
                                     <div class="ui form">
-                                        <form:select path="userId">
-                                            <form:option value="" label="선택안함"/>
-                                            <c:forEach var="e" items="${persons}">
-                                                <form:option value="${e.id}" label="${e.idName}"/>
-                                            </c:forEach>
-                                        </form:select>
+                                        <form:select path="sort" items="${sortTypes}"/>
                                     </div>
                                 </td>
                                 <th>내선번호</th>
@@ -112,10 +107,15 @@
                                         <form:input path="phone"/>
                                     </div>
                                 </td>
-                                <th>정렬순서</th>
+                                <th>상담원</th>
                                 <td>
                                     <div class="ui form">
-                                        <form:select path="sort" items="${sortTypes}"/>
+                                        <form:select path="userId">
+                                            <form:option value="" label="선택안함"/>
+                                            <c:forEach var="e" items="${persons}">
+                                                <form:option value="${e.id}" label="${e.idName}"/>
+                                            </c:forEach>
+                                        </form:select>
                                     </div>
                                 </td>
                                 <th>기타정보</th>
