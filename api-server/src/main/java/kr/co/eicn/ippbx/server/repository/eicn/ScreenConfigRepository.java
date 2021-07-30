@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.util.Objects;
+
 import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.SCREEN_CONFIG;
 
 @Getter
@@ -28,6 +30,8 @@ public class ScreenConfigRepository extends EicnBaseRepository<ScreenConfig, Scr
         record.setShowSlidingText(form.getShowSlidingText());
         record.setSlidingText(form.getSlidingText());
         record.setCompanyId(getCompanyId());
+        if(Objects.nonNull(form.getSlidingSec()))
+            record.setSlidingSec(form.getSlidingSec());
 
         return super.insertOnGeneratedKey(record).get(SCREEN_CONFIG.SEQ);
     }
@@ -41,6 +45,8 @@ public class ScreenConfigRepository extends EicnBaseRepository<ScreenConfig, Scr
         record.setShowSlidingText(form.getShowSlidingText());
         record.setSlidingText(form.getSlidingText());
         record.setCompanyId(getCompanyId());
+        if(Objects.nonNull(form.getSlidingSec()))
+            record.setSlidingSec(form.getSlidingSec());
 
         super.updateByKey(record, seq);
     }
