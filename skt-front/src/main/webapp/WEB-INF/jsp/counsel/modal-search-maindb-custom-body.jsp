@@ -169,7 +169,7 @@
                                 <td>
                                     <c:forEach var="field" items="${e.multichannelList}">
                                         <c:if test="${field.channelType == 'PHONE'}">
-                                            <text class="-phone-channel-data" style="cursor: pointer;" onclick="ipccCommunicator.clickDial('', ${g.escapeQuote(field.channelData)})">${g.htmlQuote(field.channelData)}</text>
+                                            <text class="-phone-channel-data" style="cursor: pointer;" onclick="ipccCommunicator.clickDial('', '${g.escapeQuote(field.channelData)}')">${g.htmlQuote(field.channelData)}</text>
                                             &ensp;
                                         </c:if>
                                     </c:forEach>
