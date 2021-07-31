@@ -202,7 +202,7 @@
                                             onclick="$(this).toggleClass('active'); $('[name=batchDownloadMode]').prop('checked', $(this).hasClass('active')); $('.-batch-download-alert').show()">
                                         일자별 녹취 다운
                                     </button>
-                                    <span class="inline-txt -batch-download-alert" style="display: none;">* 일자별 녹취 다운은 최대 1일씩 다운이 가능합니다.</span>
+                                    <span class="inline-txt -batch-download-alert" style="display: ${search.batchDownloadMode == true ? '' : 'none'};">* 일자별 녹취 다운은 최대 1일씩 다운이 가능합니다.</span>
                                 </c:if>
                                 <c:if test="${company.isServiceAvailable('QA') && !g.user.idType.equals('M')}">
                                     <form:checkbox path="batchEvaluationMode" cssStyle="display: none;"/>
