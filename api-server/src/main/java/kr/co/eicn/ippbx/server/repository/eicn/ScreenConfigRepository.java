@@ -30,8 +30,8 @@ public class ScreenConfigRepository extends EicnBaseRepository<ScreenConfig, Scr
         record.setShowSlidingText(form.getShowSlidingText());
         record.setSlidingText(form.getSlidingText());
         record.setCompanyId(getCompanyId());
-        if(Objects.nonNull(form.getSlidingSec()))
-            record.setSlidingSec(form.getSlidingSec());
+//        if(Objects.nonNull(form.getSlidingSec()))
+//            record.setSlidingSec(form.getSlidingSec());
 
         return super.insertOnGeneratedKey(record).get(SCREEN_CONFIG.SEQ);
     }
@@ -45,8 +45,8 @@ public class ScreenConfigRepository extends EicnBaseRepository<ScreenConfig, Scr
         record.setShowSlidingText(form.getShowSlidingText());
         record.setSlidingText(form.getSlidingText());
         record.setCompanyId(getCompanyId());
-        if(Objects.nonNull(form.getSlidingSec()))
-            record.setSlidingSec(form.getSlidingSec());
+//        if(Objects.nonNull(form.getSlidingSec()))
+//            record.setSlidingSec(form.getSlidingSec());
 
         super.updateByKey(record, seq);
     }

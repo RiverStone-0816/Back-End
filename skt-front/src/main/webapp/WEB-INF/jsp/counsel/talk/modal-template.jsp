@@ -12,8 +12,9 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<div class="ui modal inverted custom" id="modal-template-select">
+<div class="ui modal tiny inverted" id="modal-template-select">
     <i class="close icon"></i>
+    <div class="header">템플릿</div>
     <div class="content rows scrolling">
         <div class="ui grid">
             <div class="row">
@@ -65,9 +66,7 @@
 <tags:scripts>
     <script  >
         function templateSelectPopup() {
-            $('#modal-template-select').modal({
-                context: $('#talk-room').parent()
-            }).modal('show');
+            $('#modal-template-select').dragModalShow();
         }
     </script>
 </tags:scripts>

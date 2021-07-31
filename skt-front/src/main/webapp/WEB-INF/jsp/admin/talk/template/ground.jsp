@@ -16,7 +16,7 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/talk/template/"/>
         <div class="sub-content ui container fluid unstackable">
-            <div class="panel panel-search">
+            <form:form id="search-form" modelAttribute="search" method="get"  class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
                         <div class="panel-label">채팅상담템플릿설정</div>
@@ -36,29 +36,28 @@
                                 <th>유형</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <select>
-                                            <option>개인</option>
-                                            <option>그룹</option>
-                                            <option>회사전체</option>
-                                        </select>
+                                        <form:select path="type">
+                                            <form:option value="" label="전체"/>
+                                            <form:options items="${types}"/>
+                                        </form:select>
                                     </div>
                                 </td>
                                 <th>유형데이터</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <input type="text">
+                                        <form:input path="metaType"/>
                                     </div>
                                 </td>
                                 <th>작성자</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <input type="text">
+                                        <form:input path="userName"/>
                                     </div>
                                 </td>
                                 <th>템플릿명</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <input type="text">
+                                        <form:input path="mentName"/>
                                     </div>
                                 </td>
                             </tr>
@@ -71,7 +70,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </form:form>
 
             <div class="panel">
                 <div class="panel-heading">

@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.talk;
 
+import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,8 +42,8 @@ public class TalkTemplateController extends BaseController {
     private OrganizationService organizationService;
 
     @GetMapping("")
-    public String page(Model model) throws IOException, ResultFailException {
-        final List<TalkTemplateSummaryResponse> list = apiInterface.list();
+    public String page(Model model, @ModelAttribute("search") TemplateSearchRequest search) throws IOException, ResultFailException {
+        final List<TalkTemplateSummaryResponse> list = apiInterface.list(search);
         model.addAttribute("list", list);
 
         final Map<String, String> templateTypes = FormUtils.optionsOfCode(TalkTemplate.class);
@@ -49,6 +51,8 @@ public class TalkTemplateController extends BaseController {
 
         final Map<Integer, String> metaTypeList = organizationService.metaTypeMap();
         model.addAttribute("metaTypeList", metaTypeList);
+
+        model.addAttribute("types", FormUtils.options(TalkTemplate.class));
 
         return "admin/talk/template/ground";
     }

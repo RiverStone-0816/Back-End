@@ -11,7 +11,6 @@ import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbGroupApiInter
 import kr.co.eicn.ippbx.front.service.api.application.type.CommonTypeApiInterface;
 import kr.co.eicn.ippbx.front.service.api.talk.TalkTemplateApiInterface;
 import kr.co.eicn.ippbx.front.service.api.talk.group.TalkReceptionGroupApiInterface;
-import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CommonCodeEntity;
@@ -19,27 +18,26 @@ import kr.co.eicn.ippbx.model.entity.eicn.CommonFieldEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CommonTypeEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.GradeListEntity;
 import kr.co.eicn.ippbx.model.enums.MultichannelChannelType;
+import kr.co.eicn.ippbx.model.enums.TalkTemplate;
 import kr.co.eicn.ippbx.model.form.MaindbCustomInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.ResultCustomInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
 import kr.co.eicn.ippbx.model.search.GradeListSearchRequest;
 import kr.co.eicn.ippbx.model.search.MaindbDataSearchRequest;
 import kr.co.eicn.ippbx.model.search.MaindbGroupSearchRequest;
+import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
+import kr.co.eicn.ippbx.util.FormUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -84,9 +82,23 @@ public class CounselTalkController extends BaseController {
     }
 
     @GetMapping("modal-template")
-    public String modalTemplate(Model model) throws IOException, ResultFailException {
-        final List<TalkTemplateSummaryResponse> talkTemplates = talkTemplateApiInterface.list();
-        model.addAttribute("talkTemplates", talkTemplates);
+    public String modalTemplate(Model model, @ModelAttribute("search") TemplateSearchRequest search) throws IOException, ResultFailException {
+        final List<TalkTemplateSummaryResponse> talkTemplates = talkTemplateApiInterface.list(search);
+        List<TalkTemplateSummaryResponse> candidates = new ArrayList<>();
+        for (TalkTemplateSummaryResponse e : talkTemplates) {
+            if (Objects.equals(e.getType(), TalkTemplate.COMPANY.getCode()))
+                candidates.add(e);
+
+            // TODO: api 수정 후, 코드 변경해야 한다. api에서 group의 code가 전달되어야 한다.
+            if (Objects.equals(e.getType(), TalkTemplate.GROUP.getCode()) && Objects.equals(g.getUser().getGroupTreeName(), e.getTypeData()))
+                candidates.add(e);
+
+            // TODO: api 수정 후, 코드 변경해야 한다. api에서 person의 id가 전달되어야 한다.
+            if (Objects.equals(e.getType(), TalkTemplate.PERSON.getCode()) && Objects.equals(g.getUser().getIdName(), e.getTypeData()))
+                candidates.add(e);
+        }
+
+        model.addAttribute("talkTemplates", candidates);
 
         return "counsel/talk/modal-template";
     }

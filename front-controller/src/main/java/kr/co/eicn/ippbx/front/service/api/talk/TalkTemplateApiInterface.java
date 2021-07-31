@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.front.service.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkTemplateSummaryResponse;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
+import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
@@ -18,8 +19,8 @@ public class TalkTemplateApiInterface extends ApiServerInterface {
 
     private static final String subUrl = "/api/v1/admin/talk/template/";
 
-    public List<TalkTemplateSummaryResponse> list() throws IOException, ResultFailException {
-        return getList(subUrl, null, TalkTemplateSummaryResponse.class).getData();
+    public List<TalkTemplateSummaryResponse> list(TemplateSearchRequest search) throws IOException, ResultFailException {
+        return getList(subUrl, search, TalkTemplateSummaryResponse.class).getData();
     }
 
     public TalkTemplateSummaryResponse get(Integer seq) throws IOException, ResultFailException {
