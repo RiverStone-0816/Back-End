@@ -293,6 +293,10 @@
             popupDraggableModalFromReceivedHtml('/counsel/modal-counseling-info?seq=' + seq, 'modal-counseling-info');
         }
 
+        function talkHistoryView(roomId) {
+            popupDraggableModalFromReceivedHtml('/admin/talk/history/modal?roomId=' + encodeURIComponent(roomId), 'modal-consulting-history-talk-view');
+        }
+
         function setAlertCurrentStatus() {
             const ui = $('#current-status-sheet');
 
