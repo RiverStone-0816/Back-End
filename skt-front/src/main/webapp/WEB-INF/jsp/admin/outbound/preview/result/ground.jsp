@@ -8,6 +8,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
+<%--@elvariable id="menu" type="kr.co.eicn.ippbx.front.model.CurrentUserMenu"--%>
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
@@ -21,7 +22,7 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">상담결과이력(프리뷰)  <span class="explanation-txt">※ [프리뷰 그룹] 선택 후 검색을 눌러주세요.</span></div>
+                        <div class="panel-label">${g.htmlQuote(menu.getMenuName("/admin/outbound/preview/result/"))} <span class="explanation-txt">※ [프리뷰 그룹] 선택 후 검색을 눌러주세요.</span></div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">

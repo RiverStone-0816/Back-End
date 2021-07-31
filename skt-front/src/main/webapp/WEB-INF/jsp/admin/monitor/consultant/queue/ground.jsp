@@ -8,6 +8,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
+<%--@elvariable id="menu" type="kr.co.eicn.ippbx.front.model.CurrentUserMenu"--%>
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="person" type="kr.co.eicn.ippbx.model.dto.eicn.MonitorQueuePersonStatResponse"--%>
@@ -20,7 +21,7 @@
 
             <div class="panel panel-statstics">
                 <div class="panel-heading">
-                    <div class="panel-label">센터현황관리[수신그룹별]</div>
+                    <div class="panel-label">${g.htmlQuote(menu.getMenuName("/admin/monitor/consultant/queue/"))}</div>
                 </div>
                 <div class="panel-body">
                     <div class="panel-section">

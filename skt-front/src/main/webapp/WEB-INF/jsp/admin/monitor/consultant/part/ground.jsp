@@ -8,6 +8,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
+<%--@elvariable id="menu" type="kr.co.eicn.ippbx.front.model.CurrentUserMenu"--%>
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
@@ -18,7 +19,7 @@
         <div class="sub-content ui container fluid">
             <div class="panel panel-statstics">
                 <div class="panel-heading">
-                    <div class="panel-label">센터현황관리[부서별]</div>
+                    <div class="panel-label">${g.htmlQuote(menu.getMenuName("/admin/monitor/consultant/part/"))}</div>
                 </div>
                 <div class="panel-body">
                     <div class="panel-section">

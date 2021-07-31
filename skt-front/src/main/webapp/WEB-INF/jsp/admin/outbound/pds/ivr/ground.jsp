@@ -8,6 +8,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
+<%--@elvariable id="menu" type="kr.co.eicn.ippbx.front.model.CurrentUserMenu"--%>
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
@@ -21,7 +22,7 @@
             <form class="panel panel-search" method="get">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">IVR연결(PDS)</div>
+                        <div class="panel-label">${g.htmlQuote(menu.getMenuName("/admin/outbound/pds/ivr/"))}</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">

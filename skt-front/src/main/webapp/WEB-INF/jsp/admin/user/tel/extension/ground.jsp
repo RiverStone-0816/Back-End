@@ -8,6 +8,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
+<%--@elvariable id="menu" type="kr.co.eicn.ippbx.front.model.CurrentUserMenu"--%>
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
@@ -25,7 +26,7 @@
             <form:form id="search-form" modelAttribute="search" class="panel panel-search" method="get">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">개인번호설정</div>
+                        <div class="panel-label">${g.htmlQuote(menu.getMenuName("/admin/user/tel/extension/"))}</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">

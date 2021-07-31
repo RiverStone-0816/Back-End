@@ -8,6 +8,7 @@
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
+<%--@elvariable id="menu" type="kr.co.eicn.ippbx.front.model.CurrentUserMenu"--%>
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
@@ -20,7 +21,7 @@
                 <form:hidden path="categoryId"/>
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">지식관리</div>
+                        <div class="panel-label">${g.htmlQuote(menu.getMenuName("/admin/service/help/task-script/"))}</div>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">

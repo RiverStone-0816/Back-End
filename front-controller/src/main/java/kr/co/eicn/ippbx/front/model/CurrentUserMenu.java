@@ -14,6 +14,11 @@ import java.util.*;
 public class CurrentUserMenu {
     private List<UserMenuCompanyResponse> menus;
 
+    public String getMenuName(String url) {
+        List<UserMenuCompanyResponse> menuTree = findMenuByUrl(url);
+        return menuTree.size() == 0 ? null : menuTree.get(menuTree.size() - 1).getMenuName();
+    }
+
     public List<UserMenuCompanyResponse> findMenuByUrl(String url) {
         val menus = findMenuByUrl(this.menus, new Stack<>(), url);
         return menus != null ? Arrays.asList(menus) : new ArrayList<>();
