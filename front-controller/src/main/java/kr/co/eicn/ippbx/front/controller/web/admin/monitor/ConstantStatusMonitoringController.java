@@ -5,13 +5,16 @@ import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ChattingApiInterface;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
+import kr.co.eicn.ippbx.front.service.api.OrganizationApiInterface;
 import kr.co.eicn.ippbx.front.service.api.monitor.consultant.PartMonitoringApiInterface;
 import kr.co.eicn.ippbx.front.service.api.monitor.consultant.QueueMonitoringApiInterface;
 import kr.co.eicn.ippbx.front.service.api.monitor.display.ScreenDataApiInterface;
 import kr.co.eicn.ippbx.front.service.api.stat.ConsultantStatApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CmpMemberStatusCode;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
 import kr.co.eicn.ippbx.model.dto.eicn.MonitorQueuePersonStatResponse;
 import kr.co.eicn.ippbx.model.dto.statdb.StatUserResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.Organization;
 import kr.co.eicn.ippbx.model.search.StatUserSearchRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -44,7 +47,7 @@ public class ConstantStatusMonitoringController extends BaseController {
     private final PartMonitoringApiInterface partMonitoringApiInterface;
     private final CompanyApiInterface companyApiInterface;
     private final ScreenDataApiInterface screenDataApiInterface;
-    private final ChattingApiInterface chattingApiInterface;
+    private final OrganizationApiInterface organizationApiInterface;
     private final ConsultantStatApiInterface consultantStatApiInterface;
 
     @SneakyThrows
@@ -99,6 +102,10 @@ public class ConstantStatusMonitoringController extends BaseController {
             list.forEach(p -> statusToCount.put(p.getPaused(), statusToCount.getOrDefault(p.getPaused(), 0) + 1));
             groupToStatusToCount.put(groupCode, statusToCount);
         });
+
+        final List<Organization> list = organizationApiInterface.getAllOrganizationPersons();
+        Map<String, String> organizationCodeToTreeName = list.stream().collect(Collectors.toMap(CompanyTree::getGroupCode, CompanyTree::getGroupTreeName));
+        model.addAttribute("organizationCodeToTreeName", organizationCodeToTreeName);
 
         return "admin/monitor/consultant-status/part/ground";
     }

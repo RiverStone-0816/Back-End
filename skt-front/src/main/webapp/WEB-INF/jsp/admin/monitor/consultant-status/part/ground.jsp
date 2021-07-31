@@ -54,7 +54,7 @@
                                         <button type="button" class="ui icon button mini brand compact -select-group">
                                             <i class="search icon"></i>
                                         </button>
-                                        <input id="groupCode" name="groupCode" type="hidden" value="" onchange="console.log(1); filterGroup($(this).val())">
+                                        <input id="groupCode" name="groupCode" type="hidden" value="" onchange="filterGroup($(this).val())">
                                         <div class="ui breadcrumb -group-name">
                                             <span class="section">부서를 선택해 주세요.</span>
                                         </div>
@@ -72,7 +72,7 @@
                 <div class="panel-body">
                     <c:forEach var="group" items="${groupToPersons}">
 
-                        <div class="panel-section -group-section" data-name="${g.escapeQuote(group.key)}">
+                        <div class="panel-section -group-section" data-name="${g.escapeQuote(group.key)}" data-tree-name="${g.escapeQuote(organizationCodeToTreeName.get(group.key))}">
                             <div class="panel-heading transparent">
                                 <div class="panel-sub-title">${g.escapeQuote(groups.get(group.key))}</div>
                                 <ul class="state-list">
@@ -255,9 +255,16 @@
                 }
             });
 
+            const organizationCodeToTreeName = {
+                <c:forEach var="e" items="${organizationCodeToTreeName}">
+                '${g.escapeQuote(e.key)}': '${g.escapeQuote(e.value)}',
+                </c:forEach>
+            };
+
             function filterGroup(groupCode) {
                 if (groupCode) {
-                    $('.-group-section').hide().filter('[data-name="' + groupCode + '"]').show();
+                    const groupTreeName = organizationCodeToTreeName[groupCode];
+                    $('.-group-section').hide().filter('[data-tree-name^="' + groupTreeName + '"]').show();
                 } else {
                     $('.-group-section').show();
                 }
