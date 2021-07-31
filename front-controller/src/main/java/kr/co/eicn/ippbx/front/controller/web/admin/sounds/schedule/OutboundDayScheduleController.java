@@ -78,7 +78,9 @@ public class OutboundDayScheduleController extends BaseController {
         if (entity.getTotime() != null)
             form.setToDate(g.dateFormat(entity.getTotime()));
 
-        final Map<String, String> extensions = apiInterface.addExtensions().stream().collect(Collectors.toMap(SummaryPhoneInfoResponse::getExtension, SummaryPhoneInfoResponse::getInUseIdName));
+        final Map<String, String> extensions = apiInterface.addExtensions().stream()
+                .filter(e -> e.getExtension() != null && e.getInUseIdName() != null)
+                .collect(Collectors.toMap(SummaryPhoneInfoResponse::getExtension, SummaryPhoneInfoResponse::getInUseIdName));
         model.addAttribute("extensions", extensions);
 
         final Map<Integer, String> sounds = apiInterface.addSounds().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName));

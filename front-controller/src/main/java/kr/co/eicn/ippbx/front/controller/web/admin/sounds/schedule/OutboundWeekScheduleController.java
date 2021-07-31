@@ -75,7 +75,9 @@ public class OutboundWeekScheduleController extends BaseController {
         ReflectionUtils.copy(form, entity);
         form.setWeeks(new HashSet<>(entity.getWeeks()));
 
-        final Map<String, String> extensions = apiInterface.addExtensions().stream().collect(Collectors.toMap(SummaryPhoneInfoResponse::getExtension, SummaryPhoneInfoResponse::getInUseIdName));
+        final Map<String, String> extensions = apiInterface.addExtensions().stream()
+                .filter(e -> e.getExtension() != null && e.getInUseIdName() != null)
+                .collect(Collectors.toMap(SummaryPhoneInfoResponse::getExtension, SummaryPhoneInfoResponse::getInUseIdName));
         model.addAttribute("extensions", extensions);
 
         final Map<Integer, String> sounds = apiInterface.addSounds().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName));
