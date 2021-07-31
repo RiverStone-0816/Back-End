@@ -74,65 +74,66 @@
                             <tr>
                                 <th rowspan="2">날짜/시간</th>
                                 <th colspan="6">I/B 콜 현황</th>
-                                <th colspan="6">성과지표</th>
-                                <th colspan="5">응대호 대기시간 분석</th>
-                                <th colspan="5">포기호 대기시간 분석</th>
+                                <th colspan="7">응답호 분석</th>
+                                <th colspan="6">포기호 분석</th>
+                                <th colspan="4">기타 분석</th>
                             </tr>
                             <tr>
-                                <th>I/B<br>전체콜</th>
+                                <th>I/B 전체콜</th>
                                 <th>무효콜</th>
                                 <th>연결요청</th>
                                 <th>응대호</th>
                                 <th>포기호</th>
                                 <th>콜백</th>
-
-                                <th>I/B<br>총통화시간</th>
+                                <th>호응답률</th>
+                                <th>서비스레벨 호응답률</th>
+                                <th>~10(초)</th>
+                                <th>~20(초)</th>
+                                <th>~30(초)</th>
+                                <th>~40(초)</th>
+                                <th>40~(초)</th>
+                                <th>호 포기율</th>
+                                <th>~10(초)</th>
+                                <th>~20(초)</th>
+                                <th>~30(초)</th>
+                                <th>~40(초)</th>
+                                <th>40~(초)</th>
+                                <th>무효콜비율</th>
+                                <th>I/B 총통화시간</th>
                                 <th>평균통화시간</th>
                                 <th>평균대기시간</th>
-                                <th>호응답률</th>
-                                <th>서비스레벨<br>호응답률</th>
-                                <th>무효콜비율</th>
-                                <th>~10(초)</th>
-                                <th>~20(초)</th>
-                                <th>~30(초)</th>
-                                <th>~40(초)</th>
-                                <th>40~(초)</th>
-                                <th>~10(초)</th>
-                                <th>~20(초)</th>
-                                <th>~30(초)</th>
-                                <th>~40(초)</th>
-                                <th>40~(초)</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <th>합계</th>
+                                <td>합계</td>
 
-                                <td><span>${inboundData.total}</span></td>
-                                <td><span>${inboundData.onlyRead}</span></td>
-                                <td><span>${inboundData.connReq}</span></td>
-                                <td><span>${inboundData.success}</span></td>
-                                <td><span>${inboundData.cancel}</span></td>
-                                <td><span>${inboundData.callbackSuccess}</span></td>
+                                <td>${inboundData.total}</td>
+                                <td>${inboundData.onlyRead}</td>
+                                <td>${inboundData.connReq}</td>
+                                <td>${inboundData.success}</td>
+                                <td>${inboundData.cancel}</td>
+                                <td>${inboundData.callbackSuccess}</td>
 
-                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(inboundData.billSecSum)}</td>
-                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(inboundData.billSecAvg)}</td>
-                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(inboundData.waitAvg)}</td>
-                                <td>${inboundData.responseRate}%</td>
-                                <td>${inboundData.svcLevelAvg}%</td>
-                                <td>${inboundData.ivrAvg}%</td>
-
+                                <td>${String.format("%.1f", inboundData.responseRate)}%</td>
+                                <td>${String.format("%.1f", inboundData.svcLevelAvg)}%</td>
                                 <td>${inboundData.waitSucc_0_10}</td>
                                 <td>${inboundData.waitSucc_10_20}</td>
                                 <td>${inboundData.waitSucc_20_30}</td>
                                 <td>${inboundData.waitSucc_30_40}</td>
                                 <td>${inboundData.waitSucc_40}</td>
 
+                                <td>${inboundData.cancelAvg}%</td>
                                 <td>${inboundData.waitCancel_0_10}</td>
                                 <td>${inboundData.waitCancel_10_20}</td>
                                 <td>${inboundData.waitCancel_20_30}</td>
                                 <td>${inboundData.waitCancel_30_40}</td>
                                 <td>${inboundData.waitCancel_40}</td>
+
+                                <td>${String.format("%.1f", inboundData.ivrAvg)}%</td>
+                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(inboundData.billSecSum)}</td>
+                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(inboundData.billSecAvg)}</td>
+                                <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(inboundData.waitAvg)}</td>
                             </tr>
                             </tbody>
                         </table>
