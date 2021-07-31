@@ -73,7 +73,7 @@
                     ipccCommunicator.protectArs(data.sound);
 
                 restSelf.post('/api/route-app/', {
-                    type: 'BLACKLIST',
+                    type: 'BLACK',
                     number: data.number,
                     memo: data.memo,
                     uniqueId: data.uniqueId,
