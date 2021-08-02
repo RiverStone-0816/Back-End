@@ -809,13 +809,17 @@
                         )
                         .append(
                             $('<div/>', {class: 'btn-wrap'})
-                                .append($('<span/>', {
-                                    class: 'ui mini label -consultant-status-with-color', 'data-peer': e.peer, css: {visibility: e.peer ? 'visible' : 'hidden'},
-                                    onclick: 'ipccCommunicator.redirect(' + e.extension + ')'
-                                }))
+                                .append($('<span/>', {class: 'ui mini label -consultant-status-with-color', 'data-peer': e.peer, css: {visibility: e.peer ? 'visible' : 'hidden'}}))
                                 .append(
                                     $('<div/>', {class: 'buttons'})
-                                        .append($('<button/>', {type: 'button', class: 'arrow button', 'data-inverted': '', 'data-tooltip': '호전환', 'data-position': 'bottom center'}))
+                                        .append($('<button/>', {
+                                            type: 'button',
+                                            class: 'arrow button',
+                                            'data-inverted': '',
+                                            'data-tooltip': '호전환',
+                                            'data-position': 'bottom center',
+                                            onclick: 'ipccCommunicator.redirect(' + e.extension + ')'
+                                        }))
                                         .append($('<button/>', {
                                             type: 'button', class: 'talk ${user.isTalk.equals('Y') ? 'on' : 'off'} button', click: function () {
                                                 <c:if test="${user.isTalk.equals('Y')}">
