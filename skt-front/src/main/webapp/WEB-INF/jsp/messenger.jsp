@@ -818,7 +818,7 @@
                                             'data-inverted': '',
                                             'data-tooltip': '호전환',
                                             'data-position': 'bottom center',
-                                            onclick: 'ipccCommunicator.redirect(' + e.extension + ')'
+                                            onclick: 'ipccCommunicator.redirect("' + e.extension + '")'
                                         }))
                                         .append($('<button/>', {
                                             type: 'button', class: 'talk ${user.isTalk.equals('Y') ? 'on' : 'off'} button', click: function () {
@@ -1100,7 +1100,7 @@
                                         'data-inverted': '',
                                         'data-tooltip': '호전환',
                                         'data-position': 'bottom center',
-                                        onclick: 'ipccCommunicator.redirect(' + e.extension + ')'
+                                        onclick: 'ipccCommunicator.redirect("' + e.extension + '")'
                                     }))
                                     .append($('<button/>', {
                                         type: 'button', class: 'talk ${user.isTalk.equals('Y') ? 'on' : 'off'} button', click: function () {
