@@ -94,8 +94,9 @@
                 </div>
                 <div class="panel-segment-body overflow-overlay">
                     <div class="area">
-                        <ul class="organization-ul border-bottom-none remove-padding" id="messenger-bookmark-panel"></ul>
-                        <div class="empty">즐겨찾기가 없습니다.</div>
+                        <ul class="organization-ul border-bottom-none remove-padding" id="messenger-bookmark-panel">
+                            <div class="empty">즐겨찾기가 없습니다.</div>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -796,98 +797,104 @@
             const messenger = this;
 
             return restSelf.get('/api/chatt/bookmark-list', null, null, true).done(function (response) {
-                messenger.ui.bookmarkPanel.empty();
-                response.data.map(function (e) {
-                    if (e.id === messenger.me)
-                        return;
+                if (response.data.length > 0) {
+                    messenger.ui.bookmarkPanel.empty();
+                    response.data.map(function (e) {
+                        if (e.id === messenger.me)
+                            return;
 
-                    $('<li/>', {class: '-messenger-bookmark', 'data-id': e.id})
-                        .append(
-                            $('<div/>', {class: 'user-wrap'})
-                                .append($('<span/>', {class: 'user-icon ' + (e.isLoginChatt === 'L' ? 'active' : '')}))
-                                .append($('<text/>', {text: e.idName}))
-                        )
-                        .append(
-                            $('<div/>', {class: 'btn-wrap'})
-                                .append($('<span/>', {class: 'ui mini label -consultant-status-with-color', 'data-peer': e.peer, css: {visibility: e.peer ? 'visible' : 'hidden'}}))
-                                .append(
-                                    $('<div/>', {class: 'buttons'})
-                                        .append($('<button/>', {
-                                            type: 'button',
-                                            class: 'arrow button',
-                                            'data-inverted': '',
-                                            'data-tooltip': '호전환',
-                                            'data-position': 'bottom center',
-                                            onclick: 'ipccCommunicator.redirect("' + e.extension + '")'
-                                        }))
-                                        .append($('<button/>', {
-                                            type: 'button', class: 'talk ${user.isTalk.equals('Y') ? 'on' : 'off'} button', click: function () {
-                                                <c:if test="${user.isTalk.equals('Y')}">
-                                                if ($('#organi-state').hasClass('active'))
-                                                    $('#organi-state').click();
-                                                if ($('#organi-room').hasClass('active'))
-                                                    $('#organi-room').click();
+                        $('<li/>', {class: '-messenger-bookmark', 'data-id': e.id})
+                            .append(
+                                $('<div/>', {class: 'user-wrap'})
+                                    .append($('<span/>', {class: 'user-icon ' + (e.isLoginChatt === 'L' ? 'active' : '')}))
+                                    .append($('<text/>', {text: e.idName}))
+                            )
+                            .append(
+                                $('<div/>', {class: 'btn-wrap'})
+                                    .append($('<span/>', {class: 'ui mini label -consultant-status-with-color', 'data-peer': e.peer, css: {visibility: e.peer ? 'visible' : 'hidden'}}))
+                                    .append(
+                                        $('<div/>', {class: 'buttons'})
+                                            .append($('<button/>', {
+                                                type: 'button',
+                                                class: 'arrow button',
+                                                'data-inverted': '',
+                                                'data-tooltip': '호전환',
+                                                'data-position': 'bottom center',
+                                                onclick: 'ipccCommunicator.redirect("' + e.extension + '")'
+                                            }))
+                                            .append($('<button/>', {
+                                                type: 'button', class: 'talk ${user.isTalk.equals('Y') ? 'on' : 'off'} button', click: function () {
+                                                    <c:if test="${user.isTalk.equals('Y')}">
+                                                    if ($('#organi-state').hasClass('active'))
+                                                        $('#organi-state').click();
+                                                    if ($('#organi-room').hasClass('active'))
+                                                        $('#organi-room').click();
 
-                                                $('.-counsel-content-panel .item[data-tab="talk-panel"]').click();
-                                                $('.item[data-tab="talk-list-type-OTH"]').click();
+                                                    $('.-counsel-content-panel .item[data-tab="talk-panel"]').click();
+                                                    $('.item[data-tab="talk-list-type-OTH"]').click();
 
-                                                const ui = $('#talk-list-panel');
-                                                ui.find('.-search-type').val('userId');
-                                                ui.find('.-search-value').val(e.id);
-                                                ui.find('.-search-button').click();
-                                                </c:if>
-                                                <c:if test="${!user.isTalk.equals('Y')}">
-                                                alert('상담톡 권한이 없습니다.');
-                                                </c:if>
-                                            }
-                                        }))
-                                        .append($('<button/>', {
-                                            type: 'button', class: 'info button', 'data-inverted': '', 'data-tooltip': '정보', 'data-position': 'bottom center', click: function () {
-                                                const modal = $('#user-info-modal');
-                                                e.groupName = messenger.users[e.id].groupName;
-                                                modal.find('.-field').each(function () {
-                                                    $(this).text(e[$(this).attr('data-name')]);
-                                                });
-                                                modal.find('.-extension').attr('onclick', e.extension ? 'ipccCommunicator.clickDial("", "' + e.extension + '")' : '');
-                                                modal.find('.-hp-number').attr('onclick', e.hpNumber ? 'ipccCommunicator.clickDial("", "' + e.hpNumber + '")' : '');
-                                                modal.dragModalShow();
-                                            }
-                                        }))
-                                )
-                        )
-                        .append(
-                            $('<div/>', {class: 'state-wrap'})
-                                .append($('<text/>', {text: '전화'}))
-                                .append($('<span/>', {class: 'num -user-total-call-count', 'data-id': e.id, text: '0'}))
-                                .append($('<text/>', {text: '채팅'}))
-                                .append($('<span/>', {class: 'num -user-total-chat-count', 'data-id': e.id, text: '0'}))
-                        )
-                        .appendTo(messenger.ui.bookmarkPanel)
-                        .click(function (event) {
-                            if (event.ctrlKey) {
-                                $(this).toggleClass('active');
-                            } else {
-                                messenger.ui.organizationPanel.find('.-messenger-user').removeClass('active');
-                                messenger.ui.bookmarkPanel.find('.-messenger-bookmark').removeClass('active');
-                                messenger.ui.organizationPanel.find('.-messenger-folder').removeClass('active');
-                                $(this).addClass('active');
-                            }
-                        })
-                        .dblclick(function () {
-                            const user = $(this).attr('data-id');
-                            if (user === messenger.me)
-                                return;
+                                                    const ui = $('#talk-list-panel');
+                                                    ui.find('.-search-type').val('userId');
+                                                    ui.find('.-search-value').val(e.id);
+                                                    ui.find('.-search-button').click();
+                                                    </c:if>
+                                                    <c:if test="${!user.isTalk.equals('Y')}">
+                                                    alert('상담톡 권한이 없습니다.');
+                                                    </c:if>
+                                                }
+                                            }))
+                                            .append($('<button/>', {
+                                                type: 'button', class: 'info button', 'data-inverted': '', 'data-tooltip': '정보', 'data-position': 'bottom center', click: function () {
+                                                    const modal = $('#user-info-modal');
+                                                    e.groupName = messenger.users[e.id].groupName;
+                                                    modal.find('.-field').each(function () {
+                                                        $(this).text(e[$(this).attr('data-name')]);
+                                                    });
+                                                    modal.find('.-extension').attr('onclick', e.extension ? 'ipccCommunicator.clickDial("", "' + e.extension + '")' : '');
+                                                    modal.find('.-hp-number').attr('onclick', e.hpNumber ? 'ipccCommunicator.clickDial("", "' + e.hpNumber + '")' : '');
+                                                    modal.dragModalShow();
+                                                }
+                                            }))
+                                    )
+                            )
+                            .append(
+                                $('<div/>', {class: 'state-wrap'})
+                                    .append($('<text/>', {text: '전화'}))
+                                    .append($('<span/>', {class: 'num -user-total-call-count', 'data-id': e.id, text: '0'}))
+                                    .append($('<text/>', {text: '채팅'}))
+                                    .append($('<span/>', {class: 'num -user-total-chat-count', 'data-id': e.id, text: '0'}))
+                            )
+                            .appendTo(messenger.ui.bookmarkPanel)
+                            .click(function (event) {
+                                if (event.ctrlKey) {
+                                    $(this).toggleClass('active');
+                                } else {
+                                    messenger.ui.organizationPanel.find('.-messenger-user').removeClass('active');
+                                    messenger.ui.bookmarkPanel.find('.-messenger-bookmark').removeClass('active');
+                                    messenger.ui.organizationPanel.find('.-messenger-folder').removeClass('active');
+                                    $(this).addClass('active');
+                                }
+                            })
+                            .dblclick(function () {
+                                const user = $(this).attr('data-id');
+                                if (user === messenger.me)
+                                    return;
 
-                            const users = [];
-                            users.push($(this).attr('data-id'));
-                            users.push(messenger.me);
+                                const users = [];
+                                users.push($(this).attr('data-id'));
+                                users.push(messenger.me);
 
-                            restSelf.post('/api/chatt/', {memberList: users}).done(function (response) {
-                                messenger.loadRoom(response.data);
+                                restSelf.post('/api/chatt/', {memberList: users}).done(function (response) {
+                                    messenger.loadRoom(response.data);
+                                });
                             });
-                        });
-                });
-                messenger.filterItem();
+                    });
+                    messenger.filterItem();
+                } else {
+                    messenger.ui.bookmarkPanel.empty();
+                    $('<div/>', {class: 'empty'}).append($('<text/>', {text: '즐겨찾기가 없습니다.'})).appendTo(messenger.ui.bookmarkPanel);
+                    messenger.filterItem();
+                }
             });
         };
 

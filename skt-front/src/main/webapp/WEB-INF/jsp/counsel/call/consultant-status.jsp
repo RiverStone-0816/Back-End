@@ -32,7 +32,7 @@
                     <tr>
                         <td>${integrationData.constantStatusCounts.values().stream().sum()}</td>
                         <c:forEach var="e" items="${statusCodes}">
-                            <td>${integrationData.constantStatusCounts.getOrDefault(e.key, 0)}</td>
+                            <td class="-consultant-status-count" data-value="${e.key}">${integrationData.constantStatusCounts.getOrDefault(e.key, 0)}</td>
                         </c:forEach>
                     </tr>
                 </tbody>

@@ -87,7 +87,8 @@ public class MaindbGroupRepository extends EicnBaseRepository<MaindbGroup, kr.co
 
     public void updateGroup(MaindbGroupUpdateRequest formRequest, Integer seq) {
         final CommonType commonType = typeRepository.findOne(formRequest.getMaindbType());
-        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup record = this.findOne(seq);
+
         record.setName(formRequest.getName());
         record.setResultType(formRequest.getResultType());
         record.setCompanyId(getCompanyId());

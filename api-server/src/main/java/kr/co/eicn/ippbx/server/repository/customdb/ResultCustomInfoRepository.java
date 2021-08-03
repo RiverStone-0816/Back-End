@@ -262,8 +262,10 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
                 .execute();
 
         form.setSeq(seq);
-        final Optional<MaindbMultichannelInfoEntity> optionalChannelInfo = Optional.ofNullable(maindbMultichannelInfoService.getRepository().findOne(multichannelInfoTable.MAINDB_CUSTOM_ID.eq(form.getCustomId()).and(multichannelInfoTable.CHANNEL_TYPE.eq("PHONE"))));
-        optionalChannelInfo.ifPresent(e -> form.setCustomNumber(e.getChannelData()));
+        if (StringUtils.isEmpty(form.getCustomNumber())) {
+            final Optional<MaindbMultichannelInfoEntity> optionalChannelInfo = Optional.ofNullable(maindbMultichannelInfoService.getRepository().findAll(multichannelInfoTable.MAINDB_CUSTOM_ID.eq(form.getCustomId()).and(multichannelInfoTable.CHANNEL_TYPE.eq("PHONE"))).get(0));
+            optionalChannelInfo.ifPresent(e -> form.setCustomNumber(e.getChannelData()));
+        }
 
         if (form.getGroupKind() != null && form.getGroupKind().equals("TALK")) {
             currentTalkRoomRepository.updateRoomNameByRoomId(form.getHangupMsg(), form.getRoomName());

@@ -343,7 +343,11 @@ public class MainApiController extends ApiBaseController {
                 .collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo::getSenderKey, e -> e));
 
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
-        final Map<String, String> mainDb = maindbCustomInfoService.getRepository().findAll().stream().collect(Collectors.toMap(MaindbCustomInfoEntity::getMaindbSysCustomId, MaindbCustomInfoEntity::getMaindbString_1));
+        final Map<String, String> mainDb = maindbCustomInfoService.getRepository().findAll().stream().map(e -> {
+            if (Objects.isNull(e.getMaindbString_1()))
+                e.setMaindbString_1("");
+            return e;
+        }).collect(Collectors.toMap(MaindbCustomInfoEntity::getMaindbSysCustomId, MaindbCustomInfoEntity::getMaindbString_1));
         final List<TalkCurrentListResponse> response = currentTalkRoomRepository.findAll().stream()
                 .filter(e -> {
                     if (Objects.equals(search.getMode(), "MY") && !(Objects.equals(e.getUserid(), g.getUser().getId()) && !Objects.equals(e.getRoomStatus(), "E")))

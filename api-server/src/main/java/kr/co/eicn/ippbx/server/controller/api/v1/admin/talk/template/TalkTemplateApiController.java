@@ -49,12 +49,12 @@ public class TalkTemplateApiController extends ApiBaseController {
 
     //리스트
     @GetMapping("")
-    public ResponseEntity<JsonResult<List<TalkTemplateSummaryResponse>>> list(TemplateSearchRequest search) {
+    public ResponseEntity<JsonResult<List<TalkTemplateSummaryResponse>>> list() {
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
         final Map<String, String> companyInfoMap = companyInfoRepository.findAll().stream().collect(Collectors.toMap(CompanyInfo::getCompanyId, CompanyInfo::getCompanyName));
         final Map<String, CompanyTree> companyTreeMap = organizationService.getAllCompanyTrees().stream().collect(Collectors.toMap(CompanyTree::getGroupCode, e -> e));
 
-        final List<TalkTemplateSummaryResponse> list = repository.list(search).stream()
+        final List<TalkTemplateSummaryResponse> list = repository.list().stream()
                 .map((e) -> {
                     final TalkTemplateSummaryResponse talkTemplateSummaryResponse = convertDto(e, TalkTemplateSummaryResponse.class);
                     talkTemplateSummaryResponse.setWriteUserName(Objects.nonNull(personListMap.get(e.getWriteUserid()))
