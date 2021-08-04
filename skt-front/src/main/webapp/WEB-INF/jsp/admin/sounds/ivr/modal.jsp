@@ -69,10 +69,12 @@
                     </div>
                     <div class="twelve wide column">
                         <div class="ui form">
-                            <form:select path="introSoundCode">
+                            <form:select path="introSoundCode" >
                                 <form:option value="" label="선택안함"/>
                                 <form:option value="TTS" label="TTS입력"/>
-                                <form:options items="${sounds}"/>
+                                <c:forEach var="e" items="${sounds}">
+                                    <form:option value="${e.seq}" label="${e.soundName}"/>
+                                </c:forEach>
                             </form:select>
                         </div>
                     </div>
@@ -126,7 +128,9 @@
                                 <form:option value="" label="선택안함"/>
                             </c:if>
                             <form:option value="TTS" label="TTS입력"/>
-                            <form:options items="${sounds}"/>
+                            <c:forEach var="e" items="${sounds}">
+                                <form:option value="${e.seq}" label="${e.soundName}"/>
+                            </c:forEach>
                         </form:select>
                     </div>
                 </div>
@@ -164,7 +168,7 @@
                             <select name="typeDataStrings" data-multiple="multiple">
                                 <option value="" label="선택안함"></option>
                                 <c:forEach var="e" items="${queues}">
-                                    <option value="${e.key}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[form.type == CONNECT_HUNT_NUMBER ? 0 : 1] == e.key ? 'selected' : ''}>${g.htmlQuote(e.value)}</option>
+                                    <option value="${e.number}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[form.type == CONNECT_HUNT_NUMBER ? 0 : 1] == e.number ? 'selected' : ''}>${g.htmlQuote(e.hanName)}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -176,7 +180,7 @@
                     <div class="four wide column"><label class="control-label">내선번호선택(*)</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
-                            <select name="typeDataStrings" data-multiple="multiple">
+                            <select name="typeDataStrings" data-multiple="multiple" id="wantsort">
                                 <option value="" label="선택안함"></option>
                                 <c:forEach var="e" items="${extensions}">
                                     <option value="${e.key}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[0] == e.key ? 'selected' : ''}>${g.htmlQuote(e.value)}[${e.key}]</option>
@@ -398,4 +402,21 @@
 
         loadRootIvrTree(${form.rootSeq != null ? form.rootSeq : 'response.data'});
     };
+
+/*    function sortSelect(wantsort) {
+        var sel = $('#wantsort'); var optionList = sel.find('option');
+        optionList.sort(function(a, b){
+            if (a.text > b.text) return 1;
+            else if (a.text < b.text) return -1; else { if (a.value > b.value) return 1;
+                else if (a.value < b.value) return -1; else return 0; } });
+        sel.html(optionList); }
+
+    $(document).ready(function(){ sortSelect('wantsort'); });*/
+    var options = $("#wantsort option");                    // Collect options
+    options.detach().sort(function(a,b) {               // Detach from select, then Sort
+        var at = $(a).text();
+        var bt = $(b).text();
+        return (at > bt)?1:((at < bt)?-1:0);            // Tell the sort function how to order
+    });
+    options.appendTo("#wantsort");
 </script>

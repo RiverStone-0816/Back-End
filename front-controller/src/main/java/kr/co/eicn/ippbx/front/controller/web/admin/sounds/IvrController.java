@@ -10,6 +10,7 @@ import kr.co.eicn.ippbx.front.service.api.sounds.schedule.OutboundWeekScheduleAp
 import kr.co.eicn.ippbx.front.service.api.sounds.schedule.ScheduleGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.user.tel.NumberApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchQueueResponse;
 import kr.co.eicn.ippbx.model.enums.IsWebVoiceYn;
@@ -33,7 +34,9 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import static java.util.Comparator.comparing;
 import static org.apache.commons.lang3.StringUtils.defaultString;
 
 /**
@@ -85,12 +88,12 @@ public class IvrController extends BaseController {
     public String modal(Model model, @ModelAttribute("form") IvrFormRequest form) throws IOException, ResultFailException {
         model.addAttribute("typeName", FormUtils.optionsOfCode(IvrMenuType.class).get(form.getType()));
 
-        final Map<Integer, String> sounds = scheduleGroupApiInterface.addSoundList().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName));
-        model.addAttribute("sounds", sounds);
+/*        scheduleGroupApiInterface.addSoundList().stream().sorted(comparing(SummarySoundListResponse::getSoundName)).forEach(SummarySoundListResponse::getSoundName);*/
+        model.addAttribute("sounds", scheduleGroupApiInterface.addSoundList());
         final Map<String, String> serviceNumbers = numberApiInterface.list(new NumberSearchRequest(NumberType.SERVICE.getCode())).stream().collect(Collectors.toMap(NumberSummaryResponse::getNumber, NumberSummaryResponse::getNumber));
         model.addAttribute("serviceNumbers", serviceNumbers);
-        final Map<String, String> queues = gradelistApiInterface.queues().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName));
-        model.addAttribute("queues", queues);
+       //final Map<String, String> queues = gradelistApiInterface.queues().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName));
+        model.addAttribute("queues", gradelistApiInterface.queues());
         final Map<String, String> contexts = queueApiInterface.context().stream().collect(Collectors.toMap(SummaryContextInfoResponse::getContext, SummaryContextInfoResponse::getName));
         model.addAttribute("contexts", contexts);
         final Map<String, String> extensions = outboundWeekScheduleApiInterface.addExtensions().stream().collect(Collectors.toMap(SummaryPhoneInfoResponse::getExtension, e -> defaultString(e.getInUseIdName())));

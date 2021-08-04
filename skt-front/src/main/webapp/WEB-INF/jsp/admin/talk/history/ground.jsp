@@ -35,7 +35,7 @@
                             <tr>
                                 <th>업로드날짜</th>
                                 <td colspan="7" class="-buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
-                                    <div class="ui action input calendar-area">
+                                    <div cl`ass="ui action input calendar-area">
                                         <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
                                         <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
