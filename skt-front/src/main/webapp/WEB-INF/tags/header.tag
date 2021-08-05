@@ -141,7 +141,7 @@
 
             main.toggleClass('change-mode');
             if (main.is('.change-mode')) { // 상담모드
-                $('#mode').text('상담모드');
+                $('#mode').text('관리모드');
                 $('.-admin-panel').hide();
                 $('.-counsel-panel').show();
 
@@ -151,7 +151,7 @@
                     menus.filter('[data-type=COUNSEL]').click();
                 }
             } else {
-                $('#mode').text('관리모드');
+                $('#mode').text('상담모드');
                 $('.-admin-panel').show();
                 $('.-counsel-panel').hide();
             }

@@ -96,7 +96,7 @@
                     <div class="four wide column"><label class="control-label">예외컨텍스트선택(*)</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
-                            <select name="typeDataStrings" data-multiple="multiple">
+                            <select name="typeDataStrings" data-multiple="multiple" class="wantsort2">
                                 <option value="">선택안함</option>
                                 <c:forEach var="e" items="${contexts}">
                                     <option value="${e.key}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[0] == e.key ? 'selected' : ''}>${g.htmlQuote(e.value)}</option>
@@ -149,7 +149,7 @@
                     <div class="four wide column"><label class="control-label">대표번호선택(*)</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
-                            <select name="typeDataStrings" data-multiple="multiple">
+                            <select name="typeDataStrings" data-multiple="multiple" class="wantsort">
                                 <option value="">선택안함</option>
                                 <c:forEach var="e" items="${serviceNumbers}">
                                     <option value="${e.key}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[form.type == CONNECT_REPRESENTABLE_NUMBER ? 0 : 1] == e.key ? 'selected' : ''}>${g.htmlQuote(e.value)}</option>
@@ -180,7 +180,7 @@
                     <div class="four wide column"><label class="control-label">내선번호선택(*)</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
-                            <select name="typeDataStrings" data-multiple="multiple" id="wantsort">
+                            <select name="typeDataStrings" data-multiple="multiple" class="wantsort">
                                 <option value="" label="선택안함"></option>
                                 <c:forEach var="e" items="${extensions}">
                                     <option value="${e.key}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[0] == e.key ? 'selected' : ''}>${g.htmlQuote(e.value)}[${e.key}]</option>
@@ -412,11 +412,19 @@
         sel.html(optionList); }
 
     $(document).ready(function(){ sortSelect('wantsort'); });*/
-    var options = $("#wantsort option");                    // Collect options
+    var options = $(".wantsort option");                    // Collect options
     options.detach().sort(function(a,b) {               // Detach from select, then Sort
         var at = $(a).text();
         var bt = $(b).text();
         return (at > bt)?1:((at < bt)?-1:0);            // Tell the sort function how to order
     });
-    options.appendTo("#wantsort");
+    options.appendTo(".wantsort");
+
+    var options = $(".wantsort2 option");                    // Collect options
+    options.detach().sort(function(a,b) {               // Detach from select, then Sort
+        var at = $(a).text();
+        var bt = $(b).text();
+        return (at > bt)?1:((at < bt)?-1:0);            // Tell the sort function how to order
+    });
+    options.appendTo(".wantsort2");
 </script>
