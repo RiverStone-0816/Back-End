@@ -37,7 +37,7 @@
                                 <th>유형</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <form:select path="type">
+                                        <form:select path="type" id="selecttype">
                                             <form:option value="" label="전체"/>
                                             <form:options items="${types}"/>
                                         </form:select>
@@ -46,19 +46,28 @@
                                 <th>유형데이터</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <form:input path="metaType"/>
+                                        <form:select path="metaType">
+                                            <form:option value="" label="전체"/>
+                                            <form:options items="${metaTypeLists}"/>
+                                        </form:select>
                                     </div>
                                 </td>
                                 <th>작성자</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <form:input path="userName"/>
+                                        <form:select path="userName">
+                                            <form:option value="" label="전체"/>
+                                            <form:options items="${writeUserId}"/>
+                                        </form:select>
                                     </div>
                                 </td>
                                 <th>템플릿명</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <form:input path="mentName"/>
+                                        <form:select path="mentName">
+                                            <form:option value="" label="전체"/>
+                                            <form:options items="${mentName}"/>
+                                        </form:select>
                                     </div>
                                 </td>
                             </tr>
@@ -153,6 +162,22 @@
                     });
                 });
             }
+
+            $.find('[name=type]').change(function () {
+                if ($(this).val() === 'G') {
+                    $.find('[name=metaType]').show();
+                } else {
+                    $.find('[name=metaType]').hide();
+                }
+            }).change();
+
+            window.prepareWriteForm = function (data) {
+                if (data.type === 'P')
+                    data.typeData = '${g.user.id}';
+                if (data.type === 'C')
+                    data.typeData = '${g.user.companyId}';
+            };
+
         </script>
     </tags:scripts>
 </tags:tabContentLayout>

@@ -6,6 +6,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="input" uri="http://www.springframework.org/tags/form" %>
 
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
 <%--@elvariable id="menu" type="kr.co.eicn.ippbx.front.model.CurrentUserMenu"--%>
@@ -47,10 +48,13 @@
                                 <td colspan="3">
                                     <div class="ui action input calendar-area">
                                         <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                        <button type="button" class="ui basic button -click-prev" Class=".-datepicker"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                         <span class="tilde">~</span>
                                         <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                       <%-- <input:button Class="-datepicker" type="button">
+                                            <img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar">
+                                        </input:button>--%>
+                                        <button type="button" class="ui basic button -click-prev -datepicker hasDatepicker"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                     </div>
                                 </td>
                             </tr>

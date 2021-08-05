@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author tinywind
@@ -53,6 +54,15 @@ public class TalkTemplateController extends BaseController {
         model.addAttribute("metaTypeList", metaTypeList);
 
         model.addAttribute("types", FormUtils.options(TalkTemplate.class));
+
+        final Map<Integer, String> metaTypeLists =  apiInterface.list(search).stream().collect(Collectors.toMap(TalkTemplateSummaryResponse::getSeq,TalkTemplateSummaryResponse::getTypeData));
+        model.addAttribute("metaTypeLists", metaTypeLists);
+
+        final Map<Integer, String> writeUserId =  apiInterface.list(search).stream().collect(Collectors.toMap(TalkTemplateSummaryResponse::getSeq,TalkTemplateSummaryResponse::getWriteUserid));
+        model.addAttribute("writeUserId", writeUserId);
+
+        final Map<Integer, String> mentName =  apiInterface.list(search).stream().collect(Collectors.toMap(TalkTemplateSummaryResponse::getSeq,TalkTemplateSummaryResponse::getMentName));
+        model.addAttribute("mentName", mentName);
 
         return "admin/talk/template/ground";
     }
