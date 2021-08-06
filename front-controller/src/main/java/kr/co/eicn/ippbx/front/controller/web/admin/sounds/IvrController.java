@@ -88,11 +88,9 @@ public class IvrController extends BaseController {
     public String modal(Model model, @ModelAttribute("form") IvrFormRequest form) throws IOException, ResultFailException {
         model.addAttribute("typeName", FormUtils.optionsOfCode(IvrMenuType.class).get(form.getType()));
 
-/*        scheduleGroupApiInterface.addSoundList().stream().sorted(comparing(SummarySoundListResponse::getSoundName)).forEach(SummarySoundListResponse::getSoundName);*/
         model.addAttribute("sounds", scheduleGroupApiInterface.addSoundList());
         final Map<String, String> serviceNumbers = numberApiInterface.list(new NumberSearchRequest(NumberType.SERVICE.getCode())).stream().collect(Collectors.toMap(NumberSummaryResponse::getNumber, NumberSummaryResponse::getNumber));
         model.addAttribute("serviceNumbers", serviceNumbers);
-       //final Map<String, String> queues = gradelistApiInterface.queues().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName));
         model.addAttribute("queues", gradelistApiInterface.queues());
         final Map<String, String> contexts = queueApiInterface.context().stream().collect(Collectors.toMap(SummaryContextInfoResponse::getContext, SummaryContextInfoResponse::getName));
         model.addAttribute("contexts", contexts);
