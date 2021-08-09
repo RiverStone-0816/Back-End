@@ -11,6 +11,7 @@ import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkTemplateSummaryResponse;
 import kr.co.eicn.ippbx.model.enums.TalkTemplate;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +46,8 @@ public class TalkTemplateController extends BaseController {
 
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") TemplateSearchRequest search) throws IOException, ResultFailException {
-        final List<TalkTemplateSummaryResponse> list = apiInterface.list(search);
-        model.addAttribute("list", list);
+        final Pagination<TalkTemplateSummaryResponse> pagination = apiInterface.getPagination(search);
+        model.addAttribute("pagination", pagination);
 
         final Map<String, String> templateTypes = FormUtils.optionsOfCode(TalkTemplate.class);
         model.addAttribute("templateTypes", templateTypes);
@@ -55,7 +57,30 @@ public class TalkTemplateController extends BaseController {
 
         model.addAttribute("types", FormUtils.options(TalkTemplate.class));
 
-        final Map<Integer, String> metaTypeLists =  apiInterface.list(search).stream().collect(Collectors.toMap(TalkTemplateSummaryResponse::getSeq,TalkTemplateSummaryResponse::getTypeData));
+        Map<Integer, String> metaTypeListG = new HashMap<>();
+        Map<Integer, String> metaTypeListC = new HashMap<>();
+        Map<Integer, String> metaTypeListP = new HashMap<>();
+
+        apiInterface.list(search).forEach(e -> {
+                if(e.getType().equals("G"))
+                    metaTypeListG.put(e.getSeq(),e.getTypeData());
+                if(e.getType().equals("C"))
+                    metaTypeListC.put(e.getSeq(),e.getTypeData());
+                if(e.getType().equals("P"))
+                    metaTypeListP.put(e.getSeq(),e.getTypeData());
+            }
+        );
+
+        model.addAttribute("metaTypeListG", metaTypeListG);
+        model.addAttribute("metaTypeListC", metaTypeListC);
+        model.addAttribute("metaTypeListP", metaTypeListP);
+
+        final Map<String,Map<Integer, String>> metaTypeLists = new HashMap<>();
+
+        metaTypeLists.put("G",metaTypeListG);
+        metaTypeLists.put("C",metaTypeListC);
+        metaTypeLists.put("P",metaTypeListP);
+
         model.addAttribute("metaTypeLists", metaTypeLists);
 
         final Map<Integer, String> writeUserId =  apiInterface.list(search).stream().collect(Collectors.toMap(TalkTemplateSummaryResponse::getSeq,TalkTemplateSummaryResponse::getWriteUserid));

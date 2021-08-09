@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.template;
 
+import kr.co.eicn.ippbx.model.entity.eicn.TalkTemplateEntity;
 import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
@@ -15,6 +16,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.TalkTemplateRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
@@ -48,7 +50,7 @@ public class TalkTemplateApiController extends ApiBaseController {
     private final OrganizationService organizationService;
 
     //리스트
-    @GetMapping("")
+    @GetMapping("list")
     public ResponseEntity<JsonResult<List<TalkTemplateSummaryResponse>>> list() {
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
         final Map<String, String> companyInfoMap = companyInfoRepository.findAll().stream().collect(Collectors.toMap(CompanyInfo::getCompanyId, CompanyInfo::getCompanyName));
@@ -77,6 +79,39 @@ public class TalkTemplateApiController extends ApiBaseController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(data(list));
+    }
+
+    @GetMapping("")
+    public ResponseEntity<JsonResult<Pagination<TalkTemplateSummaryResponse>>> getPagination(TemplateSearchRequest search) {
+        final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+        final Map<String, String> companyInfoMap = companyInfoRepository.findAll().stream().collect(Collectors.toMap(CompanyInfo::getCompanyId, CompanyInfo::getCompanyName));
+        final Map<String, CompanyTree> companyTreeMap = organizationService.getAllCompanyTrees().stream().collect(Collectors.toMap(CompanyTree::getGroupCode, e -> e));
+
+        final Pagination<TalkTemplateEntity> pagination = repository.pagination(search);
+
+        final List<TalkTemplateSummaryResponse> rows = pagination.getRows().stream()
+                .map((e) -> {
+                    final TalkTemplateSummaryResponse talkTemplateSummaryResponse = convertDto(e, TalkTemplateSummaryResponse.class);
+                    talkTemplateSummaryResponse.setWriteUserName(Objects.nonNull(personListMap.get(e.getWriteUserid()))
+                            ? personListMap.get(e.getWriteUserid()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
+
+                    if (Objects.equals(TalkTemplate.PERSON.getCode(), e.getType()))
+                        talkTemplateSummaryResponse.setTypeData(Objects.nonNull(personListMap.get(e.getTypeData())) ?
+                                personListMap.get(e.getTypeData()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
+                    else if (Objects.equals(TalkTemplate.COMPANY.getCode(), e.getType()))
+                        talkTemplateSummaryResponse.setTypeData(companyInfoMap.get(e.getTypeData()));
+                    else {
+                        if (Objects.nonNull(companyTreeMap.get(e.getTypeData()))) {
+                            final CompanyTree companyTree = companyTreeMap.get(e.getTypeData());
+                            talkTemplateSummaryResponse.setTypeData(companyTree.getGroupName());
+                            talkTemplateSummaryResponse.setCompanyTreeLevel(companyTree.getGroupLevel());
+                        }
+                    }
+                    return talkTemplateSummaryResponse;
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(data(new Pagination<>(rows, pagination.getPage(), pagination.getTotalCount(),search.getLimit())));
     }
 
     //수정을 위한 SEQ조회

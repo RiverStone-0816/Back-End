@@ -12,7 +12,8 @@
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
-
+<%--<meta name="_csrf" th:content="${_csrf.token}"/>
+<meta name="_csrf_header" th:content='${_csrf.headerName}'/>--%>
 <tags:tabContentLayout>
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/talk/template/"/>
@@ -37,19 +38,46 @@
                                 <th>유형</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <form:select path="type" id="selecttype">
+                                        <form:select path="type" >
                                             <form:option value="" label="전체"/>
-                                            <form:options items="${types}"/>
+                                            <form:options items="${templateTypes}"/>
                                         </form:select>
                                     </div>
                                 </td>
                                 <th>유형데이터</th>
                                 <td colspan="3">
                                     <div class="ui form">
-                                        <form:select path="metaType">
+
+                     <%--                   <form:select path="metaType" >
                                             <form:option value="" label="전체"/>
-                                            <form:options items="${metaTypeLists}"/>
+                                            <form:options items="${metaTypeLists.get('P')}"/>
+                                        </form:select>--%>
+
+                                  <%--     <form:select path="metaType" id="selecttype">
+                                           <c:set var="Mytype">
+                                            <c:choose>
+                                                 <c:when test='${Mytype.equals("C")}'>
+                                                      <form:option value="" label="전체"/>
+                                                      <form:options items="${metaTypeList.get('C')}"/>
+                                                 </c:when>
+                                                <c:when test='${Mytype.equals("G")}'>
+                                                    <form:option value="" label="전체"/>
+                                                    <form:options items="${metaTypeList.get('G')}"/>
+                                                </c:when>
+                                                <c:when test='${Mytype.equals("P")}'>
+                                                    <form:option value="" label="전체"/>
+                                                    <form:options items="${metaTypeList.get('P')}"/>
+                                                </c:when>
+                                            </c:choose>
+                                            </c:set>
                                         </form:select>
+--%>
+                                           <form:select path="metaType" >
+                                                          <form:option value="" label="전체"/>
+                                                           <form:options class="meta1" items="${metaTypeList.get('C')}"/>
+                                                           <form:options class="meta2" items="${metaTypeList.get('G')}"/>
+                                                           <form:options class="meta3" items="${metaTypeList.get('P')}"/>
+                                           </form:select>
                                     </div>
                                 </td>
                                 <th>작성자</th>
@@ -85,7 +113,7 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-total-count">전체 <span class="text-primary">${list.size()}</span> 건</h3>
+                        <h3 class="panel-total-count">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
                         <div class="ui basic buttons">
                             <button type="button" class="ui button" onclick="popupModal()">추가</button>
                             <button type="button" class="ui button -control-entity" data-entity="TalkTemplate" style="display: none;" onclick="popupModal(getEntityId('TalkTemplate'))">수정</button>
@@ -94,7 +122,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table num-tbl unstackable ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkTemplate">
+                    <table class="ui celled table num-tbl unstackable ${pagination.rows.size()> 0 ? "selectable-only" : null}" data-entity="TalkTemplate">
                         <thead>
                         <tr>
                             <th>선택</th>
@@ -108,8 +136,8 @@
                         </thead>
                         <tbody>
                         <c:choose>
-                            <c:when test="${list.size() > 0}">
-                                <c:forEach var="e" items="${list}" varStatus="status">
+                            <c:when test="${pagination.rows.size()> 0}">
+                                <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${e.seq}">
                                         <td>
                                             <div class="ui radio checkbox">
@@ -144,6 +172,9 @@
                         </c:choose>
                         </tbody>
                     </table>
+                    <div class="panel-footer">
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/talk/template/" pageForm="${search}"/>
+                    </div>
                 </div>
             </div>
         </div>
@@ -163,11 +194,21 @@
                 });
             }
 
-            $.find('[name=type]').change(function () {
+          const modal = $(document);
+
+
+            /*   var Mytype=  '${Mytype}';*/
+
+            modal.find('[name=type]').change(function () {
+                console.log("안녕2");
                 if ($(this).val() === 'G') {
-                    $.find('[name=metaType]').show();
+                  /*  Mytype="G";*/
+                    console.log("안녕");
+                    $('.meta1').hide();
+                    $('.meta2').show();
+                    $('.meta3').hide();
                 } else {
-                    $.find('[name=metaType]').hide();
+                  /*  $.find('[name=metaType]').hide();*/
                 }
             }).change();
 
@@ -177,6 +218,38 @@
                 if (data.type === 'C')
                     data.typeData = '${g.user.companyId}';
             };
+
+       /*     const fieldToRelatedField = {
+                <c:forEach var="e" items="${metaTypeList}">
+
+                </c:forEach>
+            };*/
+
+            ui.find('select').change(function () {
+                const selectName = $(this).attr('name');
+                if (!selectName)
+                    return;
+
+                const dbName = convertToDbTypeFieldId(selectName);
+                const parentValue = $(this).val();
+
+                if (!fieldToRelatedField[dbName])
+                    return;
+
+                const relatedField = ui.find('[name="' + convertToFormFieldId(fieldToRelatedField[dbName]) + '"]');
+                const preValue = relatedField.val();
+
+                relatedField.empty()
+                    .append($('<option/>', {value: '', text: ''}));
+                fields[fieldToRelatedField[dbName]].map(function (o) {
+                    if (o.value.indexOf(parentValue) !== 0)
+                        return;
+
+                    relatedField.append($('<option/>', {value: o.value, text: o.text}).prop('selected', o.value === preValue));
+                });
+                relatedField.change();
+            });
+
 
         </script>
     </tags:scripts>
