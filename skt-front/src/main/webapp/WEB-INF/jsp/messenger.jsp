@@ -78,10 +78,12 @@
             <text>조직도</text>
             <div class="btn-wrap">
                 <button type="button" class="ui basic button" id="organi-state">현황</button>
+                <c:if test="${user.isChatt.equals('Y')}">
                 <button type="button" class="ui basic button" id="organi-room">
                     <text class="message-indicator">0</text>
                     <text>대화방</text>
                 </button>
+                </c:if>
             </div>
             <div class="state-header">현황</div>
             <button class="state-header-close"></button>
@@ -104,7 +106,9 @@
             <div class="panel-segment list">
                 <div class="panel-segment-header">
                     <text>조직도</text>
+                    <c:if test="${user.isChatt.equals('Y')}">
                     <button type="button" class="ui basic mini button" onclick="messenger.openRoomFromOrganization()">선택대화</button>
+                    </c:if>
                 </div>
                 <div class="panel-segment-body overflow-overlay">
                     <div class="area" id="messenger-organization-panel"></div>
@@ -876,6 +880,10 @@
                                 }
                             })
                             .dblclick(function () {
+                                const isChatt = 'Y' === '${user.isChatt}';
+                                if (!isChatt)
+                                    return;
+
                                 const user = $(this).attr('data-id');
                                 if (user === messenger.me)
                                     return;
@@ -1195,6 +1203,10 @@
                         }
                     })
                     .dblclick(function () {
+                        const isChatt = 'Y' === '${user.isChatt}';
+                        if (!isChatt)
+                            return;
+
                         const user = $(this).attr('data-id');
                         if (user === messenger.me)
                             return;

@@ -527,12 +527,14 @@
                     };
                 </script>
                 <script src="<c:url value="/resources/ipcc-messenger/js/callcontrol.js?version=${version}"/>"></script>
+                <c:if test="${user.isChatt.equals('Y')}">
                 <script>
                     if (window.isElectron)
                         $('head').append('<script src="<c:url value="/resources/ipcc-messenger/js/electron/Messenger.electron.js?version=${version}"/>"><\/script>')
                     else
                         $('head').append('<script src="<c:url value="/resources/ipcc-messenger/js/Messenger.js?version=${version}"/>"><\/script>')
                 </script>
+                </c:if>
                 <script>
                     function updateUserStatus(userId, status) {
                         const dom = $('.-status-icon').filter(function () {
