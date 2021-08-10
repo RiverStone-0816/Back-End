@@ -12,6 +12,7 @@ public class PersonSummaryResponse {
 	private String idName;  // 한글이름
 	private String extension; // 내선번호
 	private String companyId; // 고객사 아이디
+	private String idStatus; //id 상태
 
 	private List<OrganizationSummaryResponse> companyTrees; // 조직 정보
 	private String listeningRecordingAuthority; // 녹취권한 듣기

@@ -257,7 +257,8 @@
 
                 if (statusCodes.hasOwnProperty(status)) {
                     const isPds = statusCodes[status] === 'PDS';
-
+                    const pdsChk = '${user.isPds}';
+                    if(pdsChk !== 'Y' && isPds) continue;
                     $('<button/>', {
                         type: 'button',
                         class: "ui button small -member-status " + (isPds ? 'status-is-pds' : ''),

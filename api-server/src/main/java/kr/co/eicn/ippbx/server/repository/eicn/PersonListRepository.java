@@ -98,6 +98,7 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
     public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList findOneById(final String id) {
         return dsl.selectFrom(PERSON_LIST)
                 .where(PERSON_LIST.ID.eq(id))
+                .and(PERSON_LIST.ID_STATUS.eq(""))
                 .fetchOneInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList.class);
     }
 
