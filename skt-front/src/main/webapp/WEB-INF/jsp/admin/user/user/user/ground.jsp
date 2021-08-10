@@ -126,6 +126,7 @@
                             </th>
                             <th rowspan="2">녹취권한[듣기][다운][삭제]</th>
                             <th colspan="4">라이센스 할당 여부</th>
+                            <th rowspan="2">근무상태</th>
                         </tr>
                         <tr>
                             <c:if test="${services.contains('APP') || services.contains('API')}">
@@ -209,6 +210,7 @@
                                         <c:if test="${services.contains('PDS')}">
                                             <td>${e.isPds == 'Y' ? '허용됨' : '허용되지 않음'}</td>
                                         </c:if>
+                                        <td>${e.idStatus == 'X' ? '퇴사' : e.idStatus == 'S' ? '휴직' : '정상'}</td>
                                     </tr>
                                 </c:forEach>
                             </c:when>
