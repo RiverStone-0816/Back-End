@@ -1,13 +1,12 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkTemplate;
-import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.TalkTemplateEntity;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
-import kr.co.eicn.ippbx.model.search.MaindbDataSearchRequest;
 import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.SelectConditionStep;
@@ -17,15 +16,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.COMMON_TYPE;
-import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.MAINDB_GROUP;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkTemplate.TALK_TEMPLATE;
-import static org.jooq.impl.DSL.noCondition;
 
 @Getter
 @Repository
@@ -68,13 +63,18 @@ public class TalkTemplateRepository extends EicnBaseRepository<TalkTemplate, Tal
 	private List<Condition> conditions(TemplateSearchRequest search) {
 		final List<Condition> conditions = new ArrayList<>();
 
-		if (Objects.nonNull(search.getType()))
-			conditions.add(TALK_TEMPLATE.TYPE.eq(search.getType().getCode()));
-		if (Objects.nonNull(search.getMetaType()) && !search.getMetaType().equals(""))
+		if (search.getType() != null && kr.co.eicn.ippbx.model.enums.TalkTemplate.PERSON.getCode().equals(search.getType()))
+			conditions.add(TALK_TEMPLATE.TYPE.eq(search.getType()));
+		else if(search.getType() != null && kr.co.eicn.ippbx.model.enums.TalkTemplate.GROUP.getCode().equals(search.getType()))
+			conditions.add(TALK_TEMPLATE.TYPE.eq(search.getType()));
+		else if(search.getType() != null && kr.co.eicn.ippbx.model.enums.TalkTemplate.COMPANY.getCode().equals(search.getType()))
+			conditions.add(TALK_TEMPLATE.TYPE.eq(search.getType()));
+
+		if (StringUtils.isNotEmpty(search.getMetaType()))
 			conditions.add(TALK_TEMPLATE.TYPE_DATA.eq(search.getMetaType()));
-		if (Objects.nonNull(search.getUserName()) && !search.getUserName().equals(""))
+		if (StringUtils.isNotEmpty(search.getUserName()))
 			conditions.add(PERSON_LIST.ID_NAME.eq(search.getUserName()));
-		if (Objects.nonNull(search.getMentName()) && !search.getMentName().equals(""))
+		if (StringUtils.isNotEmpty(search.getMentName()))
 			conditions.add(TALK_TEMPLATE.MENT_NAME.eq(search.getMentName()));
 
 		return conditions;

@@ -7,6 +7,7 @@ import kr.co.eicn.ippbx.front.service.api.talk.TalkTemplateApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkTemplateSummaryResponse;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
 import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.List;
 
 /**
  * @author tinywind
@@ -30,9 +30,14 @@ public class TalkTemplateApiController extends BaseController {
     @Autowired
     private TalkTemplateApiInterface apiInterface;
 
-    @GetMapping("")
+/*    @GetMapping("")
     public List<TalkTemplateSummaryResponse> list(TemplateSearchRequest search) throws IOException, ResultFailException {
         return apiInterface.list(search);
+    }*/
+
+    @GetMapping("")
+    public Pagination<TalkTemplateSummaryResponse> getPagination(@Valid @RequestBody TemplateSearchRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
+        return apiInterface.getPagination(form);
     }
 
     @GetMapping("{seq}")

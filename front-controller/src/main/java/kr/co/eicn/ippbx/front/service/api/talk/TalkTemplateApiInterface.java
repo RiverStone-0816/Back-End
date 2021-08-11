@@ -40,8 +40,8 @@ public class TalkTemplateApiInterface extends ApiServerInterface {
         delete(subUrl + seq);
     }
 
-    public Pagination<TalkTemplateSummaryResponse> getPagination(TemplateSearchRequest form) throws java.io.IOException, ResultFailException {
-        return getPagination(subUrl, form, TalkTemplateSummaryResponse.class).getData();
+    public Pagination<TalkTemplateSummaryResponse> getPagination(TemplateSearchRequest search) throws java.io.IOException, ResultFailException {
+        return getPagination(subUrl, search, TalkTemplateSummaryResponse.class).getData();
     }
 
 }

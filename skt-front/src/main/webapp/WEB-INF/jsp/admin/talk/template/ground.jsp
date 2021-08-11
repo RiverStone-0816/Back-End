@@ -74,9 +74,6 @@
 --%>
                                            <form:select path="metaType" >
                                                           <form:option value="" label="전체"/>
-                                                           <form:options class="meta1" items="${metaTypeList.get('C')}"/>
-                                                           <form:options class="meta2" items="${metaTypeList.get('G')}"/>
-                                                           <form:options class="meta3" items="${metaTypeList.get('P')}"/>
                                            </form:select>
                                     </div>
                                 </td>
@@ -113,12 +110,15 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-total-count">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
+                          <h3 class="panel-total-count">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
                         <div class="ui basic buttons">
                             <button type="button" class="ui button" onclick="popupModal()">추가</button>
                             <button type="button" class="ui button -control-entity" data-entity="TalkTemplate" style="display: none;" onclick="popupModal(getEntityId('TalkTemplate'))">수정</button>
                             <button type="button" class="ui button -control-entity" data-entity="TalkTemplate" style="display: none;" onclick="deleteEntity(getEntityId('TalkTemplate'))">삭제</button>
                         </div>
+                    </div>
+                    <div class="pull-right">
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/talk/template/" pageForm="${search}"/>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -173,8 +173,7 @@
                         </tbody>
                     </table>
                     <div class="panel-footer">
-                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/talk/template/" pageForm="${search}"/>
-                    </div>
+                           </div>
                 </div>
             </div>
         </div>
@@ -194,62 +193,54 @@
                 });
             }
 
-          const modal = $(document);
-
-
-            /*   var Mytype=  '${Mytype}';*/
-
-            modal.find('[name=type]').change(function () {
-                console.log("안녕2");
-                if ($(this).val() === 'G') {
-                  /*  Mytype="G";*/
-                    console.log("안녕");
-                    $('.meta1').hide();
-                    $('.meta2').show();
-                    $('.meta3').hide();
-                } else {
-                  /*  $.find('[name=metaType]').hide();*/
-                }
-            }).change();
-
-            window.prepareWriteForm = function (data) {
-                if (data.type === 'P')
-                    data.typeData = '${g.user.id}';
-                if (data.type === 'C')
-                    data.typeData = '${g.user.companyId}';
+            const fields = {
+                <c:forEach var="e" items="${metaTypeLists}">
+                <c:if test="${metaTypeLists.size() > 0}">
+                '${g.escapeQuote(e.key)}': [<c:forEach var="code" items="${e.value}">{
+                    value: '${g.escapeQuote(code.key)}',
+                    text: '${g.escapeQuote(code.value)}'
+                }, </c:forEach>],
+                </c:if>
+                </c:forEach>
             };
 
-       /*     const fieldToRelatedField = {
-                <c:forEach var="e" items="${metaTypeList}">
+            function convertToDbTypeFieldId(fieldId) {
+                return fieldId.toUpperCase();
+            }
 
-                </c:forEach>
-            };*/
-
-            ui.find('select').change(function () {
+            function convertToFormFieldId(fieldId) {
+                return fieldId.toLowerCase();
+            }
+            /**/
+            $('[name=type]').change(function () {
                 const selectName = $(this).attr('name');
                 if (!selectName)
                     return;
 
-                const dbName = convertToDbTypeFieldId(selectName);
+                const dbName = convertToDbTypeFieldId(selectName); //
                 const parentValue = $(this).val();
 
-                if (!fieldToRelatedField[dbName])
+                if (!fields[parentValue])
                     return;
 
-                const relatedField = ui.find('[name="' + convertToFormFieldId(fieldToRelatedField[dbName]) + '"]');
+
+               /* ' + convertToFormFieldId(fieldToRelatedField[dbName]) + '*/
+                const relatedField = $('[name="metaType"]');
                 const preValue = relatedField.val();
-
                 relatedField.empty()
-                    .append($('<option/>', {value: '', text: ''}));
-                fields[fieldToRelatedField[dbName]].map(function (o) {
-                    if (o.value.indexOf(parentValue) !== 0)
+                    .append($('<option/>', {value: '', text: '전체'}));
+                let chkValue = '';
+                fields[parentValue].map(function (o) {
+                    if(chkValue.indexOf(o.text) !== -1) {
+                        chkValue = o.text;
                         return;
-
+                    }else {
+                        chkValue = o.text;
+                    }
                     relatedField.append($('<option/>', {value: o.value, text: o.text}).prop('selected', o.value === preValue));
                 });
                 relatedField.change();
             });
-
 
         </script>
     </tags:scripts>

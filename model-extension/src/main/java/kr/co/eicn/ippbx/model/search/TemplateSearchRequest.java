@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.model.search;
 import kr.co.eicn.ippbx.model.enums.TalkTemplate;
 import kr.co.eicn.ippbx.util.page.PageForm;
 import kr.co.eicn.ippbx.util.page.PageQueryable;
+import kr.co.eicn.ippbx.util.spring.BaseForm;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -10,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class TemplateSearchRequest extends PageForm {
     @PageQueryable
-    private TalkTemplate type;
+    private String type;
     @PageQueryable
     private String metaType;
     @PageQueryable

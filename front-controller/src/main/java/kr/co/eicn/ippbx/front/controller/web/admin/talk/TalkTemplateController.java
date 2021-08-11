@@ -24,10 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -50,7 +47,9 @@ public class TalkTemplateController extends BaseController {
         model.addAttribute("pagination", pagination);
 
         final Map<String, String> templateTypes = FormUtils.optionsOfCode(TalkTemplate.class);
+    //    final Map<Integer, String> templateTypes = apiInterface.list(search).stream().collect(Collectors.toMap(TalkTemplateSummaryResponse::getSeq,TalkTemplateSummaryResponse::getType));
         model.addAttribute("templateTypes", templateTypes);
+
 
         final Map<Integer, String> metaTypeList = organizationService.metaTypeMap();
         model.addAttribute("metaTypeList", metaTypeList);
@@ -83,10 +82,15 @@ public class TalkTemplateController extends BaseController {
 
         model.addAttribute("metaTypeLists", metaTypeLists);
 
-        final Map<Integer, String> writeUserId =  apiInterface.list(search).stream().collect(Collectors.toMap(TalkTemplateSummaryResponse::getSeq,TalkTemplateSummaryResponse::getWriteUserid));
+        final Map<Integer, String> writeUserId2 =  apiInterface.list(search).stream().collect(Collectors.toMap(TalkTemplateSummaryResponse::getSeq,TalkTemplateSummaryResponse::getWriteUserid));
+        final HashSet<String> writeUserId = new HashSet<>();
+        pagination.getRows().forEach(e->writeUserId.add(e.getWriteUserName()));
         model.addAttribute("writeUserId", writeUserId);
 
-        final Map<Integer, String> mentName =  apiInterface.list(search).stream().collect(Collectors.toMap(TalkTemplateSummaryResponse::getSeq,TalkTemplateSummaryResponse::getMentName));
+
+      //  final Map<Integer, String> mentName =  apiInterface.list(search).stream().collect(Collectors.toMap(TalkTemplateSummaryResponse::getSeq,TalkTemplateSummaryResponse::getMentName));
+        final ArrayList<String> mentName = new ArrayList<>();
+        pagination.getRows().forEach(e->mentName.add(e.getMentName()));
         model.addAttribute("mentName", mentName);
 
         return "admin/talk/template/ground";

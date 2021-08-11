@@ -7,6 +7,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.search.SearchPersonListResponse;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -201,5 +202,19 @@ public class TalkTemplateApiControllerTest extends BaseControllerTest {
             log.info(summaryResponse.toString());
         }
     }
+
+    @Test
+    @Order(1)
+    protected void pagnation() throws Exception {
+        final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL )
+                .accept(MediaType.APPLICATION_JSON)
+                .with(new JwtRequestPostProcessor())
+                .param("type","P"))
+                .andDo(print())
+                .andExpect(status().isOk())
+
+                .andReturn();
+    }
+
 
 }

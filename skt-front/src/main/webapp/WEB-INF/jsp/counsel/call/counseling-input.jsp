@@ -331,7 +331,11 @@
         </c:if>
         </c:forEach>
     };
-    const fieldToRelatedField = {<c:forEach var="e" items="${fieldToRelatedField}">'${g.escapeQuote(e.key)}': '${g.escapeQuote(e.value)}', </c:forEach>};
+    const fieldToRelatedField = {
+        <c:forEach var="e" items="${fieldToRelatedField}">
+        '${g.escapeQuote(e.key)}': '${g.escapeQuote(e.value)}',
+        </c:forEach>
+    };
 
     function convertToDbTypeFieldId(fieldId) {
         return DBTYPE_FIELD_PREFIX + fieldId.toUpperCase();

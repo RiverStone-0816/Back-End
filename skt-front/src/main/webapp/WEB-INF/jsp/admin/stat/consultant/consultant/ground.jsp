@@ -48,13 +48,14 @@
                                 <td colspan="3">
                                     <div class="ui action input calendar-area">
                                         <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        <button type="button" class="ui basic button -click-prev" Class=".-datepicker"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                        <button type="button" class="ui basic button -click-prev " ><input type="image" src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar" class="-datepicker"/>
+                                        </button>
                                         <span class="tilde">~</span>
                                         <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
                                        <%-- <input:button Class="-datepicker" type="button">
                                             <img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar">
                                         </input:button>--%>
-                                        <button type="button" class="ui basic button -click-prev -datepicker hasDatepicker"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                        <button type="button" class="ui basic button -click-prev " id="datepicker"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></input>
                                     </div>
                                 </td>
                             </tr>
@@ -266,6 +267,7 @@
                 $(this).addClass('active');
                 $('#search-form [name=timeUnit]').val($(this).attr('data-value'));
             });
+
 
             function downloadExcel() {
                 window.open(contextPath + '/admin/stat/consultant/consultant/_excel?${g.escapeQuote(search.query)}', '_blank');
