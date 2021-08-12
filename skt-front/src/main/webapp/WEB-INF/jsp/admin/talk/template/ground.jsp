@@ -47,31 +47,6 @@
                                 <th>유형데이터</th>
                                 <td colspan="3">
                                     <div class="ui form">
-
-                     <%--                   <form:select path="metaType" >
-                                            <form:option value="" label="전체"/>
-                                            <form:options items="${metaTypeLists.get('P')}"/>
-                                        </form:select>--%>
-
-                                  <%--     <form:select path="metaType" id="selecttype">
-                                           <c:set var="Mytype">
-                                            <c:choose>
-                                                 <c:when test='${Mytype.equals("C")}'>
-                                                      <form:option value="" label="전체"/>
-                                                      <form:options items="${metaTypeList.get('C')}"/>
-                                                 </c:when>
-                                                <c:when test='${Mytype.equals("G")}'>
-                                                    <form:option value="" label="전체"/>
-                                                    <form:options items="${metaTypeList.get('G')}"/>
-                                                </c:when>
-                                                <c:when test='${Mytype.equals("P")}'>
-                                                    <form:option value="" label="전체"/>
-                                                    <form:options items="${metaTypeList.get('P')}"/>
-                                                </c:when>
-                                            </c:choose>
-                                            </c:set>
-                                        </form:select>
---%>
                                            <form:select path="metaType" >
                                                           <form:option value="" label="전체"/>
                                            </form:select>
@@ -99,7 +74,7 @@
                         </table>
                         <div class="button-area remove-mb">
                             <div class="align-right">
-                                <button type="submit" class="ui button sharp brand large">검색</button>
+                                <button id="metatypebutton" type="submit" class="ui button sharp brand large">검색</button>
                                 <button type="button" class="ui button sharp light large" onclick="refreshPageWithoutParameters()">초기화</button>
                             </div>
                         </div>
@@ -211,20 +186,17 @@
             function convertToFormFieldId(fieldId) {
                 return fieldId.toLowerCase();
             }
-            /**/
+
             $('[name=type]').change(function () {
                 const selectName = $(this).attr('name');
                 if (!selectName)
                     return;
 
-                const dbName = convertToDbTypeFieldId(selectName); //
                 const parentValue = $(this).val();
 
                 if (!fields[parentValue])
                     return;
 
-
-               /* ' + convertToFormFieldId(fieldToRelatedField[dbName]) + '*/
                 const relatedField = $('[name="metaType"]');
                 const preValue = relatedField.val();
                 relatedField.empty()
@@ -241,6 +213,23 @@
                 });
                 relatedField.change();
             });
+
+         /*   $('#metatypebutton').submit(function(){
+                debugger;
+               alert("안녕");
+               [name=metaType] option
+            });*/
+         /*   $('[name="metaType"]').select(function(){
+                debugger;
+               console.log($(this).val());
+                alert("안녕");
+            });*/
+         /*   $("#metaType").change(function (){
+                alert('안녕');
+            });*/
+
+            $("#metaType option:selected").text();
+            $("[name=type] option:selected").val();
 
         </script>
     </tags:scripts>

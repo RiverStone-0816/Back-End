@@ -19,6 +19,8 @@ import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -43,6 +45,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RestController
 @RequestMapping(value = "api/v1/admin/talk/template", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TalkTemplateApiController extends ApiBaseController {
+    private static final Logger logger = LoggerFactory.getLogger(TalkTemplateApiController.class);
 
     private final TalkTemplateRepository repository;
     private final PersonListRepository personListRepository;
@@ -83,6 +86,11 @@ public class TalkTemplateApiController extends ApiBaseController {
 
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<TalkTemplateSummaryResponse>>> getPagination(TemplateSearchRequest search) {
+         final Map<Integer,String> imsearch = repository.findAll().stream().collect(Collectors.toMap(TalkTemplateEntity::getSeq,TalkTemplateEntity::getTypeData));
+
+        if (Objects.nonNull(imsearch.get(search.getMetaType() != null ? Integer.parseInt(search.getMetaType()) : "")))
+            search.setMetaType(imsearch.get(Integer.parseInt(search.getMetaType())));
+
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
         final Map<String, String> companyInfoMap = companyInfoRepository.findAll().stream().collect(Collectors.toMap(CompanyInfo::getCompanyId, CompanyInfo::getCompanyName));
         final Map<String, CompanyTree> companyTreeMap = organizationService.getAllCompanyTrees().stream().collect(Collectors.toMap(CompanyTree::getGroupCode, e -> e));
