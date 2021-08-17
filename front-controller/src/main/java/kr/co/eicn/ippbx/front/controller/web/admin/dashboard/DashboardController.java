@@ -111,7 +111,6 @@ public class DashboardController extends BaseController {
         partMonitoringApiInterface.getIndividualStat().forEach(e -> {
             val record = new ConsultantRecord();
             ReflectionUtils.copy(record, e);
-            ConsultantRecords.add(record);
 
             record.setInSuccess(excellentCSTop.getInSuccessTopTen().stream().filter(e2 -> Objects.equals(e2.getId(), e.getPerson().getId())).mapToInt(StatUserRankingInSuccess::getInSuccess).findAny().orElse(0));
             record.setOutSuccess(excellentCSTop.getOutSuccessTopTen().stream().filter(e2 -> Objects.equals(e2.getId(), e.getPerson().getId())).mapToInt(StatUserRankingOutSuccess::getOutSuccess).findAny().orElse(0));
@@ -120,6 +119,8 @@ public class DashboardController extends BaseController {
             record.setCallbackSuccess(excellentCSTop.getCallbackSuccessTopTen().stream().filter(e2 -> Objects.equals(e2.getId(), e.getPerson().getId())).mapToInt(StatUserRankingCallbackSuccess::getCallbackSuccess).findAny().orElse(0));
 
             record.setBillsecSum(Math.max(record.getInBillsecSum(), record.getOutBillsecSum()));
+
+            ConsultantRecords.add(record);
         });
 
         return "admin/dashboard-sheet/ground";

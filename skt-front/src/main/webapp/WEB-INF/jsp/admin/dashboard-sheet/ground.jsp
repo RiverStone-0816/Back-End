@@ -277,6 +277,7 @@
         </div>
     </div>
 
+    <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
     <tags:scripts>
         <script>
             function loadInboundData() {
