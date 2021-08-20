@@ -125,12 +125,12 @@
                                             <c:when test="${e.type.contains('G')}">
                                                 <td>
                                                     <c:if test="${metaTypeList.get(e.companyTreeLevel) != null}">
-                                                        ${g.htmlQuote(e.typeData)}(${g.htmlQuote(metaTypeList.get(e.companyTreeLevel))})
+                                                        ${g.htmlQuote(e.typeDataName)}(${g.htmlQuote(metaTypeList.get(e.companyTreeLevel))})
                                                     </c:if>
                                                 </td>
                                             </c:when>
                                             <c:otherwise>
-                                                <td>${g.htmlQuote(e.typeData)}</td>
+                                                <td>${g.htmlQuote(e.typeDataName)}</td>
                                             </c:otherwise>
                                         </c:choose>
                                         <td>${g.htmlQuote(e.writeUserName)}</td>
@@ -168,6 +168,7 @@
                 });
             }
 
+            var imselect = "";
             const fields = {
                 <c:forEach var="e" items="${metaTypeLists}">
                 <c:if test="${metaTypeLists.size() > 0}">
@@ -198,6 +199,7 @@
                     return;
 
                 const relatedField = $('[name="metaType"]');
+                console.log("여기"+ relatedField.val());
                 const preValue = relatedField.val();
                 relatedField.empty()
                     .append($('<option/>', {value: '', text: '전체'}));
@@ -214,22 +216,39 @@
                 relatedField.change();
             });
 
-         /*   $('#metatypebutton').submit(function(){
-                debugger;
-               alert("안녕");
-               [name=metaType] option
-            });*/
-         /*   $('[name="metaType"]').select(function(){
-                debugger;
-               console.log($(this).val());
-                alert("안녕");
-            });*/
-         /*   $("#metaType").change(function (){
-                alert('안녕');
-            });*/
+            $(window).on('load',()=>{
+                const fields = {
+                    <c:forEach var="e" items="${metaTypeLists}">
+                    <c:if test="${metaTypeLists.size() > 0}">
+                    '${g.escapeQuote(e.key)}': [<c:forEach var="code" items="${e.value}">{
+                        value: '${g.escapeQuote(code.key)}',
+                        text: '${g.escapeQuote(code.value)}'
+                    }, </c:forEach>],
+                    </c:if>
+                    </c:forEach>
+                };
 
-            $("#metaType option:selected").text();
-            $("[name=type] option:selected").val();
+                const parentValue = $("[name=type]").val();
+
+                if (!fields[parentValue])
+                    return;
+
+
+                const relatedField = $('[name="metaType"]');
+                const preValue = '${search.metaType}';
+                relatedField.empty()
+                    .append($('<option/>', {value: '', text: '전체'}));
+                let chkValue = '';
+                fields[parentValue].map(function (o) {
+                    if(chkValue.indexOf(o.text) !== -1) {
+                        chkValue = o.text;
+                        return;
+                    }else {
+                        chkValue = o.text;
+                    }
+                    relatedField.append($('<option/>', {value: o.value, text: o.text}).prop('selected', o.value === preValue));
+                });
+            });
 
         </script>
     </tags:scripts>
