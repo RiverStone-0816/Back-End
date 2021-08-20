@@ -47,7 +47,6 @@ public class TalkTemplateController extends BaseController {
         model.addAttribute("pagination", pagination);
 
         final Map<String, String> templateTypes = FormUtils.optionsOfCode(TalkTemplate.class);
-    //    final Map<Integer, String> templateTypes = apiInterface.list(search).stream().collect(Collectors.toMap(TalkTemplateSummaryResponse::getSeq,TalkTemplateSummaryResponse::getType));
         model.addAttribute("templateTypes", templateTypes);
 
 
@@ -56,25 +55,48 @@ public class TalkTemplateController extends BaseController {
 
         model.addAttribute("types", FormUtils.options(TalkTemplate.class));
 
-        Map<Integer, String> metaTypeListG = new HashMap<>();
-        Map<Integer, String> metaTypeListC = new HashMap<>();
-        Map<Integer, String> metaTypeListP = new HashMap<>();
+        Map<String, String> metaTypeListG = new HashMap<>();
+        Map<String, String> metaTypeListC = new HashMap<>();
+        Map<String, String> metaTypeListP = new HashMap<>();
 
-        apiInterface.list(search).forEach(e -> {
-                if(e.getType().equals("G"))
-                    metaTypeListG.put(e.getSeq(),e.getTypeData());
-                if(e.getType().equals("C"))
-                    metaTypeListC.put(e.getSeq(),e.getTypeData());
-                if(e.getType().equals("P"))
-                    metaTypeListP.put(e.getSeq(),e.getTypeData());
+        final List<TalkTemplateSummaryResponse> list = apiInterface.list(search);
+
+        final List<String> listP = list.stream().filter(e->e.getType().equals("P")).map(TalkTemplateSummaryResponse::getTypeData).distinct().collect(Collectors.toList());
+        final List<String> listG = list.stream().filter(e->e.getType().equals("G")).map(TalkTemplateSummaryResponse::getTypeData).distinct().collect(Collectors.toList());
+        final List<String> listC = list.stream().filter(e->e.getType().equals("C")).map(TalkTemplateSummaryResponse::getTypeData).distinct().collect(Collectors.toList());
+
+        for(int i=0;i<listP.size();i++){
+            for(TalkTemplateSummaryResponse response : list){
+                if(response.getTypeData().equals(listP.get(i))) {
+                    metaTypeListP.put(listP.get(i), response.getTypeDataName());
+                    break;
+                }
             }
-        );
+        }
+        for(int i=0;i<listG.size();i++){
+            for(TalkTemplateSummaryResponse response : list){
+                if(response.getTypeData().equals(listG.get(i))) {
+                    metaTypeListG.put(listG.get(i), response.getTypeDataName());
+                    break;
+                }
+            }
+        }
+        for(int i=0;i<listC.size();i++){
+            for(TalkTemplateSummaryResponse response : list){
+                if(response.getTypeData().equals(listC.get(i))) {
+                    metaTypeListC.put(listC.get(i), response.getTypeDataName());
+                    break;
+                }
+            }
+        }
+
+        final Map<Integer,String> m = apiInterface.list(search).stream().collect(Collectors.toMap(TalkTemplateSummaryResponse::getSeq,TalkTemplateSummaryResponse::getTypeData));
 
         model.addAttribute("metaTypeListG", metaTypeListG);
         model.addAttribute("metaTypeListC", metaTypeListC);
         model.addAttribute("metaTypeListP", metaTypeListP);
 
-        final Map<String,Map<Integer, String>> metaTypeLists = new HashMap<>();
+        final Map<String,Map<String, String>> metaTypeLists = new HashMap<>();
 
         metaTypeLists.put("G",metaTypeListG);
         metaTypeLists.put("C",metaTypeListC);
@@ -87,8 +109,6 @@ public class TalkTemplateController extends BaseController {
         pagination.getRows().forEach(e->writeUserId.add(e.getWriteUserName()));
         model.addAttribute("writeUserId", writeUserId);
 
-
-      //  final Map<Integer, String> mentName =  apiInterface.list(search).stream().collect(Collectors.toMap(TalkTemplateSummaryResponse::getSeq,TalkTemplateSummaryResponse::getMentName));
         final ArrayList<String> mentName = new ArrayList<>();
         pagination.getRows().forEach(e->mentName.add(e.getMentName()));
         model.addAttribute("mentName", mentName);

@@ -66,14 +66,15 @@ public class TalkTemplateApiController extends ApiBaseController {
                             ? personListMap.get(e.getWriteUserid()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
 
                     if (Objects.equals(TalkTemplate.PERSON.getCode(), e.getType()))
-                        talkTemplateSummaryResponse.setTypeData(Objects.nonNull(personListMap.get(e.getTypeData())) ?
+
+                        talkTemplateSummaryResponse.setTypeDataName(Objects.nonNull(personListMap.get(e.getTypeData())) ?
                                 personListMap.get(e.getTypeData()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
                     else if (Objects.equals(TalkTemplate.COMPANY.getCode(), e.getType()))
-                        talkTemplateSummaryResponse.setTypeData(companyInfoMap.get(e.getTypeData()));
+                        talkTemplateSummaryResponse.setTypeDataName(companyInfoMap.get(e.getTypeData()));
                     else {
                         if (Objects.nonNull(companyTreeMap.get(e.getTypeData()))) {
                             final CompanyTree companyTree = companyTreeMap.get(e.getTypeData());
-                            talkTemplateSummaryResponse.setTypeData(companyTree.getGroupName());
+                            talkTemplateSummaryResponse.setTypeDataName(companyTree.getGroupName());
                             talkTemplateSummaryResponse.setCompanyTreeLevel(companyTree.getGroupLevel());
                         }
                     }
@@ -86,10 +87,6 @@ public class TalkTemplateApiController extends ApiBaseController {
 
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<TalkTemplateSummaryResponse>>> getPagination(TemplateSearchRequest search) {
-         final Map<Integer,String> imsearch = repository.findAll().stream().collect(Collectors.toMap(TalkTemplateEntity::getSeq,TalkTemplateEntity::getTypeData));
-
-        if (Objects.nonNull(imsearch.get(search.getMetaType() != null ? Integer.parseInt(search.getMetaType()) : "")))
-            search.setMetaType(imsearch.get(Integer.parseInt(search.getMetaType())));
 
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
         final Map<String, String> companyInfoMap = companyInfoRepository.findAll().stream().collect(Collectors.toMap(CompanyInfo::getCompanyId, CompanyInfo::getCompanyName));
@@ -104,14 +101,14 @@ public class TalkTemplateApiController extends ApiBaseController {
                             ? personListMap.get(e.getWriteUserid()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
 
                     if (Objects.equals(TalkTemplate.PERSON.getCode(), e.getType()))
-                        talkTemplateSummaryResponse.setTypeData(Objects.nonNull(personListMap.get(e.getTypeData())) ?
+                        talkTemplateSummaryResponse.setTypeDataName(Objects.nonNull(personListMap.get(e.getTypeData())) ?
                                 personListMap.get(e.getTypeData()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
                     else if (Objects.equals(TalkTemplate.COMPANY.getCode(), e.getType()))
-                        talkTemplateSummaryResponse.setTypeData(companyInfoMap.get(e.getTypeData()));
+                        talkTemplateSummaryResponse.setTypeDataName(companyInfoMap.get(e.getTypeData()));
                     else {
                         if (Objects.nonNull(companyTreeMap.get(e.getTypeData()))) {
                             final CompanyTree companyTree = companyTreeMap.get(e.getTypeData());
-                            talkTemplateSummaryResponse.setTypeData(companyTree.getGroupName());
+                            talkTemplateSummaryResponse.setTypeDataName(companyTree.getGroupName());
                             talkTemplateSummaryResponse.setCompanyTreeLevel(companyTree.getGroupLevel());
                         }
                     }
