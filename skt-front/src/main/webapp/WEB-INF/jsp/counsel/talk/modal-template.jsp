@@ -20,6 +20,11 @@
         <div class="ui grid">
             <div class="row">
                 <div class="sixteen wide column">
+                    <button type="button" class="ui button mini compact" id="imA">전체</button>
+                    <button type="button" class="ui button mini compact" id="imC">회사</button>
+                    <button type="button" class="ui button mini compact" id="imG">그룹</button>
+                    <button type="button" class="ui button mini compact" id="imP">개인</button>
+
                     <table class="ui table celled compact fixed">
                         <thead>
                         <tr>
@@ -31,14 +36,15 @@
                         <c:choose>
                             <c:when test="${talkTemplates.size() > 0}">
                                 <c:forEach var="e" items="${talkTemplates}">
+                                    <c:if test="${e.type=='C'}">
                                     <tr>
-                                        <td>
+                                        <td class="imC">
                                             <div class="template-item">
                                                 <strong>${g.htmlQuote(e.mentName)}</strong>
                                                 <p>${g.htmlQuote(e.ment)}</p>
                                             </div>
                                         </td>
-                                        <td>
+                                        <td class="imC">
                                             <div class="ui form">
                                                 <button type="button" class="ui button mini compact"
                                                         onclick="$('#talk-message').val('${g.htmlQuote(g.escapeQuote(e.ment))}'); $('#modal-template-select').modalHide()">선택
@@ -46,6 +52,41 @@
                                             </div>
                                         </td>
                                     </tr>
+                                    </c:if>
+                                    <c:if test="${e.type=='G'}">
+                                        <tr>
+                                            <td class="imG">
+                                                <div class="template-item">
+                                                    <strong>${g.htmlQuote(e.mentName)}</strong>
+                                                    <p>${g.htmlQuote(e.ment)}</p>
+                                                </div>
+                                            </td>
+                                            <td class="imG">
+                                                <div class="ui form">
+                                                    <button type="button" class="ui button mini compact"
+                                                            onclick="$('#talk-message').val('${g.htmlQuote(g.escapeQuote(e.ment))}'); $('#modal-template-select').modalHide()">선택
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </c:if>
+                                    <c:if test="${e.type=='P'}">
+                                        <tr>
+                                            <td class="imP">
+                                                <div class="template-item">
+                                                    <strong>${g.htmlQuote(e.mentName)}</strong>
+                                                    <p>${g.htmlQuote(e.ment)}</p>
+                                                </div>
+                                            </td>
+                                            <td class="imP">
+                                                <div class="ui form">
+                                                    <button type="button" class="ui button mini compact"
+                                                            onclick="$('#talk-message').val('${g.htmlQuote(g.escapeQuote(e.ment))}'); $('#modal-template-select').modalHide()">선택
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </c:if>
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
@@ -69,5 +110,33 @@
         function templateSelectPopup() {
             $('#modal-template-select').dragModalShow();
         }
+
+        $("#imA").on("click",function(){
+            $(".imC").show();
+            $(".imG").show();
+            $(".imP").show();
+        });
+
+        $("#imC").on("click",function(){
+            $(".imC").show();
+            $(".imG").hide();
+            $(".imP").hide();
+        });
+
+        $("#imP").on("click",function(){
+            $(".imP").show();
+            $(".imG").hide();
+            $(".imC").hide();
+        });
+
+        $("#imG").on("click",function(){
+            $(".imG").show();
+            $(".imC").hide();
+            $(".imP").hide();
+        });
     </script>
+
+
+
 </tags:scripts>
+<%-- </tags:tabContentLayout>--%>

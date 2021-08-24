@@ -27,6 +27,7 @@ import kr.co.eicn.ippbx.model.search.MaindbDataSearchRequest;
 import kr.co.eicn.ippbx.model.search.MaindbGroupSearchRequest;
 import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
 import kr.co.eicn.ippbx.util.FormUtils;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,19 +85,33 @@ public class CounselTalkController extends BaseController {
     @GetMapping("modal-template")
     public String modalTemplate(Model model, @ModelAttribute("search") TemplateSearchRequest search) throws IOException, ResultFailException {
         final List<TalkTemplateSummaryResponse> talkTemplates = talkTemplateApiInterface.list(search);
+        final Pagination<TalkTemplateSummaryResponse> pagination = talkTemplateApiInterface.getPagination(search);
+        model.addAttribute("pagination",pagination);
+
+        final Map<String, String> templateTypes = FormUtils.optionsOfCode(TalkTemplate.class);
+        model.addAttribute("templateTypes", templateTypes);
+
         List<TalkTemplateSummaryResponse> candidates = new ArrayList<>();
+    /*    List<TalkTemplateSummaryResponse> candidatesG = new ArrayList<>();
+        List<TalkTemplateSummaryResponse> candidatesP = new ArrayList<>();
+*/
         for (TalkTemplateSummaryResponse e : talkTemplates) {
             if (Objects.equals(e.getType(), TalkTemplate.COMPANY.getCode()))
                 candidates.add(e);
 
+
             // TODO: api 수정 후, 코드 변경해야 한다. api에서 group의 code가 전달되어야 한다.
-            if (Objects.equals(e.getType(), TalkTemplate.GROUP.getCode()) && Objects.equals(g.getUser().getGroupTreeName(), e.getTypeData()))
+            if (Objects.equals(e.getType(), TalkTemplate.GROUP.getCode())&& Objects.equals(g.getUser().getGroupTreeName(), e.getTypeData()))
                 candidates.add(e);
 
+            //
             // TODO: api 수정 후, 코드 변경해야 한다. api에서 person의 id가 전달되어야 한다.
-            if (Objects.equals(e.getType(), TalkTemplate.PERSON.getCode()) && Objects.equals(g.getUser().getIdName(), e.getTypeData()))
+            if (Objects.equals(e.getType(), TalkTemplate.PERSON.getCode()) && Objects.equals(g.getUser().getId(), e.getTypeData()))
                 candidates.add(e);
         }
+
+
+
 
         model.addAttribute("talkTemplates", candidates);
 
