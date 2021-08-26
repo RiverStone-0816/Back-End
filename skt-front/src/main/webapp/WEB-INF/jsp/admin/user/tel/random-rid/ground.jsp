@@ -20,8 +20,9 @@
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <div class="panel-label">${g.htmlQuote(menu.getMenuName("/admin/user/tel/random-rid/"))}</div>
-                        <span class="ui black circular mini label help-info-btn">?</span>
+                       <%-- menu.getMenuName("/admin/user/tel/random-rid/")--%>
+                        <div class="panel-label">${g.htmlQuote("랜덤cid관리")}</div>
+                      <%--  <span class="ui black circular mini label help-info-btn">?</span>
                         <div class="ui flowing popup top left transition hidden help-info">
                             <dl>
                                 <dd class="font-weight-bold">사용방법</dd>
@@ -29,7 +30,7 @@
                                 <dd>2. 팀내부 발신표시번호를 사용할때 : 98+단축1자리+고객전화번호</dd>
                                 <dd>3. 개인 발신표시번호를 사용할때 : 97 + 단축1자리+고객전화번호</dd>
                             </dl>
-                        </div>
+                        </div>--%>
                     </div>
                     <div class="pull-right">
                         <div class="ui slider checkbox checked">
@@ -99,8 +100,24 @@
                         <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/user/tel/random-rid/" pageForm="${search}"/>
                     </div>
                 </div>
-
                 <div class="panel-body">
+                    <div class="ui segment">
+                        <div class="ui list">
+                            <div class="item">
+                                사용방법 <span class="ui circular label tiny">1</span> - 전체 CID번호를 사용할때 : 99+고객전화번호
+                            </div>
+                        </div>
+                        <div class="ui list">
+                            <div class="item">
+                                사용방법 <span class="ui circular label tiny">2</span> - 팀내부 CID번호를 사용할때 : 98+단축1자리+고객전화번호
+                            </div>
+                        </div>
+                        <div class="ui list">
+                            <div class="item">
+                                사용방법 <span class="ui circular label tiny">3</span> - 개인 CID번호를 사용할때 : 97 + 단축1자리+고객전화번호
+                            </div>
+                        </div>
+                    </div>
                     <table class="ui celled table num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="RandomRid">
                         <thead>
                         <tr>

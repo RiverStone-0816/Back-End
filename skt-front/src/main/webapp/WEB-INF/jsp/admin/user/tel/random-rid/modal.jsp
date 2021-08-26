@@ -18,7 +18,7 @@
            data-done="reload">
 
     <i class="close icon"></i>
-    <div class="header">랜덤 RID[${entity != null ? '수정' : '추가'}]</div>
+    <div class="header">랜덤 CID[${entity != null ? '수정' : '추가'}]</div>
 
     <div class="content rows scrolling">
         <div class="ui grid">
