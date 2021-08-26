@@ -47,9 +47,9 @@
                     <table class="ui celled table num-tbl unstackable num-tbl fixed ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="RecordEnc">
                         <thead>
                         <tr>
-                            <th>번호</th>
-                            <th>암호키 적용시간</th>
-                            <th>암호키</th>
+                            <th style="width: 10%">번호</th>
+                            <th style="width: 45%">암호키 적용시간</th>
+                            <th style="width: 45%">암호키</th>
                         </tr>
                         </thead>
                         <tbody>
