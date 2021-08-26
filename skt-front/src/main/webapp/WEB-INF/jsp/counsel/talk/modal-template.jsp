@@ -135,8 +135,5 @@
             $(".imP").hide();
         });
     </script>
-
-
-
 </tags:scripts>
 <%-- </tags:tabContentLayout>--%>

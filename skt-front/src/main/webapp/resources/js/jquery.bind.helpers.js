@@ -35,7 +35,7 @@
             });
         });
         findAndMe('.-click-prev', this).click(function () {
-            $(this).prev().click();
+            $(this).prev().focus();
         });
         findAndMe('#_newsletter', this).change(function () {
             const checked = $(this).is(':checked');
