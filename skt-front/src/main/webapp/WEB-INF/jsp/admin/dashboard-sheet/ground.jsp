@@ -423,8 +423,9 @@
                 title.text(rankingKeywords[currentContentIndex].title + ' TOP 10');
 
                 const propertyName = rankingKeywords[currentContentIndex].property;
+                console.log("츌룍"+propertyName);
                 consultantRecords.sort(function (a, b) {
-                    return a.values[propertyName] > b.values[propertyName];
+                    return a.values[propertyName] > b.values[propertyName] ? -1 : a.values[propertyName] < b.values[propertyName] ? 1 : 0;
                 });
 
                 for (let i = 0; i < 10 && i < consultantRecords.length; i++) {
