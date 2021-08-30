@@ -197,6 +197,12 @@ logging:
   config: classpath:logback-spring.xml
 ---
 # 운영
+server:
+  host: 211.43.218.10
+
+jdbc:
+  host: 211.43.218.13
+
 spring:
   profiles: stage
   datasource:

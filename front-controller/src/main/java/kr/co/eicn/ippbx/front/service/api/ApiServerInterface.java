@@ -74,7 +74,7 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
     }
 
     protected final ObjectMapper objectMapper = new ObjectMapper();
-    @Value("${eicn.apiserver}")
+    @Value("${eicn.realapiserver}")
     protected String apiServerUrl;
     @Value("${eicn.debugging}")
     protected String devel;

@@ -59,6 +59,7 @@ eicn:
   file:
     location: ./files
   apiserver: http://localhost:8080/api-server
+  realapiserver: http://localhost:8080/api-server
   admin:
     socket:
       id: monitor_connector
