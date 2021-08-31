@@ -189,7 +189,6 @@
 
             $('.-consultant-status-with-color').each(function () {
                 const _this = $(this);
-                console.log("this는"+_this);
                 const peer = _this.attr('data-peer');
                 if (!peerStatuses[peer])
                     return /*console.info({message: 'invalid peer value', peer: peer, this: this})*/;
