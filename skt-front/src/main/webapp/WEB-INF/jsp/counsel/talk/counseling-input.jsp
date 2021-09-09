@@ -24,10 +24,12 @@
                 <input type="checkbox" name="saveCustomInfo" class="options" checked>
                 <label>고객정보저장</label>
             </div>
+<%--
             <div class="ui checkbox ml10">
                 <input type="checkbox" name="saveWaitStatusAfterPostCounselingInfo" class="options" checked>
                 <label>저장 후 대기</label>
             </div>
+--%>
             <div class="panel-title-info">
                 <c:if test="${talk != null}">
                     <span class="label">진행정보</span>
@@ -288,16 +290,17 @@
     };
 
     window.donePostTalkCounselingInfo = function () {
-        alert('상담정보가 저장되었습니다.');
-        loadTalkCounselingInput('${form.groupId}', null, '${g.htmlQuote(roomId)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}');
-        loadTalkList('MY');
-        replaceReceivedHtmlInSilence('/counsel/talk/room/' + encodeURIComponent('${g.escapeQuote(roomId)}'), '#talk-room');
+        alert('상담정보가 저장되었습니다.' function(){
+            loadTalkCounselingInput('${form.groupId}', null, '${g.htmlQuote(roomId)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}');
+            loadTalkList('MY');
+            replaceReceivedHtmlInSilence('/counsel/talk/room/' + encodeURIComponent('${g.escapeQuote(roomId)}'), '#talk-room');
 
-        if (!$('#talk-room').attr('data-user')) {
-            loadTalkList('TOT');
-        } else if ($('#talk-room').attr('data-user') !== userId) {
-            loadTalkList('OTH');
-        }
+            if (!$('#talk-room').attr('data-user')) {
+                loadTalkList('TOT');
+            } else if ($('#talk-room').attr('data-user') !== userId) {
+                loadTalkList('OTH');
+            }
+        });
     };
 
     ui.find('.-submit-form').click(function () {
@@ -313,17 +316,17 @@
             if (objText[i].getAttribute('data-type') == 'text') {
                 if (objText[i].value.trim() == "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
-                    return;
+                    return false;
                 }
             } else if (objText[i].getAttribute('data-type') == 'select') {
                 if (objText[i].options[objText[i].selectedIndex].value == "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 선택 해 주세요.");
-                    return;
+                    return false;
                 }
             } else {
                 if (objText[i].value.trim() == "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
-                    return;
+                    return false;
                 }
             }
         }
@@ -337,17 +340,17 @@
                 if (customObjText[i].getAttribute('data-type') === 'text') {
                     if (customObjText[i].value.trim() === "") {
                         alert("고객정보에서 [" + customObjText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
-                        return;
+                        return false;
                     }
                 } else if (customObjText[i].getAttribute('data-type') === 'select') {
                     if (customObjText[i].options[customObjText[i].selectedIndex].value === "") {
                         alert("고객정보에서 [" + customObjText[i].getAttribute('data-text') + "] 을(를) 선택 해 주세요.");
-                        return;
+                        return false;
                     }
                 } else {
                     if (customObjText[i].value.trim() === "") {
                         alert("고객정보에서 [" + customObjText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
-                        return;
+                        return false;
                     }
                 }
             }
