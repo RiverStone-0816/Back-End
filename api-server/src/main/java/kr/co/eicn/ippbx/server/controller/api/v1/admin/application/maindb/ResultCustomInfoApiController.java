@@ -138,7 +138,7 @@ public class ResultCustomInfoApiController extends ApiBaseController {
             if(form.getTodoSequences().size() == 0)
                 throw new IllegalArgumentException("다른 상담원의 이력은 수정할 수 없습니다.");
 
-        service.getRepository().update(form, seq);
+        service.getRepository().update(form, response);
         return create();
     }
 
@@ -179,7 +179,7 @@ public class ResultCustomInfoApiController extends ApiBaseController {
         final List<ResultCustomInfoEntity> seqCheck = repository.getOne(search);
 
         if (seqCheck.size() > 0) {
-            repository.update(form, seqCheck.get(0).getSeq());
+            repository.update(form, seqCheck.get(0));
         } else {
             repository.insert(form);
         }

@@ -459,7 +459,7 @@
     }).change();
 
     ui.find('.-submit-form').click(function () {
-        ui.find('[name=clickKey]').val(ipccCommunicator.status.clickKey);
+        ui.find('#clickKey').val(ipccCommunicator.status.clickKey);
         ipccCommunicator.status.clickKey = null;
 
         function submit(customId) {
@@ -486,22 +486,23 @@
             if (objText[i].getAttribute('data-type') === 'text') {
                 if (objText[i].value.trim() === "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
-                    return;
+                    return false;
                 }
             } else if (objText[i].getAttribute('data-type') === 'select') {
                 if (objText[i].options[objText[i].selectedIndex].value === "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 선택 해 주세요.");
-                    return;
+                    return false;
                 }
             } else {
                 if (objText[i].value.trim() === "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
-                    return;
+                    return false;
                 }
             }
         }
 
         if (ui.find('[name="saveCustomInfo"]').is(':checked')) {
+
             let customInfo = $("#call-custom-input");
             let customObjText = customInfo.find('[data-value="Y"]');
 
@@ -509,17 +510,17 @@
                 if (customObjText[i].getAttribute('data-type') === 'text') {
                     if (customObjText[i].value.trim() === "") {
                         alert("고객정보에서 [" + customObjText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
-                        return;
+                        return false;
                     }
                 } else if (customObjText[i].getAttribute('data-type') === 'select') {
                     if (customObjText[i].options[customObjText[i].selectedIndex].value === "") {
                         alert("고객정보에서 [" + customObjText[i].getAttribute('data-text') + "] 을(를) 선택 해 주세요.");
-                        return;
+                        return false;
                     }
                 } else {
                     if (customObjText[i].value.trim() === "") {
                         alert("고객정보에서 [" + customObjText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
-                        return;
+                        return false;
                     }
                 }
             }

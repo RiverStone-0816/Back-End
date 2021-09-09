@@ -215,7 +215,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
         return conditions;
     }
 
-    public void update(ResultCustomInfoFormRequest form, Integer seq) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void update(ResultCustomInfoFormRequest form, ResultCustomInfoEntity resultCustomInfoEntity) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
 
         final UpdateSetMoreStep<ResultCustomInfoRecord> query = dsl.update(TABLE)
                 //.set(TABLE.MAINDB_SYS_GROUP_ID, form.getGroupSeq())
@@ -225,7 +225,8 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
                 .set(TABLE.USERID_TR, form.getUserIdTr())
                 .set(TABLE.GROUP_KIND, form.getGroupKind().equals("PHONE_TMP") ? "PHONE" : form.getGroupKind())
                 .set(TABLE.UPDATE_DATE, DSL.now())
-                .set(TABLE.CUSTOM_ID, form.getCustomId());
+                .set(TABLE.CUSTOM_ID, form.getCustomId())
+                .set(TABLE.CLICK_KEY, StringUtils.isEmpty(resultCustomInfoEntity.getClickKey()) ? "nonClickKey" : resultCustomInfoEntity.getClickKey());
 
         final List<? extends Class<? extends Serializable>> insertableFieldTypes = Arrays.asList(Date.class, Timestamp.class, Integer.class, String.class);
         for (java.lang.reflect.Field field : form.getClass().getDeclaredFields()) {
@@ -248,7 +249,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
                 query.set((Field<Integer>) tableField, (Integer) invoked);
             } else { // String.class
                 if (StringUtils.isNotEmpty((String) invoked) && fieldName.contains("img")) {
-                    final ResultCustomInfoEntity entity = findOne(TABLE.SEQ.eq(seq));
+                    final ResultCustomInfoEntity entity = findOne(TABLE.SEQ.eq(resultCustomInfoEntity.getSeq()));
                     final String oldFileName = fieldName.contains("1") ? entity.getRsImg_1() : (fieldName.contains("2") ? entity.getRsImg_2() : entity.getRsImg_3());
                     final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
                     maindbCustomInfoService.uploadImgWithFileStore((String) invoked, oldFileName);
@@ -258,10 +259,10 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
             }
         }
         query
-                .where(TABLE.SEQ.eq(seq))
+                .where(TABLE.SEQ.eq(resultCustomInfoEntity.getSeq()))
                 .execute();
 
-        form.setSeq(seq);
+        form.setSeq(resultCustomInfoEntity.getSeq());
         if (StringUtils.isEmpty(form.getCustomNumber())) {
             final Optional<MaindbMultichannelInfoEntity> optionalChannelInfo = Optional.ofNullable(maindbMultichannelInfoService.getRepository().findAll(multichannelInfoTable.MAINDB_CUSTOM_ID.eq(form.getCustomId()).and(multichannelInfoTable.CHANNEL_TYPE.eq("PHONE"))).get(0));
             optionalChannelInfo.ifPresent(e -> form.setCustomNumber(e.getChannelData()));
