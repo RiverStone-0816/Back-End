@@ -15,7 +15,7 @@
 
 <div class="ui modal inverted tiny" id="modal-consulting-move-popup">
     <i class="close icon"></i>
-    <div class="header">상담이관</div>
+    <div class="header">상담이관 - ※확인후 상담저장을 해야 상담이관 됩니다.</div>
     <div class="content rows scrolling">
         <div class="ui grid">
             <%--<div class="row">
