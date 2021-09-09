@@ -31,26 +31,44 @@
             </tr>
         </thead>
         <tbody>
+        <c:set var="totalSum" value="0" />
+        <c:set var="outTotalSum" value="0" />
+        <c:set var="outSuccessSum" value="0" />
+        <c:set var="inTotalSum" value="0" />
+        <c:set var="inSuccessSum" value="0" />
+        <c:set var="memberStatSum" value="0" />
         <c:forEach var="i" begin="0" end="23">
             <c:set var="e" value="${data.myStatData.get(i.byteValue())}"/>
+            <c:set var="totalSum_for" value="${e != null ? e.totalCnt : 0}" />
+            <c:set var="outTotalSum_for" value="${e != null ? e.outTotal : 0}" />
+            <c:set var="outSuccessSum_for" value="${e != null ? e.outSuccess : 0}" />
+            <c:set var="inTotalSum_for" value="${e != null ? e.inTotal : 0}" />
+            <c:set var="inSuccessSum_for" value="${e != null ? e.inSuccess : 0}" />
+            <c:set var="memberStatSum_for" value="${e != null ? e.memberTotal : 0}" />
             <tr>
                 <th>${i}시</th>
-                <td>${e != null ? e.totalCnt : 0}</td>
-                <td>${e != null ? e.outTotal : 0}</td>
-                <td>${e != null ? e.outSuccess : 0}</td>
-                <td>${e != null ? e.inTotal : 0}</td>
-                <td>${e != null ? e.inSuccess : 0}</td>
-                <td>${e != null ? e.memberTotal : 0}</td>
+                <td>${totalSum_for}</td>
+                <td>${outTotalSum_for}</td>
+                <td>${outSuccessSum_for}</td>
+                <td>${inTotalSum_for}</td>
+                <td>${inSuccessSum_for}</td>
+                <td>${memberStatSum_for}</td>
             </tr>
+            <c:set var="totalSum" value="${totalSum + totalSum_for}" />
+            <c:set var="outTotalSum" value="${outTotalSum + outTotalSum_for}" />
+            <c:set var="outSuccessSum" value="${outSuccessSum + outSuccessSum_for}" />
+            <c:set var="inTotalSum" value="${inTotalSum + inTotalSum_for}" />
+            <c:set var="inSuccessSum" value="${inSuccessSum + inSuccessSum_for}" />
+            <c:set var="memberStatSum" value="${memberStatSum + memberStatSum_for}" />
         </c:forEach>
             <tr>
                 <th>합계</th>
-                <td>${data.totalSum}</td>
-                <td>${data.outTotalSum}</td>
-                <td>${data.outSuccessSum}</td>
-                <td>${data.inTotalSum}</td>
-                <td>${data.inSuccessSum}</td>
-                <td>${data.memberStatSum}</td>
+                <td>${totalSum}</td>
+                <td>${outTotalSum}</td>
+                <td>${outSuccessSum}</td>
+                <td>${inTotalSum}</td>
+                <td>${inSuccessSum}</td>
+                <td>${memberStatSum}</td>
             </tr>
         </tbody>
     </table>
