@@ -59,6 +59,7 @@ eicn:
   file:
     location: /tmp
   apiserver: http://122.49.74.102/api-server
+  realapiserver: http://211.43.218.10/api-server
   admin:
     socket:
       id: monitor_connector
