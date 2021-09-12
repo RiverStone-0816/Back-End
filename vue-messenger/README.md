@@ -2,8 +2,14 @@
 
 # 스프링과 NPM 통합 방법
 
-* https://www.andrew-flower.com/blog/Spring-Boot-and-React-1
-* https://jundragon.tistory.com/8
+* https://changhyunit.tistory.com/75
+
+# 쓸만한 UI components
+
+* https://tailwindcomponents.com/ `강추!!`
+* https://headlessui.dev/
+* https://vue-feather-icons.egoist.sh/
+* https://next.vuetifyjs.com/en/
 
 ## Project setup
 

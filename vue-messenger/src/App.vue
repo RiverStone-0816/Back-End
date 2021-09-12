@@ -1,35 +1,53 @@
 <template>
-  <AppHeader/>
-  <div class="w-full flex">
+
+  <div v-if="path === PATH.LOGIN">
+    <LOGIN/>
+  </div>
+  <div v-else>
+    <AppHeader/>
     <router-view/>
   </div>
 
   <teleport to="#modals">
-    <LoginModal/>
     <AlertModal/>
   </teleport>
+
 </template>
 
 <script>
-import AppHeader from "@/components/singleton/AppHeader"
-import LoginModal from "@/components/singleton/LoginModal"
 import AlertModal from "@/components/singleton/AlertModal";
-import {getLoginedUser, registerUserStateChangeEventHandler} from "@/utillities/firebase";
+import LOGIN from "@/pages/Login";
+import AppHeader from "@/components/singleton/AppHeader";
+import {PATH} from "@/router";
+import axios from "@/plugins/axois"
 
 export default {
   components: {
     AlertModal,
-    LoginModal,
     AppHeader,
+    LOGIN
+  },
+  setup() {
+    return {
+      PATH: PATH
+    }
   },
   data() {
     return {
-      user: null
+      path: PATH.MAIN
+    }
+  },
+  watch: {
+    $route(to) {
+      this.path = to.path
     }
   },
   created() {
-    this.user = getLoginedUser()
-    registerUserStateChangeEventHandler(user => this.$store.commit(user ? 'user/login' : 'user/logout', user))
-  },
+    axios.get('/api/auth/sockets').then(response => {
+      this.$store.state.socket = response.data.data
+    }).catch(e => {
+      console.log(e.response)
+    })
+  }
 }
 </script>

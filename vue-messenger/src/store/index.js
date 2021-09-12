@@ -1,8 +1,10 @@
 import {createStore} from 'vuex'
-import login from "@/store/login"
 import alert from "@/store/alert"
 import user from "@/store/user"
+import ipcc from "@/store/ipcc";
+import ipccAdmin from "@/store/ipccAdmin";
+import socket from "@/store/socket";
 
 export default createStore({
-    modules: {login, alert, user}
+    modules: {alert, user, ipcc, ipccAdmin, socket}
 })

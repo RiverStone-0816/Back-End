@@ -97,9 +97,7 @@
 <script>
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
 import {BellIcon, MenuIcon, UserIcon, XIcon} from "@zhuowenli/vue-feather-icons"
-import {logout} from "@/utillities/firebase";
 import logo from '@/assets/logo.png'
-import router from "@/router";
 
 export default {
   components: {
@@ -135,12 +133,6 @@ export default {
   },
   methods: {
     logout() {
-      logout()
-          .then(() => router.push('/'))
-          .catch(error => {
-            console.error(error)
-            router.push('/')
-          })
     },
   },
   watch: {
