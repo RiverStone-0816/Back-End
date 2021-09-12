@@ -22,6 +22,7 @@ import kr.co.eicn.ippbx.model.enums.IdType;
 import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
 import lombok.Builder;
 import lombok.Data;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -85,6 +86,12 @@ public class AuthApiController extends BaseController {
         companyApiInterface.getPBXServers().stream().findFirst().ifPresent(e -> arsAuth.setPbxHost(e.getHost()));
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         return arsAuth;
+    }
+
+    @SneakyThrows
+    @GetMapping("sockets")
+    public Map<String, String> sockets() {
+        return daemonInfoInterface.getSocketList();
     }
 
     @ApiOperation("로그인")
