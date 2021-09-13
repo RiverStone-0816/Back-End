@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.text.Normalizer;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +69,14 @@ public class QueueController extends BaseController {
         final List<SummaryPersonResponse> addOnPersons = apiInterface.addOnPersons(null);
         model.addAttribute("addOnPersons", addOnPersons);
 
-        final LinkedHashMap<String, String> strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.class);
+        LinkedHashMap<String, String> strategyOptions;
+        if(g.getServiceKind().equals("SC") && g.getUsingServices().contains("TYPE1")) {
+            strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.FEWESTCALLS,CallDistributionStrategy.LEASTRECENT,CallDistributionStrategy.RANDOM
+            ,CallDistributionStrategy.RINGALL,CallDistributionStrategy.RRMEMORY,CallDistributionStrategy.SKILL);
+        } else {
+            strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.class);
+        }
+
         model.addAttribute("strategyOptions", strategyOptions);
         final Map<String, String> ringBackTones = apiInterface.ringBackTone().stream().collect(Collectors.toMap(SummaryMohListResponse::getCategory, SummaryMohListResponse::getMohName));
         model.addAttribute("ringBackTones", ringBackTones);
@@ -97,8 +105,16 @@ public class QueueController extends BaseController {
         model.addAttribute("subGroups", subGroups);
         final List<SummaryPersonResponse> addOnPersons = apiInterface.addOnPersons(entity.getName());
         model.addAttribute("addOnPersons", addOnPersons);
-        final LinkedHashMap<String, String> strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.class);
+
+        LinkedHashMap<String, String> strategyOptions;
+        if(g.getServiceKind().equals("CC") && g.getUsingServices().contains("TYPE2")) {
+            strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.FEWESTCALLS,CallDistributionStrategy.LEASTRECENT,CallDistributionStrategy.RANDOM
+                    ,CallDistributionStrategy.RINGALL,CallDistributionStrategy.RRMEMORY,CallDistributionStrategy.SKILL);
+        } else {
+            strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.class);
+        }
         model.addAttribute("strategyOptions", strategyOptions);
+
         final Map<String, String> ringBackTones = apiInterface.ringBackTone().stream().collect(Collectors.toMap(SummaryMohListResponse::getCategory, SummaryMohListResponse::getMohName));
         model.addAttribute("ringBackTones", ringBackTones);
         final Map<Integer, String> sounds = scheduleGroupApiInterface.addSoundList().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName));

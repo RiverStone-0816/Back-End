@@ -105,8 +105,10 @@
             </c:if>
         </div>
         <div class="center">
+            <c:if test="${!(g.serviceKind.equals('CC') && g.usingServices.contains('TYPE2'))}">
             <a class="ui button basic small -menu-page" href="<c:url value="/admin/dashboard/total"/>">대쉬보드</a>
             <a class="ui button basic small -menu-page" href="<c:url value="/admin/monitor/screen/config"/>">전광판</a>
+            </c:if>
             <c:if test="${hasExtension && isStat}">
                 <button class="ui button basic small" onclick="changeMode()" id="mode">관리모드</button>
             </c:if>

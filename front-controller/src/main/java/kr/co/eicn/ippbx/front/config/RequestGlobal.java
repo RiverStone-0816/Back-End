@@ -36,6 +36,7 @@ public class RequestGlobal {
     private static final String REQUEST_GLOBAL_SOCKET_LIST = "REQUEST_GLOBAL_SOCKET_LIST";
     private static final String REQUEST_GLOBAL_ALERTS = "REQUEST_GLOBAL_ALERTS";
     private static final String REQUEST_GLOBAL_LOGIN = "REQUEST_GLOBAL_LOGIN_CHECK";
+    private static final String REQUEST_GLOBAL_SERVICE_KIND = "REQUEST_GLOBAL_SERVICE_KIND";
 
     private final HttpSession session;
     private final FileService fileService;
@@ -72,6 +73,15 @@ public class RequestGlobal {
     public void setUsingServices(String service) {
         sessionStorage.set(session.getId(), REQUEST_GLOBAL_USING_SERVICE_LIST, service);
     }
+
+    public String getServiceKind(){
+        return sessionStorage.get(session.getId(), REQUEST_GLOBAL_SERVICE_KIND, String.class);
+    }
+
+    public void setServiceKind(String service){
+        sessionStorage.set(session.getId(), REQUEST_GLOBAL_SERVICE_KIND, service);
+    }
+
 
     public Boolean checkLogin() {
         final Boolean checkLogin = sessionStorage.get(session.getId(), REQUEST_GLOBAL_LOGIN, Boolean.class);

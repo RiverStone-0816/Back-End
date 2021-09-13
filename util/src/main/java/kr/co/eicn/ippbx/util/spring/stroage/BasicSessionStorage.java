@@ -9,8 +9,9 @@ public class BasicSessionStorage implements SessionStorage {
     private final HttpSession session;
 
     @Override
-    public void set(String sessionId, String key, Object value) {
+    public String set(String sessionId, String key, Object value) {
         session.setAttribute(key, value);
+        return sessionId;
     }
 
     @Override
