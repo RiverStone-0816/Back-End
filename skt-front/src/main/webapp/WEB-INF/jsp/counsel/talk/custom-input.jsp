@@ -351,17 +351,17 @@
             if (objText[i].getAttribute('data-type') == 'text') {
                 if (objText[i].value.trim() == "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
-                    return;
+                    return false;
                 }
             } else if (objText[i].getAttribute('data-type') == 'select') {
                 if (objText[i].options[objText[i].selectedIndex].value == "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 선택 해 주세요.");
-                    return;
+                    return false;
                 }
             } else {
                 if (objText[i].value.trim() == "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
-                    return;
+                    return false;
                 }
             }
         }

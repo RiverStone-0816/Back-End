@@ -197,6 +197,7 @@ public class StatUserApiController extends ApiBaseController {
         final StatUserSearchRequest search = new StatUserSearchRequest();
         search.setStartDate(new Date(System.currentTimeMillis()));
         search.setEndDate(new Date(System.currentTimeMillis()));
+        search.setTimeUnit(SearchCycle.HOUR);
         search.getPersonIds().add(g.getUser().getId());
 
         final List<StatUserInboundEntity> userInboundList = statUserInboundService.getRepository().findAllUserStat(search);
