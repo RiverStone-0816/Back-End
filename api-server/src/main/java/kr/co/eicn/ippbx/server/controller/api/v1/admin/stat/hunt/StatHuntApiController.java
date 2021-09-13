@@ -116,6 +116,7 @@ public class StatHuntApiController extends ApiBaseController {
                 .findFirst().orElse(new StatUserInboundEntity());
         final StatHuntInboundResponse result = convertDto(entity, StatHuntInboundResponse.class);
         result.setAvgRateValue(entity.getAvgRate());
+        result.setCallbackCount(entity.getCallbackSucc());
 
         return ResponseEntity.ok(data(result));
     }
