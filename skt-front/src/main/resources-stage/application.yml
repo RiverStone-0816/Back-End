@@ -5,7 +5,7 @@ server:
       timeout: 10h
 spring:
   profiles:
-    active: local
+    active: stage
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
@@ -52,12 +52,12 @@ eicn:
   service:
     base-url: http://211.43.218.10
     servicekind: SC
-  version: 20210525
+  version: 20210913
   debugging: true
   swagger:
     api-package: kr.co.eicn.ippbx.front.controller.api
   file:
-    location: ./files
+    location: /tmp
   apiserver: http://211.43.218.10/api-server
   realapiserver: http://localhost:8080/api-server
   admin:
