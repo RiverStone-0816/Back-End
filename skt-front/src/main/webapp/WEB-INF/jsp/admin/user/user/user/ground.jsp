@@ -96,7 +96,9 @@
                         <h3 class="panel-total-count">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
                         <div class="ui basic buttons">
                             <button class="ui button" onclick="popupModal()">추가</button>
+                            <c:if test="${!(g.serviceKind.equals('CC') && g.usingServices.contains('TYPE2'))}">
                             <button class="ui button -control-entity" data-entity="PersonList" style="display: none;" onclick="popupMenuModal(getEntityId('PersonList'))">권한/메뉴설정</button>
+                            </c:if>
                             <button class="ui button -control-entity" data-entity="PersonList" style="display: none;" onclick="popupModal(getEntityId('PersonList'))">수정</button>
                             <button class="ui button -control-entity" data-entity="PersonList" style="display: none;" onclick="deleteEntity(getEntityId('PersonList'))">삭제</button>
                         </div>
