@@ -108,7 +108,9 @@
                     <div class="pull-left">
                         <h3 class="panel-total-count">전체 <span>${list.size()}</span> 건</h3>
                         <div class="ui basic buttons">
-                            <button class="ui button" onclick="popupHolidayBatchModal()">공휴일 일괄등록</button>
+                            <c:if test="${serviceKind.equals('SC')}">
+                              <button class="ui button" onclick="popupHolidayBatchModal()">공휴일 일괄등록</button>
+                            </c:if>
                             <button class="ui button" onclick="popupScheduleInfoModal()">추가</button>
                         </div>
                     </div>

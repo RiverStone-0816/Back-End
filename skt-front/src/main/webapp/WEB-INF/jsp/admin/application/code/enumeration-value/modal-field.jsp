@@ -88,16 +88,18 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="three wide column"><label class="control-label">스크립트</label></div>
-                <div class="thirteen wide column">
-                    <div class="ui form">
-                        <div class="field">
-                            <textarea name="script" row="7"></textarea>
-                        </div>
-                    </div>
+            <c:if test="${serviceKind.equals('SC')}">
+                <div class="row">
+                  <div class="three wide column"><label class="control-label">스크립트</label></div>
+                      <div class="thirteen wide column">
+                          <div class="ui form">
+                              <div class="field">
+                                 <textarea name="script" row="7"></textarea>
+                              </div>
+                          </div>
+                      </div>
                 </div>
-            </div>
+            </c:if>
         </div>
     </div>
 
