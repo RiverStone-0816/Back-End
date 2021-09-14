@@ -69,6 +69,8 @@ public class AuthApiController extends BaseController {
     private String pdsSocketId;
     @Value("${eicn.messenger.socket.id}")
     private String messengerSocketId;
+    @Value("${eicn.service.servicekind}")
+    private String serviceKind;
 
     @PostMapping("check-login-condition")
     public ArsAuthInfo checkLoginCondition(HttpServletResponse response, @RequestBody @Valid LoginForm form, BindingResult bindingResult) throws IOException, ResultFailException {
@@ -112,6 +114,7 @@ public class AuthApiController extends BaseController {
         g.setCurrentUser(user);
         g.setLoginInputs(form);
         g.setUsingServices(companyInfo.getService());
+        g.setServiceKind(serviceKind);
         g.setSocketList(daemonInfoInterface.getSocketList());
     }
 
