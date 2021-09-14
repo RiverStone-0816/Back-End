@@ -19,7 +19,7 @@ import AlertModal from "@/components/singleton/AlertModal";
 import LOGIN from "@/pages/Login";
 import AppHeader from "@/components/singleton/AppHeader";
 import {PATH} from "@/router";
-import axios from "@/plugins/axois"
+import axios from "@/plugins/axios"
 
 export default {
   components: {

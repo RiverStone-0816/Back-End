@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import axios from "@/plugins/axois"
+import axios from "@/plugins/axios"
 import router from "@/router"
 
 export default {

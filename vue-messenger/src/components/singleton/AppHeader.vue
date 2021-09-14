@@ -60,10 +60,7 @@
                         leave-to-class="transform opacity-0 scale-95">
               <MenuItems class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
                 <MenuItem v-slot="{ active }">
-                  <a :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']" href="#">{{ user.credential?.displayName || user.credential?.email }}</a>
-                </MenuItem>
-                <MenuItem v-slot="{ active }">
-                  <a :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']" href="#">Settings</a>
+                  <a :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']" href="#">{{ user.credential?.idName }}</a>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
                   <button :class="[active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700']" type="button" @click="logout">Logout</button>
@@ -98,6 +95,8 @@
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/vue'
 import {BellIcon, MenuIcon, UserIcon, XIcon} from "@zhuowenli/vue-feather-icons"
 import logo from '@/assets/logo.png'
+import sessionUtils from "@/utillities/sessionUtils";
+import router from "@/router";
 
 export default {
   components: {
@@ -133,6 +132,9 @@ export default {
   },
   methods: {
     logout() {
+      sessionUtils.clear()
+      this.$store.commit('user/logout')
+      router.push('/login')
     },
   },
   watch: {

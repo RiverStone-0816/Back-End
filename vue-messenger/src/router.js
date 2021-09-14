@@ -6,7 +6,7 @@ import Slider from "@/pages/Slider";
 import ReusableModal from "@/pages/ReusableModal";
 import Crud from "@/pages/Crud";
 // import Login from "@/pages/Login";
-import store from "@/store/index"
+import sessionUtils from "@/utillities/sessionUtils"
 
 export const PATH = {
     LOGIN: '/login',
@@ -27,11 +27,9 @@ const router = createRouter({
 })
 export default router
 
-router.beforeEach((to, from, next) => {
-    console.log(to, from)
-
-    if (!store.state.user.credential && to.path !== PATH.LOGIN)
+router.beforeEach(async (to, from, next) => {
+    const me = await sessionUtils.fetchMe()
+    if (!me && to.path !== PATH.LOGIN)
         return next(PATH.LOGIN)
-
     next()
 })
