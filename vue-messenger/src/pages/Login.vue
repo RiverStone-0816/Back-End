@@ -58,10 +58,10 @@ export default {
       communicator: this.$store.state.ipccAdmin.communicator,
       showingVerification: false,
       loginForm: {
-        company: 'skdev',
-        id: 'user1',
+        company: 'eicn',
+        id: 'user0990',
         password: 'user12!@!',
-        extension: '1000',
+        extension: '0990',
       },
       verifyForm: {
         phone: null,

@@ -15,7 +15,10 @@
   * ```skdev / admin / admin12!@! / ```
   * ```skdev / user1 / user12!@! / 1000```
   * ```skdev / user2 / user12!@! / 2000```
-
+* 챗봇
+  * ```eicn / user0990 / user12!@! / 0990``` 
+  * ```eicn / user0988 / user12!@! / 0988``` 
+  * ```eicn / user0989 / user12!@! / 0989``` 
 # 테스트 배포 방법
 1. git pull
 1. (혹시 JAVA_HOME 세팅이 안되어 있다면..) JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/
