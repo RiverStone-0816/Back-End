@@ -32,7 +32,7 @@
         <tbody>
         <c:forEach var="e" items="${queueSummaries}">
             <tr>
-                <td>${g.htmlQuote(e.queue.name)}</td>
+                <td>${g.htmlQuote(e.queue.hanName)}</td>
                 <td class="-custom-wait-count" data-hunt="${g.htmlQuote(e.queue.name)}">${e.customWaitCnt}</td>
                 <c:forEach var="status" items="${memberStatuses}">
                     <c:if test="${status.key != 9}">
