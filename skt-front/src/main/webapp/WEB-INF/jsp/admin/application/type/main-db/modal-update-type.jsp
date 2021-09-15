@@ -57,7 +57,6 @@
                     </thead>
 
                     <c:if test="${usingServices.contains('TYPE2')}">
-                        츌력2
                         <tbody>
                         <c:forEach var="field" items="${fields}" varStatus="fieldStatus">
                             <c:if test="${fn:contains(g.htmlQuote(fieldIdToNames.get(field.id)),'문자열')}">
@@ -157,7 +156,6 @@
                     </c:if>
 
                     <c:if test="${usingServices.contains('TYPE1')}">
-                        출력
                         <tbody>
                         <c:forEach var="field" items="${fields}" varStatus="fieldStatus">
                             <tr>
