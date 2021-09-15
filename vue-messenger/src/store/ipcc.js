@@ -1,4 +1,4 @@
-import IpccCommunicator from "@/utillities/IpccCommunicator";
+import IpccCommunicator from "@/utillities/IpccCommunicator"
 
 export default {
     namespaced: true,

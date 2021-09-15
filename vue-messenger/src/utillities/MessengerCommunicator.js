@@ -1,4 +1,4 @@
-import {io} from "socket.io-client";
+import {connect} from "socket.io-client";
 
 function MessengerCommunicator() {
     this.socket = null;
@@ -60,7 +60,7 @@ MessengerCommunicator.prototype.connect = function (url, companyId, userid, user
 
     const _this = this;
     try {
-        this.socket = io.connect(url, {'reconnect': true, 'resource': 'socket.io'});
+        this.socket = connect(url, {'reconnect': true, 'resource': 'socket.io'});
     } catch (error) {
         console.error(error);
         setTimeout(function () {
@@ -92,11 +92,7 @@ MessengerCommunicator.prototype.connect = function (url, companyId, userid, user
     });
 };
 MessengerCommunicator.prototype.disconnect = function () {
-    try {
-        this.socket.disconnect();
-    } catch (ignored) {
-    }
-
+    this.socket?.disconnect();
     this.socket = null;
     this.init();
 };

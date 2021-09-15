@@ -1,5 +1,5 @@
 import moment from "moment";
-import {io} from "socket.io-client";
+import {connect} from "socket.io-client";
 
 function IpccCommunicator() {
     this.socket = null;
@@ -64,7 +64,7 @@ IpccCommunicator.prototype.connect = function (url, serverIp, companyId, userId,
 
     const _this = this;
     try {
-        this.socket = io.connect(url, {'reconnect': true, 'resource': 'socket.io'});
+        this.socket = connect(url, {'reconnect': true, 'resource': 'socket.io'});
         this.socket.emit('climsg_login', {
             company_id: _this.request.companyId,
             userid: _this.request.userId,
@@ -111,12 +111,8 @@ IpccCommunicator.prototype.disconnect = function () {
     } catch (ignored) {
         console.log('error: Bye.')
     }
-    try {
-        this.socket.disconnect();
-    } catch (ignored) {
-        console.log('error: disconnect()')
-    }
 
+    this.socket?.disconnect();
     this.socket = null;
     this.init();
 };

@@ -76,16 +76,16 @@ export default {
   methods: {
     prepareVerification() {
       axios.post('/api/auth/check-login-condition', this.loginForm).then(response => {
-        if (!response.data.number)
+        if (!response.data.data?.number)
           return this.login()
 
-        this.verifyForm.phone = response.data.number
-        this.verifyForm.code = response.data.authNum
-        this.verifyForm.sessionId = response.data.sessionId
-        this.verifyForm.pbxHost = response.data.pbxHost
+        this.verifyForm.phone = response.data.data?.number
+        this.verifyForm.code = response.data.data?.authNum
+        this.verifyForm.sessionId = response.data.data?.sessionId
+        this.verifyForm.pbxHost = response.data.data?.pbxHost
         this.showingVerification = true
 
-        this.communicator.connect(this.$store.state.socket.monitor_connector, this.loginForm.company, this.loginForm.id, this.verifyForm.pbxHost)
+        this.communicator.connect(this.$store.state.socket.monitor_connector, this.loginForm.company, this.loginForm.id, response.data.data?.pbxHost)
       }).catch(e => {
         console.log(e.response)
       })
@@ -101,8 +101,9 @@ export default {
     login() {
       axios.get('/api/auth/confirm-login').then(() => {
         axios.get('/api/user/' + this.loginForm.id, this.loginForm).then(response => {
-          alert('success to login')
           this.$store.commit('user/login', response.data.data)
+          this.$store.commit('ipccAdmin/login')
+          this.$store.commit('messenger/login')
           router.push('/')
         })
       })

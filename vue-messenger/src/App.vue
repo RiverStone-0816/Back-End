@@ -43,6 +43,8 @@ export default {
     }
   },
   created() {
+    window.$store = this.$store
+
     axios.get('/api/auth/sockets').then(response => {
       this.$store.state.socket = response.data.data
     }).catch(e => {

@@ -1,4 +1,4 @@
-import {io} from "socket.io-client";
+import {connect} from "socket.io-client";
 
 function IpccAdminCommunicator() {
     this.socket = null;
@@ -56,7 +56,7 @@ IpccAdminCommunicator.prototype.connect = function (url, companyId, userId, pbxN
 
     const _this = this;
     try {
-        this.socket = io.connect(url, {'secure': url.includes('https')}, {'reconnect': true, 'resource': 'socket.io'});
+        this.socket = connect(url, {'secure': url.includes('https'), 'reconnect': true, 'resource': 'socket.io'});
         this.socket.emit('climsg_join', {
             company_id: _this.request.companyId,
             userid: _this.request.userId,
@@ -87,17 +87,8 @@ IpccAdminCommunicator.prototype.connect = function (url, companyId, userId, pbxN
     return this;
 };
 IpccAdminCommunicator.prototype.disconnect = function () {
-    try {
-        this.socket.emit('climsg_bye', "Bye.");
-    } catch (ignored) {
-        console.log('error: climsg_bye')
-    }
-    try {
-        this.socket.disconnect();
-    } catch (ignored) {
-        console.log('error: disconnect()')
-    }
-
+    this.socket?.emit('climsg_bye', "Bye.");
+    this.socket?.disconnect();
     this.socket = null;
     this.init();
 };

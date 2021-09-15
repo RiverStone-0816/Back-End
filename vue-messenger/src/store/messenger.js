@@ -1,11 +1,11 @@
-import IpccAdminCommunicator from "@/utillities/IpccAdminCommunicator";
+import Messenger from "@/utillities/MessengerCommunicator"
 import axios from "@/plugins/axios";
 
 export default {
     namespaced: true,
     state() {
         return {
-            communicator: new IpccAdminCommunicator(),
+            communicator: new Messenger(),
         }
     },
     getters: {
@@ -19,7 +19,7 @@ export default {
             const data = (await axios.get('/api/auth/socket-info')).data.data
             if (!data)
                 return
-            state.communicator.connect(data.adminSocketUrl, data.companyId, data.userId, data.pbxName)
+            state.communicator.connect(data.messengerSocketUrl, data.companyId, data.userId, data.userName, data.password)
         },
     }
 }
