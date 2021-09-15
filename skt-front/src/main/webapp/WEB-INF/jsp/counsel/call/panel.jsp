@@ -12,6 +12,8 @@
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
+<%--@elvariable id="usingServices" type="java.lang.String"--%>
+<%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
 <div class="ui bottom attached tab segment remove-margin active" data-tab="call-panel">
     <div class="panel remove-margin full-height">
@@ -27,9 +29,12 @@
                     <th>전화상태</th>
                     <td>
                         <text id="call-status"></text>
-                        <button class="ui right floated button mini compact blue" id="partial-recoding" style="display: none;">
-                            <i class="fa fa-play"></i>&ensp;<text>부분녹취</text>
-                        </button>
+                        <c:if test="${usingServices.contains('TYPE1')}">
+                            <button class="ui right floated button mini compact blue" id="partial-recoding"
+                                    style="display: none;">
+                                <i class="fa fa-play"></i>&ensp;<text>부분녹취</text>
+                            </button>
+                        </c:if>
                     </td>
                 </tr>
                 <tr>
