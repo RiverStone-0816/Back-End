@@ -12,6 +12,8 @@
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
+<%--@elvariable id="usingServices" type="java.lang.String"--%>
+<%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
 <form:form modelAttribute="form" cssClass="ui modal tiny -json-submit" data-method="put"
            action="${pageContext.request.contextPath}/api/enumeration-value/type/${type}/field/${entity.fieldId}/code"
@@ -22,18 +24,20 @@
 
     <div class="content rows scrolling">
         <div class="ui grid">
-            <div class="row">
-                <div class="four wide column"><label class="control-label">연동된하위코드</label></div>
-                <div class="four wide column">
-                    <div class="ui form">
-                        <form:select path="relatedFieldId">
-                            <form:option value="" label="선택안함"/>
-                            <form:options items="${relatedFields}"/>
-                        </form:select>
+            <c:if test="${usingServices.contains('TYPE1')}">
+                <div class="row">
+                    <div class="four wide column"><label class="control-label">연동된하위코드</label></div>
+                    <div class="four wide column">
+                        <div class="ui form">
+                            <form:select path="relatedFieldId">
+                                <form:option value="" label="선택안함"/>
+                                <form:options items="${relatedFields}"/>
+                            </form:select>
+                        </div>
                     </div>
+                    <div class="eight wide column">해당 결과 코드가 바뀌면 같이 연동되어 바뀌어야할 필드</div>
                 </div>
-                <div class="eight wide column">해당 결과 코드가 바뀌면 같이 연동되어 바뀌어야할 필드</div>
-            </div>
+            </c:if>
             <div class="row">
                 <div class="twelve wide column">
                     <div class="ui form">
