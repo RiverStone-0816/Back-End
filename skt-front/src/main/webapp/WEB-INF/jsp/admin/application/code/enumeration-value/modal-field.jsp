@@ -88,7 +88,7 @@
                     </div>
                 </div>
             </div>
-            <c:if test="${serviceKind.equals('SC')}">
+            <c:if test="${usingServices.contains('TYPE1')}">
                 <div class="row">
                   <div class="three wide column"><label class="control-label">스크립트</label></div>
                       <div class="thirteen wide column">

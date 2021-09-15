@@ -107,7 +107,7 @@
         <div class="center">
             <c:if test="${!(g.serviceKind.equals('CC') && g.usingServices.contains('TYPE2'))}">
             <a class="ui button basic small -menu-page" href="<c:url value="/admin/dashboard/total"/>">대쉬보드</a>
-                <c:if test="${serviceKind.equals('SC')}">
+                <c:if test="${usingServices.contains('TYPE1')}">
                     <a class="ui button basic small -menu-page" href="<c:url value="/admin/monitor/screen/config"/>">전광판</a>
                 </c:if>
             </c:if>
