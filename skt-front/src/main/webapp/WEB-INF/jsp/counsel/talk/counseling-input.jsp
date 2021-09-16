@@ -290,7 +290,7 @@
     };
 
     window.donePostTalkCounselingInfo = function () {
-        alert('상담정보가 저장되었습니다.' function(){
+        alert('상담정보가 저장되었습니다.', function(){
             loadTalkCounselingInput('${form.groupId}', null, '${g.htmlQuote(roomId)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}');
             loadTalkList('MY');
             replaceReceivedHtmlInSilence('/counsel/talk/room/' + encodeURIComponent('${g.escapeQuote(roomId)}'), '#talk-room');

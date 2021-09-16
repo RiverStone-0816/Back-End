@@ -2,9 +2,11 @@ package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.SipBuddies;
 import kr.co.eicn.ippbx.server.service.CacheService;
+import kr.co.eicn.ippbx.server.service.IpccUrlConnection;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import lombok.Getter;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -30,6 +32,16 @@ public class SipBuddiesRepository extends EicnBaseRepository<SipBuddies, kr.co.e
 		cacheService.pbxServerList(getCompanyId()).forEach(e -> {
 			try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
 				pbxDsl.deleteFrom(SIP_BUDDIES).where(SIP_BUDDIES.NAME.eq(peer)).execute();
+			}
+		});
+	}
+
+	public void updateAndMD5SecretAllPbxServers(String peer,String secret) {
+		dsl.update(SIP_BUDDIES).set(SIP_BUDDIES.MD5SECRET, DSL.md5(secret)).where(SIP_BUDDIES.NAME.eq(peer)).execute();
+		cacheService.pbxServerList(getCompanyId()).forEach(e -> {
+			try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
+				pbxDsl.update(SIP_BUDDIES).set(SIP_BUDDIES.MD5SECRET, DSL.md5(secret)).where(SIP_BUDDIES.NAME.eq(peer)).execute();
+				IpccUrlConnection.execute("http://" + e.getHost() + "/ipcc/multichannel/remote/pickup_update.jsp", peer);
 			}
 		});
 	}

@@ -40,6 +40,7 @@ public class UserDetails extends User {
 	private String    isTalk;
 	private String    isEmail;
 	private String remoteIp;
+	private String	phoneKind;
 
 	private CompanyEntity company;
 

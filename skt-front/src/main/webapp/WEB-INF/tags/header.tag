@@ -67,7 +67,9 @@
                 </div>
 
                 <div class="etc-groups">
+                    <c:if test="${g.usingServices.contains('SPHONE')}">
                     <button class="ui button dial" data-inverted="" data-tooltip="다이얼" data-position="bottom center"></button>
+                    </c:if>
                     <button id="button-bell-toggle" class="ui button bell" data-inverted="" data-tooltip="전화알림창" data-position="bottom right"></button>
 
                     <jsp:include page="/WEB-INF/jsp/dial-pad.jsp"/>

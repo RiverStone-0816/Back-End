@@ -33,7 +33,7 @@
                 <div class="four wide column"><label class="control-label">내선번호</label></div>
                 <div class="four wide column">
                     <div class="ui action input fluid">
-                        <form:input path="extension"/>
+                        <form:input path="extension" readonly="${entity != null ? 'true' : 'false'}"/>
                         <button class="ui button" type="button" onclick="checkDuplicatedExtension()">중복확인</button>
                     </div>
                 </div>
@@ -57,6 +57,17 @@
                         </form:select>
                     </div>
                 </div>
+                <c:if test="${g.usingServices.contains('SPHONE')}">
+                <div class="four wide column"><label class="control-label">소프트폰사용여부</label></div>
+                <div class="four wide column">
+                    <div class="ui input fluid">
+                        <form:select path="phoneKind">
+                            <form:option value="N" label="사용안함"/>
+                            <form:option value="S" label="사용함"/>
+                        </form:select>
+                    </div>
+                </div>
+                </c:if>
             </div>
             <div class="row">
                 <div class="four wide column"><label class="control-label">전화기아이디</label></div>
