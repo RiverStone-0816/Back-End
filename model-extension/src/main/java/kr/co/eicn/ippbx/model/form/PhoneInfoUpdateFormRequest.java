@@ -40,6 +40,7 @@ public class PhoneInfoUpdateFormRequest extends BaseForm {
 	private String forwardNum;										 // 착신번호
 	private String originalNumber;                                   // 번호이동원번호
 	private String prevent;                                          // 금지프리픽스
+	private String phoneKind;
 	/**
 	 * @see kr.co.eicn.ippbx.model.enums.ForwardKind
 	 */

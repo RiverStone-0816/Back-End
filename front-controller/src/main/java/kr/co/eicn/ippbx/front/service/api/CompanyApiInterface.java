@@ -7,7 +7,6 @@ import kr.co.eicn.ippbx.model.dto.eicn.SummaryCompanyServerResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.CmpMemberStatusCodeEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyLicenceEntity;
-import org.apache.commons.collections4.map.SingletonMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -44,6 +43,10 @@ public class CompanyApiInterface extends ApiServerInterface {
 
     public ServerInfo pbxServerInfo() throws IOException, ResultFailException {
         return getData(subUrl + "pbx-server", null, ServerInfo.class).getData();
+    }
+
+    public ServerInfo webrtcServerInfo() throws IOException, ResultFailException {
+        return getData(subUrl + "webrtc-server", null, ServerInfo.class).getData();
     }
 
     public boolean checkService(String service) throws IOException, ResultFailException {

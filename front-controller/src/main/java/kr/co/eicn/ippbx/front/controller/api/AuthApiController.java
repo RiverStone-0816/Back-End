@@ -12,12 +12,15 @@ import kr.co.eicn.ippbx.front.service.api.AuthApiInterface;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.DaemonInfoInterface;
 import kr.co.eicn.ippbx.front.service.api.MenuApiInterface;
+import kr.co.eicn.ippbx.front.service.api.user.tel.PhoneApiInterface;
 import kr.co.eicn.ippbx.front.service.api.user.user.UserApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServerInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SipBuddies;
 import kr.co.eicn.ippbx.model.dto.configdb.UserMenuCompanyResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.PhoneInfoDetailResponse;
 import kr.co.eicn.ippbx.model.enums.IdType;
 import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
 import lombok.Builder;
@@ -58,6 +61,8 @@ public class AuthApiController extends BaseController {
     private MenuApiInterface menuApiInterface;
     @Autowired
     private CompanyApiInterface companyApiInterface;
+    @Autowired
+    private PhoneApiInterface phoneApiInterface;
 
     @Value("${eicn.admin.socket.id}")
     private String adminSocketId;
@@ -98,6 +103,7 @@ public class AuthApiController extends BaseController {
         authApiInterface.login(form);
 
         final PersonDetailResponse user = userApiInterface.get(form.getId());
+        final PhoneInfoDetailResponse phone = phoneApiInterface.get(user.getPeer());
         final CompanyInfo companyInfo = companyApiInterface.getInfo(form.getCompany());
 
         if (Objects.equals(IdType.MASTER, IdType.of(user.getIdType()))) {
@@ -107,7 +113,7 @@ public class AuthApiController extends BaseController {
 
         // if (isNotEmpty(form.getExtension()))
         user.setExtension(form.getExtension());
-
+        user.setPhoneKind(phone.getPhoneKind());
         final List<UserMenuCompanyResponse> menus = menuApiInterface.getUserMenus(user.getId());
 
         g.setMenus(new CurrentUserMenu(menus));
@@ -191,5 +197,73 @@ public class AuthApiController extends BaseController {
         private String groupTreeName;
         private Integer groupLevel;
         private String isMulti;
+    }
+
+    @LoginRequired
+    @GetMapping("softPhone-info")
+    public SoftPhoneInformation getSoftPhoneInformation() throws IOException, ResultFailException {
+        final PersonDetailResponse user = g.getUser();
+        final LoginForm loginForm = g.getLoginInputs();
+        final ServerInfo pbx = companyApiInterface.pbxServerInfo();
+        final ServerInfo webrtc = companyApiInterface.webrtcServerInfo();
+        ServerInformation serverInformation = ServerInformation.builder()
+                .pbxServerIp(pbx.getIp())
+                .pbxServerPort("5060")
+                .webrtcServerIp(webrtc.getIp())
+                .webrtcServerPort("8200")
+                .turnServerIp(webrtc.getIp())
+                .turnServerPort("3478")
+                .turnUser("turn")
+                .turnSecret("turnrw")
+                .build();
+
+        //소프트폰이 아닐경우 리턴
+        if(!user.getPhoneKind().equals("S") || StringUtils.isEmpty(loginForm.getExtension()))
+            return SoftPhoneInformation.builder().result("ERROR").message("Invalid Request").peerNum("").peerSecret("").build();
+
+        PhoneInfoDetailResponse phoneInfo = phoneApiInterface.get(user.getPeer());
+
+        if(Objects.isNull(phoneInfo))
+            return SoftPhoneInformation.builder().result("ERROR").message("Peer Not Found: "+ user.getPeer()).peerNum(user.getPeer()).peerSecret("").build();
+
+        SipBuddies sipBuddies = authApiInterface.getSoftPhoneAuth(user.getPeer());
+        if(Objects.isNull(sipBuddies))
+            return SoftPhoneInformation.builder().result("ERROR").message("Peer Not Found: "+ user.getPeer()).peerNum(user.getPeer()).peerSecret(sipBuddies.getMd5secret()).build();
+
+        if(StringUtils.isEmpty(sipBuddies.getMd5secret()))
+            return SoftPhoneInformation.builder().result("ERROR").message("Peer Not Found: "+ user.getPeer()).peerNum(user.getPeer()).peerSecret(sipBuddies.getMd5secret()).build();
+
+        authApiInterface.update(user.getPeer(), sipBuddies.getMd5secret());
+        sipBuddies = authApiInterface.getSoftPhoneAuth(user.getPeer());
+
+        return SoftPhoneInformation.builder().result("OK")
+                .message("")
+                .peerNum(user.getPeer())
+                .peerSecret(sipBuddies.getMd5secret())
+                .serverInformation(serverInformation)
+                .build();
+    }
+
+    @Builder
+    @Data
+    public static class SoftPhoneInformation {
+        private String result;
+        private String message;
+        private String peerNum;
+        private String peerSecret;
+        private ServerInformation serverInformation;
+    }
+
+    @Builder
+    @Data
+    public static class ServerInformation {
+        private String pbxServerIp;
+        private String pbxServerPort;
+        private String webrtcServerIp;
+        private String webrtcServerPort;
+        private String turnServerIp;
+        private String turnServerPort;
+        private String turnUser;
+        private String turnSecret;
     }
 }

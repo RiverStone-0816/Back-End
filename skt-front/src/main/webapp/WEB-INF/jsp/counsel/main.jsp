@@ -636,10 +636,12 @@
                 ipccCommunicator.reject();
             });
 
+            <c:if test="${g.user.phoneKind.equals('N')}">
             $(".-call-receive").click(function () {
                 $('#modal-calling').modalHide();
                 ipccCommunicator.receiveCall();
             });
+            </c:if>
 
             $(".-call-hangup").click(function () {
                 ipccCommunicator.hangUp();

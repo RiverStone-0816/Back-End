@@ -121,12 +121,6 @@ public class PhoneApiController extends ApiBaseController {
                 && !g.getUser().getIdType().equals(IdType.ADMIN.getCode()))
             throw new IllegalArgumentException("수정할 수 없습니다.");
 
-        final PhoneSearchRequest search = new PhoneSearchRequest();
-        search.setExtension(form.getExtension());
-        final Pagination<PhoneInfo> pagination = repository.pagination(search);
-        if (pagination.getTotalCount() > 0)
-            throw new IllegalArgumentException("중복내선 입니다.");
-
         repository.update(form);
         return ResponseEntity.ok(create());
     }
