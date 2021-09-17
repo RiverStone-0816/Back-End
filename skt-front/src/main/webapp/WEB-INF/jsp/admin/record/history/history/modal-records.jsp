@@ -17,7 +17,8 @@
 
 <div class="ui modal xsmall">
     <div class="header">녹취 듣기</div>
-    <i class="close icon"></i>
+    <i class="close icon" onclick="$(this).parents('div').find('audio')[0].pause();"></i>
+
     <div class="content">
         <c:choose>
             <c:when test="${files.size() > 0}">

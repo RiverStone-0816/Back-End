@@ -8,6 +8,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.SummarySoundListResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.OutScheduleSeedEntity;
 import kr.co.eicn.ippbx.model.enums.ScheduleType;
 import kr.co.eicn.ippbx.model.form.DayOutScheduleSeedFormRequest;
+import kr.co.eicn.ippbx.model.form.HolyOutScheduleFormRequest;
 import kr.co.eicn.ippbx.model.search.OutScheduleSeedSearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,10 @@ public class OutboundDayScheduleApiInterface extends ApiServerInterface {
 
     public OutScheduleSeedDetailResponse get(Integer parent) throws IOException, ResultFailException {
         return getData(subUrl + parent, null, OutScheduleSeedDetailResponse.class).getData();
+    }
+
+    public void holyPost(HolyOutScheduleFormRequest form) throws IOException, ResultFailException {
+        post(subUrl + "holy", form);
     }
 
     public void post(DayOutScheduleSeedFormRequest form) throws IOException, ResultFailException {

@@ -9,6 +9,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.SummaryPhoneInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.SummarySoundListResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.OutScheduleSeedEntity;
 import kr.co.eicn.ippbx.model.form.DayOutScheduleSeedFormRequest;
+import kr.co.eicn.ippbx.model.form.HolyOutScheduleFormRequest;
 import kr.co.eicn.ippbx.model.search.OutScheduleSeedSearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,6 +72,14 @@ public class OutboundDayScheduleApiController extends BaseController {
     @DeleteMapping("{parent}")
     public void delete(@PathVariable Integer parent) throws IOException, ResultFailException {
         apiInterface.delete(parent);
+    }
+
+    /**
+     * 공휴일 일괄등록
+     */
+    @PostMapping("holy")
+    public void holyPost(@Valid @RequestBody HolyOutScheduleFormRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
+        apiInterface.holyPost(form);
     }
 
     /**

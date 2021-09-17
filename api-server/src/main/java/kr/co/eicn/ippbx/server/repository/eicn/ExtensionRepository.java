@@ -313,7 +313,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
             for (CompanyServerEntity entity : pbxServerList) {
                 try (DSLContext pbxDsl = pbxServerInterface.using(entity.getHost())) {
                     updateSipBuddies(form, sipBuddies, pbxDsl);
-                    IpccUrlConnection.execute("http://" + entity.getHost() + "/ipcc/multichannel/remote/pickup_update.jsp", form.getPeer());
+                    IpccUrlConnection.execute("http://" + entity.getServer().getIp() + "/ipcc/multichannel/remote/pickup_update.jsp", form.getPeer());
                 }
             }
         } else {

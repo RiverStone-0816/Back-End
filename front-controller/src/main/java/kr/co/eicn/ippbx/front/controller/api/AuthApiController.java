@@ -101,19 +101,21 @@ public class AuthApiController extends BaseController {
 
         form.setActionType(WebSecureActionType.LOGIN.getCode());
         authApiInterface.login(form);
-
+        PhoneInfoDetailResponse phone = null;
         final PersonDetailResponse user = userApiInterface.get(form.getId());
-        final PhoneInfoDetailResponse phone = phoneApiInterface.get(user.getPeer());
+
         final CompanyInfo companyInfo = companyApiInterface.getInfo(form.getCompany());
 
         if (Objects.equals(IdType.MASTER, IdType.of(user.getIdType()))) {
             user.setCompanyId(companyInfo.getCompanyId());
             user.setCompanyName(companyInfo.getCompanyName());
+        } else {
+            phone = phoneApiInterface.get(user.getPeer());
         }
 
         // if (isNotEmpty(form.getExtension()))
         user.setExtension(form.getExtension());
-        user.setPhoneKind(phone.getPhoneKind());
+        user.setPhoneKind(phone != null ? phone.getPhoneKind() : "N");
         final List<UserMenuCompanyResponse> menus = menuApiInterface.getUserMenus(user.getId());
 
         g.setMenus(new CurrentUserMenu(menus));
