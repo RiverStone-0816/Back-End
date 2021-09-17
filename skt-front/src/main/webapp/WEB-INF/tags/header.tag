@@ -228,6 +228,7 @@
                         menuCode: '${g.escapeQuote(e2.menuCode)}',
                         menuName: '${g.escapeQuote(e2.menuName)}',
                         menuActionExeId: '${g.escapeQuote(e2.menuActionExeId)}',
+                        service: '${g.escapeQuote(e2.service)}'
                     },
                     </c:if>
                     </c:forEach>
@@ -249,12 +250,14 @@
                 throw 'invalid selectedMenu: ' + selectedMenu;
 
             selectedMenu.children.map(function (e) {
+                if (!'${usingServices}'.contains('TALK') && e.service.contains('TALK'))
+                    return;
                 list.append(
                     $('<li/>')
                         .append($('<a/>', {href: e.menuActionExeId, class: 'link-txt -menu-page', text: e.menuName}))
                         .append($('<a/>', {target: '_blank', href: e.menuActionExeId, class: 'link-new material-icons', text: 'open_in_new'}))
                 );
-            });
+           });
         });
 
         $(window).on('load', function () {
