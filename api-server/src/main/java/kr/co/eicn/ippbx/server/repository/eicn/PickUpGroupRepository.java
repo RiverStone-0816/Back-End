@@ -307,7 +307,7 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
 
         // 당겨받기그룹 업데이트
         if (pickUpSipBuddies.size() > 0) {
-            optionalPbxServer.ifPresent(e -> IpccUrlConnection.execute("http://" + e.getHost() + "/ipcc/cc/remote/pickup_update.jsp",
+            optionalPbxServer.ifPresent(e -> IpccUrlConnection.execute("http://" + e.getServer().getIp() + "/ipcc/cc/remote/pickup_update.jsp",
                     pickUpSipBuddies.stream()
                             .filter(sip -> isNotEmpty(sip.getName()))
                             .map(SipBuddies::getName)
