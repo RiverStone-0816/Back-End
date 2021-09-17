@@ -41,7 +41,7 @@ public class SipBuddiesRepository extends EicnBaseRepository<SipBuddies, kr.co.e
 		cacheService.pbxServerList(getCompanyId()).forEach(e -> {
 			try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
 				pbxDsl.update(SIP_BUDDIES).set(SIP_BUDDIES.MD5SECRET, DSL.md5(secret)).where(SIP_BUDDIES.NAME.eq(peer)).execute();
-				IpccUrlConnection.execute("http://" + e.getHost() + "/ipcc/multichannel/remote/pickup_update.jsp", peer);
+				IpccUrlConnection.execute("http://" + e.getServer().getIp() + "/ipcc/multichannel/remote/pickup_update.jsp", peer);
 			}
 		});
 	}
