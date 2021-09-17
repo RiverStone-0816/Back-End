@@ -16,7 +16,7 @@
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
 <div class="ui modal inverted small">
-    <i class="close icon"></i>
+    <i class="close icon" onclick="$(this).parents('div').find('audio')[0].pause();"></i>
     <div class="header">상담정보</div>
 
     <div class="content rows scrolling">
