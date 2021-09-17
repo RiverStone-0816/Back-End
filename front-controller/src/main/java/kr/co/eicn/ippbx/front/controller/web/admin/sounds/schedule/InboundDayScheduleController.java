@@ -106,8 +106,7 @@ public class InboundDayScheduleController extends BaseController {
         final Map<Integer, String> scheduleGroups = apiInterface.scheduleGroups().stream().collect(Collectors.toMap(SummaryScheduleGroupResponse::getParent, SummaryScheduleGroupResponse::getName));
         model.addAttribute("scheduleGroups", scheduleGroups);
 
-        final Map<String, String> number070List = apiInterface.addNumber070List().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, e -> Optional.ofNullable(e.getHanName()).orElse("")));
-        model.addAttribute("number070List", number070List);
+        model.addAttribute("number070List", apiInterface.addNumber070List());
 
         final Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
