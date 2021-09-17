@@ -63,19 +63,10 @@
                             <tr>
                                 <td>
                                     <input type="hidden" name="field[${fieldStatus.index}].id" value="${field.id}"/>
-                                    <c:choose>
-                                        <c:when test="${defaultFieldIds.contains(field.id)}">
-                                            <input type="checkbox" name="field[${fieldStatus.index}].checked"
-                                                   value="${fieldStatus.index}" checked style="display: none;"/>
-                                            <label>고정</label>
-                                        </c:when>
-                                        <c:otherwise>
                                             <div class="ui checkbox">
                                                 <input type="checkbox" name="field[${fieldStatus.index}].checked"
                                                        value="${fieldStatus.index}" ${registeredFieldIds.contains(field.id) ? 'checked' : null} />
                                             </div>
-                                        </c:otherwise>
-                                    </c:choose>
                                 </td>
                                 <td>${g.htmlQuote(fieldIdToNames.get(field.id))}</td>
                                 <td>
@@ -151,19 +142,10 @@
                                 <tr>
                                     <td>
                                         <input type="hidden" name="field[${fieldStatus.index}].id" value="${field.id}"/>
-                                        <c:choose>
-                                            <c:when test="${defaultFieldIds.contains(field.id)}">
-                                                <input type="checkbox" name="field[${fieldStatus.index}].checked"
-                                                       value="${fieldStatus.index}" checked style="display: none;"/>
-                                                <label>고정</label>
-                                            </c:when>
-                                            <c:otherwise>
                                                 <div class="ui checkbox">
                                                     <input type="checkbox" name="field[${fieldStatus.index}].checked"
                                                            value="${fieldStatus.index}" ${registeredFieldIds.contains(field.id) ? 'checked' : null} />
                                                 </div>
-                                            </c:otherwise>
-                                        </c:choose>
                                     </td>
                                     <td>${g.htmlQuote(fieldIdToNames.get(field.id))}</td>
                                     <td>
