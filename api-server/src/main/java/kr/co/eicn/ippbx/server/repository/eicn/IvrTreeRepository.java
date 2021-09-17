@@ -202,6 +202,10 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
             level = parentNode.getLevel() + 1;
             treeName = parentNode.getTreeName().concat("_").concat(treeName);
 
+            if (g.getUser().getCompany().getService().contains("TYPE2"))
+                if (level == 1 && IvrMenuType.CONNECT_MENU.getCode().equals(form.getType()))
+                    throw new IllegalArgumentException("IVR은 2단계까지 생성 가능합니다.");
+
             // 하위IVR code 는 parent ivr_tree.type_data에 저장됨
             dsl.update(IVR_TREE)
                     .set(IVR_TREE.TYPE_DATA, String.valueOf(code))
@@ -292,6 +296,10 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
 
     public void updateByKeyAllPbxServers(IvrFormUpdateRequest form, Integer seq) {
         final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree entity = findOneIfNullThrow(seq);
+
+        if (g.getUser().getCompany().getService().contains("TYPE2"))
+            if (entity.getLevel() == 1 && IvrMenuType.CONNECT_MENU.getCode().equals(form.getType()))
+                throw new IllegalArgumentException("IVR은 2단계까지 생성 가능합니다.");
 
         updateOrInsert(dsl, form, entity);
 

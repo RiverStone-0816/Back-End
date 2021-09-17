@@ -97,6 +97,17 @@ public class CommonMenuCompany extends TableImpl<CommonMenuCompanyRecord> {
      */
     public final TableField<CommonMenuCompanyRecord, Integer> GROUP_LEVEL = createField(DSL.name("group_level"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
 
+    /**
+     * The column <code>CONFIGDB.menu_company_*.group_level</code>.
+     */
+    public final TableField<CommonMenuCompanyRecord, String> SERVICE_KIND = createField(DSL.name("service_kind"), org.jooq.impl.SQLDataType.VARCHAR(10).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>CONFIGDB.menu_company_*.group_level</code>.
+     */
+    public final TableField<CommonMenuCompanyRecord, String> SERVICE = createField(DSL.name("service"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+
+
     private final String tableName;
 
     public CommonMenuCompany(String companyName) {
