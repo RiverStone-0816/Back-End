@@ -53,6 +53,7 @@ public class PhoneApiController extends ApiBaseController {
     private final SipBuddiesRepository sipBuddiesRepository;
     private final Number070Repository numberRepository;
 
+    @IsAdmin
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<PhoneInfoSummaryResponse>>> pagination(PhoneSearchRequest search) {
         final Pagination<PhoneInfo> pagination = repository.pagination(search);
@@ -95,6 +96,7 @@ public class PhoneApiController extends ApiBaseController {
         return ResponseEntity.ok(data(detail));
     }
 
+    @IsAdmin
     @PostMapping("")
     public ResponseEntity<JsonResult<Void>> register(@Valid @RequestBody PhoneInfoFormRequest form, BindingResult bindingResult) {
         if (!form.validate(bindingResult))
@@ -110,6 +112,7 @@ public class PhoneApiController extends ApiBaseController {
         return ResponseEntity.created(URI.create("/api/v1/admin/user/tel/phone")).body(create());
     }
 
+    @IsAdmin
     @PutMapping("{peer}")
     public ResponseEntity<JsonResult<?>> update(@Valid @RequestBody PhoneInfoUpdateFormRequest form, BindingResult bindingResult, @PathVariable String peer) {
         if (!form.validate(bindingResult))
@@ -124,6 +127,7 @@ public class PhoneApiController extends ApiBaseController {
         return ResponseEntity.ok(create());
     }
 
+    @IsAdmin
     @DeleteMapping("{peer}")
     public ResponseEntity<JsonResult<Void>> delete(@PathVariable String peer) {
         if (!g.getUser().getIdType().equals(IdType.MASTER.getCode())
@@ -139,6 +143,7 @@ public class PhoneApiController extends ApiBaseController {
     /**
      * 내선번호 목록조회
      */
+    @IsAdmin
     @GetMapping("add-extensions")
     public ResponseEntity<JsonResult<List<SummaryPhoneInfoResponse>>> addExtensions(@RequestParam(required = false) String extension) {
         final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> useExtensionPersons = personListRepository.findAll(
