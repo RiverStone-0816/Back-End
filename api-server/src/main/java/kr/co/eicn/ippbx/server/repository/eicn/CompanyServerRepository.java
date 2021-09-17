@@ -80,4 +80,11 @@ public class CompanyServerRepository extends EicnBaseRepository<CompanyServer, C
 				.and(SERVER_INFO.TYPE.like("%" + ServerType.PBX.getCode() + "%"))
 				.fetchOneInto(ServerInfo.class);
 	}
+
+	public ServerInfo findSoftPhoneInfo() {
+		return dsl.selectDistinct(SERVER_INFO.fields())
+				.from(SERVER_INFO)
+				.where(SERVER_INFO.TYPE.like("%" + ServerType.WEBRTC_SERVER.getCode() + "%"))
+				.fetchOneInto(ServerInfo.class);
+	}
 }

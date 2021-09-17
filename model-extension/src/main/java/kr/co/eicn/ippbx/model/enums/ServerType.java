@@ -9,7 +9,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
  */
 public enum ServerType implements CodeHasable<String> {
 	WEB("W"), PBX("P"), WEB_VOICE_SERVER("V"), TALK_RELAY_SERVER("K"), SMS("S"),
-	RECORD_SERVER("R"), TTS_SERVER("T"), WEB_CONTENT_SERVER("C");
+	RECORD_SERVER("R"), TTS_SERVER("T"), WEB_CONTENT_SERVER("C"), WEBRTC_SERVER("J");
 
 	private final String code;
 

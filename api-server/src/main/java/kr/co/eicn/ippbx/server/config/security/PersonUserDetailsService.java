@@ -2,11 +2,13 @@ package kr.co.eicn.ippbx.server.config.security;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo;
 import kr.co.eicn.ippbx.model.UserDetails;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyEntity;
 import kr.co.eicn.ippbx.model.enums.IdType;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.PhoneInfoRepository;
 import kr.co.eicn.ippbx.util.EnumUtils;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.util.spring.RequestMessage;
@@ -31,6 +33,7 @@ public class PersonUserDetailsService implements UserDetailsService {
     private final RequestMessage message;
     private final PersonListRepository repository;
     private final CompanyInfoRepository companyInfoRepository;
+    private final PhoneInfoRepository phoneInfoRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -54,11 +57,12 @@ public class PersonUserDetailsService implements UserDetailsService {
                 Collections.singletonList(EnumUtils.of(IdType.class, person.getIdType())));
 
         final CompanyInfo company = companyInfoRepository.findOneIfNullThrow(companyId);
-
+        final PhoneInfo phoneInfo = phoneInfoRepository.findOne(person.getPeer());
         ReflectionUtils.copy(details, person);
 
         details.setCompanyId(company.getCompanyId());
         details.setCompany(modelMapper.map(company, CompanyEntity.class));
+        details.setPhoneKind(phoneInfo.getPhoneKind());
 
         return details;
     }

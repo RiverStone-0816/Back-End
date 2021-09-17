@@ -81,6 +81,13 @@ public class CompanyApiController extends ApiBaseController {
         return ResponseEntity.ok(data(serverInfo));
     }
 
+    @GetMapping("webrtc-server")
+    public ResponseEntity<JsonResult<ServerInfo>> webrtcServerInfo() {
+        ServerInfo serverInfo = companyServerRepository.findSoftPhoneInfo();
+        return ResponseEntity.ok(data(serverInfo));
+    }
+
+
     @GetMapping("check-service")
     public ResponseEntity<JsonResult<Boolean>> checkService(@RequestParam String service) {
         return ResponseEntity.ok(data(companyService.checkService(g.getUser().getCompanyId(), service)));

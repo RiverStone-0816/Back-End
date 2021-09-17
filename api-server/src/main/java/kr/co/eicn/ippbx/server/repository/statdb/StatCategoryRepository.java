@@ -107,12 +107,12 @@ public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbou
                 conditions.add(serviceCondition);
             }
         }
-        if (search.getIvrMulti() != null) {
-            for (int i = 0; i < search.getIvrMulti().size(); i++) {
-                if (i == 0)
-                    categoryCondition = TABLE.IVR_TREE_NAME.eq(search.getIvrMulti().get(i));
+        if (search.getIvrMulti().size() > 0 ) {
+           for (int i = 0; i < search.getIvrMulti().size(); i++) {
+                   if (i == 0)
+                    categoryCondition = TABLE.IVR_TREE_NAME.like(search.getIvrMulti().get(i)+"%");
                 else
-                    categoryCondition = categoryCondition.or(TABLE.IVR_TREE_NAME.eq(search.getIvrMulti().get(i)));
+                    categoryCondition = categoryCondition.or(TABLE.IVR_TREE_NAME.like(search.getIvrMulti().get(i)+"%"));
 
                 conditions.add(categoryCondition);
             }
