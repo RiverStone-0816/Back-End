@@ -41,7 +41,6 @@ import static org.apache.commons.lang3.StringUtils.*;
 /**
  * 번호/그룹/사용자 > 번호/서비스관리 > 내선관리
  */
-@IsAdmin
 @Slf4j
 @RequiredArgsConstructor
 @RestController
