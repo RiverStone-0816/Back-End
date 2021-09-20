@@ -55,7 +55,7 @@ import router from "@/router"
 export default {
   data() {
     return {
-      communicator: this.$store.state.ipccAdmin.communicator,
+      communicator: this.$store.state.monitor.communicator,
       showingVerification: false,
       loginForm: {
         company: 'eicn',
@@ -102,8 +102,6 @@ export default {
       axios.get('/api/auth/confirm-login').then(() => {
         axios.get('/api/user/' + this.loginForm.id, this.loginForm).then(response => {
           this.$store.commit('user/login', response.data.data)
-          this.$store.commit('ipccAdmin/login')
-          this.$store.commit('messenger/login')
           router.push('/')
         })
       })

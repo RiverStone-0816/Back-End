@@ -114,14 +114,7 @@ export default {
   },
   data() {
     const pages = {
-      Calendar: '/calendar',
-      Markdown: '/markdown',
-      Slider: '/slider',
-      Calculator: '/calculator',
-      ReusableModal: '/reusable-modal',
-      Chat: '/chat',
-      Crud: '/crud',
-      Tensorflow: '/tensorflow',
+      MAIN: '/',
     }
     return {
       navigation: Object.keys(pages).map(e => ({name: e, href: pages[e], active: pages[e] === location.pathname})),

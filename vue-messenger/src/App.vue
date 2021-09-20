@@ -4,7 +4,6 @@
     <LOGIN/>
   </div>
   <div v-else>
-    <AppHeader/>
     <router-view/>
   </div>
 
@@ -17,14 +16,12 @@
 <script>
 import AlertModal from "@/components/singleton/AlertModal";
 import LOGIN from "@/pages/Login";
-import AppHeader from "@/components/singleton/AppHeader";
 import {PATH} from "@/router";
 import axios from "@/plugins/axios"
 
 export default {
   components: {
     AlertModal,
-    AppHeader,
     LOGIN
   },
   setup() {

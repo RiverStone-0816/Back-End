@@ -2,7 +2,7 @@ import cookieUtils from '@/utillities/cookieUtils'
 import axios from "@/plugins/axios";
 import store from "@/store/index"
 
-export const BROWSER_SESSION_KEY = "JSESSIONID";
+export const BROWSER_SESSION_KEY = "BROWSER_SESSION_ATTRIBUTE";
 export const LOCALSTORAGE_SESSION_KEY = "session";
 
 const uuidv4 = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -22,6 +22,9 @@ export default {
     _generateSessionId() {
         const sessionId = cookieUtils.get(BROWSER_SESSION_KEY) || uuidv4()
         cookieUtils.set(BROWSER_SESSION_KEY, sessionId)
+        if (cookieUtils.get(BROWSER_SESSION_KEY) !== sessionId)
+            throw 'cannot use cookie'
+
         this.set(BROWSER_SESSION_KEY, sessionId)
     },
     get(key) {

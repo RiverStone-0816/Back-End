@@ -21,5 +21,8 @@ export default {
                 return
             state.communicator.connect(data.messengerSocketUrl, data.companyId, data.userId, data.userName, data.password)
         },
+        on(state, handle) {
+            state.communicator.on(handle.command, handle.func)
+        }
     }
 }
