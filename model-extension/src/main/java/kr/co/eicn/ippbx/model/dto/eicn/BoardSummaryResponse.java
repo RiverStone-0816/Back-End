@@ -12,4 +12,5 @@ public class BoardSummaryResponse {
     private Date createdAt;   //등록일
     private String writer;    //작성자
     private Integer viewCnt;     //조회수
+    private String creatorId;
 }

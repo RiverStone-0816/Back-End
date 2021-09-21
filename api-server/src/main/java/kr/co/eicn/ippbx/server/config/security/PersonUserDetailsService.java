@@ -54,7 +54,6 @@ public class PersonUserDetailsService implements UserDetailsService {
                 Collections.singletonList(EnumUtils.of(IdType.class, person.getIdType())));
 
         final CompanyInfo company = companyInfoRepository.findOneIfNullThrow(companyId);
-
         ReflectionUtils.copy(details, person);
 
         details.setCompanyId(company.getCompanyId());

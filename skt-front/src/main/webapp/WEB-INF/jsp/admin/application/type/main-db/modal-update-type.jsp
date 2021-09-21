@@ -12,6 +12,8 @@
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
+<%--@elvariable id="usingServices" type="java.lang.String"--%>
+<%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
 <form:form modelAttribute="form" cssClass="ui modal large -json-submit" data-method="put"
            action="${pageContext.request.contextPath}/api/common-type/${entity.seq}"
@@ -53,79 +55,188 @@
                         <th>글자수(500자이내)<br>(영문한글공통)</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <c:forEach var="field" items="${fields}" varStatus="fieldStatus">
-                        <tr>
-                            <td>
-                                <input type="hidden" name="field[${fieldStatus.index}].id" value="${field.id}"/>
-                                <c:choose>
-                                    <c:when test="${defaultFieldIds.contains(field.id)}">
-                                        <input type="checkbox" name="field[${fieldStatus.index}].checked" value="${fieldStatus.index}" checked style="display: none;"/>
-                                        <label>고정</label>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="ui checkbox">
+
+                    <c:if test="${usingServices.contains('TYPE2')}">
+                        <tbody>
+                        <c:forEach var="field" items="${fields}" varStatus="fieldStatus">
+                            <c:if test="${fn:contains(g.htmlQuote(fieldIdToNames.get(field.id)),'문자열')}">
+                                <c:if test="${g.htmlQuote(fieldIdToNames.get(field.id)).length()==5 || g.htmlQuote(fieldIdToNames.get(field.id))=='문자열_10' }">
+                                    <tr>
+                                        <td>
+                                            <input type="hidden" name="field[${fieldStatus.index}].id"
+                                                   value="${field.id}"/>
+                                            <c:choose>
+                                                <c:when test="${defaultFieldIds.contains(field.id)}">
+                                                    <input type="checkbox" name="field[${fieldStatus.index}].checked"
+                                                           value="${fieldStatus.index}" checked style="display: none;"/>
+                                                    <label>고정</label>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <div class="ui checkbox">
+                                                        <input type="checkbox"
+                                                               name="field[${fieldStatus.index}].checked"
+                                                               value="${fieldStatus.index}" ${registeredFieldIds.contains(field.id) ? 'checked' : null} />
+                                                    </div>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </td>
+                                        <td>${g.htmlQuote(fieldIdToNames.get(field.id))}</td>
+                                        <td>
+                                            <div class="ui input fluid">
+                                                <input type="text" name="field[${fieldStatus.index}].fieldName"
+                                                       value="${g.htmlQuote(field.fieldName)}"/>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ui form fluid">
+                                                <select name="field[${fieldStatus.index}].isneed">
+                                                    <option value="Y" ${field.isneed == 'Y' ? 'selected' : null}>YES
+                                                    </option>
+                                                    <option value="N" ${field.isneed == 'N' ? 'selected' : null}>NO
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ui form fluid">
+                                                <select name="field[${fieldStatus.index}].isdisplay">
+                                                    <option value="Y" ${field.isdisplay == 'Y' ? 'selected' : null}>
+                                                        YES
+                                                    </option>
+                                                    <option value="N" ${field.isdisplay == 'N' ? 'selected' : null}>NO
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ui form fluid">
+                                                <select name="field[${fieldStatus.index}].isdisplayList">
+                                                    <option value="Y" ${field.isdisplayList == 'Y' ? 'selected' : null}>
+                                                        YES
+                                                    </option>
+                                                    <option value="N" ${field.isdisplayList == 'N' ? 'selected' : null}>
+                                                        NO
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ui form fluid">
+                                                <select name="field[${fieldStatus.index}].issearch">
+                                                    <option value="Y" ${field.issearch == 'Y' ? 'selected' : null}>YES
+                                                    </option>
+                                                    <option value="N" ${field.issearch == 'N' ? 'selected' : null}>NO
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="ui form fluid">
+                                                <div class="ui input fluid">
+                                                    <c:choose>
+                                                        <c:when test="${fieldIdToTypes.get(field.id) == 'STRING'}">
+                                                            <input type="text"
+                                                                   name="field[${fieldStatus.index}].fieldSize"
+                                                                   value="${field.fieldSize}" class="-input-numerical"/>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <input type="text"
+                                                                   name="field[${fieldStatus.index}].fieldSize"
+                                                                   value="${field.fieldSize}" style="display: none;"/>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </c:if>
+                            </c:if>
+                        </c:forEach>
+                        </tbody>
+                    </c:if>
+
+                    <c:if test="${usingServices.contains('TYPE1')}">
+                        <tbody>
+                        <c:forEach var="field" items="${fields}" varStatus="fieldStatus">
+                            <tr>
+                                <td>
+                                    <input type="hidden" name="field[${fieldStatus.index}].id" value="${field.id}"/>
+                                    <c:choose>
+                                        <c:when test="${defaultFieldIds.contains(field.id)}">
                                             <input type="checkbox" name="field[${fieldStatus.index}].checked"
-                                                   value="${fieldStatus.index}" ${registeredFieldIds.contains(field.id) ? 'checked' : null} />
-                                        </div>
-                                    </c:otherwise>
-                                </c:choose>
-                            </td>
-                            <td>${g.htmlQuote(fieldIdToNames.get(field.id))}</td>
-                            <td>
-                                <div class="ui input fluid">
-                                    <input type="text" name="field[${fieldStatus.index}].fieldName" value="${g.htmlQuote(field.fieldName)}"/>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ui form fluid">
-                                    <select name="field[${fieldStatus.index}].isneed">
-                                        <option value="Y" ${field.isneed == 'Y' ? 'selected' : null}>YES</option>
-                                        <option value="N" ${field.isneed == 'N' ? 'selected' : null}>NO</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ui form fluid">
-                                    <select name="field[${fieldStatus.index}].isdisplay">
-                                        <option value="Y" ${field.isdisplay == 'Y' ? 'selected' : null}>YES</option>
-                                        <option value="N" ${field.isdisplay == 'N' ? 'selected' : null}>NO</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ui form fluid">
-                                    <select name="field[${fieldStatus.index}].isdisplayList">
-                                        <option value="Y" ${field.isdisplayList == 'Y' ? 'selected' : null}>YES</option>
-                                        <option value="N" ${field.isdisplayList == 'N' ? 'selected' : null}>NO</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ui form fluid">
-                                    <select name="field[${fieldStatus.index}].issearch">
-                                        <option value="Y" ${field.issearch == 'Y' ? 'selected' : null}>YES</option>
-                                        <option value="N" ${field.issearch == 'N' ? 'selected' : null}>NO</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ui form fluid">
+                                                   value="${fieldStatus.index}" checked style="display: none;"/>
+                                            <label>고정</label>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="ui checkbox">
+                                                <input type="checkbox" name="field[${fieldStatus.index}].checked"
+                                                       value="${fieldStatus.index}" ${registeredFieldIds.contains(field.id) ? 'checked' : null} />
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td>${g.htmlQuote(fieldIdToNames.get(field.id))}</td>
+                                <td>
                                     <div class="ui input fluid">
-                                        <c:choose>
-                                            <c:when test="${fieldIdToTypes.get(field.id) == 'STRING'}">
-                                                <input type="text" name="field[${fieldStatus.index}].fieldSize" value="${field.fieldSize}" class="-input-numerical"/>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <input type="text" name="field[${fieldStatus.index}].fieldSize" value="${field.fieldSize}" style="display: none;"/>
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <input type="text" name="field[${fieldStatus.index}].fieldName"
+                                               value="${g.htmlQuote(field.fieldName)}"/>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
+                                </td>
+                                <td>
+                                    <div class="ui form fluid">
+                                        <select name="field[${fieldStatus.index}].isneed">
+                                            <option value="Y" ${field.isneed == 'Y' ? 'selected' : null}>YES</option>
+                                            <option value="N" ${field.isneed == 'N' ? 'selected' : null}>NO</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="ui form fluid">
+                                        <select name="field[${fieldStatus.index}].isdisplay">
+                                            <option value="Y" ${field.isdisplay == 'Y' ? 'selected' : null}>YES</option>
+                                            <option value="N" ${field.isdisplay == 'N' ? 'selected' : null}>NO</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="ui form fluid">
+                                        <select name="field[${fieldStatus.index}].isdisplayList">
+                                            <option value="Y" ${field.isdisplayList == 'Y' ? 'selected' : null}>YES
+                                            </option>
+                                            <option value="N" ${field.isdisplayList == 'N' ? 'selected' : null}>NO
+                                            </option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="ui form fluid">
+                                        <select name="field[${fieldStatus.index}].issearch">
+                                            <option value="Y" ${field.issearch == 'Y' ? 'selected' : null}>YES</option>
+                                            <option value="N" ${field.issearch == 'N' ? 'selected' : null}>NO</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="ui form fluid">
+                                        <div class="ui input fluid">
+                                            <c:choose>
+                                                <c:when test="${fieldIdToTypes.get(field.id) == 'STRING'}">
+                                                    <input type="text" name="field[${fieldStatus.index}].fieldSize"
+                                                           value="${field.fieldSize}" class="-input-numerical"/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <input type="text" name="field[${fieldStatus.index}].fieldSize"
+                                                           value="${field.fieldSize}" style="display: none;"/>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </c:if>
+
                 </table>
             </div>
         </div>
@@ -138,6 +249,7 @@
 </form:form>
 
 <script>
+
     window.prepareUpdateTypeForm = function (data) {
         data.fieldFormRequests = [];
 

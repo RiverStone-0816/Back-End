@@ -24,6 +24,8 @@ public class CommonMenuCompany implements Serializable {
 	private String  groupLevelAuthYn;   // 조직권한부여여부
 	private String  groupCode;          // 조직코드
 	private Integer groupLevel;         // 조직레벨
+	private String  serviceKind;
+	private String  service;
 
 	@Override
 	public boolean equals(Object o) {

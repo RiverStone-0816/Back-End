@@ -248,6 +248,34 @@ public class CommonMenuCompanyRecord extends UpdatableRecordImpl<CommonMenuCompa
 		return (Integer) get(16);
 	}
 
+	/**
+	 * Setter for <code>CONFIGDB.menu_company_*.group_level</code>.
+	 */
+	public void setServiceKind(String value) {
+		set(17, value);
+	}
+
+	/**
+	 * Getter for <code>CONFIGDB.menu_company_*.group_level</code>.
+	 */
+	public String getServiceKind() {
+		return (String) get(17);
+	}
+
+	/**
+	 * Setter for <code>CONFIGDB.menu_company_*.group_level</code>.
+	 */
+	public void setService(String value) {
+		set(18, value);
+	}
+
+	/**
+	 * Getter for <code>CONFIGDB.menu_company_*.group_level</code>.
+	 */
+	public String getService() {
+		return (String) get(18);
+	}
+
 	// -------------------------------------------------------------------------
 	// Primary key information
 	// -------------------------------------------------------------------------

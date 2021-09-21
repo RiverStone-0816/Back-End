@@ -290,7 +290,7 @@
                 });
             }
 
-            setInterval(loadInboundData, 1000 * 30);
+            setInterval(loadInboundData, 1000 * 3);
 
             $(window).on('load', loadInboundData);
 
@@ -435,11 +435,11 @@
                             .append($('<td/>', {text: e.id}))
                             .append($('<td/>', {text: e.extension}))
                             .append($('<td/>', {text: e.peer}))
-                            .append($('<td/>', {class: 'bcolor-bar' + e.paused, text: statuses[e.paused]}))
+                            .append($('<td/>', {class: '-consultant-status', 'data-peer': e.peer,text: statuses[e.paused]}))
                     );
+                    updatePersonStatus();
                 }
             }
-
             $(window).on('load', function () {
                 moveRankingContents(1, 0);
                 moveRankingContents(2, 0);

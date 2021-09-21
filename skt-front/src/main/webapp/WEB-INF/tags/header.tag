@@ -67,7 +67,9 @@
                 </div>
 
                 <div class="etc-groups">
+                    <c:if test="${g.usingServices.contains('SPHONE') && g.user.phoneKind.equals('S')}">
                     <button class="ui button dial" data-inverted="" data-tooltip="다이얼" data-position="bottom center"></button>
+                    </c:if>
                     <button id="button-bell-toggle" class="ui button bell" data-inverted="" data-tooltip="전화알림창" data-position="bottom right"></button>
 
                     <jsp:include page="/WEB-INF/jsp/dial-pad.jsp"/>
@@ -99,14 +101,20 @@
                     <li><a href="#" data-type="NOTICE" class="-counsel-menu">공지사항</a></li>
                     <li><a href="#" data-type="KNOWLEDGE" class="-counsel-menu">지식관리</a></li>
                     <li><a href="#" data-type="CALENDAR" class="-counsel-menu">일정관리</a></li>
-                    <li><a href="javascript:popupBookmark()" class="-counsel-panel bookmark-btn">즐겨찾기</a></li>
+                    <c:if test="${usingServices.contains('TYPE1')}">
+                        <li><a href="javascript:popupBookmark()" class="-counsel-panel bookmark-btn">즐겨찾기</a></li>
+                    </c:if>
                     <li><a href="#" data-type="PREVIEW" class="-counsel-menu">프리뷰</a></li>
                 </ul>
             </c:if>
         </div>
         <div class="center">
+            <c:if test="${!(g.serviceKind.equals('CC') && g.usingServices.contains('TYPE2'))}">
             <a class="ui button basic small -menu-page" href="<c:url value="/admin/dashboard/total"/>">대쉬보드</a>
-            <a class="ui button basic small -menu-page" href="<c:url value="/admin/monitor/screen/config"/>">전광판</a>
+                <c:if test="${usingServices.contains('TYPE1')}">
+                    <a class="ui button basic small -menu-page" href="<c:url value="/admin/monitor/screen/config"/>">전광판</a>
+                </c:if>
+            </c:if>
             <c:if test="${hasExtension && isStat}">
                 <button class="ui button basic small" onclick="changeMode()" id="mode">관리모드</button>
             </c:if>
@@ -220,6 +228,7 @@
                         menuCode: '${g.escapeQuote(e2.menuCode)}',
                         menuName: '${g.escapeQuote(e2.menuName)}',
                         menuActionExeId: '${g.escapeQuote(e2.menuActionExeId)}',
+                        service: '${g.escapeQuote(e2.service)}'
                     },
                     </c:if>
                     </c:forEach>
@@ -241,12 +250,14 @@
                 throw 'invalid selectedMenu: ' + selectedMenu;
 
             selectedMenu.children.map(function (e) {
+                if (!'${usingServices}'.contains('TALK') && e.service.contains('TALK'))
+                    return;
                 list.append(
                     $('<li/>')
                         .append($('<a/>', {href: e.menuActionExeId, class: 'link-txt -menu-page', text: e.menuName}))
                         .append($('<a/>', {target: '_blank', href: e.menuActionExeId, class: 'link-new material-icons', text: 'open_in_new'}))
                 );
-            });
+           });
         });
 
         $(window).on('load', function () {

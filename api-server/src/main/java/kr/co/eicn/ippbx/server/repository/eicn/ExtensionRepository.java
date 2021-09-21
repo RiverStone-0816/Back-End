@@ -113,7 +113,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         insertRecord.setPhoneStatus("registered");
         insertRecord.setCompanyId(getCompanyId());
 
-        insertRecord.setPhoneKind("N"); //사용안함
+        insertRecord.setPhoneKind(StringUtils.isEmpty(form.getPhoneKind()) ? "N" : form.getPhoneKind()); //사용안함
         insertRecord.setHpDeviceId(EMPTY); //사용안함
         insertRecord.setOriginalNumber(isEmpty(form.getOriginalNumber()) ? number.getNumber() : form.getOriginalNumber());
         insertRecord.setOutboundGw(form.getOutboundGw());
@@ -256,7 +256,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         insertRecord.setDialStatus(old.getDialStatus());
         insertRecord.setPhoneStatus("registered");
         insertRecord.setPickup(old.getPickup());
-        insertRecord.setPhoneKind("N");
+        insertRecord.setPhoneKind(StringUtils.isEmpty(form.getPhoneKind()) ? "N" : form.getPhoneKind());
         insertRecord.setHpNumber(EMPTY);
         insertRecord.setHpDeviceId(EMPTY);
         insertRecord.setOutboundGw(form.getOutboundGw());
@@ -313,7 +313,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
             for (CompanyServerEntity entity : pbxServerList) {
                 try (DSLContext pbxDsl = pbxServerInterface.using(entity.getHost())) {
                     updateSipBuddies(form, sipBuddies, pbxDsl);
-                    IpccUrlConnection.execute("http://" + entity.getHost() + "/ipcc/multichannel/remote/pickup_update.jsp", form.getPeer());
+                    IpccUrlConnection.execute("http://" + entity.getServer().getIp() + "/ipcc/multichannel/remote/pickup_update.jsp", form.getPeer());
                 }
             }
         } else {

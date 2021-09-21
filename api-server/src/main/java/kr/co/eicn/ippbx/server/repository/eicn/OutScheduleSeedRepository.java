@@ -279,7 +279,7 @@ public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSee
 
 		final OutScheduleListRecord outScheduleListRecord = new OutScheduleListRecord();
 		outScheduleListRecord.setParent(parent);
-		outScheduleListRecord.setType(ScheduleType.WEEK.getCode());
+		outScheduleListRecord.setType(ScheduleType.DAY.getCode());
 		outScheduleListRecord.setName(form.getName());
 		outScheduleListRecord.setFromhour(form.getFromhour());
 		outScheduleListRecord.setTohour(form.getTohour());

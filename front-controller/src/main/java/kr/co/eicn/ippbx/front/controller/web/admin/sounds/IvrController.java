@@ -62,7 +62,7 @@ public class IvrController extends BaseController {
         final Map<Integer, String> rootMap = roots.stream().collect(Collectors.toMap(IvrTree::getSeq, IvrTree::getName));
         List<IvrMenuType> menuTypes = Arrays.asList(IvrMenuType.values());
 
-        if (model.asMap().get("serviceKind").equals("CC")) {
+        if (g.getUsingServices().contains("TYPE2")) {
             menuTypes = menuTypes.stream().filter(e -> !(e.getCode().equals(IvrMenuType.CONNECT_MENU_AFTER_DONE_EXCEPTION.getCode()) ||
                     e.getCode().equals(IvrMenuType.CONNECT_REPRESENTABLE_NUMBER_AFTER_DONE_EXCEPTION.getCode()) ||
                     e.getCode().equals(IvrMenuType.CONNECT_HUNT_NUMBER_AFTER_DONE_EXCEPTION.getCode()))).collect(Collectors.toList());

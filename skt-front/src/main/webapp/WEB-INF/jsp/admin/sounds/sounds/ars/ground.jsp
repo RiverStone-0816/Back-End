@@ -75,9 +75,11 @@
                                                         <audio controls src="${apiServerUrl}/api/v1/admin/sounds/ars/${e.seq}/resource?token=${accessToken}"></audio>
                                                     </div>
                                                 </div>
-                                                <a class="ui icon button mini compact" href="${apiServerUrl}/api/v1/admin/sounds/ars/${e.seq}/resource?token=${accessToken}">
-                                                    <i class="arrow down icon" data-value="${e.seq}"></i>
-                                                </a>
+                                                <c:if test="${usingServices.contains('TYPE1')}">
+                                                    <a class="ui icon button mini compact" href="${apiServerUrl}/api/v1/admin/sounds/ars/${e.seq}/resource?token=${accessToken}">
+                                                        <i class="arrow down icon" data-value="${e.seq}"></i>
+                                                    </a>
+                                                </c:if>
                                             </div>
                                         </td>
                                     </tr>

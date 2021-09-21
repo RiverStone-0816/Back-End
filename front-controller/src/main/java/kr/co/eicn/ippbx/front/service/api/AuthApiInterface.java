@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.front.service.api;
 import kr.co.eicn.ippbx.front.model.ArsAuthInfo;
 import kr.co.eicn.ippbx.front.model.form.LoginForm;
 import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SipBuddies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
@@ -25,5 +26,13 @@ public class AuthApiInterface extends ApiServerInterface {
 
     public ArsAuthInfo getArsAuth(String userId) throws IOException, ResultFailException {
         return getData("/api/ars-auth/" + userId, null, ArsAuthInfo.class).getData();
+    }
+
+    public SipBuddies getSoftPhoneAuth(String peer) throws IOException, ResultFailException {
+        return getData("/api/softphone-auth/" + peer, null, SipBuddies.class).getData();
+    }
+
+    public void update(String peer, String secret)  throws IOException, ResultFailException {
+        put("/api/softphone-auth/" + peer + "/" + secret , null);
     }
 }

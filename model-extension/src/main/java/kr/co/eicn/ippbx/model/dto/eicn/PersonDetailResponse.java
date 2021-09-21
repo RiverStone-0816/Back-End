@@ -14,4 +14,5 @@ public class PersonDetailResponse extends PersonSummaryResponse {
 	private String emailInfo;   // 이메일
 
 	private String profilePhoto; //프로필 사진 정보
+	private String phoneKind;
 }

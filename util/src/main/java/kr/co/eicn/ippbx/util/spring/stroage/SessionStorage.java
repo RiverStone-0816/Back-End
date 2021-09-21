@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.util.spring.stroage;
 import java.util.function.Supplier;
 
 public interface SessionStorage {
-    void set(String sessionId, String key, Object value);
+    String set(String sessionId, String key, Object value);
 
     <T> T get(String sessionId, String key, Class<T> returnType);
 

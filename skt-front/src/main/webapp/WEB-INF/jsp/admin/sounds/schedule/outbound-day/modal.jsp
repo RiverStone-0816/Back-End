@@ -51,7 +51,7 @@
                         <div class="to-panel">
                             <select name="extensions" class="form-control -left-selector" size="8" multiple="multiple">
                                 <c:forEach var="e" items="${entity.extensions}">
-                                    <option value="${g.htmlQuote(e.extension)}">${g.htmlQuote(e.extension)} ${g.htmlQuote(e.inUseIdName)}</option>
+                                    <option value="${g.htmlQuote(e.extension)}">${g.htmlQuote(e.extension)}[${g.htmlQuote(e.inUseIdName)}]</option>
                                 </c:forEach>
                             </select>
                         </div>

@@ -77,7 +77,7 @@
                         <div class="ui buttons">
                             <button class="ui basic button -control-entity" data-entity="Notice" style="display: none;" onclick="popupShowModal(getEntityId('Notice'))">보기</button>
                             <button class="ui basic button" onclick="popupModal()">추가</button>
-                            <button class="ui basic button -control-entity" data-entity="Notice" style="display: none;" onclick="popupModal(getEntityId('Notice'))">수정</button>
+                            <button class="ui basic button -control-entity" data-entity="Notice" style="display: none;" onclick="changepopupModal(getEntityId('Notice'), getEntityId('Notice', 'userid'))">수정</button>
                             <button class="ui basic button -control-entity" data-entity="Notice" style="display: none;" onclick="deleteEntity(getEntityId('Notice'))">삭제</button>
                         </div>
                     </div>
@@ -86,7 +86,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="Notice">
+                    <table class="ui celled table num-tbl unstackable ${pagination.rows.size() > 0  ? "selectable-only" : null}" data-entity="Notice">
                         <thead>
                         <tr>
                             <th>선택</th>
@@ -101,7 +101,7 @@
                         <c:choose>
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
-                                    <tr data-id="${e.id}">
+                                    <tr class="getId" data-id="${e.id}" data-userid="${e.creatorId}">
                                         <td>
                                             <div class="ui radio checkbox">
                                                 <input type="radio" name="radio">
@@ -131,19 +131,28 @@
     <tags:scripts>
         <script>
             function popupShowModal(id) {
+                console.log(id);
                 popupReceivedHtml('/admin/service/help/notice/' + (id || 'new') + '/modal-show', 'modal-show-notice');
+
             }
 
             function popupModal(id) {
-                popupReceivedHtml('/admin/service/help/notice/' + (id || 'new') + '/modal', 'modal-notice');
+                    popupReceivedHtml('/admin/service/help/notice/' + (id || 'new') + '/modal', 'modal-notice');
+            }
+
+            function changepopupModal(id, userid) {
+                if('${g.user.id}' === userid)
+                    popupReceivedHtml('/admin/service/help/notice/' + (id || 'new') + '/modal', 'modal-notice');
             }
 
             function deleteEntity(id) {
-                confirm('정말 삭제하시겠습니까?').done(function () {
-                    restSelf.delete('/api/notice/' + id).done(function () {
-                        reload();
+                if('${g.user.id}' === userid){
+                    confirm('정말 삭제하시겠습니까?').done(function () {
+                        restSelf.delete('/api/notice/' + id).done(function () {
+                            reload();
+                        });
                     });
-                });
+                 }
             }
         </script>
     </tags:scripts>

@@ -39,6 +39,7 @@ public class PhoneInfoFormRequest extends BaseForm {
 	private String forwardNum;
 	private String originalNumber;                                   // 번호이동원번호
 	private String prevent;                                          // 금지프리픽스
+	private String phoneKind = "N";								// 소프트폰 여부
 	/**
 	 * @see kr.co.eicn.ippbx.model.enums.ForwardKind
 	 */

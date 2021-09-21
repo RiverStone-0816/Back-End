@@ -25,10 +25,9 @@ import java.util.stream.Collectors;
 public class MenuCompanyService extends ApiBaseService implements ApplicationContextAware {
     protected final Logger logger = LoggerFactory.getLogger(MenuCompanyService.class);
     private final Map<String, MenuCompanyRepository> repositories = new HashMap<>();
-    private ApplicationContext applicationContext;
-
     private final PersonListRepository personListRepository;
     private final CompanyTreeRepository companyTreeRepository;
+    private ApplicationContext applicationContext;
 
     public MenuCompanyService(PersonListRepository personListRepository, CompanyTreeRepository companyTreeRepository) {
         this.personListRepository = personListRepository;
@@ -102,7 +101,7 @@ public class MenuCompanyService extends ApiBaseService implements ApplicationCon
                 resultMenus.add(menu);
         }
         resultMenus.forEach(e -> {
-           final UserMenuCompanyResponse menu = new UserMenuCompanyResponse();
+            final UserMenuCompanyResponse menu = new UserMenuCompanyResponse();
             ReflectionUtils.copy(menu, e);
             menus.add(menu);
         });
@@ -140,8 +139,7 @@ public class MenuCompanyService extends ApiBaseService implements ApplicationCon
 
     public List<UserMenuCompanyResponse> convertToMenu(List<kr.co.eicn.ippbx.meta.jooq.configdb.tables.pojos.CommonMenuCompany> menuCompanies) {
         final List<UserMenuCompanyResponse> menus = new ArrayList<>();
-
-        final List<kr.co.eicn.ippbx.meta.jooq.configdb.tables.pojos.CommonMenuCompany> roots = menuCompanies.stream().filter(e -> StringUtils.isEmpty(e.getParentMenuCode())).collect(Collectors.toList());
+        final List<CommonMenuCompany> roots = menuCompanies.stream().filter(e -> StringUtils.isEmpty(e.getParentMenuCode())).collect(Collectors.toList());
         menuCompanies.removeAll(roots);
 
         roots.forEach(e -> {
@@ -165,8 +163,12 @@ public class MenuCompanyService extends ApiBaseService implements ApplicationCon
     }
 
     private void joinToParentMenu(UserMenuCompanyResponse parentMenu, List<kr.co.eicn.ippbx.meta.jooq.configdb.tables.pojos.CommonMenuCompany> menuCompanies) {
-        final List<kr.co.eicn.ippbx.meta.jooq.configdb.tables.pojos.CommonMenuCompany> children = menuCompanies.stream().filter(e -> Objects.equals(parentMenu.getMenuCode(), e.getParentMenuCode())).collect(Collectors.toList());
+        List<kr.co.eicn.ippbx.meta.jooq.configdb.tables.pojos.CommonMenuCompany> children = menuCompanies.stream().filter(e -> Objects.equals(parentMenu.getMenuCode(), e.getParentMenuCode())).collect(Collectors.toList());
         menuCompanies.removeAll(children);
+        if (g.getUser().getCompany().getService().contains("TYPE2"))
+            children = children.stream().filter(e -> !e.getMenuName().contains("센터") && !e.getMenuName().contains("로그") && !e.getService().contains("NOT")
+                    && (!e.getService().equals("STA") || (e.getMenuCode().contains("0259") || e.getMenuCode().contains("0261"))))
+                    .collect(Collectors.toList());
 
         children.forEach(e -> {
             final UserMenuCompanyResponse menu = new UserMenuCompanyResponse();

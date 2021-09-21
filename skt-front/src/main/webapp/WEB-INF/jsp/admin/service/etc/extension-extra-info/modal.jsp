@@ -24,11 +24,11 @@
         <table class="ui celled table compact unstackable">
             <thead>
             <tr>
-                <th><input type="checkbox" id="check-all"/></th>
-                <th>내선번호</th>
-                <th>지역번호</th>
-                <th>CID</th>
-                <th>과금번호</th>
+                <th style="width: 4%"><input type="checkbox" id="check-all"/></th>
+                <th style="width: 6%">내선번호</th>
+                <th style="width: 8%">지역번호</th>
+                <th style="width: 12%">CID</th>
+                <th style="width: 12%">과금번호</th>
                 <th>CRM최초연결상태</th>
                 <th>CRM연결중전화끊김후자동상태</th>
                 <th>CRM비연결시 상태</th>
