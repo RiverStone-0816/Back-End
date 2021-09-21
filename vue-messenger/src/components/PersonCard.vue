@@ -12,7 +12,7 @@
         <div class="min-w-0">
           <p class="truncate" v-text="chat.lastMessage"/>
         </div>
-        <p class="ml-2 whitespace-no-wrap" v-text="getLastMessageTime"/>
+        <p class="ml-2 whitespace-no-wrap italic" v-text="getLastMessageTime"/>
       </div>
     </div>
 
@@ -52,10 +52,10 @@ export default {
       const duration = moment.duration(moment(new Date()).diff(messageTime))
 
       return duration.asMinutes() < 2 ? 'Just now'
-          : duration.asHours() < 1 ? `Before ${duration.asMinutes()} minutes`
+          : duration.asHours() < 1 ? `Before ${parseInt(duration.asMinutes())} minutes`
               : duration.asHours() < 2 ? 'Before 1 hour'
-                  : duration.asDays() < 1 ? `Before ${duration.asHours()} hours`
-                      : messageTime.format('D MMM')
+                  : duration.asDays() < 1 ? `Before ${parseInt(duration.asHours())} hours`
+                      : messageTime.format('lll')
     },
     isHiding() {
       return this.person.idName.includes(this.filterKeyword) || (this.chat && this.chat.lastMessage.includes(this.filterKeyword))

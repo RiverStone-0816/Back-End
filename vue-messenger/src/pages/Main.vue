@@ -38,11 +38,10 @@
             </div>
           </div>
           <div class="contacts p-2 flex-1 overflow-y-scroll">
-            <PersonCard v-for="p in persons" :key="p.id" :activated="false" :chat="{lastMessage: 'Ok, see you at the subway in a bit.', lastMessageTime: null, readAll: true }"
-                        :filter-keyword="personKeyword" :person="p" @call-chat="callChat(p.id)"/>
+            <PersonCard v-for="p in persons" :key="p.id" :activated="false" :chat="getLastMessageStatus(p)" :filter-keyword="personKeyword" :person="p" @call-chat="callChat(p.id)"/>
           </div>
         </section>
-        <ChatRoom :person="currentRoomPerson" :roomId="currentRoomId"/>
+        <ChatRoom :person="currentRoomPerson" :roomId="currentRoomId" @append-message="appendMessage"/>
       </main>
     </div>
   </div>
@@ -81,11 +80,11 @@ export default {
     sortPersons() {
       this.persons.sort((a, b) => {
         console.log(a.chatRoom, b.chatRoom)
-        if (!a.chatRoom || !a.chatRoom.chattRoom)
+        if (!a.chatRoom)
           return -1
-        if (!b.chatRoom || !b.chatRoom.chattRoom)
+        if (!b.chatRoom)
           return 1
-        return a.chatRoom.chattRoom.lastTime - b.chatRoom.chattRoom.lastTime
+        return a.chatRoom.lastTime - b.chatRoom.lastTime
       })
     },
     callChat(personId) {
@@ -95,13 +94,13 @@ export default {
 
       const person = persons[0]
       if (person.chatRoom) {
-        this.loadRoom(person, person.chatRoom.chattRoom.roomId)
+        this.loadRoom(person, person.chatRoom.roomId)
       } else {
         this.createRoom(person)
       }
     },
     loadRoom(person) {
-      this.currentRoomId = person.chatRoom.chattRoom.roomId
+      this.currentRoomId = person.chatRoom.roomId
       this.currentRoomPerson = person
     },
     async createRoom(person) {
@@ -109,7 +108,33 @@ export default {
       this.currentRoomPerson = person
     },
     loadRoomInfo(roomId) {
-      axios.get(`/api/chatt/${roomId}/chatting`).then(res => res.data.data.chattingMembers.length === 1 && this.persons.forEach(person => (person.id === res.data.data.chattingMembers[0].userid) && (person.chatRoom = res)))
+      axios.get(`/api/chatt/${roomId}/chatting`).then(res => {
+        const data = res.data.data
+        if (data.chattingMembers.length !== 2)
+          return
+        this.persons
+            .filter(person => (person.id === data.chattingMembers[0].userid) || (person.id === data.chattingMembers[1].userid))
+            .forEach(person => {
+              if (data.chattingMessages)
+                data.chattingMessages.sort((a, b) => a.insertTime - b.insertTime)
+              person.chatRoom = data
+            })
+      })
+    },
+    getLastMessageStatus(person) {
+      return !person.chatRoom || !person.chatRoom.chattingMessages ? {} : {
+        lastMessage: person.chatRoom.chattingMessages.length ? person.chatRoom.chattingMessages[person.chatRoom.chattingMessages.length - 1].content : '',
+        lastMessageTime: person.chatRoom.chattingMessages.length ? person.chatRoom.chattingMessages[person.chatRoom.chattingMessages.length - 1].insertTime : null,
+        readAll: person.chatRoom.chattingMessages.length ? !person.chatRoom.chattingMessages[person.chatRoom.chattingMessages.length - 1].unreadMessageCount : null
+      }
+    },
+    appendMessage(personId, message) {
+      this.persons.filter(p => p.id === personId).forEach(p => {
+        if (!p.chatRoom) p.chatRoom = {}
+        if (!p.chatRoom.chattingMessages) p.chatRoom.chattingMessages = []
+        p.chatRoom.roomId = message.roomId
+        p.chatRoom.chattingMessages.push(message)
+      })
     }
   },
   async mounted() {

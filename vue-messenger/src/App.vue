@@ -64,8 +64,6 @@ export default {
     }
   },
   created() {
-    window.$store = this.$store
-
     axios.interceptors.request.use((config) => {
       this.setLoading(true)
       return config
@@ -87,21 +85,10 @@ export default {
     }).catch(e => {
       console.log(e.response)
     })
-
   }
 }
 </script>
-
 <style scoped>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
 /** https://loading.io/css/ **/
 .lds-ellipsis {
   display: inline-block;

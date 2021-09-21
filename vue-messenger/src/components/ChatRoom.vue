@@ -27,20 +27,24 @@
           </div>
           <div class="messages text-sm text-gray-700 grid grid-flow-row gap-2">
             <div v-for="(message, i) in group.messages" :key="i" class="flex items-center group">
-              <p :class="i === 0 ? 'rounded-t-3xl' : i === group.messages.length -1 ? 'rounded-b-3xl' : ''"
+              <p v-if="message.type === CONTENT_TYPES.TEXT" :class="i === 0 ? 'rounded-t-3xl' : i === group.messages.length -1 ? 'rounded-b-3xl' : ''"
                  class="px-6 py-3 rounded-r-3xl bg-gray-800 max-w-xs lg:max-w-md text-gray-200 whitespace-pre-line"
-                 v-text="message"/>
+                 v-text="message.content"/>
+              <a v-else-if="message.type === CONTENT_TYPES.IMAGE" :href="message.content" class="block w-64 h-64 relative flex flex-shrink-0 max-w-xs lg:max-w-md" target="_blank">
+                <img :src="message.content" alt="hiking" class="absolute shadow-md w-full h-full rounded-r-3xl object-cover"/>
+              </a>
             </div>
           </div>
         </div>
         <div v-else-if="group.type === MESSAGE_TYPES.TO" class="flex flex-row justify-end">
           <div class="messages text-sm text-white grid grid-flow-row gap-2">
             <div v-for="(message, i) in group.messages" :key="i" class="flex items-center flex-row-reverse group">
-              <p :class="i === 0 ? 'rounded-t-3xl' : i === group.messages.length -1 ? 'rounded-b-3xl' : ''" class="px-6 py-3 rounded-l-3xl bg-blue-700 max-w-xs lg:max-w-md  whitespace-pre-line"
-                 v-text="message"/>
-              <!--<a class="block w-64 h-64 relative flex flex-shrink-0 max-w-xs lg:max-w-md" href="#">
-                <img alt="hiking" class="absolute shadow-md w-full h-full rounded-l-lg object-cover" src="https://unsplash.com/photos/8&#45;&#45;kuxbxuKU/download?force=true&w=640"/>
-              </a>-->
+              <p v-if="message.type === CONTENT_TYPES.TEXT" :class="i === 0 ? 'rounded-t-3xl' : i === group.messages.length -1 ? 'rounded-b-3xl' : ''"
+                 class="px-6 py-3 rounded-l-3xl bg-blue-700 max-w-xs lg:max-w-md  whitespace-pre-line"
+                 v-text="message.content"/>
+              <a v-else-if="message.type === CONTENT_TYPES.IMAGE" :href="message.content" class="block w-64 h-64 relative flex flex-shrink-0 max-w-xs lg:max-w-md" target="_blank">
+                <img :src="message.content" alt="hiking" class="absolute shadow-md w-full h-full rounded-l-3xl object-cover"/>
+              </a>
             </div>
           </div>
         </div>
@@ -62,9 +66,10 @@
         </button>
         <div class="relative flex-grow">
           <label>
-            <input class="rounded-full py-2 pl-3 pr-10 w-full border border-gray-800 focus:border-gray-700 bg-gray-800 focus:bg-gray-900 focus:outline-none text-gray-200 focus:shadow-md transition duration-300 ease-in"
-                   placeholder="Aa"
-                   @change.stop.prevent="sendMessage"/>
+            <input
+                class="rounded-full py-2 pl-3 pr-10 w-full border border-gray-800 focus:border-gray-700 bg-gray-800 focus:bg-gray-900 focus:outline-none text-gray-200 focus:shadow-md transition duration-300 ease-in"
+                placeholder="Aa"
+                @change.stop.prevent="sendMessage"/>
           </label>
         </div>
       </div>
@@ -78,32 +83,32 @@ import moment from "moment"
 import axios from "@/plugins/axios";
 import sessionUtils from "@/utillities/sessionUtils";
 import debounce from "@/utillities/mixins/debounce";
+import stringUtils from "@/utillities/stringUtils";
 
 export default {
   mixins: [debounce],
   props: {
     person: {
+      id: String,
       idName: String,
       profilePhoto: String,
-    },
-    chat: {
-      lastMessage: String,
-      lastMessageTime: Date,
-      readAll: Boolean,
     },
     roomId: String
   },
   setup() {
     return {
       MESSAGE_TYPES: {TIME: 'TIME', FROM: 'FROM', TO: 'TO'},
-      READ_LIMIT: 10
+      CONTENT_TYPES: {TEXT: 'TEXT', IMAGE: 'IMAGE', SOUND: 'SOUND', FILE: 'FILE'},
+      READ_LIMIT: 10,
     }
   },
   data() {
     return {
       myId: null,
-
+      accessToken: '',
       currentRoomId: null,
+      lastMessageTime: null,
+
       roomName: null,
       members: {},
       messages: {},
@@ -118,12 +123,14 @@ export default {
   },
   methods: {
     async init() {
+      this.$store.state.messenger.communicator.join(this.currentRoomId)
+
       this.searchingMessage = null
       this.searchingMessages = []
       this.members = {}
       this.messages = {}
 
-      const entity = (await axios.get(`/api/chatt/${this.roomId}/chatting`, {limit: this.READ_LIMIT})).data.data
+      const entity = (await axios.get(`/api/chatt/${this.currentRoomId}/chatting`, {limit: this.READ_LIMIT})).data.data
       entity.chattingMembers.forEach(e => this.members[e.userid] = e)
       entity.chattingMessages.sort((a, b) => a.insertTime - b.insertTime)
 
@@ -135,7 +142,7 @@ export default {
       this.chattingMessages = entity.chattingMessages
 
       if (entity.chattingMessages.length)
-        this.$store.state.messenger.communicator.confirmMessage(this.roomId, entity.chattingMessages[entity.chattingMessages.length - 1].messageId)
+        this.$store.state.messenger.communicator.confirmMessage(this.currentRoomId, entity.chattingMessages[entity.chattingMessages.length - 1].messageId)
 
       this.debounce(() => this.$refs.chatBody.scroll({top: this.$refs.chatBody.scrollHeight}), 100)
     },
@@ -145,16 +152,20 @@ export default {
 
       this.$store.state.messenger.communicator.confirmMessage(data.room_id, data.message_id)
 
-      this.chattingMessages.push({
+      const o = {
+        roomId: data.room_id,
         type: data.type,
         sendReceive: data.send_receive,
         content: data.contents,
         userid: data.userid,
-        insertTime: parseFloat(data.cur_timestr) * 1000
-      })
+        insertTime: parseFloat(data.cur_timestr) * 1000,
+        unreadMessageCount: 1,
+      }
+      this.chattingMessages.push(o)
 
       this.$forceUpdate()
       this.debounce(() => this.$refs.chatBody.scroll({top: this.$refs.chatBody.scrollHeight}), 100)
+      this.$emit('appendMessage', this.person.id, o)
     },
     sendMessage(event) {
       const message = event.target.value
@@ -170,17 +181,17 @@ export default {
       return this.person && this.person.profilePhoto || avatar
     },
     getLastMessageTime() {
-      if (!this.chat || !this.chat.lastMessageTime)
+      if (!this.lastMessageTime)
         return ''
 
-      const messageTime = moment(this.chat.lastMessageTime)
+      const messageTime = moment(this.lastMessageTime)
       const duration = moment.duration(moment(new Date()).diff(messageTime))
 
       return duration.asMinutes() < 2 ? 'Just now'
-          : duration.asHours() < 1 ? `Before ${duration.asMinutes()} minutes`
+          : duration.asHours() < 1 ? `Before ${parseInt(duration.asMinutes())} minutes`
               : duration.asHours() < 2 ? 'Before 1 hour'
-                  : duration.asDays() < 1 ? `Before ${duration.asHours()} hours`
-                      : messageTime.format('D MMM')
+                  : duration.asDays() < 1 ? `Before ${parseInt(duration.asHours())} hours`
+                      : messageTime.format('lll')
     },
     getDivedMessageGroup() {
       const groups = []
@@ -198,10 +209,23 @@ export default {
         if (e.insertTime - lastGroup.lastMessageTime > 5 * 1000 * 60)
           groups.push((lastGroup = {type: this.MESSAGE_TYPES.TIME, value: e.insertTime, expression: moment(e.insertTime).format('lll')}))
 
-        if (lastGroup.type !== messageType)
-          return groups.push({type: messageType, messages: [e.content], lastMessageTime: e.insertTime})
+        const split = /^([^|]+)\|([^|]+)\|([^|]+)\|([^|]+)$/.exec(e.content);
+        const message = {
+          type: e.type !== 'file' ? this.CONTENT_TYPES.TEXT
+              : split[1].endsWith('g') ? this.CONTENT_TYPES.IMAGE
+                  : split[1].contains('wav') || split[1].contains('mp') ? this.CONTENT_TYPES.SOUND
+                      : this.CONTENT_TYPES.FILE,
+          content: e.type !== 'file' ? e.content : stringUtils.addQueryString(split && split[4] || '', {token: this.accessToken}),
+          fileName: split && split[2] || '',
+          fileSize: split && split[3] || '',
+          insertTime: e.insertTime,
+        }
+        this.lastMessageTime = e.insertTime
 
-        lastGroup.messages.push(e.content)
+        if (lastGroup.type !== messageType)
+          return groups.push({type: messageType, messages: [message], lastMessageTime: e.insertTime})
+
+        lastGroup.messages.push(message)
         lastGroup.lastMessageTime = e.insertTime
       })
 
@@ -209,6 +233,8 @@ export default {
     }
   },
   async updated() {
+    console.log('updated')
+
     if (!this.roomId || this.currentRoomId === this.roomId)
       return
 
@@ -217,6 +243,7 @@ export default {
   },
   async mounted() {
     this.myId = (await sessionUtils.fetchMe()).id
+    this.accessToken = (await sessionUtils.fetchAccessToken())
     this.$store.commit('messenger/on', {command: 'svc_msg', func: this.appendMessage})
   }
 }
