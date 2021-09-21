@@ -19,7 +19,7 @@
         </a>
       </div>
     </div>
-    <div v-if="roomId" class="chat-body p-4 flex-1 overflow-y-scroll">
+    <div v-if="roomId" ref="chatBody" class="chat-body p-4 flex-1 overflow-y-scroll" style="scroll-behavior: smooth">
       <div v-for="(group, i) in getDivedMessageGroup" :key="i" :class="group.type === 'TO' ? 'justify-end' : 'justify-start'" class="flex flex-row">
         <div v-if="group.type === MESSAGE_TYPES.FROM" class="flex flex-row justify-start">
           <div class="w-8 h-8 relative flex flex-shrink-0 mr-4">
@@ -44,7 +44,7 @@
             </div>
           </div>
         </div>
-        <p v-else class="p-4 text-center text-sm text-gray-500" v-text="group.value"/>
+        <p v-else class="p-4 text-center text-sm text-gray-500 w-full" v-text="group.expression"/>
       </div>
     </div>
     <div v-if="roomId" class="chat-footer flex-none">
@@ -62,9 +62,9 @@
         </button>
         <div class="relative flex-grow">
           <label>
-            <input
-                class="rounded-full py-2 pl-3 pr-10 w-full border border-gray-800 focus:border-gray-700 bg-gray-800 focus:bg-gray-900 focus:outline-none text-gray-200 focus:shadow-md transition duration-300 ease-in"
-                placeholder="Aa"/>
+            <input class="rounded-full py-2 pl-3 pr-10 w-full border border-gray-800 focus:border-gray-700 bg-gray-800 focus:bg-gray-900 focus:outline-none text-gray-200 focus:shadow-md transition duration-300 ease-in"
+                   placeholder="Aa"
+                   @change.stop.prevent="sendMessage"/>
           </label>
         </div>
       </div>
@@ -77,8 +77,10 @@ import avatar from "@/assets/avatar1.svg"
 import moment from "moment"
 import axios from "@/plugins/axios";
 import sessionUtils from "@/utillities/sessionUtils";
+import debounce from "@/utillities/mixins/debounce";
 
 export default {
+  mixins: [debounce],
   props: {
     person: {
       idName: String,
@@ -126,12 +128,42 @@ export default {
       entity.chattingMessages.sort((a, b) => a.insertTime - b.insertTime)
 
       this.roomName = entity.roomName
-      this.startMessageTime = entity.chattingMessages.length > 0 ? entity.chattingMessages[0].insertTime : null
-      this.startMessageId = entity.chattingMessages.length > 0 ? entity.chattingMessages[0].messageId : null
-      this.endMessageTime = entity.chattingMessages.length > 0 ? entity.chattingMessages[entity.chattingMessages.length - 1].insertTime : null
-      this.endMessageId = entity.chattingMessages.length > 0 ? entity.chattingMessages[entity.chattingMessages.length - 1].messageId : null
+      this.startMessageTime = entity.chattingMessages.length ? entity.chattingMessages[0].insertTime : null
+      this.startMessageId = entity.chattingMessages.length ? entity.chattingMessages[0].messageId : null
+      this.endMessageTime = entity.chattingMessages.length ? entity.chattingMessages[entity.chattingMessages.length - 1].insertTime : null
+      this.endMessageId = entity.chattingMessages.length ? entity.chattingMessages[entity.chattingMessages.length - 1].messageId : null
       this.chattingMessages = entity.chattingMessages
+
+      if (entity.chattingMessages.length)
+        this.$store.state.messenger.communicator.confirmMessage(this.roomId, entity.chattingMessages[entity.chattingMessages.length - 1].messageId)
+
+      this.debounce(() => this.$refs.chatBody.scroll({top: this.$refs.chatBody.scrollHeight}), 100)
     },
+    appendMessage(data) {
+      if (data.room_id !== this.currentRoomId)
+        return
+
+      this.$store.state.messenger.communicator.confirmMessage(data.room_id, data.message_id)
+
+      this.chattingMessages.push({
+        type: data.type,
+        sendReceive: data.send_receive,
+        content: data.contents,
+        userid: data.userid,
+        insertTime: parseFloat(data.cur_timestr) * 1000
+      })
+
+      this.$forceUpdate()
+      this.debounce(() => this.$refs.chatBody.scroll({top: this.$refs.chatBody.scrollHeight}), 100)
+    },
+    sendMessage(event) {
+      const message = event.target.value
+      if (!message || !this.currentRoomId)
+        return
+
+      this.$store.state.messenger.communicator.sendMessage(this.currentRoomId, message)
+      event.target.value = ''
+    }
   },
   computed: {
     getAvatar() {
@@ -158,13 +190,13 @@ export default {
           return
 
         if (!groups.length)
-          groups.push({type: this.MESSAGE_TYPES.TIME, value: e.insertTime})
+          groups.push({type: this.MESSAGE_TYPES.TIME, value: e.insertTime, expression: moment(e.insertTime).format('lll')})
 
         const messageType = e.userid === this.myId ? this.MESSAGE_TYPES.TO : this.MESSAGE_TYPES.FROM
         let lastGroup = groups[groups.length - 1]
 
         if (e.insertTime - lastGroup.lastMessageTime > 5 * 1000 * 60)
-          groups.push((lastGroup = {type: this.MESSAGE_TYPES.TIME, value: e.insertTime}))
+          groups.push((lastGroup = {type: this.MESSAGE_TYPES.TIME, value: e.insertTime, expression: moment(e.insertTime).format('lll')}))
 
         if (lastGroup.type !== messageType)
           return groups.push({type: messageType, messages: [e.content], lastMessageTime: e.insertTime})
@@ -173,12 +205,10 @@ export default {
         lastGroup.lastMessageTime = e.insertTime
       })
 
-      console.log('getDivedMessageGroup', groups)
       return groups
     }
   },
   async updated() {
-    console.log('updated', this.person, this.roomId)
     if (!this.roomId || this.currentRoomId === this.roomId)
       return
 
@@ -186,18 +216,8 @@ export default {
     await this.init()
   },
   async mounted() {
-    console.log('mounted', this.person, this.roomId)
     this.myId = (await sessionUtils.fetchMe()).id
-
-    this.$store.commit('messenger/on', {
-      command: 'svc_msg', func: data => data.room_id !== this.currentRoomId && this.chattingMessages.push({
-        type: data.type,
-        sendReceive: data.send_receive,
-        contents: data.contents,
-        userid: data.userid,
-        insertTime: parseFloat(data.cur_timestr) * 1000
-      })
-    })
+    this.$store.commit('messenger/on', {command: 'svc_msg', func: this.appendMessage})
   }
 }
 </script>

@@ -109,7 +109,7 @@ export default {
       this.currentRoomPerson = person
     },
     loadRoomInfo(roomId) {
-      axios.get(`/api/chatt/chatt-room/${roomId}`).then(res => res.data.data.chattingMembers.length === 1 && this.persons.forEach(person => (person.id === res.data.data.chattingMembers[0].userid) && (person.chatRoom = res)))
+      axios.get(`/api/chatt/${roomId}/chatting`).then(res => res.data.data.chattingMembers.length === 1 && this.persons.forEach(person => (person.id === res.data.data.chattingMembers[0].userid) && (person.chatRoom = res)))
     }
   },
   async mounted() {
