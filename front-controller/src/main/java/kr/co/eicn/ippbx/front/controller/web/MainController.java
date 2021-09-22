@@ -11,6 +11,7 @@ import kr.co.eicn.ippbx.front.service.api.talk.group.TalkReceptionGroupApiInterf
 import kr.co.eicn.ippbx.model.dto.eicn.PersonSummaryResponse;
 import kr.co.eicn.ippbx.model.form.ChattingMemberFormRequest;
 import kr.co.eicn.ippbx.model.search.ChattingMemberSearchRequest;
+import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -20,16 +21,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 

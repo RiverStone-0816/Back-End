@@ -26,8 +26,9 @@
 <script>
 import AlertModal from "@/components/singleton/AlertModal";
 import LOGIN from "@/pages/Login";
-import {PATH} from "@/router";
+import router, {PATH} from "@/router";
 import axios from "@/plugins/axios"
+import sessionUtils from "@/utillities/sessionUtils";
 
 // ref: https://stackoverflow.com/questions/50768678/axios-ajax-show-loading-when-making-ajax-request
 export default {
@@ -77,6 +78,13 @@ export default {
       return response
     }, (error) => {
       this.setLoading(false)
+
+      if (error.response && error.response.status === 401) {
+        sessionUtils.clear()
+        router.push('/login')
+        return
+      }
+
       return Promise.reject(error)
     })
 

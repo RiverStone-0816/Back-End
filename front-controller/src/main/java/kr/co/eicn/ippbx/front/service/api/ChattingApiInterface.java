@@ -1,5 +1,7 @@
 package kr.co.eicn.ippbx.front.service.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.co.eicn.ippbx.exception.UnauthorizedException;
 import kr.co.eicn.ippbx.front.service.ResultFailException;
 import kr.co.eicn.ippbx.model.dto.configdb.ChattRoomResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse;
@@ -11,17 +13,23 @@ import kr.co.eicn.ippbx.model.search.ChattingMemberSearchRequest;
 import kr.co.eicn.ippbx.model.search.ChattingRoomSearchRequest;
 import kr.co.eicn.ippbx.model.search.ChattingSearchRequest;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.spring.BaseForm;
+import kr.co.eicn.ippbx.util.valid.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.nio.charset.Charset;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static kr.co.eicn.ippbx.util.JsonResult.data;
@@ -91,6 +99,51 @@ public class ChattingApiInterface extends ApiServerInterface {
     @SneakyThrows
     public List<ScoreMonitorResponse> userScoreMoniter(){
         return getList(subUrl + "user-score-moniter", null, ScoreMonitorResponse.class).getData();
+    }
+
+    @SneakyThrows
+    public void uploadFile(FileUploadForm o) {
+        final MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
+
+        if (o != null) {
+            final Map<String, Object> params = objectMapper.convertValue(o, new ObjectMapper().getTypeFactory().constructParametricType(Map.class, String.class, Object.class));
+            params.forEach(parts::add);
+        }
+        parts.add("up_filename", new FileResource(o.getFilePath(), o.getOriginalName()));
+
+        final RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        final String accessToken = getAccessToken();
+        if (StringUtils.isNotEmpty(accessToken))
+            headers.add("Authorization", "Bearer " + accessToken);
+
+        final HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parts, headers);
+
+        try {
+            restTemplate.exchange(o.getBasic_url() + "/fileupload", HttpMethod.POST, requestEntity, String.class);
+        } catch (HttpStatusCodeException e) {
+            if (Objects.equals(e.getStatusCode(), HttpStatus.UNAUTHORIZED))
+                throw new UnauthorizedException(e.getStatusText(), e.getResponseHeaders(), e.getResponseBodyAsByteArray(), Charset.defaultCharset());
+            throw e;
+        }
+    }
+
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    public static class FileUploadForm extends BaseForm {
+        @NotNull("파일경로")
+        private String filePath;
+        @NotNull("파일이름")
+        private String originalName;
+
+        private String my_userid;
+        private String my_username;
+        private String company_id;
+        private String basic_url;
+        private String web_url;
+        private String room_id;
     }
 
 }

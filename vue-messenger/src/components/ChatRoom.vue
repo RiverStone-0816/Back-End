@@ -58,7 +58,8 @@
             <path d="M10,1.6c-4.639,0-8.4,3.761-8.4,8.4s3.761,8.4,8.4,8.4s8.4-3.761,8.4-8.4S14.639,1.6,10,1.6z M15,11h-4v4H9  v-4H5V9h4V5h2v4h4V11z"/>
           </svg>
         </button>
-        <button class="flex flex-shrink-0 focus:outline-none mx-2 block text-blue-600 hover:text-blue-700 w-6 h-6" type="button">
+        <input style="display: none" type="file" @change="sendFile">
+        <button class="flex flex-shrink-0 focus:outline-none mx-2 block text-blue-600 hover:text-blue-700 w-6 h-6" onclick="this.previousElementSibling.click()" type="button">
           <svg class="w-full h-full fill-current" viewBox="0 0 20 20">
             <path
                 d="M11,13 L8,10 L2,16 L11,16 L18,16 L13,11 L11,13 Z M0,3.99406028 C0,2.8927712 0.898212381,2 1.99079514,2 L18.0092049,2 C19.1086907,2 20,2.89451376 20,3.99406028 L20,16.0059397 C20,17.1072288 19.1017876,18 18.0092049,18 L1.99079514,18 C0.891309342,18 0,17.1054862 0,16.0059397 L0,3.99406028 Z M15,9 C16.1045695,9 17,8.1045695 17,7 C17,5.8954305 16.1045695,5 15,5 C13.8954305,5 13,5.8954305 13,7 C13,8.1045695 13.8954305,9 15,9 Z"/>
@@ -104,7 +105,7 @@ export default {
   },
   data() {
     return {
-      myId: null,
+      me: null,
       accessToken: '',
       currentRoomId: null,
       lastMessageTime: null,
@@ -174,6 +175,23 @@ export default {
 
       this.$store.state.messenger.communicator.sendMessage(this.currentRoomId, message)
       event.target.value = ''
+    },
+    async sendFile(event) {
+      const file = event.target.files[0]
+      event.target.value = null
+
+      // form.append('room_id', this.currentRoomId)
+      const form = new FormData()
+      form.append('file', file, file.name)
+
+      const fileMeta = (await axios.post(`/api/file`, form, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })).data.data
+      console.log(fileMeta)
+
+      await axios.post(`/api/chatt/${this.currentRoomId}/upload-file`, {filePath: fileMeta.filePath, originalName: fileMeta.originalName})
     }
   },
   computed: {
@@ -203,7 +221,7 @@ export default {
         if (!groups.length)
           groups.push({type: this.MESSAGE_TYPES.TIME, value: e.insertTime, expression: moment(e.insertTime).format('lll')})
 
-        const messageType = e.userid === this.myId ? this.MESSAGE_TYPES.TO : this.MESSAGE_TYPES.FROM
+        const messageType = e.userid === this.me.id ? this.MESSAGE_TYPES.TO : this.MESSAGE_TYPES.FROM
         let lastGroup = groups[groups.length - 1]
 
         if (e.insertTime - lastGroup.lastMessageTime > 5 * 1000 * 60)
@@ -233,8 +251,6 @@ export default {
     }
   },
   async updated() {
-    console.log('updated')
-
     if (!this.roomId || this.currentRoomId === this.roomId)
       return
 
@@ -242,7 +258,7 @@ export default {
     await this.init()
   },
   async mounted() {
-    this.myId = (await sessionUtils.fetchMe()).id
+    this.me = (await sessionUtils.fetchMe())
     this.accessToken = (await sessionUtils.fetchAccessToken())
     this.$store.commit('messenger/on', {command: 'svc_msg', func: this.appendMessage})
   }
