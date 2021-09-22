@@ -180,17 +180,10 @@ export default {
       const file = event.target.files[0]
       event.target.value = null
 
-      // form.append('room_id', this.currentRoomId)
       const form = new FormData()
       form.append('file', file, file.name)
 
-      const fileMeta = (await axios.post(`/api/file`, form, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      })).data.data
-      console.log(fileMeta)
-
+      const fileMeta = (await axios.post(`/api/file`, form, {headers: {'Content-Type': 'multipart/form-data'}})).data.data
       await axios.post(`/api/chatt/${this.currentRoomId}/upload-file`, {filePath: fileMeta.filePath, originalName: fileMeta.originalName})
     }
   },
