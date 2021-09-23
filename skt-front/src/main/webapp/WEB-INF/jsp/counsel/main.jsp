@@ -367,13 +367,8 @@
         function loadCounselingList(customId) {
             if (customId && customId !== '') {
                 replaceReceivedHtmlInSilence($.addQueryString('/counsel/counsel-list', {customId: customId}), '#counsel-list');
-                console.log("customId: "+customId);
-                debugger;
             } else {
                 $('#counsel-list').empty();
-                debugger;
-             /*   replaceReceivedHtmlInSilence($.addQueryString('/counsel/counsel-list', {customId: customId}), '#counsel-list');
-                debugger;*/
             }
         }
 
