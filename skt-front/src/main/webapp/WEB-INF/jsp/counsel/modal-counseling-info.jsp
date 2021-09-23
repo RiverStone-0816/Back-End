@@ -39,7 +39,7 @@
                                     </div>
 
                                         <div class="maudio">
-                                            <audio controls src="${apiServerUrl}/api/v1/admin/record/history/${e.index}/resource?token=${accessToken}"></audio>
+                                            <audio controls src="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY&token=${accessToken}"></audio>
                                         </div>
                                     </c:if>
                                     <c:if test="${user.downloadRecordingAuthority.equals('GROUP') && entity.personList.groupCode.equals(user.user.groupCode)}">
@@ -48,7 +48,7 @@
                                         </div>
 
                                         <div class="maudio">
-                                            <audio controls src="${apiServerUrl}/api/v1/admin/record/history/${e.index}/resource?token=${accessToken}"></audio>
+                                            <audio controls src="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY&token=${accessToken}"></audio>
                                         </div>
                                     </c:if>
                                     <c:if test="${user.downloadRecordingAuthority.equals('ALL')}">
@@ -57,7 +57,7 @@
                                         </div>
 
                                         <div class="maudio">
-                                            <audio controls src="${apiServerUrl}/api/v1/admin/record/history/${e.index}/resource?token=${accessToken}"></audio>
+                                            <audio controls src="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY&token=${accessToken}"></audio>
                                         </div>
                                     </c:if>
                                 </c:if>
