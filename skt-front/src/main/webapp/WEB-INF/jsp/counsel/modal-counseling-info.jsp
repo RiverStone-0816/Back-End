@@ -37,15 +37,27 @@
                                     <div class="ui center aligned segment">
                                         <a target="_blank" href="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN&token=${accessToken}">[ 파일다운로드 ]</a>
                                     </div>
+
+                                        <div class="maudio">
+                                            <audio controls src="${apiServerUrl}/api/v1/admin/record/history/${e.index}/resource?token=${accessToken}"></audio>
+                                        </div>
                                     </c:if>
                                     <c:if test="${user.downloadRecordingAuthority.equals('GROUP') && entity.personList.groupCode.equals(user.user.groupCode)}">
                                         <div class="ui center aligned segment">
                                             <a target="_blank" href="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN&token=${accessToken}">[ 파일다운로드 ]</a>
                                         </div>
+
+                                        <div class="maudio">
+                                            <audio controls src="${apiServerUrl}/api/v1/admin/record/history/${e.index}/resource?token=${accessToken}"></audio>
+                                        </div>
                                     </c:if>
                                     <c:if test="${user.downloadRecordingAuthority.equals('ALL')}">
                                         <div class="ui center aligned segment">
                                             <a target="_blank" href="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN&token=${accessToken}">[ 파일다운로드 ]</a>
+                                        </div>
+
+                                        <div class="maudio">
+                                            <audio controls src="${apiServerUrl}/api/v1/admin/record/history/${e.index}/resource?token=${accessToken}"></audio>
                                         </div>
                                     </c:if>
                                 </c:if>

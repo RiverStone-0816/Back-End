@@ -435,10 +435,10 @@
     };
 
     window.donePostCounselingInfo = function () {
-        alert('상담정보가 저장되었습니다.', function () {
+        alert('상담정보가 저장되었습니다.', function (customId) {
             clearCustomerAndCounselingInput();
             loadTodoList();
-            loadCounselingList("");
+            loadCounselingList(customId);
         });
     };
 
