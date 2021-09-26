@@ -25,186 +25,80 @@
     <title></title>
     <tags:favicon/>
     <style>
-
-        .ui-chatbot-canvas {
-            position: relative;
-        }
-        .ui-chatbot-canvas:before {
-            content: ' ';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: #f6f6f6;
-            background-image: linear-gradient(90deg, #cdcccc 0px, #cdcccc 1px, transparent 1px, transparent 99px, transparent 100px),
-            linear-gradient(#cdcccc 0px, #cdcccc 1px, transparent 1px, transparent 99px, transparent 100px),
-            linear-gradient(#efefef 0px, #efefef 1px, transparent 1px, transparent 99px, transparent 100px),
-            linear-gradient(90deg, #efefef 0px, #efefef 1px, transparent 1px, transparent 99px, transparent 100px),
-            linear-gradient(transparent 0px, transparent 5px, #fff 5px, #fff 95px, transparent 95px, transparent 100px),
-            linear-gradient(90deg, #efefef 0px, #efefef 1px, transparent 1px, transparent 99px, #efefef 99px, #efefef 100px),
-            linear-gradient(90deg, transparent 0px, transparent 5px, #fff 5px, #fff 95px, transparent 95px, transparent 100px),
-            linear-gradient(transparent 0px, transparent 1px, #fff 1px, #fff 99px, transparent 99px, transparent 100px),
-            linear-gradient(#cdcccc, #cdcccc);
-            background-size: 0 100%, 100% 0, 100% 15px, 15px 100%, 100% 0, 0 100%, 100px 100%, 100px 100px, 0 0;
-            background-position: -1px -1px;
-            opacity: 0.75;
-        }
-
-        .ui-chatbot-node:before {
-            position: absolute !important;
-            width: 230px;
-            min-height: 30px;
-            border: dashed 2px #d0d0d0;
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        .ui-chatbot-node:hover {
-            background: rgba(0, 0, 0, 0.1);
-        }
-
-        .ui-chatbot-node {
-            position: relative;
-        }
-
-        .ui-chatbot-node-handle {
-        }
-
-        .ui-chatbot-node-title {
-            cursor: pointer;
-            overflow: hidden;
-            white-space: nowrap;
-            position: relative;
-            display: block;
-            font-weight: 700;
-            line-height: 31px;
-            padding: 0 0 0 11px;
-            background: white;
-            border-bottom: 1px solid grey;
-        }
-
-        .ui-chatbot-node-setup {
-            position: absolute;
-            right: 24px;
-            top: 8px;
-        }
-
-        .ui-chatbot-node-eye {
-            position: absolute;
-            right: 45px;
-            top: 8px;
-        }
-
-        .ui-chatbot-node-icon {
-            font-family: "Font Awesome 5 Free", monospace;
-            font-weight: 900;
-            overflow: hidden;
-            cursor: pointer;
-            color: #7d7d7d;
-        }
-
-        .ui-chatbot-node-remove {
-            position: absolute;
-            right: 9px;
-            top: 8px;
-        }
-
-        .ui-chatbot-node-remove:before {
-        . ui-chatbot-node-icon();
-            content: "\f00d";
-        }
-
-        .ui-chatbot-node-line-end-point {
-            visibility: hidden;
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            overflow: hidden;
-            border-radius: 50%;
-            width: 5px;
-            height: 5px;
-            background-color: grey;
-        }
-
-        .ui-chatbot-node-point-container {
-            position: relative;
-            display: block;
-            border-left: 0;
-            border-right: 0;
-        }
-
-        .ui-chatbot-connection-point {
-            position: relative;
-            display: table;
-            width: 100%;
-            border-bottom: 1px solid grey;
-        }
-
-        .ui-chatbot-connection-point-title {
-            overflow: hidden;
-            white-space: normal;
-            box-sizing: border-box;
-            display: table-cell;
-            border-right: 1px solid grey;
-            height: 30px;
-            vertical-align: middle;
-            padding: 7px 7px;
-            text-align: right;
-            background: white;
-            line-height: 1.3;
-        }
-
-        .ui-chatbot-connection-point-number {
-            overflow: hidden;
-            white-space: nowrap;
-            box-sizing: border-box;
-            width: 20%;
-            display: table-cell;
-            height: 30px;
-            vertical-align: middle;
-            padding: 0 7px;
-            text-align: center;
-            font-weight: bold;
-            background: grey;
-        }
-
-        .ui-chatbot-connection-point-line-start-point {
-            visibility: hidden;
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translate(50%, -50%);
-            overflow: hidden;
-            border-radius: 50%;
-            width: 5px;
-            height: 5px;
-            background-color: grey;
-        }
-
-        .ui-chatbot-line {
-            position: absolute !important;
-            border-top: solid 1px grey;
-        }
+        .ui-chatbot-canvas {position: absolute; top: 0; left: 0;}
+        .ui-chatbot-block {}
+        .ui-chatbot-block-point {}
+        .ui-chatbot-block-title {}
+        .ui-chatbot-display-container {}
+        .ui-chatbot-display-element {}
+        .ui-chatbot-display-element[data-type='TEXT'] {}
+        .ui-chatbot-display-element[data-type='IMAGE'] {}
+        .ui-chatbot-display-element[data-type='CARD'] {}
+        .ui-chatbot-display-element[data-type='LIST'] {}
+        .ui-chatbot-display-text {}
+        .ui-chatbot-display-image {}
+        .ui-chatbot-display-card {}
+        .ui-chatbot-display-card-head {}
+        .ui-chatbot-display-card-body {}
+        .ui-chatbot-display-card-image {}
+        .ui-chatbot-display-list {}
+        .ui-chatbot-display-list-item {}
+        .ui-chatbot-display-list-item-head {}
+        .ui-chatbot-display-list-item-body {}
+        .ui-chatbot-display-list-item-image {}
+        .ui-chatbot-button {}
+        .ui-chatbot-button-point {}
+        .ui-chatbot-button[data-type='TO_NEXT_BLOCK'] {}
+        .ui-chatbot-button[data-type='TO_OTHER_BLOCK'] {}
+        .ui-chatbot-button[data-type='TO_URL'] {}
+        .ui-chatbot-button[data-type='CALL_CONSULTANT'] {}
+        .ui-chatbot-button[data-type='MAKE_TEL_CALL'] {}
+        .ui-chatbot-button[data-type='CALL_API'] {}
+        .ui-chatbot-button-title {}
+        .ui-chatbot-line path {stroke: black; fill: transparent}
     </style>
 </head>
 <body>
 
 <div id="app" style="position: relative; overflow: auto">
-    <div ref="canvas" class="ui-chatbot-canvas"
-         :style="'width: ' + canvasWidth + 'px; height: ' + canvasHeight + 'px;'"
-         style="position: absolute; top: 0; left: 0;">
+    <div ref="canvas" class="ui-chatbot-canvas" :style="'width: ' + canvasWidth + 'px; height: ' + canvasHeight + 'px;'" style="position: absolute; top: 0; left: 0;">
+        <div v-for="block in blocks" :key="block.id" class="ui-chatbot-block" style="position: absolute;" :style="'top: ' + block.y + 'px; left: ' + block.x + 'px;'">
+            <div :ref="'blockPoint.' + block.id" class="ui-chatbot-block-point"></div>
+            <div class="ui-chatbot-block-title">{{block.title}}</div>
 
-        <div v-for="node in nodes" :key="node.id" class="ui-chatbot-node"
-             style="position: absolute;" :data-emtpy="node.empty"
-             :style="'top: ' + node.y + 'px; left: ' + node.x + 'px;'">
+            <div class="ui-chatbot-display-container">
+                <div v-for="(element, i) in displayElements" :key="i" class="ui-chatbot-display-element" :data-type="element.type">
+                    <text v-if="element.type === DISPLAY_TYPE.TEXT" class="ui-chatbot-display-text">{{element.content.TEXT}}</text>
+                    <img v-else-if="element.type === DISPLAY_TYPE.IMAGE" class="ui-chatbot-display-image" alt="display content" :src="element.content.IMAGE"/>
+                    <div v-else-if="element.type === DISPLAY_TYPE.CARD" class="ui-chatbot-display-card">
+                        <div class="ui-chatbot-display-card-head">{{element.content.CARD.head}}</div>
+                        <div class="ui-chatbot-display-card-body">{{element.content.CARD.body}}</div>
+                        <img class="ui-chatbot-display-card-image" alt="display content" :src="element.content.CARD.image"/>
+                    </div>
+                    <div v-else-if="element.type === DISPLAY_TYPE.LIST" class="ui-chatbot-display-list">
+                        <a v-if="e.url" v-for="(e, i) in element.content.LIST" :key="i" class="ui-chatbot-display-list-item" target="_blank" :href="e.url">
+                            <div class="ui-chatbot-display-list-item-head">{{e.head}}</div>
+                            <div class="ui-chatbot-display-list-item-body">{{e.body}}</div>
+                            <img class="ui-chatbot-display-list-item-image" alt="display content" :src="e.image"/>
+                        </a>
+                        <div v-if="!e.url" v-for="(e, i) in element.content.LIST" :key="i" class="ui-chatbot-display-list-item">
+                            <div class="ui-chatbot-display-list-item-head">{{e.head}}</div>
+                            <div class="ui-chatbot-display-list-item-body">{{e.body}}</div>
+                            <img class="ui-chatbot-display-list-item-image" alt="display content" :src="e.image"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-            <div v-if="!node.empty" class="ui-chatbot-title" v-text="node.title" class="ui-chatbot-node-title"></div>
-            <div v-if="!node.empty" v-for="point in points" :key="point.id" class="ui-chatbot-point">
-                <div class="ui-chatbot-point-title" v-text="point.title"></div>
+            <div v-for="button in buttons" :key="button.id" class="ui-chatbot-button" :data-type="button.type">
+                <div :ref="'buttonPoint.' + button.id" class="ui-chatbot-button-point"></div>
+                <div class="ui-chatbot-button-title">{{button.title}}</div>
             </div>
         </div>
 
+        <svg class="ui-chatbot-line" v-for="(e,i) in getLineElements()" :key="i" xmlns="http://www.w3.org/2000/svg">
+            <path :d="renderLine(e)"/>
+        </svg>
     </div>
 </div>
 
