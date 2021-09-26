@@ -373,6 +373,8 @@ project(':lgu-front') {
 
         implementation 'org.webjars:sockjs-client:1.0.2'
         implementation 'org.webjars:stomp-websocket:2.3.3'
+
+        implementation 'org.webjars.npm:vue:3.2.10'
     }
 }
 
