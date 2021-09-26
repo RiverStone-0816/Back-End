@@ -98,11 +98,8 @@ const editor = Vue.createApp({
             const blockRight = block.x + block.width + this.PADDING_CANVAS
             const blockBottom = block.y + block.height + this.PADDING_CANVAS
 
-            this.canvasWidth = this.canvasWidth > blockRight ? this.canvasWidth : blockRight
-            this.canvasHeight = this.canvasHeight > blockBottom ? this.canvasHeight : blockBottom
-
-            this.canvasWidth = Math.max(this.canvasWidth, $(this.container).innerWidth())
-            this.canvasHeight = Math.max(this.canvasHeight, $(this.container).innerHeight())
+            this.canvasWidth = Math.max(this.canvasWidth > blockRight ? this.canvasWidth : blockRight, $(this.container).innerWidth())
+            this.canvasHeight = Math.max(this.canvasHeight > blockBottom ? this.canvasHeight : blockBottom, $(this.container).innerHeight())
         },
         renderLine: function (lineElement) {
             for (let i = 0; i < this.renderingLineTimers.length; i++) {
