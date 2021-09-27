@@ -78,6 +78,12 @@ public class AuthApiController extends BaseController {
     @Value("${eicn.service.servicekind}")
     private String serviceKind;
 
+    @LoginRequired
+    @GetMapping("access-token")
+    public String getAccessToken() {
+        return authApiInterface.getAccessToken();
+    }
+
     @PostMapping("check-login-condition")
     public ArsAuthInfo checkLoginCondition(HttpServletResponse response, @RequestBody @Valid LoginForm form, BindingResult bindingResult) throws IOException, ResultFailException {
         authApiInterface.login(form);
@@ -186,6 +192,51 @@ public class AuthApiController extends BaseController {
                 .build();
     }
 
+    @LoginRequired
+    @GetMapping("softPhone-info")
+    public SoftPhoneInformation getSoftPhoneInformation() throws IOException, ResultFailException {
+        final PersonDetailResponse user = g.getUser();
+        final LoginForm loginForm = g.getLoginInputs();
+        final ServerInfo pbx = companyApiInterface.pbxServerInfo();
+        final ServerInfo webrtc = companyApiInterface.webrtcServerInfo();
+        ServerInformation serverInformation = ServerInformation.builder()
+                .pbxServerIp(pbx.getIp())
+                .pbxServerPort("5060")
+                .webrtcServerIp(webrtc.getIp())
+                .webrtcServerPort("8200")
+                .turnServerIp(webrtc.getIp())
+                .turnServerPort("3478")
+                .turnUser("turn")
+                .turnSecret("turnrw")
+                .build();
+
+        //소프트폰이 아닐경우 리턴
+        if (!user.getPhoneKind().equals("S") || StringUtils.isEmpty(loginForm.getExtension()))
+            return SoftPhoneInformation.builder().result("ERROR").message("Invalid Request").peerNum("").peerSecret("").build();
+
+        PhoneInfoDetailResponse phoneInfo = phoneApiInterface.get(user.getPeer());
+
+        if (Objects.isNull(phoneInfo))
+            return SoftPhoneInformation.builder().result("ERROR").message("Peer Not Found: " + user.getPeer()).peerNum(user.getPeer()).peerSecret("").build();
+
+        SipBuddies sipBuddies = authApiInterface.getSoftPhoneAuth(user.getPeer());
+        if (Objects.isNull(sipBuddies))
+            return SoftPhoneInformation.builder().result("ERROR").message("Peer Not Found: " + user.getPeer()).peerNum(user.getPeer()).peerSecret(sipBuddies.getMd5secret()).build();
+
+        if (StringUtils.isEmpty(sipBuddies.getMd5secret()))
+            return SoftPhoneInformation.builder().result("ERROR").message("Peer Not Found: " + user.getPeer()).peerNum(user.getPeer()).peerSecret(sipBuddies.getMd5secret()).build();
+
+        authApiInterface.update(user.getPeer(), sipBuddies.getMd5secret());
+        sipBuddies = authApiInterface.getSoftPhoneAuth(user.getPeer());
+
+        return SoftPhoneInformation.builder().result("OK")
+                .message("")
+                .peerNum(user.getPeer())
+                .peerSecret(sipBuddies.getMd5secret())
+                .serverInformation(serverInformation)
+                .build();
+    }
+
     @Builder
     @Data
     public static class SocketIoInformation {
@@ -206,51 +257,6 @@ public class AuthApiController extends BaseController {
         private String groupTreeName;
         private Integer groupLevel;
         private String isMulti;
-    }
-
-    @LoginRequired
-    @GetMapping("softPhone-info")
-    public SoftPhoneInformation getSoftPhoneInformation() throws IOException, ResultFailException {
-        final PersonDetailResponse user = g.getUser();
-        final LoginForm loginForm = g.getLoginInputs();
-        final ServerInfo pbx = companyApiInterface.pbxServerInfo();
-        final ServerInfo webrtc = companyApiInterface.webrtcServerInfo();
-        ServerInformation serverInformation = ServerInformation.builder()
-                .pbxServerIp(pbx.getIp())
-                .pbxServerPort("5060")
-                .webrtcServerIp(webrtc.getIp())
-                .webrtcServerPort("8200")
-                .turnServerIp(webrtc.getIp())
-                .turnServerPort("3478")
-                .turnUser("turn")
-                .turnSecret("turnrw")
-                .build();
-
-        //소프트폰이 아닐경우 리턴
-        if(!user.getPhoneKind().equals("S") || StringUtils.isEmpty(loginForm.getExtension()))
-            return SoftPhoneInformation.builder().result("ERROR").message("Invalid Request").peerNum("").peerSecret("").build();
-
-        PhoneInfoDetailResponse phoneInfo = phoneApiInterface.get(user.getPeer());
-
-        if(Objects.isNull(phoneInfo))
-            return SoftPhoneInformation.builder().result("ERROR").message("Peer Not Found: "+ user.getPeer()).peerNum(user.getPeer()).peerSecret("").build();
-
-        SipBuddies sipBuddies = authApiInterface.getSoftPhoneAuth(user.getPeer());
-        if(Objects.isNull(sipBuddies))
-            return SoftPhoneInformation.builder().result("ERROR").message("Peer Not Found: "+ user.getPeer()).peerNum(user.getPeer()).peerSecret(sipBuddies.getMd5secret()).build();
-
-        if(StringUtils.isEmpty(sipBuddies.getMd5secret()))
-            return SoftPhoneInformation.builder().result("ERROR").message("Peer Not Found: "+ user.getPeer()).peerNum(user.getPeer()).peerSecret(sipBuddies.getMd5secret()).build();
-
-        authApiInterface.update(user.getPeer(), sipBuddies.getMd5secret());
-        sipBuddies = authApiInterface.getSoftPhoneAuth(user.getPeer());
-
-        return SoftPhoneInformation.builder().result("OK")
-                .message("")
-                .peerNum(user.getPeer())
-                .peerSecret(sipBuddies.getMd5secret())
-                .serverInformation(serverInformation)
-                .build();
     }
 
     @Builder

@@ -438,7 +438,7 @@
         alert('상담정보가 저장되었습니다.', function () {
             clearCustomerAndCounselingInput();
             loadTodoList();
-            loadCounselingList("");
+            loadCounselingList();
         });
     };
 

@@ -66,6 +66,20 @@ export default {
         this.set('me', o)
         this.set('currentUserId', o.id)
     },
+    async fetchAccessToken() {
+        try {
+            const currentUserId = this.getId()
+            if (!currentUserId)
+                return
+
+            const accessToken = this.get('accessToken') || (await axios.get(`/api/auth/access-token`)).data.data
+
+            this.set('accessToken', accessToken)
+            return accessToken
+        } catch (e) {
+            throw 'cannot get access token'
+        }
+    },
     async fetchMe() {
         try {
             const currentUserId = this.getId()
@@ -73,7 +87,6 @@ export default {
                 return
 
             const me = this.get('me') || (await axios.get(`/api/user/${currentUserId}`)).data.data
-            console.log(me)
 
             this.set('me', me)
             store.state.user.credential = me

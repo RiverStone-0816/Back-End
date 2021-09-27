@@ -254,6 +254,7 @@
                             <th>IVR</th>
                             <th>종료</th>
                             <th>녹취</th>
+                            <th>부분녹취여부</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -323,6 +324,13 @@
                                                     </button>
                                                 </c:if>
                                             </div>
+                                        </td>
+                                        <td style="width: 50px">
+                                            <c:if test="${isFile}">
+                                                <c:if test="${fn:contains(e.recordInfo,'M_')}">
+                                                    Y
+                                                </c:if>
+                                            </c:if>
                                         </td>
                                     </tr>
                                 </c:forEach>

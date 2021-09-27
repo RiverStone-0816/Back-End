@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.front.controller.api;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
+import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.api.ChattingApiInterface;
 import kr.co.eicn.ippbx.model.dto.configdb.ChattRoomResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse;
@@ -14,6 +15,7 @@ import kr.co.eicn.ippbx.model.search.ChattingSearchRequest;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,7 @@ import java.util.List;
  */
 @Slf4j
 @AllArgsConstructor
+@LoginRequired
 @RestController
 @RequestMapping(value = "api/chatt", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ChattingApiController extends BaseController {
@@ -104,4 +107,15 @@ public class ChattingApiController extends BaseController {
         return apiInterface.userScoreMoniter();
     }
 
+    @SneakyThrows
+    @PostMapping("{roomId}/upload-file")
+    public void uploadFile(@PathVariable String roomId, @Valid @RequestBody ChattingApiInterface.FileUploadForm form, BindingResult bindingResult, @Value("${eicn.apiserver}") String apiServer, @Value("${eicn.messenger.socket.id}") String messengerSocketId) {
+        form.setMy_userid(g.getUser().getId());
+        form.setMy_username(g.getUser().getIdName());
+        form.setCompany_id(g.getUser().getCompanyId());
+        form.setBasic_url(g.getSocketList().get(messengerSocketId));
+        form.setWeb_url(apiServer);
+        form.setRoom_id(roomId);
+        apiInterface.uploadFile(form);
+    }
 }

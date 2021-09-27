@@ -35,4 +35,8 @@ public class AuthApiInterface extends ApiServerInterface {
     public void update(String peer, String secret)  throws IOException, ResultFailException {
         put("/api/softphone-auth/" + peer + "/" + secret , null);
     }
+
+    public String getAccessToken() {
+        return super.getAccessToken();
+    }
 }
