@@ -209,7 +209,7 @@
         findAndMe('.panel-heading .slider', this).on("click", function () {
             $(this).parents('.panel').toggleClass('hide');
         });
-        findAndMe('.treeview-menu', this).each(function () { // 좌측네비게이션
+        findAndMe('.side-bar.manage-side .treeview-menu', this).each(function () { // 좌측네비게이션
             $(this)
                 .siblings()
                 .click(function () {
@@ -233,10 +233,45 @@
             event.stopPropagation();
         });
         findAndMe('.menu .item', this).tab();
-        findAndMe(".sidebar-menu-container", this).overlayScrollbars({ // overflow scroll
+        findAndMe(".manage-side .sidebar-menu-container", this).overlayScrollbars({ // overflow scroll
             className: "os-theme-light"
         });
+
         findAndMe(".chat-body", this).overlayScrollbars({});
+
+        findAndMe(".side-bar-tab li", this).click(function () {
+            const activeTab = $(this).attr('data-tab');
+            $('.side-bar-tab li').removeClass('active');
+            $('.side-bar-content').removeClass('active');
+            $(this).addClass('active');
+            $('#' + activeTab).addClass('active');
+        });
+
+        findAndMe(".box .sidebar-label", this).on("click", function () {
+            if($(this).parent('.box').hasClass('active') === true) {
+                $(this).parent('.box').find('.material-icons.arrow').text('keyboard_arrow_right');
+            } else {
+                $(this).parent('.box').find('.material-icons.arrow').text('keyboard_arrow_down');
+            }
+            $(this).parent('.box').toggleClass('active');
+        });
+
+        findAndMe(".consulting-accordion-label", this).on("click", function () {
+            if($(this).parent().hasClass('active') === true) {
+                $(this).parent().children('.consulting-accordion-label').find('.material-icons.arrow').text('keyboard_arrow_right');
+                $(this).parent().children('.consulting-accordion-label').find('.left').children('.folder.icon').removeClass('open');
+            } else {
+                $(this).parent().children('.consulting-accordion-label').find('.material-icons.arrow').text('keyboard_arrow_down');
+                $(this).parent().children('.consulting-accordion-label').find('.left').children('.folder.icon').addClass('open');
+            }
+            $(this).parent().toggleClass('active');
+            event.stopPropagation();
+        });
+
+        findAndMe(".side-room-list-ul .list", this).on("click", function () {
+            $(this).toggleClass('active');
+        });
+
 
 
         /* jquery-ui.datepicker 호출. id 재생성되므로, 기존 id 속성을 삭제시킨다. */

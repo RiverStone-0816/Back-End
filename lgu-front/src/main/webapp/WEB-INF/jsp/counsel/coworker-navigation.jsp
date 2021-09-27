@@ -13,7 +13,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="usingservices" type="java.lang.String"--%>
 
-<ul class="sidebar-menu" id="counsel-nav">
+<ul class="side-organization-ul" id="counsel-nav">
 <%--        <li>--%>
 <%--            <a class="item active" data-tab="talk-list-type-MY">--%>
 <%--                <text>상담중 (<span></span>)</text>--%>
@@ -24,26 +24,303 @@
 <%--        </li>--%>
     <c:forEach var="e" items="${list}" varStatus="status">
         <c:if test="${e.person != null && e.person.size() > 0}">
-            <li>
-                <a href="javascript:"><i class="material-icons"> group </i>
-                    <span>${e.groupName}</span><i class="material-icons arrow"> keyboard_arrow_down </i></a>
-                <ul class="treeview-menu treeview-on">
+            <li class="consulting-accordion active">
+                <div class="consulting-accordion-label team">
+                    <div class="left">
+                        <i class="folder open icon"></i>
+                        <span class="team-name">${e.groupName}</span>
+                    </div>
+                    <div class="right">
+                        <i class="material-icons arrow">keyboard_arrow_down</i>
+                    </div>
+                </div>
+                <ul class="treeview-menu treeview-on consulting-accordion-content">
                     <c:forEach var="person" items="${e.person}">
                         <li>
-                            <div class="item-user">
+                            <div>
+                                <img src="<c:url value="/resources/images/Icon%20material-people.svg"/>" class="user-icon">
                                 <span class="user">${g.htmlQuote(person.idName)}[${g.htmlQuote(person.extension)}]</span>
-                                <span class="ui mini label -consultant-status-with-color" data-peer="${g.htmlQuote(person.peer)}"></span>
                                 <button type="button" class="ui icon button mini compact -redirect-to" data-extension="${person.extension}" title="전화돌려주기">
-                                    <i class="share square icon"></i>
+                                    <i class="share icon"></i>
                                 </button>
-                                <c:if test="${usingservices.contains('IM')}">
-                                    <button type="button" class="ui icon button mini compact -note-send" title="쪽지발송" onclick="noteSendPopup('${g.escapeQuote(person.extension)}','${g.escapeQuote(person.idName)}')">
-                                        <i class="comment alternate icon"></i>
-                                    </button>
-                                </c:if>
                             </div>
+                            <div>
+                                <span class="ui mini label -consultant-status-with-color" data-peer="${g.htmlQuote(person.peer)}"></span>
+                            </div>
+                            <c:if test="${usingservices.contains('IM')}">
+                                <button type="button" class="ui icon button mini compact -note-send" title="쪽지발송" onclick="noteSendPopup('${g.escapeQuote(person.extension)}','${g.escapeQuote(person.idName)}')">
+                                    <i class="comment alternate icon"></i>
+                                </button>
+                            </c:if>
                         </li>
                     </c:forEach>
+                    <li class="active">
+                        <div>
+                            <img src="<c:url value="/resources/images/Icon%20material-people-active.svg"/>" class="user-icon">
+                            <span class="user">상담사3[0989]</span>
+                            <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0989" title="전화돌려주기">
+                                <i class="share icon"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <span class="ui mini label -consultant-status-with-color teal" data-peer="78390989">대기</span>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="side-organization-ul" id="counsel-nav">
+                    <li class="consulting-accordion active">
+                        <div class="consulting-accordion-label team">
+                            <div class="left">
+                                <i class="folder open icon"></i>
+                                <span class="team-name">개발</span>
+                            </div>
+                            <div class="right">
+                                <i class="material-icons arrow">keyboard_arrow_down</i>
+                            </div>
+                        </div>
+                        <ul class="treeview-menu treeview-on consulting-accordion-content">
+                            <li>
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                    <span class="user">상담사1[0990]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color teal" data-peer="78390990">대기</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                    <span class="user">상담사2[0988]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0988" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color teal" data-peer="78390988">대기</span>
+                                </div>
+                            </li>
+                            <li class="active">
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people-active.svg" class="user-icon">
+                                    <span class="user">상담사3[0989]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0989" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color" data-peer="78390989">후처리</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="side-organization-ul" id="counsel-nav">
+                    <li class="consulting-accordion active">
+                        <div class="consulting-accordion-label team">
+                            <div class="left">
+                                <i class="folder open icon"></i>
+                                <span class="team-name">개발</span>
+                            </div>
+                            <div class="right">
+                                <i class="material-icons arrow">keyboard_arrow_down</i>
+                            </div>
+                        </div>
+                        <ul class="treeview-menu treeview-on consulting-accordion-content">
+                            <li>
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                    <span class="user">상담사1[0990]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color teal" data-peer="78390990">대기</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                    <span class="user">상담사2[0988]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0988" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color teal" data-peer="78390988">대기</span>
+                                </div>
+                            </li>
+                            <li class="active">
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people-active.svg" class="user-icon">
+                                    <span class="user">상담사3[0989]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0989" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color" data-peer="78390989">후처리</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="side-organization-ul" id="counsel-nav">
+                    <li class="consulting-accordion active">
+                        <div class="consulting-accordion-label team">
+                            <div class="left">
+                                <i class="folder open icon"></i>
+                                <span class="team-name">개발</span>
+                            </div>
+                            <div class="right">
+                                <i class="material-icons arrow">keyboard_arrow_down</i>
+                            </div>
+                        </div>
+                        <ul class="treeview-menu treeview-on consulting-accordion-content">
+                            <li>
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                    <span class="user">상담사1[0990]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color teal" data-peer="78390990">대기</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                    <span class="user">상담사2[0988]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0988" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color teal" data-peer="78390988">대기</span>
+                                </div>
+                            </li>
+                            <li class="active">
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people-active.svg" class="user-icon">
+                                    <span class="user">상담사3[0989]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0989" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color" data-peer="78390989">후처리</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="side-organization-ul" id="counsel-nav">
+                    <li class="consulting-accordion active">
+                        <div class="consulting-accordion-label team">
+                            <div class="left">
+                                <i class="folder open icon"></i>
+                                <span class="team-name">개발</span>
+                            </div>
+                            <div class="right">
+                                <i class="material-icons arrow">keyboard_arrow_down</i>
+                            </div>
+                        </div>
+                        <ul class="treeview-menu treeview-on consulting-accordion-content">
+                            <li>
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                    <span class="user">상담사1[0990]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color teal" data-peer="78390990">대기</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                    <span class="user">상담사2[0988]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0988" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color teal" data-peer="78390988">대기</span>
+                                </div>
+                            </li>
+                            <li class="active">
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people-active.svg" class="user-icon">
+                                    <span class="user">상담사3[0989]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0989" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color" data-peer="78390989">후처리</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="side-organization-ul" id="counsel-nav">
+                    <li class="consulting-accordion active">
+                        <div class="consulting-accordion-label team">
+                            <div class="left">
+                                <i class="folder open icon"></i>
+                                <span class="team-name">개발</span>
+                            </div>
+                            <div class="right">
+                                <i class="material-icons arrow">keyboard_arrow_down</i>
+                            </div>
+                        </div>
+                        <ul class="treeview-menu treeview-on consulting-accordion-content">
+                            <li>
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                    <span class="user">상담사1[0990]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color teal" data-peer="78390990">대기</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                    <span class="user">상담사2[0988]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0988" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color teal" data-peer="78390988">대기</span>
+                                </div>
+                            </li>
+                            <li class="active">
+                                <div>
+                                    <img src="/resources/images/Icon%20material-people-active.svg" class="user-icon">
+                                    <span class="user">상담사3[0989]</span>
+                                    <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0989" title="전화돌려주기">
+                                        <i class="share icon"></i>
+                                    </button>
+                                </div>
+                                <div>
+                                    <span class="ui mini label -consultant-status-with-color" data-peer="78390989">후처리</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </li>
         </c:if>

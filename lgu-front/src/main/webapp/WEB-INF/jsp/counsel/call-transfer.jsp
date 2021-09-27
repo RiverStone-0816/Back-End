@@ -12,32 +12,36 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<table class="ui table celled definition very compact small">
+<table class="ui x-small table celled unstackable">
     <tbody>
     <tr>
-        <td class="four wide">대표번호</td>
+        <td>대표번호</td>
         <td>
-            <select id="service-numbers">
-                <c:forEach var="e" items="${services}">
-                    <option value="${g.htmlQuote(e.svcNumber)}">${g.htmlQuote(e.svcName)}</option>
-                </c:forEach>
-            </select>
-            <button type="button" class="ui icon button mini -redirect-to-service" data-input="#service-numbers">
-                <i class="share square icon"></i>
-            </button>
+            <div class="dp-flex">
+                <select id="service-numbers" class="flex-100">
+                    <c:forEach var="e" items="${services}">
+                        <option value="${g.htmlQuote(e.svcNumber)}">${g.htmlQuote(e.svcName)}</option>
+                    </c:forEach>
+                </select>
+                <button type="button" class="ui icon button mini compact trans-btn -redirect-to-service" data-input="#service-numbers">
+                    <i class="share icon"></i>
+                </button>
+            </div>
         </td>
     </tr>
     <tr>
         <td>큐번호</td>
         <td>
-            <select id="hunt-numbers">
-                <c:forEach var="e" items="${queues}">
-                    <option value="${g.htmlQuote(e.number)}">${g.htmlQuote(e.hanName)}</option>
-                </c:forEach>
-            </select>
-            <button type="button" class="ui icon button mini -redirect-to-hunt" data-input="#hunt-numbers">
-                <i class="share square icon"></i>
-            </button>
+            <div class="dp-flex">
+                <select id="hunt-numbers" class="flex-100">
+                    <c:forEach var="e" items="${queues}">
+                        <option value="${g.htmlQuote(e.number)}">${g.htmlQuote(e.hanName)}</option>
+                    </c:forEach>
+                </select>
+                <button type="button" class="ui icon button mini compact trans-btn -redirect-to-hunt" data-input="#hunt-numbers">
+                    <i class="share icon"></i>
+                </button>
+            </div>
         </td>
     </tr>
     </tbody>
