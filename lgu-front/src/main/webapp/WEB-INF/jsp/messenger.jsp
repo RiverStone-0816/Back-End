@@ -61,45 +61,239 @@
                     <i class="user plus icon"></i>
                 </button>
                 <text class="-chatroom-name"></text>
-                <i class="x icon -close-room" style="position: absolute; right: 10px; top: 10px;"></i>
+                <i class="x icon -close-room" style="position: absolute; right: 10px; top: 13px;"></i>
             </div>
-            <div class="chat-body" style="height: calc(100% - 170px);"></div>
-            <div class="write-chat">
-                <div class="write-menu">
-                    <button type="button" class="mini ui button icon compact -upload-file" title="파일전송"><i class="paperclip icon"></i></button>
-
-                    <div class="ui small action input">
-                        <input type="text" placeholder="Search...">
+            <div class="chat-body" style="height: calc(100% - 170px);">
+                <div class="chat-item">
+                    <div class="wrap-content">
+                        <div class="txt-time">[상담사1] 09-22 04:19</div>
+                        <div class="chat">
+                            <div class="bubble">
+                                <div class="outer-unread-count"></div>
+                                <div class="txt_chat">
+                                    <p>이부분을 마우스오버 해보세요. 더보기 메뉴가 출력됩니다. 이부분을 마우스오버 해보세요. 더보기 메뉴가 출력됩니다. 이부분을 마우스오버 해보세요. 더보기 메뉴가 출력됩니다. 이부분을 마우스오버 해보세요. 더보기 메뉴가 출력됩니다.</p>
+                                </div>
+                            </div>
+                            <div class="chat-layer">
+                                <div class="buttons">
+                                    <button type="button" class="button-reply" data-inverted="" data-tooltip="답장 달기" data-position="bottom center"></button>
+                                    <button type="button" onclick="messengerTemplatePopup()" class="button-template" data-inverted="" data-tooltip="템플릿 만들기" data-position="bottom center"></button>
+                                    <button type="button" class="button-knowledge" data-inverted="" data-tooltip="지식관리 호출" data-position="bottom center"></button>
+                                    <button type="button" class="button-sideview" data-inverted="" data-tooltip="사이드 뷰" data-position="bottom center"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-item">
+                    <div class="wrap-content">
+                        <div class="txt-time">[상담사1] 09-22 04:19</div>
+                        <div class="chat">
+                            <div class="bubble">
+                                <div class="outer-unread-count"></div>
+                                <div class="txt_chat"><p>내용</p></div>
+                            </div>
+                            <div class="chat-layer">
+                                <div class="buttons">
+                                    <button type="button" class="button-reply" data-inverted="" data-tooltip="답장 달기" data-position="bottom center"></button>
+                                    <button type="button" onclick="messengerTemplatePopup()" class="button-template" data-inverted="" data-tooltip="템플릿 만들기" data-position="bottom center"></button>
+                                    <button type="button" class="button-knowledge" data-inverted="" data-tooltip="지식관리 호출" data-position="bottom center"></button>
+                                    <button type="button" class="button-sideview" data-inverted="" data-tooltip="사이드 뷰" data-position="bottom center"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-item chat-me">
+                    <div class="wrap-content">
+                        <div class="txt-time">[상담사3] 09-27 17:46</div>
+                        <div class="chat">
+                            <div class="bubble">
+                                <div class="outer-unread-count">1</div>
+                                <div class="txt_chat">
+                                    <div class="reply-content-container">
+                                        <div class="reply-content">
+                                            <p>[홍길동]에게 답장</p>
+                                            <p class="target-msg">테스트메시지테스트메시지테스트메시지테스트메시지테스트메시지</p>
+                                        </div>
+                                    </div>
+                                    <p>111</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-item chat-me">
+                    <div class="wrap-content">
+                        <div class="txt-time">[상담사3] 09-27 17:46</div>
+                        <div class="chat">
+                            <div class="bubble">
+                                <div class="outer-unread-count">1</div>
+                                <div class="txt_chat">
+                                    <div class="reply-content-container">
+                                        <div class="reply-content photo">
+                                            <img src="http://img1.tmon.kr/cdn2/deals/2019/01/18/1775411122/1775411122_front_97b600598d.jpg">
+                                        </div>
+                                        <div class="reply-content">
+                                            <p>[홍길동]에게 답장</p>
+                                            <p class="target-msg">사진</p>
+                                        </div>
+                                    </div>
+                                    <p>111</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="write-chat">
+            <div class="template-container">
+                <div class="template-container-inner">
+                    <%--<p class="empty">등록된 템플릿이 없습니다.</p>--%>
+                    <ul class="template-ul">
+                        <li class="template-list">
+                            <div class="template-title">/test</div>
+                            <div class="template-content">testtesttesttest</div>
+                        </li>
+                        <li class="template-list">
+                            <div class="template-title">/444</div>
+                            <div class="template-content">안녕하세요</div>
+                        </li>
+                        <li class="template-list">
+                            <div class="template-title">/단순문의</div>
+                            <div class="template-content">단순문의템플릿</div>
+                        </li>
+                        <li class="template-list">
+                            <div class="template-title">/test</div>
+                            <div class="template-content">두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다. </div>
+                        </li>
+                        <li class="template-list">
+                            <div class="template-title">/444</div>
+                            <div class="template-content">안녕하세요</div>
+                        </li>
+                        <li class="template-list">
+                            <div class="template-title">/단순문의</div>
+                            <div class="template-content">단순문의템플릿</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="view-to-reply">
+                <div class="target-text">
+                    <p class="target-user">홍길동에게 답장</p>
+                    <p class="target-content">아아아아아아아아아아아아아아아아아아아아아아아아</p>
+                </div>
+                <div class="target-close">
+                    <img src="<c:url value="/resources/images/icon-close.svg"/>">
+                </div>
+            </div>
+            <div class="write-menu">
+                <div class="dp-flex align-items-center">
+                    <button type="button" class="mini ui button icon compact mr10 -upload-file" title="파일전송"><i class="paperclip icon"></i></button>
+                    <div class="ui small action input mr10">
+                        <input type="text" placeholder="찾기">
                         <button class="ui icon button -search-text">
                             <i class="search icon"></i>
                         </button>
                     </div>
-
-                    <text data-total="0" data-index="0" class="-text-count" style="margin-right: 0.5em;">0/0</text>
-                    <button type="button" class="mini ui button icon compact -move-to-prev-text"><i class="angle up icon"></i></button>
+                    <text data-total="0" data-index="0" class="mr10 -text-count">0/0</text>
+                    <button type="button" class="mini ui button icon compact mr10 -move-to-prev-text"><i class="angle up icon"></i></button>
                     <button type="button" class="mini ui button icon compact -move-to-next-text"><i class="angle down icon"></i></button>
-                    <button type="button" class="mini ui button compact pull-right -leave-room" style="margin-top: 3px;">나가기</button>
-
                 </div>
-                <div class="wrap-inp">
-                    <div class="inp-box">
-                        <textarea id="messenger-message" placeholder="전송하실 메시지를 입력하세요."></textarea>
-                    </div>
-                    <button type="button" class="send-btn" onclick="messenger.sendMessage()">전송</button>
+                <div>
+                    <button type="button" class="mini ui button compact -leave-room">나가기</button>
                 </div>
+            </div>
+            <div class="wrap-inp">
+                <div class="inp-box">
+                    <textarea id="messenger-message" placeholder="전송하실 메시지를 입력하세요."></textarea>
+                </div>
+                <button type="button" class="send-btn" onclick="messenger.sendMessage()">전송</button>
             </div>
         </div>
-        <div class="invitation-panel"
-             style="display: none; position: absolute; top: 44px; bottom: 180px; left: 1px; width: 400px; background: rgba(255,255,255,0.9); padding: 15px; overflow: hidden; z-index: 1;">
-            <div class="" style="position: absolute; top: 15px; left: 15px; right: 0; bottom: 30px; overflow: auto;">
-                <div id="messenger-room-members"></div>
-                <div class="organization-panel ui list"></div>
-            </div>
-            <button type="button" class="ui button mini compact -invite-to-room" style="position: absolute; bottom: 1px; right: 55px;">초대</button>
-            <button type="button" class="ui button mini compact -hide-panel" style="position: absolute; bottom: 1px; right: 1px;">닫기</button>
+    </div>
+    <div class="invitation-panel">
+        <div class="invitation-panel-content">
+            <div id="messenger-room-members"></div>
+            <div class="organization-panel ui list"></div>
+        </div>
+        <div class="footer">
+            <button type="button" class="ui button mini compact -invite-to-room">초대</button>
+            <button type="button" class="ui button mini compact -hide-panel">닫기</button>
         </div>
     </div>
 </div>
+
+
+<div class="ui modal small cover-modal-index" id="messenger-template-add-popup">
+    <i class="close icon"></i>
+    <div class="header">상담톡 템플릿 추가</div>
+    <div class="scrolling content rows">
+        <div class="ui grid">
+            <div class="row">
+                <div class="four wide column"><label class="control-label">사용권한</label></div>
+                <div class="four wide column">
+                    <div class="ui form">
+                        <select>
+                            <option>개인</option>
+                            <option>그룹</option>
+                            <option>회사전체</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="four wide column"><label class="control-label">유형</label></div>
+                <div class="four wide column">
+                    <div class="ui form">
+                        <select>
+                            <option>텍스트</option>
+                            <option>이미지</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">템플릿명</label></div>
+                <div class="twelve wide column">
+                    <div class="ui form">
+                        <input type="text" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column">
+                    <label class="control-label">템플릿멘트</label>
+                </div>
+                <div class="twelve wide column">
+                    <div class="ui form">
+                        <div class="align-right"><label>500자 이하</label></div>
+                        <textarea id="ment" name="ment" row="10" maxlength="500"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column">
+                    <label class="control-label">이미지</label>
+                </div>
+                <div class="twelve wide column">
+                    <div class="file-upload-header">
+                        <label for="file" class="ui button blue mini compact">파일찾기</label>
+                        <input type="file" id="file">
+                        <span class="file-name">No file selected</span>
+                    </div>
+                    <div>
+                        <progress value="0" max="100" style="width:100%"></progress>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <button type="button" class="ui button modal-close">취소</button>
+        <button type="submit" class="ui blue button">확인</button>
+    </div>
+</div>
+
 <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
 <tags:scripts>
     <script>
@@ -376,14 +570,14 @@
                         const url2 = $.addQueryString(split && split[4] || '', {token: messenger.accessToken});
 
                         if (split[1].endsWith('g'))
-                            bubble.append('<p class="txt_chat"><img src="' + url2 + '"></p>');
+                            bubble.append('<div class="txt_chat"><img src="' + url2 + '"></div>');
                         else if (split[1].contains('wav') || split[1].contains('mp'))
-                            bubble.append('<p class="txt_chat"><audio controls src="' + url2 + '" style="height: 35px;"></audio></p>');
+                            bubble.append('<div class="txt_chat"><audio controls src="' + url2 + '" style="height: 35px;"></audio></div>');
                         else
-                            bubble.append('<p class="txt_chat"><a href="' + url2 + '" target="_blank"><i class="paperclip icon"></i> ' + (split && split[2] || '') + '<p style="opacity: 50%; font-size: smaller; padding: 0 0.5em 1em;"> 용량: ' + (split && split[3] || '') + '</p></a></p>');
+                            bubble.append('<div class="txt_chat"><a href="' + url2 + '" target="_blank"><i class="paperclip icon"></i> ' + (split && split[2] || '') + '<p style="opacity: 50%; font-size: smaller; padding: 0 0.5em 1em;"> 용량: ' + (split && split[3] || '') + '</p></a></div>');
                         content.append('<a href="' + url2 + '" target="_blank">저장하기</a>');
                     } else {
-                        bubble.append('<p class="txt_chat">' + htmlQuote(contents) + '</p>');
+                        bubble.append('<div class="txt_chat">' + htmlQuote(contents) + '</div>');
                     }
 
                     return item;
@@ -1229,5 +1423,41 @@
                 || top > $(window).height() - messenger.ui.button.height() - 50)
                 messenger.ui.button.css({left: $(window).width() - messenger.ui.button.width() - 50, top: $(window).height() - messenger.ui.button.height() - 50});
         });
+
+        $('.target-close').click(function(){
+            $(this).parents('.view-to-reply').hide();
+            $('#messenger-message').attr('placeholder','전송하실 메시지를 입력하세요.');
+        });
+
+        $('.button-reply').click(function(){
+            $('.write-chat').find('.view-to-reply').css('display', 'flex');
+            $('#messenger-message').attr('placeholder','답장하실 메시지를 입력하세요.');
+        });
+
+        $('.chat-item').mouseenter(function(){
+            $(this).find('.chat-layer').css('visibility','visible');
+        });
+
+        $('.chat-item').mouseleave(function(){
+            $(this).find('.chat-layer').css('visibility','hidden');
+        });
+
+        $("#messenger-message").on("keydown", function(e) {
+            const keycode = e.keyCode;
+            switch(keycode) {
+                case 191:
+                    $('.template-container').show();
+                    break;
+                case 8:
+                    $('.template-container').hide();
+                    break;
+            }
+        });
+
+        function messengerTemplatePopup() {
+            $('#messenger-template-add-popup').dragModalShow();
+        }
+
+
     </script>
 </tags:scripts>
