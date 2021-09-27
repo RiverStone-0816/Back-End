@@ -15,6 +15,10 @@
   * ```skdev / admin / admin12!@! / ```
   * ```skdev / user1 / user12!@! / 1000```
   * ```skdev / user2 / user12!@! / 2000```
+* LGU향 챗팅서비스 개발
+  * ```eicn / user0990 / user12!@!@ / 0990```
+  * ```eicn / user0988 / user12!@!@ / 0988```
+  * ```eicn / user0989 / user12!@!@ / 0989```
 
 # 테스트 배포 방법
 1. git pull
