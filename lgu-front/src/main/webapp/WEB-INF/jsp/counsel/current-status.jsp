@@ -12,16 +12,14 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<table class="ui table celled very compact small" id="current-status-sheet">
-    <thead>
-    <tr>
-        <th>채널</th>
-        <th>접수</th>
-        <th>처리</th>
-        <th>처리율</th>
-    </tr>
-    </thead>
+<table class="ui x-small table celled unstackable" id="current-status-sheet">
     <tbody>
+        <tr>
+            <td>채널</td>
+            <td>접수</td>
+            <td>처리</td>
+            <td>처리율</td>
+        </tr>
     <c:forEach var="e" items="${list}">
         <c:if test="${todoKinds.contains(e.todoKind)}">
             <tr data-name="${g.htmlQuote(e.todoKind)}" data-value="${e.successRate}">

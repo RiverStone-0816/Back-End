@@ -17,7 +17,6 @@
     <div class="sidebar-menu-container">
         <ul class="sidebar-menu">
             <li><a href="<c:url value="/admin/dashboard/"/>" class="tab-indicator" title="대시보드"><i class="material-icons menu-icon"> computer </i><span>대시보드</span></a></li>
-
             <c:forEach var="e" items="${menu.menus}">
                 <c:if test="${e.viewYn == 'Y'}">
                     <c:choose>
@@ -72,22 +71,250 @@
 <c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
 <c:if test="${hasExtension}">
     <aside class="side-bar consulting-side">
-        <button class="nav-bar"><i class="material-icons arrow"> keyboard_arrow_left </i></button>
-        <div class="sidebar-menu-container">
-            <ul class="sidebar-menu" id="counsel-nav"></ul>
+        <div class="side-bar-tab-container">
+            <ul class="side-bar-tab">
+                <li class="active" data-tab="organization-area"><i class="list ul icon"></i>조직도</li>
+                <li data-tab="room-list-area"><i class="comments icon unread"></i>채팅방</li>
+            </ul>
         </div>
-        <div class="box-container">
-            <div class="box">
-                <label class="control-label">외부링크</label>
-                <div class="ui list" id="outer-link-list"></div>
+        <button class="nav-bar"><i class="material-icons arrow">keyboard_arrow_left</i></button>
+        <div class="side-bar-content active" id="organization-area">
+            <div class="organization-area-inner">
+                <div class="sidebar-menu-container">
+                    <div class="consulting-accordion favorite active">
+                        <div class="consulting-accordion-label">
+                            <div>
+                                즐겨찾기 <button class="ui basic white very mini compact button ml10">편집</button>
+                            </div>
+                            <div>
+                                <i class="material-icons arrow">keyboard_arrow_down</i>
+                            </div>
+                        </div>
+                        <div class="consulting-accordion-content">
+                            <ul class="treeview-menu treeview-on consulting-accordion-content favorite overflow-overlay">
+                                <%--<li class="empty">등록된 즐겨찾기가 없습니다.</li>--%>
+                                <li>
+                                    <div>
+                                        <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                        <span class="user">상담사1[0990]</span>
+                                        <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
+                                            <i class="share icon"></i>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <span class="ui mini label -consultant-status-with-color teal" data-peer="78390990">대기</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                        <span class="user">상담사1[0990]</span>
+                                        <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
+                                            <i class="share icon"></i>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <span class="ui mini label -consultant-status-with-color teal" data-peer="78390990">대기</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                        <span class="user">상담사1[0990]</span>
+                                        <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
+                                            <i class="share icon"></i>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <span class="ui mini label -consultant-status-with-color teal" data-peer="78390990">대기</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                        <span class="user">상담사1[0990]</span>
+                                        <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
+                                            <i class="share icon"></i>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <span class="ui mini label -consultant-status-with-color teal" data-peer="78390990">대기</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                        <span class="user">상담사1[0990]</span>
+                                        <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
+                                            <i class="share icon"></i>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <span class="ui mini label -consultant-status-with-color teal" data-peer="78390990">대기</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                        <span class="user">상담사1[0990]</span>
+                                        <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
+                                            <i class="share icon"></i>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <span class="ui mini label -consultant-status-with-color teal" data-peer="78390990">대기</span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div>
+                                        <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                        <span class="user">상담사1[0990]</span>
+                                        <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
+                                            <i class="share icon"></i>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <span class="ui mini label -consultant-status-with-color teal" data-peer="78390990">대기</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="consulting-accordion overflow-hidden dp-flex flex-flow-column active">
+                        <div class="consulting-accordion-label">
+                            <div>
+                                조직도 <button class="ui basic white very mini compact button ml10">선택대화</button>
+                            </div>
+                            <div>
+                                <i class="material-icons arrow">keyboard_arrow_down</i>
+                            </div>
+                        </div>
+                        <div class="consulting-accordion-content overflow-overlay flex-100">
+                            <ul class="" id="counsel-nav"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-container">
+                    <div class="box-container-inner">
+                        <div class="box">
+                            <div class="sidebar-label">
+                                <div>
+                                    외부링크<button class="ui basic white very mini compact button ml10" onclick="popupBookmarkConfiguration()">편집</button>
+                                </div>
+                                <div>
+                                    <i class="material-icons arrow">keyboard_arrow_right</i>
+                                </div>
+                            </div>
+                            <div class="box-content">
+                                <div class="ui list" id="outer-link-list"></div>
+                            </div>
+                        </div>
+                        <div class="box call-transform">
+                            <div class="sidebar-label">
+                                <div>
+                                    대표/헌트번호돌려주기
+                                </div>
+                                <div>
+                                    <i class="material-icons arrow">keyboard_arrow_right</i>
+                                </div>
+                            </div>
+                            <div class="box-content">
+                                <jsp:include page="/counsel/call-transfer"/>
+                            </div>
+                        </div>
+                        <div class="box">
+                            <div class="sidebar-label">
+                                <div>
+                                    처리현황(30초마다 갱신)
+                                </div>
+                                <div>
+                                    <i class="material-icons arrow">keyboard_arrow_right</i>
+                                </div>
+                            </div>
+                            <div class="box-content">
+                                <jsp:include page="/counsel/current-status"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="box call-transform">
-                <label class="control-label">대표번호/헌트번호돌려주기</label>
-                <jsp:include page="/counsel/call-transfer"/>
-            </div>
-            <div class="box">
-                <label class="control-label">처리현황(30초마다 정보 갱신)</label>
-                <jsp:include page="/counsel/current-status"/>
+        </div>
+        <div class="side-bar-content overflow-overlay" id="room-list-area">
+            <div class="room-list-area-inner">
+                <ul class="side-room-list-ul">
+                    <li class="list">
+                        <div class="header">
+                            <div class="room-name"><text>제목입니다.</text></div>
+                            <div class="last-message-time">09-27 12:39</div>
+                        </div>
+                        <div class="content">
+                            <div class="preview">내용입니다.</div>
+                            <div class="unread">
+                                <span class="number">9</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list">
+                        <div class="header">
+                            <div class="room-name"><text>제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목</text></div>
+                            <div class="last-message-time">09-27 12:39</div>
+                        </div>
+                        <div class="content">
+                            <div class="preview">내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용</div>
+                            <div class="unread">
+                                <span class="number">9</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list active">
+                        <div class="header">
+                            <div class="room-name"><text>제목입니다.</text></div>
+                            <div class="last-message-time">09-27 12:39</div>
+                        </div>
+                        <div class="content">
+                            <div class="preview">내용입니다.</div>
+                            <div class="unread">
+                                <span class="number">9</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list">
+                        <div class="header">
+                            <div class="room-name"><text>제목입니다.</text></div>
+                            <div class="last-message-time">09-27 12:39</div>
+                        </div>
+                        <div class="content">
+                            <div class="preview">내용입니다.</div>
+                            <div class="unread">
+                                <span class="number">9</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list">
+                        <div class="header">
+                            <div class="room-name"><text>제목입니다.</text></div>
+                            <div class="last-message-time">09-27 12:39</div>
+                        </div>
+                        <div class="content">
+                            <div class="preview">내용입니다.</div>
+                            <div class="unread">
+                                <span class="number">9</span>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list">
+                        <div class="header">
+                            <div class="room-name"><text>제목입니다.</text></div>
+                            <div class="last-message-time">09-27 12:39</div>
+                        </div>
+                        <div class="content">
+                            <div class="preview">내용입니다.</div>
+                            <div class="unread">
+                                <span class="number">9</span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
     </aside>
