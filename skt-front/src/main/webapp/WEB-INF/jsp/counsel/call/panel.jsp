@@ -29,7 +29,7 @@
                     <th>전화상태</th>
                     <td>
                         <text id="call-status"></text>
-                        <c:if test="${usingServices.contains('TYPE1')}">
+                        <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                             <button class="ui right floated button mini compact blue" id="partial-recoding"
                                     style="display: none;">
                                 <i class="fa fa-play"></i>&ensp;<text>부분녹취</text>

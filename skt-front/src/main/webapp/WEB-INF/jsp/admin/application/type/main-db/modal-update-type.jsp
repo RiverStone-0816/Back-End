@@ -155,7 +155,7 @@
                         </tbody>
                     </c:if>
 
-                    <c:if test="${usingServices.contains('TYPE1')}">
+                    <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                         <tbody>
                         <c:forEach var="field" items="${fields}" varStatus="fieldStatus">
                             <tr>

@@ -73,7 +73,7 @@
                                                         <audio controls src="${apiServerUrl}/api/v1/admin/sounds/ring-back-tone/${g.htmlQuote(e.category)}/resource?type=PLAY&token=${accessToken}"></audio>
                                                     </div>
                                                 </div>
-                                                <c:if test="${usingServices.contains('TYPE1')}">
+                                                <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                                                     <a class="ui icon button mini compact"
                                                        href="${apiServerUrl}/api/v1/admin/sounds/ring-back-tone/${g.htmlQuote(e.category)}/resource?type=DOWN&token=${accessToken}">
                                                         <i class="arrow down icon" data-value="${e.category}"></i>

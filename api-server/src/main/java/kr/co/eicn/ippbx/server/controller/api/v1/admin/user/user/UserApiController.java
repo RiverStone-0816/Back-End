@@ -152,15 +152,15 @@ public class UserApiController extends ApiBaseController {
 
         System.out.println("form.getIsEmail() : "+form.getIsEmail());
 
-        Integer pds = form.getIsPds().equals("Y") ? licence.getPdsLicense().getCurrentLicence()+1 : licence.getPdsLicense().getCurrentLicence();
-        Integer stat = form.getIsStat().equals("Y") ? licence.getStatLicence().getCurrentLicence()+1 : licence.getStatLicence().getCurrentLicence();
-        Integer talk = form.getIsTalk().equals("Y") ? licence.getTalkLicense().getCurrentLicence()+1 : licence.getTalkLicense().getCurrentLicence();
-        Integer email = Objects.nonNull(form.getIsEmail()) && form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
+        Integer pds = StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y") ? licence.getPdsLicense().getCurrentLicence()+1 : licence.getPdsLicense().getCurrentLicence();
+        Integer stat = StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y") ? licence.getStatLicence().getCurrentLicence()+1 : licence.getStatLicence().getCurrentLicence();
+        Integer talk = StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y") ? licence.getTalkLicense().getCurrentLicence()+1 : licence.getTalkLicense().getCurrentLicence();
+        Integer email = StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
 
-        if((licence.getPdsLicense().getLicence() < pds && form.getIsPds().equals("Y"))
-                || (licence.getStatLicence().getLicence() < stat && form.getIsStat().equals("Y"))
-                || (licence.getTalkLicense().getLicence() < talk && form.getIsTalk().equals("Y"))
-                || (licence.getEmailLicense().getLicence() < email && form.getIsEmail().equals("Y")))
+        if((licence.getPdsLicense().getLicence() < pds && StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y"))
+                || (licence.getStatLicence().getLicence() < stat && StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y"))
+                || (licence.getTalkLicense().getLicence() < talk && StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y"))
+                || (licence.getEmailLicense().getLicence() < email && StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y")))
             throw new IllegalArgumentException("라이센스를 확인하세요.");
 
         repository.insert(form);
@@ -192,23 +192,23 @@ public class UserApiController extends ApiBaseController {
                 && !entity.getIdType().equals(form.getIdType()))
             throw new IllegalArgumentException("본인 아이디만 변경 가능 합니다.");
 
-        Integer pds = form.getIsPds().equals("Y") ? licence.getPdsLicense().getCurrentLicence()+1 : licence.getPdsLicense().getCurrentLicence();
-        Integer stat = form.getIsStat().equals("Y") ? licence.getStatLicence().getCurrentLicence()+1 : licence.getStatLicence().getCurrentLicence();
-        Integer talk = form.getIsTalk().equals("Y") ? licence.getTalkLicense().getCurrentLicence()+1 : licence.getTalkLicense().getCurrentLicence();
-        Integer email = Objects.nonNull(form.getIsEmail()) && form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
-        Integer chatt = Objects.nonNull(form.getIsChatt()) && form.getIsChatt().equals("Y") ? licence.getChattLicense().getCurrentLicence()+1 : licence.getChattLicense().getCurrentLicence();
+        Integer pds = StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y") ? licence.getPdsLicense().getCurrentLicence()+1 : licence.getPdsLicense().getCurrentLicence();
+        Integer stat = StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y") ? licence.getStatLicence().getCurrentLicence()+1 : licence.getStatLicence().getCurrentLicence();
+        Integer talk = StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y") ? licence.getTalkLicense().getCurrentLicence()+1 : licence.getTalkLicense().getCurrentLicence();
+        Integer email = StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
+        Integer chatt = StringUtils.isNotEmpty(form.getIsChatt()) && form.getIsChatt().equals("Y") ? licence.getChattLicense().getCurrentLicence()+1 : licence.getChattLicense().getCurrentLicence();
 
-        if(detail.getIsPds().equals("Y")) pds = pds-1;
-        if(detail.getIsStat().equals("Y")) stat = stat-1;
-        if(detail.getIsTalk().equals("Y")) talk = talk-1;
-        if(Objects.nonNull(form.getIsEmail()) && detail.getIsEmail().equals("Y")) email = email-1;
-        if(Objects.nonNull(form.getIsEmail()) && detail.getIsChatt().equals("Y")) chatt = chatt-1;
+        if(StringUtils.isNotEmpty(form.getIsPds()) && detail.getIsPds().equals("Y")) pds = pds-1;
+        if(StringUtils.isNotEmpty(form.getIsStat()) && detail.getIsStat().equals("Y")) stat = stat-1;
+        if(StringUtils.isNotEmpty(form.getIsTalk()) && detail.getIsTalk().equals("Y")) talk = talk-1;
+        if(StringUtils.isNotEmpty(form.getIsEmail()) && detail.getIsEmail().equals("Y")) email = email-1;
+        if(StringUtils.isNotEmpty(form.getIsChatt()) && detail.getIsChatt().equals("Y")) chatt = chatt-1;
 
-        if((licence.getPdsLicense().getLicence() < pds && form.getIsPds().equals("Y"))
-                || (licence.getStatLicence().getLicence() < stat && form.getIsStat().equals("Y"))
-                || (licence.getTalkLicense().getLicence() < talk && form.getIsTalk().equals("Y"))
-                || (licence.getEmailLicense().getLicence() < email && form.getIsEmail().equals("Y"))
-                || (licence.getChattLicense().getLicence() < chatt && form.getIsChatt().equals("Y")))
+        if((licence.getPdsLicense().getLicence() < pds && StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y"))
+                || (licence.getStatLicence().getLicence() < stat && StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y"))
+                || (licence.getTalkLicense().getLicence() < talk && StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y"))
+                || (licence.getEmailLicense().getLicence() < email && StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y"))
+                || (licence.getChattLicense().getLicence() < chatt && StringUtils.isNotEmpty(form.getIsChatt()) && form.getIsChatt().equals("Y")))
             throw new IllegalArgumentException("라이센스를 확인하세요.");
 
         repository.updateByKey(form, id);

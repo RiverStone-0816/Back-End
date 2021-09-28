@@ -24,7 +24,7 @@
 
     <div class="content rows scrolling">
         <div class="ui grid">
-            <c:if test="${usingServices.contains('TYPE1')}">
+            <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                 <div class="row">
                     <div class="four wide column"><label class="control-label">연동된하위코드</label></div>
                     <div class="four wide column">
@@ -92,7 +92,7 @@
                     </div>
                 </div>
             </div>
-            <c:if test="${usingServices.contains('TYPE1')}">
+            <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                 <div class="row">
                   <div class="three wide column"><label class="control-label">스크립트</label></div>
                       <div class="thirteen wide column">
