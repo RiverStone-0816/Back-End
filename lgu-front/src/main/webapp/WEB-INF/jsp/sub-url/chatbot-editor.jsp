@@ -64,6 +64,9 @@
 
 <div id="app" style="position: relative;">
     <div ref="canvas" class="ui-chatbot-canvas" :style="'width: ' + canvasWidth + 'px; height: ' + canvasHeight + 'px;'">
+
+        <div ref="lines"></div>
+
         <div v-for="block in blocks" :key="block.id" class="ui-chatbot-block" :style="'top: ' + block.y + 'px; left: ' + block.x + 'px;'">
             <div :ref="'blockPoint.' + block.id" class="ui-chatbot-block-point"></div>
             <div class="ui-chatbot-block-title">{{block.title}}</div>
@@ -102,7 +105,7 @@
             </div>
         </div>
 
-        <div ref="lines"></div>
+
     </div>
 </div>
 
