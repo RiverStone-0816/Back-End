@@ -57,6 +57,8 @@
         .ui-chatbot-button[data-type='CALL_API'] {}
         .ui-chatbot-button-title {}
         .ui-chatbot-line {position: absolute;}
+        .ui-chatbot-line[data-type="TO_NEXT_BLOCK"] {}
+        .ui-chatbot-line[data-type="TO_OTHER_BLOCK"] {opacity: 25%;}
         .ui-chatbot-line path {stroke: black; stroke-width: 5px; fill: transparent; }
     </style>
 </head>

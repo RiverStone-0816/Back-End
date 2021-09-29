@@ -117,7 +117,6 @@ const editor = Vue.createApp({
             this.canvasHeight = Math.max(this.canvasHeight > blockBottom ? this.canvasHeight : blockBottom, $(this.container).innerHeight())
         },
         createLineSvg: function (lineElement) {
-
             for (let i = 0; i < this.renderingLineTimers.length; i++) {
                 const timer = this.renderingLineTimers[i]
                 if (timer.button === lineElement.button && timer.block === lineElement.block) {
@@ -181,6 +180,7 @@ const editor = Vue.createApp({
             svg.style.left = (width >= 0 ? buttonRect.left : blockRect.left - PAD) + 'px' // 만약 block이 button보다 왼쪽에 있으면, 돌아가는 선을 표현하기 위해 pad를 두었다.
             svg.style.top = (height >= 0 ? buttonRect.top : blockRect.top) + 'px'
             svg.setAttribute('class', 'ui-chatbot-line')
+            svg.setAttribute('data-type', lineElement.type)
             svg.setAttribute('width', '' + (width >= 0 ? width : -width + 2 * PAD))
             svg.setAttribute('height', '' + Math.abs(height))
 
@@ -209,12 +209,12 @@ const editor = Vue.createApp({
             const result = []
             _this.blocks.forEach(function (block) {
                 if (block.parent)
-                    result.push({block: _this.$refs['blockPoint.' + block.id], button: _this.$refs['buttonPoint.' + block.parent]})
+                    result.push({type: 'TO_NEXT_BLOCK', block: _this.$refs['blockPoint.' + block.id], button: _this.$refs['buttonPoint.' + block.parent]})
 
                 block.buttons.filter(function (button) {
                     return button.type === _this.BUTTON_TYPE.TO_OTHER_BLOCK
                 }).forEach(function (button) {
-                    result.push({block: _this.$refs['blockPoint.' + button.parameter.TO_OTHER_BLOCK.block], button: _this.$refs['buttonPoint.' + button.id]})
+                    result.push({type: 'TO_OTHER_BLOCK', block: _this.$refs['blockPoint.' + button.parameter.TO_OTHER_BLOCK.block], button: _this.$refs['buttonPoint.' + button.id]})
                 })
             })
             return result
