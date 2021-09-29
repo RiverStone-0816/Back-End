@@ -185,7 +185,7 @@ public class CommonMenuCompany extends TableImpl<CommonMenuCompanyRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row17<Integer, String, String, String, String, Integer, String, String, String, Integer, String, String, String, String, String, String, Integer> fieldsRow() {
-        return (Row17) super.fieldsRow();
+    public Row19<Integer, String, String, String, String, Integer, String, String, String, Integer, String, String, String, String, String, String, Integer, String, String> fieldsRow() {
+        return (Row19) super.fieldsRow();
     }
 }

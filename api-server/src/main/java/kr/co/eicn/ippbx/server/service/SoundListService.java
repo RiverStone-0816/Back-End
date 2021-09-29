@@ -99,10 +99,9 @@ public class SoundListService extends ApiBaseService {
 
 		cacheService.pbxServerList(g.getUser().getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						repository.insert(pbxDsl, record);
-						processService.execute(ShellCommand.SCP_SOUND_MOH, "SOUND", e.getHost(), g.getUser().getCompanyId());
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					repository.insert(pbxDsl, record);
+					processService.execute(ShellCommand.SCP_SOUND_MOH, "SOUND", e.getHost(), g.getUser().getCompanyId());
 				});
 
 		return nextSequence;
@@ -119,9 +118,8 @@ public class SoundListService extends ApiBaseService {
 
 		cacheService.pbxServerList(g.getUser().getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						repository.deleteBySoundFile(pbxDsl, entity.getSoundFile());
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					repository.deleteBySoundFile(pbxDsl, entity.getSoundFile());
 				});
 	}
 
@@ -143,10 +141,9 @@ public class SoundListService extends ApiBaseService {
 
 		cacheService.pbxServerList(g.getUser().getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						repository.insert(pbxDsl, record);
-						processService.execute(ShellCommand.SCP_SOUND_MOH, "SOUND", e.getHost(), g.getUser().getCompanyId());
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					repository.insert(pbxDsl, record);
+					processService.execute(ShellCommand.SCP_SOUND_MOH, "SOUND", e.getHost(), g.getUser().getCompanyId());
 				});
 
 		return nextSequence;

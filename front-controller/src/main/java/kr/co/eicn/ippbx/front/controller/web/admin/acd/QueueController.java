@@ -70,9 +70,9 @@ public class QueueController extends BaseController {
         model.addAttribute("addOnPersons", addOnPersons);
 
         LinkedHashMap<String, String> strategyOptions;
-        if(g.getServiceKind().equals("SC") && g.getUsingServices().contains("TYPE1")) {
+        if(g.getServiceKind().equals("CC") && g.getUsingServices().contains("TYPE2")) {
             strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.FEWESTCALLS,CallDistributionStrategy.LEASTRECENT,CallDistributionStrategy.RANDOM
-            ,CallDistributionStrategy.RINGALL,CallDistributionStrategy.RRMEMORY,CallDistributionStrategy.SKILL);
+            ,CallDistributionStrategy.RINGALL,CallDistributionStrategy.RRMEMORY);
         } else {
             strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.class);
         }

@@ -97,9 +97,8 @@ public class CsRouteApiController extends ApiBaseController {
 
         final List<CompanyServerEntity> pbxServerList = cacheService.pbxServerList(g.getUser().getCompanyId());
         pbxServerList.forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                repository.updateByKey(pbxDsl, form, seq);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            repository.updateByKey(pbxDsl, form, seq);
         });
 
         repository.updateByKey(form, seq);
@@ -110,9 +109,8 @@ public class CsRouteApiController extends ApiBaseController {
     public ResponseEntity<JsonResult<Void>> delete(@PathVariable Integer seq) {
         final List<CompanyServerEntity> pbxServerList = cacheService.pbxServerList(g.getUser().getCompanyId());
         pbxServerList.forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                repository.delete(pbxDsl, seq);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            repository.delete(pbxDsl, seq);
         });
 
         repository.deleteOnIfNullThrow(seq);

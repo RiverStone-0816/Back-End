@@ -50,9 +50,8 @@ public class ExecutePDSGroupRepository extends EicnBaseRepository<ExecutePdsGrou
     public ExecutePDSGroupEntity findByRunHost(String runHost, String executeId) {
         CompanyServerEntity companyServerEntity = cacheService.pbxServerList(getCompanyId()).stream().filter(e -> e.getHost().equals(runHost)).findFirst().orElse(null);
         if (companyServerEntity != null) {
-            try (DSLContext pbxDsl = pbxServerInterface.using(companyServerEntity.getHost(), "PDS")) {
-                return findOne(pbxDsl, getCompanyId(), EXECUTE_PDS_GROUP.EXECUTE_ID.eq(executeId));
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(companyServerEntity.getHost(), "PDS");
+            return findOne(pbxDsl, getCompanyId(), EXECUTE_PDS_GROUP.EXECUTE_ID.eq(executeId));
         }
 
         return findOne(getCompanyId(), EXECUTE_PDS_GROUP.EXECUTE_ID.eq(executeId));

@@ -69,12 +69,11 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
                 .execute();
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                pbxDsl.deleteFrom(Tables.QUEUE_MEMBER_TABLE)
-                        .where(compareCompanyId())
-                        .and(QUEUE_MEMBER_TABLE.MEMBERNAME.eq(memberName))
-                        .execute();
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            pbxDsl.deleteFrom(Tables.QUEUE_MEMBER_TABLE)
+                    .where(compareCompanyId())
+                    .and(QUEUE_MEMBER_TABLE.MEMBERNAME.eq(memberName))
+                    .execute();
         });
     }
 
@@ -96,9 +95,8 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        super.insert(pbxDsl, record);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    super.insert(pbxDsl, record);
                 });
     }
 
@@ -107,9 +105,8 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        super.delete(pbxDsl, condition);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    super.delete(pbxDsl, condition);
                 });
 
         return r;
@@ -120,9 +117,8 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        insertOnConflictDoNothing(pbxDsl, record);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    insertOnConflictDoNothing(pbxDsl, record);
                 });
     }
 
@@ -165,9 +161,8 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
 
         updatePause(dsl, form);
         pbxServerList.forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                updatePause(pbxDsl, form);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            updatePause(pbxDsl, form);
         });
     }
 
@@ -186,9 +181,8 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
         updatePeerByUserId(dsl, record);
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        updatePeerByUserId(pbxDsl, record);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    updatePeerByUserId(pbxDsl, record);
                 });
     }
 

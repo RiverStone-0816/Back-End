@@ -135,13 +135,12 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                 .collect(toMap(QueueMemberTable::getMembername, member -> member));
 
         if (optionalPbxServer.isPresent()) {
-            try (DSLContext pbxDsl = pbxServerInterface.using(optionalPbxServer.get().getHost())) {
-                insert(pbxDsl, queueNameRecord);
-                queueTableRepository.insert(pbxDsl, queueTableRecord);
-                huntOldMembers = queueMemberTableRepository.findAll(pbxDsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(queueName))
-                        .stream()
-                        .collect(toMap(QueueMemberTable::getMembername, member -> member));
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(optionalPbxServer.get().getHost());
+            insert(pbxDsl, queueNameRecord);
+            queueTableRepository.insert(pbxDsl, queueTableRecord);
+            huntOldMembers = queueMemberTableRepository.findAll(pbxDsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(queueName))
+                    .stream()
+                    .collect(toMap(QueueMemberTable::getMembername, member -> member));
         }
 
         final List<PDSResultGroupPersonFormRequest> addPersons = form.getAddPersons();
@@ -160,19 +159,17 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                 queueMemberTableRepository.updateQueueNameAndMemberName(dsl, record);
 
                 optionalPbxServer.ifPresent(server -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(optionalPbxServer.get().getHost())) {
-                        queueMemberTableRepository.updateQueueNameAndMemberName(pbxDsl, record);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(optionalPbxServer.get().getHost());
+                    queueMemberTableRepository.updateQueueNameAndMemberName(pbxDsl, record);
                 });
                 huntOldMembers.remove(userId);
             } else {
                 Optional<QueueMemberTable> optionalEmptyOrHuntQueueNameQueueMemberTable;
                 if (optionalPbxServer.isPresent()) {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(form.getRunHost())) {
-                        optionalEmptyOrHuntQueueNameQueueMemberTable = queueMemberTableRepository.findAll(pbxDsl, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(userId).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(QUEUE_MEMBER_TABLE.MEMBERNAME)))
-                                .stream()
-                                .findFirst();
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(form.getRunHost());
+                    optionalEmptyOrHuntQueueNameQueueMemberTable = queueMemberTableRepository.findAll(pbxDsl, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(userId).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(QUEUE_MEMBER_TABLE.MEMBERNAME)))
+                            .stream()
+                            .findFirst();
                 } else {
                     optionalEmptyOrHuntQueueNameQueueMemberTable = queueMemberTableRepository.findAll(dsl, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(userId).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(QUEUE_MEMBER_TABLE.MEMBERNAME)))
                             .stream()
@@ -185,9 +182,8 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                     insertQueueMemberTableRecord.setUniqueid(null);
                     queueMemberTableRepository.insert(dsl, insertQueueMemberTableRecord);
                     optionalPbxServer.ifPresent(server -> {
-                        try (DSLContext pbxDsl = pbxServerInterface.using(server.getHost())) {
-                            queueMemberTableRepository.insert(pbxDsl, insertQueueMemberTableRecord);
-                        }
+                        DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
+                        queueMemberTableRepository.insert(pbxDsl, insertQueueMemberTableRecord);
                     });
                 } else {
                     final Optional<QueueMemberTable> optionalDBRoutingQueueMemberTable;
@@ -196,11 +192,10 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                                 .stream()
                                 .findFirst();
                     } else {
-                        try (DSLContext pbx = pbxServerInterface.using(form.getRunHost())) {
-                            optionalDBRoutingQueueMemberTable = queueMemberTableRepository.findAll(pbx, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(userId))
-                                    .stream()
-                                    .findFirst();
-                        }
+                        DSLContext pbx = pbxServerInterface.using(form.getRunHost());
+                        optionalDBRoutingQueueMemberTable = queueMemberTableRepository.findAll(pbx, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(userId))
+                                .stream()
+                                .findFirst();
                     }
                     final QueueMemberTable insertQueueMemberTableRecord = new QueueMemberTable();
                     insertQueueMemberTableRecord.setQueueName(queueName);
@@ -218,9 +213,8 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                     insertQueueMemberTableRecord.setCompanyId(getCompanyId());
                     queueMemberTableRepository.insert(dsl, insertQueueMemberTableRecord);
                     optionalPbxServer.ifPresent(server -> {
-                        try (DSLContext pbxDsl = pbxServerInterface.using(server.getHost())) {
-                            queueMemberTableRepository.insert(pbxDsl, insertQueueMemberTableRecord);
-                        }
+                        DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
+                        queueMemberTableRepository.insert(pbxDsl, insertQueueMemberTableRecord);
                     });
                 }
             }
@@ -229,9 +223,8 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
         huntOldMembers.forEach((memberName, member) -> {
             queueMemberTableRepository.deleteByQueueNameAndMemberName(dsl, member.getQueueName(), memberName);
             optionalPbxServer.ifPresent(server -> {
-                try (DSLContext pbx = pbxServerInterface.using(server.getHost())) {
-                    queueMemberTableRepository.deleteByQueueNameAndMemberName(pbx, member.getQueueName(), memberName);
-                }
+                DSLContext pbx = pbxServerInterface.using(server.getHost());
+                queueMemberTableRepository.deleteByQueueNameAndMemberName(pbx, member.getQueueName(), memberName);
             });
         });
 
@@ -269,18 +262,16 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
             queueTableRepository.updateByKey(modQueueTable, modQueueTable.getName());
 
             optionalPbxServer.ifPresent(server -> {
-                try (DSLContext pbxDsl = pbxServerInterface.using(server.getHost())) {
-                    updateByKey(pbxDsl, modQueueName, modQueueTable.getName());
-                    queueTableRepository.updateByKey(pbxDsl, modQueueName, modQueueTable.getName());
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
+                updateByKey(pbxDsl, modQueueName, modQueueTable.getName());
+                queueTableRepository.updateByKey(pbxDsl, modQueueName, modQueueTable.getName());
             });
         }
 
         queueMemberTableRepository.delete(dsl, compareCompanyId(QUEUE_MEMBER_TABLE).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(modQueueTable.getName())));
         optionalPbxServer.ifPresent(server -> {
-            try (DSLContext pbx = pbxServerInterface.using(server.getHost())) {
-                queueMemberTableRepository.delete(pbx, compareCompanyId(QUEUE_MEMBER_TABLE).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(modQueueTable.getName())));
-            }
+            DSLContext pbx = pbxServerInterface.using(server.getHost());
+            queueMemberTableRepository.delete(pbx, compareCompanyId(QUEUE_MEMBER_TABLE).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(modQueueTable.getName())));
         });
 
         if (form.getAddPersons() != null) {
@@ -290,11 +281,10 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                 final String peer = addPerson.getUserId();
                 Optional<QueueMemberTable> optionalEmptyOrHuntQueueNameQueueMemberTable;
                 if (optionalPbxServer.isPresent()) {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(form.getRunHost())) {
-                        optionalEmptyOrHuntQueueNameQueueMemberTable = queueMemberTableRepository.findAll(pbxDsl, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(peer).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(QUEUE_MEMBER_TABLE.MEMBERNAME)))
-                                .stream()
-                                .findFirst();
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(form.getRunHost());
+                    optionalEmptyOrHuntQueueNameQueueMemberTable = queueMemberTableRepository.findAll(pbxDsl, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(peer).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(QUEUE_MEMBER_TABLE.MEMBERNAME)))
+                            .stream()
+                            .findFirst();
                 } else {
                     optionalEmptyOrHuntQueueNameQueueMemberTable = queueMemberTableRepository.findAll(dsl, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(peer).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(QUEUE_MEMBER_TABLE.MEMBERNAME)))
                             .stream()
@@ -309,9 +299,8 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                     queueMemberTableRepository.insert(dsl, dsl.newRecord(QUEUE_MEMBER_TABLE, insertRecord));
 
                     optionalPbxServer.ifPresent(server -> {
-                        try (DSLContext pbx = pbxServerInterface.using(server.getHost())) {
-                            queueMemberTableRepository.insert(pbx, dsl.newRecord(QUEUE_MEMBER_TABLE, insertRecord));
-                        }
+                        DSLContext pbx = pbxServerInterface.using(server.getHost());
+                        queueMemberTableRepository.insert(pbx, dsl.newRecord(QUEUE_MEMBER_TABLE, insertRecord));
                     });
                 } else {
 
@@ -321,11 +310,10 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                                 .stream()
                                 .findFirst();
                     } else {
-                        try (DSLContext pbx = pbxServerInterface.using(form.getRunHost())) {
-                            optionalDBRoutingQueueMemberTable = queueMemberTableRepository.findAll(pbx, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(peer))
-                                    .stream()
-                                    .findFirst();
-                        }
+                        DSLContext pbx = pbxServerInterface.using(form.getRunHost());
+                        optionalDBRoutingQueueMemberTable = queueMemberTableRepository.findAll(pbx, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(peer))
+                                .stream()
+                                .findFirst();
                     }
 
                     final QueueMemberTable insertRecord = new QueueMemberTable();
@@ -346,9 +334,8 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                     queueMemberTableRepository.insert(dsl, dsl.newRecord(QUEUE_MEMBER_TABLE, insertRecord));
 
                     optionalPbxServer.ifPresent(server -> {
-                        try (DSLContext pbx = pbxServerInterface.using(server.getHost())) {
-                            queueMemberTableRepository.insert(pbx, dsl.newRecord(QUEUE_MEMBER_TABLE, insertRecord));
-                        }
+                        DSLContext pbx = pbxServerInterface.using(server.getHost());
+                        queueMemberTableRepository.insert(pbx, dsl.newRecord(QUEUE_MEMBER_TABLE, insertRecord));
                     });
                 }
             }
@@ -373,18 +360,16 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                 .findFirst();
 
         optionalPbxServer.ifPresent(server -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(server.getHost())) {
-                queueTableRepository.delete(pbxDsl, queueName);
-                queueMemberTableRepository.delete(pbxDsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(queueName));
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
+            queueTableRepository.delete(pbxDsl, queueName);
+            queueMemberTableRepository.delete(pbxDsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(queueName));
         });
         // queue_name 삭제
         final int r = super.delete(dsl, queueName);
 
         optionalPbxServer.ifPresent(server -> {
-            try (DSLContext pbx = pbxServerInterface.using(server.getHost())) {
-                super.delete(pbx, queueName);
-            }
+            DSLContext pbx = pbxServerInterface.using(server.getHost());
+            super.delete(pbx, queueName);
         });
 
         webSecureHistoryRepository.insert(WebSecureActionType.PDS_GROUP, WebSecureActionSubType.DEL, pdsQueueName.getHanName() + "(" + queueName + ")");

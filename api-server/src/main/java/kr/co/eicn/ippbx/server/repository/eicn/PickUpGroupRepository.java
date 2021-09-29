@@ -104,9 +104,8 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
         final Record result = super.insertOnGeneratedKey(record);
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        super.insert(pbxDsl, record);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    super.insert(pbxDsl, record);
                 });
 
         webSecureHistoryRepository.insert(WebSecureActionType.PICKUP, WebSecureActionSubType.ADD, form.getGroupname());
@@ -126,13 +125,12 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        pbxDsl.update(PICKUP_GROUP)
-                                .set(PICKUP_GROUP.GROUPNAME, form.getGroupname())
-                                .where(compareCompanyId())
-                                .and(PICKUP_GROUP.GROUPCODE.eq(groupcode))
-                                .execute();
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    pbxDsl.update(PICKUP_GROUP)
+                            .set(PICKUP_GROUP.GROUPNAME, form.getGroupname())
+                            .where(compareCompanyId())
+                            .and(PICKUP_GROUP.GROUPCODE.eq(groupcode))
+                            .execute();
                 });
 
         // 전화기 당겨받기그룹 전체 초기화
@@ -144,13 +142,12 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        pbxDsl.update(PHONE_INFO)
-                                .set(PHONE_INFO.PICKUP, EMPTY)
-                                .where(PHONE_INFO.COMPANY_ID.eq(getCompanyId()))
-                                .and(PHONE_INFO.PICKUP.eq(String.valueOf(pickupGroup.getGroupcode())))
-                                .execute();
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    pbxDsl.update(PHONE_INFO)
+                            .set(PHONE_INFO.PICKUP, EMPTY)
+                            .where(PHONE_INFO.COMPANY_ID.eq(getCompanyId()))
+                            .and(PHONE_INFO.PICKUP.eq(String.valueOf(pickupGroup.getGroupcode())))
+                            .execute();
                 });
 
         final String groupname = pickupGroup.getGroupname();
@@ -167,9 +164,8 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
 
             cacheService.pbxServerList(getCompanyId())
                     .forEach(e -> {
-                        try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                            super.updateByKey(pbxDsl, pickupGroup, pickupGroup.getSeq());
-                        }
+                        DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                        super.updateByKey(pbxDsl, pickupGroup, pickupGroup.getSeq());
                     });
         }
         // 전화기 정보(asterisk 사용테이블) 당겨받기그룹 초기화
@@ -184,9 +180,8 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
 
                 cacheService.pbxServerList(getCompanyId())
                         .forEach(e -> {
-                            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                                sipBuddiesRepository.updateByKey(pbxDsl, resetPickUpSipBuddy, resetPickUpSipBuddy.getId());
-                            }
+                            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                            sipBuddiesRepository.updateByKey(pbxDsl, resetPickUpSipBuddy, resetPickUpSipBuddy.getId());
                         });
             }
         }
@@ -210,13 +205,12 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
 
                 cacheService.pbxServerList(getCompanyId())
                         .forEach(e -> {
-                            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                                pbxDsl.update(PHONE_INFO)
-                                        .set(PHONE_INFO.PICKUP, String.valueOf(groupcode))
-                                        .where(PHONE_INFO.COMPANY_ID.eq(getCompanyId()))
-                                        .and(PHONE_INFO.PEER.eq(peer))
-                                        .execute();
-                            }
+                            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                            pbxDsl.update(PHONE_INFO)
+                                    .set(PHONE_INFO.PICKUP, String.valueOf(groupcode))
+                                    .where(PHONE_INFO.COMPANY_ID.eq(getCompanyId()))
+                                    .and(PHONE_INFO.PEER.eq(peer))
+                                    .execute();
                         });
                 // 전화기 정보(asterisk 사용테이블) 당겨받기그룹 업데이트
                 dsl.update(SIP_BUDDIES)
@@ -229,15 +223,14 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
 
                 cacheService.pbxServerList(getCompanyId())
                         .forEach(e -> {
-                            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                                pbxDsl.update(SIP_BUDDIES)
-                                        .set(SIP_BUDDIES.PICKUPGROUP, EMPTY)
-                                        .set(SIP_BUDDIES.CALLGROUP, EMPTY)
-                                        .set(SIP_BUDDIES.NAMEDPICKUPGROUP, getCompanyId() + "_" + pickupGroup.getGroupcode())
-                                        .set(SIP_BUDDIES.NAMEDCALLGROUP, getCompanyId() + "_" + pickupGroup.getGroupcode())
-                                        .where(SIP_BUDDIES.NAME.eq(peer))
-                                        .execute();
-                            }
+                            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                            pbxDsl.update(SIP_BUDDIES)
+                                    .set(SIP_BUDDIES.PICKUPGROUP, EMPTY)
+                                    .set(SIP_BUDDIES.CALLGROUP, EMPTY)
+                                    .set(SIP_BUDDIES.NAMEDPICKUPGROUP, getCompanyId() + "_" + pickupGroup.getGroupcode())
+                                    .set(SIP_BUDDIES.NAMEDCALLGROUP, getCompanyId() + "_" + pickupGroup.getGroupcode())
+                                    .where(SIP_BUDDIES.NAME.eq(peer))
+                                    .execute();
                         });
 
                 if (resetSipNames.stream().anyMatch(e -> e.equals(peer)))
@@ -275,9 +268,8 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
                 .findFirst();
 
         optionalPbxServer.ifPresent(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                super.delete(pbxDsl, entity.getSeq());
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            super.delete(pbxDsl, entity.getSeq());
         });
 
         final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo> pickUpPhones = phoneInfoRepository.findAll(PHONE_INFO.PICKUP.eq(String.valueOf(entity.getGroupcode())));
@@ -286,9 +278,8 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
             phoneInfoRepository.updateByKey(pickUpPhone, pickUpPhone.getPeer());
 
             optionalPbxServer.ifPresent(e -> {
-                try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                    phoneInfoRepository.updateByKey(pbxDsl, pickUpPhone, pickUpPhone.getPeer());
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                phoneInfoRepository.updateByKey(pbxDsl, pickUpPhone, pickUpPhone.getPeer());
             });
         }
 
@@ -299,9 +290,8 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
             sipBuddiesRepository.updateByKey(pickUpSipBuddy, pickUpSipBuddy.getId());
 
             optionalPbxServer.ifPresent(e -> {
-                try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                    sipBuddiesRepository.updateByKey(pbxDsl, pickUpSipBuddy, pickUpSipBuddy.getId());
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                sipBuddiesRepository.updateByKey(pbxDsl, pickUpSipBuddy, pickUpSipBuddy.getId());
             });
         }
 

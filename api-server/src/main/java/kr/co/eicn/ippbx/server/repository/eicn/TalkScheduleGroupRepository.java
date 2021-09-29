@@ -98,9 +98,8 @@ public class TalkScheduleGroupRepository extends EicnBaseRepository<TalkSchedule
 		super.insert(record);
 		cacheService.pbxServerList(getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						super.insert(pbxDsl, record);
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					super.insert(pbxDsl, record);
 				});
 	}
 

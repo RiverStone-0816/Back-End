@@ -53,9 +53,8 @@ public class ScheduleGroupListRepository extends EicnBaseRepository<ScheduleGrou
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        this.insert(pbxDsl, pbxRecord);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    this.insert(pbxDsl, pbxRecord);
                 });
     }
 
@@ -68,9 +67,8 @@ public class ScheduleGroupListRepository extends EicnBaseRepository<ScheduleGrou
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        super.updateByKey(pbxDsl, form, key);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    super.updateByKey(pbxDsl, form, key);
                 });
     }
 
@@ -81,9 +79,8 @@ public class ScheduleGroupListRepository extends EicnBaseRepository<ScheduleGrou
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        super.updateByKey(pbxDsl, form, key);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    super.updateByKey(pbxDsl, form, key);
                 });
     }
 
@@ -94,12 +91,11 @@ public class ScheduleGroupListRepository extends EicnBaseRepository<ScheduleGrou
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        pbxDsl.deleteFrom(SCHEDULE_GROUP_LIST)
-                                .where(SCHEDULE_GROUP_LIST.COMPANY_ID.eq(getCompanyId()))
-                                .and(SCHEDULE_GROUP_LIST.CHILD.eq(child))
-                                .execute();
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    pbxDsl.deleteFrom(SCHEDULE_GROUP_LIST)
+                            .where(SCHEDULE_GROUP_LIST.COMPANY_ID.eq(getCompanyId()))
+                            .and(SCHEDULE_GROUP_LIST.CHILD.eq(child))
+                            .execute();
                 });
     }
 
@@ -108,9 +104,8 @@ public class ScheduleGroupListRepository extends EicnBaseRepository<ScheduleGrou
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        deleteByParent(pbxDsl, parent);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    deleteByParent(pbxDsl, parent);
                 });
     }
 

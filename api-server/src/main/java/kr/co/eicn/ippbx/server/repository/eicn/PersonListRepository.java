@@ -68,9 +68,8 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        super.insert(pbxDsl, record);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    super.insert(pbxDsl, record);
                 });
     }
 
@@ -87,9 +86,8 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        super.delete(pbxDsl, key);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    super.delete(pbxDsl, key);
                 });
 
         return r;

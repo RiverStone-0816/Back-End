@@ -65,9 +65,8 @@ public class CallbackDistRepository extends EicnBaseRepository<CallbackDist, Cal
 
         huntDistribution(dsl, insertRecord, form.getHunts());
         pbxServerList.forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                huntDistribution(pbxDsl, insertRecord, form.getHunts());
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            huntDistribution(pbxDsl, insertRecord, form.getHunts());
         });
 
         webSecureHistoryRepository.insert(WebSecureActionType.CALLBACK, WebSecureActionSubType.DIST, form.getHunts().stream().reduce("", (a, b) -> a + " " + b));
@@ -105,9 +104,8 @@ public class CallbackDistRepository extends EicnBaseRepository<CallbackDist, Cal
 
         userDistribution(dsl, insertRecord, form.getUsers());
         pbxServerList.forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                userDistribution(pbxDsl, insertRecord, form.getUsers());
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            userDistribution(pbxDsl, insertRecord, form.getUsers());
         });
 
         webSecureHistoryRepository.insert(WebSecureActionType.CALLBACK, WebSecureActionSubType.DIST, subStringBytes(String.join("|", form.getUsers()), 400));

@@ -58,9 +58,8 @@ public class QueueTableRepository extends EicnBaseRepository<QueueTable, kr.co.e
 
 		cacheService.pbxServerList(getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						this.insert(pbxDsl, record);
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					this.insert(pbxDsl, record);
 				});
 	}
 
@@ -73,9 +72,8 @@ public class QueueTableRepository extends EicnBaseRepository<QueueTable, kr.co.e
 
 		cacheService.pbxServerList(getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						super.delete(pbxDsl, key);
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					super.delete(pbxDsl, key);
 				});
 
 		return r;

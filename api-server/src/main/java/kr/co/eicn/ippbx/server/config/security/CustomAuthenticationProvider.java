@@ -169,9 +169,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 if (Constants.LOCAL_HOST.equals(pbxServer.getHost())) {
                     arsAuthRepository.insert(id, user.getHpNumber(), EicnUtils.getRandomNumber(), authenticationRequest.getSessionId(), authenticationRequest.getCompanyId());
                 } else {
-                    try (final DSLContext pbxDsl = pbxServerInterface.using(pbxServer.getHost())) {
-                        arsAuthRepository.insert(pbxDsl, id, user.getHpNumber(), EicnUtils.getRandomNumber(), authenticationRequest.getSessionId(), authenticationRequest.getCompanyId());
-                    }
+                    final DSLContext pbxDsl = pbxServerInterface.using(pbxServer.getHost());
+                    arsAuthRepository.insert(pbxDsl, id, user.getHpNumber(), EicnUtils.getRandomNumber(), authenticationRequest.getSessionId(), authenticationRequest.getCompanyId());
                 }
             }
         }

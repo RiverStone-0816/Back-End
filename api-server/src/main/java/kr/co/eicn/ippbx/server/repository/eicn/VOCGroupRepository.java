@@ -142,11 +142,10 @@ public class VOCGroupRepository extends EicnBaseRepository<VocGroup, kr.co.eicn.
         customListService.getRepository(record.getValue(VOC_GROUP.SEQ)).createTableIfNotExists();
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                pbxDsl.insertInto(VOC_GROUP)
-                        .set(dsl.newRecord(VOC_GROUP, groupRecord))
-                        .execute();
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            pbxDsl.insertInto(VOC_GROUP)
+                    .set(dsl.newRecord(VOC_GROUP, groupRecord))
+                    .execute();
         });
     }
 
@@ -213,9 +212,8 @@ public class VOCGroupRepository extends EicnBaseRepository<VocGroup, kr.co.eicn.
         }
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                super.updateByKey(pbxDsl, groupRecord, groupId);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            super.updateByKey(pbxDsl, groupRecord, groupId);
         });
     }
 
@@ -229,9 +227,8 @@ public class VOCGroupRepository extends EicnBaseRepository<VocGroup, kr.co.eicn.
         statVOCService.getRepository(groupId).dropTableIfExists();
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                super.delete(pbxDsl, groupId);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            super.delete(pbxDsl, groupId);
         });
 
         return deleteRow;

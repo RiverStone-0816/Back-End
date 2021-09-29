@@ -87,9 +87,8 @@ public class ResearchItemRepository extends EicnBaseRepository<ResearchItem, kr.
         super.insert(record);
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                super.insert(pbxDsl, record);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            super.insert(pbxDsl, record);
         });
 
         byte rowIndex = 1;
@@ -101,9 +100,8 @@ public class ResearchItemRepository extends EicnBaseRepository<ResearchItem, kr.
                 super.insert(record);
 
                 cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        super.insert(pbxDsl, record);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    super.insert(pbxDsl, record);
                 });
             }
         }
@@ -134,14 +132,13 @@ public class ResearchItemRepository extends EicnBaseRepository<ResearchItem, kr.
         delete(RESEARCH_ITEM.ITEM_ID.eq(record.getItemId()).and(RESEARCH_ITEM.MAPPING_NUMBER.ne((byte) 0)));
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                pbxDsl.update(RESEARCH_ITEM)
-                        .set(pbxDsl.newRecord(RESEARCH_ITEM, record))
-                        .where(RESEARCH_ITEM.SEQ.eq(seq))
-                        .execute();
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            pbxDsl.update(RESEARCH_ITEM)
+                    .set(pbxDsl.newRecord(RESEARCH_ITEM, record))
+                    .where(RESEARCH_ITEM.SEQ.eq(seq))
+                    .execute();
 
-                delete(pbxDsl, RESEARCH_ITEM.ITEM_ID.eq(record.getItemId()).and(RESEARCH_ITEM.MAPPING_NUMBER.ne((byte) 0)));
-            }
+            delete(pbxDsl, RESEARCH_ITEM.ITEM_ID.eq(record.getItemId()).and(RESEARCH_ITEM.MAPPING_NUMBER.ne((byte) 0)));
         });
 
         byte rowIndex = 1;
@@ -171,11 +168,10 @@ public class ResearchItemRepository extends EicnBaseRepository<ResearchItem, kr.
                         .execute();
 
                 cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        pbxDsl.insertInto(RESEARCH_ITEM)
-                                .set(newRecord)
-                                .execute();
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    pbxDsl.insertInto(RESEARCH_ITEM)
+                            .set(newRecord)
+                            .execute();
                 });
             }
         }
@@ -187,9 +183,8 @@ public class ResearchItemRepository extends EicnBaseRepository<ResearchItem, kr.
         delete(RESEARCH_ITEM.ITEM_ID.eq(entity.getItemId()));
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                delete(pbxDsl, RESEARCH_ITEM.ITEM_ID.eq(entity.getItemId()));
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            delete(pbxDsl, RESEARCH_ITEM.ITEM_ID.eq(entity.getItemId()));
         });
     }
 

@@ -235,13 +235,12 @@ public class ResearchTreeRepository extends EicnBaseRepository<ResearchTree, kr.
                 .execute();
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                pbxDsl.update(RESEARCH_LIST)
-                        .set(RESEARCH_LIST.HAVE_TREE, "Y")
-                        .set(RESEARCH_LIST.TTS_FIELD_NAME, ttsBuffer.toString().contains("|") ? ttsBuffer.append("|").toString() : ttsBuffer.toString())
-                        .where(RESEARCH_LIST.RESEARCH_ID.eq(researchId))
-                        .execute();
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            pbxDsl.update(RESEARCH_LIST)
+                    .set(RESEARCH_LIST.HAVE_TREE, "Y")
+                    .set(RESEARCH_LIST.TTS_FIELD_NAME, ttsBuffer.toString().contains("|") ? ttsBuffer.append("|").toString() : ttsBuffer.toString())
+                    .where(RESEARCH_LIST.RESEARCH_ID.eq(researchId))
+                    .execute();
         });
     }
 
@@ -268,20 +267,19 @@ public class ResearchTreeRepository extends EicnBaseRepository<ResearchTree, kr.
                 .execute();
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                pbxDsl.insertInto(RESEARCH_TREE)
-                        .set(RESEARCH_TREE.CODE, code)
-                        .set(RESEARCH_TREE.PATH, path)
-                        .set(RESEARCH_TREE.ROOT, rootCode)
-                        .set(RESEARCH_TREE.PARENT, parentCode)
-                        .set(RESEARCH_TREE.LEVEL, level)
-                        .set(RESEARCH_TREE.TYPE, (byte) 0)
-                        .set(RESEARCH_TREE.ITEM_ID, itemId)
-                        .set(RESEARCH_TREE.MAPPING_NUMBER, answerNumber)
-                        .set(RESEARCH_TREE.RESEARCH_ID, researchId)
-                        .set(RESEARCH_TREE.COMPANY_ID, getCompanyId())
-                        .execute();
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            pbxDsl.insertInto(RESEARCH_TREE)
+                    .set(RESEARCH_TREE.CODE, code)
+                    .set(RESEARCH_TREE.PATH, path)
+                    .set(RESEARCH_TREE.ROOT, rootCode)
+                    .set(RESEARCH_TREE.PARENT, parentCode)
+                    .set(RESEARCH_TREE.LEVEL, level)
+                    .set(RESEARCH_TREE.TYPE, (byte) 0)
+                    .set(RESEARCH_TREE.ITEM_ID, itemId)
+                    .set(RESEARCH_TREE.MAPPING_NUMBER, answerNumber)
+                    .set(RESEARCH_TREE.RESEARCH_ID, researchId)
+                    .set(RESEARCH_TREE.COMPANY_ID, getCompanyId())
+                    .execute();
         });
 
         if (form.getChildNotMappedByAnswerNumber() != null)
