@@ -109,10 +109,10 @@
             </c:if>
         </div>
         <div class="center">
-            <c:if test="${!(g.serviceKind.equals('CC') && g.usingServices.contains('TYPE2'))}">
+            <c:if test="${g.usingServices.contains('DSHB')}">
             <a class="ui button basic small -menu-page" href="<c:url value="/admin/dashboard/total"/>">대쉬보드</a>
             </c:if>
-            <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
+            <c:if test="${g.usingServices.contains('DSP')}">
                 <a class="ui button basic small -menu-page" href="<c:url value="/admin/monitor/screen/config"/>">전광판</a>
             </c:if>
             <c:if test="${hasExtension && isStat}">

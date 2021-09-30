@@ -96,7 +96,7 @@
                         <h3 class="panel-total-count">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
                         <div class="ui basic buttons">
                             <button class="ui button" onclick="popupModal()">추가</button>
-                            <c:if test="${g.usingServices.contains('TYPE2')}">
+                            <c:if test="${!(g.serviceKind.contains('CC') && g.usingServices.contains('TYPE2'))}">
                                 <button class="ui button -control-entity" data-entity="PersonList" style="display: none;" onclick="popupMenuModal(getEntityId('PersonList'))">권한/메뉴설정</button>
                             </c:if>
                             <button class="ui button -control-entity" data-entity="PersonList" style="display: none;" onclick="popupModal(getEntityId('PersonList'))">수정</button>
@@ -127,7 +127,13 @@
                                 </c:if>
                             </th>
                             <th rowspan="2">녹취권한[듣기][다운][삭제]</th>
-                            <th colspan="4">라이센스 할당 여부</th>
+                            <c:set var="cols" value="0"/>
+                            <c:set var="cols" value="${services.contains('APP') || services.contains('API') ? cols + 1 : cols}"/>
+                            <c:set var="cols" value="${services.contains('TALK') ? cols + 1 : cols}"/>
+                            <c:set var="cols" value="${services.contains('EMAIL') ? cols + 1 : cols}"/>
+                            <c:set var="cols" value="${services.contains('CHATT') || services.contains('CHATWIN') || services.contains('CHATMEMO') ? cols + 1 : cols}"/>
+                            <c:set var="cols" value="${services.contains('PDS') ? cols + 1 : cols}"/>
+                            <th colspan="${cols}">라이센스 할당 여부</th>
                             <th rowspan="2">근무상태</th>
                         </tr>
                         <tr>
