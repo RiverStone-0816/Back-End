@@ -117,7 +117,6 @@ const editor = Vue.createApp({
             this.canvasHeight = Math.max(this.canvasHeight > blockBottom ? this.canvasHeight : blockBottom, $(this.container).innerHeight())
         },
         createLineSvg: function (lineElement) {
-
             for (let i = 0; i < this.renderingLineTimers.length; i++) {
                 const timer = this.renderingLineTimers[i]
                 if (timer.button === lineElement.button && timer.block === lineElement.block) {
@@ -142,11 +141,36 @@ const editor = Vue.createApp({
                     block: lineElement.block,
                 })
 
-            //       (x,y)
-            // case1 ( width > 0, height > 0 ): 0,0 -> 100,100: 0 0, 50 0, 50 100, 100 100
-            // case2 ( width > 0, height < 0 ): 0,100 -> 100,0: 0 100, 50 100, 50 0, 100 0
-            // case3 ( width < 0, height > 0 ): 100,0 -> 0,100: 100 0, 100+pad 0, 100+pad 50, 0-pad 50, 0-pad 100, 0 100
-            // case4 ( width < 0, height < 0 ): 100,100 -> 0,0: 100 100, 100+pad 100, 100+pad 50, 0-pad 50, 0-pad 0, 0 0
+            function getD() {
+                const MAX_CURVE_RADIUS = 50
+                const M = 'M', L = 'L', Q = 'Q'
+                const matrices = []
+
+                for (let i = 0; i < arguments.length; i++) {
+                    const p1 = arguments[i], p2 = arguments[i + 1], p3 = arguments[i + 2]
+
+                    if (i === 0)
+                        matrices.push([M, p1[0], p1[1]])
+
+                    if (!p3) {
+                        matrices.push([L, p2[0], p2[1]])
+                        break
+                    }
+
+                    const xSide1 = p2[0] - p1[0], ySide1 = p2[1] - p1[1]
+                    const xSide2 = p3[0] - p2[0], ySide2 = p3[1] - p2[1]
+                    const radius1 = Math.min(MAX_CURVE_RADIUS, Math.abs((xSide1 || ySide1) / 2))
+                    const radius2 = Math.min(MAX_CURVE_RADIUS, Math.abs((xSide2 || ySide2) / 2))
+                    const radius = Math.min(radius1, radius2)
+
+                    matrices.push([L, p2[0] - (xSide1 ? radius * (xSide1 > 0 ? 1 : -1) : 0), p2[1] - (ySide1 ? radius * (ySide1 > 0 ? 1 : -1) : 0)])
+                    matrices.push([Q, p2[0], p2[1], p2[0] + (xSide2 ? xSide2 > 0 ? radius : -radius : 0), p2[1] + (ySide2 ? ySide2 > 0 ? radius : -radius : 0)])
+                }
+
+                return matrices.map(function (e) {
+                    return e.join(' ')
+                }).join(', ')
+            }
 
             const width = blockRect.left - buttonRect.left
             const height = blockRect.top - buttonRect.top
@@ -156,15 +180,21 @@ const editor = Vue.createApp({
             svg.style.left = (width >= 0 ? buttonRect.left : blockRect.left - PAD) + 'px' // 만약 block이 button보다 왼쪽에 있으면, 돌아가는 선을 표현하기 위해 pad를 두었다.
             svg.style.top = (height >= 0 ? buttonRect.top : blockRect.top) + 'px'
             svg.setAttribute('class', 'ui-chatbot-line')
+            svg.setAttribute('data-type', lineElement.type)
             svg.setAttribute('width', '' + (width >= 0 ? width : -width + 2 * PAD))
             svg.setAttribute('height', '' + Math.abs(height))
 
+            //       (x,y)
+            // case1 ( width > 0, height > 0 ): 0,0 -> 100,100: 0 0, 50 0, 50 100, 100 100
+            // case2 ( width > 0, height < 0 ): 0,100 -> 100,0: 0 100, 50 100, 50 0, 100 0
+            // case3 ( width < 0, height > 0 ): 100,0 -> 0,100: 100 0, 100+pad 0, 100+pad 50, 0-pad 50, 0-pad 100, 0 100
+            // case4 ( width < 0, height < 0 ): 100,100 -> 0,0: 100 100, 100+pad 100, 100+pad 50, 0-pad 50, 0-pad 0, 0 0
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path')
             path.setAttribute('d',
-                (width >= 0 && height >= 0) ? `M 0 0, l ${width / 2} 0, l 0 ${height}, l ${width / 2} 0`
-                    : (width >= 0 && height < 0) ? `M 0 ${-height}, l ${width / 2} 0, l 0 ${height}, l ${width / 2} 0`
-                        : (width < 0 && height >= 0) ? `M ${-width + PAD} 0, l ${PAD} 0, l 0 ${height / 2}, l ${width - 2 * PAD} 0, l 0 ${height / 2}, l ${PAD} 0`
-                            : `M ${-width + PAD} ${-height}, l ${PAD} 0, l 0, ${height / 2}, l ${width - 2 * PAD} 0, l 0  ${height / 2}, L ${PAD} 0`
+                (width >= 0 && height >= 0) ? getD([0, 0], [width / 2, 0], [width / 2, height], [width, height])
+                    : (width >= 0 && height < 0) ? getD([0, -height], [width / 2, -height], [width / 2, 0], [width, 0])
+                        : (width < 0 && height >= 0) ? getD([-width + PAD, 0], [-width + 2 * PAD, 0], [-width + 2 * PAD, height / 2], [0, height / 2], [0, height], [PAD, height])
+                            : getD([-width + PAD, -height], [-width + 2 * PAD, -height], [-width + 2 * PAD, -height / 2], [0, -height / 2], [0, 0], [PAD, 0])
             )
             svg.appendChild(path)
 
@@ -179,19 +209,21 @@ const editor = Vue.createApp({
             const result = []
             _this.blocks.forEach(function (block) {
                 if (block.parent)
-                    result.push({block: _this.$refs['blockPoint.' + block.id], button: _this.$refs['buttonPoint.' + block.parent]})
+                    result.push({type: 'TO_NEXT_BLOCK', block: _this.$refs['blockPoint.' + block.id], button: _this.$refs['buttonPoint.' + block.parent]})
 
                 block.buttons.filter(function (button) {
                     return button.type === _this.BUTTON_TYPE.TO_OTHER_BLOCK
                 }).forEach(function (button) {
-                    result.push({block: _this.$refs['blockPoint.' + button.parameter.TO_OTHER_BLOCK.block], button: _this.$refs['buttonPoint.' + button.id]})
+                    result.push({type: 'TO_OTHER_BLOCK', block: _this.$refs['blockPoint.' + button.parameter.TO_OTHER_BLOCK.block], button: _this.$refs['buttonPoint.' + button.id]})
                 })
             })
             return result
         })()
 
         lineElements.forEach(function (e) {
-            _this.$refs.lines.appendChild(_this.createLineSvg(e))
+            const svg = _this.createLineSvg(e)
+            if (svg)
+                _this.$refs.lines.appendChild(svg)
         })
     },
     mounted: function () {
@@ -265,7 +297,7 @@ editor.addBlock({
     id: 'block-2',
     title: '2번째 block',
     x: 400,
-    y: 10,
+    y: 20,
     parent: 'button-1-1',
     buttons: [{
         id: 'button-2-1',

@@ -57,6 +57,8 @@
         .ui-chatbot-button[data-type='CALL_API'] {}
         .ui-chatbot-button-title {}
         .ui-chatbot-line {position: absolute;}
+        .ui-chatbot-line[data-type="TO_NEXT_BLOCK"] {}
+        .ui-chatbot-line[data-type="TO_OTHER_BLOCK"] {opacity: 25%;}
         .ui-chatbot-line path {stroke: black; stroke-width: 5px; fill: transparent; }
     </style>
 </head>
@@ -64,6 +66,9 @@
 
 <div id="app" style="position: relative;">
     <div ref="canvas" class="ui-chatbot-canvas" :style="'width: ' + canvasWidth + 'px; height: ' + canvasHeight + 'px;'">
+
+        <div ref="lines"></div>
+
         <div v-for="block in blocks" :key="block.id" class="ui-chatbot-block" :style="'top: ' + block.y + 'px; left: ' + block.x + 'px;'">
             <div :ref="'blockPoint.' + block.id" class="ui-chatbot-block-point"></div>
             <div class="ui-chatbot-block-title">{{block.title}}</div>
@@ -102,7 +107,7 @@
             </div>
         </div>
 
-        <div ref="lines"></div>
+
     </div>
 </div>
 
