@@ -167,7 +167,8 @@ public class MenuCompanyService extends ApiBaseService implements ApplicationCon
         menuCompanies.removeAll(children);
         if (g.getUser().getCompany().getService().contains("TYPE2"))
             children = children.stream().filter(e -> !e.getMenuName().contains("센터") && !e.getMenuName().contains("로그") && !e.getService().contains("NOT")
-                    && (!e.getService().equals("STA") || (e.getMenuCode().contains("0259") || e.getMenuCode().contains("0261"))))
+                    && (!e.getService().equals("STA") || (e.getMenuCode().contains("0259") || e.getMenuCode().contains("0261")))
+                    && (!e.getMenuCode().equals("0241") && (!e.getMenuCode().equals("0318"))))
                     .collect(Collectors.toList());
 
         children.forEach(e -> {

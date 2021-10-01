@@ -87,7 +87,9 @@
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
+                                                <c:if test="${serviceKind.equals('SC')}">
                                                 <td></td>
+                                                </c:if>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
