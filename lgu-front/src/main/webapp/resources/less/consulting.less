@@ -16,6 +16,10 @@
   .box-container {
     width: 100%;
     padding: 5px 5px 0 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border: 1px solid #dddddd;
+    border-bottom: 0;
     .box-container-inner {
       background: @color-sidebar-grey;
       border-radius: 10px 10px 0 0;
@@ -255,13 +259,11 @@
       .flex();
       align-items: center;
       justify-content: space-between;
-      .user-icon {
-        vertical-align: top;
-        margin: 1px 0 0 0;
-      }
       .user {
         color: @color-black;
-        margin: 0 0 0 8px;
+      }
+      .user.online {
+        color: @color-brand;
       }
       font-size: 13px;
       .label {
@@ -431,6 +433,9 @@
                 background-color: rgba(255,255,255,1);
               }
             }
+            [data-inverted]:before, [data-inverted]:after {
+              background: #616B77;
+            }
             .button-reply {
               background-image: url('/resources/images/reply.svg');
               &:hover {
@@ -460,7 +465,7 @@
         .wrap-content {
           text-align: left;
           .chat {
-            max-width: 470px;
+            max-width: 430px;
             .flex();
             .bubble {
               display: flex;
@@ -481,6 +486,7 @@
                   height: auto;
                   float: left;
                   margin: 4px 0;
+                  border-radius: 4px;
                 }
                 p {
                   white-space: pre-wrap;
@@ -601,6 +607,8 @@
         border: 1px solid #a5a5a5;
         box-shadow: rgba(1,1,1,.25) 0 1px 7px;
         padding: 5px;
+        max-height: 186px;
+        overflow: overlay;
         .empty {
           color: #adadad;
           text-align: center;

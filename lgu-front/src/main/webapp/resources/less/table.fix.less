@@ -139,11 +139,30 @@
 }
 
 
-.ui.selectable-only.table tbody tr:hover,
-.ui.table tbody tr td.selectable-only:hover {
-  background: rgba(0, 0, 0, 0.05) !important;
-  color: rgba(0, 0, 0, 0.95) !important;
+
+
+.ui.selectable-only.table{
+  tbody {
+    tr {
+      &:hover {
+        td {
+          background: rgba(0, 0, 0, 0.05) ;
+          color: rgba(0, 0, 0, 0.95) ;
+        }
+      }
+    }
+    tr.list-view {
+      display: none;
+      cursor: unset;
+      &:hover {
+        td {
+          background:@color-white;
+        }
+      }
+    }
+  }
 }
+
 
 
 table.scroll {

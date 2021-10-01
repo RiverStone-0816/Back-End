@@ -84,7 +84,7 @@
                     <div class="consulting-accordion favorite active">
                         <div class="consulting-accordion-label">
                             <div>
-                                즐겨찾기 <button class="ui basic white very mini compact button ml10">편집</button>
+                                즐겨찾기 <button type="button" class="ui basic white very mini compact button ml10" onclick="messenger.popupBookmarkModal();">편집</button>
                             </div>
                             <div>
                                 <i class="material-icons arrow">keyboard_arrow_down</i>
@@ -95,7 +95,7 @@
                                 <%--<li class="empty">등록된 즐겨찾기가 없습니다.</li>--%>
                                 <li>
                                     <div>
-                                        <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                        <i class="user outline icon online"></i>
                                         <span class="user">상담사1[0990]</span>
                                         <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
                                             <i class="share icon"></i>
@@ -107,7 +107,7 @@
                                 </li>
                                 <li>
                                     <div>
-                                        <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                        <i class="user outline icon"></i>
                                         <span class="user">상담사1[0990]</span>
                                         <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
                                             <i class="share icon"></i>
@@ -119,7 +119,7 @@
                                 </li>
                                 <li>
                                     <div>
-                                        <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                        <i class="user outline icon"></i>
                                         <span class="user">상담사1[0990]</span>
                                         <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
                                             <i class="share icon"></i>
@@ -131,7 +131,7 @@
                                 </li>
                                 <li>
                                     <div>
-                                        <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                        <i class="user outline icon"></i>
                                         <span class="user">상담사1[0990]</span>
                                         <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
                                             <i class="share icon"></i>
@@ -143,7 +143,7 @@
                                 </li>
                                 <li>
                                     <div>
-                                        <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                        <i class="user outline icon"></i>
                                         <span class="user">상담사1[0990]</span>
                                         <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
                                             <i class="share icon"></i>
@@ -155,7 +155,7 @@
                                 </li>
                                 <li>
                                     <div>
-                                        <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                        <i class="user outline icon online"></i>
                                         <span class="user">상담사1[0990]</span>
                                         <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
                                             <i class="share icon"></i>
@@ -167,7 +167,7 @@
                                 </li>
                                 <li>
                                     <div>
-                                        <img src="/resources/images/Icon%20material-people.svg" class="user-icon">
+                                        <i class="user outline icon"></i>
                                         <span class="user">상담사1[0990]</span>
                                         <button type="button" class="ui icon button mini compact -redirect-to" data-extension="0990" title="전화돌려주기">
                                             <i class="share icon"></i>
@@ -180,10 +180,10 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="consulting-accordion overflow-hidden dp-flex flex-flow-column active">
+                    <div class="consulting-accordion organization overflow-hidden dp-flex flex-flow-column active">
                         <div class="consulting-accordion-label">
                             <div>
-                                조직도 <button class="ui basic white very mini compact button ml10">선택대화</button>
+                                조직도 <button type="button" class="ui basic white very mini compact button ml10">선택대화</button>
                             </div>
                             <div>
                                 <i class="material-icons arrow">keyboard_arrow_down</i>
