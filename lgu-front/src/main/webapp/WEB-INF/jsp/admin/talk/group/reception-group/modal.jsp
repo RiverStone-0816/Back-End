@@ -66,6 +66,121 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="sixteen wide column">
+                    <h4 class="ui header title">자동멘트</h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">초기 인사 멘트</label></div>
+                <div class="twelve wide column">
+                    <div class="ui form fluid">
+                        <input type="text" placeholder="멘트내용입력">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">자동 종료 멘트</label></div>
+                <div class="twelve wide column">
+                    <div class="ui form fluid">
+                        <input type="text" placeholder="멘트내용입력">
+                    </div>
+                </div>
+                <div class="four wide column"></div>
+                <div class="twelve wide column">
+                    <div class="mt5">상담원이 메시지 송출  후
+                        <select class="mr3 ml3">
+                            <option>5</option>
+                            <option>10</option>
+                            <option>15</option>
+                            <option>20</option>
+                            <option>25</option>
+                            <option>30</option>
+                        </select>
+                        분 동안 고객 답변이 없을 시 자동종료 안내
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">자동종료 안내 멘트</label></div>
+                <div class="twelve wide column">
+                    <div class="ui form fluid">
+                        <input type="text" placeholder="멘트내용입력">
+                    </div>
+                </div>
+                <div class="four wide column"></div>
+                <div class="twelve wide column">
+                    <div class="mt5">자동종료 안내 메시지 송출 후
+                        <select class="mr3 ml3">
+                            <option>5</option>
+                            <option>10</option>
+                            <option>15</option>
+                            <option>20</option>
+                            <option>25</option>
+                            <option>30</option>
+                        </select>
+                        분 동안 고객 답변이 없을 시 자동종료 안내
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">비접수 초과시 멘트</label></div>
+                <div class="twelve wide column">
+                    <div class="ui form fluid">
+                        <input type="text" placeholder="멘트내용입력">
+                    </div>
+                </div>
+                <div class="four wide column"></div>
+                <div class="twelve wide column">
+                    <div class="mt5">
+                        상담원 비접수 건수가 <input type="text" size="2" class="ml3 mr3"> 건을 넘을 경우
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">추가 멘트1</label></div>
+                <div class="twelve wide column">
+                    <div class="ui form fluid">
+                        <input type="text" placeholder="멘트내용입력">
+                    </div>
+                </div>
+                <div class="four wide column"></div>
+                <div class="twelve wide column">
+                    <div class="mt5">고객이 메시지 송출 후
+                        <select class="mr3 ml3">
+                            <option>5</option>
+                            <option>10</option>
+                            <option>15</option>
+                            <option>20</option>
+                            <option>25</option>
+                            <option>30</option>
+                        </select>
+                        동안 상담원 답변이 없을 경우
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">추가 멘트2</label></div>
+                <div class="twelve wide column">
+                    <div class="ui form fluid">
+                        <input type="text" placeholder="멘트내용입력">
+                    </div>
+                </div>
+                <div class="four wide column"></div>
+                <div class="twelve wide column">
+                    <div class="mt5">상담원이 메시지 송출 후
+                        <select class="mr3 ml3">
+                            <option>5</option>
+                            <option>10</option>
+                            <option>15</option>
+                            <option>20</option>
+                            <option>25</option>
+                            <option>30</option>
+                        </select>
+                        동안 고객 답변이 없을 경우
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
