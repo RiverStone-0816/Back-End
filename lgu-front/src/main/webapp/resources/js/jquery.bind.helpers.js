@@ -256,26 +256,9 @@
             $(this).parent('.box').toggleClass('active');
         });
 
-        findAndMe(".consulting-accordion-label", this).on("click", function () {
-            if($(this).parent().hasClass('active') === true) {
-                $(this).parent().children('.consulting-accordion-label').find('.material-icons.arrow').text('keyboard_arrow_right');
-                $(this).parent().children('.consulting-accordion-label').find('.left').children('.folder.icon').removeClass('open');
-            } else {
-                $(this).parent().children('.consulting-accordion-label').find('.material-icons.arrow').text('keyboard_arrow_down');
-                $(this).parent().children('.consulting-accordion-label').find('.left').children('.folder.icon').addClass('open');
-            }
-            $(this).parent().toggleClass('active');
-            event.stopPropagation();
-        });
-
         findAndMe(".side-room-list-ul .list", this).on("click", function () {
             $(this).toggleClass('active');
         });
-
-        findAndMe(".consulting-accordion-content .team-item", this).on("click", function () {
-           $(this).toggleClass('active');
-        });
-
 
 
         /* jquery-ui.datepicker 호출. id 재생성되므로, 기존 id 속성을 삭제시킨다. */

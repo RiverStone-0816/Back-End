@@ -14,6 +14,8 @@
 
 <tags:scripts>
     <script>
+        console.log("script-for-queue-and-person-status")
+
         window.MEMBER_STATUS_CALLING = 1;
 
         window.queues = {
@@ -169,8 +171,10 @@
                     $(this).data('sortValue', peerStatus.status);
                 }
 
-                $(this).css({backgroundColor: peerStatus.status === 0 ? 'skyblue' : peerStatus.status === 1 ? 'yellow' : peerStatus.status === 2 ? 'orange' :
-                        peerStatus.status === 3 ? '#FF7171' : peerStatus.status === 4 ? '#86E57F' : peerStatus.status === 8 ? '#C98AFF' : '#ABABAB'});
+                $(this).css({
+                    backgroundColor: peerStatus.status === 0 ? 'skyblue' : peerStatus.status === 1 ? 'yellow' : peerStatus.status === 2 ? 'orange' :
+                        peerStatus.status === 3 ? '#FF7171' : peerStatus.status === 4 ? '#86E57F' : peerStatus.status === 8 ? '#C98AFF' : '#ABABAB'
+                });
             });
 
             $('.-consultant-status-with-color').each(function () {
@@ -226,22 +230,25 @@
 
             $('.-consultant-login').each(function () {
                 const loginStatus = $(this).attr('data-value');
+                const logonClass = $(this).attr('data-logon-class')
+                const logoutClass = $(this).attr('data-logout-class')
+
                 if (loginStatus === "Y") {
-                    $(this).removeAttr('data-value');
-                    $(this).removeClass('translucent');
-                    $(this).addClass('blue');
-                    return;
+                    $(this).removeAttr('data-value')
+                    if (logoutClass) $(this).removeClass(logoutClass)
+                    if (logonClass) $(this).addClass(logonClass)
+                    return
                 }
 
                 const peerStatus = peerStatuses[$(this).attr('data-peer')];
-                if (!peerStatus) return;
+                if (!peerStatus) return
 
-                $(this).removeClass('translucent');
-                $(this).addClass('blue');
+                if (logoutClass) $(this).removeClass(logoutClass);
+                if (logonClass) $(this).addClass(logonClass);
 
                 if (!peerStatus.login) {
-                    $(this).removeClass('blue');
-                    $(this).addClass('translucent');
+                    if (logonClass) $(this).removeClass(logonClass);
+                    if (logoutClass) $(this).addClass(logoutClass);
                 }
             });
         }

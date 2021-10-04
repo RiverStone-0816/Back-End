@@ -13,7 +13,7 @@
 
 <form:form modelAttribute="form" cssClass="ui modal -json-submit" data-method="put"
            action="${pageContext.request.contextPath}/api/chatt/bookmark"
-           data-before="prepareWriteMessengerBookmarkFormData" data-done="doneSubmitMessengerBookmarkFormData">
+           data-before="prepareWriteBookmarkFormData" data-done="doneSubmitBookmarkFormData">
 
     <i class="close icon"></i>
     <div class="header">북마크 편집</div>
@@ -58,15 +58,14 @@
 </form:form>
 
 <script>
-    window.prepareWriteMessengerBookmarkFormData = function (data) {
+    window.prepareWriteBookmarkFormData = function (data) {
         data.memberList = [];
         modal.find('[name="memberList"] option').each(function () {
             data.memberList.push($(this).val());
         });
     };
 
-    window.doneSubmitMessengerBookmarkFormData = function () {
+    window.doneSubmitBookmarkFormData = function () {
         modal.find('.modal-close:first').click();
-        messenger.loadBookmarks();
     };
 </script>

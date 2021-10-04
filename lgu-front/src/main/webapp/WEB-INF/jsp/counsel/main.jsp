@@ -374,10 +374,6 @@
 
         $("#etc-panel .segment").overlayScrollbars({});
 
-        function loadCoworkerNavigation() {
-            replaceReceivedHtmlInSilence('/counsel/coworker-navigation', '#counsel-nav');
-        }
-
         function loadOuterLink() {
             replaceReceivedHtmlInSilence('/counsel/outer-link', '#outer-link-list');
         }
@@ -399,12 +395,10 @@
         }
 
         $(window).on('load', function () {
-            loadCoworkerNavigation();
             loadOuterLink();
             loadCurrentStatus();
             setInterval(function () {
                 if ($(parent.document).find('#main').is('.change-mode')) {
-                    loadCoworkerNavigation();
                     loadOuterLink();
                     loadCurrentStatus();
                     loadTodoList();

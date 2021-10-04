@@ -33,7 +33,7 @@ public class MonitApiController extends BaseController {
     private MonitApiInterface apiInterface;
 
     @GetMapping("")
-    public List<MonitControlResponse> pagination(MonitControlSearchRequest search) throws IOException, ResultFailException {
+    public List<MonitControlResponse> list(MonitControlSearchRequest search) throws IOException, ResultFailException {
         return apiInterface.list(search);
     }
 

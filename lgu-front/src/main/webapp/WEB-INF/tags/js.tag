@@ -20,6 +20,7 @@
 <script src="<c:url value="/webjars/jquery-blockui/2.65/jquery.blockUI.js"/>"></script>
 <script src="<c:url value="/webjars/momentjs/2.21.0/min/moment.min.js"/>"></script>
 <script src="<c:url value="/webjars/d3js/5.9.1/d3.min.js"/>"></script>
+<script src="<c:url value="/webjars/vue/3.2.10/dist/vue.global.js"/>"></script>
 
 <!-- external library depend -->
 <script src="<c:url value="/webjars/jquery-ui/1.12.1/jquery-ui.min.js"/>"></script>

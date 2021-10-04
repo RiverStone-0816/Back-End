@@ -223,7 +223,7 @@
                                                     <i class="phone icon ${e.isPhone != 'Y' ? 'translucent' : ''} -consultant-phone-status" data-peer="${g.htmlQuote(e.person.peer)}"></i>
                                                 </td>
                                                 <td>
-                                                    <i class="key icon ${e.person.isLogin != 'Y' ? 'translucent' : ''} -consultant-login" data-peer="${g.htmlQuote(e.person.peer)}"></i>
+                                                    <i class="key icon ${e.person.isLogin != 'Y' ? 'translucent' : ''} -consultant-login" data-peer="${g.htmlQuote(e.person.peer)}" data-logon-class="blue" data-logout-class="translucent"></i>
                                                 </td>
                                                 <td class="-consultant-queue-name" data-peer="${g.htmlQuote(e.person.peer)}"></td>
                                                 <td class="-consultant-status" data-peer="${g.htmlQuote(e.person.peer)}">${memberStatuses.get(e.person.paused)}</td>

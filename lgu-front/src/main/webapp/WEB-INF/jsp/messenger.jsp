@@ -42,7 +42,7 @@
             </div>
             <div id="messenger-content-panel">
                 <div class="inner">
-                    <div class="ui list" id="messenger-bookmark-panel"></div>
+                    <div class="ui list"></div>
                     <div class="ui list" id="messenger-organization-panel"></div>
                     <div class="ui list" id="messenger-chat-container"></div>
                 </div>
@@ -166,7 +166,7 @@
                         </li>
                         <li class="template-list">
                             <div class="template-title">/test</div>
-                            <div class="template-content">두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다. </div>
+                            <div class="template-content">두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.두줄입니다.</div>
                         </li>
                         <li class="template-list">
                             <div class="template-title">/444</div>
@@ -360,155 +360,156 @@
                             </div>
                         </div>
                     </div>
-                </form><div class="panel">
-                <div class="panel-heading">
-                    <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">14</span>건</h3>
+                </form>
+                <div class="panel">
+                    <div class="panel-heading">
+                        <div class="pull-left">
+                            <h3 class="panel-title">전체 <span class="text-primary">14</span>건</h3>
+                        </div>
                     </div>
-                </div>
-                <div class="panel-body">
-                    <div class="ui secondary  menu">
-                        <a href="javascript: chnageCategory()" class="item active">전체</a>
-                        <a href="javascript: chnageCategory(16)" class="item ">연락</a>
-                        <a href="javascript: chnageCategory(17)" class="item ">업무</a>
-                        <a href="javascript: chnageCategory(18)" class="item ">영업</a>
-                        <a href="javascript: chnageCategory(12)" class="item ">기타</a>
-                    </div>
-                    <table class="ui celled table compact unstackable fixed selectable-only" data-entity="TaskScript">
-                        <thead>
-                        <tr>
-                            <th class="one wide">번호</th>
-                            <th class="eight wide">제목</th>
-                            <th class="four wide">태그</th>
-                            <th class="two wide">등록일</th>
-                            <th class="one wide">내용보기</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr data-id="17">
-                            <td>1</td>
-                            <td>첨부 파일 테스트</td>
-                            <td>
-                                <div class="ui tiny label">test</div>
-                            </td>
-                            <td>2021-09-29</td>
-                            <td>
-                                <button class="ui icon compact mini button view-content-btn">
-                                    <i class="angle down icon"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr class="list-view">
-                            <td colspan="5">
-                                <div class="ui grid mg-1em align-left">
-                                    <div class="row">
-                                        <div class="two wide column">
-                                            <label class="control-label">내용</label>
+                    <div class="panel-body">
+                        <div class="ui secondary  menu">
+                            <a href="javascript: chnageCategory()" class="item active">전체</a>
+                            <a href="javascript: chnageCategory(16)" class="item ">연락</a>
+                            <a href="javascript: chnageCategory(17)" class="item ">업무</a>
+                            <a href="javascript: chnageCategory(18)" class="item ">영업</a>
+                            <a href="javascript: chnageCategory(12)" class="item ">기타</a>
+                        </div>
+                        <table class="ui celled table compact unstackable fixed selectable-only" data-entity="TaskScript">
+                            <thead>
+                            <tr>
+                                <th class="one wide">번호</th>
+                                <th class="eight wide">제목</th>
+                                <th class="four wide">태그</th>
+                                <th class="two wide">등록일</th>
+                                <th class="one wide">내용보기</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr data-id="17">
+                                <td>1</td>
+                                <td>첨부 파일 테스트</td>
+                                <td>
+                                    <div class="ui tiny label">test</div>
+                                </td>
+                                <td>2021-09-29</td>
+                                <td>
+                                    <button class="ui icon compact mini button view-content-btn">
+                                        <i class="angle down icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="list-view">
+                                <td colspan="5">
+                                    <div class="ui grid mg-1em align-left">
+                                        <div class="row">
+                                            <div class="two wide column">
+                                                <label class="control-label">내용</label>
+                                            </div>
+                                            <div class="fourteen wide column">
+                                                <div class="ws-prewrap">내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용</div>
+                                            </div>
                                         </div>
-                                        <div class="fourteen wide column">
-                                            <div class="ws-prewrap">내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용</div>
+                                        <div class="row">
+                                            <div class="two wide column">
+                                                <label class="control-label">이미지</label>
+                                            </div>
+                                            <div class="fourteen wide column">
+                                                <ul class="board-img-ul">
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://techrecipe.co.kr/wp-content/uploads/2019/04/190401_Mark-Zuckerberg_001.jpg">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://ichef.bbci.co.uk/news/640/cpsprodpb/D42F/production/_116391345_tes1.png">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://blog.kakaocdn.net/dn/bFBxbH/btq7RJR0XR1/ur7ttz6CW4k425zyVHBnHK/img.jpg">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://techrecipe.co.kr/wp-content/uploads/2019/04/190401_Mark-Zuckerberg_001.jpg">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://ichef.bbci.co.uk/news/640/cpsprodpb/D42F/production/_116391345_tes1.png">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://blog.kakaocdn.net/dn/bFBxbH/btq7RJR0XR1/ur7ttz6CW4k425zyVHBnHK/img.jpg">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://techrecipe.co.kr/wp-content/uploads/2019/04/190401_Mark-Zuckerberg_001.jpg">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://ichef.bbci.co.uk/news/640/cpsprodpb/D42F/production/_116391345_tes1.png">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://blog.kakaocdn.net/dn/bFBxbH/btq7RJR0XR1/ur7ttz6CW4k425zyVHBnHK/img.jpg">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://techrecipe.co.kr/wp-content/uploads/2019/04/190401_Mark-Zuckerberg_001.jpg">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://ichef.bbci.co.uk/news/640/cpsprodpb/D42F/production/_116391345_tes1.png">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://blog.kakaocdn.net/dn/bFBxbH/btq7RJR0XR1/ur7ttz6CW4k425zyVHBnHK/img.jpg">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://techrecipe.co.kr/wp-content/uploads/2019/04/190401_Mark-Zuckerberg_001.jpg">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://ichef.bbci.co.uk/news/640/cpsprodpb/D42F/production/_116391345_tes1.png">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://blog.kakaocdn.net/dn/bFBxbH/btq7RJR0XR1/ur7ttz6CW4k425zyVHBnHK/img.jpg">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://techrecipe.co.kr/wp-content/uploads/2019/04/190401_Mark-Zuckerberg_001.jpg">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://ichef.bbci.co.uk/news/640/cpsprodpb/D42F/production/_116391345_tes1.png">
+                                                    </li>
+                                                    <li class="thumbnail-item" onclick="imgViewPopup();">
+                                                        <img src="https://blog.kakaocdn.net/dn/bFBxbH/btq7RJR0XR1/ur7ttz6CW4k425zyVHBnHK/img.jpg">
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="two wide column">
-                                            <label class="control-label">이미지</label>
-                                        </div>
-                                        <div class="fourteen wide column">
-                                            <ul class="board-img-ul">
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://techrecipe.co.kr/wp-content/uploads/2019/04/190401_Mark-Zuckerberg_001.jpg">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://ichef.bbci.co.uk/news/640/cpsprodpb/D42F/production/_116391345_tes1.png">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://blog.kakaocdn.net/dn/bFBxbH/btq7RJR0XR1/ur7ttz6CW4k425zyVHBnHK/img.jpg">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://techrecipe.co.kr/wp-content/uploads/2019/04/190401_Mark-Zuckerberg_001.jpg">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://ichef.bbci.co.uk/news/640/cpsprodpb/D42F/production/_116391345_tes1.png">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://blog.kakaocdn.net/dn/bFBxbH/btq7RJR0XR1/ur7ttz6CW4k425zyVHBnHK/img.jpg">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://techrecipe.co.kr/wp-content/uploads/2019/04/190401_Mark-Zuckerberg_001.jpg">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://ichef.bbci.co.uk/news/640/cpsprodpb/D42F/production/_116391345_tes1.png">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://blog.kakaocdn.net/dn/bFBxbH/btq7RJR0XR1/ur7ttz6CW4k425zyVHBnHK/img.jpg">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://techrecipe.co.kr/wp-content/uploads/2019/04/190401_Mark-Zuckerberg_001.jpg">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://ichef.bbci.co.uk/news/640/cpsprodpb/D42F/production/_116391345_tes1.png">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://blog.kakaocdn.net/dn/bFBxbH/btq7RJR0XR1/ur7ttz6CW4k425zyVHBnHK/img.jpg">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://techrecipe.co.kr/wp-content/uploads/2019/04/190401_Mark-Zuckerberg_001.jpg">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://ichef.bbci.co.uk/news/640/cpsprodpb/D42F/production/_116391345_tes1.png">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://blog.kakaocdn.net/dn/bFBxbH/btq7RJR0XR1/ur7ttz6CW4k425zyVHBnHK/img.jpg">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://techrecipe.co.kr/wp-content/uploads/2019/04/190401_Mark-Zuckerberg_001.jpg">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://ichef.bbci.co.uk/news/640/cpsprodpb/D42F/production/_116391345_tes1.png">
-                                                </li>
-                                                <li class="thumbnail-item" onclick="imgViewPopup();">
-                                                    <img src="https://blog.kakaocdn.net/dn/bFBxbH/btq7RJR0XR1/ur7ttz6CW4k425zyVHBnHK/img.jpg">
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="two wide column">
-                                            <label class="control-label">첨부파일</label>
-                                        </div>
-                                        <div class="fourteen wide column">
-                                            <div class="board-con-inner">
-                                                <div class="ui list filelist">
-                                                    <div class="item">
-                                                        <i class="file alternate outline icon"></i>
-                                                        <div class="content">
-                                                            <a href="#" target="_blank">파일.pdf</a>
+                                        <div class="row">
+                                            <div class="two wide column">
+                                                <label class="control-label">첨부파일</label>
+                                            </div>
+                                            <div class="fourteen wide column">
+                                                <div class="board-con-inner">
+                                                    <div class="ui list filelist">
+                                                        <div class="item">
+                                                            <i class="file alternate outline icon"></i>
+                                                            <div class="content">
+                                                                <a href="#" target="_blank">파일.pdf</a>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="panel-footer">
-                    <div class="ui pagination menu pull-right small">
-                        <a href="javascript:" class="item active">1</a>
-                        <a href="/admin/service/help/task-script/?limit=10&amp;page=2" class="item " onclick="$.blockUIFixed()">
-                            2
-                        </a>
-                        <a href="/admin/service/help/task-script/?limit=10&amp;page=2" aria-label="Next" class="item " onclick="$.blockUIFixed()">
-                            <i class="angle right icon"></i>
-                        </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="ui pagination menu pull-right small">
+                            <a href="javascript:" class="item active">1</a>
+                            <a href="/admin/service/help/task-script/?limit=10&amp;page=2" class="item " onclick="$.blockUIFixed()">
+                                2
+                            </a>
+                            <a href="/admin/service/help/task-script/?limit=10&amp;page=2" aria-label="Next" class="item " onclick="$.blockUIFixed()">
+                                <i class="angle right icon"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </div>
 
@@ -523,7 +524,6 @@
         </div>
     </div>
 </div>
-
 
 
 <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
@@ -719,9 +719,6 @@
                 messenger.communicator.sendMessage(roomId, message);
                 messenger.ui.messageInput.val('');
             }
-        };
-        Messenger.prototype.popupBookmarkModal = function () {
-            popupReceivedHtml('/modal-messenger-bookmark', 'modal-messenger-bookmark');
         };
         // 조직도에서 대화방 열기를 시도한다.. 메서드 이름 변경좀....
         Messenger.prototype.openRoom = function () {
@@ -1028,50 +1025,6 @@
                 messenger._sortChatListItem();
                 messenger.filterItem();
                 messenger._showMessageIndicator();
-            });
-        };
-        Messenger.prototype.loadBookmarks = function () {
-            const messenger = this;
-
-            return restSelf.get('/api/chatt/bookmark-list', null, null, true).done(function (response) {
-                messenger.ui.bookmarkPanel.empty();
-                response.data.map(function (e) {
-                    if (e.id === messenger.me)
-                        return;
-
-                    let text = '';
-                    if (e.extension) text += ' / 내선:' + e.extension;
-                    if (e.hpNumber) text += ' / 휴대폰:' + e.hpNumber;
-                    if (e.emailInfo) text += ' / 이메일:' + e.emailInfo;
-                    if (text.indexOf(' / ') === 0) text = text.substr(3);
-                    const info = text !== '' ? $('<span/>', {style: 'margin-left: 1em; font-size: 90%; color: #aaa;', text: '[' + text + ']'}) : '';
-
-                    $('<div/>', {class: 'item -messenger-bookmark', 'data-id': e.id})
-                        .append(
-                            $('<div/>', {class: 'header'})
-                                .append($('<i/>', {class: 'user outline icon', style: 'color: ' + (e.isLoginChatt === 'L' ? '#c60452' : 'black') + ';'}))
-                                .append($('<text/>', {text: e.idName}).append(info))
-                        )
-                        .appendTo(messenger.ui.bookmarkPanel)
-                        .click(function (event) {
-                            if (event.ctrlKey) {
-                                $(this).toggleClass('active');
-                            } else {
-                                messenger.ui.organizationPanel.find('.-messenger-user').removeClass('active');
-                                messenger.ui.bookmarkPanel.find('.-messenger-bookmark').removeClass('active');
-                                messenger.ui.organizationPanel.find('.-messenger-folder').removeClass('active');
-                                $(this).addClass('active');
-                            }
-                        })
-                        .dblclick(function () {
-                            messenger.ui.organizationPanel.find('.-messenger-user').removeClass('active');
-                            messenger.ui.bookmarkPanel.find('.-messenger-bookmark').removeClass('active');
-                            messenger.ui.organizationPanel.find('.-messenger-folder').removeClass('active');
-                            $(this).addClass('active');
-                            messenger.openRoom();
-                        });
-                });
-                messenger.filterItem();
             });
         };
 
@@ -1628,7 +1581,6 @@
                 }, 100);
             })();
 
-            messenger.loadBookmarks();
             messenger.loadRooms();
 
             restSelf.get('/api/chatt/', null, null, true).done(function (response) {
@@ -1656,27 +1608,27 @@
                 messenger.ui.button.css({left: $(window).width() - messenger.ui.button.width() - 50, top: $(window).height() - messenger.ui.button.height() - 50});
         });
 
-        $('.target-close').click(function(){
+        $('.target-close').click(function () {
             $(this).parents('.view-to-reply').hide();
-            $('#messenger-message').attr('placeholder','전송하실 메시지를 입력하세요.');
+            $('#messenger-message').attr('placeholder', '전송하실 메시지를 입력하세요.');
         });
 
-        $('.button-reply').click(function(){
+        $('.button-reply').click(function () {
             $('.write-chat').find('.view-to-reply').css('display', 'flex');
-            $('#messenger-message').attr('placeholder','답장하실 메시지를 입력하세요.');
+            $('#messenger-message').attr('placeholder', '답장하실 메시지를 입력하세요.');
         });
 
-        $('.chat-item').mouseenter(function(){
-            $(this).find('.chat-layer').css('visibility','visible');
+        $('.chat-item').mouseenter(function () {
+            $(this).find('.chat-layer').css('visibility', 'visible');
         });
 
-        $('.chat-item').mouseleave(function(){
-            $(this).find('.chat-layer').css('visibility','hidden');
+        $('.chat-item').mouseleave(function () {
+            $(this).find('.chat-layer').css('visibility', 'hidden');
         });
 
-        $("#messenger-message").on("keydown", function(e) {
+        $("#messenger-message").on("keydown", function (e) {
             const keycode = e.keyCode;
-            switch(keycode) {
+            switch (keycode) {
                 case 191:
                     $('.template-container').show();
                     break;
@@ -1686,12 +1638,12 @@
             }
         });
 
-        $('.ui.table .view-content-btn').on("click", function(e) {
-           const listview = $(this).closest("tr").next();
-           $(this).children('.icon').toggleClass('trans-rotate-180');
-           if(listview.hasClass('list-view') === true) {
-               listview.toggle();
-           }
+        $('.ui.table .view-content-btn').on("click", function (e) {
+            const listview = $(this).closest("tr").next();
+            $(this).children('.icon').toggleClass('trans-rotate-180');
+            if (listview.hasClass('list-view') === true) {
+                listview.toggle();
+            }
         });
 
         function knowledgeCall() {

@@ -34,6 +34,10 @@
             <jsp:doBody/>
         </div>
         <tags:nav/>
+        <c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
+        <c:if test="${hasExtension}">
+            <tags:nav-counsel/>
+        </c:if>
     </main>
 </div>
 

@@ -63,7 +63,7 @@
                                         <i class="phone icon ${e.isPhone != 'Y' ? 'translucent' : 'blue'} -consultant-phone-status" data-peer="${g.htmlQuote(e.person.peer)}"></i>
                                     </td>
                                     <td>
-                                        <i class="key icon ${e.person.isLogin != 'Y' ? 'translucent' : 'blue'} -consultant-login" data-value="${e.person.isLogin}" data-peer="${g.htmlQuote(e.person.peer)}"></i>
+                                        <i class="key icon ${e.person.isLogin != 'Y' ? 'translucent' : 'blue'} -consultant-login" data-value="${e.person.isLogin}" data-peer="${g.htmlQuote(e.person.peer)}" data-logon-class="blue" data-logout-class="translucent"></i>
                                     </td>
                                     <td class="-consultant-queue-name" data-peer="${g.htmlQuote(e.person.peer)}"></td>
                                     <td class="-consultant-status" data-sort-value="${g.htmlQuote(e.person.paused)}" data-peer="${g.htmlQuote(e.person.peer)}">${statuses.get(e.person.paused)}</td>

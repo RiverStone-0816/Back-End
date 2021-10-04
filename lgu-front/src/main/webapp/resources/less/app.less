@@ -2736,7 +2736,7 @@ g {
   }
 }
 
-#messenger-bookmark-panel, #messenger-organization-panel, #messenger-chat-container, #messenger-room-members {
+#messenger-organization-panel, #messenger-chat-container, #messenger-room-members {
   &:before {
     display: inline-block;
     font-weight: 600;
@@ -2766,22 +2766,6 @@ g {
   }
 }
 
-#messenger-bookmark-panel {
-  position: relative;
-  display: block; padding-bottom: 20px;
-  &:after {
-    position: absolute;
-    content: '';
-    display: block;
-    width: 98%;
-    background: #eee;
-    height: 1px;
-    bottom: 4px;
-  }
-  &:before {
-    content: '즐겨찾기';
-  }
-}
 
 #messenger-organization-panel {
   &:before {
@@ -2815,7 +2799,6 @@ g {
 #messenger-modal #messenger-control-panel {display: block;}
 #messenger-modal #messenger-room {display: none;}
 
-#messenger-modal.show-rooms #messenger-bookmark-panel {display: none;}
 #messenger-modal.show-rooms #messenger-organization-panel {display: none;}
 #messenger-modal.show-rooms #messenger-chat-container {display: block;}
 #messenger-modal.show-rooms #messenger-content-panel {bottom: 0;}

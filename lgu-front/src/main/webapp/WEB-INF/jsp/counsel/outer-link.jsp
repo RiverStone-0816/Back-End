@@ -13,16 +13,15 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 
 <div class="ui list" id="outer-link-list">
-    <p class="empty">등록된 외부링크가 없습니다.</p>
     <c:choose>
         <c:when test="${list.size() > 0}">
             <c:forEach var="e" items="${list}">
                 <a class="item" href="javascript:linkCheck('${g.htmlQuote(e.reference)}');">${g.htmlQuote(e.name)}(${g.htmlQuote(e.reference)})</a>
             </c:forEach>
         </c:when>
-        <%--<c:otherwise>
-            <button type="button" class="fluid ui button compact" onclick="popupBookmarkConfiguration()">외부링크등록</button>
-        </c:otherwise>--%>
+        <c:otherwise>
+            <p class="empty">등록된 외부링크가 없습니다.</p>
+        </c:otherwise>
     </c:choose>
 </div>
 
