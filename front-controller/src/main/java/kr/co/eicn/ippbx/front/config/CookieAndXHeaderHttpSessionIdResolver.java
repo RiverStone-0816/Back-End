@@ -39,13 +39,14 @@ public class CookieAndXHeaderHttpSessionIdResolver implements HttpSessionIdResol
     public static final String WRITTEN_SESSION_ID_ATTR = CookieHttpSessionIdResolver.class.getName().concat(".WRITTEN_SESSION_ID_ATTR");
     public static final String HEADER_X_SESSION_ID = "X-Auth-Token";
 
-    private static final String cookieName = "SESSION";
+    private static final String cookieName = "JSESSIONID";
     private final DefaultCookieSerializer cookieSerializer = new DefaultCookieSerializer();
     private final CookieAndXHeaderIdSessionRepository sessionRepository;
 
     public <S extends Session> CookieAndXHeaderHttpSessionIdResolver(CookieAndXHeaderIdSessionRepository sessionRepository) {
         this.sessionRepository = sessionRepository;
         cookieSerializer.setCookieName(cookieName);
+        cookieSerializer.setUseBase64Encoding(false);
     }
 
     @Override

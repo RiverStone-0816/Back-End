@@ -6,7 +6,6 @@ import kr.co.eicn.ippbx.front.service.FileService;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse;
 import kr.co.eicn.ippbx.util.CodeHasable;
 import kr.co.eicn.ippbx.util.spring.SpringApplicationContextAware;
-import kr.co.eicn.ippbx.util.spring.stroage.SessionStorage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -35,57 +34,54 @@ public class RequestGlobal {
     private static final String REQUEST_GLOBAL_USING_SERVICE_LIST = "REQUEST_GLOBAL_USING_SERVICE_LIST";
     private static final String REQUEST_GLOBAL_SOCKET_LIST = "REQUEST_GLOBAL_SOCKET_LIST";
     private static final String REQUEST_GLOBAL_ALERTS = "REQUEST_GLOBAL_ALERTS";
-    private static final String REQUEST_GLOBAL_LOGIN = "REQUEST_GLOBAL_LOGIN_CHECK";
     private static final String REQUEST_GLOBAL_SERVICE_KIND = "REQUEST_GLOBAL_SERVICE_KIND";
 
     private final HttpSession session;
     private final FileService fileService;
-    private final SessionStorage sessionStorage;
-
-    static {
-        EnumConverter.instance.messageOf("DayOfWeek", "Mon");
-    }
 
     public CurrentUserMenu getMenus() {
-        return sessionStorage.get(session.getId(), REQUEST_GLOBAL_CURRENT_USER_MENUS, CurrentUserMenu.class);
+        return (CurrentUserMenu) session.getAttribute(REQUEST_GLOBAL_CURRENT_USER_MENUS);
     }
 
     public void setMenus(CurrentUserMenu menu) {
-        sessionStorage.set(session.getId(), REQUEST_GLOBAL_CURRENT_USER_MENUS, menu);
+        session.setAttribute(REQUEST_GLOBAL_CURRENT_USER_MENUS, menu);
     }
 
     public PersonDetailResponse getUser() {
-        return sessionStorage.get(session.getId(), REQUEST_GLOBAL_CURRENT_USER, PersonDetailResponse.class);
+        return (PersonDetailResponse) session.getAttribute(REQUEST_GLOBAL_CURRENT_USER);
     }
 
     public LoginForm getLoginInputs() {
-        return sessionStorage.get(session.getId(), REQUEST_GLOBAL_LOGIN_INPUTS, LoginForm.class);
+        return (LoginForm) session.getAttribute(REQUEST_GLOBAL_LOGIN_INPUTS);
     }
 
     public void setLoginInputs(LoginForm form) {
-        sessionStorage.set(session.getId(), REQUEST_GLOBAL_LOGIN_INPUTS, form);
+        session.setAttribute(REQUEST_GLOBAL_LOGIN_INPUTS, form);
     }
 
     public String getUsingServices() {
-        return sessionStorage.get(session.getId(), REQUEST_GLOBAL_USING_SERVICE_LIST, String.class);
+        return (String) session.getAttribute(REQUEST_GLOBAL_USING_SERVICE_LIST);
     }
 
     public void setUsingServices(String service) {
-        sessionStorage.set(session.getId(), REQUEST_GLOBAL_USING_SERVICE_LIST, service);
+        session.setAttribute(REQUEST_GLOBAL_USING_SERVICE_LIST, service);
     }
 
-    public String getServiceKind(){
-        return sessionStorage.get(session.getId(), REQUEST_GLOBAL_SERVICE_KIND, String.class);
+    public String getServiceKind() {
+        return (String) session.getAttribute(REQUEST_GLOBAL_SERVICE_KIND);
     }
 
-    public void setServiceKind(String service){
-        sessionStorage.set(session.getId(), REQUEST_GLOBAL_SERVICE_KIND, service);
+    public void setServiceKind(String service) {
+        session.setAttribute(REQUEST_GLOBAL_SERVICE_KIND, service);
     }
 
 
-    public Boolean checkLogin() {
-        final Boolean checkLogin = sessionStorage.get(session.getId(), REQUEST_GLOBAL_LOGIN, Boolean.class);
-        return checkLogin != null ? checkLogin : false;
+    public boolean checkLogin() {
+        final PersonDetailResponse user = getUser();
+        if (user == null)
+            return false;
+
+        return user.isLoginConfirmed();
     }
 
     public boolean isLogin() {
@@ -93,47 +89,52 @@ public class RequestGlobal {
     }
 
     public void setCurrentUser(PersonDetailResponse user) {
-        sessionStorage.set(session.getId(), REQUEST_GLOBAL_CURRENT_USER, user);
+        session.setAttribute(REQUEST_GLOBAL_CURRENT_USER, user);
     }
 
     @SuppressWarnings("unchecked")
     public Map<String, String> getSocketList() {
-        return (Map<String, String>) sessionStorage.get(session.getId(), REQUEST_GLOBAL_SOCKET_LIST, Map.class);
+        return (Map<String, String>) session.getAttribute(REQUEST_GLOBAL_SOCKET_LIST);
     }
 
     public void setSocketList(Map<String, String> list) {
-        sessionStorage.set(session.getId(), REQUEST_GLOBAL_SOCKET_LIST, list);
+        session.setAttribute(REQUEST_GLOBAL_SOCKET_LIST, list);
     }
 
     public void setLoginConfirm(Boolean loginConfirm) {
-        sessionStorage.set(session.getId(), REQUEST_GLOBAL_LOGIN, loginConfirm);
+        final PersonDetailResponse user = getUser();
+        if (user == null)
+            return;
+
+        user.setLoginConfirmed(loginConfirm);
+        setCurrentUser(user);
     }
 
     public void invalidateSession() {
-        sessionStorage.expire(session.getId());
+        session.invalidate();
     }
 
     public void alert(String code, Object... objects) {
         final List<String> alerts = getAlerts();
         alerts.add(SpringApplicationContextAware.requestMessage().getText(code, objects));
-        sessionStorage.set(session.getId(), REQUEST_GLOBAL_ALERTS, alerts);
+        session.setAttribute(REQUEST_GLOBAL_ALERTS, alerts);
     }
 
     public void alertString(String string) {
         final List<String> alerts = getAlerts();
         alerts.add(string);
-        sessionStorage.set(session.getId(), REQUEST_GLOBAL_ALERTS, alerts);
+        session.setAttribute(REQUEST_GLOBAL_ALERTS, alerts);
     }
 
     @SuppressWarnings("unchecked")
     public List<String> getAlerts() {
-        final List<String> alerts = sessionStorage.get(session.getId(), REQUEST_GLOBAL_ALERTS, List.class, ArrayList::new);
-        return new ArrayList<>(alerts);
+        final List<String> alerts = (List<String>) session.getAttribute(REQUEST_GLOBAL_ALERTS);
+        return alerts != null ? alerts : new ArrayList<>();
     }
 
     public List<String> popAlerts() {
         final List<String> alerts = getAlerts().stream().distinct().collect(Collectors.toList());
-        sessionStorage.remove(session.getId(), REQUEST_GLOBAL_ALERTS);
+        session.removeAttribute(REQUEST_GLOBAL_ALERTS);
         return alerts;
     }
 

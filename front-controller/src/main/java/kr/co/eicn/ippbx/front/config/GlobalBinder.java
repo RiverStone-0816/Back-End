@@ -6,7 +6,6 @@ import kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse;
 import kr.co.eicn.ippbx.util.spring.DateTypePropertyEditor;
 import kr.co.eicn.ippbx.util.spring.RequestMessage;
 import kr.co.eicn.ippbx.util.spring.TagExtender;
-import kr.co.eicn.ippbx.util.spring.stroage.SessionStorage;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.WebDataBinder;
@@ -29,7 +28,6 @@ public class GlobalBinder {
     private final RequestMessage requestMessage;
     private final HttpServletRequest request;
     private final RequestGlobal g;
-    private final SessionStorage storage;
 
     @ModelAttribute("devel")
     public Boolean devel(@Value("${eicn.debugging}") Boolean debugging) {
@@ -63,7 +61,7 @@ public class GlobalBinder {
 
     @ModelAttribute("accessToken")
     public String accessToken(HttpSession session) {
-        return storage.get(session.getId(), ApiServerInterface.SESSION_ACCESS_TOKEN, String.class);
+        return (String) session.getAttribute(ApiServerInterface.SESSION_ACCESS_TOKEN);
     }
 
     @ModelAttribute("contextPath")

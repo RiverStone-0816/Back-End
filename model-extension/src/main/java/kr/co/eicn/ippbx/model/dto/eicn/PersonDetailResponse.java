@@ -15,4 +15,5 @@ public class PersonDetailResponse extends PersonSummaryResponse {
 
 	private String profilePhoto; //프로필 사진 정보
 	private String phoneKind;
+	private boolean loginConfirmed = false;
 }

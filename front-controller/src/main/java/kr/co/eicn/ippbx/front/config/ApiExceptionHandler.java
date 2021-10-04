@@ -5,7 +5,6 @@ import kr.co.eicn.ippbx.exception.UnauthorizedException;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.front.service.ResultFailException;
 import kr.co.eicn.ippbx.util.JsonResult;
-import kr.co.eicn.ippbx.util.spring.stroage.SessionStorage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +16,6 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestClientResponseException;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.sql.SQLException;
@@ -29,9 +27,8 @@ import java.util.Arrays;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-    private final SessionStorage sessionStorage;
     private final ObjectMapper objectMapper;
-    private final HttpSession session;
+    private final RequestGlobal g;
 
     @ExceptionHandler(SQLException.class)
     public void sqlException(HttpServletResponse response, Exception e) throws IOException {
@@ -87,7 +84,7 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(UnauthorizedException.class)
     public void unauthorizedException(HttpServletResponse response, UnauthorizedException e) throws IOException {
-        sessionStorage.expire(session.getId());
+        g.invalidateSession();
         writeResponse(response, e, HttpServletResponse.SC_UNAUTHORIZED, "허가되지 않은 접근");
     }
 
