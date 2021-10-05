@@ -90,7 +90,7 @@
                 <c:forEach var="e" items="${huntData.hunts}">
                     <tr>
                         <td>${g.htmlQuote(e.queueKoreanName)}</td>
-                        <td>${e.customerWaiting}</td>
+                        <td class="-custom-wait-count" data-hunt="${g.htmlQuote(e.queueName)}">${e.customerWaiting}</td>
                         <td>${e.constantStatusCounts.getOrDefault(0, 0)}</td>
                         <td>${e.constantStatusCounts.getOrDefault(1, 0)
                                 + e.constantStatusCounts.getOrDefault(1, 0)
@@ -109,3 +109,24 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    function updateQueues() {
+        $('.-custom-wait-count').each(function () {
+            const queueName = $(this).attr('data-hunt');
+            if (queueName) {
+                $(this).text(queues[queueName].waitingCustomerCount);
+            } else {
+                $(this).text(values(queues).reduce(function (sum, queue) {
+                    return Number(sum + Number(queue.waitingCustomerCount));
+                }, 0));
+            }
+        });
+    }
+
+    updateQueues();
+</script>
+
+<%--
+일단 로그--%>
