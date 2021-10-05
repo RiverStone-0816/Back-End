@@ -43,6 +43,8 @@ public class WebMvcConfig extends WebSecurityConfigurerAdapter implements WebMvc
                 .authorizeRequests()
                 .anyRequest()
                 .permitAll();
+
+        http.headers().frameOptions().sameOrigin();
     }
 
     @Override
