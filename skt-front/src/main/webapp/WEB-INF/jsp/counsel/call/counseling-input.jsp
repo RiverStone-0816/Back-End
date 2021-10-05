@@ -111,10 +111,12 @@
                                 <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
                             </c:forEach>
                         </select>
+                        <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                         <button type="button" class="ui button sharp navy ml5"
                                 onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-counseling-input').find('[name=${name}]').val())">
                             TIP
                         </button>
+                        </c:if>
                     </div>
                 </div>
             </div>
