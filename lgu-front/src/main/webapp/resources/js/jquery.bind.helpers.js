@@ -256,11 +256,6 @@
             $(this).parent('.box').toggleClass('active');
         });
 
-        findAndMe(".side-room-list-ul .list", this).on("click", function () {
-            $(this).toggleClass('active');
-        });
-
-
         /* jquery-ui.datepicker 호출. id 재생성되므로, 기존 id 속성을 삭제시킨다. */
         findAndMe('.-datepicker', this).asDatepicker();
 

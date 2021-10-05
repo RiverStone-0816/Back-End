@@ -17,7 +17,7 @@
     <div class="side-bar-tab-container">
         <ul class="side-bar-tab">
             <li class="active" data-tab="organization-area"><i class="list ul icon"></i>조직도</li>
-            <li data-tab="room-list-area"><i class="comments icon unread"></i>채팅방</li>
+            <li data-tab="room-list-area"><i class="comments icon" id="messenger-unread-indicator"></i>채팅방</li>
         </ul>
     </div>
     <button class="nav-bar"><i class="material-icons arrow">keyboard_arrow_left</i></button>
@@ -146,96 +146,8 @@
     </div>
 
     <%--TODO: 채팅방 리스트 + 채팅방을 Vue 컴포넌트로 분리 --%>
-    <div class="side-bar-content overflow-overlay" id="room-list-area">
-        <div class="room-list-area-inner">
-            <ul class="side-room-list-ul">
-                <li class="list">
-                    <div class="header">
-                        <div class="room-name">
-                            <text>제목입니다.</text>
-                        </div>
-                        <div class="last-message-time">09-27 12:39</div>
-                    </div>
-                    <div class="content">
-                        <div class="preview">내용입니다.</div>
-                        <div class="unread">
-                            <span class="number">9</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="list">
-                    <div class="header">
-                        <div class="room-name">
-                            <text>제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목제목</text>
-                        </div>
-                        <div class="last-message-time">09-27 12:39</div>
-                    </div>
-                    <div class="content">
-                        <div class="preview">내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용</div>
-                        <div class="unread">
-                            <span class="number">9</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="list active">
-                    <div class="header">
-                        <div class="room-name">
-                            <text>제목입니다.</text>
-                        </div>
-                        <div class="last-message-time">09-27 12:39</div>
-                    </div>
-                    <div class="content">
-                        <div class="preview">내용입니다.</div>
-                        <div class="unread">
-                            <span class="number">9</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="list">
-                    <div class="header">
-                        <div class="room-name">
-                            <text>제목입니다.</text>
-                        </div>
-                        <div class="last-message-time">09-27 12:39</div>
-                    </div>
-                    <div class="content">
-                        <div class="preview">내용입니다.</div>
-                        <div class="unread">
-                            <span class="number">9</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="list">
-                    <div class="header">
-                        <div class="room-name">
-                            <text>제목입니다.</text>
-                        </div>
-                        <div class="last-message-time">09-27 12:39</div>
-                    </div>
-                    <div class="content">
-                        <div class="preview">내용입니다.</div>
-                        <div class="unread">
-                            <span class="number">9</span>
-                        </div>
-                    </div>
-                </li>
-                <li class="list">
-                    <div class="header">
-                        <div class="room-name">
-                            <text>제목입니다.</text>
-                        </div>
-                        <div class="last-message-time">09-27 12:39</div>
-                    </div>
-                    <div class="content">
-                        <div class="preview">내용입니다.</div>
-                        <div class="unread">
-                            <span class="number">9</span>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
+<jsp:include page="/WEB-INF/jsp/messenger.jsp"/>
+
 </aside>
 
 <tags:scripts>
