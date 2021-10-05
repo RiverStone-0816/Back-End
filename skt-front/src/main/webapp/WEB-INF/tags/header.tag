@@ -98,13 +98,17 @@
             <c:if test="${hasExtension && isStat}">
                 <ul class="gnb-ul2 -counsel-panel">
                     <li><a href="#" data-type="COUNSEL" class="-counsel-menu">상담화면</a></li>
+                    <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                     <li><a href="#" data-type="NOTICE" class="-counsel-menu">공지사항</a></li>
                     <li><a href="#" data-type="KNOWLEDGE" class="-counsel-menu">지식관리</a></li>
+                    </c:if>
                     <li><a href="#" data-type="CALENDAR" class="-counsel-menu">일정관리</a></li>
                     <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                         <li><a href="javascript:popupBookmark()" class="-counsel-panel bookmark-btn">즐겨찾기</a></li>
                     </c:if>
+                    <c:if test="${usingServices.contains('PRV')}">
                     <li><a href="#" data-type="PREVIEW" class="-counsel-menu">프리뷰</a></li>
+                    </c:if>
                 </ul>
             </c:if>
         </div>

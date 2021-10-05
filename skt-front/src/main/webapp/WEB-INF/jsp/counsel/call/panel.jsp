@@ -84,15 +84,17 @@
             </table>
             <div class="call-bottom-area">
                 <div class="ui top attached tabular menu light flex">
-                    <button class="item active" data-tab="monitoring">모니터링</button>
-                    <button class="item" data-tab="statistics">통계</button>
+                    <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
+                    <button class="item" data-tab="monitoring">모니터링</button>
+                    </c:if>
+                    <button class="item active" data-tab="statistics">통계</button>
                 </div>
-                <div class="ui bottom attached tab segment active remove-padding remove-margin overflow-auto" data-tab="monitoring">
+                <div class="ui bottom attached tab segment remove-margin overflow-auto" data-tab="monitoring">
                     <div>
                         <jsp:include page="/counsel/call/consultant-status"/>
                     </div>
                 </div>
-                <div class="ui bottom attached tab segment remove-margin overflow-auto" data-tab="statistics">
+                <div class="ui bottom attached tab segment active remove-padding remove-margin overflow-auto" data-tab="statistics">
                     <div class="statistics-inner" id="my-call-time"></div>
                 </div>
             </div>
