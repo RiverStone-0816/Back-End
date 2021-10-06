@@ -187,6 +187,10 @@ ALTER TABLE `screen_config` ADD COLUMN `sliding_sec` INT(11) NULL COMMENT '전�
 
 * 2021-10-06 CUSTOMDB function fn_enc_string_text / fn_dec_string_text 추가
 ```
+ROOT 실행
+
+SET GLOBAL log_bin_trust_function_creators = OFF;
+
 DELIMITER $$
 CREATE FUNCTION fn_enc_string_text (
 stringText VARCHAR(500)
