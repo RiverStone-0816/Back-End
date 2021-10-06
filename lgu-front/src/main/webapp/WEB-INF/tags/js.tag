@@ -35,6 +35,8 @@
 <script src="<c:url value="/resources/vendors/flexslider/2.7.2/jquery.flexslider.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/tablesort/0.0.11/tablesort.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/multifile-master/jquery.MultiFile.js?version=${version}"/>" data-type="library"></script>
+<script src="<c:url value="/resources/vendors/spectrum/spectrum.min.js"/>" data-type="library"></script>
+
 <script src="<c:url value="/resources/vendors/maudio.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/Amsify-Suggestags/jquery.amsify.suggestags.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/tagify/1.3.1/tagify.min.js?version=${version}"/>" data-type="library"></script>

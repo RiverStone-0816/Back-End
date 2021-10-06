@@ -62,6 +62,7 @@
 <link href="<c:url value="/webjars/jquery-ui/1.12.1/jquery-ui.min.css"/>" rel="stylesheet"/>
 <link href="<c:url value="/webjars/toastr/2.1.2/build/toastr.css"/>" rel="stylesheet"/>
 <link href="<c:url value="/resources/vendors/tagify/1.3.1/tagify.css?version=${version}"/>" rel="stylesheet"/>
+<link href="<c:url value="/resources/vendors/spectrum/spectrum.min.css"/>" rel="stylesheet"/>
 
 <c:choose>
     <c:when test="${devel}">
