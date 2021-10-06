@@ -71,9 +71,6 @@
             </div>
         </div>
     </div>
-<c:if test="${serviceKind.equals('SC') && usingServices.contains('CHATT')}">
-    <jsp:include page="/messenger"/>
-</c:if>
 </header>
 
 <jsp:include page="/modal-update-password"/>

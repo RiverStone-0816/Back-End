@@ -145,8 +145,9 @@
         </div>
     </div>
 
-    <%--TODO: 채팅방 리스트 + 채팅방을 Vue 컴포넌트로 분리 --%>
-<jsp:include page="/WEB-INF/jsp/messenger.jsp"/>
+    <c:if test="${serviceKind.equals('SC') && usingServices.contains('CHATT')}">
+        <jsp:include page="/messenger"/>
+    </c:if>
 
 </aside>
 

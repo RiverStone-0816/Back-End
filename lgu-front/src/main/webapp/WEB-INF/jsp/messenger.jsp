@@ -33,11 +33,11 @@
     </div>
 </div>
 
-<div id="messenger-modal" class="ui modal large ui-resizable ui-draggable show-rooms show-room"
-     style="width: 500px; display: block; overflow-y: auto; position: absolute; left: 335px; top: 265px; max-height: none;">
-    <div class="chat-container" id="messenger-room">
-        <div class="room">
-            <div class="chat-header" :title="roomName">
+<div id="messenger-modal" v-if="showing" class="ui modal large ui-resizable ui-draggable show-rooms show-room"
+     style="width: 500px; display: block; position: absolute; left: 335px; top: 265px;">
+    <div class="chat-container" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
+        <div class="room" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
+            <div class="chat-header" data-act="draggable" :title="roomName">
                 <button type="button" class="ui mini compact icon button" @click="popupInvitationModal">
                     <i class="user plus icon"></i>
                 </button>
@@ -45,7 +45,7 @@
                 <i class="x icon" @click="hide" style="position: absolute; right: 10px; top: 13px;"></i>
             </div>
             <div class="chat-body os-host os-theme-dark os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition os-host-overflow os-host-overflow-y"
-                 style="height: calc(100% - 170px);">
+                 style="height: calc(100% - 170px); position: absolute; top: 41px; right: 0; left: 0; bottom: 105px;">
                 <div class="os-resize-observer-host">
                     <div class="os-resize-observer observed" style="left: 0; right: auto;"></div>
                 </div>
@@ -107,7 +107,7 @@
                 <div class="os-scrollbar-corner"></div>
             </div>
         </div>
-        <div class="write-chat">
+        <div class="write-chat" style="position: absolute; bottom: 0;">
             <div class="template-container" style="display: none;">
                 <div class="template-container-inner">
                     <ul class="template-ul">
@@ -146,7 +146,7 @@
             </div>
             <div class="wrap-inp">
                 <div class="inp-box">
-                    <textarea id="messenger-message" placeholder="전송하실 메시지를 입력하세요."></textarea>
+                    <textarea placeholder="전송하실 메시지를 입력하세요."></textarea>
                 </div>
                 <button type="button" class="send-btn" onclick="sendMessage()">전송</button>
             </div>
@@ -193,6 +193,8 @@
                 },
             }).mount('#room-list-area')
 
+            $('#messenger-modal').dragModalShow()
+
             const chatRoom = Vue.createApp({
                 setup: function () {
                     return {
@@ -201,7 +203,7 @@
                 },
                 data: function () {
                     return {
-                        showing: false,
+                        showing: true,
                         roomId: null,
                         roomName: '',
                         templates: [],
@@ -212,7 +214,7 @@
                 },
                 methods: {
                     hide: function () {
-                        $('#room-list-area').modalHide()
+                        this.showing = false
                     },
                     leave: function () {
                         // todo: leave
@@ -272,7 +274,6 @@
                 mounted: function () {
                 },
             }).mount('#messenger-modal')
-
 
             function receiveMessage(data) {
                 const roomId = data.room_id;

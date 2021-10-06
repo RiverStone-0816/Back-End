@@ -308,7 +308,7 @@ $.fn.dragModalShow = function (container) {
         }).draggable({
             iframeFix: true,
             containment: 'body',
-            handle: '[class="header"],[class="header ui-draggable-handle"]'
+            handle: '[class="header"],[class="header ui-draggable-handle"],[data-act=draggable]'
         });
     }, 100);
 
