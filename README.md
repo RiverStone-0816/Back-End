@@ -184,3 +184,26 @@ ALTER TABLE screen_config CHANGE expression_type expression_type ENUM('INTEGRATI
 ```
 ALTER TABLE `screen_config` ADD COLUMN `sliding_sec` INT(11) NULL COMMENT '전광판전환슬라이딩(초)' AFTER `company_id`;
 ```
+
+* 2021-10-06 CUSTOMDB function fn_enc_string_text / fn_dec_string_text 추가
+```
+DELIMITER $$
+CREATE FUNCTION fn_enc_string_text (
+stringText VARCHAR(500)
+,secretKey VARCHAR(50)
+) RETURNS VARCHAR(500)
+BEGIN
+	RETURN hex(aes_encrypt(stringText,secretKey));
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE FUNCTION fn_dec_string_text (
+stringText VARCHAR(500)
+,secretKey VARCHAR(50)
+) RETURNS VARCHAR(500)
+BEGIN
+	RETURN aes_decrypt(unhex(stringText),secretKey);
+END $$
+DELIMITER ;
+```
