@@ -60,7 +60,8 @@
                         <tbody>
                         <c:forEach var="field" items="${fields}" varStatus="fieldStatus">
                             <c:if test="${fn:contains(g.htmlQuote(fieldIdToNames.get(field.id)),'문자열')}">
-                                <c:if test="${g.htmlQuote(fieldIdToNames.get(field.id)).length()==5 || g.htmlQuote(fieldIdToNames.get(field.id))=='문자열_10' }">
+                                <c:set var="array1">_1, _2, _3, _4, _5, _16, _17, _18, _19, _20</c:set>
+                                <c:if test="${array1.indexOf(g.htmlQuote(fieldIdToNames.get(field.id)).replace('문자열','')) > -1}">
                                     <tr>
                                         <td>
                                             <input type="hidden" name="field[${fieldStatus.index}].id"
@@ -80,7 +81,10 @@
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
-                                        <td>${g.htmlQuote(fieldIdToNames.get(field.id))}</td>
+                                        <td>
+                                                ${g.htmlQuote(fieldIdToNames.get(field.id))}
+                                                ${g.htmlQuote(fieldIdToNames.get(field.id)).replace('문자열_','') > 15 ? '(암호화)' : ''}
+                                        </td>
                                         <td>
                                             <div class="ui input fluid">
                                                 <input type="text" name="field[${fieldStatus.index}].fieldName"
@@ -175,7 +179,10 @@
                                         </c:otherwise>
                                     </c:choose>
                                 </td>
-                                <td>${g.htmlQuote(fieldIdToNames.get(field.id))}</td>
+                                <td>
+                                        ${g.htmlQuote(fieldIdToNames.get(field.id))}
+                                        ${g.htmlQuote(fieldIdToNames.get(field.id)).contains('문자열') ? g.htmlQuote(fieldIdToNames.get(field.id)).replace('문자열_','') > 15 ? '(암호화)' : '' : ''}
+                                </td>
                                 <td>
                                     <div class="ui input fluid">
                                         <input type="text" name="field[${fieldStatus.index}].fieldName"
