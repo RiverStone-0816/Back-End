@@ -189,7 +189,7 @@ ALTER TABLE `screen_config` ADD COLUMN `sliding_sec` INT(11) NULL COMMENT '전�
 ```
 ROOT 실행
 
-SET GLOBAL log_bin_trust_function_creators = OFF;
+SET GLOBAL log_bin_trust_function_creators = ON;
 
 DELIMITER $$
 CREATE FUNCTION fn_enc_string_text (
