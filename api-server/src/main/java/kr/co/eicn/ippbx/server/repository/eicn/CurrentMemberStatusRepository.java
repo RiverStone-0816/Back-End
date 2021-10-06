@@ -37,13 +37,12 @@ public class CurrentMemberStatusRepository extends EicnBaseRepository<CurrentMem
         DashCurrentResultCallResponse response = getCurrentResult(dsl);
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = getPbxServerInterface().using(e.getServer().getIp())) {
-                        DashCurrentResultCallResponse res = getCurrentResult(pbxDsl);
+                    DSLContext pbxDsl = getPbxServerInterface().using(e.getServer().getIp());
+                    DashCurrentResultCallResponse res = getCurrentResult(pbxDsl);
 
-                        response.setInCallingCount(response.getInCallingCount() + res.getInCallingCount());
-                        response.setOutCallingCount(response.getOutCallingCount() + res.getOutCallingCount());
+                    response.setInCallingCount(response.getInCallingCount() + res.getInCallingCount());
+                    response.setOutCallingCount(response.getOutCallingCount() + res.getOutCallingCount());
 
-                    }
                 });
 
         return response;
@@ -66,11 +65,10 @@ public class CurrentMemberStatusRepository extends EicnBaseRepository<CurrentMem
         if (response != null) {
             cacheService.pbxServerList(getCompanyId())
                     .forEach(e -> {
-                        try (DSLContext pbxDsl = getPbxServerInterface().using(e.getHost())) {
-                            MonitorQueuePersonStatResponse res = getCurrentStatus(pbxDsl, userId);
+                        DSLContext pbxDsl = getPbxServerInterface().using(e.getHost());
+                        MonitorQueuePersonStatResponse res = getCurrentStatus(pbxDsl, userId);
 
-                            response.setInOut(res.getInOut() == null ? "N" : res.getInOut());
-                        }
+                        response.setInOut(res.getInOut() == null ? "N" : res.getInOut());
                     });
         }
 
@@ -81,11 +79,10 @@ public class CurrentMemberStatusRepository extends EicnBaseRepository<CurrentMem
         CenterMemberStatusCountEntity entity = getCenterStatusCount(dsl);
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        CenterMemberStatusCountEntity pbxEntity = getCenterStatusCount(pbxDsl);
-                        entity.setInCallingCount(pbxEntity.getInCallingCount());
-                        entity.setOutCallingCount(pbxEntity.getOutCallingCount());
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    CenterMemberStatusCountEntity pbxEntity = getCenterStatusCount(pbxDsl);
+                    entity.setInCallingCount(pbxEntity.getInCallingCount());
+                    entity.setOutCallingCount(pbxEntity.getOutCallingCount());
                 });
 
         return entity;

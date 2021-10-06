@@ -85,9 +85,8 @@ public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.
 				pbxRecord.changed(true);
 
 				cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-							try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-								insert(pbxDsl, pbxRecord);
-							}
+							DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+							insert(pbxDsl, pbxRecord);
 						});
 			}
 		}
@@ -126,9 +125,8 @@ public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.
 					pbxRecord.changed(true);
 
 					cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-						try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-							insert(pbxDsl, pbxRecord);
-						}
+						DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+						insert(pbxDsl, pbxRecord);
 					});
 				}
 			}
@@ -162,9 +160,8 @@ public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.
 		updateByKey(record, key);
 
 		cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-			try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-				updateByKey(pbxDsl, record, key);
-			}
+			DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+			updateByKey(pbxDsl, record, key);
 		});
 	}
 
@@ -187,18 +184,16 @@ public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.
 		update(dsl, record, SCHEDULE_INFO.SEQ.eq(key));
 
 		cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-			try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-				update(pbxDsl, record, SCHEDULE_INFO.SEQ.eq(key));
-			}
+			DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+			update(pbxDsl, record, SCHEDULE_INFO.SEQ.eq(key));
 		});
 	}
 
 	public void deleteAllPBXServer(Integer seq) {
 		delete(seq);
 		cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-			try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-				delete(pbxDsl, seq);
-			}
+			DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+			delete(pbxDsl, seq);
 		});
 	}
 
@@ -208,9 +203,8 @@ public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.
 		delete(SCHEDULE_INFO.NUMBER.eq(number).and(SCHEDULE_INFO.TYPE.eq(type.getCode())));
 
 		cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						delete(pbxDsl, SCHEDULE_INFO.NUMBER.eq(number).and(SCHEDULE_INFO.TYPE.eq(type.getCode())));
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					delete(pbxDsl, SCHEDULE_INFO.NUMBER.eq(number).and(SCHEDULE_INFO.TYPE.eq(type.getCode())));
 				});
 	}
 

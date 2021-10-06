@@ -29,17 +29,16 @@ public class EicnMonitDataRepository extends EicnBaseRepository<EicnMonitData, k
 		//		DashCurrentResultCallResponse response = new DashCurrentResultCallResponse();
 //		cacheService.pbxServerList(getCompanyId())
 //				.forEach(e -> {
-//					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-//						DashCurrentResultCallResponse res = pbxDsl.select(DSL.count(DSL.when(CURRENT_MEMBER_STATUS.IN_OUT.eq("I"), 1)).as("in_calling_cnt"))
-//								.select(DSL.count(DSL.when(CURRENT_MEMBER_STATUS.IN_OUT.eq("O"), 1)).as("out_calling_cnt"))
-//								.from(CURRENT_MEMBER_STATUS)
-//								.where(compareCompanyId())
-//								.and(CURRENT_MEMBER_STATUS.STATUS.eq(CURRENT_MEMBER_STATUS.NEXT_STATUS))
-//								.and(CURRENT_MEMBER_STATUS.STATUS.eq("1"))
-//								.fetchOneInto(DashCurrentResultCallResponse.class);
-//						response.setOutCallingCnt(response.getOutCallingCnt() + res.getOutCallingCnt());
-//						response.setInCallingCnt(response.getInCallingCnt() + res.getInCallingCnt());
-//					}
+//					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+//					DashCurrentResultCallResponse res = pbxDsl.select(DSL.count(DSL.when(CURRENT_MEMBER_STATUS.IN_OUT.eq("I"), 1)).as("in_calling_cnt"))
+//							.select(DSL.count(DSL.when(CURRENT_MEMBER_STATUS.IN_OUT.eq("O"), 1)).as("out_calling_cnt"))
+//							.from(CURRENT_MEMBER_STATUS)
+//							.where(compareCompanyId())
+//							.and(CURRENT_MEMBER_STATUS.STATUS.eq(CURRENT_MEMBER_STATUS.NEXT_STATUS))
+//							.and(CURRENT_MEMBER_STATUS.STATUS.eq("1"))
+//							.fetchOneInto(DashCurrentResultCallResponse.class);
+//					response.setOutCallingCnt(response.getOutCallingCnt() + res.getOutCallingCnt());
+//					response.setInCallingCnt(response.getInCallingCnt() + res.getInCallingCnt());
 //				});
 
 		return dsl.select(EICN_MONIT_DATA.DATA)

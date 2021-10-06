@@ -123,9 +123,8 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
 
         deleteWithInsertPhone(dsl, insertRecord);
         pbxServerList.forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                deleteWithInsertPhone(pbxDsl, insertRecord);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            deleteWithInsertPhone(pbxDsl, insertRecord);
         });
 
         final SipBuddiesRecord sipBuddiesRecord = new SipBuddiesRecord();
@@ -139,9 +138,8 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
 
         deleteAndInsertBuddies(dsl, sipBuddiesRecord);
         pbxServerList.forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                deleteAndInsertBuddies(pbxDsl, sipBuddiesRecord);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            deleteAndInsertBuddies(pbxDsl, sipBuddiesRecord);
         });
 
         // 개인큐를 위한 큐설정
@@ -271,13 +269,12 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         deleteWithInsertPhone(dsl, insertRecord);
 
         pbxServerList.forEach(entity -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(entity.getHost())) {
-                pbxDsl.deleteFrom(PHONE_INFO)
-                        .where(compareCompanyId())
-                        .and(PHONE_INFO.PEER.eq(old.getPeer()))
-                        .execute();
-                deleteWithInsertPhone(pbxDsl, insertRecord);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(entity.getHost());
+            pbxDsl.deleteFrom(PHONE_INFO)
+                    .where(compareCompanyId())
+                    .and(PHONE_INFO.PEER.eq(old.getPeer()))
+                    .execute();
+            deleteWithInsertPhone(pbxDsl, insertRecord);
         });
 
         SipBuddies sipBuddies = null;
@@ -293,13 +290,12 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
                     .filter(e -> e.getHost().equals(number.getHost()))
                     .findAny();
             if (byPbxHost.isPresent()) {
-                try (DSLContext pbxDsl = pbxServerInterface.using(number.getHost())) {
-                    sipBuddies = pbxDsl.select(SIP_BUDDIES.fields())
-                            .from(SIP_BUDDIES)
-                            .where(DSL.trueCondition())
-                            .and(SIP_BUDDIES.NAME.eq(form.getPeer()))
-                            .fetchOneInto(SipBuddies.class);
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(number.getHost());
+                sipBuddies = pbxDsl.select(SIP_BUDDIES.fields())
+                        .from(SIP_BUDDIES)
+                        .where(DSL.trueCondition())
+                        .and(SIP_BUDDIES.NAME.eq(form.getPeer()))
+                        .fetchOneInto(SipBuddies.class);
             }
         }
         if (sipBuddies != null) {
@@ -311,10 +307,9 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
             processService.execute(ShellCommand.PICKUP_UPDATE, form.getPeer(), " &");
 
             for (CompanyServerEntity entity : pbxServerList) {
-                try (DSLContext pbxDsl = pbxServerInterface.using(entity.getHost())) {
-                    updateSipBuddies(form, sipBuddies, pbxDsl);
-                    IpccUrlConnection.execute("http://" + entity.getServer().getIp() + "/ipcc/multichannel/remote/pickup_update.jsp", form.getPeer());
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(entity.getHost());
+                updateSipBuddies(form, sipBuddies, pbxDsl);
+                IpccUrlConnection.execute("http://" + entity.getServer().getIp() + "/ipcc/multichannel/remote/pickup_update.jsp", form.getPeer());
             }
         } else {
             // sip_buddies 저장
@@ -332,9 +327,8 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
             deleteAndInsertBuddies(dsl, sipBuddiesRecord);
 
             pbxServerList.forEach(e -> {
-                try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                    deleteAndInsertBuddies(pbxDsl, sipBuddiesRecord);
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                deleteAndInsertBuddies(pbxDsl, sipBuddiesRecord);
             });
         }
         // peer가 변경되었다면 큐 정보 삭제
@@ -344,12 +338,11 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
                     .and(QUEUE_MEMBER_TABLE.MEMBERNAME.eq(old.getPeer()))
                     .execute();
             pbxServerList.forEach(entity -> {
-                try (DSLContext pbxDsl = pbxServerInterface.using(entity.getHost())) {
-                    pbxDsl.deleteFrom(QUEUE_MEMBER_TABLE)
-                            .where(QUEUE_MEMBER_TABLE.COMPANY_ID.eq(getCompanyId()))
-                            .and(QUEUE_MEMBER_TABLE.MEMBERNAME.eq(old.getPeer()))
-                            .execute();
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(entity.getHost());
+                pbxDsl.deleteFrom(QUEUE_MEMBER_TABLE)
+                        .where(QUEUE_MEMBER_TABLE.COMPANY_ID.eq(getCompanyId()))
+                        .and(QUEUE_MEMBER_TABLE.MEMBERNAME.eq(old.getPeer()))
+                        .execute();
             });
         }
 
@@ -359,9 +352,8 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
                 .filter(e -> e.getHost().equals(number.getHost()))
                 .findAny();
         if (byPbxHost.isPresent()) {
-            try (DSLContext pbxDsl = pbxServerInterface.using(byPbxHost.get().getHost())) {
-                queueMemberTableMap = queueMemberTableRepository.findByMemberName(pbxDsl, form.getPeer());
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(byPbxHost.get().getHost());
+            queueMemberTableMap = queueMemberTableRepository.findByMemberName(pbxDsl, form.getPeer());
         } else {
             queueMemberTableMap = queueMemberTableRepository.findByMemberName(dsl, form.getPeer());
         }
@@ -415,23 +407,22 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         pbxServerList.stream()
                 .filter(e -> e.getHost().equals(number.getHost()))
                 .forEach(e -> {
-                    try (DSLContext pbxContext = pbxServerInterface.using(number.getHost())) {
-                        int result = pbxContext.selectFrom(QUEUE_TABLE)
-                                .where(compareCompanyId(QUEUE_TABLE))
-                                .and(QUEUE_TABLE.NAME.eq(old.getPeer()))
-                                .execute();
-                        if (result == 1) {
-                            queueTableRepository.deleteQueueTable(pbxContext, old.getPeer());
-                            queueTableRepository.deleteQueueTable(pbxContext, form.getPeer());
-                        }
-                        int queueResult = pbxContext.selectFrom(QUEUE_TABLE)
-                                .where(compareCompanyId(QUEUE_TABLE))
-                                .and(QUEUE_TABLE.NAME.eq("QUEUE".concat(old.getPeer())))
-                                .execute();
-                        if (queueResult == 1) {
-                            queueTableRepository.deleteQueueTable(pbxContext, "QUEUE".concat(old.getPeer()));
-                            queueTableRepository.deleteQueueTable(pbxContext, "QUEUE".concat(form.getPeer()));
-                        }
+                    DSLContext pbxContext = pbxServerInterface.using(number.getHost());
+                    int result = pbxContext.selectFrom(QUEUE_TABLE)
+                            .where(compareCompanyId(QUEUE_TABLE))
+                            .and(QUEUE_TABLE.NAME.eq(old.getPeer()))
+                            .execute();
+                    if (result == 1) {
+                        queueTableRepository.deleteQueueTable(pbxContext, old.getPeer());
+                        queueTableRepository.deleteQueueTable(pbxContext, form.getPeer());
+                    }
+                    int queueResult = pbxContext.selectFrom(QUEUE_TABLE)
+                            .where(compareCompanyId(QUEUE_TABLE))
+                            .and(QUEUE_TABLE.NAME.eq("QUEUE".concat(old.getPeer())))
+                            .execute();
+                    if (queueResult == 1) {
+                        queueTableRepository.deleteQueueTable(pbxContext, "QUEUE".concat(old.getPeer()));
+                        queueTableRepository.deleteQueueTable(pbxContext, "QUEUE".concat(form.getPeer()));
                     }
                 });
 
@@ -573,9 +564,8 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
             user.setPeer("");
             personListRepository.updateByKey(user, user.getId());
             pbxServerList.forEach(e -> {
-                try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                    personListRepository.updateByKey(pbxDsl, user, user.getId());
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                personListRepository.updateByKey(pbxDsl, user, user.getId());
             });
         });
 
@@ -593,9 +583,8 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        super.delete(pbxDsl, key);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    super.delete(pbxDsl, key);
                 });
 
         return r;

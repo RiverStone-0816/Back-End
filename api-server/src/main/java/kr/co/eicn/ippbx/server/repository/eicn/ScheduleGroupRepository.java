@@ -109,9 +109,8 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        this.insert(pbxDsl, record);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    this.insert(pbxDsl, record);
                 });
     }
 
@@ -148,10 +147,9 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
 
             cacheService.pbxServerList(getCompanyId())
                     .forEach(e -> {
-                        try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                            for (ScheduleGroupList scheduleGroupList : scheduleGroupLists) {
-                                insertItem(pbxDsl, scheduleGroupList, targetParent);
-                            }
+                        DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                        for (ScheduleGroupList scheduleGroupList : scheduleGroupLists) {
+                            insertItem(pbxDsl, scheduleGroupList, targetParent);
                         }
                     });
         }
@@ -187,9 +185,8 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        this.deleteAllPBXServer(pbxDsl, parent);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    this.deleteAllPBXServer(pbxDsl, parent);
                 });
     }
 

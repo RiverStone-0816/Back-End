@@ -43,9 +43,8 @@ public class RecordEncFileRepository extends EicnBaseRepository<RecordEncFile, k
 		final List<CompanyServerEntity> pbxServerList = cacheService.pbxServerList(getCompanyId());
 
 		pbxServerList.forEach(e -> {
-			try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-				ReflectionUtils.copy(encFileEntity, findOneByRecordFile(pbxDsl, recordFile));
-			}
+			DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+			ReflectionUtils.copy(encFileEntity, findOneByRecordFile(pbxDsl, recordFile));
 		});
 		return encFileEntity;
 	}

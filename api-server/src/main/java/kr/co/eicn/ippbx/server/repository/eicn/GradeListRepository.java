@@ -73,9 +73,8 @@ public class GradeListRepository extends EicnBaseRepository<GradeList, GradeList
         record.setCompanyId(getCompanyId());
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                super.insert(pbxDsl, record);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            super.insert(pbxDsl, record);
         });
 
         return super.insertOnGeneratedKey(record);
@@ -94,9 +93,8 @@ public class GradeListRepository extends EicnBaseRepository<GradeList, GradeList
         super.updateByKey(record, seq);
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                super.updateByKey(pbxDsl, record, seq);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            super.updateByKey(pbxDsl, record, seq);
         });
     }
 
@@ -104,9 +102,8 @@ public class GradeListRepository extends EicnBaseRepository<GradeList, GradeList
         int delete = super.deleteOnIfNullThrow(seq);
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                super.delete(pbxDsl, seq);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            super.delete(pbxDsl, seq);
         });
 
         return delete;

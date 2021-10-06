@@ -68,9 +68,8 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        super.insert(pbxDsl, record);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    super.insert(pbxDsl, record);
                 });
     }
 
@@ -87,9 +86,8 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        super.delete(pbxDsl, key);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    super.delete(pbxDsl, key);
                 });
 
         return r;
@@ -184,6 +182,7 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> findAllByChatting(ChattingMemberSearchRequest search) {
         return dsl.selectFrom(PERSON_LIST)
                 .where(PERSON_LIST.ID_STATUS.notEqual(IdStatus.RETIRE.getCode()))
+                .and(PERSON_LIST.COMPANY_ID.eq(getCompanyId()))
                 .and(PERSON_LIST.IS_CHATT.eq(ChattingJoinStatus.ACTIVE.getCode()))
                 .and(StringUtils.isNotEmpty(search.getUserName()) ?
                         PERSON_LIST.ID_NAME.like("%" + search.getUserName() + "%").or(PERSON_LIST.ID.like("%" + search.getUserName() + "%")) : noCondition())

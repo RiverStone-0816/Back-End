@@ -77,9 +77,8 @@ public class PhoneInfoRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
 
         updatePage(dsl, form);
         pbxServerList.forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                updatePage(pbxDsl, form);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            updatePage(pbxDsl, form);
         });
     }
 
@@ -110,9 +109,8 @@ public class PhoneInfoRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         List<CompanyServerEntity> pbxServerList = cacheService.pbxServerList(getCompanyId());
         updateCid(dsl, form);
         pbxServerList.forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                updateCid(pbxDsl, form);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            updateCid(pbxDsl, form);
         });
     }
 
@@ -130,9 +128,8 @@ public class PhoneInfoRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         List<CompanyServerEntity> pbxServerList = cacheService.pbxServerList(getCompanyId());
         Map<String, String> phoneInfoMap = new HashMap<>();
         pbxServerList.forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                phoneInfoMap.putAll(getPhoneInfoMap(pbxDsl));
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            phoneInfoMap.putAll(getPhoneInfoMap(pbxDsl));
         });
         return phoneInfoMap;
     }

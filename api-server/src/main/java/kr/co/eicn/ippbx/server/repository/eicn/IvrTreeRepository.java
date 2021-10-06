@@ -213,12 +213,11 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
                     .execute();
 
             cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-                try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                    pbxDsl.update(IVR_TREE)
-                            .set(IVR_TREE.TYPE_DATA, String.valueOf(code))
-                            .where(IVR_TREE.SEQ.eq(pbxDsl.select(IVR_TREE.SEQ).from(IVR_TREE).where(compareCompanyId()).and(IVR_TREE.TREE_NAME.eq(parentNode.getTreeName()))))
-                            .execute();
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                pbxDsl.update(IVR_TREE)
+                        .set(IVR_TREE.TYPE_DATA, String.valueOf(code))
+                        .where(IVR_TREE.SEQ.eq(pbxDsl.select(IVR_TREE.SEQ).from(IVR_TREE).where(compareCompanyId()).and(IVR_TREE.TREE_NAME.eq(parentNode.getTreeName()))))
+                        .execute();
             });
         }
 
@@ -247,11 +246,10 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
         record.setSeq(seq);
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                pbxDsl.insertInto(IVR_TREE)
-                        .set(record)
-                        .execute();
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            pbxDsl.insertInto(IVR_TREE)
+                    .set(record)
+                    .execute();
         });
 
         if (form.getButtons() != null) {
@@ -270,19 +268,18 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
                         .fetchOne().value1();
 
                 cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        pbxDsl.insertInto(IVR_TREE)
-                                .set(IVR_TREE.SEQ, buttonSeq)
-                                .set(IVR_TREE.CODE, code)
-                                .set(IVR_TREE.ROOT, record.getRoot())
-                                .set(IVR_TREE.PARENT, record.getCode())
-                                .set(IVR_TREE.NAME, button.getName())
-                                .set(IVR_TREE.TREE_NAME, record.getTreeName().concat("_").concat(decimalFormat.format(Objects.requireNonNull(Button.of(button.getButton())).getIntValue())))
-                                .set(IVR_TREE.LEVEL, record.getLevel())
-                                .set(IVR_TREE.BUTTON, button.getButton())
-                                .set(IVR_TREE.COMPANY_ID, getCompanyId())
-                                .execute();
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    pbxDsl.insertInto(IVR_TREE)
+                            .set(IVR_TREE.SEQ, buttonSeq)
+                            .set(IVR_TREE.CODE, code)
+                            .set(IVR_TREE.ROOT, record.getRoot())
+                            .set(IVR_TREE.PARENT, record.getCode())
+                            .set(IVR_TREE.NAME, button.getName())
+                            .set(IVR_TREE.TREE_NAME, record.getTreeName().concat("_").concat(decimalFormat.format(Objects.requireNonNull(Button.of(button.getButton())).getIntValue())))
+                            .set(IVR_TREE.LEVEL, record.getLevel())
+                            .set(IVR_TREE.BUTTON, button.getButton())
+                            .set(IVR_TREE.COMPANY_ID, getCompanyId())
+                            .execute();
                 });
             }
         }
@@ -305,9 +302,8 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(server -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(server.getHost())) {
-                        updateOrInsert(pbxDsl, form, entity);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
+                    updateOrInsert(pbxDsl, form, entity);
                 });
 
         webSecureHistoryRepository.insert(WebSecureActionType.IVR, WebSecureActionSubType.MOD, form.getName());
@@ -405,23 +401,21 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
                         .execute();
 
                 cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        pbxDsl.update(IVR_TREE)
-                                .set(IVR_TREE.TYPE_DATA, "")
-                                .where(IVR_TREE.COMPANY_ID.eq(getCompanyId()))
-                                .and(IVR_TREE.TYPE_DATA.eq(String.valueOf(entity.getCode())))
-                                .execute();
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    pbxDsl.update(IVR_TREE)
+                            .set(IVR_TREE.TYPE_DATA, "")
+                            .where(IVR_TREE.COMPANY_ID.eq(getCompanyId()))
+                            .and(IVR_TREE.TYPE_DATA.eq(String.valueOf(entity.getCode())))
+                            .execute();
                 });
             }
 
             cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-                try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                    pbxDsl.deleteFrom(IVR_TREE)
-                            .where(IVR_TREE.TREE_NAME.like(entity.getTreeName() + "%"))
-                            .and(compareCompanyId())
-                            .execute();
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                pbxDsl.deleteFrom(IVR_TREE)
+                        .where(IVR_TREE.TREE_NAME.like(entity.getTreeName() + "%"))
+                        .and(compareCompanyId())
+                        .execute();
             });
         } else {
             dsl.update(IVR_TREE)
@@ -434,18 +428,17 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
                     .execute();
 
             cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-                try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                    pbxDsl.update(IVR_TREE)
-                            .set(IVR_TREE.TYPE, (byte) 0)
-                            .setNull(IVR_TREE.TYPE_DATA)
-                            .setNull(IVR_TREE.TTS_DATA)
-                            .set(IVR_TREE.SOUND_CODE, EMPTY)
-                            .set(IVR_TREE.INTRO_SOUND_CODE, EMPTY)
-                            .where(IVR_TREE.TREE_NAME.eq(entity.getTreeName()))
-                            .and(IVR_TREE.BUTTON.eq(entity.getButton()))
-                            .and(IVR_TREE.COMPANY_ID.eq(getCompanyId()))
-                            .execute();
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                pbxDsl.update(IVR_TREE)
+                        .set(IVR_TREE.TYPE, (byte) 0)
+                        .setNull(IVR_TREE.TYPE_DATA)
+                        .setNull(IVR_TREE.TTS_DATA)
+                        .set(IVR_TREE.SOUND_CODE, EMPTY)
+                        .set(IVR_TREE.INTRO_SOUND_CODE, EMPTY)
+                        .where(IVR_TREE.TREE_NAME.eq(entity.getTreeName()))
+                        .and(IVR_TREE.BUTTON.eq(entity.getButton()))
+                        .and(IVR_TREE.COMPANY_ID.eq(getCompanyId()))
+                        .execute();
             });
         }
 
@@ -468,18 +461,17 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
                     .execute();
 
             cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-                try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                    pbxDsl.update(IVR_TREE)
-                            .set(IVR_TREE.TYPE, (byte) 0)
-                            .setNull(IVR_TREE.TYPE_DATA)
-                            .setNull(IVR_TREE.TTS_DATA)
-                            .set(IVR_TREE.SOUND_CODE, EMPTY)
-                            .set(IVR_TREE.INTRO_SOUND_CODE, EMPTY)
-                            .where(IVR_TREE.TREE_NAME.eq(parentTree.getTreeName()))
-                            .and(IVR_TREE.BUTTON.eq(parentTree.getButton()))
-                            .and(IVR_TREE.COMPANY_ID.eq(getCompanyId()))
-                            .execute();
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                pbxDsl.update(IVR_TREE)
+                        .set(IVR_TREE.TYPE, (byte) 0)
+                        .setNull(IVR_TREE.TYPE_DATA)
+                        .setNull(IVR_TREE.TTS_DATA)
+                        .set(IVR_TREE.SOUND_CODE, EMPTY)
+                        .set(IVR_TREE.INTRO_SOUND_CODE, EMPTY)
+                        .where(IVR_TREE.TREE_NAME.eq(parentTree.getTreeName()))
+                        .and(IVR_TREE.BUTTON.eq(parentTree.getButton()))
+                        .and(IVR_TREE.COMPANY_ID.eq(getCompanyId()))
+                        .execute();
             });
         }
         if (StringUtils.isEmpty(entity.getButton()))
@@ -522,13 +514,12 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
                 .execute();
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                pbxDsl.deleteFrom(IVR_TREE)
-                        .where(compareCompanyId())
-                        .and(IVR_TREE.TREE_NAME.like(target.getTreeName() + "%"))
-                        .and(IVR_TREE.TREE_NAME.ne(target.getTreeName()))
-                        .execute();
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            pbxDsl.deleteFrom(IVR_TREE)
+                    .where(compareCompanyId())
+                    .and(IVR_TREE.TREE_NAME.like(target.getTreeName() + "%"))
+                    .and(IVR_TREE.TREE_NAME.ne(target.getTreeName()))
+                    .execute();
         });
 
 
@@ -575,26 +566,25 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
             final List<CompanyServerEntity> companyServerEntities = cacheService.pbxServerList(getCompanyId());
 
             for (CompanyServerEntity e : companyServerEntities) {
-                try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                    pbxDsl.insertInto(IVR_TREE)
-                            .set(IVR_TREE.CODE, code)
-                            .set(IVR_TREE.ROOT, parentNode.getRoot())
-                            .set(IVR_TREE.PARENT, parentNode.getCode())
-                            .set(IVR_TREE.LEVEL, node.getLevel())
-                            .set(IVR_TREE.TREE_NAME, treeName)
-                            .set(IVR_TREE.NAME, node.getName())
-                            .set(IVR_TREE.BUTTON, node.getButton())
-                            .set(IVR_TREE.TYPE, node.getType())
-                            .set(IVR_TREE.TYPE_DATA, node.getTypeData())
-                            .set(IVR_TREE.INTRO_SOUND_CODE, node.getIntroSoundCode())
-                            .set(IVR_TREE.SOUND_CODE, node.getSoundCode())
-                            .set(IVR_TREE.TTS_DATA, node.getTtsData())
-                            .set(IVR_TREE.IS_WEB_VOICE, node.getIsWebVoice())
-                            .set(IVR_TREE.POS_X, node.getPosX())
-                            .set(IVR_TREE.POS_Y, node.getPosY())
-                            .set(IVR_TREE.COMPANY_ID, getCompanyId())
-                            .execute();
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                pbxDsl.insertInto(IVR_TREE)
+                        .set(IVR_TREE.CODE, code)
+                        .set(IVR_TREE.ROOT, parentNode.getRoot())
+                        .set(IVR_TREE.PARENT, parentNode.getCode())
+                        .set(IVR_TREE.LEVEL, node.getLevel())
+                        .set(IVR_TREE.TREE_NAME, treeName)
+                        .set(IVR_TREE.NAME, node.getName())
+                        .set(IVR_TREE.BUTTON, node.getButton())
+                        .set(IVR_TREE.TYPE, node.getType())
+                        .set(IVR_TREE.TYPE_DATA, node.getTypeData())
+                        .set(IVR_TREE.INTRO_SOUND_CODE, node.getIntroSoundCode())
+                        .set(IVR_TREE.SOUND_CODE, node.getSoundCode())
+                        .set(IVR_TREE.TTS_DATA, node.getTtsData())
+                        .set(IVR_TREE.IS_WEB_VOICE, node.getIsWebVoice())
+                        .set(IVR_TREE.POS_X, node.getPosX())
+                        .set(IVR_TREE.POS_Y, node.getPosY())
+                        .set(IVR_TREE.COMPANY_ID, getCompanyId())
+                        .execute();
             }
 
             if (!node.isLeaf())

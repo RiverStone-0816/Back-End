@@ -131,9 +131,8 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        this.insert(pbxDsl, record);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    this.insert(pbxDsl, record);
                 });
 
         webSecureHistoryRepository.insert(WebSecureActionType.PDS_IVR, WebSecureActionSubType.ADD, form.getName());
@@ -158,9 +157,8 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(server -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(server.getHost())) {
-                        updateOrInsertByDslContext(pbxDsl, form, entity, record, code);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
+                    updateOrInsertByDslContext(pbxDsl, form, entity, record, code);
                 });
 
         webSecureHistoryRepository.insert(WebSecureActionType.PDS_IVR, WebSecureActionSubType.MOD, form.getName());
@@ -286,12 +284,11 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        pbxDsl.deleteFrom(PDS_IVR)
-                                .where(PDS_IVR.CODE.eq(code))
-                                .and(compareCompanyId())
-                                .execute();
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    pbxDsl.deleteFrom(PDS_IVR)
+                            .where(PDS_IVR.CODE.eq(code))
+                            .and(compareCompanyId())
+                            .execute();
                 });
 
         final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsIvr> optionalPdsIvr = findAll(PDS_IVR.CODE.eq(entity.getParent()).and(PDS_IVR.TYPE.eq((byte) 5)), Collections.singletonList(PDS_IVR.TREE_NAME.desc()))
@@ -308,11 +305,10 @@ public class PDSIvrRepository extends EicnBaseRepository<PdsIvr, kr.co.eicn.ippb
 
             cacheService.pbxServerList(getCompanyId())
                     .forEach(e -> {
-                        try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                            pbxDsl.deleteFrom(PDS_IVR)
-                                    .where(PDS_IVR.SEQ.eq(parent.getSeq()))
-                                    .execute();
-                        }
+                        DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                        pbxDsl.deleteFrom(PDS_IVR)
+                                .where(PDS_IVR.SEQ.eq(parent.getSeq()))
+                                .execute();
                     });
         }
 

@@ -187,9 +187,8 @@ public class OrganizationService extends ApiBaseService {
 
         personListRepository.partOrganizationCodeInitialize(childNode);
         pbxServerList.forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                personListRepository.partOrganizationCodeInitialize(pbxDsl, childNode);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            personListRepository.partOrganizationCodeInitialize(pbxDsl, childNode);
         });
     }
 

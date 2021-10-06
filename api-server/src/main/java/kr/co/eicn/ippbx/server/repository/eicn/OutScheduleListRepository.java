@@ -86,9 +86,8 @@ public class OutScheduleListRepository extends EicnBaseRepository<OutScheduleLis
 
 		cacheService.pbxServerList(getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						outScheduleSeedRepository.insertOnGeneratedKey(pbxDsl, seedRecord);
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					outScheduleSeedRepository.insertOnGeneratedKey(pbxDsl, seedRecord);
 				});
 
 		final OutScheduleListRecord record = new OutScheduleListRecord();
@@ -118,9 +117,8 @@ public class OutScheduleListRepository extends EicnBaseRepository<OutScheduleLis
 				this.insertOnGeneratedKey(record);
 
 				cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						this.insert(pbxDsl, record);
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					this.insert(pbxDsl, record);
 				});
 			}
 		}

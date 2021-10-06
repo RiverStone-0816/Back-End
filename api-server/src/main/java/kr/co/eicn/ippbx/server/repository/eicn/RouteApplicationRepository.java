@@ -113,9 +113,8 @@ public class RouteApplicationRepository extends EicnBaseRepository<RouteApplicat
         updateByKey(routeApplication, seq);
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                super.updateByKey(pbxDsl, routeApplication, seq);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            super.updateByKey(pbxDsl, routeApplication, seq);
         });
 
 //        dsl.update(ROUTE_APPLICATION)
@@ -135,9 +134,8 @@ public class RouteApplicationRepository extends EicnBaseRepository<RouteApplicat
         super.updateByKey(record, seq);
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                super.updateByKey(pbxDsl, record, seq);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            super.updateByKey(pbxDsl, record, seq);
         });
 
 //        dsl.update(ROUTE_APPLICATION)
@@ -162,9 +160,8 @@ public class RouteApplicationRepository extends EicnBaseRepository<RouteApplicat
         super.insertOnGeneratedKey(record);
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                super.insert(pbxDsl, record);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            super.insert(pbxDsl, record);
         });
 
 //        dsl.insertInto(ROUTE_APPLICATION)

@@ -209,9 +209,8 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
             final Optional<CompanyServerEntity> optionalServer = cacheService.pbxServerList(getCompanyId()).stream().filter(server -> server.getHost().equals(form.getRunHost())).findAny();
             if (optionalServer.isPresent()) {
                 final CompanyServerEntity server = optionalServer.get();
-                try (DSLContext pbxDsl = pbxServerInterface.using(server.getHost())) {
-                    executePDSGroupEntities = executePDSGroupRepository.findAllGroupId(pbxDsl, entity.getSeq());
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
+                executePDSGroupEntities = executePDSGroupRepository.findAllGroupId(pbxDsl, entity.getSeq());
             }
         }
 
@@ -275,13 +274,12 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
                         .execute();
             } else {
                 cacheService.pbxServerList(getCompanyId()).stream().filter(server -> server.getHost().equals(form.getRunHost())).findAny().ifPresent(server -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(server.getHost())) {
-                        pbxDsl.insertInto(EXECUTE_PDS_GROUP)
-                                .set(executePdsGroupRecord)
+                    DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
+                    pbxDsl.insertInto(EXECUTE_PDS_GROUP)
+                            .set(executePdsGroupRecord)
 
-                                .set(EXECUTE_PDS_GROUP.START_DATE, DSL.now())
-                                .execute();
-                    }
+                            .set(EXECUTE_PDS_GROUP.START_DATE, DSL.now())
+                            .execute();
                 });
             }
 
@@ -343,9 +341,8 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
                 executePDSGroupRepository.update(dsl, executePdsGroupRecord, Tables.EXECUTE_PDS_GROUP.PDS_GROUP_ID.eq(seq));
             } else {
                 cacheService.pbxServerList(getCompanyId()).stream().filter(server -> server.getHost().equals(form.getRunHost())).findAny().ifPresent(server -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(server.getHost())) {
-                        executePDSGroupRepository.update(pbxDsl, executePdsGroupRecord, Tables.EXECUTE_PDS_GROUP.PDS_GROUP_ID.eq(seq));
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
+                    executePDSGroupRepository.update(pbxDsl, executePdsGroupRecord, Tables.EXECUTE_PDS_GROUP.PDS_GROUP_ID.eq(seq));
                 });
             }
         }
@@ -363,9 +360,8 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
             executePDSCustomInfoService.getRepository(executeId).createTableIfNotExists();
         } else {
             cacheService.pbxServerList(getCompanyId()).stream().filter(server -> server.getHost().equals(form.getRunHost())).findAny().ifPresent(server -> {
-                try (DSLContext pbxDsl = pbxServerInterface.using(server.getHost(), "PDS")) {
-                    executePDSCustomInfoService.getRepository(executeId).createTableIfNotExists(pbxDsl);
-                }
+                DSLContext pbxDsl = pbxServerInterface.using(server.getHost(), "PDS");
+                executePDSCustomInfoService.getRepository(executeId).createTableIfNotExists(pbxDsl);
             });
         }
     }

@@ -61,9 +61,8 @@ public class CsRouteRepository extends EicnBaseRepository<CsRoute, kr.co.eicn.ip
         final List<CompanyServerEntity> pbxServerList = cacheService.pbxServerList(getCompanyId());
 
         pbxServerList.forEach(e -> {
-            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                super.insertOnGeneratedKey(pbxDsl, record);
-            }
+            DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            super.insertOnGeneratedKey(pbxDsl, record);
         });
 
         return super.insertOnGeneratedKey(record);

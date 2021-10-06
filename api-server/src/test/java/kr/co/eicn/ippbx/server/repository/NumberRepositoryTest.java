@@ -51,9 +51,8 @@ public class NumberRepositoryTest extends EicnBaseRepository<Number_070, kr.co.e
 
 		cacheService.pbxServerList(getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						this.updateByKey(pbxDsl, form, number);
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					this.updateByKey(pbxDsl, form, number);
 				});
 	}
 
@@ -73,12 +72,11 @@ public class NumberRepositoryTest extends EicnBaseRepository<Number_070, kr.co.e
 				.execute();
 
 		cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-			try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-				pbxDsl.update(NUMBER_070)
-						.set(NUMBER_070.STATUS, status)
-						.where(getCondition(number))
-						.execute();
-			}
+			DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+			pbxDsl.update(NUMBER_070)
+					.set(NUMBER_070.STATUS, status)
+					.where(getCondition(number))
+					.execute();
 		});
 	}
 }

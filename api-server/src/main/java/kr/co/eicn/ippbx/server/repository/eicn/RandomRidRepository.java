@@ -69,9 +69,8 @@ public class RandomRidRepository extends EicnBaseRepository<RandomCid, kr.co.eic
 		super.insert(record);
 
 		cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-			try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-				super.insert(pbxDsl, record);
-			}
+			DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+			super.insert(pbxDsl, record);
 		});
 	}
 
@@ -98,9 +97,8 @@ public class RandomRidRepository extends EicnBaseRepository<RandomCid, kr.co.eic
 		super.updateByKey(entity, seq);
 
 		cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-			try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-				super.updateByKey(pbxDsl, entity, seq);
-			}
+			DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+			super.updateByKey(pbxDsl, entity, seq);
 		});
 	}
 
@@ -108,9 +106,8 @@ public class RandomRidRepository extends EicnBaseRepository<RandomCid, kr.co.eic
 		int delete = super.delete(key);
 
 		cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-			try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-				super.delete(pbxDsl, key);
-			}
+			DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+			super.delete(pbxDsl, key);
 		});
 
 		return delete;

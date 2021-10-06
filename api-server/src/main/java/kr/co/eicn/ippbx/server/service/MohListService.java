@@ -116,14 +116,13 @@ public class MohListService extends ApiBaseService {
 		} else {
 			companyServerEntities
 						.forEach(e -> {
-							try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-								repository.insert(pbxDsl, record);
+							DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+							repository.insert(pbxDsl, record);
 
-								mohConfigRepository.insert(pbxDsl, categoryCode, "mode","files");
-								mohConfigRepository.insert(pbxDsl, categoryCode, "directory", savePath + directoryPath);
+							mohConfigRepository.insert(pbxDsl, categoryCode, "mode","files");
+							mohConfigRepository.insert(pbxDsl, categoryCode, "directory", savePath + directoryPath);
 
-								processService.execute(ShellCommand.SCP_SOUND_MOH, "MOH", e.getHost(), g.getUser().getCompanyId());
-							}
+							processService.execute(ShellCommand.SCP_SOUND_MOH, "MOH", e.getHost(), g.getUser().getCompanyId());
 						});
 		}
 
@@ -142,10 +141,9 @@ public class MohListService extends ApiBaseService {
 
 		cacheService.pbxServerList(g.getUser().getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						repository.delete(pbxDsl, category);
-						mohConfigRepository.delete(pbxDsl, MOH_CONFIG.CATEGORY.eq(category));
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					repository.delete(pbxDsl, category);
+					mohConfigRepository.delete(pbxDsl, MOH_CONFIG.CATEGORY.eq(category));
 				});
 	}
 
@@ -191,14 +189,13 @@ public class MohListService extends ApiBaseService {
 
 		cacheService.pbxServerList(g.getUser().getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						repository.insert(pbxDsl, record);
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					repository.insert(pbxDsl, record);
 
-						mohConfigRepository.insert(pbxDsl, categoryCode, "mode", "files");
-						mohConfigRepository.insert(pbxDsl, categoryCode, "directory", path.toString() + File.separator);
+					mohConfigRepository.insert(pbxDsl, categoryCode, "mode", "files");
+					mohConfigRepository.insert(pbxDsl, categoryCode, "directory", path.toString() + File.separator);
 
-						processService.execute(ShellCommand.SCP_SOUND_MOH, "MOH", e.getHost(), g.getUser().getCompanyId());
-					}
+					processService.execute(ShellCommand.SCP_SOUND_MOH, "MOH", e.getHost(), g.getUser().getCompanyId());
 				});
 
 		return nextSequence;

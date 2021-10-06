@@ -55,14 +55,13 @@ public class RecordEncRepository extends EicnBaseRepository<RecordEnc, kr.co.eic
 
 		cacheService.pbxServerList(getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						pbxDsl.insertInto(RECORD_ENC)
-								.set(pbxDsl.newRecord(RECORD_ENC, entity))
-								.set(RECORD_ENC.KEY_ID, nextKeyId())
-								.onDuplicateKeyUpdate()
-								.set(pbxDsl.newRecord(RECORD_ENC, entity))
-								.execute();
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					pbxDsl.insertInto(RECORD_ENC)
+							.set(pbxDsl.newRecord(RECORD_ENC, entity))
+							.set(RECORD_ENC.KEY_ID, nextKeyId())
+							.onDuplicateKeyUpdate()
+							.set(pbxDsl.newRecord(RECORD_ENC, entity))
+							.execute();
 				});
 
 		webSecureHistoryRepository.insert(WebSecureActionType.RECORD_ENC, WebSecureActionSubType.ENABLE_ENC, "");

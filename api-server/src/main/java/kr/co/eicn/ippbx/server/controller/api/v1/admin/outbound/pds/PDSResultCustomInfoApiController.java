@@ -58,9 +58,8 @@ public class PDSResultCustomInfoApiController extends ApiBaseController {
         pdsGroups.forEach(group -> {
             final Optional<CompanyServerEntity> optionalServer = servers.stream().filter(server -> server.getHost().equals(group.getRunHost())).findAny();
             if (optionalServer.isPresent()) {
-                try (final DSLContext pbxDsl = pbxServerInterface.using(optionalServer.get().getHost())) {
-                    rows.addAll(executePDSGroupRepository.findAll(pbxDsl, ExecutePdsGroup.EXECUTE_PDS_GROUP.PDS_GROUP_ID.eq(group.getSeq())));
-                }
+                final DSLContext pbxDsl = pbxServerInterface.using(optionalServer.get().getHost());
+                rows.addAll(executePDSGroupRepository.findAll(pbxDsl, ExecutePdsGroup.EXECUTE_PDS_GROUP.PDS_GROUP_ID.eq(group.getSeq())));
             }
         });
 

@@ -18,13 +18,13 @@
 <form:form modelAttribute="form" cssClass="ui modal tiny -json-submit" data-method="put"
            action="${pageContext.request.contextPath}/api/enumeration-value/type/${type}/field/${entity.fieldId}/code"
            data-before="prepareUpdateSequenceFieldForm" data-done="reload">
-
+ <%--   onsubmit="return chkChar();"--%>
     <i class="close icon"></i>
     <div class="header">코드수정</div>
 
     <div class="content rows scrolling">
         <div class="ui grid">
-            <c:if test="${usingServices.contains('TYPE1')}">
+            <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                 <div class="row">
                     <div class="four wide column"><label class="control-label">연동된하위코드</label></div>
                     <div class="four wide column">
@@ -92,7 +92,7 @@
                     </div>
                 </div>
             </div>
-            <c:if test="${usingServices.contains('TYPE1')}">
+            <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                 <div class="row">
                   <div class="three wide column"><label class="control-label">스크립트</label></div>
                       <div class="thirteen wide column">
@@ -134,6 +134,23 @@
         delete data.script;
     };
 
+/*    window.chkChar = function (){
+            var pattern = /^[a-zA-Zㄱ-힣0-9]*$/;
+            const str=$('[name="codeId"]').val();
+            console.log(str)
+
+            if (str.match(pattern)) {
+                if (str.match(pattern).length > 0) {
+                    alert("일치");
+                    return true;
+                }
+            }else {
+                    alert("그거아님");
+
+                }
+
+    };*/
+
     const select = modal.find('[name=codes]');
 
     select.on('click','option',function () {
@@ -156,7 +173,18 @@
             existOption.attr('data-name', codeName);
             existOption.attr('data-script', script);
         } else {
-            select.append($('<option/>', {value: codeId, text: '[' + codeId + '] ' + codeName, 'data-name': codeName, 'data-script': script}));
+            var pattern = /^[a-zA-Zㄱ-힣0-9]{1,50}$/;
+            const str=$('[name="codeId"]').val();
+            const strname=$('[name="codeName"]').val();
+
+            if (str.match(pattern) && strname.match(pattern)) {
+                if (str.match(pattern).length > 0) {
+                    select.append($('<option/>', {value: codeId, text: '[' + codeId + '] ' + codeName, 'data-name': codeName, 'data-script': script}));
+                }
+            }else {
+                alert("코드는 영어,숫자만 허용하며 최대 50자로 제한합니다.");
+
+            }
         }
     });
 

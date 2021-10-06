@@ -216,9 +216,8 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        personListRepository.updateByKey(pbxDsl, record, id);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    personListRepository.updateByKey(pbxDsl, record, id);
                 });
 
         final QueueMemberTable queueMemberTableRecord = new QueueMemberTable();
@@ -244,9 +243,8 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        super.delete(pbxDsl, id);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    super.delete(pbxDsl, id);
                 });
 
         // queue_member_table 삭제
@@ -268,13 +266,12 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
 
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        pbxDsl.update(PERSON_LIST)
-                                .set(PERSON_LIST.PASSWD, getSHA512(password))
-                                .set(PERSON_LIST.PASS_CHANGE_DATE, DSL.now())
-                                .where(getCondition(id))
-                                .execute();
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    pbxDsl.update(PERSON_LIST)
+                            .set(PERSON_LIST.PASSWD, getSHA512(password))
+                            .set(PERSON_LIST.PASS_CHANGE_DATE, DSL.now())
+                            .where(getCondition(id))
+                            .execute();
                 });
     }
 

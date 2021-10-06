@@ -33,10 +33,10 @@
         </div>
         <div class="pull-right">
             <button type="button" class="ui basic button" onclick="popupSearchCounselingHistoryModal()">상담이력</button>
-            <c:if test="${usingServices.contains('TYPE1')}">
+            <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                     <button type="button" class="ui basic button" onclick="popupReservationModal()">상담예약</button>
                     <button type="button" class="ui basic button" onclick="popupTransferModal()">상담이관</button>
-                  </c:if>
+            </c:if>
             <button type="button" class="ui button sharp light -submit-form" data-method="post"><img
                     src="<c:url value="/resources/images/save.svg"/>" alt="save">상담저장
             </button>
@@ -88,10 +88,12 @@
                                 <option value="${g.htmlQuote(e.codeId)}" ${contains ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
                             </c:forEach>
                         </select>
+                        <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                         <button type="button" class="ui button sharp navy ml5"
                                 onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-counseling-input').find('[name=${name}]').val()) ">
                             TIP
                         </button>
+                        </c:if>
                     </div>
                 </div>
             </div>
@@ -109,10 +111,12 @@
                                 <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
                             </c:forEach>
                         </select>
+                        <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                         <button type="button" class="ui button sharp navy ml5"
                                 onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-counseling-input').find('[name=${name}]').val())">
                             TIP
                         </button>
+                        </c:if>
                     </div>
                 </div>
             </div>

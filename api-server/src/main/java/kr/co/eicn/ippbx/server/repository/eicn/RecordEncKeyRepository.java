@@ -61,9 +61,8 @@ public class RecordEncKeyRepository extends EicnBaseRepository<RecordEncKey, kr.
 
 		cacheService.pbxServerList(getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						this.insert(pbxDsl, record);
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					this.insert(pbxDsl, record);
 				});
 
 
@@ -85,9 +84,8 @@ public class RecordEncKeyRepository extends EicnBaseRepository<RecordEncKey, kr.
 
 		cacheService.pbxServerList(getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						this.updateByKey(pbxDsl, record, id);
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					this.updateByKey(pbxDsl, record, id);
 				});
 
 		webSecureHistoryRepository.insert(WebSecureActionType.RECORD_ENC, WebSecureActionSubType.SAVE_ENC_KEY, "");
@@ -103,9 +101,8 @@ public class RecordEncKeyRepository extends EicnBaseRepository<RecordEncKey, kr.
 
 		cacheService.pbxServerList(getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						super.delete(pbxDsl, id);
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					super.delete(pbxDsl, id);
 				});
 		webSecureHistoryRepository.insert(WebSecureActionType.RECORD_ENC, WebSecureActionSubType.DEL, "");
 	}

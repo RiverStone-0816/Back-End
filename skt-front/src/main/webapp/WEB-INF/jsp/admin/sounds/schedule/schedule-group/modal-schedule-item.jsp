@@ -89,11 +89,6 @@
                                     <label>예외컨텍스트</label>
                                 </div>
                             </div>
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <form:radiobutton path="kind" value="V" class="hidden"/>
-                                    <label>음성사서함</label>
-                                </div>
                             </div>
                         </div>
                     </div>

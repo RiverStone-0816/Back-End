@@ -111,9 +111,8 @@ public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSee
 
 		cacheService.pbxServerList(getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						this.insert(pbxDsl, record);
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					this.insert(pbxDsl, record);
 				});
 
 		final OutScheduleList outScheduleListRecord = new OutScheduleList();
@@ -139,11 +138,10 @@ public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSee
 
 				cacheService.pbxServerList(getCompanyId())
 						.forEach(e -> {
-							try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-								pbxDsl.insertInto(OUT_SCHEDULE_LIST)
-										.set(pbxDsl.newRecord(OUT_SCHEDULE_LIST, outScheduleListRecord))
-										.execute();
-							}
+							DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+							pbxDsl.insertInto(OUT_SCHEDULE_LIST)
+									.set(pbxDsl.newRecord(OUT_SCHEDULE_LIST, outScheduleListRecord))
+									.execute();
 						});
 			}
 		}
@@ -164,9 +162,8 @@ public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSee
 
 		cacheService.pbxServerList(getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						this.insert(pbxDsl, record);
-					}
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					this.insert(pbxDsl, record);
 				});
 
 		final OutScheduleListRecord outScheduleListRecord = new OutScheduleListRecord();
@@ -194,11 +191,10 @@ public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSee
 
 				cacheService.pbxServerList(getCompanyId())
 						.forEach(e -> {
-							try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-								pbxDsl.insertInto(OUT_SCHEDULE_LIST)
-										.set(outScheduleListRecord)
-										.execute();
-							}
+							DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+							pbxDsl.insertInto(OUT_SCHEDULE_LIST)
+									.set(outScheduleListRecord)
+									.execute();
 						});
 			}
 		}
@@ -214,14 +210,13 @@ public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSee
 
 		cacheService.pbxServerList(getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						this.updateByKey(form, parent);
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					this.updateByKey(form, parent);
 
-						pbxDsl.deleteFrom(OUT_SCHEDULE_LIST)
-								.where(OUT_SCHEDULE_LIST.PARENT.eq(parent))
-								.and(OUT_SCHEDULE_LIST.COMPANY_ID.eq(getCompanyId()))
-								.execute();
-					}
+					pbxDsl.deleteFrom(OUT_SCHEDULE_LIST)
+							.where(OUT_SCHEDULE_LIST.PARENT.eq(parent))
+							.and(OUT_SCHEDULE_LIST.COMPANY_ID.eq(getCompanyId()))
+							.execute();
 				});
 
 		final OutScheduleListRecord outScheduleListRecord = new OutScheduleListRecord();
@@ -247,11 +242,10 @@ public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSee
 
 				cacheService.pbxServerList(getCompanyId())
 						.forEach(e -> {
-							try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-								pbxDsl.insertInto(OUT_SCHEDULE_LIST)
-										.set(outScheduleListRecord)
-										.execute();
-							}
+							DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+							pbxDsl.insertInto(OUT_SCHEDULE_LIST)
+									.set(outScheduleListRecord)
+									.execute();
 						});
 			}
 		}
@@ -267,14 +261,13 @@ public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSee
 
 		cacheService.pbxServerList(getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						this.updateByKey(form, parent);
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					this.updateByKey(form, parent);
 
-						pbxDsl.deleteFrom(OUT_SCHEDULE_LIST)
-								.where(OUT_SCHEDULE_LIST.PARENT.eq(parent))
-								.and(OUT_SCHEDULE_LIST.COMPANY_ID.eq(getCompanyId()))
-								.execute();
-					}
+					pbxDsl.deleteFrom(OUT_SCHEDULE_LIST)
+							.where(OUT_SCHEDULE_LIST.PARENT.eq(parent))
+							.and(OUT_SCHEDULE_LIST.COMPANY_ID.eq(getCompanyId()))
+							.execute();
 				});
 
 		final OutScheduleListRecord outScheduleListRecord = new OutScheduleListRecord();
@@ -301,11 +294,10 @@ public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSee
 
 				cacheService.pbxServerList(getCompanyId())
 						.forEach(e -> {
-							try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-								pbxDsl.insertInto(OUT_SCHEDULE_LIST)
-										.set(outScheduleListRecord)
-										.execute();
-							}
+							DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+							pbxDsl.insertInto(OUT_SCHEDULE_LIST)
+									.set(outScheduleListRecord)
+									.execute();
 						});
 			}
 		}
@@ -321,14 +313,13 @@ public class OutScheduleSeedRepository extends EicnBaseRepository<OutScheduleSee
 
 		cacheService.pbxServerList(getCompanyId())
 				.forEach(e -> {
-					try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-						super.delete(pbxDsl, parent);
+					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+					super.delete(pbxDsl, parent);
 
-						pbxDsl.deleteFrom(OUT_SCHEDULE_LIST)
-								.where(OUT_SCHEDULE_LIST.PARENT.eq(parent))
-								.and(OUT_SCHEDULE_LIST.COMPANY_ID.eq(getCompanyId()))
-								.execute();
-					}
+					pbxDsl.deleteFrom(OUT_SCHEDULE_LIST)
+							.where(OUT_SCHEDULE_LIST.PARENT.eq(parent))
+							.and(OUT_SCHEDULE_LIST.COMPANY_ID.eq(getCompanyId()))
+							.execute();
 				});
 	}
 }

@@ -30,19 +30,17 @@ public class SipBuddiesRepository extends EicnBaseRepository<SipBuddies, kr.co.e
 		dsl.deleteFrom(SIP_BUDDIES).where(SIP_BUDDIES.NAME.eq(peer)).execute();
 
 		cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-			try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-				pbxDsl.deleteFrom(SIP_BUDDIES).where(SIP_BUDDIES.NAME.eq(peer)).execute();
-			}
+			DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+			pbxDsl.deleteFrom(SIP_BUDDIES).where(SIP_BUDDIES.NAME.eq(peer)).execute();
 		});
 	}
 
 	public void updateAndMD5SecretAllPbxServers(String peer,String secret) {
 		dsl.update(SIP_BUDDIES).set(SIP_BUDDIES.MD5SECRET, DSL.md5(secret)).where(SIP_BUDDIES.NAME.eq(peer)).execute();
 		cacheService.pbxServerList(getCompanyId()).forEach(e -> {
-			try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-				pbxDsl.update(SIP_BUDDIES).set(SIP_BUDDIES.MD5SECRET, DSL.md5(secret)).where(SIP_BUDDIES.NAME.eq(peer)).execute();
-				IpccUrlConnection.execute("http://" + e.getServer().getIp() + "/ipcc/multichannel/remote/pickup_update.jsp", peer);
-			}
+			DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+			pbxDsl.update(SIP_BUDDIES).set(SIP_BUDDIES.MD5SECRET, DSL.md5(secret)).where(SIP_BUDDIES.NAME.eq(peer)).execute();
+			IpccUrlConnection.execute("http://" + e.getServer().getIp() + "/ipcc/multichannel/remote/pickup_update.jsp", peer);
 		});
 	}
 }

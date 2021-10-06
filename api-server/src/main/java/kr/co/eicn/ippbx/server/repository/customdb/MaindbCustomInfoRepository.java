@@ -1,5 +1,7 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
+import kr.co.eicn.ippbx.meta.jooq.customdb.CommonRoutines;
+import kr.co.eicn.ippbx.meta.jooq.customdb.routines.FnEncStringText;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbCustomInfo;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.MaindbKeyInfo;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbMultichannelInfo;
@@ -73,9 +75,33 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
         TABLE = new CommonMaindbCustomInfo(companyId);
         multichannelInfoTable = new kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo(companyId);
 
-        addField(TABLE);
+        addField(TABLE.MAINDB_SYS_CUSTOM_ID,TABLE.MAINDB_SYS_UPLOAD_DATE,TABLE.MAINDB_SYS_UPDATE_DATE,
+                TABLE.MAINDB_SYS_GROUP_ID,TABLE.MAINDB_SYS_GROUP_TYPE,TABLE.MAINDB_SYS_RESULT_TYPE,
+                TABLE.MAINDB_SYS_DAMDANG_ID,TABLE.MAINDB_SYS_LAST_RESULT_ID,TABLE.MAINDB_SYS_LAST_RESULT_DATE,
+                TABLE.MAINDB_SYS_COMPANY_ID,
+                TABLE.MAINDB_DATE_1,TABLE.MAINDB_DATE_2,TABLE.MAINDB_DATE_3,
+                TABLE.MAINDB_DAY_1,TABLE.MAINDB_DAY_2,TABLE.MAINDB_DAY_3,
+                TABLE.MAINDB_DATETIME_1,TABLE.MAINDB_DATETIME_2,TABLE.MAINDB_DATETIME_3,
+                TABLE.MAINDB_INT_1,TABLE.MAINDB_INT_2,TABLE.MAINDB_INT_3,TABLE.MAINDB_INT_4,TABLE.MAINDB_INT_5,
+                TABLE.MAINDB_STRING_1,TABLE.MAINDB_STRING_2,TABLE.MAINDB_STRING_3,TABLE.MAINDB_STRING_4,TABLE.MAINDB_STRING_5,
+                TABLE.MAINDB_STRING_6,TABLE.MAINDB_STRING_7,TABLE.MAINDB_STRING_8,TABLE.MAINDB_STRING_9,TABLE.MAINDB_STRING_10,
+                TABLE.MAINDB_STRING_11,TABLE.MAINDB_STRING_12,TABLE.MAINDB_STRING_13,TABLE.MAINDB_STRING_14,TABLE.MAINDB_STRING_15,
+                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_16,"eicn_"+companyId).as(TABLE.MAINDB_STRING_16),
+                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_17,"eicn_"+companyId).as(TABLE.MAINDB_STRING_17),
+                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_18,"eicn_"+companyId).as(TABLE.MAINDB_STRING_18),
+                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_19,"eicn_"+companyId).as(TABLE.MAINDB_STRING_19),
+                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_20,"eicn_"+companyId).as(TABLE.MAINDB_STRING_20),
+                TABLE.MAINDB_CODE_1,TABLE.MAINDB_CODE_2,TABLE.MAINDB_CODE_3,TABLE.MAINDB_CODE_4,TABLE.MAINDB_CODE_5,
+                TABLE.MAINDB_CODE_6,TABLE.MAINDB_CODE_7,TABLE.MAINDB_CODE_8,TABLE.MAINDB_CODE_9,TABLE.MAINDB_CODE_10,
+                TABLE.MAINDB_MULTICODE_1,TABLE.MAINDB_MULTICODE_2,TABLE.MAINDB_MULTICODE_3,
+                TABLE.MAINDB_INT_1,TABLE.MAINDB_INT_2,TABLE.MAINDB_INT_3,
+                TABLE.MAINDB_CONCODE_1,TABLE.MAINDB_CONCODE_2,TABLE.MAINDB_CONCODE_3,
+                TABLE.MAINDB_CSCODE_1,TABLE.MAINDB_CSCODE_2,TABLE.MAINDB_CSCODE_3
+        );
         addField(MAINDB_GROUP);
         addField(COMMON_TYPE);
+
+        addField(CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_16.getName(),"eicn_"+getCompanyId()).as("MAINDB_STRING_16"));
         addOrderingField(TABLE.MAINDB_SYS_UPLOAD_DATE.desc());
     }
 
@@ -232,6 +258,7 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
                 .set(TABLE.MAINDB_SYS_RESULT_TYPE, maindbGroup.getResultType());
 
         final List<? extends Class<? extends Serializable>> insertableFieldTypes = Arrays.asList(Date.class, Timestamp.class, Integer.class, String.class);
+        FnEncStringText fnEncStringText = new FnEncStringText();
         for (java.lang.reflect.Field field : form.getClass().getDeclaredFields()) {
             if (!insertableFieldTypes.contains(field.getType()))
                 continue;
@@ -255,8 +282,13 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
                     final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
                     maindbCustomInfoService.uploadImgWithFileStore((String) invoked, null);
                     query.set((Field<String>) tableField, path.toString() + "/" + (String) invoked);
-                } else
-                    query.set((Field<String>) tableField, (String) invoked);
+                } else {
+                    if(fieldName.contains("string_") && Integer.parseInt(fieldName.replace("string_","")) > 15){
+                        query.set((Field<String>) tableField, CommonRoutines.fnEncStringText((String) invoked,"eicn_" + getCompanyId()));
+                    } else{
+                        query.set((Field<String>) tableField, (String) invoked);
+                    }
+                }
             }
         }
 
@@ -350,8 +382,13 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
                     final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
                     maindbCustomInfoService.uploadImgWithFileStore((String) invoked, oldFileName);
                     query.set((Field<String>) tableField, path.toString() + "/" + (String) invoked);
-                } else
-                    query.set((Field<String>) tableField, (String) invoked);
+                } else {
+                    if (fieldName.contains("string_") && Integer.parseInt(fieldName.replace("string_", "")) > 15) {
+                        query.set((Field<String>) tableField, CommonRoutines.fnEncStringText((String) invoked,"eicn_" + getCompanyId()));
+                    } else {
+                        query.set((Field<String>) tableField, (String) invoked);
+                    }
+                }
             }
         }
 

@@ -119,9 +119,8 @@ public class ServiceRepository extends EicnBaseRepository<ServiceList, kr.co.eic
         final Record r = super.insertOnGeneratedKey(form);
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        this.insert(pbxDsl, form);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    this.insert(pbxDsl, form);
                 });
 
         if (r.getValue(SERVICE_LIST.SEQ) != null)
@@ -148,9 +147,8 @@ public class ServiceRepository extends EicnBaseRepository<ServiceList, kr.co.eic
         super.updateByKey(form, key);
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        this.updateByKey(pbxDsl, form, key);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    this.updateByKey(pbxDsl, form, key);
                 });
 
         dashboardInfoRepository.updateByValue(form.getSvcName().concat(" 통계"), form.getSvcNumber(), oldServiceInfo.getSvcNumber());
@@ -163,9 +161,8 @@ public class ServiceRepository extends EicnBaseRepository<ServiceList, kr.co.eic
         final int r = super.delete(key);
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
-                        super.delete(pbxDsl, key);
-                    }
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    super.delete(pbxDsl, key);
                 });
 
         dashboardInfoRepository.deleteByValue(entity.getSvcNumber());
