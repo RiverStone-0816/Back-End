@@ -191,6 +191,8 @@ ROOT 실행
 
 SET GLOBAL log_bin_trust_function_creators = ON;
 
+USE CUSTOMDB;
+
 DELIMITER $$
 CREATE FUNCTION fn_enc_string_text (
 stringText VARCHAR(500)
