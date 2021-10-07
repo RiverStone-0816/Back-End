@@ -15,7 +15,7 @@
 <div class="side-bar-content overflow-overlay" id="room-list-area">
     <div class="room-list-area-inner">
         <ul class="side-room-list-ul">
-            <li v-for="(e, i) in rooms" :key="i" class="list">
+            <li v-for="(e, i) in rooms" :key="i" class="list" @click="loadRoom(e.roomId)">
                 <div class="header">
                     <div class="room-name">
                         <text>{{ e.roomName }}</text>
@@ -33,8 +33,7 @@
     </div>
 </div>
 
-<div id="messenger-modal" v-if="showing" class="ui modal large ui-resizable ui-draggable show-rooms show-room"
-     style="width: 500px; display: block; position: absolute; left: 335px; top: 265px;">
+<div id="messenger-modal" class="ui modal large ui-resizable ui-draggable show-rooms show-room" style="width: 500px; display: block; position: absolute; left: 335px; top: 265px;">
     <div class="chat-container" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
         <div class="room" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
             <div class="chat-header" data-act="draggable" :title="roomName">
@@ -62,7 +61,7 @@
                                 <div v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info'" class="chat-item"
                                      :class="['AF', 'S'].includes(e.sendReceive) && e.userId === userId && 'chat-me'">
                                     <div class="wrap-content">
-                                        <div class="txt-time">[{{ e.username }}] getTimeFormat(e.time)</div>
+                                        <div class="txt-time">[{{ e.username }}] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
                                             <div class="bubble">
                                                 <div class="outer-unread-count">{{ e.unreadCount || '' }}</div>
@@ -75,9 +74,9 @@
                                                     </a>
                                                     <p v-else>{{ e.contents }}</p>
                                                 </div>
-                                                <a v-if="e.messageType === 'file'" target="_blank">저장하기</a>
+                                                <a v-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl">저장하기</a>
                                             </div>
-                                            <div class="chat-layer" style="visibility: hidden;">
+                                            <div v-if="e.userId !== userId" class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
                                                     <button type="button" class="button-reply" data-inverted="" data-tooltip="답장 달기" data-position="bottom center"></button>
                                                     <button type="button" onclick="messengerTemplatePopup()" class="button-template" data-inverted="" data-tooltip="템플릿 만들기"
@@ -146,9 +145,9 @@
             </div>
             <div class="wrap-inp">
                 <div class="inp-box">
-                    <textarea placeholder="전송하실 메시지를 입력하세요."></textarea>
+                    <textarea placeholder="전송하실 메시지를 입력하세요." ref="message"></textarea>
                 </div>
-                <button type="button" class="send-btn" onclick="sendMessage()">전송</button>
+                <button type="button" class="send-btn" @click="sendMessage">전송</button>
             </div>
         </div>
     </div>
@@ -180,6 +179,9 @@
                             if (this.rooms[i].unreadMessageTotalCount > 0)
                                 return true
                         return false
+                    },
+                    loadRoom: function (roomId) {
+                        chatRoom.loadRoom(roomId)
                     }
                 },
                 updated: function () {
@@ -198,23 +200,52 @@
             const chatRoom = Vue.createApp({
                 setup: function () {
                     return {
-                        userId: userId
+                        READ_LIMIT: 100,
+                        userId: userId,
                     }
                 },
                 data: function () {
                     return {
-                        showing: true,
                         roomId: null,
                         roomName: '',
                         templates: [],
                         replying: null,
 
+                        startMessageTime: null,
+                        startMessageId: null,
+                        endMessageTime: null,
+                        endMessageId: null,
+
+                        members: {},
                         messages: [],
+
+                        bodyScrollingTimer: null
                     }
                 },
                 methods: {
+                    loadRoom: function (roomId) {
+                        const _this = this
+                        restSelf.get('/api/chatt/' + roomId + '/chatting', {limit: this.READ_LIMIT}).done(function (response) {
+                            _this.roomId = roomId
+                            _this.roomName = response.data.roomName
+                            _this.members = {}
+                            response.data.chattingMembers.forEach(function (e) {
+                                _this.members[e.userid] = e
+                            })
+                            _this.messages = []
+                            response.data.chattingMessages.forEach(function (e) {
+                                _this.appendMessage(e.roomId, e.messageId, e.insertTime, e.type, e.sendReceive, e.content, e.userid, e.userName, e.unreadMessageCount)
+                            })
+                            _this.startMessageTime = _this.messages[0] && _this.messages[0].time
+                            _this.startMessageId = _this.messages[0] && _this.messages[0].messageId
+                            _this.endMessageTime = _this.messages[0] && _this.messages[_this.messages.length - 1].time
+                            _this.endMessageId = _this.messages[0] && _this.messages[_this.messages.length - 1].messageId
+
+                            $(this.$el).parent().show()
+                        })
+                    },
                     hide: function () {
-                        this.showing = false
+                        $(this.$el).parent().hide()
                     },
                     leave: function () {
                         // todo: leave
@@ -257,7 +288,8 @@
 
                         if (this.messages[this.messages.length - 1].time <= message.time) {
                             const _this = this
-                            setTimeout(function () {
+                            if (this.bodyScrollingTimer) clearTimeout(this.bodyScrollingTimer)
+                            this.bodyScrollingTimer = setTimeout(function () {
                                 _this.$refs.chatBody.scroll({top: _this.$refs.chatBody.scrollHeight})
                             }, 100)
                             return this.messages.push(message)
@@ -267,6 +299,13 @@
                         this.messages.sort(function (a, b) {
                             return a.time - b.time
                         })
+                    },
+                    sendMessage: function () {
+                        const message = this.$refs.message.value
+                        if (!message)
+                            return
+                        communicator.sendMessage(this.roomId, message)
+                        this.$refs.message.value = ''
                     }
                 },
                 updated: function () {
@@ -301,7 +340,11 @@
                 .on('svc_read_confirm', function (data) {
                 })
                 .on('svc_roomname_change', function (data) {
-                });
+                })
+
+            restSelf.get('/api/auth/socket-info').done(function (response) {
+                communicator.connect(response.data.messengerSocketUrl, response.data.companyId, response.data.userId, response.data.userName, response.data.password)
+            })
         })()
     </script>
 </tags:scripts>
