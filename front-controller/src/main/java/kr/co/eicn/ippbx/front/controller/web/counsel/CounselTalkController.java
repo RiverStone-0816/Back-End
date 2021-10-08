@@ -92,16 +92,14 @@ public class CounselTalkController extends BaseController {
         model.addAttribute("templateTypes", templateTypes);
 
         List<TalkTemplateSummaryResponse> candidates = new ArrayList<>();
-    /*    List<TalkTemplateSummaryResponse> candidatesG = new ArrayList<>();
-        List<TalkTemplateSummaryResponse> candidatesP = new ArrayList<>();*/
+
         for (TalkTemplateSummaryResponse e : talkTemplates) {
             if (Objects.equals(e.getType(), TalkTemplate.COMPANY.getCode()))
                 candidates.add(e);
 
 
             // TODO: api 수정 후, 코드 변경해야 한다. api에서 group의 code가 전달되어야 한다.
-/*            if (Objects.equals(e.getType(), TalkTemplate.GROUP.getCode()) && Objects.equals(g.getUser().getGroupTreeName().substring(g.getUser().getGroupTreeName().length()-4), e.getTypeData()))
-                candidates.add(e);*/
+
 
 
             if (Objects.equals(e.getType(), TalkTemplate.GROUP.getCode()) && e.getTypeGroup().contains(g.getUser().getGroupTreeName().substring(g.getUser().getGroupTreeName().length()-4)) )
