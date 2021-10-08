@@ -104,7 +104,7 @@
     modal.find('[name=groupId]').change(function () {
         modal.find('#schedule-info').empty();
         if (this.value !== '') {
-            receiveHtml('/admin/sounds/schedule/inbound-week/modal-view-schedule-group?parent=' + this.value).done(function (html) {
+            receiveHtml(contextPath + '/admin/sounds/schedule/inbound-week/modal-view-schedule-group?parent=' + this.value).done(function (html) {
                 const mixedNodes = $.parseHTML(html, null, true);
 
                 const ui = (function () {
