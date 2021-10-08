@@ -15,9 +15,9 @@
 <div class="side-bar-content overflow-overlay" id="room-list-area">
     <div class="room-list-area-inner">
         <ul class="side-room-list-ul">
-            <li v-for="(e, i) in rooms" :key="i" class="list" @click="loadRoom(e.roomId)">
+            <li v-for="(e, i) in roomList" :key="i" class="list" @click="loadRoom(e.roomId)">
                 <div class="header">
-                    <div class="room-name">
+                    <div class="room-name" @click="popupRoomNameModal(e.roomId)">
                         <text>{{ e.roomName }}</text>
                     </div>
                     <div class="last-message-time">{{ getRoomLastMessageTimeFormat(e.lastTime) }}</div>
@@ -57,7 +57,7 @@
                         <div class="os-content" style="padding: 10px 0 0; height: 100%; width: 100%;">
                             <div v-for="(e, i) in messages" :key="i">
                                 <p v-if="['SE', 'RE'].includes(e.sendReceive)" class="info-msg">[{{ getTimeFormat(e.time) }}]</p>
-                                <p v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.time) }}]</p>
+                                <p v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
                                 <div v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info'" class="chat-item"
                                      :class="['AF', 'S'].includes(e.sendReceive) && e.userId === userId && 'chat-me'">
                                     <div class="wrap-content">
@@ -154,198 +154,286 @@
 </div>
 <tags:scripts>
     <script>
-        (function () {
-            const roomList = Vue.createApp({
-                data: function () {
-                    return {
-                        rooms: []
-                    }
+        const roomList = Vue.createApp({
+            data: function () {
+                return {
+                    roomMap: {},
+                    roomList: []
+                }
+            },
+            methods: {
+                load: function () {
+                    const _this = this
+                    restSelf.get('/api/chatt/chatt-room', null, null, true).done(function (response) {
+                        _this.roomList = []
+                        response.data.forEach(function (e) {
+                            _this.roomList.push(Object.assign(e.chattRoom, {unreadMessageTotalCount: e.unreadMessageTotalCount}))
+                            const last = _this.roomList[_this.roomList.length - 1]
+                            _this.roomMap[last.roomId] = last
+                        })
+                        _this.sortRooms()
+                    })
                 },
-                methods: {
-                    load: function () {
+                getRoomLastMessageTimeFormat: function (time) {
+                    return moment(time).format('MM-DD HH:mm')
+                },
+                hasUnreadMessage: function () {
+                    for (let i = 0; i < this.roomList.length; i++)
+                        if (this.roomList[i].unreadMessageTotalCount > 0)
+                            return true
+                    return false
+                },
+                loadRoom: function (roomId) {
+                    messenger.loadRoom(roomId)
+                },
+                removeRoom: function (roomId) {
+                    for (let i = 0; i < this.roomList.length; i++)
+                        if (this.roomList[i].roomId === roomId) {
+                            this.roomList.splice(i, 1)
+                            break
+                        }
+
+                    delete this.roomMap[roomId]
+                },
+                popupRoomNameModal: function(roomId) {
+                    prompt('새로운 채팅방이름을 입력하시오.').done(function (text) {
+                        restSelf.put('/api/chatt/' + roomId + '/room-name?newRoomName=' + encodeURIComponent(text)).done(function () {
+                            messengerCommunicator.changeRoomName(roomId, text);
+                        });
+                    })
+                },
+                receiveMessage: function (roomId, roomName, lastMsg, lastTime) {
+                    if (this.roomMap[roomId]) {
+                        const e = this.roomMap[roomId]
+                        e.roomName = roomName
+                        e.lastMsg = lastMsg
+                        e.lastTime = lastTime
+                        e.unreadMessageTotalCount++
+                    } else {
+                        this.roomList.push({
+                            roomId: roomId,
+                            roomName: roomName,
+                            lastMsg: lastMsg,
+                            lastTime: lastTime,
+                            unreadMessageTotalCount: 1,
+                        })
+                        const last = this.roomList[this.roomList.length - 1]
+                        this.roomMap[last.roomId] = last
+                    }
+
+                    this.sortRooms()
+                },
+                changeRoomName: function (roomId, roomName) {
+                    this.roomMap[roomId] && (this.roomMap[roomId].roomName = roomName)
+                },
+                sortRooms: function () {
+                    this.roomList.sort(function (a, b) {
+                        return moment(b.lastTime).toDate().getTime() - moment(a.lastTime).toDate().getTime()
+                    })
+                },
+                readMessages: function (roomId) {
+                    this.roomMap[roomId] && (this.roomMap[roomId].unreadMessageTotalCount = 0)
+                }
+            },
+            updated: function () {
+                if (this.hasUnreadMessage())
+                    $('#messenger-unread-indicator').addClass('unread')
+                else
+                    $('#messenger-unread-indicator').removeClass('unread')
+            },
+            mounted: function () {
+                this.load()
+            },
+        }).mount('#room-list-area')
+
+        $('#messenger-modal').dragModalShow()
+
+        const messenger = Vue.createApp({
+            setup: function () {
+                return {
+                    READ_LIMIT: 100,
+                    userId: userId,
+                }
+            },
+            data: function () {
+                return {
+                    roomId: null,
+                    roomName: '',
+                    templates: [],
+                    replying: null,
+
+                    startMessageTime: null,
+                    startMessageId: null,
+                    endMessageTime: null,
+                    endMessageId: null,
+
+                    members: {},
+                    messages: [],
+
+                    bodyScrollingTimer: null
+                }
+            },
+            methods: {
+                loadRoom: function (roomId) {
+                    const _this = this
+                    restSelf.get('/api/chatt/' + roomId + '/chatting', {limit: this.READ_LIMIT}).done(function (response) {
+                        _this.roomId = roomId
+                        _this.roomName = response.data.roomName
+                        _this.members = {}
+                        response.data.chattingMembers.forEach(function (e) {
+                            _this.members[e.userid] = e
+                        })
+                        _this.messages = []
+                        response.data.chattingMessages.forEach(function (e) {
+                            _this.appendMessage({
+                                roomId: e.roomId,
+                                messageId: e.messageId,
+                                time: e.insertTime,
+                                messageType: e.type,
+                                sendReceive: e.sendReceive,
+                                contents: e.content,
+                                userId: e.userid,
+                                username: e.userName,
+                                unreadCount: e.unreadMessageCount
+                            })
+                        })
+
+                        _this.startMessageTime = _this.messages[0] && _this.messages[0].time
+                        _this.startMessageId = _this.messages[0] && _this.messages[0].messageId
+                        _this.endMessageTime = _this.messages[0] && _this.messages[_this.messages.length - 1].time
+                        _this.endMessageId = _this.messages[0] && _this.messages[_this.messages.length - 1].messageId
+
+                        if (_this.endMessageId)
+                            messengerCommunicator.confirmMessage(roomId, _this.endMessageId)
+
+                        $(this.$el).parent().show()
+                    })
+                },
+                openRoom: function () {
+                    const userIds = [userId]
+                    $('.-messenger-user.active').each(function () {
+                        const id = $(this).attr('data-id')
+                        if (!userIds.includes(id))
+                            userIds.push(id)
+                    })
+
+                    const _this = this
+                    restSelf.post('/api/chatt/', {memberList: userIds}).done(function (response) {
+                        _this.loadRoom(response.data);
+                    });
+                },
+                hide: function () {
+                    $(this.$el).parent().hide()
+                },
+                leave: function () {
+                    const _this = this
+                    confirm('채팅방을 나가시겠습니까?').done(function () {
+                        restSelf.delete('/api/chatt/' + encodeURIComponent(messenger.currentRoom.id), null, null, true).done(function () {
+                            messengerCommunicator.leave(_this.roomId);
+                            roomList.removeRoom(_this.roomId)
+                            _this.hide()
+                        })
+                    })
+                },
+                popupInvitationModal: function () {
+                    // todo
+                },
+                getTimeFormat: function (time) {
+                    return moment(time).format('MM-DD HH:mm')
+                },
+                appendMessage: function (message, confirm) {
+                    if (this.roomId !== message.roomId)
+                        return
+
+                    roomList.readMessages(message.roomId)
+                    if (confirm)
+                        messengerCommunicator.confirmMessage(message.roomId, message.messageId)
+
+                    if (message.messageType === 'file') {
+                        const split = /^([^|]+)\|([^|]+)\|([^|]+)\|([^|]+)$/.exec(message.contents)
+                        message.fileType = split[1].endsWith('g') ? 'image'
+                            : split[1].contains('wav') || split[1].contains('mp') ? 'audio'
+                                : null
+                        message.fileUrl = $.addQueryString(split && split[4] || '', {token: '${g.escapeQuote(accessToken)}'})
+                        message.fileName = split && split[2] || ''
+                        message.fileSize = split && split[3] || ''
+                    }
+
+                    if (this.messages.length === 0)
+                        return this.messages.push(message)
+
+                    if (this.messages[0].time >= message.time)
+                        return this.messages.splice(0, 0, message)
+
+                    if (this.messages[this.messages.length - 1].time <= message.time) {
                         const _this = this
-                        restSelf.get('/api/chatt/chatt-room', null, null, true).done(function (response) {
-                            _this.rooms = []
-                            response.data.forEach(function (e) {
-                                _this.rooms.push(Object.assign(e.chattRoom, {unreadMessageTotalCount: e.unreadMessageTotalCount}))
-                            })
-                        })
-                    },
-                    getRoomLastMessageTimeFormat: function (time) {
-                        return moment(time).format('MM:DD HH:mm')
-                    },
-                    hasUnreadMessage: function () {
-                        for (let i = 0; i < this.rooms.length; i++)
-                            if (this.rooms[i].unreadMessageTotalCount > 0)
-                                return true
-                        return false
-                    },
-                    loadRoom: function (roomId) {
-                        chatRoom.loadRoom(roomId)
+                        if (this.bodyScrollingTimer) clearTimeout(this.bodyScrollingTimer)
+                        this.bodyScrollingTimer = setTimeout(function () {
+                            _this.$refs.chatBody.scroll({top: _this.$refs.chatBody.scrollHeight})
+                        }, 100)
+                        return this.messages.push(message)
                     }
+
+                    this.messages.push(message)
+                    this.messages.sort(function (a, b) {
+                        return a.time - b.time
+                    })
                 },
-                updated: function () {
-                    if (this.hasUnreadMessage())
-                        $('#messenger-unread-indicator').addClass('unread')
-                    else
-                        $('#messenger-unread-indicator').removeClass('unread')
+                changeRoomName: function (roomId, roomName) {
+                    this.roomId === roomId && (this.roomName = roomName)
                 },
-                mounted: function () {
-                    this.load()
-                },
-            }).mount('#room-list-area')
+                sendMessage: function () {
+                    const message = this.$refs.message.value
+                    if (!message)
+                        return
+                    messengerCommunicator.sendMessage(this.roomId, message)
+                    this.$refs.message.value = ''
+                }
+            },
+            updated: function () {
+            },
+            mounted: function () {
+            },
+        }).mount('#messenger-modal')
 
-            $('#messenger-modal').dragModalShow()
+        function receiveMessage(data) {
+            roomList.receiveMessage(
+                data.room_id,
+                data.room_name,
+                data.contents,
+                parseFloat(data.cur_timestr) * 1000
+            )
+            messenger.appendMessage({
+                roomId: data.room_id,
+                messageId: data.message_id,
+                time: parseFloat(data.cur_timestr) * 1000,
+                messageType: data.type,
+                sendReceive: data.send_receive,
+                contents: data.contents,
+                userId: data.userid,
+                username: data.username,
+                unreadCount: parseInt(data.member_cnt) - 1
+            }, true)
+        }
 
-            const chatRoom = Vue.createApp({
-                setup: function () {
-                    return {
-                        READ_LIMIT: 100,
-                        userId: userId,
-                    }
-                },
-                data: function () {
-                    return {
-                        roomId: null,
-                        roomName: '',
-                        templates: [],
-                        replying: null,
-
-                        startMessageTime: null,
-                        startMessageId: null,
-                        endMessageTime: null,
-                        endMessageId: null,
-
-                        members: {},
-                        messages: [],
-
-                        bodyScrollingTimer: null
-                    }
-                },
-                methods: {
-                    loadRoom: function (roomId) {
-                        const _this = this
-                        restSelf.get('/api/chatt/' + roomId + '/chatting', {limit: this.READ_LIMIT}).done(function (response) {
-                            _this.roomId = roomId
-                            _this.roomName = response.data.roomName
-                            _this.members = {}
-                            response.data.chattingMembers.forEach(function (e) {
-                                _this.members[e.userid] = e
-                            })
-                            _this.messages = []
-                            response.data.chattingMessages.forEach(function (e) {
-                                _this.appendMessage(e.roomId, e.messageId, e.insertTime, e.type, e.sendReceive, e.content, e.userid, e.userName, e.unreadMessageCount)
-                            })
-                            _this.startMessageTime = _this.messages[0] && _this.messages[0].time
-                            _this.startMessageId = _this.messages[0] && _this.messages[0].messageId
-                            _this.endMessageTime = _this.messages[0] && _this.messages[_this.messages.length - 1].time
-                            _this.endMessageId = _this.messages[0] && _this.messages[_this.messages.length - 1].messageId
-
-                            $(this.$el).parent().show()
-                        })
-                    },
-                    hide: function () {
-                        $(this.$el).parent().hide()
-                    },
-                    leave: function () {
-                        // todo: leave
-                        this.hide()
-                    },
-                    popupInvitationModal: function () {
-                        // todo
-                    },
-                    getTimeFormat: function (time) {
-                        return moment(time).format('MM-DD HH:mm')
-                    },
-                    appendMessage: function (roomId, messageId, time, messageType, sendReceive, contents, userId, username, unreadCount) {
-                        if (this.roomId !== roomId)
-                            return
-                        const message = {
-                            messageId: messageId,
-                            time: time,
-                            messageType: messageType,
-                            sendReceive: sendReceive,
-                            contents: contents,
-                            userId: userId,
-                            username: username,
-                            unreadCount: unreadCount
-                        }
-                        if (messageType === 'file') {
-                            const split = /^([^|]+)\|([^|]+)\|([^|]+)\|([^|]+)$/.exec(contents)
-                            message.fileType = split[1].endsWith('g') ? 'image'
-                                : split[1].contains('wav') || split[1].contains('mp') ? 'audio'
-                                    : null
-                            message.fileUrl = $.addQueryString(split && split[4] || '', {token: '${g.escapeQuote(accessToken)}'});
-                            message.fileName = split && split[2] || ''
-                            message.fileSize = split && split[3] || ''
-                        }
-
-                        if (this.messages.length === 0)
-                            return this.messages.push(message)
-
-                        if (this.messages[0].time >= message.time)
-                            return this.messages.splice(0, 0, message)
-
-                        if (this.messages[this.messages.length - 1].time <= message.time) {
-                            const _this = this
-                            if (this.bodyScrollingTimer) clearTimeout(this.bodyScrollingTimer)
-                            this.bodyScrollingTimer = setTimeout(function () {
-                                _this.$refs.chatBody.scroll({top: _this.$refs.chatBody.scrollHeight})
-                            }, 100)
-                            return this.messages.push(message)
-                        }
-
-                        this.messages.push(message)
-                        this.messages.sort(function (a, b) {
-                            return a.time - b.time
-                        })
-                    },
-                    sendMessage: function () {
-                        const message = this.$refs.message.value
-                        if (!message)
-                            return
-                        communicator.sendMessage(this.roomId, message)
-                        this.$refs.message.value = ''
-                    }
-                },
-                updated: function () {
-                },
-                mounted: function () {
-                },
-            }).mount('#messenger-modal')
-
-            function receiveMessage(data) {
-                const roomId = data.room_id;
-                const roomName = data.room_name;
-                const messageId = data.message_id;
-                const time = parseFloat(data.cur_timestr) * 1000;
-                const messageType = data.type;
-                const sendReceive = data.send_receive;
-                const contents = data.contents;
-                const formUserId = data.userid;
-                const formUserName = data.username;
-
-                chatRoom.appendMessage(roomId, messageId, time, messageType, sendReceive, contents, formUserId, formUserName, parseInt(data.member_cnt) - 1)
-            }
-
-            const communicator = new MessengerCommunicator()
-                .on('svc_msg', receiveMessage)
-                .on('svc_join_msg', function (data) {
-                    receiveMessage(data);
-                    communicator.join(data.room_id);
-                }).on('svc_invite_room', function (data) {
-                })
-                .on('svc_leave_room', function (data) {
-                })
-                .on('svc_read_confirm', function (data) {
-                })
-                .on('svc_roomname_change', function (data) {
-                })
-
-            restSelf.get('/api/auth/socket-info').done(function (response) {
-                communicator.connect(response.data.messengerSocketUrl, response.data.companyId, response.data.userId, response.data.userName, response.data.password)
+        const messengerCommunicator = new MessengerCommunicator()
+            .on('svc_msg', receiveMessage)
+            .on('svc_join_msg', function (data) {
+                receiveMessage(data);
+                messengerCommunicator.join(data.room_id);
+            }).on('svc_invite_room', function (data) {
+            }).on('svc_leave_room', function (data) {
+            }).on('svc_read_confirm', function (data) {
+            }).on('svc_roomname_change', function (data) {
+                const roomId = data.room_id
+                const roomName = data.change_room_name
+                roomList.changeRoomName(roomId, roomName)
+                messenger.changeRoomName(roomId, roomName)
             })
-        })()
+
+        restSelf.get('/api/auth/socket-info').done(function (response) {
+            messengerCommunicator.connect(response.data.messengerSocketUrl, response.data.companyId, response.data.userId, response.data.userName, response.data.password)
+        })
     </script>
 </tags:scripts>
 
@@ -647,5 +735,3 @@
         </div>
     </div>
 </div>
-
-<jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>

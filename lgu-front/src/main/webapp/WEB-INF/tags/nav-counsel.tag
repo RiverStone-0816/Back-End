@@ -12,51 +12,60 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="menu" type="kr.co.eicn.ippbx.front.model.CurrentUserMenu"--%>
 <%--@elvariable id="usingservices" type="java.lang.String"--%>
+<%--@elvariable id="serviceKind" type="java.lang.String"--%>
+
+<c:set var="activeMessenger" value="${serviceKind.equals('SC') && usingServices.contains('CHATT')}"/>
 
 <aside class="side-bar consulting-side">
     <div class="side-bar-tab-container">
         <ul class="side-bar-tab">
             <li class="active" data-tab="organization-area"><i class="list ul icon"></i>조직도</li>
-            <li data-tab="room-list-area"><i class="comments icon" id="messenger-unread-indicator"></i>채팅방</li>
+            <c:if test="${activeMessenger}">
+                <li data-tab="room-list-area"><i class="comments icon" id="messenger-unread-indicator"></i>채팅방</li>
+            </c:if>
         </ul>
     </div>
     <button class="nav-bar"><i class="material-icons arrow">keyboard_arrow_left</i></button>
     <div class="side-bar-content active" id="organization-area">
         <div class="organization-area-inner">
             <div class="sidebar-menu-container">
-                <div class="consulting-accordion favorite active" onclick="toggleFold(event, this)">
-                    <div class="consulting-accordion-label">
-                        <div>
-                            즐겨찾기
-                            <button type="button" class="ui basic white very mini compact button ml10" onclick="event.stopPropagation(); popupBookmarkModal();">편집</button>
+                <c:if test="${activeMessenger}">
+                    <div class="consulting-accordion favorite active" onclick="toggleFold(event, this)">
+                        <div class="consulting-accordion-label">
+                            <div>
+                                즐겨찾기
+                                <button type="button" class="ui basic white very mini compact button ml10" onclick="event.stopPropagation(); popupBookmarkModal();">편집</button>
+                            </div>
+                            <div>
+                                <i class="material-icons arrow">keyboard_arrow_down</i>
+                            </div>
                         </div>
-                        <div>
-                            <i class="material-icons arrow">keyboard_arrow_down</i>
+                        <div class="consulting-accordion-content">
+                            <ul class="treeview-menu treeview-on consulting-accordion-content favorite overflow-overlay" id="bookmark-list">
+                                <li v-if="!list.length" class="empty">등록된 즐겨찾기가 없습니다.</li>
+                                <li v-else v-for="(e, i) in list" :key="i" style="cursor: pointer" class="-messenger-user" :data-id="e.id" onclick="toggleActive(event, this)">
+                                    <div>
+                                        <i class="user outline icon -consultant-login" :data-peer="e.peer" data-logon-class="online"></i>
+                                        <span class="user">{{ e.idName }}[{{ e.extension }}]</span>
+                                        <button class="ui icon button mini compact" @click.stop="redirectTo(e.extension)" title="전화돌려주기">
+                                            <i class="share icon"></i>
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <span class="ui mini label -consultant-status-with-color" :data-peer="e.peer"></span>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="consulting-accordion-content">
-                        <ul class="treeview-menu treeview-on consulting-accordion-content favorite overflow-overlay" id="bookmark-list">
-                            <li v-if="!list.length" class="empty">등록된 즐겨찾기가 없습니다.</li>
-                            <li v-else v-for="(e, i) in list" :key="i" style="cursor: pointer" onclick="toggleActive(event, this)">
-                                <div>
-                                    <i class="user outline icon -consultant-login" :data-peer="e.peer" data-logon-class="online"></i>
-                                    <span class="user">{{ e.idName }}[{{ e.extension }}]</span>
-                                    <button class="ui icon button mini compact" @click.stop="redirectTo(e.extension)" title="전화돌려주기">
-                                        <i class="share icon"></i>
-                                    </button>
-                                </div>
-                                <div>
-                                    <span class="ui mini label -consultant-status-with-color" :data-peer="e.peer"></span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+                </c:if>
                 <div class="consulting-accordion organization overflow-hidden dp-flex flex-flow-column active" onclick="toggleFold(event, this)">
                     <div class="consulting-accordion-label">
                         <div>
                             조직도
-                            <button type="button" class="ui basic white very mini compact button ml10">선택대화</button>
+                            <c:if test="${activeMessenger}">
+                                <button type="button" class="ui basic white very mini compact button ml10" onclick="messenger.openRoom()">선택대화</button>
+                            </c:if>
                         </div>
                         <div>
                             <i class="material-icons arrow">keyboard_arrow_down</i>
@@ -75,7 +84,7 @@
                                     </div>
                                 </div>
                                 <ul class="treeview-menu consulting-accordion-content">
-                                    <li v-for="(person, j) in team.person" :key="j" class="team-item" onclick="toggleActive(event, this)">
+                                    <li v-for="(person, j) in team.person" :key="j" class="team-item -messenger-user" :data-id="person.id" onclick="toggleActive(event, this)">
                                         <div>
                                             <i class="user outline icon -consultant-login" :data-peer="person.peer" data-logon-class="online"></i>
                                             <span class="user">{{ person.idName }}[{{ person.extension }}]</span>
@@ -145,7 +154,7 @@
         </div>
     </div>
 
-    <c:if test="${serviceKind.equals('SC') && usingServices.contains('CHATT')}">
+    <c:if test="${activeMessenger}">
         <jsp:include page="/messenger"/>
     </c:if>
 
