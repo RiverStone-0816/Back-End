@@ -104,7 +104,6 @@ public class TalkTemplateController extends BaseController {
 
         model.addAttribute("metaTypeLists", metaTypeLists);
 
-        final Map<Integer, String> writeUserId2 =  apiInterface.list(search).stream().collect(Collectors.toMap(TalkTemplateSummaryResponse::getSeq,TalkTemplateSummaryResponse::getWriteUserid));
         final HashSet<String> writeUserId = new HashSet<>();
         pagination.getRows().forEach(e->writeUserId.add(e.getWriteUserName()));
         model.addAttribute("writeUserId", writeUserId);

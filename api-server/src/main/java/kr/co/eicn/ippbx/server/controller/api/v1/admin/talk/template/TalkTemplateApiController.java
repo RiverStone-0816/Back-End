@@ -51,7 +51,6 @@ public class TalkTemplateApiController extends ApiBaseController {
     private final PersonListRepository personListRepository;
     private final CompanyInfoRepository companyInfoRepository;
     private final OrganizationService organizationService;
-
     //리스트
     @GetMapping("list")
     public ResponseEntity<JsonResult<List<TalkTemplateSummaryResponse>>> list() {
@@ -59,12 +58,14 @@ public class TalkTemplateApiController extends ApiBaseController {
         final Map<String, String> companyInfoMap = companyInfoRepository.findAll().stream().collect(Collectors.toMap(CompanyInfo::getCompanyId, CompanyInfo::getCompanyName));
         final Map<String, CompanyTree> companyTreeMap = organizationService.getAllCompanyTrees().stream().collect(Collectors.toMap(CompanyTree::getGroupCode, e -> e));
 
+
         final List<TalkTemplateSummaryResponse> list = repository.list().stream()
                 .map((e) -> {
                     final TalkTemplateSummaryResponse talkTemplateSummaryResponse = convertDto(e, TalkTemplateSummaryResponse.class);
                     talkTemplateSummaryResponse.setWriteUserName(Objects.nonNull(personListMap.get(e.getWriteUserid()))
                             ? personListMap.get(e.getWriteUserid()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
 
+                    talkTemplateSummaryResponse.setTypeGroup(companyTreeMap.get(e.getTypeData()).getGroupTreeName());
                     if (Objects.equals(TalkTemplate.PERSON.getCode(), e.getType()))
 
                         talkTemplateSummaryResponse.setTypeDataName(Objects.nonNull(personListMap.get(e.getTypeData())) ?
@@ -100,6 +101,8 @@ public class TalkTemplateApiController extends ApiBaseController {
                     talkTemplateSummaryResponse.setWriteUserName(Objects.nonNull(personListMap.get(e.getWriteUserid()))
                             ? personListMap.get(e.getWriteUserid()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
 
+
+                    talkTemplateSummaryResponse.setTypeGroup(companyTreeMap.get(e.getTypeData()).getGroupTreeName());
                     if (Objects.equals(TalkTemplate.PERSON.getCode(), e.getType()))
                         talkTemplateSummaryResponse.setTypeDataName(Objects.nonNull(personListMap.get(e.getTypeData())) ?
                                 personListMap.get(e.getTypeData()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());

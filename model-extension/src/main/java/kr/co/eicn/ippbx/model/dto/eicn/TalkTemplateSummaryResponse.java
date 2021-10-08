@@ -7,6 +7,7 @@ public class TalkTemplateSummaryResponse {
     private Integer seq;
     private String  type;
     private String  typeData;
+    private String  typeGroup;
     private String  typeDataName;
     private Integer companyTreeLevel = 0;
     private String  writeUserid;

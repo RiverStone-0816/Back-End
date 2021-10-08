@@ -106,7 +106,7 @@
 </div>
 
 <tags:scripts>
-    <script  >
+    <script>
         function templateSelectPopup() {
             $('#modal-template-select').dragModalShow();
         }
@@ -136,4 +136,3 @@
         });
     </script>
 </tags:scripts>
-<%-- </tags:tabContentLayout>--%>
