@@ -34,8 +34,7 @@
 </div>
 
 <div id="messenger-modal" class="ui modal large ui-resizable ui-draggable show-rooms show-room" style="width: 500px; display: block; position: absolute; left: 335px; top: 265px;">
-    <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent
-         style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
+    <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
         <div class="room" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
             <div class="chat-header" data-act="draggable" :title="roomName">
                 <button type="button" class="ui mini compact icon button" @click="popupInvitationModal">
@@ -249,8 +248,6 @@
         }).mount('#room-list-area')
 
         const messengerModal = document.getElementById('messenger-modal')
-        $(messengerModal).dragModalShow().hide()
-
         const messenger = Vue.createApp({
             setup: function () {
                 return {
@@ -606,6 +603,22 @@
             updated: function () {
             },
             mounted: function () {
+                this.$nextTick(function () {
+                    $(messengerModal)
+                        .resizable({
+                            helper: 'ui-resizable-helper',
+                            minWidth: 500,
+                            minHeight: 500,
+                            start: function () {
+                                $('iframe').css('pointer-events', 'none')
+                            },
+                            stop: function () {
+                                $('iframe').css('pointer-events', 'auto')
+                            }
+                        })
+                        .dragModalShow()
+                        .hide()
+                })
             },
         }).mount(messengerModal)
 
