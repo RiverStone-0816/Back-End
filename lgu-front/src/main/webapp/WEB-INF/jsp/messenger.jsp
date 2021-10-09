@@ -17,7 +17,7 @@
         <ul class="side-room-list-ul">
             <li v-for="(e, i) in roomList" :key="i" class="list" @click="loadRoom(e.roomId)">
                 <div class="header">
-                    <div class="room-name" @click="popupRoomNameModal(e.roomId)">
+                    <div class="room-name" @click.stop="popupRoomNameModal(e.roomId)">
                         <text>{{ e.roomName }}</text>
                     </div>
                     <div class="last-message-time">{{ getRoomLastMessageTimeFormat(e.lastTime) }}</div>
@@ -40,7 +40,7 @@
                 <button type="button" class="ui mini compact icon button" @click="popupInvitationModal">
                     <i class="user plus icon"></i>
                 </button>
-                <text>{{ roomName }}</text>
+                <text @click.stop="popupRoomNameModal" class="room-name">{{ roomName }}</text>
                 <i class="x icon" @click="hide" style="position: absolute; right: 10px; top: 13px;"></i>
             </div>
             <div class="chat-body os-host os-theme-dark os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition os-host-overflow os-host-overflow-y"
@@ -55,11 +55,11 @@
                 <div class="os-padding">
                     <div ref="chatBody" class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
                         <div class="os-content" style="padding: 10px 0 0; height: 100%; width: 100%;">
-                            <div v-for="(e, i) in messages" :key="i">
+                            <div v-for="(e, i) in messageList" :key="i">
                                 <p v-if="['SE', 'RE'].includes(e.sendReceive)" class="info-msg">[{{ getTimeFormat(e.time) }}]</p>
                                 <p v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
                                 <div v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info'" class="chat-item"
-                                     :class="['AF', 'S'].includes(e.sendReceive) && e.userId === userId && 'chat-me'">
+                                     :class="(['AF', 'S'].includes(e.sendReceive) && e.userId === userId && 'chat-me') + ' ' + (activatedSearchingTextMessageId === e.messageId && 'active')">
                                     <div class="wrap-content">
                                         <div class="txt-time">[{{ e.username }}] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
@@ -128,16 +128,17 @@
             </div>
             <div class="write-menu">
                 <div class="dp-flex align-items-center">
-                    <button type="button" class="mini ui button icon compact mr10 -upload-file" title="파일전송"><i class="paperclip icon"></i></button>
+                    <input style="display: none" type="file" @change="sendFile">
+                    <button type="button" class="mini ui button icon compact mr10" onclick="this.previousElementSibling.click()" title="파일전송"><i class="paperclip icon"></i></button>
                     <div class="ui small action input mr10">
-                        <input type="text" placeholder="찾기">
-                        <button class="ui icon button -search-text">
+                        <input type="text" placeholder="찾기" v-model="searchingText">
+                        <button class="ui icon button" @click.stop="searchText">
                             <i class="search icon"></i>
                         </button>
                     </div>
-                    <text data-total="0" data-index="0" class="mr10 -text-count">0/0</text>
-                    <button type="button" class="mini ui button icon compact mr10 -move-to-prev-text"><i class="angle up icon"></i></button>
-                    <button type="button" class="mini ui button icon compact -move-to-next-text"><i class="angle down icon"></i></button>
+                    <text data-total="0" data-index="0" class="mr10">{{ searchingTexts.length && (searchingTextIndex + 1) || 0 }}/{{ searchingTexts.length || 0 }}</text>
+                    <button type="button" class="mini ui button icon compact mr10" @click.stop="moveToPreviousText"><i class="angle up icon"></i></button>
+                    <button type="button" class="mini ui button icon compact" @click.stop="moveToNextText"><i class="angle down icon"></i></button>
                 </div>
                 <div>
                     <button type="button" class="mini ui button compact" @click="leave">나가기</button>
@@ -195,7 +196,7 @@
 
                     delete this.roomMap[roomId]
                 },
-                popupRoomNameModal: function(roomId) {
+                popupRoomNameModal: function (roomId) {
                     prompt('새로운 채팅방이름을 입력하시오.').done(function (text) {
                         restSelf.put('/api/chatt/' + roomId + '/room-name?newRoomName=' + encodeURIComponent(text)).done(function () {
                             messengerCommunicator.changeRoomName(roomId, text);
@@ -233,7 +234,7 @@
                 },
                 readMessages: function (roomId) {
                     this.roomMap[roomId] && (this.roomMap[roomId].unreadMessageTotalCount = 0)
-                }
+                },
             },
             updated: function () {
                 if (this.hasUnreadMessage())
@@ -246,12 +247,13 @@
             },
         }).mount('#room-list-area')
 
-        $('#messenger-modal').dragModalShow()
+        const messengerModal = document.getElementById('messenger-modal')
+        $(messengerModal).dragModalShow().hide()
 
         const messenger = Vue.createApp({
             setup: function () {
                 return {
-                    READ_LIMIT: 100,
+                    READ_LIMIT: 5,
                     userId: userId,
                 }
             },
@@ -262,13 +264,19 @@
                     templates: [],
                     replying: null,
 
+                    searchingText: '',
+                    searchingTexts: [],
+                    searchingTextIndex: 0,
+                    activatedSearchingTextMessageId: null,
+
                     startMessageTime: null,
                     startMessageId: null,
                     endMessageTime: null,
                     endMessageId: null,
 
                     members: {},
-                    messages: [],
+                    messageMap: {},
+                    messageList: [],
 
                     bodyScrollingTimer: null
                 }
@@ -281,9 +289,11 @@
                         _this.roomName = response.data.roomName
                         _this.members = {}
                         response.data.chattingMembers.forEach(function (e) {
+                            if (e.userid === userId)
+                                return
                             _this.members[e.userid] = e
                         })
-                        _this.messages = []
+                        _this.messageList = []
                         response.data.chattingMessages.forEach(function (e) {
                             _this.appendMessage({
                                 roomId: e.roomId,
@@ -298,15 +308,50 @@
                             })
                         })
 
-                        _this.startMessageTime = _this.messages[0] && _this.messages[0].time
-                        _this.startMessageId = _this.messages[0] && _this.messages[0].messageId
-                        _this.endMessageTime = _this.messages[0] && _this.messages[_this.messages.length - 1].time
-                        _this.endMessageId = _this.messages[0] && _this.messages[_this.messages.length - 1].messageId
+                        _this.startMessageTime = _this.messageList[0] && _this.messageList[0].time
+                        _this.startMessageId = _this.messageList[0] && _this.messageList[0].messageId
+                        _this.endMessageTime = _this.messageList[0] && _this.messageList[_this.messageList.length - 1].time
+                        _this.endMessageId = _this.messageList[0] && _this.messageList[_this.messageList.length - 1].messageId
 
                         if (_this.endMessageId)
                             messengerCommunicator.confirmMessage(roomId, _this.endMessageId)
 
-                        $(this.$el).parent().show()
+                        _this.searchingText = ''
+                        _this.searchingTexts = []
+                        _this.searchingTextIndex = 0
+                        this.activatedSearchingTextMessageId = null
+
+                        $(messengerModal).show()
+                    })
+                },
+                loadAdditionalMessages: function (endMessageId, limit) {
+                    const _this = this
+
+                    const form = {}
+                    if (this.startMessageId) form.startMessageId = this.startMessageId
+                    if (this.endMessageId) form.endMessageId =  endMessageId
+                    if (this.limit) form.limit =  limit
+
+                    restSelf.get('/api/chatt/'+ this.roomId + '/chatting', form).done(function (response) {
+                        response.data.chattingMessages.forEach(function (e) {
+                            _this.appendMessage({
+                                roomId: e.roomId,
+                                messageId: e.messageId,
+                                time: e.insertTime,
+                                messageType: e.type,
+                                sendReceive: e.sendReceive,
+                                contents: e.content,
+                                userId: e.userid,
+                                username: e.userName,
+                                unreadCount: e.unreadMessageCount
+                            })
+                        })
+
+                        _this.endMessageTime = _this.messageList[0] && _this.messageList[_this.messageList.length - 1].time
+                        _this.endMessageId = _this.messageList[0] && _this.messageList[_this.messageList.length - 1].messageId
+
+                        if (_this.endMessageId)
+                            messengerCommunicator.confirmMessage(roomId, _this.endMessageId)
                     })
                 },
                 openRoom: function () {
@@ -317,13 +362,25 @@
                             userIds.push(id)
                     })
 
+                    if (userIds.length === 1)
+                        return
+
                     const _this = this
                     restSelf.post('/api/chatt/', {memberList: userIds}).done(function (response) {
-                        _this.loadRoom(response.data);
-                    });
+                        _this.loadRoom(response.data)
+                    })
+                },
+                popupRoomNameModal: function () {
+                    const roomId = this.roomId
+                    prompt('새로운 채팅방이름을 입력하시오.').done(function (text) {
+                        restSelf.put('/api/chatt/' + roomId + '/room-name?newRoomName=' + encodeURIComponent(text)).done(function () {
+                            messengerCommunicator.changeRoomName(roomId, text)
+                        })
+                    })
                 },
                 hide: function () {
-                    $(this.$el).parent().hide()
+                    this.roomId = null
+                    $(messengerModal).hide()
                 },
                 leave: function () {
                     const _this = this
@@ -335,8 +392,83 @@
                         })
                     })
                 },
+                leaveMember: function (roomId, userId) {
+                    if (this.roomId !== roomId)
+                        return
+
+                    if (this.userId === userId)
+                        return this.leave()
+
+                    delete this.members[userId]
+
+                    this.updateMessageReadCount()
+                },
                 popupInvitationModal: function () {
                     // todo
+                },
+                searchText: function () {
+                    if (!this.searchingText)
+                        return
+                    const _this = this
+                    restSelf.get('/api/chatt/' + this.roomId + '/chatting', {message: this.searchingText, /*limit: this.READ_LIMIT*/}).done(function (response) {
+                        response.data.chattingMessages.sort(function (a, b) {
+                            return b.insertTime - a.insertTime;
+                        })
+                        response.data.chattingMessages.forEach(function (e) {
+                            _this.searchingTexts.push({messageId: e.messageId, time: e.insertTime})
+                        })
+                        _this.moveToText(0)
+                    })
+                },
+                moveToText: function (index) {
+                    if (!this.searchingTexts.length)
+                        return
+
+                    this.searchingTextIndex = (index + this.searchingTexts.length) % this.searchingTexts.length
+                    if (!$.isNumeric(this.searchingTextIndex))
+                        this.searchingTextIndex = 0
+
+                    this.activatedSearchingTextMessageId = this.searchingTexts[this.searchingTextIndex].messageId
+
+                    if (!this.messageMap[this.activatedSearchingTextMessageId])
+                        this.loadAdditionalMessages(this.activatedSearchingTextMessageId)
+                },
+                moveToNextText: function () {
+                    this.moveToText(this.searchingTextIndex - 1)
+                },
+                moveToPreviousText: function () {
+                    this.moveToText(this.searchingTextIndex + 1)
+                },
+                updateMessageReadCount: function () {
+                    const _this = this
+                    const memberIds = keys(this.members)
+                    const lastReadMessageTimesOfEachMember = {}
+                    memberIds.forEach(function (userId) {
+                        console.log(userId, _this.members[userId].lastReadMessageId)
+
+                        const lastReadMessageId = _this.members[userId].lastReadMessageId
+                        lastReadMessageTimesOfEachMember[userId] = lastReadMessageId && _this.messageMap[lastReadMessageId]
+                            ? _this.messageMap[lastReadMessageId].time
+                            : (_this.startMessageTime || 0)
+                    })
+
+                    const lastReadMessageTimes = values(lastReadMessageTimesOfEachMember)
+                    lastReadMessageTimes.sort(function (a, b) {
+                        return a - b
+                    })
+
+                    function getIndexInLastReadMessageTimes(time) {
+                        for (let i = 0; i < lastReadMessageTimes.length; i++)
+                            if (time <= lastReadMessageTimes[i])
+                                return i
+                        return lastReadMessageTimes.length
+                    }
+
+                    for (let i = this.messageList.length - 1; i >= 0; i--) {
+                        this.messageList[i].unreadCount = getIndexInLastReadMessageTimes(this.messageList[i].time)
+                        if (!this.messageList[i].unreadCount)
+                            break
+                    }
                 },
                 getTimeFormat: function (time) {
                     return moment(time).format('MM-DD HH:mm')
@@ -349,6 +481,9 @@
                     if (confirm)
                         messengerCommunicator.confirmMessage(message.roomId, message.messageId)
 
+                    if (this.members[message.userId])
+                        this.members[message.userId].lastReadMessageId = this.members[message.userId].lastReadMessageId > message.messageId ? this.members[message.userId].lastReadMessageId : message.messageId
+
                     if (message.messageType === 'file') {
                         const split = /^([^|]+)\|([^|]+)\|([^|]+)\|([^|]+)$/.exec(message.contents)
                         message.fileType = split[1].endsWith('g') ? 'image'
@@ -359,23 +494,28 @@
                         message.fileSize = split && split[3] || ''
                     }
 
-                    if (this.messages.length === 0)
-                        return this.messages.push(message)
+                    if (this.messageList.length === 0) {
+                        this.messageMap[message.messageId] = message
+                        return this.messageList.push(message)
+                    }
 
-                    if (this.messages[0].time >= message.time)
-                        return this.messages.splice(0, 0, message)
+                    if (this.messageList[0].time >= message.time)
+                        return this.messageList.splice(0, 0, message)
 
-                    if (this.messages[this.messages.length - 1].time <= message.time) {
+                    if (this.messageList[this.messageList.length - 1].time <= message.time) {
                         const _this = this
                         if (this.bodyScrollingTimer) clearTimeout(this.bodyScrollingTimer)
                         this.bodyScrollingTimer = setTimeout(function () {
                             _this.$refs.chatBody.scroll({top: _this.$refs.chatBody.scrollHeight})
                         }, 100)
-                        return this.messages.push(message)
+
+                        this.messageMap[message.messageId] = message
+                        return this.messageList.push(message)
                     }
 
-                    this.messages.push(message)
-                    this.messages.sort(function (a, b) {
+                    this.messageMap[message.messageId] = message
+                    this.messageList.push(message)
+                    this.messageList.sort(function (a, b) {
                         return a.time - b.time
                     })
                 },
@@ -388,13 +528,34 @@
                         return
                     messengerCommunicator.sendMessage(this.roomId, message)
                     this.$refs.message.value = ''
-                }
+                },
+                confirmRead: function (roomId, userId, messageId) {
+                    if (this.roomId !== roomId)
+                        return
+
+                    if (this.members[userId]) {
+                        this.members[userId].lastReadMessageId = messageId
+                        this.updateMessageReadCount()
+                    }
+                },
+                sendFile: function (event) {
+                    const file = event.target.files[0]
+                    event.target.value = null
+
+                    if (!file || !file.name)
+                        return
+
+                    const _this = this
+                    uploadFile(file).done(function (response) {
+                        restSelf.post('/api/chatt/' + _this.roomId + '/upload-file', {filePath: response.data.filePath, originalName: response.data.originalName})
+                    })
+                },
             },
             updated: function () {
             },
             mounted: function () {
             },
-        }).mount('#messenger-modal')
+        }).mount(messengerModal)
 
         function receiveMessage(data) {
             roomList.receiveMessage(
@@ -414,6 +575,8 @@
                 username: data.username,
                 unreadCount: parseInt(data.member_cnt) - 1
             }, true)
+
+            messenger.changeRoomName(data.room_id, data.room_name)
         }
 
         const messengerCommunicator = new MessengerCommunicator()
@@ -423,12 +586,15 @@
                 messengerCommunicator.join(data.room_id);
             }).on('svc_invite_room', function (data) {
             }).on('svc_leave_room', function (data) {
+                if (userId === data.leave_userid)
+                    roomList.removeRoom(data.room_id)
+
+                messenger(data.room_id, data.leave_userid)
             }).on('svc_read_confirm', function (data) {
+                messenger.confirmRead(data.room_id, data.userid, data.last_read_message_id)
             }).on('svc_roomname_change', function (data) {
-                const roomId = data.room_id
-                const roomName = data.change_room_name
-                roomList.changeRoomName(roomId, roomName)
-                messenger.changeRoomName(roomId, roomName)
+                roomList.changeRoomName(data.room_id, data.change_room_name)
+                messenger.changeRoomName(data.room_id, data.change_room_name)
             })
 
         restSelf.get('/api/auth/socket-info').done(function (response) {

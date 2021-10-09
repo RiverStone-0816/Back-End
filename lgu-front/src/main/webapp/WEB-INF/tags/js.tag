@@ -29,7 +29,7 @@
 
 <script src="<c:url value="/resources/vendors/highlight/1.0.0/jQuery.highlight.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/moment-lunar/moment-lunar.min.js?version=${version}"/>" data-type="library"></script>
-<script src="<c:url value="/resources/vendors/socket.io/2.1.1/socket.io.js?version=${version}"/>"></script>
+<script src="<c:url value="/resources/vendors/socket.io/2.3.1/socket.io.slim.js?version=${version}"/>"></script>
 <script src="<c:url value="/resources/vendors/sha512.js?version=${version}"/>"></script>
 
 <script src="<c:url value="/resources/vendors/flexslider/2.7.2/jquery.flexslider.js?version=${version}"/>" data-type="library"></script>

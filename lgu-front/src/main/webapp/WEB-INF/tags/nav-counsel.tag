@@ -30,18 +30,18 @@
         <div class="organization-area-inner">
             <div class="sidebar-menu-container">
                 <c:if test="${activeMessenger}">
-                    <div class="consulting-accordion favorite active" onclick="toggleFold(event, this)">
+                    <div id="bookmark-list" class="consulting-accordion favorite active" onclick="toggleFold(event, this)">
                         <div class="consulting-accordion-label">
                             <div>
                                 즐겨찾기
-                                <button type="button" class="ui basic white very mini compact button ml10" onclick="event.stopPropagation(); popupBookmarkModal();">편집</button>
+                                <button type="button" class="ui basic white very mini compact button ml10" @click.stop="popupBookmarkModal">편집</button>
                             </div>
                             <div>
                                 <i class="material-icons arrow">keyboard_arrow_down</i>
                             </div>
                         </div>
                         <div class="consulting-accordion-content">
-                            <ul class="treeview-menu treeview-on consulting-accordion-content favorite overflow-overlay" id="bookmark-list">
+                            <ul class="treeview-menu treeview-on consulting-accordion-content favorite overflow-overlay">
                                 <li v-if="!list.length" class="empty">등록된 즐겨찾기가 없습니다.</li>
                                 <li v-else v-for="(e, i) in list" :key="i" style="cursor: pointer" class="-messenger-user" :data-id="e.id" onclick="toggleActive(event, this)">
                                     <div>
@@ -59,12 +59,12 @@
                         </div>
                     </div>
                 </c:if>
-                <div class="consulting-accordion organization overflow-hidden dp-flex flex-flow-column active" onclick="toggleFold(event, this)">
+                <div id="team-list" class="consulting-accordion organization overflow-hidden dp-flex flex-flow-column active" onclick="toggleFold(event, this)">
                     <div class="consulting-accordion-label">
                         <div>
                             조직도
                             <c:if test="${activeMessenger}">
-                                <button type="button" class="ui basic white very mini compact button ml10" onclick="messenger.openRoom()">선택대화</button>
+                                <button type="button" class="ui basic white very mini compact button ml10" @click.stop="openRoom">선택대화</button>
                             </c:if>
                         </div>
                         <div>
@@ -72,7 +72,7 @@
                         </div>
                     </div>
                     <div class="consulting-accordion-content overflow-overlay flex-100">
-                        <ul class="side-organization-ul" id="team-list">
+                        <ul class="side-organization-ul">
                             <li v-for="(team, i) in teams" :key="i" class="consulting-accordion active" onclick="toggleFold(event, this)">
                                 <div class="consulting-accordion-label team">
                                     <div class="left">
@@ -199,6 +199,9 @@
                 popupNoteModal: function (person) {
                     noteSendPopup(person.extension, person.idName)
                 },
+                openRoom: function () {
+                    messenger.openRoom()
+                }
             },
             updated: function () {
                 updatePersonStatus()
@@ -228,6 +231,15 @@
                 redirectTo: function (extension) {
                     ipccCommunicator.redirect(extension)
                 },
+                popupBookmarkModal: function () {
+                    const _this = this
+                    popupReceivedHtml('/modal-messenger-bookmark', 'modal-messenger-bookmark').done(function () {
+                        window.doneSubmitBookmarkFormData = function () {
+                            $('#modal-messenger-bookmark').find('.modal-close:first').click()
+                            _this.load()
+                        }
+                    })
+                }
             },
             updated: function () {
                 updatePersonStatus()
@@ -236,14 +248,5 @@
                 this.load()
             },
         }).mount('#bookmark-list')
-
-        function popupBookmarkModal() {
-            popupReceivedHtml('/modal-messenger-bookmark', 'modal-messenger-bookmark').done(function () {
-                window.doneSubmitBookmarkFormData = function () {
-                    $('#modal-messenger-bookmark').find('.modal-close:first').click()
-                    bookmarkList.load()
-                }
-            })
-        }
     </script>
 </tags:scripts>
