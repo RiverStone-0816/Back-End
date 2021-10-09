@@ -79,12 +79,12 @@
                                             </div>
                                             <div v-if="e.userId !== userId" class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
-                                                    <button type="button" class="button-reply" data-inverted="" data-tooltip="답장 달기" data-position="bottom center"></button>
-                                                    <button type="button" onclick="messengerTemplatePopup()" class="button-template" data-inverted="" data-tooltip="템플릿 만들기"
+                                                    <button type="button" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="bottom center"></button>
+                                                    <button type="button" onclick="messengerTemplatePopup()" class="button-template" data-inverted data-tooltip="템플릿 만들기"
                                                             data-position="bottom center"></button>
-                                                    <button type="button" class="button-knowledge" data-inverted="" data-tooltip="지식관리 호출" data-position="bottom center"
-                                                            onclick="knowledgeCall();"></button>
-                                                    <button type="button" class="button-sideview" data-inverted="" data-tooltip="사이드 뷰" data-position="bottom center"></button>
+                                                    <button type="button" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="bottom center"
+                                                            onclick="knowledgeCall()"></button>
+                                                    <%--<button type="button" class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
                                                 </div>
                                             </div>
                                         </div>
@@ -147,7 +147,7 @@
             </div>
             <div class="wrap-inp">
                 <div class="inp-box">
-                    <textarea placeholder="전송하실 메시지를 입력하세요." ref="message"></textarea>
+                    <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteClipboardImage"></textarea>
                 </div>
                 <button type="button" class="send-btn" @click="sendMessage">전송</button>
             </div>
@@ -594,6 +594,14 @@
                         })
                     }
                 },
+                pasteClipboardFiles: function (event) {
+                    const _this = this
+                    for (let i = 0; i < event.clipboardData.items.length; i++) {
+                        uploadFile(event.clipboardData.items[i].getAsFile()).done(function (response) {
+                            restSelf.post('/api/chatt/' + _this.roomId + '/upload-file', {filePath: response.data.filePath, originalName: response.data.originalName})
+                        })
+                    }
+                }
             },
             updated: function () {
             },
