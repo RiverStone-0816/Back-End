@@ -53,9 +53,9 @@
                 </div>
                 <div class="os-content-glue" style="margin: -10px 0 0; width: 497px; height: 397px;"></div>
                 <div class="os-padding">
-                    <div ref="chatBody" class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
+                    <div ref="chatBody" class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll; scroll-behavior: smooth;">
                         <div class="os-content" style="padding: 10px 0 0; height: 100%; width: 100%;">
-                            <div v-for="(e, i) in messageList" :key="i">
+                            <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + e.messageId">
                                 <p v-if="['SE', 'RE'].includes(e.sendReceive)" class="info-msg">[{{ getTimeFormat(e.time) }}]</p>
                                 <p v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
                                 <div v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info'" class="chat-item"
@@ -253,7 +253,7 @@
         const messenger = Vue.createApp({
             setup: function () {
                 return {
-                    READ_LIMIT: 5,
+                    READ_LIMIT: 100,
                     userId: userId,
                 }
             },
@@ -307,6 +307,7 @@
                                 unreadCount: e.unreadMessageCount
                             })
                         })
+                        _this.scrollToBottom()
 
                         _this.startMessageTime = _this.messageList[0] && _this.messageList[0].time
                         _this.startMessageId = _this.messageList[0] && _this.messageList[0].messageId
@@ -319,7 +320,7 @@
                         _this.searchingText = ''
                         _this.searchingTexts = []
                         _this.searchingTextIndex = 0
-                        this.activatedSearchingTextMessageId = null
+                        _this.activatedSearchingTextMessageId = null
 
                         $(messengerModal).show()
                     })
@@ -329,10 +330,10 @@
 
                     const form = {}
                     if (this.startMessageId) form.startMessageId = this.startMessageId
-                    if (this.endMessageId) form.endMessageId =  endMessageId
-                    if (this.limit) form.limit =  limit
+                    if (this.endMessageId) form.endMessageId = endMessageId
+                    if (this.limit) form.limit = limit
 
-                    restSelf.get('/api/chatt/'+ this.roomId + '/chatting', form).done(function (response) {
+                    return restSelf.get('/api/chatt/' + this.roomId + '/chatting', form).done(function (response) {
                         response.data.chattingMessages.forEach(function (e) {
                             _this.appendMessage({
                                 roomId: e.roomId,
@@ -410,7 +411,12 @@
                     if (!this.searchingText)
                         return
                     const _this = this
-                    restSelf.get('/api/chatt/' + this.roomId + '/chatting', {message: this.searchingText, /*limit: this.READ_LIMIT*/}).done(function (response) {
+                    restSelf.get('/api/chatt/' + this.roomId + '/chatting', {message: this.searchingText, limit: this.READ_LIMIT}).done(function (response) {
+                        _this.searchingText = ''
+                        _this.searchingTexts = []
+                        _this.searchingTextIndex = 0
+                        _this.activatedSearchingTextMessageId = null
+
                         response.data.chattingMessages.sort(function (a, b) {
                             return b.insertTime - a.insertTime;
                         })
@@ -430,8 +436,18 @@
 
                     this.activatedSearchingTextMessageId = this.searchingTexts[this.searchingTextIndex].messageId
 
-                    if (!this.messageMap[this.activatedSearchingTextMessageId])
-                        this.loadAdditionalMessages(this.activatedSearchingTextMessageId)
+                    if (!this.messageMap[this.activatedSearchingTextMessageId]) {
+                        const _this = this
+                        this.loadAdditionalMessages(this.activatedSearchingTextMessageId).done(function () {
+                            _this.$nextTick(function () {
+                                const e = _this.$refs['message-' + _this.activatedSearchingTextMessageId]
+                                _this.scrollTo(e.getBoundingClientRect().y - e.parentElement.getBoundingClientRect().y)
+                            })
+                        })
+                    } else {
+                        const e = this.$refs['message-' + this.activatedSearchingTextMessageId]
+                        this.scrollTo(e.getBoundingClientRect().y - e.parentElement.getBoundingClientRect().y)
+                    }
                 },
                 moveToNextText: function () {
                     this.moveToText(this.searchingTextIndex - 1)
@@ -503,12 +519,7 @@
                         return this.messageList.splice(0, 0, message)
 
                     if (this.messageList[this.messageList.length - 1].time <= message.time) {
-                        const _this = this
-                        if (this.bodyScrollingTimer) clearTimeout(this.bodyScrollingTimer)
-                        this.bodyScrollingTimer = setTimeout(function () {
-                            _this.$refs.chatBody.scroll({top: _this.$refs.chatBody.scrollHeight})
-                        }, 100)
-
+                        this.scrollToBottom()
                         this.messageMap[message.messageId] = message
                         return this.messageList.push(message)
                     }
@@ -517,6 +528,28 @@
                     this.messageList.push(message)
                     this.messageList.sort(function (a, b) {
                         return a.time - b.time
+                    })
+                },
+                scrollTo: function (y) {
+                    if (this.bodyScrollingTimer)
+                        clearTimeout(this.bodyScrollingTimer)
+
+                    const _this = this
+                    this.$nextTick(function () {
+                        _this.bodyScrollingTimer = setTimeout(function () {
+                            _this.$refs.chatBody.scroll({top: y})
+                        }, 100)
+                    })
+                },
+                scrollToBottom: function () {
+                    if (this.bodyScrollingTimer)
+                        clearTimeout(this.bodyScrollingTimer)
+
+                    const _this = this
+                    this.$nextTick(function () {
+                        _this.bodyScrollingTimer = setTimeout(function () {
+                            _this.$refs.chatBody.scroll({top: _this.$refs.chatBody.scrollHeight})
+                        }, 100)
                     })
                 },
                 changeRoomName: function (roomId, roomName) {
