@@ -78,7 +78,7 @@
                                             </div>
                                             <div v-if="e.userId !== userId" class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
-                                                    <button @click="reply = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="bottom center"></button>
+                                                    <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="bottom center"></button>
                                                     <button onclick="messengerTemplatePopup()" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="bottom center"></button>
                                                     <button class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="bottom center" onclick="knowledgeCall()"></button>
                                                     <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
