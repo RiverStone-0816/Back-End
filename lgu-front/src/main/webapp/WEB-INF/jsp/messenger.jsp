@@ -34,7 +34,8 @@
 </div>
 
 <div id="messenger-modal" class="ui modal large ui-resizable ui-draggable show-rooms show-room" style="width: 500px; display: block; position: absolute; left: 335px; top: 265px;">
-    <div class="chat-container" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
+    <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent
+         style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
         <div class="room" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
             <div class="chat-header" data-act="draggable" :title="roomName">
                 <button type="button" class="ui mini compact icon button" @click="popupInvitationModal">
@@ -582,6 +583,16 @@
                     uploadFile(file).done(function (response) {
                         restSelf.post('/api/chatt/' + _this.roomId + '/upload-file', {filePath: response.data.filePath, originalName: response.data.originalName})
                     })
+                },
+                dropFiles: function (event) {
+                    if (!event.dataTransfer)
+                        return
+                    const _this = this
+                    for (let i = 0; i < event.dataTransfer.files.length; i++) {
+                        uploadFile(event.dataTransfer.files[i]).done(function (response) {
+                            restSelf.post('/api/chatt/' + _this.roomId + '/upload-file', {filePath: response.data.filePath, originalName: response.data.originalName})
+                        })
+                    }
                 },
             },
             updated: function () {
