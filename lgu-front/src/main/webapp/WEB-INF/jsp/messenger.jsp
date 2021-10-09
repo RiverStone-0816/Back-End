@@ -34,10 +34,10 @@
 </div>
 
 <div id="messenger-modal" class="ui modal large ui-resizable ui-draggable show-rooms show-room" style="width: 500px; display: block; position: absolute; left: 335px; top: 265px;">
-    <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent @click="showingTemplates = false" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
+    <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent @click.stop="showingTemplates = false" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
         <div class="room" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
             <div class="chat-header" data-act="draggable" :title="roomName">
-                <button type="button" class="ui mini compact icon button" @click="popupInvitationModal">
+                <button class="ui mini compact icon button" @click="popupInvitationModal">
                     <i class="user plus icon"></i>
                 </button>
                 <text @click="popupRoomNameModal" class="room-name">{{ roomName }}</text>
@@ -78,12 +78,10 @@
                                             </div>
                                             <div v-if="e.userId !== userId" class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
-                                                    <button type="button" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="bottom center"></button>
-                                                    <button type="button" onclick="messengerTemplatePopup()" class="button-template" data-inverted data-tooltip="템플릿 만들기"
-                                                            data-position="bottom center"></button>
-                                                    <button type="button" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="bottom center"
-                                                            onclick="knowledgeCall()"></button>
-                                                    <%--<button type="button" class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
+                                                    <button @click="reply = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="bottom center"></button>
+                                                    <button onclick="messengerTemplatePopup()" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="bottom center"></button>
+                                                    <button class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="bottom center" onclick="knowledgeCall()"></button>
+                                                    <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
                                                 </div>
                                             </div>
                                         </div>
@@ -117,10 +115,10 @@
                     </ul>
                 </div>
             </div>
-            <div class="view-to-reply" v-if="replying">
+            <div v-if="replying !== null" class="view-to-reply">
                 <div class="target-text">
-                    <p class="target-user">{{ replying.to }}에게 답장</p>
-                    <p class="target-content">{{ replying.message }}</p>
+                    <p class="target-user">{{ replying.username }}에게 답장</p>
+                    <p class="target-content">{{ replying.contents }}</p>
                 </div>
                 <div class="target-close" @click="replying=null">
                     <img src="<c:url value="/resources/images/icon-close.svg"/>">
@@ -623,8 +621,11 @@
                         return
                     }
 
-                    if (this.showingTemplates && event.key === 'Escape')
-                        return this.showingTemplates = false
+                    if (event.key === 'Escape') {
+                        this.showingTemplates = false
+                        this.replying = null
+                        return
+                    }
 
                     if (this.showingTemplates && this.templates.length > 0 && event.key === 'ArrowDown') {
                         if (this.activatingTemplateIndex === null)
@@ -646,7 +647,7 @@
                         this.showingTemplates = false
                         // TODO: send image
                     }
-                }
+                },
             },
             updated: function () {
             },
