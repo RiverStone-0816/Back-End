@@ -251,7 +251,7 @@
         const messenger = Vue.createApp({
             setup: function () {
                 return {
-                    READ_LIMIT: 5,
+                    READ_LIMIT: 100,
                     userId: userId,
                 }
             },
