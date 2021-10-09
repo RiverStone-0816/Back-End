@@ -34,13 +34,13 @@
 </div>
 
 <div id="messenger-modal" class="ui modal large ui-resizable ui-draggable show-rooms show-room" style="width: 500px; display: block; position: absolute; left: 335px; top: 265px;">
-    <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
+    <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent @click="showingTemplates = false" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
         <div class="room" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
             <div class="chat-header" data-act="draggable" :title="roomName">
                 <button type="button" class="ui mini compact icon button" @click="popupInvitationModal">
                     <i class="user plus icon"></i>
                 </button>
-                <text @click.stop="popupRoomNameModal" class="room-name">{{ roomName }}</text>
+                <text @click="popupRoomNameModal" class="room-name">{{ roomName }}</text>
                 <i class="x icon" @click="hide" style="position: absolute; right: 10px; top: 13px;"></i>
             </div>
             <div class="chat-body os-host os-theme-dark os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition os-host-overflow os-host-overflow-y"
@@ -107,11 +107,11 @@
             </div>
         </div>
         <div class="write-chat" style="position: absolute; bottom: 0;">
-            <div class="template-container" style="display: none;">
+            <div v-if="showingTemplates" class="template-container">
                 <div class="template-container-inner">
                     <ul class="template-ul">
-                        <li v-for="(e, i) in templates" :key="i" class="template-list">
-                            <div class="template-title">/{{ e.keyword }}</div>
+                        <li v-for="(e, i) in templates" :key="i" :class="i === activatingTemplateIndex && 'active'" @click.stop="sendMessage(e.text)" class="template-list">
+                            <div class="template-title">/{{ e.name }}</div>
                             <div class="template-content">{{ e.text }}</div>
                         </li>
                     </ul>
@@ -146,7 +146,7 @@
             </div>
             <div class="wrap-inp">
                 <div class="inp-box">
-                    <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteClipboardImage"></textarea>
+                    <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteClipboardImage" @keyup.stop="keyup"></textarea>
                 </div>
                 <button type="button" class="send-btn" @click="sendMessage">전송</button>
             </div>
@@ -259,7 +259,11 @@
                 return {
                     roomId: null,
                     roomName: '',
-                    templates: [],
+
+                    showingTemplates: false,
+                    activatingTemplateIndex: null,
+                    templates: [{name: 'aaa', text: '인사말입니다.'}, {name: 'bbb', text: '인사말입니다.222'}, {name: 'ccc', text: '인사말입니다.3333'},],
+
                     replying: null,
 
                     searchingText: '',
@@ -566,12 +570,12 @@
                 changeRoomName: function (roomId, roomName) {
                     this.roomId === roomId && (this.roomName = roomName)
                 },
-                sendMessage: function () {
-                    const message = this.$refs.message.value
-                    if (!message)
-                        return
+                sendMessage: function (message) {
+                    if (!message) message = this.$refs.message.value
+                    if (!message) return
                     messengerCommunicator.sendMessage(this.roomId, message)
                     this.$refs.message.value = ''
+                    this.showingTemplates = false
                 },
                 confirmRead: function (roomId, userId, messageId) {
                     if (this.roomId !== roomId)
@@ -610,6 +614,37 @@
                         uploadFile(event.clipboardData.items[i].getAsFile()).done(function (response) {
                             restSelf.post('/api/chatt/' + _this.roomId + '/upload-file', {filePath: response.data.filePath, originalName: response.data.originalName})
                         })
+                    }
+                },
+                keyup: function (event) {
+                    if (event.key === '/' && this.$refs.message.value === '/' && this.templates.length > 0) {
+                        this.showingTemplates = true
+                        this.activatingTemplateIndex = null
+                        return
+                    }
+
+                    if (this.showingTemplates && event.key === 'Escape')
+                        return this.showingTemplates = false
+
+                    if (this.showingTemplates && this.templates.length > 0 && event.key === 'ArrowDown') {
+                        if (this.activatingTemplateIndex === null)
+                            return this.activatingTemplateIndex = 0
+
+                        return this.activatingTemplateIndex = (this.activatingTemplateIndex + 1) % this.templates.length
+                    }
+
+                    if (this.showingTemplates && this.templates.length > 0 && event.key === 'ArrowUp') {
+                        if (this.activatingTemplateIndex === null)
+                            return this.activatingTemplateIndex = this.templates.length - 1
+
+                        return this.activatingTemplateIndex = (this.activatingTemplateIndex - 1 + this.templates.length) % this.templates.length
+                    }
+
+                    if (this.showingTemplates && this.templates[this.activatingTemplateIndex] && event.key === 'Enter') {
+                        messengerCommunicator.sendMessage(this.roomId, this.templates[this.activatingTemplateIndex].text)
+                        this.$refs.message.value = ''
+                        this.showingTemplates = false
+                        // TODO: send image
                     }
                 }
             },
