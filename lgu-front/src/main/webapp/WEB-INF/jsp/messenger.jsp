@@ -53,7 +53,7 @@
                 </div>
                 <div class="os-content-glue" style="margin: -10px 0 0; width: 497px; height: 397px;"></div>
                 <div class="os-padding">
-                    <div ref="chatBody" class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll; scroll-behavior: smooth;">
+                    <div ref="chatBody" @scroll="loadAdditionalMessagesIfTop" class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll; scroll-behavior: smooth;">
                         <div class="os-content" style="padding: 10px 0 0; height: 100%; width: 100%;">
                             <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + e.messageId">
                                 <p v-if="['SE', 'RE'].includes(e.sendReceive)" class="info-msg">[{{ getTimeFormat(e.time) }}]</p>
@@ -251,7 +251,7 @@
         const messenger = Vue.createApp({
             setup: function () {
                 return {
-                    READ_LIMIT: 100,
+                    READ_LIMIT: 5,
                     userId: userId,
                 }
             },
@@ -276,7 +276,8 @@
                     messageMap: {},
                     messageList: [],
 
-                    bodyScrollingTimer: null
+                    bodyScrollingTimer: null,
+                    messageLoading: false,
                 }
             },
             methods: {
@@ -291,6 +292,7 @@
                                 return
                             _this.members[e.userid] = e
                         })
+                        _this.messageMap = {}
                         _this.messageList = []
                         response.data.chattingMessages.forEach(function (e) {
                             _this.appendMessage({
@@ -323,15 +325,13 @@
                         $(messengerModal).show()
                     })
                 },
-                loadAdditionalMessages: function (endMessageId, limit) {
+                loadAdditionalMessages: function (option) {
                     const _this = this
 
-                    const form = {}
-                    if (this.startMessageId) form.startMessageId = this.startMessageId
-                    if (this.endMessageId) form.endMessageId = endMessageId
-                    if (this.limit) form.limit = limit
+                    option = option || {}
+                    if (this.startMessageId) option.startMessageId = this.startMessageId
 
-                    return restSelf.get('/api/chatt/' + this.roomId + '/chatting', form).done(function (response) {
+                    return restSelf.get('/api/chatt/' + this.roomId + '/chatting', option).done(function (response) {
                         response.data.chattingMessages.forEach(function (e) {
                             _this.appendMessage({
                                 roomId: e.roomId,
@@ -346,11 +346,23 @@
                             })
                         })
 
+                        _this.startMessageTime = _this.messageList[0] && _this.messageList[0].time
+                        _this.startMessageId = _this.messageList[0] && _this.messageList[0].messageId
                         _this.endMessageTime = _this.messageList[0] && _this.messageList[_this.messageList.length - 1].time
                         _this.endMessageId = _this.messageList[0] && _this.messageList[_this.messageList.length - 1].messageId
 
                         if (_this.endMessageId)
                             messengerCommunicator.confirmMessage(roomId, _this.endMessageId)
+                    })
+                },
+                loadAdditionalMessagesIfTop: function () {
+                    if (this.$refs.chatBody.scrollTop) return
+                    if (this.messageLoading) return
+
+                    const _this = this
+                    this.messageLoading = true
+                    this.loadAdditionalMessages({limit: this.READ_LIMIT}).done(function () {
+                        _this.messageLoading = false
                     })
                 },
                 openRoom: function () {
@@ -436,7 +448,7 @@
 
                     if (!this.messageMap[this.activatedSearchingTextMessageId]) {
                         const _this = this
-                        this.loadAdditionalMessages(this.activatedSearchingTextMessageId).done(function () {
+                        this.loadAdditionalMessages({endMessageId: this.activatedSearchingTextMessageId}).done(function () {
                             _this.$nextTick(function () {
                                 const e = _this.$refs['message-' + _this.activatedSearchingTextMessageId]
                                 _this.scrollTo(e.getBoundingClientRect().y - e.parentElement.getBoundingClientRect().y)
@@ -491,6 +503,9 @@
                     if (this.roomId !== message.roomId)
                         return
 
+                    if (this.messageMap[message.messageId])
+                        return
+
                     roomList.readMessages(message.roomId)
                     if (confirm)
                         messengerCommunicator.confirmMessage(message.roomId, message.messageId)
@@ -508,21 +523,19 @@
                         message.fileSize = split && split[3] || ''
                     }
 
-                    if (this.messageList.length === 0) {
-                        this.messageMap[message.messageId] = message
+                    this.messageMap[message.messageId] = message
+
+                    if (this.messageList.length === 0)
                         return this.messageList.push(message)
-                    }
 
                     if (this.messageList[0].time >= message.time)
                         return this.messageList.splice(0, 0, message)
 
                     if (this.messageList[this.messageList.length - 1].time <= message.time) {
                         this.scrollToBottom()
-                        this.messageMap[message.messageId] = message
                         return this.messageList.push(message)
                     }
 
-                    this.messageMap[message.messageId] = message
                     this.messageList.push(message)
                     this.messageList.sort(function (a, b) {
                         return a.time - b.time
