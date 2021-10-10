@@ -12,26 +12,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
-<div class="side-bar-content overflow-overlay" id="room-list-area">
-    <div class="room-list-area-inner">
-        <ul class="side-room-list-ul">
-            <li v-for="(e, i) in roomList" :key="i" class="list" @click="loadRoom(e.roomId)">
-                <div class="header">
-                    <div class="room-name" @click.stop="popupRoomNameModal(e.roomId)">
-                        <text>{{ e.roomName }}</text>
-                    </div>
-                    <div class="last-message-time">{{ getRoomLastMessageTimeFormat(e.lastTime) }}</div>
-                </div>
-                <div class="content">
-                    <div class="preview">{{ e.lastMsg }}</div>
-                    <div class="unread">
-                        <span v-if="e.unreadMessageTotalCount > 0" class="number">{{ e.unreadMessageTotalCount }}</span>
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </div>
-</div>
+<jsp:include page="/WEB-INF/jsp/messenger-room-list.jsp"/>
 
 <div id="messenger-modal" class="ui modal large ui-resizable ui-draggable show-rooms show-room" style="width: 500px; display: block; position: absolute; left: 335px; top: 265px;">
     <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent @click.stop="showingTemplates = false" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
@@ -153,98 +134,6 @@
 </div>
 <tags:scripts>
     <script>
-        const roomList = Vue.createApp({
-            data: function () {
-                return {
-                    roomMap: {},
-                    roomList: []
-                }
-            },
-            methods: {
-                load: function () {
-                    const _this = this
-                    restSelf.get('/api/chatt/chatt-room', null, null, true).done(function (response) {
-                        _this.roomList = []
-                        response.data.forEach(function (e) {
-                            _this.roomList.push(Object.assign(e.chattRoom, {unreadMessageTotalCount: e.unreadMessageTotalCount}))
-                            const last = _this.roomList[_this.roomList.length - 1]
-                            _this.roomMap[last.roomId] = last
-                        })
-                        _this.sortRooms()
-                    })
-                },
-                getRoomLastMessageTimeFormat: function (time) {
-                    return moment(time).format('MM-DD HH:mm')
-                },
-                hasUnreadMessage: function () {
-                    for (let i = 0; i < this.roomList.length; i++)
-                        if (this.roomList[i].unreadMessageTotalCount > 0)
-                            return true
-                    return false
-                },
-                loadRoom: function (roomId) {
-                    messenger.loadRoom(roomId)
-                },
-                removeRoom: function (roomId) {
-                    for (let i = 0; i < this.roomList.length; i++)
-                        if (this.roomList[i].roomId === roomId) {
-                            this.roomList.splice(i, 1)
-                            break
-                        }
-
-                    delete this.roomMap[roomId]
-                },
-                popupRoomNameModal: function (roomId) {
-                    prompt('새로운 채팅방이름을 입력하시오.').done(function (text) {
-                        restSelf.put('/api/chatt/' + roomId + '/room-name?newRoomName=' + encodeURIComponent(text)).done(function () {
-                            messengerCommunicator.changeRoomName(roomId, text);
-                        });
-                    })
-                },
-                receiveMessage: function (roomId, roomName, lastMsg, lastTime) {
-                    if (this.roomMap[roomId]) {
-                        const e = this.roomMap[roomId]
-                        e.roomName = roomName
-                        e.lastMsg = lastMsg
-                        e.lastTime = lastTime
-                        e.unreadMessageTotalCount++
-                    } else {
-                        this.roomList.push({
-                            roomId: roomId,
-                            roomName: roomName,
-                            lastMsg: lastMsg,
-                            lastTime: lastTime,
-                            unreadMessageTotalCount: 1,
-                        })
-                        const last = this.roomList[this.roomList.length - 1]
-                        this.roomMap[last.roomId] = last
-                    }
-
-                    this.sortRooms()
-                },
-                changeRoomName: function (roomId, roomName) {
-                    this.roomMap[roomId] && (this.roomMap[roomId].roomName = roomName)
-                },
-                sortRooms: function () {
-                    this.roomList.sort(function (a, b) {
-                        return moment(b.lastTime).toDate().getTime() - moment(a.lastTime).toDate().getTime()
-                    })
-                },
-                readMessages: function (roomId) {
-                    this.roomMap[roomId] && (this.roomMap[roomId].unreadMessageTotalCount = 0)
-                },
-            },
-            updated: function () {
-                if (this.hasUnreadMessage())
-                    $('#messenger-unread-indicator').addClass('unread')
-                else
-                    $('#messenger-unread-indicator').removeClass('unread')
-            },
-            mounted: function () {
-                this.load()
-            },
-        }).mount('#room-list-area')
-
         const messengerModal = document.getElementById('messenger-modal')
         const messenger = Vue.createApp({
             setup: function () {
