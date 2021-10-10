@@ -260,7 +260,7 @@
 
                     showingTemplates: false,
                     activatingTemplateIndex: null,
-                    templates: [{name: 'aaa', text: '인사말입니다.'}, {name: 'bbb', text: '인사말입니다.222'}, {name: 'ccc', text: '인사말입니다.3333'},],
+                    templates: [],
 
                     replying: null,
 
