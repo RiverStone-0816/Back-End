@@ -146,7 +146,7 @@
                 <div class="inp-box">
                     <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteClipboardImage" @keyup.stop="keyup"></textarea>
                 </div>
-                <button type="button" class="send-btn" @click="sendMessage">전송</button>
+                <button type="button" class="send-btn" @click="sendMessage()">전송</button>
             </div>
         </div>
     </div>
@@ -472,8 +472,6 @@
                     const memberIds = keys(this.members)
                     const lastReadMessageTimesOfEachMember = {}
                     memberIds.forEach(function (userId) {
-                        console.log(userId, _this.members[userId].lastReadMessageId)
-
                         const lastReadMessageId = _this.members[userId].lastReadMessageId
                         lastReadMessageTimesOfEachMember[userId] = lastReadMessageId && _this.messageMap[lastReadMessageId]
                             ? _this.messageMap[lastReadMessageId].time
