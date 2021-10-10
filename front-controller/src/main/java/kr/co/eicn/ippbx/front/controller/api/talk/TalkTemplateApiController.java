@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author tinywind
@@ -30,15 +31,15 @@ public class TalkTemplateApiController extends BaseController {
     @Autowired
     private TalkTemplateApiInterface apiInterface;
 
-/*    @GetMapping("")
+    @GetMapping("")
     public List<TalkTemplateSummaryResponse> list(TemplateSearchRequest search) throws IOException, ResultFailException {
         return apiInterface.list(search);
-    }*/
-
-    @GetMapping("")
-    public Pagination<TalkTemplateSummaryResponse> getPagination(@Valid @RequestBody TemplateSearchRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
-        return apiInterface.getPagination(form);
     }
+
+    /*@GetMapping("")
+    public Pagination<TalkTemplateSummaryResponse> getPagination(TemplateSearchRequest form) throws IOException, ResultFailException {
+        return apiInterface.getPagination(form);
+    }*/
 
     @GetMapping("{seq}")
     public TalkTemplateSummaryResponse get(@PathVariable Integer seq) throws IOException, ResultFailException {

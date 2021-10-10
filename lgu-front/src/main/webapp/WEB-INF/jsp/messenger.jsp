@@ -79,7 +79,7 @@
                                             <div v-if="e.userId !== userId" class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
                                                     <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="bottom center"></button>
-                                                    <button onclick="messengerTemplatePopup()" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="bottom center"></button>
+                                                    <button @click="popupTemplateModal(e)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="bottom center"></button>
                                                     <button class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="bottom center" onclick="knowledgeCall()"></button>
                                                     <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
                                                 </div>
@@ -647,6 +647,35 @@
                         // TODO: send image
                     }
                 },
+                loadTemplates: function () {
+                    const _this = this
+                    restSelf.get('/api/talk-template/', null, false, null).done(function (response) {
+                        _this.templates = []
+                        response.data.forEach(function (e) {
+                            _this.templates.push({name: e.mentName, text: e.ment})
+                        })
+                    })
+                },
+                popupTemplateModal: function (message) {
+                    const _this = this
+                    const modalId = 'modal-talk-template'
+                    popupDraggableModalFromReceivedHtml('/admin/talk/template/new/modal', modalId).done(function () {
+                        const modal = document.getElementById(modalId)
+
+                        // TODO: 텍스트 유형 선택
+                        modal.querySelector('[name=ment]').value = message.contents
+
+                        // TODO: 이미지일 때는 이미지 유형 선택 후, 파일 ID 입력
+
+                        const doneActionName = '_doneTemplatePost'
+                        modal.setAttribute('data-done', doneActionName)
+                        window[doneActionName] = function () {
+                            modal.querySelector('.close.icon').click()
+                            delete window[doneActionName]
+                            _this.loadTemplates()
+                        }
+                    })
+                }
             },
             updated: function () {
             },
@@ -667,6 +696,7 @@
                         .dragModalShow()
                         .hide()
                 })
+                this.loadTemplates()
             },
         }).mount(messengerModal)
 
