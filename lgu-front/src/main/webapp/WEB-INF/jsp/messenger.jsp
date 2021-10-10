@@ -552,7 +552,12 @@
                         const modal = document.getElementById(modalId)
 
                         // TODO: 텍스트 유형 선택
-                        modal.querySelector('[name=ment]').value = message.contents
+
+                        const selectedTextContents = getSelectedTextContentOfSingleElement()
+                        if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === _this.$refs['message-' + message.messageId].querySelector('.txt_chat p'))
+                            modal.querySelector('[name=ment]').value = selectedTextContents.text
+                        else
+                            modal.querySelector('[name=ment]').value = message.contents
 
                         // TODO: 이미지일 때는 이미지 유형 선택 후, 파일 ID 입력
 
@@ -566,7 +571,12 @@
                     })
                 },
                 popupTaskScriptModal: function (message) {
-                    popupDraggableModalFromReceivedHtml('/admin/service/help/task-script/modal-search?title=' + encodeURIComponent(message.contents), 'modal-search-task-script')
+                    let contents = message.contents
+                    const selectedTextContents = getSelectedTextContentOfSingleElement()
+                    if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === this.$refs['message-' + message.messageId].querySelector('.txt_chat p'))
+                        contents = selectedTextContents.text
+
+                    popupDraggableModalFromReceivedHtml('/admin/service/help/task-script/modal-search?title=' + encodeURIComponent(contents), 'modal-search-task-script')
                 }
             },
             updated: function () {
@@ -591,6 +601,17 @@
                 this.loadTemplates()
             },
         }).mount(messengerModal)
+
+        function getSelectedTextContentOfSingleElement() {
+            const range = getSelection().getRangeAt(0)
+            if (range.startContainer !== range.endContainer)
+                return null
+
+            return {
+                parent: range.startContainer.parentElement,
+                text: range.cloneContents().textContent
+            }
+        }
 
         function receiveMessage(data) {
             roomList.receiveMessage(
