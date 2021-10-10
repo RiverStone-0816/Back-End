@@ -49,6 +49,22 @@ public class TaskScriptController extends BaseController {
         return "admin/service/help/task-script/ground";
     }
 
+    @GetMapping("modal-search")
+    public String modal(Model model, @ModelAttribute("search") TaskScriptSearchRequest search) throws IOException, ResultFailException {
+        return "admin/service/help/task-script/modal-search";
+    }
+
+    @GetMapping("modal-search-body")
+    public String modalBody(Model model, @ModelAttribute("search") TaskScriptSearchRequest search) throws IOException, ResultFailException {
+        final Pagination<TaskScriptSummaryResponse> pagination = apiInterface.pagination(search);
+        model.addAttribute("pagination", pagination);
+
+        final Map<Long, String> categories = apiInterface.taskScriptCategoryList().stream().collect(Collectors.toMap(TaskScriptCategoryResponse::getCategoryId, TaskScriptCategoryResponse::getCategoryName));
+        model.addAttribute("categories", categories);
+
+        return "admin/service/help/task-script/modal-search-body";
+    }
+
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") TaskScriptForm form) throws IOException, ResultFailException {
         final Map<Long, String> categories = apiInterface.taskScriptCategoryList().stream().collect(Collectors.toMap(TaskScriptCategoryResponse::getCategoryId, TaskScriptCategoryResponse::getCategoryName));

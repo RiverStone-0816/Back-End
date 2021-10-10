@@ -61,7 +61,7 @@
                                                 <div class="buttons">
                                                     <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="bottom center"></button>
                                                     <button @click="popupTemplateModal(e)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="bottom center"></button>
-                                                    <button class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="bottom center" onclick="knowledgeCall()"></button>
+                                                    <button @click="popupTaskScriptModal(e)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="bottom center"></button>
                                                     <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
                                                 </div>
                                             </div>
@@ -564,6 +564,9 @@
                             _this.loadTemplates()
                         }
                     })
+                },
+                popupTaskScriptModal: function (message) {
+                    popupDraggableModalFromReceivedHtml('/admin/service/help/task-script/modal-search?title=' + encodeURIComponent(message.contents), 'modal-search-task-script')
                 }
             },
             updated: function () {
