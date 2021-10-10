@@ -572,6 +572,7 @@
                     messengerCommunicator.sendMessage(this.roomId, message)
                     this.$refs.message.value = ''
                     this.showingTemplates = false
+                    this.replying = null
                 },
                 confirmRead: function (roomId, userId, messageId) {
                     if (this.roomId !== roomId)
