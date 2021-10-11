@@ -16,16 +16,107 @@
 
 <div id="messenger-modal" class="ui modal large ui-resizable ui-draggable show-rooms show-room" style="width: 500px; display: block; position: absolute; left: 335px; top: 265px;">
     <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent @click.stop="showingTemplates = false" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
+        <div class="attach-overlay">
+            <div class="inner">
+                <img src="<c:url value="/resources/images/circle-plus.svg"/>">
+                <p class="attach-text">파일을 채팅창에 바로 업로드하려면<br>여기에 드롭하세요.</p>
+            </div>
+        </div>
+        <%--todo: 파일 드랠그앤드랍시 attach-overlay class 개발 적용 요청--%>
         <div class="room" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
+            <div class="ui very mini modal user-invite-popup" id="user-invite-popup">
+                <i class="close icon"></i>
+                <div class="header"><i class="user plus icon mr10"></i>새로운 사용자 초대하기</div>
+                <div class="pd15">
+                    <div class="user-invite-container">
+                        <ul class="user-invite-organization-ul">
+                            <li class="consulting-accordion">
+                                <div class="consulting-accordion-label team">
+                                    <div class="left"><i class="folder open icon"></i><span class="team-name">개발</span></div>
+                                    <div class="right"><i class="material-icons arrow">keyboard_arrow_right</i></div>
+                                </div>
+                                <ul class="consulting-accordion-content">
+                                    <li class="team-item">
+                                        <div>
+                                            <i class="user outline icon"></i>
+                                            <span class="user">상담사1[0990]</span>
+                                        </div>
+                                        <div>
+                                            <span class="ui mini label teal">대기</span>
+                                        </div>
+                                    </li>
+                                    <li class="team-item active">
+                                        <div>
+                                            <i class="user online outline icon"></i>
+                                            <span class="user">상담사1[0990]</span>
+                                        </div>
+                                        <div>
+                                            <span class="ui mini label teal">대기</span>
+                                        </div>
+                                    </li>
+                                    <li class="team-item">
+                                        <div>
+                                            <i class="user outline icon online"></i>
+                                            <span class="user">상담사1[0990]</span>
+                                        </div>
+                                        <div>
+                                            <span class="ui mini label teal">대기</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="consulting-accordion active">
+                                <div class="consulting-accordion-label team">
+                                    <div class="left"><i class="folder open icon"></i><span class="team-name">개발</span></div>
+                                    <div class="right"><i class="material-icons arrow">keyboard_arrow_right</i></div>
+                                </div>
+                                <ul class="consulting-accordion-content">
+                                    <li class="team-item">
+                                        <div>
+                                            <i class="user outline icon"></i>
+                                            <span class="user">상담사1[0990]</span>
+                                        </div>
+                                        <div>
+                                            <span class="ui mini label teal">대기</span>
+                                        </div>
+                                    </li>
+                                    <li class="team-item active">
+                                        <div>
+                                            <i class="user online outline icon"></i>
+                                            <span class="user">상담사1[0990]</span>
+                                        </div>
+                                        <div>
+                                            <span class="ui mini label teal">대기</span>
+                                        </div>
+                                    </li>
+                                    <li class="team-item">
+                                        <div>
+                                            <i class="user outline icon"></i>
+                                            <span class="user">상담사1[0990]</span>
+                                        </div>
+                                        <div>
+                                            <span class="ui mini label teal">대기</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button type="button" class="ui button modal-close">닫기</button>
+                    <button type="submit" class="ui blue button">초대</button>
+                </div>
+            </div>
             <div class="chat-header" data-act="draggable" :title="roomName">
-                <button class="ui mini compact icon button" @click="popupInvitationModal">
+                <button class="ui mini compact icon button mr10" @click="popupInvitationModal">
                     <i class="user plus icon"></i>
                 </button>
                 <text @click="popupRoomNameModal" class="room-name">{{ roomName }}</text>
-                <i class="x icon" @click="hide" style="position: absolute; right: 10px; top: 13px;"></i>
+                <i class="x icon" @click="hide"></i>
             </div>
             <div class="chat-body os-host os-theme-dark os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition os-host-overflow os-host-overflow-y"
-                 style="height: calc(100% - 170px); position: absolute; top: 41px; right: 0; left: 0; bottom: 105px;">
+                 style="height: calc(100% - 190px); position: absolute; top: 60px; right: 0; left: 0; bottom: 105px;">
                 <div class="os-resize-observer-host">
                     <div class="os-resize-observer observed" style="left: 0; right: auto;"></div>
                 </div>
@@ -47,7 +138,7 @@
                                             <div class="bubble">
                                                 <div class="outer-unread-count">{{ e.unreadCount || '' }}</div>
                                                 <div class="txt_chat">
-                                                    <img v-if="e.messageType === 'file' && e.fileType === 'image'" :src="e.fileUrl">
+                                                    <img v-if="e.messageType === 'file' && e.fileType === 'image'" :src="e.fileUrl" class="cursor-pointer" onclick="imgViewModal()">
                                                     <audio v-else-if="e.messageType === 'file' && e.fileType === 'audio'" controls :src="e.fileUrl" style="height: 35px;"></audio>
                                                     <a v-else-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl">
                                                         <i class="paperclip icon"></i> {{ e.fileName }}
@@ -55,14 +146,37 @@
                                                     </a>
                                                     <p v-else>{{ e.contents }}</p>
                                                 </div>
-                                                <a v-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl">저장하기</a>
+                                                <a v-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl" class="save-txt">저장하기</a>
                                             </div>
                                             <div v-if="e.userId !== userId" class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
-                                                    <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="bottom center"></button>
-                                                    <button @click="popupTemplateModal(e)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="bottom center"></button>
-                                                    <button @click="popupTaskScriptModal(e)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="bottom center"></button>
+                                                    <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="top center"></button>
+                                                    <button @click="popupTemplateModal(e)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
+                                                    <button @click="popupTaskScriptModal(e)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="top center"></button>
                                                     <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="chat-item chat-me false">
+                                    <div class="wrap-content">
+                                        <div class="txt-time">[상담사2] 10-10 15:40</div>
+                                        <div class="chat">
+                                            <div class="chat-layer" style="visibility: hidden;">
+                                                <div class="buttons">
+                                                    <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="top center"></button>
+                                                    <button @click="popupTemplateModal(e)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
+                                                    <button @click="popupTaskScriptModal(e)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="top center"></button>
+                                                    <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
+                                                </div>
+                                            </div>
+                                            <div class="bubble">
+                                                <div class="outer-unread-count"></div>
+                                                <div class="txt_chat">
+                                                    <p>이곳을 마우스 오버하면 더보기 메뉴 출력 이곳을 마우스 오버하면 더보기 메뉴 출력</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -97,6 +211,9 @@
                 </div>
             </div>
             <div v-if="replying !== null" class="view-to-reply">
+                <div class="target-image">
+                    <img src="https://i.pinimg.com/736x/6a/82/f2/6a82f2127d3fb32e5734a87543002e5b.jpg" class="target-image-content">
+                </div>
                 <div class="target-text">
                     <p class="target-user">{{ replying.username }}에게 답장</p>
                     <p class="target-content">{{ replying.contents }}</p>
@@ -306,7 +423,7 @@
                     this.updateMessageReadCount()
                 },
                 popupInvitationModal: function () {
-                    // todo
+                    $('.user-invite-popup').toggle();
                 },
                 searchText: function () {
                     if (!this.searchingText)
@@ -656,8 +773,36 @@
         restSelf.get('/api/auth/socket-info').done(function (response) {
             messengerCommunicator.connect(response.data.messengerSocketUrl, response.data.companyId, response.data.userId, response.data.userName, response.data.password)
         })
+
+        function imgViewModal() {
+            $('#image-view-popup').dragModalShow();
+        }
+
+        $('.user-invite-organization-ul .consulting-accordion').on('click', function(){
+            $(this).toggleClass('active');
+        });
+
+        $('.user-invite-organization-ul .consulting-accordion .team-item').on('click', function(){
+            $(this).toggleClass('active');
+            event.stopPropagation();
+        });
+
     </script>
 </tags:scripts>
+
+
+<div class="ui xsmall modal cover-modal-index" id="image-view-popup">
+    <i class="close icon"></i>
+    <div class="header">이미지 뷰어</div>
+    <div class="content img">
+       <img src="http://lonelyplanet.co.kr/upload/moduleBasic/e36b45e8-f88f-45eb-9240-88d7bee2ddac.jpg">
+       <%--<img src="https://t1.daumcdn.net/cfile/tistory/212210405676D88C0C">--%>
+    </div>
+    <div class="actions">
+        <button type="button" class="ui button modal-close">닫기</button>
+        <button type="submit" class="ui blue floated button">다운로드</button>
+    </div>
+</div>
 
 <div class="ui modal small cover-modal-index" id="messenger-template-add-popup">
     <i class="close icon"></i>

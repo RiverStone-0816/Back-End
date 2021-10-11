@@ -397,6 +397,135 @@
 
 .chat-item:hover .chat-layer { visibility: visible !important;}
 
+.ui.modal {
+  .chat-container {
+    .room {
+      .chat-header {
+        padding: 1.25rem 1.5rem;
+        .x.icon {
+          cursor: pointer;
+          position: absolute;
+          right: 16px;
+          top: 22px;
+        }
+      }
+    }
+  }
+}
+
+.attach-overlay {
+  background: rgba(0,0,0,.6);
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  position: absolute;
+  padding: 1em;
+  .inner {
+    .attach-text {
+      color: @color-white;
+      font-size: @font-size-small;
+      margin: 2em 0;
+      text-align: center;
+    }
+    .flex();
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #fff;
+    border-radius: 6px;
+    height: 100%;
+  }
+}
+
+.user-invite-container {
+  height:289px;
+  overflow-y: overlay;
+  overflow-x: hidden;
+  border:1px solid #e9e9e9;
+  .user-invite-organization-ul {
+    .consulting-accordion-label {
+      .flex();
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      height: 30px;
+      padding: 0 14px;
+      .left {
+        .icon {
+          color: #9A9A9A;
+        }
+      }
+      .team-name {
+        padding: 0 0 0 6px;
+        font-size: 13px;
+        color: #514F65;
+      }
+      .material-icons.arrow {
+        vertical-align: middle;
+        width: 17px;
+        color: #707070;
+        font-size: 20px;
+      }
+    }
+    .consulting-accordion {
+      border-bottom: 1px solid #e9e9e9;
+      .consulting-accordion-content {
+        display: none;
+      }
+    }
+    .consulting-accordion.active {
+      .consulting-accordion-label {
+        .left {
+          .icon {
+            color: @color-brand;
+          }
+        }
+        .material-icons.arrow {
+          transform: rotate(90deg);
+        }
+      }
+      .consulting-accordion-content {
+        display: block;
+        .team-item.active {
+          background: #F3F3F3;
+        }
+        .team-item {
+          .user.online {
+            color: @color-brand;
+          }
+          .flex();
+          align-items: center;
+          justify-content: space-between;
+          cursor: pointer;
+          font-size: 13px;
+          height: 30px;
+          padding: 0 14px;
+          .ui.label {
+            padding: 0;
+            font-weight: 300;
+            width: 43px;
+            text-align: center;
+            height: 18px;
+            line-height: 18px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.user-invite-popup {
+  display:none;
+  overflow-y: auto;
+  position: absolute;
+  left: 21px;
+  top: 48px;
+  max-height: 80%;
+  .close.icon {
+    right: 7px!important;
+  }
+}
+
 .chat-container {
   border: 1px solid #d4d4d5;
   .room {
@@ -415,11 +544,11 @@
         .flex();
         position: relative;
         justify-content: start;
-        padding: 10px;
+        padding: 10px 10px 12px 10px;
         .chat-layer {
           visibility: hidden;
           align-self: end;
-          margin: 0 0 0 8px;
+          margin: 0 8px 0 8px;
           .buttons {
             border:1px solid @color-border;
             border-radius: 5px;
@@ -478,6 +607,14 @@
               background: #fff;
               box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.10);
               -webkit-box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.10);
+              .save-txt {
+                position: absolute;
+                bottom: -15px;
+                right: 0;
+                color: #708297;
+                font-weight: 200;
+                font-size: 12px;
+              }
               .txt_chat {
                 padding: 0 10px;
                 font-size: 13px;
@@ -650,6 +787,7 @@
       }
     }
     .view-to-reply {
+      .flex();
       width:100%;
       background: @color-white;
       position: absolute;
@@ -658,6 +796,19 @@
       flex-flow: row;
       align-items: center;
       justify-items: center;
+      padding: 0 10px;
+      .target-image {
+        .flex();
+        border-radius: 3px;
+        align-items: center;
+        justify-content: center;
+        width: 35px;
+        height: 35px;
+        overflow: hidden;
+        .target-image-content {
+          height: 200%;
+        }
+      }
       .target-text {
         flex: 1;
         padding: 10px;
@@ -671,11 +822,8 @@
         }
       }
       .target-close {
-        padding: 0 20px;
+        padding: 0 10px;
         cursor: pointer;
-        position: absolute;
-        right: 0;
-        top: 10px;
       }
     }
     .write-menu {
@@ -692,7 +840,7 @@
     }
     .wrap-inp {
       position: relative;
-      height: 100px;
+      height: 87px;
       padding: 11px 80px 11px 13px;
       border: 0 none;
       .inp-box {
@@ -701,6 +849,7 @@
           width: 100%;
           border: 0 none;
           font-size: 14px;
+          height: 62px;
           line-height: 18px;
           background: transparent;
           word-wrap: break-word;
@@ -717,7 +866,7 @@
         top: 12px;
         right: 10px;
         width: 60px;
-        height: 43px;
+        height: 60px;
         border: 1px solid rgba(0, 0, 0, 0.06);
         border-radius: 2px;
         background-color: #ffe118;

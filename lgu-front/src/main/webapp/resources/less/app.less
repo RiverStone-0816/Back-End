@@ -72,8 +72,10 @@ pre {
 .text-primary {color: @color-brand}
 .text-green {color: @color-green}
 .text-red {color: @color-red}
+.text-white {color: @color-white!important}
 .text-gray {color: #9A9A9A;}
 .bg-gray {background: @color-gray!important;}
+.bg-darkblue {background:#616b77!important}
 .wrap {
   height: 100%;
   background: @color-bg;
@@ -747,16 +749,33 @@ ul.ui.list ul li, ol.ui.list ol li, .ui.list .list > .item {
     color: @color-darkgray;
   }
 }
+.ui.very.mini.modal {
+  width: 270px;
+}
 .ui.xlarge.modal {
   width: 1400px;
 }
 .ui.xsmall.modal {
   width: 500px;
-
   .center {
-    margin: 0px auto;
+    margin: 0 auto;
   }
 }
+
+.ui.modal > .img.content {
+  .flex();
+  height: 457px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    overflow: hidden;
+  }
+}
+
 .organization-select {
   line-height: 27px;
   button {
@@ -1080,6 +1099,9 @@ label.control-label {
 .mg-1em {
   margin: 1em!important;
 }
+.cursor-pointer {
+  cursor: pointer!important;
+}
 .pr15 {
   padding-right: 15px;
 }
@@ -1110,6 +1132,9 @@ label.control-label {
 .mr0 {
   margin-right: 0 !important;
 }
+.mr5 {
+  margin-right: 5px !important;
+}
 .ml5 {
   margin-left: 5px !important;
 }
@@ -1121,6 +1146,9 @@ label.control-label {
 }
 .mb13 {
   margin-bottom: 13px !important
+}
+.pd15 {
+  padding:15px!important;
 }
 .trans-rotate-180 {
   transform: rotate(180deg);
@@ -1474,15 +1502,17 @@ label.control-label {
 .ui.menu {font-family: @base-font}
 .ui.modal {
   > .close {
-    top: 1.0535rem;
-    right: 1rem;
-    color: rgba(0, 0, 0, .87);
+    top: 11px;
+    right: 7px;
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 15px;
   }
   > .header {
     font-family: @base-font;
   }
   > .header:not(.ui) {
-    font-size: @font-size-default !important;
+    font-size: 14px!important;
+    font-weight: 500;
   }
   .header {
     span:not(.label) {
