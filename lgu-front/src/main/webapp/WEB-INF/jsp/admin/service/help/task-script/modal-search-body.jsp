@@ -11,6 +11,8 @@
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
+<%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
+<%--@elvariable id="accessToken" type="java.lang.String"--%>
 
 <div class="sub-content ui container fluid unstackable" id="modal-search-task-script-body">
     <form:form modelAttribute="search" method="get" class="panel panel-search -ajax-loader"
@@ -81,13 +83,6 @@
             <div class="pull-left">
                 <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span>건</h3>
             </div>
-            <div class="pull-right">
-                <button class="ui basic button" onclick="popupCategoryModal();">분류관리</button>
-                <button class="ui basic button -control-entity" data-entity="TaskScript" style="display: none;" onclick="popupShowModal(getEntityId('TaskScript'))">보기</button>
-                <button class="ui basic button" onclick="popupModal()">추가</button>
-                <button class="ui basic button -control-entity" data-entity="TaskScript" style="display: none;" onclick="popupModal(getEntityId('TaskScript'))">수정</button>
-                <button class="ui basic button -control-entity" data-entity="TaskScript" style="display: none;" onclick="deleteEntity(getEntityId('TaskScript'))">삭제</button>
-            </div>
         </div>
         <div class="panel-body">
             <div class="ui secondary  menu">
@@ -100,9 +95,10 @@
                 <thead>
                 <tr>
                     <th class="one wide">번호</th>
-                    <th class="nine wide">제목</th>
-                    <th class="five wide">태그</th>
-                    <th class="one wide">등록일</th>
+                    <th class="eight wide">제목</th>
+                    <th class="four wide">태그</th>
+                    <th class="two wide">등록일</th>
+                    <th class="one wide">내용보기</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -118,6 +114,64 @@
                                     </c:forEach>
                                 </td>
                                 <td><fmt:formatDate value="${e.createdAt}" pattern="yyyy-MM-dd"/></td>
+                                <td>
+                                    <button type="button" class="ui icon compact mini button view-content-btn"
+                                            onclick="$(this).closest('tr').next().toggle(); $(this).children('.icon').toggleClass('trans-rotate-180')">
+                                        <i class="angle down icon"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="list-view">
+                                <td colspan="5">
+                                    <div class="ui grid mg-1em align-left">
+                                        <div class="row">
+                                            <div class="two wide column">
+                                                <label class="control-label">내용</label>
+                                            </div>
+                                            <div class="fourteen wide column">
+                                                <div class="ws-prewrap">${g.htmlQuote(e.content)}</div>
+                                            </div>
+                                        </div>
+                                        <c:if test="${e.imageFileInfos.size() > 0}">
+                                            <div class="row">
+                                                <div class="two wide column">
+                                                    <label class="control-label">이미지</label>
+                                                </div>
+                                                <div class="fourteen wide column">
+                                                    <ul class="board-img-ul">
+                                                        <c:forEach var="file" items="${e.imageFileInfos}">
+                                                            <li class="thumbnail-item" onclick="imgViewPopup()">
+                                                                <img src="${apiServerUrl}/api/v1/admin/help/notice/${e.id}/specific-file-resource?token=${accessToken}">
+                                                            </li>
+                                                        </c:forEach>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                        <c:if test="${e.nonImageFileInfos.size() > 0}">
+                                            <div class="row">
+                                                <div class="two wide column">
+                                                    <label class="control-label">첨부파일</label>
+                                                </div>
+                                                <div class="fourteen wide column">
+                                                    <div class="board-con-inner">
+                                                        <div class="ui list filelist">
+                                                            <c:forEach var="file" items="${e.nonImageFileInfos}">
+                                                                <div class="item">
+                                                                    <i class="file alternate outline icon"></i>
+                                                                    <div class="content">
+                                                                        <a href="${apiServerUrl}/api/v1/admin/help/notice/${e.id}/specific-file-resource?token=${accessToken}"
+                                                                           target="_blank">${g.htmlQuote(e.originalName)}</a>
+                                                                    </div>
+                                                                </div>
+                                                            </c:forEach>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </c:if>
+                                    </div>
+                                </td>
                             </tr>
                         </c:forEach>
                     </c:when>

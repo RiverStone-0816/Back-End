@@ -1,17 +1,18 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.service.help;
 
-import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.form.TaskScriptCategoryForm;
 import kr.co.eicn.ippbx.front.model.form.TaskScriptForm;
 import kr.co.eicn.ippbx.front.service.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.service.help.TaskScriptApiInterface;
-import kr.co.eicn.ippbx.util.page.Pagination;
 import kr.co.eicn.ippbx.model.dto.eicn.TaskScriptCategoryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.TaskScriptDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.TaskScriptSummaryResponse;
 import kr.co.eicn.ippbx.model.search.TaskScriptSearchRequest;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.page.Pagination;
+import lombok.SneakyThrows;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -54,10 +57,18 @@ public class TaskScriptController extends BaseController {
         return "admin/service/help/task-script/modal-search";
     }
 
+    @SneakyThrows
     @GetMapping("modal-search-body")
     public String modalBody(Model model, @ModelAttribute("search") TaskScriptSearchRequest search) throws IOException, ResultFailException {
+        search.setLimit(5);
         final Pagination<TaskScriptSummaryResponse> pagination = apiInterface.pagination(search);
-        model.addAttribute("pagination", pagination);
+
+        final List<TaskScriptDetailResponse> rows = new ArrayList<>();
+        final Pagination<TaskScriptDetailResponse> newPagination = new Pagination<>(rows, pagination.getPage(), pagination.getTotalCount(), pagination.getNumberOfRowsPerPage(), search.getLimit());
+        for (TaskScriptSummaryResponse e : pagination.getRows())
+            rows.add(apiInterface.get(e.getId()));
+
+        model.addAttribute("pagination", newPagination);
 
         final Map<Long, String> categories = apiInterface.taskScriptCategoryList().stream().collect(Collectors.toMap(TaskScriptCategoryResponse::getCategoryId, TaskScriptCategoryResponse::getCategoryName));
         model.addAttribute("categories", categories);
