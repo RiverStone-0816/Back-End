@@ -148,12 +148,16 @@
                 </div>
             </div>
             <div v-if="replying !== null" class="view-to-reply">
+                <%--사진답변일 경우만 출력--%>
                 <div class="target-image">
                     <img src="https://i.pinimg.com/736x/6a/82/f2/6a82f2127d3fb32e5734a87543002e5b.jpg" class="target-image-content">
                 </div>
+                <%--사진답변일 경우만 출력--%>
                 <div class="target-text">
                     <p class="target-user">{{ replying.username }}에게 답장</p>
                     <p class="target-content">{{ replying.contents }}</p>
+                    <%--<p class="target-content">이미지</p>--%>
+                    <%--<p class="target-content">파일명.pdf</p>--%>
                 </div>
                 <div class="target-close" @click="replying=null">
                     <img src="<c:url value="/resources/images/icon-close.svg"/>">
