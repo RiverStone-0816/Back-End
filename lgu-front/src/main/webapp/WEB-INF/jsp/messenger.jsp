@@ -16,13 +16,13 @@
 
 <div id="messenger-modal" class="ui modal large ui-resizable ui-draggable show-rooms show-room" style="width: 500px; display: block; position: absolute; left: 335px; top: 265px;">
     <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent @click.stop="showingTemplates = false" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
-        <div class="attach-overlay">
+        <%--<div class="attach-overlay">
             <div class="inner">
                 <img src="<c:url value="/resources/images/circle-plus.svg"/>">
                 <p class="attach-text">파일을 채팅창에 바로 업로드하려면<br>여기에 드롭하세요.</p>
             </div>
-        </div>
-        <%--todo: 파일 드랠그앤드랍시 attach-overlay class 개발 적용 요청--%>
+        </div>--%>
+        <%--todo: 파일 드래그앤드랍시 attach-overlay class 개발 적용 요청--%>
         <div class="room" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
             <div class="ui very mini modal user-invite-popup" id="user-invite-popup">
                 <i class="close icon"></i>
@@ -211,12 +211,16 @@
                 </div>
             </div>
             <div v-if="replying !== null" class="view-to-reply">
+                <%--사진답변일 경우만 출력--%>
                 <div class="target-image">
                     <img src="https://i.pinimg.com/736x/6a/82/f2/6a82f2127d3fb32e5734a87543002e5b.jpg" class="target-image-content">
                 </div>
+                <%--사진답변일 경우만 출력--%>
                 <div class="target-text">
                     <p class="target-user">{{ replying.username }}에게 답장</p>
                     <p class="target-content">{{ replying.contents }}</p>
+                    <%--<p class="target-content">이미지</p>--%>
+                    <%--<p class="target-content">파일명.pdf</p>--%>
                 </div>
                 <div class="target-close" @click="replying=null">
                     <img src="<c:url value="/resources/images/icon-close.svg"/>">
