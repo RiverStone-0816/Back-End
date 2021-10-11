@@ -24,7 +24,7 @@
     <tags:favicon/>
     <tags:css/>
 </head>
-<body>
+<body ondragenter="((typeof messenger)==='object')&&(messenger.showingDropzone=false)">
 
 <div id="wrap">
     <tags:header/>
