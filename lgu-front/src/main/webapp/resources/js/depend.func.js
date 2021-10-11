@@ -984,3 +984,21 @@ function prompt(text, isPassword) {
 
     return deferred.promise();
 }
+
+function popupImageView(url) {
+    $('#image-view-modal').remove()
+
+    const modal = $('<div class="ui xsmall modal cover-modal-index" id="image-view-modal" style="display: block"/>')
+        .append('<i class="close icon"></i>')
+        .append('<div class="header">이미지 뷰어</div>')
+        .append($('<div class="content img"/>').append($('<img/>', {src: url})))
+        .append(
+            $('<div class="actions"/>')
+                .append('<button type="button" class="ui button modal-close">닫기</button>')
+                .append($('<a/>', {href: url, target: '_blank', class: 'ui blue floated button', text: '다운로드'}))
+        )
+
+    modal
+        .dragModalShow()
+        .appendTo('body')
+}

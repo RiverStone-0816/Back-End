@@ -15,87 +15,39 @@
 <jsp:include page="/WEB-INF/jsp/messenger-room-list.jsp"/>
 
 <div id="messenger-modal" class="ui modal large ui-resizable ui-draggable show-rooms show-room" style="width: 500px; display: block; position: absolute; left: 335px; top: 265px;">
-    <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent @click.stop="showingTemplates = false" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
-        <div class="attach-overlay">
+    <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent @dragleave="dragleave" @dragenter="dragenter"
+         @click.stop="showingTemplates = false" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
+        <div v-if="showingDropzone" class="attach-overlay" @dragleave @dragenter.stop>
             <div class="inner">
                 <img src="<c:url value="/resources/images/circle-plus.svg"/>">
                 <p class="attach-text">파일을 채팅창에 바로 업로드하려면<br>여기에 드롭하세요.</p>
             </div>
         </div>
-        <%--todo: 파일 드랠그앤드랍시 attach-overlay class 개발 적용 요청--%>
         <div class="room" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
-            <div class="ui very mini modal user-invite-popup" id="user-invite-popup">
-                <i class="close icon"></i>
+            <div v-if="showingInvitationPanel" class="ui very mini modal user-invite-popup" style="display: block;">
                 <div class="header"><i class="user plus icon mr10"></i>새로운 사용자 초대하기</div>
                 <div class="pd15">
                     <div class="user-invite-container">
-                        <ul class="user-invite-organization-ul">
-                            <li class="consulting-accordion">
+                        <ul ref="invitingPanel" class="user-invite-organization-ul">
+                            <li v-for="(team, i) in teams" :key="i" class="consulting-accordion active" onclick="toggleFold(event, this)">
                                 <div class="consulting-accordion-label team">
-                                    <div class="left"><i class="folder open icon"></i><span class="team-name">개발</span></div>
-                                    <div class="right"><i class="material-icons arrow">keyboard_arrow_right</i></div>
+                                    <div class="left">
+                                        <i class="folder open icon"></i>
+                                        <span class="team-name">{{ team.groupName }}</span>
+                                    </div>
+                                    <div class="right">
+                                        <i class="material-icons arrow">keyboard_arrow_right</i>
+                                    </div>
                                 </div>
                                 <ul class="consulting-accordion-content">
-                                    <li class="team-item">
+                                    <li v-for="(person, j) in team.person" :key="j" class="team-item -inviting-person" :data-id="person.id" :data-name="person.idName"
+                                        onclick="toggleActive(event, this)">
                                         <div>
-                                            <i class="user outline icon"></i>
-                                            <span class="user">상담사1[0990]</span>
+                                            <i class="user outline icon -consultant-login" :data-peer="person.peer" data-logon-class="online"></i>
+                                            <span class="user">{{ person.idName }}[{{ person.extension }}]</span>
                                         </div>
                                         <div>
-                                            <span class="ui mini label teal">대기</span>
-                                        </div>
-                                    </li>
-                                    <li class="team-item active">
-                                        <div>
-                                            <i class="user online outline icon"></i>
-                                            <span class="user">상담사1[0990]</span>
-                                        </div>
-                                        <div>
-                                            <span class="ui mini label teal">대기</span>
-                                        </div>
-                                    </li>
-                                    <li class="team-item">
-                                        <div>
-                                            <i class="user outline icon online"></i>
-                                            <span class="user">상담사1[0990]</span>
-                                        </div>
-                                        <div>
-                                            <span class="ui mini label teal">대기</span>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="consulting-accordion active">
-                                <div class="consulting-accordion-label team">
-                                    <div class="left"><i class="folder open icon"></i><span class="team-name">개발</span></div>
-                                    <div class="right"><i class="material-icons arrow">keyboard_arrow_right</i></div>
-                                </div>
-                                <ul class="consulting-accordion-content">
-                                    <li class="team-item">
-                                        <div>
-                                            <i class="user outline icon"></i>
-                                            <span class="user">상담사1[0990]</span>
-                                        </div>
-                                        <div>
-                                            <span class="ui mini label teal">대기</span>
-                                        </div>
-                                    </li>
-                                    <li class="team-item active">
-                                        <div>
-                                            <i class="user online outline icon"></i>
-                                            <span class="user">상담사1[0990]</span>
-                                        </div>
-                                        <div>
-                                            <span class="ui mini label teal">대기</span>
-                                        </div>
-                                    </li>
-                                    <li class="team-item">
-                                        <div>
-                                            <i class="user outline icon"></i>
-                                            <span class="user">상담사1[0990]</span>
-                                        </div>
-                                        <div>
-                                            <span class="ui mini label teal">대기</span>
+                                            <span class="ui mini label -consultant-status-with-color" :data-peer="person.peer"></span>
                                         </div>
                                     </li>
                                 </ul>
@@ -104,12 +56,12 @@
                     </div>
                 </div>
                 <div class="actions">
-                    <button type="button" class="ui button modal-close">닫기</button>
-                    <button type="submit" class="ui blue button">초대</button>
+                    <button type="button" class="ui button modal-close" @click="showingInvitationPanel = false">닫기</button>
+                    <button type="button" class="ui blue button" @click="invite">초대</button>
                 </div>
             </div>
             <div class="chat-header" data-act="draggable" :title="roomName">
-                <button class="ui mini compact icon button mr10" @click="popupInvitationModal">
+                <button class="ui mini compact icon button mr10" @click="showingInvitationPanel = true">
                     <i class="user plus icon"></i>
                 </button>
                 <text @click="popupRoomNameModal" class="room-name">{{ roomName }}</text>
@@ -135,10 +87,18 @@
                                     <div class="wrap-content">
                                         <div class="txt-time">[{{ e.username }}] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
+                                            <div v-if="e.userId === userId" class="chat-layer" style="visibility: hidden;">
+                                                <div class="buttons">
+                                                    <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="top center"></button>
+                                                    <button @click="popupTemplateModal(e)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
+                                                    <button @click="popupTaskScriptModal(e)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="top center"></button>
+                                                    <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
+                                                </div>
+                                            </div>
                                             <div class="bubble">
                                                 <div class="outer-unread-count">{{ e.unreadCount || '' }}</div>
                                                 <div class="txt_chat">
-                                                    <img v-if="e.messageType === 'file' && e.fileType === 'image'" :src="e.fileUrl" class="cursor-pointer" onclick="imgViewModal()">
+                                                    <img v-if="e.messageType === 'file' && e.fileType === 'image'" :src="e.fileUrl" class="cursor-pointer" @click="popupImageView(e.fileUrl)">
                                                     <audio v-else-if="e.messageType === 'file' && e.fileType === 'audio'" controls :src="e.fileUrl" style="height: 35px;"></audio>
                                                     <a v-else-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl">
                                                         <i class="paperclip icon"></i> {{ e.fileName }}
@@ -154,29 +114,6 @@
                                                     <button @click="popupTemplateModal(e)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
                                                     <button @click="popupTaskScriptModal(e)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="top center"></button>
                                                     <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="chat-item chat-me false">
-                                    <div class="wrap-content">
-                                        <div class="txt-time">[상담사2] 10-10 15:40</div>
-                                        <div class="chat">
-                                            <div class="chat-layer" style="visibility: hidden;">
-                                                <div class="buttons">
-                                                    <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="top center"></button>
-                                                    <button @click="popupTemplateModal(e)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
-                                                    <button @click="popupTaskScriptModal(e)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="top center"></button>
-                                                    <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
-                                                </div>
-                                            </div>
-                                            <div class="bubble">
-                                                <div class="outer-unread-count"></div>
-                                                <div class="txt_chat">
-                                                    <p>이곳을 마우스 오버하면 더보기 메뉴 출력 이곳을 마우스 오버하면 더보기 메뉴 출력</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -261,8 +198,15 @@
             },
             data: function () {
                 return {
+                    teams: [],
+
                     roomId: null,
                     roomName: '',
+
+                    showingInvitationPanel: false,
+
+                    showingDropzone: false,
+                    dragEnteringElement: null,
 
                     showingTemplates: false,
                     activatingTemplateIndex: null,
@@ -422,9 +366,6 @@
 
                     this.updateMessageReadCount()
                 },
-                popupInvitationModal: function () {
-                    $('.user-invite-popup').toggle();
-                },
                 searchText: function () {
                     if (!this.searchingText)
                         return
@@ -472,6 +413,9 @@
                 },
                 moveToPreviousText: function () {
                     this.moveToText(this.searchingTextIndex + 1)
+                },
+                popupImageView: function (url) {
+                    popupImageView(url)
                 },
                 updateMessageReadCount: function () {
                     const _this = this
@@ -601,9 +545,22 @@
                         restSelf.post('/api/chatt/' + _this.roomId + '/upload-file', {filePath: response.data.filePath, originalName: response.data.originalName})
                     })
                 },
+                dragenter: function (event) {
+                    this.showingDropzone = true
+                    this.dragEnteringElement = event.srcElement
+                },
+                dragleave: function (event) {
+                    if (this.dragEnteringElement === event.srcElement)
+                        return
+
+                    this.showingDropzone = false
+                },
                 dropFiles: function (event) {
+                    this.showingDropzone = false
+
                     if (!event.dataTransfer)
                         return
+
                     const _this = this
                     for (let i = 0; i < event.dataTransfer.files.length; i++) {
                         uploadFile(event.dataTransfer.files[i]).done(function (response) {
@@ -662,6 +619,46 @@
                         })
                     })
                 },
+                loadInvitationPersons: function () {
+                    const _this = this
+                    restSelf.get('/api/monit/', null, null, true).done(function (response) {
+                        _this.teams = []
+                        response.data.forEach(function (team) {
+                            if (!team.person || !team.person.length || (team.person.length === 1 && team.person[0].id === userId)) return
+                            _this.teams.push(team)
+                            for (let i in team.person)
+                                if (team.person[i].id === userId)
+                                    return team.person.splice(i, 1)
+                        })
+                    })
+                },
+                invite: function () {
+                    const members = keys(this.members)
+                    members.push(this.userId)
+                    const list = this.$refs.invitingPanel.querySelectorAll('.-inviting-person.active')
+
+                    const userIds = [], userNames = [], userNameMap = {}
+                    for (let i = 0; i < list.length; i++) {
+                        const id = list[i].getAttribute('data-id')
+                        const name = list[i].getAttribute('data-name')
+                        if (!members.includes(id)) {
+                            userIds.push(id)
+                            userNames.push(name)
+                            userNameMap[id] = name
+                        }
+                    }
+
+                    if (!userIds.length)
+                        return
+
+                    const _this = this
+                    messengerCommunicator.invite(this.roomId, userIds, userNames);
+                    restSelf.put('/api/chatt/' + this.roomId + '/chatt-member', {memberList: userIds}).done(function () {
+                        userIds.forEach(function (userId) {
+                            _this.members[userId] = {userid: userId, userName: userNameMap[userId]}
+                        })
+                    })
+                },
                 popupTemplateModal: function (message) {
                     const _this = this
                     const modalId = 'modal-talk-template'
@@ -697,6 +694,7 @@
                 }
             },
             updated: function () {
+                updatePersonStatus()
             },
             mounted: function () {
                 this.$nextTick(function () {
@@ -716,6 +714,7 @@
                         .hide()
                 })
                 this.loadTemplates()
+                this.loadInvitationPersons()
             },
         }).mount(messengerModal)
 
@@ -773,36 +772,8 @@
         restSelf.get('/api/auth/socket-info').done(function (response) {
             messengerCommunicator.connect(response.data.messengerSocketUrl, response.data.companyId, response.data.userId, response.data.userName, response.data.password)
         })
-
-        function imgViewModal() {
-            $('#image-view-popup').dragModalShow();
-        }
-
-        $('.user-invite-organization-ul .consulting-accordion').on('click', function(){
-            $(this).toggleClass('active');
-        });
-
-        $('.user-invite-organization-ul .consulting-accordion .team-item').on('click', function(){
-            $(this).toggleClass('active');
-            event.stopPropagation();
-        });
-
     </script>
 </tags:scripts>
-
-
-<div class="ui xsmall modal cover-modal-index" id="image-view-popup">
-    <i class="close icon"></i>
-    <div class="header">이미지 뷰어</div>
-    <div class="content img">
-       <img src="http://lonelyplanet.co.kr/upload/moduleBasic/e36b45e8-f88f-45eb-9240-88d7bee2ddac.jpg">
-       <%--<img src="https://t1.daumcdn.net/cfile/tistory/212210405676D88C0C">--%>
-    </div>
-    <div class="actions">
-        <button type="button" class="ui button modal-close">닫기</button>
-        <button type="submit" class="ui blue floated button">다운로드</button>
-    </div>
-</div>
 
 <div class="ui modal small cover-modal-index" id="messenger-template-add-popup">
     <i class="close icon"></i>

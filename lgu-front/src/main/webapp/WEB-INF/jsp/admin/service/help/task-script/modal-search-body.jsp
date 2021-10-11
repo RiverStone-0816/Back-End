@@ -140,8 +140,8 @@
                                                 <div class="fourteen wide column">
                                                     <ul class="board-img-ul">
                                                         <c:forEach var="file" items="${e.imageFileInfos}">
-                                                            <li class="thumbnail-item" onclick="imgViewPopup()">
-                                                                <img src="${apiServerUrl}/api/v1/admin/help/notice/${e.id}/specific-file-resource?token=${accessToken}">
+                                                            <li class="thumbnail-item" onclick="imgViewPopup()"> <%--TODO: 디자인 모달로 변경해야 함.--%>
+                                                                <img src="${apiServerUrl}/api/v1/admin/help/notice/${file.id}/specific-file-resource?token=${accessToken}">
                                                             </li>
                                                         </c:forEach>
                                                     </ul>
@@ -160,8 +160,8 @@
                                                                 <div class="item">
                                                                     <i class="file alternate outline icon"></i>
                                                                     <div class="content">
-                                                                        <a href="${apiServerUrl}/api/v1/admin/help/notice/${e.id}/specific-file-resource?token=${accessToken}"
-                                                                           target="_blank">${g.htmlQuote(e.originalName)}</a>
+                                                                        <a href="${apiServerUrl}/api/v1/admin/help/notice/${file.id}/specific-file-resource?token=${accessToken}"
+                                                                           target="_blank">${g.htmlQuote(file.originalName)}</a>
                                                                     </div>
                                                                 </div>
                                                             </c:forEach>
@@ -196,25 +196,5 @@
         const searchForm = $('#modal-search-task-script-body form');
         searchForm.find('[name=categoryId]').val(categoryId != null ? categoryId : '');
         searchForm.submit();
-    }
-
-    function popupShowModal(id) {
-        popupDraggableModalFromReceivedHtml('/admin/service/help/task-script/' + (id || 'new') + '/modal-show', 'modal-show-task-script');
-    }
-
-    function popupModal(id) {
-        popupDraggableModalFromReceivedHtml('/admin/service/help/task-script/' + (id || 'new') + '/modal', 'modal-task-script');
-    }
-
-    function deleteEntity(id) {
-        confirm('정말 삭제하시겠습니까?').done(function () {
-            restSelf.delete('/api/task-script/' + id).done(function () {
-                reload();
-            });
-        });
-    }
-
-    function popupCategoryModal() {
-        popupDraggableModalFromReceivedHtml('/admin/service/help/task-script/modal-category', 'modal-task-script-category');
     }
 </script>
