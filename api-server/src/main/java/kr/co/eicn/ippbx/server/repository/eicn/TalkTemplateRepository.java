@@ -47,6 +47,7 @@ public class TalkTemplateRepository extends EicnBaseRepository<TalkTemplate, Tal
 
 		record.setWriteUserid(g.getUser().getId());
 		record.setType(form.getType());
+		record.setTypeMent(form.getTypeMent());
 		record.setMentName(form.getMentName());
 		record.setMent(form.getMent());
 		record.setCompanyId(getCompanyId());

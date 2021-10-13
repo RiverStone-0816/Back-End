@@ -183,3 +183,11 @@ ALTER TABLE screen_config CHANGE expression_type expression_type ENUM('INTEGRATI
 ```
 ALTER TABLE `screen_config` ADD COLUMN `sliding_sec` INT(11) NULL COMMENT '전광판전환슬라이딩(초)' AFTER `company_id`;
 ```
+
+* 2021-10-13 eicn.talk_template 테이블 type_ment,original_file_name,file_path 컬럼 추가
+```
+ALTER TABLE `talk_template` ADD COLUMN `type_ment` CHAR(1) NULL DEFAULT '' COMMENT 'T:텍스트, P:이미지' AFTER `type`;
+ALTER TABLE `talk_template`
+	ADD COLUMN `original_file_name` VARCHAR(150) NULL DEFAULT '' COMMENT '파일이름' AFTER `ment`,
+	ADD COLUMN `file_path` VARCHAR(300) NULL DEFAULT '' COMMENT '파일경로' AFTER `original_file_name`;
+```

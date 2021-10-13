@@ -15,10 +15,12 @@ import kr.co.eicn.ippbx.server.repository.eicn.CompanyInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.TalkTemplateRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
+import kr.co.eicn.ippbx.server.service.TalkTemplateFileUploadService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -40,7 +42,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 /**
  * 상담톡관리 > 상담톡템플릿관리
  */
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/talk/template", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -51,6 +53,8 @@ public class TalkTemplateApiController extends ApiBaseController {
     private final PersonListRepository personListRepository;
     private final CompanyInfoRepository companyInfoRepository;
     private final OrganizationService organizationService;
+    private final TalkTemplateFileUploadService service;
+
     //리스트
     @GetMapping("list")
     public ResponseEntity<JsonResult<List<TalkTemplateSummaryResponse>>> list() {
@@ -129,22 +133,29 @@ public class TalkTemplateApiController extends ApiBaseController {
     }
 
     //템플릿 추가
-    @PostMapping("")
+    @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<JsonResult<Integer>> post(@Valid @RequestBody TalkTemplateFormRequest form, BindingResult bindingResult) {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
+        Integer insertSeq = 0;
+        if(form.getFiles() != null){
+            insertSeq = service.insertTalkTemplateFileUpload(form);
+        }else{
+            insertSeq = repository.insertOnGeneratedKey(form).getValue(TALK_TEMPLATE.SEQ);
+        }
+        
         return ResponseEntity.created(URI.create("api/v1/admin/talk/template"))
-                .body(data(repository.insertOnGeneratedKey(form).getValue(TALK_TEMPLATE.SEQ)));
+                .body(data(insertSeq));
     }
 
     //템플릿 수정
-    @PutMapping("{seq}")
+    @PostMapping(value = "{seq}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<JsonResult<Void>> put(@Valid @RequestBody TalkTemplateFormRequest form, BindingResult bindingResult, @PathVariable Integer seq) {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
-        repository.updateByKey(form, seq);
+        service.updateTalkTemplateFileUpload(form, seq);
         return ResponseEntity.ok(create());
     }
 

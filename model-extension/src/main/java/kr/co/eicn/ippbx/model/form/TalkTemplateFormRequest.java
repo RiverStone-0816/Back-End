@@ -5,6 +5,9 @@ import kr.co.eicn.ippbx.util.valid.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.*;
 
@@ -17,6 +20,8 @@ public class TalkTemplateFormRequest extends BaseForm {
      */
     @NotNull("템플릿 타입")
     private String  type;
+    @NotNull("템플릿 타입")
+    private String  typeMent;
     @NotNull("템플릿 유형 데이터")
     private String  typeData;
     @NotNull("템플릿명")
@@ -24,11 +29,19 @@ public class TalkTemplateFormRequest extends BaseForm {
     @NotNull("템플릿 멘트")
     private String  ment;
 
+    private List<MultipartFile> files;
+    private String originalFileName;
+    private String filePath;
+
     @Override
     public boolean validate(BindingResult bindingResult) {
         if (isNotEmpty(type))
             if (containsWhitespace(type))
                 reject(bindingResult, "type", "{빈 공백문자를 포함할 수 없습니다.}", "");
+
+        if (isNotEmpty(typeMent))
+            if (containsWhitespace(typeMent))
+                reject(bindingResult, "typeMent", "{빈 공백문자를 포함할 수 없습니다.}", "");
 
         return super.validate(bindingResult);
     }
