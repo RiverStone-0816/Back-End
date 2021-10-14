@@ -15,8 +15,9 @@
 
 <div class="room" id="talk-room" data-status="${g.htmlQuote(talk.roomStatus)}" data-id="${g.htmlQuote(talk.roomId)}" data-sender-key="${g.htmlQuote(talk.senderKey)}"
      data-user-key="${g.htmlQuote(talk.userKey)}" data-user="${g.htmlQuote(talk.userId)}">
-    <div class="chat-header">
-        [${talk.roomStatus}]-${g.htmlQuote(talk.roomName)}
+    <div class="chat-header dp-flex justify-content-space-between align-items-center">
+        <span><img src="<c:url value="/resources/images/kakao-icon.png"/>" class="channel-icon"> [${talk.roomStatus}]-${g.htmlQuote(talk.roomName)}</span>
+        <button type="button" class="ui button tiny compact button-sideview" onclick="sideViewRoomModal()"></button>
     </div>
     <div class="chat-body" data-last="${talk.lastMsgSeq}">
         <c:forEach var="e" items="${talk.talkMsgSummaryList}">
@@ -37,41 +38,83 @@
                                 <c:when test="${e.type == 'photo'}">
                                     <div class="chat">
                                         <div class="bubble">
-                                            <p class="txt_chat">
-                                                <img src="${url}">
-                                            </p>
+                                            <div class="txt_chat">
+                                                <img src="${url}" class="cursor-pointer" onclick="viewImg()">
+                                            </div>
+                                            <a href="${url}" target="_blank" class="save-txt">저장하기</a>
                                         </div>
                                     </div>
-                                    <a href="${url}" target="_blank">저장하기</a>
                                 </c:when>
                                 <c:when test="${e.type == 'audio'}">
                                     <div class="chat">
                                         <div class="bubble">
-                                            <p class="txt_chat">
+                                            <div class="txt_chat">
                                                 <audio controls src="${url}"></audio>
-                                            </p>
+                                            </div>
+                                            <a href="${url}" target="_blank" class="save-txt">저장하기</a>
                                         </div>
                                     </div>
-                                    <a href="${url}" target="_blank">저장하기</a>
                                 </c:when>
                                 <c:when test="${e.type == 'file'}">
                                     <div class="chat">
                                         <div class="bubble">
-                                            <p class="txt_chat">
+                                            <div class="txt_chat">
                                                 <a href="${url}" target="_blank">${url}</a>
-                                            </p>
+                                            </div>
+                                            <a href="${url}" target="_blank" class="save-txt">저장하기</a>
                                         </div>
                                     </div>
-                                    <a href="${url}" target="_blank">저장하기</a>
                                 </c:when>
                                 <c:otherwise>
                                     <div class="chat">
                                         <div class="bubble">
-                                            <pre class="txt_chat">${g.htmlQuote(e.content)}</pre>
+                                            <div class="txt_chat">
+                                                <p>${g.htmlQuote(e.content)}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </c:otherwise>
                             </c:choose>
+                        </div>
+                    </div>
+                    <div class="chat-item ">
+                        <div class="wrap-content">
+                            <div class="txt-time">
+                                [미등록고객] 2021-10-10 11:01:29
+                            </div>
+                            <div class="chat">
+                                <div class="bubble">
+                                    <div class="txt_chat"><p>남이보낸메시지</p></div>
+                                </div>
+                                <div class="chat-layer">
+                                    <div class="buttons">
+                                        <button class="button-reply" data-inverted="" data-tooltip="답장 달기" data-position="top center" onclick="viewToReply()"></button>
+                                        <button class="button-template" data-inverted="" data-tooltip="템플릿 만들기" data-position="top center" onclick="templateModal()"></button>
+                                        <button class="button-knowledge" data-inverted="" data-tooltip="지식관리 호출" data-position="top center" onclick="knowledgeManagementModal()"></button>
+                                        <button class="button-sideview" data-inverted="" data-tooltip="사이드뷰" data-position="top center"></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-item chat-me">
+                        <div class="wrap-content">
+                            <div class="txt-time">
+                                [상담사1] 2021-10-10 11:13:51
+                            </div>
+                            <div class="chat">
+                                <div class="chat-layer">
+                                    <div class="buttons">'
+                                        <button class="button-reply" data-inverted="" data-tooltip="답장 달기" data-position="top center" onclick="viewToReply()"></button>
+                                        <button class="button-template" data-inverted="" data-tooltip="템플릿 만들기" data-position="top center" onclick="templateModal()"></button>
+                                        <button class="button-knowledge" data-inverted="" data-tooltip="지식관리 호출" data-position="top center" onclick="knowledgeManagementModal()"></button>
+                                        <button class="button-sideview" data-inverted="" data-tooltip="사이드뷰" data-position="top center"></button>
+                                    </div>
+                                </div>
+                                <div class="bubble">
+                                    <div class="txt_chat"><p>내가보낸메시지</p></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </c:when>

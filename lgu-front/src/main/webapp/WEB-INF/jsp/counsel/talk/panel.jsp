@@ -46,31 +46,78 @@
     </div>
 
     <div class="seven wide column">
-        <div class="chat-container">
+        <div class="chat-container overflow-hidden">
             <div class="room" id="talk-room">
                 <div class="chat-header"></div>
                 <div class="chat-body"></div>
             </div>
             <div class="write-chat">
+                <%--<div class="template-container">
+                    <div class="template-container-inner">
+                        <ul class="template-ul">
+                            <li class="template-list">
+                                <div class="template-title">/템플릿</div>
+                                <div class="template-content">템플릿 1호</div>
+                            </li>
+                            <li class="template-list">
+                                <div class="template-title">/ㅁㅁㅁ</div>
+                                <div class="template-content">[object Object]</div>
+                            </li>
+                            <li class="template-list">
+                                <div class="template-title">/ㄹㄹㄹ</div>
+                                <div class="template-content">12222</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>--%>
+                <%--todo: 메신저에 들어간 슬래쉬키로 템플릿 선택 기능 적용 요청--%>
+                <div class="view-to-reply">
+                    <%--사진답변일 경우만 출력--%>
+                    <div class="target-image">
+                        <img src="https://i.pinimg.com/736x/6a/82/f2/6a82f2127d3fb32e5734a87543002e5b.jpg" class="target-image-content">
+                    </div>
+                    <%--사진답변일 경우만 출력--%>
+                    <div class="target-text">
+                        <p class="target-user">홍길동에게 답장</p>
+                        <p class="target-content">내용</p>
+                        <%--<p class="target-content">이미지</p>--%>
+                        <%--<p class="target-content">파일명.pdf</p>--%>
+                    </div>
+                    <div class="target-close">
+                        <img src="<c:url value="/resources/images/icon-close.svg"/>">
+                    </div>
+                </div>
                 <div class="write-menu">
-                    <button type="button" class="mini ui button compact" onclick="templateSelectPopup()">템플릿</button>
-                    <button type="button" class="mini ui button compact" onclick="uploadTalkFile()">파일전송</button>
-                    <button type="button" class="mini ui button compact pull-right -assignUnassignedRoomToMe" style="display: none;"
-                            onclick="talkCommunicator.assignUnassignedRoomToMe($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key')); $(this).hide()">
-                        찜하기
-                    </button>
-                    <button type="button" class="mini ui button compact pull-right -assignAssignedRoomToMe" style="display: none;"
-                            onclick="talkCommunicator.assignAssignedRoomToMe($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key')); $(this).hide()">
-                        가져오기
-                    </button>
-                    <button type="button" class="mini ui button compact pull-right -deleteRoom" style="display: none;"
-                            onclick="deleteRoom($('#talk-room').attr('data-id'))">
-                        대화방내리기
-                    </button>
-                    <button type="button" class="mini ui button compact pull-right -downRoom" style="display: none;"
-                            onclick="talkCommunicator.deleteRoom($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key'))">
-                        대화방종료
-                    </button>
+                    <div>
+                        <button type="button" class="mini ui button compact" onclick="templateSelectPopup()">템플릿</button>
+                        <button type="button" class="mini ui button compact">봇템플릿</button>
+                        <button type="button" class="mini ui button compact" onclick="uploadTalkFile()">파일전송</button>
+                        <button class="ui icon compact mini button" data-inverted="" data-tooltip="음성대화" data-variation="tiny" data-position="top center"> <i class="microphone icon"></i> </button>
+                        <button class="ui icon compact mini button" data-inverted="" data-tooltip="화상대화" data-variation="tiny" data-position="top center"> <i class="user icon"></i> </button>
+                        <div class="ui fitted toggle checkbox auto-ment vertical-align-middle ml5">
+                            <input type="checkbox">
+                            <label></label>
+                        </div>
+
+                    </div>
+                    <div>
+                        <button type="button" class="mini ui button compact -assignUnassignedRoomToMe" style="display: none;"
+                                onclick="talkCommunicator.assignUnassignedRoomToMe($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key')); $(this).hide()">
+                            찜하기
+                        </button>
+                        <button type="button" class="mini ui button compact -assignAssignedRoomToMe" style="display: none;"
+                                onclick="talkCommunicator.assignAssignedRoomToMe($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key')); $(this).hide()">
+                            가져오기
+                        </button>
+                        <button type="button" class="mini ui button compact -deleteRoom" style="display: none;"
+                                onclick="deleteRoom($('#talk-room').attr('data-id'))">
+                            대화방내리기
+                        </button>
+                        <button type="button" class="mini ui button compact -downRoom" style="display: none;"
+                                onclick="talkCommunicator.deleteRoom($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key'))">
+                            대화방종료
+                        </button>
+                    </div>
                 </div>
                 <div class="wrap-inp">
                     <div class="inp-box">
@@ -82,6 +129,218 @@
         </div>
     </div>
 </div>
+
+<div class="ui modal side-view-room" id="side-view-modal">
+    <div class="chat-container">
+        <div class="room">
+            <div class="chat-header">
+                <span><img src="/resources/images/kakao-icon.png" class="channel-icon"> [S]-대화방ZDgm6rQ043dz</span>
+                <i class="x icon modal-close"></i>
+            </div>
+            <div class="chat-body">
+                <p class="info-msg">시스템메시지</p>
+                <div class="chat-item">
+                    <div class="wrap-content">
+                        <div class="txt-time">
+                            [미등록고객] 2021-10-10 11:01:29
+                        </div>
+                        <div class="chat">
+                            <div class="bubble">
+                                <div class="txt_chat"><p>남이보낸메시지</p></div>
+                            </div>
+                            <div class="chat-layer">
+                                <div class="buttons">
+                                    <button class="button-reply" data-inverted="" data-tooltip="답장 달기" data-position="top center" onclick="viewToReply()"></button>
+                                    <button class="button-template" data-inverted="" data-tooltip="템플릿 만들기" data-position="top center" onclick="templateModal()"></button>
+                                    <button class="button-knowledge" data-inverted="" data-tooltip="지식관리 호출" data-position="top center" onclick="knowledgeManagementModal()"></button>
+                                    <button class="button-sideview" data-inverted="" data-tooltip="사이드뷰" data-position="top center"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-item chat-me">
+                    <div class="wrap-content">
+                        <div class="txt-time">
+                            [상담사1] 2021-10-10 11:13:51
+                        </div>
+                        <div class="chat">
+                            <div class="chat-layer">
+                                <div class="buttons">'
+                                    <button class="button-reply" data-inverted="" data-tooltip="답장 달기" data-position="top center" onclick="viewToReply()"></button>
+                                    <button class="button-template" data-inverted="" data-tooltip="템플릿 만들기" data-position="top center" onclick="templateModal()"></button>
+                                    <button class="button-knowledge" data-inverted="" data-tooltip="지식관리 호출" data-position="top center" onclick="knowledgeManagementModal()"></button>
+                                    <button class="button-sideview" data-inverted="" data-tooltip="사이드뷰" data-position="top center"></button>
+                                </div>
+                            </div>
+                            <div class="bubble">
+                                <div class="txt_chat"><p>내가보낸메시지</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="write-chat">
+            <%--<div class="template-container">
+                    <div class="template-container-inner">
+                        <ul class="template-ul">
+                            <li class="template-list">
+                                <div class="template-title">/템플릿</div>
+                                <div class="template-content">템플릿 1호</div>
+                            </li>
+                            <li class="template-list">
+                                <div class="template-title">/ㅁㅁㅁ</div>
+                                <div class="template-content">[object Object]</div>
+                            </li>
+                            <li class="template-list">
+                                <div class="template-title">/ㄹㄹㄹ</div>
+                                <div class="template-content">12222</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>--%>
+            <%--todo: 메신저에 들어간 슬래쉬키로 템플릿 선택 기능 적용 요청--%>
+            <div class="view-to-reply">
+                <%--사진답변일 경우만 출력--%>
+                <div class="target-image">
+                    <img src="https://i.pinimg.com/736x/6a/82/f2/6a82f2127d3fb32e5734a87543002e5b.jpg" class="target-image-content">
+                </div>
+                <%--사진답변일 경우만 출력--%>
+                <div class="target-text">
+                    <p class="target-user">홍길동에게 답장</p>
+                    <p class="target-content">내용</p>
+                    <%--<p class="target-content">이미지</p>--%>
+                    <%--<p class="target-content">파일명.pdf</p>--%>
+                </div>
+                <div class="target-close">
+                    <img src="<c:url value="/resources/images/icon-close.svg"/>">
+                </div>
+            </div>
+            <div class="write-menu">
+                <div>
+                    <button type="button" class="mini ui button compact" onclick="templateSelectPopup()">템플릿</button>
+                    <button type="button" class="mini ui button compact" onclick="uploadTalkFile()">파일전송</button>
+                    <button class="ui icon compact mini button" data-inverted="" data-tooltip="음성대화" data-variation="tiny" data-position="top center"> <i class="microphone icon"></i> </button>
+                    <button class="ui icon compact mini button" data-inverted="" data-tooltip="화상대화" data-variation="tiny" data-position="top center"> <i class="user icon"></i> </button>
+                    <div class="ui fitted toggle checkbox auto-ment vertical-align-middle ml5 checked">
+                        <input type="checkbox" tabindex="0" class="hidden">
+                        <label></label>
+                    </div>
+
+                </div>
+                <div>
+                    <button type="button" class="mini ui button compact -assignUnassignedRoomToMe" style="display: none;" onclick="talkCommunicator.assignUnassignedRoomToMe($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key')); $(this).hide()">
+                        찜하기
+                    </button>
+                    <button type="button" class="mini ui button compact -assignAssignedRoomToMe" style="display: none;" onclick="talkCommunicator.assignAssignedRoomToMe($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key')); $(this).hide()">
+                        가져오기
+                    </button>
+                    <button type="button" class="mini ui button compact -deleteRoom" style="display: none;" onclick="deleteRoom($('#talk-room').attr('data-id'))">
+                        대화방내리기
+                    </button>
+                    <button type="button" class="mini ui button compact -downRoom" style="" onclick="talkCommunicator.deleteRoom($('#talk-room').attr('data-id'), $('#talk-room').attr('data-sender-key'), $('#talk-room').attr('data-user-key'))">
+                        대화방종료
+                    </button>
+                </div>
+            </div>
+            <div class="wrap-inp">
+                <div class="inp-box">
+                    <textarea id="talk-message" placeholder="전송하실 메시지를 입력하세요."></textarea>
+                </div>
+                <button type="button" class="send-btn" onclick="sendTalkMessage()">전송</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ui modal small cover-modal-index" id="messenger-template-add-popup">
+    <i class="close icon"></i>
+    <div class="header">상담톡 템플릿 추가</div>
+    <div class="scrolling content rows">
+        <div class="ui grid">
+            <div class="row">
+                <div class="four wide column"><label class="control-label">사용권한</label></div>
+                <div class="four wide column">
+                    <div class="ui form">
+                        <select>
+                            <option>개인</option>
+                            <option>그룹</option>
+                            <option>회사전체</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="four wide column"><label class="control-label">유형</label></div>
+                <div class="four wide column">
+                    <div class="ui form">
+                        <select>
+                            <option>텍스트</option>
+                            <option>이미지</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">템플릿명</label></div>
+                <div class="twelve wide column">
+                    <div class="ui form">
+                        <input type="text" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column">
+                    <label class="control-label">템플릿멘트</label>
+                </div>
+                <div class="twelve wide column">
+                    <div class="ui form">
+                        <div class="align-right"><label>500자 이하</label></div>
+                        <textarea id="ment" name="ment" row="10" maxlength="500"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column">
+                    <label class="control-label">이미지</label>
+                </div>
+                <div class="twelve wide column">
+                    <div class="file-upload-header">
+                        <label for="file" class="ui button blue mini compact">파일찾기</label>
+                        <input type="file" id="file">
+                        <span class="file-name">No file selected</span>
+                    </div>
+                    <div>
+                        <progress value="0" max="100" style="width:100%"></progress>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="actions">
+        <button type="button" class="ui button modal-close">취소</button>
+        <button type="submit" class="ui blue button">확인</button>
+    </div>
+</div>
+
+<div class="ui modal inverted large" id="knowledge-management-modal">
+    <i class="close icon"></i>
+    <div class="header">지식관리검색</div>
+    <div class="content rows scrolling">
+        지식관리 iclude 요청
+    </div>
+</div>
+
+<div class="ui xsmall modal cover-modal-index" id="image-view-modal">
+    <div class="header">이미지 뷰어</div>
+    <div class="content img">
+        <img src="https://t1.daumcdn.net/cfile/blog/1568434B50EF2C8C0D">
+    </div>
+    <div class="actions">
+        <button type="button" class="ui button modal-close">닫기</button>
+        <a href="#" target="_blank" class="ui blue floated button">다운로드</a>
+    </div>
+</div>
+
 
 <jsp:include page="/counsel/talk/modal-template"/>
 
@@ -261,5 +520,28 @@
                 return sendTalkMessage();
             }
         });
+
+        function viewToReply() {
+            $('.view-to-reply').toggle();
+        }
+
+        function templateModal() {
+            $('#messenger-template-add-popup').dragModalShow();
+        }
+
+        function knowledgeManagementModal() {
+            $('#knowledge-management-modal').dragModalShow();
+        }
+
+        function viewImg() {
+            $('#image-view-modal').dragModalShow();
+        }
+
+        function sideViewRoomModal() {
+            $('#side-view-modal').dragModalShow();
+        }
+
+
+
     </script>
 </tags:scripts>

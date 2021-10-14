@@ -1147,6 +1147,12 @@ label.control-label {
 .mb13 {
   margin-bottom: 13px !important
 }
+.vertical-align-middle {
+  vertical-align: middle!important;
+}
+.ws-nowrap {
+  white-space:nowrap!important;
+}
 .pd15 {
   padding:15px!important;
 }
@@ -1164,6 +1170,9 @@ label.control-label {
 }
 .align-items-center {
   align-items: center!important;
+}
+.justify-content-space-between {
+  justify-content: space-between;
 }
 .dp-flex {
   .flex();
@@ -1444,6 +1453,33 @@ label.control-label {
 
 .ui.checkbox {
   margin: 0 3px 0 0;
+}
+
+.ui.toggle.checkbox.auto-ment {
+  width: 66px;
+  input {
+    width: 100%;
+  }
+  label {
+    width: 100%;
+    &:before {
+      width: 100%;
+      content: '자동멘트';
+      font-size: 11px;
+      letter-spacing: -1px;
+      text-align: right;
+      line-height: 20px;
+      padding: 0 7px 0 0;
+    }
+  }
+  input:checked ~ label:after {
+    left: 3.5rem;
+  }
+  input:checked ~ label:before {
+    text-align: left;
+    color: #fff;
+    padding: 0 0 0 8px;
+  }
 }
 
 .ui.form {
@@ -2777,6 +2813,25 @@ g {
 .os-size-auto-observer {
   height: calc(100% + 1px);
   float: left;
+}
+
+.ui.modal.side-view-room {
+  overflow: hidden !important;
+  width: 500px;
+  height: 570px;
+  .chat-container {
+    .room {
+      .chat-body {
+        height: ~"calc(100% - 56px)";
+      }
+    }
+    .flex();
+    height: 100%;
+    flex-flow: column;
+    .write-chat {
+      align-self: end;
+    }
+  }
 }
 
 #messenger-control-panel {position: absolute; left: 0; right: 0; bottom: 0;}

@@ -47,7 +47,7 @@
                     <c:forEach var="e" items="${talkList}">
                         <li class="talk-list" data-id="${g.htmlQuote(e.roomId)}" data-sender-key="${g.htmlQuote(e.senderKey)}" data-user-key="${g.htmlQuote(e.userKey)}">
                             <div class="ui segment">
-                                <div class="ui top left attached label small blue">서비스 : ${g.htmlQuote(e.svcName)}</div>
+                                <div class="ui top left attached label small blue">서비스 : ${g.htmlQuote(e.svcName)} <img src="<c:url value="/resources/images/kakao-icon.png"/>" class="channel-icon"> </div>
                                 <div class="ui top right attached label small">상담원 :
                                     <text class="-user-name">${g.htmlQuote(e.userName)}</text>
                                 </div>
