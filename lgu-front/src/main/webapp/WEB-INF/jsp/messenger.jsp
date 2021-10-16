@@ -17,8 +17,8 @@
 <div id="messenger-modal" class="ui modal large ui-resizable ui-draggable show-rooms show-room" style="width: 500px; display: block; position: absolute; left: 335px; top: 265px;">
     <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true"
          @click.stop="showingTemplates = false" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
-        <div v-if="showingDropzone" class="attach-overlay" >
-            <div class="inner" >
+        <div v-if="showingDropzone" class="attach-overlay">
+            <div class="inner">
                 <img src="<c:url value="/resources/images/circle-plus.svg"/>">
                 <p class="attach-text">파일을 채팅창에 바로 업로드하려면<br>여기에 드롭하세요.</p>
             </div>
