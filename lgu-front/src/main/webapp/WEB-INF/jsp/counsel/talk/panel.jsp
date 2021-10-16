@@ -283,7 +283,7 @@
                         </div>
                     </div>
                     <div v-if="replying !== null" class="view-to-reply">
-                        <div v-if="replying.messageType === 'file' && replying.fileType === 'photo'" class="target-image">
+                        <div v-if="replying.messageType === 'photo'" class="target-image">
                             <img :src="replying.fileUrl" class="target-image-content">
                         </div>
                         <div class="target-text">
