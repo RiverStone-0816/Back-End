@@ -47,7 +47,7 @@
         </div>
         <div class="ui tab active" data-tab="consulting-screen">
             <div class="ui grid">
-                <div class="nine wide column">
+                <div class="ten wide column">
                     <jsp:include page="/counsel/call/"/>
                     <c:if test="${user.isTalk.equals('Y')}">
                         <jsp:include page="/counsel/talk/"/>
@@ -86,7 +86,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="seven wide column">
+                <div class="six wide column">
                     <div id="call-custom-input-panel">
                         <div id="call-custom-input"></div>
                     </div>
