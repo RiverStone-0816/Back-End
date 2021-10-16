@@ -334,14 +334,8 @@
     window.donePostTalkCustomInfo = function (form, response) {
         alert('고객정보가 저장되었습니다.');
         //loadTalkCustomInput(${form.groupSeq}, response.data || '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', '${g.escapeQuote(roomId)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}');
-        loadTalkList('MY');
-        replaceReceivedHtmlInSilence('/counsel/talk/room/' + encodeURIComponent('${g.escapeQuote(roomId)}'), '#talk-room');
 
-        if (!$('#talk-room').attr('data-user')) {
-            loadTalkList('TOT');
-        } else if ($('#talk-room').attr('data-user') !== userId) {
-            loadTalkList('OTH');
-        }
+        talkListContainer.load()
     };
 
     ui.find('[name="channelType"]').change(function () {

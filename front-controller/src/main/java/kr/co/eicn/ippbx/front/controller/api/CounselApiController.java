@@ -11,8 +11,9 @@ import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
 import kr.co.eicn.ippbx.model.form.TodoListUpdateFormRequest;
 import kr.co.eicn.ippbx.model.form.TodoReservationFormRequest;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -21,13 +22,12 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
 
+@Slf4j
 @LoginRequired
 @AllArgsConstructor
 @RestController
 @RequestMapping(value = "api/counsel", produces = MediaType.APPLICATION_JSON_VALUE)
 public class CounselApiController extends BaseController {
-    private static final Logger logger = LoggerFactory.getLogger(CounselApiController.class);
-
     private final CounselApiInterface apiInterface;
 
     //todolist 처리결과 수정
@@ -68,5 +68,17 @@ public class CounselApiController extends BaseController {
     @DeleteMapping("talk-remove-room/{roomId}")
     public void talkRemoveRoom(@PathVariable String roomId) throws IOException, ResultFailException {
         apiInterface.talkRemoveRoom(roomId);
+    }
+
+    @SneakyThrows
+    @PostMapping("{roomId}/upload-file")
+    public void uploadFile(@PathVariable String roomId, @Valid @RequestBody CounselApiInterface.FileUploadForm form, BindingResult bindingResult, @Value("${eicn.apiserver}") String apiServer, @Value("${eicn.talk.socket.id}") String talkSocketId) {
+        form.setMy_userid(g.getUser().getId());
+        form.setMy_username(g.getUser().getIdName());
+        form.setCompany_id(g.getUser().getCompanyId());
+        form.setBasic_url(g.getSocketList().get(talkSocketId));
+        form.setWeb_url(apiServer);
+        form.setRoom_id(roomId);
+        apiInterface.uploadFile(form);
     }
 }

@@ -15,8 +15,7 @@
 <jsp:include page="/WEB-INF/jsp/messenger-room-list.jsp"/>
 
 <div id="messenger-modal" class="ui modal large ui-resizable ui-draggable show-rooms show-room" style="width: 500px; display: block; position: absolute; left: 335px; top: 265px;">
-    <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true"
-         @click.stop="showingTemplates = false" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
+    <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true" @click.stop="showingTemplates=false" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
         <div v-if="showingDropzone" class="attach-overlay">
             <div class="inner">
                 <img src="<c:url value="/resources/images/circle-plus.svg"/>">
@@ -179,7 +178,7 @@
             </div>
             <div class="wrap-inp">
                 <div class="inp-box">
-                    <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteClipboardImage" @keyup.stop="keyup"></textarea>
+                    <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteClipboardFiles" @keyup.stop="keyup"></textarea>
                 </div>
                 <button type="button" class="send-btn" @click="sendMessage()">전송</button>
             </div>
@@ -706,17 +705,6 @@
                 this.loadInvitationPersons()
             },
         }).mount(messengerModal)
-
-        function getSelectedTextContentOfSingleElement() {
-            const range = getSelection().getRangeAt(0)
-            if (range.startContainer !== range.endContainer)
-                return null
-
-            return {
-                parent: range.startContainer.parentElement,
-                text: range.cloneContents().textContent
-            }
-        }
 
         function receiveMessage(data) {
             roomList.receiveMessage(

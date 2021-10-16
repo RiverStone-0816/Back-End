@@ -232,16 +232,16 @@
     };
 
     window.donePostTalkCounselingInfo = function () {
-        alert('상담정보가 저장되었습니다.');
-        loadTalkCounselingInput('${form.groupId}', null, '${g.htmlQuote(roomId)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}');
-        loadTalkList('MY');
-        replaceReceivedHtmlInSilence('/counsel/talk/room/' + encodeURIComponent('${g.escapeQuote(roomId)}'), '#talk-room');
+        const roomId = '${g.escapeQuote(roomId)}'
 
-        if (!$('#talk-room').attr('data-user')) {
-            loadTalkList('TOT');
-        } else if ($('#talk-room').attr('data-user') !== userId) {
-            loadTalkList('OTH');
-        }
+        alert('상담정보가 저장되었습니다.');
+        loadTalkCounselingInput('${form.groupId}', null, roomId, '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}');
+
+        talkListContainer.load().done(function () {
+            if (!talkListContainer.roomMap[roomId])
+                return
+            talkListContainer.openRoom(roomId, talkListContainer.roomMap[roomId].userName)
+        })
     };
 
     ui.find('.-submit-form').click(function () {

@@ -1002,3 +1002,14 @@ function popupImageView(url) {
         .dragModalShow()
         .appendTo('body')
 }
+
+function getSelectedTextContentOfSingleElement() {
+    const range = getSelection().getRangeAt(0)
+    if (range.startContainer !== range.endContainer)
+        return null
+
+    return {
+        parent: range.startContainer.parentElement,
+        text: range.cloneContents().textContent
+    }
+}
