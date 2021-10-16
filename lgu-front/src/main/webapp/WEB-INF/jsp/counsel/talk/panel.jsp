@@ -34,7 +34,7 @@
                             </div>
                             <div class="nine wide field">
                                 <div class="ui action input">
-                                    <input type="text" v-model="statuses[e.status].filter.input"/>
+                                    <input type="text" v-model="statuses[e.status].filter.value"/>
                                     <button class="ui icon button" @click.stop="filter(e.status)">
                                         <i class="search icon"></i>
                                     </button>
