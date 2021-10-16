@@ -669,7 +669,10 @@
         }
 
         function processTalkMessage(data) {
-            talkRoomList.forEach(e => e.appendMessage({
+            const validRoomList = talkRoomList.filter(e => e.roomId === data.room_id)
+            if (!validRoomList.length)
+                return talkListContainer.loadActivatedRoomIds()
+            validRoomList.forEach(e => e.appendMessage({
                 roomId: data.room_id,
                 time: moment().format('YYYY-MM-DD') + ' ' + data.cur_timestr.substring(data.cur_timestr.length - 8, data.cur_timestr.length),
                 messageType: data.type,
