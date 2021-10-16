@@ -148,6 +148,16 @@
                             _this.STATUSES.forEach(e => _this.filter(e.status))
                         })
                     },
+                    updateRoom: function (roomId, messageType, content, messageTime) {
+                        if (!this.roomMap[roomId])
+                            return this.load()
+
+                        this.roomMap[roomId].content = content
+                        this.roomMap[roomId].roomLastTime = messageTime
+                        this.roomMap[roomId].type = messageType
+
+                        this.changeOrdering(this.roomMap[roomId].container.status)
+                    },
                     activeTab: function (status) {
                         this.STATUSES.forEach(e => this.statuses[e.status].activated = e.status === status)
                     },
@@ -669,12 +679,12 @@
         }
 
         function processTalkMessage(data) {
-            const validRoomList = talkRoomList.filter(e => e.roomId === data.room_id)
-            if (!validRoomList.length)
-                return talkListContainer.loadActivatedRoomIds()
-            validRoomList.forEach(e => e.appendMessage({
+            const messageTime = moment().format('YYYY-MM-DD') + ' ' + data.cur_timestr.substring(data.cur_timestr.length - 8, data.cur_timestr.length)
+            talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime)
+
+            talkRoomList.forEach(e => e.appendMessage({
                 roomId: data.room_id,
-                time: moment().format('YYYY-MM-DD') + ' ' + data.cur_timestr.substring(data.cur_timestr.length - 8, data.cur_timestr.length),
+                time: messageTime,
                 messageType: data.type,
                 sendReceive: data.send_receive,
                 contents: data.content,
