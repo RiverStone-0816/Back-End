@@ -237,7 +237,7 @@
                                     <div class="wrap-content">
                                         <div class="txt-time">[{{ e.username || customName }}] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
-                                            <div v-if="e.userId === ME" class="chat-layer" style="visibility: hidden;">
+                                            <div v-if="['AF', 'S'].includes(e.sendReceive) && e.userId === ME" class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
                                                     <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="top center"></button>
                                                     <button @click="popupTemplateModal(e,i)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
@@ -254,7 +254,7 @@
                                                 </div>
                                                 <a v-if="['file','photo','audio'].includes(e.messageType)" target="_blank" :href="e.fileUrl">저장하기</a>
                                             </div>
-                                            <div v-if="e.userId !== ME" class="chat-layer" style="visibility: hidden;">
+                                            <div v-if="!['AF', 'S'].includes(e.sendReceive) || e.userId !== ME" class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
                                                     <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="top center"></button>
                                                     <button @click="popupTemplateModal(e,i)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
@@ -675,7 +675,7 @@
                 messageType: data.type,
                 sendReceive: data.send_receive,
                 contents: data.content,
-                userId: data.userid,
+                userId: ['AF', 'S'].includes(data.send_receive) ? data.userid : null,
                 username: ['AF', 'S'].includes(data.send_receive) ? data.username : data.customname,
             }))
         }
