@@ -1013,3 +1013,8 @@ function getSelectedTextContentOfSingleElement() {
         text: range.cloneContents().textContent
     }
 }
+
+function zeroPad(nr, base) {
+    let len = (String(base).length - String(nr).length) + 1;
+    return len > 0 ? new Array(len).join('0') + nr : nr;
+}

@@ -60,7 +60,7 @@
                                     <div class="item">
                                         <div class="thumb">
                                             <div class="profile-img">
-                                                <img src="https://www.next-t.co.kr/public/uploads/7b7f7e2138e29e598cd0cdf2c85ea08d.jpg">
+                                                <img :src="getImage(room.roomId)">
                                             </div>
                                         </div>
                                         <div class="middle aligned content">
@@ -160,6 +160,9 @@
 
                         this.changeOrdering(this.roomMap[roomId].container.status)
                     },
+                    getImage: function (userName) {
+                        return profileImageSources[Math.abs(userName.hashCode()) % profileImageSources.length]
+                    },
                     activeTab: function (status) {
                         this.STATUSES.forEach(e => this.statuses[e.status].activated = e.status === status)
                     },
@@ -247,10 +250,10 @@
                                 <div v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info'" class="chat-item"
                                      :class="['AF', 'S'].includes(e.sendReceive) && e.userId === ME && 'chat-me'">
                                     <div class="profile-img">
-                                        <img src="https://www.next-t.co.kr/public/uploads/7b7f7e2138e29e598cd0cdf2c85ea08d.jpg">
+                                        <img :src="getImage(['AF', 'S'].includes(e.sendReceive) ? e.username : roomId)">
                                     </div>
                                     <div class="wrap-content">
-                                        <div class="txt-time">[{{ e.username || customName }}] {{ getTimeFormat(e.time) }}</div>
+                                        <div class="txt-time">[{{ ['AF', 'S'].includes(e.sendReceive) ? e.username : customName }}] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
                                             <div v-if="['AF', 'S'].includes(e.sendReceive) && e.userId === ME" class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
@@ -314,22 +317,23 @@
                         <%--TODO--%>
                         <button type="button" class="mini ui button compact mr5">봇템플릿</button>
                         <input style="display: none" type="file" @change="sendFile">
-                        <button type="button" class="mini ui button icon compact mr5" onclick="this.previousElementSibling.click()" title="파일전송"><i class="paperclip icon"></i></button>
+                        <button type="button" class="mini ui button icon compact mr5" data-inverted data-tooltip="파일전송" data-variation="tiny" data-position="top center"
+                                onclick="this.previousElementSibling.click()"><i class="paperclip icon"></i></button>
                         <%--TODO--%>
-                        <button class="ui icon compact mini button mr5" data-inverted="" data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i class="microphone icon"></i></button>
+                        <button class="ui icon compact mini button mr5" data-inverted data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i class="microphone icon"></i></button>
                         <%--TODO--%>
-                        <button class="ui icon compact mini button mr5" data-inverted="" data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>
+                        <button class="ui icon compact mini button mr5" data-inverted data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>
                         <%--TODO--%>
                         <div class="ui fitted toggle checkbox auto-ment vertical-align-middle">
                             <input type="checkbox">
                             <label></label>
                         </div>
+                    </div>
+                    <div :style="'visibility:'+(roomId?'visible':'hidden')">
                         <button v-if="roomStatus === 'E'" class="mini ui button compact" @click.stop="deleteRoom">대화방내리기</button>
                         <button v-else-if="!userId" class="mini ui button compact" @click.stop="assignUnassignedRoomToMe">찜하기</button>
                         <button v-else-if="userId !== ME" class="mini ui button compact" @click.stop="assignAssignedRoomToMe">가져오기</button>
-                    </div>
-                    <div :style="'visibility:'+(roomId?'visible':'hidden')">
-                        <button class="mini ui button compact" @click.stop="finishCounsel">대화방종료</button>
+                        <button v-else class="mini ui button compact" @click.stop="finishCounsel">대화방종료</button>
                     </div>
                 </div>
 
@@ -473,6 +477,9 @@
                         }, 100)
                     })
                 },
+                getImage: function (userName) {
+                    return profileImageSources[Math.abs(userName.hashCode()) % profileImageSources.length]
+                },
                 sendMessage: function (message) {
                     if (!message) message = this.$refs.message.value
                     if (!message || !this.roomStatus || this.roomStatus === 'E') return
@@ -581,7 +588,7 @@
                         // TODO: 텍스트 유형 선택
 
                         const selectedTextContents = getSelectedTextContentOfSingleElement()
-                        if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === _this.$refs['message-' + index].querySelector('.txt_chat pre'))
+                        if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === _this.$refs['message-' + index].querySelector('.txt_chat p'))
                             modal.querySelector('[name=ment]').value = selectedTextContents.text
                         else
                             modal.querySelector('[name=ment]').value = message.contents
@@ -600,7 +607,7 @@
                 popupTaskScriptModal: function (message, index) {
                     let contents = message.contents
                     const selectedTextContents = getSelectedTextContentOfSingleElement()
-                    if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === this.$refs['message-' + index].querySelector('.txt_chat pre'))
+                    if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === this.$refs['message-' + index].querySelector('.txt_chat p'))
                         contents = selectedTextContents.text
 
                     popupDraggableModalFromReceivedHtml('/admin/service/help/task-script/modal-search?title=' + encodeURIComponent(contents), 'modal-search-task-script')

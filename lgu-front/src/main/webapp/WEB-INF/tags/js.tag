@@ -109,4 +109,6 @@
         });
         moment.locale('kr');
     }());
+
+    window.profileImageSources = [...Array(24).keys()].map(i => contextPath + '/resources/images/profile/profile' + zeroPad(i + 1, '00') + '.png')
 </script>
