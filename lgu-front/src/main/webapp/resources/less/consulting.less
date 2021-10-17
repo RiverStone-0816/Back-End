@@ -148,9 +148,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
-  &:hover {
-    background: #dcdcdc;
-  }
   text {
 
   }
@@ -305,6 +302,7 @@
 
 .ui.bottom.attached.tab.segment {
   word-break: break-all;
+  margin: 0;
 }
 
 .talk-list-container {
@@ -619,10 +617,25 @@
             }
           }
         }
+        .profile-img {
+          .flex();
+          width: 35px;
+          height: 35px;
+          min-width: 35px;
+          min-height: 35px;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+          border-radius: 50%;
+          margin: 0 10px 0 0;
+          img {
+            width: 200%;
+          }
+        }
         .wrap-content {
           text-align: left;
           .chat {
-            max-width: 430px;
+            max-width: 320px;
             .flex();
             .bubble {
               display: flex;
@@ -698,6 +711,9 @@
       }
       .chat-item.chat-me {
         justify-content: end;
+        .profile-img {
+          display:none;
+        }
         .wrap-content {
           text-align: right;
           flex-basis: 320px;
@@ -816,6 +832,7 @@
       background: @color-white;
       position: absolute;
       bottom: 88px;
+      left: 0;
       z-index: 5;
       flex-flow: row;
       align-items: center;
@@ -829,6 +846,8 @@
         width: 35px;
         height: 35px;
         overflow: hidden;
+        min-width: 35px;
+        min-height: 35px;
         .target-image-content {
           height: 200%;
         }
@@ -836,13 +855,17 @@
       .target-text {
         flex: 1;
         padding: 10px;
+        width: 100%;
+        min-width: 0;
         .target-user {
-
+          text-overflow: ellipsis;
+          overflow: hidden;
         }
         .target-content {
           color: #ABABAB;
           height: 20px;
           overflow: hidden;
+          text-overflow: ellipsis;
         }
       }
       .target-close {

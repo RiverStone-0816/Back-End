@@ -23,7 +23,7 @@
             </div>
         </div>
         <div class="room" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
-            <div v-if="showingInvitationPanel" class="ui very mini modal user-invite-popup" style="display: block;">
+            <div v-if="showingInvitationPanel" class="ui very mini modal user-invite-popup overflow-hidden" style="display: block;">
                 <div class="header"><i class="user plus icon mr10"></i>새로운 사용자 초대하기</div>
                 <div class="pd15">
                     <div class="user-invite-container">

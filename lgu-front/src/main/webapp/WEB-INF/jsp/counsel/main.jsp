@@ -53,7 +53,7 @@
                         <jsp:include page="/counsel/talk/"/>
                     </c:if>
 
-                    <div id="etc-panel" style="position: relative;">
+                    <div id="etc-panel" class="mt10" style="position: relative;">
                         <div>
                             <div class="ui top attached tabular menu">
                                 <a class="item active" data-tab="todo-list">To-do</a>

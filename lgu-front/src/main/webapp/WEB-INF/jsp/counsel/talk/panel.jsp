@@ -244,6 +244,9 @@
                                 <p v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
                                 <div v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info'" class="chat-item"
                                      :class="['AF', 'S'].includes(e.sendReceive) && e.userId === ME && 'chat-me'">
+                                    <div class="profile-img">
+                                        <img src="https://www.next-t.co.kr/public/uploads/7b7f7e2138e29e598cd0cdf2c85ea08d.jpg">
+                                    </div>
                                     <div class="wrap-content">
                                         <div class="txt-time">[{{ e.username || customName }}] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
@@ -260,9 +263,9 @@
                                                     <img v-if="e.messageType === 'photo'" :src="e.fileUrl" class="cursor-pointer" @click="popupImageView(e.fileUrl)">
                                                     <audio v-if="e.messageType === 'audio'" controls :src="e.fileUrl"></audio>
                                                     <a v-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl">{{ e.contents }}</a>
-                                                    <pre v-if="e.messageType === 'text'">{{ e.contents }}</pre>
+                                                    <p v-if="e.messageType === 'text'">{{ e.contents }}</p>
                                                 </div>
-                                                <a v-if="['file','photo','audio'].includes(e.messageType)" target="_blank" :href="e.fileUrl">저장하기</a>
+                                                <a v-if="['file','photo','audio'].includes(e.messageType)" target="_blank" :href="e.fileUrl" class="save-txt">저장하기</a>
                                             </div>
                                             <div v-if="!['AF', 'S'].includes(e.sendReceive) || e.userId !== ME" class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
@@ -307,15 +310,15 @@
 
                     <div :style="'visibility:'+(roomId?'visible':'hidden')">
                         <%--TODO--%>
-                        <button type="button" class="mini ui button compact">봇템플릿</button>
+                        <button type="button" class="mini ui button compact mr5">봇템플릿</button>
                         <input style="display: none" type="file" @change="sendFile">
-                        <button type="button" class="mini ui button icon compact mr10" onclick="this.previousElementSibling.click()" title="파일전송"><i class="paperclip icon"></i></button>
+                        <button type="button" class="mini ui button icon compact mr5" onclick="this.previousElementSibling.click()" title="파일전송"><i class="paperclip icon"></i></button>
                         <%--TODO--%>
-                        <button class="ui icon compact mini button" data-inverted="" data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i class="microphone icon"></i></button>
+                        <button class="ui icon compact mini button mr5" data-inverted="" data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i class="microphone icon"></i></button>
                         <%--TODO--%>
-                        <button class="ui icon compact mini button" data-inverted="" data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>
+                        <button class="ui icon compact mini button mr5" data-inverted="" data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>
                         <%--TODO--%>
-                        <div class="ui fitted toggle checkbox auto-ment vertical-align-middle ml5">
+                        <div class="ui fitted toggle checkbox auto-ment vertical-align-middle">
                             <input type="checkbox">
                             <label></label>
                         </div>
