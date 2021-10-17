@@ -59,7 +59,9 @@
                                 <div class="ui divided items">
                                     <div class="item">
                                         <div class="thumb">
-                                            <i class="user circle icon"></i>
+                                            <div class="profile-img">
+                                                <img src="https://www.next-t.co.kr/public/uploads/7b7f7e2138e29e598cd0cdf2c85ea08d.jpg">
+                                            </div>
                                         </div>
                                         <div class="middle aligned content">
                                             <div class="header">

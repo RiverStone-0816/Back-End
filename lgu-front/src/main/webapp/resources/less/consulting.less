@@ -341,10 +341,20 @@
           .thumb {
             .flex;
             align-items: center;
-            padding: 0 4px;
-            i {
-              font-size: @font-size-max;
-              color: #d0d0d0;
+            .profile-img {
+              .flex();
+              width: 35px;
+              height: 35px;
+              min-width: 35px;
+              min-height: 35px;
+              align-items: center;
+              justify-content: center;
+              overflow: hidden;
+              border-radius: 50%;
+              margin: 0 10px 0 0;
+              img {
+                width: 200%;
+              }
             }
           }
           .content {
