@@ -325,7 +325,9 @@
                         <button v-if="roomStatus === 'E'" class="mini ui button compact" @click.stop="deleteRoom">대화방내리기</button>
                         <button v-else-if="!userId" class="mini ui button compact" @click.stop="assignUnassignedRoomToMe">찜하기</button>
                         <button v-else-if="userId !== ME" class="mini ui button compact" @click.stop="assignAssignedRoomToMe">가져오기</button>
-                        <button v-else class="mini ui button compact" @click.stop="finishCounsel">대화방종료</button>
+                    </div>
+                    <div :style="'visibility:'+(roomId?'visible':'hidden')">
+                        <button class="mini ui button compact" @click.stop="finishCounsel">대화방종료</button>
                     </div>
                 </div>
 
