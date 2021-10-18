@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22">
+  <g id="그룹_143" data-name="그룹 143" transform="translate(1 1)" style="isolation: isolate">
+    <g id="그룹_142" data-name="그룹 142">
+      <g id="Icon_feather-credit-card" data-name="Icon feather-credit-card">
+        <path id="패스_9" data-name="패스 9" d="M3.318,6H19.682c1,0,1.818,1.119,1.818,2.5v15c0,1.381-.814,2.5-1.818,2.5H3.318c-1,0-1.818-1.119-1.818-2.5V8.5C1.5,7.119,2.314,6,3.318,6Z" transform="translate(-1.5 -6)" fill="none" stroke="#d676bf" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <g id="Icon_feather-list" data-name="Icon feather-list" transform="translate(3.059 4.672)">
+        <g id="그룹_141" data-name="그룹 141">
+          <path id="패스_3" data-name="패스 3" d="M12,9H22.167" transform="translate(-8.672 -9)" fill="none" stroke="#d676bf" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          <path id="패스_4" data-name="패스 4" d="M12,18H22.167" transform="translate(-8.672 -12.672)" fill="none" stroke="#d676bf" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          <path id="패스_5" data-name="패스 5" d="M12,27H22.167" transform="translate(-8.672 -16.344)" fill="none" stroke="#d676bf" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          <path id="패스_6" data-name="패스 6" d="M4.5,9h0" transform="translate(-4.5 -9)" fill="none" stroke="#d676bf" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          <path id="패스_7" data-name="패스 7" d="M4.5,18h0" transform="translate(-4.5 -12.672)" fill="none" stroke="#d676bf" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          <path id="패스_8" data-name="패스 8" d="M4.5,27h0" transform="translate(-4.5 -16.344)" fill="none" stroke="#d676bf" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
