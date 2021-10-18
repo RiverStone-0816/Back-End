@@ -20,7 +20,7 @@
         <tags:page-menu-tab url="/admin/chatbot/event/profile/"/>
         <div class="sub-content ui container fluid">
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
-                <div class="panel-heading">
+                <div class="panel-heading dp-flex align-items-center justify-content-space-between">
                     <div class="pull-left">검색</div>
                     <div class="pull-right">
                         <div class="ui slider checkbox">

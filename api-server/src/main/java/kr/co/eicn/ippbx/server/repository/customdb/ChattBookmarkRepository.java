@@ -2,11 +2,9 @@ package kr.co.eicn.ippbx.server.repository.customdb;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonChattBookmark;
 import kr.co.eicn.ippbx.model.form.ChattingMemberFormRequest;
-import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -15,8 +13,6 @@ public class ChattBookmarkRepository extends CustomDBBaseRepository<CommonChattB
     protected final Logger logger = LoggerFactory.getLogger(ChattBookmarkRepository.class);
 
     private final CommonChattBookmark TABLE;
-    @Autowired
-    private PersonListRepository personListRepository;
 
     public ChattBookmarkRepository(String table) {
         super(new CommonChattBookmark(table), new CommonChattBookmark(table).SEQ, kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattBookmark.class);

@@ -68,8 +68,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
 
         // 아이디유형, 그룹명, 아이디
         orderByFields.add(PERSON_LIST.ID_TYPE.asc());
-        orderByFields.add(COMPANY_TREE.GROUP_NAME.asc());
-        orderByFields.add(PERSON_LIST.ID.asc());
+        orderByFields.add(PERSON_LIST.ID_NAME.asc());
     }
 
     @Override

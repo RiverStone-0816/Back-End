@@ -108,7 +108,6 @@ public class UserApiController extends ApiBaseController {
                                 .collect(toList()));
                     return summary;
                 })
-                .sorted(Comparator.comparing(PersonSummaryResponse::getIdName))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(data(new Pagination<>(rows, search.getPage(), pagination.getTotalCount(), search.getLimit())));

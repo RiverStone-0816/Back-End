@@ -20,6 +20,8 @@ public class TalkServiceInfoFormRequest extends BaseForm {
 	private String  senderKey;            // 상담톡키
 	@NotNull("상담톡 활성화")
 	private String  isChattEnable;        // 상담창활성화
+	private String botId;
+	private String botName;
 
 	@Override
 	public boolean validate(BindingResult bindingResult) {

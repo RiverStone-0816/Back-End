@@ -2,15 +2,17 @@ package kr.co.eicn.ippbx.model.enums;
 
 import kr.co.eicn.ippbx.util.CodeHasable;
 
-public enum TalkStrategy implements CodeHasable<String> {
-    NO("NO"),RR("RR"),LC("LC"),LR("LR"),CL("CL");
+public enum ChatbotOpenBuilderType implements CodeHasable<String> {
+    BUILD("BD"), SKILL("SK");
 
     private final String code;
-    TalkStrategy(String code) {
+
+    ChatbotOpenBuilderType(String code) {
         this.code = code;
     }
 
+    @Override
     public String getCode() {
-        return code;
+        return this.code;
     }
 }

@@ -28,7 +28,8 @@ public class DaemonRepository extends EicnBaseRepository<DaemonInfo, kr.co.eicn.
 				.fetchOneInto(String.class);
 	}
 
-	public Map<String, String> findAllNodeJSDaemon() {
-		return findAll(DAEMON_INFO.TYPE.eq(DaemonType.NODEJS.getCode())).stream().collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.DaemonInfo::getId, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.DaemonInfo::getSocketUrlIn));
+	public Map<String, String> findAllNodeJSDaemon(boolean inOut) {
+		return findAll(DAEMON_INFO.TYPE.eq(DaemonType.NODEJS.getCode())).stream()
+				.collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.DaemonInfo::getId, inOut ? kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.DaemonInfo::getSocketUrlIn : kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.DaemonInfo::getSocketUrlOut));
 	}
 }

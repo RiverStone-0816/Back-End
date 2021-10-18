@@ -31,11 +31,17 @@
                     <table class="ui celled table compact unstackable ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkService">
                         <thead>
                         <tr>
-                            <th class="one wide">번호</th>
+                            <th rowspan="2" class="onew wide">번호</th>
+                            <th colspan="4">상담톡</th>
+                            <th colspan="2">카카오챗봇</th>
+                        </tr>
+                        <tr>
                             <th>상담톡서비스명</th>
                             <th>상담톡아이디</th>
                             <th>상담톡키</th>
                             <th>상담창활성화</th>
+                            <th>챗봇명</th>
+                            <th>챗봇아이디</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -48,12 +54,14 @@
                                         <td>${g.htmlQuote(e.kakaoServiceId)}</td>
                                         <td>${g.htmlQuote(e.senderKey)}</td>
                                         <td>${e.isChattEnable == 'Y' ? '활성화' : '비활성화'}</td>
+                                        <td>${g.htmlQuote(e.botName)}</td>
+                                        <td>${g.htmlQuote(e.botId)}</td>
                                     </tr>
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="5" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <td colspan="7" class="null-data">조회된 데이터가 없습니다.</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>

@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberList;
 import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
 import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
 import kr.co.eicn.ippbx.model.form.TalkMemberGroupFormRequest;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.Getter;
 import org.jooq.Record;
 import org.slf4j.Logger;
@@ -42,7 +43,7 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup();
 		record.setGroupName(form.getGroupName());
 		record.setCompanyId(getCompanyId());
-		record.setTalkStrategy(form.getTalkStrategy());
+		record.setTalkStrategy(form.getDistributionPolicy().getCode());
 		record.setInitMent(form.getInitMent());
 		record.setAutoWarnMin(form.getAutoWarnMin());
 		record.setAutoWarnMent(form.getAutoWarnMent());
@@ -52,6 +53,8 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 		record.setUnassignMent(form.getUnassignMent());
 		record.setMemberUnanswerMin(form.getMemberUnanswerMin());
 		record.setMemberUnanswerMent(form.getMemberUnanswerMent());
+		record.setDistLastTime(Timestamp.valueOf("2020-05-01 00:00:00"));
+		record.setDistLastUserid("");
 
 		final Record r = super.insertOnGeneratedKey(record);
 
@@ -60,8 +63,14 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 		talkMemberRecord.setGroupId(r.getValue(TALK_MEMBER_GROUP.GROUP_ID));
 		talkMemberRecord.setStatus(EMPTY);
 
+		int sequence = 0;
 		for (String personId : form.getPersonIds()) {
 			talkMemberRecord.setUserid(personId);
+			talkMemberRecord.setDistSequence(sequence++);
+			talkMemberRecord.setDistTodayCount(0);
+			talkMemberRecord.setDistRemainCount(0);
+			talkMemberRecord.setDistLastTime(Timestamp.valueOf("2020-05-01 00:00:00"));
+			talkMemberRecord.setIsDistEnable("");
 			talkMemberListRepository.insert(talkMemberRecord);
 		}
 
@@ -75,8 +84,10 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 
 
 		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup();
+		ReflectionUtils.copy(record, findOne(groupId));
+
 		record.setGroupName(form.getGroupName());
-		record.setTalkStrategy(form.getTalkStrategy());
+		record.setTalkStrategy(form.getDistributionPolicy().getCode());
 		record.setInitMent(form.getInitMent());
 		record.setAutoWarnMin(form.getAutoWarnMin());
 		record.setAutoWarnMent(form.getAutoWarnMent());
@@ -87,7 +98,7 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 		record.setMemberUnanswerMin(form.getMemberUnanswerMin());
 		record.setMemberUnanswerMent(form.getMemberUnanswerMent());
 
-		super.updateByKey(form, groupId);
+		super.updateByKey(record, groupId);
 
 		// 기존 그룹 사용자
 		final Map<String, TalkMemberList> persons = talkMemberListRepository.findAll(TALK_MEMBER_LIST.GROUP_ID.eq(groupId)).stream().collect(Collectors.toMap(TalkMemberList::getUserid, e -> e));
@@ -97,13 +108,15 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 		talkMemberRecord.setCompanyId(getCompanyId());
 		talkMemberRecord.setGroupId(groupId);
 		talkMemberRecord.setStatus(EMPTY);
-		/*분배정책 적용 없을시만 0.. 정책이 있는경우 정책 대로 추가 개발해야함..*/
-		talkMemberRecord.setDistSequence(0);
-		talkMemberRecord.setDistTodayCount(0);
-		talkMemberRecord.setDistRemainCount(0);
-		talkMemberRecord.setDistLastTime(new Timestamp(System.currentTimeMillis()));
+
+		int sequence = 0;
 		for (String personId : form.getPersonIds()) {
 			talkMemberRecord.setUserid(personId);
+			talkMemberRecord.setDistSequence(sequence++);
+			talkMemberRecord.setDistTodayCount(0);
+			talkMemberRecord.setDistRemainCount(0);
+			talkMemberRecord.setDistLastTime(Timestamp.valueOf("2020-05-01 00:00:00"));
+
 			if (Objects.nonNull(persons.get(personId)))
 				talkMemberRecord.setStatus(persons.get(personId).getStatus());
 

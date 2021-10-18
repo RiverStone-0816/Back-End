@@ -23,15 +23,16 @@ public class TalkMemberListRepository extends EicnBaseRepository<TalkMemberList,
 
 	public List<TalkMemberListEntity> getTalkMemberListEntities() {
 		return dsl.select(TALK_MEMBER_LIST.fields())
-					.select(PERSON_LIST.fields())
-					.from(TALK_MEMBER_LIST)
-					.join(PERSON_LIST)
-					.on(TALK_MEMBER_LIST.USERID.eq(PERSON_LIST.ID))
-					.where(compareCompanyId())
-					.fetch(record -> {
-						final TalkMemberListEntity entity = record.into(TALK_MEMBER_LIST).into(TalkMemberListEntity.class);
-						entity.setPerson(record.into(PERSON_LIST).into(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList.class));
-						return entity;
-					});
+				.select(PERSON_LIST.fields())
+				.from(TALK_MEMBER_LIST)
+				.join(PERSON_LIST)
+				.on(TALK_MEMBER_LIST.USERID.eq(PERSON_LIST.ID))
+				.where(compareCompanyId())
+				.orderBy(TALK_MEMBER_LIST.DIST_SEQUENCE)
+				.fetch(record -> {
+					final TalkMemberListEntity entity = record.into(TALK_MEMBER_LIST).into(TalkMemberListEntity.class);
+					entity.setPerson(record.into(PERSON_LIST).into(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList.class));
+					return entity;
+				});
 	}
 }

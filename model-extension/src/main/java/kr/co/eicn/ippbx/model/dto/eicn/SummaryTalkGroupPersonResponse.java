@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 @Data
 public class SummaryTalkGroupPersonResponse extends SummaryPersonResponse {
 	private String id;        // 상담원아이디
+	private Integer distributionSequence;
 
 	private OrganizationSummaryResponse organization; // 조직정보
 }

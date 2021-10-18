@@ -13,6 +13,7 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -99,7 +100,7 @@ public class TalkMemberGroupApiControllerTest extends BaseControllerTest {
 		final TalkMemberGroupFormRequest form = new TalkMemberGroupFormRequest();
 		form.setGroupName("상품문의그룹1");
 
-		final Set<String> persons = new HashSet<>();
+		final List<String> persons = new ArrayList<>();
 		persons.add("user0681");
 
 		form.setPersonIds(persons);
@@ -161,7 +162,7 @@ public class TalkMemberGroupApiControllerTest extends BaseControllerTest {
 
 		form.setGroupName("상품문의그룹TEST");
 
-		final Set<String> persons = new HashSet<>();
+		final List<String> persons = new ArrayList<>();
 		persons.add("user0681");
 
 		form.setPersonIds(persons);

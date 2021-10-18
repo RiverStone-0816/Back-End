@@ -32,14 +32,14 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RequestMapping(value = "api/v1/admin/talk/info/service", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TalkServiceInfoApiController extends ApiBaseController {
 
-	private final TalkServiceInfoRepository repository;
+	private final TalkServiceInfoRepository talkServiceInfoRepository;
 
 	/**
 	 * 상담톡 목록조회
 	 */
 	@GetMapping("")
 	public ResponseEntity<JsonResult<List<TalkServiceSummaryResponse>>> list() {
-		final List<TalkServiceSummaryResponse> list = repository.findAll().stream()
+		final List<TalkServiceSummaryResponse> list = talkServiceInfoRepository.findAll().stream()
 				.map((e) -> convertDto(e, TalkServiceSummaryResponse.class))
 				.collect(Collectors.toList());
 
@@ -51,7 +51,7 @@ public class TalkServiceInfoApiController extends ApiBaseController {
 	 */
 	@GetMapping("{seq}")
 	public ResponseEntity<JsonResult<TalkServiceDetailResponse>> get(@PathVariable Integer seq) {
-		return ResponseEntity.ok(data(convertDto(repository.findOneIfNullThrow(seq), TalkServiceDetailResponse.class)));
+		return ResponseEntity.ok(data(convertDto(talkServiceInfoRepository.findOneIfNullThrow(seq), TalkServiceDetailResponse.class)));
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class TalkServiceInfoApiController extends ApiBaseController {
 			throw new ValidationException(bindingResult);
 
 		return ResponseEntity.created(URI.create("api/v1/admin/talk/info/service"))
-				.body(data(repository.insertOnGeneratedKey(form).getValue(TALK_SERVICE_INFO.SEQ)));
+				.body(data(talkServiceInfoRepository.insertOnGeneratedKey(form).getValue(TALK_SERVICE_INFO.SEQ)));
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class TalkServiceInfoApiController extends ApiBaseController {
 		if (!form.validate(bindingResult))
 			throw new ValidationException(bindingResult);
 
-		repository.updateByKey(form, seq);
+		talkServiceInfoRepository.updateByKey(form, seq);
 		return ResponseEntity.ok(create());
 	}
 
@@ -83,7 +83,7 @@ public class TalkServiceInfoApiController extends ApiBaseController {
 	 */
 	@DeleteMapping("{seq}")
 	public ResponseEntity<JsonResult<Void>> delete(@PathVariable Integer seq) {
-		repository.deleteOnIfNullThrow(seq);
+		talkServiceInfoRepository.deleteOnIfNullThrow(seq);
 		return ResponseEntity.ok(create());
 	}
 }

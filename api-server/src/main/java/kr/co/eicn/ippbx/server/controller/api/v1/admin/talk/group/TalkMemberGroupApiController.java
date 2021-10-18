@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.group;
 
+import kr.co.eicn.ippbx.model.enums.TalkMemberDistributionType;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
@@ -60,7 +61,13 @@ public class TalkMemberGroupApiController extends ApiBaseController {
 
 					final List<SummaryTalkGroupPersonResponse> persons = talkMemberLists.stream()
 							.filter(person -> person.getGroupId().equals(e.getGroupId()))
-							.map(person -> convertDto(person.getPerson(), SummaryTalkGroupPersonResponse.class))
+							.map(person -> {
+								SummaryTalkGroupPersonResponse summaryTalkGroupPersonResponse = convertDto(person.getPerson(), SummaryTalkGroupPersonResponse.class);
+
+								summaryTalkGroupPersonResponse.setDistributionSequence(person.getDistSequence());
+
+								return summaryTalkGroupPersonResponse;
+							})
 							.collect(Collectors.toList());
 
 					talkMemberGroupSummaryResponse.setPersons(persons);

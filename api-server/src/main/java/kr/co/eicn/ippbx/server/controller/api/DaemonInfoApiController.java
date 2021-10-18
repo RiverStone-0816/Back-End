@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api;
 
 import kr.co.eicn.ippbx.server.repository.eicn.DaemonRepository;
+import kr.co.eicn.ippbx.util.ContextUtil;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 import static kr.co.eicn.ippbx.util.JsonResult.data;
@@ -23,6 +25,9 @@ public class DaemonInfoApiController extends ApiBaseController{
 
     @GetMapping("")
     public ResponseEntity<JsonResult<Map<String, String>>> get() {
-        return ResponseEntity.ok(data(daemonRepository.findAllNodeJSDaemon()));
+        final HttpServletRequest request = ContextUtil.getRequest();
+        final String ip = request.getHeader("HTTP_CLIENT_IP");
+
+        return ResponseEntity.ok(data(daemonRepository.findAllNodeJSDaemon(ip.startsWith("192.") || ip.startsWith("10."))));
     }
 }

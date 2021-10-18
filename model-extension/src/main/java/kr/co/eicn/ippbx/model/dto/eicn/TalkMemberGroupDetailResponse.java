@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.model.dto.eicn;
 
+import kr.co.eicn.ippbx.model.enums.TalkMemberDistributionType;
 import lombok.Data;
 
 import java.util.List;
@@ -9,7 +10,7 @@ public class TalkMemberGroupDetailResponse {
 	private Integer groupId;                    // 상담톡아이디
 	private String  groupName;                  // 상담톡그룹명
 	private String	channelType;				// 채널 eicn,kakao,navertt,naverline
-	private String  talkStrategy;				// 분배전략 NO,RR,LC,LR,CL
+	private TalkMemberDistributionType distributionPolicy;				// 분배전략 NO,RR,LC,LR,CL
 	private String  initMent;					// 인사멘트
 	private Integer autoWarnMin;				// 자동종료안내시간
 	private String  autoWarnMent;				// 자동중료안내맨트

@@ -27,6 +27,8 @@ public class TalkServiceInfoRepository extends EicnBaseRepository<TalkServiceInf
 		record.setKakaoServiceId(form.getKakaoServiceId());
 		record.setKakaoServiceName(form.getKakaoServiceName());
 		record.setIsChattEnable(form.getIsChattEnable());
+		record.setBotId(form.getBotId());
+		record.setBotName(form.getBotName());
 
 		return super.insertOnGeneratedKey(record);
 	}

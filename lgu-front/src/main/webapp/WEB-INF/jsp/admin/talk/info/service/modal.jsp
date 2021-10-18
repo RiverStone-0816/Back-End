@@ -55,6 +55,16 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="three wide column"><label class="control-label">챗봇명</label></div>
+                <div class="five wide column">
+                    <div class="ui input fluid"><form:input path="botName"/></div>
+                </div>
+                <div class="three wide column"><label class="control-label">챗봇아이디</label></div>
+                <div class="five wide column">
+                    <div class="ui input fluid"><form:input path="botId"/></div>
+                </div>
+            </div>
         </div>
     </div>
 

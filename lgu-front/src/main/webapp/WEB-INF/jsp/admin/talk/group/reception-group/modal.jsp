@@ -33,10 +33,8 @@
                 <div class="four wide column"><label class="control-label">분배정책</label></div>
                 <div class="four wide column">
                     <div class="ui form">
-                        <form:select path="talkStrategy">
-                            <c:forEach var="e" items="${talkStrategy}">
-                                <form:option value="${e.key}" label="${e.value}"/>
-                            </c:forEach>
+                        <form:select path="distributionPolicy">
+                            <form:options items="${distributionType}"/>
                         </form:select>
                     </div>
                 </div>

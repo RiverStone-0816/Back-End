@@ -88,6 +88,8 @@ public class RepositoryTest extends BaseControllerTest {
 	@Autowired
 	private TalkServiceInfoRepository talkServiceInfoRepository;
 	@Autowired
+	private TalkScheduleInfoRepository talkScheduleInfoRepository;
+	@Autowired
 	private TalkStatisticsService talkStatisticsService;
 	@Autowired
 	private OutScheduleSeedRepository outScheduleSeedRepository;
@@ -128,16 +130,6 @@ public class RepositoryTest extends BaseControllerTest {
 	public void get_talk_serviceinfo_lists() {
 		final TalkServiceInfoSearchRequest search = new TalkServiceInfoSearchRequest();
 		search.setType(ScheduleType.WEEK);
-
-		talkServiceInfoRepository.getTalkServiceInfoLists(search)
-				.forEach(r -> {
-					log.info("번호 {}", r.getKakaoServiceName());
-					r.getScheduleInfos()
-							.forEach(e -> {
-								log.info("요일 {}, 유형 {}", e.getWeek(), e.getScheduleGroup().getName());
-							});
-					log.warn("=========================================================================");
-				});
 	}
 
 //	@Test

@@ -35,7 +35,7 @@
                         <tr>
                             <th class="one wide">번호</th>
                             <th class="two wide">상담톡그룹명</th>
-                            <th class="two wide">분배정책</th>
+                            <th class="two wide">톡분배정책</th>
                             <th class="one wide">멤버수</th>
                             <th>그룹멤버</th>
                         </tr>
@@ -47,10 +47,13 @@
                                     <tr data-id="${e.groupId}">
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(e.groupName)}</td>
-                                        <td>${g.htmlQuote(g.messageOf('TalkStrategy', e.talkStrategy))}</td>
+                                        <td>${g.htmlQuote(g.messageOf("TalkMemberDistributionType", e.talkStrategy))}</td>
                                         <td>${e.memberCnt}</td>
                                         <td title="<c:forEach var="person" items="${e.persons}">[${g.htmlQuote(person.idName)}(${g.htmlQuote(person.id)})]</c:forEach>">
-                                            <c:forEach var="person" items="${e.persons}">[${g.htmlQuote(person.idName)}(${g.htmlQuote(person.id)})] </c:forEach>
+                                            <c:forEach var="person" items="${e.persons}">
+                                                <c:if test="${e.talkStrategy == 'RR'}">[순차${person.distributionSequence + 1}]</c:if>
+                                                [${g.htmlQuote(person.idName)}(${g.htmlQuote(person.id)})]
+                                            </c:forEach>
                                         </td>
                                     </tr>
                                 </c:forEach>

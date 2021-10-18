@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.server.controller.api.v1.search;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchTalkServiceInfoResponse;
 import kr.co.eicn.ippbx.server.repository.eicn.TalkServiceInfoRepository;
+import kr.co.eicn.ippbx.server.service.TalkServiceInfoService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +23,10 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RestController
 @RequestMapping(value = "api/v1/search/talk-service", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TalkServiceInfoSearchApiController extends ApiBaseController {
-    private final TalkServiceInfoRepository talkServiceInfoRepository;
+    private final TalkServiceInfoService talkServiceInfoService;
 
     @GetMapping("")
     public ResponseEntity<JsonResult<List<SearchTalkServiceInfoResponse>>> search() {
-        return ResponseEntity.ok(data(talkServiceInfoRepository.findAll().stream()
-                .map(talkServiceInfo -> convertDto(talkServiceInfo, SearchTalkServiceInfoResponse.class))
-                .collect(Collectors.toList())));
+        return ResponseEntity.ok(data(talkServiceInfoService.getAllTalkServiceList()));
     }
 }
