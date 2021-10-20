@@ -45,7 +45,7 @@
                                     <button type="button" class="ui mini button">봇 저장</button>
                                 </div>
                             </div>
-                            <div class="panel-body remove-padding full-height">
+                            <div class="panel-body chatbot remove-padding">
                                 <div class="chatbot-container">
                                     <div class="chatbot-node-container">
                                         <div class="chatbot-box-label">디스플레이</div>
@@ -70,7 +70,7 @@
                                                 <ul class="block-list-ul">
                                                     <li class="block-list">
                                                         <div class="block-name">폴백 블록</div>
-                                                        <div>
+                                                        <div class="block-control">
                                                             <button class="ui mini button">수정</button>
                                                         </div>
                                                     </li>
@@ -80,8 +80,15 @@
                                             <div class="block-list-container">
                                                 <ul class="block-list-ul">
                                                     <li class="block-list">
-                                                        <div class="block-name">폴백 블록</div>
-                                                        <div>
+                                                        <div class="block-name">블록1</div>
+                                                        <div class="block-contorl">
+                                                            <button class="ui mini button">수정</button>
+                                                        </div>
+                                                    </li>
+                                                    <li class="block-list">
+                                                        <div class="block-name">블록1블록1블록1블록1블록1블록1블록1블록1블록1블록1블록1블록1블록1블록1블록1</div>
+                                                        <div class="block-control">
+                                                            <img src="<c:url value="/resources/images/chatbot-square-mini.svg"/>">
                                                             <button class="ui mini button">수정</button>
                                                         </div>
                                                     </li>
@@ -90,7 +97,13 @@
                                         </div>
                                     </div>
                                     <div class="chatbot-main-container flex-100">
-
+                                        <div id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                            <div class="bar-zoom">
+                                                <button class="zoom-control-btn" type="button" onclick="editor.zoom_in()"><img src="<c:url value="/resources/images/zoom-plus.svg"/>"></button>
+                                                <button class="zoom-control-btn" type="button" onclick="editor.zoom_reset()"><img src="<c:url value="/resources/images/zoom-refresh.svg"/>"></button>
+                                                <button class="zoom-control-btn" type="button" onclick="editor.zoom_out()"><img src="<c:url value="/resources/images/zoom-minus.svg"/>"></button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <%--기본--%>
                                     <%--<div class="chatbot-control-container active">
@@ -504,18 +517,6 @@
                                                         <span class="customer-title">Chat Bot</span>
                                                     </div>
                                                     <div class="content editor">
-                                                       <%-- <div class="drawflow">
-                                                            <div class="parent-node">
-                                                                <div class="drawflow-node">
-                                                                    <div class="drawflow_content_node">
-                                                                        <div>
-                                                                            <div class="title-box">봇 기본설정</div>
-                                                                            <div class="box">d</div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>--%>
                                                         <div class="sample-bubble">
                                                             <p>
                                                                 [ 이아이씨엔 ] 고객님 안녕하세요.
@@ -571,6 +572,29 @@
                                                                             <input type="text">
                                                                         </div>
                                                                     </li>
+                                                                    <li class="item form">
+                                                                        <div class="label">가입일자</div>
+                                                                        <div class="ui fluid input">
+                                                                            <input type="text" class="-datepicker hasDatepicker calendar-ipt">
+                                                                        </div>
+                                                                    </li>
+                                                                    <li class="item form">
+                                                                        <div class="label">가입일시</div>
+                                                                        <div class="ui multi form">
+                                                                            <select class="slt">
+                                                                                <option>오전</option>
+                                                                                <option>오후</option>
+                                                                            </select>
+                                                                            <select class="slt">
+                                                                                <option>12</option>
+                                                                            </select>
+                                                                            <span class="unit">시</span>
+                                                                            <select class="slt">
+                                                                                <option>55</option>
+                                                                            </select>
+                                                                            <span class="unit">분</span>
+                                                                        </div>
+                                                                    </li>
                                                                     <li class="item">
                                                                         <button type="button" class="chatbot-button">제출</button>
                                                                     </li>
@@ -623,10 +647,30 @@
                         "data": {
                             "1": {
                                 "id": 1,
-                                "name": "welcome",
+                                "name": "example1",
                                 "data": {},
-                                "class": "welcome",
-                                "html": "    <div>      <div class=\"title-box\">Welcome!!</div>     <div class=\"box\">        <p>Simple flow library <b>demo</b>        <a href=\"https://github.com/jerosoler/Drawflow\" target=\"_blank\">Drawflow</a> by <b>Jero Soler</b></p><br>     <p>Multiple input / outputs<br>           Data sync nodes<br>           Import / export<br>           Modules support<br>           Simple use<br>           Type: Fixed or Edit<br>           Events: view console<br>           Pure Javascript<br>        </p>        <br>        <p><b><u>Shortkeys:</u></b></p>        <p> <b>Delete</b> for remove selected<br>         Mouse Left Click == Move<br>         Mouse Right == Delete Option<br>         Ctrl + Wheel == Zoom      Mobile support<br>        ...</p>      </div>    </div>",
+                                "class": "example1",
+                                "html": "<div>\n" +
+                                "                                                                        <div class=\"title-box\">\n" +
+                                "                                                                            <div class=\"mb10\">\n" +
+                                "                                                                                <input type=\"text\" placeholder=\"텍스트 입력\">\n" +
+                                "                                                                            </div>\n" +
+                                "                                                                            <div class=\"btn-wrap\">\n" +
+                                "                                                                                <button type=\"button\" class=\"ui tiny compact button\">키워드 관리</button>\n" +
+                                "                                                                                <button type=\"button\" class=\"ui tiny compact button\">미리보기</button>\n" +
+                                "                                                                                <button type=\"button\" class=\"ui tiny compact button preview-button\"><img src=\"../resources/images/chatbot-icon-white.svg\">OFF</button>\n" +
+                                // "                                                                                <button type=\"button\" class=\"ui tiny compact button preview-button active\"><img src=\"../resources/images/chatbot-icon-white-active.svg\">ON</button>\n" +
+                                "                                                                            </div>\n" +
+                                "                                                                        </div>\n" +
+                                "                                                                        <div class=\"box\">\n" +
+                                "                                                                            <div class=\"inner\">\n" +
+                                "                                                                                <div class=\"empty-item\">디스플레이를 넣어주세요</div>\n" +
+                                "                                                                            </div>\n" +
+                                "                                                                            <div class=\"inner\">\n" +
+                                "                                                                                <button type=\"button\" class=\"empty-item\">클릭시 버튼이 생성됩니다.</button>\n" +
+                                "                                                                            </div>\n" +
+                                "                                                                        </div>\n" +
+                                "                                                                    </div>",
                                 "typenode": false,
                                 "inputs": {},
                                 "outputs": {},
@@ -635,281 +679,147 @@
                             },
                             "2": {
                                 "id": 2,
-                                "name": "slack",
+                                "name": "example2",
                                 "data": {},
-                                "class": "slack",
-                                "html": "\n          <div>\n            <div class=\"title-box\"><i class=\"fab fa-slack\"></i> Slack chat message</div>\n          </div>\n          ",
+                                "class": "example2",
+                                "html": "<div>\n" +
+                                    "                                                                        <div class=\"title-box\">\n" +
+                                    "                                                                            <div class=\"mb10\">\n" +
+                                    "                                                                                <input type=\"text\" placeholder=\"텍스트 입력\">\n" +
+                                    "                                                                            </div>\n" +
+                                    "                                                                            <div class=\"btn-wrap\">\n" +
+                                    "                                                                                <button type=\"button\" class=\"ui tiny compact button\">키워드 관리</button>\n" +
+                                    "                                                                                <button type=\"button\" class=\"ui tiny compact button\">미리보기</button>\n" +
+                                    "                                                                                <%--<button type=\"button\" class=\"ui tiny compact button poreview-button\"><img src=\"<c:url value=\"/resources/images/chatbot-icon-white.svg\"/>\">OFF</button>--%>\n" +
+                                    "                                                                                <button type=\"button\" class=\"ui tiny compact button preview-button active\"><img src=\"../resources/images/chatbot-icon-white.svg\">ON</button>\n" +
+                                    "                                                                            </div>\n" +
+                                    "                                                                        </div>\n" +
+                                    "                                                                        <div class=\"box\">\n" +
+                                    "                                                                            <div class=\"inner\">\n" +
+                                    "                                                                                <ul class=\"button-item-ul\">\n" +
+                                    "                                                                                    <li class=\"button-item text\">\n" +
+                                    "                                                                                        <div class=\"button-item-inner\">\n" +
+                                    "                                                                                            <div class=\"start\">\n" +
+                                    "                                                                                                <img src=\"../../resources/images/item-text-icon.svg\">텍스트\n" +
+                                    "                                                                                            </div>\n" +
+                                    "                                                                                            <div class=\"end\">\n" +
+                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"plus icon\"></i></button>\n" +
+                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"cog icon\"></i></button>\n" +
+                                    "                                                                                                <button class=\"ui icon small compact brand button\"><i class=\"x icon\"></i></button>\n" +
+                                    "                                                                                            </div>\n" +
+                                    "                                                                                        </div>\n" +
+                                    "                                                                                    </li>\n" +
+                                    "                                                                                    <li class=\"button-item image\">\n" +
+                                    "                                                                                        <div class=\"button-item-inner\">\n" +
+                                    "                                                                                            <div class=\"start\">\n" +
+                                    "                                                                                                <img src=\"../../resources/images/item-image-icon.svg\">이미지\n" +
+                                    "                                                                                            </div>\n" +
+                                    "                                                                                            <div class=\"end\">\n" +
+                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"plus icon\"></i></button>\n" +
+                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"cog icon\"></i></button>\n" +
+                                    "                                                                                                <button class=\"ui icon small compact brand button\"><i class=\"x icon\"></i></button>\n" +
+                                    "                                                                                            </div>\n" +
+                                    "                                                                                        </div>\n" +
+                                    "                                                                                    </li>\n" +
+                                    "                                                                                    <li class=\"button-item card\">\n" +
+                                    "                                                                                        <div class=\"button-item-inner\">\n" +
+                                    "                                                                                            <div class=\"start\">\n" +
+                                    "                                                                                                <img src=\"../../resources/images/item-card-icon.svg\">카드\n" +
+                                    "                                                                                            </div>\n" +
+                                    "                                                                                            <div class=\"end\">\n" +
+                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"plus icon\"></i></button>\n" +
+                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"cog icon\"></i></button>\n" +
+                                    "                                                                                                <button class=\"ui icon small compact brand button\"><i class=\"x icon\"></i></button>\n" +
+                                    "                                                                                            </div>\n" +
+                                    "                                                                                        </div>\n" +
+                                    "                                                                                    </li>\n" +
+                                    "                                                                                    <li class=\"button-item list\">\n" +
+                                    "                                                                                        <div class=\"button-item-inner\">\n" +
+                                    "                                                                                            <div class=\"start\">\n" +
+                                    "                                                                                                <img src=\"../../resources/images/item-list-icon.svg\">리스트\n" +
+                                    "                                                                                            </div>\n" +
+                                    "                                                                                            <div class=\"end\">\n" +
+                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"plus icon\"></i></button>\n" +
+                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"cog icon\"></i></button>\n" +
+                                    "                                                                                                <button class=\"ui icon small compact brand button\"><i class=\"x icon\"></i></button>\n" +
+                                    "                                                                                            </div>\n" +
+                                    "                                                                                        </div>\n" +
+                                    "                                                                                    </li>\n" +
+                                    "                                                                                </ul>\n" +
+                                    "                                                                            </div>\n" +
+                                    "                                                                            <div class=\"inner\">\n" +
+                                    "                                                                                <ul class=\"button-item-ul\">\n" +
+                                    "                                                                                    <li class=\"button-item button\">\n" +
+                                    "                                                                                        <div class=\"button-item-inner\">\n" +
+                                    "                                                                                            <div class=\"start\">\n" +
+                                    "                                                                                                <text>이름없는버튼이름없는버튼</text>\n" +
+                                    "                                                                                            </div>\n" +
+                                    "                                                                                            <div class=\"end\">\n" +
+                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"plus icon\"></i></button>\n" +
+                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"cog icon\"></i></button>\n" +
+                                    "                                                                                                <button class=\"ui icon small compact brand button\"><i class=\"x icon\"></i></button>\n" +
+                                    "                                                                                            </div>\n" +
+                                    "                                                                                        </div>\n" +
+                                    "                                                                                    </li>\n" +
+                                    "                                                                                    <li class=\"button-item button\">\n" +
+                                    "                                                                                        <div class=\"button-item-inner\">\n" +
+                                    "                                                                                            <div class=\"start\">\n" +
+                                    "                                                                                                <text>이름없는버튼이름없는버튼</text>\n" +
+                                    "                                                                                            </div>\n" +
+                                    "                                                                                            <div class=\"end\">\n" +
+                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"cog icon\"></i></button>\n" +
+                                    "                                                                                                <button class=\"ui icon small compact brand button\"><i class=\"x icon\"></i></button>\n" +
+                                    "                                                                                            </div>\n" +
+                                    "                                                                                        </div>\n" +
+                                    "                                                                                    </li>\n" +
+                                    "                                                                                </ul>\n" +
+                                    "                                                                            </div>\n" +
+                                    "                                                                        </div>\n" +
+                                    "                                                                    </div>",
                                 "typenode": false,
-                                "inputs": {
-                                    "input_1": {
-                                        "connections": [{
-                                            "node": "7",
-                                            "input": "output_1"
-                                        }]
-                                    }
-                                },
+                                "inputs": {},
                                 "outputs": {},
-                                "pos_x": 1028,
-                                "pos_y": 87
+                                "pos_x": 50,
+                                "pos_y": 300
                             },
                             "3": {
                                 "id": 3,
-                                "name": "telegram",
-                                "data": {
-                                    "channel": "channel_2"
-                                },
-                                "class": "telegram",
-                                "html": "\n          <div>\n            <div class=\"title-box\"><i class=\"fab fa-telegram-plane\"></i> Telegram bot</div>\n            <div class=\"box\">\n              <p>Send to telegram</p>\n              <p>select channel</p>\n              <select df-channel>\n                <option value=\"channel_1\">Channel 1</option>\n                <option value=\"channel_2\">Channel 2</option>\n                <option value=\"channel_3\">Channel 3</option>\n                <option value=\"channel_4\">Channel 4</option>\n              </select>\n            </div>\n          </div>\n          ",
-                                "typenode": false,
-                                "inputs": {
-                                    "input_1": {
-                                        "connections": [{
-                                            "node": "7",
-                                            "input": "output_1"
-                                        }]
-                                    }
-                                },
-                                "outputs": {},
-                                "pos_x": 1032,
-                                "pos_y": 184
-                            },
-                            "4": {
-                                "id": 4,
-                                "name": "email",
+                                "name": "example3",
                                 "data": {},
-                                "class": "email",
-                                "html": "\n            <div>\n              <div class=\"title-box\"><i class=\"fas fa-at\"></i> Send Email </div>\n            </div>\n            ",
-                                "typenode": false,
-                                "inputs": {
-                                    "input_1": {
-                                        "connections": [{
-                                            "node": "5",
-                                            "input": "output_1"
-                                        }]
-                                    }
-                                },
-                                "outputs": {},
-                                "pos_x": 1033,
-                                "pos_y": 439
-                            },
-                            "5": {
-                                "id": 5,
-                                "name": "template",
-                                "data": {
-                                    "template": "Write your template"
-                                },
-                                "class": "template",
-                                "html": "\n            <div>\n              <div class=\"title-box\"><i class=\"fas fa-code\"></i> Template</div>\n              <div class=\"box\">\n                Ger Vars\n                <textarea df-template></textarea>\n                Output template with vars\n              </div>\n            </div>\n            ",
-                                "typenode": false,
-                                "inputs": {
-                                    "input_1": {
-                                        "connections": [{
-                                            "node": "6",
-                                            "input": "output_1"
-                                        }]
-                                    }
-                                },
-                                "outputs": {
-                                    "output_1": {
-                                        "connections": [{
-                                            "node": "4",
-                                            "output": "input_1"
-                                        }, {
-                                            "node": "11",
-                                            "output": "input_1"
-                                        }]
-                                    }
-                                },
-                                "pos_x": 607,
-                                "pos_y": 304
-                            },
-                            "6": {
-                                "id": 6,
-                                "name": "github",
-                                "data": {
-                                    "name": "https://github.com/jerosoler/Drawflow"
-                                },
-                                "class": "github",
-                                "html": "\n          <div>\n            <div class=\"title-box\"><i class=\"fab fa-github \"></i> Github Stars</div>\n            <div class=\"box\">\n              <p>Enter repository url</p>\n            <input type=\"text\" df-name>\n            </div>\n          </div>\n          ",
+                                "class": "example3",
+                                "html": "<div>\n" +
+                                    "                                                                        <div class=\"title-box\">봇 기본설정</div>\n" +
+                                    "                                                                        <div class=\"box\">\n" +
+                                    "                                                                            <div class=\"inner\">\n" +
+                                    "                                                                                <div class=\"mb10\">이름</div>\n" +
+                                    "                                                                                <div class=\"input-wrap mb15\">\n" +
+                                    "                                                                                    <input type=\"text\">\n" +
+                                    "                                                                                </div>\n" +
+                                    "                                                                                <div class=\"mb10\">폴백 멘트 입력</div>\n" +
+                                    "                                                                                <div class=\"ui form fluid mb10\">\n" +
+                                    "                                                                                    <textarea rows=\"3\"></textarea>\n" +
+                                    "                                                                                </div>\n" +
+                                    "                                                                                <div class=\"mb10\">동작</div>\n" +
+                                    "                                                                                <div class=\"ui form fluid mb10\">\n" +
+                                    "                                                                                    <select>\n" +
+                                    "                                                                                        <option>동작</option>\n" +
+                                    "                                                                                    </select>\n" +
+                                    "                                                                                </div>\n" +
+                                    "                                                                                <div class=\"action-wrap\">\n" +
+                                    "                                                                                    <button type=\"button\" class=\"ui tiny compact button\">취소</button>\n" +
+                                    "                                                                                    <button type=\"button\" class=\"ui tiny compact brand button\">확인</button>\n" +
+                                    "                                                                                </div>\n" +
+                                    "                                                                            </div>\n" +
+                                    "                                                                        </div>\n" +
+                                    "                                                                    </div>",
                                 "typenode": false,
                                 "inputs": {},
-                                "outputs": {
-                                    "output_1": {
-                                        "connections": [{
-                                            "node": "5",
-                                            "output": "input_1"
-                                        }]
-                                    }
-                                },
-                                "pos_x": 341,
-                                "pos_y": 191
-                            },
-                            "7": {
-                                "id": 7,
-                                "name": "facebook",
-                                "data": {},
-                                "class": "facebook",
-                                "html": "\n        <div>\n          <div class=\"title-box\"><i class=\"fab fa-facebook\"></i> Facebook Message</div>\n        </div>\n        ",
-                                "typenode": false,
-                                "inputs": {},
-                                "outputs": {
-                                    "output_1": {
-                                        "connections": [{
-                                            "node": "2",
-                                            "output": "input_1"
-                                        }, {
-                                            "node": "3",
-                                            "output": "input_1"
-                                        }, {
-                                            "node": "11",
-                                            "output": "input_1"
-                                        }]
-                                    }
-                                },
-                                "pos_x": 347,
-                                "pos_y": 87
-                            },
-                            "11": {
-                                "id": 11,
-                                "name": "log",
-                                "data": {},
-                                "class": "log",
-                                "html": "\n            <div>\n              <div class=\"title-box\"><i class=\"fas fa-file-signature\"></i> Save log file </div>\n            </div>\n            ",
-                                "typenode": false,
-                                "inputs": {
-                                    "input_1": {
-                                        "connections": [{
-                                            "node": "5",
-                                            "input": "output_1"
-                                        }, {
-                                            "node": "7",
-                                            "input": "output_1"
-                                        }]
-                                    }
-                                },
                                 "outputs": {},
-                                "pos_x": 1031,
-                                "pos_y": 363
-                            }
+                                "pos_x": 350,
+                                "pos_y": 50
+                            },
                         }
                     },
-                    "Other": {
-                        "data": {
-                            "8": {
-                                "id": 8,
-                                "name": "personalized",
-                                "data": {},
-                                "class": "personalized",
-                                "html": "\n            <div>\n              Personalized\n            </div>\n            ",
-                                "typenode": false,
-                                "inputs": {
-                                    "input_1": {
-                                        "connections": [{
-                                            "node": "12",
-                                            "input": "output_1"
-                                        }, {
-                                            "node": "12",
-                                            "input": "output_2"
-                                        }, {
-                                            "node": "12",
-                                            "input": "output_3"
-                                        }, {
-                                            "node": "12",
-                                            "input": "output_4"
-                                        }]
-                                    }
-                                },
-                                "outputs": {
-                                    "output_1": {
-                                        "connections": [{
-                                            "node": "9",
-                                            "output": "input_1"
-                                        }]
-                                    }
-                                },
-                                "pos_x": 764,
-                                "pos_y": 227
-                            },
-                            "9": {
-                                "id": 9,
-                                "name": "dbclick",
-                                "data": {
-                                    "name": "Hello World!!"
-                                },
-                                "class": "dbclick",
-                                "html": "\n            <div>\n            <div class=\"title-box\"><i class=\"fas fa-mouse\"></i> Db Click</div>\n              <div class=\"box dbclickbox\" ondblclick=\"showpopup(event)\">\n                Db Click here\n                <div class=\"modal\" style=\"display:none\">\n                  <div class=\"modal-content\">\n                    <span class=\"close\" onclick=\"closemodal(event)\">&times;</span>\n                    Change your variable {name} !\n                    <input type=\"text\" df-name>\n                  </div>\n\n                </div>\n              </div>\n            </div>\n            ",
-                                "typenode": false,
-                                "inputs": {
-                                    "input_1": {
-                                        "connections": [{
-                                            "node": "8",
-                                            "input": "output_1"
-                                        }]
-                                    }
-                                },
-                                "outputs": {
-                                    "output_1": {
-                                        "connections": [{
-                                            "node": "12",
-                                            "output": "input_2"
-                                        }]
-                                    }
-                                },
-                                "pos_x": 209,
-                                "pos_y": 38
-                            },
-                            "12": {
-                                "id": 12,
-                                "name": "multiple",
-                                "data": {},
-                                "class": "multiple",
-                                "html": "\n            <div>\n              <div class=\"box\">\n                Multiple!\n              </div>\n            </div>\n            ",
-                                "typenode": false,
-                                "inputs": {
-                                    "input_1": {
-                                        "connections": []
-                                    },
-                                    "input_2": {
-                                        "connections": [{
-                                            "node": "9",
-                                            "input": "output_1"
-                                        }]
-                                    },
-                                    "input_3": {
-                                        "connections": []
-                                    }
-                                },
-                                "outputs": {
-                                    "output_1": {
-                                        "connections": [{
-                                            "node": "8",
-                                            "output": "input_1"
-                                        }]
-                                    },
-                                    "output_2": {
-                                        "connections": [{
-                                            "node": "8",
-                                            "output": "input_1"
-                                        }]
-                                    },
-                                    "output_3": {
-                                        "connections": [{
-                                            "node": "8",
-                                            "output": "input_1"
-                                        }]
-                                    },
-                                    "output_4": {
-                                        "connections": [{
-                                            "node": "8",
-                                            "output": "input_1"
-                                        }]
-                                    }
-                                },
-                                "pos_x": 179,
-                                "pos_y": 272
-                            }
-                        }
-                    }
                 }
             }
             editor.start();
