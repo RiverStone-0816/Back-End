@@ -636,8 +636,27 @@
         </div>
     </div>
 
+    <%--키워드 중복 modal--%>
+    <%--<div class="ui mini modal keyword-confirm">
+        <i class="close icon"></i>
+        <div class="header">키워드 중복</div>
+        <div class="scrolling content rows">
+            해당 키워드는 [ 블록1 ] 에서 사용되고 있습니다.
+            다른 키워드를 입력해주세요.
+        </div>
+        <div class="actions">
+            <button type="button" class="ui blue button modal-close">확인</button>
+        </div>
+    </div>--%>
+
+
+
     <tags:scripts>
         <script>
+            function keywordConfirmPopup() {
+                $('.keyword-confirm').dragModalShow();
+            }
+
             var id = document.getElementById("drawflow");
             const editor = new Drawflow(id);
             editor.reroute = true;
