@@ -785,8 +785,7 @@
         <div class="btn-wrap">
             <button type="button" class="ui tiny compact button">키워드 관리</button>
             <button type="button" class="ui tiny compact button">미리보기</button>
-            <!--<button type="button" class="ui tiny compact button poreview-button"><img src="/resources/images/chatbot-icon-white.svg">OFF</button>-->
-            <button type="button" class="ui tiny compact button preview-button active"><img src="../resources/images/chatbot-icon-white.svg">ON</button>
+            <button type="button" class="ui tiny compact button poreview-button"><img src="/resources/images/chatbot-icon-white.svg">OFF</button>
         </div>
     </div>
     <div class="box">
@@ -880,7 +879,17 @@
                                         }]
                                     }
                                 },
-                                outputs: {},
+                                outputs: {
+                                    "output_1": {
+                                        "connections": [{
+                                            "node": "4",
+                                            "output": "input_1"
+                                        }, {
+                                            "node": "5",
+                                            "output": "input_1"
+                                        }]
+                                    }
+                                },
                                 pos_x: 650,
                                 pos_y: 300
                             },
@@ -920,6 +929,134 @@
                                 outputs: {},
                                 pos_x: 50,
                                 pos_y: 50
+                            },
+                            4: {
+                                id: 4,
+                                name: "example4",
+                                data: {},
+                                class: "example4",
+                                html: `
+<div>
+    <div class="title-box">
+        <div class="mb10">
+            <input type="text" placeholder="텍스트 입력">
+        </div>
+        <div class="btn-wrap">
+            <button type="button" class="ui tiny compact button">키워드 관리</button>
+            <button type="button" class="ui tiny compact button">미리보기</button>
+            <button type="button" class="ui tiny compact button preview-button active"><img src="../resources/images/chatbot-icon-white-active.svg">ON</button>
+        </div>
+    </div>
+    <div class="box">
+        <div class="inner">
+            <ul class="button-item-ul">
+                <li class="button-item text">
+                    <div class="button-item-inner">
+                        <div class="start">
+                            <img src="../../resources/images/item-text-icon.svg">텍스트
+                        </div>
+                        <div class="end">
+                            <button class="ui icon small compact button"><i class="plus icon"></i></button>
+                            <button class="ui icon small compact button"><i class="cog icon"></i></button>
+                            <button class="ui icon small compact brand button"><i class="x icon"></i></button>
+                        </div>
+                    </div>
+                </li>
+                <li class="button-item image">
+                    <div class="button-item-inner">
+                        <div class="start">
+                            <img src="../../resources/images/item-image-icon.svg">이미지
+                        </div>
+                        <div class="end">
+                            <button class="ui icon small compact button"><i class="plus icon"></i></button>
+                            <button class="ui icon small compact button"><i class="cog icon"></i></button>
+                            <button class="ui icon small compact brand button"><i class="x icon"></i></button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="inner">
+            <button type="button" class="empty-item">클릭시 버튼이 생성됩니다.</button>
+        </div>
+    </div>
+</div>`,
+                                typenode: false,
+                                inputs: {
+                                    "input_1": {
+                                        "connections": [{
+                                            "node": "2",
+                                            "input": "output_1"
+                                        }]
+                                    }
+                                },
+                                outputs: {},
+                                pos_x: 900,
+                                pos_y: 50
+                            },
+                            5: {
+                                id: 5,
+                                name: "example5",
+                                data: {},
+                                class: "example5",
+                                html: `
+<div>
+    <div class="title-box">
+        <div class="mb10">
+            <input type="text" placeholder="텍스트 입력">
+        </div>
+        <div class="btn-wrap">
+            <button type="button" class="ui tiny compact button">키워드 관리</button>
+            <button type="button" class="ui tiny compact button">미리보기</button>
+            <button type="button" class="ui tiny compact button preview-button active"><img src="../resources/images/chatbot-icon-white-active.svg">ON</button>
+        </div>
+    </div>
+    <div class="box">
+        <div class="inner">
+            <ul class="button-item-ul">
+                <li class="button-item text">
+                    <div class="button-item-inner">
+                        <div class="start">
+                            <img src="../../resources/images/item-text-icon.svg">텍스트
+                        </div>
+                        <div class="end">
+                            <button class="ui icon small compact button"><i class="plus icon"></i></button>
+                            <button class="ui icon small compact button"><i class="cog icon"></i></button>
+                            <button class="ui icon small compact brand button"><i class="x icon"></i></button>
+                        </div>
+                    </div>
+                </li>
+                <li class="button-item image">
+                    <div class="button-item-inner">
+                        <div class="start">
+                            <img src="../../resources/images/item-image-icon.svg">이미지
+                        </div>
+                        <div class="end">
+                            <button class="ui icon small compact button"><i class="plus icon"></i></button>
+                            <button class="ui icon small compact button"><i class="cog icon"></i></button>
+                            <button class="ui icon small compact brand button"><i class="x icon"></i></button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="inner">
+            <button type="button" class="empty-item">클릭시 버튼이 생성됩니다.</button>
+        </div>
+    </div>
+</div>`,
+                                typenode: false,
+                                inputs: {
+                                    "input_1": {
+                                        "connections": [{
+                                            "node": "2",
+                                            "input": "output_1"
+                                        }]
+                                    }
+                                },
+                                outputs: {},
+                                pos_x: 900,
+                                pos_y: 350
                             },
                         }
                     },
