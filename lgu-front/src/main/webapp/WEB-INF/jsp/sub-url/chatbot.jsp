@@ -12,9 +12,8 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.css">
-<script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.css">
 <tags:layout>
     <div class="tab-label-flow-container">
         <ul class="tab-label-container" style="left: 0;"></ul>
@@ -105,411 +104,413 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <%--기본--%>
-                                    <%--<div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">설정영역</div>
-                                            <div class="chatbot-control-body">
-                                                <div class="empty">선택된 내용이 없습니다.</div>
-                                            </div>
-                                        </div>
-                                    </div>--%>
-
-                                    <%--폴백 블록 관리--%>
-                                    <%--<div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">폴백 블록 관리<button class="ui mini button">저장</button></div>
-                                            <div class="chatbot-control-body">
-                                                <div class="mb15">이름</div>
-                                                <div class="ui form fluid mb15">
-                                                    <input type="text">
-                                                </div>
-                                                <div class="mb15">멘트 입력</div>
-                                                <div class="ui form fluid mb15">
-                                                    <textarea rows="8"></textarea>
-                                                </div>
-                                                <div class="mb15">동작</div>
-                                                <div class="ui form fluid mb15">
-                                                    <select>
-                                                        <option>처음으로 가기</option>
-                                                    </select>
+                                        <%--기본--%>
+                                        <%--<div class="chatbot-control-container active">
+                                            <button type="button" class="arrow-button"></button>
+                                            <div class="chatbot-control-inner">
+                                                <div class="chatbot-box-label">설정영역</div>
+                                                <div class="chatbot-control-body">
+                                                    <div class="empty">선택된 내용이 없습니다.</div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>--%>
+                                        </div>--%>
 
-                                    <%--키워드 관리--%>
-                                    <%--<div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">키워드 관리<button class="ui mini button">저장</button></div>
-                                            <div class="chatbot-control-body">
-                                                <div class="mb15">키워드 생성</div>
-                                                <div class="ui action fluid input mb15">
-                                                    <input type="text" placeholder="키워드 입력">
-                                                    <button class="ui button">추가</button>
-                                                </div>
-                                                <div class="mb15">키워드 목록</div>
-                                                <div class="mb15">
-                                                    <span class="ui basic large label">
-                                                      키위
-                                                      <i class="delete icon"></i>
-                                                    </span>
-                                                    <span class="ui basic large label">
-                                                      키워드
-                                                      <i class="delete icon"></i>
-                                                    </span>
-                                                    <span class="ui basic large label">
-                                                      챗봇기능
-                                                      <i class="delete icon"></i>
-                                                    </span>
-                                                    <span class="ui basic large label">
-                                                      가나다라마
-                                                      <i class="delete icon"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>--%>
-
-                                    <%--텍스트 디스플레이 관리--%>
-                                    <%--<div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">텍스트 디스플레이 관리<button class="ui mini button">저장</button></div>
-                                            <div class="chatbot-control-body">
-                                                <div class="mb15">멘트 입력</div>
-                                                <div class="ui form fluid mb15">
-                                                    <textarea rows="8"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>--%>
-
-                                    <%--이미지 디스플레이 관리--%>
-                                    <%--<div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">이미지 디스플레이 관리<button class="ui mini button">저장</button></div>
-                                            <div class="chatbot-control-body">
-                                                <div class="mb15">이미지 삽입</div>
-                                                <div class="ui action fluid input mb15">
-                                                    <input type="text" readonly="">
-                                                    <input type="file" id="file">
-                                                    <label class="ui icon button" for="file">
-                                                        찾아보기
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>--%>
-
-                                    <%--카드 디스플레이 관리--%>
-                                    <%--<div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">이미지 디스플레이 관리<button class="ui mini button">저장</button></div>
-                                            <div class="chatbot-control-body">
-                                                <div class="mb15">이미지 삽입</div>
-                                                <div class="ui action fluid input mb15">
-                                                    <input type="text" readonly="">
-                                                    <input type="file" id="file">
-                                                    <label class="ui icon button" for="file">
-                                                        찾아보기
-                                                    </label>
-                                                </div>
-                                                <div class="mb15">타이틀 입력</div>
-                                                <div class="ui form fluid mb15">
-                                                    <input type="text">
-                                                </div>
-                                                <div class="mb15">멘트 입력</div>
-                                                <div class="ui form fluid mb15">
-                                                    <textarea rows="8"></textarea>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>--%>
-
-                                    <%--리스트 디스플레이 관리--%>
-                                    <%--<div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">이미지 디스플레이 관리<button class="ui mini button">저장</button></div>
-                                            <div class="chatbot-control-body">
-                                                <div class="mb15">타이틀 입력</div>
-                                                <div class="ui form fluid mb15">
-                                                    <input type="text">
-                                                </div>
-                                                <div class="mb15">타이틀 URL 입력</div>
-                                                <div class="ui form fluid mb15">
-                                                    <input type="text">
-                                                </div>
-                                                <div class="mb15">리스트 설정</div>
-                                                <div class="list-control-container mb15">
-                                                    <div class="list-control-header">
-                                                        <div>리스트1</div>
-                                                        <button class="ui icon small compact black button">
-                                                            <i class="plus icon"></i>
-                                                        </button>
-                                                    </div>
-                                                    <table class="list-control-table">
-                                                        <tr>
-                                                            <th>제목</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>멘트</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <textarea rows="3"></textarea>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>URL</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>이미지</th>
-                                                            <td>
-                                                                <div class="ui action fluid input">
-                                                                    <input type="text" readonly="">
-                                                                    <input type="file" id="file">
-                                                                    <label class="ui icon button" for="file">
-                                                                        찾아보기
-                                                                    </label>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div class="list-control-container mb15">
-                                                    <div class="list-control-header">
-                                                        <div>리스트1</div>
-                                                        <button class="ui icon small compact brand button">
-                                                            <i class="x icon"></i>
-                                                        </button>
-                                                    </div>
-                                                    <table class="list-control-table">
-                                                        <tr>
-                                                            <th>제목</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>멘트</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <textarea rows="3"></textarea>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>URL</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>이미지</th>
-                                                            <td>
-                                                                <div class="ui action fluid input">
-                                                                    <input type="text" readonly="">
-                                                                    <input type="file" id="file">
-                                                                    <label class="ui icon button" for="file">
-                                                                        찾아보기
-                                                                    </label>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>--%>
-
-                                    <%--버튼 동작 관리--%>
-                                    <%--<div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">버튼 동작 관리<button class="ui mini button">저장</button></div>
-                                            <div class="chatbot-control-body">
-                                                <div class="mb15">버튼 이름</div>
-                                                <div class="ui form fluid mb15">
-                                                    <input type="text">
-                                                </div>
-                                                <div class="mb15">버튼 액션</div>
-                                                <div class="ui form fluid mb15">
-                                                    <select>
-                                                        <option>다음 블록으로 연결</option>
-                                                        <option>상담원 연결</option>
-                                                        <option>URL 연결</option>
-                                                        <option>외부연동</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb15">연결 블록 설정</div>
-                                                <div class="ui form fluid mb15">
-                                                    <select>
-                                                        <option>블록1</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb15">연결 그룹 설정</div>
-                                                <div class="ui form fluid mb15">
-                                                    <select>
-                                                        <option>상담원 그룹 이름</option>
-                                                    </select>
-                                                </div>
-                                                <div class="mb15">연결 URL 설정</div>
-                                                <div class="ui form fluid mb15">
+                                        <%--폴백 블록 관리--%>
+                                        <%--<div class="chatbot-control-container active">
+                                            <button type="button" class="arrow-button"></button>
+                                            <div class="chatbot-control-inner">
+                                                <div class="chatbot-box-label">폴백 블록 관리<button class="ui mini button">저장</button></div>
+                                                <div class="chatbot-control-body">
+                                                    <div class="mb15">이름</div>
                                                     <div class="ui form fluid mb15">
                                                         <input type="text">
                                                     </div>
+                                                    <div class="mb15">멘트 입력</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <textarea rows="8"></textarea>
+                                                    </div>
+                                                    <div class="mb15">동작</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <select>
+                                                            <option>처음으로 가기</option>
+                                                        </select>
+                                                    </div>
                                                 </div>
-                                                <div class="mb15">외부연동 URL 입력</div>
-                                                <div class="ui form fluid mb15">
+                                            </div>
+                                        </div>--%>
+
+                                        <%--키워드 관리--%>
+                                        <%--<div class="chatbot-control-container active">
+                                            <button type="button" class="arrow-button"></button>
+                                            <div class="chatbot-control-inner">
+                                                <div class="chatbot-box-label">키워드 관리<button class="ui mini button">저장</button></div>
+                                                <div class="chatbot-control-body">
+                                                    <div class="mb15">키워드 생성</div>
+                                                    <div class="ui action fluid input mb15">
+                                                        <input type="text" placeholder="키워드 입력">
+                                                        <button class="ui button">추가</button>
+                                                    </div>
+                                                    <div class="mb15">키워드 목록</div>
+                                                    <div class="mb15">
+                                                        <span class="ui basic large label">
+                                                          키위
+                                                          <i class="delete icon"></i>
+                                                        </span>
+                                                        <span class="ui basic large label">
+                                                          키워드
+                                                          <i class="delete icon"></i>
+                                                        </span>
+                                                        <span class="ui basic large label">
+                                                          챗봇기능
+                                                          <i class="delete icon"></i>
+                                                        </span>
+                                                        <span class="ui basic large label">
+                                                          가나다라마
+                                                          <i class="delete icon"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>--%>
+
+                                        <%--텍스트 디스플레이 관리--%>
+                                        <%--<div class="chatbot-control-container active">
+                                            <button type="button" class="arrow-button"></button>
+                                            <div class="chatbot-control-inner">
+                                                <div class="chatbot-box-label">텍스트 디스플레이 관리<button class="ui mini button">저장</button></div>
+                                                <div class="chatbot-control-body">
+                                                    <div class="mb15">멘트 입력</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <textarea rows="8"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>--%>
+
+                                        <%--이미지 디스플레이 관리--%>
+                                        <%--<div class="chatbot-control-container active">
+                                            <button type="button" class="arrow-button"></button>
+                                            <div class="chatbot-control-inner">
+                                                <div class="chatbot-box-label">이미지 디스플레이 관리<button class="ui mini button">저장</button></div>
+                                                <div class="chatbot-control-body">
+                                                    <div class="mb15">이미지 삽입</div>
+                                                    <div class="ui action fluid input mb15">
+                                                        <input type="text" readonly="">
+                                                        <input type="file" id="file">
+                                                        <label class="ui icon button" for="file">
+                                                            찾아보기
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>--%>
+
+                                        <%--카드 디스플레이 관리--%>
+                                        <%--<div class="chatbot-control-container active">
+                                            <button type="button" class="arrow-button"></button>
+                                            <div class="chatbot-control-inner">
+                                                <div class="chatbot-box-label">이미지 디스플레이 관리<button class="ui mini button">저장</button></div>
+                                                <div class="chatbot-control-body">
+                                                    <div class="mb15">이미지 삽입</div>
+                                                    <div class="ui action fluid input mb15">
+                                                        <input type="text" readonly="">
+                                                        <input type="file" id="file">
+                                                        <label class="ui icon button" for="file">
+                                                            찾아보기
+                                                        </label>
+                                                    </div>
+                                                    <div class="mb15">타이틀 입력</div>
                                                     <div class="ui form fluid mb15">
                                                         <input type="text">
                                                     </div>
-                                                </div>
-                                                <div class="mb15">안내문구 입력</div>
-                                                <div class="ui form fluid mb15">
-                                                    <textarea rows="5"></textarea>
-                                                </div>
-                                                <div class="mb15">항목설정</div>
-                                                <div class="list-control-container mb15">
-                                                    <div class="list-control-header">
-                                                        <div>항목1</div>
-                                                        <button class="ui icon small compact black button">
-                                                            <i class="plus icon"></i>
-                                                        </button>
+                                                    <div class="mb15">멘트 입력</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <textarea rows="8"></textarea>
                                                     </div>
-                                                    <table class="list-control-table">
-                                                        <tr>
-                                                            <th>타입</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <select>
-                                                                        <option>텍스트</option>
-                                                                    </select>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>항목명</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>파라미터</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div class="list-control-container mb15">
-                                                    <div class="list-control-header">
-                                                        <div>항목1</div>
-                                                        <button class="ui icon small compact brand button">
-                                                            <i class="x icon"></i>
-                                                        </button>
-                                                    </div>
-                                                    <table class="list-control-table">
-                                                        <tr>
-                                                            <th>타입</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <select>
-                                                                        <option>텍스트</option>
-                                                                    </select>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>항목명</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>파라미터</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div class="mb15 dp-flex align-items-center justify-content-space-between">
-                                                    <div>답변 멘트 사용</div>
-                                                    <div class="ui fitted toggle checkbox">
-                                                        <input type="checkbox">
-                                                        <label></label>
-                                                    </div>
-                                                </div>
-                                                <div class="list-control-container mb15">
-                                                    <div class="list-control-header">
-                                                        <div>답변 설정</div>
-                                                    </div>
-                                                    <table class="list-control-table">
-                                                        <tr>
-                                                            <th>정상</th>
-                                                            <td>
-                                                                <div class="ui form fluid mb15">
-                                                                    <textarea rows="4">[[$result1]] 고객님. 안녕하세요? [[$result2]] 에 [[$result3]]을(를) [[$result4]] 개 구매 하셨습니다.</textarea>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>항목없음</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text" value="조회되는 항목이 없습니다.">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>조회불가</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text" value="조회가 불가능합니다. 잠시 후 다시 이용해주세요.">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>--%>
+                                        </div>--%>
 
-                                    <%--채팅미리보기--%>
+                                        <%--리스트 디스플레이 관리--%>
+                                        <%--<div class="chatbot-control-container active">
+                                            <button type="button" class="arrow-button"></button>
+                                            <div class="chatbot-control-inner">
+                                                <div class="chatbot-box-label">이미지 디스플레이 관리<button class="ui mini button">저장</button></div>
+                                                <div class="chatbot-control-body">
+                                                    <div class="mb15">타이틀 입력</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <input type="text">
+                                                    </div>
+                                                    <div class="mb15">타이틀 URL 입력</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <input type="text">
+                                                    </div>
+                                                    <div class="mb15">리스트 설정</div>
+                                                    <div class="list-control-container mb15">
+                                                        <div class="list-control-header">
+                                                            <div>리스트1</div>
+                                                            <button class="ui icon small compact black button">
+                                                                <i class="plus icon"></i>
+                                                            </button>
+                                                        </div>
+                                                        <table class="list-control-table">
+                                                            <tr>
+                                                                <th>제목</th>
+                                                                <td>
+                                                                    <div class="ui form fluid">
+                                                                        <input type="text">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>멘트</th>
+                                                                <td>
+                                                                    <div class="ui form fluid">
+                                                                        <textarea rows="3"></textarea>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>URL</th>
+                                                                <td>
+                                                                    <div class="ui form fluid">
+                                                                        <input type="text">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>이미지</th>
+                                                                <td>
+                                                                    <div class="ui action fluid input">
+                                                                        <input type="text" readonly="">
+                                                                        <input type="file" id="file">
+                                                                        <label class="ui icon button" for="file">
+                                                                            찾아보기
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="list-control-container mb15">
+                                                        <div class="list-control-header">
+                                                            <div>리스트1</div>
+                                                            <button class="ui icon small compact brand button">
+                                                                <i class="x icon"></i>
+                                                            </button>
+                                                        </div>
+                                                        <table class="list-control-table">
+                                                            <tr>
+                                                                <th>제목</th>
+                                                                <td>
+                                                                    <div class="ui form fluid">
+                                                                        <input type="text">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>멘트</th>
+                                                                <td>
+                                                                    <div class="ui form fluid">
+                                                                        <textarea rows="3"></textarea>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>URL</th>
+                                                                <td>
+                                                                    <div class="ui form fluid">
+                                                                        <input type="text">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>이미지</th>
+                                                                <td>
+                                                                    <div class="ui action fluid input">
+                                                                        <input type="text" readonly="">
+                                                                        <input type="file" id="file">
+                                                                        <label class="ui icon button" for="file">
+                                                                            찾아보기
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>--%>
+
+                                        <%--버튼 동작 관리--%>
+                                        <%--<div class="chatbot-control-container active">
+                                            <button type="button" class="arrow-button"></button>
+                                            <div class="chatbot-control-inner">
+                                                <div class="chatbot-box-label">버튼 동작 관리<button class="ui mini button">저장</button></div>
+                                                <div class="chatbot-control-body">
+                                                    <div class="mb15">버튼 이름</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <input type="text">
+                                                    </div>
+                                                    <div class="mb15">버튼 액션</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <select>
+                                                            <option>다음 블록으로 연결</option>
+                                                            <option>상담원 연결</option>
+                                                            <option>URL 연결</option>
+                                                            <option>외부연동</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb15">연결 블록 설정</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <select>
+                                                            <option>블록1</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb15">연결 그룹 설정</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <select>
+                                                            <option>상담원 그룹 이름</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb15">연결 URL 설정</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <div class="ui form fluid mb15">
+                                                            <input type="text">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb15">외부연동 URL 입력</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <div class="ui form fluid mb15">
+                                                            <input type="text">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb15">안내문구 입력</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <textarea rows="5"></textarea>
+                                                    </div>
+                                                    <div class="mb15">항목설정</div>
+                                                    <div class="list-control-container mb15">
+                                                        <div class="list-control-header">
+                                                            <div>항목1</div>
+                                                            <button class="ui icon small compact black button">
+                                                                <i class="plus icon"></i>
+                                                            </button>
+                                                        </div>
+                                                        <table class="list-control-table">
+                                                            <tr>
+                                                                <th>타입</th>
+                                                                <td>
+                                                                    <div class="ui form fluid">
+                                                                        <select>
+                                                                            <option>텍스트</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>항목명</th>
+                                                                <td>
+                                                                    <div class="ui form fluid">
+                                                                        <input type="text">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>파라미터</th>
+                                                                <td>
+                                                                    <div class="ui form fluid">
+                                                                        <input type="text">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="list-control-container mb15">
+                                                        <div class="list-control-header">
+                                                            <div>항목1</div>
+                                                            <button class="ui icon small compact brand button">
+                                                                <i class="x icon"></i>
+                                                            </button>
+                                                        </div>
+                                                        <table class="list-control-table">
+                                                            <tr>
+                                                                <th>타입</th>
+                                                                <td>
+                                                                    <div class="ui form fluid">
+                                                                        <select>
+                                                                            <option>텍스트</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>항목명</th>
+                                                                <td>
+                                                                    <div class="ui form fluid">
+                                                                        <input type="text">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>파라미터</th>
+                                                                <td>
+                                                                    <div class="ui form fluid">
+                                                                        <input type="text">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                    <div class="mb15 dp-flex align-items-center justify-content-space-between">
+                                                        <div>답변 멘트 사용</div>
+                                                        <div class="ui fitted toggle checkbox">
+                                                            <input type="checkbox">
+                                                            <label></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="list-control-container mb15">
+                                                        <div class="list-control-header">
+                                                            <div>답변 설정</div>
+                                                        </div>
+                                                        <table class="list-control-table">
+                                                            <tr>
+                                                                <th>정상</th>
+                                                                <td>
+                                                                    <div class="ui form fluid mb15">
+                                                                        <textarea rows="4">[[$result1]] 고객님. 안녕하세요? [[$result2]] 에 [[$result3]]을(를) [[$result4]] 개 구매 하셨습니다.</textarea>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>항목없음</th>
+                                                                <td>
+                                                                    <div class="ui form fluid">
+                                                                        <input type="text" value="조회되는 항목이 없습니다.">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <th>조회불가</th>
+                                                                <td>
+                                                                    <div class="ui form fluid">
+                                                                        <input type="text" value="조회가 불가능합니다. 잠시 후 다시 이용해주세요.">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>--%>
+
+                                        <%--채팅미리보기--%>
                                     <div class="chatbot-control-container active">
                                         <button type="button" class="arrow-button"></button>
                                         <div class="chatbot-control-inner chatbot-ui">
-                                            <div class="chatbot-box-label">미리보기<button class="ui mini button">새로고침</button></div>
+                                            <div class="chatbot-box-label">미리보기
+                                                <button class="ui mini button">새로고침</button>
+                                            </div>
                                             <div class="chatbot-control-body">
                                                 <div class="chat-preview">
                                                     <div class="header">
@@ -649,9 +650,8 @@
         </div>
     </div>--%>
 
-
-
     <tags:scripts>
+        <script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
         <script>
             function keywordConfirmPopup() {
                 $('.keyword-confirm').dragModalShow();
@@ -664,178 +664,181 @@
                 "drawflow": {
                     "Home": {
                         "data": {
-                            "1": {
-                                "id": 1,
-                                "name": "example1",
-                                "data": {},
-                                "class": "example1",
-                                "html": "<div>\n" +
-                                "                                                                        <div class=\"title-box\">\n" +
-                                "                                                                            <div class=\"mb10\">\n" +
-                                "                                                                                <input type=\"text\" placeholder=\"텍스트 입력\">\n" +
-                                "                                                                            </div>\n" +
-                                "                                                                            <div class=\"btn-wrap\">\n" +
-                                "                                                                                <button type=\"button\" class=\"ui tiny compact button\">키워드 관리</button>\n" +
-                                "                                                                                <button type=\"button\" class=\"ui tiny compact button\">미리보기</button>\n" +
-                                "                                                                                <button type=\"button\" class=\"ui tiny compact button preview-button\"><img src=\"../resources/images/chatbot-icon-white.svg\">OFF</button>\n" +
-                                // "                                                                                <button type=\"button\" class=\"ui tiny compact button preview-button active\"><img src=\"../resources/images/chatbot-icon-white-active.svg\">ON</button>\n" +
-                                "                                                                            </div>\n" +
-                                "                                                                        </div>\n" +
-                                "                                                                        <div class=\"box\">\n" +
-                                "                                                                            <div class=\"inner\">\n" +
-                                "                                                                                <div class=\"empty-item\">디스플레이를 넣어주세요</div>\n" +
-                                "                                                                            </div>\n" +
-                                "                                                                            <div class=\"inner\">\n" +
-                                "                                                                                <button type=\"button\" class=\"empty-item\">클릭시 버튼이 생성됩니다.</button>\n" +
-                                "                                                                            </div>\n" +
-                                "                                                                        </div>\n" +
-                                "                                                                    </div>",
-                                "typenode": false,
-                                "inputs": {},
-                                "outputs": {},
-                                "pos_x": 50,
-                                "pos_y": 50
+                            1: {
+                                id: 1,
+                                name: "example1",
+                                data: {},
+                                class: "example1",
+                                html: `
+<div>
+    <div class="title-box">
+        <div class="mb10">
+            <input type="text" placeholder="텍스트 입력">
+        </div>
+        <div class="btn-wrap">
+            <button type="button" class="ui tiny compact button">키워드 관리</button>
+            <button type="button" class="ui tiny compact button">미리보기</button>
+            <button type="button" class="ui tiny compact button preview-button"><img src="../resources/images/chatbot-icon-white.svg">OFF</button>
+            <!--<button type="button" class="ui tiny compact button preview-button active"><img src="../resources/images/chatbot-icon-white-active.svg">ON</button>-->
+        </div>
+    </div>
+    <div class="box">
+        <div class="inner">
+            <div class="empty-item">디스플레이를 넣어주세요</div>
+        </div>
+        <div class="inner">
+            <button type="button" class="empty-item">클릭시 버튼이 생성됩니다.</button>
+        </div>
+    </div>
+</div>`,
+                                typenode: false,
+                                inputs: {},
+                                outputs: {},
+                                pos_x: 50,
+                                pos_y: 50
                             },
-                            "2": {
-                                "id": 2,
-                                "name": "example2",
-                                "data": {},
-                                "class": "example2",
-                                "html": "<div>\n" +
-                                    "                                                                        <div class=\"title-box\">\n" +
-                                    "                                                                            <div class=\"mb10\">\n" +
-                                    "                                                                                <input type=\"text\" placeholder=\"텍스트 입력\">\n" +
-                                    "                                                                            </div>\n" +
-                                    "                                                                            <div class=\"btn-wrap\">\n" +
-                                    "                                                                                <button type=\"button\" class=\"ui tiny compact button\">키워드 관리</button>\n" +
-                                    "                                                                                <button type=\"button\" class=\"ui tiny compact button\">미리보기</button>\n" +
-                                    "                                                                                <%--<button type=\"button\" class=\"ui tiny compact button poreview-button\"><img src=\"<c:url value=\"/resources/images/chatbot-icon-white.svg\"/>\">OFF</button>--%>\n" +
-                                    "                                                                                <button type=\"button\" class=\"ui tiny compact button preview-button active\"><img src=\"../resources/images/chatbot-icon-white.svg\">ON</button>\n" +
-                                    "                                                                            </div>\n" +
-                                    "                                                                        </div>\n" +
-                                    "                                                                        <div class=\"box\">\n" +
-                                    "                                                                            <div class=\"inner\">\n" +
-                                    "                                                                                <ul class=\"button-item-ul\">\n" +
-                                    "                                                                                    <li class=\"button-item text\">\n" +
-                                    "                                                                                        <div class=\"button-item-inner\">\n" +
-                                    "                                                                                            <div class=\"start\">\n" +
-                                    "                                                                                                <img src=\"../../resources/images/item-text-icon.svg\">텍스트\n" +
-                                    "                                                                                            </div>\n" +
-                                    "                                                                                            <div class=\"end\">\n" +
-                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"plus icon\"></i></button>\n" +
-                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"cog icon\"></i></button>\n" +
-                                    "                                                                                                <button class=\"ui icon small compact brand button\"><i class=\"x icon\"></i></button>\n" +
-                                    "                                                                                            </div>\n" +
-                                    "                                                                                        </div>\n" +
-                                    "                                                                                    </li>\n" +
-                                    "                                                                                    <li class=\"button-item image\">\n" +
-                                    "                                                                                        <div class=\"button-item-inner\">\n" +
-                                    "                                                                                            <div class=\"start\">\n" +
-                                    "                                                                                                <img src=\"../../resources/images/item-image-icon.svg\">이미지\n" +
-                                    "                                                                                            </div>\n" +
-                                    "                                                                                            <div class=\"end\">\n" +
-                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"plus icon\"></i></button>\n" +
-                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"cog icon\"></i></button>\n" +
-                                    "                                                                                                <button class=\"ui icon small compact brand button\"><i class=\"x icon\"></i></button>\n" +
-                                    "                                                                                            </div>\n" +
-                                    "                                                                                        </div>\n" +
-                                    "                                                                                    </li>\n" +
-                                    "                                                                                    <li class=\"button-item card\">\n" +
-                                    "                                                                                        <div class=\"button-item-inner\">\n" +
-                                    "                                                                                            <div class=\"start\">\n" +
-                                    "                                                                                                <img src=\"../../resources/images/item-card-icon.svg\">카드\n" +
-                                    "                                                                                            </div>\n" +
-                                    "                                                                                            <div class=\"end\">\n" +
-                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"plus icon\"></i></button>\n" +
-                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"cog icon\"></i></button>\n" +
-                                    "                                                                                                <button class=\"ui icon small compact brand button\"><i class=\"x icon\"></i></button>\n" +
-                                    "                                                                                            </div>\n" +
-                                    "                                                                                        </div>\n" +
-                                    "                                                                                    </li>\n" +
-                                    "                                                                                    <li class=\"button-item list\">\n" +
-                                    "                                                                                        <div class=\"button-item-inner\">\n" +
-                                    "                                                                                            <div class=\"start\">\n" +
-                                    "                                                                                                <img src=\"../../resources/images/item-list-icon.svg\">리스트\n" +
-                                    "                                                                                            </div>\n" +
-                                    "                                                                                            <div class=\"end\">\n" +
-                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"plus icon\"></i></button>\n" +
-                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"cog icon\"></i></button>\n" +
-                                    "                                                                                                <button class=\"ui icon small compact brand button\"><i class=\"x icon\"></i></button>\n" +
-                                    "                                                                                            </div>\n" +
-                                    "                                                                                        </div>\n" +
-                                    "                                                                                    </li>\n" +
-                                    "                                                                                </ul>\n" +
-                                    "                                                                            </div>\n" +
-                                    "                                                                            <div class=\"inner\">\n" +
-                                    "                                                                                <ul class=\"button-item-ul\">\n" +
-                                    "                                                                                    <li class=\"button-item button\">\n" +
-                                    "                                                                                        <div class=\"button-item-inner\">\n" +
-                                    "                                                                                            <div class=\"start\">\n" +
-                                    "                                                                                                <text>이름없는버튼이름없는버튼</text>\n" +
-                                    "                                                                                            </div>\n" +
-                                    "                                                                                            <div class=\"end\">\n" +
-                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"plus icon\"></i></button>\n" +
-                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"cog icon\"></i></button>\n" +
-                                    "                                                                                                <button class=\"ui icon small compact brand button\"><i class=\"x icon\"></i></button>\n" +
-                                    "                                                                                            </div>\n" +
-                                    "                                                                                        </div>\n" +
-                                    "                                                                                    </li>\n" +
-                                    "                                                                                    <li class=\"button-item button\">\n" +
-                                    "                                                                                        <div class=\"button-item-inner\">\n" +
-                                    "                                                                                            <div class=\"start\">\n" +
-                                    "                                                                                                <text>이름없는버튼이름없는버튼</text>\n" +
-                                    "                                                                                            </div>\n" +
-                                    "                                                                                            <div class=\"end\">\n" +
-                                    "                                                                                                <button class=\"ui icon small compact button\"><i class=\"cog icon\"></i></button>\n" +
-                                    "                                                                                                <button class=\"ui icon small compact brand button\"><i class=\"x icon\"></i></button>\n" +
-                                    "                                                                                            </div>\n" +
-                                    "                                                                                        </div>\n" +
-                                    "                                                                                    </li>\n" +
-                                    "                                                                                </ul>\n" +
-                                    "                                                                            </div>\n" +
-                                    "                                                                        </div>\n" +
-                                    "                                                                    </div>",
-                                "typenode": false,
-                                "inputs": {},
-                                "outputs": {},
-                                "pos_x": 50,
-                                "pos_y": 300
+                            2: {
+                                id: 2,
+                                name: "example2",
+                                data: {},
+                                class: "example2",
+                                html: `
+<div>
+    <div class="title-box">
+        <div class="mb10">
+            <input type="text" placeholder="텍스트 입력">
+        </div>
+        <div class="btn-wrap">
+            <button type="button" class="ui tiny compact button">키워드 관리</button>
+            <button type="button" class="ui tiny compact button">미리보기</button>
+            <!--<button type="button" class="ui tiny compact button poreview-button"><img src="/resources/images/chatbot-icon-white.svg">OFF</button>-->
+            <button type="button" class="ui tiny compact button preview-button active"><img src="../resources/images/chatbot-icon-white.svg">ON</button>
+        </div>
+    </div>
+    <div class="box">
+        <div class="inner">
+            <ul class="button-item-ul">
+                <li class="button-item text">
+                    <div class="button-item-inner">
+                        <div class="start">
+                            <img src="../../resources/images/item-text-icon.svg">텍스트
+                        </div>
+                        <div class="end">
+                            <button class="ui icon small compact button"><i class="plus icon"></i></button>
+                            <button class="ui icon small compact button"><i class="cog icon"></i></button>
+                            <button class="ui icon small compact brand button"><i class="x icon"></i></button>
+                        </div>
+                    </div>
+                </li>
+                <li class="button-item image">
+                    <div class="button-item-inner">
+                        <div class="start">
+                            <img src="../../resources/images/item-image-icon.svg">이미지
+                        </div>
+                        <div class="end">
+                            <button class="ui icon small compact button"><i class="plus icon"></i></button>
+                            <button class="ui icon small compact button"><i class="cog icon"></i></button>
+                            <button class="ui icon small compact brand button"><i class="x icon"></i></button>
+                        </div>
+                    </div>
+                </li>
+                <li class="button-item card">
+                    <div class="button-item-inner">
+                        <div class="start">
+                            <img src="../../resources/images/item-card-icon.svg">카드
+                        </div>
+                        <div class="end">
+                            <button class="ui icon small compact button"><i class="plus icon"></i></button>
+                            <button class="ui icon small compact button"><i class="cog icon"></i></button>
+                            <button class="ui icon small compact brand button"><i class="x icon"></i></button>
+                        </div>
+                    </div>
+                </li>
+                <li class="button-item list">
+                    <div class="button-item-inner">
+                        <div class="start">
+                            <img src="../../resources/images/item-list-icon.svg">리스트
+                        </div>
+                        <div class="end">
+                            <button class="ui icon small compact button"><i class="plus icon"></i></button>
+                            <button class="ui icon small compact button"><i class="cog icon"></i></button>
+                            <button class="ui icon small compact brand button"><i class="x icon"></i></button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="inner">
+            <ul class="button-item-ul">
+                <li class="button-item button">
+                    <div class="button-item-inner">
+                        <div class="start">
+                            <text>이름없는버튼이름없는버튼</text>
+                        </div>
+                        <div class="end">
+                            <button class="ui icon small compact button"><i class="plus icon"></i></button>
+                            <button class="ui icon small compact button"><i class="cog icon"></i></button>
+                            <button class="ui icon small compact brand button"><i class="x icon"></i></button>
+                        </div>
+                    </div>
+                </li>
+                <li class="button-item button">
+                    <div class="button-item-inner">
+                        <div class="start">
+                            <text>이름없는버튼이름없는버튼</text>
+                        </div>
+                        <div class="end">
+                            <button class="ui icon small compact button"><i class="cog icon"></i></button>
+                            <button class="ui icon small compact brand button"><i class="x icon"></i></button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>`,
+                                typenode: false,
+                                inputs: {},
+                                outputs: {},
+                                pos_x: 50,
+                                pos_y: 300
                             },
-                            "3": {
-                                "id": 3,
-                                "name": "example3",
-                                "data": {},
-                                "class": "example3",
-                                "html": "<div>\n" +
-                                    "                                                                        <div class=\"title-box\">봇 기본설정</div>\n" +
-                                    "                                                                        <div class=\"box\">\n" +
-                                    "                                                                            <div class=\"inner\">\n" +
-                                    "                                                                                <div class=\"mb10\">이름</div>\n" +
-                                    "                                                                                <div class=\"input-wrap mb15\">\n" +
-                                    "                                                                                    <input type=\"text\">\n" +
-                                    "                                                                                </div>\n" +
-                                    "                                                                                <div class=\"mb10\">폴백 멘트 입력</div>\n" +
-                                    "                                                                                <div class=\"ui form fluid mb10\">\n" +
-                                    "                                                                                    <textarea rows=\"3\"></textarea>\n" +
-                                    "                                                                                </div>\n" +
-                                    "                                                                                <div class=\"mb10\">동작</div>\n" +
-                                    "                                                                                <div class=\"ui form fluid mb10\">\n" +
-                                    "                                                                                    <select>\n" +
-                                    "                                                                                        <option>동작</option>\n" +
-                                    "                                                                                    </select>\n" +
-                                    "                                                                                </div>\n" +
-                                    "                                                                                <div class=\"action-wrap\">\n" +
-                                    "                                                                                    <button type=\"button\" class=\"ui tiny compact button\">취소</button>\n" +
-                                    "                                                                                    <button type=\"button\" class=\"ui tiny compact brand button\">확인</button>\n" +
-                                    "                                                                                </div>\n" +
-                                    "                                                                            </div>\n" +
-                                    "                                                                        </div>\n" +
-                                    "                                                                    </div>",
-                                "typenode": false,
-                                "inputs": {},
-                                "outputs": {},
-                                "pos_x": 350,
-                                "pos_y": 50
+                            3: {
+                                id: 3,
+                                name: "example3",
+                                data: {},
+                                class: "example3",
+                                html: `
+<div>
+    <div class="title-box">봇 기본설정</div>
+    <div class="box">
+        <div class="inner">
+            <div class="mb10">이름</div>
+            <div class="input-wrap mb15">
+                <input type="text">
+            </div>
+            <div class="mb10">폴백 멘트 입력</div>
+            <div class="ui form fluid mb10">
+                <textarea rows="3"></textarea>
+            </div>
+            <div class="mb10">동작</div>
+            <div class="ui form fluid mb10">
+                <select>
+                    <option>동작</option>
+                </select>
+            </div>
+            <div class="action-wrap">
+                <button type="button" class="ui tiny compact button">취소</button>
+                <button type="button" class="ui tiny compact brand button">확인</button>
+            </div>
+        </div>
+    </div>
+</div>`,
+                                typenode: false,
+                                inputs: {},
+                                outputs: {},
+                                pos_x: 350,
+                                pos_y: 50
                             },
                         }
                     },
@@ -845,60 +848,58 @@
             editor.import(dataToImport);
 
 
-
-
             // Events!
-            editor.on('nodeCreated', function(id) {
+            editor.on('nodeCreated', function (id) {
                 console.log("Node created " + id);
             })
 
-            editor.on('nodeRemoved', function(id) {
+            editor.on('nodeRemoved', function (id) {
                 console.log("Node removed " + id);
             })
 
-            editor.on('nodeSelected', function(id) {
+            editor.on('nodeSelected', function (id) {
                 console.log("Node selected " + id);
             })
 
-            editor.on('moduleCreated', function(name) {
+            editor.on('moduleCreated', function (name) {
                 console.log("Module Created " + name);
             })
 
-            editor.on('moduleChanged', function(name) {
+            editor.on('moduleChanged', function (name) {
                 console.log("Module Changed " + name);
             })
 
-            editor.on('connectionCreated', function(connection) {
+            editor.on('connectionCreated', function (connection) {
                 console.log('Connection created');
                 console.log(connection);
             })
 
-            editor.on('connectionRemoved', function(connection) {
+            editor.on('connectionRemoved', function (connection) {
                 console.log('Connection removed');
                 console.log(connection);
             })
 
-            editor.on('mouseMove', function(position) {
-                console.log('Position mouse x:' + position.x + ' y:'+ position.y);
+            editor.on('mouseMove', function (position) {
+                console.log('Position mouse x:' + position.x + ' y:' + position.y);
             })
 
-            editor.on('nodeMoved', function(id) {
+            editor.on('nodeMoved', function (id) {
                 console.log("Node moved " + id);
             })
 
-            editor.on('zoom', function(zoom) {
+            editor.on('zoom', function (zoom) {
                 console.log('Zoom level ' + zoom);
             })
 
-            editor.on('translate', function(position) {
-                console.log('Translate x:' + position.x + ' y:'+ position.y);
+            editor.on('translate', function (position) {
+                console.log('Translate x:' + position.x + ' y:' + position.y);
             })
 
-            editor.on('addReroute', function(id) {
+            editor.on('addReroute', function (id) {
                 console.log("Reroute added " + id);
             })
 
-            editor.on('removeReroute', function(id) {
+            editor.on('removeReroute', function (id) {
                 console.log("Reroute removed " + id);
             })
 
@@ -910,11 +911,12 @@
             for (var i = 0; i < elements.length; i++) {
                 elements[i].addEventListener('touchend', drop, false);
                 elements[i].addEventListener('touchmove', positionMobile, false);
-                elements[i].addEventListener('touchstart', drag, false );
+                elements[i].addEventListener('touchstart', drag, false);
             }
 
             var mobile_item_selec = '';
             var mobile_last_move = null;
+
             function positionMobile(ev) {
                 mobile_last_move = ev;
             }
@@ -933,8 +935,8 @@
 
             function drop(ev) {
                 if (ev.type === "touchend") {
-                    var parentdrawflow = document.elementFromPoint( mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY).closest("#drawflow");
-                    if(parentdrawflow != null) {
+                    var parentdrawflow = document.elementFromPoint(mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY).closest("#drawflow");
+                    if (parentdrawflow != null) {
                         addNodeToDrawFlow(mobile_item_selec, mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY);
                     }
                     mobile_item_selec = '';
@@ -947,11 +949,11 @@
             }
 
             function addNodeToDrawFlow(name, pos_x, pos_y) {
-                if(editor.editor_mode === 'fixed') {
+                if (editor.editor_mode === 'fixed') {
                     return false;
                 }
-                pos_x = pos_x * ( editor.precanvas.clientWidth / (editor.precanvas.clientWidth * editor.zoom)) - (editor.precanvas.getBoundingClientRect().x * ( editor.precanvas.clientWidth / (editor.precanvas.clientWidth * editor.zoom)));
-                pos_y = pos_y * ( editor.precanvas.clientHeight / (editor.precanvas.clientHeight * editor.zoom)) - (editor.precanvas.getBoundingClientRect().y * ( editor.precanvas.clientHeight / (editor.precanvas.clientHeight * editor.zoom)));
+                pos_x = pos_x * (editor.precanvas.clientWidth / (editor.precanvas.clientWidth * editor.zoom)) - (editor.precanvas.getBoundingClientRect().x * (editor.precanvas.clientWidth / (editor.precanvas.clientWidth * editor.zoom)));
+                pos_y = pos_y * (editor.precanvas.clientHeight / (editor.precanvas.clientHeight * editor.zoom)) - (editor.precanvas.getBoundingClientRect().y * (editor.precanvas.clientHeight / (editor.precanvas.clientHeight * editor.zoom)));
 
 
                 switch (name) {
@@ -961,7 +963,7 @@
           <div class="title-box"><i class="fab fa-facebook"></i> Facebook Message</div>
         </div>
         `;
-                        editor.addNode('facebook', 0,  1, pos_x, pos_y, 'facebook', {}, facebook );
+                        editor.addNode('facebook', 0, 1, pos_x, pos_y, 'facebook', {}, facebook);
                         break;
                     case 'slack':
                         var slackchat = `
@@ -969,7 +971,7 @@
             <div class="title-box"><i class="fab fa-slack"></i> Slack chat message</div>
           </div>
           `
-                        editor.addNode('slack', 1, 0, pos_x, pos_y, 'slack', {}, slackchat );
+                        editor.addNode('slack', 1, 0, pos_x, pos_y, 'slack', {}, slackchat);
                         break;
                     case 'github':
                         var githubtemplate = `
@@ -981,7 +983,7 @@
             </div>
           </div>
           `;
-                        editor.addNode('github', 0, 1, pos_x, pos_y, 'github', { "name": ''}, githubtemplate );
+                        editor.addNode('github', 0, 1, pos_x, pos_y, 'github', {"name": ''}, githubtemplate);
                         break;
                     case 'telegram':
                         var telegrambot = `
@@ -999,7 +1001,7 @@
             </div>
           </div>
           `;
-                        editor.addNode('telegram', 1, 0, pos_x, pos_y, 'telegram', { "channel": 'channel_3'}, telegrambot );
+                        editor.addNode('telegram', 1, 0, pos_x, pos_y, 'telegram', {"channel": 'channel_3'}, telegrambot);
                         break;
                     case 'aws':
                         var aws = `
@@ -1013,7 +1015,7 @@
             </div>
           </div>
           `;
-                        editor.addNode('aws', 1, 1, pos_x, pos_y, 'aws', { "db": { "dbname": '', "key": '' }}, aws );
+                        editor.addNode('aws', 1, 1, pos_x, pos_y, 'aws', {"db": {"dbname": '', "key": ''}}, aws);
                         break;
                     case 'log':
                         var log = `
@@ -1021,7 +1023,7 @@
               <div class="title-box"><i class="fas fa-file-signature"></i> Save log file </div>
             </div>
             `;
-                        editor.addNode('log', 1, 0, pos_x, pos_y, 'log', {}, log );
+                        editor.addNode('log', 1, 0, pos_x, pos_y, 'log', {}, log);
                         break;
                     case 'google':
                         var google = `
@@ -1029,7 +1031,7 @@
               <div class="title-box"><i class="fab fa-google-drive"></i> Google Drive save </div>
             </div>
             `;
-                        editor.addNode('google', 1, 0, pos_x, pos_y, 'google', {}, google );
+                        editor.addNode('google', 1, 0, pos_x, pos_y, 'google', {}, google);
                         break;
                     case 'email':
                         var email = `
@@ -1037,7 +1039,7 @@
               <div class="title-box"><i class="fas fa-at"></i> Send Email </div>
             </div>
             `;
-                        editor.addNode('email', 1, 0, pos_x, pos_y, 'email', {}, email );
+                        editor.addNode('email', 1, 0, pos_x, pos_y, 'email', {}, email);
                         break;
 
                     case 'template':
@@ -1051,7 +1053,7 @@
               </div>
             </div>
             `;
-                        editor.addNode('template', 1, 1, pos_x, pos_y, 'template', { "template": 'Write your template'}, template );
+                        editor.addNode('template', 1, 1, pos_x, pos_y, 'template', {"template": 'Write your template'}, template);
                         break;
                     case 'multiple':
                         var multiple = `
@@ -1061,7 +1063,7 @@
               </div>
             </div>
             `;
-                        editor.addNode('multiple', 3, 4, pos_x, pos_y, 'multiple', {}, multiple );
+                        editor.addNode('multiple', 3, 4, pos_x, pos_y, 'multiple', {}, multiple);
                         break;
                     case 'personalized':
                         var personalized = `
@@ -1069,7 +1071,7 @@
               Personalized
             </div>
             `;
-                        editor.addNode('personalized', 1, 1, pos_x, pos_y, 'personalized', {}, personalized );
+                        editor.addNode('personalized', 1, 1, pos_x, pos_y, 'personalized', {}, personalized);
                         break;
                     case 'dbclick':
                         var dbclick = `
@@ -1088,7 +1090,7 @@
               </div>
             </div>
             `;
-                        editor.addNode('dbclick', 1, 1, pos_x, pos_y, 'dbclick', { name: ''}, dbclick );
+                        editor.addNode('dbclick', 1, 1, pos_x, pos_y, 'dbclick', {name: ''}, dbclick);
                         break;
 
                     default:
@@ -1096,6 +1098,7 @@
             }
 
             var transform = '';
+
             function showpopup(e) {
                 e.target.closest(".drawflow-node").style.zIndex = "9999";
                 e.target.children[0].style.display = "block";
@@ -1104,8 +1107,8 @@
                 //e.target.children[0].style.transform = 'translate('+translate.x+'px, '+translate.y+'px)';
                 transform = editor.precanvas.style.transform;
                 editor.precanvas.style.transform = '';
-                editor.precanvas.style.left = editor.canvas_x +'px';
-                editor.precanvas.style.top = editor.canvas_y +'px';
+                editor.precanvas.style.left = editor.canvas_x + 'px';
+                editor.precanvas.style.top = editor.canvas_y + 'px';
                 console.log(transform);
 
                 //e.target.children[0].style.top  =  -editor.canvas_y - editor.container.offsetTop +'px';
@@ -1116,7 +1119,7 @@
 
             function closemodal(e) {
                 e.target.closest(".drawflow-node").style.zIndex = "2";
-                e.target.parentElement.parentElement.style.display  ="none";
+                e.target.parentElement.parentElement.style.display = "none";
                 //document.getElementById("modalfix").style.display = "none";
                 editor.precanvas.style.transform = transform;
                 editor.precanvas.style.left = '0px';
@@ -1135,7 +1138,7 @@
             function changeMode(option) {
 
                 //console.log(lock.id);
-                if(option == 'lock') {
+                if (option == 'lock') {
                     lock.style.display = 'none';
                     unlock.style.display = 'block';
                 } else {
@@ -1149,17 +1152,17 @@
         <script>
 
 
-            $('.chatbot-control-container .arrow-button').click(function(){
+            $('.chatbot-control-container .arrow-button').click(function () {
                 $(this).toggleClass('show');
                 $(this).parent('.chatbot-control-container').toggleClass('active');
             });
 
-            $("input:text").click(function() {
+            $("input:text").click(function () {
                 $(this).parent().find("input:file").click();
             });
 
             $('input:file', '.ui.action.input')
-                .on('change', function(e) {
+                .on('change', function (e) {
                     var name = e.target.files[0].name;
                     $('input:text', $(e.target).parent()).val(name);
                 });
