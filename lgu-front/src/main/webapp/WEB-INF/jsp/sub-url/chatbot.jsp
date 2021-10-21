@@ -38,10 +38,19 @@
                                 <div>
                                     <h3 class="panel-title"><img src="<c:url value="/resources/images/chatbot-square.svg"/>" class="vertical-align-middle mr5"> 봇 에디터</h3>
                                 </div>
-                                <div>
-                                    <button type="button" class="ui mini button">봇 복사</button>
+                                <div class="dp-flex">
+                                    <div class="bot-select-wrap">
+                                        <span>봇 리스트</span>
+                                        <div class="ui form">
+                                            <select>
+                                                <option></option>
+                                            </select>
+                                        </div>
+                                        <button type="button" class="ui mini button">봇 추가</button>
+                                    </div>
+                                    <%--<button type="button" class="ui mini button">봇 복사</button>
                                     <button type="button" class="ui mini button">봇 테스트</button>
-                                    <button type="button" class="ui mini button">봇 저장</button>
+                                    <button type="button" class="ui mini button">봇 저장</button>--%>
                                 </div>
                             </div>
                             <div class="panel-body chatbot remove-padding">
@@ -650,9 +659,67 @@
         </div>
     </div>--%>
 
+    <%--봇 붙여넣기 modal--%>
+    <%--<div class="ui mini modal bot-paste">
+    <i class="close icon"></i>
+    <div class="header">봇 붙여넣기</div>
+    <div class="scrolling content rows">
+        클립보드에 복사된 시나리오를 붙여 넣겠습니다. 진행 하시겠습니까?
+    </div>
+    <div class="actions dp-flex justify-content-space-between">
+        <div>
+            <button type="button" class="ui button">신규추가</button>
+        </div>
+        <div>
+            <button type="button" class="ui button modal-close">취소</button>
+            <button type="button" class="ui blue button">확인</button>
+        </div>
+    </div>--%>
+
+    <%-- 봇 복사 modal--%>
+    <%--<div class="ui mini modal bot-copy">
+        <i class="close icon"></i>
+        <div class="header">봇 복사</div>
+        <div class="scrolling content rows">
+           선택하신 시나리오를 클립보드에 복사합니다. 진행 하시겠습니까?
+        </div>
+        <div class="actions">
+            <button type="button" class="ui button modal-close">취소</button>
+            <button type="button" class="ui blue button">확인</button>
+        </div>
+    </div>--%>
+
+     <%--봇 경고 modal--%>
+    <%--<div class="ui mini modal bot-waring">
+        <i class="close icon"></i>
+        <div class="header">경고</div>
+        <div class="scrolling content rows">
+           기존 클립보드에 복사된 시나리오는 삭제 됩니다. 진행 하시겠습니까?
+        </div>
+        <div class="actions">
+            <button type="button" class="ui button modal-close">취소</button>
+            <button type="button" class="ui blue button">확인</button>
+        </div>
+    </div>--%>
+
+    <%--봇 자동저장 modal--%>
+    <%--<div class="ui mini modal bot-save">
+        <i class="close icon"></i>
+        <div class="header">자동저장</div>
+        <div class="scrolling content rows">
+           확인을 누르시면 자동 저장 후 테스트 기능이 활성화 됩니다.
+        </div>
+        <div class="actions">
+            <button type="button" class="ui button modal-close">취소</button>
+            <button type="button" class="ui blue button">확인</button>
+        </div>
+    </div>--%>
+
+
     <tags:scripts>
         <script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
         <script>
+            /*$('.ui.modal.bot-save').dragModalShow();*/
             function keywordConfirmPopup() {
                 $('.keyword-confirm').dragModalShow();
             }
@@ -693,8 +760,15 @@
 </div>`,
                                 typenode: false,
                                 inputs: {},
-                                outputs: {},
-                                pos_x: 50,
+                                outputs: {
+                                    "output_1": {
+                                        "connections": [{
+                                            "node": "2",
+                                            "output": "input_1"
+                                        }]
+                                    }
+                                },
+                                pos_x: 350,
                                 pos_y: 50
                             },
                             2: {
@@ -798,9 +872,16 @@
     </div>
 </div>`,
                                 typenode: false,
-                                inputs: {},
+                                inputs: {
+                                    "input_1": {
+                                        "connections": [{
+                                            "node": "1",
+                                            "input": "output_1"
+                                        }]
+                                    }
+                                },
                                 outputs: {},
-                                pos_x: 50,
+                                pos_x: 650,
                                 pos_y: 300
                             },
                             3: {
@@ -837,7 +918,7 @@
                                 typenode: false,
                                 inputs: {},
                                 outputs: {},
-                                pos_x: 350,
+                                pos_x: 50,
                                 pos_y: 50
                             },
                         }
