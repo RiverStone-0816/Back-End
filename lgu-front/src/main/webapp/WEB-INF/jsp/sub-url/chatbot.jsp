@@ -870,14 +870,24 @@
                                 },
                                 outputs: {
                                     "output_1": {
-                                        "connections": [{
-                                            "node": "4",
-                                            "output": "input_1"
-                                        }, {
-                                            "node": "5",
-                                            "output": "input_1"
-                                        }]
-                                    }
+                                        "connections": [
+                                            {
+                                                "node": "4",
+                                                "output": "input_1"
+                                            }
+                                        ]
+                                    },
+                                    "output_2": {
+                                        "connections": [
+                                            {
+                                                "node": "5",
+                                                "output": "input_1"
+                                            }
+                                        ]
+                                    },
+                                    "output_3": {
+                                        "connections": []
+                                    },
                                 },
                                 pos_x: 650,
                                 pos_y: 300
@@ -1039,7 +1049,7 @@
                                     "input_1": {
                                         "connections": [{
                                             "node": "2",
-                                            "input": "output_1"
+                                            "input": "output_2"
                                         }]
                                     }
                                 },
