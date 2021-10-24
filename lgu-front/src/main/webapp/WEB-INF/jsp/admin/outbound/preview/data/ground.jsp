@@ -19,13 +19,13 @@
         <tags:page-menu-tab url="/admin/outbound/preview/data/"/>
         <div class="sub-content ui container fluid unstackable">
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
-                <div class="panel-heading">
-                    <div class="pull-left">
+                <div class="panel-heading dp-flex align-items-center justify-content-space-between">
+                    <div>
                         검색
                         <span style="color: red;padding-left:20px;">※ [프리뷰 그룹] 선택 후 검색을 눌러주세요.</span>
                     </div>
-                    <div class="pull-right">
-                        <div class="ui slider checkbox">
+                    <div class="dp-flex align-items-center">
+                        <div class="ui slider checkbox mr15">
                             <label>접기/펴기</label>
                             <input type="checkbox" name="newsletter" id="_newsletter">
                         </div>

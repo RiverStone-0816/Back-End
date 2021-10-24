@@ -20,25 +20,25 @@
         <tags:page-menu-tab url="/admin/record/history/history/"/>
         <div class="sub-content ui container fluid unstackable">
             <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
-                <div class="panel-heading">
-                    <div class="pull-left">
+                <div class="panel-heading dp-flex align-items-center justify-content-space-between">
+                    <div>
                         검색
                         <c:if test="${g.user.downloadRecordingAuthority.equals('ALL')}">
-                            <div class="ui toggle checkbox">
+                            <div class="ui toggle checkbox ml15">
                                 <form:checkbox path="batchDownloadMode"/>
                                 <form:hidden path="limit"/>
                                 <label>녹취 일괄다운로드 모드로 전환 (1일 녹취만 다운로드 가능)</label>
                             </div>
                         </c:if>
                         <c:if test="${company.isServiceAvailable('QA') && !g.user.idType.equals('M')}">
-                            <div class="ui toggle checkbox -evaluation-mode">
+                            <div class="ui toggle checkbox ml15 -evaluation-mode">
                                 <form:checkbox path="batchEvaluationMode"/>
                                 <label>상담원 일괄평가모드로 전환</label>
                             </div>
                         </c:if>
                     </div>
-                    <div class="pull-right">
-                        <div class="ui slider checkbox">
+                    <div class="dp-flex align-items-center">
+                        <div class="ui slider checkbox mr15">
                             <label>접기/펴기</label>
                             <input type="checkbox" name="newsletter" id="_newsletter">
                         </div>

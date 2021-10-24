@@ -28,7 +28,7 @@
                             <div class="bar">
                                 <div class="progress">${disk.use}</div>
                             </div>
-                            <div class="label">
+                            <div class="label ws-nowrap">
                                 사용중디스크 : ${disk.used}
                                 <span class="slash">/</span>
                                 사용가능디스크 : ${disk.avail}
