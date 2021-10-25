@@ -40,9 +40,9 @@
                                 </div>
                                 <button type="button" class="ui mini button">봇 추가</button>
                             </div>
-                            <%--<button type="button" class="ui mini button">봇 복사</button>
-                            <button type="button" class="ui mini button">봇 테스트</button>
-                            <button type="button" class="ui mini button">봇 저장</button>--%>
+                            <button type="button" class="ui mini button" onclick="botCopyPopup();">봇 복사</button>
+                            <button type="button" class="ui mini button" onclick="botTextPopup();">봇 테스트</button>
+                            <button type="button" class="ui mini button" onclick="botSavePopup();">봇 저장</button>
                         </div>
                     </div>
                     <div class="panel-body chatbot remove-padding flex-100">
@@ -106,7 +106,7 @@
                                 </div>
                             </div>
                                 <%--기본--%>
-                                <%--<div class="chatbot-control-container active">
+                                <div class="chatbot-control-container active">
                                     <button type="button" class="arrow-button"></button>
                                     <div class="chatbot-control-inner">
                                         <div class="chatbot-box-label">설정영역</div>
@@ -114,7 +114,7 @@
                                             <div class="empty">선택된 내용이 없습니다.</div>
                                         </div>
                                     </div>
-                                </div>--%>
+                                </div>
 
                                 <%--폴백 블록 관리--%>
                                 <%--<div class="chatbot-control-container active">
@@ -506,7 +506,7 @@
                                 </div>--%>
 
                                 <%--채팅미리보기--%>
-                            <div class="chatbot-control-container active">
+                            <%--<div class="chatbot-control-container active">
                                 <button type="button" class="arrow-button"></button>
                                 <div class="chatbot-control-inner chatbot-ui">
                                     <div class="chatbot-box-label">미리보기
@@ -605,12 +605,12 @@
                                                 </div>
                                                 <div class="card">
                                                     <div class="card-img">
-                                                        <img src="<c:url value="../resources/images/eicn-sample.png"/>">
+                                                        <img src="<c:url value="../resources/images/eicn-sample.png"/>" class="border-radius-1em">
                                                     </div>
                                                 </div>
                                                 <div class="card">
                                                     <div class="card-img">
-                                                        <img src="<c:url value="../resources/images/eicn-sample.png"/>">
+                                                        <img src="<c:url value="../resources/images/eicn-sample.png"/>" class="border-radius-top-1em">
                                                     </div>
                                                     <div class="card-content">
                                                         <div class="card-title">
@@ -622,12 +622,13 @@
                                                             IPCC 화면에 로그인 하려면 지정된 계정 정보를 입력해야 합니다.
                                                         </div>
                                                     </div>
+                                                    <span class="time-text">오전 09:23</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>--%>
 
                         </div>
                     </div>
@@ -637,7 +638,7 @@
     </div>
 
     <%--키워드 중복 modal--%>
-    <%--<div class="ui mini modal keyword-confirm">
+    <div class="ui mini modal keyword-confirm">
         <i class="close icon"></i>
         <div class="header">키워드 중복</div>
         <div class="scrolling content rows">
@@ -647,10 +648,10 @@
         <div class="actions">
             <button type="button" class="ui blue button modal-close">확인</button>
         </div>
-    </div>--%>
+    </div>
 
     <%--봇 붙여넣기 modal--%>
-    <%--<div class="ui mini modal bot-paste">
+    <div class="ui mini modal bot-paste">
     <i class="close icon"></i>
     <div class="header">봇 붙여넣기</div>
     <div class="scrolling content rows">
@@ -664,10 +665,10 @@
             <button type="button" class="ui button modal-close">취소</button>
             <button type="button" class="ui blue button">확인</button>
         </div>
-    </div>--%>
+    </div>
 
     <%-- 봇 복사 modal--%>
-    <%--<div class="ui mini modal bot-copy">
+    <div class="ui mini modal bot-copy">
         <i class="close icon"></i>
         <div class="header">봇 복사</div>
         <div class="scrolling content rows">
@@ -677,10 +678,10 @@
             <button type="button" class="ui button modal-close">취소</button>
             <button type="button" class="ui blue button">확인</button>
         </div>
-    </div>--%>
+    </div>
 
     <%--봇 경고 modal--%>
-    <%--<div class="ui mini modal bot-waring">
+    <div class="ui mini modal bot-waring">
         <i class="close icon"></i>
         <div class="header">경고</div>
         <div class="scrolling content rows">
@@ -690,10 +691,10 @@
             <button type="button" class="ui button modal-close">취소</button>
             <button type="button" class="ui blue button">확인</button>
         </div>
-    </div>--%>
+    </div>
 
     <%--봇 자동저장 modal--%>
-    <%--<div class="ui mini modal bot-save">
+    <div class="ui mini modal bot-save">
         <i class="close icon"></i>
         <div class="header">자동저장</div>
         <div class="scrolling content rows">
@@ -703,16 +704,11 @@
             <button type="button" class="ui button modal-close">취소</button>
             <button type="button" class="ui blue button">확인</button>
         </div>
-    </div>--%>
+    </div>
 
     <tags:scripts>
         <script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
         <script>
-            /*$('.ui.modal.bot-save').dragModalShow();*/
-            function keywordConfirmPopup() {
-                $('.keyword-confirm').dragModalShow();
-            }
-
             var id = document.getElementById("drawflow");
             const editor = new Drawflow(id);
             editor.reroute = true;
@@ -734,8 +730,8 @@
         <div class="btn-wrap">
             <button type="button" class="ui tiny compact button">키워드 관리</button>
             <button type="button" class="ui tiny compact button">미리보기</button>
-            <button type="button" class="ui tiny compact button preview-button"><img src="../resources/images/chatbot-icon-white.svg">OFF</button>
-            <!--<button type="button" class="ui tiny compact button preview-button active"><img src="../resources/images/chatbot-icon-white-active.svg">ON</button>-->
+            <button type="button" class="ui tiny compact button preview-button">OFF</button>
+            <!--<button type="button" class="ui tiny compact button preview-button active">ON</button>-->
         </div>
     </div>
     <div class="box">
@@ -774,7 +770,7 @@
         <div class="btn-wrap">
             <button type="button" class="ui tiny compact button">키워드 관리</button>
             <button type="button" class="ui tiny compact button">미리보기</button>
-            <button type="button" class="ui tiny compact button poreview-button"><img src="/resources/images/chatbot-icon-white.svg">OFF</button>
+            <button type="button" class="ui tiny compact button preview-button">OFF</button>
         </div>
     </div>
     <div class="box">
@@ -885,9 +881,6 @@
                                             }
                                         ]
                                     },
-                                    "output_3": {
-                                        "connections": []
-                                    },
                                 },
                                 pos_x: 650,
                                 pos_y: 300
@@ -913,7 +906,8 @@
             <div class="mb10">동작</div>
             <div class="ui form fluid mb10">
                 <select>
-                    <option>동작</option>
+                    <option>처음으로가기</option>
+                    <option>상담그룹연결</option>
                 </select>
             </div>
             <div class="action-wrap">
@@ -943,7 +937,7 @@
         <div class="btn-wrap">
             <button type="button" class="ui tiny compact button">키워드 관리</button>
             <button type="button" class="ui tiny compact button">미리보기</button>
-            <button type="button" class="ui tiny compact button preview-button active"><img src="../resources/images/chatbot-icon-white-active.svg">ON</button>
+            <button type="button" class="ui tiny compact button preview-button active">ON</button>
         </div>
     </div>
     <div class="box">
@@ -1007,7 +1001,7 @@
         <div class="btn-wrap">
             <button type="button" class="ui tiny compact button">키워드 관리</button>
             <button type="button" class="ui tiny compact button">미리보기</button>
-            <button type="button" class="ui tiny compact button preview-button active"><img src="../resources/images/chatbot-icon-white-active.svg">ON</button>
+            <button type="button" class="ui tiny compact button preview-button active">ON</button>
         </div>
     </div>
     <div class="box">
@@ -1051,7 +1045,7 @@
                                             "node": "2",
                                             "input": "output_2"
                                         }]
-                                    }
+                                    },
                                 },
                                 outputs: {},
                                 pos_x: 900,
@@ -1367,6 +1361,31 @@
 
         </script>
         <script>
+
+            function botSavePopup() {
+                $('.ui.modal.bot-save').dragModalShow();
+            }
+
+            function botTestPopup() {
+                $('.ui.modal.bot-test').dragModalShow();
+            }
+
+            function botCopyPopup() {
+                $('.ui.modal.bot-copy').dragModalShow();
+            }
+
+            function keywordConfirmPopup() {
+                $('.keyword-confirm').dragModalShow();
+            }
+
+            $('.preview-button').click(function(){
+                $(this).toggleClass('active');
+                if($(this).hasClass('active') === false) {
+                    $(this).text("OFF");
+                } else {
+                    $(this).text("ON");
+                }
+            });
 
 
             $('.chatbot-control-container .arrow-button').click(function () {
