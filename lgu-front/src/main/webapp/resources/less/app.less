@@ -2934,6 +2934,12 @@ g {
     margin: .5em auto .4em auto;
     font-size: 3em;
   }
+  .actions {
+    .ui.button {
+      margin: 0 3px;
+      font-weight: 900;
+    }
+  }
   background-color: white;
   padding: 1em;
   min-width: 300px;
@@ -3279,6 +3285,14 @@ g {
 .ui-resizable-helper {z-index: 10001 !important;}
 
 
+
+.chatbot-control-panel {
+  display: none;
+}
+.chatbot-control-panel.active {
+  .flex();
+}
+
 .chatbot-container {
   .flex();
   position: relative;
@@ -3400,7 +3414,7 @@ g {
           .flex();
           align-items: center;
           img {
-            margin: 0 3px 0 0;
+            margin: 0 0 0 5px;
           }
         }
       }
@@ -3613,9 +3627,34 @@ g {
         }
         .button-item-ul {
           .button-item {
+            position: relative;
             margin: 0 0 8px 0;
-            padding: 9px 9px;
+            padding: 9px 9px 9px 19px;
             border-radius: 5px;
+            .button-item-order-wrap {
+              position: absolute;
+              display: flex;
+              left: 0;
+              flex-flow: column;
+              height: 100%;
+              top: 0;
+              .up-button, .down-button {
+                cursor: pointer;
+                outline:0;
+                border:0;
+                height: 19px;
+                background-repeat: no-repeat;
+                background-position: center center;
+              }
+              .up-button {
+                border-radius: 5px 5px 0 0;
+                background-image: url('../images/arrow-up-white.svg');
+              }
+              .down-button {
+                border-radius: 0 0 5px 5px;
+                background-image: url('../images/arrow-down-white.svg');
+              }
+            }
             &:last-child {
               margin: 0;
             }
@@ -3662,34 +3701,49 @@ g {
             }
           }
           .button-item.text {
-            background: @color-display-text;
-            .ui.button {
-              background: #668DA8;
+            background-color: @color-display-text;
+            .up-button, .down-button, .ui.button {
+              background-color: #668DA8;
+              &:hover {
+                background-color: #517289;
+              }
             }
           }
           .button-item.image {
-            background: @color-display-image;
-            .ui.button {
-              background: #9BAFA1;
+            background-color: @color-display-image;
+            .up-button, .down-button, .ui.button {
+              background-color: #9BAFA1;
+              &:hover {
+                background-color: #84978a;
+              }
             }
           }
           .button-item.card {
-            background: @color-display-card;
-            .ui.button {
-              background: #EFCE85;
+            background-color: @color-display-card;
+            .up-button, .down-button, .ui.button {
+              background-color: #EFCE85;
+              &:hover {
+                background-color: #dab460;
+              }
             }
           }
           .button-item.list {
-            background: @color-display-list;
-            .ui.button {
-              background: #D676BF;
+            background-color: @color-display-list;
+            .up-button, .down-button, .ui.button {
+              background-color: #D676BF;
+              &:hover {
+                background-color: #c358aa;
+              }
             }
           }
           .button-item.button {
-            background: #DCDCDC;
+            background-color: #DCDCDC;
             font-size: 12px;
-            .ui.button {
-              background: #9A9A9A;
+            .up-button, .down-button, .ui.button {
+              background-color: #9A9A9A;
+              &:hover {
+                background-color: #797979;
+              }
             }
           }
         }

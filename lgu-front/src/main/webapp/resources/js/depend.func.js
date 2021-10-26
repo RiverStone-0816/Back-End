@@ -871,7 +871,7 @@ function alert(text, func) {
     $('#lean-overlay-container').click();
 
     // const modal = $('<div id="alert-modal" class="alert-modal" style="display: none;"><h3>alert</h3><i class="close icon"></i><text></text></div>').appendTo($('body'));
-    const modal = $('<div id="alert-modal" class="alert-modal" style="display: none;"><i class="close icon"></i><i class="exclamation icon"></i><div class="content"></div><div class="action"><button class="fluid ui button">확인</button></div><div/>', {
+    const modal = $('<div id="alert-modal" class="alert-modal" style="display: none;"><i class="close icon"></i><i class="exclamation icon"></i><div class="content"></div><div class="action"><button class="fluid ui small button">확인</button></div><div/>', {
         id: 'alert-modal',
         class: 'alert-modal',
         style: 'display: none;'
@@ -903,7 +903,7 @@ function confirm(text) {
         '<i class="close icon"></i>' +
         '<i class="exclamation icon"></i>' +
         '<div class="content"></div>' +
-        '<div class="actions" style="text-align: center;"><button class="ui button blue -confirm">확인</button><button class="ui button -cancel">취소</button></div>' +
+        '<div class="actions" style="text-align: center;"><button class="ui small button blue -confirm">확인</button><button class="ui small button -cancel">취소</button></div>' +
         '<div/>', {
         id: 'alert-modal',
         class: 'alert-modal',
@@ -938,6 +938,52 @@ function confirm(text) {
 
     return deferred.promise();
 }
+
+function confirmMulti(text) {
+    const deferred = $.Deferred();
+
+    $('#lean-overlay-container').click();
+
+    const modal = $('<div id="alert-modal" class="alert-modal" style="display: none;">' +
+        '<i class="close icon"></i>' +
+        '<i class="exclamation icon"></i>' +
+        '<div class="content"></div>' +
+        '<div class="actions" style="text-align: center;"><button class="ui small button blue -confirm">확인</button><button class="ui small button -cancel">취소</button><button class="ui small grey button">신규추가</button></div>' +
+        '<div/>', {
+        id: 'alert-modal',
+        class: 'alert-modal',
+        style: 'display: none;'
+    }).appendTo($('body'));
+    modal.find('.content').text(text);
+    modal.click(function (event) {
+        event.stopPropagation();
+    });
+
+    modal.find('.-confirm').click(function () {
+        setTimeout(function () {
+            deferred.resolve(text);
+        }, 10);
+    });
+
+    modal.find('.-cancel').click(function () {
+        setTimeout(function () {
+            deferred.reject(text);
+        }, 10);
+    });
+
+    const linker = $('<a/>', {href: '#alert-modal'}).leanModal({closeButton: '#alert-modal button'}).click();
+    $('.alert-modal').transition('bounce');
+
+    function removeGarbage() {
+        modal.remove();
+        linker.remove();
+    }
+
+    $('#alert-modal button').on('click', removeGarbage);
+
+    return deferred.promise();
+}
+
 
 function prompt(text, isPassword) {
     const deferred = $.Deferred();
