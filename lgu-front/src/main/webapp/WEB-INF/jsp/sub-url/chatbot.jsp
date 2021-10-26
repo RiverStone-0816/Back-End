@@ -41,7 +41,7 @@
                                 <button type="button" class="ui mini button">봇 추가</button>
                             </div>
                             <button type="button" class="ui mini button" onclick="botCopyPopup();">봇 복사</button>
-                            <button type="button" class="ui mini button" onclick="botTextPopup();">봇 테스트</button>
+                            <button type="button" class="ui mini button" onclick="botTestPopup();">봇 테스트</button>
                             <button type="button" class="ui mini button" onclick="botSavePopup();">봇 저장</button>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
                                 </div>
 
                                 <%--폴백 블록 관리--%>
-                                <%--<div class="chatbot-control-container active">
+                               <%-- <div class="chatbot-control-container active">
                                     <button type="button" class="arrow-button"></button>
                                     <div class="chatbot-control-inner">
                                         <div class="chatbot-box-label">폴백 블록 관리<button class="ui mini button">저장</button></div>
@@ -694,7 +694,7 @@
     </div>
 
     <%--봇 자동저장 modal--%>
-    <div class="ui mini modal bot-save">
+    <div class="ui mini modal bot-test">
         <i class="close icon"></i>
         <div class="header">자동저장</div>
         <div class="scrolling content rows">
@@ -1362,8 +1362,8 @@
         </script>
         <script>
 
-            function botSavePopup() {
-                $('.ui.modal.bot-save').dragModalShow();
+            function botTestPopup() {
+                $('.ui.modal.bot-text').dragModalShow();
             }
 
             function botTestPopup() {
