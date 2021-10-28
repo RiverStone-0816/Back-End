@@ -1,11 +1,8 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.help;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.NoticeFileEntity;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.NoticeXFile;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.model.dto.eicn.BoardSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.FileNameDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.NoticeDetailResponse;
@@ -61,7 +58,7 @@ public class NoticeApiController extends ApiBaseController {
 
     @GetMapping
     public ResponseEntity<JsonResult<Pagination<BoardSummaryResponse>>> pagination(BoardSearchRequest search) {
-        final Pagination<BoardInfo> pagination = repository.pagination(search);
+        final Pagination<BoardNoticeInfo> pagination = repository.pagination(search);
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
 
         final List<BoardSummaryResponse> rows = pagination.getRows().stream()
@@ -82,7 +79,7 @@ public class NoticeApiController extends ApiBaseController {
 
     @GetMapping(value = "{id}")
     public ResponseEntity<JsonResult<NoticeDetailResponse>> get(@PathVariable Long id) {
-        final BoardInfo notice = repository.findOneCheckBoardType(id, false);
+        final BoardNoticeInfo notice = repository.findOneCheckBoardType(id, false);
         final List<Long> fileIds = xFileRepository.findAll().stream().filter(e -> e.getNotice().equals(id)).map(NoticeXFile::getFile).collect(Collectors.toList());
         final List<NoticeFileEntity> fileEntityMap = fileEntityRepository.findAll();
 
@@ -107,7 +104,7 @@ public class NoticeApiController extends ApiBaseController {
 
     @GetMapping(value = "{id}/detail")
     public ResponseEntity<JsonResult<NoticeDetailResponse>> getDetail(@PathVariable Long id) {
-        final BoardInfo notice = repository.findOneCheckBoardType(id, true);
+        final BoardNoticeInfo notice = repository.findOneCheckBoardType(id, true);
         final List<Long> fileIds = xFileRepository.findAll().stream().filter(e -> e.getNotice().equals(id)).map(NoticeXFile::getFile).collect(Collectors.toList());
         final List<NoticeFileEntity> fileEntityMap = fileEntityRepository.findAll();
 

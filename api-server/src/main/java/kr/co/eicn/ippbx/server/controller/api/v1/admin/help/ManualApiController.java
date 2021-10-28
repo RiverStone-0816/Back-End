@@ -1,11 +1,8 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.help;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ManualFileEntity;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ManualXFile;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.model.dto.eicn.BoardSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.FileNameDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.ManualDetailResponse;
@@ -59,7 +56,7 @@ public class ManualApiController extends ApiBaseController {
 
     @GetMapping
     public ResponseEntity<JsonResult<Pagination<BoardSummaryResponse>>> pagination(BoardSearchRequest search) {
-        final Pagination<BoardInfo> pagination = repository.pagination(search);
+        final Pagination<BoardNoticeInfo> pagination = repository.pagination(search);
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
 
         final List<BoardSummaryResponse> rows = pagination.getRows().stream()
@@ -79,7 +76,7 @@ public class ManualApiController extends ApiBaseController {
 
     @GetMapping(value = "{id}")
     public ResponseEntity<JsonResult<ManualDetailResponse>> get(@PathVariable Long id) {
-        final BoardInfo manual = repository.findOneCheckBoardType(id, false);
+        final BoardNoticeInfo manual = repository.findOneCheckBoardType(id, false);
         final List<ManualFileEntity> fileEntityMap = fileEntityRepository.findAll();
         final List<Long> fileIds = xFileRepository.findAll().stream().filter(e -> e.getManual().equals(id)).map(ManualXFile::getFile).collect(Collectors.toList());
 
@@ -104,7 +101,7 @@ public class ManualApiController extends ApiBaseController {
 
     @GetMapping(value = "{id}/detail")
     public ResponseEntity<JsonResult<ManualDetailResponse>> getDetail(@PathVariable Long id) {
-        final BoardInfo manual = repository.findOneCheckBoardType(id, true);
+        final BoardNoticeInfo manual = repository.findOneCheckBoardType(id, true);
         final List<ManualFileEntity> fileEntityMap = fileEntityRepository.findAll();
         final List<Long> fileIds = xFileRepository.findAll().stream().filter(e -> e.getManual().equals(id)).map(ManualXFile::getFile).collect(Collectors.toList());
 

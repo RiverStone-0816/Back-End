@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.BoardInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.BoardNoticeInfo;
 import kr.co.eicn.ippbx.model.enums.BoardType;
 import kr.co.eicn.ippbx.model.form.ManualFormRequest;
 import kr.co.eicn.ippbx.model.search.BoardSearchRequest;
@@ -16,41 +16,41 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.BoardInfo.BOARD_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.BoardNoticeInfo.BOARD_NOTICE_INFO;
 
 @Getter
 @Repository
-public class ManualRepository extends EicnBaseRepository<BoardInfo,kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo, Long>{
+public class ManualRepository extends EicnBaseRepository<BoardNoticeInfo,kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardNoticeInfo, Long>{
     protected final Logger logger = LoggerFactory.getLogger(ManualRepository.class);
 
     private final ManualXFileRepository manualXFileRepository;
 
     public ManualRepository(ManualXFileRepository manualXFileRepository) {
-        super(BOARD_INFO,BOARD_INFO.ID,kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo.class);
+        super(BOARD_NOTICE_INFO,BOARD_NOTICE_INFO.ID,kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardNoticeInfo.class);
         this.manualXFileRepository = manualXFileRepository;
     }
 
     public Long nextId() {
-        final BoardInfo Id = BOARD_INFO.as("ID");
+        final BoardNoticeInfo Id = BOARD_NOTICE_INFO.as("ID");
         return dsl.select(DSL.ifnull(DSL.max(Id.ID), 0).add(1)).from(Id).fetchOneInto(Long.class);
     }
 
-    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo> pagination(BoardSearchRequest search) {
-        orderByFields.add(BOARD_INFO.CREATED_AT.desc());
+    public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardNoticeInfo> pagination(BoardSearchRequest search) {
+        orderByFields.add(BOARD_NOTICE_INFO.CREATED_AT.desc());
         return super.pagination(search, conditions(search));
     }
 
     public void updateViewCnt(Long id) {
-        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo record = findOne(id);
-        dsl.update(BOARD_INFO)
-                .set(BOARD_INFO.VIEW_CNT, record.getViewCnt()+1)
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardNoticeInfo record = findOne(id);
+        dsl.update(BOARD_NOTICE_INFO)
+                .set(BOARD_NOTICE_INFO.VIEW_CNT, record.getViewCnt()+1)
                 .where(compareCompanyId())
-                .and(BOARD_INFO.ID.eq(id))
+                .and(BOARD_NOTICE_INFO.ID.eq(id))
                 .execute();
     }
 
-    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo findOneCheckBoardType(Long id, Boolean detailYn) {
-        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo boardInfo = findOneIfNullThrow(id);
+    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardNoticeInfo findOneCheckBoardType(Long id, Boolean detailYn) {
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardNoticeInfo boardInfo = findOneIfNullThrow(id);
 
         if (!BoardType.MANUAL.getCode().equals(boardInfo.getBoardType()))
             throw new IllegalArgumentException("매뉴얼의 게시글이 아닙니다.");
@@ -61,7 +61,7 @@ public class ManualRepository extends EicnBaseRepository<BoardInfo,kr.co.eicn.ip
     }
 
     public void deleteCheckBoardType(Long id) {
-        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo boardInfo = findOneIfNullThrow(id);
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardNoticeInfo boardInfo = findOneIfNullThrow(id);
 
         if (!BoardType.MANUAL.getCode().equals(boardInfo.getBoardType()))
             throw new IllegalArgumentException("매뉴얼의 게시글이 아닙니다.");
@@ -72,7 +72,7 @@ public class ManualRepository extends EicnBaseRepository<BoardInfo,kr.co.eicn.ip
     }
 
     public void insertOnGeneratedKey(ManualFormRequest form) {
-        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo boardInfoRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo();
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardNoticeInfo boardInfoRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardNoticeInfo();
         boardInfoRecord.setId(nextId());
         boardInfoRecord.setTitle(form.getTitle());
         boardInfoRecord.setCreatorId(g.getUser().getId().equals("") ? "master" : g.getUser().getId());
@@ -83,16 +83,16 @@ public class ManualRepository extends EicnBaseRepository<BoardInfo,kr.co.eicn.ip
 
     private List<Condition> conditions(BoardSearchRequest search) {
         final List<Condition> conditions = new ArrayList<>();
-        conditions.add(BOARD_INFO.BOARD_TYPE.eq(BoardType.MANUAL.getCode()));
+        conditions.add(BOARD_NOTICE_INFO.BOARD_TYPE.eq(BoardType.MANUAL.getCode()));
 
         if (search.getStartDate() != null)
-            conditions.add(BOARD_INFO.CREATED_AT.ge(DSL.timestamp(search.getStartDate() + " 00:00:00")));
+            conditions.add(BOARD_NOTICE_INFO.CREATED_AT.ge(DSL.timestamp(search.getStartDate() + " 00:00:00")));
 
         if(search.getEndDate() != null)
-            conditions.add(BOARD_INFO.CREATED_AT.le(DSL.timestamp(search.getEndDate() + " 23:59:59")));
+            conditions.add(BOARD_NOTICE_INFO.CREATED_AT.le(DSL.timestamp(search.getEndDate() + " 23:59:59")));
 
         if(StringUtils.isNotEmpty(search.getSearchText()))
-            conditions.add(BOARD_INFO.TITLE.like("%" + search.getSearchText() + "%"));
+            conditions.add(BOARD_NOTICE_INFO.TITLE.like("%" + search.getSearchText() + "%"));
 
 
         return conditions;

@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.server.service;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardNoticeInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ManualFileEntity;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ManualXFile;
 import kr.co.eicn.ippbx.model.enums.BoardType;
@@ -45,7 +46,7 @@ public class ManualFileUploadService extends ApiBaseService {
     }
 
     public void insertManualWithFileStore(ManualFormRequest form) {
-        final BoardInfo boardInfoRecord = new BoardInfo();
+        final BoardNoticeInfo boardInfoRecord = new BoardNoticeInfo();
         final Long manualId = manualRepository.nextId();
         boardInfoRecord.setId(manualId);
         boardInfoRecord.setTitle(form.getTitle());
@@ -94,7 +95,7 @@ public class ManualFileUploadService extends ApiBaseService {
     }
 
     public void updateManualWithFileStore(ManualFormRequest form, Long id) {
-        final BoardInfo boardInfoRecord = manualRepository.findOneCheckBoardType(id, false);
+        final BoardNoticeInfo boardInfoRecord = manualRepository.findOneCheckBoardType(id, false);
         if (!g.getUser().getIdType().equals(IdType.MASTER.getCode()) && !g.getUser().getIdType().equals(IdType.SUPER_ADMIN.getCode())
                 && !boardInfoRecord.getCreatorId().equals(g.getUser().getId()))
             throw new IllegalArgumentException("해당 게시글을 수정할 수 없습니다.");

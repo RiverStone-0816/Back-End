@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardNoticeInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.NoticeFileEntity;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.NoticeXFile;
 import kr.co.eicn.ippbx.model.enums.BoardType;
@@ -45,7 +45,7 @@ public class NoticeFileUploadService extends ApiBaseService {
     }
 
     public void insertNoticeWithFileStore(NoticeFormRequest form) {
-        final BoardInfo boardInfoRecord = new BoardInfo();
+        final BoardNoticeInfo boardInfoRecord = new BoardNoticeInfo();
         final Long noticeId = noticeRepository.nextId();
         boardInfoRecord.setId(noticeId);
         boardInfoRecord.setTitle(form.getTitle());
@@ -97,7 +97,7 @@ public class NoticeFileUploadService extends ApiBaseService {
     }
 
     public void updateNoticeWithFileStore(NoticeFormRequest form, Long noticeId) {
-        final BoardInfo boardInfoRecord = noticeRepository.findOneCheckBoardType(noticeId, false);
+        final BoardNoticeInfo boardInfoRecord = noticeRepository.findOneCheckBoardType(noticeId, false);
         if (!g.getUser().getIdType().equals(IdType.MASTER.getCode()) && !g.getUser().getIdType().equals(IdType.SUPER_ADMIN.getCode())
                 && !boardInfoRecord.getCreatorId().equals(g.getUser().getId()))
             throw new IllegalArgumentException("해당 게시글을 수정할 수 없습니다.");
