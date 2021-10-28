@@ -121,8 +121,7 @@
 
             function updateCurrentEncryptionType() {
                 restSelf.put('/api/record-file-enc/', {encType: $('[name=enable]:checked').val()}).done(function () {
-                    alert('설정되었습니다.');
-                    reload();
+                    alert('설정되었습니다.', reload());
                 });
             }
 

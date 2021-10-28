@@ -123,7 +123,8 @@ public class AuthApiController extends BaseController {
             user.setCompanyId(companyInfo.getCompanyId());
             user.setCompanyName(companyInfo.getCompanyName());
         } else {
-            phone = phoneApiInterface.get(user.getPeer());
+            if (StringUtils.isNotEmpty(user.getPeer()))
+                phone = phoneApiInterface.get(user.getPeer());
         }
 
         // if (isNotEmpty(form.getExtension()))

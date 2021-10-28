@@ -71,7 +71,9 @@
                             <form:select path="introSoundCode">
                                 <form:option value="" label="선택안함"/>
                                 <form:option value="TTS" label="TTS입력"/>
-                                <form:options items="${sounds}"/>
+                                <c:forEach var="e" items="${sounds}">
+                                    <form:option value="${e.seq}" label="${e.soundName}"/>
+                                </c:forEach>
                             </form:select>
                         </div>
                     </div>
@@ -125,7 +127,9 @@
                                 <form:option value="" label="선택안함"/>
                             </c:if>
                             <form:option value="TTS" label="TTS입력"/>
-                            <form:options items="${sounds}"/>
+                            <c:forEach var="e" items="${sounds}">
+                            <form:option value="${e.seq}" label="${e.soundName}"/>
+                            </c:forEach>
                         </form:select>
                     </div>
                 </div>
@@ -163,7 +167,7 @@
                             <select name="typeDataStrings" data-multiple="multiple">
                                 <option value="" label="선택안함"></option>
                                 <c:forEach var="e" items="${queues}">
-                                    <option value="${e.key}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[form.type == CONNECT_HUNT_NUMBER ? 0 : 1] == e.key ? 'selected' : ''}>${g.htmlQuote(e.value)}</option>
+                                    <option value="${e.number}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[form.type == CONNECT_HUNT_NUMBER ? 0 : 1] == e.number ? 'selected' : ''}>${g.htmlQuote(e.hanName)}</option>
                                 </c:forEach>
                             </select>
                         </div>

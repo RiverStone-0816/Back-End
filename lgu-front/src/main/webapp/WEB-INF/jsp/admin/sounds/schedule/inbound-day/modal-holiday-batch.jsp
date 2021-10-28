@@ -48,7 +48,7 @@
                         <div class="from-panel">
                             <select class="form-control -right-selector" size="8" multiple="multiple">
                                 <c:forEach var="e" items="${number070List}">
-                                    <option value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.key)}[${g.htmlQuote(e.value)}]</option>
+                                    <option value="${g.htmlQuote(e.number)}">${g.htmlQuote(e.number)}[${g.htmlQuote(e.hanName)}]</option>
                                 </c:forEach>
                             </select>
                         </div>
