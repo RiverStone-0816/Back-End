@@ -20,6 +20,9 @@
             <div class="inner">
                 <ul>
                     <li><a href="#" class="tab-on tab-indicator">채팅 봇</a></li>
+                    <li>
+                        <button type="button" onclick="createNode()">블락 생성</button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -50,16 +53,16 @@
                             <div class="chatbot-node-container">
                                 <div class="chatbot-box-label">디스플레이</div>
                                 <div class="pd13">
-                                    <div class="display-item text" draggable="true" ondragstart="drag(event)" data-node="display-text">
+                                    <div class="display-item text" draggable="true" ondragstart="event.dataTransfer.setData('node', 'display-item-text')">
                                         <img src="<c:url value="/resources/images/item-text-icon.svg"/>"> 텍스트
                                     </div>
-                                    <div class="display-item image" draggable="true" ondragstart="drag(event)" data-node="display-image">
+                                    <div class="display-item image" draggable="true" ondragstart="event.dataTransfer.setData('node', 'display-item-image')">
                                         <img src="<c:url value="/resources/images/item-image-icon.svg"/>"> 이미지
                                     </div>
-                                    <div class="display-item card" draggable="true" ondragstart="drag(event)" data-node="display-card">
+                                    <div class="display-item card" draggable="true" ondragstart="event.dataTransfer.setData('node', 'display-item-card')">
                                         <img src="<c:url value="/resources/images/item-card-icon.svg"/>"> 카드
                                     </div>
-                                    <div class="display-item list" draggable="true" ondragstart="drag(event)" data-node="display-list">
+                                    <div class="display-item list" draggable="true" ondragstart="event.dataTransfer.setData('node', 'display-item-list')">
                                         <img src="<c:url value="/resources/images/item-list-icon.svg"/>"> 리스트
                                     </div>
                                 </div>
@@ -78,13 +81,10 @@
                                     </div>
                                     <div class="chatbot-box-sub-label skyblue">일반 블록</div>
                                     <div class="block-list-container">
-                                        <ul class="block-list-ul">
-                                            <li class="block-list">
-                                                <div class="block-name">블록1</div>
-                                            </li>
-                                            <li class="block-list">
-                                                <div class="block-name">블록1블록1블록1블록1블록1블록1블록1블록1블록1블록1블록1블록1블록1블록1블록1</div>
-                                                <div class="block-control">
+                                        <ul id="block-list" class="block-list-ul">
+                                            <li v-for="(e,i) in blocks" :key="i" class="block-list">
+                                                <div class="block-name">{{e.name}}</div>
+                                                <div v-if="e.autoReply" class="block-control">
                                                     <img src="<c:url value="/resources/images/chatbot-square-mini.svg"/>">
                                                 </div>
                                             </li>
@@ -93,7 +93,7 @@
                                 </div>
                             </div>
                             <div class="chatbot-main-container flex-100">
-                                <div id="drawflow" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                <div id="drawflow" ondragover="allowDrop(event)">
                                     <div class="bar-zoom">
                                         <button class="zoom-control-btn" type="button" onclick="editor.zoom_in()"><img src="<c:url value="/resources/images/zoom-plus.svg"/>"></button>
                                         <button class="zoom-control-btn" type="button" onclick="editor.zoom_reset()"><img src="<c:url value="/resources/images/zoom-refresh.svg"/>"></button>
@@ -101,322 +101,271 @@
                                     </div>
                                 </div>
                             </div>
-                                <%--기본--%>
-                                <div class="chatbot-control-panel active">
-                                    <div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">설정영역</div>
-                                            <div class="chatbot-control-body">
-                                                <div class="empty">선택된 내용이 없습니다.</div>
+                            <div class="chatbot-control-panel active">
+                                <div class="chatbot-control-container active">
+                                    <button type="button" class="arrow-button"></button>
+                                    <div class="chatbot-control-inner">
+                                        <div class="chatbot-box-label">설정영역</div>
+                                        <div class="chatbot-control-body">
+                                            <div class="empty">선택된 내용이 없습니다.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="fallback-config" class="chatbot-control-panel fallback-block-manage">
+                                <div class="chatbot-control-container active">
+                                    <button type="button" class="arrow-button"></button>
+                                    <div class="chatbot-control-inner">
+                                        <div class="chatbot-box-label">폴백 블록 관리
+                                            <button class="ui mini button" @click.stop="save">저장</button>
+                                        </div>
+                                        <div class="chatbot-control-body">
+                                            <div class="mb15">이름</div>
+                                            <div class="ui form fluid mb15">
+                                                <input type="text" v-model="name">
+                                            </div>
+                                            <div class="mb15">대사 입력</div>
+                                            <div class="ui form fluid mb15">
+                                                <textarea rows="8" v-model="announcement"></textarea>
+                                            </div>
+                                            <div class="mb15">동작</div>
+                                            <div class="ui form fluid mb15">
+                                                <select v-model="action">
+                                                    <option value="GOTO_ROOT">처음으로 가기</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <%--폴백 블록 관리--%>
-                               <div class="chatbot-control-panel fallback-block-manage">
-                                   <div class="chatbot-control-container active">
-                                       <button type="button" class="arrow-button"></button>
-                                       <div class="chatbot-control-inner">
-                                           <div class="chatbot-box-label">폴백 블록 관리<button type="button" class="ui mini button">저장</button></div>
-                                           <div class="chatbot-control-body">
-                                               <div class="mb15">이름</div>
-                                               <div class="ui form fluid mb15">
-                                                   <input type="text">
-                                               </div>
-                                               <div class="mb15">멘트 입력</div>
-                                               <div class="ui form fluid mb15">
-                                                   <textarea rows="8"></textarea>
-                                               </div>
-                                               <div class="mb15">동작</div>
-                                               <div class="ui form fluid mb15">
-                                                   <select>
-                                                       <option>처음으로 가기</option>
-                                                   </select>
-                                               </div>
-                                           </div>
-                                       </div>
-                                   </div>
-                               </div>
-
-                                <%--키워드 관리--%>
-                                <div class="chatbot-control-panel keyword-manage">
-                                    <div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">키워드 관리<button type="button" class="ui mini button">저장</button></div>
-                                            <div class="chatbot-control-body">
-                                                <div class="mb15">키워드 생성</div>
-                                                <div class="ui action fluid input mb15">
-                                                    <input type="text" placeholder="키워드 입력">
-                                                    <button type="button" class="ui button" onclick="keywordConfirmPopup()">추가</button>
-                                                </div>
-                                                <div class="mb15">키워드 목록</div>
-                                                <div class="mb15">
-                                                <span class="ui basic large label">
-                                                  키위
-                                                  <i class="delete icon"></i>
-                                                </span>
-                                                    <span class="ui basic large label">
-                                                  키워드
-                                                  <i class="delete icon"></i>
-                                                </span>
-                                                    <span class="ui basic large label">
-                                                  챗봇기능
-                                                  <i class="delete icon"></i>
-                                                </span>
-                                                    <span class="ui basic large label">
-                                                  가나다라마
-                                                  <i class="delete icon"></i>
-                                                </span>
-                                                </div>
+                            </div>
+                            <div id="keyword-config" class="chatbot-control-panel keyword-manage">
+                                <div class="chatbot-control-container active">
+                                    <button type="button" class="arrow-button"></button>
+                                    <div class="chatbot-control-inner">
+                                        <div class="chatbot-box-label">키워드 관리
+                                            <button class="ui mini button" @click.stop="save">저장</button>
+                                        </div>
+                                        <div class="chatbot-control-body">
+                                            <div class="mb15">키워드 생성</div>
+                                            <div class="ui action fluid input mb15">
+                                                <input type="text" placeholder="키워드 입력" v-model="input">
+                                                <button @click.stop="addKeyword" class="ui button">추가</button>
+                                            </div>
+                                            <div class="mb15">키워드 목록</div>
+                                            <div class="mb15">
+                                                <span v-for="(e,i) in keywords" :key="i" class="ui basic large label">{{ e }}<i @click.stop="removeKeyword(e)" class="delete icon"></i></span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <%--텍스트 디스플레이 관리--%>
-                                <div class="chatbot-control-panel text-display-manage">
-                                    <div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">텍스트 디스플레이 관리<button type="button" class="ui mini button">저장</button></div>
-                                            <div class="chatbot-control-body">
-                                                <div class="mb15">멘트 입력</div>
-                                                <div class="ui form fluid mb15">
-                                                    <textarea rows="8"></textarea>
-                                                </div>
+                            </div>
+                            <div id="text-display-config" class="chatbot-control-panel text-display-manage">
+                                <div class="chatbot-control-container active">
+                                    <button type="button" class="arrow-button"></button>
+                                    <div class="chatbot-control-inner">
+                                        <div class="chatbot-box-label">텍스트 디스플레이 관리
+                                            <button class="ui mini button" @click.stop="save">저장</button>
+                                        </div>
+                                        <div class="chatbot-control-body">
+                                            <div class="mb15">대사 입력</div>
+                                            <div class="ui form fluid mb15">
+                                                <textarea rows="8" v-model="data.text"></textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <%--이미지 디스플레이 관리--%>
-                                <div class="chatbot-control-panel img-display-manage">
-                                    <div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">이미지 디스플레이 관리<button type="button" class="ui mini button">저장</button></div>
-                                            <div class="chatbot-control-body">
-                                                <div class="mb15">이미지 삽입</div>
-                                                <div class="ui action fluid input mb15">
-                                                    <input type="text" readonly="">
-                                                    <input type="file" id="file">
-                                                    <label class="ui icon button" for="file">
-                                                        찾아보기
-                                                    </label>
-                                                </div>
+                            </div>
+                            <div id="image-display-config" class="chatbot-control-panel img-display-manage">
+                                <div class="chatbot-control-container active">
+                                    <button type="button" class="arrow-button"></button>
+                                    <div class="chatbot-control-inner">
+                                        <div class="chatbot-box-label">이미지 디스플레이 관리
+                                            <button class="ui mini button" @click.stop="save">저장</button>
+                                        </div>
+                                        <div class="chatbot-control-body">
+                                            <div class="mb15">이미지 삽입</div>
+                                            <input type="file" style="display: none" @change="uploadFile">
+                                            <div class="ui action fluid input mb15" onclick="this.previousElementSibling.click()">
+                                                <input type="text" readonly v-model="data.fileName">
+                                                <label class="ui icon button">찾아보기</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <%--카드 디스플레이 관리--%>
-                                <div class="chatbot-control-panel card-display-manage">
-                                    <div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">카드 디스플레이 관리<button type="button" class="ui mini button">저장</button></div>
-                                            <div class="chatbot-control-body">
-                                                <div class="mb15">이미지 삽입</div>
-                                                <div class="ui action fluid input mb15">
-                                                    <input type="text" readonly="">
-                                                    <input type="file" id="file">
-                                                    <label class="ui icon button" for="file">
-                                                        찾아보기
-                                                    </label>
-                                                </div>
-                                                <div class="mb15">타이틀 입력</div>
-                                                <div class="ui form fluid mb15">
-                                                    <input type="text">
-                                                </div>
-                                                <div class="mb15">멘트 입력</div>
-                                                <div class="ui form fluid mb15">
-                                                    <textarea rows="8"></textarea>
-                                                </div>
+                            </div>
+                            <div id="card-display-config" class="chatbot-control-panel card-display-manage">
+                                <div class="chatbot-control-container active">
+                                    <button type="button" class="arrow-button"></button>
+                                    <div class="chatbot-control-inner">
+                                        <div class="chatbot-box-label">카드 디스플레이 관리
+                                            <button class="ui mini button" @click.stop="save">저장</button>
+                                        </div>
+                                        <div class="chatbot-control-body">
+                                            <div class="mb15">이미지 삽입</div>
+                                            <input type="file" style="display: none" @change="uploadFile">
+                                            <div class="ui action fluid input mb15" onclick="this.previousElementSibling.click()">
+                                                <input type="text" readonly v-model="data.fileName">
+                                                <label class="ui icon button">찾아보기</label>
+                                            </div>
+                                            <div class="mb15">타이틀 입력</div>
+                                            <div class="ui form fluid mb15">
+                                                <input type="text" v-model="data.title">
+                                            </div>
+                                            <div class="mb15">대사 입력</div>
+                                            <div class="ui form fluid mb15">
+                                                <textarea rows="8" v-model="data.announcement"></textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <%--리스트 디스플레이 관리--%>
-                                <div class="chatbot-control-panel list-display-manage">
-                                    <div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">리스트 디스플레이 관리<button type="button" class="ui mini button">저장</button></div>
-                                            <div class="chatbot-control-body">
-                                                <div class="mb15">타이틀 입력</div>
-                                                <div class="ui form fluid mb15">
-                                                    <input type="text">
+                            </div>
+                            <div id="list-display-config" class="chatbot-control-panel list-display-manage">
+                                <div class="chatbot-control-container active">
+                                    <button type="button" class="arrow-button"></button>
+                                    <div class="chatbot-control-inner">
+                                        <div class="chatbot-box-label">리스트 디스플레이 관리
+                                            <button class="ui mini button" @click.stop="save">저장</button>
+                                        </div>
+                                        <div class="chatbot-control-body">
+                                            <div class="mb15">타이틀 입력</div>
+                                            <div class="ui form fluid mb15">
+                                                <input type="text" v-model="data.title">
+                                            </div>
+                                            <div class="mb15">타이틀 URL 입력</div>
+                                            <div class="ui form fluid mb15">
+                                                <input type="text" v-model="data.titleUrl">
+                                            </div>
+                                            <div class="mb15">리스트 설정</div>
+                                            <div v-for="(e,i) in data.list" :key="i" class="list-control-container mb15">
+                                                <div class="list-control-header">
+                                                    <div>리스트{{ i + 1 }}</div>
+                                                    <button v-if="i === 0" @click.stop="addListItem" class="ui icon small compact black button"><i class="plus icon"></i></button>
+                                                    <button v-if="i !== 0" @click.stop="removeListItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
                                                 </div>
-                                                <div class="mb15">타이틀 URL 입력</div>
-                                                <div class="ui form fluid mb15">
-                                                    <input type="text">
-                                                </div>
-                                                <div class="mb15">리스트 설정</div>
-                                                <div class="list-control-container mb15">
-                                                    <div class="list-control-header">
-                                                        <div>리스트1</div>
-                                                        <button type="button" class="ui icon small compact black button">
-                                                            <i class="plus icon"></i>
-                                                        </button>
-                                                    </div>
-                                                    <table class="list-control-table">
-                                                        <tr>
-                                                            <th>제목</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>멘트</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <textarea rows="3"></textarea>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>URL</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>이미지</th>
-                                                            <td>
-                                                                <div class="ui action fluid input">
-                                                                    <input type="text" readonly="">
-                                                                    <input type="file" id="file">
-                                                                    <label class="ui icon button" for="file">
-                                                                        찾아보기
-                                                                    </label>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div class="list-control-container mb15">
-                                                    <div class="list-control-header">
-                                                        <div>리스트1</div>
-                                                        <button type="button" class="ui icon small compact brand button">
-                                                            <i class="x icon"></i>
-                                                        </button>
-                                                    </div>
-                                                    <table class="list-control-table">
-                                                        <tr>
-                                                            <th>제목</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>멘트</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <textarea rows="3"></textarea>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>URL</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>이미지</th>
-                                                            <td>
-                                                                <div class="ui action fluid input">
-                                                                    <input type="text" readonly="">
-                                                                    <input type="file" id="file">
-                                                                    <label class="ui icon button" for="file">
-                                                                        찾아보기
-                                                                    </label>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
+                                                <table class="list-control-table">
+                                                    <tr>
+                                                        <th>제목</th>
+                                                        <td>
+                                                            <div class="ui form fluid">
+                                                                <input type="text" v-model="e.title">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>대사</th>
+                                                        <td>
+                                                            <div class="ui form fluid">
+                                                                <textarea rows="3" v-model="e.announcement"></textarea>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>URL</th>
+                                                        <td>
+                                                            <div class="ui form fluid">
+                                                                <input type="text" v-model="e.url">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>이미지</th>
+                                                        <td>
+                                                            <input type="file" style="display: none" @change="uploadFile($event, i)">
+                                                            <div class="ui action fluid input" onclick="this.previousElementSibling.click()">
+                                                                <input type="text" readonly v-model="e.fileName">
+                                                                <label class="ui icon button">찾아보기</label>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                                <%--버튼 동작 관리--%>
-                                <div class="chatbot-control-panel button-action-manage">
-                                    <div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner">
-                                            <div class="chatbot-box-label">버튼 동작 관리<button type="button" class="ui mini button">저장</button></div>
-                                            <div class="chatbot-control-body">
-                                                <div class="mb15">버튼 이름</div>
-                                                <div class="ui form fluid mb15">
-                                                    <input type="text">
-                                                </div>
-                                                <div class="mb15">버튼 액션</div>
-                                                <div class="ui form fluid mb15">
-                                                    <select>
-                                                        <option>다음 블록으로 연결</option>
-                                                        <option>다른 블록으로 연결</option>
-                                                        <option>상담원 연결</option>
-                                                        <option>URL 연결</option>
-                                                        <option>외부연동</option>
-                                                    </select>
-                                                </div>
+                            </div>
+                            <div id="button-config" class="chatbot-control-panel button-action-manage">
+                                <div class="chatbot-control-container active">
+                                    <button type="button" class="arrow-button"></button>
+                                    <div class="chatbot-control-inner">
+                                        <div class="chatbot-box-label">버튼 동작 관리
+                                            <button class="ui mini button" @click.stop="save">저장</button>
+                                        </div>
+                                        <div class="chatbot-control-body">
+                                            <div class="mb15">버튼 이름</div>
+                                            <div class="ui form fluid mb15">
+                                                <input type="text" v-model="data.name">
+                                            </div>
+                                            <div class="mb15">버튼 액션</div>
+                                            <div class="ui form fluid mb15">
+                                                <select v-model="data.action">
+                                                    <option value="TO_NEXT_BLOCK">다음 블록으로 연결</option>
+                                                    <option value="TO_OTHER_BLOCK">다른 블록으로 연결</option>
+                                                    <option value="CALL_CONSULTANT">상담원 연결</option>
+                                                    <option value="TO_URL">URL 연결</option>
+                                                    <option value="MAKE_TEL_CALL">전화 연결</option>
+                                                    <option value="CALL_API">외부연동</option>
+                                                </select>
+                                            </div>
+                                            <div v-if="data.action === 'TO_OTHER_BLOCK'">
                                                 <div class="mb15">연결 블록 설정</div>
                                                 <div class="ui form fluid mb15">
-                                                    <select>
-                                                        <option>블록1</option>
+                                                    <select v-model="data.block">
+                                                        <option v-for="(e,i) in blocks" :key="i" :value="e.id">{{ e.name }}</option>
                                                     </select>
                                                 </div>
+                                            </div>
+                                            <div v-if="data.action === 'CALL_CONSULTANT'">
                                                 <div class="mb15">연결 그룹 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <select>
-                                                        <option>상담원 그룹 이름</option>
+                                                        <option v-for="(e,i) in groups" :key="i" :value="e.id">{{ e.name }}</option>
                                                     </select>
                                                 </div>
+                                            </div>
+                                            <div v-if="data.action === 'TO_URL'">
                                                 <div class="mb15">연결 URL 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <div class="ui form fluid mb15">
-                                                        <input type="text">
+                                                        <input type="text" v-model="data.url">
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div v-if="data.action === 'MAKE_TEL_CALL'">
+                                                <div class="mb15">연결 번호 설정</div>
+                                                <div class="ui form fluid mb15">
+                                                    <div class="ui form fluid mb15">
+                                                        <input type="text" v-model="data.tel">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div v-if="data.action === 'CALL_API'">
                                                 <div class="mb15">외부연동 URL 입력</div>
                                                 <div class="ui form fluid mb15">
                                                     <div class="ui form fluid mb15">
-                                                        <input type="text">
+                                                        <input type="text" v-model="data.api.url">
                                                     </div>
                                                 </div>
                                                 <div class="mb15">안내문구 입력</div>
                                                 <div class="ui form fluid mb15">
-                                                    <textarea rows="5"></textarea>
+                                                    <textarea rows="5" v-model="data.api.description"></textarea>
                                                 </div>
                                                 <div class="mb15">항목설정</div>
-                                                <div class="list-control-container mb15">
+                                                <div v-for="(e,i) in data.api.parameters" :key="i" class="list-control-container mb15">
                                                     <div class="list-control-header">
-                                                        <div>항목1</div>
-                                                        <button type="button" class="ui icon small compact black button">
-                                                            <i class="plus icon"></i>
-                                                        </button>
+                                                        <div>항목{{ i + 1 }}</div>
+                                                        <button v-if="i === 0" @click.stop="addApiParameterItem" class="ui icon small compact black button"><i class="plus icon"></i></button>
+                                                        <button v-if="i !== 0" @click.stop="removeApiParameterItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
                                                     </div>
                                                     <table class="list-control-table">
                                                         <tr>
                                                             <th>타입</th>
                                                             <td>
                                                                 <div class="ui form fluid">
-                                                                    <select>
-                                                                        <option>텍스트</option>
+                                                                    <select v-model="e.type">
+                                                                        <option value="TEXT">텍스트</option>
+                                                                        <option value="NUMERICAL">숫자</option>
+                                                                        <option value="DATE">날짜</option>
+                                                                        <option value="TIME">시간</option>
                                                                     </select>
                                                                 </div>
                                                             </td>
@@ -425,7 +374,7 @@
                                                             <th>항목명</th>
                                                             <td>
                                                                 <div class="ui form fluid">
-                                                                    <input type="text">
+                                                                    <input type="text" v-model="e.name">
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -433,52 +382,16 @@
                                                             <th>파라미터</th>
                                                             <td>
                                                                 <div class="ui form fluid">
-                                                                    <input type="text">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                                <div class="list-control-container mb15">
-                                                    <div class="list-control-header">
-                                                        <div>항목1</div>
-                                                        <button type="button" class="ui icon small compact brand button">
-                                                            <i class="x icon"></i>
-                                                        </button>
-                                                    </div>
-                                                    <table class="list-control-table">
-                                                        <tr>
-                                                            <th>타입</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <select>
-                                                                        <option>텍스트</option>
-                                                                    </select>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>항목명</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>파라미터</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text">
+                                                                    <input type="text" v-model="e.value">
                                                                 </div>
                                                             </td>
                                                         </tr>
                                                     </table>
                                                 </div>
                                                 <div class="mb15 dp-flex align-items-center justify-content-space-between">
-                                                    <div>답변 멘트 사용</div>
+                                                    <div>답변 대사 사용</div>
                                                     <div class="ui fitted toggle checkbox">
-                                                        <input type="checkbox">
+                                                        <input type="checkbox" @change="data.api.usingResponse = $event.target.checked">
                                                         <label></label>
                                                     </div>
                                                 </div>
@@ -491,15 +404,7 @@
                                                             <th>정상</th>
                                                             <td>
                                                                 <div class="ui form fluid mb15">
-                                                                    <textarea rows="4">[[$result1]] 고객님. 안녕하세요? [[$result2]] 에 [[$result3]]을(를) [[$result4]] 개 구매 하셨습니다.</textarea>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>항목없음</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text" value="조회되는 항목이 없습니다.">
+                                                                    <textarea rows="4" v-model="data.api.outputFormat"></textarea>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -507,7 +412,7 @@
                                                             <th>조회불가</th>
                                                             <td>
                                                                 <div class="ui form fluid">
-                                                                    <input type="text" value="조회가 불가능합니다. 잠시 후 다시 이용해주세요.">
+                                                                    <input type="text" v-model="data.api.errorOutput">
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -517,133 +422,96 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
 
-                                <%--채팅미리보기--%>
-                                <div class="chatbot-control-panel chat-preview-manage">
-                                    <div class="chatbot-control-container active">
-                                        <button type="button" class="arrow-button"></button>
-                                        <div class="chatbot-control-inner chatbot-ui">
-                                            <div class="chatbot-box-label">미리보기
-                                                <button type="button" class="ui mini button">새로고침</button>
-                                            </div>
-                                            <div class="chatbot-control-body">
-                                                <div class="chat-preview">
-                                                    <div class="header">
-                                                        <img src="<c:url value="../resources/images/chatbot-icon.svg"/>" class="chatbot-icon">
-                                                        <span class="customer-title">Chat Bot</span>
-                                                    </div>
-                                                    <div class="content editor">
-                                                        <div class="sample-bubble">
-                                                            <p>
-                                                                [ 이아이씨엔 ] 고객님 안녕하세요.
-                                                                [ 2021-07-29 ] 에 총 [IP460S] 을(를)
-                                                                [ 30 ] 개 구매하셨습니다.
-                                                            </p>
+                            <div id="block-preview" class="chatbot-control-panel chat-preview-manage">
+                                <div class="chatbot-control-container active">
+                                    <button type="button" class="arrow-button"></button>
+                                    <div class="chatbot-control-inner chatbot-ui">
+                                        <div class="chatbot-box-label">미리보기<%--<button type="button" class="ui mini button">새로고침</button>--%></div>
+                                        <div class="chatbot-control-body">
+                                            <div class="chat-preview">
+                                                <div class="header">
+                                                    <img src="<c:url value="/resources/images/chatbot-icon.svg"/>" class="chatbot-icon">
+                                                    <span class="customer-title">Chat Bot</span>
+                                                </div>
+                                                <div class="content editor">
+                                                    <div v-for="(e,i) in displays" :class="e.type === 'TEXT' ? 'sample-bubble' : 'card'">
+                                                        <p v-if="e.type === 'TEXT'">{{ e.data.text }}</p>
+                                                        <div v-if="e.type === 'IMAGE'" class="card-img">
+                                                            <img :src="e.data.fileUrl" class="border-radius-1em">
                                                         </div>
-                                                        <div class="sample-bubble">
-                                                            <button type="button" class="chatbot-button">이름없는 버튼</button>
-                                                            <button type="button" class="chatbot-button">이름없는 버튼</button>
+                                                        <div v-if="e.type === 'CARD'" class="card-img">
+                                                            <img :src="e.data.fileUrl" class="border-radius-top-1em">
                                                         </div>
-                                                        <div class="card">
-                                                            <div class="card-list">
-                                                                <div class="card-list-title">카드 리스트</div>
-                                                                <ul class="card-list-ul">
-                                                                    <li class="item">
+                                                        <div v-if="e.type === 'CARD'" class="card-content">
+                                                            <div class="card-title">{{ e.data.title }}</div>
+                                                            <div class="card-text">{{ e.data.announcement }}</div>
+                                                        </div>
+                                                        <div v-if="e.type === 'LIST'" class="card-list">
+                                                            <div class="card-list-title">
+                                                                <a v-if="titleUrl" :href="e.data.titleUrl" target="_blank">{{ e.data.title }}</a>
+                                                                <text v-else>{{ e.data.title }}</text>
+                                                            </div>
+                                                            <ul class="card-list-ul">
+                                                                <li v-for="(e2,j) in e.data.list" :key="j" class="item">
+                                                                    <a :href="e2.url" target="_blank">
                                                                         <div class="item-thumb">
                                                                             <div class="item-thumb-inner">
-                                                                                <img src="https://img.insight.co.kr/static/2016/03/04/700/292z8mhg980269202q5s.jpg">
+                                                                                <img :src="e2.fileUrl">
                                                                             </div>
                                                                         </div>
                                                                         <div class="item-content">
-                                                                            <div class="subject">리스트 제목이 나오는 공간</div>
-                                                                            <div class="ment">리스트 멘트가 나오는 공간</div>
+                                                                            <div class="subject">{{ e2.title }}</div>
+                                                                            <div class="ment">{{ e2.announcement }}</div>
                                                                         </div>
-                                                                    </li>
-                                                                    <li class="item">
-                                                                        <div class="item-thumb">
-                                                                            <div class="item-thumb-inner">
-                                                                                <img src="https://img.insight.co.kr/static/2016/03/04/700/292z8mhg980269202q5s.jpg">
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="item-content">
-                                                                            <div class="subject">리스트 제목이 나오는 공간</div>
-                                                                            <div class="ment">리스트 멘트가 나오는 공간리스트 멘트가 나오는 공간리스트 멘트가 나오는 공간리스트 멘트가 나오는 공간</div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card">
-                                                            <div class="card-list">
-                                                                <ul class="card-list-ul">
-                                                                    <li class="item form">
-                                                                        <div class="label">이름</div>
-                                                                        <div class="ui fluid input">
-                                                                            <input type="text">
-                                                                        </div>
-                                                                    </li>
-                                                                    <li class="item form">
-                                                                        <div class="label">사업자 번호</div>
-                                                                        <div class="ui fluid input">
-                                                                            <input type="text">
-                                                                        </div>
-                                                                    </li>
-                                                                    <li class="item form">
-                                                                        <div class="label">가입일자</div>
-                                                                        <div class="ui fluid input">
-                                                                            <input type="text" class="-datepicker hasDatepicker calendar-ipt">
-                                                                        </div>
-                                                                    </li>
-                                                                    <li class="item form">
-                                                                        <div class="label">가입일시</div>
-                                                                        <div class="ui multi form">
-                                                                            <select class="slt">
-                                                                                <option>오전</option>
-                                                                                <option>오후</option>
-                                                                            </select>
-                                                                            <select class="slt">
-                                                                                <option>12</option>
-                                                                            </select>
-                                                                            <span class="unit">시</span>
-                                                                            <select class="slt">
-                                                                                <option>55</option>
-                                                                            </select>
-                                                                            <span class="unit">분</span>
-                                                                        </div>
-                                                                    </li>
-                                                                    <li class="item">
-                                                                        <button type="button" class="chatbot-button">제출</button>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card">
-                                                            <div class="card-img">
-                                                                <img src="<c:url value="../resources/images/eicn-sample.png"/>" class="border-radius-1em">
-                                                            </div>
-                                                        </div>
-                                                        <div class="card">
-                                                            <div class="card-img">
-                                                                <img src="<c:url value="../resources/images/eicn-sample.png"/>" class="border-radius-top-1em">
-                                                            </div>
-                                                            <div class="card-content">
-                                                                <div class="card-title">
-                                                                    카드 디스플레이 타이틀
-                                                                </div>
-                                                                <div class="card-text">
-                                                                    IPCC 화면에 로그인 하려면 지정된 계정 정보를 입력해야 합니다.
-                                                                    IPCC 화면에 로그인 하려면 지정된 계정 정보를 입력해야 합니다.
-                                                                    IPCC 화면에 로그인 하려면 지정된 계정 정보를 입력해야 합니다.
-                                                                </div>
-                                                            </div>
-                                                            <span class="time-text">오전 09:23</span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
                                                         </div>
                                                     </div>
+
+                                                    <div v-for="(e,i) in buttons" :key="i" :class="e.action !== 'CALL_API' ? 'sample-bubble' : 'card'">
+                                                        <div v-if="e.action === 'CALL_API'" class="card-list">
+                                                            <ul class="card-list-ul">
+                                                                <li v-for="(e2,j) in e.api.parameters" :key="j" class="item form">
+                                                                    <div class="label">{{ e2.name }}</div>
+                                                                    <div v-if="" class="ui fluid input">
+                                                                        <input type="text">
+                                                                    </div>
+                                                                    <div v-else class="ui multi form">
+                                                                        <select class="slt">
+                                                                            <option>오전</option>
+                                                                            <option>오후</option>
+                                                                        </select>
+                                                                        <select class="slt">
+                                                                            <option>12</option>
+                                                                        </select>
+                                                                        <span class="unit">시</span>
+                                                                        <select class="slt">
+                                                                            <option>55</option>
+                                                                        </select>
+                                                                        <span class="unit">분</span>
+                                                                    </div>
+                                                                </li>
+                                                                <li class="item">
+                                                                    <button type="button" class="chatbot-button">제출</button>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <button v-else type="button" class="chatbot-button">{{ e.name }}</button>
+                                                    </div>
+
+                                                    <div class="card">
+                                                        <span class="time-text">오전 09:23</span> <%--TODO--%>
+                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -651,407 +519,540 @@
         </div>
     </div>
 
-
+    <div id="block-template" style="display: none">
+        <div class="title-box">
+            <div class="mb10">
+                <input type="text" placeholder="블록명입력" v-model="name">
+            </div>
+            <div class="btn-wrap">
+                <button @click.stop="configKeywords" class="ui tiny compact button">키워드 관리</button>
+                <button @click.stop="showPreview" class="ui tiny compact button">미리보기</button>
+                <button @click.stop="autoReply = !autoReply" class="ui tiny compact button preview-button" :class="autoReply && ' active'">{{ autoReply ? 'ON' : 'OFF' }}</button>
+            </div>
+        </div>
+        <div class="box">
+            <div class="inner">
+                <ul v-if="displays && displays.length" class="button-item-ul">
+                    <li v-for="(e,i) in displays" :key="i" class="button-item " :class="getDisplayClass(e.type)">
+                        <div class="button-item-order-wrap">
+                            <button @click.stop="moveUpDisplayItem(i)" class="up-button"></button>
+                            <button @click.stop="moveDownDisplayItem(i)" class="down-button"></button>
+                        </div>
+                        <div class="button-item-inner">
+                            <div class="start">{{ getDisplayText(e.type) }}</div>
+                            <div class="end">
+                                <button v-if="i === 0 && !showingEmptyDisplayItem" @click.stop="showingEmptyDisplayItem = true" class="ui icon small compact button"><i class="plus icon"></i></button>
+                                <button @click.stop="configDisplayItem(i)" class="ui icon small compact button"><i class="cog icon"></i></button>
+                                <button @click.stop="removeDisplayItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div v-if="showingEmptyDisplayItem" @drop="dropDisplayItem" class="empty-item">디스플레이를 넣어주세요</div>
+            </div>
+            <div class="inner">
+                <ul v-if="buttons && buttons.length" class="button-item-ul">
+                    <li v-for="(e,i) in buttons" :key="i" class="button-item button">
+                        <div class="button-item-order-wrap">
+                            <button @click.stop="moveUpButtonItem(i)" class="up-button"></button>
+                            <button @click.stop="moveDownButtonItem(i)" class="down-button"></button>
+                        </div>
+                        <div class="button-item-inner">
+                            <div class="start">
+                                <text>{{ e.name }}</text>
+                            </div>
+                            <div class="end">
+                                <button v-if="i === 0 && !showingEmptyButtonItem" @click.stop="createButton" class="ui icon small compact button"><i class="plus icon"></i></button>
+                                <button @click.stop="configButtonItem(i)" class="ui icon small compact button"><i class="cog icon"></i></button>
+                                <button @click.stop="removeButtonItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <button v-if="showingEmptyButtonItem" @click.stop="createButton" class="empty-item">클릭시 버튼이 생성됩니다.</button>
+            </div>
+        </div>
+    </div>
 
     <tags:scripts>
         <script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
         <script>
-            const id = document.getElementById("drawflow");
-            const editor = new Drawflow(id);
-            editor.reroute = true;
-            const dataToImport = {
-                "drawflow": {
-                    "Home": {
-                        "data": {
-                            1: {
-                                id: 1,
-                                name: "example1",
-                                data: {},
-                                class: "example1",
-                                html: `
-<div>
-    <div class="title-box">
-        <div class="mb10">
-            <input type="text" placeholder="블록명입력">
-        </div>
-        <div class="btn-wrap">
-            <button type="button" class="ui tiny compact button" onclick="keywordManage()">키워드 관리</button>
-            <button type="button" class="ui tiny compact button" onclick="chatPreviewManage()">미리보기</button>
-            <button type="button" class="ui tiny compact button preview-button">OFF</button>
-        </div>
-    </div>
-    <div class="box">
-        <div class="inner">
-            <div class="empty-item">디스플레이를 넣어주세요</div>
-        </div>
-        <div class="inner">
-            <button type="button" class="empty-item">클릭시 버튼이 생성됩니다.</button>
-        </div>
-    </div>
-</div>`,
-                                typenode: false,
-                                inputs: {},
-                                outputs: {
-                                    "output_1": {
-                                        "connections": [{
-                                            "node": "2",
-                                            "output": "input_1"
-                                        }]
-                                    }
-                                },
-                                pos_x: 350,
-                                pos_y: 50
-                            },
-                            2: {
-                                id: 2,
-                                name: "example2",
-                                data: {},
-                                class: "example2",
-                                html: `
-<div>
-    <div class="title-box">
-        <div class="mb10">
-            <input type="text" placeholder="블록명입력">
-        </div>
-        <div class="btn-wrap">
-            <button type="button" class="ui tiny compact button" onclick="keywordManage()">키워드 관리</button>
-            <button type="button" class="ui tiny compact button" onclick="chatPreviewManage()">미리보기</button>
-            <button type="button" class="ui tiny compact button preview-button">OFF</button>
-        </div>
-    </div>
-    <div class="box">
-        <div class="inner">
-            <ul class="button-item-ul">
-                <li class="button-item text">
-                    <div class="button-item-order-wrap">
-                        <button type="button" class="up-button"></button>
-                        <button type="button" class="down-button"></button>
-                    </div>
-                    <div class="button-item-inner">
-                        <div class="start">
-                            텍스트
-                        </div>
-                        <div class="end">
-                            <button type="button" class="ui icon small compact button"><i class="plus icon"></i></button>
-                            <button type="button" class="ui icon small compact button" onclick="textDisplayManage();"><i class="cog icon"></i></button>
-                            <button type="button" class="ui icon small compact brand button"><i class="x icon"></i></button>
-                        </div>
-                    </div>
-                </li>
-                <li class="button-item image">
-                    <div class="button-item-order-wrap">
-                        <button type="button" class="up-button"></button>
-                        <button type="button" class="down-button"></button>
-                    </div>
-                    <div class="button-item-inner">
-                        <div class="start">
-                            이미지
-                        </div>
-                        <div class="end">
-                            <button type="button" class="ui icon small compact button"><i class="plus icon"></i></button>
-                            <button type="button" class="ui icon small compact button" onclick="imgDisplayManage();"><i class="cog icon"></i></button>
-                            <button type="button" class="ui icon small compact brand button"><i class="x icon"></i></button>
-                        </div>
-                    </div>
-                </li>
-                <li class="button-item card">
-                    <div class="button-item-order-wrap">
-                        <button type="button" class="up-button"></button>
-                        <button type="button" class="down-button"></button>
-                    </div>
-                    <div class="button-item-inner">
-                        <div class="start">
-                            카드
-                        </div>
-                        <div class="end">
-                            <button type="button" class="ui icon small compact button"><i class="plus icon"></i></button>
-                            <button type="button" class="ui icon small compact button" onclick="cardDisplayManage();"><i class="cog icon"></i></button>
-                            <button type="button" class="ui icon small compact brand button"><i class="x icon"></i></button>
-                        </div>
-                    </div>
-                </li>
-                <li class="button-item list">
-                    <div class="button-item-order-wrap">
-                        <button type="button" class="up-button"></button>
-                        <button type="button" class="down-button"></button>
-                    </div>
-                    <div class="button-item-inner">
-                        <div class="start">
-                          리스트
-                        </div>
-                        <div class="end">
-                            <button type="button" class="ui icon small compact button"><i class="plus icon"></i></button>
-                            <button type="button" class="ui icon small compact button" onclick="listDisplayManage();"><i class="cog icon"></i></button>
-                            <button type="button" class="ui icon small compact brand button"><i class="x icon"></i></button>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="inner">
-            <ul class="button-item-ul">
-                <li class="button-item button">
-                    <div class="button-item-order-wrap">
-                        <button type="button" class="up-button"></button>
-                        <button type="button" class="down-button"></button>
-                    </div>
-                    <div class="button-item-inner">
-                        <div class="start">
-                            <text>이름없는버튼이름없는버튼</text>
-                        </div>
-                        <div class="end">
-                            <button type="button" class="ui icon small compact button"><i class="plus icon"></i></button>
-                            <button type="button" class="ui icon small compact button" onclick="buttonActionManage();"><i class="cog icon"></i></button>
-                            <button type="button" class="ui icon small compact brand button"><i class="x icon"></i></button>
-                        </div>
-                    </div>
-                </li>
-                <li class="button-item button">
-                    <div class="button-item-order-wrap">
-                        <button type="button" class="up-button"></button>
-                        <button type="button" class="down-button"></button>
-                    </div>
-                    <div class="button-item-inner">
-                        <div class="start">
-                            <text>이름없는버튼이름없는버튼</text>
-                        </div>
-                        <div class="end">
-                            <button type="button" class="ui icon small compact button" onclick="buttonActionManage();"><i class="cog icon"></i></button>
-                            <button type="button" class="ui icon small compact brand button"><i class="x icon"></i></button>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>`,
-                                typenode: false,
-                                inputs: {
-                                    "input_1": {
-                                        "connections": [{
-                                            "node": "1",
-                                            "input": "output_1"
-                                        }]
-                                    }
-                                },
-                                outputs: {
-                                    "output_1": {
-                                        "connections": [
-                                            {
-                                                "node": "4",
-                                                "output": "input_1"
-                                            }
-                                        ]
-                                    },
-                                    "output_2": {
-                                        "connections": [
-                                            {
-                                                "node": "5",
-                                                "output": "input_1"
-                                            }
-                                        ]
-                                    },
-                                },
-                                pos_x: 650,
-                                pos_y: 300
-                            },
-                            3: {
-                                id: 3,
-                                name: "example3",
-                                data: {},
-                                class: "example3",
-                                html: `
-<div>
-    <div class="title-box">봇 기본설정</div>
-    <div class="box">
-        <div class="inner">
-            <div class="mb10">이름</div>
-            <div class="input-wrap mb15">
-                <input type="text">
-            </div>
-            <div class="mb10">폴백 멘트 입력</div>
-            <div class="ui form fluid mb10">
-                <textarea rows="3"></textarea>
-            </div>
-            <div class="mb10">동작</div>
-            <div class="ui form fluid mb10">
-                <select>
-                    <option>처음으로가기</option>
-                    <option>상담그룹연결</option>
-                </select>
-            </div>
-            <div class="action-wrap">
-                <button type="button" class="ui tiny compact button">취소</button>
-                <button type="button" class="ui tiny compact brand button">확인</button>
-            </div>
-        </div>
-    </div>
-</div>`,
-                                typenode: false,
-                                inputs: {},
-                                outputs: {},
-                                pos_x: 50,
-                                pos_y: 50
-                            },
-                            4: {
-                                id: 4,
-                                name: "example4",
-                                data: {},
-                                class: "example4",
-                                html: `
-<div>
-    <div class="title-box">
-        <div class="mb10">
-            <input type="text" placeholder="블록명입력">
-        </div>
-        <div class="btn-wrap">
-            <button type="button" class="ui tiny compact button" onclick="keywordManage()">키워드 관리</button>
-            <button type="button" class="ui tiny compact button" onclick="chatPreviewManage()">미리보기</button>
-            <button type="button" class="ui tiny compact button preview-button active">ON</button>
-        </div>
-    </div>
-    <div class="box">
-        <div class="inner">
-            <ul class="button-item-ul">
-                <li class="button-item text">
-                    <div class="button-item-order-wrap">
-                        <button type="button" class="up-button"></button>
-                        <button type="button" class="down-button"></button>
-                    </div>
-                    <div class="button-item-inner">
-                        <div class="start">
-                            텍스트
-                        </div>
-                        <div class="end">
-                            <button type="button" class="ui icon small compact button"><i class="plus icon"></i></button>
-                            <button type="button" class="ui icon small compact button" onclick="textDisplayManage()"><i class="cog icon"></i></button>
-                            <button type="button" class="ui icon small compact brand button"><i class="x icon"></i></button>
-                        </div>
-                    </div>
-                </li>
-                <li class="button-item image">
-                    <div class="button-item-order-wrap">
-                        <button type="button" class="up-button"></button>
-                        <button type="button" class="down-button"></button>
-                    </div>
-                    <div class="button-item-inner">
-                        <div class="start">
-                            이미지
-                        </div>
-                        <div class="end">
-                            <button type="button" class="ui icon small compact button"><i class="plus icon"></i></button>
-                            <button type="button" class="ui icon small compact button" onclick="imgDisplayManage()"><i class="cog icon"></i></button>
-                            <button type="button" class="ui icon small compact brand button"><i class="x icon"></i></button>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="inner">
-            <button type="button" class="empty-item">클릭시 버튼이 생성됩니다.</button>
-        </div>
-    </div>
-</div>`,
-                                typenode: false,
-                                inputs: {
-                                    "input_1": {
-                                        "connections": [{
-                                            "node": "2",
-                                            "input": "output_1"
-                                        }]
-                                    }
-                                },
-                                outputs: {},
-                                pos_x: 900,
-                                pos_y: 50
-                            },
-                            5: {
-                                id: 5,
-                                name: "example5",
-                                data: {},
-                                class: "example5",
-                                html: `
-<div>
-    <div class="title-box">
-        <div class="mb10">
-            <input type="text" placeholder="블록명입력">
-        </div>
-        <div class="btn-wrap">
-            <button type="button" class="ui tiny compact button" onclick="keywordManage()">키워드 관리</button>
-            <button type="button" class="ui tiny compact button" onclick="chatPreviewManage()">미리보기</button>
-            <button type="button" class="ui tiny compact button preview-button active">ON</button>
-        </div>
-    </div>
-    <div class="box">
-        <div class="inner">
-            <ul class="button-item-ul">
-                <li class="button-item text">
-                    <div class="button-item-order-wrap">
-                        <button type="button" class="up-button"></button>
-                        <button type="button" class="down-button"></button>
-                    </div>
-                    <div class="button-item-inner">
-                        <div class="start">
-                           텍스트
-                        </div>
-                        <div class="end">
-                            <button type="button" class="ui icon small compact button"><i class="plus icon"></i></button>
-                            <button type="button" class="ui icon small compact button" onclick="textDisplayManage()"><i class="cog icon"></i></button>
-                            <button type="button" class="ui icon small compact brand button"><i class="x icon"></i></button>
-                        </div>
-                    </div>
-                </li>
-                <li class="button-item image">
-                    <div class="button-item-order-wrap">
-                        <button type="button" class="up-button"></button>
-                        <button type="button" class="down-button"></button>
-                    </div>
-                    <div class="button-item-inner">
-                        <div class="start">
-                           이미지
-                        </div>
-                        <div class="end">
-                            <button type="button" class="ui icon small compact button"><i class="plus icon"></i></button>
-                            <button type="button" class="ui icon small compact button" onclick="imgDisplayManage()"><i class="cog icon"></i></button>
-                            <button type="button" class="ui icon small compact brand button"><i class="x icon"></i></button>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="inner">
-            <button type="button" class="empty-item">클릭시 버튼이 생성됩니다.</button>
-        </div>
-    </div>
-</div>`,
-                                typenode: false,
-                                inputs: {
-                                    "input_1": {
-                                        "connections": [{
-                                            "node": "2",
-                                            "input": "output_2"
-                                        }]
-                                    },
-                                },
-                                outputs: {},
-                                pos_x: 900,
-                                pos_y: 350
+            const blockList = (() => {
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            blocks: []
+                        }
+                    },
+                    mounted() {
+                        setInterval(() => {
+                            blockAppList.filter(block => !o.blocks.includes(block)).forEach(block => o.blocks.push(block))
+                        }, 100)
+                    }
+                }).mount('#block-list')
+                return o || o
+            })()
+            const fallbackConfig = (() => {
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            name: '',
+                            announcement: '',
+                            action: 'GOTO_ROOT',
+                        }
+                    },
+                    methods: {
+                        save() {
+
+                        }
+                    }
+                }).mount('#fallback-config')
+                return o || o
+            })()
+            const keywordConfig = (() => {
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            nodeId: null,
+                            input: '',
+                            keywords: []
+                        }
+                    },
+                    methods: {
+                        load(nodeId, keywords) {
+                            o.nodeId = nodeId
+                            o.keywords = []
+                            keywords.forEach(e => o.keywords.push(e))
+                        },
+                        save() {
+                            if (!nodeBlockMap[o.nodeId]) return
+                            nodeBlockMap[o.nodeId].keywords = []
+                            o.keywords.forEach(e => nodeBlockMap[o.nodeId].keywords.push(e))
+                        },
+                        addKeyword() {
+                            if (!o.input.trim()) return
+
+                            if (o.keywords.includes(o.input.trim()))
+                                return alert('해당 키워드는 이미 목록에 존재합니다.')
+
+                            const includedBlocks = blockAppList.filter(block => block.keywords.includes(o.input.trim()))
+                            if (includedBlocks.length)
+                                return alert('해당 키워드는 [' + includedBlocks[0].name + '] 에서 사용되고 있습니다. 다른 키워드를 입력해주세요.')
+
+                            o.keywords.push(o.input.trim())
+                            o.input = ''
+                        },
+                        removeKeyword(keyword) {
+                            if (!keyword || !keyword.trim()) return
+                            o.keywords = o.keywords.filter(e => e !== keyword.trim())
+                        }
+                    },
+                }).mount('#keyword-config')
+                return o || o
+            })()
+            const textDisplayConfig = (() => {
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            nodeId: null,
+                            displayIndex: null,
+                            data: {
+                                text: null
                             },
                         }
                     },
-                }
-            }
+                    methods: {
+                        load(nodeId, displayIndex, data) {
+                            o.nodeId = nodeId
+                            o.displayIndex = displayIndex
+                            o.data = {text: data?.text}
+                        },
+                        save() {
+                            if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'TEXT') return
+                            nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {text: o.data.text}
+                        },
+                    },
+                }).mount('#text-display-config')
+                return o || o
+            })()
+            const imageDisplayConfig = (() => {
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            nodeId: null,
+                            displayIndex: null,
+                            data: {
+                                fileName: null,
+                                fileUrl: null,
+                            },
+                        }
+                    },
+                    methods: {
+                        load(nodeId, displayIndex, data) {
+                            o.nodeId = nodeId
+                            o.displayIndex = displayIndex
+                            o.data = {fileName: data?.fileName, fileUrl: data?.fileUrl}
+                        },
+                        save() {
+                            if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'IMAGE') return
+                            nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {fileName: o.data.fileName, fileUrl: o.data.fileUrl,}
+                        },
+                        uploadFile(event) {
+                            const file = event.target.files[0]
+                            event.target.value = null
+                            if (!file || !file.name) return
+                            uploadFile(file).done(function (response) {
+                                o.data.fileName = response.data.originalName
+                                o.data.fileUrl = `/files/download?file=` + encodeURIComponent(response.data.fileName)
+                            })
+                        },
+                    },
+                }).mount('#image-display-config')
+                return o || o
+            })()
+            const cardDisplayConfig = (() => {
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            nodeId: null,
+                            displayIndex: null,
+                            data: {
+                                fileName: null,
+                                fileUrl: null,
+                                title: null,
+                                announcement: null,
+                            },
+                        }
+                    },
+                    methods: {
+                        load(nodeId, displayIndex, data) {
+                            o.nodeId = nodeId
+                            o.displayIndex = displayIndex
+                            o.data = {fileName: data?.fileName, fileUrl: data?.fileUrl, title: data?.title, announcement: data?.announcement,}
+                        },
+                        save() {
+                            if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'CARD') return
+                            nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {fileName: o.data.fileName, fileUrl: o.data.fileUrl, title: o.data.title, announcement: o.data.announcement,}
+                        },
+                        uploadFile(event) {
+                            const file = event.target.files[0]
+                            event.target.value = null
+                            if (!file || !file.name) return
+                            uploadFile(file).done(function (response) {
+                                o.data.fileName = response.data.originalName
+                                o.data.fileUrl = `/files/download?file=` + encodeURIComponent(response.data.fileName)
+                            })
+                        },
+                    },
+                }).mount('#card-display-config')
+                return o || o
+            })()
+            const listDisplayConfig = (() => {
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            nodeId: null,
+                            displayIndex: null,
+                            data: {
+                                title: null,
+                                titleUrl: null,
+                                list: [{title: null, announcement: null, url: null, fileName: null, fileUrl: null}],
+                            },
+                        }
+                    },
+                    methods: {
+                        load(nodeId, displayIndex, data) {
+                            o.nodeId = nodeId
+                            o.displayIndex = displayIndex
+                            o.data = {title: data?.title, titleUrl: data?.titleUrl, list: []}
+                            data && data.list && data.list.forEach(e => o.data.list.push({title: e?.title, announcement: e?.announcement, url: e?.url, fileName: e?.fileName, fileUrl: e?.fileUrl}))
+                            if (!o.data.list || !o.data.list.length) o.data.list = [{title: null, announcement: null, url: null, fileName: null, fileUrl: null}]
+                        },
+                        save() {
+                            if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'LIST') return
+                            nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {title: o.data?.title, titleUrl: o.data?.titleUrl, list: []}
+                            o.data.list.forEach(e => nodeBlockMap[o.nodeId].displays[o.displayIndex].data.list.push({
+                                title: e?.title,
+                                announcement: e?.announcement,
+                                url: e?.url,
+                                fileName: e?.fileName,
+                                fileUrl: e?.fileUrl
+                            }))
+                        },
+                        addListItem() {
+                            o.data.list.push({title: null, announcement: null, url: null, fileName: null, fileUrl: null})
+                        },
+                        removeListItem(index) {
+                            if (index === 0) return
+                            o.data.list.splice(index, 1)
+                        },
+                        uploadFile(event, index) {
+                            const file = event.target.files[0]
+                            event.target.value = null
+                            if (!file || !file.name) return
+                            uploadFile(file).done(function (response) {
+                                o.data.list[index].fileName = response.data.originalName
+                                o.data.list[index].fileUrl = `/files/download?file=` + encodeURIComponent(response.data.fileName)
+                            })
+                        },
+                    },
+                }).mount('#list-display-config')
+                return o || o
+            })()
+            const buttonConfig = (() => {
+                const API_PARAMETER_TYPES = Object.freeze({TEXT: 'TEXT', NUMERICAL: 'NUMERICAL', DATE: 'DATE', TIME: 'TIME'})
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            nodeId: null,
+                            buttonIndex: null,
+                            data: null,
+                            blocks: [],
+                            groups: [],
+                        }
+                    },
+                    methods: {
+                        load(nodeId, buttonIndex, data) {
+                            o.nodeId = nodeId
+                            o.buttonIndex = buttonIndex
+                            o.data = {}
+                            if (data) for (let property in data) o.data[property] = data[property]
+                            o.data.api = {}
+                            if (data.api) for (let property in data.api) o.data.api[property] = data.api[property]
+                            o.data.api.parameters = []
+                            data.api && data.api.parameters && data.api.parameters.forEach(e => o.data.api.parameters.push({type: e.type, name: e.name, value: e.value}))
+                            o.checkDataStructure()
+                        },
+                        save() {
+                            if (!nodeBlockMap[o.nodeId] || !nodeBlockMap[o.nodeId].buttons[o.buttonIndex]) return
+                            const prevAction = nodeBlockMap[o.nodeId].buttons[o.buttonIndex].action
+                            const currentAction = o.data.action
+
+                            const data = {}
+                            for (let property in o.data) data[property] = o.data[property]
+                            for (let property in o.data.api) data.api[property] = o.data.api[property]
+                            o.data.api.parameters.forEach(e => data.api.parameters.push({type: e.type, name: e.name, value: e.value}))
+                            nodeBlockMap[o.nodeId].buttons[o.buttonIndex] = data
+
+                            // TODO:
+
+                            if (prevAction !== currentAction) {
+                                if (currentAction === 'TO_NEXT_BLOCK') {
+                                    const node = editor.getNodeFromId(o.nodeId)
+                                    const childNodeId = createNode(node.pos_x + 300, node.pos_y)
+                                    setTimeout(() => {
+                                        editor.addConnection(o.nodeId, childNodeId, Object.keys(node.outputs)[o.buttonIndex], Object.keys(editor.getNodeFromId(childNodeId).inputs)[0])
+                                    }, 100)
+                                } else if (prevAction === 'TO_NEXT_BLOCK') {
+                                    // TODO: 뒤에 있던 블럭들 싹 지워야 한다. (트리 구조를 타고 쭉 전부)
+                                }
+                            }
+                        },
+                        loadBlocks(blocks) {
+                            o.blocks = blocks
+                        },
+                        loadGroups(groups) {
+                            o.groups = groups
+                        },
+                        checkDataStructure() {
+                            if (!this.data) this.data = {}
+                            if (this.data.name === undefined) this.data.name = null
+                            if (this.data.action === undefined) this.data.action = null
+
+                            if (this.data.block === undefined) this.data.block = null
+                            if (this.data.group === undefined) this.data.group = null
+                            if (this.data.url === undefined) this.data.url = null
+                            if (this.data.tel === undefined) this.data.tel = null
+
+                            if (!this.data.api) this.data.api = {}
+                            if (this.data.api.url === undefined) this.data.api.url = null
+                            if (this.data.api.description === undefined) this.data.api.description = null
+                            if (!this.data.api.parameters || !this.data.api.parameters.length) this.data.api.parameters = [{type: API_PARAMETER_TYPES.TEXT, name: null, value: null}]
+                            if (this.data.api.usingResponse === undefined) this.data.api.usingResponse = false
+                            if (this.data.api.outputFormat === undefined) this.data.api.outputFormat = null
+                            if (this.data.api.errorOutput === undefined) this.data.api.errorOutput = null
+                        },
+                        addApiParameterItem() {
+                            o.data.api.parameters.push({type: API_PARAMETER_TYPES.TEXT, name: null, value: null})
+                        },
+                        removeApiParameterItem(index) {
+                            if (index === 0) return
+                            o.data.api.parameters.splice(index, 1)
+                        },
+                    },
+                    created() {
+                        this.checkDataStructure()
+                    }
+                }).mount('#button-config')
+                return o || o
+            })()
+            const blockPreview = (() => {
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            displays: [],
+                            buttons: [],
+                        }
+                    },
+                    methods: {
+                        load(displays, buttons) {
+                            o.displays = displays
+                            o.buttons = buttons
+                        },
+                    },
+                }).mount('#block-preview')
+                return o || o
+            })()
+
+            const editor = new Drawflow(document.getElementById("drawflow"))
+            // editor.reroute = false; // default : false
+            // editor.editor_mode = 'fixed'
+
             editor.start();
-            editor.import(dataToImport);
 
+            const nodeBlockMap = {}
+            const blockAppList = []
 
-            // Events!
-            editor.on('nodeCreated', function (id) {
-                console.log("Node created " + id);
+            function createNode(x, y) {
+                const nodeId = editor.addNode('BLOCK', 1, 0, x || 150, y || 300, '', {}, '')
+                const template = document.getElementById('block-template')
+                const block = document.getElementById('node-' + nodeId).querySelector('.drawflow_content_node')
+                for (let i = 0; i < template.children.length; i++)
+                    block.append(template.children[i].cloneNode(true))
+
+                const app = (() => {
+                    const o = Vue.createApp({
+                        data() {
+                            return {
+                                name: '',
+                                displays: [],
+                                buttons: [],
+                                keywords: [],
+                                autoReply: false,
+
+                                nodeId: nodeId,
+                                showingEmptyDisplayItem: false,
+                                showingEmptyButtonItem: false,
+                            }
+                        },
+                        methods: {
+                            getDisplayClass(type) {
+                                const DISPLAY_TYPE_TO_CLASS = {TEXT: 'text', IMAGE: 'image', CARD: 'card', LIST: 'list'}
+                                return DISPLAY_TYPE_TO_CLASS[type]
+                            },
+                            getDisplayText(type) {
+                                const DISPLAY_TYPE_TO_TEXT = {TEXT: '텍스트', IMAGE: '이미지', CARD: '카드', LIST: '리스트'}
+                                return DISPLAY_TYPE_TO_TEXT[type]
+                            },
+                            moveUpDisplayItem(index) {
+                                if (index <= 0) return
+                                const item = o.displays.splice(index, 1)[0]
+                                o.displays.splice(index - 1, 0, item)
+                            },
+                            moveDownDisplayItem(index) {
+                                if (index >= o.displays.length - 1) return
+                                const item = o.displays.splice(index, 1)[0]
+                                o.displays.splice(index + 1, 0, item)
+                            },
+                            removeDisplayItem(index) {
+                                o.displays.splice(index, 1)
+                                this.showingEmptyDisplayItem = !this.displays || !this.displays.length
+                            },
+                            dropDisplayItem(event) {
+                                o.showingEmptyDisplayItem = false
+                                const type = event.dataTransfer.getData('node')
+                                if (type === 'display-item-text') {
+                                    o.displays.push({type: 'TEXT', name: ''})
+                                } else if (type === 'display-item-image') {
+                                    o.displays.push({type: 'IMAGE', name: ''})
+                                } else if (type === 'display-item-card') {
+                                    o.displays.push({type: 'CARD', name: ''})
+                                } else if (type === 'display-item-list') {
+                                    o.displays.push({type: 'LIST', name: ''})
+                                } else {
+                                    o.showingEmptyDisplayItem = true
+                                }
+                            },
+                            moveUpButtonItem(index) {
+                                if (index <= 0) return
+                                const item = o.buttons.splice(index, 1)[0]
+                                o.buttons.splice(index - 1, 0, item)
+                            },
+                            moveDownButtonItem(index) {
+                                if (index >= o.buttons.length - 1) return
+                                const item = o.buttons.splice(index, 1)[0]
+                                o.buttons.splice(index + 1, 0, item)
+                            },
+                            removeButtonItem(index) {
+                                const removedButton = o.buttons.splice(index, 1)[0]
+                                o.showingEmptyButtonItem = !o.buttons || !o.buttons.length
+
+                                if (removedButton.action === 'TO_NEXT_BLOCK')
+                                    ; // TODO: 뒤에 있던 블럭들 싹 지워야 한다. (트리 구조를 타고 쭉 전부)
+                            },
+                            createButton() {
+                                o.buttons.push({name: ''})
+                                editor.addNodeOutput(o.nodeId)
+                                o.configButtonItem(o.buttons.length - 1)
+                                o.showingEmptyButtonItem = false
+                            },
+                            configKeywords() {
+                                $('.chatbot-control-panel').removeClass('active')
+                                $('.keyword-manage').addClass('active')
+                                keywordConfig.load(o.nodeId, o.keywords)
+                            },
+                            configDisplayItem(index) {
+                                $('.chatbot-control-panel').removeClass('active')
+                                if (o.displays[index].type === 'TEXT') {
+                                    $('.text-display-manage').addClass('active')
+                                    textDisplayConfig.load(o.nodeId, index, o.displays[index].data)
+                                }
+                                if (o.displays[index].type === 'IMAGE') {
+                                    $('.img-display-manage').addClass('active')
+                                    imageDisplayConfig.load(o.nodeId, index, o.displays[index].data)
+                                }
+                                if (o.displays[index].type === 'CARD') {
+                                    $('.card-display-manage').addClass('active')
+                                    cardDisplayConfig.load(o.nodeId, index, o.displays[index].data)
+                                }
+                                if (o.displays[index].type === 'LIST') {
+                                    $('.list-display-manage').addClass('active')
+                                    listDisplayConfig.load(o.nodeId, index, o.displays[index].data)
+                                }
+                            },
+                            configButtonItem(index) {
+                                $('.chatbot-control-panel').removeClass('active')
+                                $('.button-action-manage').addClass('active')
+                                buttonConfig.load(o.nodeId, index, o.buttons[index])
+                            },
+                            showPreview() {
+                                $('.chatbot-control-panel').removeClass('active');
+                                $('.chat-preview-manage').addClass('active');
+                                blockPreview.load(o.displays, o.buttons)
+                            }
+                        },
+                        mounted() {
+                            this.showingEmptyDisplayItem = !this.displays || !this.displays.length
+                            this.showingEmptyButtonItem = !this.buttons || !this.buttons.length
+                        }
+                    }).mount(block)
+                    return o || o
+                })()
+                nodeBlockMap[nodeId] = app
+                blockAppList.push(app)
+
+                return nodeId
+            }
+
+            editor.on('nodeRemoved', function (nodeId) {
+                const app = nodeBlockMap[nodeId]
+                blockAppList.splice(blockAppList.indexOf(app), 1)
+                blockList.blocks.splice(blockList.blocks.indexOf(app), 1)
+                delete nodeBlockMap[nodeId]
             })
 
-            editor.on('nodeRemoved', function (id) {
-                console.log("Node removed " + id);
+            editor.on('nodeCreated', function (id) {
+                console.log("Node created " + id);
             })
 
             editor.on('nodeSelected', function (id) {
@@ -1076,9 +1077,9 @@
                 console.log(connection);
             })
 
-            editor.on('mouseMove', function (position) {
+            /*editor.on('mouseMove',  function (position) {
                 console.log('Position mouse x:' + position.x + ' y:' + position.y);
-            })
+            })*/
 
             editor.on('nodeMoved', function (id) {
                 console.log("Node moved " + id);
@@ -1100,156 +1101,10 @@
                 console.log("Reroute removed " + id);
             })
 
-            /* DRAG EVENT */
-
-            /* Mouse and Touch Actions */
-
-            const elements = document.getElementsByClassName('drag-drawflow');
-            for (const i = 0; i < elements.length; i++) {
-                elements[i].addEventListener('touchend', drop, false);
-                elements[i].addEventListener('touchmove', positionMobile, false);
-                elements[i].addEventListener('touchstart', drag, false);
-            }
-
-            const mobile_item_selec = '';
-            const mobile_last_move = null;
-
-            function positionMobile(ev) {
-                mobile_last_move = ev;
-            }
-
-            function allowDrop(ev) {
-                ev.preventDefault();
-            }
-
-            function drag(ev) {
-                if (ev.type === "touchstart") {
-                    mobile_item_selec = ev.target.closest(".drag-drawflow").getAttribute('data-node');
-                } else {
-                    ev.dataTransfer.setData("node", ev.target.getAttribute('data-node'));
-                }
-            }
-
-            function drop(ev) {
-                if (ev.type === "touchend") {
-                    const parentdrawflow = document.elementFromPoint(mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY).closest("#drawflow");
-                    if (parentdrawflow != null) {
-                        addNodeToDrawFlow(mobile_item_selec, mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY);
-                    }
-                    mobile_item_selec = '';
-                } else {
-                    ev.preventDefault();
-                    const data = ev.dataTransfer.getData("node");
-                    addNodeToDrawFlow(data, ev.clientX, ev.clientY);
-                }
-
-            }
-
-            function addNodeToDrawFlow(name, pos_x, pos_y) {
-                if (editor.editor_mode === 'fixed') {
-                    return false;
-                }
-                pos_x = pos_x * (editor.precanvas.clientWidth / (editor.precanvas.clientWidth * editor.zoom)) - (editor.precanvas.getBoundingClientRect().x * (editor.precanvas.clientWidth / (editor.precanvas.clientWidth * editor.zoom)));
-                pos_y = pos_y * (editor.precanvas.clientHeight / (editor.precanvas.clientHeight * editor.zoom)) - (editor.precanvas.getBoundingClientRect().y * (editor.precanvas.clientHeight / (editor.precanvas.clientHeight * editor.zoom)));
-
-
-
-            }
-
-            const transform = '';
-
-            function showpopup(e) {
-                e.target.closest(".drawflow-node").style.zIndex = "9999";
-                e.target.children[0].style.display = "block";
-                //document.getElementById("modalfix").style.display = "block";
-
-                //e.target.children[0].style.transform = 'translate('+translate.x+'px, '+translate.y+'px)';
-                transform = editor.precanvas.style.transform;
-                editor.precanvas.style.transform = '';
-                editor.precanvas.style.left = editor.canvas_x + 'px';
-                editor.precanvas.style.top = editor.canvas_y + 'px';
-                console.log(transform);
-
-                //e.target.children[0].style.top  =  -editor.canvas_y - editor.container.offsetTop +'px';
-                //e.target.children[0].style.left  =  -editor.canvas_x  - editor.container.offsetLeft +'px';
-                editor.editor_mode = "fixed";
-
-            }
-
-            function closemodal(e) {
-                e.target.closest(".drawflow-node").style.zIndex = "2";
-                e.target.parentElement.parentElement.style.display = "none";
-                //document.getElementById("modalfix").style.display = "none";
-                editor.precanvas.style.transform = transform;
-                editor.precanvas.style.left = '0px';
-                editor.precanvas.style.top = '0px';
-                editor.editor_mode = "edit";
-            }
-
-            function changeModule(event) {
-                const all = document.querySelectorAll(".menu ul li");
-                for (const i = 0; i < all.length; i++) {
-                    all[i].classList.remove('selected');
-                }
-                event.target.classList.add('selected');
-            }
-
-            function changeMode(option) {
-
-                //console.log(lock.id);
-                if (option == 'lock') {
-                    lock.style.display = 'none';
-                    unlock.style.display = 'block';
-                } else {
-                    lock.style.display = 'block';
-                    unlock.style.display = 'none';
-                }
-
-            }
-
-        </script>
-        <script>
-
             function fallbackBlockManage() {
                 $('.chatbot-control-panel').removeClass('active');
                 $('.fallback-block-manage').addClass('active');
             }
-
-            function keywordManage() {
-                $('.chatbot-control-panel').removeClass('active');
-                $('.keyword-manage').addClass('active');
-            }
-
-            function textDisplayManage() {
-                $('.chatbot-control-panel').removeClass('active');
-                $('.text-display-manage').addClass('active');
-            }
-
-            function imgDisplayManage() {
-                $('.chatbot-control-panel').removeClass('active');
-                $('.img-display-manage').addClass('active');
-            }
-
-            function cardDisplayManage() {
-                $('.chatbot-control-panel').removeClass('active');
-                $('.card-display-manage').addClass('active');
-            }
-
-            function listDisplayManage() {
-                $('.chatbot-control-panel').removeClass('active');
-                $('.list-display-manage').addClass('active');
-            }
-
-            function buttonActionManage() {
-                $('.chatbot-control-panel').removeClass('active');
-                $('.button-action-manage').addClass('active');
-            }
-
-            function chatPreviewManage() {
-                $('.chatbot-control-panel').removeClass('active');
-                $('.chat-preview-manage').addClass('active');
-            }
-
 
             function botTestPopup() {
                 confirm('확인을 누르시면 자동 저장 후 테스트 기능이 활성화 됩니다.');
@@ -1265,35 +1120,14 @@
                 confirm('선택하신 시나리오를 클립보드에 복사합니다. 진행 하시겠습니까?');
             }
 
-            function keywordConfirmPopup() {
-                alert('해당 키워드는 [ 블록1 ] 에서 사용되고 있습니다. 다른 키워드를 입력해주세요.');
+            function allowDrop(ev) {
+                ev.preventDefault()
             }
 
-            $('.preview-button').click(function(){
-                $(this).toggleClass('active');
-                if($(this).hasClass('active') === false) {
-                    $(this).text("OFF");
-                } else {
-                    $(this).text("ON");
-                }
-            });
-
-
             $('.chatbot-control-container .arrow-button').click(function () {
-                $(this).toggleClass('show');
-                $(this).parent('.chatbot-control-container').toggleClass('active');
-            });
-
-            $("input:text").click(function () {
-                $(this).parent().find("input:file").click();
-            });
-
-            $('input:file', '.ui.action.input')
-                .on('change', function (e) {
-                    var name = e.target.files[0].name;
-                    $('input:text', $(e.target).parent()).val(name);
-                });
-
+                $(this).toggleClass('show')
+                $(this).parent('.chatbot-control-container').toggleClass('active')
+            })
         </script>
     </tags:scripts>
 </tags:tabContentLayout>
