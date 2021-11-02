@@ -94,6 +94,32 @@
                             </div>
                             <div class="chatbot-main-container flex-100">
                                 <div id="drawflow" ondragover="allowDrop(event)">
+                                    <div class="ui modal bot-setting-popup" >
+                                        <div class="header">
+                                            봇 기본설정
+                                        </div>
+                                        <div class="content">
+                                            <div class="mb10">이름</div>
+                                            <div class="ui form fluid mb15">
+                                                <input type="text">
+                                            </div>
+                                            <div class="mb10">폴백 멘트 입력</div>
+                                            <div class="ui form fluid mb10">
+                                                <textarea rows="3"></textarea>
+                                            </div>
+                                            <div class="mb10">동작</div>
+                                            <div class="ui form fluid mb10">
+                                                <select>
+                                                    <option>처음으로가기</option>
+                                                    <option>상담그룹연결</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="actions">
+                                            <button type="button" class="ui small compact button modal-close">취소</button>
+                                            <button type="button" class="ui small compact brand button">시작</button>
+                                        </div>
+                                    </div>
                                     <div class="bar-zoom">
                                         <button class="zoom-control-btn" type="button" onclick="editor.zoom_in()"><img src="<c:url value="/resources/images/zoom-plus.svg"/>"></button>
                                         <button class="zoom-control-btn" type="button" onclick="editor.zoom_reset()"><img src="<c:url value="/resources/images/zoom-refresh.svg"/>"></button>
@@ -455,8 +481,8 @@
                                                             </div>
                                                             <ul class="card-list-ul">
                                                                 <li v-for="(e2,j) in e.data.list" :key="j" class="item">
-                                                                    <a :href="e2.url" target="_blank">
-                                                                        <div class="item-thumb">
+                                                                    <a :href="e2.url" target="_blank" class="link-wrap">
+                                                                        <div class="item-thumb" v-if="e2.fileUrl && e2.fileUrl.trim()">
                                                                             <div class="item-thumb-inner">
                                                                                 <img :src="e2.fileUrl">
                                                                             </div>
@@ -469,6 +495,7 @@
                                                                 </li>
                                                             </ul>
                                                         </div>
+                                                        <span class="time-text">21-04-11 04:33</span>
                                                     </div>
 
                                                     <div v-if="buttons.length" v-for="(e, i) in getButtonGroups()" :key="i" :class="e instanceof Array ? 'sample-bubble' : 'card'">
@@ -500,10 +527,7 @@
                                                                 </li>
                                                             </ul>
                                                         </div>
-                                                    </div>
-
-                                                    <div class="card">
-                                                        <span class="time-text">오전 09:23</span> <%--TODO--%>
+                                                        <span class="time-text">21-04-11 04:33</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1082,6 +1106,12 @@
                 $(this).toggleClass('show')
                 $(this).parent('.chatbot-control-container').toggleClass('active')
             })
+
+            $('.bot-setting-popup').modal({
+                dimmerSettings: { opacity: 0 },
+                duration: 350,
+                closable: false
+            }).modal('show');
         </script>
     </tags:scripts>
 </tags:tabContentLayout>
