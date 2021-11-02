@@ -74,7 +74,7 @@
                                             <li class="block-list">
                                                 <div class="block-name">폴백 블록</div>
                                                 <div class="block-control">
-                                                    <button type="button" class="ui mini button remove-margin" onclick="fallbackBlockManage();">수정</button>
+                                                    <button type="button" class="ui mini button remove-margin" onclick="fallbackConfig.show()">수정</button>
                                                 </div>
                                             </li>
                                         </ul>
@@ -122,15 +122,15 @@
                                         <div class="chatbot-control-body">
                                             <div class="mb15">이름</div>
                                             <div class="ui form fluid mb15">
-                                                <input type="text" v-model="name">
+                                                <input type="text" v-model="input.name">
                                             </div>
                                             <div class="mb15">대사 입력</div>
                                             <div class="ui form fluid mb15">
-                                                <textarea rows="8" v-model="announcement"></textarea>
+                                                <textarea rows="8" v-model="input.announcement"></textarea>
                                             </div>
                                             <div class="mb15">동작</div>
                                             <div class="ui form fluid mb15">
-                                                <select v-model="action">
+                                                <select v-model="input.action">
                                                     <option value="GOTO_ROOT">처음으로 가기</option>
                                                 </select>
                                             </div>
@@ -318,7 +318,7 @@
                                                 <div class="mb15">연결 그룹 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <select>
-                                                        <option v-for="(e,i) in groups" :key="i" :value="e.id">{{ e.name }}</option>
+                                                        <option v-for="(e,i) in groups" :key="i" :value="e.name">{{ e.hanName }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -437,18 +437,18 @@
                                                 </div>
                                                 <div class="content editor">
                                                     <div v-for="(e,i) in displays" :class="e.type === 'TEXT' ? 'sample-bubble' : 'card'">
-                                                        <p v-if="e.type === 'TEXT'">{{ e.data.text }}</p>
-                                                        <div v-if="e.type === 'IMAGE'" class="card-img">
+                                                        <p v-if="e.data && e.type === 'TEXT'">{{ e.data.text }}</p>
+                                                        <div v-if="e.data && e.type === 'IMAGE'" class="card-img">
                                                             <img :src="e.data.fileUrl" class="border-radius-1em">
                                                         </div>
-                                                        <div v-if="e.type === 'CARD'" class="card-img">
+                                                        <div v-if="e.data && e.type === 'CARD'" class="card-img">
                                                             <img :src="e.data.fileUrl" class="border-radius-top-1em">
                                                         </div>
-                                                        <div v-if="e.type === 'CARD'" class="card-content">
+                                                        <div v-if="e.data && e.type === 'CARD'" class="card-content">
                                                             <div class="card-title">{{ e.data.title }}</div>
                                                             <div class="card-text">{{ e.data.announcement }}</div>
                                                         </div>
-                                                        <div v-if="e.type === 'LIST'" class="card-list">
+                                                        <div v-if="e.data && e.type === 'LIST'" class="card-list">
                                                             <div class="card-list-title">
                                                                 <a v-if="titleUrl" :href="e.data.titleUrl" target="_blank">{{ e.data.title }}</a>
                                                                 <text v-else>{{ e.data.title }}</text>
@@ -471,12 +471,13 @@
                                                         </div>
                                                     </div>
 
-                                                    <div v-for="(e,i) in buttons" :key="i" :class="e.action !== 'CALL_API' ? 'sample-bubble' : 'card'">
-                                                        <div v-if="e.action === 'CALL_API'" class="card-list">
+                                                    <div v-if="buttons.length" v-for="(e, i) in getButtonGroups()" :key="i" :class="e instanceof Array ? 'sample-bubble' : 'card'">
+                                                        <button v-if="e instanceof Array" v-for="(e2, j) in e" :key="j" type="button" class="chatbot-button">{{ e2.name }}</button>
+                                                        <div v-else class="card-list">
                                                             <ul class="card-list-ul">
-                                                                <li v-for="(e2,j) in e.api.parameters" :key="j" class="item form">
+                                                                <li v-for="(e2, j) in e.api.parameters" :key="j" class="item form">
                                                                     <div class="label">{{ e2.name }}</div>
-                                                                    <div v-if="" class="ui fluid input">
+                                                                    <div v-if="e2.type !== 'TIME'" class="ui fluid input">
                                                                         <input type="text">
                                                                     </div>
                                                                     <div v-else class="ui multi form">
@@ -499,13 +500,11 @@
                                                                 </li>
                                                             </ul>
                                                         </div>
-                                                        <button v-else type="button" class="chatbot-button">{{ e.name }}</button>
                                                     </div>
 
                                                     <div class="card">
                                                         <span class="time-text">오전 09:23</span> <%--TODO--%>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -584,11 +583,6 @@
                             blocks: []
                         }
                     },
-                    mounted() {
-                        setInterval(() => {
-                            blockAppList.filter(block => !o.blocks.includes(block)).forEach(block => o.blocks.push(block))
-                        }, 100)
-                    }
                 }).mount('#block-list')
                 return o || o
             })()
@@ -596,14 +590,18 @@
                 const o = Vue.createApp({
                     data() {
                         return {
-                            name: '',
-                            announcement: '',
-                            action: 'GOTO_ROOT',
+                            data: {name: '', announcement: '', action: 'GOTO_ROOT',},
+                            input: {name: '', announcement: '', action: 'GOTO_ROOT',},
                         }
                     },
                     methods: {
                         save() {
-
+                            for (let property in o.input) o.data[property] = o.input[property]
+                        },
+                        show() {
+                            $('.chatbot-control-panel').removeClass('active')
+                            $('.fallback-block-manage').addClass('active')
+                            for (let property in o.data) o.input[property] = o.data[property]
                         }
                     }
                 }).mount('#fallback-config')
@@ -635,7 +633,7 @@
                             if (o.keywords.includes(o.input.trim()))
                                 return alert('해당 키워드는 이미 목록에 존재합니다.')
 
-                            const includedBlocks = blockAppList.filter(block => block.keywords.includes(o.input.trim()))
+                            const includedBlocks = blockList.blocks.filter(block => block.keywords.includes(o.input.trim()))
                             if (includedBlocks.length)
                                 return alert('해당 키워드는 [' + includedBlocks[0].name + '] 에서 사용되고 있습니다. 다른 키워드를 입력해주세요.')
 
@@ -656,9 +654,7 @@
                         return {
                             nodeId: null,
                             displayIndex: null,
-                            data: {
-                                text: null
-                            },
+                            data: {text: null},
                         }
                     },
                     methods: {
@@ -681,10 +677,7 @@
                         return {
                             nodeId: null,
                             displayIndex: null,
-                            data: {
-                                fileName: null,
-                                fileUrl: null,
-                            },
+                            data: {fileName: null, fileUrl: null,},
                         }
                     },
                     methods: {
@@ -701,7 +694,7 @@
                             const file = event.target.files[0]
                             event.target.value = null
                             if (!file || !file.name) return
-                            uploadFile(file).done(function (response) {
+                            uploadFile(file).done(response => {
                                 o.data.fileName = response.data.originalName
                                 o.data.fileUrl = `/files/download?file=` + encodeURIComponent(response.data.fileName)
                             })
@@ -716,12 +709,7 @@
                         return {
                             nodeId: null,
                             displayIndex: null,
-                            data: {
-                                fileName: null,
-                                fileUrl: null,
-                                title: null,
-                                announcement: null,
-                            },
+                            data: {fileName: null, fileUrl: null, title: null, announcement: null,},
                         }
                     },
                     methods: {
@@ -738,7 +726,7 @@
                             const file = event.target.files[0]
                             event.target.value = null
                             if (!file || !file.name) return
-                            uploadFile(file).done(function (response) {
+                            uploadFile(file).done(response => {
                                 o.data.fileName = response.data.originalName
                                 o.data.fileUrl = `/files/download?file=` + encodeURIComponent(response.data.fileName)
                             })
@@ -753,11 +741,7 @@
                         return {
                             nodeId: null,
                             displayIndex: null,
-                            data: {
-                                title: null,
-                                titleUrl: null,
-                                list: [{title: null, announcement: null, url: null, fileName: null, fileUrl: null}],
-                            },
+                            data: {title: null, titleUrl: null, list: [{title: null, announcement: null, url: null, fileName: null, fileUrl: null}],},
                         }
                     },
                     methods: {
@@ -790,7 +774,7 @@
                             const file = event.target.files[0]
                             event.target.value = null
                             if (!file || !file.name) return
-                            uploadFile(file).done(function (response) {
+                            uploadFile(file).done(response => {
                                 o.data.list[index].fileName = response.data.originalName
                                 o.data.list[index].fileUrl = `/files/download?file=` + encodeURIComponent(response.data.fileName)
                             })
@@ -830,29 +814,30 @@
 
                             const data = {}
                             for (let property in o.data) data[property] = o.data[property]
+                            data.api = {}
                             for (let property in o.data.api) data.api[property] = o.data.api[property]
+                            data.api.parameters = []
                             o.data.api.parameters.forEach(e => data.api.parameters.push({type: e.type, name: e.name, value: e.value}))
                             nodeBlockMap[o.nodeId].buttons[o.buttonIndex] = data
 
-                            // TODO:
-
                             if (prevAction !== currentAction) {
+                                if (prevAction === 'TO_NEXT_BLOCK') {
+                                    // TODO: 뒤에 있던 블럭들 싹 지워야 한다. (트리 구조를 타고 쭉 전부)
+                                } else if (currentAction === 'TO_OTHER_BLOCK') {
+                                    // TODO: 지우자 커넥션
+                                }
                                 if (currentAction === 'TO_NEXT_BLOCK') {
                                     const node = editor.getNodeFromId(o.nodeId)
                                     const childNodeId = createNode(node.pos_x + 300, node.pos_y)
-                                    setTimeout(() => {
-                                        editor.addConnection(o.nodeId, childNodeId, Object.keys(node.outputs)[o.buttonIndex], Object.keys(editor.getNodeFromId(childNodeId).inputs)[0])
-                                    }, 100)
-                                } else if (prevAction === 'TO_NEXT_BLOCK') {
-                                    // TODO: 뒤에 있던 블럭들 싹 지워야 한다. (트리 구조를 타고 쭉 전부)
+                                    editor.addConnection(o.nodeId, childNodeId, Object.keys(node.outputs)[o.buttonIndex], Object.keys(editor.getNodeFromId(childNodeId).inputs)[0])
+                                    data.childNodeId = childNodeId
+                                } else if (currentAction === 'TO_OTHER_BLOCK') {
+                                    // TODO: 만들자 커넥션
                                 }
                             }
                         },
-                        loadBlocks(blocks) {
-                            o.blocks = blocks
-                        },
-                        loadGroups(groups) {
-                            o.groups = groups
+                        loadGroups() {
+                            restSelf.get('/api/queue/', {limit: 10000}).done(response => o.groups = response.data.rows)
                         },
                         checkDataStructure() {
                             if (!this.data) this.data = {}
@@ -882,6 +867,7 @@
                     },
                     created() {
                         this.checkDataStructure()
+                        this.loadGroups()
                     }
                 }).mount('#button-config')
                 return o || o
@@ -899,31 +885,57 @@
                             o.displays = displays
                             o.buttons = buttons
                         },
+                        getButtonGroups() {
+                            return o.buttons.reduce((list, e) => {
+                                if (e.action === 'CALL_API') list.push(e)
+                                else if (!list.length || !(list[list.length - 1] instanceof Array)) list.push([e])
+                                else list[list.length - 1].push(e)
+                                return list
+                            }, [])
+                        },
                     },
                 }).mount('#block-preview')
                 return o || o
             })()
 
             const editor = new Drawflow(document.getElementById("drawflow"))
-            // editor.reroute = false; // default : false
-            // editor.editor_mode = 'fixed'
-
             editor.start();
+            editor.container.addEventListener('keydown', event => event.stopImmediatePropagation(), true)
+            editor.container.addEventListener('mousedown', event => event.target.classList.contains('output') && event.stopImmediatePropagation(), true)
 
             const nodeBlockMap = {}
-            const blockAppList = []
 
             function createNode(x, y) {
-                const nodeId = editor.addNode('BLOCK', 1, 0, x || 150, y || 300, '', {}, '')
+                if (typeof x !== 'number' || typeof y !== 'number') {
+                    editor.zoom_reset()
+                    editor.canvas_x = 0
+                    editor.canvas_y = 0
+                    editor.pos_x = 0
+                    editor.pos_y = 0
+                    editor.editor_selected = true
+                    editor.position({type: null, clientX: 0, clientY: 0})
+                    editor.editor_selected = false
+
+                    const rect = editor.container.getBoundingClientRect()
+                    x = rect.width / 2 - 100 // note: 대충 초기 사이즈가 (200,200)쯤 될것이다.. 스타일에 따라 달라지니 중요하지 않다.
+                    y = rect.height / 2 - 100
+                }
+                const nodeId = editor.addNode('BLOCK', 1, 0, x, y, '', {}, '')
                 const template = document.getElementById('block-template')
                 const block = document.getElementById('node-' + nodeId).querySelector('.drawflow_content_node')
                 for (let i = 0; i < template.children.length; i++)
                     block.append(template.children[i].cloneNode(true))
 
                 const app = (() => {
+                    // ref: https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid
+                    const uuidv4 = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8)
+                        return v.toString(16)
+                    })
                     const o = Vue.createApp({
                         data() {
                             return {
+                                id: uuidv4(),
                                 name: '',
                                 displays: [],
                                 buttons: [],
@@ -977,11 +989,13 @@
                                 if (index <= 0) return
                                 const item = o.buttons.splice(index, 1)[0]
                                 o.buttons.splice(index - 1, 0, item)
+                                // TODO: 커넥션 순서 바꾸자
                             },
                             moveDownButtonItem(index) {
                                 if (index >= o.buttons.length - 1) return
                                 const item = o.buttons.splice(index, 1)[0]
                                 o.buttons.splice(index + 1, 0, item)
+                                // TODO: 커넥션 순서 바꾸자
                             },
                             removeButtonItem(index) {
                                 const removedButton = o.buttons.splice(index, 1)[0]
@@ -1031,6 +1045,9 @@
                                 blockPreview.load(o.displays, o.buttons)
                             }
                         },
+                        updated() {
+                            editor.updateConnectionNodes('node-' + o.nodeId)
+                        },
                         mounted() {
                             this.showingEmptyDisplayItem = !this.displays || !this.displays.length
                             this.showingEmptyButtonItem = !this.buttons || !this.buttons.length
@@ -1039,76 +1056,17 @@
                     return o || o
                 })()
                 nodeBlockMap[nodeId] = app
-                blockAppList.push(app)
-
+                blockList.blocks.push(app)
+                buttonConfig.blocks.push(app)
                 return nodeId
             }
 
-            editor.on('nodeRemoved', function (nodeId) {
+            editor.on('nodeRemoved', (nodeId) => {
                 const app = nodeBlockMap[nodeId]
-                blockAppList.splice(blockAppList.indexOf(app), 1)
                 blockList.blocks.splice(blockList.blocks.indexOf(app), 1)
+                buttonConfig.blocks.splice(buttonConfig.blocks.indexOf(app), 1)
                 delete nodeBlockMap[nodeId]
             })
-
-            editor.on('nodeCreated', function (id) {
-                console.log("Node created " + id);
-            })
-
-            editor.on('nodeSelected', function (id) {
-                console.log("Node selected " + id);
-            })
-
-            editor.on('moduleCreated', function (name) {
-                console.log("Module Created " + name);
-            })
-
-            editor.on('moduleChanged', function (name) {
-                console.log("Module Changed " + name);
-            })
-
-            editor.on('connectionCreated', function (connection) {
-                console.log('Connection created');
-                console.log(connection);
-            })
-
-            editor.on('connectionRemoved', function (connection) {
-                console.log('Connection removed');
-                console.log(connection);
-            })
-
-            /*editor.on('mouseMove',  function (position) {
-                console.log('Position mouse x:' + position.x + ' y:' + position.y);
-            })*/
-
-            editor.on('nodeMoved', function (id) {
-                console.log("Node moved " + id);
-            })
-
-            editor.on('zoom', function (zoom) {
-                console.log('Zoom level ' + zoom);
-            })
-
-            editor.on('translate', function (position) {
-                console.log('Translate x:' + position.x + ' y:' + position.y);
-            })
-
-            editor.on('addReroute', function (id) {
-                console.log("Reroute added " + id);
-            })
-
-            editor.on('removeReroute', function (id) {
-                console.log("Reroute removed " + id);
-            })
-
-            function fallbackBlockManage() {
-                $('.chatbot-control-panel').removeClass('active');
-                $('.fallback-block-manage').addClass('active');
-            }
-
-            function botTestPopup() {
-                confirm('확인을 누르시면 자동 저장 후 테스트 기능이 활성화 됩니다.');
-            }
 
             // 봇 추가 클릭 시 클립보드에 이미 복사한 봇이 있을 경우만 출력
             // confirmMulti('클립보드에 복사된 시나리오를 붙여넣겠습니다. 진행 하시겠습니까?');
@@ -1116,13 +1074,9 @@
             // 위 봇 붙여넣기 모달에서 신규추가 버튼 클릭 시 아래 모달 출력
             // confirm('기존 클립보드에 복사된 시나리오는 삭제 됩니다. 진행 하시겠습니까?');
 
-            function botCopyPopup() {
-                confirm('선택하신 시나리오를 클립보드에 복사합니다. 진행 하시겠습니까?');
-            }
-
-            function allowDrop(ev) {
-                ev.preventDefault()
-            }
+            const botTestPopup = () => confirm('확인을 누르시면 자동 저장 후 테스트 기능이 활성화 됩니다.')
+            const botCopyPopup = () => confirm('선택하신 시나리오를 클립보드에 복사합니다. 진행 하시겠습니까?')
+            const allowDrop = event => event.preventDefault()
 
             $('.chatbot-control-container .arrow-button').click(function () {
                 $(this).toggleClass('show')
