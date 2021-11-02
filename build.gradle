@@ -12,7 +12,7 @@ buildscript {
     ext.profile = (!project.hasProperty('profile') || !profile) ? 'local' : profile
 
     ext {
-        springBootVersion = '2.5.4'
+        springBootVersion = '2.3.0.RELEASE'
         springCloudVersion = 'Hoxton.SR4'
         vavrVersion = '0.10.2'
         mysqlVersion = '5.1.47'
@@ -324,6 +324,7 @@ project(':front-controller') {
         api 'org.springframework.boot:spring-boot-starter-security'
         api "org.springframework.session:spring-session-core"
 
+        api 'org.springframework.security:spring-security-core'
         api 'org.apache.tomcat.embed:tomcat-embed-jasper'
         api 'taglibs:standard:1.1.2'
         api 'javax.servlet:jstl'
