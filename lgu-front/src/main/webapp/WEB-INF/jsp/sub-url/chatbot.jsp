@@ -20,9 +20,6 @@
             <div class="inner">
                 <ul>
                     <li><a href="#" class="tab-on tab-indicator">채팅 봇</a></li>
-                    <li>
-                        <button type="button" onclick="createNode()">블락 생성</button>
-                    </li>
                 </ul>
             </div>
         </div>
@@ -41,7 +38,7 @@
                                         <option></option>
                                     </select>
                                 </div>
-                                <button type="button" class="ui mini button">봇 추가</button>
+                                <button type="button" class="ui mini button" onclick="chatbotSettingModal.show()">봇 추가</button>
                             </div>
                             <button type="button" class="ui mini button" onclick="botCopyPopup();">봇 복사</button>
                             <button type="button" class="ui mini button" onclick="botTestPopup();">봇 테스트</button>
@@ -94,32 +91,6 @@
                             </div>
                             <div class="chatbot-main-container flex-100">
                                 <div id="drawflow" ondragover="allowDrop(event)">
-                                    <div class="ui modal bot-setting-popup" >
-                                        <div class="header">
-                                            봇 기본설정
-                                        </div>
-                                        <div class="content">
-                                            <div class="mb10">이름</div>
-                                            <div class="ui form fluid mb15">
-                                                <input type="text">
-                                            </div>
-                                            <div class="mb10">폴백 멘트 입력</div>
-                                            <div class="ui form fluid mb10">
-                                                <textarea rows="3"></textarea>
-                                            </div>
-                                            <div class="mb10">동작</div>
-                                            <div class="ui form fluid mb10">
-                                                <select>
-                                                    <option>처음으로가기</option>
-                                                    <option>상담그룹연결</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="actions">
-                                            <button type="button" class="ui small compact button modal-close">취소</button>
-                                            <button type="button" class="ui small compact brand button">시작</button>
-                                        </div>
-                                    </div>
                                     <div class="bar-zoom">
                                         <button class="zoom-control-btn" type="button" onclick="editor.zoom_in()"><img src="<c:url value="/resources/images/zoom-plus.svg"/>"></button>
                                         <button class="zoom-control-btn" type="button" onclick="editor.zoom_reset()"><img src="<c:url value="/resources/images/zoom-refresh.svg"/>"></button>
@@ -127,7 +98,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="chatbot-control-panel active">
+                            <div class="chatbot-control-panel empty-panel active">
                                 <div class="chatbot-control-container active">
                                     <button type="button" class="arrow-button"></button>
                                     <div class="chatbot-control-inner">
@@ -150,7 +121,7 @@
                                             <div class="ui form fluid mb15">
                                                 <input type="text" v-model="input.name">
                                             </div>
-                                            <div class="mb15">대사 입력</div>
+                                            <div class="mb15">폴백 대사 입력</div>
                                             <div class="ui form fluid mb15">
                                                 <textarea rows="8" v-model="input.announcement"></textarea>
                                             </div>
@@ -158,6 +129,13 @@
                                             <div class="ui form fluid mb15">
                                                 <select v-model="input.action">
                                                     <option value="GOTO_ROOT">처음으로 가기</option>
+                                                    <option value="GOTO_GROUP">상담그룹연결</option>
+                                                </select>
+                                            </div>
+                                            <div v-if="input.action === 'GOTO_GROUP'" class="mb10">상담그룹</div>
+                                            <div v-if="input.action === 'GOTO_GROUP'" class="ui form fluid mb10">
+                                                <select v-model="input.group">
+                                                    <option v-for="(e,i) in groups" :key="i" :value="e.name">{{ e.hanName }}</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -343,7 +321,7 @@
                                             <div v-if="data.action === 'CALL_CONSULTANT'">
                                                 <div class="mb15">연결 그룹 설정</div>
                                                 <div class="ui form fluid mb15">
-                                                    <select>
+                                                    <select v-model="data.group">
                                                         <option v-for="(e,i) in groups" :key="i" :value="e.name">{{ e.hanName }}</option>
                                                     </select>
                                                 </div>
@@ -597,6 +575,37 @@
         </div>
     </div>
 
+    <div id="chatbot-setting-modal" class="ui modal chatbot-setting-modal">
+        <div class="header">봇 기본설정</div>
+        <div class="content">
+            <div class="mb10">이름</div>
+            <div class="ui form fluid mb15">
+                <input type="text" v-model="name">
+            </div>
+            <div class="mb10">폴백 대사 입력</div>
+            <div class="ui form fluid mb10">
+                <textarea rows="3" v-model="announcement"></textarea>
+            </div>
+            <div class="mb10">동작</div>
+            <div class="ui form fluid mb10">
+                <select v-model="action">
+                    <option value="GOTO_ROOT">처음으로가기</option>
+                    <option value="GOTO_GROUP">상담그룹연결</option>
+                </select>
+            </div>
+            <div v-if="action === 'GOTO_GROUP'" class="mb10">상담그룹</div>
+            <div v-if="action === 'GOTO_GROUP'" class="ui form fluid mb10">
+                <select v-model="group">
+                    <option v-for="(e,i) in groups" :key="i" :value="e.name">{{ e.hanName }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="actions">
+            <button type="button" class="ui small compact button" @click.stop="hide">취소</button>
+            <button type="button" class="ui small compact brand button" @click.stop="start">시작</button>
+        </div>
+    </div>
+
     <tags:scripts>
         <script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
         <script>
@@ -614,8 +623,8 @@
                 const o = Vue.createApp({
                     data() {
                         return {
-                            data: {name: '', announcement: '', action: 'GOTO_ROOT',},
-                            input: {name: '', announcement: '', action: 'GOTO_ROOT',},
+                            groups: [],
+                            input: {name: '', announcement: '', action: 'GOTO_ROOT', group: null},
                         }
                     },
                     methods: {
@@ -623,12 +632,56 @@
                             for (let property in o.input) o.data[property] = o.input[property]
                         },
                         show() {
+                            if (!o.data)
+                                return alert('봇이 생성되지 않았습니다.')
+
                             $('.chatbot-control-panel').removeClass('active')
                             $('.fallback-block-manage').addClass('active')
                             for (let property in o.data) o.input[property] = o.data[property]
                         }
                     }
                 }).mount('#fallback-config')
+                return o || o
+            })()
+            const chatbotSettingModal = (() => {
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            groups: [],
+                            name: '', announcement: '', action: 'GOTO_ROOT', group: null
+                        }
+                    },
+                    methods: {
+                        show() {
+                            o.name = ''
+                            o.announcement = ''
+                            o.action = 'GOTO_ROOT'
+                            o.group = null
+
+                            $('#chatbot-setting-modal').modal({
+                                dimmerSettings: {opacity: 0},
+                                duration: 350,
+                                closable: false
+                            }).modal('show')
+                        },
+                        start() {
+                            blockList.blocks.splice(0, blockList.blocks.length)
+                            buttonConfig.blocks.splice(0, buttonConfig.blocks.length)
+                            for (let property in nodeBlockMap)
+                                delete nodeBlockMap[property]
+                            editor.clear()
+                            fallbackConfig.data = {name: o.name, announcement: o.announcement, action: o.action, group: o.group,}
+                            o.hide()
+                            createNode()
+
+                            $('.chatbot-control-panel').removeClass('active')
+                            $('.empty-panel').addClass('active')
+                        },
+                        hide() {
+                            $('#chatbot-setting-modal').modalHide()
+                        }
+                    }
+                }).mount('#chatbot-setting-modal')
                 return o || o
             })()
             const keywordConfig = (() => {
@@ -860,9 +913,6 @@
                                 }
                             }
                         },
-                        loadGroups() {
-                            restSelf.get('/api/queue/', {limit: 10000}).done(response => o.groups = response.data.rows)
-                        },
                         checkDataStructure() {
                             if (!this.data) this.data = {}
                             if (this.data.name === undefined) this.data.name = null
@@ -891,7 +941,6 @@
                     },
                     created() {
                         this.checkDataStructure()
-                        this.loadGroups()
                     }
                 }).mount('#button-config')
                 return o || o
@@ -1092,6 +1141,12 @@
                 delete nodeBlockMap[nodeId]
             })
 
+            restSelf.get('/api/queue/', {limit: 10000}).done(response => {
+                chatbotSettingModal.groups = response.data.rows
+                fallbackConfig.groups = response.data.rows
+                buttonConfig.groups = response.data.rows
+            })
+
             // 봇 추가 클릭 시 클립보드에 이미 복사한 봇이 있을 경우만 출력
             // confirmMulti('클립보드에 복사된 시나리오를 붙여넣겠습니다. 진행 하시겠습니까?');
 
@@ -1107,11 +1162,7 @@
                 $(this).parent('.chatbot-control-container').toggleClass('active')
             })
 
-            $('.bot-setting-popup').modal({
-                dimmerSettings: { opacity: 0 },
-                duration: 350,
-                closable: false
-            }).modal('show');
+
         </script>
     </tags:scripts>
 </tags:tabContentLayout>
