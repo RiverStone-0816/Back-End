@@ -885,8 +885,12 @@
                             o.checkDataStructure()
                         },
                         save() {
-                            if (!nodeBlockMap[o.nodeId] || !nodeBlockMap[o.nodeId].buttons[o.buttonIndex]) return
-                            const prevAction = nodeBlockMap[o.nodeId].buttons[o.buttonIndex].action
+                            const app = nodeBlockMap[o.nodeId]
+                            if (!app || !app.buttons[o.buttonIndex]) return
+
+                            const prevAction = app.buttons[o.buttonIndex].action
+                            const preChildNodeId = app.buttons[o.buttonIndex].childNodeId
+                            const preBlock = app.buttons[o.buttonIndex].block
                             const currentAction = o.data.action
 
                             const data = {}
@@ -895,22 +899,25 @@
                             for (let property in o.data.api) data.api[property] = o.data.api[property]
                             data.api.parameters = []
                             o.data.api.parameters.forEach(e => data.api.parameters.push({type: e.type, name: e.name, value: e.value}))
-                            nodeBlockMap[o.nodeId].buttons[o.buttonIndex] = data
+                            app.buttons[o.buttonIndex] = data
 
                             if (prevAction !== currentAction) {
                                 if (prevAction === 'TO_NEXT_BLOCK') {
-                                    // TODO: 뒤에 있던 블럭들 싹 지워야 한다. (트리 구조를 타고 쭉 전부)
-                                } else if (currentAction === 'TO_OTHER_BLOCK') {
-                                    // TODO: 지우자 커넥션
+                                    nodeBlockMap[preChildNodeId].delete()
+                                } else if (prevAction === 'TO_OTHER_BLOCK') {
+                                    app.removeConnection(o.buttonIndex)
                                 }
+
                                 if (currentAction === 'TO_NEXT_BLOCK') {
                                     const node = editor.getNodeFromId(o.nodeId)
-                                    const childNodeId = createNode(node.pos_x + 300, node.pos_y)
-                                    editor.addConnection(o.nodeId, childNodeId, Object.keys(node.outputs)[o.buttonIndex], Object.keys(editor.getNodeFromId(childNodeId).inputs)[0])
-                                    data.childNodeId = childNodeId
+                                    data.childNodeId = createNode(node.pos_x + 300, node.pos_y)
+                                    app.createConnection(o.buttonIndex, nodeBlockMap[data.childNodeId].id)
                                 } else if (currentAction === 'TO_OTHER_BLOCK') {
-                                    // TODO: 만들자 커넥션
+                                    app.createConnection(o.buttonIndex, data.block)
                                 }
+                            } else if (currentAction === 'TO_OTHER_BLOCK' && preBlock !== data.block) {
+                                app.removeConnection(o.buttonIndex)
+                                app.createConnection(o.buttonIndex, data.block)
                             }
                         },
                         checkDataStructure() {
@@ -1062,20 +1069,44 @@
                                 if (index <= 0) return
                                 const item = o.buttons.splice(index, 1)[0]
                                 o.buttons.splice(index - 1, 0, item)
-                                // TODO: 커넥션 순서 바꾸자
+
+                                const outputs = editor.getNodeFromId(o.nodeId).outputs
+                                const targetOutputClass = o.getOutputClass(index)
+                                const destinationOutputClass = o.getOutputClass(index - 1)
+
+                                outputs[targetOutputClass].connections.forEach(e => {
+                                    editor.removeSingleConnection(o.nodeId, e.node, targetOutputClass, e.output)
+                                    editor.addConnection(o.nodeId, e.node, destinationOutputClass, e.output)
+                                })
+                                outputs[destinationOutputClass].connections.forEach(e => {
+                                    editor.removeSingleConnection(o.nodeId, e.node, destinationOutputClass, e.output)
+                                    editor.addConnection(o.nodeId, e.node, targetOutputClass, e.output)
+                                })
                             },
                             moveDownButtonItem(index) {
                                 if (index >= o.buttons.length - 1) return
                                 const item = o.buttons.splice(index, 1)[0]
                                 o.buttons.splice(index + 1, 0, item)
-                                // TODO: 커넥션 순서 바꾸자
+
+                                const outputs = editor.getNodeFromId(o.nodeId).outputs
+                                const targetOutputClass = o.getOutputClass(index)
+                                const destinationOutputClass = o.getOutputClass(index + 1)
+
+                                outputs[targetOutputClass].connections.forEach(e => {
+                                    editor.removeSingleConnection(o.nodeId, e.node, targetOutputClass, e.output)
+                                    editor.addConnection(o.nodeId, e.node, destinationOutputClass, e.output)
+                                })
+                                outputs[destinationOutputClass].connections.forEach(e => {
+                                    editor.removeSingleConnection(o.nodeId, e.node, destinationOutputClass, e.output)
+                                    editor.addConnection(o.nodeId, e.node, targetOutputClass, e.output)
+                                })
                             },
                             removeButtonItem(index) {
                                 const removedButton = o.buttons.splice(index, 1)[0]
                                 o.showingEmptyButtonItem = !o.buttons || !o.buttons.length
 
                                 if (removedButton.action === 'TO_NEXT_BLOCK')
-                                    ; // TODO: 뒤에 있던 블럭들 싹 지워야 한다. (트리 구조를 타고 쭉 전부)
+                                    nodeBlockMap[removedButton.childNodeId].delete()
                             },
                             createButton() {
                                 o.buttons.push({name: ''})
@@ -1116,6 +1147,30 @@
                                 $('.chatbot-control-panel').removeClass('active');
                                 $('.chat-preview-manage').addClass('active');
                                 blockPreview.load(o.displays, o.buttons)
+                            },
+                            createConnection(buttonIndex, blockId) {
+                                const next = ((blockId) => {
+                                    for (let nodeId in nodeBlockMap)
+                                        if (nodeBlockMap[nodeId].id === blockId)
+                                            return {nodeId: nodeId, blockId: nodeBlockMap[nodeId].id, inputClass: nodeBlockMap[nodeId].getInputClass()}
+                                })(blockId)
+                                editor.addConnection(o.nodeId, next.nodeId, o.getOutputClass(buttonIndex), next.inputClass)
+                            },
+                            removeConnection(buttonIndex) {
+                                const outputs = editor.getNodeFromId(o.nodeId).outputs
+                                const outputClass = o.getOutputClass(buttonIndex)
+                                outputs[outputClass].connections.forEach(e => editor.removeSingleConnection(o.nodeId, e.node, outputClass, e.output))
+                            },
+                            getOutputClass(buttonIndex) {
+                                return Object.keys(editor.getNodeFromId(o.nodeId).outputs)[buttonIndex]
+                            },
+                            getInputClass() {
+                                return Object.keys(editor.getNodeFromId(o.nodeId).inputs)[0]
+                            },
+                            delete() {
+                                o.buttons.filter(e => e.action === 'TO_NEXT_BLOCK').forEach(e => nodeBlockMap[e.childNodeId].delete())
+                                editor.removeNodeId('node-' + o.nodeId)
+                                o.$.appContext.app.unmount()
                             }
                         },
                         updated() {
