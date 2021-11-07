@@ -1217,6 +1217,8 @@
                 $(this).parent('.chatbot-control-container').toggleClass('active')
             })
 
+            window.open('/sub-url/chatbot-test', '_blank', 'width=420px,height=800px,top=100,left=100,scrollbars=yes,resizable=no');
+
 
         </script>
     </tags:scripts>

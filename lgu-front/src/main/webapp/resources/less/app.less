@@ -323,6 +323,44 @@ pre {
   }
 }
 
+.chat-preview.window {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  padding: 0 0 51px 0;
+  border: 0;
+  .action {
+    .ui.form {
+      flex: 1;
+      padding: 0 10px 0 0;
+      input[type="text"] {
+        height: 32px;
+        padding: 5px;
+      }
+    }
+    .send-btn {
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      padding: 0;
+      vertical-align: middle;
+    }
+    .flex();
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    position: fixed;
+    width:100%;
+    bottom:0;
+    height: 51px;
+    border-top: 1px solid #c3c3c3;
+    background: @color-white;
+  }
+}
+
 .chat-preview {
   .no-drag();
   position: relative;
@@ -345,6 +383,30 @@ pre {
   .content.editor {
     padding: 0 7em 0 1em;
   }
+  .content.send-message {
+    .bubble-wrap {
+      .flex();
+      margin-bottom: 1em;
+      .bubble-inner {
+        position: relative;
+        margin-left: auto;
+        .bubble {
+          max-width: 306px;
+          background: #514F65;
+          color: #fff;
+          border-radius: 10px;
+          padding: 1em;
+        }
+        .time-text {
+          position: absolute;
+          bottom: 0;
+          left: -84px;
+          font-size: 11px;
+          color: #8f8f8f;
+        }
+      }
+    }
+  }
   .content {
     padding: 0 1em;
     .customer-img {
@@ -353,6 +415,7 @@ pre {
       margin: 0 0 .5em 0;
     }
     .chatbot-button {
+      overflow: hidden;
       background: #5B9BD5;
       border: 0;
       outline: 0;
@@ -361,8 +424,8 @@ pre {
       height: 40px;
       cursor: pointer;
       color: #fff;
-      margin: 0 0 10px 0;
-      &:last-child {
+      margin: 10px 0 0 0;
+      &:first-child {
         margin: 0;
       }
       &:only-child {
@@ -380,6 +443,7 @@ pre {
           .slt {
             width: 50px;
             margin: 0 7px 0 0;
+            height: 30px;
           }
           .unit {
             margin: 0 6px 0 2px;
@@ -481,6 +545,10 @@ pre {
       }
     }
     .sample-bubble {
+      .title {
+        font-weight: 800;
+        margin-bottom: 5px;
+      }
       position: relative;
       background: @color-white;
       box-shadow: rgba(1,1,1, .05) 0 4px 7px;
@@ -1342,6 +1410,9 @@ label.control-label {
 }
 .flex-100 {
   flex:1;
+}
+.overflow-auto {
+  overflow: auto !important;
 }
 .overflow-unset {
   overflow: unset !important;
