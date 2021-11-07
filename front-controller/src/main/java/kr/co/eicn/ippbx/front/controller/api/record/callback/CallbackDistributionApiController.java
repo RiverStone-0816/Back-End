@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.record.callback;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.record.callback.CallbackDistributionApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.CallbackDistListResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryCallbackDistPersonResponse;

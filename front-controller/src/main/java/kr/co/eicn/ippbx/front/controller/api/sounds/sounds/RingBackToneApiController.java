@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.front.controller.api.sounds.sounds;
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.model.form.RingBackToneForm;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.sounds.sounds.RingBackToneApiInterface;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import kr.co.eicn.ippbx.model.dto.eicn.MohDetailResponse;

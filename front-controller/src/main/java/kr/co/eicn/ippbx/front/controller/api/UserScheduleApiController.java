@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.front.controller.api;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.UserScheduleApiInterface;
 import kr.co.eicn.ippbx.model.entity.eicn.UserScheduleEntity;
 import kr.co.eicn.ippbx.model.form.UserScheduleFormRequest;

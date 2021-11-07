@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.service;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.service.ContextApiInterface;
 import kr.co.eicn.ippbx.model.form.ContextInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsFormRequest;

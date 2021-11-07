@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.user.tel;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.user.tel.NumberApiInterface;
 import kr.co.eicn.ippbx.front.service.api.user.tel.ServiceApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.ServiceListDetailResponse;

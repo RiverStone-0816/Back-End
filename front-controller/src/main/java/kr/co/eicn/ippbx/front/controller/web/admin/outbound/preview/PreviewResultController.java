@@ -4,7 +4,7 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbResultController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.search.PreviewResultSearch;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.application.type.CommonTypeApiInterface;
 import kr.co.eicn.ippbx.front.service.api.outbound.preview.PreviewDataApiInterface;
 import kr.co.eicn.ippbx.front.service.api.outbound.preview.PreviewGroupApiInterface;

@@ -4,7 +4,7 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.OrganizationTree;
 import kr.co.eicn.ippbx.front.model.search.OrganizationPanCondition;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.OrganizationApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.CompanyTreeLevelNameResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.OrganizationPersonSummaryResponse;

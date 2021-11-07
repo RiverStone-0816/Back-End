@@ -7,7 +7,7 @@ import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.ArsAuthInfo;
 import kr.co.eicn.ippbx.front.model.CurrentUserMenu;
 import kr.co.eicn.ippbx.front.model.form.LoginForm;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.AuthApiInterface;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.DaemonInfoInterface;

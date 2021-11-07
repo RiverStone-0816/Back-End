@@ -2,26 +2,20 @@ package kr.co.eicn.ippbx.front.controller.api.dashboard;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.dashboard.DashboardApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
-import kr.co.eicn.ippbx.model.dto.statdb.*;
 import kr.co.eicn.ippbx.model.form.DashboardViewListFormRequest;
-import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
  * @author tinywind

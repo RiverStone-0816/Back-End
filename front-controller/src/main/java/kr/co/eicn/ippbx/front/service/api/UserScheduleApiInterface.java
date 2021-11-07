@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.front.service.api;
 
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.model.entity.eicn.UserScheduleEntity;
 import kr.co.eicn.ippbx.model.form.UserScheduleFormRequest;
 import kr.co.eicn.ippbx.model.search.UserScheduleSearchRequest;

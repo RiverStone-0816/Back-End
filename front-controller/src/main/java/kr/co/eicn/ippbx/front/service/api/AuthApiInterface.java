@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.service.api;
 
 import kr.co.eicn.ippbx.front.model.ArsAuthInfo;
 import kr.co.eicn.ippbx.front.model.form.LoginForm;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SipBuddies;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package kr.co.eicn.ippbx.front.service;
+package kr.co.eicn.ippbx.util;
 
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.Data;

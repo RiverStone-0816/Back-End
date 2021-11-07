@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.front.service.api;
 
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.model.dto.eicn.CompanyTreeLevelNameResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.OrganizationPersonSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;

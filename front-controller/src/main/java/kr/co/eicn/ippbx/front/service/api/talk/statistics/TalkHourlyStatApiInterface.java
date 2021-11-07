@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.front.service.api.talk.statistics;
 
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.model.dto.statdb.TalkStatisticsHourlyResponse;
 import kr.co.eicn.ippbx.model.search.TalkStatisticsHourlySearchRequest;

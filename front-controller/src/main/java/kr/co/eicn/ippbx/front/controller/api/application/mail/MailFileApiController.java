@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.model.form.MailFileForm;
 import kr.co.eicn.ippbx.front.model.form.MailFileUpdateForm;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.application.mail.MailFileApiInterface;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import kr.co.eicn.ippbx.model.dto.eicn.SendFileResponse;

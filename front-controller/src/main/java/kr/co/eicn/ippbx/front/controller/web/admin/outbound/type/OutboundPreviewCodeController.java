@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.outbound.type;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.OrganizationService;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.outbound.type.OutboundCommonCodeApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.CommonTypeDetailResponse;
 import kr.co.eicn.ippbx.model.enums.CommonTypeKind;

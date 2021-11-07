@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.user.tel;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.user.tel.ServiceApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.ServiceListDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.ServiceListSummaryResponse;

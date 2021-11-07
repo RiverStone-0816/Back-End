@@ -2,12 +2,11 @@ package kr.co.eicn.ippbx.front.controller.api.talk;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.talk.TalkTemplateApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkTemplateSummaryResponse;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
 import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
-import kr.co.eicn.ippbx.util.page.Pagination;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

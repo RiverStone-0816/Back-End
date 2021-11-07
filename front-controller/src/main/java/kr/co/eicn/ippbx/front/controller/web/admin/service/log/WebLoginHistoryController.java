@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.service.log;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.service.log.WebLoginHistoryApiInterface;
 import kr.co.eicn.ippbx.front.service.excel.LoginHistoryExcel;
 import kr.co.eicn.ippbx.util.page.Pagination;

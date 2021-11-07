@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.front.controller.api.user.user;
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.user.user.UserApiInterface;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse;

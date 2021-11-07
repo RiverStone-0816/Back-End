@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.front.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.eicn.ippbx.exception.UnauthorizedException;
 import kr.co.eicn.ippbx.exception.ValidationException;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

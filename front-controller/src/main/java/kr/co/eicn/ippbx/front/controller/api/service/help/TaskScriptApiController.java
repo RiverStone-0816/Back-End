@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.model.form.TaskScriptCategoryForm;
 import kr.co.eicn.ippbx.front.model.form.TaskScriptForm;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.service.help.TaskScriptApiInterface;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import kr.co.eicn.ippbx.model.dto.eicn.TaskScriptDetailResponse;

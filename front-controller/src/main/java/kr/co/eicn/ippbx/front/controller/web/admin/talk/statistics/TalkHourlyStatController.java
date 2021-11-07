@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.talk.statistics;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.talk.group.TalkReceptionGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.talk.statistics.TalkHourlyStatApiInterface;
 import kr.co.eicn.ippbx.front.service.excel.TalkHourlyStatExcel;

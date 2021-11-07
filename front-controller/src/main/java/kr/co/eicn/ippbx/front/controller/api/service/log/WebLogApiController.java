@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.service.log;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.service.log.WebLogApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.LoginInfoResponse;
 import org.slf4j.Logger;

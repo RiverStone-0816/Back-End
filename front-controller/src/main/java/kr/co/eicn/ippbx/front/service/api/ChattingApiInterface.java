@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.service.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.eicn.ippbx.exception.UnauthorizedException;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.model.dto.configdb.ChattRoomResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.ScoreMonitorResponse;
@@ -24,15 +24,11 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 @Slf4j
 @Service

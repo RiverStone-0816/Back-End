@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbData
 import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbResultController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.search.RecordCallSearchForm;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.CounselApiInterface;
 import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;

@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.front.service.api;
 
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServerInfo;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryCompanyServerResponse;

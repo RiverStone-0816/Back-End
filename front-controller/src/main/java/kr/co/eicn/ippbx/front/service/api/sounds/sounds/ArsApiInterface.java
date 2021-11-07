@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.front.service.api.sounds.sounds;
 
 import kr.co.eicn.ippbx.front.model.form.ArsForm;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;

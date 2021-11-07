@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.outbound.pds;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.outbound.pds.PdsCustominfoApiInterface;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import kr.co.eicn.ippbx.model.entity.pds.PDSCustomInfoEntity;

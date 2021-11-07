@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.front.service.api.talk.schedule;
 
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryTalkScheduleInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryTalkServiceResponse;

@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.record.evaluation;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.record.evaluation.EvaluationFormApiInterface;
 import kr.co.eicn.ippbx.front.service.api.record.evaluation.EvaluationResultApiInterface;
 import kr.co.eicn.ippbx.front.service.api.record.history.RecordingHistoryApiInterface;

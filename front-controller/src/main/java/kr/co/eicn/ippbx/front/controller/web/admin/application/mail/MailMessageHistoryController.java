@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.application.mail;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.application.mail.MailHistoryApiInterface;
 import kr.co.eicn.ippbx.front.service.excel.MailHistoryExcel;
 import kr.co.eicn.ippbx.util.FormUtils;

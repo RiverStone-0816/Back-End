@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.monitor;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.monitor.consultant.PartMonitoringApiInterface;
 import kr.co.eicn.ippbx.front.service.api.monitor.consultant.QueueMonitoringApiInterface;
@@ -16,7 +16,6 @@ import kr.co.eicn.ippbx.model.dto.util.HourResponse;
 import kr.co.eicn.ippbx.model.enums.SearchCycle;
 import kr.co.eicn.ippbx.model.search.StatInboundSearchRequest;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.val;
 import org.apache.commons.lang3.tuple.MutablePair;
@@ -35,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 /**
  * @author tinywind

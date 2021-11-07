@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.front.service.OrganizationService;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.outbound.pds.PdsGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.outbound.preview.PreviewGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.record.callback.CallbackHistoryApiInterface;

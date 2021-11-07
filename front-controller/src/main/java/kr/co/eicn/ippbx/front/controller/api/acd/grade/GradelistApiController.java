@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.front.controller.api.acd.grade;
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.model.form.GradeFileForm;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.acd.grade.GradelistApiInterface;
 import kr.co.eicn.ippbx.model.form.GradeListFormRequest;
 import org.slf4j.Logger;

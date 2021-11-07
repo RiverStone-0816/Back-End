@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.record.file;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.record.file.RecordFileApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.DiskResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.FileSummaryResponse;

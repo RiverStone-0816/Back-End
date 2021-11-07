@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.service.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.eicn.ippbx.exception.UnauthorizedException;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.model.dto.customdb.CustomMultichannelInfoResponse;
 import kr.co.eicn.ippbx.model.dto.customdb.MainReceivePathResponse;

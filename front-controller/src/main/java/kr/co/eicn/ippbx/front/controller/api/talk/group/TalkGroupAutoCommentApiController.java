@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.talk.group;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.talk.group.TalkGroupAutoCommentApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkMentDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkMentSummaryResponse;

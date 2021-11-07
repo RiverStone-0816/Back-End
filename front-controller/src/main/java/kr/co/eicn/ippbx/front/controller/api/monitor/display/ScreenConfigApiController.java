@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.monitor.display;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.monitor.display.ScreenConfigApiInterface;
 import kr.co.eicn.ippbx.model.entity.eicn.ScreenConfigEntity;
 import kr.co.eicn.ippbx.model.form.ScreenConfigFormRequest;

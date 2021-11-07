@@ -2,8 +2,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.monitor;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
-import kr.co.eicn.ippbx.front.service.api.ChattingApiInterface;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.OrganizationApiInterface;
 import kr.co.eicn.ippbx.front.service.api.monitor.consultant.PartMonitoringApiInterface;

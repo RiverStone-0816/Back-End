@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.front.model.search.MaindbDataSearch;
 import kr.co.eicn.ippbx.front.model.search.MaindbResultSearch;
 import kr.co.eicn.ippbx.front.model.search.RecordCallSearchForm;
 import kr.co.eicn.ippbx.front.service.OrganizationService;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.*;
 import kr.co.eicn.ippbx.front.service.api.acd.QueueApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.grade.GradelistApiInterface;

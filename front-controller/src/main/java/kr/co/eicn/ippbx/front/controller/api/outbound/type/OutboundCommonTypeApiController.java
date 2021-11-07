@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.outbound.type;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.outbound.type.OutboundCommonTypeApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonBasicField;
 import kr.co.eicn.ippbx.model.entity.eicn.CommonTypeEntity;

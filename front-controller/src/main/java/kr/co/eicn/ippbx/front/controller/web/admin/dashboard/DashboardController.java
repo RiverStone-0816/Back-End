@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.dashboard;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.QueueSummaryAndMemberPeers;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.QueueApiInterface;
 import kr.co.eicn.ippbx.front.service.api.dashboard.DashboardApiInterface;

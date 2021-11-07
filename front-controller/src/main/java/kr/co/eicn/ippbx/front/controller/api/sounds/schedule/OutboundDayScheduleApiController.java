@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.sounds.schedule;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.sounds.schedule.OutboundDayScheduleApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.OutScheduleSeedDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryPhoneInfoResponse;

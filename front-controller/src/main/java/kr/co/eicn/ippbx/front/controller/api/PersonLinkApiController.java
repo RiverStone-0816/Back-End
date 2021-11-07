@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.front.controller.api;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.PersonLinkApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonLink;
 import kr.co.eicn.ippbx.model.form.PersonLinkFormRequest;

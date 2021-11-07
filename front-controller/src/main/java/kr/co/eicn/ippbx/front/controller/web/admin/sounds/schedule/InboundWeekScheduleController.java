@@ -4,7 +4,7 @@ import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.OrganizationService;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.sounds.schedule.InboundWeekScheduleApiInterface;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.model.dto.eicn.Number070ScheduleInfoDetailResponse;

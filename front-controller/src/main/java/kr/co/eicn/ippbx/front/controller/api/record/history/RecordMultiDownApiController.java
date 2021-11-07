@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.record.history;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.record.history.RecordMultiDownApiInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

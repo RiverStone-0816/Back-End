@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.front.service.api.application.maindb;
 
 import kr.co.eicn.ippbx.front.model.form.FileForm;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField;

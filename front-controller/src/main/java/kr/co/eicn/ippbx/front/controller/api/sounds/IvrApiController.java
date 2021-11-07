@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.sounds;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.sounds.IvrApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree;
 import kr.co.eicn.ippbx.model.dto.eicn.IvrResponse;

@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.front.controller.api.outbound.type;
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.outbound.type.OutboundCommonCodeApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.CommonTypeDetailResponse;
 import kr.co.eicn.ippbx.model.form.CommonCodeUpdateFormRequest;

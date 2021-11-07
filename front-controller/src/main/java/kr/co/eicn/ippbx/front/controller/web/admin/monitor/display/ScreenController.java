@@ -4,7 +4,7 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.ScreenDataForByService;
 import kr.co.eicn.ippbx.front.model.ScreenDataForIntegration;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.monitor.consultant.PartMonitoringApiInterface;
 import kr.co.eicn.ippbx.front.service.api.monitor.display.ScreenConfigApiInterface;
@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**

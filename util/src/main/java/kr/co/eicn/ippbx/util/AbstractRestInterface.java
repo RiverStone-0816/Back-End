@@ -1,12 +1,10 @@
-package kr.co.eicn.ippbx.front.service;
+package kr.co.eicn.ippbx.util;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import kr.co.eicn.ippbx.util.JsonResult;
-import kr.co.eicn.ippbx.util.UrlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;

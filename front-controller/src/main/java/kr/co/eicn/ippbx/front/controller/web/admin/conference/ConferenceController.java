@@ -6,7 +6,7 @@ import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.ConferenceDay;
 import kr.co.eicn.ippbx.front.model.ConferenceWeek;
 import kr.co.eicn.ippbx.front.model.form.ConfInfoCopyForm;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.conference.ConferenceApiInterface;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.model.dto.eicn.*;

@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.front.service.OrganizationService;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.outbound.type.OutboundCommonCodeApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.CommonFieldResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.RelatedFieldResponse;

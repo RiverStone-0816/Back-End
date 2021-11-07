@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.model.ScreenDataForByHunt;
 import kr.co.eicn.ippbx.front.model.ScreenDataForByService;
 import kr.co.eicn.ippbx.front.model.ScreenDataForIntegration;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.monitor.display.ScreenDataApiInterface;
 import kr.co.eicn.ippbx.model.form.ByHuntSuccessPerData;
 import org.slf4j.Logger;

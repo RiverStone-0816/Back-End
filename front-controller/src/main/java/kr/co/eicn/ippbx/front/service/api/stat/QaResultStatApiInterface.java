@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.front.service.api.stat;
 
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultIndividualResponse;
 import kr.co.eicn.ippbx.model.dto.customdb.StatQaResultResponse;

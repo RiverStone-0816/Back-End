@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.application.type;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.application.type.CommonTypeApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonBasicField;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField;

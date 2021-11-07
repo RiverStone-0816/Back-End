@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.monitor.consultant;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.monitor.consultant.IvrMonitoringApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.MonitorIvrResponse;
 import org.slf4j.Logger;

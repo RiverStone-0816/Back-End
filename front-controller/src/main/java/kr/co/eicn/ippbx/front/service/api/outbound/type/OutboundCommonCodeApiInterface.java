@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.front.service.api.outbound.type;
 
 import kr.co.eicn.ippbx.front.model.form.FileForm;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.CommonFieldResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.CommonTypeDetailResponse;

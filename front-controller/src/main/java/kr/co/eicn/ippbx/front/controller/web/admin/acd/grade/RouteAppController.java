@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.acd.grade;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.acd.grade.RouteAppApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.grade.GradelistApiInterface;
 import kr.co.eicn.ippbx.util.FormUtils;

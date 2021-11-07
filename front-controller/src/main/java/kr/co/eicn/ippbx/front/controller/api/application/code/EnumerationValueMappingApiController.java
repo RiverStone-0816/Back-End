@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.application.code;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.application.code.EnumerationValueMappingApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.ConCodeResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.ConGroupResponse;

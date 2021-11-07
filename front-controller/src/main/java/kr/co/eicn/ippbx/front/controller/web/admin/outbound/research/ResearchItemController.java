@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.outbound.research;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.front.service.ResultFailException;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.outbound.research.ResearchItemApiInterface;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;

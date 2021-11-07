@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.front.service;
 import kr.co.eicn.ippbx.front.service.api.OrganizationApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.CompanyTreeLevelNameResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
