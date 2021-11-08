@@ -169,6 +169,9 @@
             </div>
         </div>
         <div class="action">
+            <div>
+                <button type="button" class="home-btn"><img src="<c:url value="../resources/images/material-home.svg"/>"></button>
+            </div>
             <div class="ui form">
                 <input type="text" placeholder="문의사항을 입력하세요.">
             </div>
