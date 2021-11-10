@@ -95,7 +95,7 @@ public class MainController extends BaseController {
 
     @GetMapping("sub-url/**")
     public String page(Model model, HttpServletRequest request) {
-        return request.getRequestURI();
+        return request.getRequestURI().substring(request.getContextPath().length());
     }
 
     @GetMapping("favicon.ico")

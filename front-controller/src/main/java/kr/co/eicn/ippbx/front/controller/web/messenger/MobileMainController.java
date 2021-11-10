@@ -75,10 +75,9 @@ public class MobileMainController extends MessengerBaseController {
         return "redirect:/resources/ipcc-messenger/images/favicon.ico";
     }
 
-
     @GetMapping("sub-url/**")
     public String page(HttpServletRequest request) {
-        return request.getRequestURI();
+        return request.getRequestURI().substring(request.getContextPath().length());
     }
 
     @GetMapping("")
