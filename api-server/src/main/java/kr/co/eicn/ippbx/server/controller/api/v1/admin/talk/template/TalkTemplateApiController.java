@@ -69,7 +69,8 @@ public class TalkTemplateApiController extends ApiBaseController {
                     talkTemplateSummaryResponse.setWriteUserName(Objects.nonNull(personListMap.get(e.getWriteUserid()))
                             ? personListMap.get(e.getWriteUserid()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
 
-                    talkTemplateSummaryResponse.setTypeGroup(companyTreeMap.get(e.getTypeData()).getGroupTreeName());
+                    if(Objects.equals(TalkTemplate.GROUP.getCode(), e.getType()))
+                        talkTemplateSummaryResponse.setTypeGroup(companyTreeMap.get(e.getTypeData()).getGroupTreeName());
                     if (Objects.equals(TalkTemplate.PERSON.getCode(), e.getType()))
 
                         talkTemplateSummaryResponse.setTypeDataName(Objects.nonNull(personListMap.get(e.getTypeData())) ?
@@ -105,8 +106,8 @@ public class TalkTemplateApiController extends ApiBaseController {
                     talkTemplateSummaryResponse.setWriteUserName(Objects.nonNull(personListMap.get(e.getWriteUserid()))
                             ? personListMap.get(e.getWriteUserid()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
 
-
-                    talkTemplateSummaryResponse.setTypeGroup(companyTreeMap.get(e.getTypeData()).getGroupTreeName());
+                    if(Objects.equals(TalkTemplate.GROUP.getCode(), e.getType()))
+                        talkTemplateSummaryResponse.setTypeGroup(companyTreeMap.get(e.getTypeData()).getGroupTreeName());
                     if (Objects.equals(TalkTemplate.PERSON.getCode(), e.getType()))
                         talkTemplateSummaryResponse.setTypeDataName(Objects.nonNull(personListMap.get(e.getTypeData())) ?
                                 personListMap.get(e.getTypeData()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
