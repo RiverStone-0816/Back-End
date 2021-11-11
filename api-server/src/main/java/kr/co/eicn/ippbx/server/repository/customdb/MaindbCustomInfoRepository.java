@@ -26,7 +26,6 @@ import kr.co.eicn.ippbx.server.service.MaindbMultichannelInfoService;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
-import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
@@ -75,33 +74,33 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
         TABLE = new CommonMaindbCustomInfo(companyId);
         multichannelInfoTable = new kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo(companyId);
 
-        addField(TABLE.MAINDB_SYS_CUSTOM_ID,TABLE.MAINDB_SYS_UPLOAD_DATE,TABLE.MAINDB_SYS_UPDATE_DATE,
-                TABLE.MAINDB_SYS_GROUP_ID,TABLE.MAINDB_SYS_GROUP_TYPE,TABLE.MAINDB_SYS_RESULT_TYPE,
-                TABLE.MAINDB_SYS_DAMDANG_ID,TABLE.MAINDB_SYS_LAST_RESULT_ID,TABLE.MAINDB_SYS_LAST_RESULT_DATE,
+        addField(TABLE.MAINDB_SYS_CUSTOM_ID, TABLE.MAINDB_SYS_UPLOAD_DATE, TABLE.MAINDB_SYS_UPDATE_DATE,
+                TABLE.MAINDB_SYS_GROUP_ID, TABLE.MAINDB_SYS_GROUP_TYPE, TABLE.MAINDB_SYS_RESULT_TYPE,
+                TABLE.MAINDB_SYS_DAMDANG_ID, TABLE.MAINDB_SYS_LAST_RESULT_ID, TABLE.MAINDB_SYS_LAST_RESULT_DATE,
                 TABLE.MAINDB_SYS_COMPANY_ID,
-                TABLE.MAINDB_DATE_1,TABLE.MAINDB_DATE_2,TABLE.MAINDB_DATE_3,
-                TABLE.MAINDB_DAY_1,TABLE.MAINDB_DAY_2,TABLE.MAINDB_DAY_3,
-                TABLE.MAINDB_DATETIME_1,TABLE.MAINDB_DATETIME_2,TABLE.MAINDB_DATETIME_3,
-                TABLE.MAINDB_INT_1,TABLE.MAINDB_INT_2,TABLE.MAINDB_INT_3,TABLE.MAINDB_INT_4,TABLE.MAINDB_INT_5,
-                TABLE.MAINDB_STRING_1,TABLE.MAINDB_STRING_2,TABLE.MAINDB_STRING_3,TABLE.MAINDB_STRING_4,TABLE.MAINDB_STRING_5,
-                TABLE.MAINDB_STRING_6,TABLE.MAINDB_STRING_7,TABLE.MAINDB_STRING_8,TABLE.MAINDB_STRING_9,TABLE.MAINDB_STRING_10,
-                TABLE.MAINDB_STRING_11,TABLE.MAINDB_STRING_12,TABLE.MAINDB_STRING_13,TABLE.MAINDB_STRING_14,TABLE.MAINDB_STRING_15,
-                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_16,"eicn_"+companyId).as(TABLE.MAINDB_STRING_16),
-                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_17,"eicn_"+companyId).as(TABLE.MAINDB_STRING_17),
-                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_18,"eicn_"+companyId).as(TABLE.MAINDB_STRING_18),
-                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_19,"eicn_"+companyId).as(TABLE.MAINDB_STRING_19),
-                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_20,"eicn_"+companyId).as(TABLE.MAINDB_STRING_20),
-                TABLE.MAINDB_CODE_1,TABLE.MAINDB_CODE_2,TABLE.MAINDB_CODE_3,TABLE.MAINDB_CODE_4,TABLE.MAINDB_CODE_5,
-                TABLE.MAINDB_CODE_6,TABLE.MAINDB_CODE_7,TABLE.MAINDB_CODE_8,TABLE.MAINDB_CODE_9,TABLE.MAINDB_CODE_10,
-                TABLE.MAINDB_MULTICODE_1,TABLE.MAINDB_MULTICODE_2,TABLE.MAINDB_MULTICODE_3,
-                TABLE.MAINDB_INT_1,TABLE.MAINDB_INT_2,TABLE.MAINDB_INT_3,
-                TABLE.MAINDB_CONCODE_1,TABLE.MAINDB_CONCODE_2,TABLE.MAINDB_CONCODE_3,
-                TABLE.MAINDB_CSCODE_1,TABLE.MAINDB_CSCODE_2,TABLE.MAINDB_CSCODE_3
+                TABLE.MAINDB_DATE_1, TABLE.MAINDB_DATE_2, TABLE.MAINDB_DATE_3,
+                TABLE.MAINDB_DAY_1, TABLE.MAINDB_DAY_2, TABLE.MAINDB_DAY_3,
+                TABLE.MAINDB_DATETIME_1, TABLE.MAINDB_DATETIME_2, TABLE.MAINDB_DATETIME_3,
+                TABLE.MAINDB_INT_1, TABLE.MAINDB_INT_2, TABLE.MAINDB_INT_3, TABLE.MAINDB_INT_4, TABLE.MAINDB_INT_5,
+                TABLE.MAINDB_STRING_1, TABLE.MAINDB_STRING_2, TABLE.MAINDB_STRING_3, TABLE.MAINDB_STRING_4, TABLE.MAINDB_STRING_5,
+                TABLE.MAINDB_STRING_6, TABLE.MAINDB_STRING_7, TABLE.MAINDB_STRING_8, TABLE.MAINDB_STRING_9, TABLE.MAINDB_STRING_10,
+                TABLE.MAINDB_STRING_11, TABLE.MAINDB_STRING_12, TABLE.MAINDB_STRING_13, TABLE.MAINDB_STRING_14, TABLE.MAINDB_STRING_15,
+                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_16, "eicn_" + companyId).as(TABLE.MAINDB_STRING_16),
+                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_17, "eicn_" + companyId).as(TABLE.MAINDB_STRING_17),
+                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_18, "eicn_" + companyId).as(TABLE.MAINDB_STRING_18),
+                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_19, "eicn_" + companyId).as(TABLE.MAINDB_STRING_19),
+                CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_20, "eicn_" + companyId).as(TABLE.MAINDB_STRING_20),
+                TABLE.MAINDB_CODE_1, TABLE.MAINDB_CODE_2, TABLE.MAINDB_CODE_3, TABLE.MAINDB_CODE_4, TABLE.MAINDB_CODE_5,
+                TABLE.MAINDB_CODE_6, TABLE.MAINDB_CODE_7, TABLE.MAINDB_CODE_8, TABLE.MAINDB_CODE_9, TABLE.MAINDB_CODE_10,
+                TABLE.MAINDB_MULTICODE_1, TABLE.MAINDB_MULTICODE_2, TABLE.MAINDB_MULTICODE_3,
+                TABLE.MAINDB_INT_1, TABLE.MAINDB_INT_2, TABLE.MAINDB_INT_3,
+                TABLE.MAINDB_CONCODE_1, TABLE.MAINDB_CONCODE_2, TABLE.MAINDB_CONCODE_3,
+                TABLE.MAINDB_CSCODE_1, TABLE.MAINDB_CSCODE_2, TABLE.MAINDB_CSCODE_3
         );
         addField(MAINDB_GROUP);
         addField(COMMON_TYPE);
 
-        addField(CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_16.getName(),"eicn_"+getCompanyId()).as("MAINDB_STRING_16"));
+        addField(CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_16.getName(), "eicn_" + getCompanyId()).as("MAINDB_STRING_16"));
         addOrderingField(TABLE.MAINDB_SYS_UPLOAD_DATE.desc());
     }
 
@@ -259,38 +258,43 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
 
         final List<? extends Class<? extends Serializable>> insertableFieldTypes = Arrays.asList(Date.class, Timestamp.class, Integer.class, String.class);
         FnEncStringText fnEncStringText = new FnEncStringText();
-        for (java.lang.reflect.Field field : form.getClass().getDeclaredFields()) {
-            if (!insertableFieldTypes.contains(field.getType()))
-                continue;
 
-            final String fieldName = field.getName();
-            final Field<?> tableField = TABLE.field("MAINDB_" + fieldName.toUpperCase());
-            if (tableField == null)
-                continue;
 
-            final String capName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-            final Object invoked = form.getClass().getMethod("get" + capName).invoke(form);
+        for (Class<?> aClass = form.getClass(); !aClass.equals(Object.class); aClass = aClass.getSuperclass()) {
+            for (java.lang.reflect.Field field : aClass.getDeclaredFields()) {
+                if (!insertableFieldTypes.contains(field.getType()))
+                    continue;
 
-            if (tableField.getType().equals(Date.class)) {
-                query.set((Field<Date>) tableField, (Date) invoked);
-            } else if (tableField.getType().equals(Timestamp.class)) {
-                query.set((Field<Timestamp>) tableField, (Timestamp) invoked);
-            } else if (tableField.getType().equals(Integer.class)) {
-                query.set((Field<Integer>) tableField, (Integer) invoked);
-            } else { // String.class
-                if (StringUtils.isNotEmpty((String) invoked) && fieldName.contains("img")) {
-                    final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
-                    maindbCustomInfoService.uploadImgWithFileStore((String) invoked, null);
-                    query.set((Field<String>) tableField, path.toString() + "/" + (String) invoked);
-                } else {
-                    if(fieldName.contains("string_") && Integer.parseInt(fieldName.replace("string_","")) > 15){
-                        query.set((Field<String>) tableField, CommonRoutines.fnEncStringText((String) invoked,"eicn_" + getCompanyId()));
-                    } else{
-                        query.set((Field<String>) tableField, (String) invoked);
+                final String fieldName = field.getName();
+                final Field<?> tableField = TABLE.field("MAINDB_" + fieldName.toUpperCase());
+                if (tableField == null)
+                    continue;
+
+                final String capName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                final Object invoked = aClass.getMethod("get" + capName).invoke(form);
+
+                if (tableField.getType().equals(Date.class)) {
+                    query.set((Field<Date>) tableField, (Date) invoked);
+                } else if (tableField.getType().equals(Timestamp.class)) {
+                    query.set((Field<Timestamp>) tableField, (Timestamp) invoked);
+                } else if (tableField.getType().equals(Integer.class)) {
+                    query.set((Field<Integer>) tableField, (Integer) invoked);
+                } else { // String.class
+                    if (StringUtils.isNotEmpty((String) invoked) && fieldName.contains("img")) {
+                        final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
+                        maindbCustomInfoService.uploadImgWithFileStore((String) invoked, null);
+                        query.set((Field<String>) tableField, path.toString() + "/" + (String) invoked);
+                    } else {
+                        if (fieldName.contains("string_") && Integer.parseInt(fieldName.replace("string_", "")) > 15) {
+                            query.set((Field<String>) tableField, CommonRoutines.fnEncStringText((String) invoked, "eicn_" + getCompanyId()));
+                        } else {
+                            query.set((Field<String>) tableField, (String) invoked);
+                        }
                     }
                 }
             }
         }
+
 
         final String customName = form.getString_1() != null ? form.getString_1() : "";
 
@@ -357,36 +361,38 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
         //.set(TABLE.MAINDB_SYS_RESULT_TYPE, maindbGroup.getResultpe());
 
         final List<? extends Class<? extends Serializable>> insertableFieldTypes = Arrays.asList(Date.class, Timestamp.class, Integer.class, String.class);
-        for (java.lang.reflect.Field field : form.getClass().getDeclaredFields()) {
-            if (!insertableFieldTypes.contains(field.getType()))
-                continue;
+        for (Class<?> aClass = form.getClass(); !aClass.equals(Object.class); aClass = aClass.getSuperclass()) {
+            for (java.lang.reflect.Field field : aClass.getDeclaredFields()) {
+                if (!insertableFieldTypes.contains(field.getType()))
+                    continue;
 
-            final String fieldName = field.getName();
-            final Field<?> tableField = TABLE.field("MAINDB_" + fieldName.toUpperCase());
-            if (tableField == null)
-                continue;
+                final String fieldName = field.getName();
+                final Field<?> tableField = TABLE.field("MAINDB_" + fieldName.toUpperCase());
+                if (tableField == null)
+                    continue;
 
-            final String capName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-            final Object invoked = form.getClass().getMethod("get" + capName).invoke(form);
+                final String capName = fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+                final Object invoked = aClass.getMethod("get" + capName).invoke(form);
 
-            if (tableField.getType().equals(Date.class)) {
-                query.set((Field<Date>) tableField, (Date) invoked);
-            } else if (tableField.getType().equals(Timestamp.class)) {
-                query.set((Field<Timestamp>) tableField, (Timestamp) invoked);
-            } else if (tableField.getType().equals(Integer.class)) {
-                query.set((Field<Integer>) tableField, (Integer) invoked);
-            } else { // String.class
-                if (StringUtils.isNotEmpty((String) invoked) && fieldName.contains("img")) {
-                    final MaindbCustomInfoEntity entity = findOne(TABLE.MAINDB_SYS_CUSTOM_ID.eq(id));
-                    final String oldFileName = fieldName.contains("1") ? entity.getMaindbImg_1() : (fieldName.contains("2") ? entity.getMaindbImg_2() : entity.getMaindbImg_3());
-                    final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
-                    maindbCustomInfoService.uploadImgWithFileStore((String) invoked, oldFileName);
-                    query.set((Field<String>) tableField, path.toString() + "/" + (String) invoked);
-                } else {
-                    if (fieldName.contains("string_") && Integer.parseInt(fieldName.replace("string_", "")) > 15) {
-                        query.set((Field<String>) tableField, CommonRoutines.fnEncStringText((String) invoked,"eicn_" + getCompanyId()));
+                if (tableField.getType().equals(Date.class)) {
+                    query.set((Field<Date>) tableField, (Date) invoked);
+                } else if (tableField.getType().equals(Timestamp.class)) {
+                    query.set((Field<Timestamp>) tableField, (Timestamp) invoked);
+                } else if (tableField.getType().equals(Integer.class)) {
+                    query.set((Field<Integer>) tableField, (Integer) invoked);
+                } else { // String.class
+                    if (StringUtils.isNotEmpty((String) invoked) && fieldName.contains("img")) {
+                        final MaindbCustomInfoEntity entity = findOne(TABLE.MAINDB_SYS_CUSTOM_ID.eq(id));
+                        final String oldFileName = fieldName.contains("1") ? entity.getMaindbImg_1() : (fieldName.contains("2") ? entity.getMaindbImg_2() : entity.getMaindbImg_3());
+                        final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
+                        maindbCustomInfoService.uploadImgWithFileStore((String) invoked, oldFileName);
+                        query.set((Field<String>) tableField, path.toString() + "/" + (String) invoked);
                     } else {
-                        query.set((Field<String>) tableField, (String) invoked);
+                        if (fieldName.contains("string_") && Integer.parseInt(fieldName.replace("string_", "")) > 15) {
+                            query.set((Field<String>) tableField, CommonRoutines.fnEncStringText((String) invoked, "eicn_" + getCompanyId()));
+                        } else {
+                            query.set((Field<String>) tableField, (String) invoked);
+                        }
                     }
                 }
             }
