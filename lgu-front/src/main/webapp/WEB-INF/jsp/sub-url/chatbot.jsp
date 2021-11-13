@@ -123,20 +123,39 @@
                                             </div>
                                             <div class="mb15">폴백 대사 입력</div>
                                             <div class="ui form fluid mb15">
-                                                <textarea rows="8" v-model="input.announcement"></textarea>
+                                                <textarea rows="8" v-model="input.fallbackMent"></textarea>
                                             </div>
                                             <div class="mb15">동작</div>
                                             <div class="ui form fluid mb15">
-                                                <select v-model="input.action">
-                                                    <option value="GOTO_ROOT">처음으로 가기</option>
-                                                    <option value="GOTO_GROUP">상담그룹연결</option>
+                                                <select v-model="input.fallbackAction">
+                                                    <option value="first">처음으로 가기</option>
+                                                    <option value="member">상담그룹연결</option>
+                                                    <option value="url">URL 연결</option>
+                                                    <option value="block">다른 블록으로 연결</option>
+                                                    <option value="phone">전화 연결</option>
                                                 </select>
                                             </div>
-                                            <div v-if="input.action === 'GOTO_GROUP'" class="mb10">상담그룹</div>
-                                            <div v-if="input.action === 'GOTO_GROUP'" class="ui form fluid mb10">
-                                                <select v-model="input.group">
+                                            <div v-if="input.fallbackAction === 'member'" class="mb10">상담그룹</div>
+                                            <div v-if="input.fallbackAction === 'member'" class="ui form fluid mb10">
+                                                <select v-model="input.nextGroupId">
                                                     <option v-for="(e,i) in groups" :key="i" :value="e.name">{{ e.hanName }}</option>
                                                 </select>
+                                            </div>
+                                            <div v-if="input.fallbackAction === 'url'" class="mb10">연결 URL 설정</div>
+                                            <div v-if="input.fallbackAction === 'url'" class="ui form fluid mb10">
+                                                <input type="text" v-model="input.nextUrl">
+                                            </div>
+                                            <div v-if="input.fallbackAction === 'block'">
+                                                <div class="mb15">연결 블록 설정</div>
+                                                <div class="ui form fluid mb15">
+                                                    <select v-model="input.nextBlockId">
+                                                        <option v-for="(e,i) in blocks" :key="i" :value="e.id">{{ e.name }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div v-if="input.fallbackAction === 'phone'" class="mb10">연결 번호 설정</div>
+                                            <div v-if="input.fallbackAction === 'phone'" class="ui form fluid mb10">
+                                                <input type="text" v-model="input.nextPhone">
                                             </div>
                                         </div>
                                     </div>
@@ -302,56 +321,56 @@
                                             <div class="mb15">버튼 액션</div>
                                             <div class="ui form fluid mb15">
                                                 <select v-model="data.action">
-                                                    <option value="TO_NEXT_BLOCK">다음 블록으로 연결</option>
-                                                    <option value="TO_OTHER_BLOCK">다른 블록으로 연결</option>
-                                                    <option value="CALL_CONSULTANT">상담원 연결</option>
-                                                    <option value="TO_URL">URL 연결</option>
-                                                    <option value="MAKE_TEL_CALL">전화 연결</option>
-                                                    <option value="CALL_API">외부연동</option>
+                                                    <option value="">다음 블록으로 연결</option>
+                                                    <option value="block">다른 블록으로 연결</option>
+                                                    <option value="member">상담원 연결</option>
+                                                    <option value="url">URL 연결</option>
+                                                    <option value="phone">전화 연결</option>
+                                                    <option value="api">외부연동</option>
                                                 </select>
                                             </div>
-                                            <div v-if="data.action === 'TO_OTHER_BLOCK'">
+                                            <div v-if="data.action === 'block'">
                                                 <div class="mb15">연결 블록 설정</div>
                                                 <div class="ui form fluid mb15">
-                                                    <select v-model="data.block">
+                                                    <select v-model="data.nextBlockId">
                                                         <option v-for="(e,i) in blocks" :key="i" :value="e.id">{{ e.name }}</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div v-if="data.action === 'CALL_CONSULTANT'">
+                                            <div v-if="data.action === 'member'">
                                                 <div class="mb15">연결 그룹 설정</div>
                                                 <div class="ui form fluid mb15">
-                                                    <select v-model="data.group">
+                                                    <select v-model="data.nextGroupId">
                                                         <option v-for="(e,i) in groups" :key="i" :value="e.name">{{ e.hanName }}</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div v-if="data.action === 'TO_URL'">
+                                            <div v-if="data.action === 'url'">
                                                 <div class="mb15">연결 URL 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <div class="ui form fluid mb15">
-                                                        <input type="text" v-model="data.url">
+                                                        <input type="text" v-model="data.nextUrl">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div v-if="data.action === 'MAKE_TEL_CALL'">
+                                            <div v-if="data.action === 'phone'">
                                                 <div class="mb15">연결 번호 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <div class="ui form fluid mb15">
-                                                        <input type="text" v-model="data.tel">
+                                                        <input type="text" v-model="data.nextPhone">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div v-if="data.action === 'CALL_API'">
+                                            <div v-if="data.action === 'api'">
                                                 <div class="mb15">외부연동 URL 입력</div>
                                                 <div class="ui form fluid mb15">
                                                     <div class="ui form fluid mb15">
-                                                        <input type="text" v-model="data.api.url">
+                                                        <input type="text" v-model="data.api.nextApiUrl">
                                                     </div>
                                                 </div>
                                                 <div class="mb15">안내문구 입력</div>
                                                 <div class="ui form fluid mb15">
-                                                    <textarea rows="5" v-model="data.api.description"></textarea>
+                                                    <textarea rows="5" v-model="data.api.nextApiMent"></textarea>
                                                 </div>
                                                 <div class="mb15">항목설정</div>
                                                 <div v-for="(e,i) in data.api.parameters" :key="i" class="list-control-container mb15">
@@ -366,10 +385,10 @@
                                                             <td>
                                                                 <div class="ui form fluid">
                                                                     <select v-model="e.type">
-                                                                        <option value="TEXT">텍스트</option>
-                                                                        <option value="NUMERICAL">숫자</option>
-                                                                        <option value="DATE">날짜</option>
-                                                                        <option value="TIME">시간</option>
+                                                                        <option value="text">텍스트</option>
+                                                                        <option value="number">숫자</option>
+                                                                        <option value="calendar">날짜</option>
+                                                                        <option value="time">시간</option>
                                                                     </select>
                                                                 </div>
                                                             </td>
@@ -408,7 +427,7 @@
                                                             <th>정상</th>
                                                             <td>
                                                                 <div class="ui form fluid mb15">
-                                                                    <textarea rows="4" v-model="data.api.outputFormat"></textarea>
+                                                                    <textarea rows="4" v-model="data.api.nextApiResultTemplate"></textarea>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -416,7 +435,7 @@
                                                             <th>조회불가</th>
                                                             <td>
                                                                 <div class="ui form fluid">
-                                                                    <input type="text" v-model="data.api.errorOutput">
+                                                                    <input type="text" v-model="data.api.nextApiErrorMent">
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -440,19 +459,19 @@
                                                     <span class="customer-title">Chat Bot</span>
                                                 </div>
                                                 <div class="content editor">
-                                                    <div v-for="(e,i) in displays" :class="e.type === 'TEXT' ? 'sample-bubble' : 'card'">
-                                                        <p v-if="e.data && e.type === 'TEXT'">{{ e.data.text }}</p>
-                                                        <div v-if="e.data && e.type === 'IMAGE'" class="card-img">
+                                                    <div v-for="(e,i) in displays" :class="e.type === 'text' ? 'sample-bubble' : 'card'">
+                                                        <p v-if="e.data && e.type === 'text'">{{ e.data.text }}</p>
+                                                        <div v-if="e.data && e.type === 'image'" class="card-img">
                                                             <img :src="e.data.fileUrl" class="border-radius-1em">
                                                         </div>
-                                                        <div v-if="e.data && e.type === 'CARD'" class="card-img">
+                                                        <div v-if="e.data && e.type === 'card'" class="card-img">
                                                             <img :src="e.data.fileUrl" class="border-radius-top-1em">
                                                         </div>
-                                                        <div v-if="e.data && e.type === 'CARD'" class="card-content">
+                                                        <div v-if="e.data && e.type === 'card'" class="card-content">
                                                             <div class="card-title">{{ e.data.title }}</div>
                                                             <div class="card-text">{{ e.data.announcement }}</div>
                                                         </div>
-                                                        <div v-if="e.data && e.type === 'LIST'" class="card-list">
+                                                        <div v-if="e.data && e.type === 'list'" class="card-list">
                                                             <div class="card-list-title">
                                                                 <a v-if="titleUrl" :href="e.data.titleUrl" target="_blank">{{ e.data.title }}</a>
                                                                 <text v-else>{{ e.data.title }}</text>
@@ -482,7 +501,7 @@
                                                             <ul class="card-list-ul">
                                                                 <li v-for="(e2, j) in e.api.parameters" :key="j" class="item form">
                                                                     <div class="label">{{ e2.name }}</div>
-                                                                    <div v-if="e2.type !== 'TIME'" class="ui fluid input">
+                                                                    <div v-if="e2.type !== 'time'" class="ui fluid input">
                                                                         <input type="text">
                                                                     </div>
                                                                     <div v-else class="ui multi form">
@@ -584,20 +603,30 @@
             </div>
             <div class="mb10">폴백 대사 입력</div>
             <div class="ui form fluid mb10">
-                <textarea rows="3" v-model="announcement"></textarea>
+                <textarea rows="3" v-model="fallbackMent"></textarea>
             </div>
             <div class="mb10">동작</div>
             <div class="ui form fluid mb10">
-                <select v-model="action">
-                    <option value="GOTO_ROOT">처음으로가기</option>
-                    <option value="GOTO_GROUP">상담그룹연결</option>
+                <select v-model="fallbackAction">
+                    <option value="first">처음으로 가기</option>
+                    <option value="member">상담그룹연결</option>
+                    <option value="url">URL 연결</option>
+                    <option value="phone">전화 연결</option>
                 </select>
             </div>
-            <div v-if="action === 'GOTO_GROUP'" class="mb10">상담그룹</div>
-            <div v-if="action === 'GOTO_GROUP'" class="ui form fluid mb10">
-                <select v-model="group">
+            <div v-if="fallbackAction === 'member'" class="mb10">상담그룹</div>
+            <div v-if="fallbackAction === 'member'" class="ui form fluid mb10">
+                <select v-model="nextGroupId">
                     <option v-for="(e,i) in groups" :key="i" :value="e.name">{{ e.hanName }}</option>
                 </select>
+            </div>
+            <div v-if="fallbackAction === 'url'" class="mb10">연결 URL 설정</div>
+            <div v-if="fallbackAction === 'url'" class="ui form fluid mb10">
+                <input type="text" v-model="nextUrl">
+            </div>
+            <div v-if="fallbackAction === 'phone'" class="mb10">연결 번호 설정</div>
+            <div v-if="fallbackAction === 'phone'" class="ui form fluid mb10">
+                <input type="text" v-model="nextPhone">
             </div>
         </div>
         <div class="actions">
@@ -624,7 +653,8 @@
                     data() {
                         return {
                             groups: [],
-                            input: {name: '', announcement: '', action: 'GOTO_ROOT', group: null},
+                            blocks: [],
+                            input: {name: '', fallbackMent: '', fallbackAction: 'first', nextBlockId: null, nextGroupId: null, nextUrl: null, nextPhone: null,},
                         }
                     },
                     methods: {
@@ -648,15 +678,17 @@
                     data() {
                         return {
                             groups: [],
-                            name: '', announcement: '', action: 'GOTO_ROOT', group: null
+                            name: '', fallbackMent: '', fallbackAction: 'first', nextGroupId: null, nextUrl: null, nextPhone: null,
                         }
                     },
                     methods: {
                         show() {
                             o.name = ''
-                            o.announcement = ''
-                            o.action = 'GOTO_ROOT'
-                            o.group = null
+                            o.fallbackMent = ''
+                            o.fallbackAction = 'first'
+                            o.nextGroupId = null
+                            o.nextUrl = null
+                            o.nextPhone = null
 
                             $('#chatbot-setting-modal').modal({
                                 dimmerSettings: {opacity: 0},
@@ -667,10 +699,11 @@
                         start() {
                             blockList.blocks.splice(0, blockList.blocks.length)
                             buttonConfig.blocks.splice(0, buttonConfig.blocks.length)
+                            fallbackConfig.blocks.splice(0, fallbackConfig.blocks.length)
                             for (let property in nodeBlockMap)
                                 delete nodeBlockMap[property]
                             editor.clear()
-                            fallbackConfig.data = {name: o.name, announcement: o.announcement, action: o.action, group: o.group,}
+                            fallbackConfig.data = {name: o.name, fallbackMent: o.fallbackMent, fallbackAction: o.fallbackAction, nextGroupId: o.nextGroupId, nextUrl: o.nextUrl, nextPhone: o.nextPhone}
                             o.hide()
                             createNode()
 
@@ -741,7 +774,7 @@
                             o.data = {text: data?.text}
                         },
                         save() {
-                            if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'TEXT') return
+                            if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'text') return
                             nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {text: o.data.text}
                         },
                     },
@@ -764,7 +797,7 @@
                             o.data = {fileName: data?.fileName, fileUrl: data?.fileUrl}
                         },
                         save() {
-                            if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'IMAGE') return
+                            if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'image') return
                             nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {fileName: o.data.fileName, fileUrl: o.data.fileUrl,}
                         },
                         uploadFile(event) {
@@ -796,7 +829,7 @@
                             o.data = {fileName: data?.fileName, fileUrl: data?.fileUrl, title: data?.title, announcement: data?.announcement,}
                         },
                         save() {
-                            if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'CARD') return
+                            if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'card') return
                             nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {fileName: o.data.fileName, fileUrl: o.data.fileUrl, title: o.data.title, announcement: o.data.announcement,}
                         },
                         uploadFile(event) {
@@ -830,7 +863,7 @@
                             if (!o.data.list || !o.data.list.length) o.data.list = [{title: null, announcement: null, url: null, fileName: null, fileUrl: null}]
                         },
                         save() {
-                            if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'LIST') return
+                            if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'list') return
                             nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {title: o.data?.title, titleUrl: o.data?.titleUrl, list: []}
                             o.data.list.forEach(e => nodeBlockMap[o.nodeId].displays[o.displayIndex].data.list.push({
                                 title: e?.title,
@@ -861,7 +894,7 @@
                 return o || o
             })()
             const buttonConfig = (() => {
-                const API_PARAMETER_TYPES = Object.freeze({TEXT: 'TEXT', NUMERICAL: 'NUMERICAL', DATE: 'DATE', TIME: 'TIME'})
+                const API_PARAMETER_TYPES = Object.freeze({text: 'text', number: 'number', calendar: 'calendar', time: 'time'})
                 const o = Vue.createApp({
                     data() {
                         return {
@@ -902,22 +935,22 @@
                             app.buttons[o.buttonIndex] = data
 
                             if (prevAction !== currentAction) {
-                                if (prevAction === 'TO_NEXT_BLOCK') {
+                                if (prevAction === '') {
                                     nodeBlockMap[preChildNodeId].delete()
-                                } else if (prevAction === 'TO_OTHER_BLOCK') {
+                                } else if (prevAction === 'block') {
                                     app.removeConnection(o.buttonIndex)
                                 }
 
-                                if (currentAction === 'TO_NEXT_BLOCK') {
+                                if (currentAction === '') {
                                     const node = editor.getNodeFromId(o.nodeId)
                                     data.childNodeId = createNode(node.pos_x + 300, node.pos_y)
                                     app.createConnection(o.buttonIndex, nodeBlockMap[data.childNodeId].id)
-                                } else if (currentAction === 'TO_OTHER_BLOCK') {
-                                    app.createConnection(o.buttonIndex, data.block)
+                                } else if (currentAction === 'block') {
+                                    app.createConnection(o.buttonIndex, data.nextBlockId)
                                 }
-                            } else if (currentAction === 'TO_OTHER_BLOCK' && preBlock !== data.block) {
+                            } else if (currentAction === 'block' && preBlock !== data.nextBlockId) {
                                 app.removeConnection(o.buttonIndex)
-                                app.createConnection(o.buttonIndex, data.block)
+                                app.createConnection(o.buttonIndex, data.nextBlockId)
                             }
                         },
                         checkDataStructure() {
@@ -925,21 +958,21 @@
                             if (this.data.name === undefined) this.data.name = null
                             if (this.data.action === undefined) this.data.action = null
 
-                            if (this.data.block === undefined) this.data.block = null
-                            if (this.data.group === undefined) this.data.group = null
-                            if (this.data.url === undefined) this.data.url = null
-                            if (this.data.tel === undefined) this.data.tel = null
+                            if (this.data.nextBlockId === undefined) this.data.nextBlockId = null
+                            if (this.data.nextGroupId === undefined) this.data.nextGroupId = null
+                            if (this.data.nextUrl === undefined) this.data.nextUrl = null
+                            if (this.data.nextPhone === undefined) this.data.nextPhone = null
 
                             if (!this.data.api) this.data.api = {}
-                            if (this.data.api.url === undefined) this.data.api.url = null
-                            if (this.data.api.description === undefined) this.data.api.description = null
-                            if (!this.data.api.parameters || !this.data.api.parameters.length) this.data.api.parameters = [{type: API_PARAMETER_TYPES.TEXT, name: null, value: null}]
+                            if (this.data.api.nextApiUrl === undefined) this.data.api.nextApiUrl = null
+                            if (this.data.api.nextApiMent === undefined) this.data.api.nextApiMent = null
+                            if (!this.data.api.parameters || !this.data.api.parameters.length) this.data.api.parameters = [{type: API_PARAMETER_TYPES.text, name: null, value: null}]
                             if (this.data.api.usingResponse === undefined) this.data.api.usingResponse = false
-                            if (this.data.api.outputFormat === undefined) this.data.api.outputFormat = null
-                            if (this.data.api.errorOutput === undefined) this.data.api.errorOutput = null
+                            if (this.data.api.nextApiResultTemplate === undefined) this.data.api.nextApiResultTemplate = null
+                            if (this.data.api.nextApiErrorMent === undefined) this.data.api.nextApiErrorMent = null
                         },
                         addApiParameterItem() {
-                            o.data.api.parameters.push({type: API_PARAMETER_TYPES.TEXT, name: null, value: null})
+                            o.data.api.parameters.push({type: API_PARAMETER_TYPES.text, name: null, value: null})
                         },
                         removeApiParameterItem(index) {
                             if (index === 0) return
@@ -967,7 +1000,7 @@
                         },
                         getButtonGroups() {
                             return o.buttons.reduce((list, e) => {
-                                if (e.action === 'CALL_API') list.push(e)
+                                if (e.action === 'api') list.push(e)
                                 else if (!list.length || !(list[list.length - 1] instanceof Array)) list.push([e])
                                 else list[list.length - 1].push(e)
                                 return list
@@ -1029,11 +1062,11 @@
                         },
                         methods: {
                             getDisplayClass(type) {
-                                const DISPLAY_TYPE_TO_CLASS = {TEXT: 'text', IMAGE: 'image', CARD: 'card', LIST: 'list'}
+                                const DISPLAY_TYPE_TO_CLASS = {text: 'text', image: 'image', card: 'card', list: 'list'}
                                 return DISPLAY_TYPE_TO_CLASS[type]
                             },
                             getDisplayText(type) {
-                                const DISPLAY_TYPE_TO_TEXT = {TEXT: '텍스트', IMAGE: '이미지', CARD: '카드', LIST: '리스트'}
+                                const DISPLAY_TYPE_TO_TEXT = {text: '텍스트', image: '이미지', card: '카드', list: '리스트'}
                                 return DISPLAY_TYPE_TO_TEXT[type]
                             },
                             moveUpDisplayItem(index) {
@@ -1054,13 +1087,13 @@
                                 o.showingEmptyDisplayItem = false
                                 const type = event.dataTransfer.getData('node')
                                 if (type === 'display-item-text') {
-                                    o.displays.push({type: 'TEXT', name: ''})
+                                    o.displays.push({type: 'text', name: ''})
                                 } else if (type === 'display-item-image') {
-                                    o.displays.push({type: 'IMAGE', name: ''})
+                                    o.displays.push({type: 'image', name: ''})
                                 } else if (type === 'display-item-card') {
-                                    o.displays.push({type: 'CARD', name: ''})
+                                    o.displays.push({type: 'card', name: ''})
                                 } else if (type === 'display-item-list') {
-                                    o.displays.push({type: 'LIST', name: ''})
+                                    o.displays.push({type: 'list', name: ''})
                                 } else {
                                     o.showingEmptyDisplayItem = true
                                 }
@@ -1105,7 +1138,7 @@
                                 const removedButton = o.buttons.splice(index, 1)[0]
                                 o.showingEmptyButtonItem = !o.buttons || !o.buttons.length
 
-                                if (removedButton.action === 'TO_NEXT_BLOCK')
+                                if (removedButton.action === '')
                                     nodeBlockMap[removedButton.childNodeId].delete()
                             },
                             createButton() {
@@ -1121,19 +1154,19 @@
                             },
                             configDisplayItem(index) {
                                 $('.chatbot-control-panel').removeClass('active')
-                                if (o.displays[index].type === 'TEXT') {
+                                if (o.displays[index].type === 'text') {
                                     $('.text-display-manage').addClass('active')
                                     textDisplayConfig.load(o.nodeId, index, o.displays[index].data)
                                 }
-                                if (o.displays[index].type === 'IMAGE') {
+                                if (o.displays[index].type === 'image') {
                                     $('.img-display-manage').addClass('active')
                                     imageDisplayConfig.load(o.nodeId, index, o.displays[index].data)
                                 }
-                                if (o.displays[index].type === 'CARD') {
+                                if (o.displays[index].type === 'card') {
                                     $('.card-display-manage').addClass('active')
                                     cardDisplayConfig.load(o.nodeId, index, o.displays[index].data)
                                 }
-                                if (o.displays[index].type === 'LIST') {
+                                if (o.displays[index].type === 'list') {
                                     $('.list-display-manage').addClass('active')
                                     listDisplayConfig.load(o.nodeId, index, o.displays[index].data)
                                 }
@@ -1168,7 +1201,7 @@
                                 return Object.keys(editor.getNodeFromId(o.nodeId).inputs)[0]
                             },
                             delete() {
-                                o.buttons.filter(e => e.action === 'TO_NEXT_BLOCK').forEach(e => nodeBlockMap[e.childNodeId].delete())
+                                o.buttons.filter(e => e.action === '').forEach(e => nodeBlockMap[e.childNodeId].delete())
                                 editor.removeNodeId('node-' + o.nodeId)
                                 o.$.appContext.app.unmount()
                             }
@@ -1186,6 +1219,7 @@
                 nodeBlockMap[nodeId] = app
                 blockList.blocks.push(app)
                 buttonConfig.blocks.push(app)
+                fallbackConfig.blocks.push(app)
                 return nodeId
             }
 
@@ -1193,6 +1227,7 @@
                 const app = nodeBlockMap[nodeId]
                 blockList.blocks.splice(blockList.blocks.indexOf(app), 1)
                 buttonConfig.blocks.splice(buttonConfig.blocks.indexOf(app), 1)
+                fallbackConfig.blocks.splice(fallbackConfig.blocks.indexOf(app), 1)
                 delete nodeBlockMap[nodeId]
             })
 
@@ -1219,6 +1254,43 @@
 
             window.open('/sub-url/chatbot-test', '_blank', 'width=420px,height=800px,top=100,left=100,scrollbars=yes,resizable=no');
 
+            const save = () => {
+                const convertBlock = block => ({
+                    name: block?.name,
+                    keyword: block?.keywords.length === 0 ? '' : block?.keywords.reduce((a, b) => (a + '|' + b)),
+                    isTemplateEnable: block?.autoReply,
+                    displayList: block?.displays.map((e, i) => ({
+                        order: i,
+                        type: e.type,
+                        elementList: e.type === 'text' ? [{order: 0, content: e.data?.text}]
+                            : e.type === 'image' ? [{order: 0, image: e.data?.fileUrl}]
+                                : e.type === 'card' ? [{order: 0, image: e.data?.fileUrl, title: e.data?.title, content: e.data?.announcement}]
+                                    : [{order: 0, title: e.data?.title, url: e.data?.titleUrl}].concat(e.data?.list?.map((e2, j) =>
+                                        ({order: j + 1, title: e2.title, content: e2.announcement, url: e2.url, image: e2.fileUrl})))
+                    })),
+                    buttonList: block?.buttons.map((e, i) => ({
+                        order: i,
+                        buttonName: e.name,
+                        action: e.action,
+                        nextBlockId: e.nextBlockId,
+                        nextGroupId: e.nextGroupId,
+                        nextUrl: e.nextUrl,
+                        nextPhone: e.nextPhone,
+                        nextApiUrl: e.api?.nextApiUrl,
+                        nextApiMent: e.api?.nextApiMent,
+                        isResultTemplateEnable: e.api?.usingResponse === true ? 'Y' : 'N',
+                        nextApiResultTemplate: e.api?.nextApiResultTemplate,
+                        nextApiErrorMent: e.api?.nextApiErrorMent,
+                        paramList: e.api?.parameters.map(e2 => ({type: e2.type, paramName: e2.value, displayName: e2.name})),
+                        connectedBlockInfo: e.action === '' ? convertBlock(nodeBlockMap[e.childNodeId]) : null
+                    })),
+                })
+
+                const form = Object.assign({}, fallbackConfig.data, {blockInfo: convertBlock(blockList.blocks[0])})
+                console.log(form)
+
+                restSelf.post('/api/chatbot/', form).done(() => alert('반영되었습니다.'))
+            }
 
         </script>
     </tags:scripts>
