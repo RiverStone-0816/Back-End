@@ -31,7 +31,7 @@ public class WebchatBotInfoApiController extends ApiBaseController {
         return ResponseEntity.ok(data(webchatBotInfoService.getAllWebchatBotList()));
     }
 
-    @GetMapping("id/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<JsonResult<WebchatBotInfoResponse>> getById(@PathVariable Integer id) {
         return ResponseEntity.ok(create());
     }
@@ -43,21 +43,21 @@ public class WebchatBotInfoApiController extends ApiBaseController {
         return ResponseEntity.ok(create());
     }
 
-    @PutMapping("id/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<JsonResult<Void>> update(@PathVariable Integer id, @RequestBody WebchatBotFormRequest form) {
         webchatBotService.updateWebchatBotInfo(id, form);
 
         return ResponseEntity.ok(create());
     }
 
-    @DeleteMapping("id/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<JsonResult<Void>> delete(@PathVariable Integer id) {
         webchatBotService.deleteBot(id);
 
         return ResponseEntity.ok(create());
     }
 
-    @PostMapping("id/{id}/copy")
+    @PostMapping("{id}/copy")
     public ResponseEntity<JsonResult<Void>> copy(@PathVariable Integer id) {
 //        webchatBotInfoService.copy(id);
 

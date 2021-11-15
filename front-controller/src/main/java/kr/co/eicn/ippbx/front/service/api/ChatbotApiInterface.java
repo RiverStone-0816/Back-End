@@ -21,7 +21,7 @@ public class ChatbotApiInterface extends ApiServerInterface {
 
     @SneakyThrows
     public WebchatBotInfoResponse getById(Integer id) {
-        return get(subUrl+ "id/" + id, null, WebchatBotInfoResponse.class);
+        return get(subUrl + id, null, WebchatBotInfoResponse.class);
     }
 
     @SneakyThrows
@@ -31,16 +31,16 @@ public class ChatbotApiInterface extends ApiServerInterface {
 
     @SneakyThrows
     public void update(Integer id, WebchatBotFormRequest form) {
-        put(subUrl + "id/" + id, form);
+        put(subUrl + id, form);
     }
 
     @SneakyThrows
     public void delete(Integer id) {
-        delete(subUrl + "id/" + id);
+        delete(subUrl + id);
     }
 
     @SneakyThrows
     public void copy(Integer id) {
-        post(subUrl + "id/" + id, null);
+        post(subUrl + id, null);
     }
 }
