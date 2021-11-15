@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.model.form;
 
+import kr.co.eicn.ippbx.model.enums.*;
 import lombok.Data;
 
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 public class WebchatBotFormRequest {
     private String name;
     private String fallbackMent;
-    private String fallbackAction;
+    private FallbackAction fallbackAction;
     private Integer nextBlockId;
     private Integer nextGroupId;
     private String nextUrl;
@@ -20,7 +21,7 @@ public class WebchatBotFormRequest {
     public static class BlockInfo {
         private String name;
         private String keyword;
-        private String isTemplateEnable;
+        private IsTemplateEnable isTemplateEnable;
         private List<DisplayInfo> displayList;
         private List<ButtonElement> buttonList;
     }
@@ -28,7 +29,7 @@ public class WebchatBotFormRequest {
     @Data
     public static class DisplayInfo {
         private Integer order;
-        private String type;
+        private DisplayType type;
         private List<DisplayElement> elementList;
     }
 
@@ -45,14 +46,14 @@ public class WebchatBotFormRequest {
     public static class ButtonElement {
         private Integer order;
         private String buttonName;
-        private String action;
+        private ButtonAction action;
         private Integer nextBlockId;
         private Integer nextGroupId;
         private String nextUrl;
         private String nextPhone;
         private String nextApiUrl;
         private String nextApiMent;
-        private String isResultTemplateEnable;
+        private IsTemplateEnable isResultTemplateEnable;
         private String nextApiResultTemplate;
         private String nextApiNoResultMent;
         private String nextApiErrorMent;
@@ -63,7 +64,7 @@ public class WebchatBotFormRequest {
 
     @Data
     public static class ApiParam {
-        private String type;
+        private ApiParameterType type;
         private String paramName;
         private String displayName;
     }

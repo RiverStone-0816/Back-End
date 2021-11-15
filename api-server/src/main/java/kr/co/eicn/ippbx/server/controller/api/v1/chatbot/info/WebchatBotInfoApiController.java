@@ -37,10 +37,10 @@ public class WebchatBotInfoApiController extends ApiBaseController {
     }
 
     @PostMapping("")
-    public ResponseEntity<JsonResult<Void>> post(@RequestBody WebchatBotFormRequest form) {
-        webchatBotService.createWebchatBotInfo(form);
+    public ResponseEntity<JsonResult<Integer>> post(@RequestBody WebchatBotFormRequest form) {
+        final Integer botId = webchatBotService.createWebchatBotInfo(form);
 
-        return ResponseEntity.ok(create());
+        return ResponseEntity.ok(data(botId));
     }
 
     @PutMapping("{id}")

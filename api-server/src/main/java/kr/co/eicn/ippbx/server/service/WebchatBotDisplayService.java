@@ -24,7 +24,7 @@ public class WebchatBotDisplayService extends ApiBaseService {
 
         data.setBlockId(blockId);
         data.setOrder(displayInfo.getOrder());
-        data.setType(displayInfo.getType());
+        data.setType(displayInfo.getType().getCode());
 
         return webchatBotDisplayRepository.insert(data);
     }

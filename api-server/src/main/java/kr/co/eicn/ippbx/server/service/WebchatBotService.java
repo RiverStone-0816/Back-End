@@ -21,10 +21,12 @@ public class WebchatBotService extends ApiBaseService {
     private final WebchatBotButtonElementService webchatBotButtonElementService;
     private final WebchatBotApiParamService webchatBotApiParamService;
 
-    public void createWebchatBotInfo(WebchatBotFormRequest form) {
+    public Integer createWebchatBotInfo(WebchatBotFormRequest form) {
         Integer botId = webchatBotInfoService.insert(form);
 
         insertRootBlock(botId, form);
+
+        return botId;
     }
 
     public void updateWebchatBotInfo(Integer botId, WebchatBotFormRequest form) {
@@ -95,4 +97,6 @@ public class WebchatBotService extends ApiBaseService {
         webchatBotBlockService.deleteByBlockIdList(blockIdList);
         webchatBotTreeService.deleteByBotId(botId);
     }
+
+
 }
