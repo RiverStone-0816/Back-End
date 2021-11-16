@@ -52,6 +52,8 @@ public class TalkTemplateRepository extends EicnBaseRepository<TalkTemplate, Tal
 		record.setMent(form.getMent());
 		record.setCompanyId(getCompanyId());
 		record.setTypeData(form.getTypeData());
+		record.setFilePath(form.getFilePath());
+		record.setOriginalFileName(form.getOriginalFileName());
 
 		return super.insertOnGeneratedKey(record);
 	}
