@@ -42,7 +42,7 @@
                             </div>
                             <button type="button" class="ui mini button" onclick="botCopyPopup();">봇 복사</button>
                             <button type="button" class="ui mini button" onclick="botTestPopup();">봇 테스트</button>
-                            <button type="button" class="ui mini button" onclick="botSavePopup();">봇 저장</button>
+                            <button type="button" class="ui mini button" onclick="save();">봇 저장</button>
                         </div>
                     </div>
                     <div class="panel-body chatbot remove-padding flex-100">
@@ -1278,7 +1278,7 @@
                         nextPhone: e.nextPhone,
                         nextApiUrl: e.api?.nextApiUrl,
                         nextApiMent: e.api?.nextApiMent,
-                        isResultTemplateEnable: e.api?.usingResponse === true ? 'Y' : 'N',
+                        isResultTemplateEnable: e.api?.usingResponse,
                         nextApiResultTemplate: e.api?.nextApiResultTemplate,
                         nextApiErrorMent: e.api?.nextApiErrorMent,
                         paramList: e.api?.parameters.map(e2 => ({type: e2.type, paramName: e2.value, displayName: e2.name})),

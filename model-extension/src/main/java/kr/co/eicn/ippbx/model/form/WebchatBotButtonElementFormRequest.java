@@ -1,7 +1,6 @@
 package kr.co.eicn.ippbx.model.form;
 
 import kr.co.eicn.ippbx.model.enums.ButtonAction;
-import kr.co.eicn.ippbx.model.enums.IsTemplateEnable;
 import lombok.Data;
 
 @Data
@@ -17,7 +16,7 @@ public class WebchatBotButtonElementFormRequest {
     private String nextPhone;
     private String nextApiUrl;
     private String nextApiMent;
-    private IsTemplateEnable isResultTemplateEnable;
+    private Boolean isResultTemplateEnable;
     private String nextApiResultTemplate;
     private String nextApiNoResultMent;
     private String nextApiErrorMent;
