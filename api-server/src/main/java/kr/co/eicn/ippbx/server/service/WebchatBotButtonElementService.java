@@ -24,7 +24,7 @@ public class WebchatBotButtonElementService extends ApiBaseService {
         data.setBlockId(blockId);
         data.setOrder(buttonElement.getOrder());
         data.setButtonName(buttonElement.getButtonName());
-        data.setAction(buttonElement.getAction().getCode());
+        data.setAction(buttonElement.getAction());
         data.setNextBlockId(buttonElement.getNextBlockId());
         data.setNextGroupId(buttonElement.getNextGroupId());
         data.setNextUrl(buttonElement.getNextUrl());

@@ -24,7 +24,7 @@ public class WebchatBotDisplayRepository extends EicnBaseRepository<WebchatBotDi
         return dsl.insertInto(WEBCHAT_BOT_DISPLAY)
                 .set(WEBCHAT_BOT_DISPLAY.BLOCK_ID, request.getBlockId())
                 .set(WEBCHAT_BOT_DISPLAY.ORDER, request.getOrder())
-                .set(WEBCHAT_BOT_DISPLAY.TYPE, request.getType())
+                .set(WEBCHAT_BOT_DISPLAY.TYPE, request.getType().getCode())
                 .returning(WEBCHAT_BOT_DISPLAY.ID)
                 .fetchOne()
                 .value1();

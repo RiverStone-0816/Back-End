@@ -21,7 +21,7 @@ public class WebchatBotApiParamService extends ApiBaseService {
         WebchatBotApiParamFormRequest data = new WebchatBotApiParamFormRequest();
 
         data.setButtonId(buttonId);
-        data.setType(apiParam.getType().getCode());
+        data.setType(apiParam.getType());
         data.setParamName(apiParam.getParamName());
         data.setDisplayName(apiParam.getDisplayName());
 
