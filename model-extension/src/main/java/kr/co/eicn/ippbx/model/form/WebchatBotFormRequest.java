@@ -21,7 +21,7 @@ public class WebchatBotFormRequest {
     public static class BlockInfo {
         private String name;
         private String keyword;
-        private IsTemplateEnable isTemplateEnable;
+        private Boolean isTemplateEnable;
         private List<DisplayInfo> displayList;
         private List<ButtonElement> buttonList;
     }
@@ -53,7 +53,7 @@ public class WebchatBotFormRequest {
         private String nextPhone;
         private String nextApiUrl;
         private String nextApiMent;
-        private IsTemplateEnable isResultTemplateEnable;
+        private Boolean isResultTemplateEnable;
         private String nextApiResultTemplate;
         private String nextApiNoResultMent;
         private String nextApiErrorMent;

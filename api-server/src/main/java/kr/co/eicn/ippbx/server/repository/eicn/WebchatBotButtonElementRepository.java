@@ -33,7 +33,7 @@ public class WebchatBotButtonElementRepository extends EicnBaseRepository<Webcha
                 .set(WEBCHAT_BOT_BTN_ELEMENT.NEXT_PHONE, request.getNextPhone())
                 .set(WEBCHAT_BOT_BTN_ELEMENT.NEXT_API_URL, request.getNextApiUrl())
                 .set(WEBCHAT_BOT_BTN_ELEMENT.NEXT_API_MENT, request.getNextApiMent())
-                .set(WEBCHAT_BOT_BTN_ELEMENT.IS_RESULT_TPL_ENABLE, request.getIsResultTemplateEnable().getCode())
+                .set(WEBCHAT_BOT_BTN_ELEMENT.IS_RESULT_TPL_ENABLE, request.getIsResultTemplateEnable() != null && request.getIsResultTemplateEnable() ? "Y" : "N")
                 .set(WEBCHAT_BOT_BTN_ELEMENT.NEXT_API_RESULT_TPL, request.getNextApiResultTemplate())
                 .set(WEBCHAT_BOT_BTN_ELEMENT.NEXT_API_NO_RESULT_MENT, request.getNextApiNoResultMent())
                 .set(WEBCHAT_BOT_BTN_ELEMENT.NEXT_API_ERROR_MENT, request.getNextApiErrorMent())
