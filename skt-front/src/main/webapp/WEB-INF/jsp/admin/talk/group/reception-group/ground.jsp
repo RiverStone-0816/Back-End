@@ -47,6 +47,7 @@
                             <th>번호</th>
                             <th class="two wide">채팅상담그룹명</th>
                             <th class="two wide">관련채팅상담서비스</th>
+                            <th class="two wide">분배정책</th>
                             <th class="one wide">멤버수</th>
                             <th>그룹멤버</th>
                         </tr>
@@ -64,6 +65,7 @@
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(e.groupName)}</td>
                                         <td>${g.htmlQuote(e.kakaoServiceName)}</td>
+                                        <td>${g.htmlQuote(g.messageOf("TalkStrategy",e.talkStrategy))}</td>
                                         <td>${e.memberCnt}</td>
                                         <td title="<c:forEach var="person" items="${e.persons}">[${g.htmlQuote(person.idName)}(${g.htmlQuote(person.id)})]</c:forEach>">
                                             <c:forEach var="person" items="${e.persons}">[${g.htmlQuote(person.idName)}(${g.htmlQuote(person.id)})] </c:forEach>
