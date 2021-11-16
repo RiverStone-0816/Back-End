@@ -17,12 +17,12 @@ public class WebchatBotBlockRepository extends EicnBaseRepository<WebchatBotBloc
     protected final Logger logger = LoggerFactory.getLogger(WebchatBotBlockRepository.class);
 
     public WebchatBotBlockRepository() {
-        super(WEBCHAT_BOT_BLOCK, WEBCHAT_BOT_BLOCK.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotBlock.class);
+        super(WEBCHAT_BOT_BLOCK, WEBCHAT_BOT_BLOCK.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotBlock.class);
     }
 
     public void insert(Integer blockId, WebchatBotBlockFormRequest request) {
         dsl.insertInto(WEBCHAT_BOT_BLOCK)
-                .set(WEBCHAT_BOT_BLOCK.BLOCK_ID, blockId)
+                .set(WEBCHAT_BOT_BLOCK.ID, blockId)
                 .set(WEBCHAT_BOT_BLOCK.NAME, request.getName())
                 .set(WEBCHAT_BOT_BLOCK.KEYWORD, request.getKeyword())
                 .set(WEBCHAT_BOT_BLOCK.IS_TPL_ENABLE, request.getIsTemplateEnable() != null && request.getIsTemplateEnable() ? "Y" : "N")
@@ -32,7 +32,7 @@ public class WebchatBotBlockRepository extends EicnBaseRepository<WebchatBotBloc
 
     public void deleteByBlockIdList(List<Integer> blockIdList) {
         dsl.deleteFrom(WEBCHAT_BOT_BLOCK)
-                .where(WEBCHAT_BOT_BLOCK.BLOCK_ID.in(blockIdList))
+                .where(WEBCHAT_BOT_BLOCK.ID.in(blockIdList))
                 .execute();
     }
 }
