@@ -4,10 +4,10 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 
 /**
  * 상담톡스케쥴 구분
- * A: 자동멘트요청, G: 상담톡그룹연결, P: 개인상담원연결
+ * A: 자동멘트요청, G: 상담톡그룹연결, P: 개인상담원연결, B: 챗봇연결
  */
 public enum TalkScheduleKind implements CodeHasable<String> {
-	AUTO_MENT_REQUEST("A"), SERVICE_BY_GROUP_CONNECT("G"), PERSON_CONSULTATION_CONNECT("P");
+	AUTO_MENT_REQUEST("A"), SERVICE_BY_GROUP_CONNECT("G"), CHAT_BOT_CONNECT("B");
 
 	private final String code;
 

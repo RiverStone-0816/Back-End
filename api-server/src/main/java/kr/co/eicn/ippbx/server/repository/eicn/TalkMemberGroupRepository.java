@@ -45,6 +45,17 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 		record.setGroupName(form.getGroupName());
 		record.setSenderKey(form.getSenderKey());
 		record.setCompanyId(getCompanyId());
+		record.setChannelType(form.getChannelType());
+		record.setTalkStrategy(form.getTalkStrategy());
+		record.setInitMent(form.getInitMent());
+		record.setAutoWarnMin(form.getAutoWarnMin());
+		record.setAutoWarnMent(form.getAutoWarnMent());
+		record.setAutoExpireMin(form.getAutoExpireMin());
+		record.setAutoExpireMent(form.getAutoExpireMent());
+		record.setUnassignCnt(form.getUnassignCnt());
+		record.setUnassignMent(form.getUnassignMent());
+		record.setMemberUnanswerMin(form.getMemberUnanswerMin());
+		record.setMemberUnanswerMent(form.getMemberUnanswerMent());
 
 		final Record r = super.insertOnGeneratedKey(record);
 
@@ -76,6 +87,17 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup();
 		record.setGroupName(form.getGroupName());
 		record.setSenderKey(form.getSenderKey());
+		record.setChannelType(form.getChannelType());
+		record.setTalkStrategy(form.getTalkStrategy());
+		record.setInitMent(form.getInitMent());
+		record.setAutoWarnMin(form.getAutoWarnMin());
+		record.setAutoWarnMent(form.getAutoWarnMent());
+		record.setAutoExpireMin(form.getAutoExpireMin());
+		record.setAutoExpireMent(form.getAutoExpireMent());
+		record.setUnassignCnt(form.getUnassignCnt());
+		record.setUnassignMent(form.getUnassignMent());
+		record.setMemberUnanswerMin(form.getMemberUnanswerMin());
+		record.setMemberUnanswerMent(form.getMemberUnanswerMent());
 
 		super.updateByKey(form, groupId);
 

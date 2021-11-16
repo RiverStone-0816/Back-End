@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkScheduleGroup;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMent;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotInfo;
 import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleGroupEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleGroupListEntity;
 import kr.co.eicn.ippbx.model.enums.TalkScheduleKind;
@@ -29,6 +30,7 @@ import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkMemberGroup.TALK_MEMBER
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkMent.TALK_MENT;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkScheduleGroup.TALK_SCHEDULE_GROUP;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkScheduleGroupList.TALK_SCHEDULE_GROUP_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebchatBotInfo.WEBCHAT_BOT_INFO;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
@@ -60,7 +62,7 @@ public class TalkScheduleGroupRepository extends EicnBaseRepository<TalkSchedule
 		final List<TalkScheduleGroupEntity> talkScheduleGroupEntities = new ArrayList<>();
 		final Map<Integer, String> talkMentStringMap = getTalkMentLists().stream().collect(Collectors.toMap(TalkMent::getSeq, TalkMent::getMentName));
 		final Map<Integer, String> talkMemberGroupStringMap = getTalkMemberGroupLists().stream().collect(Collectors.toMap(TalkMemberGroup::getGroupId, TalkMemberGroup::getGroupName));
-		final Map<String, String> personStringMap = getPersonLists().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+		final Map<Integer, String> webchatBotInfoMap = getWebchatBotinfoList().stream().collect(Collectors.toMap(WebchatBotInfo::getId, WebchatBotInfo::getName));
 
 		recordResultMap.forEach((record, records) -> {
 			final TalkScheduleGroupEntity talkScheduleGroupEntity = record.into(TalkScheduleGroupEntity.class);
@@ -74,8 +76,8 @@ public class TalkScheduleGroupRepository extends EicnBaseRepository<TalkSchedule
 								into.setKindDataName(talkMentStringMap.getOrDefault(Integer.valueOf(into.getKindData()), EMPTY));
 							else if (TalkScheduleKind.SERVICE_BY_GROUP_CONNECT.getCode().equals(into.getKind()))
 								into.setKindDataName(talkMemberGroupStringMap.getOrDefault(Integer.valueOf(into.getKindData()), EMPTY));
-							else if (TalkScheduleKind.PERSON_CONSULTATION_CONNECT.getCode().equals(into.getKindData()))
-								into.setKindDataName(personStringMap.getOrDefault(into.getKind(), EMPTY));
+							else if (TalkScheduleKind.CHAT_BOT_CONNECT.getCode().equals(into.getKind()))
+								into.setKindDataName(webchatBotInfoMap.getOrDefault(Integer.valueOf(into.getKindData()), EMPTY));
 						}
 
 						return into;
@@ -125,5 +127,13 @@ public class TalkScheduleGroupRepository extends EicnBaseRepository<TalkSchedule
 				.where(PERSON_LIST.COMPANY_ID.eq(getCompanyId()))
 				.orderBy(PERSON_LIST.ID_NAME)
 				.fetchInto(PersonList.class);
+	}
+
+	private List<WebchatBotInfo> getWebchatBotinfoList(){
+		return dsl.select()
+				.from(WEBCHAT_BOT_INFO)
+				.where(WEBCHAT_BOT_INFO.COMPANY_ID.eq(getCompanyId()))
+				.orderBy(WEBCHAT_BOT_INFO.NAME)
+				.fetchInto(WebchatBotInfo.class);
 	}
 }
