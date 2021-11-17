@@ -1018,6 +1018,9 @@
 
             const nodeBlockMap = {}
 
+            let lastBlockId = 0
+            const createBlockId = () => (++lastBlockId)
+
             function createNode(x, y) {
                 if (typeof x !== 'number' || typeof y !== 'number') {
                     editor.zoom_reset()
@@ -1040,15 +1043,10 @@
                     block.append(template.children[i].cloneNode(true))
 
                 const app = (() => {
-                    // ref: https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid
-                    const uuidv4 = () => 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8)
-                        return v.toString(16)
-                    })
                     const o = Vue.createApp({
                         data() {
                             return {
-                                id: uuidv4(),
+                                id: createBlockId(),
                                 name: '',
                                 displays: [],
                                 buttons: [],
@@ -1256,6 +1254,9 @@
 
             const save = () => {
                 const convertBlock = block => ({
+                    id: block?.id,
+                    posX: block ? editor.getNodeFromId(block.nodeId).pos_x : 0,
+                    posY: block ? editor.getNodeFromId(block.nodeId).pos_y : 0,
                     name: block?.name,
                     keyword: block?.keywords.length === 0 ? '' : block?.keywords.reduce((a, b) => (a + '|' + b)),
                     isTemplateEnable: block?.autoReply,
@@ -1282,8 +1283,9 @@
                         nextApiResultTemplate: e.api?.nextApiResultTemplate,
                         nextApiErrorMent: e.api?.nextApiErrorMent,
                         paramList: e.api?.parameters.map(e2 => ({type: e2.type, paramName: e2.value, displayName: e2.name})),
-                        connectedBlockInfo: e.action === '' ? convertBlock(nodeBlockMap[e.childNodeId]) : null
+                        // connectedBlockInfo: e.action === '' ? convertBlock(nodeBlockMap[e.childNodeId]) : null
                     })),
+                    children: block?.buttons.filter(e => e.action === '').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
                 })
 
                 const form = Object.assign({}, fallbackConfig.data, {blockInfo: convertBlock(blockList.blocks[0])})
