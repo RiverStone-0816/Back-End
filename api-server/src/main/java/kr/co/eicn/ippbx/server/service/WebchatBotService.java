@@ -1,11 +1,13 @@
 package kr.co.eicn.ippbx.server.service;
 
+import kr.co.eicn.ippbx.model.enums.ButtonAction;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @AllArgsConstructor
@@ -40,25 +42,27 @@ public class WebchatBotService extends ApiBaseService {
     public void insertRootBlock(Integer botId, WebchatBotFormRequest request) {
         WebchatBotFormRequest.BlockInfo blockInfo = request.getBlockInfo();
 
-        Integer blockId = 0;
-        Integer rootId = 0;
-        Integer parentId = 0;
         Integer parentButtonId = 0;
         String parentTreeName = "";
         Integer level = 0;
 
-        insertBlock(botId, blockId, rootId, parentId, parentButtonId, parentTreeName, level, blockInfo);
+        insertBlock(botId, null, null, parentButtonId, parentTreeName, level, blockInfo);
     }
 
-    public Integer insertBlock(Integer botId, Integer blockId, Integer rootId, Integer parentId, Integer parentButtonId, String parentTreeName, Integer level, WebchatBotFormRequest.BlockInfo blockInfo) {
-        webchatBotBlockService.insert(blockId, blockInfo);
+    public void insertBlock(Integer botId, Integer rootId, Integer parentId, Integer parentButtonId, String parentTreeName, Integer level, WebchatBotFormRequest.BlockInfo blockInfo) {
+        final HashMap<Integer, Integer> buttonIdByBlockId = new HashMap<>();
+        Integer blockId = webchatBotBlockService.insert(blockInfo);
+        if (rootId == null) rootId = blockId;
+        if (parentId == null) parentId = blockId;
         String treeName = webchatBotTreeService.insert(botId, blockId, rootId, parentId, parentButtonId, parentTreeName, level);
 
-        for (WebchatBotFormRequest.DisplayInfo displayInfo : blockInfo.getDisplayList()) {
-            final Integer displayId = webchatBotDisplayService.insertDisplay(blockId, displayInfo);
+        if (blockInfo.getDisplayList() != null) {
+            for (WebchatBotFormRequest.DisplayInfo displayInfo : blockInfo.getDisplayList()) {
+                final Integer displayId = webchatBotDisplayService.insertDisplay(blockId, displayInfo);
 
-            for (WebchatBotFormRequest.DisplayElement displayElement : displayInfo.getElementList()) {
-                webchatBotDisplayElementService.insertDisplayElement(displayId, displayElement);
+                for (WebchatBotFormRequest.DisplayElement displayElement : displayInfo.getElementList()) {
+                    webchatBotDisplayElementService.insertDisplayElement(displayId, displayElement);
+                }
             }
         }
 
@@ -71,13 +75,17 @@ public class WebchatBotService extends ApiBaseService {
                     webchatBotApiParamService.insert(buttonId, apiParam);
                 }
 
-                if (buttonElement.getConnectedBlockInfo() != null) {
-                    blockId = insertBlock(botId, blockId + 1, rootId, blockId, buttonId, treeName, level + 1, buttonElement.getConnectedBlockInfo());
-                }
+                if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()))
+                    buttonIdByBlockId.put(buttonElement.getNextBlockId(), buttonId);
             }
         }
 
-        return blockId;
+        if (blockInfo.getChildren() != null) {
+            for (WebchatBotFormRequest.BlockInfo child : blockInfo.getChildren()) {
+                if (buttonIdByBlockId.containsKey(child.getId()))
+                    insertBlock(botId, rootId, blockId, buttonIdByBlockId.get(child.getId()), treeName, level + 1, child);
+            }
+        }
     }
 
     public void deleteBot(Integer botId) {

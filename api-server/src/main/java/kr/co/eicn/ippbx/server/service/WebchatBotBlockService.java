@@ -17,14 +17,14 @@ public class WebchatBotBlockService extends ApiBaseService {
 
     private final WebchatBotBlockRepository webchatbotBlockRepository;
 
-    public void insert(Integer blockId, WebchatBotFormRequest.BlockInfo info) {
+    public Integer insert(WebchatBotFormRequest.BlockInfo info) {
         WebchatBotBlockFormRequest data = new WebchatBotBlockFormRequest();
 
         data.setName(info.getName());
         data.setKeyword(info.getKeyword());
         data.setIsTemplateEnable(info.getIsTemplateEnable());
 
-        webchatbotBlockRepository.insert(blockId, data);
+        return webchatbotBlockRepository.insert(data);
     }
 
     public void deleteByBlockIdList(List<Integer> blockIdList) {

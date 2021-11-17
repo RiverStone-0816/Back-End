@@ -20,14 +20,15 @@ public class WebchatBotBlockRepository extends EicnBaseRepository<WebchatBotBloc
         super(WEBCHAT_BOT_BLOCK, WEBCHAT_BOT_BLOCK.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotBlock.class);
     }
 
-    public void insert(Integer blockId, WebchatBotBlockFormRequest request) {
-        dsl.insertInto(WEBCHAT_BOT_BLOCK)
-                .set(WEBCHAT_BOT_BLOCK.ID, blockId)
+    public Integer insert(WebchatBotBlockFormRequest request) {
+        return dsl.insertInto(WEBCHAT_BOT_BLOCK)
                 .set(WEBCHAT_BOT_BLOCK.NAME, request.getName())
                 .set(WEBCHAT_BOT_BLOCK.KEYWORD, request.getKeyword())
                 .set(WEBCHAT_BOT_BLOCK.IS_TPL_ENABLE, request.getIsTemplateEnable() != null && request.getIsTemplateEnable() ? "Y" : "N")
                 .set(WEBCHAT_BOT_BLOCK.COMPANY_ID, getCompanyId())
-                .execute();
+                .returning()
+                .fetchOne()
+                .value1();
     }
 
     public void deleteByBlockIdList(List<Integer> blockIdList) {

@@ -19,11 +19,15 @@ public class WebchatBotFormRequest {
 
     @Data
     public static class BlockInfo {
+        private Integer id; //실제 ID가 아닌 button 과 매핑할 수 있는 임의값
+        private Integer posX;
+        private Integer posY;
         private String name;
         private String keyword;
         private Boolean isTemplateEnable;
         private List<DisplayInfo> displayList;
         private List<ButtonElement> buttonList;
+        private List<BlockInfo> children;
     }
 
     @Data
@@ -59,7 +63,6 @@ public class WebchatBotFormRequest {
         private String nextApiErrorMent;
 
         private List<ApiParam> paramList;
-        private BlockInfo connectedBlockInfo;
     }
 
     @Data
