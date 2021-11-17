@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.model.enums;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import kr.co.eicn.ippbx.util.CodeHasable;
 
 public enum FallbackAction implements CodeHasable<String> {
@@ -12,6 +13,7 @@ public enum FallbackAction implements CodeHasable<String> {
     }
 
     @Override
+    @JsonValue
     public String getCode() {
         return code;
     }
