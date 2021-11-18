@@ -37,15 +37,10 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 
 	public Record insertOnGeneratedKey(TalkMemberGroupFormRequest form) {
 		// 상담톡 서비스별로 그룹을 1개씩만 설정 가능
-		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup duplicatedSenderKey = findOne(TALK_MEMBER_GROUP.SENDER_KEY.eq(form.getSenderKey()));
-		if (duplicatedSenderKey != null)
-			throw new DuplicateKeyException("같은 상담톡 서비스의 상담원 그룹이 존재합니다.");
 
 		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup();
 		record.setGroupName(form.getGroupName());
-		record.setSenderKey(form.getSenderKey());
 		record.setCompanyId(getCompanyId());
-		record.setChannelType(form.getChannelType());
 		record.setTalkStrategy(form.getTalkStrategy());
 		record.setInitMent(form.getInitMent());
 		record.setAutoWarnMin(form.getAutoWarnMin());
@@ -62,7 +57,6 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 		final TalkMemberList talkMemberRecord = new TalkMemberList();
 		talkMemberRecord.setCompanyId(getCompanyId());
 		talkMemberRecord.setGroupId(r.getValue(TALK_MEMBER_GROUP.GROUP_ID));
-		talkMemberRecord.setSenderKey(form.getSenderKey());
 		talkMemberRecord.setStatus(EMPTY);
 
 		for (String personId : form.getPersonIds()) {
@@ -78,16 +72,9 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 	public void updateByKey(TalkMemberGroupFormRequest form, Integer groupId) {
 		findOneIfNullThrow(groupId);
 
-		// 상담톡 서비스별로 그룹을 1개씩만 설정 가능
-		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup duplicatedSenderKey =
-				findOne(TALK_MEMBER_GROUP.GROUP_ID.notEqual(groupId).and(TALK_MEMBER_GROUP.SENDER_KEY.eq(form.getSenderKey())));
-		if (duplicatedSenderKey != null)
-			throw new DuplicateKeyException("같은 상담톡 서비스의 상담원 그룹이 존재합니다.");
 
 		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup();
 		record.setGroupName(form.getGroupName());
-		record.setSenderKey(form.getSenderKey());
-		record.setChannelType(form.getChannelType());
 		record.setTalkStrategy(form.getTalkStrategy());
 		record.setInitMent(form.getInitMent());
 		record.setAutoWarnMin(form.getAutoWarnMin());
@@ -108,7 +95,6 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 		final TalkMemberList talkMemberRecord = new TalkMemberList();
 		talkMemberRecord.setCompanyId(getCompanyId());
 		talkMemberRecord.setGroupId(groupId);
-		talkMemberRecord.setSenderKey(form.getSenderKey());
 		talkMemberRecord.setStatus(EMPTY);
 
 		for (String personId : form.getPersonIds()) {

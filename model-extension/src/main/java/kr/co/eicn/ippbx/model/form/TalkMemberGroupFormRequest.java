@@ -12,12 +12,9 @@ import java.util.Set;
 public class TalkMemberGroupFormRequest extends BaseForm {
 	@NotNull("상담톡그룹명")
 	private String groupName;
-	@NotNull("관련상담톡서비스")
-	private String senderKey;
 	@NotNull("추가 사용자")
 	private Set<String> personIds; // 추가 사용자
 
-	private String	channelType;				// 채널
 	private String	talkStrategy;				// 분배정책
 	private String  initMent;					// 인사멘트
 	private Integer autoWarnMin;				// 자동종료안내시간

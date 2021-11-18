@@ -57,7 +57,6 @@ public class TalkMemberGroupApiController extends ApiBaseController {
 		final List<TalkMemberGroupSummaryResponse> list = repository.findAll().stream()
 				.map((e) -> {
 					final TalkMemberGroupSummaryResponse talkMemberGroupSummaryResponse = convertDto(e, TalkMemberGroupSummaryResponse.class);
-					talkMemberGroupSummaryResponse.setKakaoServiceName(talkServiceMap.get(e.getSenderKey()));
 
 					final List<SummaryTalkGroupPersonResponse> persons = talkMemberLists.stream()
 							.filter(person -> person.getGroupId().equals(e.getGroupId()))
@@ -86,7 +85,6 @@ public class TalkMemberGroupApiController extends ApiBaseController {
 
 		final TalkMemberGroupDetailResponse detail = convertDto(entity, TalkMemberGroupDetailResponse.class);
 
-		detail.setKakaoServiceName(talkServiceMap.get((entity.getSenderKey())));
 		detail.setPersons(
 				talkMemberLists.stream()
 						.filter(e -> e.getGroupId().equals(entity.getGroupId()))

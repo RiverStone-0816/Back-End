@@ -8,8 +8,6 @@ import java.util.List;
 public class TalkMemberGroupDetailResponse {
 	private Integer groupId;                    // 상담톡아이디
 	private String  groupName;                  // 상담톡그룹명
-	private String  kakaoServiceName;           // 상담톡 서비스명
-	private String  senderKey;                  // 관련상담톡서비스
 	private String	channelType;				// 채널 eicn,kakao,navertt,naverline
 	private String  talkStrategy;				// 분배전략 NO,RR,LC,LR,CL
 	private String  initMent;					// 인사멘트
