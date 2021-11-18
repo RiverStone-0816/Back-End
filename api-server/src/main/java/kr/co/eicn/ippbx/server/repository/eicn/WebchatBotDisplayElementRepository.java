@@ -23,7 +23,7 @@ public class WebchatBotDisplayElementRepository extends EicnBaseRepository<Webch
     public void insert(WebchatBotDisplayElementFormRequest request) {
         dsl.insertInto(WEBCHAT_BOT_DISP_ELEMENT)
                 .set(WEBCHAT_BOT_DISP_ELEMENT.DISPLAY_ID, request.getDisplayId())
-                .set(WEBCHAT_BOT_DISP_ELEMENT.ORDER, request.getOrder())
+                .set(WEBCHAT_BOT_DISP_ELEMENT.SEQUENCE, request.getOrder())
                 .set(WEBCHAT_BOT_DISP_ELEMENT.TITLE, request.getTitle())
                 .set(WEBCHAT_BOT_DISP_ELEMENT.CONTENT, request.getContent())
                 .set(WEBCHAT_BOT_DISP_ELEMENT.IMAGE, request.getImage())

@@ -24,7 +24,7 @@ public class WebchatBotButtonElementRepository extends EicnBaseRepository<Webcha
         dsl.insertInto(WEBCHAT_BOT_BTN_ELEMENT)
                 .set(WEBCHAT_BOT_BTN_ELEMENT.BTN_ID, request.getButtonId())
                 .set(WEBCHAT_BOT_BTN_ELEMENT.BLOCK_ID, request.getBlockId())
-                .set(WEBCHAT_BOT_BTN_ELEMENT.ORDER, request.getOrder())
+                .set(WEBCHAT_BOT_BTN_ELEMENT.SEQUENCE, request.getOrder())
                 .set(WEBCHAT_BOT_BTN_ELEMENT.BTN_NAME, request.getButtonName())
                 .set(WEBCHAT_BOT_BTN_ELEMENT.ACTION, request.getAction().getCode())
                 .set(WEBCHAT_BOT_BTN_ELEMENT.NEXT_BLOCK_ID, request.getNextBlockId())
