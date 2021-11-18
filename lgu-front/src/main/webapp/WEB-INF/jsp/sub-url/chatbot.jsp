@@ -1273,7 +1273,7 @@
                         order: i,
                         buttonName: e.name,
                         action: e.action,
-                        nextBlockId: e.nextBlockId,
+                        nextBlockId: e.action === '' ? nodeBlockMap[e.childNodeId].id : e.nextBlockId,
                         nextGroupId: e.nextGroupId,
                         nextUrl: e.nextUrl,
                         nextPhone: e.nextPhone,
