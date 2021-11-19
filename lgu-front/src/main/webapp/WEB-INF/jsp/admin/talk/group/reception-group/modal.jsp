@@ -28,15 +28,6 @@
                         <form:input path="groupName"/>
                     </div>
                 </div>
-                <div class="four wide column"><label class="control-label">관련상담톡서비스</label></div>
-                <div class="four wide column">
-                    <div class="ui form">
-                        <form:select path="senderKey">
-                            <form:option value="" label="선택안함"/>
-                            <form:options items="${talkServices}"/>
-                        </form:select>
-                    </div>
-                </div>
             </div>
             <div class="row">
                 <div class="eight wide column"><label class="control-label">사용자 리스트</label></div>

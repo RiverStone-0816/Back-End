@@ -66,11 +66,6 @@ public class TalkReceptionGroupController extends BaseController {
         final Map<String, String> addOnPersons = new HashMap<>();
         apiInterface.addOnPersons(entity.getGroupId()).forEach(e -> addOnPersons.put(e.getId(), e.getIdName()));
         model.addAttribute("addOnPersons", addOnPersons);
-        final Map<String, String> talkServices = apiInterface.talkServices().stream().collect(Collectors.toMap(SummaryTalkServiceResponse::getSenderKey, SummaryTalkServiceResponse::getKakaoServiceName));
-        model.addAttribute("talkServices", talkServices);
-
-        if (entity.getSenderKey() != null && !talkServices.containsKey(entity.getSenderKey()))
-            talkServices.put(entity.getSenderKey(), entity.getKakaoServiceName());
 
         for (SummaryTalkGroupPersonResponse person : entity.getPersons())
             addOnPersons.remove(person.getId());
