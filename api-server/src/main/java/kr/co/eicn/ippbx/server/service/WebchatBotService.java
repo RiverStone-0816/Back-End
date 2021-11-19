@@ -52,9 +52,10 @@ public class WebchatBotService extends ApiBaseService {
         insertBlock(botId, null, null, parentButtonId, parentTreeName, level, blockInfo);
     }
 
-    public void insertBlock(Integer botId, Integer rootId, Integer parentId, Integer parentButtonId, String parentTreeName, Integer level, WebchatBotFormRequest.BlockInfo blockInfo) {
+    public Integer insertBlock(Integer botId, Integer rootId, Integer parentId, Integer parentButtonId, String parentTreeName, Integer level, WebchatBotFormRequest.BlockInfo blockInfo) {
         final HashMap<Integer, Integer> buttonIdByBlockId = new HashMap<>();
-        Integer blockId = webchatBotBlockService.insert(blockInfo);
+        final HashMap<Integer, Integer> blockIdByButtonId = new HashMap<>();
+        final Integer blockId = webchatBotBlockService.insert(blockInfo);
         if (rootId == null) rootId = blockId;
         if (parentId == null) parentId = blockId;
         String treeName = webchatBotTreeService.insert(botId, blockId, rootId, parentId, parentButtonId, parentTreeName, level);
@@ -69,26 +70,35 @@ public class WebchatBotService extends ApiBaseService {
             }
         }
 
-        if (blockInfo.getButtonList() != null) {
+        if (blockInfo.getButtonList() != null && blockInfo.getChildren() != null) {
             for (int buttonId = 0; buttonId < blockInfo.getButtonList().size(); buttonId++) {
                 final WebchatBotFormRequest.ButtonElement buttonElement = blockInfo.getButtonList().get(buttonId);
-                webchatBotButtonElementService.insertButtonElement(blockId, buttonId, buttonElement);
-
-                for (WebchatBotFormRequest.ApiParam apiParam : buttonElement.getParamList()) {
-                    webchatBotApiParamService.insert(buttonId, apiParam);
-                }
 
                 if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()))
                     buttonIdByBlockId.put(buttonElement.getNextBlockId(), buttonId);
             }
-        }
 
-        if (blockInfo.getChildren() != null) {
             for (WebchatBotFormRequest.BlockInfo child : blockInfo.getChildren()) {
-                if (buttonIdByBlockId.containsKey(child.getId()))
-                    insertBlock(botId, rootId, blockId, buttonIdByBlockId.get(child.getId()), treeName, level + 1, child);
+                if (buttonIdByBlockId.containsKey(child.getId())) {
+                    Integer childBlockId = insertBlock(botId, rootId, blockId, buttonIdByBlockId.get(child.getId()), treeName, level + 1, child);
+                    blockIdByButtonId.put(buttonIdByBlockId.get(child.getId()), childBlockId);
+                }
+            }
+
+            for (int buttonId = 0; buttonId < blockInfo.getButtonList().size(); buttonId++) {
+                final WebchatBotFormRequest.ButtonElement buttonElement = blockInfo.getButtonList().get(buttonId);
+
+                if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()))
+                    buttonElement.setNextBlockId(blockIdByButtonId.get(buttonId));
+
+                webchatBotButtonElementService.insertButtonElement(blockId, buttonId, buttonElement);
+
+                for (WebchatBotFormRequest.ApiParam apiParam : buttonElement.getParamList())
+                    webchatBotApiParamService.insert(buttonId, apiParam);
             }
         }
+
+        return blockId;
     }
 
     public void deleteBot(Integer botId) {
@@ -153,5 +163,13 @@ public class WebchatBotService extends ApiBaseService {
             block.setChildren(new ArrayList<>());
 
         return block;
+    }
+
+    public Integer copy(Integer botId) {
+        WebchatBotInfoResponse response = get(botId);
+
+        WebchatBotFormRequest copyData = convertDto(response, WebchatBotFormRequest.class);
+
+        return createWebchatBotInfo(copyData);
     }
 }

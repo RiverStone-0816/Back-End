@@ -59,9 +59,9 @@ public class WebchatBotInfoApiController extends ApiBaseController {
     }
 
     @PostMapping("{id}/copy")
-    public ResponseEntity<JsonResult<Void>> copy(@PathVariable Integer id) {
-//        webchatBotInfoService.copy(id);
+    public ResponseEntity<JsonResult<Integer>> copy(@PathVariable Integer id) {
+        Integer botId = webchatBotService.copy(id);
 
-        return ResponseEntity.ok(create());
+        return ResponseEntity.ok(data(botId));
     }
 }

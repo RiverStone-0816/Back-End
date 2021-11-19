@@ -33,7 +33,7 @@ public class WebchatBotButtonElementService extends ApiBaseService {
         data.setIsResultTemplateEnable(buttonElement.getIsResultTemplateEnable());
         data.setAction(buttonElement.getAction());
 
-        if (ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()))
+        if (ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()))
             data.setActionData(String.valueOf(buttonElement.getNextBlockId()));
         else if (ButtonAction.CONNECT_MEMBER.equals(buttonElement.getAction()))
             data.setActionData(String.valueOf(buttonElement.getNextGroupId()));
@@ -60,6 +60,14 @@ public class WebchatBotButtonElementService extends ApiBaseService {
         webchatBotButtonElementRepository.deleteByBlockIdList(blockIdList);
     }
 
+    public Integer convertStringToInteger(String value) {
+        try {
+            return Integer.valueOf(value);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
     public WebchatBotInfoResponse.ButtonInfo convertEntityToResponse(WebchatBotBtnElement entity) {
         WebchatBotInfoResponse.ButtonInfo response = new WebchatBotInfoResponse.ButtonInfo();
 
@@ -71,10 +79,10 @@ public class WebchatBotButtonElementService extends ApiBaseService {
         response.setAction(ButtonAction.of(entity.getAction()));
 
 
-        if (ButtonAction.CONNECT_BLOCK.equals(ButtonAction.of(entity.getAction())))
-            response.setNextBlockId(Integer.valueOf(entity.getNextActionData()));
+        if (ButtonAction.CONNECT_BLOCK.equals(ButtonAction.of(entity.getAction())) || ButtonAction.CONNECT_NEXT_BLOCK.equals(ButtonAction.of(entity.getAction())))
+            response.setNextBlockId(convertStringToInteger(entity.getNextActionData()));
         else if (ButtonAction.CONNECT_MEMBER.equals(ButtonAction.of(entity.getAction())))
-            response.setNextGroupId(Integer.valueOf(entity.getNextActionData()));
+            response.setNextGroupId(convertStringToInteger(entity.getNextActionData()));
         else if (ButtonAction.CONNECT_URL.equals(ButtonAction.of(entity.getAction())))
             response.setNextUrl(entity.getNextActionData());
         else if (ButtonAction.CONNECT_PHONE.equals(ButtonAction.of(entity.getAction())))
