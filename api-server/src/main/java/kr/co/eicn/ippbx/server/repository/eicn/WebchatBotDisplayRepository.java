@@ -25,16 +25,17 @@ public class WebchatBotDisplayRepository extends EicnBaseRepository<WebchatBotDi
                 .set(WEBCHAT_BOT_DISPLAY.BLOCK_ID, request.getBlockId())
                 .set(WEBCHAT_BOT_DISPLAY.SEQUENCE, request.getOrder())
                 .set(WEBCHAT_BOT_DISPLAY.TYPE, request.getType().getCode())
+                .set(WEBCHAT_BOT_DISPLAY.COMPANY_ID, getCompanyId())
                 .returning(WEBCHAT_BOT_DISPLAY.ID)
                 .fetchOne()
                 .value1();
     }
 
-    public List<Integer> findDisplayIdListByDisplayIdList(List<Integer> blockIdList) {
-        return dsl.select(WEBCHAT_BOT_DISPLAY.ID)
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotDisplay> findDisplayListByBlockIdList(List<Integer> blockIdList) {
+        return dsl.select(WEBCHAT_BOT_DISPLAY.fields())
                 .from(WEBCHAT_BOT_DISPLAY)
                 .where(WEBCHAT_BOT_DISPLAY.BLOCK_ID.in(blockIdList))
-                .fetchInto(Integer.class);
+                .fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotDisplay.class);
     }
 
     public void deleteByBlockIdList(List<Integer> blockIdList) {

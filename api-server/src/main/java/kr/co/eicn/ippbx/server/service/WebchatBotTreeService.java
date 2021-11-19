@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.service;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotTree;
 import kr.co.eicn.ippbx.model.form.WebchatBotTreeFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatBotTreeRepository;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -48,10 +51,18 @@ public class WebchatBotTreeService extends ApiBaseService {
     }
 
     public List<Integer> findBlockIdListByBotId(Integer botId) {
-        return webchatBotTreeRepository.findBlockIdListByBotId(botId);
+        return webchatBotTreeRepository.findTreeByBotId(botId, null).stream().map(WebchatBotTree::getBlockId).collect(Collectors.toList());
     }
 
     public void deleteByBotId(Integer botId) {
         webchatBotTreeRepository.deleteByBotId(botId);
+    }
+
+    public Integer findRootBlockId(Integer botId) {
+        return webchatBotTreeRepository.findRootBlockId(botId);
+    }
+
+    public Map<Integer, List<Integer>> findBlockIdByParentIdMapByBotId(Integer botId, Integer rootBlockId) {
+        return webchatBotTreeRepository.findTreeByBotId(botId, rootBlockId).stream().collect(Collectors.groupingBy(WebchatBotTree::getParentId, Collectors.mapping(WebchatBotTree::getBlockId, Collectors.toList())));
     }
 }

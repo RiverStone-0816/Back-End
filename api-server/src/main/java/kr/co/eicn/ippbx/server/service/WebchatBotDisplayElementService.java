@@ -1,5 +1,7 @@
 package kr.co.eicn.ippbx.server.service;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotDispElement;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.form.WebchatBotDisplayElementFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatBotDisplayElementRepository;
@@ -9,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -32,5 +36,23 @@ public class WebchatBotDisplayElementService extends ApiBaseService {
 
     public void deleteByDisplayIdList(List<Integer> displayIdList) {
         webchatBotDisplayElementRepository.deleteByDisplayIdList(displayIdList);
+    }
+
+    public WebchatBotInfoResponse.DisplayElement convertEntityToResponse(WebchatBotDispElement entity) {
+        WebchatBotInfoResponse.DisplayElement response = new WebchatBotInfoResponse.DisplayElement();
+
+        response.setId(entity.getId());
+        response.setDisplayId(entity.getDisplayId());
+        response.setOrder(entity.getSequence());
+        response.setTitle(entity.getTitle());
+        response.setContent(entity.getContent());
+        response.setImage(entity.getImage());
+        response.setUrl(entity.getUrl());
+
+        return response;
+    }
+
+    public Map<Integer, List<WebchatBotInfoResponse.DisplayElement>> findDisplayElementByDisplayId(List<Integer> displayIdList) {
+        return webchatBotDisplayElementRepository.findAllInDisplayIdList(displayIdList).stream().map(this::convertEntityToResponse).collect(Collectors.groupingBy(WebchatBotInfoResponse.DisplayElement::getDisplayId));
     }
 }

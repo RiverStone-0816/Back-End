@@ -38,4 +38,8 @@ public class WebchatBotDisplayElementRepository extends EicnBaseRepository<Webch
                 .and(WEBCHAT_BOT_DISP_ELEMENT.DISPLAY_ID.in(displayIdList))
                 .execute();
     }
+
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotDispElement> findAllInDisplayIdList(List<Integer> displayIdList) {
+        return findAll(WEBCHAT_BOT_DISP_ELEMENT.DISPLAY_ID.in(displayIdList));
+    }
 }

@@ -1,5 +1,8 @@
 package kr.co.eicn.ippbx.server.service;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotApiParam;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.enums.ApiParameterType;
 import kr.co.eicn.ippbx.model.form.WebchatBotApiParamFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatBotApiParamRepository;
@@ -9,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -30,5 +35,21 @@ public class WebchatBotApiParamService extends ApiBaseService {
 
     public void deleteByButtonIdList(List<Integer> buttonIdList) {
         webchatBotApiParamRepository.deleteByButtonIdList(buttonIdList);
+    }
+
+    public WebchatBotInfoResponse.ApiParam convertEntityToResponse(WebchatBotApiParam entity) {
+        WebchatBotInfoResponse.ApiParam response = new WebchatBotInfoResponse.ApiParam();
+
+        response.setId(entity.getId());
+        response.setButtonId(entity.getBtnId());
+        response.setType(ApiParameterType.of(entity.getType()));
+        response.setParamName(entity.getParamName());
+        response.setDisplayName(entity.getDisplayName());
+
+        return response;
+    }
+
+    public Map<Integer, List<WebchatBotInfoResponse.ApiParam>> findApiParamListByButtonId(List<Integer> buttonIdList) {
+        return webchatBotApiParamRepository.findAllInButtonIdList(buttonIdList).stream().map(this::convertEntityToResponse).collect(Collectors.groupingBy(WebchatBotInfoResponse.ApiParam::getButtonId));
     }
 }

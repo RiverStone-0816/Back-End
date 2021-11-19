@@ -36,4 +36,8 @@ public class WebchatBotApiParamRepository extends EicnBaseRepository<WebchatBotA
                 .and(WEBCHAT_BOT_API_PARAM.BTN_ID.in(buttonIdList))
                 .execute();
     }
+
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotApiParam> findAllInButtonIdList(List<Integer> buttonIdList) {
+        return findAll(WEBCHAT_BOT_API_PARAM.BTN_ID.in(buttonIdList));
+    }
 }

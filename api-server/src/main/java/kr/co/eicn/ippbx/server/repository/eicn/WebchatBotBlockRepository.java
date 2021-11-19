@@ -22,6 +22,8 @@ public class WebchatBotBlockRepository extends EicnBaseRepository<WebchatBotBloc
 
     public Integer insert(WebchatBotBlockFormRequest request) {
         return dsl.insertInto(WEBCHAT_BOT_BLOCK)
+                .set(WEBCHAT_BOT_BLOCK.POS_X, request.getPosX())
+                .set(WEBCHAT_BOT_BLOCK.POX_Y, request.getPosY())
                 .set(WEBCHAT_BOT_BLOCK.NAME, request.getName())
                 .set(WEBCHAT_BOT_BLOCK.KEYWORD, request.getKeyword())
                 .set(WEBCHAT_BOT_BLOCK.IS_TPL_ENABLE, request.getIsTemplateEnable() != null && request.getIsTemplateEnable() ? "Y" : "N")
@@ -35,5 +37,9 @@ public class WebchatBotBlockRepository extends EicnBaseRepository<WebchatBotBloc
         dsl.deleteFrom(WEBCHAT_BOT_BLOCK)
                 .where(WEBCHAT_BOT_BLOCK.ID.in(blockIdList))
                 .execute();
+    }
+
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotBlock> findInBlockIdList(List<Integer> blockIdList) {
+        return findAll(WEBCHAT_BOT_BLOCK.ID.in(blockIdList));
     }
 }

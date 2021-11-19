@@ -23,7 +23,7 @@ public class WebchatBotInfoService extends ApiBaseService {
         return webchatBotInfoRepository.findAll().stream().map(e -> convertDto(e, SummaryWebchatBotInfoResponse.class)).collect(Collectors.toList());
     }
 
-    public WebchatBotInfoResponse getById(Integer id) {
+    public WebchatBotInfoResponse get(Integer id) {
         return convertDto(webchatBotInfoRepository.findOneIfNullThrow(id), WebchatBotInfoResponse.class);
     }
 
