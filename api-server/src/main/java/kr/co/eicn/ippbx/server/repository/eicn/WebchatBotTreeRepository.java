@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.WEBCHAT_BOT_TREE;
+import static org.jooq.impl.DSL.noCondition;
 
 @Getter
 @Repository
@@ -40,11 +41,19 @@ public class WebchatBotTreeRepository extends EicnBaseRepository<WebchatBotTree,
                 .execute();
     }
 
-    public List<Integer> findBlockIdListByBotId(Integer botId) {
-        return dsl.select(WEBCHAT_BOT_TREE.BLOCK_ID)
+    public Integer findRootBlockId(Integer botId) {
+        return findOne(WEBCHAT_BOT_TREE.CHATBOT_ID.eq(botId)
+                .and(WEBCHAT_BOT_TREE.LEVEL.eq(0))
+                .and(WEBCHAT_BOT_TREE.BLOCK_ID.eq(WEBCHAT_BOT_TREE.ROOT_ID)))
+                .getBlockId();
+    }
+
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotTree> findTreeByBotId(Integer botId, Integer rootBlockId) {
+        return dsl.select(WEBCHAT_BOT_TREE.fields())
                 .from(WEBCHAT_BOT_TREE)
                 .where(compareCompanyId())
                 .and(WEBCHAT_BOT_TREE.CHATBOT_ID.eq(botId))
-                .fetchInto(Integer.class);
+                .and(rootBlockId != null ? WEBCHAT_BOT_TREE.BLOCK_ID.ne(rootBlockId) : noCondition())
+                .fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotTree.class);
     }
 }

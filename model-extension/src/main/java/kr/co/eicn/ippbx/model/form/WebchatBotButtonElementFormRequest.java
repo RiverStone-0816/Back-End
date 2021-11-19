@@ -10,11 +10,7 @@ public class WebchatBotButtonElementFormRequest {
     private Integer order;
     private String buttonName;
     private ButtonAction action;
-    private Integer nextBlockId;
-    private Integer nextGroupId;
-    private String nextUrl;
-    private String nextPhone;
-    private String nextApiUrl;
+    private String actionData;
     private String nextApiMent;
     private Boolean isResultTemplateEnable;
     private String nextApiResultTemplate;
