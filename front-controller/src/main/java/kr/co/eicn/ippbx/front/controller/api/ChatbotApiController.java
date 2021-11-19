@@ -42,8 +42,8 @@ public class ChatbotApiController extends BaseController {
 
     @SneakyThrows
     @PostMapping("")
-    public void post(@Valid @RequestBody WebchatBotFormRequest form, BindingResult bindingResult) {
-        apiInterface.post(form);
+    public Integer post(@Valid @RequestBody WebchatBotFormRequest form, BindingResult bindingResult) {
+        return apiInterface.post(form);
     }
 
     @SneakyThrows

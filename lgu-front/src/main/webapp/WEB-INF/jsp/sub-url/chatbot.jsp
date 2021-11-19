@@ -30,12 +30,13 @@
                         <div>
                             <h3 class="panel-title"><img src="<c:url value="/resources/images/chatbot-square.svg"/>" class="vertical-align-middle mr5"> 봇 에디터</h3>
                         </div>
-                        <div class="dp-flex">
+                        <div id="bot-list" class="dp-flex">
                             <div class="bot-select-wrap">
                                 <span>봇 리스트</span>
                                 <div class="ui form">
-                                    <select>
-                                        <option></option>
+                                    <select @change.stop.prevent="changeBot" v-model="select">
+                                        <option value=""></option>
+                                        <option v-for="(e,i) in bots" :key="i" :value="e.id">{{ e.name }}</option>
                                     </select>
                                 </div>
                                 <button type="button" class="ui mini button" onclick="chatbotSettingModal.show()">봇 추가</button>
@@ -638,6 +639,76 @@
     <tags:scripts>
         <script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
         <script>
+            const botList = (() => {
+                const o = Vue.createApp({
+                    data() {
+                        return {current: '', select: '', bots: []}
+                    },
+                    methods: {
+                        changeBot() {
+                            const change = () => {
+                                restSelf.get('/api/chatbot/' + o.select).done(response => {
+                                    o.current = o.select
+
+                                    const data = response.data
+
+                                    blockList.blocks.splice(0, blockList.blocks.length)
+                                    buttonConfig.blocks.splice(0, buttonConfig.blocks.length)
+                                    fallbackConfig.blocks.splice(0, fallbackConfig.blocks.length)
+                                    for (let property in nodeBlockMap) delete nodeBlockMap[property]
+                                    editor.clear()
+
+                                    fallbackConfig.data = {
+                                        name: data.name,
+                                        fallbackMent: data.fallbackMent,
+                                        fallbackAction: data.fallbackAction,
+                                        nextBlockId: data.nextBlockId,
+                                        nextGroupId: data.nextGroupId,
+                                        nextUrl: data.nextUrl,
+                                        nextPhone: data.nextPhone
+                                    }
+                                    chatbotSettingModal.hide()
+
+                                    $('.chatbot-control-panel').removeClass('active')
+                                    $('.empty-panel').addClass('active')
+
+
+                                    const block = data.blockInfo
+                                    const nodeId = createNode(block.id, block.posX, block.posY)
+
+                                    const app = nodeBlockMap[nodeId]
+
+                                    app.name = block.name
+                                    app.keywords = block.keyword.split('|')
+                                    app.autoReply = block.isTemplateEnable
+
+                                    app.displays = []
+                                    app.buttons = []
+
+                                    // TODO: 작업중
+                                })
+                            }
+
+                            if (o.current && o.current !== o.select) {
+                                confirm('저장되지 않은 내용은 모두 버려집니다. 변경하시겠습니까?').done(change).reject(() => {
+                                    o.select = o.current
+                                })
+                            } else if (o.current !== o.select) {
+                                change()
+                            }
+
+                            console.log(o.current, o.select)
+                        },
+                    },
+                    mounted() {
+                        restSelf.get('/api/chatbot/').done(response => {
+                            o.bots = response.data
+                        })
+                    }
+                }).mount('#bot-list')
+                return o || o
+            })()
+
             const blockList = (() => {
                 const o = Vue.createApp({
                     data() {
@@ -697,12 +768,15 @@
                             }).modal('show')
                         },
                         start() {
+                            botList.current = ''
+                            botList.select = ''
+
                             blockList.blocks.splice(0, blockList.blocks.length)
                             buttonConfig.blocks.splice(0, buttonConfig.blocks.length)
                             fallbackConfig.blocks.splice(0, fallbackConfig.blocks.length)
-                            for (let property in nodeBlockMap)
-                                delete nodeBlockMap[property]
+                            for (let property in nodeBlockMap) delete nodeBlockMap[property]
                             editor.clear()
+
                             fallbackConfig.data = {name: o.name, fallbackMent: o.fallbackMent, fallbackAction: o.fallbackAction, nextGroupId: o.nextGroupId, nextUrl: o.nextUrl, nextPhone: o.nextPhone}
                             o.hide()
                             createNode()
@@ -943,7 +1017,7 @@
 
                                 if (currentAction === '') {
                                     const node = editor.getNodeFromId(o.nodeId)
-                                    data.childNodeId = createNode(node.pos_x + 300, node.pos_y)
+                                    data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y)
                                     app.createConnection(o.buttonIndex, nodeBlockMap[data.childNodeId].id)
                                 } else if (currentAction === 'block') {
                                     app.createConnection(o.buttonIndex, data.nextBlockId)
@@ -1021,7 +1095,7 @@
             let lastBlockId = 0
             const createBlockId = () => (++lastBlockId)
 
-            function createNode(x, y) {
+            function createNode(blockId, x, y) {
                 if (typeof x !== 'number' || typeof y !== 'number') {
                     editor.zoom_reset()
                     editor.canvas_x = 0
@@ -1046,7 +1120,7 @@
                     const o = Vue.createApp({
                         data() {
                             return {
-                                id: createBlockId(),
+                                id: blockId ?? createBlockId(),
                                 name: '',
                                 displays: [],
                                 buttons: [],
@@ -1253,6 +1327,9 @@
             window.open('/sub-url/chatbot-test', '_blank', 'width=420px,height=800px,top=100,left=100,scrollbars=yes,resizable=no');
 
             const save = () => {
+                if (!fallbackConfig.data)
+                    return alert('봇이 생성(선택)되지 않았습니다.')
+
                 const convertBlock = block => ({
                     id: block?.id,
                     posX: block ? editor.getNodeFromId(block.nodeId).pos_x : 0,

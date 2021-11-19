@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,12 +22,12 @@ public class ChatbotApiInterface extends ApiServerInterface {
 
     @SneakyThrows
     public WebchatBotInfoResponse getById(Integer id) {
-        return get(subUrl + id, null, WebchatBotInfoResponse.class);
+        return getData(subUrl + id, null, WebchatBotInfoResponse.class).getData();
     }
 
     @SneakyThrows
-    public void post(WebchatBotFormRequest form) {
-        post(subUrl, form);
+    public Integer post(WebchatBotFormRequest form) {
+        return getData(HttpMethod.POST, subUrl, form, Integer.class, false).getData();
     }
 
     @SneakyThrows
