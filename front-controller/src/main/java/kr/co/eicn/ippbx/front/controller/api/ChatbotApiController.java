@@ -59,8 +59,8 @@ public class ChatbotApiController extends BaseController {
     }
 
     @SneakyThrows
-    @PostMapping("{id}")
-    public void copy(@PathVariable Integer id) {
-        apiInterface.copy(id);
+    @PostMapping("{id}/copy")
+    public Integer copy(@PathVariable Integer id) {
+        return apiInterface.copy(id);
     }
 }

@@ -22,6 +22,7 @@ public class WebchatBotInfoResponse {
     @Data
     public static class BlockInfo {
         private Integer id;
+        private Integer parentButtonId;
         private Integer posX;
         private Integer posY;
         private String name;

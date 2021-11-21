@@ -13,7 +13,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.css">
+<link rel="stylesheet" href="<c:url value="/resources/vendors/drawflow/0.0.53/drawflow.min.css?version=${version}"/>"/>
 <tags:tabContentLayout>
     <div class="content-wrapper-frame">
         <div class="menu-tab">
@@ -41,9 +41,9 @@
                                 </div>
                                 <button type="button" class="ui mini button" onclick="chatbotSettingModal.show()">봇 추가</button>
                             </div>
-                            <button type="button" class="ui mini button" onclick="botCopyPopup();">봇 복사</button>
+                            <button type="button" class="ui mini button" onclick="copy()">봇 복사</button>
                             <button type="button" class="ui mini button" onclick="botTestPopup();">봇 테스트</button>
-                            <button type="button" class="ui mini button" onclick="save();">봇 저장</button>
+                            <button type="button" class="ui mini button" onclick="save()">봇 저장</button>
                         </div>
                     </div>
                     <div class="panel-body chatbot remove-padding flex-100">
@@ -637,7 +637,7 @@
     </div>
 
     <tags:scripts>
-        <script src="https://cdn.jsdelivr.net/gh/jerosoler/Drawflow/dist/drawflow.min.js"></script>
+        <script src="<c:url value="/resources/vendors/drawflow/0.0.53/drawflow.min.js?version=${version}"/>" data-type="library"></script>
         <script>
             const botList = (() => {
                 const o = Vue.createApp({
@@ -645,49 +645,98 @@
                         return {current: '', select: '', bots: []}
                     },
                     methods: {
+                        load() {
+                            restSelf.get('/api/chatbot/').done(response => {
+                                o.bots = response.data
+                            })
+                        },
                         changeBot() {
-                            const change = () => {
-                                restSelf.get('/api/chatbot/' + o.select).done(response => {
-                                    o.current = o.select
+                            const change = () => restSelf.get('/api/chatbot/' + o.select).done(response => {
+                                o.current = o.select
 
-                                    const data = response.data
+                                const data = response.data
 
-                                    blockList.blocks.splice(0, blockList.blocks.length)
-                                    buttonConfig.blocks.splice(0, buttonConfig.blocks.length)
-                                    fallbackConfig.blocks.splice(0, fallbackConfig.blocks.length)
-                                    for (let property in nodeBlockMap) delete nodeBlockMap[property]
-                                    editor.clear()
+                                blockList.blocks.splice(0, blockList.blocks.length)
+                                buttonConfig.blocks.splice(0, buttonConfig.blocks.length)
+                                fallbackConfig.blocks.splice(0, fallbackConfig.blocks.length)
+                                for (let property in nodeBlockMap) delete nodeBlockMap[property]
+                                editor.clear()
 
-                                    fallbackConfig.data = {
-                                        name: data.name,
-                                        fallbackMent: data.fallbackMent,
-                                        fallbackAction: data.fallbackAction,
-                                        nextBlockId: data.nextBlockId,
-                                        nextGroupId: data.nextGroupId,
-                                        nextUrl: data.nextUrl,
-                                        nextPhone: data.nextPhone
-                                    }
-                                    chatbotSettingModal.hide()
+                                fallbackConfig.data = {
+                                    name: data.name,
+                                    fallbackMent: data.fallbackMent,
+                                    fallbackAction: data.fallbackAction,
+                                    nextBlockId: data.nextBlockId,
+                                    nextGroupId: data.nextGroupId,
+                                    nextUrl: data.nextUrl,
+                                    nextPhone: data.nextPhone
+                                }
+                                chatbotSettingModal.hide()
 
-                                    $('.chatbot-control-panel').removeClass('active')
-                                    $('.empty-panel').addClass('active')
+                                $('.chatbot-control-panel').removeClass('active')
+                                $('.empty-panel').addClass('active')
 
+                                const createBlock = block => {
+                                    block.children?.forEach(e => createBlock(e))
 
-                                    const block = data.blockInfo
                                     const nodeId = createNode(block.id, block.posX, block.posY)
-
                                     const app = nodeBlockMap[nodeId]
 
                                     app.name = block.name
                                     app.keywords = block.keyword.split('|')
                                     app.autoReply = block.isTemplateEnable
+                                    app.displays = block.displayList.sort((a, b) => (a.order - b.order)).map(e => {
+                                        return e.type === 'text' ? {type: 'text', data: {text: e.elementList?.[0]?.content}}
+                                            : e.type === 'image' ? {type: 'image', data: {fileUrl: e.elementList?.[0]?.image}}
+                                                : e.type === 'card' ? {
+                                                        type: 'card',
+                                                        data: {fileUrl: e.elementList?.[0]?.image, title: e.elementList?.[0]?.title, announcement: e.elementList?.[0]?.content,}
+                                                    }
+                                                    : {
+                                                        type: 'list',
+                                                        title: e.elementList?.[0]?.title,
+                                                        titleUrl: e.elementList?.[0]?.url,
+                                                        data: e.elementList?.splice(1).map(e2 => ({title: e2.title, announcement: e2.content, url: e2.url, fileUrl: e2.image,}))
+                                                    }
+                                    })
 
-                                    app.displays = []
-                                    app.buttons = []
+                                    const connections = {}
+                                    app.buttons = block.buttonList.sort((a, b) => (a.order - b.order)).map((e, i) => {
+                                        const childNodeId = (() => {
+                                            if (e.action !== 'block') return
+                                            const childBlockId = block.children?.filter(childBlock => (childBlock.parentButtonId === e.id))[0]?.id
+                                            return blockList.blocks.filter(createdBlock => createdBlock.id === childBlockId)?.nodeId
+                                        })()
+                                        const action = $.isNumeric(childNodeId) ? '' : e.action
+                                        if (e.action === 'block') connections[i] = e.nextBlockId
+                                        return {
+                                            name: e.name,
+                                            action: action,
+                                            nextBlockId: action ? e.nextBlockId : null,
+                                            childNodeId: action ? null : childNodeId,
+                                            nextGroupId: e.nextGroupId,
+                                            nextUrl: e.nextUrl,
+                                            nextPhone: e.nextPhone,
+                                            api: {
+                                                nextApiUrl: e.nextApiUrl,
+                                                nextApiMent: e.nextApiMent,
+                                                usingResponse: e.isResultTemplateEnable,
+                                                nextApiResultTemplate: e.nextApiResultTemplate,
+                                                nextApiErrorMent: e.nextApiErrorMent,
+                                                parameters: e.paramList?.map(e2 => ({type: e2.type, value: e2.paramName, name: e2.displayName}))
+                                            }
+                                        }
+                                    })
+                                    app.showingEmptyDisplayItem = !app.displays.length
+                                    app.showingEmptyButtonItem = !app.buttons.length
 
-                                    // TODO: 작업중
-                                })
-                            }
+                                    app.buttons.forEach(() => editor.addNodeOutput(nodeId))
+                                    for (let buttonIndex in connections) app.createConnection(parseInt(buttonIndex), connections[buttonIndex])
+                                }
+
+                                createBlock(data.blockInfo)
+                                lastBlockId = blockList.blocks.reduce((a, b) => Math.max(a.id, b.id), 0) + 1
+                            })
 
                             if (o.current && o.current !== o.select) {
                                 confirm('저장되지 않은 내용은 모두 버려집니다. 변경하시겠습니까?').done(change).reject(() => {
@@ -696,14 +745,10 @@
                             } else if (o.current !== o.select) {
                                 change()
                             }
-
-                            console.log(o.current, o.select)
                         },
                     },
                     mounted() {
-                        restSelf.get('/api/chatbot/').done(response => {
-                            o.bots = response.data
-                        })
+                        this.load()
                     }
                 }).mount('#bot-list')
                 return o || o
@@ -734,7 +779,7 @@
                         },
                         show() {
                             if (!o.data)
-                                return alert('봇이 생성되지 않았습니다.')
+                                return alert('봇 시나리오가 생성되지 않았습니다.')
 
                             $('.chatbot-control-panel').removeClass('active')
                             $('.fallback-block-manage').addClass('active')
@@ -1187,6 +1232,14 @@
                                     editor.removeSingleConnection(o.nodeId, e.node, destinationOutputClass, e.output)
                                     editor.addConnection(o.nodeId, e.node, targetOutputClass, e.output)
                                 })
+
+                                if (buttonConfig.nodeId === o.nodeId) {
+                                    if (buttonConfig.buttonIndex === index) {
+                                        buttonConfig.buttonIndex = index - 1
+                                    } else if (buttonConfig.buttonIndex === index - 1) {
+                                        buttonConfig.buttonIndex = index
+                                    }
+                                }
                             },
                             moveDownButtonItem(index) {
                                 if (index >= o.buttons.length - 1) return
@@ -1205,10 +1258,20 @@
                                     editor.removeSingleConnection(o.nodeId, e.node, destinationOutputClass, e.output)
                                     editor.addConnection(o.nodeId, e.node, targetOutputClass, e.output)
                                 })
+
+                                if (buttonConfig.nodeId === o.nodeId) {
+                                    if (buttonConfig.buttonIndex === index) {
+                                        buttonConfig.buttonIndex = index + 1
+                                    } else if (buttonConfig.buttonIndex === index + 1) {
+                                        buttonConfig.buttonIndex = index
+                                    }
+                                }
                             },
                             removeButtonItem(index) {
                                 const removedButton = o.buttons.splice(index, 1)[0]
                                 o.showingEmptyButtonItem = !o.buttons || !o.buttons.length
+
+                                editor.removeNodeOutput(o.nodeId, o.getOutputClass(index))
 
                                 if (removedButton.action === '')
                                     nodeBlockMap[removedButton.childNodeId].delete()
@@ -1326,9 +1389,13 @@
 
             window.open('/sub-url/chatbot-test', '_blank', 'width=420px,height=800px,top=100,left=100,scrollbars=yes,resizable=no');
 
+            const copy = () => {
+                if (!$.isNumeric(botList.current)) return alert('봇 시나리오가 선택되지 않았습니다.')
+                restSelf.post('/api/chatbot/' + botList.current + '/copy').done(() => alert('봇 시나리오가 복사되었습니다.', botList.load))
+            }
             const save = () => {
                 if (!fallbackConfig.data)
-                    return alert('봇이 생성(선택)되지 않았습니다.')
+                    return alert('봇 시나리오가 생성(선택)되지 않았습니다.')
 
                 const convertBlock = block => ({
                     id: block?.id,

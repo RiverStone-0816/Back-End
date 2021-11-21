@@ -41,7 +41,7 @@ public class ChatbotApiInterface extends ApiServerInterface {
     }
 
     @SneakyThrows
-    public void copy(Integer id) {
-        post(subUrl + id, null);
+    public Integer copy(Integer id) {
+        return getData(HttpMethod.POST, subUrl + id +  "/copy", null, Integer.class, false).getData();
     }
 }
