@@ -31,6 +31,14 @@
                 </div>
             </div>
             <div class="row">
+                <div class="four wide column"><label class="control-label">첫인사멘트</label></div>
+                <div class="eight wide column">
+                    <div class="ui form">
+                        <form:input path="initMent" placeholder="[주의]처음 그룹에 들어온 고객에 나가는 자동멘트 없으면 처리하지 않음."/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="four wide column"><label class="control-label">비접수설정</label></div>
                 <div class="four wide column">
                     <div class="ui form">
