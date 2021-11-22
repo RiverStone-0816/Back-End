@@ -9,9 +9,13 @@ import kr.co.eicn.ippbx.server.service.WebchatBotService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -42,6 +46,23 @@ public class WebchatBotInfoApiController extends ApiBaseController {
         final Integer botId = webchatBotService.createWebchatBotInfo(form);
 
         return ResponseEntity.ok(data(botId));
+    }
+
+    @GetMapping("image")
+    public ResponseEntity<Resource> getImage(@RequestParam String fileName) {
+        final Resource resource = webchatBotService.getImage(fileName);
+
+        return ResponseEntity.ok()
+                .contentType(MediaTypeFactory.getMediaType(resource).isPresent() ? MediaTypeFactory.getMediaType(resource).get() : MediaType.APPLICATION_OCTET_STREAM)
+                .headers(header -> header.setCacheControl(CacheControl.noCache().getHeaderValue()))
+                .body(resource);
+    }
+
+    @PostMapping("image")
+    public ResponseEntity<JsonResult<String>> uploadImage(@RequestParam MultipartFile image) {
+        final String saveFileName = webchatBotService.uploadImage(image);
+
+        return ResponseEntity.ok(data(saveFileName));
     }
 
     @PutMapping("{id}")

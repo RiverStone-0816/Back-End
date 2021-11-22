@@ -4,20 +4,28 @@ import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.enums.ButtonAction;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
-@AllArgsConstructor
+import static org.apache.commons.lang3.StringUtils.replace;
+
+@Slf4j
+@RequiredArgsConstructor
 @Service
 public class WebchatBotService extends ApiBaseService {
-    private final Logger logger = LoggerFactory.getLogger(WebchatBotService.class);
-
     private final WebchatBotInfoService webchatBotInfoService;
     private final WebchatBotTreeService webchatBotTreeService;
     private final WebchatBotBlockService webchatBotBlockService;
@@ -25,6 +33,10 @@ public class WebchatBotService extends ApiBaseService {
     private final WebchatBotDisplayElementService webchatBotDisplayElementService;
     private final WebchatBotButtonElementService webchatBotButtonElementService;
     private final WebchatBotApiParamService webchatBotApiParamService;
+    private final FileSystemStorageService fileSystemStorageService;
+
+    @Value("${file.path.chatbot}")
+    private String savePath;
 
     public Integer createWebchatBotInfo(WebchatBotFormRequest form) {
         Integer botId = webchatBotInfoService.insert(form);
@@ -171,5 +183,26 @@ public class WebchatBotService extends ApiBaseService {
         WebchatBotFormRequest copyData = convertDto(response, WebchatBotFormRequest.class);
 
         return createWebchatBotInfo(copyData);
+    }
+
+    public String uploadImage(MultipartFile image) {
+        final String saveFileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()).concat("_") + image.getOriginalFilename();
+        final Path newPath = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
+
+        if (!StringUtils.endsWithAny(Objects.requireNonNull(image.getOriginalFilename()).toLowerCase(), ".jpg", "jpeg", ".png"))
+            throw new IllegalArgumentException("알 수 없는 파일 확장자입니다.");
+
+        fileSystemStorageService.store(newPath, saveFileName, image);
+
+        return saveFileName;
+    }
+
+    public Resource getImage(String fileName) {
+        final Path newPath = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
+
+        if (!StringUtils.endsWithAny(Objects.requireNonNull(fileName).toLowerCase(), ".jpg", "jpeg", ".png"))
+            throw new IllegalArgumentException("알 수 없는 파일 확장자입니다.");
+
+        return fileSystemStorageService.loadAsResource(newPath, fileName);
     }
 }
