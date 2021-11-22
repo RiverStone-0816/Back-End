@@ -89,7 +89,7 @@
                                 <li><a href="#" class="-menu" data-menu-id="${g.escapeQuote(e.menuCode)}">${g.htmlQuote(e.menuName)}</a></li>
                             </c:when>
                             <c:when test="${e.actionType == 'PAGE'}">
-                                <li><a href="<c:url value="${e.menuActionExeId}"/>" class="-menu-page">${g.htmlQuote(e.menuName)}</a></li>
+                                <li><a href="<c:url value="${pageContext}${e.menuActionExeId}"/>" class="-menu-page">${g.htmlQuote(e.menuName)}</a></li>
                             </c:when>
                         </c:choose>
                     </c:if>
@@ -258,8 +258,8 @@
                     return;
                 list.append(
                     $('<li/>')
-                        .append($('<a/>', {href: e.menuActionExeId, class: 'link-txt -menu-page', text: e.menuName}))
-                        .append($('<a/>', {target: '_blank', href: e.menuActionExeId, class: 'link-new material-icons', text: 'open_in_new'}))
+                        .append($('<a/>', {href: contextPath.concat(e.menuActionExeId), class: 'link-txt -menu-page', text: e.menuName}))
+                        .append($('<a/>', {target: '_blank', href: contextPath.concat(e.menuActionExeId), class: 'link-new material-icons', text: 'open_in_new'}))
                 );
            });
         });
