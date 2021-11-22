@@ -74,7 +74,7 @@ public class WebchatBotService extends ApiBaseService {
             for (int buttonId = 0; buttonId < blockInfo.getButtonList().size(); buttonId++) {
                 final WebchatBotFormRequest.ButtonElement buttonElement = blockInfo.getButtonList().get(buttonId);
 
-                if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()))
+                if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()))
                     buttonIdByBlockId.put(buttonElement.getNextBlockId(), buttonId);
             }
 
@@ -88,7 +88,7 @@ public class WebchatBotService extends ApiBaseService {
             for (int buttonId = 0; buttonId < blockInfo.getButtonList().size(); buttonId++) {
                 final WebchatBotFormRequest.ButtonElement buttonElement = blockInfo.getButtonList().get(buttonId);
 
-                if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()))
+                if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()))
                     buttonElement.setNextBlockId(blockIdByButtonId.get(buttonId));
 
                 webchatBotButtonElementService.insertButtonElement(blockId, buttonId, buttonElement);
