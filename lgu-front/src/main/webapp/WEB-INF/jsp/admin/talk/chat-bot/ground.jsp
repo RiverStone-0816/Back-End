@@ -41,9 +41,10 @@
                                 </div>
                                 <button type="button" class="ui mini button" onclick="chatbotSettingModal.show()">봇 추가</button>
                             </div>
-                            <button type="button" class="ui mini button" onclick="copy()">봇 복사</button>
-                            <button type="button" class="ui mini button" onclick="test()">봇 테스트</button>
-                            <button type="button" class="ui mini button" onclick="save()">봇 저장</button>
+                            <button class="ui mini button" @click.stop.prevent="copy">봇 복사</button>
+                            <button class="ui mini button" @click.stop.prevent="test">봇 테스트</button>
+                            <button class="ui mini button" @click.stop.prevent="save">봇 저장</button>
+                            <button class="ui mini button" @click.stop.prevent="remove">봇 삭제</button>
                         </div>
                     </div>
                     <div class="panel-body chatbot remove-padding flex-100">
@@ -650,6 +651,77 @@
                                 o.bots = response.data
                             })
                         },
+                        test() {
+                            if (!$.isNumeric(o.current)) return alert('봇 시나리오가 선택되지 않았습니다.')
+                            alert('저장된 블록을 대상으로만 테스트됩니다.', () => window.open(contextPath + '/admin/talk/chat-bot/' + o.current + '/modal-test', '_blank', 'width=420px,height=800px,top=100,left=100,scrollbars=yes,resizable=no'))
+                        },
+                        copy() {
+                            if (!$.isNumeric(o.current)) return alert('봇 시나리오가 선택되지 않았습니다.')
+                            restSelf.post('/api/chatbot/' + o.current + '/copy').done(() => alert('봇 시나리오가 복사되었습니다.', o.load))
+                        },
+                        save() {
+                            if (!fallbackConfig.data || !fallbackConfig.data.fallbackAction)
+                                return alert('봇 시나리오가 생성(선택)되지 않았습니다.')
+
+                            const convertBlock = block => ({
+                                id: block?.id,
+                                posX: block ? editor.getNodeFromId(block.nodeId).pos_x : 0,
+                                posY: block ? editor.getNodeFromId(block.nodeId).pos_y : 0,
+                                name: block?.name,
+                                keyword: block?.keywords.length === 0 ? '' : block?.keywords.reduce((a, b) => (a + '|' + b)),
+                                isTemplateEnable: block?.autoReply,
+                                displayList: block?.displays.map((e, i) => ({
+                                    order: i,
+                                    type: e.type,
+                                    elementList: e.type === 'text' ? [{order: 0, content: e.data?.text}]
+                                        : e.type === 'image' ? [{order: 0, image: e.data?.fileUrl}]
+                                            : e.type === 'card' ? [{order: 0, image: e.data?.fileUrl, title: e.data?.title, content: e.data?.announcement}]
+                                                : [{order: 0, title: e.data?.title, url: e.data?.titleUrl}].concat(e.data?.list?.map((e2, j) =>
+                                                    ({order: j + 1, title: e2.title, content: e2.announcement, url: e2.url, image: e2.fileUrl})))
+                                })),
+                                buttonList: block?.buttons.map((e, i) => ({
+                                    order: i,
+                                    buttonName: e.name,
+                                    action: e.action,
+                                    nextBlockId: e.action === '' ? nodeBlockMap[e.childNodeId].id : e.nextBlockId,
+                                    nextGroupId: e.nextGroupId,
+                                    nextUrl: e.nextUrl,
+                                    nextPhone: e.nextPhone,
+                                    nextApiUrl: e.api?.nextApiUrl,
+                                    nextApiMent: e.api?.nextApiMent,
+                                    isResultTemplateEnable: e.api?.usingResponse,
+                                    nextApiResultTemplate: e.api?.nextApiResultTemplate,
+                                    nextApiErrorMent: e.api?.nextApiErrorMent,
+                                    paramList: e.api?.parameters.map(e2 => ({type: e2.type, paramName: e2.value, displayName: e2.name})),
+                                    // connectedBlockInfo: e.action === '' ? convertBlock(nodeBlockMap[e.childNodeId]) : null
+                                })),
+                                children: block?.buttons.filter(e => e.action === '').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
+                            })
+
+                            const form = Object.assign({}, fallbackConfig.data, {blockInfo: convertBlock(blockList.blocks[0])})
+                            if ($.isNumeric(o.current)) {
+                                restSelf.put('/api/chatbot/' + o.current, form).done(() => alert('저장되었습니다.', o.load))
+                            } else {
+                                restSelf.post('/api/chatbot/', form).done(response => {
+                                    o.current = response.data
+                                    o.select = response.data
+                                    alert('저장되었습니다.', o.load)
+                                })
+                            }
+                        },
+                        remove() {
+                            if (!$.isNumeric(o.current)) return alert('봇 시나리오가 선택되지 않았습니다.')
+                            confirm('삭제하시겠습니까?').done(() => restSelf.delete('/api/chatbot/' + o.current).done(() => alert('봇 시나리오가 삭제되었습니다.', () => {
+                                o.init()
+                                o.load()
+                            })))
+                        },
+                        init() {
+                            o.current = ''
+                            o.select = ''
+                            delete fallbackConfig.data
+                            editor.clear()
+                        },
                         changeBot() {
                             const change = () => restSelf.get('/api/chatbot/' + o.select).done(response => {
                                 o.current = o.select
@@ -741,13 +813,8 @@
                             if (o.current && o.current !== o.select) {
                                 confirm('저장되지 않은 내용은 모두 버려집니다. 변경하시겠습니까?')
                                     .done(() => {
-                                        if (!o.select) {
-                                            o.current = o.select
-                                            delete fallbackConfig.data
-                                            editor.clear()
-                                        } else {
-                                            change()
-                                        }
+                                        if (!o.select) o.init()
+                                        else change()
                                     })
                                     .fail(() => (o.select = o.current))
                             } else if (o.current !== o.select) {
@@ -761,7 +828,6 @@
                 }).mount('#bot-list')
                 return o || o
             })()
-
             const blockList = (() => {
                 const o = Vue.createApp({
                     data() {
@@ -1386,68 +1452,6 @@
                 $(this).toggleClass('show')
                 $(this).parent('.chatbot-control-container').toggleClass('active')
             })
-
-            const test = () => {
-                if (!$.isNumeric(botList.current)) return alert('봇 시나리오가 선택되지 않았습니다.')
-                alert('저장된 블록을 대상으로만 테스트됩니다.', () => window.open(contextPath + '/admin/talk/chat-bot/' + botList.current + '/modal-test', '_blank', 'width=420px,height=800px,top=100,left=100,scrollbars=yes,resizable=no'))
-            }
-            const copy = () => {
-                if (!$.isNumeric(botList.current)) return alert('봇 시나리오가 선택되지 않았습니다.')
-                restSelf.post('/api/chatbot/' + botList.current + '/copy').done(() => alert('봇 시나리오가 복사되었습니다.', botList.load))
-            }
-            const save = () => {
-                if (!fallbackConfig.data || !fallbackConfig.data.fallbackAction)
-                    return alert('봇 시나리오가 생성(선택)되지 않았습니다.')
-
-                const convertBlock = block => ({
-                    id: block?.id,
-                    posX: block ? editor.getNodeFromId(block.nodeId).pos_x : 0,
-                    posY: block ? editor.getNodeFromId(block.nodeId).pos_y : 0,
-                    name: block?.name,
-                    keyword: block?.keywords.length === 0 ? '' : block?.keywords.reduce((a, b) => (a + '|' + b)),
-                    isTemplateEnable: block?.autoReply,
-                    displayList: block?.displays.map((e, i) => ({
-                        order: i,
-                        type: e.type,
-                        elementList: e.type === 'text' ? [{order: 0, content: e.data?.text}]
-                            : e.type === 'image' ? [{order: 0, image: e.data?.fileUrl}]
-                                : e.type === 'card' ? [{order: 0, image: e.data?.fileUrl, title: e.data?.title, content: e.data?.announcement}]
-                                    : [{order: 0, title: e.data?.title, url: e.data?.titleUrl}].concat(e.data?.list?.map((e2, j) =>
-                                        ({order: j + 1, title: e2.title, content: e2.announcement, url: e2.url, image: e2.fileUrl})))
-                    })),
-                    buttonList: block?.buttons.map((e, i) => ({
-                        order: i,
-                        buttonName: e.name,
-                        action: e.action,
-                        nextBlockId: e.action === '' ? nodeBlockMap[e.childNodeId].id : e.nextBlockId,
-                        nextGroupId: e.nextGroupId,
-                        nextUrl: e.nextUrl,
-                        nextPhone: e.nextPhone,
-                        nextApiUrl: e.api?.nextApiUrl,
-                        nextApiMent: e.api?.nextApiMent,
-                        isResultTemplateEnable: e.api?.usingResponse,
-                        nextApiResultTemplate: e.api?.nextApiResultTemplate,
-                        nextApiErrorMent: e.api?.nextApiErrorMent,
-                        paramList: e.api?.parameters.map(e2 => ({type: e2.type, paramName: e2.value, displayName: e2.name})),
-                        // connectedBlockInfo: e.action === '' ? convertBlock(nodeBlockMap[e.childNodeId]) : null
-                    })),
-                    children: block?.buttons.filter(e => e.action === '').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
-                })
-
-                const form = Object.assign({}, fallbackConfig.data, {blockInfo: convertBlock(blockList.blocks[0])})
-                console.log(form)
-
-                if ($.isNumeric(botList.current)) {
-                    restSelf.put('/api/chatbot/' + botList.current, form).done(() => alert('저장되었습니다.', botList.load))
-                } else {
-                    restSelf.post('/api/chatbot/', form).done(response => {
-                        botList.current = response.data
-                        botList.select = response.data
-                        alert('저장되었습니다.', botList.load)
-                    })
-                }
-            }
-
         </script>
     </tags:scripts>
 </tags:tabContentLayout>
