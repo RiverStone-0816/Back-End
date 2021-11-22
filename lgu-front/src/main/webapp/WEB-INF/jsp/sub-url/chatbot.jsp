@@ -646,7 +646,7 @@
                     },
                     methods: {
                         load() {
-                            restSelf.get('/api/chatbot/').done(response => {
+                            return restSelf.get('/api/chatbot/').done(response => {
                                 o.bots = response.data
                             })
                         },
@@ -1435,8 +1435,15 @@
                 const form = Object.assign({}, fallbackConfig.data, {blockInfo: convertBlock(blockList.blocks[0])})
                 console.log(form)
 
-                if ($.isNumeric(botList.current)) restSelf.put('/api/chatbot/' + botList.current, form).done(() => alert('반영되었습니다.', botList.load))
-                else restSelf.post('/api/chatbot/', form).done(() => alert('반영되었습니다.', botList.load))
+                if ($.isNumeric(botList.current)) {
+                    restSelf.put('/api/chatbot/' + botList.current, form).done(() => alert('저장되었습니다.'))
+                } else {
+                    restSelf.post('/api/chatbot/', form).done(response => {
+                        botList.current = response.data
+                        botList.select = response.data
+                        alert('저장되었습니다.', botList.load)
+                    })
+                }
             }
 
         </script>
