@@ -17,13 +17,13 @@ public class TalkMemberGroupFormRequest extends BaseForm {
 
 	private String	talkStrategy;				// 분배정책
 	private String  initMent;					// 인사멘트
-	private Integer autoWarnMin;				// 자동종료안내시간
+	private Integer autoWarnMin = 0;				// 자동종료안내시간
 	private String  autoWarnMent;				// 자동중료안내맨트
-	private Integer autoExpireMin;				// 자동종료시간
+	private Integer autoExpireMin = 0;				// 자동종료시간
 	private String  autoExpireMent;				// 자동종료멘트
-	private Integer unassignCnt;				// 비접수 건수
+	private Integer unassignCnt = 0;				// 비접수 건수
 	private String  unassignMent;				// 비접수 초과시 멘트
-	private Integer memberUnanswerMin;			// 상담원 무응답시간
+	private Integer memberUnanswerMin = 0;			// 상담원 무응답시간
 	private String  memberUnanswerMent;			// 상담원 무응답시 멘트
 
 }

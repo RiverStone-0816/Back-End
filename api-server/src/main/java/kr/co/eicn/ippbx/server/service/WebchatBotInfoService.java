@@ -1,7 +1,9 @@
 package kr.co.eicn.ippbx.server.service;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotInfo;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryWebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.enums.FallbackAction;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatBotInfoRepository;
 import lombok.AllArgsConstructor;
@@ -24,7 +26,12 @@ public class WebchatBotInfoService extends ApiBaseService {
     }
 
     public WebchatBotInfoResponse get(Integer id) {
-        return convertDto(webchatBotInfoRepository.findOneIfNullThrow(id), WebchatBotInfoResponse.class);
+        WebchatBotInfo entity = webchatBotInfoRepository.findOneIfNullThrow(id);
+        WebchatBotInfoResponse response = convertDto(entity, WebchatBotInfoResponse.class);
+
+        response.setFallbackAction(FallbackAction.of(entity.getFallbackAction()));
+
+        return response;
     }
 
     public Integer insert(WebchatBotFormRequest form) {

@@ -17,4 +17,13 @@ public enum FallbackAction implements CodeHasable<String> {
     public String getCode() {
         return code;
     }
+
+    public static FallbackAction of (String value) {
+        for (FallbackAction type : FallbackAction.values()){
+            if (type.getCode().equals(value))
+                return type;
+        }
+
+        return null;
+    }
 }
