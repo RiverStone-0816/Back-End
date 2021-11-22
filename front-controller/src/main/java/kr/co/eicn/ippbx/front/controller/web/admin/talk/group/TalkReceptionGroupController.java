@@ -1,5 +1,7 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.talk.group;
 
+import kr.co.eicn.ippbx.model.enums.TalkStrategy;
+import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -51,8 +53,8 @@ public class TalkReceptionGroupController extends BaseController {
         final Map<String, String> addOnPersons = new HashMap<>();
         apiInterface.addOnPersons().forEach(e -> addOnPersons.put(e.getId(), e.getIdName()));
         model.addAttribute("addOnPersons", addOnPersons);
-        final Map<String, String> talkServices = apiInterface.talkServices().stream().collect(Collectors.toMap(SummaryTalkServiceResponse::getSenderKey, SummaryTalkServiceResponse::getKakaoServiceName));
-        model.addAttribute("talkServices", talkServices);
+        model.addAttribute("talkStrategy", FormUtils.optionsOfCode(TalkStrategy.class));
+
 
         return "admin/talk/group/reception-group/modal";
     }
@@ -69,6 +71,8 @@ public class TalkReceptionGroupController extends BaseController {
 
         for (SummaryTalkGroupPersonResponse person : entity.getPersons())
             addOnPersons.remove(person.getId());
+
+        model.addAttribute("talkStrategy", FormUtils.optionsOfCode(TalkStrategy.class));
 
         return "admin/talk/group/reception-group/modal";
     }

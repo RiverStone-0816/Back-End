@@ -23,18 +23,110 @@
     <div class="scrolling content rows">
         <div class="ui grid">
             <div class="row">
-                <div class="four wide column"><label class="control-label">채팅상담그룹명</label></div>
+                <div class="four wide column"><label class="control-label">채팅상담그룹명(*)</label></div>
                 <div class="four wide column">
                     <div class="ui form">
                         <form:input path="groupName"/>
                     </div>
                 </div>
-                <div class="four wide column"><label class="control-label">관련채팅상담서비스</label></div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">비접수설정</label></div>
                 <div class="four wide column">
                     <div class="ui form">
-                        <form:select path="senderKey">
-                            <form:option value="" label="선택안함"/>
-                            <form:options items="${talkServices}"/>
+                        <form:input path="unassignCnt" cssClass="-input-numerical" placeholder="숫자를 입력하세요."/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">비접수멘트</label></div>
+                <div class="eight wide column">
+                    <div class="ui form">
+                        <form:input path="unassignMent" placeholder="[주의]상담사 답변 후 답변하지 않을때 마지막 상담사 답변기준임."/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">상담사무응답처리</label></div>
+                <div class="four wide column">
+                    <div class="ui form">
+                        <form:select path="memberUnanswerMin">
+                            <form:option value="0" label="사용하지않음"/>
+                            <form:option value="5" label="5"/>
+                            <form:option value="10" label="10"/>
+                            <form:option value="15" label="15"/>
+                            <form:option value="20" label="20"/>
+                            <form:option value="25" label="25"/>
+                            <form:option value="30" label="30"/>
+                        </form:select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">상담사무응답멘트</label></div>
+                <div class="eight wide column">
+                    <div class="ui form">
+                        <form:input path="memberUnanswerMent" placeholder="[주의]고객 답변 후 상담사가 답변하지 않을때 마지막 고객 답변기준 1회."/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="four wide column"><label class="control-label">자동종료안내시간</label></div>
+                <div class="four wide column">
+                    <div class="ui form">
+                        <form:select path="autoWarnMin">
+                            <form:option value="0" label="사용하지않음"/>
+                            <form:option value="5" label="5"/>
+                            <form:option value="10" label="10"/>
+                            <form:option value="15" label="15"/>
+                            <form:option value="20" label="20"/>
+                            <form:option value="25" label="25"/>
+                            <form:option value="30" label="30"/>
+                        </form:select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">자동종료안내멘트</label></div>
+                <div class="eight wide column">
+                    <div class="ui form">
+                        <form:input path="autoWarnMent" placeholder="[주의]상담사 답변 후 답변하지 않을때 마지막 상담사 답변기준임."/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">자동종료시간</label></div>
+                <div class="four wide column">
+                    <div class="ui form">
+                        <form:select path="autoExpireMin">
+                            <form:option value="0" label="사용하지않음"/>
+                            <form:option value="5" label="5"/>
+                            <form:option value="10" label="10"/>
+                            <form:option value="15" label="15"/>
+                            <form:option value="20" label="20"/>
+                            <form:option value="25" label="25"/>
+                            <form:option value="30" label="30"/>
+                        </form:select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">자동종료멘트</label></div>
+                <div class="eight wide column">
+                    <div class="ui form">
+                        <form:input path="autoExpireMent" placeholder="[주의]자동종료안내를 마친 후 몇분 후 자동종료 할것인지 설정."/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">분배정책</label></div>
+                <div class="four wide column">
+                    <div class="ui form">
+                        <form:select path="talkStrategy">
+                            <c:forEach var="e" items="${talkStrategy}">
+                                <form:option value="${e.key}" label="${e.value}"/>
+                            </c:forEach>
                         </form:select>
                     </div>
                 </div>
