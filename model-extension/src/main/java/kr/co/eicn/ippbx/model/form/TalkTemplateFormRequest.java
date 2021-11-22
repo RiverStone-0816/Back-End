@@ -1,15 +1,18 @@
 package kr.co.eicn.ippbx.model.form;
 
+import kr.co.eicn.ippbx.util.CodeHasable;
 import kr.co.eicn.ippbx.util.spring.BaseForm;
 import kr.co.eicn.ippbx.util.valid.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.util.Objects;
 
-import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.containsWhitespace;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -19,17 +22,17 @@ public class TalkTemplateFormRequest extends BaseForm {
      * @see kr.co.eicn.ippbx.model.enums.TalkTemplate;
      */
     @NotNull("템플릿 타입")
-    private String  type;
+    private String type;
     @NotNull("템플릿 타입")
-    private String  typeMent;
+    private MentType typeMent;
     @NotNull("템플릿 유형 데이터")
-    private String  typeData;
+    private String typeData;
     @NotNull("템플릿명")
-    private String  mentName;
+    private String mentName;
     @NotNull("템플릿 멘트")
-    private String  ment;
+    private String ment;
 
-    private List<MultipartFile> files;
+    private MultipartFile file;
     private String originalFileName;
     private String filePath;
 
@@ -39,10 +42,16 @@ public class TalkTemplateFormRequest extends BaseForm {
             if (containsWhitespace(type))
                 reject(bindingResult, "type", "{빈 공백문자를 포함할 수 없습니다.}", "");
 
-        if (isNotEmpty(typeMent))
-            if (containsWhitespace(typeMent))
-                reject(bindingResult, "typeMent", "{빈 공백문자를 포함할 수 없습니다.}", "");
-
         return super.validate(bindingResult);
+    }
+
+    @Getter
+    public enum MentType implements CodeHasable<String> {
+        TEXT("T"), PHOTO("P");
+        private final String code;
+
+        MentType(String code) {
+            this.code = code;
+        }
     }
 }

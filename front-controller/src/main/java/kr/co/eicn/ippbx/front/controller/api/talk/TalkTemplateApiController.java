@@ -7,6 +7,7 @@ import kr.co.eicn.ippbx.front.service.api.talk.TalkTemplateApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkTemplateSummaryResponse;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
 import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,10 @@ public class TalkTemplateApiController extends BaseController {
 
     @PostMapping("")
     public Integer post(@Valid @RequestBody TalkTemplateFormRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
+        if (form.getTypeMent().equals(TalkTemplateFormRequest.MentType.PHOTO))
+            if (StringUtils.isEmpty(form.getFilePath()) || StringUtils.isEmpty(form.getOriginalFileName()))
+                throw new IllegalArgumentException(message.getText("validator.blank", "파일"));
+
         return apiInterface.post(form);
     }
 

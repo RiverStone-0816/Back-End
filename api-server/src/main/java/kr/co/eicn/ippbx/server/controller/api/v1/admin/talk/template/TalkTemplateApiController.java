@@ -1,16 +1,16 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.template;
 
-import kr.co.eicn.ippbx.model.entity.eicn.TalkTemplateEntity;
-import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
-import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkTemplateSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchPersonListResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.TalkTemplateEntity;
 import kr.co.eicn.ippbx.model.enums.TalkTemplate;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
+import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
+import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.TalkTemplateRepository;
@@ -19,7 +19,6 @@ import kr.co.eicn.ippbx.server.service.TalkTemplateFileUploadService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -69,7 +68,7 @@ public class TalkTemplateApiController extends ApiBaseController {
                     talkTemplateSummaryResponse.setWriteUserName(Objects.nonNull(personListMap.get(e.getWriteUserid()))
                             ? personListMap.get(e.getWriteUserid()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
 
-                    if(Objects.equals(TalkTemplate.GROUP.getCode(), e.getType()))
+                    if (Objects.equals(TalkTemplate.GROUP.getCode(), e.getType()))
                         talkTemplateSummaryResponse.setTypeGroup(companyTreeMap.get(e.getTypeData()).getGroupTreeName());
                     if (Objects.equals(TalkTemplate.PERSON.getCode(), e.getType()))
 
@@ -106,7 +105,7 @@ public class TalkTemplateApiController extends ApiBaseController {
                     talkTemplateSummaryResponse.setWriteUserName(Objects.nonNull(personListMap.get(e.getWriteUserid()))
                             ? personListMap.get(e.getWriteUserid()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
 
-                    if(Objects.equals(TalkTemplate.GROUP.getCode(), e.getType()))
+                    if (Objects.equals(TalkTemplate.GROUP.getCode(), e.getType()))
                         talkTemplateSummaryResponse.setTypeGroup(companyTreeMap.get(e.getTypeData()).getGroupTreeName());
                     if (Objects.equals(TalkTemplate.PERSON.getCode(), e.getType()))
                         talkTemplateSummaryResponse.setTypeDataName(Objects.nonNull(personListMap.get(e.getTypeData())) ?
@@ -124,7 +123,7 @@ public class TalkTemplateApiController extends ApiBaseController {
                 })
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(data(new Pagination<>(rows, pagination.getPage(), pagination.getTotalCount(),search.getLimit())));
+        return ResponseEntity.ok(data(new Pagination<>(rows, pagination.getPage(), pagination.getTotalCount(), search.getLimit())));
     }
 
     //수정을 위한 SEQ조회
@@ -139,13 +138,13 @@ public class TalkTemplateApiController extends ApiBaseController {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
-        Integer insertSeq = 0;
-        if(form.getFiles() != null){
+        final Integer insertSeq;
+        if (form.getFile() != null && !form.getFile().isEmpty()) {
             insertSeq = service.insertTalkTemplateFileUpload(form);
-        }else{
+        } else {
             insertSeq = repository.insertOnGeneratedKey(form).getValue(TALK_TEMPLATE.SEQ);
         }
-        
+
         return ResponseEntity.created(URI.create("api/v1/admin/talk/template"))
                 .body(data(insertSeq));
     }

@@ -14,7 +14,7 @@
 
 <form:form modelAttribute="form" cssClass="ui modal small -json-submit" data-method="${entity == null ? 'post' : 'put'}"
            action="${pageContext.request.contextPath}/api/talk-template/${entity == null ? null : entity.seq}"
-           data-before="prepareWriteForm" data-done="reload">
+           data-before="prepareTalkTemplateForm" data-done="reload">
 
     <i class="close icon"></i>
     <div class="header">상담톡템플릿[${entity != null ? '수정' : '추가'}]</div>
@@ -22,10 +22,19 @@
     <div class="scrolling content rows">
         <div class="ui grid">
             <div class="row">
-                <div class="four wide column"><label class="control-label">유형</label></div>
-                <div class="twelve wide column">
+                <div class="four wide column"><label class="control-label">권한</label></div>
+                <div class="four wide column">
                     <div class="ui form">
                         <form:select path="type" items="${templateTypes}"/>
+                    </div>
+                </div>
+                <div class="four wide column"><label class="control-label">유형</label></div>
+                <div class="four wide column">
+                    <div class="ui form">
+                        <form:select path="typeMent">
+                            <form:option value="T" label="텍스트"/>
+                            <form:option value="P" label="이미지"/>
+                        </form:select>
                     </div>
                 </div>
             </div>
@@ -75,6 +84,21 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">이미지</label></div>
+                <div class="twelve wide column">
+                    <form:hidden path="originalFileName"/>
+                    <form:hidden path="filePath"/>
+                    <div class="file-upload-header">
+                        <label for="file" class="ui button blue mini compact">파일찾기</label>
+                        <input type="file" id="file">
+                        <span class="file-name">No file selected</span>
+                    </div>
+                    <div>
+                        <progress value="0" max="100" style="width:100%"></progress>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -87,13 +111,21 @@
 <script>
     modal.find('[name=type]').change(function () {
         if ($(this).val() === 'G') {
-            $('.-group-selector-container').show();
+            modal.find('.-group-selector-container').show();
         } else {
-            $('.-group-selector-container').hide();
+            modal.find('.-group-selector-container').hide();
         }
     }).change();
 
-    window.prepareWriteForm = function (data) {
+    modal.find('[type="file"]').change(function () {
+        uploadFile(this.files[0], modal.find('progress')).done(function (response) {
+            modal.find('.file-name').text(response.data.originalName);
+            modal.find('[name=originalFileName]').val(response.data.originalName);
+            modal.find('[name=filePath]').val(response.data.filePath);
+        });
+    })
+
+    window.prepareTalkTemplateForm = function (data) {
         if (data.type === 'P')
             data.typeData = '${g.user.id}';
         if (data.type === 'C')
