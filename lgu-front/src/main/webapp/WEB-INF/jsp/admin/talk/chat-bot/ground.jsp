@@ -42,7 +42,7 @@
                                 <button type="button" class="ui mini button" onclick="chatbotSettingModal.show()">봇 추가</button>
                             </div>
                             <button type="button" class="ui mini button" onclick="copy()">봇 복사</button>
-                            <button type="button" class="ui mini button" onclick="botTestPopup();">봇 테스트</button>
+                            <button type="button" class="ui mini button" onclick="test()">봇 테스트</button>
                             <button type="button" class="ui mini button" onclick="save()">봇 저장</button>
                         </div>
                     </div>
@@ -740,7 +740,15 @@
 
                             if (o.current && o.current !== o.select) {
                                 confirm('저장되지 않은 내용은 모두 버려집니다. 변경하시겠습니까?')
-                                    .done(change)
+                                    .done(() => {
+                                        if (!o.select) {
+                                            o.current = o.select
+                                            delete fallbackConfig.data
+                                            editor.clear()
+                                        } else {
+                                            change()
+                                        }
+                                    })
                                     .fail(() => (o.select = o.current))
                             } else if (o.current !== o.select) {
                                 change()
@@ -1372,14 +1380,6 @@
                 buttonConfig.groups = response.data.rows
             })
 
-            // 봇 추가 클릭 시 클립보드에 이미 복사한 봇이 있을 경우만 출력
-            // confirmMulti('클립보드에 복사된 시나리오를 붙여넣겠습니다. 진행 하시겠습니까?');
-
-            // 위 봇 붙여넣기 모달에서 신규추가 버튼 클릭 시 아래 모달 출력
-            // confirm('기존 클립보드에 복사된 시나리오는 삭제 됩니다. 진행 하시겠습니까?');
-
-            const botTestPopup = () => confirm('확인을 누르시면 자동 저장 후 테스트 기능이 활성화 됩니다.')
-            const botCopyPopup = () => confirm('선택하신 시나리오를 클립보드에 복사합니다. 진행 하시겠습니까?')
             const allowDrop = event => event.preventDefault()
 
             $('.chatbot-control-container .arrow-button').click(function () {
@@ -1387,8 +1387,10 @@
                 $(this).parent('.chatbot-control-container').toggleClass('active')
             })
 
-            window.open('/sub-url/chatbot-test', '_blank', 'width=420px,height=800px,top=100,left=100,scrollbars=yes,resizable=no');
-
+            const test = () => {
+                if (!$.isNumeric(botList.current)) return alert('봇 시나리오가 선택되지 않았습니다.')
+                alert('저장된 블록을 대상으로만 테스트됩니다.', () => window.open(contextPath + '/admin/talk/chat-bot/' + botList.current + '/modal-test', '_blank', 'width=420px,height=800px,top=100,left=100,scrollbars=yes,resizable=no'))
+            }
             const copy = () => {
                 if (!$.isNumeric(botList.current)) return alert('봇 시나리오가 선택되지 않았습니다.')
                 restSelf.post('/api/chatbot/' + botList.current + '/copy').done(() => alert('봇 시나리오가 복사되었습니다.', botList.load))
@@ -1436,7 +1438,7 @@
                 console.log(form)
 
                 if ($.isNumeric(botList.current)) {
-                    restSelf.put('/api/chatbot/' + botList.current, form).done(() => alert('저장되었습니다.'))
+                    restSelf.put('/api/chatbot/' + botList.current, form).done(() => alert('저장되었습니다.', botList.load))
                 } else {
                     restSelf.post('/api/chatbot/', form).done(response => {
                         botList.current = response.data
