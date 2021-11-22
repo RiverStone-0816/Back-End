@@ -1435,7 +1435,8 @@
                 const form = Object.assign({}, fallbackConfig.data, {blockInfo: convertBlock(blockList.blocks[0])})
                 console.log(form)
 
-                restSelf.post('/api/chatbot/', form).done(() => alert('반영되었습니다.'))
+                if ($.isNumeric(botList.current)) restSelf.put('/api/chatbot/' + botList.current, form).done(() => alert('반영되었습니다.', botList.load))
+                else restSelf.post('/api/chatbot/', form).done(() => alert('반영되었습니다.', botList.load))
             }
 
         </script>
