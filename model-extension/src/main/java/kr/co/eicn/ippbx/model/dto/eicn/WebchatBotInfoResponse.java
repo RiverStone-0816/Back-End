@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.model.dto.eicn;
 import kr.co.eicn.ippbx.model.enums.ApiParameterType;
 import kr.co.eicn.ippbx.model.enums.ButtonAction;
 import kr.co.eicn.ippbx.model.enums.DisplayType;
+import kr.co.eicn.ippbx.model.enums.FallbackAction;
 import lombok.Data;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public class WebchatBotInfoResponse {
     private Integer id;
     private String name;
     private String fallbackMent;
-    private String fallbackAction;
+    private FallbackAction fallbackAction;
     private Integer nextBlockId;
     private Integer nextGroupId;
     private String nextUrl;
