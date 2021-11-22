@@ -739,9 +739,9 @@
                             })
 
                             if (o.current && o.current !== o.select) {
-                                confirm('저장되지 않은 내용은 모두 버려집니다. 변경하시겠습니까?').done(change).reject(() => {
-                                    o.select = o.current
-                                })
+                                confirm('저장되지 않은 내용은 모두 버려집니다. 변경하시겠습니까?')
+                                    .done(change)
+                                    .fail(() => (o.select = o.current))
                             } else if (o.current !== o.select) {
                                 change()
                             }
@@ -1394,7 +1394,7 @@
                 restSelf.post('/api/chatbot/' + botList.current + '/copy').done(() => alert('봇 시나리오가 복사되었습니다.', botList.load))
             }
             const save = () => {
-                if (!fallbackConfig.data)
+                if (!fallbackConfig.data || !fallbackConfig.data.fallbackAction)
                     return alert('봇 시나리오가 생성(선택)되지 않았습니다.')
 
                 const convertBlock = block => ({
