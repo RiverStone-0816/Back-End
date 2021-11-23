@@ -7,4 +7,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class TalkScheduleGroupListDetailResponse extends TalkScheduleGroupList {
+    private String chatBot; //챗봇
+    private String talkGroup; //채팅상담그룹
 }

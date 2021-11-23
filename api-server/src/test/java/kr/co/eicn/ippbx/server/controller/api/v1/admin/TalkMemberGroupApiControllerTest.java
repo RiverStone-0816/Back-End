@@ -98,7 +98,6 @@ public class TalkMemberGroupApiControllerTest extends BaseControllerTest {
 	public void post() throws Exception {
 		final TalkMemberGroupFormRequest form = new TalkMemberGroupFormRequest();
 		form.setGroupName("상품문의그룹1");
-		form.setSenderKey("28ee2687812321c674b2453cbd62c121bea349d4");
 
 		final Set<String> persons = new HashSet<>();
 		persons.add("user0681");
@@ -161,7 +160,6 @@ public class TalkMemberGroupApiControllerTest extends BaseControllerTest {
 		final TalkMemberGroupFormRequest form = new TalkMemberGroupFormRequest();
 
 		form.setGroupName("상품문의그룹TEST");
-		form.setSenderKey("28ee2687812321c674b2453cbd62c121bea349d4");
 
 		final Set<String> persons = new HashSet<>();
 		persons.add("user0681");

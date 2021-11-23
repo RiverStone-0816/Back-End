@@ -3,6 +3,8 @@ package kr.co.eicn.ippbx.server.repository.eicn;
 import kr.co.eicn.ippbx.exception.DuplicateKeyException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkScheduleGroupList;
 import kr.co.eicn.ippbx.model.enums.ScheduleListKind;
+import kr.co.eicn.ippbx.model.enums.TalkChannelType;
+import kr.co.eicn.ippbx.model.enums.TalkScheduleKind;
 import kr.co.eicn.ippbx.model.form.TalkScheduleGroupListFormRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
@@ -43,6 +45,12 @@ public class TalkScheduleGroupListRepository extends EicnBaseRepository<TalkSche
 		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleGroupList record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleGroupList();
 		ReflectionUtils.copy(record, form);
 
+		if(form.getKind().equals(TalkScheduleKind.SERVICE_BY_GROUP_CONNECT.getCode()))
+			record.setKindData(form.getTalkGroup());
+
+		if(form.getChannelType().equals(TalkChannelType.EICN.getCode()) && form.getKind().equals(TalkScheduleKind.CHAT_BOT_CONNECT.getCode()))
+			record.setKindData(form.getChatBot());
+
 		record.setChildName(EMPTY);
 		record.setStatYn(defaultString(form.getStatYn(), "Y"));
 		record.setWorktimeYn(defaultString(form.getWorktimeYn(), "Y"));
@@ -57,6 +65,8 @@ public class TalkScheduleGroupListRepository extends EicnBaseRepository<TalkSche
 			form.setLimitNum(0);
 			form.setLimitMentId(0);
 		}
+		if (TalkScheduleKind.CHAT_BOT_CONNECT.getCode().equals(form.getKind()))
+			form.setKindData(form.getChatBot());
 
 		super.updateByKey(form, key);
 	}

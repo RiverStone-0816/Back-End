@@ -1,5 +1,7 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.talk.schedule;
 
+import kr.co.eicn.ippbx.front.service.api.ChatbotApiInterface;
+import kr.co.eicn.ippbx.front.service.api.talk.group.TalkReceptionGroupApiInterface;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -33,6 +35,11 @@ public class TalkScheduleGroupController extends BaseController {
 
     @Autowired
     private TalkScheduleGroupApiInterface apiInterface;
+    @Autowired
+    private ChatbotApiInterface chatbotApiInterface;
+    @Autowired
+    private TalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
+
 
     @GetMapping("")
     public String page(Model model) throws IOException, ResultFailException {
@@ -46,11 +53,12 @@ public class TalkScheduleGroupController extends BaseController {
     public String modalScheduleItem(Model model, @ModelAttribute("form") TalkScheduleGroupListFormRequest form, @PathVariable Integer parent) throws IOException, ResultFailException {
         form.setParent(parent);
 
-        final List<SummaryTalkMentResponse> talkMentList = apiInterface.getTalkMent();
-        final Map<String, String> talkMentsOfStringSeq = talkMentList.stream().collect(Collectors.toMap(e -> e.getSeq().toString(), SummaryTalkMentResponse::getMentName));
+        final Map<String, String> talkMentsOfStringSeq = apiInterface.getTalkMent().stream().collect(Collectors.toMap(e -> e.getSeq().toString(), SummaryTalkMentResponse::getMentName));
         model.addAttribute("talkMentsOfStringSeq", talkMentsOfStringSeq);
-        final Map<Integer, String> talkMentsOfIntegerSeq = talkMentList.stream().collect(Collectors.toMap(SummaryTalkMentResponse::getSeq, SummaryTalkMentResponse::getMentName));
-        model.addAttribute("talkMentsOfIntegerSeq", talkMentsOfIntegerSeq);
+        final Map<String, String> chatbotList = chatbotApiInterface.list().stream().collect(Collectors.toMap(e-> e.getId().toString(), SummaryWebchatBotInfoResponse::getName));
+        model.addAttribute("chatbotList", chatbotList);
+        final Map<String, String> talkGroupList = talkReceptionGroupApiInterface.list().stream().collect(Collectors.toMap(e -> e.getGroupId().toString(), TalkMemberGroupSummaryResponse::getGroupName));
+        model.addAttribute("talkGroupList", talkGroupList);
 
         return "admin/talk/schedule/schedule-group/modal-schedule-item";
     }

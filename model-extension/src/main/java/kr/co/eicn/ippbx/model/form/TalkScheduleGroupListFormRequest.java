@@ -36,6 +36,10 @@ public class TalkScheduleGroupListFormRequest extends BaseForm {
 	private String statYn = "Y";     //  통계반영유무
 	private String  worktimeYn = "Y"; // 업무시간 반영 유무
 
+	private String channelType; //채널타입
+	private String chatBot; //챗봇
+	private String talkGroup; //채팅상담그룹
+
 	@Override
 	public boolean validate(BindingResult bindingResult) {
 		if (Objects.nonNull(fromhour) && Objects.nonNull(tohour)) {

@@ -1,5 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.schedule;
 
+import kr.co.eicn.ippbx.model.enums.TalkChannelType;
+import kr.co.eicn.ippbx.model.enums.TalkScheduleKind;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryTalkMentResponse;
@@ -73,7 +75,13 @@ public class TalkScheduleGroupApiController extends ApiBaseController {
 	 */
 	@GetMapping("item/{child}")
 	public ResponseEntity<JsonResult<TalkScheduleGroupListDetailResponse>> itemGet(@PathVariable Integer child) {
-		return ResponseEntity.ok(data(convertDto(talkScheduleGroupListRepository.findOneIfNullThrow(child), TalkScheduleGroupListDetailResponse.class)));
+		TalkScheduleGroupListDetailResponse entity = convertDto(talkScheduleGroupListRepository.findOneIfNullThrow(child), TalkScheduleGroupListDetailResponse.class);
+		if (entity.getChannelType().equals(TalkChannelType.EICN.getCode()) && entity.getKind().equals(TalkScheduleKind.CHAT_BOT_CONNECT.getCode()))
+			entity.setChatBot(entity.getKindData());
+		if (entity.getKind().equals(TalkScheduleKind.SERVICE_BY_GROUP_CONNECT.getCode()))
+			entity.setTalkGroup(entity.getKindData());
+
+		return ResponseEntity.ok(data(entity));
 	}
 
 	/**

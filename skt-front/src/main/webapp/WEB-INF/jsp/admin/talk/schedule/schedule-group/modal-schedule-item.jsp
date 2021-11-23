@@ -52,6 +52,25 @@
                 </div>
             </div>
             <div class="row">
+                <div class="four wide column"><label class="control-label">채널타입</label></div>
+                <div class="twelve wide column">
+                    <div class="ui form">
+                        <div class="inline fields">
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <form:radiobutton path="channelType" value="kakao"/>
+                                    <label>카카오상담톡</label>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <form:radiobutton path="channelType" value="eicn"/>
+                                    <label>웹챗</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="four wide column"><label class="control-label">스케쥴유형선택</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
@@ -68,6 +87,14 @@
                                     <label>서비스별그룹연결</label>
                                 </div>
                             </div>
+                            <c:if test="${g.usingServices.contains('CHBOT')}">
+                            <div class="field -channel-data" data-channel="eicn">
+                                <div class="ui radio checkbox">
+                                    <form:radiobutton path="kind" value="B" class="hidden"/>
+                                    <label>챗봇</label>
+                                </div>
+                            </div>
+                            </c:if>
                         </div>
                     </div>
                 </div>
@@ -81,35 +108,22 @@
                 </div>
             </div>
             <div class="row -kind-data" data-kind="G">
-                <div class="four wide column"><label class="control-label">첫인사멘트</label></div>
+                <div class="four wide column"><label class="control-label">채팅상담그룹</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
-                        <form:select path="firstMentId">
-                            <form:option value="" label="선택안함"/>
-                            <form:options items="${talkMentsOfStringSeq}"/>
-                        </form:select>
+                        <form:select path="talkGroup" items="${talkGroupList}"/>
                     </div>
                 </div>
             </div>
-            <div class="row -kind-data" data-kind="G">
-                <div class="four wide column"></div>
-                <div class="twelve wide column">
-                    <div class="ui form">
-                        비접수 <form:input path="limitNum" cssClass="-input-numerical" cssStyle="width: 50px;"/>개이상 초과시 자동멘트 송출(0개는 무한대)
-                    </div>
-                </div>
-            </div>
-            <div class="row -kind-data" data-kind="G">
-                <div class="four wide column"><label class="control-label">비접수초과시멘트</label></div>
+            <div class="row -kind-data" data-kind="B">
+                <div class="four wide column"><label class="control-label">챗봇선택</label></div>
                 <div class="four wide column">
                     <div class="ui form">
-                        <form:select path="limitMentId">
-                            <form:option value="" label="선택안함"/>
-                            <form:options items="${talkMentsOfStringSeq}"/>
+                        <form:select path="chatBot">
+                            <form:options items="${chatbotList}"/>
                         </form:select>
                     </div>
                 </div>
-                <div class="eight wide column">(비접수초과 0이상시 필수)</div>
             </div>
             <div class="row">
                 <div class="four wide column"><label class="control-label">통계적용여부</label></div>
@@ -179,4 +193,12 @@
             return $(this).attr('data-kind') === kind;
         }).show();
     }).change();
+
+    modal.find('[name=channelType]').change(function () {
+        const channel = modal.find('[name=channelType]:checked').val();
+        modal.find('.-channel-data').hide().filter(function () {
+            return $(this).attr('data-channel') === channel;
+        }).show();
+    }).change();
+
 </script>
