@@ -79,3 +79,7 @@ eicn:
       key: eicn
   screen:
     variation: true
+  webbot:
+    resource:
+      location: /tmp/chatbot
+

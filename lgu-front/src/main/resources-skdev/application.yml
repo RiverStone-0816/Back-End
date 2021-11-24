@@ -77,3 +77,6 @@ eicn:
       id: chatting_connector
     cipher:
       key: eicn
+  webbot:
+    resource:
+      location: /tmp/chatbot
