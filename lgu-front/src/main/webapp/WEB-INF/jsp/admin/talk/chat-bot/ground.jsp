@@ -416,7 +416,7 @@
                                                 <div class="mb15 dp-flex align-items-center justify-content-space-between">
                                                     <div>답변 대사 사용</div>
                                                     <div class="ui fitted toggle checkbox">
-                                                        <input type="checkbox" @change="data.api.usingResponse = $event.target.checked">
+                                                        <input type="checkbox" @change="data.api.usingResponse = $event.target.checked" :checked="data.api.usingResponse">
                                                         <label></label>
                                                     </div>
                                                 </div>
@@ -464,10 +464,10 @@
                                                     <div v-for="(e,i) in displays" :class="e.type === 'text' ? 'sample-bubble' : 'card'">
                                                         <p v-if="e.data && e.type === 'text'">{{ e.data.text }}</p>
                                                         <div v-if="e.data && e.type === 'image'" class="card-img">
-                                                            <img :src="e.data.fileUrl" class="border-radius-1em">
+                                                            <img :src="`/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e.data.fileUrl)" class="border-radius-1em">
                                                         </div>
                                                         <div v-if="e.data && e.type === 'card'" class="card-img">
-                                                            <img :src="e.data.fileUrl" class="border-radius-top-1em">
+                                                            <img :src="`/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e.data.fileUrl)" class="border-radius-top-1em">
                                                         </div>
                                                         <div v-if="e.data && e.type === 'card'" class="card-content">
                                                             <div class="card-title">{{ e.data.title }}</div>
@@ -475,7 +475,7 @@
                                                         </div>
                                                         <div v-if="e.data && e.type === 'list'" class="card-list">
                                                             <div class="card-list-title">
-                                                                <a v-if="titleUrl" :href="e.data.titleUrl" target="_blank">{{ e.data.title }}</a>
+                                                                <a v-if="e.data.titleUrl" :href="e.data.titleUrl" target="_blank">{{ e.data.title }}</a>
                                                                 <text v-else>{{ e.data.title }}</text>
                                                             </div>
                                                             <ul class="card-list-ul">
@@ -483,7 +483,7 @@
                                                                     <a :href="e2.url" target="_blank" class="link-wrap">
                                                                         <div class="item-thumb" v-if="e2.fileUrl && e2.fileUrl.trim()">
                                                                             <div class="item-thumb-inner">
-                                                                                <img :src="e2.fileUrl">
+                                                                                <img :src="`/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e2.fileUrl)">
                                                                             </div>
                                                                         </div>
                                                                         <div class="item-content">
@@ -720,6 +720,10 @@
                             o.current = ''
                             o.select = ''
                             delete fallbackConfig.data
+                            blockList.blocks.splice(0, blockList.blocks.length)
+                            buttonConfig.blocks.splice(0, buttonConfig.blocks.length)
+                            fallbackConfig.blocks.splice(0, fallbackConfig.blocks.length)
+                            for (let property in nodeBlockMap) delete nodeBlockMap[property]
                             editor.clear()
                         },
                         changeBot() {
@@ -758,18 +762,28 @@
                                     app.keywords = block.keyword.split('|')
                                     app.autoReply = block.isTemplateEnable
                                     app.displays = block.displayList.sort((a, b) => (a.order - b.order)).map(e => {
-                                        return e.type === 'text' ? {type: 'text', data: {text: e.elementList?.[0]?.content}}
-                                            : e.type === 'image' ? {type: 'image', data: {fileUrl: e.elementList?.[0]?.image, fileName: e.elementList?.[0]?.image}}
-                                                : e.type === 'card' ? {
-                                                        type: 'card',
-                                                        data: {fileUrl: e.elementList?.[0]?.image, fileName: e.elementList?.[0]?.image, title: e.elementList?.[0]?.title, announcement: e.elementList?.[0]?.content,}
-                                                    }
-                                                    : {
-                                                        type: 'list',
-                                                        title: e.elementList?.[0]?.title,
-                                                        titleUrl: e.elementList?.[0]?.url,
-                                                        data: e.elementList?.splice(1).map(e2 => ({title: e2.title, announcement: e2.content, url: e2.url, fileUrl: e2.image, fileName: e2.image,}))
-                                                    }
+                                        if (e.type === 'text') return {type: 'text', data: {text: e.elementList?.[0]?.content}}
+                                        if (e.type === 'image') return {type: 'image', data: {fileUrl: e.elementList?.[0]?.image, fileName: e.elementList?.[0]?.image}}
+                                        if (e.type === 'card') return {
+                                            type: 'card',
+                                            data: {
+                                                fileUrl: e.elementList?.[0]?.image,
+                                                fileName: e.elementList?.[0]?.image,
+                                                title: e.elementList?.[0]?.title,
+                                                announcement: e.elementList?.[0]?.content,
+                                            }
+                                        }
+
+                                        if (!e.elementList) return {type: 'list'}
+                                        e.elementList.sort((a, b) => (a.order - b.order))
+                                        return {
+                                            type: 'list',
+                                            data: {
+                                                title: e.elementList[0]?.title,
+                                                titleUrl: e.elementList[0]?.url,
+                                                list: e.elementList.splice(1).map(e2 => ({title: e2.title, announcement: e2.content, url: e2.url, fileUrl: e2.image, fileName: e2.image,}))
+                                            }
+                                        }
                                     })
 
                                     const connections = {}
@@ -795,7 +809,7 @@
                                                 usingResponse: e.isResultTemplateEnable,
                                                 nextApiResultTemplate: e.nextApiResultTemplate,
                                                 nextApiErrorMent: e.nextApiErrorMent,
-                                                parameters: e.paramList?.map(e2 => ({type: e2.type, value: e2.paramName, name: e2.displayName}))
+                                                parameters: e.paramList?.sort((a, b) => (a.order - b.order)).map(e2 => ({type: e2.type, value: e2.paramName, name: e2.displayName}))
                                             }
                                         }
                                     })
@@ -803,7 +817,9 @@
                                     app.showingEmptyButtonItem = !app.buttons.length
 
                                     app.buttons.forEach(() => editor.addNodeOutput(nodeId))
-                                    for (let buttonIndex in connections) app.createConnection(parseInt(buttonIndex), connections[buttonIndex])
+                                    for (let buttonIndex in connections) {
+                                        app.createConnection(parseInt(buttonIndex), connections[buttonIndex])
+                                    }
                                 }
 
                                 createBlock(data.blockInfo)
@@ -1001,7 +1017,7 @@
                                 const originalName = response.data.originalName
                                 restSelf.post('/api/chatbot/image', response.data).done(response => {
                                     o.data.fileName = originalName
-                                    o.data.fileUrl = `/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(response.data)
+                                    o.data.fileUrl = response.data
                                 })
                             })
                         },
@@ -1036,7 +1052,7 @@
                                 const originalName = response.data.originalName
                                 restSelf.post('/api/chatbot/image', response.data).done(response => {
                                     o.data.fileName = originalName
-                                    o.data.fileUrl = `/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(response.data)
+                                    o.data.fileUrl = response.data
                                 })
                             })
                         },
@@ -1087,7 +1103,7 @@
                                 const originalName = response.data.originalName
                                 restSelf.post('/api/chatbot/image', response.data).done(response => {
                                     o.data.list[index].fileName = originalName
-                                    o.data.list[index].fileUrl = `/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(response.data)
+                                    o.data.list[index].fileUrl = response.data
                                 })
                             })
                         },

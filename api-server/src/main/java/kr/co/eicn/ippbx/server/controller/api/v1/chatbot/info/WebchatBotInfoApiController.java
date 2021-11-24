@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.chatbot.info;
 
+import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryWebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
@@ -14,9 +15,11 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static kr.co.eicn.ippbx.util.JsonResult.create;
@@ -42,7 +45,10 @@ public class WebchatBotInfoApiController extends ApiBaseController {
     }
 
     @PostMapping("")
-    public ResponseEntity<JsonResult<Integer>> post(@RequestBody WebchatBotFormRequest form) {
+    public ResponseEntity<JsonResult<Integer>> post(@Valid @RequestBody WebchatBotFormRequest form, BindingResult bindingResult) {
+        if (!form.validate(bindingResult))
+            throw new ValidationException(bindingResult);
+
         final Integer botId = webchatBotService.createWebchatBotInfo(form);
 
         return ResponseEntity.ok(data(botId));
@@ -66,7 +72,10 @@ public class WebchatBotInfoApiController extends ApiBaseController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<JsonResult<Void>> update(@PathVariable Integer id, @RequestBody WebchatBotFormRequest form) {
+    public ResponseEntity<JsonResult<Void>> update(@PathVariable Integer id, @Valid @RequestBody WebchatBotFormRequest form, BindingResult bindingResult) {
+        if (!form.validate(bindingResult))
+            throw new ValidationException(bindingResult);
+
         webchatBotService.updateWebchatBotInfo(id, form);
 
         return ResponseEntity.ok(create());
