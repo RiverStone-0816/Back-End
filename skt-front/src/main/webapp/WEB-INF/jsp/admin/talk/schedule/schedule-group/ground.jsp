@@ -61,10 +61,7 @@
                                                         <fmt:formatNumber value="${(s.tohour / 60).intValue()}" pattern="00"/>:<fmt:formatNumber value="${s.tohour % 60}" pattern="00"/>
                                                     </td>
                                                     <td>
-                                                            ${s.kind == 'A' ? '자동멘트전송'
-                                                                    : s.kind == 'G' ? '서비스별그룹연결'
-                                                                    : s.kind == 'B' ? '챗봇'
-                                                                    : '알수없음: '.concat(s.kind)}
+                                                            ${g.messageOf('TalkScheduleKind', s.kind)}
                                                     </td>
                                                     <td>${g.htmlQuote(s.kindDataName)}</td>
                                                     <td>
