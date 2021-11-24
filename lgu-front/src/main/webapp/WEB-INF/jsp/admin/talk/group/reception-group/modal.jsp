@@ -22,10 +22,22 @@
     <div class="scrolling content rows">
         <div class="ui grid">
             <div class="row">
-                <div class="four wide column"><label class="control-label">상담톡그룹명</label></div>
+                <div class="four wide column"><label class="control-label">채팅상담그룹명(*)</label></div>
                 <div class="four wide column">
                     <div class="ui form">
                         <form:input path="groupName"/>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">분배정책</label></div>
+                <div class="four wide column">
+                    <div class="ui form">
+                        <form:select path="talkStrategy">
+                            <c:forEach var="e" items="${talkStrategy}">
+                                <form:option value="${e.key}" label="${e.value}"/>
+                            </c:forEach>
+                        </form:select>
                     </div>
                 </div>
             </div>
@@ -66,29 +78,7 @@
                 <div class="four wide column"><label class="control-label">초기 인사 멘트</label></div>
                 <div class="twelve wide column">
                     <div class="ui form fluid">
-                        <input type="text" placeholder="멘트내용입력">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="four wide column"><label class="control-label">자동 종료 멘트</label></div>
-                <div class="twelve wide column">
-                    <div class="ui form fluid">
-                        <input type="text" placeholder="멘트내용입력">
-                    </div>
-                </div>
-                <div class="four wide column"></div>
-                <div class="twelve wide column">
-                    <div class="mt5">상담원이 메시지 송출  후
-                        <select class="mr3 ml3">
-                            <option>5</option>
-                            <option>10</option>
-                            <option>15</option>
-                            <option>20</option>
-                            <option>25</option>
-                            <option>30</option>
-                        </select>
-                        분 동안 고객 답변이 없을 시 자동종료 안내
+                        <form:input path="initMent" placeholder="[주의]처음 그룹에 들어온 고객에 나가는 자동멘트 없으면 처리하지 않음."/>
                     </div>
                 </div>
             </div>
@@ -96,20 +86,44 @@
                 <div class="four wide column"><label class="control-label">자동종료 안내 멘트</label></div>
                 <div class="twelve wide column">
                     <div class="ui form fluid">
-                        <input type="text" placeholder="멘트내용입력">
+                        <form:input path="autoWarnMent" placeholder="[주의]상담사 답변 후 답변하지 않을때 마지막 상담사 답변기준임."/>
+                    </div>
+                </div>
+                <div class="four wide column"></div>
+                <div class="twelve wide column">
+                    <div class="mt5">상담원이 메시지 송출 후
+                        <form:select path="autoWarnMin" class="mr3 ml3">
+                            <form:option value="0" label="사용하지않음"/>
+                            <form:option value="5" label="5"/>
+                            <form:option value="10" label="10"/>
+                            <form:option value="15" label="15"/>
+                            <form:option value="20" label="20"/>
+                            <form:option value="25" label="25"/>
+                            <form:option value="30" label="30"/>
+                        </form:select>
+                        분 동안 고객 답변이 없을 시 자동종료 안내
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">자동 종료 멘트</label></div>
+                <div class="twelve wide column">
+                    <div class="ui form fluid">
+                        <form:input path="autoExpireMent" placeholder="[주의]자동종료안내를 마친 후 몇분 후 자동종료 할것인지 설정."/>
                     </div>
                 </div>
                 <div class="four wide column"></div>
                 <div class="twelve wide column">
                     <div class="mt5">자동종료 안내 메시지 송출 후
-                        <select class="mr3 ml3">
-                            <option>5</option>
-                            <option>10</option>
-                            <option>15</option>
-                            <option>20</option>
-                            <option>25</option>
-                            <option>30</option>
-                        </select>
+                        <form:select path="autoExpireMin" class="mr3 ml3">
+                            <form:option value="0" label="사용하지않음"/>
+                            <form:option value="5" label="5"/>
+                            <form:option value="10" label="10"/>
+                            <form:option value="15" label="15"/>
+                            <form:option value="20" label="20"/>
+                            <form:option value="25" label="25"/>
+                            <form:option value="30" label="30"/>
+                        </form:select>
                         분 동안 고객 답변이 없을 시 자동종료 안내
                     </div>
                 </div>
@@ -118,57 +132,36 @@
                 <div class="four wide column"><label class="control-label">비접수 초과시 멘트</label></div>
                 <div class="twelve wide column">
                     <div class="ui form fluid">
-                        <input type="text" placeholder="멘트내용입력">
+                        <form:input path="unassignMent" placeholder="[주의]상담사 답변 후 답변하지 않을때 마지막 상담사 답변기준임."/>
                     </div>
                 </div>
                 <div class="four wide column"></div>
                 <div class="twelve wide column">
                     <div class="mt5">
-                        상담원 비접수 건수가 <input type="text" size="2" class="ml3 mr3"> 건을 넘을 경우
+                        상담원 비접수 건수가 <form:input path="unassignCnt" cssClass="-input-numerical" placeholder="숫자를 입력하세요." size="2" class="ml3 mr3"/> 건을 넘을 경우
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">추가 멘트1</label></div>
+                <div class="four wide column"><label class="control-label">상담사 무응답 멘트</label></div>
                 <div class="twelve wide column">
                     <div class="ui form fluid">
-                        <input type="text" placeholder="멘트내용입력">
+                        <form:input path="memberUnanswerMent" placeholder="[주의]고객 답변 후 상담사가 답변하지 않을때 마지막 고객 답변기준 1회."/>
                     </div>
                 </div>
                 <div class="four wide column"></div>
                 <div class="twelve wide column">
                     <div class="mt5">고객이 메시지 송출 후
-                        <select class="mr3 ml3">
-                            <option>5</option>
-                            <option>10</option>
-                            <option>15</option>
-                            <option>20</option>
-                            <option>25</option>
-                            <option>30</option>
-                        </select>
+                        <form:select path="memberUnanswerMin" class="mr3 ml3">
+                            <form:option value="0" label="사용하지않음"/>
+                            <form:option value="5" label="5"/>
+                            <form:option value="10" label="10"/>
+                            <form:option value="15" label="15"/>
+                            <form:option value="20" label="20"/>
+                            <form:option value="25" label="25"/>
+                            <form:option value="30" label="30"/>
+                        </form:select>
                         동안 상담원 답변이 없을 경우
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="four wide column"><label class="control-label">추가 멘트2</label></div>
-                <div class="twelve wide column">
-                    <div class="ui form fluid">
-                        <input type="text" placeholder="멘트내용입력">
-                    </div>
-                </div>
-                <div class="four wide column"></div>
-                <div class="twelve wide column">
-                    <div class="mt5">상담원이 메시지 송출 후
-                        <select class="mr3 ml3">
-                            <option>5</option>
-                            <option>10</option>
-                            <option>15</option>
-                            <option>20</option>
-                            <option>25</option>
-                            <option>30</option>
-                        </select>
-                        동안 고객 답변이 없을 경우
                     </div>
                 </div>
             </div>
