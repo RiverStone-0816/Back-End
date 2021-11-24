@@ -29,10 +29,6 @@ public class TalkScheduleGroupListFormRequest extends BaseForm {
 	private String  kind;               // 유형구분
 	private String  kindData;           // 유형별 입력 데이터
 
-	private Integer firstMentId = 0;    // 첫인사멘트
-	private Integer limitNum = 0;       // 비접수 n개이상 초과시 자동멘트송출(0개는 무한대)
-	private Integer limitMentId = 0;    // 비접수초과0이상시필수
-
 	private String statYn = "Y";     //  통계반영유무
 	private String  worktimeYn = "Y"; // 업무시간 반영 유무
 
@@ -52,12 +48,6 @@ public class TalkScheduleGroupListFormRequest extends BaseForm {
 					reject(bindingResult, "kind", "{자동멘트전송시 유형별입력값은 필수 입력사항입니다.}");
 				else if (!NumberUtils.isDigits(kindData))
 					reject(bindingResult, "kindData", "messages.validator.invalid", kindData);
-			else if (ScheduleListKind.BY_SERVICE_GROUP_REQUEST.getCode().equals(kind)) { // 비접수초과 0이상시 필수
-				if (limitNum > 0) {
-					if (limitMentId < 1)
-						reject(bindingResult, "limitMentId", "{비접수 n개 이상초과시 자동멘트송출값은 필수 입력사항입니다.}");
-				}
-			}
 		}
 
 		return super.validate(bindingResult);
