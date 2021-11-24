@@ -37,7 +37,7 @@ public class StatInboundApiController extends ApiBaseController {
     @GetMapping("")
     public ResponseEntity<JsonResult<List<StatInboundTimeResponse<?>>>> list(StatInboundSearchRequest search) {
         if (search.getStartDate().after(search.getEndDate()))
-            throw new IllegalArgumentException(message.getText("messages.validator.enddate.after.startdate"));
+            throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");
         if ((search.getEndDate().getTime() - search.getStartDate().getTime()) / 1000 > 6 * 30 * 24 * 60 * 60)
             throw new IllegalArgumentException(message.getText("messages.validator.enddate.indays", "180일"));
 

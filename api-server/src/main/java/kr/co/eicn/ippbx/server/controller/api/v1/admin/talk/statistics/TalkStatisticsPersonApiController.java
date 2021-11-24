@@ -36,7 +36,7 @@ public class TalkStatisticsPersonApiController extends ApiBaseController {
     public ResponseEntity<JsonResult<List<TalkStatisticsPersonResponse>>> list(TalkStatisticsSearchRequest search) {
         if (search.getStartDate() != null && search.getEndDate() != null)
             if (search.getStartDate().after(search.getEndDate()))
-                throw new IllegalArgumentException(message.getText("messages.validator.enddate.after.startdate"));
+                throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");
 
         final List<PersonList> personLists = personListRepository.findAll();
 

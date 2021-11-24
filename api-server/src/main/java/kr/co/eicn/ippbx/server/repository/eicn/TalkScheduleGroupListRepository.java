@@ -61,9 +61,10 @@ public class TalkScheduleGroupListRepository extends EicnBaseRepository<TalkSche
 
 	public void updateByKey(TalkScheduleGroupListFormRequest form, Integer key) {
 		if (ScheduleListKind.AUTO_MENT_REQUEST.getCode().equals(form.getKind())) {
-			form.setFirstMentId(0);
-			form.setLimitNum(0);
-			form.setLimitMentId(0);
+			// FIXME: 0 으로 채우지 않아도 상관없는지 확인 필요
+			// form.setFirstMentId(0);
+			// form.setLimitNum(0);
+			// form.setLimitMentId(0);
 		}
 		if (TalkScheduleKind.CHAT_BOT_CONNECT.getCode().equals(form.getKind()))
 			form.setKindData(form.getChatBot());

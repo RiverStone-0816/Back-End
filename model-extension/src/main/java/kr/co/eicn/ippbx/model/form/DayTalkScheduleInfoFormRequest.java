@@ -26,7 +26,7 @@ public class DayTalkScheduleInfoFormRequest extends TalkScheduleInfoFormRequest 
 			else if (!PatternUtils.isDate(toDate))
 				reject(bindingResult, "toDate", "messages.validator.pattern", "종료일");
 			else if (LocalDate.parse(fromDate).isAfter(LocalDate.parse(toDate)))
-				reject(bindingResult, "fromDate", "messages.validator.enddate.after.startdate");
+				reject(bindingResult, "fromDate", "{시작시간이 종료시간보다 이전이어야 합니다.}");
 
 		return super.validate(bindingResult);
 	}

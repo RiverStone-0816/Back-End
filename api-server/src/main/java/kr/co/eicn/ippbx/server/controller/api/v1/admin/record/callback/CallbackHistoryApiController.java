@@ -83,7 +83,7 @@ public class CallbackHistoryApiController extends ApiBaseController {
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<CallbackHistoryResponse>>> pagination(CallbackHistorySearchRequest search) {
         if (search.getStartDate().after(search.getEndDate()))
-            throw new IllegalArgumentException(message.getText("messages.validator.enddate.after.startdate"));
+            throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");
         final Pagination<CallbackEntity> pagination = callBackRepository.pagination(search);
         final List<CallbackHistoryResponse> rows = pagination.getRows().stream()
                 .map((e) -> {

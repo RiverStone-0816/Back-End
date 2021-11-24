@@ -59,7 +59,7 @@ public class TalkRoomApiController extends ApiBaseController {
 
         if (search.getStartDate() != null && search.getEndDate() != null)
             if (search.getStartDate().after(search.getEndDate()))
-                throw new IllegalArgumentException(message.getText("messages.validator.enddate.after.startdate"));
+                throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");
         if (Objects.isNull(search.getSort()))
             search.setSorts(TalkRoomSearchRequest.Sorts.START_TIME);
         if (StringUtils.isEmpty(search.getSequence()))

@@ -61,7 +61,7 @@ public class RecordDownApiController extends ApiBaseController {
 		if (Objects.isNull(search.getEndDate()))
 			search.setEndDate(Date.valueOf(LocalDate.now()));
 		if (search.getStartDate().after(search.getEndDate()))
-			throw new IllegalArgumentException(message.getText("messages.validator.enddate.after.startdate"));
+			throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");
 
 		final Map<String, String> personMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
 		final List<RecordDownSummaryResponse> rows = service.list(search).stream()

@@ -65,7 +65,7 @@ public class PDSGroupApiController extends ApiBaseController {
 	public ResponseEntity<JsonResult<List<PDSGroupSummaryResponse>>> list(PDSGroupSearchRequest search) {
 		if (search.getStartDate() != null && search.getEndDate() != null)
 			if (search.getStartDate().after(search.getEndDate()))
-				throw new IllegalArgumentException(message.getText("messages.validator.enddate.after.startdate"));
+				throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");
 
 		final List<PdsGroup> list = repository.findAll(search);
 		final List<PDSGroupSummaryResponse> rows = list.stream()
@@ -79,7 +79,7 @@ public class PDSGroupApiController extends ApiBaseController {
 	public ResponseEntity<JsonResult<Pagination<PDSGroupSummaryResponse>>> pagination(PDSGroupSearchRequest search) {
 		if (search.getStartDate() != null && search.getEndDate() != null)
 			if (search.getStartDate().after(search.getEndDate()))
-				throw new IllegalArgumentException(message.getText("messages.validator.enddate.after.startdate"));
+				throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");
 
 		final Pagination<PdsGroup> pagination = repository.pagination(search);
 		final List<PDSGroupSummaryResponse> rows = pagination.getRows().stream()

@@ -37,7 +37,7 @@ public class ScheduleGroupListFormRequest extends BaseForm {
 	public boolean validate(BindingResult bindingResult) {
 		if (Objects.nonNull(fromhour) && Objects.nonNull(tohour)) {
 			if (fromhour.compareTo(tohour) >= 0)
-				reject(bindingResult, "fromhour", "messages.validator.enddate.after.startdate");
+				reject(bindingResult, "fromhour", "{시작시간이 종료시간보다 이전이어야 합니다.}");
 		}
 		if (isNotEmpty(kind)) {
 			if (ScheduleKind.ONY_SOUND_PLAY.getCode().equals(kind) || ScheduleKind.VOICE.getCode().equals(kind)) {

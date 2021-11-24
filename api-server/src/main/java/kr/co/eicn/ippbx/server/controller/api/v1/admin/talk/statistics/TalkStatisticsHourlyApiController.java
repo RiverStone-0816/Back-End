@@ -34,7 +34,7 @@ public class TalkStatisticsHourlyApiController extends ApiBaseController {
     public ResponseEntity<JsonResult<List<TalkStatisticsHourlyResponse>>> list(TalkStatisticsHourlySearchRequest search) {
         if (search.getStartDate() != null && search.getEndDate() != null) {
             if (search.getStartDate().after(search.getEndDate()))
-                throw new IllegalArgumentException(message.getText("messages.validator.enddate.after.startdate"));
+                throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");
             if (search.getStartHour() != null && search.getEndHour() != null)
                 if (search.getStartHour() > search.getEndHour())
                     throw new IllegalArgumentException(message.getText("messages.validator.endhour.after.starthour"));
