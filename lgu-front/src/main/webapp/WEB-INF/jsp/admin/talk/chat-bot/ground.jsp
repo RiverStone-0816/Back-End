@@ -759,16 +759,16 @@
                                     app.autoReply = block.isTemplateEnable
                                     app.displays = block.displayList.sort((a, b) => (a.order - b.order)).map(e => {
                                         return e.type === 'text' ? {type: 'text', data: {text: e.elementList?.[0]?.content}}
-                                            : e.type === 'image' ? {type: 'image', data: {fileUrl: e.elementList?.[0]?.image}}
+                                            : e.type === 'image' ? {type: 'image', data: {fileUrl: e.elementList?.[0]?.image, fileName: e.elementList?.[0]?.image}}
                                                 : e.type === 'card' ? {
                                                         type: 'card',
-                                                        data: {fileUrl: e.elementList?.[0]?.image, title: e.elementList?.[0]?.title, announcement: e.elementList?.[0]?.content,}
+                                                        data: {fileUrl: e.elementList?.[0]?.image, fileName: e.elementList?.[0]?.image, title: e.elementList?.[0]?.title, announcement: e.elementList?.[0]?.content,}
                                                     }
                                                     : {
                                                         type: 'list',
                                                         title: e.elementList?.[0]?.title,
                                                         titleUrl: e.elementList?.[0]?.url,
-                                                        data: e.elementList?.splice(1).map(e2 => ({title: e2.title, announcement: e2.content, url: e2.url, fileUrl: e2.image,}))
+                                                        data: e.elementList?.splice(1).map(e2 => ({title: e2.title, announcement: e2.content, url: e2.url, fileUrl: e2.image, fileName: e2.image,}))
                                                     }
                                     })
 
@@ -998,8 +998,11 @@
                             event.target.value = null
                             if (!file || !file.name) return
                             uploadFile(file).done(response => {
-                                o.data.fileName = response.data.originalName
-                                o.data.fileUrl = `/files/download?file=` + encodeURIComponent(response.data.fileName)
+                                const originalName = response.data.originalName
+                                restSelf.post('/api/chatbot/image', response.data).done(response => {
+                                    o.data.fileName = originalName
+                                    o.data.fileUrl = `/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(response.data)
+                                })
                             })
                         },
                     },
@@ -1030,8 +1033,11 @@
                             event.target.value = null
                             if (!file || !file.name) return
                             uploadFile(file).done(response => {
-                                o.data.fileName = response.data.originalName
-                                o.data.fileUrl = `/files/download?file=` + encodeURIComponent(response.data.fileName)
+                                const originalName = response.data.originalName
+                                restSelf.post('/api/chatbot/image', response.data).done(response => {
+                                    o.data.fileName = originalName
+                                    o.data.fileUrl = `/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(response.data)
+                                })
                             })
                         },
                     },
@@ -1078,8 +1084,11 @@
                             event.target.value = null
                             if (!file || !file.name) return
                             uploadFile(file).done(response => {
-                                o.data.list[index].fileName = response.data.originalName
-                                o.data.list[index].fileUrl = `/files/download?file=` + encodeURIComponent(response.data.fileName)
+                                const originalName = response.data.originalName
+                                restSelf.post('/api/chatbot/image', response.data).done(response => {
+                                    o.data.list[index].fileName = originalName
+                                    o.data.list[index].fileUrl = `/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(response.data)
+                                })
                             })
                         },
                     },
