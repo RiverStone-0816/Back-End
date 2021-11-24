@@ -823,7 +823,7 @@
                                 }
 
                                 createBlock(data.blockInfo)
-                                lastBlockId = blockList.blocks.reduce((a, b) => Math.max(a.id, b.id), 0) + 1
+                                lastBlockId = Math.max.apply(null, [0].concat(blockList.blocks.map(e => e.id))) + 1
                             })
 
                             if (o.current && o.current !== o.select) {
