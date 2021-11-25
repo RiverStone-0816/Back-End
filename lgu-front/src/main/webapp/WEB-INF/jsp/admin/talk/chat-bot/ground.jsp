@@ -791,7 +791,7 @@
                                         const childNodeId = (() => {
                                             if (e.action !== 'block') return
                                             const childBlockId = block.children?.filter(childBlock => (childBlock.parentButtonId === e.id))[0]?.id
-                                            return blockList.blocks.filter(createdBlock => createdBlock.id === childBlockId)?.nodeId
+                                            return blockList.blocks.filter(createdBlock => createdBlock.id === childBlockId)[0]?.nodeId
                                         })()
                                         const action = $.isNumeric(childNodeId) ? '' : e.action
                                         if (e.action === 'block') connections[i] = e.nextBlockId
