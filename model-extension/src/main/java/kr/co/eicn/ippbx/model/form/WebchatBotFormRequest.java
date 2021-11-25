@@ -16,6 +16,7 @@ import java.util.List;
 @Data
 public class WebchatBotFormRequest extends BaseForm {
     private String name;
+    private Boolean isCustomInputEnable;
     private String fallbackMent;
     @NotNull("폴백액션")
     private FallbackAction fallbackAction;

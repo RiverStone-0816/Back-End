@@ -90,7 +90,7 @@ public class WebchatBotButtonElementService extends ApiBaseService {
         else if (ButtonAction.CONNECT_API.equals(ButtonAction.of(entity.getAction()))) {
             response.setNextApiUrl(entity.getNextActionData());
             response.setNextApiMent(entity.getNextApiMent());
-            response.setNextApiResultTemplate(entity.getNextApiNoResultMent());
+            response.setNextApiResultTemplate(entity.getNextApiResultTpl());
             response.setNextApiNoResultMent(entity.getNextApiNoResultMent());
             response.setNextApiErrorMent(entity.getNextApiErrorMent());
         }

@@ -18,30 +18,26 @@ public class WebchatBotInfoRepository extends EicnBaseRepository<WebchatBotInfo,
         super(WEBCHAT_BOT_INFO, WEBCHAT_BOT_INFO.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotInfo.class);
     }
 
-    public Integer insert(WebchatBotFormRequest form) {
+    public Integer insert(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotInfo data) {
         return dsl.insertInto(WEBCHAT_BOT_INFO)
-                .set(WEBCHAT_BOT_INFO.NAME, form.getName())
-                .set(WEBCHAT_BOT_INFO.FALLBACK_MENT, form.getFallbackMent())
-                .set(WEBCHAT_BOT_INFO.FALLBACK_ACTION, form.getFallbackAction().getCode())
-                .set(WEBCHAT_BOT_INFO.NEXT_BLOCK_ID, form.getNextBlockId())
-                .set(WEBCHAT_BOT_INFO.NEXT_GROUP_ID, form.getNextGroupId())
-                .set(WEBCHAT_BOT_INFO.NEXT_URL, form.getNextUrl())
-                .set(WEBCHAT_BOT_INFO.NEXT_PHONE, form.getNextPhone())
+                .set(WEBCHAT_BOT_INFO.NAME, data.getName())
+                .set(WEBCHAT_BOT_INFO.IS_CUSTINPUT_ENABLE, data.getIsCustinputEnable())
+                .set(WEBCHAT_BOT_INFO.FALLBACK_MENT, data.getFallbackMent())
+                .set(WEBCHAT_BOT_INFO.FALLBACK_ACTION, data.getFallbackAction())
+                .set(WEBCHAT_BOT_INFO.FALLBACK_ACTION_DATA, data.getFallbackActionData())
                 .set(WEBCHAT_BOT_INFO.COMPANY_ID, getCompanyId())
                 .returning()
                 .fetchOne()
                 .value1();
     }
 
-    public void updateById(Integer id, WebchatBotFormRequest form) {
+    public void updateById(Integer id, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotInfo data) {
         dsl.update(WEBCHAT_BOT_INFO)
-                .set(WEBCHAT_BOT_INFO.NAME, form.getName())
-                .set(WEBCHAT_BOT_INFO.FALLBACK_MENT, form.getFallbackMent())
-                .set(WEBCHAT_BOT_INFO.FALLBACK_ACTION, form.getFallbackAction().getCode())
-                .set(WEBCHAT_BOT_INFO.NEXT_BLOCK_ID, form.getNextBlockId())
-                .set(WEBCHAT_BOT_INFO.NEXT_GROUP_ID, form.getNextGroupId())
-                .set(WEBCHAT_BOT_INFO.NEXT_URL, form.getNextUrl())
-                .set(WEBCHAT_BOT_INFO.NEXT_PHONE, form.getNextPhone())
+                .set(WEBCHAT_BOT_INFO.NAME, data.getName())
+                .set(WEBCHAT_BOT_INFO.IS_CUSTINPUT_ENABLE, data.getIsCustinputEnable())
+                .set(WEBCHAT_BOT_INFO.FALLBACK_MENT, data.getFallbackMent())
+                .set(WEBCHAT_BOT_INFO.FALLBACK_ACTION, data.getFallbackAction())
+                .set(WEBCHAT_BOT_INFO.FALLBACK_ACTION_DATA, data.getFallbackActionData())
                 .where(WEBCHAT_BOT_INFO.ID.eq(id))
                 .execute();
     }

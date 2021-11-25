@@ -34,12 +34,36 @@ public class WebchatBotInfoService extends ApiBaseService {
         return response;
     }
 
+    public WebchatBotInfo convertFormToData(WebchatBotFormRequest form) {
+        WebchatBotInfo data = new WebchatBotInfo();
+
+        data.setName(form.getName());
+        data.setIsCustinputEnable(form.getIsCustomInputEnable() ? "Y" : "N");
+        data.setFallbackMent(form.getFallbackMent());
+        data.setFallbackAction(form.getFallbackAction().getCode());
+
+        if (FallbackAction.CONNECT_MEMBER.equals(form.getFallbackAction()))
+            data.setFallbackActionData(String.valueOf(form.getNextGroupId()));
+        else if (FallbackAction.CONNECT_URL.equals(form.getFallbackAction()))
+            data.setFallbackActionData(form.getNextUrl());
+        else if (FallbackAction.CONNECT_BLOCK.equals(form.getFallbackAction()))
+            data.setFallbackActionData(String.valueOf(form.getNextBlockId()));
+        else if (FallbackAction.CONNECT_PHONE.equals(form.getFallbackAction()))
+            data.setFallbackActionData(form.getNextPhone());
+
+        return data;
+    }
+
     public Integer insert(WebchatBotFormRequest form) {
-        return webchatBotInfoRepository.insert(form);
+        WebchatBotInfo data = convertFormToData(form);
+
+        return webchatBotInfoRepository.insert(data);
     }
 
     public void updateById(Integer id, WebchatBotFormRequest form) {
-        webchatBotInfoRepository.updateById(id, form);
+        WebchatBotInfo data = convertFormToData(form);
+
+        webchatBotInfoRepository.updateById(id, data);
     }
 
     public void deleteById(Integer id) {

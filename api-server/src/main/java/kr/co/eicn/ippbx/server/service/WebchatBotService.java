@@ -65,8 +65,8 @@ public class WebchatBotService extends ApiBaseService {
     }
 
     public Integer insertBlock(Integer botId, Integer rootId, Integer parentId, Integer parentButtonId, String parentTreeName, Integer level, WebchatBotFormRequest.BlockInfo blockInfo) {
-        final HashMap<Integer, Integer> buttonIdByBlockId = new HashMap<>();
-        final HashMap<Integer, Integer> blockIdByButtonId = new HashMap<>();
+        final HashMap<Integer, Integer> buttonIdByVirtualBlockId = new HashMap<>();
+        final HashMap<Integer, Integer> realBlockIdByButtonId = new HashMap<>();
         final Integer blockId = webchatBotBlockService.insert(blockInfo);
         if (rootId == null) rootId = blockId;
         if (parentId == null) parentId = blockId;
@@ -87,13 +87,13 @@ public class WebchatBotService extends ApiBaseService {
                 final WebchatBotFormRequest.ButtonElement buttonElement = blockInfo.getButtonList().get(buttonId);
 
                 if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()))
-                    buttonIdByBlockId.put(buttonElement.getNextBlockId(), buttonId);
+                    buttonIdByVirtualBlockId.put(buttonElement.getNextBlockId(), buttonId);
             }
 
             for (WebchatBotFormRequest.BlockInfo child : blockInfo.getChildren()) {
-                if (buttonIdByBlockId.containsKey(child.getId())) {
-                    Integer childBlockId = insertBlock(botId, rootId, blockId, buttonIdByBlockId.get(child.getId()), treeName, level + 1, child);
-                    blockIdByButtonId.put(buttonIdByBlockId.get(child.getId()), childBlockId);
+                if (buttonIdByVirtualBlockId.containsKey(child.getId())) {
+                    Integer childBlockId = insertBlock(botId, rootId, blockId, buttonIdByVirtualBlockId.get(child.getId()), treeName, level + 1, child);
+                    realBlockIdByButtonId.put(buttonIdByVirtualBlockId.get(child.getId()), childBlockId);
                 }
             }
 
@@ -101,7 +101,7 @@ public class WebchatBotService extends ApiBaseService {
                 final WebchatBotFormRequest.ButtonElement buttonElement = blockInfo.getButtonList().get(buttonId);
 
                 if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()))
-                    buttonElement.setNextBlockId(blockIdByButtonId.get(buttonId));
+                    buttonElement.setNextBlockId(realBlockIdByButtonId.get(buttonId));
 
                 webchatBotButtonElementService.insertButtonElement(blockId, buttonId, buttonElement);
 
