@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -38,7 +39,7 @@ public class WebchatBotInfoService extends ApiBaseService {
         WebchatBotInfo data = new WebchatBotInfo();
 
         data.setName(form.getName());
-        data.setIsCustinputEnable(form.getIsCustomInputEnable() ? "Y" : "N");
+        data.setIsCustinputEnable(Objects.equals(form.getEnableCustomerInput(), true) ? "Y" : "N");
         data.setFallbackMent(form.getFallbackMent());
         data.setFallbackAction(form.getFallbackAction().getCode());
 
