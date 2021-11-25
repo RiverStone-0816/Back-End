@@ -692,7 +692,7 @@
                                     isResultTemplateEnable: e.api?.usingResponse,
                                     nextApiResultTemplate: e.api?.nextApiResultTemplate,
                                     nextApiErrorMent: e.api?.nextApiErrorMent,
-                                    paramList: e.api?.parameters.map(e2 => ({type: e2.type, paramName: e2.value, displayName: e2.name})),
+                                    paramList: e.api?.parameters?.map(e2 => ({type: e2.type, paramName: e2.value, displayName: e2.name})),
                                     // connectedBlockInfo: e.action === '' ? convertBlock(nodeBlockMap[e.childNodeId]) : null
                                 })),
                                 children: block?.buttons.filter(e => e.action === '').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
@@ -1454,6 +1454,11 @@
                 blockList.blocks.push(app)
                 buttonConfig.blocks.push(app)
                 fallbackConfig.blocks.push(app)
+
+                blockList.blocks.sort((a, b) => (a.id - b.id))
+                buttonConfig.blocks.sort((a, b) => (a.id - b.id))
+                fallbackConfig.blocks.sort((a, b) => (a.id - b.id))
+
                 return nodeId
             }
 
