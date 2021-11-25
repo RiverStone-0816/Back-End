@@ -148,7 +148,7 @@
                                                 <div v-if="input.fallbackAction === 'member'" class="mb10">상담그룹</div>
                                                 <div v-if="input.fallbackAction === 'member'" class="ui form fluid mb10">
                                                     <select v-model="input.nextGroupId">
-                                                        <option v-for="(e,i) in groups" :key="i" :value="e.name">{{ e.hanName }}</option>
+                                                        <option v-for="(e,i) in groups" :key="i" :value="e.groupId">{{ e.groupName }}</option>
                                                     </select>
                                                 </div>
                                                 <div v-if="input.fallbackAction === 'url'" class="mb10">연결 URL 설정</div>
@@ -353,7 +353,7 @@
                                                 <div class="mb15">연결 그룹 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <select v-model="data.nextGroupId">
-                                                        <option v-for="(e,i) in groups" :key="i" :value="e.name">{{ e.hanName }}</option>
+                                                        <option v-for="(e,i) in groups" :key="i" :value="e.groupId">{{ e.groupName }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -637,7 +637,7 @@
                 <div v-if="fallbackAction === 'member'" class="mb10">상담그룹</div>
                 <div v-if="fallbackAction === 'member'" class="ui form fluid mb10">
                     <select v-model="nextGroupId">
-                        <option v-for="(e,i) in groups" :key="i" :value="e.name">{{ e.hanName }}</option>
+                        <option v-for="(e,i) in groups" :key="i" :value="e.groupId">{{ e.groupName }}</option>
                     </select>
                 </div>
                 <div v-if="fallbackAction === 'url'" class="mb10">연결 URL 설정</div>
@@ -1499,10 +1499,10 @@
                 delete nodeBlockMap[nodeId]
             })
 
-            restSelf.get('/api/queue/', {limit: 10000}).done(response => {
-                chatbotSettingModal.groups = response.data.rows
-                fallbackConfig.groups = response.data.rows
-                buttonConfig.groups = response.data.rows
+            restSelf.get('/api/talk-reception-group/').done(response => {
+                chatbotSettingModal.groups = response.data
+                fallbackConfig.groups = response.data
+                buttonConfig.groups = response.data
             })
 
             const allowDrop = event => event.preventDefault()
