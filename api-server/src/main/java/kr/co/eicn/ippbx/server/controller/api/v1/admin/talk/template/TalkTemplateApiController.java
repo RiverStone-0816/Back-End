@@ -134,24 +134,19 @@ public class TalkTemplateApiController extends ApiBaseController {
 
     //템플릿 추가
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<JsonResult<Integer>> post(@Valid @RequestBody TalkTemplateFormRequest form, BindingResult bindingResult) {
+    public ResponseEntity<JsonResult<Integer>> post(@Valid @ModelAttribute TalkTemplateFormRequest form, BindingResult bindingResult) {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
-        final Integer insertSeq;
-        if (form.getFile() != null && !form.getFile().isEmpty()) {
-            insertSeq = service.insertTalkTemplateFileUpload(form);
-        } else {
-            insertSeq = repository.insertOnGeneratedKey(form).getValue(TALK_TEMPLATE.SEQ);
-        }
+        final Integer insertSeq = service.insertTalkTemplateFileUpload(form);
 
         return ResponseEntity.created(URI.create("api/v1/admin/talk/template"))
                 .body(data(insertSeq));
     }
 
     //템플릿 수정
-    @PostMapping(value = "{seq}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<JsonResult<Void>> put(@Valid @RequestBody TalkTemplateFormRequest form, BindingResult bindingResult, @PathVariable Integer seq) {
+    @PutMapping(value = "{seq}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<JsonResult<Void>> put(@Valid @ModelAttribute TalkTemplateFormRequest form, BindingResult bindingResult, @PathVariable Integer seq) {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 

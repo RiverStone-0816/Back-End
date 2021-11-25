@@ -32,8 +32,8 @@
                 <div class="four wide column">
                     <div class="ui form">
                         <form:select path="typeMent">
-                            <form:option value="T" label="텍스트"/>
-                            <form:option value="P" label="이미지"/>
+                            <form:option value="TEXT" label="텍스트"/>
+                            <form:option value="PHOTO" label="이미지"/>
                         </form:select>
                     </div>
                 </div>

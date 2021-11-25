@@ -19,7 +19,7 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${list.size()}</span> 건</h3>
+                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.rows.size()}</span> 건</h3>
                     </div>
                     <div class="pull-right">
                         <button type="button" class="ui basic button" onclick="popupModal()">추가</button>
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkTemplate">
+                    <table class="ui celled table compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="TalkTemplate">
                         <thead>
                         <tr>
                             <th class="one wide">번호</th>
@@ -41,8 +41,8 @@
                         </thead>
                         <tbody>
                         <c:choose>
-                            <c:when test="${list.size() > 0}">
-                                <c:forEach var="e" items="${list}" varStatus="status">
+                            <c:when test="${pagination.rows.size()> 0}">
+                                <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${e.seq}">
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(templateTypes.get(e.type))}</td>
@@ -50,12 +50,12 @@
                                             <c:when test="${e.type.contains('G')}">
                                                 <td>
                                                     <c:if test="${metaTypeList.get(e.companyTreeLevel) != null}">
-                                                        ${g.htmlQuote(e.typeData)}(${g.htmlQuote(metaTypeList.get(e.companyTreeLevel))})
+                                                        ${g.htmlQuote(e.typeDataName)}(${g.htmlQuote(metaTypeList.get(e.companyTreeLevel))})
                                                     </c:if>
                                                 </td>
                                             </c:when>
                                             <c:otherwise>
-                                                <td>${g.htmlQuote(e.typeData)}</td>
+                                                <td>${g.htmlQuote(e.typeDataName)}</td>
                                             </c:otherwise>
                                         </c:choose>
                                         <td>${g.htmlQuote(e.writeUserName)}</td>
@@ -72,6 +72,11 @@
                         </c:choose>
                         </tbody>
                     </table>
+                    <div class="panel-footer">
+                        <div class="pull-right">
+                            <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/talk/template/" pageForm="${search}"/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

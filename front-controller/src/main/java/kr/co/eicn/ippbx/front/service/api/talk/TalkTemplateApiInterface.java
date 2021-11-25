@@ -33,9 +33,9 @@ public class TalkTemplateApiInterface extends ApiServerInterface {
     @SuppressWarnings("unchecked")
     @SneakyThrows
     public Integer post(TalkTemplateFormRequest form) {
-        val response = (JsonResult<Integer>) sendByMultipartFile(HttpMethod.POST, subUrl, form, jsonResultType(Integer.class),
+        val response = (Integer) sendByMultipartFile(HttpMethod.POST, subUrl, form, jsonResultType(Integer.class),
                 form.getTypeMent().equals(TalkTemplateFormRequest.MentType.PHOTO) ? Collections.singletonMap("file", new FileResource(form.getFilePath(), form.getOriginalFileName())) : Collections.emptyMap());
-        return response.getData();
+        return response;
     }
 
     @SneakyThrows

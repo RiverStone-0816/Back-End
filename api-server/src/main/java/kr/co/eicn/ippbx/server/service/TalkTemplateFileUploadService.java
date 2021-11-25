@@ -32,28 +32,18 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
     private String savePath;
 
     public Integer insertTalkTemplateFileUpload(TalkTemplateFormRequest form) {
-        final MultipartFile file = form.getFile();
-        final Path path = Paths.get(replaceEach(savePath, new String[]{"{0}", "{1}"}, new String[]{g.getUser().getCompanyId(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"))}));
-
-        if (Files.notExists(path)) {
-            try {
-                Files.createDirectories(path);
-            } catch (IOException ignored) {
-            }
-        }
-
-        final String originalFileName = UrlUtils.decode(cleanPath(Objects.requireNonNull(file.getOriginalFilename())));
-        final String saveFileName = System.currentTimeMillis() + "_" + System.nanoTime() + "_" + originalFileName;
-
-        form.setOriginalFileName(originalFileName);
-        form.setFilePath(path.resolve(saveFileName).toString());
-
-        this.fileSystemStorageService.store(path, saveFileName, file);
+        storeFile(form);
 
         return repository.insertOnGeneratedKey(form).getValue(TALK_TEMPLATE.SEQ);
     }
 
     public void updateTalkTemplateFileUpload(TalkTemplateFormRequest form, Integer seq) {
+        storeFile(form);
+
+        repository.updateByKey(form, seq);
+    }
+
+    public void storeFile(TalkTemplateFormRequest form) {
         if (form.getFile() != null && !form.getFile().isEmpty()) {
             final MultipartFile file = form.getFile();
             final Path path = Paths.get(replaceEach(savePath, new String[]{"{0}", "{1}"}, new String[]{g.getUser().getCompanyId(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"))}));
@@ -73,7 +63,5 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
 
             this.fileSystemStorageService.store(path, saveFileName, file);
         }
-        repository.updateByKey(form, seq);
     }
-
 }
