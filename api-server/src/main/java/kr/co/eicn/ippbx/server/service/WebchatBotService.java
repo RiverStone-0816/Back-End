@@ -47,14 +47,27 @@ public class WebchatBotService extends ApiBaseService {
     }
 
     public void updateWebchatBotInfo(Integer botId, WebchatBotFormRequest form) {
-        if (webchatBotInfoService.isPresent(botId)) {
+        final WebchatBotInfoResponse oldData = getBotInfo(botId);
+        if (oldData != null) {
             deleteAllBlockInfoById(botId);
 
-            final Integer realBlockId = insertRootBlock(botId, form).get(form.getNextBlockId());
-            if (FallbackAction.CONNECT_BLOCK.equals(form.getFallbackAction()))
-                form.setNextBlockId(realBlockId);
+            try {
+                final Integer realBlockId = insertRootBlock(botId, form).get(form.getNextBlockId());
+                if (FallbackAction.CONNECT_BLOCK.equals(form.getFallbackAction()))
+                    form.setNextBlockId(realBlockId);
 
-            webchatBotInfoService.updateById(botId, form);
+                webchatBotInfoService.updateById(botId, form);
+            } catch (Exception e) {
+                // FIXME: 발생할 수 있는 Exception 정의하여 특정 Exception에 대응하도록 수정
+                e.printStackTrace();
+                log.error(e.getMessage());
+
+                deleteAllBlockInfoById(botId);
+                WebchatBotFormRequest copyData = convertDto(oldData, WebchatBotFormRequest.class);
+                insertRootBlock(botId, copyData);
+
+                throw e;
+            }
         }
     }
 
@@ -134,7 +147,7 @@ public class WebchatBotService extends ApiBaseService {
         webchatBotTreeService.deleteByBotId(botId);
     }
 
-    public WebchatBotInfoResponse get(Integer botId) {
+    public WebchatBotInfoResponse getBotInfo(Integer botId) {
         final WebchatBotInfoResponse response = webchatBotInfoService.get(botId);
         final Integer rootBlockId = webchatBotTreeService.findRootBlockId(botId);
         List<Integer> blockIdList = new ArrayList<>();
@@ -181,7 +194,7 @@ public class WebchatBotService extends ApiBaseService {
     }
 
     public Integer copy(Integer botId) {
-        WebchatBotInfoResponse response = get(botId);
+        WebchatBotInfoResponse response = getBotInfo(botId);
 
         WebchatBotFormRequest copyData = convertDto(response, WebchatBotFormRequest.class);
 

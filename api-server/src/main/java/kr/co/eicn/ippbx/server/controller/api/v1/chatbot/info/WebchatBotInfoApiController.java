@@ -40,7 +40,7 @@ public class WebchatBotInfoApiController extends ApiBaseController {
 
     @GetMapping("{id}")
     public ResponseEntity<JsonResult<WebchatBotInfoResponse>> getById(@PathVariable Integer id) {
-        WebchatBotInfoResponse webchatBotInfoResponse = webchatBotService.get(id);
+        WebchatBotInfoResponse webchatBotInfoResponse = webchatBotService.getBotInfo(id);
         return ResponseEntity.ok(data(webchatBotInfoResponse));
     }
 
@@ -76,7 +76,11 @@ public class WebchatBotInfoApiController extends ApiBaseController {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
-        webchatBotService.updateWebchatBotInfo(id, form);
+        try {
+            webchatBotService.updateWebchatBotInfo(id, form);
+        } catch (Exception e) {
+            throw new RuntimeException("수정중 오류가 발생하여 이전 데이터로 복구합니다.");
+        }
 
         return ResponseEntity.ok(create());
     }
