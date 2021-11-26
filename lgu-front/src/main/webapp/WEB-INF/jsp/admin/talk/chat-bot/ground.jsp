@@ -123,42 +123,52 @@
                                             <div class="ui form fluid mb15">
                                                 <input type="text" v-model="input.name">
                                             </div>
-                                            <div class="mb15">폴백 대사 입력</div>
-                                            <div class="ui form fluid mb15">
-                                                <textarea rows="8" v-model="input.fallbackMent"></textarea>
+
+                                            <div class="mb15">고객 입력</div>
+                                            <div class="ui fitted toggle checkbox">
+                                                <input type="checkbox" @change="input.enableCustomerInput = $event.target.checked" :checked="input.enableCustomerInput">
+                                                <label></label>
                                             </div>
-                                            <div class="mb15">동작</div>
-                                            <div class="ui form fluid mb15">
-                                                <select v-model="input.fallbackAction">
-                                                    <option value="first">처음으로 가기</option>
-                                                    <option value="member">상담그룹연결</option>
-                                                    <option value="url">URL 연결</option>
-                                                    <option value="block">다른 블록으로 연결</option>
-                                                    <option value="phone">전화 연결</option>
-                                                </select>
-                                            </div>
-                                            <div v-if="input.fallbackAction === 'member'" class="mb10">상담그룹</div>
-                                            <div v-if="input.fallbackAction === 'member'" class="ui form fluid mb10">
-                                                <select v-model="input.nextGroupId">
-                                                    <option v-for="(e,i) in groups" :key="i" :value="e.name">{{ e.hanName }}</option>
-                                                </select>
-                                            </div>
-                                            <div v-if="input.fallbackAction === 'url'" class="mb10">연결 URL 설정</div>
-                                            <div v-if="input.fallbackAction === 'url'" class="ui form fluid mb10">
-                                                <input type="text" v-model="input.nextUrl">
-                                            </div>
-                                            <div v-if="input.fallbackAction === 'block'">
-                                                <div class="mb15">연결 블록 설정</div>
+
+                                            <div v-if="!input.enableCustomerInput">
+                                                <div class="mb15">폴백 대사 입력</div>
                                                 <div class="ui form fluid mb15">
-                                                    <select v-model="input.nextBlockId">
-                                                        <option v-for="(e,i) in blocks" :key="i" :value="e.id">{{ e.name }}</option>
+                                                    <textarea rows="8" v-model="input.fallbackMent"></textarea>
+                                                </div>
+                                                <div class="mb15">동작</div>
+                                                <div class="ui form fluid mb15">
+                                                    <select v-model="input.fallbackAction">
+                                                        <option value="first">처음으로 가기</option>
+                                                        <option value="member">상담그룹연결</option>
+                                                        <option value="url">URL 연결</option>
+                                                        <option value="block">다른 블록으로 연결</option>
+                                                        <option value="phone">전화 연결</option>
                                                     </select>
                                                 </div>
+                                                <div v-if="input.fallbackAction === 'member'" class="mb10">상담그룹</div>
+                                                <div v-if="input.fallbackAction === 'member'" class="ui form fluid mb10">
+                                                    <select v-model="input.nextGroupId">
+                                                        <option v-for="(e,i) in groups" :key="i" :value="e.groupId">{{ e.groupName }}</option>
+                                                    </select>
+                                                </div>
+                                                <div v-if="input.fallbackAction === 'url'" class="mb10">연결 URL 설정</div>
+                                                <div v-if="input.fallbackAction === 'url'" class="ui form fluid mb10">
+                                                    <input type="text" v-model="input.nextUrl">
+                                                </div>
+                                                <div v-if="input.fallbackAction === 'block'">
+                                                    <div class="mb15">연결 블록 설정</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <select v-model="input.nextBlockId">
+                                                            <option v-for="(e,i) in blocks" :key="i" :value="e.id">{{ e.name }}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div v-if="input.fallbackAction === 'phone'" class="mb10">연결 번호 설정</div>
+                                                <div v-if="input.fallbackAction === 'phone'" class="ui form fluid mb10">
+                                                    <input type="text" v-model="input.nextPhone">
+                                                </div>
                                             </div>
-                                            <div v-if="input.fallbackAction === 'phone'" class="mb10">연결 번호 설정</div>
-                                            <div v-if="input.fallbackAction === 'phone'" class="ui form fluid mb10">
-                                                <input type="text" v-model="input.nextPhone">
-                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -343,7 +353,7 @@
                                                 <div class="mb15">연결 그룹 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <select v-model="data.nextGroupId">
-                                                        <option v-for="(e,i) in groups" :key="i" :value="e.name">{{ e.hanName }}</option>
+                                                        <option v-for="(e,i) in groups" :key="i" :value="e.groupId">{{ e.groupName }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -603,32 +613,41 @@
             <div class="ui form fluid mb15">
                 <input type="text" v-model="name">
             </div>
-            <div class="mb10">폴백 대사 입력</div>
-            <div class="ui form fluid mb10">
-                <textarea rows="3" v-model="fallbackMent"></textarea>
+
+            <div class="mb10">고객 입력</div>
+            <div class="ui fitted toggle checkbox">
+                <input type="checkbox" @change="enableCustomerInput = $event.target.checked" :checked="enableCustomerInput">
+                <label></label>
             </div>
-            <div class="mb10">동작</div>
-            <div class="ui form fluid mb10">
-                <select v-model="fallbackAction">
-                    <option value="first">처음으로 가기</option>
-                    <option value="member">상담그룹연결</option>
-                    <option value="url">URL 연결</option>
-                    <option value="phone">전화 연결</option>
-                </select>
-            </div>
-            <div v-if="fallbackAction === 'member'" class="mb10">상담그룹</div>
-            <div v-if="fallbackAction === 'member'" class="ui form fluid mb10">
-                <select v-model="nextGroupId">
-                    <option v-for="(e,i) in groups" :key="i" :value="e.name">{{ e.hanName }}</option>
-                </select>
-            </div>
-            <div v-if="fallbackAction === 'url'" class="mb10">연결 URL 설정</div>
-            <div v-if="fallbackAction === 'url'" class="ui form fluid mb10">
-                <input type="text" v-model="nextUrl">
-            </div>
-            <div v-if="fallbackAction === 'phone'" class="mb10">연결 번호 설정</div>
-            <div v-if="fallbackAction === 'phone'" class="ui form fluid mb10">
-                <input type="text" v-model="nextPhone">
+
+            <div v-if="!enableCustomerInput">
+                <div class="mb10">폴백 대사 입력</div>
+                <div class="ui form fluid mb10">
+                    <textarea rows="3" v-model="fallbackMent"></textarea>
+                </div>
+                <div class="mb10">동작</div>
+                <div class="ui form fluid mb10">
+                    <select v-model="fallbackAction">
+                        <option value="first">처음으로 가기</option>
+                        <option value="member">상담그룹연결</option>
+                        <option value="url">URL 연결</option>
+                        <option value="phone">전화 연결</option>
+                    </select>
+                </div>
+                <div v-if="fallbackAction === 'member'" class="mb10">상담그룹</div>
+                <div v-if="fallbackAction === 'member'" class="ui form fluid mb10">
+                    <select v-model="nextGroupId">
+                        <option v-for="(e,i) in groups" :key="i" :value="e.groupId">{{ e.groupName }}</option>
+                    </select>
+                </div>
+                <div v-if="fallbackAction === 'url'" class="mb10">연결 URL 설정</div>
+                <div v-if="fallbackAction === 'url'" class="ui form fluid mb10">
+                    <input type="text" v-model="nextUrl">
+                </div>
+                <div v-if="fallbackAction === 'phone'" class="mb10">연결 번호 설정</div>
+                <div v-if="fallbackAction === 'phone'" class="ui form fluid mb10">
+                    <input type="text" v-model="nextPhone">
+                </div>
             </div>
         </div>
         <div class="actions">
@@ -740,6 +759,7 @@
 
                                 fallbackConfig.data = {
                                     name: data.name,
+                                    enableCustomerInput: false,
                                     fallbackMent: data.fallbackMent,
                                     fallbackAction: data.fallbackAction,
                                     nextBlockId: data.nextBlockId,
@@ -791,7 +811,7 @@
                                         const childNodeId = (() => {
                                             if (e.action !== 'block') return
                                             const childBlockId = block.children?.filter(childBlock => (childBlock.parentButtonId === e.id))[0]?.id
-                                            return blockList.blocks.filter(createdBlock => createdBlock.id === childBlockId)?.nodeId
+                                            return blockList.blocks.filter(createdBlock => createdBlock.id === childBlockId)[0]?.nodeId
                                         })()
                                         const action = $.isNumeric(childNodeId) ? '' : e.action
                                         if (e.action === 'block') connections[i] = e.nextBlockId
@@ -860,7 +880,7 @@
                         return {
                             groups: [],
                             blocks: [],
-                            input: {name: '', fallbackMent: '', fallbackAction: 'first', nextBlockId: null, nextGroupId: null, nextUrl: null, nextPhone: null,},
+                            input: {name: '', enableCustomerInput: false, fallbackMent: '', fallbackAction: 'first', nextBlockId: null, nextGroupId: null, nextUrl: null, nextPhone: null,},
                         }
                     },
                     methods: {
@@ -884,12 +904,13 @@
                     data() {
                         return {
                             groups: [],
-                            name: '', fallbackMent: '', fallbackAction: 'first', nextGroupId: null, nextUrl: null, nextPhone: null,
+                            name: '', enableCustomerInput: false, fallbackMent: '', fallbackAction: 'first', nextGroupId: null, nextUrl: null, nextPhone: null,
                         }
                     },
                     methods: {
                         show() {
                             o.name = ''
+                            o.enableCustomerInput = false
                             o.fallbackMent = ''
                             o.fallbackAction = 'first'
                             o.nextGroupId = null
@@ -912,7 +933,15 @@
                             for (let property in nodeBlockMap) delete nodeBlockMap[property]
                             editor.clear()
 
-                            fallbackConfig.data = {name: o.name, fallbackMent: o.fallbackMent, fallbackAction: o.fallbackAction, nextGroupId: o.nextGroupId, nextUrl: o.nextUrl, nextPhone: o.nextPhone}
+                            fallbackConfig.data = {
+                                name: o.name,
+                                enableCustomerInput: o.enableCustomerInput,
+                                fallbackMent: o.fallbackMent,
+                                fallbackAction: o.fallbackAction,
+                                nextGroupId: o.nextGroupId,
+                                nextUrl: o.nextUrl,
+                                nextPhone: o.nextPhone
+                            }
                             o.hide()
                             createNode()
 
@@ -1470,10 +1499,10 @@
                 delete nodeBlockMap[nodeId]
             })
 
-            restSelf.get('/api/queue/', {limit: 10000}).done(response => {
-                chatbotSettingModal.groups = response.data.rows
-                fallbackConfig.groups = response.data.rows
-                buttonConfig.groups = response.data.rows
+            restSelf.get('/api/talk-reception-group/').done(response => {
+                chatbotSettingModal.groups = response.data
+                fallbackConfig.groups = response.data
+                buttonConfig.groups = response.data
             })
 
             const allowDrop = event => event.preventDefault()
