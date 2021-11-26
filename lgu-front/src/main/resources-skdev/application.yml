@@ -77,6 +77,8 @@ eicn:
       id: chatting_connector
     cipher:
       key: eicn
-  webbot:
+  chatbot:
+    socket:
+      id: webchatcli_connector
     resource:
       location: /tmp/chatbot

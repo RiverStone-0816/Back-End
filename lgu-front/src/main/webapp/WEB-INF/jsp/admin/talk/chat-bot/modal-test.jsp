@@ -25,16 +25,14 @@
 </head>
 <body class="overflow-auto">
 
-<div class="chat-preview window">
+<div id="chat-preview" class="chat-preview window">
     <div class="header">
         <img src="<c:url value="/resources/images/chatbot-icon.svg"/>" class="chatbot-icon"><span class="customer-title">Chat Bot</span>
     </div>
-    <div class="content">
+    <%--<div class="content">
         <div class="sample-bubble">
             <img src="<c:url value="/resources/images/eicn-sample.png"/>" class="customer-img">
-            <p>이아이씨엔 채팅상담을 이용해 주셔서 감사합니다.
-                문의사항을 입력해주시면 상담원이 답변드리겠습니다.
-                감사합니다.</p>
+            <p>이아이씨엔 채팅상담을 이용해 주셔서 감사합니다. 문의사항을 입력해주시면 상담원이 답변드리겠습니다. 감사합니다.</p>
         </div>
         <div class="sample-bubble">
             <p>다른 채널을 통한 상담을 원하시면 원하시는 서비스의 아이콘을 눌러주세요.</p>
@@ -44,156 +42,200 @@
                 <a href="#"><img src="<c:url value="/resources/images/nband-icon.png"/>" class="preview-channel-icon"></a>
             </div>
         </div>
-    </div>
-    <div class="content editor">
-        <div class="sample-bubble">
-            <p class="title">
-                폴백블록제목폴백블록제목
-            </p>
-            <p>볼백 멘트 죄송합니다. 제가 아직 배우지 못한 단어입니다. 좀 더 노력하겠습니다.
-                볼백 멘트 죄송합니다. 제가 아직 배우지 못한 단어입니다. 좀 더 노력하겠습니다.</p>
-            <button type="button" class="chatbot-button">제출</button>
-            <span class="time-text">21-04-11 04:33</span>
-        </div>
-        <div class="sample-bubble">
-            <p>
-                텍스트텍스트텍스트텍스트텍스트텍스트텍스트텍스트
-            </p>
-            <span class="time-text">21-04-11 04:33</span>
-        </div>
-        <div class="card">
-            <div class="card-img">
-                <img src="/files/download?file=1636295158240_1919604306132300_team-2.jpg" class="border-radius-1em">
-            </div>
-            <span class="time-text">21-04-11 04:33</span>
-        </div>
-        <div class="card">
-            <div class="card-img">
-                <img src="/files/download?file=1636295172720_1919618785913000_team-2.jpg" class="border-radius-top-1em">
-            </div>
-            <div class="card-content">
-                <div class="card-title">
-                    카드타이틀
+    </div>--%>
+
+    <div v-for="(message, iMessage) in messages" :key="iMessage" :class="message.sender === 'SERVER' ? ' editor ' : ' send-message '" class=" content ">
+        <template v-if="message.sender === 'SERVER'">
+            <div v-if="message.data?.display?.length" v-for="(e, i) in message.data?.display" :key="i" :class="e.type === 'text' ? 'sample-bubble' : 'card'">
+                <p v-if="e.type === 'text'">{{ e.element[0]?.content }}</p>
+                <div v-if="e.type === 'image'" class="card-img">
+                    <img :src="`/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e.element[0]?.image)" class="border-radius-1em">
                 </div>
-                <div class="card-text">
-                    카드제목
+                <div v-if="e.type === 'card'" class="card-img">
+                    <img :src="`/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e.element[0]?.image)" class="border-radius-top-1em">
+                </div>
+                <div v-if="e.type === 'card'" class="card-content">
+                    <div class="card-title">{{ e.element[0]?.title }}</div>
+                    <div class="card-text">{{ e.element[0]?.content }}</div>
+                </div>
+                <div v-if="e.type === 'list'" class="card-list">
+                    <div class="card-list-title">
+                        <a v-if="e.element[0]?.url" :href="e.element[0]?.url" target="_blank">{{ e.element[0]?.title }}</a>
+                        <text v-else>{{ e.element[0]?.title }}</text>
+                    </div>
+                    <ul class="card-list-ul">
+                        <li v-for="(e2, j) in getListElements(e)" :key="j" class="item">
+                            <a :href="e2.url" target="_blank" class="link-wrap">
+                                <div class="item-thumb" v-if="e2.image && e2.image">
+                                    <div class="item-thumb-inner">
+                                        <img :src="`/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e2.image)">
+                                    </div>
+                                </div>
+                                <div class="item-content">
+                                    <div class="subject">{{ e2.title }}</div>
+                                    <div class="ment">{{ e2.content }}</div>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <span v-if="!(message.data?.button?.length) && (i + 1 === message.data.display.length)" class="time-text">{{ getTimeFormat(message.time) }}</span>
+            </div>
+            <div v-if="message.data?.button?.length" v-for="(e, i) in getButtonGroups(message)" :key="i" :class="e instanceof Array ? 'sample-bubble' : 'card'">
+                <button v-if="e instanceof Array" v-for="(e2, j) in e" :key="j" type="button" class="chatbot-button" @click.stop.prevent="actButton(message, e2)">{{ e2.btn_name }}</button>
+                <div v-else class="card-list">
+                    <ul class="card-list-ul"><%--TODO: API 버튼 형태 작업해야함: 현재 socket에서 api parameter 정보 제대로 내려주지 않고 있다. --%>
+                        <li v-if="e.api?.parameters" v-for="(e2, j) in e.api.parameters" :key="j" class="item form">
+                            <div class="label">{{ e2.btn_name }}</div>
+                            <div v-if="e2.type !== 'time'" class="ui fluid input">
+                                <input type="text">
+                            </div>
+                            <div v-else class="ui multi form">
+                                <select class="slt">
+                                    <option>오전</option>
+                                    <option>오후</option>
+                                </select>
+                                <select class="slt">
+                                    <option>12</option>
+                                </select>
+                                <span class="unit">시</span>
+                                <select class="slt">
+                                    <option>55</option>
+                                </select>
+                                <span class="unit">분</span>
+                            </div>
+                        </li>
+                        <li class="item">
+                            <button type="button" class="chatbot-button" @click.stop.prevent="actApi(message, e2)">제출</button>
+                        </li>
+                    </ul>
+                </div>
+                <span v-if="i + 1 === getButtonGroups(message).length" class="time-text">{{ getTimeFormat(message.time) }}</span>
+            </div>
+        </template>
+        <template v-else>
+            <div class="bubble-wrap">
+                <div class="bubble-inner">
+                    <p class="bubble">{{ message.data }}</p>
+                    <span class="time-text">{{ getTimeFormat(message.time) }}</span>
                 </div>
             </div>
-            <span class="time-text">21-04-11 04:33</span>
-        </div>
-        <div class="card">
-            <div class="card-list">
-                <div class="card-list-title">
-                    <text>리스트타이틀</text>
-                </div>
-                <ul class="card-list-ul">
-                    <li class="item"><a target="_blank" class="link-wrap">
-                        <div class="item-thumb">
-                            <div class="item-thumb-inner">
-                                <img src="/files/download?file=1636295220886_1919666951830200_team-2.jpg">
-                            </div>
-                        </div>
-                        <div class="item-content">
-                            <div class="subject">
-                                리스트1
-                            </div>
-                            <div class="ment">
-                                리스트1
-                            </div>
-                        </div>
-                    </a></li>
-                    <li class="item"><a target="_blank" class="link-wrap">
-                        <!---->
-                        <div class="item-content">
-                            <div class="subject">
-                                리스트2
-                            </div>
-                            <div class="ment">
-                                리스트2
-                            </div>
-                        </div>
-                    </a></li>
-                </ul>
-            </div>
-            <span class="time-text">21-04-11 04:33</span>
-        </div>
-        <div class="sample-bubble">
-            <button type="button" class="chatbot-button">버튼제목</button>
-            <button type="button" class="chatbot-button">버튼제목</button>
-            <span class="time-text">21-04-11 04:33</span>
-        </div>
-        <div class="card">
-            <div class="card-list">
-                <ul class="card-list-ul">
-                    <li class="item form">
-                        <div class="label">
-                            사업자번호
-                        </div>
-                        <div class="ui fluid input">
-                            <input type="text">
-                        </div>
-                    </li>
-                    <li class="item form">
-                        <div class="label">
-                            날짜
-                        </div>
-                        <div class="ui fluid input">
-                            <input type="text">
-                        </div>
-                    </li>
-                    <li class="item form">
-                        <div class="label">
-                            시간
-                        </div>
-                        <div class="ui multi form">
-                            <select class="slt">
-                                <option>오전</option>
-                                <option>오후</option>
-                            </select>
-                            <select class="slt">
-                                <option>12</option>
-                            </select>
-                            <span class="unit">시</span>
-                            <select class="slt">
-                                <option>55</option>
-                            </select>
-                            <span class="unit">분</span>
-                        </div>
-                    </li>
-                    <li class="item">
-                        <button type="button" class="chatbot-button">선택한 폴백 블록 동작</button>
-                    </li>
-                </ul>
-            </div>
-            <span class="time-text">21-04-11 04:33</span>
-        </div>
+        </template>
     </div>
-    <div class="content send-message">
-        <div class="bubble-wrap">
-            <div class="bubble-inner">
-                <p class="bubble">안녕하세요.</p>
-                <span class="time-text">21-04-11 04:33</span>
-            </div>
-        </div>
-        <div class="bubble-wrap">
-            <div class="bubble-inner">
-                <p class="bubble">안녕하세요.안녕하세요.안녕하세요.안녕하세요.안녕하세요.안녕하세요.안녕하세요.안녕하세요.</p>
-                <span class="time-text">21-04-11 04:33</span>
-            </div>
-        </div>
-    </div>
-    <div class="action">
+
+    <div v-if="socket" class="action">
         <div>
             <button type="button" class="home-btn"><img src="<c:url value="/resources/images/material-home.svg"/>"></button>
         </div>
         <div class="ui form">
-            <input type="text" placeholder="문의사항을 입력하세요.">
+            <input type="text" placeholder="문의사항을 입력하세요." v-model="input" @keyup.stop.prevent="$event.key === 'Enter' && sendText()">
         </div>
         <div>
-            <button type="button" class="send-btn"><img src="<c:url value="/resources/images/material-send.svg"/>"></button>
+            <button type="button" class="send-btn" @click.stop.prevent="sendText"><img src="<c:url value="/resources/images/material-send.svg"/>"></button>
         </div>
     </div>
 </div>
+
+<tags:scripts>
+    <script>
+        const preview = (() => {
+            const SENDER = Object.freeze({SERVER: 'SERVER', USER: 'USER'})
+            const o = Vue.createApp({
+                setup() {
+                    return {
+                        botId: '${botId}',
+                        request: {
+                            company_id: '${g.escapeQuote(g.user.companyId)}',
+                            sender_key: '${g.escapeQuote(g.user.companyId)}',
+                            user_key: '${g.escapeQuote(sessionId)}',
+                            mode: 'bottest',
+                            my_ip: '${g.escapeQuote(ip)}',
+                        }
+                    }
+                },
+                data() {
+                    return {
+                        socket: null,
+                        eventSequence: 0,
+                        input: '',
+                        messages: []
+                    }
+                },
+                methods: {
+                    createSocket() {
+                        restSelf.get('/api/auth/socket-info').done(response => {
+                            const url = response.data.chatbotSocketUrl
+                            o.socket = io.connect(url, {'secure': url.startsWith('https')}, {'reconnect': true, 'resource': 'socket.io'})
+                            o.socket.on('connect', () => o.socket.emit('webchatcli_start', o.request))
+                                .on('disconnect', () => alert('연결이 종료되었습니다.'))
+                                .on('webchatsvc_close', () => o.socket.disconnect())
+                                .on('error', () => ({}))
+                                .on('end', () => ({}))
+                                .on('close', () => ({}))
+                                .on('webchatsvc_message', data => o.messages.push({sender: SENDER.SERVER, time: new Date(), data: data.message_data}))
+                                .on('webchatsvc_start', data => {
+                                    if (data.result !== 'OK') return alert('로그인실패 :' + data.result + '; ' + data.result_data)
+                                    $.isNumeric(o.botId) ? o.requestRootBlock() : o.requestIntro()
+                                })
+                        })
+                    },
+                    requestRootBlock() {
+                        o.socket.emit('webchatcli_message', Object.assign(o.request, {message_id: o.getMessageId()}, {message_type: 'bot_root_block', message_data: o.botId}))
+                    },
+                    requestIntro() {
+                        o.socket.emit('webchatcli_message', Object.assign(o.request, {message_id: o.getMessageId()}, {message_type: 'intro'}))
+                    },
+                    sendText() {
+                        if (!o.input) return
+                        o.socket.emit('webchatcli_message', Object.assign(o.request, {message_id: o.getMessageId()}, {message_type: 'text', message_data: o.input}))
+                        o.messages.push({sender: SENDER.USER, time: new Date(), data: JSON.parse(JSON.stringify(o.input))})
+                        o.input = ''
+                    },
+                    actButton(message, button) {
+                        console.log(message, button)
+                        if (button.action === 'url') return window.open(button.next_action_data, null)
+
+                        o.socket.emit('webchatcli_message', Object.assign(o.request, {message_id: o.getMessageId()}, {
+                            message_type: 'action', message_data: {
+                                chatbot_id: message.data.chatbot_id,
+                                parent_block_id: message.data.block_id,
+                                btn_id: button.btn_id,
+                                btn_name: button.btn_name,
+                                action: button.action,
+                                action_data: button.next_action_data,
+                            },
+                        }))
+                    },
+                    actApi(message, button) {
+                        // TODO: API 버튼 형태 작업해야함: 현재 socket에서 api parameter 정보 제대로 내려주지 않고 있다
+                        alert('현재 socket에서 api parameter 정보 제대로 내려주지 않고 있다.')
+                    },
+                    getMessageId() {
+                        return o.request.user_key + '_' + (++o.eventSequence)
+                    },
+                    getButtonGroups(message) {
+                        return message.data?.button?.reduce((list, e) => {
+                            if (e.action === 'api') list.push(e)
+                            else if (!list.length || !(list[list.length - 1] instanceof Array)) list.push([e])
+                            else list[list.length - 1].push(e)
+                            return list
+                        }, [])
+                    },
+                    getListElements(display) {
+                        return JSON.parse(JSON.stringify(display)).element?.sort((a, b) => (a.sequence - b.sequence)).splice(1)
+                    },
+                    getTimeFormat(value) {
+                        return moment(value).format('YY-MM-DD HH:mm')
+                    },
+                },
+                mounted() {
+                    this.createSocket()
+                }
+            }).mount('#chat-preview')
+            return o || o
+        })()
+    </script>
+</tags:scripts>
 
 <div id="scripts">
     <tags:js/>

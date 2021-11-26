@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.talk;
 
+import io.vavr.control.Option;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.api.ChatbotApiInterface;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URLEncoder;
@@ -35,7 +38,7 @@ public class ChatBotController extends BaseController {
 
     private final ChatbotApiInterface apiInterface;
 
-    @Value("${eicn.webbot.resource.location}")
+    @Value("${eicn.chatbot.resource.location}")
     private String resourceLocation;
     private File location;
 
@@ -53,7 +56,10 @@ public class ChatBotController extends BaseController {
 
     @SneakyThrows
     @GetMapping("{id}/modal-test")
-    public String modal(Model model, @PathVariable Long id) {
+    public String modal(Model model, @PathVariable Long id, @RequestParam(required = false) String ip, HttpSession session, HttpServletRequest request) {
+        model.addAttribute("botId", id);
+        model.addAttribute("sessionId", session.getId());
+        model.addAttribute("ip", Option.of(ip).getOrElse(Option.of(request.getHeader("X-FORWARDED-FOR")).getOrElse(request.getRemoteAddr())));
         return "admin/talk/chat-bot/modal-test";
     }
 

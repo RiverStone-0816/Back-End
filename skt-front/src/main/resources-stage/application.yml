@@ -79,6 +79,8 @@ eicn:
       key: eicn
   screen:
     variation: true
-  webbot:
+  chatbot:
+    socket:
+      id: webchatcli_connector
     resource:
       location: /tmp/chatbot

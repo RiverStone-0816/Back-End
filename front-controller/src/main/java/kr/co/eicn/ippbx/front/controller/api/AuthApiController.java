@@ -75,6 +75,8 @@ public class AuthApiController extends BaseController {
     private String pdsSocketId;
     @Value("${eicn.messenger.socket.id}")
     private String messengerSocketId;
+    @Value("${eicn.chatbot.socket.id}")
+    private String chatbotSocketId;
     @Value("${eicn.service.servicekind}")
     private String serviceKind;
 
@@ -178,6 +180,7 @@ public class AuthApiController extends BaseController {
                 .talkSocketUrl(socketMap.get(talkSocketId))
                 .pdsSocketUrl(socketMap.get(pdsSocketId))
                 .messengerSocketUrl(socketMap.get(messengerSocketId))
+                .chatbotSocketUrl(socketMap.get(chatbotSocketId))
                 .pbxName(serverInfo == null ? "" : serverInfo.getHost())
                 .pbxHost(serverInfo == null ? "" : serverInfo.getIp())
                 .userId(user.getId())
@@ -246,6 +249,7 @@ public class AuthApiController extends BaseController {
         private String talkSocketUrl;
         private String pdsSocketUrl;
         private String messengerSocketUrl;
+        private String chatbotSocketUrl;
         private String pbxName;
         private String pbxHost;
         private String userId;
