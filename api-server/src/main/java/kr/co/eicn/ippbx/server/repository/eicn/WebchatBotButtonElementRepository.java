@@ -43,6 +43,7 @@ public class WebchatBotButtonElementRepository extends EicnBaseRepository<Webcha
                 .from(WEBCHAT_BOT_BTN_ELEMENT)
                 .where(compareCompanyId())
                 .and(WEBCHAT_BOT_BTN_ELEMENT.BLOCK_ID.in(blockIdList))
+                .orderBy(WEBCHAT_BOT_BTN_ELEMENT.SEQUENCE)
                 .fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotBtnElement.class);
     }
 
