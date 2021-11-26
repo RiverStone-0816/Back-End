@@ -67,6 +67,11 @@ public class WebchatBotInfoService extends ApiBaseService {
         webchatBotInfoRepository.updateById(id, data);
     }
 
+    public void updateBlockId(Integer id, Integer blockId) {
+        if (blockId != null)
+            webchatBotInfoRepository.updateBlockId(id, blockId);
+    }
+
     public void deleteById(Integer id) {
         webchatBotInfoRepository.delete(id);
     }

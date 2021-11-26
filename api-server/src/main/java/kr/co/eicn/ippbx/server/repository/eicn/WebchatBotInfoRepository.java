@@ -41,4 +41,11 @@ public class WebchatBotInfoRepository extends EicnBaseRepository<WebchatBotInfo,
                 .where(WEBCHAT_BOT_INFO.ID.eq(id))
                 .execute();
     }
+
+    public void updateBlockId(Integer id, Integer blockId) {
+        dsl.update(WEBCHAT_BOT_INFO)
+                .set(WEBCHAT_BOT_INFO.FALLBACK_ACTION_DATA, String.valueOf(blockId))
+                .where(WEBCHAT_BOT_INFO.ID.eq(id))
+                .execute();
+    }
 }

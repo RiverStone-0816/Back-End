@@ -32,6 +32,7 @@ public class WebchatBotFormRequest extends BaseForm {
     @EqualsAndHashCode(callSuper = true)
     @Data
     public static class BlockInfo extends BaseForm {
+        @NotNull("블록ID")
         private Integer id; //실제 ID가 아닌 button 과 매핑할 수 있는 임의값
         private Integer posX;
         private Integer posY;
@@ -50,6 +51,7 @@ public class WebchatBotFormRequest extends BaseForm {
     @Data
     public static class DisplayInfo extends BaseForm {
         private Integer order;
+        @NotNull("디스플레이타입")
         private DisplayType type;
         @Valid
         private List<DisplayElement> elementList;
@@ -83,6 +85,7 @@ public class WebchatBotFormRequest extends BaseForm {
         private String nextApiNoResultMent;
         private String nextApiErrorMent;
 
+        @Valid
         private List<ApiParam> paramList;
     }
 
