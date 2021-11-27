@@ -18,6 +18,8 @@ public class WebchatBotApiParamRepository extends EicnBaseRepository<WebchatBotA
 
     public WebchatBotApiParamRepository() {
         super(WEBCHAT_BOT_API_PARAM, WEBCHAT_BOT_API_PARAM.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotApiParam.class);
+
+        orderByFields.add(WEBCHAT_BOT_API_PARAM.ID.asc());
     }
 
     public void insert(WebchatBotApiParamFormRequest request) {

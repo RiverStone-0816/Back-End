@@ -2,23 +2,21 @@ package kr.co.eicn.ippbx.server.service;
 
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.enums.ButtonAction;
+import kr.co.eicn.ippbx.model.enums.FallbackAction;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.replace;
 
@@ -39,34 +37,55 @@ public class WebchatBotService extends ApiBaseService {
     private String savePath;
 
     public Integer createWebchatBotInfo(WebchatBotFormRequest form) {
-        Integer botId = webchatBotInfoService.insert(form);
+        final Integer botId = webchatBotInfoService.insert(form);
 
-        insertRootBlock(botId, form);
+        final Integer realBlockId = insertRootBlock(botId, form).get(form.getNextBlockId());
+        if (FallbackAction.CONNECT_BLOCK.equals(form.getFallbackAction()))
+            webchatBotInfoService.updateBlockId(botId, realBlockId);
 
         return botId;
     }
 
     public void updateWebchatBotInfo(Integer botId, WebchatBotFormRequest form) {
-        if (webchatBotInfoService.isPresent(botId)) {
+        final WebchatBotInfoResponse oldData = getBotInfo(botId);
+        if (oldData != null) {
             deleteAllBlockInfoById(botId);
-            webchatBotInfoService.updateById(botId, form);
-            insertRootBlock(botId, form);
+
+            try {
+                final Integer realBlockId = insertRootBlock(botId, form).get(form.getNextBlockId());
+                if (FallbackAction.CONNECT_BLOCK.equals(form.getFallbackAction()))
+                    form.setNextBlockId(realBlockId);
+
+                webchatBotInfoService.updateById(botId, form);
+            } catch (Exception e) {
+                // FIXME: 발생할 수 있는 Exception 정의하여 특정 Exception에 대응하도록 수정
+                e.printStackTrace();
+                log.error(e.getMessage());
+
+                deleteAllBlockInfoById(botId);
+                WebchatBotFormRequest copyData = convertDto(oldData, WebchatBotFormRequest.class);
+                insertRootBlock(botId, copyData);
+
+                throw e;
+            }
         }
     }
 
-    public void insertRootBlock(Integer botId, WebchatBotFormRequest request) {
+    public HashMap<Integer, Integer> insertRootBlock(Integer botId, WebchatBotFormRequest request) {
+        final HashMap<Integer, Integer> virtualBlockIdByRealBlockId = new HashMap<>();
+
         WebchatBotFormRequest.BlockInfo blockInfo = request.getBlockInfo();
 
         Integer parentButtonId = 0;
         String parentTreeName = "";
         Integer level = 0;
 
-        insertBlock(botId, null, null, parentButtonId, parentTreeName, level, blockInfo);
+        insertBlock(botId, null, null, parentButtonId, parentTreeName, level, blockInfo, virtualBlockIdByRealBlockId);
+
+        return virtualBlockIdByRealBlockId;
     }
 
-    public Integer insertBlock(Integer botId, Integer rootId, Integer parentId, Integer parentButtonId, String parentTreeName, Integer level, WebchatBotFormRequest.BlockInfo blockInfo) {
-        final HashMap<Integer, Integer> buttonIdByVirtualBlockId = new HashMap<>();
-        final HashMap<Integer, Integer> realBlockIdByButtonId = new HashMap<>();
+    public Integer insertBlock(Integer botId, Integer rootId, Integer parentId, Integer parentButtonId, String parentTreeName, Integer level, WebchatBotFormRequest.BlockInfo blockInfo, HashMap<Integer, Integer> virtualBlockIdByRealBlockId) {
         final Integer blockId = webchatBotBlockService.insert(blockInfo);
         if (rootId == null) rootId = blockId;
         if (parentId == null) parentId = blockId;
@@ -82,18 +101,15 @@ public class WebchatBotService extends ApiBaseService {
             }
         }
 
+        Map<Integer, WebchatBotFormRequest.BlockInfo> blockInfoByVirtualId = blockInfo.getChildren().stream().collect(Collectors.toMap(WebchatBotFormRequest.BlockInfo::getId, e -> e));
+
         if (blockInfo.getButtonList() != null && blockInfo.getChildren() != null) {
             for (int buttonId = 0; buttonId < blockInfo.getButtonList().size(); buttonId++) {
                 final WebchatBotFormRequest.ButtonElement buttonElement = blockInfo.getButtonList().get(buttonId);
 
-                if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()))
-                    buttonIdByVirtualBlockId.put(buttonElement.getNextBlockId(), buttonId);
-            }
-
-            for (WebchatBotFormRequest.BlockInfo child : blockInfo.getChildren()) {
-                if (buttonIdByVirtualBlockId.containsKey(child.getId())) {
-                    Integer childBlockId = insertBlock(botId, rootId, blockId, buttonIdByVirtualBlockId.get(child.getId()), treeName, level + 1, child);
-                    realBlockIdByButtonId.put(buttonIdByVirtualBlockId.get(child.getId()), childBlockId);
+                if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) && blockInfoByVirtualId.containsKey(buttonElement.getNextBlockId())) {
+                    Integer childBlockId = insertBlock(botId, rootId, blockId, buttonId, treeName, level + 1, blockInfoByVirtualId.get(buttonElement.getNextBlockId()), virtualBlockIdByRealBlockId);
+                    virtualBlockIdByRealBlockId.put(buttonElement.getNextBlockId(), childBlockId);
                 }
             }
 
@@ -101,7 +117,7 @@ public class WebchatBotService extends ApiBaseService {
                 final WebchatBotFormRequest.ButtonElement buttonElement = blockInfo.getButtonList().get(buttonId);
 
                 if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()))
-                    buttonElement.setNextBlockId(realBlockIdByButtonId.get(buttonId));
+                    buttonElement.setNextBlockId(virtualBlockIdByRealBlockId.get(buttonElement.getNextBlockId()));
 
                 webchatBotButtonElementService.insertButtonElement(blockId, buttonId, buttonElement);
 
@@ -131,7 +147,7 @@ public class WebchatBotService extends ApiBaseService {
         webchatBotTreeService.deleteByBotId(botId);
     }
 
-    public WebchatBotInfoResponse get(Integer botId) {
+    public WebchatBotInfoResponse getBotInfo(Integer botId) {
         final WebchatBotInfoResponse response = webchatBotInfoService.get(botId);
         final Integer rootBlockId = webchatBotTreeService.findRootBlockId(botId);
         List<Integer> blockIdList = new ArrayList<>();
@@ -178,7 +194,7 @@ public class WebchatBotService extends ApiBaseService {
     }
 
     public Integer copy(Integer botId) {
-        WebchatBotInfoResponse response = get(botId);
+        WebchatBotInfoResponse response = getBotInfo(botId);
 
         WebchatBotFormRequest copyData = convertDto(response, WebchatBotFormRequest.class);
 

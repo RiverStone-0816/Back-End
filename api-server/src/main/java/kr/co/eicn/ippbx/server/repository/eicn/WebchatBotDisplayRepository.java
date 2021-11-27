@@ -35,6 +35,7 @@ public class WebchatBotDisplayRepository extends EicnBaseRepository<WebchatBotDi
         return dsl.select(WEBCHAT_BOT_DISPLAY.fields())
                 .from(WEBCHAT_BOT_DISPLAY)
                 .where(WEBCHAT_BOT_DISPLAY.BLOCK_ID.in(blockIdList))
+                .orderBy(WEBCHAT_BOT_DISPLAY.SEQUENCE)
                 .fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotDisplay.class);
     }
 

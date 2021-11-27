@@ -18,6 +18,8 @@ public class WebchatBotDisplayElementRepository extends EicnBaseRepository<Webch
 
     public WebchatBotDisplayElementRepository() {
         super(WEBCHAT_BOT_DISP_ELEMENT, WEBCHAT_BOT_DISP_ELEMENT.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotDispElement.class);
+
+        orderByFields.add(WEBCHAT_BOT_DISP_ELEMENT.SEQUENCE.asc());
     }
 
     public void insert(WebchatBotDisplayElementFormRequest request) {
