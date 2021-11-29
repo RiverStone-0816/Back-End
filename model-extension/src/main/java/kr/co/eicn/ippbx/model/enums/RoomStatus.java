@@ -9,7 +9,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
  *  DOWN : 내려진대화방 > 상태값/검색조건
  * */
 public enum RoomStatus implements CodeHasable<String> {
-    PROCESS("S"), STOP("E"), PROCESS_OR_STOP("C"), DOWN("X"), BOT_PLAY("B"), SERVICE_BY_GROUP_CONNECT("M");
+    PROCESS("S"), STOP("E"), PROCESS_OR_STOP("C"), DOWN("X"), BOT_PLAY("B"), SERVICE_BY_GROUP_CONNECT("G");
 
     private final String code;
 
