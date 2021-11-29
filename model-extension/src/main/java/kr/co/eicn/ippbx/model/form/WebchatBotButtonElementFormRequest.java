@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class WebchatBotButtonElementFormRequest {
-    private Integer buttonId;
     private Integer blockId;
     private Integer order;
     private String buttonName;

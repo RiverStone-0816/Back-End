@@ -23,10 +23,9 @@ public class WebchatBotButtonElementService extends ApiBaseService {
 
     private final WebchatBotButtonElementRepository webchatBotButtonElementRepository;
 
-    public void insertButtonElement(Integer blockId, Integer buttonId, WebchatBotFormRequest.ButtonElement buttonElement) {
+    public Integer insertButtonElement(Integer blockId, WebchatBotFormRequest.ButtonElement buttonElement) {
         WebchatBotButtonElementFormRequest data = new WebchatBotButtonElementFormRequest();
 
-        data.setButtonId(buttonId);
         data.setBlockId(blockId);
         data.setOrder(buttonElement.getOrder());
         data.setButtonName(buttonElement.getButtonName());
@@ -49,11 +48,15 @@ public class WebchatBotButtonElementService extends ApiBaseService {
             data.setNextApiErrorMent(buttonElement.getNextApiErrorMent());
         }
 
-        webchatBotButtonElementRepository.insert(data);
+        return webchatBotButtonElementRepository.insert(data);
+    }
+
+    public void updateNextBlockId(Integer buttonId, Integer nextBlockId) {
+        webchatBotButtonElementRepository.updateNextBlockId(buttonId, nextBlockId);
     }
 
     public List<Integer> findIdListByBlockIdList(List<Integer> blockIdList) {
-        return webchatBotButtonElementRepository.findButtonListByBlockIdList(blockIdList).stream().map(WebchatBotBtnElement::getBtnId).collect(Collectors.toList());
+        return webchatBotButtonElementRepository.findButtonListByBlockIdList(blockIdList).stream().map(WebchatBotBtnElement::getId).collect(Collectors.toList());
     }
 
     public void deleteByBlockIdList(List<Integer> blockIdList) {
@@ -71,7 +74,7 @@ public class WebchatBotButtonElementService extends ApiBaseService {
     public WebchatBotInfoResponse.ButtonInfo convertEntityToResponse(WebchatBotBtnElement entity) {
         WebchatBotInfoResponse.ButtonInfo response = new WebchatBotInfoResponse.ButtonInfo();
 
-        response.setId(entity.getBtnId());
+        response.setId(entity.getId());
         response.setBlockId(entity.getBlockId());
         response.setOrder(entity.getSequence());
         response.setName(entity.getBtnName());

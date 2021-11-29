@@ -18,12 +18,11 @@ public class WebchatBotButtonElementRepository extends EicnBaseRepository<Webcha
     protected final Logger logger = LoggerFactory.getLogger(WebchatBotButtonElementRepository.class);
 
     public WebchatBotButtonElementRepository() {
-        super(WEBCHAT_BOT_BTN_ELEMENT, WEBCHAT_BOT_BTN_ELEMENT.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotBtnElement.class);
+        super(WEBCHAT_BOT_BTN_ELEMENT, WEBCHAT_BOT_BTN_ELEMENT.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotBtnElement.class);
     }
 
-    public void insert(WebchatBotButtonElementFormRequest request) {
-        dsl.insertInto(WEBCHAT_BOT_BTN_ELEMENT)
-                .set(WEBCHAT_BOT_BTN_ELEMENT.BTN_ID, request.getButtonId())
+    public Integer insert(WebchatBotButtonElementFormRequest request) {
+        return dsl.insertInto(WEBCHAT_BOT_BTN_ELEMENT)
                 .set(WEBCHAT_BOT_BTN_ELEMENT.BLOCK_ID, request.getBlockId())
                 .set(WEBCHAT_BOT_BTN_ELEMENT.SEQUENCE, request.getOrder())
                 .set(WEBCHAT_BOT_BTN_ELEMENT.BTN_NAME, request.getButtonName())
@@ -35,6 +34,16 @@ public class WebchatBotButtonElementRepository extends EicnBaseRepository<Webcha
                 .set(WEBCHAT_BOT_BTN_ELEMENT.NEXT_API_NO_RESULT_MENT, request.getNextApiNoResultMent())
                 .set(WEBCHAT_BOT_BTN_ELEMENT.NEXT_API_ERROR_MENT, request.getNextApiErrorMent())
                 .set(WEBCHAT_BOT_BTN_ELEMENT.COMPANY_ID, getCompanyId())
+                .returning()
+                .fetchOne()
+                .value1();
+    }
+
+    public void updateNextBlockId(Integer buttonId, Integer nextBlockId) {
+        dsl.update(WEBCHAT_BOT_BTN_ELEMENT)
+                .set(WEBCHAT_BOT_BTN_ELEMENT.ACTION, ButtonAction.CONNECT_BLOCK.getCode())
+                .set(WEBCHAT_BOT_BTN_ELEMENT.NEXT_ACTION_DATA, String.valueOf(nextBlockId))
+                .where(WEBCHAT_BOT_BTN_ELEMENT.ID.eq(buttonId))
                 .execute();
     }
 
