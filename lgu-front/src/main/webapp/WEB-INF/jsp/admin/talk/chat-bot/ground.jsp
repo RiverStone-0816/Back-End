@@ -772,6 +772,7 @@
                                 $('.chatbot-control-panel').removeClass('active')
                                 $('.empty-panel').addClass('active')
 
+                                const nodeIdToConnections = {}
                                 const createBlock = block => {
                                     block.children?.forEach(e => createBlock(e))
 
@@ -806,7 +807,6 @@
                                         }
                                     })
 
-                                    const connections = {}
                                     app.buttons = block.buttonList.sort((a, b) => (a.order - b.order)).map((e, i) => {
                                         const childNodeId = (() => {
                                             if (e.action !== 'block') return
@@ -814,7 +814,10 @@
                                             return blockList.blocks.filter(createdBlock => createdBlock.id === childBlockId)[0]?.nodeId
                                         })()
                                         const action = $.isNumeric(childNodeId) ? '' : e.action
-                                        if (e.action === 'block') connections[i] = e.nextBlockId
+                                        if (e.action === 'block') {
+                                            if (!nodeIdToConnections[nodeId]) nodeIdToConnections[nodeId] = {}
+                                            nodeIdToConnections[nodeId][i] = e.nextBlockId
+                                        }
                                         return {
                                             name: e.name,
                                             action: action,
@@ -837,12 +840,17 @@
                                     app.showingEmptyButtonItem = !app.buttons.length
 
                                     app.buttons.forEach(() => editor.addNodeOutput(nodeId))
+                                }
+                                createBlock(data.blockInfo)
+
+                                for (let nodeId in nodeIdToConnections) {
+                                    const app = nodeBlockMap[nodeId]
+                                    const connections = nodeIdToConnections[nodeId]
                                     for (let buttonIndex in connections) {
                                         app.createConnection(parseInt(buttonIndex), connections[buttonIndex])
                                     }
                                 }
 
-                                createBlock(data.blockInfo)
                                 lastBlockId = Math.max.apply(null, [0].concat(blockList.blocks.map(e => e.id))) + 1
                             })
 
