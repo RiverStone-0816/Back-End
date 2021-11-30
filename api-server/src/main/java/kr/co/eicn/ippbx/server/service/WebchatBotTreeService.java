@@ -58,8 +58,8 @@ public class WebchatBotTreeService extends ApiBaseService {
         webchatBotTreeRepository.deleteByBotId(botId);
     }
 
-    public Integer findRootBlockId(Integer botId) {
-        return webchatBotTreeRepository.findRootBlockId(botId);
+    public WebchatBotTree findRootBlock(Integer botId) {
+        return webchatBotTreeRepository.findRootBlock(botId);
     }
 
     public Map<Integer, List<Integer>> findBlockIdByParentIdMapByBotId(Integer botId, Integer rootBlockId) {

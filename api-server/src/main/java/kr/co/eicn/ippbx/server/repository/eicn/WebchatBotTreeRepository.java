@@ -41,11 +41,10 @@ public class WebchatBotTreeRepository extends EicnBaseRepository<WebchatBotTree,
                 .execute();
     }
 
-    public Integer findRootBlockId(Integer botId) {
+    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotTree findRootBlock(Integer botId) {
         return findOne(WEBCHAT_BOT_TREE.CHATBOT_ID.eq(botId)
                 .and(WEBCHAT_BOT_TREE.LEVEL.eq(0))
-                .and(WEBCHAT_BOT_TREE.BLOCK_ID.eq(WEBCHAT_BOT_TREE.ROOT_ID)))
-                .getBlockId();
+                .and(WEBCHAT_BOT_TREE.BLOCK_ID.eq(WEBCHAT_BOT_TREE.ROOT_ID)));
     }
 
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotTree> findTreeByBotId(Integer botId, Integer rootBlockId) {
