@@ -6,10 +6,9 @@ import kr.co.eicn.ippbx.util.valid.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.jooq.tools.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Objects;
 
 import static org.apache.commons.lang3.StringUtils.containsWhitespace;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -41,6 +40,10 @@ public class TalkTemplateFormRequest extends BaseForm {
         if (isNotEmpty(type))
             if (containsWhitespace(type))
                 reject(bindingResult, "type", "{빈 공백문자를 포함할 수 없습니다.}", "");
+
+        if (MentType.PHOTO.equals(typeMent))
+            if ((file == null || file.isEmpty()) && (StringUtils.isEmpty(originalFileName) || StringUtils.isEmpty(filePath)))
+                reject(bindingResult, "file", "{파일을 선택해 주세요.}");
 
         return super.validate(bindingResult);
     }
