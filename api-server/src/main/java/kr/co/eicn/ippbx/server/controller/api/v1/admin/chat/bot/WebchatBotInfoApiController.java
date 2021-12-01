@@ -1,4 +1,4 @@
-package kr.co.eicn.ippbx.server.controller.api.v1.chatbot.info;
+package kr.co.eicn.ippbx.server.controller.api.v1.admin.chat.bot;
 
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryWebchatBotInfoResponse;
@@ -28,7 +28,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @Log4j2
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(value = "api/v1/chat-bot/info/", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/v1/chat/bot/", produces = MediaType.APPLICATION_JSON_VALUE)
 public class WebchatBotInfoApiController extends ApiBaseController {
     private final WebchatBotInfoService webchatBotInfoService;
     private final WebchatBotService webchatBotService;

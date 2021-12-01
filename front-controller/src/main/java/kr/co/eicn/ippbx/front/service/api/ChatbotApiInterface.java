@@ -22,7 +22,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class ChatbotApiInterface extends ApiServerInterface {
-    private static final String subUrl = "/api/v1/chat-bot/info/";
+    private static final String subUrl = "/api/v1/chat/bot/";
 
     @SneakyThrows
     public List<SummaryWebchatBotInfoResponse> list() {
