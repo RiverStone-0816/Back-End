@@ -504,7 +504,7 @@
                                                                 </li>
                                                             </ul>
                                                         </div>
-                                                        <span v-if="!(message.data?.button?.length) && (i + 1 === message.data.display.length)" class="time-text">21-04-11 04:33</span>
+                                                        <span v-if="!(buttons?.length) && (i + 1 === displays.length)" class="time-text">21-04-11 04:33</span>
                                                     </div>
 
                                                     <div v-if="buttons.length" v-for="(e, i) in getButtonGroups()" :key="i" :class="e instanceof Array ? 'sample-bubble' : 'card'">
@@ -536,7 +536,7 @@
                                                                 </li>
                                                             </ul>
                                                         </div>
-                                                        <span class="time-text">21-04-11 04:33</span>
+                                                        <span v-if="i + 1 === getButtonGroups().length" class="time-text">21-04-11 04:33</span>
                                                     </div>
                                                 </div>
                                             </div>
