@@ -4,7 +4,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatServiceInfo;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatServiceInfoResponse;
 import kr.co.eicn.ippbx.model.form.WebchatServiceInfoFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatServiceInfoRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import static org.apache.commons.lang3.StringUtils.replace;
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class WebChattingConfigService extends ApiBaseService {
     private final WebchatServiceInfoRepository webchatServiceInfoRepository;
