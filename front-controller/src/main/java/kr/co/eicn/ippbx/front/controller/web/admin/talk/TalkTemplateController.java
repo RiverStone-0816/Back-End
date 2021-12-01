@@ -12,16 +12,14 @@ import kr.co.eicn.ippbx.model.dto.eicn.TalkTemplateSummaryResponse;
 import kr.co.eicn.ippbx.model.enums.TalkTemplate;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
 import kr.co.eicn.ippbx.util.page.Pagination;
+import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.*;
@@ -41,8 +39,9 @@ public class TalkTemplateController extends BaseController {
     @Autowired
     private OrganizationService organizationService;
 
+    @SneakyThrows
     @GetMapping("")
-    public String page(Model model, @ModelAttribute("search") TemplateSearchRequest search) throws IOException, ResultFailException {
+    public String page(Model model, @ModelAttribute("search") TemplateSearchRequest search) {
         final Pagination<TalkTemplateSummaryResponse> pagination = apiInterface.getPagination(search);
         model.addAttribute("pagination", pagination);
 
@@ -115,19 +114,22 @@ public class TalkTemplateController extends BaseController {
         return "admin/talk/template/ground";
     }
 
+    @SneakyThrows
     @GetMapping("new/modal")
-    public String modal(Model model, @ModelAttribute("form") TalkTemplateFormRequest form) {
+    public String modal(Model model, @ModelAttribute("form") TalkTemplateApiInterface.TemplateForm form) {
         final Map<String, String> templateTypes = FormUtils.optionsOfCode(TalkTemplate.class);
         model.addAttribute("templateTypes", templateTypes);
 
         return "admin/talk/template/modal";
     }
 
+    @SneakyThrows
     @GetMapping("{seq}/modal")
-    public String modal(Model model, @PathVariable Integer seq, @ModelAttribute("form") TalkTemplateFormRequest form) throws IOException, ResultFailException {
+    public String modal(Model model, @PathVariable Integer seq, @ModelAttribute("form") TalkTemplateApiInterface.TemplateForm form) {
         final TalkTemplateSummaryResponse entity = apiInterface.get(seq);
         model.addAttribute("entity", entity);
         ReflectionUtils.copy(form, entity);
+        form.setTypeMent(entity.getTypeMent());
 
         if (entity.getType().equals(TalkTemplate.GROUP.getCode()) && StringUtils.isNotEmpty(form.getTypeData()))
             model.addAttribute("searchOrganizationNames", organizationService.getHierarchicalOrganizationNames(form.getTypeData()));

@@ -6,6 +6,7 @@ import lombok.Data;
 public class TalkTemplateSummaryResponse {
     private Integer seq;
     private String type;
+    private String typeMent;
     private String typeData;
     private String typeGroup;
     private String typeDataName;

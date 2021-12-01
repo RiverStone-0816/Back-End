@@ -331,7 +331,7 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
         return attr.getRequest().getRemoteHost();
     }
 
-    protected class FileResource extends FileSystemResource {
+    protected static class FileResource extends FileSystemResource {
         private final String filename;
 
         public FileResource(String filePath, String filename) {

@@ -16,6 +16,8 @@
            action="${pageContext.request.contextPath}/api/talk-template/${entity == null ? null : entity.seq}"
            data-before="prepareTalkTemplateForm" data-done="reload">
 
+    <form:hidden path="newFile"/>
+
     <i class="close icon"></i>
     <div class="header">상담톡템플릿[${entity != null ? '수정' : '추가'}]</div>
 
@@ -75,7 +77,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row -typement-inputs" data-typement="TEXT">
                 <div class="four wide column"><label class="control-label">템플릿멘트</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
@@ -84,15 +86,15 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row -typement-inputs" data-typement="PHOTO">
                 <div class="four wide column"><label class="control-label">이미지</label></div>
                 <div class="twelve wide column">
                     <form:hidden path="originalFileName"/>
                     <form:hidden path="filePath"/>
                     <div class="file-upload-header">
-                        <label for="file" class="ui button blue mini compact">파일찾기</label>
-                        <input type="file" id="file">
-                        <span class="file-name">No file selected</span>
+                        <label class="ui button blue mini compact" onclick="this.nextElementSibling.click()">파일찾기</label>
+                        <input type="file">
+                        <span class="file-name">${form.originalFileName != null && form.originalFileName != '' ? g.htmlQuote(form.originalFileName) : 'No file selected'}</span>
                     </div>
                     <div>
                         <progress value="0" max="100" style="width:100%"></progress>
@@ -117,11 +119,21 @@
         }
     }).change();
 
+    modal.find('[name="typeMent"]').change(function () {
+        const typeMent = $(this).val()
+        modal.find('.-typement-inputs').hide().filter(function () {
+            return $(this).attr('data-typement') === typeMent
+        }).show()
+    }).change();
+
     modal.find('[type="file"]').change(function () {
+        const _this = this
         uploadFile(this.files[0], modal.find('progress')).done(function (response) {
             modal.find('.file-name').text(response.data.originalName);
             modal.find('[name=originalFileName]').val(response.data.originalName);
             modal.find('[name=filePath]').val(response.data.filePath);
+            modal.find('[name=newFile]').val(true);
+            _this.value = null
         });
     })
 

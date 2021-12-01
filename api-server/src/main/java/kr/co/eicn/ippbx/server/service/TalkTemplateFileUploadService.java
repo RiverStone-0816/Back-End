@@ -17,7 +17,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkTemplate.TALK_TEMPLATE;
 import static org.apache.commons.lang3.StringUtils.replaceEach;
 import static org.springframework.util.StringUtils.cleanPath;
 
@@ -33,14 +32,12 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
 
     public Integer insertTalkTemplateFileUpload(TalkTemplateFormRequest form) {
         storeFile(form);
-
-        return repository.insertOnGeneratedKey(form).getValue(TALK_TEMPLATE.SEQ);
+        return repository.insert(form);
     }
 
     public void updateTalkTemplateFileUpload(TalkTemplateFormRequest form, Integer seq) {
         storeFile(form);
-
-        repository.updateByKey(form, seq);
+        repository.update(seq, form);
     }
 
     public void storeFile(TalkTemplateFormRequest form) {

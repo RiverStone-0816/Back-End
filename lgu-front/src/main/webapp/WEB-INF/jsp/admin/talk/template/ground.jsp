@@ -35,8 +35,9 @@
                             <th>유형</th>
                             <th>유형데이터</th>
                             <th>작성자</th>
+                            <th>템플릿 타입</th>
                             <th>템플릿명</th>
-                            <th>템플릿멘트</th>
+                            <th>템플릿내용</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -59,8 +60,9 @@
                                             </c:otherwise>
                                         </c:choose>
                                         <td>${g.htmlQuote(e.writeUserName)}</td>
+                                        <td>${g.htmlQuote(e.typeMent == 'P' ? '이미지' : '텍스트')}</td>
                                         <td>${g.htmlQuote(e.mentName)}</td>
-                                        <td style="white-space: pre-wrap">${g.htmlQuote(e.ment)}</td>
+                                        <td style="white-space: pre-wrap">${g.htmlQuote(e.typeMent == 'P' ? e.originalFileName : e.ment)}</td>
                                     </tr>
                                 </c:forEach>
                             </c:when>

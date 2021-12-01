@@ -35,7 +35,7 @@ public class RingBackToneApiInterface extends ApiServerInterface {
     public String post(RingBackToneForm form) throws IOException, ResultFailException {
         MohListRequest request = new MohListRequest();
         ReflectionUtils.copy(request, form);
-        return sendByMultipartFile(HttpMethod.POST, subUrl, request, String.class, Collections.singletonMap("file" , new FileResource(form.getFilePath(),  form.getOriginalName())) );
+        return sendByMultipartFile(HttpMethod.POST, subUrl, request, String.class, Collections.singletonMap("file" , new FileResource(form.getFilePath(), form.getOriginalName())) );
     }
 
     public void delete(String category) throws IOException, ResultFailException {

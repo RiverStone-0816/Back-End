@@ -15,7 +15,8 @@
 <jsp:include page="/WEB-INF/jsp/messenger-room-list.jsp"/>
 
 <div id="messenger-modal" class="ui modal large ui-resizable ui-draggable show-rooms show-room" style="width: 500px; display: block; position: absolute; left: 335px; top: 265px;">
-    <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true" @click.stop="showingTemplates=false" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
+    <div class="chat-container" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true" @click.stop="showingTemplates=false"
+         style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
         <div v-if="showingDropzone" class="attach-overlay">
             <div class="inner">
                 <img src="<c:url value="/resources/images/circle-plus.svg"/>">
@@ -466,6 +467,7 @@
                         message.fileType = split[1].endsWith('g') ? 'image'
                             : split[1].contains('wav') || split[1].contains('mp') ? 'audio'
                                 : null
+                        message.originalFileUrl = split && split[4] || ''
                         message.fileUrl = $.addQueryString(split && split[4] || '', {token: '${g.escapeQuote(accessToken)}'})
                         message.fileName = split && split[2] || ''
                         message.fileSize = split && split[3] || ''
@@ -652,16 +654,21 @@
                     const modalId = 'modal-talk-template'
                     popupDraggableModalFromReceivedHtml('/admin/talk/template/new/modal', modalId).done(function () {
                         const modal = document.getElementById(modalId)
-
-                        // TODO: 텍스트 유형 선택
+                        modal.querySelector('[name=typeMent]').value = 'TEXT'
+                        modal.querySelector('[type=file]').value = null
 
                         const selectedTextContents = getSelectedTextContentOfSingleElement()
-                        if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === _this.$refs['message-' + message.messageId].querySelector('.txt_chat p'))
+                        if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === _this.$refs['message-' + message.messageId].querySelector('.txt_chat p')) {
                             modal.querySelector('[name=ment]').value = selectedTextContents.text
-                        else
+                        } else if (message.fileType === 'image') {
+                            modal.querySelector('[name=originalFileName]').value = message.fileName
+                            modal.querySelector('[name=filePath]').value = message.originalFileUrl
+                            modal.querySelector('.file-name').innerHTML = message.fileName
+                            modal.querySelector('[name=typeMent]').value = 'PHOTO'
+                        } else {
                             modal.querySelector('[name=ment]').value = message.contents
-
-                        // TODO: 이미지일 때는 이미지 유형 선택 후, 파일 ID 입력
+                        }
+                        modal.querySelector('[name=typeMent]').dispatchEvent(new Event('change'))
 
                         const doneActionName = '_doneTemplatePost'
                         modal.setAttribute('data-done', doneActionName)

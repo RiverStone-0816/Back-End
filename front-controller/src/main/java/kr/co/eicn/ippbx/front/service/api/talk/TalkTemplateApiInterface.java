@@ -1,11 +1,14 @@
 package kr.co.eicn.ippbx.front.service.api.talk;
 
+import kr.co.eicn.ippbx.front.controller.api.talk.TalkTemplateApiController;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkTemplateSummaryResponse;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
 import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -30,18 +33,30 @@ public class TalkTemplateApiInterface extends ApiServerInterface {
         return getData(subUrl + seq, null, TalkTemplateSummaryResponse.class).getData();
     }
 
-    @SuppressWarnings("unchecked")
     @SneakyThrows
-    public Integer post(TalkTemplateFormRequest form) {
-        val response = (Integer) sendByMultipartFile(HttpMethod.POST, subUrl, form, jsonResultType(Integer.class),
-                form.getTypeMent().equals(TalkTemplateFormRequest.MentType.PHOTO) ? Collections.singletonMap("file", new FileResource(form.getFilePath(), form.getOriginalFileName())) : Collections.emptyMap());
-        return response;
+    public Integer post(TemplateForm form) {
+        if (form.getTypeMent().equals(TalkTemplateFormRequest.MentType.PHOTO) && form.isNewFile()) {
+            val file = Collections.singletonMap("file", new FileResource(form.getFilePath(), form.getOriginalFileName()));
+            form.setFilePath(null);
+            form.setOriginalFileName(null);
+
+            return (Integer) sendByMultipartFile(HttpMethod.POST, subUrl, form, jsonResultType(Integer.class), file);
+        } else {
+            return (Integer) sendByMultipartFile(HttpMethod.POST, subUrl, form, jsonResultType(Integer.class), Collections.emptyMap());
+        }
     }
 
     @SneakyThrows
-    public void put(Integer seq, TalkTemplateFormRequest form) {
-        sendByMultipartFile(HttpMethod.PUT, subUrl + seq, form, JsonResult.class,
-                form.getTypeMent().equals(TalkTemplateFormRequest.MentType.PHOTO) ? Collections.singletonMap("file", new FileResource(form.getFilePath(), form.getOriginalFileName())) : Collections.emptyMap());
+    public void put(Integer seq, TemplateForm form) {
+        if (form.getTypeMent().equals(TalkTemplateFormRequest.MentType.PHOTO) && form.isNewFile()) {
+            val file = Collections.singletonMap("file", new FileResource(form.getFilePath(), form.getOriginalFileName()));
+            form.setFilePath(null);
+            form.setOriginalFileName(null);
+
+            sendByMultipartFile(HttpMethod.PUT, subUrl + seq, form, JsonResult.class, file);
+        } else {
+            sendByMultipartFile(HttpMethod.PUT, subUrl + seq, form, JsonResult.class, Collections.emptyMap());
+        }
     }
 
     @SneakyThrows
@@ -54,4 +69,9 @@ public class TalkTemplateApiInterface extends ApiServerInterface {
         return getPagination(subUrl, search, TalkTemplateSummaryResponse.class).getData();
     }
 
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    public static class TemplateForm extends TalkTemplateFormRequest {
+        private boolean newFile = false;
+    }
 }

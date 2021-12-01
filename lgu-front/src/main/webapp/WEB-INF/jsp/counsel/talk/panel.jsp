@@ -436,9 +436,10 @@
                     if (this.roomId !== message.roomId)
                         return
 
-                    if (['file', 'photo', 'audio'].includes(message.messageType))
+                    if (['file', 'photo', 'audio'].includes(message.messageType)) {
+                        message.originalFileUrl = message.contents
                         message.fileUrl = $.addQueryString(message.contents, {token: '${g.escapeQuote(accessToken)}'})
-
+                    }
                     if (this.messageList.length === 0)
                         return this.messageList.push(message)
 
@@ -584,16 +585,21 @@
                     const modalId = 'modal-talk-template'
                     popupDraggableModalFromReceivedHtml('/admin/talk/template/new/modal', modalId).done(function () {
                         const modal = document.getElementById(modalId)
-
-                        // TODO: 텍스트 유형 선택
+                        modal.querySelector('[name=typeMent]').value = 'TEXT'
+                        modal.querySelector('[type=file]').value = null
 
                         const selectedTextContents = getSelectedTextContentOfSingleElement()
-                        if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === _this.$refs['message-' + index].querySelector('.txt_chat p'))
+                        if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === _this.$refs['message-' + index].querySelector('.txt_chat p')) {
                             modal.querySelector('[name=ment]').value = selectedTextContents.text
-                        else
+                        } else if (message.fileType === 'image') {
+                            modal.querySelector('[name=originalFileName]').value = message.fileName
+                            modal.querySelector('[name=filePath]').value = message.originalFileUrl
+                            modal.querySelector('.file-name').innerHTML = message.fileName
+                            modal.querySelector('[name=typeMent]').value = 'PHOTO'
+                        } else {
                             modal.querySelector('[name=ment]').value = message.contents
-
-                        // TODO: 이미지일 때는 이미지 유형 선택 후, 파일 ID 입력
+                        }
+                        modal.querySelector('[name=typeMent]').dispatchEvent(new Event('change'))
 
                         const doneActionName = '_doneTemplatePost'
                         modal.setAttribute('data-done', doneActionName)

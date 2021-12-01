@@ -130,7 +130,7 @@
                                                 <label></label>
                                             </div>
 
-                                            <div v-if="!input.enableCustomerInput" class="mt15">
+                                            <div v-if="input.enableCustomerInput" class="mt15">
                                                 <div class="mb15">폴백 대사 입력</div>
                                                 <div class="ui form fluid mb15">
                                                     <textarea rows="8" v-model="input.fallbackMent"></textarea>
@@ -620,7 +620,7 @@
                 <label></label>
             </div>
 
-            <div v-if="!enableCustomerInput" class="mt10">
+            <div v-if="enableCustomerInput" class="mt10">
                 <div class="mb10">폴백 대사 입력</div>
                 <div class="ui form fluid mb10">
                     <textarea rows="3" v-model="fallbackMent"></textarea>
