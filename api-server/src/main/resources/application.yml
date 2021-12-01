@@ -90,7 +90,7 @@ file:
     talk: ${file.path.data}/TALK/{0}
     custom: ${file.path.data}/{0}/CUSTOM_DATA
     profile: ${file.path.data}/{0}/PROFILE_PHOTO
-    chatbot: ${file.path.data}\{0}\CHATBOT
+    chatbot: ${file.path.data}/{0}/CHATBOT
     temporary:
       default: /tmp
       enc: ${file.path.temporary.default}/monit/tmp_enc_{0}
