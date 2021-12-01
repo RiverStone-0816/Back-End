@@ -124,13 +124,13 @@
                                                 <input type="text" v-model="input.name">
                                             </div>
 
-                                            <div class="mb15">고객 입력</div>
+                                            <div class="mb15">봇 수행중 고객입력 가능 여부</div>
                                             <div class="ui fitted toggle checkbox">
                                                 <input type="checkbox" @change="input.enableCustomerInput = $event.target.checked" :checked="input.enableCustomerInput">
                                                 <label></label>
                                             </div>
 
-                                            <div v-if="!input.enableCustomerInput">
+                                            <div v-if="!input.enableCustomerInput" class="mt15">
                                                 <div class="mb15">폴백 대사 입력</div>
                                                 <div class="ui form fluid mb15">
                                                     <textarea rows="8" v-model="input.fallbackMent"></textarea>
@@ -614,13 +614,13 @@
                 <input type="text" v-model="name">
             </div>
 
-            <div class="mb10">고객 입력</div>
+            <div class="mb10">봇 수행중 고객입력 가능 여부</div>
             <div class="ui fitted toggle checkbox">
                 <input type="checkbox" @change="enableCustomerInput = $event.target.checked" :checked="enableCustomerInput">
                 <label></label>
             </div>
 
-            <div v-if="!enableCustomerInput">
+            <div v-if="!enableCustomerInput" class="mt10">
                 <div class="mb10">폴백 대사 입력</div>
                 <div class="ui form fluid mb10">
                     <textarea rows="3" v-model="fallbackMent"></textarea>
