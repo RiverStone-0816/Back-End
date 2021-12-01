@@ -780,7 +780,7 @@
                                     const app = nodeBlockMap[nodeId]
 
                                     app.name = block.name
-                                    app.keywords = block.keyword.split('|')
+                                    app.keywords = block.keyword?.split('|').filter(keyword => keyword) || []
                                     app.autoReply = block.isTemplateEnable
                                     app.displays = block.displayList.sort((a, b) => (a.order - b.order)).map(e => {
                                         if (e.type === 'text') return {type: 'text', data: {text: e.elementList?.[0]?.content}}
