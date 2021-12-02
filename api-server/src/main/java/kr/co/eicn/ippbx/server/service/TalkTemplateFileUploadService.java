@@ -29,6 +29,8 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
     private final FileSystemStorageService fileSystemStorageService;
     @Value("${file.path.notice}")
     private String savePath;
+    @Value("${file.path.chatt}")
+    private String second;
 
     public Integer insertTalkTemplateFileUpload(TalkTemplateFormRequest form) {
         storeFile(form);
@@ -41,24 +43,33 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
     }
 
     public void storeFile(TalkTemplateFormRequest form) {
-        if (form.getFile() != null && !form.getFile().isEmpty()) {
-            final MultipartFile file = form.getFile();
-            final Path path = Paths.get(replaceEach(savePath, new String[]{"{0}", "{1}"}, new String[]{g.getUser().getCompanyId(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"))}));
+        if (TalkTemplateFormRequest.MentType.PHOTO.equals(form.getTypeMent())) {
+            if (form.getFile() != null && !form.getFile().isEmpty()) {
+                final MultipartFile file = form.getFile();
+                final Path path = Paths.get(replaceEach(savePath, new String[]{"{0}", "{1}"}, new String[]{g.getUser().getCompanyId(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"))}));
 
-            if (Files.notExists(path)) {
-                try {
-                    Files.createDirectories(path);
-                } catch (IOException ignored) {
+                if (Files.notExists(path)) {
+                    try {
+                        Files.createDirectories(path);
+                    } catch (IOException ignored) {
+                    }
+                }
+
+                final String originalFileName = UrlUtils.decode(cleanPath(Objects.requireNonNull(file.getOriginalFilename())));
+                final String saveFileName = System.currentTimeMillis() + "_" + System.nanoTime() + "_" + originalFileName;
+
+                form.setOriginalFileName(originalFileName);
+                form.setFilePath(path.resolve(saveFileName).toString());
+
+                this.fileSystemStorageService.store(path, saveFileName, file);
+            } else if (form.getFile() == null && form.getFilePath().startsWith("http")) {
+                final String[] dirInfo = form.getFilePath().substring(form.getFilePath().indexOf("path=") + 5, form.getFilePath().indexOf("&")).split("/");
+
+                if (dirInfo.length == 2) {
+                    final Path path = Paths.get(replaceEach(second, new String[]{"{0}", "{1}", "{2}"}, new String[]{g.getUser().getCompanyId(), dirInfo[0], dirInfo[1]}));
+                    form.setFilePath(path.resolve(form.getOriginalFileName()).toString());
                 }
             }
-
-            final String originalFileName = UrlUtils.decode(cleanPath(Objects.requireNonNull(file.getOriginalFilename())));
-            final String saveFileName = System.currentTimeMillis() + "_" + System.nanoTime() + "_" + originalFileName;
-
-            form.setOriginalFileName(originalFileName);
-            form.setFilePath(path.resolve(saveFileName).toString());
-
-            this.fileSystemStorageService.store(path, saveFileName, file);
         }
     }
 }
