@@ -847,7 +847,11 @@
                                     const app = nodeBlockMap[nodeId]
                                     const connections = nodeIdToConnections[nodeId]
                                     for (let buttonIndex in connections) {
-                                        app.createConnection(parseInt(buttonIndex), connections[buttonIndex])
+                                        try {
+                                            app.createConnection(parseInt(buttonIndex), connections[buttonIndex])
+                                        } catch (e) {
+                                            console.error(e)
+                                        }
                                     }
                                 }
 
