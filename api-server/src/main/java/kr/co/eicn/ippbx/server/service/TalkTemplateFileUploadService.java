@@ -30,7 +30,7 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
     @Value("${file.path.notice}")
     private String savePath;
     @Value("${file.path.chatt}")
-    private String second;
+    private String chattingSavePath;
 
     public Integer insertTalkTemplateFileUpload(TalkTemplateFormRequest form) {
         storeFile(form);
@@ -66,7 +66,7 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
                 final String[] dirInfo = form.getFilePath().substring(form.getFilePath().indexOf("path=") + 5, form.getFilePath().indexOf("&")).split("/");
 
                 if (dirInfo.length == 2) {
-                    final Path path = Paths.get(replaceEach(second, new String[]{"{0}", "{1}", "{2}"}, new String[]{g.getUser().getCompanyId(), dirInfo[0], dirInfo[1]}));
+                    final Path path = Paths.get(replaceEach(chattingSavePath, new String[]{"{0}", "{1}", "{2}"}, new String[]{g.getUser().getCompanyId(), dirInfo[0], dirInfo[1]}));
                     form.setFilePath(path.resolve(form.getOriginalFileName()).toString());
                 }
             }
