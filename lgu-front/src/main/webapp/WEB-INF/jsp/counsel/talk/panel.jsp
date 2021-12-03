@@ -90,8 +90,7 @@
                             </div>
                         </li>
                     </ul>
-                    <%--                    <button v-if="statuses[e.status].rooms.length && e.status === 'REALLOCATION'"--%>
-                    <button v-if="e.status === 'REALLOCATION'"
+                    <button v-if="statuses[e.status].rooms.length && e.status === 'REALLOCATION'"
                             class="ui button mini compact" @click.stop.prevent="showReallocationModal" style="position: absolute; bottom: 1em; right: 1em;">재분배
                     </button>
                     <div v-else class="null-data">조회된 데이터가 없습니다.</div>
@@ -270,7 +269,7 @@
                     showReallocationModal() {
                         $(this.$refs.reallocationModal).dragModalShow(this.$el.parentElement)
                         const options = this.$refs.reallocationModal.querySelector('[name="persons"]').options
-                        for(let i = 0; i < options.length; i++) options[i].selected = false
+                        for (let i = 0; i < options.length; i++) options[i].selected = false
                     },
                     loadPersons() {
                         restSelf.get('/api/monit/').done(response => o.persons = response.data.map(team => team.person).flatMap(persons => persons))
