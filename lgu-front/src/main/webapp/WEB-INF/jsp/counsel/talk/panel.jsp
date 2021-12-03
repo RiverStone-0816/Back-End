@@ -12,6 +12,7 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
+<%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 
 <div class="ui column grid" id="talk-panel">
     <div class="nine wide column" id="talk-list-container">
@@ -293,9 +294,11 @@
                     <div v-if="showingTemplates" class="template-container">
                         <div class="template-container-inner">
                             <ul class="template-ul">
-                                <li v-for="(e, i) in templates" :key="i" :class="i === activatingTemplateIndex && 'active'" @click.stop="sendMessage(e.text)" class="template-list">
+                                <li v-for="(e, i) in templates" :key="i" :class="i === activatingTemplateIndex && 'active'" @click.stop="sendTemplate(e)" class="template-list">
                                     <div class="template-title">/{{ e.name }}</div>
-                                    <div class="template-content">{{ e.text }}</div>
+                                    <img v-if="e.isImage" :src="e.url" class="template-image"/>
+                                    <div v-if="e.isImage" class="template-content" style="text-decoration: underline">{{ e.fileName }}</div>
+                                    <div v-else class="template-content">{{ e.text }}</div>
                                 </li>
                             </ul>
                         </div>
@@ -537,6 +540,11 @@
                         })
                     }
                 },
+                sendTemplate(template) {
+                    // TODO: 서버에 이미 존재하는 이미지 파일을 소켓에 전달하는 프로토콜 추가 필요 (이미지 템플릿으로 추가된 파일을 업로드할수 없다)
+                    if (e.isImage) return alert('TODO: 서버에 이미 존재하는 이미지 파일을 소켓에 전달하는 프로토콜 추가 필요 (이미지 템플릿으로 추가된 파일을 업로드할수 없다)')
+                    this.sendMessage(template.text)
+                },
                 keyup: function (event) {
                     if (event.key === '/' && this.$refs.message.value === '/' && this.templates.length > 0) {
                         this.showingTemplates = true
@@ -565,10 +573,9 @@
                     }
 
                     if (this.showingTemplates && this.templates[this.activatingTemplateIndex] && event.key === 'Enter') {
-                        talkCommunicator.sendMessage(this.roomId, this.senderKey, this.userKey, this.templates[this.activatingTemplateIndex].text)
                         this.$refs.message.value = ''
                         this.showingTemplates = false
-                        // TODO: send image
+                        this.sendTemplate(this.templates[this.activatingTemplateIndex])
                     }
                 },
                 loadTemplates: function () {
@@ -576,7 +583,19 @@
                     restSelf.get('/api/talk-template/', null, false, null).done(function (response) {
                         _this.templates = []
                         response.data.forEach(function (e) {
-                            _this.templates.push({name: e.mentName, text: e.ment})
+                            _this.templates.push({
+                                name: e.mentName, text: e.ment,
+                                isImage: e.typeMent === 'P',
+                                fileName: e.originalFileName,
+                                url: e.typeMent === 'P' && (e.filePath.startsWith('https://') || e.filePath.startsWith('http://'))
+                                    ? $.addQueryString(e.filePath, {token: '${g.escapeQuote(accessToken)}'})
+                                    // TODO: 저장된 이미지 파일을 전달하는 API 추가 필요
+                                    : e.typeMent === 'P' ? $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/application/maindb/custominfo', {
+                                            path: e.filePath,
+                                            token: '${g.escapeQuote(accessToken)}'
+                                        })
+                                        : null
+                            })
                         })
                     })
                 },
