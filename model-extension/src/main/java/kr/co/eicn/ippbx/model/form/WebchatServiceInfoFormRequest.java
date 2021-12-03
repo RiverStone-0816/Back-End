@@ -13,6 +13,6 @@ public class WebchatServiceInfoFormRequest extends BaseForm {
     private String displayCompanyName;
     private String message;
     private String image;
-    private String backgroundColor;
+    private String backgroundColor = "#ffffff";
     private String profile;
 }

@@ -1,4 +1,4 @@
-package kr.co.eicn.ippbx.front.controller.api;
+package kr.co.eicn.ippbx.front.controller.api.chatbot;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
