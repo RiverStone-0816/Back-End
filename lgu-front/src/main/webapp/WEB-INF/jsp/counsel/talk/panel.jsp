@@ -18,11 +18,13 @@
     <div class="nine wide column" id="talk-list-container">
         <div class="talk-list-container">
             <div class="ui top attached tabular menu">
-                <a v-for="(e, i) in STATUSES" :key="i" class="item" :class="(statuses[e.status].activated && ' active ') + (statuses[e.status].newMessages && ' newImg_c ')"
-                   @click="activeTab(e.status)">
-                    <text>{{ e.text }} (<span>{{ statuses[e.status].rooms.length }}</span>)</text>
-                    <div></div>
-                </a>
+                <template v-for="(e, i) in STATUSES" :key="i">
+                    <a class="item" :class="(statuses[e.status].activated && ' active ') + (statuses[e.status].newMessages && ' newImg_c ')" @click="activeTab(e.status)"
+                       <c:if test="${!g.user.admin()}">v-if="e.status !== 'REALLOCATION'"</c:if>>
+                        <text>{{ e.text }} (<span>{{ statuses[e.status].rooms.length }}</span>)</text>
+                        <div></div>
+                    </a>
+                </template>
             </div>
             <div v-for="(e, i) in STATUSES" :key="i" class="ui bottom attached tab segment" :class="statuses[e.status].activated && 'active'">
                 <div class="sort-wrap">
@@ -54,6 +56,12 @@
                         <li v-for="(room, j) in statuses[e.status].rooms" :key="j" class="talk-list" @click="openRoom(room.roomId, room.userName)">
                             <div v-if="room.showing" class="ui segment" :class="activatedRoomIds.includes(room.roomId) && 'active'">
                                 <%--TODO: 카톡채널로 들어온 상담인지 어떻게 알지?--%>
+                                <div v-if="e.status === 'REALLOCATION'" class="ui top left attached label small">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="reallocating" multiple :value="room.roomId"/>
+                                        <label></label>
+                                    </div>
+                                </div>
                                 <div class="ui top left attached label small blue">서비스 : {{ room.svcName }} <img src="<c:url value="/resources/images/kakao-icon.png"/>" class="channel-icon"></div>
                                 <div class="ui top right attached label small">상담원 : {{ room.userName }}</div>
                                 <div class="ui bottom right attached label small time">{{ timestampFormat(room.roomLastTime) }}</div>
@@ -82,8 +90,35 @@
                             </div>
                         </li>
                     </ul>
+                    <%--                    <button v-if="statuses[e.status].rooms.length && e.status === 'REALLOCATION'"--%>
+                    <button v-if="e.status === 'REALLOCATION'"
+                            class="ui button mini compact" @click.stop.prevent="showReallocationModal" style="position: absolute; bottom: 1em; right: 1em;">재분배
+                    </button>
                     <div v-else class="null-data">조회된 데이터가 없습니다.</div>
                 </div>
+            </div>
+        </div>
+
+        <div class="ui modal inverted tiny" ref="reallocationModal" style="display: none">
+            <i class="close icon"></i>
+            <div class="header">재분배</div>
+            <div class="content rows scrolling">
+                <div class="ui grid">
+                    <div class="row">
+                        <div class="four wide column"><label class="control-label">상담사선택</label></div>
+                        <div class="twelve wide column">
+                            <div class="jp-multiselect">
+                                <select class="form-control" name="persons" size="8" multiple="multiple">
+                                    <option v-for="(e, i) in persons" :value="e.id">{{ e.idName }} [{{ e.extension }}]</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="actions">
+                <button type="button" class="ui button modal-close">취소</button>
+                <button type="button" class="ui blue button" @click.stop.prevent="reallocate">재분배</button>
             </div>
         </div>
     </div>
@@ -93,7 +128,8 @@
             const talkListContainer = Vue.createApp({
                 setup: function () {
                     return {
-                        STATUSES: Object.freeze([{status: 'MY', text: '상담중'}, {status: 'TOT', text: '비접수'}, {status: 'OTH', text: '타상담'}, {status: 'END', text: '종료'},]),
+                        STATUSES: Object.freeze([{status: 'MY', text: '상담중'}, {status: 'TOT', text: '비접수'}, {status: 'OTH', text: '타상담'}, {status: 'END', text: '종료'},
+                            {status: 'REALLOCATION', text: '재분배'},]),
                         SEARCH_TYPE: Object.freeze({CUSTOM_NAME: '고객명', USER_NAME: '상담원명'}),
                         ORDERING_TYPE: Object.freeze({LAST_MESSAGE_TIME: '최근시간', CUSTOM_NAME: '고객명', USER_NAME: '상담원명'}),
                     }
@@ -106,9 +142,13 @@
                         }, {}),
                         roomMap: {},
                         activatedRoomIds: [],
+                        persons: [],
                     }
                 },
                 methods: {
+                    isReallocationStatus(status) {
+                        return status !== this.statuses.END.status
+                    },
                     load: function () {
                         const _this = this
                         return restSelf.get('/api/counsel/current-talk-list').done(function (response) {
@@ -125,9 +165,10 @@
                                     room.userId = e.userId
                                 })
 
-                                function appendNewRoom() {
+                                const appendNewRoom = () => {
                                     e.container = _this.statuses[status]
                                     e.container.rooms.push(e)
+                                    if (_this.isReallocationStatus(status)) _this.statuses.REALLOCATION.rooms.push(e)
                                     _this.roomMap[e.roomId] = e
                                 }
 
@@ -138,6 +179,12 @@
                                                 Object.assign(_this.roomMap[e.roomId].container.rooms[i], e)
                                             } else {
                                                 _this.roomMap[e.roomId].container.rooms.splice(i, 1)
+                                                for (let j = 0; j < _this.statuses.REALLOCATION.rooms.length; j++) {
+                                                    if (_this.statuses.REALLOCATION.rooms[j].roomId === e.roomId) {
+                                                        _this.statuses.REALLOCATION.rooms.splice(j, 1)
+                                                        break
+                                                    }
+                                                }
                                                 delete _this.roomMap[e.roomId]
                                                 appendNewRoom()
                                             }
@@ -151,25 +198,6 @@
                             _this.STATUSES.forEach(e => _this.filter(e.status))
                         })
                     },
-                    updateRoom: function (roomId, messageType, content, messageTime) {
-                        if (!this.roomMap[roomId])
-                            return this.load()
-
-                        this.roomMap[roomId].content = content
-                        this.roomMap[roomId].roomLastTime = messageTime
-                        this.roomMap[roomId].type = messageType
-
-                        this.changeOrdering(this.roomMap[roomId].container.status)
-                    },
-                    getImage: function (userName) {
-                        return profileImageSources[Math.abs(userName.hashCode()) % profileImageSources.length]
-                    },
-                    activeTab: function (status) {
-                        this.STATUSES.forEach(e => this.statuses[e.status].activated = e.status === status)
-                    },
-                    loadActivatedRoomIds: function () {
-                        this.activatedRoomIds = talkRoomList.map(e => e.roomId)
-                    },
                     removeRoom: function (roomId) {
                         if (!this.roomMap[roomId])
                             return
@@ -177,9 +205,12 @@
                         for (let i = 0; i < this.roomMap[roomId].container.rooms.length; i++) {
                             if (this.roomMap[roomId].container.rooms[i].roomId === roomId) {
                                 this.roomMap[roomId].container.rooms.splice(i, 1)
-                                delete this.roomMap[roomId]
-                                return
                             }
+                        }
+
+                        try {
+                            delete this.roomMap[roomId]
+                        } catch (ignored) {
                         }
                     },
                     filter: function (status) {
@@ -203,11 +234,46 @@
                             return a.roomLastTime - b.roomLastTime
                         })
                     },
+                    updateRoom: function (roomId, messageType, content, messageTime) {
+                        if (!this.roomMap[roomId])
+                            return this.load()
+
+                        this.roomMap[roomId].content = content
+                        this.roomMap[roomId].roomLastTime = messageTime
+                        this.roomMap[roomId].type = messageType
+
+                        this.changeOrdering(this.roomMap[roomId].container.status)
+                        if (this.isReallocationStatus(this.roomMap[roomId].container.status)) this.changeOrdering(this.statuses.REALLOCATION.status)
+                    },
+                    getImage: function (userName) {
+                        return profileImageSources[Math.abs(userName.hashCode()) % profileImageSources.length]
+                    },
+                    activeTab: function (status) {
+                        this.STATUSES.forEach(e => this.statuses[e.status].activated = e.status === status)
+                    },
+                    loadActivatedRoomIds: function () {
+                        this.activatedRoomIds = talkRoomList.map(e => e.roomId)
+                    },
                     timestampFormat: function (e) {
                         return moment(e).format('MM-DD HH:mm')
                     },
                     openRoom: function (roomId, userName) {
                         talkRoom.loadRoom(roomId, userName).done(() => this.loadActivatedRoomIds())
+                    },
+                    reallocate() {
+                        $(this.$el.parentElement).asJsonData().done(data => {
+                            console.log(data.reallocating, data.persons)
+                            // TODO: 소켓 프로토콜 준비 되어야 함
+                            alert('소켓 프로토콜 준비 되어야 함')
+                        })
+                    },
+                    showReallocationModal() {
+                        $(this.$refs.reallocationModal).dragModalShow(this.$el.parentElement)
+                        const options = this.$refs.reallocationModal.querySelector('[name="persons"]').options
+                        for(let i = 0; i < options.length; i++) options[i].selected = false
+                    },
+                    loadPersons() {
+                        restSelf.get('/api/monit/').done(response => o.persons = response.data.map(team => team.person).flatMap(persons => persons))
                     }
                 },
                 updated: function () {
@@ -216,6 +282,7 @@
                 mounted: function () {
                     this.activeTab(this.STATUSES[0].status)
                     this.load()
+                    this.loadPersons()
                 },
             }).mount('#talk-list-container')
         </script>

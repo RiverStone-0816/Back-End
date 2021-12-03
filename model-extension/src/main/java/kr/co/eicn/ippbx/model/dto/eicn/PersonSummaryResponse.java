@@ -1,7 +1,10 @@
 package kr.co.eicn.ippbx.model.dto.eicn;
 
+import kr.co.eicn.ippbx.model.enums.IdType;
 import lombok.Data;
+import lombok.val;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Data
@@ -26,4 +29,9 @@ public class PersonSummaryResponse {
 	private String isEmail;     // 이메일상담 여부
 	private String isChatt;		// 메신저 사용 여부
 	private String isLoginChatt; //채팅 로그인 상태
+
+	public boolean admin() {
+		val ADMIN_TYPES = Arrays.asList(IdType.MASTER, IdType.SUPER_ADMIN, IdType.ADMIN);
+		return ADMIN_TYPES.contains(IdType.of(idType));
+	}
 }
