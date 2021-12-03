@@ -150,6 +150,7 @@
                 setup() {
                     return {
                         botId: '${botId}',
+                        lastReceiveMessageType: null,
                         request: {
                             company_id: '${g.escapeQuote(g.user.companyId)}',
                             sender_key: '${g.escapeQuote(g.user.companyId)}',
@@ -178,7 +179,10 @@
                                 .on('error', () => ({}))
                                 .on('end', () => ({}))
                                 .on('close', () => ({}))
-                                .on('webchatsvc_message', data => o.messages.push({sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type}))
+                                .on('webchatsvc_message', data => {
+                                    o.lastReceiveMessageType = data.message_type
+                                    o.messages.push({sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type})
+                                })
                                 .on('webchatsvc_start', data => {
                                     if (data.result !== 'OK') return alert('로그인실패 :' + data.result + '; ' + data.result_data)
                                     $.isNumeric(o.botId) ? o.requestRootBlock() : o.requestIntro()
@@ -193,7 +197,10 @@
                     },
                     sendText() {
                         if (!o.input) return
-                        o.socket.emit('webchatcli_message', Object.assign(o.request, {message_id: o.getMessageId()}, {message_type: 'text', message_data: o.input}))
+                        o.socket.emit('webchatcli_message', Object.assign(o.request, {message_id: o.getMessageId()}, {
+                            message_type: 'text',
+                            message_data: {last_receive_message_type: o.lastReceiveMessageType, text_data: o.input,}
+                        }))
                         o.messages.push({sender: SENDER.USER, time: new Date(), data: JSON.parse(JSON.stringify(o.input)), messageType: 'text'})
                         o.input = ''
                     },
@@ -203,6 +210,7 @@
 
                         o.socket.emit('webchatcli_message', Object.assign(o.request, {message_id: o.getMessageId()}, {
                             message_type: 'action', message_data: {
+                                last_receive_message_type: o.lastReceiveMessageType,
                                 chatbot_id: message.data.chatbot_id,
                                 parent_block_id: message.data.block_id,
                                 btn_id: button.btn_id,
@@ -228,6 +236,7 @@
 
                             o.socket.emit('webchatcli_message', Object.assign(o.request, {message_id: o.getMessageId()}, {
                                 message_type: 'action', message_data: {
+                                    last_receive_message_type: o.lastReceiveMessageType,
                                     chatbot_id: message.data.chatbot_id,
                                     parent_block_id: message.data.block_id,
                                     btn_id: button.btn_id,
@@ -260,7 +269,7 @@
                         const KEYWORD_CHAR = '$'
                         let result = ''
 
-                        for (let position = 0;;) {
+                        for (let position = 0; ;) {
                             const indexKeywordChar = next_api_result_tpl.indexOf(KEYWORD_CHAR, position)
                             if (indexKeywordChar < 0) {
                                 result += next_api_result_tpl.substr(position)
