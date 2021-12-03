@@ -472,7 +472,7 @@
                                                 </div>
                                                 <div class="content editor">
                                                     <div v-for="(e,i) in displays" :class="e.type === 'text' ? 'sample-bubble' : 'card'">
-                                                        <p v-if="e.data && e.type === 'text'">{{ e.data.text }}</p>
+                                                        <p v-if="e.data && e.type === 'text'" style="white-space: pre-wrap">{{ e.data.text }}</p>
                                                         <div v-if="e.data && e.type === 'image'" class="card-img">
                                                             <img :src="`/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e.data.fileUrl)" class="border-radius-1em">
                                                         </div>
@@ -481,7 +481,7 @@
                                                         </div>
                                                         <div v-if="e.data && e.type === 'card'" class="card-content">
                                                             <div class="card-title">{{ e.data.title }}</div>
-                                                            <div class="card-text">{{ e.data.announcement }}</div>
+                                                            <div class="card-text" style="white-space: pre-wrap">{{ e.data.announcement }}</div>
                                                         </div>
                                                         <div v-if="e.data && e.type === 'list'" class="card-list">
                                                             <div class="card-list-title">
@@ -498,7 +498,7 @@
                                                                         </div>
                                                                         <div class="item-content">
                                                                             <div class="subject">{{ e2.title }}</div>
-                                                                            <div class="ment">{{ e2.announcement }}</div>
+                                                                            <div class="ment" style="white-space: pre-wrap">{{ e2.announcement }}</div>
                                                                         </div>
                                                                     </a>
                                                                 </li>
