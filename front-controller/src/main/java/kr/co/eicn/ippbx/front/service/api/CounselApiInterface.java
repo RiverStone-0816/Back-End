@@ -89,7 +89,7 @@ public class CounselApiInterface extends ApiServerInterface {
             final Map<String, Object> params = objectMapper.convertValue(o, new ObjectMapper().getTypeFactory().constructParametricType(Map.class, String.class, Object.class));
             params.forEach(parts::add);
         }
-        parts.add("up_filename", new FileResource(o.getFilePath(), o.getOriginalName()));
+        parts.add("up_filename", new FileResource(Objects.requireNonNull(o).getFilePath(), o.getOriginalName(), false));
 
         final RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();

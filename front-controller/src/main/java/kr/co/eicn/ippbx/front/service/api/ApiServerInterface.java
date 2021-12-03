@@ -335,8 +335,12 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
         private final String filename;
 
         public FileResource(String filePath, String filename) {
+            this(filePath, filename, true);
+        }
+
+        public FileResource(String filePath, String filename, boolean urlEncoded) {
             super(filePath);
-            this.filename = UrlUtils.encode(filename);
+            this.filename = urlEncoded ? UrlUtils.encode(filename) : filename;
         }
 
         @Override
