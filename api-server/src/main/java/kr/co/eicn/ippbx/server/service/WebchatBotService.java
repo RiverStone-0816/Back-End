@@ -121,8 +121,9 @@ public class WebchatBotService extends ApiBaseService {
                 if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()))
                     buttonUpdateSchedule.put(buttonId, buttonElement.getNextBlockId());
 
-                for (WebchatBotFormRequest.ApiParam apiParam : buttonElement.getParamList())
-                    webchatBotApiParamService.insert(buttonId, apiParam);
+                if (ButtonAction.CONNECT_API.equals(buttonElement.getAction()))
+                    for (WebchatBotFormRequest.ApiParam apiParam : buttonElement.getParamList())
+                        webchatBotApiParamService.insert(buttonId, apiParam);
             }
         }
     }
