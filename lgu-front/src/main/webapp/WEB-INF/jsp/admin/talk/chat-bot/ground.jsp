@@ -813,7 +813,7 @@
                                             const childBlockId = block.children?.filter(childBlock => (childBlock.parentButtonId === e.id))[0]?.id
                                             return blockList.blocks.filter(createdBlock => createdBlock.id === childBlockId)[0]?.nodeId
                                         })()
-                                        const action = $.isNumeric(childNodeId) ? '' : 'block'
+                                        const action = $.isNumeric(childNodeId) ? '' : e.action === 'block' || e.action === '' ? 'block' : e.action
                                         if (e.action === 'block' || e.action === '') {
                                             if (!nodeIdToConnections[nodeId]) nodeIdToConnections[nodeId] = {}
                                             nodeIdToConnections[nodeId][i] = e.nextBlockId
