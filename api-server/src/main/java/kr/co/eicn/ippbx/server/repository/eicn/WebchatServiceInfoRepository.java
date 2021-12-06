@@ -18,6 +18,13 @@ public class WebchatServiceInfoRepository extends EicnBaseRepository<WebchatServ
         super(WEBCHAT_SERVICE_INFO, WEBCHAT_SERVICE_INFO.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatServiceInfo.class);
     }
 
+    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatServiceInfo getBySenderKey(String senderKey) {
+        return dsl.selectFrom(WEBCHAT_SERVICE_INFO)
+                .where(compareCompanyId())
+                .and(WEBCHAT_SERVICE_INFO.SENDER_KEY.eq(senderKey))
+                .fetchOneInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatServiceInfo.class);
+    }
+
     public void insert(WebchatServiceInfoFormRequest form) {
         dsl.insertInto(WEBCHAT_SERVICE_INFO)
                 .set(WEBCHAT_SERVICE_INFO.COMPANY_ID, getCompanyId())

@@ -50,25 +50,6 @@
                     </div>
                 </div>
             </div>
-            <div class="four wide column"><label class="control-label">채널타입</label></div>
-            <div class="twelve wide column">
-                <div class="ui form">
-                    <div class="inline fields">
-                        <div class="field">
-                            <div class="ui radio checkbox">
-                                <form:radiobutton path="channelType" value="kakao"/>
-                                <label>카카오상담톡</label>
-                            </div>
-                        </div>
-                        <div class="field">
-                            <div class="ui radio checkbox">
-                                <form:radiobutton path="channelType" value="eicn"/>
-                                <label>웹챗</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="row">
                 <div class="four wide column"><label class="control-label">스케쥴유형선택</label></div>
                 <div class="twelve wide column">
@@ -86,7 +67,7 @@
                                     <label>서비스별그룹연결</label>
                                 </div>
                             </div>
-                            <c:if test="${g.usingServices.contains('CHBOT')}">
+                            <c:if test="${g.usingServices.contains('CHBOT') && isChatbot}">
                                 <div class="field -channel-data" data-channel="eicn">
                                     <div class="ui radio checkbox">
                                         <form:radiobutton path="kind" value="B" class="hidden"/>
@@ -190,13 +171,6 @@
         const kind = modal.find('[name=kind]:checked').val();
         modal.find('.-kind-data').hide().filter(function () {
             return $(this).attr('data-kind') === kind;
-        }).show();
-    }).change();
-
-    modal.find('[name=channelType]').change(function () {
-        const channel = modal.find('[name=channelType]:checked').val();
-        modal.find('.-channel-data').hide().filter(function () {
-            return $(this).attr('data-channel') === channel;
         }).show();
     }).change();
 </script>

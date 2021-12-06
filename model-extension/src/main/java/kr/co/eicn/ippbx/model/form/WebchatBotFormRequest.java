@@ -8,6 +8,8 @@ import kr.co.eicn.ippbx.util.spring.BaseForm;
 import kr.co.eicn.ippbx.util.valid.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.jooq.tools.StringUtils;
+import org.springframework.validation.BindingResult;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -55,6 +57,15 @@ public class WebchatBotFormRequest extends BaseForm {
         private DisplayType type;
         @Valid
         private List<DisplayElement> elementList;
+
+        @Override
+        public boolean validate(BindingResult bindingResult) {
+            if (DisplayType.IMAGE.equals(type))
+                if (elementList == null || elementList.size() != 1 || elementList.get(0) == null || StringUtils.isEmpty(elementList.get(0).image))
+                    reject(bindingResult, "image", "{파일을 선택해 주세요.}");
+
+            return super.validate(bindingResult);
+        }
     }
 
     @EqualsAndHashCode(callSuper = true)

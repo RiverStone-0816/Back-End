@@ -50,6 +50,10 @@
                 </div>
             </div>
             <div class="row">
+                <div class="four wide column"><label class="control-label">채널타입</label></div>
+                <div class="twelve wide column">${g.htmlQuote(g.messageOf('TalkChannelType', entity.channelType))}</div>
+            </div>
+            <div class="row">
                 <div class="four wide column"><label class="control-label">상담톡서비스</label></div>
                 <div class="twelve wide column">${entity.kakaoServiceName}</div>
             </div>

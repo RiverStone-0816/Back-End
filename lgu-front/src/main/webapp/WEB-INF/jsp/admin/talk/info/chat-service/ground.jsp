@@ -14,7 +14,7 @@
 
 <tags:tabContentLayout>
     <div class="content-wrapper-frame">
-        <tags:page-menu-tab url="/admin/chatbot/info/service/"/>
+        <tags:page-menu-tab url="/admin/talk/info/chat-service/"/>
         <div class="sub-content ui container fluid unstackable">
             <div class="panel">
                 <div class="panel-heading">
@@ -71,12 +71,12 @@
     <tags:scripts>
         <script>
             function popupModal(seq) {
-                popupReceivedHtml('/admin/chatbot/info/service/' + (seq || 'new') + '/modal', 'modal-chatbot-service');
+                popupReceivedHtml('/admin/talk/info/chat-service/' + (seq || 'new') + '/modal', 'modal-chatbot-service');
             }
 
             function deleteEntity(seq) {
                 confirm('정말 삭제하시겠습니까?').done(function () {
-                    restSelf.delete('/api/chatbot-service/' + seq).done(function () {
+                    restSelf.delete('/api/chat-service/' + seq).done(function () {
                         reload();
                     });
                 });

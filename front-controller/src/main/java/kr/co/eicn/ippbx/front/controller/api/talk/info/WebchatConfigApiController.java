@@ -1,4 +1,4 @@
-package kr.co.eicn.ippbx.front.controller.api.chatbot;
+package kr.co.eicn.ippbx.front.controller.api.talk.info;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -23,7 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @LoginRequired
 @RestController
-@RequestMapping(value = "api/chatbot-service", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/chat-service", produces = MediaType.APPLICATION_JSON_VALUE)
 public class WebchatConfigApiController extends BaseController {
 
     private final WebchatConfigApiInterface apiInterface;

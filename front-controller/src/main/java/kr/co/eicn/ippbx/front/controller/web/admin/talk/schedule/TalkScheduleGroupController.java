@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.talk.schedule;
 
 import kr.co.eicn.ippbx.front.service.api.ChatbotApiInterface;
 import kr.co.eicn.ippbx.front.service.api.talk.group.TalkReceptionGroupApiInterface;
+import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -14,10 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -50,9 +48,10 @@ public class TalkScheduleGroupController extends BaseController {
     }
 
     @GetMapping("{parent}/item/new/modal")
-    public String modalScheduleItem(Model model, @ModelAttribute("form") TalkScheduleGroupListFormRequest form, @PathVariable Integer parent) throws IOException, ResultFailException {
+    public String modalScheduleItem(Model model, @ModelAttribute("form") TalkScheduleGroupListFormRequest form, @PathVariable Integer parent, @RequestParam String channelType) throws IOException, ResultFailException {
         form.setParent(parent);
 
+        model.addAttribute("isChatbot", TalkChannelType.EICN.getCode().equals(channelType));
         final Map<String, String> talkMentsOfStringSeq = apiInterface.getTalkMent().stream().collect(Collectors.toMap(e -> e.getSeq().toString(), SummaryTalkMentResponse::getMentName));
         model.addAttribute("talkMentsOfStringSeq", talkMentsOfStringSeq);
         final Map<String, String> chatbotList = chatbotApiInterface.list().stream().collect(Collectors.toMap(e-> e.getId().toString(), SummaryWebchatBotInfoResponse::getName));
@@ -64,11 +63,11 @@ public class TalkScheduleGroupController extends BaseController {
     }
 
     @GetMapping("{parent}/item/{child}/modal")
-    public String modalScheduleItem(Model model, @ModelAttribute("form") TalkScheduleGroupListFormRequest form, @PathVariable Integer parent, @PathVariable Integer child) throws IOException, ResultFailException {
+    public String modalScheduleItem(Model model, @ModelAttribute("form") TalkScheduleGroupListFormRequest form, @PathVariable Integer parent, @PathVariable Integer child, @RequestParam String channelType) throws IOException, ResultFailException {
         final TalkScheduleGroupListDetailResponse entity = apiInterface.getItem(child);
         model.addAttribute("entity", entity);
         ReflectionUtils.copy(form, entity);
 
-        return modalScheduleItem(model, form, parent);
+        return modalScheduleItem(model, form, parent, channelType);
     }
 }

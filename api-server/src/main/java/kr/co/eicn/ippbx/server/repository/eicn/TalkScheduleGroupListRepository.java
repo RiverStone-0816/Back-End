@@ -45,10 +45,9 @@ public class TalkScheduleGroupListRepository extends EicnBaseRepository<TalkSche
 		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleGroupList record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkScheduleGroupList();
 		ReflectionUtils.copy(record, form);
 
-		if(form.getKind().equals(TalkScheduleKind.SERVICE_BY_GROUP_CONNECT.getCode()))
+		if(TalkScheduleKind.SERVICE_BY_GROUP_CONNECT.getCode().equals(form.getKind()))
 			record.setKindData(form.getTalkGroup());
-
-		if(form.getChannelType().equals(TalkChannelType.EICN.getCode()) && form.getKind().equals(TalkScheduleKind.CHAT_BOT_CONNECT.getCode()))
+		else if(TalkScheduleKind.CHAT_BOT_CONNECT.getCode().equals(form.getKind()))
 			record.setKindData(form.getChatBot());
 
 		record.setChildName(EMPTY);
@@ -60,10 +59,9 @@ public class TalkScheduleGroupListRepository extends EicnBaseRepository<TalkSche
 	}
 
 	public void updateByKey(TalkScheduleGroupListFormRequest form, Integer key) {
-		if(form.getKind().equals(TalkScheduleKind.SERVICE_BY_GROUP_CONNECT.getCode()))
+		if(TalkScheduleKind.SERVICE_BY_GROUP_CONNECT.getCode().equals(form.getKind()))
 			form.setKindData(form.getTalkGroup());
-
-		if (form.getChannelType().equals(TalkChannelType.EICN.getCode()) && TalkScheduleKind.CHAT_BOT_CONNECT.getCode().equals(form.getKind()))
+		else if (TalkScheduleKind.CHAT_BOT_CONNECT.getCode().equals(form.getKind()))
 			form.setKindData(form.getChatBot());
 
 		super.updateByKey(form, key);

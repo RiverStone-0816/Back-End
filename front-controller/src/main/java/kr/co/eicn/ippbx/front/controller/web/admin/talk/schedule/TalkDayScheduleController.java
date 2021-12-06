@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.talk.schedule;
 
+import kr.co.eicn.ippbx.front.service.api.WebchatConfigApiInterface;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -13,6 +14,8 @@ import kr.co.eicn.ippbx.model.form.DayTalkScheduleInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.HolyTalkScheduleInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormUpdateRequest;
 import kr.co.eicn.ippbx.model.search.TalkServiceInfoSearchRequest;
+import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,17 +31,16 @@ import java.util.stream.Collectors;
  * @author tinywind
  */
 @LoginRequired
+@AllArgsConstructor
 @Controller
 @RequestMapping("admin/talk/schedule/day")
 public class TalkDayScheduleController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(TalkDayScheduleController.class);
 
-    @Autowired
     private TalkDayScheduleApiInterface apiInterface;
-    @Autowired
     private OrganizationService organizationService;
-    @Autowired
     private HolidayApiInterface holidayApiInterface;
+    private final WebchatConfigApiInterface webchatConfigApiInterface;
 
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") TalkServiceInfoSearchRequest search) throws IOException, ResultFailException {
@@ -63,7 +65,11 @@ public class TalkDayScheduleController extends BaseController {
         final Map<String, String> talkServices = apiInterface.talkServices().stream().collect(Collectors.toMap(SummaryTalkServiceResponse::getSenderKey, SummaryTalkServiceResponse::getKakaoServiceName));
         model.addAttribute("talkServices", talkServices);
 
-        final Map<Integer, String> scheduleInfos = apiInterface.scheduleInfos().stream().collect(Collectors.toMap(SummaryTalkScheduleInfoResponse::getParent, SummaryTalkScheduleInfoResponse::getName));
+        final Map<String, String> chatBotServices = webchatConfigApiInterface.list().stream().filter(e -> StringUtils.isNotEmpty(e.getSenderKey()))
+                .collect(Collectors.toMap(WebchatServiceInfoResponse::getSenderKey, WebchatServiceInfoResponse::getChannelName));
+        model.addAttribute("chatBotServices", chatBotServices);
+
+        final List<SummaryTalkScheduleInfoResponse> scheduleInfos = apiInterface.scheduleInfos();
         model.addAttribute("scheduleInfos", scheduleInfos);
 
         return "admin/talk/schedule/day/modal-schedule-info";
@@ -75,7 +81,7 @@ public class TalkDayScheduleController extends BaseController {
         model.addAttribute("entity", entity);
         ReflectionUtils.copy(form, entity);
 
-        final Map<Integer, String> scheduleInfos = apiInterface.scheduleInfos().stream().collect(Collectors.toMap(SummaryTalkScheduleInfoResponse::getParent, SummaryTalkScheduleInfoResponse::getName));
+        final Map<Integer, String> scheduleInfos = apiInterface.scheduleInfos().stream().filter(e -> entity.getChannelType().equals(e.getChannelType())).collect(Collectors.toMap(SummaryTalkScheduleInfoResponse::getParent, SummaryTalkScheduleInfoResponse::getName));
         model.addAttribute("scheduleInfos", scheduleInfos);
 
         model.addAttribute("searchOrganizationNames", organizationService.getHierarchicalOrganizationNames(form.getGroupCode()));

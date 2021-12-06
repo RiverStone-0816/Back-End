@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.chat.config;
 
+import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatServiceInfoResponse;
 import kr.co.eicn.ippbx.model.form.WebchatServiceInfoFormRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
@@ -12,9 +13,11 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static kr.co.eicn.ippbx.util.JsonResult.data;
@@ -41,14 +44,20 @@ public class WebchatConfigApiController extends ApiBaseController {
     }
 
     @PostMapping("")
-    public ResponseEntity<JsonResult<Void>> post(WebchatServiceInfoFormRequest form) {
+    public ResponseEntity<JsonResult<Void>> post(@RequestBody @Valid WebchatServiceInfoFormRequest form, BindingResult bindingResult) {
+        if (!form.validate(bindingResult))
+            throw new ValidationException(bindingResult);
+
         webChattingConfigService.insert(form);
 
         return ResponseEntity.ok(JsonResult.create());
     }
 
     @PutMapping("{seq}")
-    public ResponseEntity<JsonResult<Void>> update(@PathVariable Integer seq, WebchatServiceInfoFormRequest form) {
+    public ResponseEntity<JsonResult<Void>> update(@PathVariable Integer seq, @RequestBody @Valid WebchatServiceInfoFormRequest form, BindingResult bindingResult) {
+        if (!form.validate(bindingResult))
+            throw new ValidationException(bindingResult);
+
         webChattingConfigService.update(seq, form);
 
         return ResponseEntity.ok(JsonResult.create());

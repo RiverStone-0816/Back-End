@@ -76,7 +76,7 @@ public class TalkScheduleGroupApiController extends ApiBaseController {
 	@GetMapping("item/{child}")
 	public ResponseEntity<JsonResult<TalkScheduleGroupListDetailResponse>> itemGet(@PathVariable Integer child) {
 		TalkScheduleGroupListDetailResponse entity = convertDto(talkScheduleGroupListRepository.findOneIfNullThrow(child), TalkScheduleGroupListDetailResponse.class);
-		if (entity.getChannelType().equals(TalkChannelType.EICN.getCode()) && entity.getKind().equals(TalkScheduleKind.CHAT_BOT_CONNECT.getCode()))
+		if (entity.getKind().equals(TalkScheduleKind.CHAT_BOT_CONNECT.getCode()))
 			entity.setChatBot(entity.getKindData());
 		if (entity.getKind().equals(TalkScheduleKind.SERVICE_BY_GROUP_CONNECT.getCode()))
 			entity.setTalkGroup(entity.getKindData());

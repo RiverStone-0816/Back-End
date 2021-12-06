@@ -96,6 +96,7 @@ public class TalkScheduleGroupRepository extends EicnBaseRepository<TalkSchedule
 		ReflectionUtils.copy(record, form);
 
 		record.setCompanyId(getCompanyId());
+		record.setChannelType(form.getChannelType().getCode());
 
 		super.insert(record);
 		cacheService.pbxServerList(getCompanyId())

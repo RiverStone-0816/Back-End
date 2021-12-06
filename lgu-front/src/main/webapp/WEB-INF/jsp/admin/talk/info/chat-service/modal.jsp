@@ -13,7 +13,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 
 <form:form modelAttribute="form" cssClass="ui modal -json-submit" data-method="${entity == null ? 'post' : 'put'}"
-           action="${pageContext.request.contextPath}/api/chatbot-service/${entity == null ? null : entity.seq}" data-done="reload">
+           action="${pageContext.request.contextPath}/api/chat-service/${entity == null ? null : entity.seq}" data-done="reload">
 
     <i class="close icon"></i>
     <div class="header">고객 채팅창 설정[${entity != null ? '수정' : '추가'}]</div>
@@ -235,7 +235,7 @@
     modal.find('[type="file"]').change(function () {
         const container = this.parentElement
         uploadFile(this.files[0]).done(function (response) {
-            restSelf.post('/api/chatbot-service/image', response.data).done(imageResponse => {
+            restSelf.post('/api/chat-service/image', response.data).done(imageResponse => {
                 container.querySelector('.file-name').innerHTML = response.data.originalName;
                 container.querySelector('[name]').value = imageResponse.data
             })

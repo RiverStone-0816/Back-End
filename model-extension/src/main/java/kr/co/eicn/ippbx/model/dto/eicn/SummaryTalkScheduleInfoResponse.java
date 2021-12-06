@@ -6,4 +6,5 @@ import lombok.Data;
 public class SummaryTalkScheduleInfoResponse {
 	private Integer parent; // 스케쥴유형 키
 	private String name; // 스케쥴유형명
+	private String channelType;
 }

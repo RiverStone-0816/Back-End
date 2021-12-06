@@ -1,4 +1,4 @@
-package kr.co.eicn.ippbx.front.controller.web.admin.chatbot;
+package kr.co.eicn.ippbx.front.controller.web.admin.talk.info;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -25,7 +25,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @LoginRequired
 @Controller
-@RequestMapping("admin/chatbot/info/service")
+@RequestMapping("admin/talk/info/chat-service/")
 public class ChatbotServiceController extends BaseController {
     private final WebchatConfigApiInterface apiInterface;
 
@@ -35,13 +35,13 @@ public class ChatbotServiceController extends BaseController {
         val list = apiInterface.list();
         model.addAttribute("list", list);
 
-        return "admin/chatbot/info/service/ground";
+        return "admin/talk/info/chat-service/ground";
     }
 
     @SneakyThrows
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") WebchatServiceInfoFormRequest form) {
-        return "admin/chatbot/info/service/modal";
+        return "admin/talk/info/chat-service/modal";
     }
 
     @SneakyThrows

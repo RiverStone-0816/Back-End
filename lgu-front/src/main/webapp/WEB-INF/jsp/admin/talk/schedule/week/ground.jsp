@@ -158,20 +158,6 @@
                                                 </tr>
                                             </c:forEach>
                                         </c:when>
-                                        <c:otherwise>
-                                            <tr>
-                                                <td>${g.htmlQuote(e.kakaoServiceName)}</td>
-                                                <td>${g.htmlQuote(e.senderKey)}</td>
-
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
-                                                    <button class="ui button mini compact" onclick="deleteEntity('${g.htmlQuote(e.senderKey)}')">삭제</button>
-                                                </td>
-                                            </tr>
-                                        </c:otherwise>
                                     </c:choose>
                                 </c:forEach>
                             </c:when>

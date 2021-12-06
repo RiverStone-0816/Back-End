@@ -1,5 +1,8 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.talk.schedule;
 
+import kr.co.eicn.ippbx.front.service.api.WebchatConfigApiInterface;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -7,15 +10,13 @@ import kr.co.eicn.ippbx.front.service.OrganizationService;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.talk.schedule.TalkWeekScheduleApiInterface;
 import kr.co.eicn.ippbx.util.FormUtils;
-import kr.co.eicn.ippbx.model.dto.eicn.SummaryTalkScheduleInfoResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.SummaryTalkServiceResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.TalkScheduleInfoDetailResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.TalkServiceInfoResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleGroupEntity;
 import kr.co.eicn.ippbx.model.enums.DayOfWeek;
 import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormUpdateRequest;
 import kr.co.eicn.ippbx.model.search.TalkServiceInfoSearchRequest;
+import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +32,16 @@ import java.util.stream.Collectors;
 /**
  * @author tinywind
  */
+@RequiredArgsConstructor
 @LoginRequired
 @Controller
 @RequestMapping("admin/talk/schedule/week")
 public class TalkWeekScheduleController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(TalkWeekScheduleController.class);
 
-    @Autowired
-    private TalkWeekScheduleApiInterface apiInterface;
-    @Autowired
-    private OrganizationService organizationService;
+    private final TalkWeekScheduleApiInterface apiInterface;
+    private final OrganizationService organizationService;
+    private final WebchatConfigApiInterface webchatConfigApiInterface;
 
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") TalkServiceInfoSearchRequest search) throws IOException, ResultFailException {
@@ -65,7 +66,11 @@ public class TalkWeekScheduleController extends BaseController {
         final Map<String, String> talkServices = apiInterface.talkServices().stream().collect(Collectors.toMap(SummaryTalkServiceResponse::getSenderKey, SummaryTalkServiceResponse::getKakaoServiceName));
         model.addAttribute("talkServices", talkServices);
 
-        final Map<Integer, String> scheduleInfos = apiInterface.scheduleInfos().stream().collect(Collectors.toMap(SummaryTalkScheduleInfoResponse::getParent, SummaryTalkScheduleInfoResponse::getName));
+        final Map<String, String> chatBotServices = webchatConfigApiInterface.list().stream().filter(e -> StringUtils.isNotEmpty(e.getSenderKey()))
+                .collect(Collectors.toMap(WebchatServiceInfoResponse::getSenderKey, WebchatServiceInfoResponse::getChannelName));
+        model.addAttribute("chatBotServices", chatBotServices);
+
+        final List<SummaryTalkScheduleInfoResponse> scheduleInfos = apiInterface.scheduleInfos();
         model.addAttribute("scheduleInfos", scheduleInfos);
 
         return "admin/talk/schedule/week/modal-schedule-info";
@@ -77,7 +82,7 @@ public class TalkWeekScheduleController extends BaseController {
         model.addAttribute("entity", entity);
         ReflectionUtils.copy(form, entity);
 
-        final Map<Integer, String> scheduleInfos = apiInterface.scheduleInfos().stream().collect(Collectors.toMap(SummaryTalkScheduleInfoResponse::getParent, SummaryTalkScheduleInfoResponse::getName));
+        final Map<Integer, String> scheduleInfos = apiInterface.scheduleInfos().stream().filter(e -> entity.getChannelType().equals(e.getChannelType())).collect(Collectors.toMap(SummaryTalkScheduleInfoResponse::getParent, SummaryTalkScheduleInfoResponse::getName));
         model.addAttribute("scheduleInfos", scheduleInfos);
 
         model.addAttribute("searchOrganizationNames", organizationService.getHierarchicalOrganizationNames(form.getGroupCode()));

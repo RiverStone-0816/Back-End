@@ -1,5 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.schedule;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatServiceInfo;
+import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.EntityNotFoundException;
 import kr.co.eicn.ippbx.exception.ValidationException;
@@ -13,7 +15,9 @@ import kr.co.eicn.ippbx.model.search.TalkServiceInfoSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.TalkScheduleGroupRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.TalkScheduleInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.TalkServiceInfoRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WebchatServiceInfoRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
+import kr.co.eicn.ippbx.server.service.TalkScheduleService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -43,8 +47,10 @@ public class WeekTalkScheduleInfoApiController extends ApiBaseController {
 
 	private final TalkScheduleInfoRepository repository;
 	private final TalkServiceInfoRepository talkServiceInfoRepository;
+	private final WebchatServiceInfoRepository webchatServiceInfoRepository;
 	private final TalkScheduleGroupRepository talkScheduleGroupRepository;
 	private final OrganizationService organizationService;
+	private final TalkScheduleService talkScheduleService;
 
 	/**
 	 * 상담톡 주간스케쥴러 목록조회
@@ -52,10 +58,7 @@ public class WeekTalkScheduleInfoApiController extends ApiBaseController {
 	@GetMapping("")
 	public ResponseEntity<JsonResult<List<TalkServiceInfoResponse>>> list(TalkServiceInfoSearchRequest search) {
 		search.setType(ScheduleType.WEEK);
-		return ResponseEntity.ok(data(talkServiceInfoRepository.getTalkServiceInfoLists(search).stream()
-						.map((e) -> convertDto(e, TalkServiceInfoResponse.class))
-						.collect(Collectors.toList()))
-		);
+		return ResponseEntity.ok(data(talkScheduleService.list(search)));
 	}
 
 	/**
@@ -78,12 +81,22 @@ public class WeekTalkScheduleInfoApiController extends ApiBaseController {
 				.filter(e -> e.getSeq().equals(seq))
 				.map(e -> {
 					final TalkScheduleInfoDetailResponse response = convertDto(e, TalkScheduleInfoDetailResponse.class);
-					final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo entity = talkServiceInfoRepository.findOne(TalkServiceInfo.TALK_SERVICE_INFO.SENDER_KEY.eq(e.getSenderKey()));
-					if (entity != null) {
-						response.setKakaoServiceName(entity.getKakaoServiceName());
-						response.setSenderKey(entity.getSenderKey());
-						response.setIsChattEnable(entity.getIsChattEnable());
+					if (TalkChannelType.KAKAO.getCode().equals(e.getChannelType())) {
+						final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo entity = talkServiceInfoRepository.findOne(TalkServiceInfo.TALK_SERVICE_INFO.SENDER_KEY.eq(e.getSenderKey()));
+						if (entity != null) {
+							response.setKakaoServiceName(entity.getKakaoServiceName());
+							response.setSenderKey(entity.getSenderKey());
+							response.setIsChattEnable(entity.getIsChattEnable());
+						}
+					} else {
+						final WebchatServiceInfo entity = webchatServiceInfoRepository.getBySenderKey(e.getSenderKey());
+						if (entity != null) {
+							response.setKakaoServiceName(entity.getWebchatServiceName());
+							response.setSenderKey(entity.getSenderKey());
+							response.setIsChattEnable(entity.getIsChattEnable());
+						}
 					}
+
 					if (e.getGroupId() != null)
 						response.setScheduleGroup(talkScheduleGroupRepository.getTalkScheduleGroupLists()
 								.stream()

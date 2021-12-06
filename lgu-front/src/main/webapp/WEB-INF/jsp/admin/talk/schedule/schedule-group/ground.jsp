@@ -59,13 +59,13 @@
                                                     </td>
                                                     <td>${g.htmlQuote(s.kindDataName)}</td>
                                                     <td>
-                                                        <button class="ui button mini compact" onclick="popupScheduleItemModal(${e.parent}, ${s.child})">수정</button>
+                                                        <button class="ui button mini compact" onclick="popupScheduleItemModal(${e.parent}, ${s.child}, '${e.channelType}')">수정</button>
                                                         <button class="ui button mini compact" onclick="deleteScheduleItem(${s.child})">삭제</button>
                                                     </td>
                                                     <c:if test="${scheduleStatus.first}">
                                                         <td rowspan="${e.scheduleGroupLists.size() * 2 + 1}">
                                                             <div class="ui vertical buttons">
-                                                                <button class="ui button mini compact" onclick="popupScheduleItemModal(${e.parent})">항목추가</button>
+                                                                <button class="ui button mini compact" onclick="popupScheduleItemModal(${e.parent}, '', '${e.channelType}')">항목추가</button>
                                                                 <button class="ui button mini compact" onclick="deleteScheduleGroup(${e.parent})">유형삭제</button>
                                                             </div>
                                                         </td>
@@ -107,7 +107,7 @@
                                                 <td></td>
                                                 <td>
                                                     <div class="ui vertical buttons">
-                                                        <button class="ui button mini compact" onclick="popupScheduleItemModal(${e.parent})">항목추가</button>
+                                                        <button class="ui button mini compact" onclick="popupScheduleItemModal(${e.parent}, '', '${e.channelType}')">항목추가</button>
                                                         <button class="ui button mini compact" onclick="deleteScheduleGroup(${e.parent})">유형삭제</button>
                                                     </div>
                                                 </td>
@@ -143,6 +143,27 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="four wide column"><label class="control-label">채널타입</label></div>
+                    <div class="twelve wide column">
+                        <div class="ui form">
+                            <div class="inline fields">
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="channelType" value="kakao" checked>
+                                        <label>카카오상담톡</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="channelType" value="eicn">
+                                        <label>웹챗</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -156,7 +177,7 @@
         <script>
             function popupScheduleGroupModal() {
                 const modal = $('#modal-schedule-type-add');
-                modal.find('[name]').val('');
+                modal.find('[name=name]').val('');
                 modal.modalShow();
             }
 
@@ -176,8 +197,8 @@
                 });
             }
 
-            function popupScheduleItemModal(parent, child) {
-                popupReceivedHtml('/admin/talk/schedule/schedule-group/' + parent + '/item/' + (child || 'new') + '/modal', 'modal-schedule-item');
+            function popupScheduleItemModal(parent, child, channelType) {
+                popupReceivedHtml('/admin/talk/schedule/schedule-group/' + parent + '/item/' + (child || 'new') + '/modal?channelType=' + channelType, 'modal-schedule-item');
             }
         </script>
     </tags:scripts>
