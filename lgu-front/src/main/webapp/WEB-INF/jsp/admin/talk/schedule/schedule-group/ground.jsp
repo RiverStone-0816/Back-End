@@ -46,7 +46,7 @@
                                             <c:forEach var="s" items="${e.scheduleGroupLists}" varStatus="scheduleStatus">
                                                 <tr>
                                                     <c:if test="${scheduleStatus.first}">
-                                                        <td rowspan="${e.scheduleGroupLists.size() * 2 + 1}">${g.htmlQuote(e.name)}</td>
+                                                        <td rowspan="${e.scheduleGroupLists.size() * 2 + 1}">${g.htmlQuote(e.name)}(${g.messageOf("TalkChannelType", e.channelType)})</td>
                                                     </c:if>
                                                     <td style="width: 50px;">${scheduleStatus.index + 1}</td>
                                                     <td>
