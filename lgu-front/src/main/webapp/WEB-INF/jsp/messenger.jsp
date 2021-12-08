@@ -609,7 +609,7 @@
                 },
                 loadTemplates: function () {
                     const _this = this
-                    restSelf.get('/api/talk-template/', null, false, null).done(function (response) {
+                    restSelf.get('/api/talk-template/my/', null, false, null).done(function (response) {
                         _this.templates = []
                         response.data.forEach(function (e) {
                             _this.templates.push({

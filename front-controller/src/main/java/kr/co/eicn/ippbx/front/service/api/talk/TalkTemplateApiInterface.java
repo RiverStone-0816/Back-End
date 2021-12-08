@@ -1,6 +1,5 @@
 package kr.co.eicn.ippbx.front.service.api.talk;
 
-import kr.co.eicn.ippbx.front.controller.api.talk.TalkTemplateApiController;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkTemplateSummaryResponse;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;

@@ -56,13 +56,23 @@ public class TalkTemplateApiController extends ApiBaseController {
 
     //리스트
     @GetMapping("list")
-    public ResponseEntity<JsonResult<List<TalkTemplateSummaryResponse>>> list() {
+    public ResponseEntity<JsonResult<List<TalkTemplateSummaryResponse>>> list(TemplateSearchRequest search) {
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
         final Map<String, String> companyInfoMap = companyInfoRepository.findAll().stream().collect(Collectors.toMap(CompanyInfo::getCompanyId, CompanyInfo::getCompanyName));
         final Map<String, CompanyTree> companyTreeMap = organizationService.getAllCompanyTrees().stream().collect(Collectors.toMap(CompanyTree::getGroupCode, e -> e));
 
 
         final List<TalkTemplateSummaryResponse> list = repository.list().stream()
+                .filter(e -> {
+                    if (search.getIsMy()) {
+                        if (TalkTemplate.PERSON.getCode().equals(e.getType()) && g.getUser().getId().equals(e.getTypeData()))
+                            return true;
+                        else if (TalkTemplate.GROUP.getCode().equals(e.getType()) && companyTreeMap.containsKey(e.getTypeData()) && companyTreeMap.get(e.getTypeData()).getGroupTreeName().contains(g.getUser().getGroupCode()))
+                            return true;
+                        else return TalkTemplate.COMPANY.getCode().equals(e.getType()) && g.getUser().getCompanyId().equals(e.getTypeData());
+                    } else
+                        return true;
+                })
                 .map((e) -> {
                     final TalkTemplateSummaryResponse talkTemplateSummaryResponse = convertDto(e, TalkTemplateSummaryResponse.class);
                     talkTemplateSummaryResponse.setWriteUserName(Objects.nonNull(personListMap.get(e.getWriteUserid()))

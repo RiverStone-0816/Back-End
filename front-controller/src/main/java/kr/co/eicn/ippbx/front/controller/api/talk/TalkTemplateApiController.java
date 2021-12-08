@@ -38,6 +38,12 @@ public class TalkTemplateApiController extends BaseController {
         return apiInterface.list(search);
     }
 
+    @GetMapping("my")
+    public List<TalkTemplateSummaryResponse> myList(TemplateSearchRequest search) throws IOException, ResultFailException {
+        search.setIsMy(true);
+        return apiInterface.list(search);
+    }
+
     /*@GetMapping("")
     public Pagination<TalkTemplateSummaryResponse> getPagination(TemplateSearchRequest form) throws IOException, ResultFailException {
         return apiInterface.getPagination(form);
