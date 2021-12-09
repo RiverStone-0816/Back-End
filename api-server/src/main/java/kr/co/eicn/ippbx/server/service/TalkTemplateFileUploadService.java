@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.util.UrlUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+import static org.apache.commons.io.FilenameUtils.getFullPath;
+import static org.apache.commons.io.FilenameUtils.getName;
 import static org.apache.commons.lang3.StringUtils.replaceEach;
 import static org.springframework.util.StringUtils.cleanPath;
 
@@ -26,11 +29,9 @@ import static org.springframework.util.StringUtils.cleanPath;
 public class TalkTemplateFileUploadService extends ApiBaseService {
 
     private final TalkTemplateRepository repository;
-    private final FileSystemStorageService fileSystemStorageService;
-    @Value("${file.path.notice}")
-    private String savePath;
+    private final ImageFileStorageService imageFileStorageService;
     @Value("${file.path.chatt}")
-    private String chattingSavePath;
+    private String savePath;
 
     public Integer insertTalkTemplateFileUpload(TalkTemplateFormRequest form) {
         storeFile(form);
@@ -46,7 +47,7 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
         if (TalkTemplateFormRequest.MentType.PHOTO.equals(form.getTypeMent())) {
             if (form.getFile() != null && !form.getFile().isEmpty()) {
                 final MultipartFile file = form.getFile();
-                final Path path = Paths.get(replaceEach(savePath, new String[]{"{0}", "{1}"}, new String[]{g.getUser().getCompanyId(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"))}));
+                final Path path = Paths.get(replaceEach(savePath, new String[]{"{0}", "{1}", "{2}"}, new String[]{g.getUser().getCompanyId(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM")), LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"))}));
 
                 if (Files.notExists(path)) {
                     try {
@@ -61,15 +62,19 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
                 form.setOriginalFileName(originalFileName);
                 form.setFilePath(path.resolve(saveFileName).toString());
 
-                this.fileSystemStorageService.store(path, saveFileName, file);
+                this.imageFileStorageService.store(path, saveFileName, file);
             } else if (form.getFile() == null && form.getFilePath().startsWith("http")) {
                 final String[] dirInfo = form.getFilePath().substring(form.getFilePath().indexOf("path=") + 5, form.getFilePath().indexOf("&")).split("/");
 
                 if (dirInfo.length == 2) {
-                    final Path path = Paths.get(replaceEach(chattingSavePath, new String[]{"{0}", "{1}", "{2}"}, new String[]{g.getUser().getCompanyId(), dirInfo[0], dirInfo[1]}));
+                    final Path path = Paths.get(replaceEach(savePath, new String[]{"{0}", "{1}", "{2}"}, new String[]{g.getUser().getCompanyId(), dirInfo[0], dirInfo[1]}));
                     form.setFilePath(path.resolve(form.getOriginalFileName()).toString());
                 }
             }
         }
+    }
+
+    public Resource getImage(String filePath) {
+        return this.imageFileStorageService.loadImage(Paths.get(getFullPath(filePath)), getName(filePath));
     }
 }

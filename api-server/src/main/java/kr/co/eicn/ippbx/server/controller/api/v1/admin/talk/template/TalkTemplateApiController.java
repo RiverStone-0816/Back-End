@@ -22,7 +22,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +37,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkTemplate.TALK_TEMPLATE;
 import static kr.co.eicn.ippbx.util.JsonResult.create;
 import static kr.co.eicn.ippbx.util.JsonResult.data;
 
@@ -179,5 +181,15 @@ public class TalkTemplateApiController extends ApiBaseController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(data(list));
+    }
+
+    @GetMapping("image")
+    public ResponseEntity<Resource> getImage(@RequestParam String filePath) {
+        final Resource resource = service.getImage(filePath);
+
+        return ResponseEntity.ok()
+                .contentType(MediaTypeFactory.getMediaType(resource).isPresent() ? MediaTypeFactory.getMediaType(resource).get() : MediaType.APPLICATION_OCTET_STREAM)
+                .headers(header -> header.setCacheControl(CacheControl.noCache().getHeaderValue()))
+                .body(resource);
     }
 }
