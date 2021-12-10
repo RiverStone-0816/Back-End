@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin.chat.config;
 
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatServiceInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatServiceSummaryInfoResponse;
 import kr.co.eicn.ippbx.model.form.WebchatServiceInfoFormRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.service.WebChattingConfigService;
@@ -30,8 +31,8 @@ public class WebchatConfigApiController extends ApiBaseController {
     private final WebChattingConfigService webChattingConfigService;
 
     @GetMapping("")
-    public ResponseEntity<JsonResult<List<WebchatServiceInfoResponse>>> getAll() {
-        List<WebchatServiceInfoResponse> response = webChattingConfigService.getAll();
+    public ResponseEntity<JsonResult<List<WebchatServiceSummaryInfoResponse>>> getAll() {
+        List<WebchatServiceSummaryInfoResponse> response = webChattingConfigService.getAll();
 
         return ResponseEntity.ok(JsonResult.data(response));
     }

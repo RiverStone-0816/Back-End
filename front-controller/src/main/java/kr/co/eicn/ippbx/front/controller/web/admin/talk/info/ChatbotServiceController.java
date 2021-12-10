@@ -50,7 +50,7 @@ public class ChatbotServiceController extends BaseController {
         val entity = apiInterface.get(seq);
         model.addAttribute("entity", entity);
         ReflectionUtils.copy(form, entity);
-        form.setEnableChat(Objects.equals(entity.getEnableChat(), "Y"));
+        form.setEnableChat(entity.getEnableChat());
         form.setImage(entity.getImageFileName());
         form.setProfile(entity.getProfileFileName());
 

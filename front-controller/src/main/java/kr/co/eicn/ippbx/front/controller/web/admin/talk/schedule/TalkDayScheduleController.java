@@ -66,7 +66,7 @@ public class TalkDayScheduleController extends BaseController {
         model.addAttribute("talkServices", talkServices);
 
         final Map<String, String> chatBotServices = webchatConfigApiInterface.list().stream().filter(e -> StringUtils.isNotEmpty(e.getSenderKey()))
-                .collect(Collectors.toMap(WebchatServiceInfoResponse::getSenderKey, WebchatServiceInfoResponse::getChannelName));
+                .collect(Collectors.toMap(WebchatServiceSummaryInfoResponse::getSenderKey, WebchatServiceSummaryInfoResponse::getChannelName));
         model.addAttribute("chatBotServices", chatBotServices);
 
         final List<SummaryTalkScheduleInfoResponse> scheduleInfos = apiInterface.scheduleInfos();

@@ -25,8 +25,8 @@ public class WebchatServiceInfoRepository extends EicnBaseRepository<WebchatServ
                 .fetchOneInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatServiceInfo.class);
     }
 
-    public void insert(WebchatServiceInfoFormRequest form) {
-        dsl.insertInto(WEBCHAT_SERVICE_INFO)
+    public Integer insert(WebchatServiceInfoFormRequest form) {
+        return dsl.insertInto(WEBCHAT_SERVICE_INFO)
                 .set(WEBCHAT_SERVICE_INFO.COMPANY_ID, getCompanyId())
                 .set(WEBCHAT_SERVICE_INFO.WEBCHAT_SERVICE_NAME, form.getChannelName())
                 .set(WEBCHAT_SERVICE_INFO.SENDER_KEY, form.getSenderKey())
@@ -36,7 +36,9 @@ public class WebchatServiceInfoRepository extends EicnBaseRepository<WebchatServ
                 .set(WEBCHAT_SERVICE_INFO.IMAGE, form.getImage())
                 .set(WEBCHAT_SERVICE_INFO.BGCOLOR, form.getBackgroundColor())
                 .set(WEBCHAT_SERVICE_INFO.PROFILE, form.getProfile())
-                .execute();
+                .returning()
+                .fetchOne()
+                .value1();
     }
 
     public void update(Integer seq, WebchatServiceInfoFormRequest form) {
