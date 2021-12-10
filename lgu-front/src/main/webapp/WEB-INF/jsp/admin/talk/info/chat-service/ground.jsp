@@ -50,7 +50,7 @@
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(e.channelName)}</td>
                                         <td>${g.htmlQuote(e.senderKey)}</td>
-                                        <td>${e.enableChat == 'Y' ? '활성화' : '비활성화'}</td>
+                                        <td>${e.enableChat ? '활성화' : '비활성화'}</td>
                                         <td>${g.htmlQuote(e.displayCompanyName)}</td>
                                     </tr>
                                 </c:forEach>

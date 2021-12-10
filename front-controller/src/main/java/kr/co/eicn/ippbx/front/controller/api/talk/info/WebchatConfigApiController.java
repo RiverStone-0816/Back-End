@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.front.service.api.WebchatConfigApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatServiceInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatServiceSummaryInfoResponse;
 import kr.co.eicn.ippbx.model.form.WebchatServiceInfoFormRequest;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -30,7 +31,7 @@ public class WebchatConfigApiController extends BaseController {
 
     @SneakyThrows
     @GetMapping("")
-    public List<WebchatServiceInfoResponse> list() {
+    public List<WebchatServiceSummaryInfoResponse> list() {
         return apiInterface.list();
     }
 
