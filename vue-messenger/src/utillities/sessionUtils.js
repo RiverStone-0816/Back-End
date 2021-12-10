@@ -1,6 +1,4 @@
-import cookieUtils from '@/utillities/cookieUtils'
-import axios from "@/plugins/axios";
-import store from "@/store/index"
+import cookieUtils from './cookieUtils'
 
 export const BROWSER_SESSION_KEY = "BROWSER_SESSION_ATTRIBUTE";
 export const LOCALSTORAGE_SESSION_KEY = "session";
@@ -52,48 +50,5 @@ export default {
     },
     clear() {
         localStorage.setItem(LOCALSTORAGE_SESSION_KEY, '{}')
-    },
-    getId() {
-        return this.get('currentUserId')
-    },
-    setId(o) {
-        this.set('currentUserId', o)
-    },
-    getMe() {
-        return this.get('me')
-    },
-    setMe(o) {
-        this.set('me', o)
-        this.set('currentUserId', o.id)
-    },
-    async fetchAccessToken() {
-        try {
-            const currentUserId = this.getId()
-            if (!currentUserId)
-                return
-
-            const accessToken = this.get('accessToken') || (await axios.get(`/api/auth/access-token`)).data.data
-
-            this.set('accessToken', accessToken)
-            return accessToken
-        } catch (e) {
-            throw 'cannot get access token'
-        }
-    },
-    async fetchMe() {
-        try {
-            const currentUserId = this.getId()
-            if (!currentUserId)
-                return
-
-            const me = this.get('me') || (await axios.get(`/api/user/${currentUserId}`)).data.data
-
-            this.set('me', me)
-            store.state.user.credential = me
-            return me
-        } catch (ignored) {
-            this.set('me', null)
-            store.state.user.credential = null
-        }
     },
 }

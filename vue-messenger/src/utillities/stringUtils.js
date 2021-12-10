@@ -23,9 +23,7 @@ export default {
             return concatDelimiter(url) + encodeURIComponent((data === null || data === undefined) ? '' : data);
 
         for (let key in data) {
-            if (data.hasOwnProperty(key)) {
-                url = addQueryString(url, key, data[key]);
-            }
+            url = addQueryString(url, key, data[key]);
         }
 
         return url;

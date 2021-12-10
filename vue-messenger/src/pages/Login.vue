@@ -2,140 +2,70 @@
 <!-- ref: https://tailwindcomponents.com/component/cool-text-inputs-and-login -->
 <template>
   <section class="flex w-full h-screen">
-    <div class="m-auto w-72">
+    <div class="m-auto" style="width: 36rem">
 
-      <form v-if="!showingVerification" @submit.stop.prevent="prepareVerification">
-        <h1 class="text-4xl font-black mb-4 text-center">Login</h1>
+      <form v-show="!connected" @submit.stop.prevent="connect">
         <div class="mb-4 relative">
-          <input v-model="loginForm.company" :class="loginForm.company && 'filled'" autofocus class="input" type="text">
-          <label class="label">회사아이디</label>
-        </div>
-        <div class="mb-4 relative">
-          <input v-model="loginForm.id" :class="loginForm.id && 'filled'" class="input" type="text">
-          <label class="label">아이디</label>
+          <input v-model="form.url" :class="form.url && 'filled'" autofocus class="input" type="text">
+          <label class="label">URL</label>
         </div>
         <div class="mb-4 relative">
-          <input v-model="loginForm.password" :class="loginForm.password && 'filled'" class="input" type="password">
-          <label class="label">비밀번호</label>
+          <input v-model="form.senderKey" :class="form.senderKey && 'filled'" autofocus class="input" type="text">
+          <label class="label">SENDER KEY</label>
         </div>
         <div class="mb-4 relative">
-          <input v-model="loginForm.extension" :class="loginForm.extension && 'filled'" class="input" type="text">
-          <label class="label">내선번호</label>
-        </div>
-        <div class="text-right">
-          <label class="inline-flex items-center mb-3">
-            <input v-model="remember" class="form-checkbox h-5 w-5 text-orange-600" type="checkbox"><span class="ml-2 text-gray-700">로그인저장</span>
-          </label>
-        </div>
-
-        <button class="bg-indigo-600 hover:bg-blue-dark text-white font-bold py-3 px-6 rounded w-full">로그인</button>
-      </form>
-
-      <form v-else @submit.stop.prevent="verify">
-        <h1 class="text-4xl font-black mb-4 text-center">Login</h1>
-        <div class="mb-4 relative">
-          <input v-model="verifyForm.phone" :class="verifyForm.phone && 'filled'" autofocus class="input" type="text">
-          <label class="label">전화번호</label>
+          <input v-model="form.ip" :class="form.ip && 'filled'" class="input" type="text">
+          <label class="label">IP</label>
         </div>
         <div class="mb-4 relative">
-          <input v-model="verifyForm.code" :class="verifyForm.code && 'filled'" autofocus class="input" type="text">
-          <label class="label">인증번호</label>
+          <input v-model="form.userKey" :class="form.userKey && 'filled'" class="input" type="text" disabled>
+          <label class="label">USER KEY</label>
         </div>
-        <div class="mb-4 relative" v-text="verificationStatus"></div>
-        <button class="bg-indigo-600 hover:bg-blue-dark text-white font-bold py-3 px-6 rounded w-full">인증시도하기</button>
+        <div class="mb-4 relative">
+          <input v-model="form.mode" :class="form.mode && 'filled'" class="input" type="text" disabled>
+          <label class="label">MODE</label>
+        </div>
+        <button class="bg-indigo-600 hover:bg-blue-dark text-white font-bold py-3 px-6 rounded w-full">Connect</button>
       </form>
     </div>
   </section>
 </template>
 
 <script>
-import axios from "@/plugins/axios"
-import router from "@/router"
+import axios from "axios"
+import sessionUtils from '../utillities/sessionUtils'
 
 export default {
   data() {
     return {
-      communicator: this.$store.state.monitor.communicator,
-      showingVerification: false,
-      loginForm: {
-        company: 'eicn',
-        id: 'user0990',
-        password: 'user12!@!',
-        extension: '0990',
+      communicator: this.$store.state.communicator.communicator,
+      connected: this.$store.state.communicator.communicator.connected,
+      form: {
+        url: 'http://122.49.74.102:8200',
+        senderKey: '049d87baa539f95a3ad40bf96e1f4bf8ac1031cd',
+        userKey: sessionUtils.getSessionId(),
+        ip: '',
+        mode: 'local',
       },
-      verifyForm: {
-        phone: null,
-        code: null,
-        sessionId: null,
-        pbxHost: null
-      },
-      remember: false,
-      verificationStatus: null
     }
   },
   methods: {
-    prepareVerification() {
-      axios.post('/api/auth/check-login-condition', this.loginForm).then(response => {
-        if (!response.data.data?.number)
-          return this.login()
-
-        this.verifyForm.phone = response.data.data?.number
-        this.verifyForm.code = response.data.data?.authNum
-        this.verifyForm.sessionId = response.data.data?.sessionId
-        this.verifyForm.pbxHost = response.data.data?.pbxHost
-        this.showingVerification = true
-
-        this.communicator.connect(this.$store.state.socket.monitor_connector, this.loginForm.company, this.loginForm.id, response.data.data?.pbxHost)
-      }).catch(e => {
-        console.log(e.response)
+    connect() {
+      this.communicator.connect(this.form.url, this.form.senderKey, this.form.userKey, this.form.ip, this.form.mode,)
+      this.communicator.on('webchatsvc_start', data => {
+        if (data.result !== 'OK') return alert('로그인실패 :' + data.result + '; ' + data.result_data)
+        this.openChat()
       })
     },
-    verify() {
-      this.communicator.send({
-        company_id: this.loginForm.company,
-        userid: this.loginForm.id,
-        target_pbx: this.verifyForm.pbxHost,
-        command: 'CMD|ARS_AUTH|' + this.loginForm.company + ',' + this.loginForm.id + ',' + this.verifyForm.phone + ',' + this.verifyForm.code + ',' + this.verifyForm.sessionId
-      })
-    },
-    login() {
-      axios.get('/api/auth/confirm-login').then(() => {
-        axios.get('/api/user/' + this.loginForm.id, this.loginForm).then(response => {
-          this.$store.commit('user/login', response.data.data)
-          router.push('/')
-        })
-      })
-    },
-    setLabelClickHandler() {
-      this.$el.querySelectorAll('.label').forEach(e => e.setAttribute('onclick', 'this.previousElementSibling.focus()'))
+    openChat() {
+      this.connected = true
+      const modal = window.open('/', 'modal', `width=460,height=700,top=0,left=0,scrollbars=yes`)
+      modal.communicator = this.communicator
     },
   },
-  mounted() {
-    this.setLabelClickHandler()
-  },
-  updated() {
-    this.setLabelClickHandler()
-  },
-  created() {
-    const _this = this
-    this.communicator.on('ARS_AUTH_RES', function (message, kind, peer, data1, data2) {
-      switch (kind) {
-        case 'CALLREQ_OK':
-          return _this.verificationStatus = '인증시도'
-        case 'CALLREQ_NOK':
-          return _this.verificationStatus = '인증시도실패: ' + data2
-        case 'HANGUP':
-          return _this.verificationStatus = 'HANGUP'
-        case 'DIALUP':
-          return _this.verificationStatus = '전화연결'
-        case 'FAIL':
-          return _this.verificationStatus = '인증실패'
-        case 'SUCC':
-          axios.post('/api/auth/login', _this.loginForm)
-              .then(() => this.login())
-              .catch(e => console.log(e.response))
-      }
-    })
+  async created() {
+    if (this.connected) this.openChat()
+    this.form.ip = (await axios.get('https://api.ipify.org')).data
   }
 }
 </script>

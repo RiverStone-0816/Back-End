@@ -24,11 +24,11 @@
 </template>
 
 <script>
-import AlertModal from "@/components/singleton/AlertModal";
-import LOGIN from "@/pages/Login";
-import router, {PATH} from "@/router";
-import axios from "@/plugins/axios"
-import sessionUtils from "@/utillities/sessionUtils";
+import axios from 'axios'
+import AlertModal from './components/singleton/AlertModal'
+import LOGIN from './pages/Login'
+import router, {PATH} from './router'
+import sessionUtils from './utillities/sessionUtils'
 
 // ref: https://stackoverflow.com/questions/50768678/axios-ajax-show-loading-when-making-ajax-request
 export default {
@@ -56,11 +56,11 @@ export default {
   methods: {
     setLoading(isLoading) {
       if (isLoading) {
-        this.refCount++;
-        this.isLoading = true;
+        this.refCount++
+        this.isLoading = true
       } else if (this.refCount > 0) {
-        this.refCount--;
-        this.isLoading = (this.refCount > 0);
+        this.refCount--
+        this.isLoading = (this.refCount > 0)
       }
     }
   },
@@ -86,12 +86,6 @@ export default {
       }
 
       return Promise.reject(error)
-    })
-
-    axios.get('/api/auth/sockets').then(response => {
-      this.$store.state.socket = response.data.data
-    }).catch(e => {
-      console.log(e.response)
     })
   }
 }

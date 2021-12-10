@@ -1,5 +1,5 @@
 {
-  "name": "vue3-study",
+  "name": "vue3-messenger",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -52,5 +52,7 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "main": "index.js",
+  "license": "MIT"
 }
