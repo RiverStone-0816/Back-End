@@ -272,7 +272,8 @@
                         for (let i = 0; i < options.length; i++) options[i].selected = false
                     },
                     loadPersons() {
-                        restSelf.get('/api/monit/').done(response => o.persons = response.data.map(team => team.person).flatMap(persons => persons))
+                        const _this = this
+                        restSelf.get('/api/monit/').done(response => _this.persons = response.data.map(team => team.person).flatMap(persons => persons))
                     }
                 },
                 updated: function () {
