@@ -32,14 +32,15 @@
 </template>
 
 <script>
-import axios from "axios"
+import axios from 'axios'
 import sessionUtils from '../utillities/sessionUtils'
+import store from '../store/index'
 
 export default {
   data() {
     return {
-      communicator: this.$store.state.communicator.communicator,
-      connected: this.$store.state.communicator.communicator.connected,
+      communicator: window.communicator,
+      connected: window.communicator.connected,
       form: {
         url: 'http://122.49.74.102:8200',
         senderKey: '049d87baa539f95a3ad40bf96e1f4bf8ac1031cd',
@@ -53,13 +54,13 @@ export default {
     connect() {
       this.communicator.connect(this.form.url, this.form.senderKey, this.form.userKey, this.form.ip, this.form.mode,)
       this.communicator.on('webchatsvc_start', data => {
-        if (data.result !== 'OK') return alert('로그인실패 :' + data.result + '; ' + data.result_data)
+        if (data.result !== 'OK') return store.commit('alert/show', `로그인실패 : ${data.result}; ${data.result_data}`)
         this.openChat()
       })
     },
     openChat() {
       this.connected = true
-      const modal = window.open('/', 'modal', `width=460,height=700,top=0,left=0,scrollbars=yes`)
+      const modal = window.open(location.href, 'chat', `width=460,height=700,top=0,left=0,scrollbars=yes`)
       modal.communicator = this.communicator
     },
   },

@@ -224,7 +224,7 @@
           <button class="flex items-center justify-center rounded-lg hover:bg-gray-200 h-10 w-10 text-white flex-shrink-0 mr-3">
             <span class="ml-1">
               <svg height="25" viewBox="15 5 10 25" width="36" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15,30V21h6v9h7.5V18H33L18,4.5,3,18H7.5V30Z" fill="#514F65"/>
+                <path d="M15,30V21h6v9h7.5V18H33L18,4.5,3,18H7.5V30Z" fill="#514f65"/>
               </svg>
             </span>
           </button>
@@ -256,6 +256,7 @@ import kakaoIcon from '../assets/kakao-icon.png'
 import naverIcon from '../assets/naver-icon.png'
 import moment from 'moment'
 import debounce from '../utillities/mixins/debounce'
+import store from '../store/index'
 
 const SENDER = Object.freeze({SERVER: 'SERVER', USER: 'USER'})
 
@@ -269,10 +270,10 @@ export default {
   components: {},
   data() {
     return {
-      communicator: this.$store.state.communicator.communicator || window.communicator,
+      communicator: window.communicator,
 
       inputEnable: false,
-      backgroundColor: '#F3F3F3',
+      backgroundColor: '#f3f3f3',
       displayName: null,
       botId: null,
       lastReceiveMessageType: null,
@@ -353,9 +354,9 @@ export default {
           action_data: message.data.fallback_action_data,
         }, this.lastReceiveMessageType)
       } else if (message.data.fallback_action === 'phone') {
-        alert('phone 처리 방법 없음')
+        store.commit('alert/show', 'phone 처리 방법을 전달받아야 함')
       } else {
-        alert('미처리된 부분이 있음: ' + message.data.fallback_action)
+        store.commit('alert/show', `미처리된 부분이 있음: ${message.data.fallback_action}:${message.data.fallback_action_data}`)
       }
     },
     actButton(message, button) {
@@ -379,7 +380,7 @@ export default {
       const result = {}
       const elements = event.target.closest('.-api-parent').querySelectorAll('[name]')
       for (let i = 0; i < elements.length; i++) {
-        if (!elements[i].value) return alert('API 호출을 위해 필요 정보를 모두 입력해야 합니다.')
+        if (!elements[i].value) return store.commit('alert/show', 'API 호출을 위해 필요 정보를 모두 입력해야 합니다.')
 
         const split = elements[i].name.split('.')
         if (split.length === 1) {
@@ -413,7 +414,7 @@ export default {
   },
   mounted() {
     this.communicator
-        .on('disconnect', () => alert('연결이 종료되었습니다.'))
+        .on('disconnect', () => store.commit('alert/show', '연결이 종료되었습니다.'))
         .on('webchatsvc_message', data => {
           this.lastReceiveMessageType = data.message_type
 

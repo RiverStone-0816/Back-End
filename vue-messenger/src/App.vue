@@ -1,11 +1,11 @@
 <template>
 
-  <div v-if="path === PATH.LOGIN">
-    <LOGIN/>
-  </div>
-  <div v-else>
-    <router-view/>
-  </div>
+  <template v-if="connected">
+    <Main/>
+  </template>
+  <template v-else>
+    <Login/>
+  </template>
 
   <teleport to="#modals">
     <AlertModal/>
@@ -26,31 +26,22 @@
 <script>
 import axios from 'axios'
 import AlertModal from './components/singleton/AlertModal'
-import LOGIN from './pages/Login'
-import router, {PATH} from './router'
+import Login from './pages/Login'
+import Main from './pages/Main'
 import sessionUtils from './utillities/sessionUtils'
+import Communicator from './utillities/Communicator'
+
+if (!window.communicator) window.communicator = new Communicator()
 
 // ref: https://stackoverflow.com/questions/50768678/axios-ajax-show-loading-when-making-ajax-request
 export default {
-  components: {
-    AlertModal,
-    LOGIN
-  },
-  setup() {
-    return {
-      PATH: PATH
-    }
-  },
+  components: {AlertModal, Login, Main,},
   data() {
     return {
-      path: PATH.MAIN,
+      communicator: window.communicator,
+      connected: window.communicator.connected,
       refCount: 0,
       isLoading: false
-    }
-  },
-  watch: {
-    $route(to) {
-      this.path = to.path
     }
   },
   methods: {
@@ -81,7 +72,8 @@ export default {
 
       if (error.response && error.response.status === 401) {
         sessionUtils.clear()
-        router.push('/login')
+        this.connected = false
+        this.communicator.connected = false
         return
       }
 
