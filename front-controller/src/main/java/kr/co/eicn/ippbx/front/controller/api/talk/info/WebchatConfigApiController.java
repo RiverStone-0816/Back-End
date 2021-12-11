@@ -50,7 +50,7 @@ public class WebchatConfigApiController extends BaseController {
     @SneakyThrows
     @PutMapping("{seq}")
     public void update(@PathVariable Integer seq, @Valid @RequestBody WebchatServiceInfoFormRequest form, BindingResult bindingResult) {
-        apiInterface.update(seq, form);
+         apiInterface.update(seq, form);
     }
 
     @SneakyThrows

@@ -3,7 +3,9 @@ package kr.co.eicn.ippbx.front.controller.web.admin.talk.info;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.api.WebchatConfigApiInterface;
+import kr.co.eicn.ippbx.model.enums.IntroChannelType;
 import kr.co.eicn.ippbx.model.form.WebchatServiceInfoFormRequest;
+import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author tinywind
@@ -41,6 +45,8 @@ public class ChatbotServiceController extends BaseController {
     @SneakyThrows
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") WebchatServiceInfoFormRequest form) {
+        model.addAttribute("channelTypes", IntroChannelType.class.getEnumConstants());
+
         return "admin/talk/info/chat-service/modal";
     }
 
@@ -53,6 +59,7 @@ public class ChatbotServiceController extends BaseController {
         form.setEnableChat(entity.getEnableChat());
         form.setImage(entity.getImageFileName());
         form.setProfile(entity.getProfileFileName());
+        form.setIntroChannelList(entity.getIntroChannelList().stream().map(e -> new WebchatServiceInfoFormRequest.IntroChannel(e.getChannelId(), e.getChannelType())).collect(Collectors.toList()));
 
         return modal(model, form);
     }

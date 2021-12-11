@@ -13,30 +13,30 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 
 <form:form modelAttribute="form" cssClass="ui modal -json-submit" data-method="${entity == null ? 'post' : 'put'}"
-           action="${pageContext.request.contextPath}/api/chat-service/${entity == null ? null : entity.seq}" data-done="reload">
+           action="${pageContext.request.contextPath}/api/chat-service/${entity == null ? null : entity.seq}" data-before="prepareChatServiceData" data-done="reload">
 
     <i class="close icon"></i>
     <div class="header">고객 채팅창 설정[${entity != null ? '수정' : '추가'}]</div>
 
-    <div class="content rows">
+    <div class="content scrolling rows">
         <div class="ui grid">
             <div class="row">
-                <div class="three wide column"><label class="control-label">채널명</label></div>
-                <div class="five wide column">
+                <div class="two wide column"><label class="control-label">채널명</label></div>
+                <div class="six wide column">
                     <div class="ui input fluid"><form:input path="channelName"/></div>
                 </div>
-                <div class="three wide column"><label class="control-label">senderKey</label></div>
-                <div class="five wide column">
+                <div class="two wide column"><label class="control-label">senderKey</label></div>
+                <div class="six wide column">
                     <div class="ui input fluid"><form:input path="senderKey"/></div>
                 </div>
             </div>
             <div class="row">
-                <div class="three wide column"><label class="control-label">회사명</label></div>
-                <div class="five wide column">
+                <div class="two wide column"><label class="control-label">회사명</label></div>
+                <div class="six wide column">
                     <div class="ui input fluid"><form:input path="displayCompanyName"/></div>
                 </div>
-                <div class="three wide column"><label class="control-label">활성화</label></div>
-                <div class="five wide column">
+                <div class="two wide column"><label class="control-label">활성화</label></div>
+                <div class="six wide column">
                     <div class="ui form">
                         <div class="inline fields">
                             <div class="field">
@@ -130,46 +130,32 @@
                     </div>
                 </div>
             </div>
-                <%--<div class="row">
-                    <div class="two wide column">
-                        <label class="control-label">채널추가</label>
-                    </div>
-                    <div class="fourteen wide column">
-                        <div class="ui grid">
-                            <div class="ten wide column">
-                                <div class="ui form flex mb10">
-                                    <select class="mr0">
-                                        <option>카카오톡</option>
-                                    </select>
-                                    <button type="button" class="ui small compact button mr0 ml10">추가하기</button>
-                                </div>
-                                <div class="channel-list">
-                                    <div class="dp-flex channel-item">
-                                        <img src="<c:url value="/resources/images/kakao-icon.png"/>" class="channel-icon mr10">
-                                        <div class="ui input fluid flex-100">
-                                            <input type="text" placeholder="채널ID 정보">
-                                        </div>
-                                        <button type="button" class="ui small compact button mr0 ml10">삭제하기</button>
+            <div class="row">
+                <div class="two wide column">
+                    <label class="control-label">채널정보</label>
+                </div>
+                <div class="fourteen wide column -channel-info">
+                    <div class="ui grid">
+                        <div class="ten wide column">
+                            <div class="ui form flex mb10">
+                                <select class="mr0" v-model="select">
+                                    <option v-for="(v, k) in CHANNEL_TYPES" :key="k" :value="k">{{ v.name }}</option>
+                                </select>
+                                <button type="button" class="ui small compact button mr0 ml10" @click.stop.prevent="addChannel">추가하기</button>
+                            </div>
+                            <div class="channel-list">
+                                <div v-for="(e, i) in list" :key="i" class="dp-flex channel-item">
+                                    <img :src="CHANNEL_TYPES[e.type].image" class="channel-icon mr10">
+                                    <div class="ui input fluid flex-100">
+                                        <input type="text" v-model="e.id">
                                     </div>
-                                    <div class="dp-flex channel-item">
-                                        <img src="<c:url value="/resources/images/nband-icon.png"/>" class="channel-icon mr10">
-                                        <div class="ui input fluid flex-100">
-                                            <input type="text" placeholder="채널ID 정보">
-                                        </div>
-                                        <button type="button" class="ui small compact button mr0 ml10">삭제하기</button>
-                                    </div>
-                                    <div class="dp-flex channel-item">
-                                        <img src="<c:url value="/resources/images/ntalk-icon.png"/>" class="channel-icon mr10">
-                                        <div class="ui input fluid flex-100">
-                                            <input type="text" placeholder="채널ID 정보">
-                                        </div>
-                                        <button type="button" class="ui small compact button mr0 ml10">삭제하기</button>
-                                    </div>
+                                    <button type="button" class="ui small compact button mr0 ml10" @click.stop.prevent="removeChannel(i)">삭제하기</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>--%>
+                </div>
+            </div>
         </div>
             <%--<div class="panel">
                 <div class="panel-heading">
@@ -241,4 +227,42 @@
             })
         })
     })
+
+    window.prepareChatServiceData = data => data.introChannelList = channelInfo.list
+
+    const channelInfo = (() => {
+        const o = Vue.createApp({
+            setup() {
+                return {
+                    CHANNEL_TYPES: {
+                        <c:forEach var="e" items="${channelTypes}">
+                        '${g.escapeQuote(e.name())}': {code: '${g.escapeQuote(e.code)}', image: '<c:url value="${e.imagePath}"/>', name: '${g.escapeQuote(message.getEnumText(e))}'},
+                        </c:forEach>
+                    }
+                }
+            },
+            data() {
+                return {
+                    select: 'EICN',
+                    list: [
+                        <c:forEach var="e" items="${form.introChannelList}">
+                        {id: '${g.escapeQuote(e.id)}', type: '${g.escapeQuote(e.type.name())}'},
+                        </c:forEach>
+                    ],
+                }
+            },
+            methods: {
+                addChannel() {
+                    this.list.push({id: '', type: o.select})
+                },
+                removeChannel(index) {
+                    this.list.splice(index, 1)
+                },
+                getImage(type) {
+                    return this.CHANNEL_TYPES[type].image
+                }
+            },
+        }).mount(modal.find('.-channel-info')[0])
+        return o || o
+    })()
 </script>
