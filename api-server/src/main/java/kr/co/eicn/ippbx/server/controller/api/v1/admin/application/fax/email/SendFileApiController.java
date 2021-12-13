@@ -17,7 +17,7 @@ import kr.co.eicn.ippbx.server.service.SendFileService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -41,7 +41,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
  * 상담어플리케이션 관리 > FAX/EMAIL 관리 > 발송물 관리
  */
 
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/application/fax-email/file", produces = MediaType.APPLICATION_JSON_VALUE)

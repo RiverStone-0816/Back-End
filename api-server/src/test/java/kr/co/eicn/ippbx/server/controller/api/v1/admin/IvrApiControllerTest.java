@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.model.form.IvrButtonMappingFormRequest;
 import kr.co.eicn.ippbx.model.form.IvrFormRequest;
 import kr.co.eicn.ippbx.model.form.IvrFormUpdateRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsFormRequest;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  *  TODO: API명세 미작성
  */
-@Log4j2
+@Slf4j
 public class IvrApiControllerTest extends BaseControllerTest {
 	private final String TEST_URL = "/api/v1/admin/sounds/ivr";
 

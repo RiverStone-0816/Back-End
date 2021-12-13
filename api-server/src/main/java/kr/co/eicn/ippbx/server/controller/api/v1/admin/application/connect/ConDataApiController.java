@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.ConGroupResponse;
 import kr.co.eicn.ippbx.server.repository.eicn.ConGroupRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
  * 상담어플리케이션 관리 > 연동DB 관리 > 데이터관리
  */
 
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/application/connect/data", produces = MediaType.APPLICATION_JSON_VALUE)

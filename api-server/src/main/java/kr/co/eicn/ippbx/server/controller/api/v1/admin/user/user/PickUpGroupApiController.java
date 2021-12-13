@@ -23,7 +23,7 @@ import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -47,7 +47,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  * 번호/그룹/사용자 > 사용자관리 > 당겨받기그룹설정
  */
 @IsAdmin
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/user/user/pickup-group", produces = MediaType.APPLICATION_JSON_VALUE)

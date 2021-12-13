@@ -1,13 +1,13 @@
 package kr.co.eicn.ippbx.util.spring;
 
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-@Log4j2
+@Slf4j
 public class SHA512PasswordEncoder implements PasswordEncoder {
     @Override
     public String encode(CharSequence rawPassword) {

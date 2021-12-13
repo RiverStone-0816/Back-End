@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.ScreenConfigExpressionType;
 import kr.co.eicn.ippbx.model.form.ScreenConfigFormRequest;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -19,7 +19,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Log4j2
+@Slf4j
 public class ScreenConfigApiControllerTest extends BaseControllerTest {
     private final String TEST_URL = "/api/v1/admin/monitor/screen";
 

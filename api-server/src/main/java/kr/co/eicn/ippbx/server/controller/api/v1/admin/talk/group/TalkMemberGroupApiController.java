@@ -14,7 +14,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.TalkServiceInfoRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -34,7 +34,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 /**
  * 상담톡관리 > 상담톡그룹/자동멘트관리 > 상담톡수신그룹관리
  */
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/talk/group/reception-group", produces = MediaType.APPLICATION_JSON_VALUE)

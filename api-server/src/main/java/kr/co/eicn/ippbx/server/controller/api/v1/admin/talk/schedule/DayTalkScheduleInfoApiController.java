@@ -21,7 +21,7 @@ import kr.co.eicn.ippbx.server.service.OrganizationService;
 import kr.co.eicn.ippbx.server.service.TalkScheduleService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +40,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 /**
  * 상담톡관리 > 상담톡일정관리 > 일별스케쥴러
  */
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/talk/schedule/day", produces = MediaType.APPLICATION_JSON_VALUE)

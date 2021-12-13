@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.server.controller.api.v1;
 import kr.co.eicn.ippbx.model.form.PersonLinkFormRequest;
 import kr.co.eicn.ippbx.model.form.PersonLinkListFormRequest;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
@@ -16,7 +16,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Log4j2
+@Slf4j
 public class PersonLinkApiControllerTest extends BaseControllerTest {
     private final String TEST_URL = "/api/person-link";
 
@@ -47,7 +47,7 @@ public class PersonLinkApiControllerTest extends BaseControllerTest {
                 /*문서작성필요.*/
                 .andReturn();
 
-        log.info(result);
+        log.info(String.valueOf(result));
     }
 
     @Test
@@ -61,6 +61,6 @@ public class PersonLinkApiControllerTest extends BaseControllerTest {
                 /*문서작성필요.*/
                 .andReturn();
 
-        log.info(result);
+        log.info(String.valueOf(result));
     }
 }

@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.config.security;
 
 import kr.co.eicn.ippbx.util.ResponseUtils;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Log4j2
+@Slf4j
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
 	private final ResponseUtils responseUtils;

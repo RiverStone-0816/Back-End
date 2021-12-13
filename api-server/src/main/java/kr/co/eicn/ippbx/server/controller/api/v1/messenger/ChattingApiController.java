@@ -15,7 +15,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.service.*;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -36,7 +36,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.create;
 import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.replaceEach;
 
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/chatt", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -7,7 +7,7 @@ import kr.co.eicn.ippbx.model.form.HolyInfoFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.HolyInfoRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -24,7 +24,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 /**
  * 일정관리 > 공휴일관리
  */
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/schedule/holy", produces = MediaType.APPLICATION_JSON_VALUE)

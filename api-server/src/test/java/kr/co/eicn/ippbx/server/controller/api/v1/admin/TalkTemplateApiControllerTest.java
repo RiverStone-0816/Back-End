@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkTemplateSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchPersonListResponse;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@Log4j2
+@Slf4j
 public class TalkTemplateApiControllerTest extends BaseControllerTest {
 
     private final String TEST_URL = "/api/v1/admin/talk/template";

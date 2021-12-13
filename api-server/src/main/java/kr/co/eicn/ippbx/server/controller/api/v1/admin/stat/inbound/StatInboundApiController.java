@@ -11,7 +11,7 @@ import kr.co.eicn.ippbx.server.service.StatInboundService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.SearchCycleUtils;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +27,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
  * 통계관리 > 인바운드통계 > 인바운드통계
  */
 
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/stat/inbound", produces = MediaType.APPLICATION_JSON_VALUE)

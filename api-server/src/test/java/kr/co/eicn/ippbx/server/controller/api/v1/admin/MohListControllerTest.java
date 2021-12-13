@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
 import kr.co.eicn.ippbx.model.dto.eicn.MohDetailResponse;
 import kr.co.eicn.ippbx.server.service.StorageService;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -20,7 +20,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Log4j2
+@Slf4j
 public class MohListControllerTest extends BaseControllerTest {
 	private final String TEST_URL = "/api/v1/admin/sounds/ring-back-tone";
 	private static String categoryCode = "COLOR_22";

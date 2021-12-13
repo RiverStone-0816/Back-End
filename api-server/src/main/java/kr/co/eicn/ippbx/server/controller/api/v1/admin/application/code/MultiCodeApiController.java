@@ -15,7 +15,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.CommonTypeRepository;
 import kr.co.eicn.ippbx.server.service.CommonFieldPoster;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +33,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 /**
  * 상담어플리케이션관리 > 코드관리 > 코드/멀티코드
  **/
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/application/code/multi", produces = MediaType.APPLICATION_JSON_VALUE)

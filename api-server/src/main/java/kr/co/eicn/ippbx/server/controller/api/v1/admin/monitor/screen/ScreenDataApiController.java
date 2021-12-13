@@ -15,7 +15,7 @@ import kr.co.eicn.ippbx.server.service.StatInboundService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +30,7 @@ import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName.QUEUE_NAME;
 /**
  * 모니터링 > 전광판 > 통화전광판
  */
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/monitor/screen-data", produces = MediaType.APPLICATION_JSON_VALUE)

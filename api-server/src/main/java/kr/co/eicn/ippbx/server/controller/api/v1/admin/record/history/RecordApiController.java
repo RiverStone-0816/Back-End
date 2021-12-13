@@ -26,7 +26,7 @@ import kr.co.eicn.ippbx.util.FunctionUtils;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.validation.BindingResult;
@@ -54,7 +54,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 /**
  * 녹취관리 > 녹취/통화이력조회 > 녹취/통화이력조회
  */
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/record/history", produces = MediaType.APPLICATION_JSON_VALUE)

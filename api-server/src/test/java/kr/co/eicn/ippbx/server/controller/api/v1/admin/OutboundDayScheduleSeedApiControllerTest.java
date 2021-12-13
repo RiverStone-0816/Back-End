@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.SummaryPhoneInfoResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.OutScheduleListEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.OutScheduleSeedEntity;
 import kr.co.eicn.ippbx.model.form.DayOutScheduleSeedFormRequest;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
@@ -23,7 +23,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Log4j2
+@Slf4j
 public class OutboundDayScheduleSeedApiControllerTest extends BaseControllerTest {
 	private final String TEST_URL = "/api/v1/admin/sounds/schedule/outbound/day";
 

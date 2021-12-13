@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
  * 상담어플리케이션 관리 > SMS 관리 > SMS 발송이력
  */
 
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/application/sms/message-history", produces = MediaType.APPLICATION_JSON_VALUE)

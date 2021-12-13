@@ -9,7 +9,7 @@ import kr.co.eicn.ippbx.model.form.PDSIvrButtonMappingFormRequest;
 import kr.co.eicn.ippbx.model.form.PDSIvrFormRequest;
 import kr.co.eicn.ippbx.model.form.PDSIvrFormUpdateRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.SoundListRepository;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Log4j2
+@Slf4j
 public class PDSIvrApiControllerTest extends BaseControllerTest {
 
 	@Autowired

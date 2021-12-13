@@ -22,7 +22,7 @@ import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.PatternUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +49,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 /**
  * 번호/그룹/사용자 > 사용자관리 > 사용자설정
  */
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/user/user", produces = MediaType.APPLICATION_JSON_VALUE)

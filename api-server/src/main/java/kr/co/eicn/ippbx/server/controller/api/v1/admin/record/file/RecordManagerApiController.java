@@ -7,7 +7,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.FileSummaryResponse;
 import kr.co.eicn.ippbx.server.service.StorageService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
@@ -34,7 +34,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 /**
  * 녹취관리 > 녹취파일관리 > 녹취파일관리
  */
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/record/file", produces = MediaType.APPLICATION_JSON_VALUE)

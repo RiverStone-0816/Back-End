@@ -9,7 +9,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.service.TalkStatisticsService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +24,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 /**
  * 상담톡관리 > 상담톡통계 > 상담톡상담원별통계
  */
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/talk/statistics/person", produces = MediaType.APPLICATION_JSON_VALUE)

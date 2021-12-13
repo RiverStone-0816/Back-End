@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.spring.RequestMessage;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.exception.DataAccessException;
 import org.slf4j.Logger;
@@ -34,7 +34,7 @@ import java.util.Arrays;
 import static kr.co.eicn.ippbx.util.JsonResult.Result.failure;
 import static kr.co.eicn.ippbx.util.JsonResult.create;
 
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestControllerAdvice
 public class ApiResponseExceptionHandler {

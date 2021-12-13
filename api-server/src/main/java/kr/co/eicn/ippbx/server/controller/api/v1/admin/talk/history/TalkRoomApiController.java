@@ -15,7 +15,7 @@ import kr.co.eicn.ippbx.server.service.TalkRoomService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -35,7 +35,7 @@ import static org.apache.commons.lang3.StringUtils.replace;
 /**
  * 상담톡관리 > 상담톡이력 > 상담톡이력
  */
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/talk/history", produces = MediaType.APPLICATION_JSON_VALUE)

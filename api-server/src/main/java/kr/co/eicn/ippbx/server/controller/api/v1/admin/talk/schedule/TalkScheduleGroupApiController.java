@@ -14,7 +14,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.TalkScheduleGroupListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.TalkScheduleGroupRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -31,7 +31,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 /**
  * 상담톡관리 > 상담톡일정관리 > 스케쥴유형
  */
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/admin/talk/schedule/type", produces = MediaType.APPLICATION_JSON_VALUE)

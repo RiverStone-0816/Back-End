@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.model.form.ContextInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsDtmfFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsInputFormRequest;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
@@ -21,7 +21,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Log4j2
+@Slf4j
 public class ContextInfoApiControllerTest extends BaseControllerTest {
     private final String TEST_URL = "/api/v1/admin/service/context/context";
 
@@ -96,7 +96,7 @@ public class ContextInfoApiControllerTest extends BaseControllerTest {
                 ))
                 .andReturn();
 
-        log.info(result);
+        log.info(String.valueOf(result));
     }
 
 //    @Order(1)
@@ -130,7 +130,7 @@ public class ContextInfoApiControllerTest extends BaseControllerTest {
                 ))
                 .andReturn();
 
-        log.info(result);
+        log.info(String.valueOf(result));
     }
 
 //    @Order(2)
@@ -167,7 +167,7 @@ public class ContextInfoApiControllerTest extends BaseControllerTest {
                 ))
                 .andReturn();
 
-        log.info(result);
+        log.info(String.valueOf(result));
     }
 
 //    @Order(5)
@@ -192,7 +192,7 @@ public class ContextInfoApiControllerTest extends BaseControllerTest {
                 ))
                 .andReturn();
 
-        log.info(result);
+        log.info(String.valueOf(result));
     }
 
 //    @Order(4)
@@ -218,7 +218,7 @@ public class ContextInfoApiControllerTest extends BaseControllerTest {
                 ))
                 .andReturn();
 
-        log.info(result);
+        log.info(String.valueOf(result));
     }
 
 //    @Order(3)
@@ -275,6 +275,6 @@ public class ContextInfoApiControllerTest extends BaseControllerTest {
                 ))
                 .andReturn();
 
-        log.info(result);
+        log.info(String.valueOf(result));
     }
 }

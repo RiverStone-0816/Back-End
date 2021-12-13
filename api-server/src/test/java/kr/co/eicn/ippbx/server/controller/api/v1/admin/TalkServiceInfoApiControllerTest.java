@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkServiceSummaryResponse;
 import kr.co.eicn.ippbx.model.form.TalkServiceInfoFormRequest;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
@@ -21,7 +21,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Log4j2
+@Slf4j
 public class TalkServiceInfoApiControllerTest extends BaseControllerTest {
 	private final String TEST_URL = "/api/v1/admin/talk/info/service";
 	private static Integer seq;

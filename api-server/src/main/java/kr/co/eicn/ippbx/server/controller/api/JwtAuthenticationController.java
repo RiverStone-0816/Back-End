@@ -6,7 +6,7 @@ import kr.co.eicn.ippbx.server.config.security.JwtTokenProvider;
 import kr.co.eicn.ippbx.model.UserDetails;
 import kr.co.eicn.ippbx.model.form.LoginRequest;
 import kr.co.eicn.ippbx.util.JsonResult;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.Result.failure;
 import static kr.co.eicn.ippbx.util.JsonResult.create;
 import static kr.co.eicn.ippbx.util.JsonResult.data;
 
-@Log4j2
+@Slf4j
 @CrossOrigin
 @RestController
 @RequestMapping(value = "auth")
