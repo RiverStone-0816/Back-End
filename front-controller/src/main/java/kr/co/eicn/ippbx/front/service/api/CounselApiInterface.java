@@ -124,6 +124,8 @@ public class CounselApiInterface extends ApiServerInterface {
         private String basic_url;
         private String web_url;
         private String room_id;
+        @NotNull("channel_type")
+        private String channel_type;
         @NotNull("sender_key")
         private String sender_key;
         @NotNull("user_key")

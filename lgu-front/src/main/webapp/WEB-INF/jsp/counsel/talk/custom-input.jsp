@@ -23,10 +23,10 @@
         <c:if test="${blacklist}">
             <span class="ui red basic label mini compact sparkle-red">블랙리스트</span>
         </c:if>
-        <c:if test="${roomId != null && roomId != '' && senderKey != null && senderKey != '' && userKey != null && userKey != ''}">
+        <c:if test="${roomId != null && roomId != '' && channelType != null && channelType != '' && senderKey != null && senderKey != '' && userKey != null && userKey != ''}">
             <button type="button" class="ui button mini right floated compact blue" id="talk-submitButton">${entity != null ? '고객수정' : '신규등록'}</button>
             <button type="button" class="ui button mini right floated compact"
-                    onclick="popupSearchMaindbCustomModal('TALK', '${g.htmlQuote(roomId)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}')">고객검색
+                    onclick="popupSearchMaindbCustomModal('TALK', '${g.htmlQuote(roomId)}', '${g.htmlQuote(channelType)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}')">고객검색
             </button>
         </c:if>
     </div>
@@ -40,13 +40,13 @@
                         <div class="ui form">
                             <div class="two fields">
                                 <div class="field">
-                                    <select onchange="loadTalkCustomInput(${form.groupSeq}, $(this).val() === 'insert' ? null : '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(roomId)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}')">
+                                    <select onchange="loadTalkCustomInput(${form.groupSeq}, $(this).val() === 'insert' ? null : '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(roomId)}', '${g.htmlQuote(channelType)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}')">
                                         <option value="insert" ${entity == null ? 'selected' : ''}>새로운 고객으로 등록</option>
                                         <option value="update" ${entity != null ? 'selected' : ''}>고객정보 갱신</option>
                                     </select>
                                 </div>
                                 <div class="field">
-                                    <select onchange="loadTalkCustomInput($(this).val(), null, '${g.htmlQuote(roomId)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}')">
+                                    <select onchange="loadTalkCustomInput($(this).val(), null, '${g.htmlQuote(roomId)}', '${g.htmlQuote(channelType)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}')">
                                         <c:forEach var="e" items="${maindbGroups}">
                                             <option value="${e.seq}" ${e.seq == form.groupSeq ? 'selected' : ''}>${g.htmlQuote(e.name)}</option>
                                         </c:forEach>
@@ -333,7 +333,7 @@
 
     window.donePostTalkCustomInfo = function (form, response) {
         alert('고객정보가 저장되었습니다.');
-        //loadTalkCustomInput(${form.groupSeq}, response.data || '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', '${g.escapeQuote(roomId)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}');
+        //loadTalkCustomInput(${form.groupSeq}, response.data || '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', '${g.escapeQuote(roomId)}', '${g.escapeQuote(channelType)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}');
 
         talkListContainer.load()
     };
@@ -368,5 +368,5 @@
     });
 
     loadCounselingList('${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ""}');
-    loadTalkCounselingInput('${form.groupSeq}', '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', '${g.escapeQuote(roomId)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}');
+    loadTalkCounselingInput('${form.groupSeq}', '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', '${g.escapeQuote(roomId)}', '${g.escapeQuote(channelType)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}');
 </script>

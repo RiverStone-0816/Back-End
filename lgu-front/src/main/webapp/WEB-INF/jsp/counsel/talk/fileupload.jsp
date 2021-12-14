@@ -33,6 +33,7 @@
     <input type="hidden" id="basic_url" name="basic_url" value="${g.htmlQuote(talkSocketUrl)}"/>
     <input type="hidden" id="web_url" name="web_url" value="${g.htmlQuote(apiServerUrl)}"/>
     <input type="hidden" id="room_id" name="room_id" value="${g.htmlQuote(roomId)}"/>
+    <input type="hidden" id="channel_type" name="sender_key" value="${g.htmlQuote(channelType)}"/>
     <input type="hidden" id="sender_key" name="sender_key" value="${g.htmlQuote(senderKey)}"/>
     <input type="hidden" id="user_key" name="user_key" value="${g.htmlQuote(userKey)}"/>
 

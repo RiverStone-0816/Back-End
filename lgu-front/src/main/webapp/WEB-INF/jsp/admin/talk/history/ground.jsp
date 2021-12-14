@@ -130,6 +130,7 @@
                         <tr>
                             <th class="one wide">번호</th>
                             <th>대화방명</th>
+                            <th>상담톡타입</th>
                             <th>상담톡서비스</th>
                             <th>대화방상태</th>
                             <th>상담원</th>
@@ -145,6 +146,7 @@
                                     <tr data-id="${g.htmlQuote(e.seq)}" data-roomId="${g.htmlQuote(e.roomId)}" data-roomStatus="${g.htmlQuote(e.roomStatus)}">
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.roomName)}</td>
+                                        <td>${g.htmlQuote(talkServices.get(e.channelType))}</td>
                                         <td>${g.htmlQuote(talkServices.get(e.senderKey))}</td>
                                         <td>${g.htmlQuote(g.messageOf('RoomStatus', e.roomStatus))}</td>
                                         <td>${g.htmlQuote(e.idName)}</td>

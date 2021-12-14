@@ -447,6 +447,7 @@
             data: function () {
                 return {
                     roomId: null,
+                    channelType: null,
                     userKey: null,
                     senderKey: null,
                     roomName: null,
@@ -474,6 +475,7 @@
                         _this.roomId = roomId
                         _this.userName = userName
 
+                        _this.channelType = response.data.channelType
                         _this.userKey = response.data.userKey
                         _this.senderKey = response.data.senderKey
                         _this.roomName = response.data.roomName
@@ -554,7 +556,7 @@
                 sendMessage: function (message) {
                     if (!message) message = this.$refs.message.value
                     if (!message || !this.roomStatus || this.roomStatus === 'E') return
-                    talkCommunicator.sendMessage(this.roomId, this.senderKey, this.userKey, message)
+                    talkCommunicator.sendMessage(this.roomId, this.channelType, this.senderKey, this.userKey, message)
                     this.$refs.message.value = ''
                     this.showingTemplates = false
                     this.replying = null
@@ -571,6 +573,7 @@
                         restSelf.post('/api/counsel/' + _this.roomId + '/upload-file', {
                             filePath: response.data.filePath,
                             originalName: response.data.originalName,
+                            channel_type: _this.channelType,
                             sender_key: _this.senderKey,
                             user_key: _this.userKey
                         })
@@ -588,6 +591,7 @@
                             restSelf.post('/api/counsel/' + _this.roomId + '/upload-file', {
                                 filePath: response.data.filePath,
                                 originalName: response.data.originalName,
+                                channel_type: _this.channelType,
                                 sender_key: _this.senderKey,
                                 user_key: _this.userKey
                             })
@@ -601,6 +605,7 @@
                             restSelf.post('/api/counsel/' + _this.roomId + '/upload-file', {
                                 filePath: response.data.filePath,
                                 originalName: response.data.originalName,
+                                channel_type: _this.channelType,
                                 sender_key: _this.senderKey,
                                 user_key: _this.userKey
                             })
@@ -716,15 +721,15 @@
                     })
                 },
                 assignUnassignedRoomToMe: function () {
-                    talkCommunicator.assignUnassignedRoomToMe(this.roomId, this.senderKey, this.userKey)
+                    talkCommunicator.assignUnassignedRoomToMe(this.roomId, this.channelType, this.senderKey, this.userKey)
                     setTimeout(talkListContainer.load, 100)
                 },
                 assignAssignedRoomToMe: function () {
-                    talkCommunicator.assignAssignedRoomToMe(this.roomId, this.senderKey, this.userKey)
+                    talkCommunicator.assignAssignedRoomToMe(this.roomId, this.channelType, this.senderKey, this.userKey)
                     setTimeout(talkListContainer.load, 100)
                 },
                 finishCounsel: function () {
-                    talkCommunicator.deleteRoom(this.roomId, this.senderKey, this.userKey)
+                    talkCommunicator.deleteRoom(this.roomId, this.channelType, this.senderKey, this.userKey)
                     // 상태값 정도는 ...  socket으로 주면 안되나.. 통신비용 아깝
                     setTimeout(talkListContainer.load, 100)
                 },
@@ -764,23 +769,25 @@
 
 <tags:scripts>
     <script>
-        function loadTalkCustomInput(maindbGroupSeq, customId, roomId, senderKey, userKey) {
+        function loadTalkCustomInput(maindbGroupSeq, customId, roomId, channelType, senderKey, userKey) {
             return replaceReceivedHtmlInSilence($.addQueryString('/counsel/talk/custom-input', {
                 maindbGroupSeq: maindbGroupSeq || '',
                 customId: customId || '',
                 roomId: roomId || '',
+                channelType: channelType || '',
                 senderKey: senderKey || '',
-                userKey: userKey || ''
+                userKey: userKey || '',
             }), '#talk-custom-input');
         }
 
-        function loadTalkCounselingInput(maindbGroupSeq, customId, roomId, senderKey, userKey) {
+        function loadTalkCounselingInput(maindbGroupSeq, customId, roomId, channelType, senderKey, userKey) {
             replaceReceivedHtmlInSilence($.addQueryString('/counsel/talk/counseling-input', {
                 maindbGroupSeq: maindbGroupSeq || '',
                 customId: customId || '',
                 roomId: roomId || '',
+                channelType: channelType || '',
                 senderKey: senderKey || '',
-                userKey: userKey || ''
+                userKey: userKey || '',
             }), '#talk-counseling-input');
         }
 

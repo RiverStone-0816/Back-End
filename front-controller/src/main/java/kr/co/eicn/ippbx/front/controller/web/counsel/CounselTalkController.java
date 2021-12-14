@@ -3,7 +3,6 @@ package kr.co.eicn.ippbx.front.controller.web.counsel;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbDataController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CounselApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.grade.GradelistApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbDataApiInterface;
@@ -27,6 +26,7 @@ import kr.co.eicn.ippbx.model.search.MaindbDataSearchRequest;
 import kr.co.eicn.ippbx.model.search.MaindbGroupSearchRequest;
 import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
 import kr.co.eicn.ippbx.util.FormUtils;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -74,8 +74,9 @@ public class CounselTalkController extends BaseController {
     }
 
     @GetMapping("upload-file")
-    public String uploadFile(Model model, @RequestParam String roomId, @RequestParam String senderKey, @RequestParam String userKey) throws IOException, ResultFailException {
+    public String uploadFile(Model model, @RequestParam String roomId, @RequestParam String channelType, @RequestParam String senderKey, @RequestParam String userKey) throws IOException, ResultFailException {
         model.addAttribute("roomId", roomId);
+        model.addAttribute("channelType", channelType);
         model.addAttribute("senderKey", senderKey);
         model.addAttribute("userKey", userKey);
         model.addAttribute("socketUrl", g.getSocketList().get(talkSocketId));
@@ -86,7 +87,7 @@ public class CounselTalkController extends BaseController {
     public String modalTemplate(Model model, @ModelAttribute("search") TemplateSearchRequest search) throws IOException, ResultFailException {
         final List<TalkTemplateSummaryResponse> talkTemplates = talkTemplateApiInterface.list(search);
         final Pagination<TalkTemplateSummaryResponse> pagination = talkTemplateApiInterface.getPagination(search);
-        model.addAttribute("pagination",pagination);
+        model.addAttribute("pagination", pagination);
 
         final Map<String, String> templateTypes = FormUtils.optionsOfCode(TalkTemplate.class);
         model.addAttribute("templateTypes", templateTypes);
@@ -101,8 +102,7 @@ public class CounselTalkController extends BaseController {
             // TODO: api 수정 후, 코드 변경해야 한다. api에서 group의 code가 전달되어야 한다.
 
 
-
-            if (Objects.equals(e.getType(), TalkTemplate.GROUP.getCode()) && e.getTypeGroup().contains(g.getUser().getGroupTreeName().substring(g.getUser().getGroupTreeName().length()-4)) )
+            if (Objects.equals(e.getType(), TalkTemplate.GROUP.getCode()) && e.getTypeGroup().contains(g.getUser().getGroupTreeName().substring(g.getUser().getGroupTreeName().length() - 4)))
                 candidates.add(e);
 
             // TODO: api 수정 후, 코드 변경해야 한다. api에서 person의 id가 전달되어야 한다.
@@ -146,6 +146,7 @@ public class CounselTalkController extends BaseController {
                               @RequestParam(required = false) Integer maindbGroupSeq,
                               @RequestParam(required = false) String customId,
                               @RequestParam(required = false) String roomId,
+                              @RequestParam(required = false) String channelType,
                               @RequestParam(required = false) String senderKey,
                               @RequestParam(required = false) String userKey) throws IOException, ResultFailException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         final List<MaindbGroupSummaryResponse> groups = maindbGroupApiInterface.list(new MaindbGroupSearchRequest());
@@ -165,6 +166,7 @@ public class CounselTalkController extends BaseController {
             if (talkCurrentListResponses.size() > 0) {
                 final TalkCurrentListResponse talk = talkCurrentListResponses.get(0);
 
+                channelType = talk.getChannelType();
                 senderKey = talk.getSenderKey();
                 userKey = talk.getUserKey();
 
@@ -179,6 +181,7 @@ public class CounselTalkController extends BaseController {
             maindbGroupSeq = groups.get(0).getSeq();
 
         model.addAttribute("roomId", roomId);
+        model.addAttribute("channelType", channelType);
         model.addAttribute("senderKey", senderKey);
         model.addAttribute("userKey", userKey);
 
@@ -217,10 +220,10 @@ public class CounselTalkController extends BaseController {
 
             final Map<String, Object> fieldNameToValueMap = MaindbDataController.createFieldNameToValueMap(entity, customDbType);
             model.addAttribute("fieldNameToValueMap", fieldNameToValueMap);
-        } else if (StringUtils.isNotEmpty(senderKey) && StringUtils.isNotEmpty(userKey)) {
+        } else if (StringUtils.isNotEmpty(channelType) && StringUtils.isNotEmpty(senderKey) && StringUtils.isNotEmpty(userKey)) {
             final MaindbDataSearchRequest search = new MaindbDataSearchRequest();
             search.setChannelType(MultichannelChannelType.TALK);
-            search.setChannelData(senderKey + "_" + userKey);
+            search.setChannelData(senderKey + "_" + userKey); // TODO: channelType 어쩔?
             final List<MaindbCustomInfoEntity> rows = maindbDataApiInterface.getPagination(search).getRows();
 
             if (rows.size() > 0) {
@@ -251,6 +254,7 @@ public class CounselTalkController extends BaseController {
                                   @RequestParam(required = false) Integer maindbGroupSeq,
                                   @RequestParam(required = false) String customId,
                                   @RequestParam(required = false) String roomId,
+                                  @RequestParam(required = false) String channelType,
                                   @RequestParam(required = false) String senderKey,
                                   @RequestParam(required = false) String userKey) throws IOException, ResultFailException {
         if (maindbGroupSeq == null) {
@@ -262,6 +266,7 @@ public class CounselTalkController extends BaseController {
         }
 
         model.addAttribute("roomId", roomId);
+        model.addAttribute("channelType", channelType);
         model.addAttribute("senderKey", senderKey);
         model.addAttribute("userKey", userKey);
 
@@ -275,7 +280,7 @@ public class CounselTalkController extends BaseController {
         form.setGroupId(maindbGroupSeq);
         form.setCustomId(customId);
         form.setGroupKind(MultichannelChannelType.TALK.getCode());
-        form.setClickKey(senderKey);
+        form.setClickKey(senderKey); // TODO: channelType 어쩔?
         form.setCustomNumber(userKey);
         form.setHangupMsg(roomId);
 

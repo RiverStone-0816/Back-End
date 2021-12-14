@@ -21,8 +21,10 @@
                 <div class="ui menu">
                     <a class="item -counsel-panel-indicator active" onclick="viewCallPanel()" data-tab="call-panel" data-target="#call-panel">상담화면</a>
                     <c:if test="${user.isTalk.equals('Y')}">
-                        <a class="item -counsel-panel-indicator" onclick="viewTalkPanel(); $(this).removeClass('highlight');$(this).removeClass('newImg') " data-tab="talk-panel" data-target="#talk-panel">
-                            <text>상담톡</text><div></div>
+                        <a class="item -counsel-panel-indicator" onclick="viewTalkPanel(); $(this).removeClass('highlight');$(this).removeClass('newImg') " data-tab="talk-panel"
+                           data-target="#talk-panel">
+                            <text>상담톡</text>
+                            <div></div>
                         </a>
                     </c:if>
                     <a class="item -counsel-panel-indicator" data-tab="preview-tab">프리뷰</a>
@@ -35,7 +37,7 @@
                         <a class="item -counsel-panel-indicator -configured-indicator" data-tab="menu6">메뉴얼</a>
                     </c:if>
                     <c:if test="${serviceKind.equals('SC') && usingServices.contains('QA')}">
-                    <a class="item -counsel-panel-indicator -configured-indicator" data-tab="menu7">상담원평가결과이력</a>
+                        <a class="item -counsel-panel-indicator -configured-indicator" data-tab="menu7">상담원평가결과이력</a>
                     </c:if>
                     <a class="item" onclick="popupScheduleModal()">일정관리</a>
                     <div class="right menu">
@@ -114,7 +116,7 @@
             <div class="ui tab -configured-tab" data-tab="menu6">메뉴얼</div>
         </c:if>
         <c:if test="${serviceKind.equals('SC') && usingServices.contains('QA')}">
-        <div class="ui tab -configured-tab" data-tab="menu7">상담원평가결과이력</div>
+            <div class="ui tab -configured-tab" data-tab="menu7">상담원평가결과이력</div>
         </c:if>
     </div>
 </div>
@@ -270,8 +272,14 @@
         });
 
         function popupFieldInfo(type, fieldId, selectValue) {
-            var isEmpty = function(value){ if( value == "" || value == null || value == undefined || ( value != null && typeof value == "object" && !Object.keys(value).length ) ){ return true }else{ return false } };
-            if(isEmpty(selectValue)){
+            var isEmpty = function (value) {
+                if (value == "" || value == null || value == undefined || (value != null && typeof value == "object" && !Object.keys(value).length)) {
+                    return true
+                } else {
+                    return false
+                }
+            };
+            if (isEmpty(selectValue)) {
                 alert('선택하세요.');
                 return;
             }
@@ -279,10 +287,11 @@
         }
 
 
-        function popupSearchMaindbCustomModal(type, roomId, senderKey, userKey) {
+        function popupSearchMaindbCustomModal(type, roomId, channelType, senderKey, userKey) {
             popupDraggableModalFromReceivedHtml($.addQueryString('/counsel/modal-search-maindb-custom', {
                 type: type || 'CALL',
                 roomId: roomId || '',
+                channelType: channelType || '',
                 senderKey: senderKey || '',
                 userKey: userKey || ''
             }), 'modal-search-maindb-custom');
@@ -671,7 +680,7 @@
                     ipccCommunicator.connect(response.data.callControlSocketUrl, response.data.pbxHost, response.data.companyId, response.data.userId, response.data.extension, hex_sha512(response.data.password), response.data.idType, fromUi, response.data.isMulti);
 
                 <c:if test="${user.isTalk.equals('Y')}">
-                talkCommunicator.connect(response.data.talkSocketUrl, response.data.companyId, response.data.groupCode, response.data.groupTreeName, response.data.groupLevel, response.data.userId, response.data.userName, "USER", response.data.idType);
+                talkCommunicator.connect(response.data.talkSocketUrl, response.data.companyId, response.data.userId, hex_sha512(response.data.password), "USER", response.data.idType);
                 </c:if>
             });
 

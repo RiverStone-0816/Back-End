@@ -235,7 +235,7 @@
         const roomId = '${g.escapeQuote(roomId)}'
 
         alert('상담정보가 저장되었습니다.');
-        loadTalkCounselingInput('${form.groupId}', null, roomId, '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}');
+        loadTalkCounselingInput('${form.groupId}', null, roomId, '${g.htmlQuote(channelType)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}');
 
         talkListContainer.load().done(function () {
             if (!talkListContainer.roomMap[roomId])
