@@ -18,11 +18,11 @@
           <label class="label">IP</label>
         </div>
         <div class="mb-4 relative">
-          <input v-model="form.userKey" :class="form.userKey && 'filled'" class="input" type="text" disabled>
+          <input v-model="form.userKey" :class="form.userKey && 'filled'" class="input" type="text">
           <label class="label">USER KEY</label>
         </div>
         <div class="mb-4 relative">
-          <input v-model="form.mode" :class="form.mode && 'filled'" class="input" type="text" disabled>
+          <input v-model="form.mode" :class="form.mode && 'filled'" class="input" type="text">
           <label class="label">MODE</label>
         </div>
         <button class="bg-indigo-600 hover:bg-blue-dark text-white font-bold py-3 px-6 rounded w-full">Connect</button>

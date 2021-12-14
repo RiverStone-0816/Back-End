@@ -44,29 +44,23 @@
                   </div>
                 </div>
 
-                <!--처음 시작할때 자동으로 입력(다른 채널 안내 + 채널 링크)-->
-                <!--<div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
+                <div v-if="message.data.channel_list && message.data.channel_list.length" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row items-center">
                     <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
                       <div>
-                        <p>
-                          다른 채널을 통한 상담을 원하시면 원하시는 서비스의 아이콘을 눌러주세요. 해당 서비스에 연결됩니다.
-                        </p>
+                        <p>다른 채널을 통한 상담을 원하시면 원하시는 서비스의 아이콘을 눌러주세요. 해당 서비스에 연결됩니다.</p>
                       </div>
                       <div class="flex flex-row-reverse pt-2">
-                        <div class="pl-2">
-                          <a href="#" target="_blank"><img alt="kakao" :src="getKakaoIcon()"></a>
-                        </div>
-                        <div class="pl-2">
-                          <a href="#" target="_blank"><img alt="band" :src="getBandIcon()"></a>
-                        </div>
-                        <div class="pl-2">
-                          <a href="#" target="_blank"><img alt="naver" :src="getNaverIcon()"></a>
+                        <div v-for="(channel, i) in message.data.channel_list" :key="i" class="pl-2">
+                          <a href="javascript:" @click.stop.prevent="showAlert('동작 확인 필요')" target="_blank">
+                            <img alt="kakao" :src="channel.channel_type === 'eicn' ? getEicnIcon() : channel.channel_type === 'kakao' ? getKakaoIcon()
+                                  : channel.channel_type === 'line' ? getLineIcon() : getNaverIcon()">
+                          </a>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>-->
+                </div>
               </template>
 
               <template v-if="message.sender === 'SERVER' && message.messageType === 'fallback'">
@@ -250,11 +244,12 @@
 </template>
 
 <script>
+import moment from 'moment'
 import botIcon from '../assets/bot-icon.png'
-import bandIcon from '../assets/band-icon.png'
 import kakaoIcon from '../assets/kakao-icon.png'
 import naverIcon from '../assets/naver-icon.png'
-import moment from 'moment'
+import lineIcon from '../assets/line-icon.png'
+import eicnIcon from '../assets/eicn-icon.png'
 import debounce from '../utillities/mixins/debounce'
 import store from '../store/index'
 
@@ -284,12 +279,12 @@ export default {
   },
   methods: {
     getBotIcon: () => botIcon,
-    getBandIcon: () => bandIcon,
     getKakaoIcon: () => kakaoIcon,
     getNaverIcon: () => naverIcon,
-    getTimeFormat(value) {
-      return moment(value).format('YY-MM-DD HH:mm')
-    },
+    getLineIcon: () => lineIcon,
+    getEicnIcon: () => eicnIcon,
+    showAlert: content => store.commit('alert/show', content),
+    getTimeFormat: value => moment(value).format('YY-MM-DD HH:mm'),
     getButtonGroups(message) {
       return message.data?.button?.reduce((list, e) => {
         if (e.action === 'api') list.push(e)
