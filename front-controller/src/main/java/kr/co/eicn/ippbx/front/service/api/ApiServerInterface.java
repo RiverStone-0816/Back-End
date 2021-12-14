@@ -7,8 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import kr.co.eicn.ippbx.exception.UnauthorizedException;
 import kr.co.eicn.ippbx.util.AbstractRestInterface;
-import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.util.UrlUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import org.apache.commons.lang3.StringUtils;
@@ -211,8 +211,8 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
         return objectMapper.readValue(response, klass);
     }
 
-    private <BODY> String getResponse(String url, BODY o, HttpMethod method, boolean urlParam) throws JsonProcessingException {
-        url = apiServerUrl + url;
+    protected <BODY> String getResponse(String url, BODY o, HttpMethod method, boolean urlParam) throws JsonProcessingException {
+        url = (url.startsWith("http") ? "" : apiServerUrl) + url;
 
         final RestTemplate template = new RestTemplate(getFactory());
         template.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.defaultCharset()));

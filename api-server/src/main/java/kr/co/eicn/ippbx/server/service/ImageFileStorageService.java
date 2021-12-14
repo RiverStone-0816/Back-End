@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.service;
 
+import kr.co.eicn.ippbx.util.UrlUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.Resource;
@@ -11,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
+import static org.springframework.util.StringUtils.cleanPath;
+
 @Slf4j
 @Service
 public class ImageFileStorageService extends FileSystemStorageService {
@@ -20,7 +23,7 @@ public class ImageFileStorageService extends FileSystemStorageService {
         if (!StringUtils.endsWithAny(Objects.requireNonNull(image.getOriginalFilename()).toLowerCase(), ".jpg", "jpeg", ".png"))
             throw new IllegalArgumentException("알 수 없는 파일 확장자입니다.");
 
-        final String saveFileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()).concat("_") + image.getOriginalFilename();
+        final String saveFileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()).concat("_") + UrlUtils.decode(cleanPath(Objects.requireNonNull(image.getOriginalFilename())));
 
         store(path, saveFileName, image);
 

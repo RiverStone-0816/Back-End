@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.service.api;
 
+import kr.co.eicn.ippbx.front.config.RequestGlobal;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryWebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
@@ -8,6 +9,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,12 +19,16 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URLEncoder;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
 @Service
 public class ChatbotApiInterface extends ApiServerInterface {
     private static final String subUrl = "/api/v1/chat/bot/";
+    private static final String webchatUrl = "http://localhost:8100/webchat_bot_image";
+    @Autowired
+    protected RequestGlobal g;
 
     @SneakyThrows
     public List<SummaryWebchatBotInfoResponse> list() {
@@ -56,7 +62,18 @@ public class ChatbotApiInterface extends ApiServerInterface {
 
     @SneakyThrows
     public String uploadImage(FileForm form) {
-        return sendByMultipartFile(HttpMethod.POST, subUrl + "image", form, String.class, Collections.singletonMap("image", new FileResource(form.getFilePath(), form.getOriginalName())));
+        String saveFileName = sendByMultipartFile(HttpMethod.POST, subUrl + "image", form, String.class, Collections.singletonMap("image", new FileResource(form.getFilePath(), form.getOriginalName())));
+
+        HashMap<String, String> parameterMap = new HashMap<>();
+
+        parameterMap.put("company_id", g.getUser().getCompanyId());
+        parameterMap.put("file_name", saveFileName);
+
+        log.info(webchatUrl);
+        log.info(parameterMap.toString());
+        getResponse(webchatUrl, parameterMap, HttpMethod.POST, false);
+
+        return saveFileName;
     }
 
     @SneakyThrows
