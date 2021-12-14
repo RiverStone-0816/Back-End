@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.WebchatIntroChannelListRec
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatServiceInfoResponse;
 import kr.co.eicn.ippbx.model.enums.IntroChannelType;
 import lombok.Getter;
+import org.jooq.InsertValuesStep4;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -26,6 +27,7 @@ public class WebchatIntroChannelListRepository extends EicnBaseRepository<Webcha
         return dsl.selectFrom(WEBCHAT_INTRO_CHANNEL_LIST)
                 .where(compareCompanyId())
                 .and(WEBCHAT_INTRO_CHANNEL_LIST.INTRO_ID.eq(introId))
+                .orderBy(WEBCHAT_INTRO_CHANNEL_LIST.ID)
                 .fetch(e -> {
                     WebchatServiceInfoResponse.IntroChannel result = new WebchatServiceInfoResponse.IntroChannel();
 
@@ -42,9 +44,11 @@ public class WebchatIntroChannelListRepository extends EicnBaseRepository<Webcha
         if (recordList.contains(null))
             return;
 
-        dsl.insertInto(WEBCHAT_INTRO_CHANNEL_LIST)
-                .values(recordList)
-                .execute();
+        InsertValuesStep4<WebchatIntroChannelListRecord, Integer, String, String, String> insertQuery = dsl.insertInto(WEBCHAT_INTRO_CHANNEL_LIST, WEBCHAT_INTRO_CHANNEL_LIST.INTRO_ID, WEBCHAT_INTRO_CHANNEL_LIST.COMPANY_ID, WEBCHAT_INTRO_CHANNEL_LIST.CHANNEL_TYPE, WEBCHAT_INTRO_CHANNEL_LIST.CHANNEL_ID);
+
+        recordList.forEach(e -> insertQuery.values(e.getIntroId(), getCompanyId(), e.getChannelType(), e.getChannelId()));
+
+        insertQuery.execute();
     }
 
     public void deleteByIntroId(Integer introId) {
