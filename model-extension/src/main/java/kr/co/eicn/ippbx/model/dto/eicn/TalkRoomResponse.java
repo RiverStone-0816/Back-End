@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class TalkRoomResponse {
     private Integer seq;
+    private String channelType;
     private String roomStartTime;   //시작시간
     private String roomLastTime;    //마지막메시지시간
     private String roomId;          //대화방 ID

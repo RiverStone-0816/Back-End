@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 @Data
 public class TalkCurrentListResponse {
     private Integer seq;    //talk room 시퀀스
+    private String channelType;
     private String roomId;
     private String roomName;
     private String roomStatus;

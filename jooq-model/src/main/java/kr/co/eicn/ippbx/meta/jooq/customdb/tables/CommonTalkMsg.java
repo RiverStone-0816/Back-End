@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.CommonTalkMsgRecord;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.TalkMsgRecord;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
@@ -16,6 +17,11 @@ public class CommonTalkMsg extends TableImpl<CommonTalkMsgRecord> {
      * The column <code>CUSTOMDB.talk_msg.seq</code>.
      */
     public final TableField<CommonTalkMsgRecord, Integer> SEQ = createField(DSL.name("seq"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+
+    /**
+     * The column <code>CUSTOMDB.talk_msg.channel_type</code>. 상담톡 서비스 유형, eicn/kakao/navertt/naverline
+     */
+    public final TableField<CommonTalkMsgRecord, String> CHANNEL_TYPE = createField(DSL.name("channel_type"), org.jooq.impl.SQLDataType.VARCHAR(20).nullable(false).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "상담톡 서비스 유형, eicn/kakao/navertt/naverline");
 
     /**
      * The column <code>CUSTOMDB.talk_msg.insert_time</code>.

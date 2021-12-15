@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 @Data
 public class TalkMsgSummaryResponse {
 	private Integer seq;	//talk msg 시퀀스
+	private String channelType;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
 	private Timestamp insertTime;
 	private String sendReceive;

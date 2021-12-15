@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 @Data
 public class CommonTalkRoom implements Serializable {
     private Integer   seq;
+    private String    channelType;
     private String    roomId;
     private Timestamp roomStartTime;
     private Timestamp roomLastTime;

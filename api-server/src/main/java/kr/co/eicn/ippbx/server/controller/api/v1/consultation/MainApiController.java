@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.consultation;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebchatServiceInfo;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonTalkMsg;
@@ -64,6 +65,7 @@ public class MainApiController extends ApiBaseController {
     private final TalkRoomService talkRoomService;
     private final CurrentTalkRoomRepository currentTalkRoomRepository;
     private final TalkServiceInfoRepository talkServiceInfoRepository;
+    private final WebchatServiceInfoRepository webchatServiceInfoRepository;
     private final TalkMsgService talkMsgService;
     private final PersonListRepository personListRepository;
     private final CallbackRepository callbackRepository;
@@ -338,9 +340,19 @@ public class MainApiController extends ApiBaseController {
             search.setOrderBy("room_last_time");
         }
 
-        final Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo> talkServiceInfoMap = talkServiceInfoRepository.findAll(TalkServiceInfo.TALK_SERVICE_INFO.COMPANY_ID.eq(g.getUser().getCompanyId()))
+        Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo> talkServiceInfoMap = talkServiceInfoRepository.findAll(TalkServiceInfo.TALK_SERVICE_INFO.COMPANY_ID.eq(g.getUser().getCompanyId()))
                 .stream()
                 .collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo::getSenderKey, e -> e));
+        webchatServiceInfoRepository.findAll(WebchatServiceInfo.WEBCHAT_SERVICE_INFO.COMPANY_ID.eq(g.getUser().getCompanyId()))
+                .forEach(e -> {
+                    final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo info = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo();
+                    info.setSenderKey(e.getSenderKey());
+                    info.setIsChattEnable(e.getIsChattEnable());
+                    info.setKakaoServiceName(e.getWebchatServiceName());
+                    info.setSeq(e.getSeq());
+                    info.setCompanyId(e.getCompanyId());
+                    talkServiceInfoMap.put(e.getSenderKey(), info);
+                });
 
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
         final Map<String, String> mainDb = maindbCustomInfoService.getRepository().findAll().stream().map(e -> {
@@ -373,8 +385,10 @@ public class MainApiController extends ApiBaseController {
                 .map((e) -> {
                     final TalkCurrentListResponse data = convertDto(e, TalkCurrentListResponse.class);
                     if (isNotEmpty(e.getSenderKey())) {
+
+                        /* 임시 에러 잡음. */
                         Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo> talkServiceInfo = Optional.ofNullable(talkServiceInfoMap.get(e.getSenderKey()));
-                        data.setSvcName(talkServiceInfo.orElseThrow(() -> new NullPointerException("상담톡 서비스가 존재하지 않습니다.")).getKakaoServiceName());
+                        data.setSvcName(Objects.isNull(talkServiceInfoMap.get(e.getSenderKey())) ? "" : talkServiceInfoMap.get(e.getSenderKey()).getKakaoServiceName());
                     }
                     if (isNotEmpty(e.getUserid()) && (personListMap.get(e.getUserid()) != null && isNotEmpty(personListMap.get(e.getUserid())))) {
                         data.setUserName(personListMap.get(e.getUserid()));

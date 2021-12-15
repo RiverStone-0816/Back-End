@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 @Data
 public class CommonTalkMsg implements Serializable {
     private Integer   seq;
+    private String    channelType;
     private Timestamp insertTime;
     private String    sendReceive;
     private String    companyId;

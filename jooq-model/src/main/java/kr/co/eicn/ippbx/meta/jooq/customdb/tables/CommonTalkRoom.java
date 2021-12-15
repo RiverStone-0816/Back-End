@@ -22,6 +22,11 @@ public class CommonTalkRoom extends TableImpl<TalkRoomRecord> {
     public final TableField<TalkRoomRecord, Integer> SEQ = createField(DSL.name("seq"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
+     * The column <code>CUSTOMDB.talk_room.channel_type</code>. 상담톡 서비스 유형, eicn/kakao/navertt/naverline
+     */
+    public final TableField<TalkRoomRecord, String> CHANNEL_TYPE = createField(DSL.name("channel_type"), org.jooq.impl.SQLDataType.VARCHAR(20).nullable(false).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "상담톡 서비스 유형, eicn/kakao/navertt/naverline");
+
+    /**
      * The column <code>CUSTOMDB.talk_room.room_id</code>.
      */
     public final TableField<TalkRoomRecord, String> ROOM_ID = createField(DSL.name("room_id"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");

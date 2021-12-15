@@ -15,6 +15,5 @@ public class TalkCurrentMsgResponse {
 	private String roomId;
 	private String userKey;
 	private String senderKey;
-
 	private String userId;
 }
