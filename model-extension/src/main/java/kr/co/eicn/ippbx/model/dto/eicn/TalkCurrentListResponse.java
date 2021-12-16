@@ -21,7 +21,7 @@ public class TalkCurrentListResponse {
     private String userName;
     private String userKey;
     private String senderKey;
-    private String svcName; //sender_key로 TalkServiceInfoDB해서 getKakaoServiceName()
+    private String svcName = ""; //sender_key로 TalkServiceInfoDB해서 getKakaoServiceName()
     private String content;    //TalkMsg.getMessage
     private String type;    //TalkMsg.getType
     private String send_receive; //TalkMsg.getSnedReceive

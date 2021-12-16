@@ -385,12 +385,10 @@ public class MainApiController extends ApiBaseController {
                 .map((e) -> {
                     final TalkCurrentListResponse data = convertDto(e, TalkCurrentListResponse.class);
                     if (isNotEmpty(e.getSenderKey())) {
-
-                        /* 임시 에러 잡음. */
                         Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo> talkServiceInfo = Optional.ofNullable(talkServiceInfoMap.get(e.getSenderKey()));
-                        data.setSvcName(Objects.isNull(talkServiceInfoMap.get(e.getSenderKey())) ? "" : talkServiceInfoMap.get(e.getSenderKey()).getKakaoServiceName());
+                        talkServiceInfo.ifPresent(talkService -> data.setSvcName(talkService.getKakaoServiceName()));
                     }
-                    if (isNotEmpty(e.getUserid()) && (personListMap.get(e.getUserid()) != null && isNotEmpty(personListMap.get(e.getUserid())))) {
+                    if (isNotEmpty(e.getUserid()) && isNotEmpty(personListMap.get(e.getUserid()))) {
                         data.setUserName(personListMap.get(e.getUserid()));
                     } else {
                         data.setUserName("지정안됨");
