@@ -166,7 +166,7 @@ public class CounselTalkController extends BaseController {
             if (talkCurrentListResponses.size() > 0) {
                 final TalkCurrentListResponse talk = talkCurrentListResponses.get(0);
 
-                channelType = talk.getChannelType();
+                channelType = talk.getChannelType().getCode();
                 senderKey = talk.getSenderKey();
                 userKey = talk.getUserKey();
 

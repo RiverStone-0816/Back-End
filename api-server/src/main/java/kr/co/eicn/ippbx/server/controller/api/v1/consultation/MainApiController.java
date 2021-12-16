@@ -355,10 +355,9 @@ public class MainApiController extends ApiBaseController {
                 });
 
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
-        final Map<String, String> mainDb = maindbCustomInfoService.getRepository().findAll().stream().map(e -> {
+        final Map<String, String> mainDb = maindbCustomInfoService.getRepository().findAll().stream().peek(e -> {
             if (Objects.isNull(e.getMaindbString_1()))
                 e.setMaindbString_1("");
-            return e;
         }).collect(Collectors.toMap(MaindbCustomInfoEntity::getMaindbSysCustomId, MaindbCustomInfoEntity::getMaindbString_1));
         final List<TalkCurrentListResponse> response = currentTalkRoomRepository.findAll().stream()
                 .filter(e -> {
@@ -425,6 +424,8 @@ public class MainApiController extends ApiBaseController {
                         if (maxOptional.isPresent())
                             data.setLastMessageSeq(maxOptional.getAsInt());
                     }
+                    data.setChannelType(TalkChannelType.of(e.getChannelType()));
+
                     return data;
                 })
                 .sorted(comparing(TalkCurrentListResponse::getRoomLastTime).reversed())
@@ -457,6 +458,8 @@ public class MainApiController extends ApiBaseController {
                     } else {
                         data.setUserName("");
                     }
+                    data.setChannelType(TalkChannelType.of(e.getChannelType()));
+
                     return data;
                 })
                 .limit(300)
@@ -481,6 +484,7 @@ public class MainApiController extends ApiBaseController {
         response.setSenderKey(talkRoomEntity.getSenderKey());
         response.setUserKey(talkRoomEntity.getUserKey());
         response.setUserId(talkRoomEntity.getUserid());
+        response.setChannelType(TalkChannelType.of(talkRoomEntity.getChannelType()));
 
         return ResponseEntity.ok(data(response));
     }
