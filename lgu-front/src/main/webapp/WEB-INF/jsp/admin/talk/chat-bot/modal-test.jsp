@@ -55,10 +55,10 @@
             <div v-if="message.data?.display?.length" v-for="(e, i) in message.data?.display" :key="i" :class="e.type === 'text' ? 'sample-bubble' : 'card'">
                 <p v-if="e.type === 'text'" style="white-space: pre-wrap">{{ e.element[0]?.content }}</p>
                 <div v-if="e.type === 'image'" class="card-img">
-                    <img :src="`/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e.element[0]?.image)" class="border-radius-1em">
+                    <img :src="`${pageContext.request.contextPath}/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e.element[0]?.image)" class="border-radius-1em">
                 </div>
                 <div v-if="e.type === 'card'" class="card-img">
-                    <img :src="`/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e.element[0]?.image)" class="border-radius-top-1em">
+                    <img :src="`${pageContext.request.contextPath}/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e.element[0]?.image)" class="border-radius-top-1em">
                 </div>
                 <div v-if="e.type === 'card'" class="card-content">
                     <div class="card-title">{{ e.element[0]?.title }}</div>
@@ -74,7 +74,7 @@
                             <a :href="e2.url" target="_blank" class="link-wrap">
                                 <div class="item-thumb" v-if="e2.image && e2.image">
                                     <div class="item-thumb-inner">
-                                        <img :src="`/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e2.image)">
+                                        <img :src="`${pageContext.request.contextPath}/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e2.image)">
                                     </div>
                                 </div>
                                 <div class="item-content">

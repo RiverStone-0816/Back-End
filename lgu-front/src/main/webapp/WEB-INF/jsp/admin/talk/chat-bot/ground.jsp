@@ -474,10 +474,10 @@
                                                     <div v-for="(e,i) in displays" :class="e.type === 'text' ? 'sample-bubble' : 'card'">
                                                         <p v-if="e.data && e.type === 'text'" style="white-space: pre-wrap">{{ e.data.text }}</p>
                                                         <div v-if="e.data && e.type === 'image'" class="card-img">
-                                                            <img :src="`/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e.data.fileUrl)" class="border-radius-1em">
+                                                            <img :src="`${pageContext.request.contextPath}/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e.data.fileUrl)" class="border-radius-1em">
                                                         </div>
                                                         <div v-if="e.data && e.type === 'card'" class="card-img">
-                                                            <img :src="`/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e.data.fileUrl)" class="border-radius-top-1em">
+                                                            <img :src="`${pageContext.request.contextPath}/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e.data.fileUrl)" class="border-radius-top-1em">
                                                         </div>
                                                         <div v-if="e.data && e.type === 'card'" class="card-content">
                                                             <div class="card-title">{{ e.data.title }}</div>
@@ -493,7 +493,7 @@
                                                                     <a :href="e2.url" target="_blank" class="link-wrap">
                                                                         <div class="item-thumb" v-if="e2.fileUrl && e2.fileUrl.trim()">
                                                                             <div class="item-thumb-inner">
-                                                                                <img :src="`/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e2.fileUrl)">
+                                                                                <img :src="`${pageContext.request.contextPath}/admin/talk/chat-bot/image?fileName=` + encodeURIComponent(e2.fileUrl)">
                                                                             </div>
                                                                         </div>
                                                                         <div class="item-content">
