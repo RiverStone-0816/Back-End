@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.history;
 
+import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.model.dto.customdb.TalkMsgResponse;
@@ -77,6 +78,7 @@ public class TalkRoomApiController extends ApiBaseController {
                     TalkRoomResponse talkRoomResponse = convertDto(e, TalkRoomResponse.class);
 
                     talkRoomResponse.setIdName(personList.stream().filter(person -> person.getId().equals(e.getUserid())).map(PersonList::getIdName).findFirst().orElse(""));
+                    talkRoomResponse.setChannelType(TalkChannelType.of(e.getChannelType()));
 
                     return talkRoomResponse;
                 })
@@ -101,6 +103,7 @@ public class TalkRoomApiController extends ApiBaseController {
         TalkRoomResponse talkRoomResponse = convertDto(roomEntity, TalkRoomResponse.class);
         if (roomEntity.getUserid() != null && !roomEntity.getUserid().equals(""))
             talkRoomResponse.setIdName(personListRepository.findOne(roomEntity.getUserid()).getIdName());
+        talkRoomResponse.setChannelType(TalkChannelType.of(roomEntity.getChannelType()));
 
         return ResponseEntity.ok(data(talkRoomResponse));
     }
@@ -113,6 +116,7 @@ public class TalkRoomApiController extends ApiBaseController {
 
         TalkRoomResponse talkRoomResponse = convertDto(roomEntity, TalkRoomResponse.class);
         talkRoomResponse.setIdName(personListRepository.findOne(roomEntity.getUserid()).getIdName());
+        talkRoomResponse.setChannelType(TalkChannelType.of(roomEntity.getChannelType()));
 
         return ResponseEntity.ok(data(talkRoomResponse));
     }

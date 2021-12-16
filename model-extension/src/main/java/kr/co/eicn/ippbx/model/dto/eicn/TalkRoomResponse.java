@@ -1,11 +1,12 @@
 package kr.co.eicn.ippbx.model.dto.eicn;
 
+import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import lombok.Data;
 
 @Data
 public class TalkRoomResponse {
     private Integer seq;
-    private String channelType;
+    private TalkChannelType channelType;
     private String roomStartTime;   //시작시간
     private String roomLastTime;    //마지막메시지시간
     private String roomId;          //대화방 ID

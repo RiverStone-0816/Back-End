@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.model.dto.eicn;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import lombok.Data;
 
 import java.sql.Timestamp;
@@ -8,7 +9,7 @@ import java.sql.Timestamp;
 @Data
 public class TalkCurrentListResponse {
     private Integer seq;    //talk room 시퀀스
-    private String channelType;
+    private TalkChannelType channelType;
     private String roomId;
     private String roomName;
     private String roomStatus;
@@ -21,7 +22,7 @@ public class TalkCurrentListResponse {
     private String userName;
     private String userKey;
     private String senderKey;
-    private String svcName; //sender_key로 TalkServiceInfoDB해서 getKakaoServiceName()
+    private String svcName = ""; //sender_key로 TalkServiceInfoDB해서 getKakaoServiceName()
     private String content;    //TalkMsg.getMessage
     private String type;    //TalkMsg.getType
     private String send_receive; //TalkMsg.getSnedReceive

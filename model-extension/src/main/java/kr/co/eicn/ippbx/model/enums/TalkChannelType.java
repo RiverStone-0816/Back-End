@@ -16,4 +16,13 @@ public enum TalkChannelType implements CodeHasable<String> {
     public String getCode() {
         return code;
     }
+
+    public static TalkChannelType of(String value) {
+        for (TalkChannelType code : TalkChannelType.values()){
+            if (code.getCode().equals(value))
+                return code;
+        }
+
+        return null;
+    }
 }
