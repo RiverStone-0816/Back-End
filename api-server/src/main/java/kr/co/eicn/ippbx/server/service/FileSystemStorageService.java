@@ -71,18 +71,19 @@ public class FileSystemStorageService implements StorageService {
 
 	@Override
 	public Resource loadAsResource(Path path, String fileName) {
-		Path file = load(path, fileName);
+		String decodedFileName = UrlUtils.decode(cleanPath(Objects.requireNonNull(fileName)));
+		Path file = load(path, decodedFileName);
 
 		if (path.toString().indexOf("..") > 0)
-			throw new StorageFileNotFoundException(fileName + "파일을 찾을 수 없습니다.");
+			throw new StorageFileNotFoundException(decodedFileName + "파일을 찾을 수 없습니다.");
 
 		final FileSystemResource fileSystemResource = new FileSystemResource(file);
 
 		if (fileSystemResource.exists() || fileSystemResource.isReadable()) {
 			return fileSystemResource;
 		} else {
-			log.error("FileSystemStorageService.loadAsResource ERROR[file={}, path={}]", fileName, file.toString());
-			throw new StorageFileNotFoundException(fileName + " 파일을 찾을 수 없습니다.");
+			log.error("FileSystemStorageService.loadAsResource ERROR[file={}, path={}]", decodedFileName, file.toString());
+			throw new StorageFileNotFoundException(decodedFileName + " 파일을 찾을 수 없습니다.");
 		}
 	}
 
