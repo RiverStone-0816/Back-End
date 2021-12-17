@@ -38,4 +38,8 @@ public class WebchatBotBlockService extends ApiBaseService {
     public Map<Integer, WebchatBotInfoResponse.BlockInfo> findBlockInfoByIdInBlockIdList(List<Integer> blockIdList) {
         return webchatbotBlockRepository.findBlockInfoByIdInBlockIdList(blockIdList).stream().collect(Collectors.toMap(WebchatBotInfoResponse.BlockInfo::getId, e -> e));
     }
+
+    public WebchatBotInfoResponse.BlockInfo getBlockInfo(Integer blockId) {
+        return webchatbotBlockRepository.findOneIfNullThrow(blockId);
+    }
 }

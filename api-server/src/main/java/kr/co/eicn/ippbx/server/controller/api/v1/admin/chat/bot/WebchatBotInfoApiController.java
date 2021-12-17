@@ -39,9 +39,17 @@ public class WebchatBotInfoApiController extends ApiBaseController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<JsonResult<WebchatBotInfoResponse>> getById(@PathVariable Integer id) {
+    public ResponseEntity<JsonResult<WebchatBotInfoResponse>> getBotInfo(@PathVariable Integer id) {
         WebchatBotInfoResponse webchatBotInfoResponse = webchatBotService.getBotInfo(id);
+
         return ResponseEntity.ok(data(webchatBotInfoResponse));
+    }
+
+    @GetMapping("{id}/blocks/{blockId}")
+    public ResponseEntity<JsonResult<WebchatBotInfoResponse.BlockInfo>> getBlock(@PathVariable Integer id, @PathVariable Integer blockId) {
+        WebchatBotInfoResponse.BlockInfo blockInfo = webchatBotService.getBlockInfo(blockId);
+
+        return ResponseEntity.ok(data(blockInfo));
     }
 
     @PostMapping("")
