@@ -4,11 +4,11 @@
 .ui.container.consulting-container {
   .flex();
   flex-flow: column;
-  >.ui.grid {
-    margin-bottom:0;
+  > .ui.grid {
+    margin-bottom: 0;
   }
-  >.ui.tab.active {
-    flex:1;
+  > .ui.tab.active {
+    flex: 1;
     /*    overflow: hidden;*/
   }
 }
@@ -70,7 +70,7 @@
             border-radius: 50%;
             top: 50%;
             left: 0;
-            transform: translate(0,-50%);
+            transform: translate(0, -50%);
           }
           .material-icons {
             line-height: 12px;
@@ -219,7 +219,7 @@
       font-weight: 500;
       line-height: 30px;
       .ui.checkbox {
-        margin:0 0 0 5px;
+        margin: 0 0 0 5px;
       }
     }
     .panel-body {
@@ -237,12 +237,12 @@
 }
 
 .consulting-info-panel {
-  height:392px;
+  height: 392px;
 }
 
 
 .side-bar.consulting-side {
-  display:none;
+  display: none;
   color: #fff;
   flex-flow: column;
   .treeview-menu {
@@ -323,8 +323,8 @@
       right: -24px;
       border-radius: 3px;
       top: 3px;
-      width: 20px!important;
-      height: auto!important;
+      width: 20px !important;
+      height: auto !important;
     }
     .ui.segment {
       padding: 37px 10px 20px 10px;
@@ -390,7 +390,7 @@
 }
 
 .invitation-panel {
-  display:none;
+  display: none;
   position: absolute;
   top: 40px;
   left: 1px;
@@ -429,7 +429,7 @@
 }
 
 .attach-overlay {
-  background: rgba(0,0,0,.6);
+  background: rgba(0, 0, 0, .6);
   width: 100%;
   height: 100%;
   z-index: 4;
@@ -453,10 +453,10 @@
 }
 
 .user-invite-container {
-  height:289px;
+  height: 289px;
   overflow-y: overlay;
   overflow-x: hidden;
-  border:1px solid #e9e9e9;
+  border: 1px solid #e9e9e9;
   .user-invite-organization-ul {
     .consulting-accordion-label {
       .flex();
@@ -536,7 +536,7 @@
   top: 48px;
   max-height: 80%;
   .close.icon {
-    right: 7px!important;
+    right: 7px !important;
   }
 }
 
@@ -582,20 +582,20 @@
           align-self: end;
           margin: 0 8px 0 8px;
           .buttons {
-            border:1px solid @color-border;
+            border: 1px solid @color-border;
             border-radius: 5px;
             display: inline-flex;
             button {
               cursor: pointer;
-              background-color: rgba(255,255,255,.7);
-              border:0;
-              outline:0;
+              background-color: rgba(255, 255, 255, .7);
+              border: 0;
+              outline: 0;
               width: 28px;
               height: 28px;
               background-repeat: no-repeat;
               background-position: center;
               &:hover {
-                background-color: rgba(255,255,255,1);
+                background-color: rgba(255, 255, 255, 1);
               }
             }
             [data-inverted]:before, [data-inverted]:after {
@@ -645,35 +645,35 @@
         .wrap-content {
           text-align: left;
           .chat.bot {
-            margin-bottom:10px;
+            margin-bottom: 10px;
             .button-inner {
-              width:100%;
+              width: 100%;
               padding: 0.7em 1em;
             }
-              .bubble {
-                width:320px;
-                .chatbot-button {
-                  width:100%;
-                  overflow: hidden;
-                  background: #5B9BD5;
-                  border: 0;
-                  outline: 0;
-                  width: 100%;
-                  border-radius: 5px;
-                  height: 40px;
-                  cursor: pointer;
-                  color: #fff;
-                  margin: 10px 0 0 0;
-                  &:first-child {
-                    margin: 0;
-                  }
-                  &:only-child {
-                    margin: 0;
-                  }
+            .bubble {
+              width: 320px;
+              .chatbot-button {
+                width: 100%;
+                overflow: hidden;
+                background: #5B9BD5;
+                border: 0;
+                outline: 0;
+                width: 100%;
+                border-radius: 5px;
+                height: 40px;
+                cursor: pointer;
+                color: #fff;
+                margin: 10px 0 0 0;
+                &:first-child {
+                  margin: 0;
                 }
+                &:only-child {
+                  margin: 0;
+                }
+              }
             }
             .card {
-              width:320px;
+              width: 320px;
               position: relative;
               .card-img {
                 img {
@@ -681,7 +681,7 @@
                 }
               }
               .card-content {
-                padding:10px;
+                padding: 10px;
                 word-break: break-all;
                 line-height: 15px;
                 .card-title {
@@ -748,7 +748,7 @@
                       border: 0;
                     }
                     .button-inner {
-                      padding:0;
+                      padding: 0;
                     }
                     .item-thumb {
                       .flex();
@@ -839,7 +839,7 @@
             left: 10px;
             top: 15px;
             font-size: 10px;
-            background-color: rgba(10,10,10,0.25);
+            background-color: rgba(10, 10, 10, 0.25);
             padding: 0.1em 0.5em;
             color: white;
             border-radius: 0.5em;
@@ -865,7 +865,7 @@
       .chat-item.chat-me {
         justify-content: end;
         .profile-img {
-          display:none;
+          display: none;
         }
         .wrap-content {
           text-align: right;
@@ -877,13 +877,13 @@
             }
           }
           .txt-time {
-            text-align:right;
+            text-align: right;
           }
           .txt_chat {
-            text-align:left;
+            text-align: left;
             .reply-content-container {
               .flex();
-              border-bottom:1px solid #998D1F;
+              border-bottom: 1px solid #998D1F;
               padding: 0 0 4px 0;
               margin: 0 0 4px 0;
             }
@@ -938,7 +938,7 @@
         background: #fff;
         border-radius: 5px;
         border: 1px solid #a5a5a5;
-        box-shadow: rgba(1,1,1,.25) 0 1px 7px;
+        box-shadow: rgba(1, 1, 1, .25) 0 1px 7px;
         padding: 5px;
         max-height: 186px;
         overflow: overlay;
@@ -987,7 +987,7 @@
     }
     .view-to-reply {
       .flex();
-      width:100%;
+      width: 100%;
       background: @color-white;
       position: absolute;
       bottom: 88px;
@@ -1036,7 +1036,7 @@
       .flex();
       .ui.button, .ui.input {
         height: 28px;
-        margin:0;
+        margin: 0;
       }
       white-space: nowrap;
       align-items: center;
@@ -1085,8 +1085,8 @@
 
 .template-item {
   strong {
-    display:block;
-    text-align:left;
+    display: block;
+    text-align: left;
   }
   p {
     width: 100%;
@@ -1107,18 +1107,18 @@
 
 .consulting-bookmark {
   .button.basic {
-    background:#fff!important;
+    background: #fff !important;
   }
 }
-#call-panel {display:none;}
-#call-panel.active {display:block}
-#talk-panel {display:none;}
+#call-panel {display: none;}
+#call-panel.active {display: block}
+#talk-panel {display: none;}
 #talk-panel.active {
   .flex;
 }
 #etc-panel {
   .segment {
-    height:285px;
+    height: 285px;
   }
 }
 
@@ -1140,7 +1140,7 @@
         background: #bdbdbd;
         width: 88px;
         height: 88px;
-        top:0;
+        top: 0;
         border-radius: 50%;
         animation-name: circle;
         animation-iteration-count: infinite;
@@ -1150,11 +1150,11 @@
     }
   }
   .customer-info {
-    margin:15px 0 0 0;
-    text-align:center;
+    margin: 15px 0 0 0;
+    text-align: center;
     .number {
       font-weight: 500;
-      font-size:@font-size-large;
+      font-size: @font-size-large;
     }
     .route {}
     .second {}
@@ -1162,7 +1162,7 @@
 }
 @keyframes circle {
   0% {opacity: .8}
-  100% {background:#fff; transform: scale(1.3); opacity: 0}
+  100% {background: #fff; transform: scale(1.3); opacity: 0}
 }
 
 #modal-counseling-info {
@@ -1174,7 +1174,7 @@
 }
 
 .ui.basic.label.sparkle-red {
-  .keyframes(fade-in;{
+  .keyframes(fade-in; {
     0% { opacity: .5; }
     100% { opacity: 1; }
   });
@@ -1182,7 +1182,7 @@
 }
 
 .ui.basic.label.sparkle-blue {
-  .keyframes(fade-in;{
+  .keyframes(fade-in; {
     0% { opacity: .5; }
     100% { opacity: 1; }
   });
@@ -1190,7 +1190,7 @@
 }
 
 .ui.small.header.custom {
-  line-height:28px;
+  line-height: 28px;
   .ui.slider.checkbox {
     width: 49px;
     margin: 7px 0 0 0;
@@ -1203,7 +1203,7 @@
 }
 
 .ui.labeled.input {
-  margin:0 10px 0 0;
+  margin: 0 10px 0 0;
 }
 
 .ui.button.tb-margin {

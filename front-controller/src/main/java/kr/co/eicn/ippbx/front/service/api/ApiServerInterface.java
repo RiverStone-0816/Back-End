@@ -302,7 +302,7 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
         }
         files.forEach(parts::add);
 
-        final RestTemplate restTemplate = new RestTemplate();
+        final RestTemplate restTemplate = new RestTemplate(getFactory());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 

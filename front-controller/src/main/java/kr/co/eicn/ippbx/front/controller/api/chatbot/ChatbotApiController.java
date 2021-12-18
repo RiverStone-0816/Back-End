@@ -39,7 +39,13 @@ public class ChatbotApiController extends BaseController {
     @SneakyThrows
     @GetMapping("{id}")
     public WebchatBotInfoResponse getById(@PathVariable Integer id) {
-        return apiInterface.getById(id);
+        return apiInterface.getBotInfo(id);
+    }
+
+    @SneakyThrows
+    @GetMapping("{id}/blocks/{blockId}")
+    public WebchatBotInfoResponse.BlockInfo getById(@PathVariable Integer id, @PathVariable Integer blockId) {
+        return apiInterface.getBlock(id, blockId);
     }
 
     @SneakyThrows

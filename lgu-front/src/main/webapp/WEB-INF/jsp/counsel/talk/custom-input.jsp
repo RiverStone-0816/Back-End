@@ -335,7 +335,7 @@
         alert('고객정보가 저장되었습니다.');
         //loadTalkCustomInput(${form.groupSeq}, response.data || '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', '${g.escapeQuote(roomId)}', '${g.escapeQuote(channelType)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}');
 
-        talkListContainer.load()
+        // talkListContainer.load()
     };
 
     ui.find('[name="channelType"]').change(function () {

@@ -73,7 +73,7 @@ public abstract class AbstractRestInterface {
         objectMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
         objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
-        final RestTemplate template = new RestTemplate(/*getFactory()*/);
+        final RestTemplate template = new RestTemplate(getFactory());
         @SuppressWarnings("unchecked") final Map<String, Object> params = (Map<String, Object>) objectMapper.convertValue(o, Map.class);
         template.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.defaultCharset()));
 
@@ -122,7 +122,7 @@ public abstract class AbstractRestInterface {
         objectMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
         objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
-        final RestTemplate template = new RestTemplate(/*getFactory()*/);
+        final RestTemplate template = new RestTemplate(getFactory());
         @SuppressWarnings("unchecked") final Map<String, Object> params = (Map<String, Object>) objectMapper.convertValue(o, Map.class);
         template.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.defaultCharset()));
 
