@@ -1,5 +1,5 @@
 server:
-  port: 19010
+  port: 8081
   servlet:
     session:
       timeout: 10h
@@ -60,6 +60,9 @@ eicn:
     location: ./files
   apiserver: http://localhost:8080/api-server
   realapiserver: http://localhost:8080/api-server
+  webchat:
+    image:
+      url: http://122.49.74.102:8100/webchat_bot_image
   admin:
     socket:
       id: monitor_connector

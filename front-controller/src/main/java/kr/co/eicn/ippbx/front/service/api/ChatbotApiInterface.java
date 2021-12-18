@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,7 +27,8 @@ import java.util.List;
 @Service
 public class ChatbotApiInterface extends ApiServerInterface {
     private static final String subUrl = "/api/v1/chat/bot/";
-    private static final String webchatUrl = "http://localhost:8100/webchat_bot_image";
+    @Value("${eicn.webchat.image.url}")
+    private String webchatUrl;
     @Autowired
     protected RequestGlobal g;
 
