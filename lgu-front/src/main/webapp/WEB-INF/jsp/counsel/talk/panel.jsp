@@ -312,6 +312,126 @@
                     <div class="os-content-glue" style="margin: -10px 0 0"></div>
                     <div class="os-padding">
                         <div ref="chatBody" @scroll="loadAdditionalMessagesIfTop" class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll; scroll-behavior: smooth;">
+                            <div>
+                                <div class="chat-item">
+                                    <div class="profile-img">
+                                        <img src="/resources/images/profile/profile24.png">
+                                    </div>
+                                    <div class="wrap-content">
+                                        <div class="txt-time">[미등록고객] 12-13 11:35</div>
+                                        <div class="chat bot">
+                                            <div class="bubble">
+                                                <div class="txt_chat">
+                                                    <p>11111</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="chat bot">
+                                            <div class="bubble">
+                                                <div class="card">
+                                                    <div class="card-img">
+                                                        <img src="http://th2.tmon.kr/thumbs/image/423/336/e17/1b1492318_700x700_95_FIT.jpg">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="chat bot">
+                                            <div class="bubble">
+                                                <div class="card">
+                                                    <div class="card-img">
+                                                        <img src="http://th2.tmon.kr/thumbs/image/423/336/e17/1b1492318_700x700_95_FIT.jpg">
+                                                    </div>
+                                                    <div class="card-content">
+                                                        <div class="card-title">test</div>
+                                                        <div class="card-text">testtesttesttesttesttest</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="chat bot">
+                                            <div class="bubble">
+                                                <div class="button-inner">
+                                                    <button type="button" class="chatbot-button">챗봇버튼</button>
+                                                    <button type="button" class="chatbot-button">챗봇버튼</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="chat bot">
+                                            <div class="bubble">
+                                                <div class="card">
+                                                    <div class="card-list">
+                                                        <div class="card-list-title">
+                                                            <a href="http://naver.com" target="_blank">test</a>
+                                                        </div>
+                                                        <ul class="card-list-ul">
+                                                            <li class="item">
+                                                                <a target="_blank" class="link-wrap">
+                                                                    <div class="item-thumb">
+                                                                        <div class="item-thumb-inner">
+                                                                            <img src="http://th2.tmon.kr/thumbs/image/423/336/e17/1b1492318_700x700_95_FIT.jpg">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="item-content">
+                                                                        <div class="subject">111</div>
+                                                                        <div class="ment" style="white-space: pre-wrap;">111</div>
+                                                                    </div>
+                                                                </a>
+                                                            </li>
+                                                            <li class="item">
+                                                                <a target="_blank" class="link-wrap">
+                                                                    <div class="item-content">
+                                                                        <div class="subject">11</div>
+                                                                        <div class="ment" style="white-space: pre-wrap;">111</div>
+                                                                    </div>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="chat bot">
+                                            <div class="bubble">
+                                                <div class="card">
+                                                    <div class="card-list">
+                                                        <ul class="card-list-ul">
+                                                            <li class="item form">
+                                                                <div class="label">aa</div>
+                                                                <div class="ui fluid input"><input type="text"></div>
+                                                            </li>
+                                                            <li class="item form">
+                                                                <div class="label">aa</div>
+                                                                <div class="ui multi form">
+                                                                    <select class="slt">
+                                                                        <option>오전</option>
+                                                                        <option>오후</option>
+                                                                    </select>
+                                                                    <select class="slt">
+                                                                        <option>12</option>
+                                                                    </select>
+                                                                    <span class="unit">시</span>
+                                                                    <select class="slt">
+                                                                        <option>55</option>
+                                                                    </select>
+                                                                    <span class="unit">분</span>
+                                                                </div>
+                                                            </li>
+                                                            <li class="item">
+                                                                <div class="button-inner">
+                                                                    <button type="button" class="chatbot-button">챗봇버튼</button>
+                                                                </div>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 </div>
+                            </div>
+
+
+
                             <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + i">
                                 <p v-if="['SE', 'RE'].includes(e.sendReceive)" class="info-msg">[{{ getTimeFormat(e.time) }}]</p>
                                 <p v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
