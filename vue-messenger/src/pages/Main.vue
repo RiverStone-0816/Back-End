@@ -52,7 +52,7 @@
                       </div>
                       <div class="flex flex-row-reverse pt-2">
                         <div v-for="(channel, i) in message.data.channel_list" :key="i" class="pl-2">
-                          <a href="javascript:" @click.stop.prevent="showAlert('동작 확인 필요')" target="_blank">
+                          <a :href="channel.channel_url" target="_blank">
                             <img alt="kakao" :src="channel.channel_type === 'eicn' ? getEicnIcon() : channel.channel_type === 'kakao' ? getKakaoIcon()
                                   : channel.channel_type === 'line' ? getLineIcon() : getNaverIcon()">
                           </a>
@@ -330,8 +330,6 @@ export default {
       this.input = ''
     },
     actFallback(message) {
-      console.log(message.data)
-
       if (message.data.fallback_action === 'first') {
         this.communicator.requestRootBlock(this.botId)
       } else if (message.data.fallback_action === 'url') {
@@ -355,8 +353,6 @@ export default {
       }
     },
     actButton(message, button) {
-      console.log(message, button)
-
       if (button.action === 'url') return window.open(button.next_action_data, null)
 
       this.communicator.sendAction(this.botId, {
@@ -369,8 +365,6 @@ export default {
       }, this.lastReceiveMessageType)
     },
     actApi(message, button, event) {
-      console.log(message, button, event)
-
       const data = {}
       const result = {}
       const elements = event.target.closest('.-api-parent').querySelectorAll('[name]')
@@ -426,9 +420,7 @@ export default {
             this.inputEnable = !(data.message_data.session_keep_yn === 'N')
           }
 
-          const message = {sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type}
-          console.log(message)
-          this.messages.push(message)
+          this.messages.push({sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type})
         })
         .requestIntro()
   },
