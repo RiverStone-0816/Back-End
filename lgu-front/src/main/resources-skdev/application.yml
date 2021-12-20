@@ -58,8 +58,8 @@ eicn:
     api-package: kr.co.eicn.ippbx.front.controller.api
   file:
     location: /tmp
-  apiserver: http://localhost:8080/api-server
-  realapiserver: http://localhost:8080/api-server
+  apiserver: http://122.49.74.102/api-server
+  realapiserver: http://122.49.74.102/api-server
   webchat:
     image:
       url: http://localhost:8100/webchat_bot_image
