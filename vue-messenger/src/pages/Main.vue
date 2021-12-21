@@ -166,8 +166,8 @@
                         {{ e2.btn_name }}
                       </button>
                     </div>
-                    <div v-else class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300">
-                      <div v-for="(e2, j) in e.api_param" :key="j" class="p-2 pl-3 text-base font-bold -api-parent">
+                    <div v-else class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent">
+                      <div v-for="(e2, j) in e.api_param" :key="j" class="p-2 pl-3 text-base font-bold">
                         <p>{{ e2.display_name }}</p>
                         <div v-if="e2.type !== 'time'" class="relative w-full pt-2">
                           <input class="flex w-full border rounded-lg focus:outline-none focus:border-indigo-300 h-10 pl-2 pr-2" type="text"
@@ -261,6 +261,11 @@ function zeroPad(nr, base) {
 }
 
 window.addEventListener("beforeunload", () => window.communicator.disconnect(), false)
+// ref: http://daplus.net/javascript-%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D%EC%9D%84-%ED%97%88%EC%9A%A9%ED%95%98%EB%8A%94-javascript%EC%9D%98-string-indexof-%EB%B2%84%EC%A0%84%EC%9D%B4-%EC%9E%88%EC%8A%B5%EB%8B%88/
+String.prototype.regexIndexOf = function(regex, startpos) {
+  var indexOf = this.substring(startpos || 0).search(regex);
+  return (indexOf >= 0) ? (indexOf + (startpos || 0)) : indexOf;
+}
 
 export default {
   mixins: [debounce],
