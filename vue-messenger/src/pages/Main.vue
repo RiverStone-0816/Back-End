@@ -260,6 +260,8 @@ function zeroPad(nr, base) {
   return len > 0 ? new Array(len).join('0') + nr : nr;
 }
 
+window.addEventListener("beforeunload", () => window.communicator.disconnect(), false)
+
 export default {
   mixins: [debounce],
   components: {},
