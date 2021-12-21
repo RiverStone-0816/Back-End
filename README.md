@@ -37,6 +37,10 @@
 - ./skt-front/build/libs/skt-front-1.0-SNAPSHOT.war
 ```
 
+# Vue 배포 방법
+1. /vue-messenger> npm run build
+2. dist 에 생성된 파일 배포. 
+
 # 변경된 스키마 이력
 
 * 2020-04-22 라우팅신청관리
