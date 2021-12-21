@@ -361,6 +361,8 @@ public class MainApiController extends ApiBaseController {
         }).collect(Collectors.toMap(MaindbCustomInfoEntity::getMaindbSysCustomId, MaindbCustomInfoEntity::getMaindbString_1));
         final List<TalkCurrentListResponse> response = currentTalkRoomRepository.findAll().stream()
                 .filter(e -> {
+                    if (e.getRoomStatus().startsWith("B"))
+                        return false;
                     if (Objects.equals(search.getMode(), "MY") && !(Objects.equals(e.getUserid(), g.getUser().getId()) && !Objects.equals(e.getRoomStatus(), "E")))
                         return false;
 
