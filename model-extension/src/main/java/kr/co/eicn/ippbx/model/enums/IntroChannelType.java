@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public enum IntroChannelType implements CodeHasable<String> {
     KAKAO("kakao", "/resources/images/kakao-icon.png"),
-    EICN("eicn", "/resources/images/eicn-icon.png"),
+    EICN("eicn", "/resources/images/chatbot-icon.svg"),
     LINE("naverline", "/resources/images/line-icon.png"),
     NAVER("navertt", "/resources/images/ntalk-icon.png");
 

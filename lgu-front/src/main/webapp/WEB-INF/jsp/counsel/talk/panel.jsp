@@ -58,7 +58,7 @@
                                 <div class="ui top left attached label small blue">
                                     서비스 : {{ room.svcName }}
                                     <img v-if="room.channelType === 'kakao'" src="<c:url value="/resources/images/kakao-icon.png"/>" class="channel-icon">
-                                    <img v-if="room.channelType === 'eicn'" src="<c:url value="/resources/images/eicn-icon.png"/>" class="channel-icon">
+                                    <img v-if="room.channelType === 'eicn'" src="<c:url value="/resources/images/chatbot-icon.svg"/>" class="channel-icon">
                                     <img v-if="room.channelType === 'naverline'" src="<c:url value="/resources/images/line-icon.png"/>" class="channel-icon">
                                     <img v-if="room.channelType === 'navertt'" src="<c:url value="/resources/images/ntalk-icon.png"/>" class="channel-icon">
                                 </div>
@@ -326,7 +326,7 @@
                 <div class="chat-header dp-flex justify-content-space-between align-items-center">
                     <span :style="'visibility:'+(roomId?'visible':'hidden')">
                         <img v-if="channelType === 'kakao'" src="<c:url value="/resources/images/kakao-icon.png"/>" class="channel-icon">
-                        <img v-if="channelType === 'eicn'" src="<c:url value="/resources/images/eicn-icon.png"/>" class="channel-icon">
+                        <img v-if="channelType === 'eicn'" src="<c:url value="/resources/images/chatbot-icon.svg"/>" class="channel-icon">
                         <img v-if="channelType === 'naverline'" src="<c:url value="/resources/images/line-icon.png"/>" class="channel-icon">
                         <img v-if="channelType === 'navertt'" src="<c:url value="/resources/images/ntalk-icon.png"/>" class="channel-icon">
                         [{{ roomStatus }}]-{{ roomName }}
@@ -981,7 +981,7 @@
 
             if (['SZ', 'SG'].includes(data.send_receive)) {
                 talkListContainer.updateRoomStatus(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.type, data.content, messageTime)
-            } else if ('SE' === data.send_receive) {
+            } else if (['SE', 'RE'].includes(data.send_receive)) {
                 talkListContainer.updateRoomStatus(data.room_id, 'END', data.type, data.content, messageTime)
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime)
