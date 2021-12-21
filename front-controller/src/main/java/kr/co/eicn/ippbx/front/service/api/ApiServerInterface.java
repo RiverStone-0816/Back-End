@@ -79,6 +79,8 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
     protected String devel;
     @Autowired
     protected HttpSession session;
+    @Value("${eicn.webchat.image.url}")
+    private String webchatUrl;
 
     @PostConstruct
     public void setup() {
@@ -329,6 +331,15 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
     public String getClientIp() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         return attr.getRequest().getRemoteHost();
+    }
+
+    protected void uploadWebchatImageToGateway(String companyId, String fileName) throws JsonProcessingException {
+        HashMap<String, String> parameterMap = new HashMap<>();
+
+        parameterMap.put("company_id", companyId);
+        parameterMap.put("file_name", fileName);
+
+        getResponse(webchatUrl, parameterMap, HttpMethod.POST, false);
     }
 
     protected static class FileResource extends FileSystemResource {

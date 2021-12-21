@@ -27,10 +27,6 @@ import java.util.List;
 @Service
 public class ChatbotApiInterface extends ApiServerInterface {
     private static final String subUrl = "/api/v1/chat/bot/";
-    @Value("${eicn.webchat.image.url}")
-    private String webchatUrl;
-    @Autowired
-    protected RequestGlobal g;
 
     @SneakyThrows
     public List<SummaryWebchatBotInfoResponse> list() {
@@ -68,17 +64,10 @@ public class ChatbotApiInterface extends ApiServerInterface {
     }
 
     @SneakyThrows
-    public String uploadImage(FileForm form) {
-        String saveFileName = sendByMultipartFile(HttpMethod.POST, subUrl + "image", form, String.class, Collections.singletonMap("image", new FileResource(form.getFilePath(), form.getOriginalName())));
+    public String uploadImage(FileForm form, String companyId) {
+        final String saveFileName = sendByMultipartFile(HttpMethod.POST, subUrl + "image", form, String.class, Collections.singletonMap("image", new FileResource(form.getFilePath(), form.getOriginalName())));
 
-        HashMap<String, String> parameterMap = new HashMap<>();
-
-        parameterMap.put("company_id", g.getUser().getCompanyId());
-        parameterMap.put("file_name", saveFileName);
-
-        log.info(webchatUrl);
-        log.info(parameterMap.toString());
-        getResponse(webchatUrl, parameterMap, HttpMethod.POST, false);
+        uploadWebchatImageToGateway(companyId, saveFileName);
 
         return saveFileName;
     }

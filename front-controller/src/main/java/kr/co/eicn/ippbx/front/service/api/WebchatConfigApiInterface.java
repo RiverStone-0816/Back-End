@@ -43,7 +43,11 @@ public class WebchatConfigApiInterface extends ApiServerInterface {
     }
 
     @SneakyThrows
-    public String uploadImage(FileForm form) {
-        return sendByMultipartFile(HttpMethod.POST, subUrl + "image", form, String.class, Collections.singletonMap("image", new FileResource(form.getFilePath(), form.getOriginalName())));
+    public String uploadImage(FileForm form, String companyId) {
+        final String saveFileName = sendByMultipartFile(HttpMethod.POST, subUrl + "image", form, String.class, Collections.singletonMap("image", new FileResource(form.getFilePath(), form.getOriginalName())));
+
+        uploadWebchatImageToGateway(companyId, saveFileName);
+
+        return saveFileName;
     }
 }

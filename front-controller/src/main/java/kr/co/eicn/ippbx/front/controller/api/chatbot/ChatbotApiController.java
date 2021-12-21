@@ -75,7 +75,7 @@ public class ChatbotApiController extends BaseController {
     @SneakyThrows
     @PostMapping("image")
     public String uploadImage(@Valid @RequestBody FileForm form, BindingResult bindingResult) {
-        return apiInterface.uploadImage(form);
+        return apiInterface.uploadImage(form, g.getUser().getCompanyId());
     }
 
 }
