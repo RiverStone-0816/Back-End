@@ -249,7 +249,7 @@ import botIcon from '../assets/bot-icon.png'
 import kakaoIcon from '../assets/kakao-icon.png'
 import naverIcon from '../assets/naver-icon.png'
 import lineIcon from '../assets/line-icon.png'
-import eicnIcon from '../assets/chatbot-icon.svg'
+import eicnIcon from '../assets/bot-icon.png'
 import debounce from '../utillities/mixins/debounce'
 import store from '../store/index'
 
