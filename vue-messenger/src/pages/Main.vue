@@ -20,7 +20,7 @@
                   <div class="flex flex-row items-center">
                     <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
                       <div v-if="message.data.image" class="relative rounded-lg pt-1 pb-3">
-                        <img class="w-full" :src="message.data.image" alt="intro image">
+                        <img class="w-full" :src="`http://122.49.74.102:8100/webchat_bot_image_fetch?company_id=eicn&file_name=${encodeURIComponent(message.data.image)}`" alt="intro image">
                       </div>
                       <div>
                         <p style="white-space: pre-wrap">{{ message.data.text_data }}</p>
@@ -35,7 +35,7 @@
                   <div class="flex flex-row items-center">
                     <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
                       <div v-if="message.data.image" class="relative rounded-lg pt-1 pb-3">
-                        <img class="w-full" :src="message.data.image" alt="intro image">
+                        <img class="w-full" :src="`http://122.49.74.102/api-server/api/v1/chat/config/image?fileName=${encodeURIComponent(message.data.image)}`" alt="intro image">
                       </div>
                       <div>
                         <p style="white-space: pre-wrap">{{ message.data.msg }}</p>
@@ -121,11 +121,11 @@
                       <p style="white-space: pre-wrap">{{ e.element[0]?.content }}</p>
                     </div>
                     <div v-else-if="e.type === 'image'" class="relative">
-                      <img alt="chat_image" class="w-full rounded-lg" :src="e.element[0]?.image">
+                      <img alt="chat_image" class="w-full rounded-lg" :src="`http://122.49.74.102:8100/webchat_bot_image_fetch?company_id=eicn&file_name=${encodeURIComponent(e.element[0]?.image)}`">
                     </div>
                     <div v-else-if="e.type === 'card'" class="relative text-sm bg-white shadow rounded-lg max-w-xs">
                       <div class="relative">
-                        <img alt="chat_image" class="w-full rounded-t-lg" :src="e.element[0]?.image">
+                        <img alt="chat_image" class="w-full rounded-t-lg" :src="`http://122.49.74.102:8100/webchat_bot_image_fetch?company_id=eicn&file_name=${encodeURIComponent(e.element[0]?.image)}`">
                       </div>
                       <div class="p-3 pb-0 text-base font-bold">
                         <p>{{ e.element[0]?.title }}</p>
@@ -142,7 +142,7 @@
                       <template v-if="e.element[1]?.title || e.element[1]?.image || e.element[1]?.content">
                         <div v-for="(e2, j) in getListElements(e)" :key="j" class="grid grid-cols-6 p-3">
                           <div class="col-start-1 h-full">
-                            <img v-if="e2.image" class="rounded-lg w-12 h-12" :src="e2.image" alt="item image">
+                            <img v-if="e2.image" class="rounded-lg w-12 h-12" :src="`http://122.49.74.102:8100/webchat_bot_image_fetch?company_id=eicn&file_name=${encodeURIComponent(e2.image)}`" alt="item image">
                           </div>
                           <div class="col-span-5">
                             <div class="pl-2 pt-0 pb-1">

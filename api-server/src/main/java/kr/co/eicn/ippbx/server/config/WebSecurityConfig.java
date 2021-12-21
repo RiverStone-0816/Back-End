@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
-
+		httpSecurity.authorizeRequests().mvcMatchers("api/v1/chat/config/image").permitAll();
 
 		httpSecurity.httpBasic().disable()
 				.csrf().disable()
