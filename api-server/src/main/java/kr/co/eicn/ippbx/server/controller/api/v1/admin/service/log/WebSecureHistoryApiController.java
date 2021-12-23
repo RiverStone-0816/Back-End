@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 import static kr.co.eicn.ippbx.util.JsonResult.create;
 import static kr.co.eicn.ippbx.util.JsonResult.data;
-import static org.apache.logging.log4j.util.Strings.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 /**
  *   서비스운영관리 > 로그인이력 > 웹로그관리
