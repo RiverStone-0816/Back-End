@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.model.form;
 
 import kr.co.eicn.ippbx.model.enums.WebVoiceInfoYn;
+import kr.co.eicn.ippbx.model.enums.WebVoiceItemYn;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
@@ -19,6 +20,10 @@ public class WebVoiceItemsFormRequest extends WebVoiceInfoFormRequest {
     private List<WebVoiceItemsInputFormRequest> titles;
     @Valid
     private List<WebVoiceItemsDtmfFormRequest> dtmfs;
+    private String prev = WebVoiceItemYn.UNUSED.getCode();
+    private String first = WebVoiceItemYn.UNUSED.getCode();
+    private String counseling = WebVoiceItemYn.UNUSED.getCode();
+    private String end = WebVoiceItemYn.UNUSED.getCode();
 
     @Override
     public boolean validate(BindingResult bindingResult) {

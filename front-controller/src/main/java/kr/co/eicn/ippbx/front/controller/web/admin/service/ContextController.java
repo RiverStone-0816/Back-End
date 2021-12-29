@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.service;
 
+import kr.co.eicn.ippbx.model.enums.WebVoiceItemYn;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -12,6 +13,7 @@ import kr.co.eicn.ippbx.model.form.ContextInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsDtmfFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsInputFormRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +80,25 @@ public class ContextController extends BaseController {
             voice.getItems().stream().filter(e -> Objects.equals(e.getItemType(), "TEXT")).findFirst()
                     .ifPresent(webVoiceItemsResponse -> form.setTextStr(webVoiceItemsResponse.getItemName()));
 
+            voice.getItems().stream().filter(e -> Objects.equals(e.getItemType(), "BUTTON")).findFirst()
+                    .ifPresent(webVoiceItemsResponse ->{
+                        if(StringUtils.isNotEmpty(webVoiceItemsResponse.getItemName())){
+                            String[] strArray = webVoiceItemsResponse.getItemName().split("");
+                            for(String s : strArray){
+                                switch (s) {
+                                    case "B" : form.setPrev(WebVoiceItemYn.USE.getCode());
+                                        break;
+                                    case "F" : form.setFirst(WebVoiceItemYn.USE.getCode());
+                                        break;
+                                    case "C" : form.setCounseling(WebVoiceItemYn.USE.getCode());
+                                        break;
+                                    case "H" : form.setEnd(WebVoiceItemYn.USE.getCode());
+                                        break;
+                                    default: break;
+                                }
+                            }
+                        }
+                    });
             form.setTitles(
                     voice.getItems().stream().filter(e -> Objects.equals(e.getItemType(), "INPUTDIGIT")).map(e -> {
                         final WebVoiceItemsInputFormRequest inputForm = new WebVoiceItemsInputFormRequest();

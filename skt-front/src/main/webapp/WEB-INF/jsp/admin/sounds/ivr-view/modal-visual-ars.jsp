@@ -100,8 +100,29 @@
                             ${form.controlUse == 'Y' ? '사용' : '사용안함'}
                     </div>
                 </div>
-                <div class="twelve wide column">
-                    고정
+                <div class="twelve wide column ui form">
+                    <div class="fields">
+                        <div class="four wide field">
+                            <div class="ui checkbox">
+                                <form:checkbox path="prev" value="Y"/><label>이전</label>
+                            </div>
+                        </div>
+                        <div class="four wide field">
+                            <div class="ui checkbox">
+                                <form:checkbox path="first" value="Y"/><label>처음으로</label>
+                            </div>
+                        </div>
+                        <div class="four wide field">
+                            <div class="ui checkbox">
+                                <form:checkbox path="counseling" value="Y"/><label>상담원연결</label>
+                            </div>
+                        </div>
+                        <div class="four wide field">
+                            <div class="ui checkbox">
+                                <form:checkbox path="end" value="Y"/><label>종료</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

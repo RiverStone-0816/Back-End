@@ -2,12 +2,12 @@ package kr.co.eicn.ippbx.model.enums;
 
 import kr.co.eicn.ippbx.util.CodeHasable;
 
-public enum WebVoiceAreaType implements CodeHasable<String> {
-    INPUT("INPUTAREA"), TEXT("TEXTAREA"), HEADER("HEADERAREA"), CONTROL("CONTROLAREA");
+public enum WebVoiceItemYn implements CodeHasable<String> {
+    USE("Y"), UNUSED("N");
 
     private final String code;
 
-    WebVoiceAreaType(String code) {
+    WebVoiceItemYn(String code) {
         this.code = code;
     }
 

@@ -2,10 +2,7 @@ package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebvoiceInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebvoiceItems;
-import kr.co.eicn.ippbx.model.enums.ContextType;
-import kr.co.eicn.ippbx.model.enums.WebVoiceAreaType;
-import kr.co.eicn.ippbx.model.enums.WebVoiceInfoYn;
-import kr.co.eicn.ippbx.model.enums.WebVoiceItemType;
+import kr.co.eicn.ippbx.model.enums.*;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsDtmfFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsInputFormRequest;
@@ -130,6 +127,16 @@ public class WebVoiceInfoRepository extends EicnBaseRepository<WebvoiceInfo, kr.
                 webVoiceItemsRepository.insertItem(WebVoiceAreaType.INPUT.getCode(), WebVoiceItemType.DTMF.getCode(), dtmf.getDtmfTitle(), dtmf.getDtmfValue(), dtmf.getIsView(), sequence++);
                 count++;
             }
+        }
+
+        //컨트롤영역 추가.
+        if (form.getControlUse().equals(WebVoiceInfoYn.USE.getCode())){
+            String itemName = "";
+            if(form.getPrev().equals(WebVoiceItemYn.USE.getCode())) itemName+=WebVoiceControlItem.PREV.getCode();
+            if(form.getFirst().equals(WebVoiceItemYn.USE.getCode())) itemName+=WebVoiceControlItem.FIRST.getCode();
+            if(form.getCounseling().equals(WebVoiceItemYn.USE.getCode())) itemName+=WebVoiceControlItem.COUNSELING.getCode();
+            if(form.getEnd().equals(WebVoiceItemYn.USE.getCode())) itemName+=WebVoiceControlItem.END.getCode();
+            webVoiceItemsRepository.insertItem(WebVoiceAreaType.CONTROL.getCode(), WebVoiceItemType.BUTTON.getCode(), itemName, sequence++);
         }
     }
 
