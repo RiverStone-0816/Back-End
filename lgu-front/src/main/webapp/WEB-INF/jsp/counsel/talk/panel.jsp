@@ -835,6 +835,10 @@
                         this.showingTemplates = false
                         this.sendTemplate(this.templates[this.activatingTemplateIndex])
                     }
+
+                    if (event.key === 'Enter') {
+                        this.sendMessage()
+                    }
                 },
                 loadTemplates: function () {
                     const _this = this
