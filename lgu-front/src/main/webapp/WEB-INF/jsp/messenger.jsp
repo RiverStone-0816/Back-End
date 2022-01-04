@@ -41,16 +41,18 @@
                                     </div>
                                 </div>
                                 <ul class="consulting-accordion-content">
-                                    <li v-for="(person, j) in team.person" :key="j" class="team-item -inviting-person" :data-id="person.id" :data-name="person.idName"
-                                        onclick="toggleActive(event, this)">
-                                        <div>
-                                            <i class="user outline icon -consultant-login" :data-peer="person.peer" data-logon-class="online"></i>
-                                            <span class="user">{{ person.idName }}[{{ person.extension }}]</span>
-                                        </div>
-                                        <div>
-                                            <span class="ui mini label -consultant-status-with-color" :data-peer="person.peer"></span>
-                                        </div>
-                                    </li>
+                                    <template v-for="(person, j) in team.person" :key="j">
+                                        <li v-show="!members[person.id]" class="team-item -inviting-person" :data-id="person.id" :data-name="person.idName"
+                                            onclick="toggleActive(event, this)">
+                                            <div>
+                                                <i class="user outline icon -consultant-login" :data-peer="person.peer" data-logon-class="online"></i>
+                                                <span class="user">{{ person.idName }}[{{ person.extension }}]</span>
+                                            </div>
+                                            <div>
+                                                <span class="ui mini label -consultant-status-with-color" :data-peer="person.peer"></span>
+                                            </div>
+                                        </li>
+                                    </template>
                                 </ul>
                             </li>
                         </ul>
