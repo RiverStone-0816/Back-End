@@ -197,6 +197,8 @@ public class WebchatBotService extends ApiBaseService {
         WebchatBotInfoResponse response = getBotInfo(botId);
 
         WebchatBotFormRequest copyData = convertDto(response, WebchatBotFormRequest.class);
+        if (copyData.getName() != null) copyData.setName(copyData.getName() + "(+1)");
+        else copyData.setName("_(+1)");
 
         return createWebchatBotInfo(copyData);
     }
