@@ -570,7 +570,7 @@
 
                 <div class="wrap-inp">
                     <div class="inp-box">
-                        <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteClipboardFiles" @keyup.stop="keyup"></textarea>
+                        <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup"></textarea>
                     </div>
                     <button type="button" class="send-btn" @click="sendMessage()">전송</button>
                 </div>
@@ -784,19 +784,27 @@
                         })
                     }
                 },
-                pasteClipboardFiles: function (event) {
+                pasteFromClipboard: function (event) {
                     const _this = this
+                    let hasFile = false
+
                     for (let i = 0; i < event.clipboardData.items.length; i++) {
-                        uploadFile(event.clipboardData.items[i].getAsFile()).done(function (response) {
-                            restSelf.post('/api/counsel/' + _this.roomId + '/upload-file', {
-                                filePath: response.data.filePath,
-                                originalName: response.data.originalName,
-                                channel_type: _this.channelType,
-                                sender_key: _this.senderKey,
-                                user_key: _this.userKey
+                        const item = event.clipboardData.items[i]
+                        if (item.kind === 'file') {
+                            hasFile = true
+                            uploadFile(item.getAsFile()).done(function (response) {
+                                restSelf.post('/api/counsel/' + _this.roomId + '/upload-file', {
+                                    filePath: response.data.filePath,
+                                    originalName: response.data.originalName,
+                                    channel_type: _this.channelType,
+                                    sender_key: _this.senderKey,
+                                    user_key: _this.userKey
+                                })
                             })
-                        })
+                        }
                     }
+
+                    if (!hasFile) this.$refs.message.value += event.clipboardData.getData('Text')
                 },
                 sendTemplate(template) {
                     // TODO: 서버에 이미 존재하는 이미지 파일을 소켓에 전달하는 프로토콜 추가 필요 (이미지 템플릿으로 추가된 파일을 업로드할수 없다)
