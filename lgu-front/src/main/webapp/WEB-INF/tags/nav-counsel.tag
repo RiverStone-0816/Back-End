@@ -44,15 +44,15 @@
                             <ul class="treeview-menu treeview-on consulting-accordion-content favorite overflow-overlay">
                                 <li v-if="!list.length" class="empty">등록된 즐겨찾기가 없습니다.</li>
                                 <li v-else v-for="(e, i) in list" :key="i" style="cursor: pointer" class="-messenger-user" :data-id="e.id" onclick="toggleActive(event, this)"
-                                    @dblclick="openRoom(e.id)">
+                                    @dblclick.stop.prevent="openRoom(e.id)">
                                     <div>
                                         <i class="user outline icon -consultant-login" :data-peer="e.peer" data-logon-class="online"></i>
                                         <span class="user">{{ e.idName }}<text v-if="e.extension">[{{ e.extension }}]</text></span>
-                                        <button class="ui icon button mini compact" @click.stop.prevent="redirectTo(e.extension)" title="전화돌려주기">
+                                        <button v-if="e.extension" class="ui icon button mini compact" @click.stop.prevent="redirectTo(e.extension)" title="전화돌려주기">
                                             <i class="share icon"></i>
                                         </button>
                                     </div>
-                                    <div>
+                                    <div v-if="e.peer">
                                         <span class="ui mini label -consultant-status-with-color" :data-peer="e.peer"></span>
                                     </div>
                                 </li>
@@ -60,41 +60,47 @@
                         </div>
                     </div>
                 </c:if>
-                <div id="team-list" class="consulting-accordion organization overflow-hidden dp-flex flex-flow-column active" onclick="toggleFold(event, this)">
+                <div id="team-list" class="consulting-accordion organization overflow-hidden dp-flex flex-flow-column active">
                     <div class="consulting-accordion-label">
                         <div>
                             조직도
                             <c:if test="${activeMessenger}">
                                 <button class="ui basic white very mini compact button ml10" @click.stop.prevent="openRoom()">선택대화</button>
+                                <button type="button" class="ui basic white very mini compact button ml10"
+                                        onclick="$('#team-list,#bookmark-list').find('.-messenger-user').removeClass('active')">Clear</button>
                             </c:if>
                         </div>
-                        <div>
+                        <div onclick="toggleFold(event, this)">
                             <i class="material-icons arrow">keyboard_arrow_down</i>
                         </div>
                     </div>
                     <div class="consulting-accordion-content overflow-overlay flex-100">
                         <ul class="side-organization-ul">
-                            <li v-for="(team, i) in teams" :key="i" class="consulting-accordion active" onclick="toggleFold(event, this)">
+                            <li v-for="(team, i) in teams" :key="i" class="consulting-accordion active">
                                 <div class="consulting-accordion-label team">
                                     <div class="left">
                                         <i class="folder open icon"></i>
                                         <span class="team-name">{{ team.groupName }}</span>
+                                        <button type="button" class="ui basic white very mini compact button ml10"
+                                                onclick="$(this).closest('.consulting-accordion').find('.-messenger-user').addClass('active')">선택</button>
+                                        <button type="button" class="ui basic white very mini compact button ml10"
+                                                onclick="$(this).closest('.consulting-accordion').find('.-messenger-user').removeClass('active')">해제</button>
                                     </div>
-                                    <div class="right">
+                                    <div class="right" onclick="toggleFold(event, this)">
                                         <i class="material-icons arrow">keyboard_arrow_down</i>
                                     </div>
                                 </div>
                                 <ul class="treeview-menu consulting-accordion-content">
-                                    <li v-for="(person, j) in team.person" :key="j" class="team-item -messenger-user" :data-id="person.id" onclick="toggleActive(event, this)"
-                                        @dblclick="openRoom(person.id)">
+                                    <li v-for="(person, j) in team.person" :key="j" class="team-item -messenger-user" :data-id="person.id" @click.stop.prevent="toggleActive($event)"
+                                        @dblclick.stop.prevent="openRoom(person.id)">
                                         <div>
                                             <i class="user outline icon -consultant-login" :data-peer="person.peer" data-logon-class="online"></i>
                                             <span class="user">{{ person.idName }}<text v-if="person.extension">[{{ person.extension }}]</text></span>
-                                            <button class="ui icon button mini compact" @click.stop.prevent="redirectTo(person.extension)" title="전화돌려주기">
+                                            <button v-if="person.extension" class="ui icon button mini compact" @click.stop.prevent="redirectTo(person.extension)" title="전화돌려주기">
                                                 <i class="share icon"></i>
                                             </button>
                                         </div>
-                                        <div>
+                                        <div v-if="person.peer">
                                             <span class="ui mini label -consultant-status-with-color" :data-peer="person.peer"></span>
                                         </div>
                                         <c:if test="${usingservices.contains('IM')}">
@@ -166,8 +172,9 @@
     <script>
         function toggleFold(event, target) {
             event.stopPropagation()
-            $(target).toggleClass('active')
-            $(target).find('.arrow:first').text($(target).hasClass('active') ? 'keyboard_arrow_down' : 'keyboard_arrow_right')
+            const accordion = $(target).closest('.consulting-accordion')
+            accordion.toggleClass('active')
+            $(target).find('.arrow:first').text(accordion.hasClass('active') ? 'keyboard_arrow_down' : 'keyboard_arrow_right')
         }
 
         function toggleActive(event, target) {
@@ -178,7 +185,8 @@
         const teamList = Vue.createApp({
             data: function () {
                 return {
-                    teams: []
+                    teams: [],
+                    lastActivated: null,
                 }
             },
             methods: {
@@ -203,7 +211,36 @@
                 },
                 openRoom: function (userId) {
                     messenger.openRoom(userId)
-                }
+                },
+                toggleActive(event) {
+                    const element = event.currentTarget
+                    if(event.shiftKey && this.lastActivated && this.lastActivated !== element) {
+                        const lastActivated = this.lastActivated
+                        let meetFirst = false, meetSecond = false
+                        $('#team-list .-messenger-user').each(function () {
+                            if (meetSecond) return
+                            if (meetFirst) {
+                                $(this).addClass('active')
+
+                                if (this === lastActivated || this === element)
+                                    meetSecond = true
+
+                                return
+                            }
+                            if (this === lastActivated || this === element) {
+                                $(this).addClass('active')
+                                meetFirst = true
+                            }
+                        })
+
+                        this.lastActivated = null
+                    } else {
+                        $(element).toggleClass('active')
+
+                        if ($(element).hasClass('active'))
+                            this.lastActivated = element
+                    }
+                },
             },
             updated: function () {
                 updatePersonStatus()

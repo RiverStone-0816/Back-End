@@ -337,6 +337,7 @@
 
                     const _this = this
                     restSelf.post('/api/chatt/', {memberList: userIds}).done(function (response) {
+                        $('#team-list').find('.-messenger-user').removeClass('active')
                         _this.loadRoom(response.data)
                     })
                 },
