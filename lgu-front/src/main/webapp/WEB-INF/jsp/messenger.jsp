@@ -319,13 +319,18 @@
                         _this.messageLoading = false
                     })
                 },
-                openRoom: function () {
+                openRoom: function (selectedId) {
                     const userIds = [userId]
-                    $('.-messenger-user.active').each(function () {
-                        const id = $(this).attr('data-id')
-                        if (!userIds.includes(id))
-                            userIds.push(id)
-                    })
+
+                    if (selectedId) {
+                        userIds.push(selectedId)
+                    } else {
+                        $('.-messenger-user.active').each(function () {
+                            const id = $(this).attr('data-id')
+                            if (!userIds.includes(id))
+                                userIds.push(id)
+                        })
+                    }
 
                     if (userIds.length === 1)
                         return

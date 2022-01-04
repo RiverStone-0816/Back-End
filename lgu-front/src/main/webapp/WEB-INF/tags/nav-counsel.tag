@@ -43,11 +43,12 @@
                         <div class="consulting-accordion-content">
                             <ul class="treeview-menu treeview-on consulting-accordion-content favorite overflow-overlay">
                                 <li v-if="!list.length" class="empty">등록된 즐겨찾기가 없습니다.</li>
-                                <li v-else v-for="(e, i) in list" :key="i" style="cursor: pointer" class="-messenger-user" :data-id="e.id" onclick="toggleActive(event, this)">
+                                <li v-else v-for="(e, i) in list" :key="i" style="cursor: pointer" class="-messenger-user" :data-id="e.id" onclick="toggleActive(event, this)"
+                                    @dblclick="openRoom(e.id)">
                                     <div>
                                         <i class="user outline icon -consultant-login" :data-peer="e.peer" data-logon-class="online"></i>
-                                        <span class="user">{{ e.idName }}[{{ e.extension }}]</span>
-                                        <button class="ui icon button mini compact" @click.stop="redirectTo(e.extension)" title="전화돌려주기">
+                                        <span class="user">{{ e.idName }}<text v-if="e.extension">[{{ e.extension }}]</text></span>
+                                        <button class="ui icon button mini compact" @click.stop.prevent="redirectTo(e.extension)" title="전화돌려주기">
                                             <i class="share icon"></i>
                                         </button>
                                     </div>
@@ -64,7 +65,7 @@
                         <div>
                             조직도
                             <c:if test="${activeMessenger}">
-                                <button type="button" class="ui basic white very mini compact button ml10" @click.stop="openRoom">선택대화</button>
+                                <button class="ui basic white very mini compact button ml10" @click.stop.prevent="openRoom()">선택대화</button>
                             </c:if>
                         </div>
                         <div>
@@ -84,11 +85,12 @@
                                     </div>
                                 </div>
                                 <ul class="treeview-menu consulting-accordion-content">
-                                    <li v-for="(person, j) in team.person" :key="j" class="team-item -messenger-user" :data-id="person.id" onclick="toggleActive(event, this)">
+                                    <li v-for="(person, j) in team.person" :key="j" class="team-item -messenger-user" :data-id="person.id" onclick="toggleActive(event, this)"
+                                        @dblclick="openRoom(person.id)">
                                         <div>
                                             <i class="user outline icon -consultant-login" :data-peer="person.peer" data-logon-class="online"></i>
-                                            <span class="user">{{ person.idName }}[{{ person.extension }}]</span>
-                                            <button type="button" class="ui icon button mini compact" @click.stop="redirectTo(person.extension)" title="전화돌려주기">
+                                            <span class="user">{{ person.idName }}<text v-if="person.extension">[{{ person.extension }}]</text></span>
+                                            <button class="ui icon button mini compact" @click.stop.prevent="redirectTo(person.extension)" title="전화돌려주기">
                                                 <i class="share icon"></i>
                                             </button>
                                         </div>
@@ -199,8 +201,8 @@
                 popupNoteModal: function (person) {
                     noteSendPopup(person.extension, person.idName)
                 },
-                openRoom: function () {
-                    messenger.openRoom()
+                openRoom: function (userId) {
+                    messenger.openRoom(userId)
                 }
             },
             updated: function () {
@@ -239,6 +241,9 @@
                             _this.load()
                         }
                     })
+                },
+                openRoom: function (userId) {
+                    messenger.openRoom(userId)
                 }
             },
             updated: function () {

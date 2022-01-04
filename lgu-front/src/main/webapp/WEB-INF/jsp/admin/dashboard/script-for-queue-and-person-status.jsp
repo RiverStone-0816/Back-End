@@ -180,6 +180,9 @@
             $('.-consultant-status-with-color').each(function () {
                 const _this = $(this);
                 const peer = _this.attr('data-peer');
+                if (!peerStatuses[peer])
+                    return;
+
                 const status = peerStatuses[peer].status;
                 _this.text(statusCodes[status]);
 

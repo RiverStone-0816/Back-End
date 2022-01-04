@@ -9,7 +9,7 @@ import kr.co.eicn.ippbx.server.service.WebchatBotInfoService;
 import kr.co.eicn.ippbx.server.service.WebchatBotService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
@@ -25,7 +25,7 @@ import java.util.List;
 import static kr.co.eicn.ippbx.util.JsonResult.create;
 import static kr.co.eicn.ippbx.util.JsonResult.data;
 
-@Log4j2
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(value = "api/v1/chat/bot/", produces = MediaType.APPLICATION_JSON_VALUE)
