@@ -82,7 +82,7 @@
                                     <div class="block-list-container">
                                         <ul id="block-list" class="block-list-ul">
                                             <li v-for="(e,i) in blocks" :key="i" class="block-list">
-                                                <div class="block-name" style="cursor: pointer" @mouseenter="hightlight(e)" @mouseleave="dehightlight">{{e.name}}</div>
+                                                <div class="block-name" style="cursor: pointer" @mouseenter="highlight(e)" @mouseleave="dehighlight">{{e.name}}</div>
                                                 <div v-if="e.autoReply" class="block-control">
                                                     <img src="<c:url value="/resources/images/chatbot-square-mini.svg"/>">
                                                 </div>
@@ -893,12 +893,12 @@
                         }
                     },
                     methods: {
-                        hightlight(block) {
+                        highlight(block) {
                             for (let nodeId in nodeBlockMap)
                                 if (nodeBlockMap[nodeId].id === block.id)
                                     $('#node-' + nodeId).addClass('highlight')
                         },
-                        dehightlight() {
+                        dehighlight() {
                             for (let nodeId in nodeBlockMap)
                                 $('#node-' + nodeId).removeClass('highlight')
                         },
