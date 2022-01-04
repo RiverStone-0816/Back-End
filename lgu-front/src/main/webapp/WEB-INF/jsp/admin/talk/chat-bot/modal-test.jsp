@@ -25,7 +25,7 @@
 </head>
 <body class="overflow-auto">
 
-<div id="chat-preview" class="chat-preview window">
+<div id="chat-preview" class="chat-preview window" ref="chatBody">
     <div class="header">
         <img src="<c:url value="/resources/images/chatbot-icon.svg"/>" class="chatbot-icon"><span class="customer-title">Chat Bot</span>
     </div>
@@ -162,6 +162,7 @@
                 },
                 data() {
                     return {
+                        timeout: null,
                         socket: null,
                         eventSequence: 0,
                         input: '',
@@ -291,6 +292,10 @@
                         }
 
                         return result
+                    },
+                    debounce(func, wait = 500) {
+                        clearTimeout(this.timeout)
+                        this.timeout = setTimeout(func, wait)
                     }
                 },
                 updated() {
@@ -303,6 +308,9 @@
                             return $(this).val($.onlyNumber(this));
                         })
                     })
+
+                    const container = this.$el.parentElement
+                    this.debounce(() => container.scroll({top: container.scrollHeight}), 100)
                 },
                 mounted() {
                     this.createSocket()
