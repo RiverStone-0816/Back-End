@@ -315,7 +315,7 @@
     </tags:scripts>
 
     <div class="seven wide column">
-        <div id="talk-room" class="chat-container overflow-hidden" style="position: relative" @drop.stop="dropFiles" @dragover.prevent @click.stop="showingTemplates=false">
+        <div id="talk-room" class="chat-container overflow-hidden" style="position: relative" @drop.stop="dropFiles" @dragover.prevent @click.stop="showingTemplateLevel = 0">
             <div v-if="showingDropzone" class="attach-overlay" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true">
                 <div class="inner">
                     <img src="<c:url value="/resources/images/circle-plus.svg"/>">
@@ -519,12 +519,12 @@
             </div>
             <div class="write-chat" @drop.stop="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true">
                 <div class="write-menu">
-                    <div v-if="showingTemplates" class="template-container">
+                    <div v-if="showingTemplateLevel" class="template-container">
                         <div class="template-container-inner">
                             <ul class="template-ul">
-                                <li v-for="(e, i) in templates" :key="i" :class="i === activatingTemplateIndex && 'active'" @click.stop="sendTemplate(e)" class="template-list">
+                                <li v-for="(e, i) in getTemplates()" :key="i" :class="i === activatingTemplateIndex && 'active'" @click.stop="sendTemplate(e)" class="template-list">
                                     <div class="template-title">/{{ e.name }}</div>
-                                    <img v-if="e.isImage" :src="e.url" class="template-image"/>
+                                    <img v-if="e.isImage" :src="e.url" class="template-image" :alt="e.fileName"/>
                                     <div v-if="e.isImage" class="template-content" style="text-decoration: underline">{{ e.fileName }}</div>
                                     <div v-else class="template-content">{{ e.text }}</div>
                                 </li>
@@ -619,7 +619,8 @@
 
                     showingDropzone: false,
 
-                    showingTemplates: false,
+                    showingTemplateLevel: 0,
+                    showingTemplateFilter: '',
                     activatingTemplateIndex: null,
                     templates: [],
 
@@ -744,7 +745,8 @@
                     if (!message || !this.roomStatus || this.roomStatus === 'E') return
                     talkCommunicator.sendMessage(this.roomId, this.channelType, this.senderKey, this.userKey, message)
                     this.$refs.message.value = ''
-                    this.showingTemplates = false
+                    this.showingTemplateLevel = 0
+                    this.showingTemplateFilter = ''
                     this.replying = null
                 },
                 sendFile: function (event) {
@@ -811,59 +813,64 @@
                     if (template.isImage) return alert('TODO: 서버에 이미 존재하는 이미지 파일을 소켓에 전달하는 프로토콜 추가 필요 (이미지 템플릿으로 추가된 파일을 업로드할수 없다)')
                     this.sendMessage(template.text)
                 },
+                getTemplates() {
+                    const _this = this
+                    return this.templates.filter(e => e.permissionLevel >= _this.showingTemplateLevel && e.name.includes(_this.showingTemplateFilter))
+                },
                 keyup: function (event) {
-                    if (event.key === '/' && this.$refs.message.value === '/' && this.templates.length > 0) {
-                        this.showingTemplates = true
+                    if (event.key === '/' && ['///', '//', '/'].includes(this.$refs.message.value)) {
+                        if (this.getTemplates().length > 0) {
+                            this.showingTemplateLevel = this.$refs.message.value === '///' ? 3 : this.$refs.message.value === '//' ? 2 : 1
+                        } else {
+                            this.showingTemplateLevel = 0
+                        }
                         this.activatingTemplateIndex = null
                         return
                     }
 
                     if (event.key === 'Escape') {
-                        this.showingTemplates = false
+                        this.showingTemplateLevel = 0
+                        this.showingTemplateFilter = ''
                         this.replying = null
                         return
                     }
 
-                    if (this.showingTemplates && this.templates.length > 0 && event.key === 'ArrowDown') {
-                        if (this.activatingTemplateIndex === null)
-                            return this.activatingTemplateIndex = 0
-
-                        return this.activatingTemplateIndex = (this.activatingTemplateIndex + 1) % this.templates.length
-                    }
-
-                    if (this.showingTemplates && this.templates.length > 0 && event.key === 'ArrowUp') {
-                        if (this.activatingTemplateIndex === null)
-                            return this.activatingTemplateIndex = this.templates.length - 1
-
-                        return this.activatingTemplateIndex = (this.activatingTemplateIndex - 1 + this.templates.length) % this.templates.length
-                    }
-
-                    if (this.showingTemplates && this.templates[this.activatingTemplateIndex] && event.key === 'Enter') {
-                        this.$refs.message.value = ''
-                        this.showingTemplates = false
-                        this.sendTemplate(this.templates[this.activatingTemplateIndex])
+                    if (this.showingTemplateLevel) {
+                        const templates = this.getTemplates()
+                        if (templates.length > 0 && event.key === 'ArrowDown') {
+                            if (this.activatingTemplateIndex === null) return this.activatingTemplateIndex = 0
+                            return this.activatingTemplateIndex = (this.activatingTemplateIndex + 1) % templates.length
+                        }
+                        if (templates.length > 0 && event.key === 'ArrowUp') {
+                            if (this.activatingTemplateIndex === null) return this.activatingTemplateIndex = templates.length - 1
+                            return this.activatingTemplateIndex = (this.activatingTemplateIndex - 1 + templates.length) % templates.length
+                        }
+                        if (templates[this.activatingTemplateIndex] && event.key === 'Enter') {
+                            return this.sendTemplate(templates[this.activatingTemplateIndex])
+                        }
+                        this.showingTemplateFilter = this.$refs.message.value.substr(this.showingTemplateLevel).trim()
+                        this.activatingTemplateIndex = 0
                     }
 
                     if (event.key === 'Enter') {
-                        this.sendMessage()
+                        return this.sendMessage()
                     }
                 },
                 loadTemplates: function () {
                     const _this = this
-                    restSelf.get('/api/talk-template/', null, false, null).done(function (response) {
+                    restSelf.get('/api/talk-template/my/', null, false, null).done(function (response) {
                         _this.templates = []
                         response.data.forEach(function (e) {
                             _this.templates.push({
-                                name: e.mentName, text: e.ment,
+                                name: e.mentName,
+                                permissionLevel: e.type === 'P' ? 3 : e.type === 'G' ? 2 : 1,
+                                text: e.ment,
                                 isImage: e.typeMent === 'P',
                                 fileName: e.originalFileName,
                                 url: e.typeMent === 'P' && (e.filePath.startsWith('https://') || e.filePath.startsWith('http://'))
                                     ? $.addQueryString(e.filePath, {token: '${g.escapeQuote(accessToken)}'})
                                     // TODO: 저장된 이미지 파일을 전달하는 API 추가 필요
-                                    : e.typeMent === 'P' ? $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/application/maindb/custominfo', {
-                                            path: e.filePath,
-                                            token: '${g.escapeQuote(accessToken)}'
-                                        })
+                                    : e.typeMent === 'P' ? $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/application/maindb/custominfo', {path: e.filePath, token: '${g.escapeQuote(accessToken)}'})
                                         : null
                             })
                         })
@@ -913,7 +920,7 @@
                         talkListContainer.removeRoom(_this.roomId)
 
                         _this.roomId = null
-                        _this.showingTemplates = false
+                        _this.showingTemplateLevel = 0
                         _this.replying = null
                         _this.messageList = []
                     })
