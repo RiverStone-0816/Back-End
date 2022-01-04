@@ -954,7 +954,9 @@
                     const _this = this
                     return talkRoomProperties.methods.loadRoom.apply(this, [roomId, userName]).done(() => {
                         talkListContainer.loadActivatedRoomIds()
-                        $(_this.$el).closest('.modal').show()
+                        $(_this.$el).closest('.modal')
+                            .show()
+                            .draggable({containment: '#main'})
                         _this.scrollToBottom()
                     })
                 }

@@ -276,7 +276,9 @@
                         _this.searchingTextIndex = 0
                         _this.activatedSearchingTextMessageId = null
 
-                        $(messengerModal).show()
+                        $(messengerModal)
+                            .show()
+                            .draggable({containment: '#main'})
                     })
                 },
                 loadAdditionalMessages: function (option) {
