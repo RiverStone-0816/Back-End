@@ -672,7 +672,7 @@
                         },
                         test() {
                             if (!$.isNumeric(o.current)) return alert('봇 시나리오가 선택되지 않았습니다.')
-                            alert('저장된 블록을 대상으로만 테스트됩니다.', () => window.open(contextPath + '/admin/talk/chat-bot/' + o.current + '/modal-test', '_blank', 'width=420px,height=800px,top=100,left=100,scrollbars=yes,resizable=no'))
+                            confirm('봇 테스트 선택 시 수정하신 내용은 자동으로 적용 됩니다.').done(() => this.save().done(() => window.open(contextPath + '/admin/talk/chat-bot/' + o.current + '/modal-test', '_blank', 'width=420px,height=800px,top=100,left=100,scrollbars=yes,resizable=no')))
                         },
                         copy() {
                             if (!$.isNumeric(o.current)) return alert('봇 시나리오가 선택되지 않았습니다.')
@@ -719,9 +719,9 @@
 
                             const form = Object.assign({}, fallbackConfig.data, {blockInfo: convertBlock(blockList.blocks[0])})
                             if ($.isNumeric(o.current)) {
-                                restSelf.put('/api/chatbot/' + o.current, form).done(() => alert('저장되었습니다.', o.load))
+                                return restSelf.put('/api/chatbot/' + o.current, form).done(() => alert('저장되었습니다.', o.load))
                             } else {
-                                restSelf.post('/api/chatbot/', form).done(response => {
+                                return restSelf.post('/api/chatbot/', form).done(response => {
                                     o.current = response.data
                                     o.select = response.data
                                     alert('저장되었습니다.', o.load)
