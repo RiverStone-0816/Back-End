@@ -44,7 +44,8 @@
         </div>
     </div>--%>
 
-    <div v-for="(message, iMessage) in messages" :key="iMessage" :class="message.sender === 'SERVER' ? ' editor ' : ' send-message '" class=" content ">
+    <div v-for="(message, iMessage) in messages" :key="iMessage" :class="message.sender === 'SERVER' ? ' editor ' : ' send-message '" class=" content "
+         @mouseenter="hightlight(message.data?.block_id)" @mouseleave="dehightlight">
         <template v-if="message.sender === 'SERVER' && message.messageType === 'api_result'">
             <div class="sample-bubble">
                 <p style="white-space: pre-wrap">{{ makeApiResultMessage(message.data.next_api_result_tpl, message.data.api_result_body) }}</p>
@@ -296,7 +297,15 @@
                     debounce(func, wait = 500) {
                         clearTimeout(this.timeout)
                         this.timeout = setTimeout(func, wait)
-                    }
+                    },
+                    hightlight(blockId) {
+                        if (!$.isNumeric(blockId)) return
+                        $(window.parentWindowBlocks[blockId]).addClass('highlight')
+                    },
+                    dehightlight() {
+                        for (let blockId in window.parentWindowBlocks)
+                            $(window.parentWindowBlocks[blockId]).removeClass('highlight')
+                    },
                 },
                 updated() {
                     $(this.$el).parent().find('.-datepicker').each(function () {

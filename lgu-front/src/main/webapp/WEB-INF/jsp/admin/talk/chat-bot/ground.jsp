@@ -672,7 +672,12 @@
                         },
                         test() {
                             if (!$.isNumeric(o.current)) return alert('봇 시나리오가 선택되지 않았습니다.')
-                            confirm('봇 테스트 선택 시 수정하신 내용은 자동으로 적용 됩니다.').done(() => this.save().done(() => window.open(contextPath + '/admin/talk/chat-bot/' + o.current + '/modal-test', '_blank', 'width=420px,height=800px,top=100,left=100,scrollbars=yes,resizable=no')))
+                            confirm('봇 테스트 선택 시 수정하신 내용은 자동으로 적용 됩니다.').done(() => o.save().done(() => o.loadBot(o.current).done(() => {
+                                const popup = window.open(contextPath + '/admin/talk/chat-bot/' + o.current + '/modal-test', '_blank', 'width=420px,height=800px,top=100,left=100,scrollbars=yes,resizable=no')
+                                popup.parentWindowBlocks = {}
+                                for (let nodeId in nodeBlockMap)
+                                    popup.parentWindowBlocks[nodeBlockMap[nodeId].id] = document.querySelector('#node-' + nodeId)
+                            })))
                         },
                         copy() {
                             if (!$.isNumeric(o.current)) return alert('봇 시나리오가 선택되지 않았습니다.')
@@ -745,9 +750,10 @@
                             for (let property in nodeBlockMap) delete nodeBlockMap[property]
                             editor.clear()
                         },
-                        changeBot() {
-                            const change = () => restSelf.get('/api/chatbot/' + o.select).done(response => {
-                                o.current = o.select
+                        loadBot(botId) {
+                            return restSelf.get('/api/chatbot/' + botId).done(response => {
+                                o.current = botId
+                                o.select = botId
 
                                 const data = response.data
 
@@ -857,6 +863,9 @@
 
                                 lastBlockId = Math.max.apply(null, [0].concat(blockList.blocks.map(e => e.id))) + 1
                             })
+                        },
+                        changeBot() {
+                            const change = () => this.loadBot(o.select)
 
                             if (o.current && o.current !== o.select) {
                                 confirm('저장되지 않은 내용은 모두 버려집니다. 변경하시겠습니까?')
