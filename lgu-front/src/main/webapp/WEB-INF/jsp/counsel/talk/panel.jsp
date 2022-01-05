@@ -344,6 +344,109 @@
                     <div class="os-padding">
                         <div ref="chatBody" @scroll="loadAdditionalMessagesIfTop" class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll; scroll-behavior: smooth;">
                             <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + i">
+
+                                <div class="chat-item chat-me">
+                                    <div class="profile-img">
+                                        <img src="/resources/images/profile/profile17.png">
+                                    </div>
+                                    <div class="wrap-content">
+                                        <div class="txt-time">
+                                            <text> [유도윤] </text> 01-05 08:40
+                                        </div>
+                                        <div class="chat">
+                                            <div class="chat-layer" style="visibility: hidden;">
+                                                <div class="buttons">
+                                                    <button class="button-reply" data-inverted="" data-tooltip="답장 달기" data-position="top center"></button>
+                                                    <button class="button-template" data-inverted="" data-tooltip="템플릿 만들기" data-position="top center"></button>
+                                                    <button class="button-knowledge" data-inverted="" data-tooltip="지식관리 호출" data-position="top center"></button>
+                                                </div>
+                                            </div>
+                                            <div class="bubble">
+                                                <div class="txt_chat">
+                                                    <div class="reply-content-container">
+                                                        <div class="reply-content">
+                                                            <div>[홍길동]에게 답장</div>
+                                                            <div class="target-msg">
+                                                                타겟메세지타겟메세지타겟메세지타겟메세지타겟메세지타겟메세지타겟메세지
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p>답글이요</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="chat-item chat-me">
+                                    <div class="profile-img">
+                                        <img src="/resources/images/profile/profile17.png">
+                                    </div>
+                                    <div class="wrap-content">
+                                        <div class="txt-time">
+                                            <text> [유도윤] </text> 01-05 08:40
+                                        </div>
+                                        <div class="chat">
+                                            <div class="chat-layer" style="visibility: hidden;">
+                                                <div class="buttons">
+                                                    <button class="button-reply" data-inverted="" data-tooltip="답장 달기" data-position="top center"></button>
+                                                    <button class="button-template" data-inverted="" data-tooltip="템플릿 만들기" data-position="top center"></button>
+                                                    <button class="button-knowledge" data-inverted="" data-tooltip="지식관리 호출" data-position="top center"></button>
+                                                </div>
+                                            </div>
+                                            <div class="bubble">
+                                                <div class="txt_chat">
+                                                    <div class="reply-content-container">
+                                                        <div class="reply-content photo">
+                                                            <img src="https://w.namu.la/s/126ed0de470ffd19954dde2dcdf4684286c506b774a2c1cf713c04309cf94ce26946aa03ec30a4a8a93e8e645c7bf361347807b0654a312c6e58c34e8f6bbf98e8883276bb6f561d08cc40b67dababb0">
+                                                        </div>
+                                                        <div class="reply-content">
+                                                            <div>[홍길동]에게 답장</div>
+                                                            <div class="target-msg">
+                                                                사진
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p>답글이요</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="chat-item chat-me">
+                                    <div class="profile-img">
+                                        <img src="/resources/images/profile/profile17.png">
+                                    </div>
+                                    <div class="wrap-content">
+                                        <div class="txt-time">
+                                            <text> [유도윤] </text> 01-05 08:40
+                                        </div>
+                                        <div class="chat">
+                                            <div class="chat-layer" style="visibility: hidden;">
+                                                <div class="buttons">
+                                                    <button class="button-reply" data-inverted="" data-tooltip="답장 달기" data-position="top center"></button>
+                                                    <button class="button-template" data-inverted="" data-tooltip="템플릿 만들기" data-position="top center"></button>
+                                                    <button class="button-knowledge" data-inverted="" data-tooltip="지식관리 호출" data-position="top center"></button>
+                                                </div>
+                                            </div>
+                                            <div class="bubble">
+                                                <div class="txt_chat">
+                                                    <div class="reply-content-container">
+                                                        <div class="reply-content">
+                                                            <div>[홍길동]에게 답장</div>
+                                                            <div class="target-msg">
+                                                                파일
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <p>답글이요</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div v-if="'SB' === e.sendReceive" class="chat-item">
                                     <div class="profile-img">
                                         <img :src="getImage(roomId)">
