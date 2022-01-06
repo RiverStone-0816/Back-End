@@ -136,7 +136,6 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
         queueTableRecord.setTimeout(CallDistributionStrategy.RINGALL.getCode().equals(form.getStrategy())
                 ? form.getQueueTimeout() == null ? 30 : form.getQueueTimeout()
                 : form.getTimeout() == null ? 15 : form.getTimeout());
-        queueTableRecord.setLeavewhenempty("no");
         queueTableRecord.setMonitorType("1");
         queueTableRecord.setAnnounceFrequency(0);
         queueTableRecord.setAnnounceRoundSeconds(0);
@@ -151,7 +150,7 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
                 ? CallDistributionStrategy.RRMEMORY.getCode()
                 : form.getStrategy());
         queueTableRecord.setJoinempty("yes");
-        queueTableRecord.setLeavewhenempty("no");   // 대기자가 있어도 기다림
+        queueTableRecord.setLeavewhenempty(form.getMaxlen() > 0 ? "no" : "inuse,ringing,paused,invalid,unavailable");   // 대기자가 있어도 기다림
         queueTableRecord.setEventmemberstatus(false);
         queueTableRecord.setEventwhencalled(true);
         queueTableRecord.setReportholdtime(false);
@@ -338,6 +337,7 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
             modQueueTable.setAnnounceFrequency(0);
             modQueueTable.setAnnounceRoundSeconds(0);
             modQueueTable.setAnnounceHoldtime("no");
+            modQueueTable.setLeavewhenempty(form.getMaxlen() > 0 ? "no" : "inuse,ringing,paused,invalid,unavailable");
 
             if (companyTree != null) {
                 modQueueName.setGroupCode(companyTree.getGroupCode());
