@@ -54,6 +54,8 @@ public class ManualFileUploadService extends ApiBaseService {
         boardInfoRecord.setCreatorId(g.getUser().getId().equals("") ? "master" : g.getUser().getId());
         boardInfoRecord.setCompanyId(g.getUser().getCompanyId());
 
+        manualRepository.insert(boardInfoRecord);
+
         for (MultipartFile file : form.getFiles()) {
             final Path path = Paths.get(replaceEach(savePath, new String[] {"{0}", "{1}"}, new String[] {g.getUser().getCompanyId(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"))}));
 
@@ -68,7 +70,6 @@ public class ManualFileUploadService extends ApiBaseService {
                 } catch (IOException ignored) {
                 }
             }
-            manualRepository.insert(boardInfoRecord);
 
             final ManualFileEntity fileEntityRecord = new ManualFileEntity();
             final Long fileId = repository.nextFileId();

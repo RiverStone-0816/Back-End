@@ -61,6 +61,8 @@ public class TaskFileUploadService extends ApiBaseService {
         scriptRecord.setContent(form.getContent());
         scriptRecord.setCompanyId(g.getUser().getCompanyId());
 
+        taskScriptRepository.insertOnGeneratedKey(scriptRecord);
+
         for (MultipartFile file : form.getFiles()) {
             final Path path = Paths.get(replaceEach(savePath, new String[] {"{0}", "{1}"}, new String[] {g.getUser().getCompanyId(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"))}));
 
@@ -76,7 +78,6 @@ public class TaskFileUploadService extends ApiBaseService {
                 } catch (IOException ignored) {
                 }
             }
-            taskScriptRepository.insertOnGeneratedKey(scriptRecord);
 
             final FileEntity fileEntityRecord = new FileEntity();
             final Long fileId = repository.nextFileId();

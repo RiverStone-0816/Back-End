@@ -55,6 +55,8 @@ public class NoticeFileUploadService extends ApiBaseService {
         boardInfoRecord.setNoticeType(form.getNoticeType());
         boardInfoRecord.setCompanyId(g.getUser().getCompanyId());
 
+        noticeRepository.insert(boardInfoRecord);
+
         for (MultipartFile file : form.getFiles()) {
             final Path path = Paths.get(replaceEach(savePath, new String[] {"{0}", "{1}"}, new String[] {g.getUser().getCompanyId(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM"))}));
 
@@ -70,7 +72,6 @@ public class NoticeFileUploadService extends ApiBaseService {
                 } catch (IOException ignored) {
                 }
             }
-            noticeRepository.insert(boardInfoRecord);
 
             final NoticeFileEntity fileEntityRecord = new NoticeFileEntity();
             final Long fileId = repository.nextFileId();
