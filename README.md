@@ -40,6 +40,7 @@
 # Vue 배포 방법
 1. /vue-messenger> npm run build
 2. dist 에 생성된 파일 배포. 
+3. context name이 있는경우 생성된 index.html 열어 contextName/src 수정.
 
 # 변경된 스키마 이력
 
