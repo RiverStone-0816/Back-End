@@ -1,9 +1,10 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebchatBotBlock;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.enums.Bool;
 import kr.co.eicn.ippbx.model.form.WebchatBotBlockFormRequest;
-import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import lombok.Getter;
 import lombok.val;
 import org.jooq.Record;
@@ -46,6 +47,15 @@ public class WebchatBotBlockRepository extends EicnBaseRepository<WebchatBotBloc
             entity.setParentButtonId(record.getValue(WEBCHAT_BOT_TREE.PARENT_BTN_ID));
             return entity;
         };
+    }
+
+    public List<WebchatBotBlockSummaryResponse> getAllTemplateBlockList() {
+        return dsl.select(WEBCHAT_BOT_BLOCK.ID)
+                .select(WEBCHAT_BOT_BLOCK.NAME)
+                .from(WEBCHAT_BOT_BLOCK)
+                .where(compareCompanyId())
+                .and(WEBCHAT_BOT_BLOCK.IS_TPL_ENABLE.eq(Bool.Y.name()))
+                .fetchInto(WebchatBotBlockSummaryResponse.class);
     }
 
     public Integer insert(WebchatBotBlockFormRequest request) {

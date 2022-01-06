@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.service;
 
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.form.WebchatBotBlockFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
@@ -18,6 +19,10 @@ import java.util.stream.Collectors;
 public class WebchatBotBlockService extends ApiBaseService {
 
     private final WebchatBotBlockRepository webchatbotBlockRepository;
+
+    public List<WebchatBotBlockSummaryResponse> getTemplateBlockList() {
+        return webchatbotBlockRepository.getAllTemplateBlockList();
+    }
 
     public Integer insert(WebchatBotFormRequest.BlockInfo info) {
         WebchatBotBlockFormRequest data = new WebchatBotBlockFormRequest();
