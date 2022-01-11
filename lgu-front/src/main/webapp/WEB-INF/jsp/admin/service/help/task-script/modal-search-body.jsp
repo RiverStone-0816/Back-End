@@ -141,7 +141,7 @@
                                                     <ul class="board-img-ul">
                                                         <c:forEach var="file" items="${e.imageFileInfos}">
                                                             <li class="thumbnail-item" onclick="imgViewPopup()"> <%--TODO: 디자인 모달로 변경해야 함.--%>
-                                                                <img src="${apiServerUrl}/api/v1/admin/help/notice/${file.id}/specific-file-resource?token=${accessToken}">
+                                                                <img src="${apiServerUrl}/api/v1/admin/help/script/${file.id}/specific-file-resource?token=${accessToken}">
                                                             </li>
                                                         </c:forEach>
                                                     </ul>
@@ -160,7 +160,7 @@
                                                                 <div class="item">
                                                                     <i class="file alternate outline icon"></i>
                                                                     <div class="content">
-                                                                        <a href="${apiServerUrl}/api/v1/admin/help/notice/${file.id}/specific-file-resource?token=${accessToken}"
+                                                                        <a href="${apiServerUrl}/api/v1/admin/help/script/${file.id}/specific-file-resource?token=${accessToken}"
                                                                            target="_blank">${g.htmlQuote(file.originalName)}</a>
                                                                     </div>
                                                                 </div>
