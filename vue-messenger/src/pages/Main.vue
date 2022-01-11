@@ -23,7 +23,7 @@
                         <img class="w-full" :src="`http://122.49.74.102:8100/webchat_bot_image_fetch?company_id=eicn&file_name=${encodeURIComponent(message.data.image)}`" alt="intro image">
                       </div>
                       <div>
-                        <p style="white-space: pre-wrap">{{ message.data.text_data }}</p>
+                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.text_data }}</p>
                       </div>
                     </div>
                   </div>
@@ -38,7 +38,7 @@
                         <img class="w-full" :src="`http://122.49.74.102/api-server/api/v1/chat/config/image?fileName=${encodeURIComponent(message.data.image)}`" alt="intro image">
                       </div>
                       <div>
-                        <p style="white-space: pre-wrap">{{ message.data.msg }}</p>
+                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.msg }}</p>
                       </div>
                     </div>
                   </div>
@@ -80,7 +80,7 @@
                   <div class="flex flex-row">
                     <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
                       <div>
-                        <p style="white-space: pre-wrap">{{ makeApiResultMessage(message.data.next_api_result_tpl, message.data.api_result_body) }}</p>
+                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ makeApiResultMessage(message.data.next_api_result_tpl, message.data.api_result_body) }}</p>
                       </div>
                     </div>
                     <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
@@ -93,7 +93,7 @@
                   <div class="flex flex-row">
                     <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
                       <div>
-                        <p style="white-space: pre-wrap">{{ message.data.ment }}</p>
+                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.ment }}</p>
                       </div>
                     </div>
                     <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
@@ -105,8 +105,22 @@
                 <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
                     <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
-                      <div>
-                        <p style="white-space: pre-wrap">{{ message.data.text_data }}</p>
+                      <div class="divide-y">
+                        <template v-if="message.data.replyingType">
+                          <div class="flex pb-2 text-gray-400">
+                            <div v-if="message.data.replyingType === 'image'" class="pr-4">
+                              <img :src="message.data.replyingTarget" class="h-10">
+                            </div>
+                            <div>
+                              <div class="pb-2">
+                                <p v-if="message.data.replyingType === 'text'" style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.replyingTarget }}</p>
+                                <a v-else :href="message.data.replyingTarget" target="_blank">{{ message.data.replyingType === 'image' ? '사진' : '파일' }}</a>
+                              </div>
+                            </div>
+                          </div>
+                          <p class="pt-2" style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.text_data }}</p>
+                        </template>
+                        <p v-else style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.text_data }}</p>
                       </div>
                     </div>
                     <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
@@ -118,7 +132,7 @@
                 <div v-for="(e, i) in message.data?.display" :key="i" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
                     <div v-if="e.type === 'text'" class="relative text-sm bg-white shadow rounded-lg max-w-xs py-2 px-3">
-                      <p style="white-space: pre-wrap">{{ e.element[0]?.content }}</p>
+                      <p style="white-space: pre-wrap; line-break: anywhere;">{{ e.element[0]?.content }}</p>
                     </div>
                     <div v-else-if="e.type === 'image'" class="relative">
                       <img alt="chat_image" class="w-full rounded-lg" :src="`http://122.49.74.102:8100/webchat_bot_image_fetch?company_id=eicn&file_name=${encodeURIComponent(e.element[0]?.image)}`">
@@ -131,7 +145,7 @@
                         <p>{{ e.element[0]?.title }}</p>
                       </div>
                       <div class="p-3 pt-2">
-                        <p style="white-space: pre-wrap">{{ e.element[0]?.content }}</p>
+                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ e.element[0]?.content }}</p>
                       </div>
                     </div>
                     <div v-else-if="e.type === 'list'" class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300">
@@ -150,7 +164,7 @@
                               <p v-else>{{ e2.title }}</p>
                             </div>
                             <div class="pl-2 pt-0 text-gray-600">
-                              <p style="white-space: pre-wrap">{{ e2.content }}</p>
+                              <p style="white-space: pre-wrap; line-break: anywhere;">{{ e2.content }}</p>
                             </div>
                           </div>
                         </div>
@@ -201,7 +215,7 @@
                 <div class="col-start-1 col-end-13 pb-2 rounded-lg">
                   <div class="flex justify-start flex-row-reverse">
                     <div class="relative mr-3 text-sm bg-gray-700 py-2 px-3 shadow rounded-lg max-w-xs text-white">
-                      <div style="white-space: pre-wrap">{{ message.data }}</div>
+                      <div style="white-space: pre-wrap; line-break: anywhere;">{{ message.data }}</div>
                     </div>
                     <div class="flex text-xs pr-3 items-end">{{ getTimeFormat(message.time) }}</div>
                   </div>
@@ -246,10 +260,10 @@
 <script>
 import moment from 'moment'
 import botIcon from '../assets/bot-icon.png'
+import eicnIcon from '../assets/bot-icon.png'
 import kakaoIcon from '../assets/kakao-icon.png'
 import naverIcon from '../assets/naver-icon.png'
 import lineIcon from '../assets/line-icon.png'
-import eicnIcon from '../assets/bot-icon.png'
 import debounce from '../utillities/mixins/debounce'
 import store from '../store/index'
 
@@ -270,6 +284,14 @@ String.prototype.regexIndexOf = function(regex, startpos) {
 export default {
   mixins: [debounce],
   components: {},
+  setup() {
+    return {
+      REPLYING_INDICATOR: '\u001b',
+      REPLYING_TEXT: '\u001a',
+      REPLYING_IMAGE: '\u000f',
+      REPLYING_FILE: '\u000e',
+    }
+  },
   data() {
     return {
       communicator: window.communicator,
@@ -425,6 +447,22 @@ export default {
             this.messages.splice(0, this.messages.length)
           } else if (data.message_type === 'ipcc_control') {
             this.inputEnable = !(data.message_data.session_keep_yn === 'N')
+          }
+
+          if (data.message_type === "member_text") {
+            const contents = data.message_data.text_data
+            if (this.REPLYING_INDICATOR === data.message_data.text_data.charAt(0)) {
+              [contents.indexOf(this.REPLYING_TEXT), contents.indexOf(this.REPLYING_IMAGE), contents.indexOf(this.REPLYING_FILE)].forEach((indicator, i) => {
+                if (indicator < 0) return
+                data.message_data.replyingType = i === 0 ? 'text' : i === 1 ? 'image' : 'file'
+
+                const replyingTarget = contents.substr(1, indicator - 1)
+                if (data.message_data.replyingType !== 'text') data.message_data.replyingTarget = replyingTarget + '?accessToken=' // TODO: image 리소스 접근 방법 정해야 함.
+                else data.message_data.replyingTarget = replyingTarget
+
+                data.message_data.text_data = contents.substr(indicator + 1)
+              })
+            }
           }
 
           this.messages.push({sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type})
