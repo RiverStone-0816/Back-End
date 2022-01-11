@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -96,7 +97,11 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 		talkMemberRecord.setCompanyId(getCompanyId());
 		talkMemberRecord.setGroupId(groupId);
 		talkMemberRecord.setStatus(EMPTY);
-
+		/*분배정책 적용 없을시만 0.. 정책이 있는경우 정책 대로 추가 개발해야함..*/
+		talkMemberRecord.setDistSequence(0);
+		talkMemberRecord.setDistTodayCount(0);
+		talkMemberRecord.setDistRemainCount(0);
+		talkMemberRecord.setDistLastTime(new Timestamp(System.currentTimeMillis()));
 		for (String personId : form.getPersonIds()) {
 			talkMemberRecord.setUserid(personId);
 			if (Objects.nonNull(persons.get(personId)))
