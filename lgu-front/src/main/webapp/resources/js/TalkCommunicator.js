@@ -81,6 +81,9 @@ TalkCommunicator.prototype.connect = function (url, companyId, userid, passwd, a
         }).on('svc_control', function (data) {
             _this.log(false, 'svc_control', data);
             _this.process('svc_control', data);
+        }).on('svc_dist_yn', function (data) {
+            _this.log(false, 'svc_dist_yn', data);
+            _this.process('svc_dist_yn', data);
         }).on('svc_end', function (data) {
             _this.log(false, 'svc_end', data);
             _this.process('svc_end', data);
@@ -190,5 +193,18 @@ TalkCommunicator.prototype.deleteRoom = function (roomId, channelType, senderKey
         user_key: userKey,
         etc_data: "",
         contents: ""
+    });
+};
+TalkCommunicator.prototype.changeDistribution = function (distributed) {
+    this.socket.emit('cli_dist_yn', {
+        company_id: this.request.companyId,
+        room_id: null,
+        userid: this.request.userid,
+        channel_type: null,
+        sender_key: null,
+        send_receive: "S",
+        user_key: null,
+        etc_data: "",
+        contents: distributed ? 'Y' : 'N'
     });
 };

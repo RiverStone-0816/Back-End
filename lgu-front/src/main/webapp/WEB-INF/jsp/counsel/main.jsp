@@ -40,7 +40,11 @@
                         <a class="item -counsel-panel-indicator -configured-indicator" data-tab="menu7">상담원평가결과이력</a>
                     </c:if>
                     <a class="item" onclick="popupScheduleModal()">일정관리</a>
-                    <div class="right menu">
+                    <div class="right menu" style="padding: 0">
+                        <div class="item ui slider checkbox">
+                            <%--TODO: 초기값 세팅 필요 --%>
+                            <input type="checkbox" id="distributee" tabindex="0" class="hidden"><label>분배/제외</label>
+                        </div>
                         <a class="item" onclick="popupCounselDisplayConfiguration()"><i class="cog icon"></i>메뉴관리</a>
                         <a class="item" onclick="popupBookmarkConfiguration()"><i class="cog icon"></i>즐겨찾기설정</a>
                     </div>
@@ -402,6 +406,11 @@
                 $('#counsel-list').empty();
             }
         }
+
+        $('#distributee').change(function () {
+            if (typeof talkCommunicator !== 'object') return
+            talkCommunicator.changeDistribution($(this).prop("checked"))
+        })
 
         $(window).on('load', function () {
             loadOuterLink();

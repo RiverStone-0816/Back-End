@@ -1064,6 +1064,10 @@
             .on('svc_msg', processTalkMessage)
             .on('svc_control', processTalkMessage)
             .on('svc_end', processTalkMessage)
+            .on('svc_dist_yn', data => {
+                console.log(data)
+                $('#distributee').prop("checked", data.dist_yn === 'Y')
+            })
 
         $(window).on('load', function () {
             loadTalkCustomInput()
