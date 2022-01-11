@@ -345,108 +345,6 @@
                         <div ref="chatBody" @scroll="loadAdditionalMessagesIfTop" class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll; scroll-behavior: smooth;">
                             <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + i">
 
-                                <div class="chat-item chat-me">
-                                    <div class="profile-img">
-                                        <img src="/resources/images/profile/profile17.png">
-                                    </div>
-                                    <div class="wrap-content">
-                                        <div class="txt-time">
-                                            <text> [유도윤] </text> 01-05 08:40
-                                        </div>
-                                        <div class="chat">
-                                            <div class="chat-layer" style="visibility: hidden;">
-                                                <div class="buttons">
-                                                    <button class="button-reply" data-inverted="" data-tooltip="답장 달기" data-position="top center"></button>
-                                                    <button class="button-template" data-inverted="" data-tooltip="템플릿 만들기" data-position="top center"></button>
-                                                    <button class="button-knowledge" data-inverted="" data-tooltip="지식관리 호출" data-position="top center"></button>
-                                                </div>
-                                            </div>
-                                            <div class="bubble">
-                                                <div class="txt_chat">
-                                                    <div class="reply-content-container">
-                                                        <div class="reply-content">
-                                                            <div>[홍길동]에게 답장</div>
-                                                            <div class="target-msg">
-                                                                타겟메세지타겟메세지타겟메세지타겟메세지타겟메세지타겟메세지타겟메세지
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <p>답글이요</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="chat-item chat-me">
-                                    <div class="profile-img">
-                                        <img src="/resources/images/profile/profile17.png">
-                                    </div>
-                                    <div class="wrap-content">
-                                        <div class="txt-time">
-                                            <text> [유도윤] </text> 01-05 08:40
-                                        </div>
-                                        <div class="chat">
-                                            <div class="chat-layer" style="visibility: hidden;">
-                                                <div class="buttons">
-                                                    <button class="button-reply" data-inverted="" data-tooltip="답장 달기" data-position="top center"></button>
-                                                    <button class="button-template" data-inverted="" data-tooltip="템플릿 만들기" data-position="top center"></button>
-                                                    <button class="button-knowledge" data-inverted="" data-tooltip="지식관리 호출" data-position="top center"></button>
-                                                </div>
-                                            </div>
-                                            <div class="bubble">
-                                                <div class="txt_chat">
-                                                    <div class="reply-content-container">
-                                                        <div class="reply-content photo">
-                                                            <img src="https://w.namu.la/s/126ed0de470ffd19954dde2dcdf4684286c506b774a2c1cf713c04309cf94ce26946aa03ec30a4a8a93e8e645c7bf361347807b0654a312c6e58c34e8f6bbf98e8883276bb6f561d08cc40b67dababb0">
-                                                        </div>
-                                                        <div class="reply-content">
-                                                            <div>[홍길동]에게 답장</div>
-                                                            <div class="target-msg">
-                                                                사진
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <p>답글이요</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="chat-item chat-me">
-                                    <div class="profile-img">
-                                        <img src="/resources/images/profile/profile17.png">
-                                    </div>
-                                    <div class="wrap-content">
-                                        <div class="txt-time">
-                                            <text> [유도윤] </text> 01-05 08:40
-                                        </div>
-                                        <div class="chat">
-                                            <div class="chat-layer" style="visibility: hidden;">
-                                                <div class="buttons">
-                                                    <button class="button-reply" data-inverted="" data-tooltip="답장 달기" data-position="top center"></button>
-                                                    <button class="button-template" data-inverted="" data-tooltip="템플릿 만들기" data-position="top center"></button>
-                                                    <button class="button-knowledge" data-inverted="" data-tooltip="지식관리 호출" data-position="top center"></button>
-                                                </div>
-                                            </div>
-                                            <div class="bubble">
-                                                <div class="txt_chat">
-                                                    <div class="reply-content-container">
-                                                        <div class="reply-content">
-                                                            <div>[홍길동]에게 답장</div>
-                                                            <div class="target-msg">
-                                                                파일
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <p>답글이요</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div v-if="'SB' === e.sendReceive" class="chat-item">
                                     <div class="profile-img">
                                         <img :src="getImage(roomId)">
@@ -592,7 +490,20 @@
                                                     <img v-if="e.messageType === 'photo'" :src="e.fileUrl" class="cursor-pointer" @click="popupImageView(e.fileUrl)">
                                                     <audio v-if="e.messageType === 'audio'" controls :src="e.fileUrl"></audio>
                                                     <a v-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl">{{ e.contents }}</a>
-                                                    <p v-if="e.messageType === 'text'">{{ e.contents }}</p>
+                                                    <template v-if="e.messageType === 'text'">
+                                                        <div v-if="e.replyingType" class="reply-content-container">
+                                                            <div v-if="e.replyingType === 'image'" class="reply-content photo">
+                                                                <img :src="e.replyingTarget">
+                                                            </div>
+                                                            <div class="reply-content">
+                                                                <div class="target-msg">
+                                                                    <template v-if="e.replyingType === 'text'">{{ e.replyingTarget }}</template>
+                                                                    <a v-else :href="e.replyingTarget" target="_blank">{{ e.replyingType === 'image' ? '사진' : '파일' }}</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <p>{{ e.contents }}</p>
+                                                    </template>
                                                 </div>
                                                 <a v-if="['file','photo','audio'].includes(e.messageType)" target="_blank" :href="e.fileUrl" class="save-txt">저장하기</a>
                                             </div>
@@ -706,7 +617,13 @@
 
         const talkRoomProperties = {
             setup: function () {
-                return {ME: userId}
+                return {
+                    ME: userId,
+                    REPLYING_INDICATOR: '\u001b',
+                    REPLYING_TEXT: '\u001a',
+                    REPLYING_IMAGE: '\u000f',
+                    REPLYING_FILE: '\u000e',
+                }
             },
             data: function () {
                 return {
@@ -798,7 +715,19 @@
                     if (['file', 'photo', 'audio'].includes(message.messageType)) {
                         message.originalFileUrl = message.contents
                         message.fileUrl = $.addQueryString(message.contents, {token: '${g.escapeQuote(accessToken)}'})
+                    } else if (this.REPLYING_INDICATOR === message.contents.charAt(0)) {
+                        [message.contents.indexOf(this.REPLYING_TEXT), message.contents.indexOf(this.REPLYING_IMAGE), message.contents.indexOf(this.REPLYING_FILE)].forEach((indicator, i) => {
+                            if (indicator < 0) return
+                            message.replyingType = i === 0 ? 'text' : i === 1 ? 'image' : 'file'
+
+                            const replyingTarget = message.contents.substr(1, indicator - 1)
+                            if (message.replyingType !== 'text') message.replyingTarget = $.addQueryString(replyingTarget, {token: '${g.escapeQuote(accessToken)}'})
+                            else message.replyingTarget = replyingTarget
+
+                            message.contents = message.contents.substr(indicator + 1)
+                        })
                     }
+
                     if (this.messageList.length === 0)
                         return this.messageList.push(message)
 
@@ -846,6 +775,15 @@
                 sendMessage: function (message) {
                     if (!message) message = this.$refs.message.value
                     if (!message || !this.roomStatus || this.roomStatus === 'E') return
+
+                    if (this.replying) {
+                        if (this.replying.messageType === 'file') {
+                            message = this.REPLYING_INDICATOR + this.replying.originalFileUrl + (this.replying.fileType === 'photo' ? this.REPLYING_IMAGE : this.REPLYING_FILE) + message
+                        } else {
+                            message = this.REPLYING_INDICATOR + this.replying.contents + this.REPLYING_TEXT + message
+                        }
+                    }
+
                     talkCommunicator.sendMessage(this.roomId, this.channelType, this.senderKey, this.userKey, message)
                     this.$refs.message.value = ''
                     this.showingTemplateLevel = 0

@@ -107,7 +107,20 @@
                                                         <i class="paperclip icon"></i> {{ e.fileName }}
                                                         <p style="opacity: 50%; font-size: smaller; padding: 0 0.5em 1em;"> 용량: {{ e.fileSize }}</p>
                                                     </a>
-                                                    <p v-else>{{ e.contents }}</p>
+                                                    <template v-else>
+                                                        <div v-if="e.replyingType" class="reply-content-container">
+                                                            <div v-if="e.replyingType === 'image'" class="reply-content photo">
+                                                                <img :src="e.replyingTarget">
+                                                            </div>
+                                                            <div class="reply-content">
+                                                                <div class="target-msg">
+                                                                    <template v-if="e.replyingType === 'text'">{{ e.replyingTarget }}</template>
+                                                                    <a v-else :href="e.replyingTarget" target="_blank" >{{ e.replyingType === 'image' ? '사진' : '파일' }}</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <p>{{ e.contents }}</p>
+                                                    </template>
                                                 </div>
                                                 <a v-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl" class="save-txt">저장하기</a>
                                             </div>
@@ -199,6 +212,10 @@
                 return {
                     READ_LIMIT: 100,
                     userId: userId,
+                    REPLYING_INDICATOR: '\u001b',
+                    REPLYING_TEXT: '\u001a',
+                    REPLYING_IMAGE: '\u000f',
+                    REPLYING_FILE: '\u000e',
                 }
             },
             data: function () {
@@ -485,6 +502,17 @@
                         message.fileUrl = $.addQueryString(split && split[4] || '', {token: '${g.escapeQuote(accessToken)}'})
                         message.fileName = split && split[2] || ''
                         message.fileSize = split && split[3] || ''
+                    } else if (this.REPLYING_INDICATOR === message.contents.charAt(0)) {
+                        [message.contents.indexOf(this.REPLYING_TEXT), message.contents.indexOf(this.REPLYING_IMAGE), message.contents.indexOf(this.REPLYING_FILE)].forEach((indicator, i) => {
+                            if (indicator < 0) return
+                            message.replyingType = i === 0 ? 'text' : i === 1 ? 'image' : 'file'
+
+                            const replyingTarget = message.contents.substr(1, indicator - 1)
+                            if (message.replyingType !== 'text') message.replyingTarget = $.addQueryString(replyingTarget, {token: '${g.escapeQuote(accessToken)}'})
+                            else message.replyingTarget = replyingTarget
+
+                            message.contents = message.contents.substr(indicator + 1)
+                        })
                     }
 
                     this.messageMap[message.messageId] = message
@@ -533,6 +561,15 @@
                 sendMessage: function (message) {
                     if (!message) message = this.$refs.message.value
                     if (!message) return
+
+                    if (this.replying) {
+                        if (this.replying.messageType === 'file') {
+                            message = this.REPLYING_INDICATOR + this.replying.originalFileUrl + (this.replying.fileType === 'image' ? this.REPLYING_IMAGE : this.REPLYING_FILE) + message
+                        } else {
+                            message = this.REPLYING_INDICATOR + this.replying.contents + this.REPLYING_TEXT + message
+                        }
+                    }
+
                     messengerCommunicator.sendMessage(this.roomId, message)
                     this.$refs.message.value = ''
                     this.showingTemplateLevel = 0
