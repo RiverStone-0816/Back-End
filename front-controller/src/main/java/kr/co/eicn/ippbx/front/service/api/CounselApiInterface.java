@@ -102,7 +102,7 @@ public class CounselApiInterface extends ApiServerInterface {
         final HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parts, headers);
 
         try {
-            restTemplate.exchange(o.getBasic_url() + "/fileupload", HttpMethod.POST, requestEntity, String.class);
+            restTemplate.exchange(o.getBasic_url() + "/talk/fileupload", HttpMethod.POST, requestEntity, String.class);
         } catch (HttpStatusCodeException e) {
             if (Objects.equals(e.getStatusCode(), HttpStatus.UNAUTHORIZED))
                 throw new UnauthorizedException(e.getStatusText(), e.getResponseHeaders(), e.getResponseBodyAsByteArray(), Charset.defaultCharset());
