@@ -56,12 +56,12 @@ public class TalkTemplateApiController extends BaseController {
 
     @PostMapping("")
     public Integer post(@Valid @RequestBody TalkTemplateApiInterface.TemplateForm form, BindingResult bindingResult) throws IOException, ResultFailException {
-        return apiInterface.post(form);
+        return apiInterface.post(form, g.getUser().getCompanyId());
     }
 
     @PutMapping("{seq}")
     public void put(@Valid @RequestBody TalkTemplateApiInterface.TemplateForm form, BindingResult bindingResult, @PathVariable Integer seq) throws IOException, ResultFailException {
-        apiInterface.put(seq, form);
+        apiInterface.put(seq, form, g.getUser().getCompanyId());
     }
 
     @DeleteMapping("{seq}")

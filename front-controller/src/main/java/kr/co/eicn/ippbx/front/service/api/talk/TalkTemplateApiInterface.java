@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
@@ -33,26 +34,34 @@ public class TalkTemplateApiInterface extends ApiServerInterface {
     }
 
     @SneakyThrows
-    public Integer post(TemplateForm form) {
+    public Integer post(TemplateForm form, String companyId) {
         if (form.getTypeMent().equals(TalkTemplateFormRequest.MentType.PHOTO) && form.isNewFile()) {
+            String fileName = form.getOriginalFileName();
             val file = Collections.singletonMap("file", new FileResource(form.getFilePath(), form.getOriginalFileName()));
             form.setFilePath(null);
             form.setOriginalFileName(null);
+            Object o = sendByMultipartFile(HttpMethod.POST, subUrl, form, jsonResultType(Integer.class), file);
+            if (StringUtils.isNotEmpty(companyId))
+                uploadWebchatImageToGateway(companyId, fileName);
 
-            return (Integer) sendByMultipartFile(HttpMethod.POST, subUrl, form, jsonResultType(Integer.class), file);
+            return (Integer) o;
         } else {
             return (Integer) sendByMultipartFile(HttpMethod.POST, subUrl, form, jsonResultType(Integer.class), Collections.emptyMap());
         }
     }
 
     @SneakyThrows
-    public void put(Integer seq, TemplateForm form) {
+    public void put(Integer seq, TemplateForm form, String companyId) {
         if (form.getTypeMent().equals(TalkTemplateFormRequest.MentType.PHOTO) && form.isNewFile()) {
+            String fileName = form.getOriginalFileName();
             val file = Collections.singletonMap("file", new FileResource(form.getFilePath(), form.getOriginalFileName()));
             form.setFilePath(null);
             form.setOriginalFileName(null);
 
             sendByMultipartFile(HttpMethod.PUT, subUrl + seq, form, JsonResult.class, file);
+
+            if (StringUtils.isNotEmpty(companyId))
+                uploadWebchatImageToGateway(companyId, fileName);
         } else {
             sendByMultipartFile(HttpMethod.PUT, subUrl + seq, form, JsonResult.class, Collections.emptyMap());
         }
