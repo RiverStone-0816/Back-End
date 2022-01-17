@@ -533,6 +533,15 @@
             </div>
             <div class="write-chat" @drop.stop="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true">
                 <div class="write-menu">
+                    <div v-if="showingTemplateBlocks" class="template-container template-block-container">
+                        <div class="template-container-inner">
+                            <ul class="template-ul">
+                                <li v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.id)" class="template-list">
+                                    <div class="template-title">/{{ e.name }}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     <div v-if="showingTemplateLevel" class="template-container">
                         <div class="template-container-inner">
                             <ul class="template-ul">
@@ -559,8 +568,7 @@
                     </div>
 
                     <div :style="'visibility:'+(roomId?'visible':'hidden')">
-                        <%--TODO: 봇템플릿--%>
-                        <button type="button" class="mini ui button compact mr5">봇템플릿</button>
+                        <button class="mini ui button compact mr5" @click.stop.prevent="showingTemplateBlocks = true">봇템플릿</button>
                         <input style="display: none" type="file" @change="sendFile">
                         <button type="button" class="mini ui button icon compact mr5" data-inverted data-tooltip="파일전송" data-variation="tiny" data-position="top center"
                                 onclick="this.previousElementSibling.click()"><i class="paperclip icon"></i></button>
@@ -643,6 +651,9 @@
                     showingTemplateFilter: '',
                     activatingTemplateIndex: null,
                     templates: [],
+
+                    showingTemplateBlocks: false,
+                    templateBlocks: [],
 
                     replying: null,
                     bodyScrollingTimer: null,
@@ -789,6 +800,7 @@
                     this.showingTemplateLevel = 0
                     this.showingTemplateFilter = ''
                     this.replying = null
+                    this.showingTemplateBlocks = false
                 },
                 sendFile: function (event) {
                     const file = event.target.files[0]
@@ -850,9 +862,19 @@
                     if (!hasFile) this.$refs.message.value += event.clipboardData.getData('Text')
                 },
                 sendTemplate(template) {
-                    // TODO: 서버에 이미 존재하는 이미지 파일을 소켓에 전달하는 프로토콜 추가 필요 (이미지 템플릿으로 추가된 파일을 업로드할수 없다)
-                    if (template.isImage) return alert('TODO: 서버에 이미 존재하는 이미지 파일을 소켓에 전달하는 프로토콜 추가 필요 (이미지 템플릿으로 추가된 파일을 업로드할수 없다)')
+                    if (template.isImage) {
+                        talkCommunicator.sendImageTemplate(this.roomId, this.channelType, this.senderKey, this.userKey, template.filePath)
+                        this.$refs.message.value = ''
+                        this.showingTemplateLevel = 0
+                        this.showingTemplateFilter = ''
+                        this.replying = null
+                        this.showingTemplateBlocks = false
+                        return
+                    }
                     this.sendMessage(template.text)
+                },
+                sendTemplateBlock(blockId) {
+                    this.sendTemplateBlock(blockId)
                 },
                 getTemplates() {
                     const _this = this
@@ -873,6 +895,7 @@
                         this.showingTemplateLevel = 0
                         this.showingTemplateFilter = ''
                         this.replying = null
+                        this.showingTemplateBlocks = false
                         return
                     }
 
@@ -908,12 +931,22 @@
                                 text: e.ment,
                                 isImage: e.typeMent === 'P',
                                 fileName: e.originalFileName,
-                                url: e.typeMent === 'P' && (e.filePath.startsWith('https://') || e.filePath.startsWith('http://'))
-                                    ? $.addQueryString(e.filePath, {token: '${g.escapeQuote(accessToken)}'})
-                                    // TODO: 저장된 이미지 파일을 전달하는 API 추가 필요
-                                    : e.typeMent === 'P' ? $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/application/maindb/custominfo', {path: e.filePath, token: '${g.escapeQuote(accessToken)}'})
-                                        : null
+                                filePath: e.filePath,
+                                url: e.typeMent === 'P' ? $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/talk/template/image', {
+                                        filePath: e.filePath,
+                                        token: '${g.escapeQuote(accessToken)}'
+                                    })
+                                    : null
                             })
+                        })
+                    })
+                },
+                loadTemplateBlocks: function () {
+                    const _this = this
+                    restSelf.get('/api/chatbot/blocks/template', null, false, null).done(function (response) {
+                        _this.templateBlocks = []
+                        response.data.forEach(function (e) {
+                            _this.templateBlocks.push({id: e.id, name: e.name})
                         })
                     })
                 },
@@ -986,6 +1019,7 @@
             },
             mounted: function () {
                 this.loadTemplates()
+                this.loadTemplateBlocks()
             },
         }
 

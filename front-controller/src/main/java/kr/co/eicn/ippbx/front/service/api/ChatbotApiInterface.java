@@ -1,16 +1,14 @@
 package kr.co.eicn.ippbx.front.service.api;
 
-import kr.co.eicn.ippbx.front.config.RequestGlobal;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryWebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +18,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URLEncoder;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -61,6 +58,11 @@ public class ChatbotApiInterface extends ApiServerInterface {
     @SneakyThrows
     public Integer copy(Integer id) {
         return getData(HttpMethod.POST, subUrl + id + "/copy", null, Integer.class, false).getData();
+    }
+
+    @SneakyThrows
+    public List<WebchatBotBlockSummaryResponse> getTemplateBlockList() {
+        return getList(subUrl + "/blocks/template", null, WebchatBotBlockSummaryResponse.class).getData();
     }
 
     @SneakyThrows

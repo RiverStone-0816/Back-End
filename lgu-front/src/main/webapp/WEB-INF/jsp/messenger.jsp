@@ -688,10 +688,8 @@
                                 text: e.ment,
                                 isImage: e.typeMent === 'P',
                                 fileName: e.originalFileName,
-                                url: e.typeMent === 'P' && (e.filePath.startsWith('https://') || e.filePath.startsWith('http://'))
-                                    ? $.addQueryString(e.filePath, {token: '${g.escapeQuote(accessToken)}'})
-                                    // TODO: 저장된 이미지 파일을 전달하는 API 추가 필요
-                                    : e.typeMent === 'P' ? $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/application/maindb/custominfo', {path: e.filePath, token: '${g.escapeQuote(accessToken)}'})
+                                filePath: e.filePath,
+                                url: e.typeMent === 'P' ? $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/talk/template/image', {filePath: e.filePath, token: '${g.escapeQuote(accessToken)}'})
                                         : null
                             })
                         })

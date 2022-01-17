@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.front.service.api.ChatbotApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryWebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import lombok.AllArgsConstructor;
@@ -52,6 +53,12 @@ public class ChatbotApiController extends BaseController {
     @PostMapping("")
     public Integer post(@Valid @RequestBody WebchatBotFormRequest form, BindingResult bindingResult) {
         return apiInterface.post(form);
+    }
+
+    @SneakyThrows
+    @GetMapping("blocks/template")
+    public List<WebchatBotBlockSummaryResponse> getTemplateBlockList() {
+        return apiInterface.getTemplateBlockList();
     }
 
     @SneakyThrows

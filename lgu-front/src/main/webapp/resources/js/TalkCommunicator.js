@@ -156,6 +156,34 @@ TalkCommunicator.prototype.sendMessage = function (roomId, channelType, senderKe
         contents: contents,
     });
 };
+TalkCommunicator.prototype.sendImageTemplate = function (roomId, channelType, senderKey, userKey, filePath) {
+    this.socket.emit('cli_msg', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        channel_type: channelType,
+        sender_key: senderKey,
+        send_receive: "S",
+        user_key: userKey,
+        etc_data: "",
+        // TODO: emit의 type 부분이 무엇인가요?
+        contents: filePath,
+    });
+};
+TalkCommunicator.prototype.sendTemplateBlock = function (roomId, channelType, senderKey, userKey, blockId) {
+    this.socket.emit('cli_msg', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        channel_type: channelType,
+        sender_key: senderKey,
+        send_receive: "S",
+        user_key: userKey,
+        etc_data: "",
+        // TODO: emit의 type 부분이 무엇인가요?
+        contents: blockId,
+    });
+};
 TalkCommunicator.prototype.assignUnassignedRoomToMe = function (roomId, channelType, senderKey, userKey, contents) {
     this.socket.emit('cli_control', {
         company_id: this.request.companyId,
