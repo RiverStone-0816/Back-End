@@ -113,6 +113,8 @@
 <script>
 
     function updateQueues() {
+        if (typeof $ !== 'function') return
+
         $('.-custom-wait-count').each(function () {
             const queueName = $(this).attr('data-hunt');
             if (queueName) {
