@@ -875,6 +875,7 @@
                 },
                 sendTemplateBlock(blockId) {
                     this.sendTemplateBlock(blockId)
+                    this.showingTemplateBlocks = false
                 },
                 getTemplates() {
                     const _this = this
