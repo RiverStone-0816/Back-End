@@ -679,6 +679,9 @@
                     restSelf.get('/api/talk-template/my/', null, false, null).done(function (response) {
                         _this.templates = []
                         response.data.forEach(function (e) {
+                            // note: 이미지 템플릿은 적용안하기로 함.
+                            if (e.typeMent === 'P') return
+
                             _this.templates.push({
                                 name: e.mentName,
                                 permissionLevel: e.type === 'P' ? 3 : e.type === 'G' ? 2 : 1,
