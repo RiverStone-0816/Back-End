@@ -536,7 +536,7 @@
                     <div v-if="showingTemplateBlocks" class="template-container template-block-container">
                         <div class="template-container-inner">
                             <ul class="template-ul">
-                                <li v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.id)" class="template-list">
+                                <li v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.blockId)" class="template-list">
                                     <div class="template-title">/{{ e.name }}</div>
                                 </li>
                             </ul>
@@ -874,7 +874,7 @@
                     this.sendMessage(template.text)
                 },
                 sendTemplateBlock(blockId) {
-                    this.sendTemplateBlock(blockId)
+                    talkCommunicator.sendTemplateBlock(this.roomId, this.channelType, this.senderKey, this.userKey, blockId)
                     this.showingTemplateBlocks = false
                 },
                 getTemplates() {
@@ -947,7 +947,7 @@
                     restSelf.get('/api/chatbot/blocks/template', null, false, null).done(function (response) {
                         _this.templateBlocks = []
                         response.data.forEach(function (e) {
-                            _this.templateBlocks.push({id: e.id, name: e.name})
+                            _this.templateBlocks.push({botId: e.botId, blockId: e.blockId, name: e.botName + ' - ' + e.blockName})
                         })
                     })
                 },

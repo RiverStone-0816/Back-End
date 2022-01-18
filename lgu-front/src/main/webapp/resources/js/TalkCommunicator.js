@@ -153,6 +153,7 @@ TalkCommunicator.prototype.sendMessage = function (roomId, channelType, senderKe
         send_receive: "S",
         user_key: userKey,
         etc_data: "",
+        type: 'text',
         contents: contents,
     });
 };
@@ -166,7 +167,7 @@ TalkCommunicator.prototype.sendImageTemplate = function (roomId, channelType, se
         send_receive: "S",
         user_key: userKey,
         etc_data: "",
-        // TODO: emit의 type 부분이 무엇인가요?
+        type: 'image_temp',
         contents: filePath,
     });
 };
@@ -180,7 +181,7 @@ TalkCommunicator.prototype.sendTemplateBlock = function (roomId, channelType, se
         send_receive: "S",
         user_key: userKey,
         etc_data: "",
-        // TODO: emit의 type 부분이 무엇인가요?
+        type: 'block_temp',
         contents: blockId,
     });
 };
