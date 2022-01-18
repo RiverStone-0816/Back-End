@@ -54,7 +54,7 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
                     }
                 }
 
-                final String originalFileName = UrlUtils.decode(cleanPath(Objects.requireNonNull(file.getOriginalFilename()).replaceAll("[ ()]", "")));
+                final String originalFileName = UrlUtils.decode(cleanPath(Objects.requireNonNull(file.getOriginalFilename()))).replaceAll("[ ()]", "");
                 final String saveFileName = System.currentTimeMillis() + "_" + System.nanoTime() + "_" + originalFileName;
 
                 form.setOriginalFileName(originalFileName);

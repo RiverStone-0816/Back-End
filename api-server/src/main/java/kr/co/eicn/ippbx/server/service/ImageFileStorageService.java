@@ -23,7 +23,7 @@ public class ImageFileStorageService extends FileSystemStorageService {
         if (!StringUtils.endsWithAny(Objects.requireNonNull(image.getOriginalFilename()).toLowerCase(), ".jpg", "jpeg", ".png"))
             throw new IllegalArgumentException("알 수 없는 파일 확장자입니다.");
 
-        final String saveFileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()).concat("_") + UrlUtils.decode(cleanPath(Objects.requireNonNull(image.getOriginalFilename()).replaceAll("[ ()]", "")));
+        final String saveFileName = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()).concat("_") + UrlUtils.decode(cleanPath(Objects.requireNonNull(image.getOriginalFilename()))).replaceAll("[ ()]", "");
 
         store(path, saveFileName, image);
 
