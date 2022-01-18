@@ -18,8 +18,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.WEBCHAT_BOT_BLOCK;
-import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.WEBCHAT_BOT_TREE;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.*;
 
 @Getter
 @Repository
@@ -50,9 +49,13 @@ public class WebchatBotBlockRepository extends EicnBaseRepository<WebchatBotBloc
     }
 
     public List<WebchatBotBlockSummaryResponse> getAllTemplateBlockList() {
-        return dsl.select(WEBCHAT_BOT_BLOCK.ID)
-                .select(WEBCHAT_BOT_BLOCK.NAME)
+        return dsl.select(WEBCHAT_BOT_BLOCK.ID.as("block_id"), WEBCHAT_BOT_BLOCK.NAME.as("block_name"),
+                WEBCHAT_BOT_INFO.ID.as("bot_id"), WEBCHAT_BOT_INFO.NAME.as("bot_name"))
                 .from(WEBCHAT_BOT_BLOCK)
+                .join(WEBCHAT_BOT_TREE)
+                .on(WEBCHAT_BOT_BLOCK.ID.eq(WEBCHAT_BOT_TREE.BLOCK_ID))
+                .join(WEBCHAT_BOT_INFO)
+                .on(WEBCHAT_BOT_INFO.ID.eq(WEBCHAT_BOT_TREE.CHATBOT_ID))
                 .where(compareCompanyId())
                 .and(WEBCHAT_BOT_BLOCK.IS_TPL_ENABLE.eq(Bool.Y.name()))
                 .fetchInto(WebchatBotBlockSummaryResponse.class);

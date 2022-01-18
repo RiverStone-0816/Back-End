@@ -4,6 +4,8 @@ import lombok.Data;
 
 @Data
 public class WebchatBotBlockSummaryResponse {
-    private String id;
-    private String name;
+    private Integer botId;
+    private String botName;
+    private Integer blockId;
+    private String blockName;
 }
