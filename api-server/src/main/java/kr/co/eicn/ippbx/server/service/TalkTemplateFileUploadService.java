@@ -14,13 +14,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 import static org.apache.commons.io.FilenameUtils.getFullPath;
 import static org.apache.commons.io.FilenameUtils.getName;
-import static org.apache.commons.lang3.StringUtils.replaceEach;
+import static org.apache.commons.lang3.StringUtils.replace;
 import static org.springframework.util.StringUtils.cleanPath;
 
 @Slf4j
@@ -30,7 +28,7 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
 
     private final TalkTemplateRepository repository;
     private final ImageFileStorageService imageFileStorageService;
-    @Value("${file.path.chatt}")
+    @Value("${file.path.chatbot}")
     private String savePath;
 
     public Integer insertTalkTemplateFileUpload(TalkTemplateFormRequest form) {
@@ -47,7 +45,7 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
         if (TalkTemplateFormRequest.MentType.PHOTO.equals(form.getTypeMent())) {
             if (form.getFile() != null && !form.getFile().isEmpty()) {
                 final MultipartFile file = form.getFile();
-                final Path path = Paths.get(replaceEach(savePath, new String[]{"{0}", "{1}", "{2}"}, new String[]{g.getUser().getCompanyId(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM")), LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"))}));
+                final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
 
                 if (Files.notExists(path)) {
                     try {
@@ -64,12 +62,8 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
 
                 this.imageFileStorageService.store(path, saveFileName, file);
             } else if (form.getFile() == null && form.getFilePath().startsWith("http")) {
-                final String[] dirInfo = form.getFilePath().substring(form.getFilePath().indexOf("path=") + 5, form.getFilePath().indexOf("&")).split("/");
-
-                if (dirInfo.length == 2) {
-                    final Path path = Paths.get(replaceEach(savePath, new String[]{"{0}", "{1}", "{2}"}, new String[]{g.getUser().getCompanyId(), dirInfo[0], dirInfo[1]}));
-                    form.setFilePath(path.resolve(form.getOriginalFileName()).toString());
-                }
+                final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
+                form.setFilePath(path.resolve(form.getOriginalFileName()).toString());
             }
         }
     }

@@ -32,7 +32,7 @@ public class WebChattingConfigService extends ApiBaseService {
     private final WebchatIntroChannelListRepository webchatIntroChannelListRepository;
     private final ImageFileStorageService imageFileStorageService;
 
-    @Value("${file.path.chatt}")
+    @Value("${file.path.chatbot}")
     private String savePath;
 
     protected WebchatServiceInfoResponse convertEntityToResponse(WebchatServiceInfo entity, List<WebchatServiceInfoResponse.IntroChannel> introChannelList) {
@@ -105,13 +105,13 @@ public class WebChattingConfigService extends ApiBaseService {
     }
 
     public String uploadImage(MultipartFile image) {
-        final Path newPath = Paths.get(replaceEach(savePath, new String[]{"{0}", "{1}", "{2}"}, new String[]{g.getUser().getCompanyId(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM")), LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"))}));
+        final Path newPath = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
 
         return imageFileStorageService.uploadImage(newPath, image);
     }
 
     public Resource getImage(String fileName) {
-        final Path newPath = Paths.get(replaceEach(savePath, new String[]{"{0}", "{1}", "{2}"}, new String[]{g.getUser().getCompanyId(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM")), LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"))}));
+        final Path newPath = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
 
         return imageFileStorageService.loadImage(newPath, fileName);
     }

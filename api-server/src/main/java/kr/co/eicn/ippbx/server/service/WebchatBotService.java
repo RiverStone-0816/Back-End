@@ -14,13 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.replace;
-import static org.apache.commons.lang3.StringUtils.replaceEach;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -35,7 +32,7 @@ public class WebchatBotService extends ApiBaseService {
     private final WebchatBotApiParamService webchatBotApiParamService;
     private final ImageFileStorageService imageFileStorageService;
 
-    @Value("${file.path.chatt}")
+    @Value("${file.path.chatbot}")
     private String savePath;
 
     public Integer createWebchatBotInfo(WebchatBotFormRequest form) {
@@ -207,13 +204,13 @@ public class WebchatBotService extends ApiBaseService {
     }
 
     public String uploadImage(MultipartFile image) {
-        final Path newPath = Paths.get(replaceEach(savePath, new String[]{"{0}", "{1}", "{2}"}, new String[]{g.getUser().getCompanyId(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM")), LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"))}));
+        final Path newPath = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
 
         return imageFileStorageService.uploadImage(newPath, image);
     }
 
     public Resource getImage(String fileName) {
-        final Path newPath = Paths.get(replaceEach(savePath, new String[]{"{0}", "{1}", "{2}"}, new String[]{g.getUser().getCompanyId(), LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMM")), LocalDate.now().format(DateTimeFormatter.ofPattern("MMdd"))}));
+        final Path newPath = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
 
         return imageFileStorageService.loadImage(newPath, fileName);
     }
