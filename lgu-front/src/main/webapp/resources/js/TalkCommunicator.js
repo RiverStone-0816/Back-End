@@ -182,7 +182,7 @@ TalkCommunicator.prototype.sendTemplateBlock = function (roomId, channelType, se
         user_key: userKey,
         etc_data: "",
         type: 'block_temp',
-        contents: blockId,
+        contents: '' + blockId,
     });
 };
 TalkCommunicator.prototype.assignUnassignedRoomToMe = function (roomId, channelType, senderKey, userKey, contents) {

@@ -345,12 +345,12 @@
                         <div ref="chatBody" @scroll="loadAdditionalMessagesIfTop" class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll; scroll-behavior: smooth;">
                             <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + i">
 
-                                <div v-if="'SB' === e.sendReceive" class="chat-item">
+                                <div v-if="'SB' === e.sendReceive || e.messageType === 'block_temp'" class="chat-item" :class="e.messageType === 'block_temp' && ' chat-me '">
                                     <div class="profile-img">
                                         <img :src="getImage(roomId)">
                                     </div>
                                     <div class="wrap-content">
-                                        <div class="txt-time">[{{ customName }}] {{ getTimeFormat(e.time) }}</div>
+                                        <div class="txt-time">[{{ e.messageType === 'block_temp' ? (e.username || e.userId) : customName }}] {{ getTimeFormat(e.time) }}</div>
                                         <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
                                             <div class="bubble" style="background-color: transparent; text-align: center; display: block; box-shadow: none;">
                                                 <img src="<c:url value="/resources/images/loading.svg"/>" alt="loading"/>
@@ -464,7 +464,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info'" class="chat-item"
+                                <div v-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info' && e.messageType !== 'block_temp'" class="chat-item"
                                      :class="['AF', 'S'].includes(e.sendReceive)<%-- && e.userId === ME--%> && 'chat-me'">
                                     <div class="profile-img">
                                         <img :src="getImage(['AF', 'S'].includes(e.sendReceive) ? e.username : roomId)">
@@ -710,28 +710,37 @@
                         return
 
                     const _this = this
+
+                    const setBlockInfo = response => {
+                        message.displays = response.data.displayList?.sort((a, b) => (a.order - b.order))
+                        message.buttonGroups = (() => {
+                            return response.data.buttonList?.sort((a, b) => (a.order - b.order)).reduce((list, e) => {
+                                if (e.action === 'api') list.push(e)
+                                else if (!list.length || !(list[list.length - 1] instanceof Array)) list.push([e])
+                                else list[list.length - 1].push(e)
+                                return list
+                            }, [])
+                        })()
+
+                        console.log(message)
+
+                        _this.$forceUpdate()
+                    }
+
                     if (message.sendReceive === 'SB') {
                         try {
                             const result = message.contents.match(/^BOT:(\d+)-BLK:(\d+)$/)
-                            restSelf.get('/api/chatbot/' + result[1] + '/blocks/' + result[2], null, null, true).done(response => {
-                                message.displays = response.data.displayList?.sort((a, b) => (a.order - b.order))
-                                message.buttonGroups = (() => {
-                                    return response.data.buttonList?.sort((a, b) => (a.order - b.order)).reduce((list, e) => {
-                                        if (e.action === 'api') list.push(e)
-                                        else if (!list.length || !(list[list.length - 1] instanceof Array)) list.push([e])
-                                        else list[list.length - 1].push(e)
-                                        return list
-                                    }, [])
-                                })()
-
-                                _this.$forceUpdate()
-                            })
+                            restSelf.get('/api/chatbot/' + result[1] + '/blocks/' + result[2], null, null, true).done(setBlockInfo)
                         } catch (e) {
                             console.error(e)
                         }
                     }
 
-                    if (message.messageType === 'image_temp') {
+                    if (message.messageType === 'block_temp') {
+                        // TODO: blockID 단일 api로 바꿔야 한다.
+                        const block = this.templateBlocks.filter(e => e.blockId === parseInt(message.contents))[0]
+                        block && restSelf.get('/api/chatbot/' + block.botId + '/blocks/' + block.blockId, null, null, true).done(setBlockInfo)
+                    } else if (message.messageType === 'image_temp') {
                         message.originalFileUrl = message.contents
                         message.fileUrl = $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/talk/template/image', {filePath: message.contents, token: '${g.escapeQuote(accessToken)}'})
                     } else if (['file', 'photo', 'audio'].includes(message.messageType)) {
