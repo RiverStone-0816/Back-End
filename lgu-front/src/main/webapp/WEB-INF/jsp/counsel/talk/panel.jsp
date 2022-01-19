@@ -488,11 +488,15 @@
                                             <div class="bubble">
                                                 <div class="txt_chat">
                                                     <img v-if="e.messageType === 'photo'" :src="e.fileUrl" class="cursor-pointer" @click="popupImageView(e.fileUrl)">
+                                                    <img v-if="e.messageType === 'image_temp'" :src="e.fileUrl" class="cursor-pointer" @click="popupImageView(e.fileUrl)">
                                                     <audio v-if="e.messageType === 'audio'" controls :src="e.fileUrl"></audio>
                                                     <a v-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl">{{ e.contents }}</a>
                                                     <template v-if="e.messageType === 'text'">
                                                         <div v-if="e.replyingType" class="reply-content-container">
                                                             <div v-if="e.replyingType === 'image'" class="reply-content photo">
+                                                                <img :src="e.replyingTarget">
+                                                            </div>
+                                                            <div v-if="e.replyingType === 'image_temp'" class="reply-content photo">
                                                                 <img :src="e.replyingTarget">
                                                             </div>
                                                             <div class="reply-content">
@@ -505,7 +509,7 @@
                                                         <p>{{ e.contents }}</p>
                                                     </template>
                                                 </div>
-                                                <a v-if="['file','photo','audio'].includes(e.messageType)" target="_blank" :href="e.fileUrl" class="save-txt">저장하기</a>
+                                                <a v-if="['file','photo','audio','image_temp'].includes(e.messageType)" target="_blank" :href="e.fileUrl" class="save-txt">저장하기</a>
                                             </div>
                                             <div v-if="!['AF', 'S'].includes(e.sendReceive)<%-- || e.userId !== ME--%>" class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
@@ -556,6 +560,9 @@
                     </div>
                     <div v-if="replying !== null" class="view-to-reply">
                         <div v-if="replying.messageType === 'photo'" class="target-image">
+                            <img :src="replying.fileUrl" class="target-image-content">
+                        </div>
+                        <div v-if="replying.messageType === 'image_temp'" class="target-image">
                             <img :src="replying.fileUrl" class="target-image-content">
                         </div>
                         <div class="target-text">
@@ -631,6 +638,7 @@
                     REPLYING_TEXT: '\u001a',
                     REPLYING_IMAGE: '\u000f',
                     REPLYING_FILE: '\u000e',
+                    REPLYING_IMAGE_TEMP: '\u000d',
                 }
             },
             data: function () {
@@ -723,17 +731,25 @@
                         }
                     }
 
-                    if (['file', 'photo', 'audio'].includes(message.messageType)) {
+                    if (message.messageType === 'image_temp') {
+                        message.originalFileUrl = message.contents
+                        message.fileUrl = $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/talk/template/image', {filePath: message.contents, token: '${g.escapeQuote(accessToken)}'})
+                    } else if (['file', 'photo', 'audio'].includes(message.messageType)) {
                         message.originalFileUrl = message.contents
                         message.fileUrl = $.addQueryString(message.contents, {token: '${g.escapeQuote(accessToken)}'})
                     } else if (this.REPLYING_INDICATOR === message.contents.charAt(0)) {
-                        [message.contents.indexOf(this.REPLYING_TEXT), message.contents.indexOf(this.REPLYING_IMAGE), message.contents.indexOf(this.REPLYING_FILE)].forEach((indicator, i) => {
+                        [message.contents.indexOf(this.REPLYING_TEXT), message.contents.indexOf(this.REPLYING_IMAGE), message.contents.indexOf(this.REPLYING_FILE), message.contents.indexOf(this.REPLYING_IMAGE_TEMP)].forEach((indicator, i) => {
                             if (indicator < 0) return
-                            message.replyingType = i === 0 ? 'text' : i === 1 ? 'image' : 'file'
+                            message.replyingType = i === 0 ? 'text' : i === 1 ? 'image' : i === 2 ? 'file' : 'image_temp'
 
                             const replyingTarget = message.contents.substr(1, indicator - 1)
-                            if (message.replyingType !== 'text') message.replyingTarget = $.addQueryString(replyingTarget, {token: '${g.escapeQuote(accessToken)}'})
-                            else message.replyingTarget = replyingTarget
+                            if (message.replyingType === 'text') {
+                                message.replyingTarget = replyingTarget
+                            } else if (message.replyingType === 'image_temp') {
+                                message.replyingTarget = $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/talk/template/image', {filePath: replyingTarget, token: '${g.escapeQuote(accessToken)}'})
+                            } else {
+                                message.replyingTarget = $.addQueryString(replyingTarget, {token: '${g.escapeQuote(accessToken)}'})
+                            }
 
                             message.contents = message.contents.substr(indicator + 1)
                         })
@@ -788,8 +804,12 @@
                     if (!message || !this.roomStatus || this.roomStatus === 'E') return
 
                     if (this.replying) {
-                        if (this.replying.messageType === 'file') {
-                            message = this.REPLYING_INDICATOR + this.replying.originalFileUrl + (this.replying.fileType === 'photo' ? this.REPLYING_IMAGE : this.REPLYING_FILE) + message
+                        if (['file', 'audio'].includes(this.replying.messageType)) {
+                            message = this.REPLYING_INDICATOR + this.replying.originalFileUrl + this.REPLYING_FILE + message
+                        } else if (this.replying.messageType === 'photo') {
+                            message = this.REPLYING_INDICATOR + this.replying.originalFileUrl + this.REPLYING_IMAGE + message
+                        } else if (this.replying.messageType === 'image_temp') {
+                            message = this.REPLYING_INDICATOR + this.replying.originalFileUrl + this.REPLYING_IMAGE_TEMP + message
                         } else {
                             message = this.REPLYING_INDICATOR + this.replying.contents + this.REPLYING_TEXT + message
                         }
@@ -934,10 +954,9 @@
                                 fileName: e.originalFileName,
                                 filePath: e.filePath,
                                 url: e.typeMent === 'P' ? $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/talk/template/image', {
-                                        filePath: e.filePath,
-                                        token: '${g.escapeQuote(accessToken)}'
-                                    })
-                                    : null
+                                    filePath: e.filePath,
+                                    token: '${g.escapeQuote(accessToken)}'
+                                }) : null
                             })
                         })
                     })
