@@ -48,8 +48,8 @@ public class WebchatBotInfoApiController extends ApiBaseController {
         return ResponseEntity.ok(data(webchatBotInfoResponse));
     }
 
-    @GetMapping("{id}/blocks/{blockId}")
-    public ResponseEntity<JsonResult<WebchatBotInfoResponse.BlockInfo>> getBlock(@PathVariable Integer id, @PathVariable Integer blockId) {
+    @GetMapping("blocks/{blockId}")
+    public ResponseEntity<JsonResult<WebchatBotInfoResponse.BlockInfo>> getBlock(@PathVariable Integer blockId) {
         WebchatBotInfoResponse.BlockInfo blockInfo = webchatBotService.getBlockInfo(blockId);
 
         return ResponseEntity.ok(data(blockInfo));
