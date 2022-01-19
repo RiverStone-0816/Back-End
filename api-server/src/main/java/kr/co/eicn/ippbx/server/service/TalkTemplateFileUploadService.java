@@ -54,11 +54,11 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
                     }
                 }
 
-                final String originalFileName = UrlUtils.decode(cleanPath(Objects.requireNonNull(file.getOriginalFilename()))).replaceAll("[ ()]", "");
-                final String saveFileName = System.currentTimeMillis() + "_" + System.nanoTime() + "_" + originalFileName;
+                final String originalFileName = UrlUtils.decode(cleanPath(Objects.requireNonNull(file.getOriginalFilename())));
+                final String saveFileName = System.currentTimeMillis() + "_" + System.nanoTime() + "_" + originalFileName.replaceAll("[ ()]", "");
 
                 form.setOriginalFileName(originalFileName);
-                form.setFilePath(path.resolve(saveFileName).toString());
+                form.setFilePath(saveFileName);
 
                 this.imageFileStorageService.store(path, saveFileName, file);
             } else if (form.getFile() == null && form.getFilePath().startsWith("http")) {
@@ -68,7 +68,10 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
         }
     }
 
-    public Resource getImage(String filePath) {
+    public Resource getImage(String fileName) {
+        final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
+        final String filePath = path.resolve(fileName).toString();
+
         return this.imageFileStorageService.loadImage(Paths.get(getFullPath(filePath)), getName(filePath));
     }
 }
