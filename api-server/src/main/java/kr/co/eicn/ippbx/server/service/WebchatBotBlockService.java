@@ -20,11 +20,8 @@ public class WebchatBotBlockService extends ApiBaseService {
 
     private final WebchatBotBlockRepository webchatbotBlockRepository;
 
-    public List<WebchatBotBlockSummaryResponse> getTemplateBlockList(boolean includeChatbotInfo) {
-        if (includeChatbotInfo)
-            return webchatbotBlockRepository.getAllTemplateBlockListIncludeChatbotInfo();
-        else
-            return webchatbotBlockRepository.getAllTemplateBlockList();
+    public List<WebchatBotBlockSummaryResponse> getTemplateBlockList() {
+        return webchatbotBlockRepository.getAllTemplateBlockList();
     }
 
     public Integer insert(WebchatBotFormRequest.BlockInfo info) {
