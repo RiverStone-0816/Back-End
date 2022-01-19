@@ -36,8 +36,8 @@ public class ChatbotApiInterface extends ApiServerInterface {
     }
 
     @SneakyThrows
-    public WebchatBotInfoResponse.BlockInfo getBlock(Integer id, Integer blockId) {
-        return getData(subUrl + id + "/blocks/" + blockId, null, WebchatBotInfoResponse.BlockInfo.class).getData();
+    public WebchatBotInfoResponse.BlockInfo getBlock(Integer blockId) {
+        return getData(subUrl + "blocks/" + blockId, null, WebchatBotInfoResponse.BlockInfo.class).getData();
     }
 
     @SneakyThrows

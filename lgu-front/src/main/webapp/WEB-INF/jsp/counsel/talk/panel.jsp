@@ -488,10 +488,10 @@
                                             <div class="bubble">
                                                 <div class="txt_chat">
                                                     <img v-if="e.messageType === 'photo'" :src="e.fileUrl" class="cursor-pointer" @click="popupImageView(e.fileUrl)">
-                                                    <img v-if="e.messageType === 'image_temp'" :src="e.fileUrl" class="cursor-pointer" @click="popupImageView(e.fileUrl)">
-                                                    <audio v-if="e.messageType === 'audio'" controls :src="e.fileUrl"></audio>
-                                                    <a v-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl">{{ e.contents }}</a>
-                                                    <template v-if="e.messageType === 'text'">
+                                                    <img v-else-if="e.messageType === 'image_temp'" :src="e.fileUrl" class="cursor-pointer" @click="popupImageView(e.fileUrl)">
+                                                    <audio v-else-if="e.messageType === 'audio'" controls :src="e.fileUrl"></audio>
+                                                    <a v-else-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl">{{ e.contents }}</a>
+                                                    <template v-else-if="e.messageType === 'text'">
                                                         <div v-if="e.replyingType" class="reply-content-container">
                                                             <div v-if="e.replyingType === 'image'" class="reply-content photo">
                                                                 <img :src="e.replyingTarget">
@@ -508,6 +508,7 @@
                                                         </div>
                                                         <p>{{ e.contents }}</p>
                                                     </template>
+                                                    <p v-else>{{ e.contents }}</p>
                                                 </div>
                                                 <a v-if="['file','photo','audio','image_temp'].includes(e.messageType)" target="_blank" :href="e.fileUrl" class="save-txt">저장하기</a>
                                             </div>
@@ -721,28 +722,24 @@
                                 return list
                             }, [])
                         })()
-
-                        console.log(message)
-
                         _this.$forceUpdate()
                     }
 
                     if (message.sendReceive === 'SB') {
                         try {
                             const result = message.contents.match(/^BOT:(\d+)-BLK:(\d+)$/)
-                            restSelf.get('/api/chatbot/' + result[1] + '/blocks/' + result[2], null, null, true).done(setBlockInfo)
+                            restSelf.get('/api/chatbot/blocks/' + result[2], null, null, true).done(setBlockInfo)
                         } catch (e) {
                             console.error(e)
                         }
                     }
 
                     if (message.messageType === 'block_temp') {
-                        // TODO: blockID 단일 api로 바꿔야 한다.
                         const block = this.templateBlocks.filter(e => e.blockId === parseInt(message.contents))[0]
-                        block && restSelf.get('/api/chatbot/' + block.botId + '/blocks/' + block.blockId, null, null, true).done(setBlockInfo)
+                        block && restSelf.get('/api/chatbot/blocks/' + block.blockId, null, null, true).done(setBlockInfo)
                     } else if (message.messageType === 'image_temp') {
                         message.originalFileUrl = message.contents
-                        message.fileUrl = $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/talk/template/image', {filePath: message.contents, token: '${g.escapeQuote(accessToken)}'})
+                        message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: message.contents})
                     } else if (['file', 'photo', 'audio'].includes(message.messageType)) {
                         message.originalFileUrl = message.contents
                         message.fileUrl = $.addQueryString(message.contents, {token: '${g.escapeQuote(accessToken)}'})
@@ -755,7 +752,7 @@
                             if (message.replyingType === 'text') {
                                 message.replyingTarget = replyingTarget
                             } else if (message.replyingType === 'image_temp') {
-                                message.replyingTarget = $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/talk/template/image', {filePath: replyingTarget, token: '${g.escapeQuote(accessToken)}'})
+                                message.replyingTarget = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: replyingTarget})
                             } else {
                                 message.replyingTarget = $.addQueryString(replyingTarget, {token: '${g.escapeQuote(accessToken)}'})
                             }
@@ -818,7 +815,7 @@
                         } else if (this.replying.messageType === 'photo') {
                             message = this.REPLYING_INDICATOR + this.replying.originalFileUrl + this.REPLYING_IMAGE + message
                         } else if (this.replying.messageType === 'image_temp') {
-                            message = this.REPLYING_INDICATOR + this.replying.originalFileUrl + this.REPLYING_IMAGE_TEMP + message
+                            message = this.REPLYING_INDICATOR + (this.replying.originalFileUrl.substr(this.replying.originalFileUrl.lastIndexOf('/') + 1)) + this.REPLYING_IMAGE_TEMP + message
                         } else {
                             message = this.REPLYING_INDICATOR + this.replying.contents + this.REPLYING_TEXT + message
                         }

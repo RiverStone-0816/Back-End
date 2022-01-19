@@ -108,13 +108,13 @@
                       <div class="divide-y">
                         <template v-if="message.data.replyingType">
                           <div class="flex pb-2 text-gray-400">
-                            <div v-if="message.data.replyingType === 'image'" class="pr-4">
+                            <div v-if="['image', 'image_temp'].includes(message.data.replyingType)" class="pr-4">
                               <img :src="message.data.replyingTarget" class="h-10">
                             </div>
                             <div>
                               <div class="pb-2">
                                 <p v-if="message.data.replyingType === 'text'" style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.replyingTarget }}</p>
-                                <a v-else :href="message.data.replyingTarget" target="_blank">{{ message.data.replyingType === 'image' ? '사진' : '파일' }}</a>
+                                <a v-else :href="message.data.replyingTarget" target="_blank">{{ ['image', 'image_temp'].includes(message.data.replyingType) ? '사진' : '파일' }}</a>
                               </div>
                             </div>
                           </div>
@@ -128,7 +128,7 @@
                 </div>
               </template>
 
-              <template v-if="message.sender === 'SERVER' && message.messageType === 'block'">
+              <template v-if="message.sender === 'SERVER' && ['block', 'member_block_temp'].includes(message.messageType)">
                 <div v-for="(e, i) in message.data?.display" :key="i" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
                     <div v-if="e.type === 'text'" class="relative text-sm bg-white shadow rounded-lg max-w-xs py-2 px-3">
@@ -207,6 +207,17 @@
                       </div>
                     </div>
                     <div v-if="i + 1 === getButtonGroups(message).length" class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
+                  </div>
+                </div>
+              </template>
+
+              <template v-if="message.sender === 'SERVER' && message.messageType === 'member_image_temp'">
+                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
+                  <div class="flex flex-row">
+                    <div class="relative">
+                      <img alt="chat_image" class="w-full rounded-lg" :src="message.data.fileUrl">
+                    </div>
+                    <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
                   </div>
                 </div>
               </template>
@@ -290,6 +301,7 @@ export default {
       REPLYING_TEXT: '\u001a',
       REPLYING_IMAGE: '\u000f',
       REPLYING_FILE: '\u000e',
+      REPLYING_IMAGE_TEMP: '\u000d',
     }
   },
   data() {
@@ -452,19 +464,28 @@ export default {
           if (data.message_type === "member_text") {
             const contents = data.message_data.text_data
             if (this.REPLYING_INDICATOR === data.message_data.text_data.charAt(0)) {
-              [contents.indexOf(this.REPLYING_TEXT), contents.indexOf(this.REPLYING_IMAGE), contents.indexOf(this.REPLYING_FILE)].forEach((indicator, i) => {
+              [contents.indexOf(this.REPLYING_TEXT), contents.indexOf(this.REPLYING_IMAGE), contents.indexOf(this.REPLYING_FILE), contents.indexOf(this.REPLYING_IMAGE_TEMP)].forEach((indicator, i) => {
                 if (indicator < 0) return
-                data.message_data.replyingType = i === 0 ? 'text' : i === 1 ? 'image' : 'file'
+                data.message_data.replyingType = i === 0 ? 'text' : i === 1 ? 'image' : i === 2 ? 'file' : 'image_temp'
 
                 const replyingTarget = contents.substr(1, indicator - 1)
-                if (data.message_data.replyingType !== 'text') data.message_data.replyingTarget = replyingTarget + '?accessToken=' // TODO: image 리소스 접근 방법 정해야 함.
-                else data.message_data.replyingTarget = replyingTarget
+
+                if (data.message_data.replyingType === 'text') {
+                  data.message_data.replyingTarget = replyingTarget
+                } else if (data.message_data.replyingType === 'image_temp') {
+                  data.message_data.replyingTarget = `https://cloudtalk.eicn.co.kr:8200/webchat_bot_image_fetch?company_id=${encodeURIComponent(data.company_id)}&file_name=${encodeURIComponent(replyingTarget)}`
+                } else {
+                  data.message_data.replyingTarget = replyingTarget // TODO: image 리소스 접근 방법 정해야 함.
+                }
 
                 data.message_data.text_data = contents.substr(indicator + 1)
               })
             }
+          } else if (data.message_type === "member_image_temp") {
+            data.message_data.fileUrl = `https://cloudtalk.eicn.co.kr:8200/webchat_bot_image_fetch?company_id=${encodeURIComponent(data.company_id)}&file_name=${encodeURIComponent(data.message_data.file_name)}`
           }
 
+          console.log(data, {sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type})
           this.messages.push({sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type})
         })
         .requestIntro()
