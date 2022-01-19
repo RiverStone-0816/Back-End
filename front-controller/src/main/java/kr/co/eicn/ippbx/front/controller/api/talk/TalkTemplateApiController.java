@@ -55,7 +55,7 @@ public class TalkTemplateApiController extends BaseController {
     }
 
     @PostMapping("")
-    public Integer post(@Valid @RequestBody TalkTemplateApiInterface.TemplateForm form, BindingResult bindingResult) throws IOException, ResultFailException {
+    public String post(@Valid @RequestBody TalkTemplateApiInterface.TemplateForm form, BindingResult bindingResult) throws IOException, ResultFailException {
         return apiInterface.post(form, g.getUser().getCompanyId());
     }
 

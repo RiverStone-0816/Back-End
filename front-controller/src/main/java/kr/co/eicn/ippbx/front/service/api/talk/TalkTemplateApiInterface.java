@@ -34,19 +34,19 @@ public class TalkTemplateApiInterface extends ApiServerInterface {
     }
 
     @SneakyThrows
-    public Integer post(TemplateForm form, String companyId) {
+    public String post(TemplateForm form, String companyId) {
         if (form.getTypeMent().equals(TalkTemplateFormRequest.MentType.PHOTO) && form.isNewFile()) {
             String fileName = form.getOriginalFileName();
             val file = Collections.singletonMap("file", new FileResource(form.getFilePath(), form.getOriginalFileName()));
             form.setFilePath(null);
             form.setOriginalFileName(null);
-            Object o = sendByMultipartFile(HttpMethod.POST, subUrl, form, jsonResultType(Integer.class), file);
+            Object o = sendByMultipartFile(HttpMethod.POST, subUrl, form, jsonResultType(String.class), file);
             if (StringUtils.isNotEmpty(companyId))
-                uploadWebchatImageToGateway(companyId, fileName);
+                uploadWebchatImageToGateway(companyId, (String) o);
 
-            return (Integer) o;
+            return (String) o;
         } else {
-            return (Integer) sendByMultipartFile(HttpMethod.POST, subUrl, form, jsonResultType(Integer.class), Collections.emptyMap());
+            return (String) sendByMultipartFile(HttpMethod.POST, subUrl, form, jsonResultType(String.class), Collections.emptyMap());
         }
     }
 

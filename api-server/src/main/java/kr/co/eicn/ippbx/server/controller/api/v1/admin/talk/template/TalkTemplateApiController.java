@@ -146,14 +146,14 @@ public class TalkTemplateApiController extends ApiBaseController {
 
     //템플릿 추가
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<JsonResult<Integer>> post(@Valid @ModelAttribute TalkTemplateFormRequest form, BindingResult bindingResult) {
+    public ResponseEntity<JsonResult<String>> post(@Valid @ModelAttribute TalkTemplateFormRequest form, BindingResult bindingResult) {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
-        final Integer insertSeq = service.insertTalkTemplateFileUpload(form);
+        final String uploadFilename = service.insertTalkTemplateFileUpload(form);
 
         return ResponseEntity.created(URI.create("api/v1/admin/talk/template"))
-                .body(data(insertSeq));
+                .body(data(uploadFilename));
     }
 
     //템플릿 수정

@@ -31,17 +31,21 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
     @Value("${file.path.chatbot}")
     private String savePath;
 
-    public Integer insertTalkTemplateFileUpload(TalkTemplateFormRequest form) {
-        storeFile(form);
-        return repository.insert(form);
+    public String insertTalkTemplateFileUpload(TalkTemplateFormRequest form) {
+        String fileName = storeFile(form);
+        repository.insert(form);
+
+        return fileName;
     }
 
-    public void updateTalkTemplateFileUpload(TalkTemplateFormRequest form, Integer seq) {
-        storeFile(form);
+    public String updateTalkTemplateFileUpload(TalkTemplateFormRequest form, Integer seq) {
+        String fileName = storeFile(form);
         repository.update(seq, form);
+
+        return fileName;
     }
 
-    public void storeFile(TalkTemplateFormRequest form) {
+    public String storeFile(TalkTemplateFormRequest form) {
         if (TalkTemplateFormRequest.MentType.PHOTO.equals(form.getTypeMent())) {
             if (form.getFile() != null && !form.getFile().isEmpty()) {
                 final MultipartFile file = form.getFile();
@@ -61,11 +65,17 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
                 form.setFilePath(saveFileName);
 
                 this.imageFileStorageService.store(path, saveFileName, file);
+
+                return saveFileName;
             } else if (form.getFile() == null && form.getFilePath().startsWith("http")) {
                 final Path path = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
-                form.setFilePath(path.resolve(form.getOriginalFileName()).toString());
+                form.setFilePath(path.resolve(form.getFilePath()).toString());
+
+                return form.getFilePath();
             }
         }
+
+        return "";
     }
 
     public Resource getImage(String fileName) {
