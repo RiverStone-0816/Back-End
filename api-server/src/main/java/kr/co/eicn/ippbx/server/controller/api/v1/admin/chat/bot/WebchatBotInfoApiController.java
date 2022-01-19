@@ -56,8 +56,8 @@ public class WebchatBotInfoApiController extends ApiBaseController {
     }
 
     @GetMapping("blocks/template")
-    public ResponseEntity<JsonResult<List<WebchatBotBlockSummaryResponse>>> getTemplateBlockList() {
-        List<WebchatBotBlockSummaryResponse> templateBlockList = webchatBotBlockService.getTemplateBlockList();
+    public ResponseEntity<JsonResult<List<WebchatBotBlockSummaryResponse>>> getTemplateBlockList(@RequestParam Boolean includeChatbotInfo) {
+        List<WebchatBotBlockSummaryResponse> templateBlockList = webchatBotBlockService.getTemplateBlockList(includeChatbotInfo);
 
         return ResponseEntity.ok(data(templateBlockList));
     }

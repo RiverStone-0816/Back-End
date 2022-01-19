@@ -49,6 +49,14 @@ public class WebchatBotBlockRepository extends EicnBaseRepository<WebchatBotBloc
     }
 
     public List<WebchatBotBlockSummaryResponse> getAllTemplateBlockList() {
+        return dsl.select(WEBCHAT_BOT_BLOCK.ID.as("block_id"), WEBCHAT_BOT_BLOCK.NAME.as("block_name"))
+                .from(WEBCHAT_BOT_BLOCK)
+                .where(compareCompanyId())
+                .and(WEBCHAT_BOT_BLOCK.IS_TPL_ENABLE.eq(Bool.Y.name()))
+                .fetchInto(WebchatBotBlockSummaryResponse.class);
+    }
+
+    public List<WebchatBotBlockSummaryResponse> getAllTemplateBlockListIncludeChatbotInfo() {
         return dsl.select(WEBCHAT_BOT_BLOCK.ID.as("block_id"), WEBCHAT_BOT_BLOCK.NAME.as("block_name"),
                 WEBCHAT_BOT_INFO.ID.as("bot_id"), WEBCHAT_BOT_INFO.NAME.as("bot_name"))
                 .from(WEBCHAT_BOT_BLOCK)
