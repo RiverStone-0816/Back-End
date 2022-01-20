@@ -214,7 +214,7 @@
               <template v-if="message.sender === 'SERVER' && message.messageType === 'member_image_temp'">
                 <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
-                    <div class="relative">
+                    <div class="relative max-w-xs">
                       <img alt="chat_image" class="w-full rounded-lg" :src="message.data.fileUrl">
                     </div>
                     <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
