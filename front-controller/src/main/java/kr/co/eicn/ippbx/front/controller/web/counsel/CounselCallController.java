@@ -124,9 +124,6 @@ public class CounselCallController extends BaseController {
         final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryTalkServiceResponse::getSenderKey, SummaryTalkServiceResponse::getKakaoServiceName));
         model.addAttribute("talkServices", talkServices);
 
-        if (maindbGroupSeq == null)
-            maindbGroupSeq = groups.get(0).getSeq();
-
         final GradeListSearchRequest gradeListSearchRequest = new GradeListSearchRequest();
         if (StringUtils.isNotEmpty(phoneNumber))
             gradeListSearchRequest.getGradeNumbers().add(phoneNumber);
@@ -134,13 +131,50 @@ public class CounselCallController extends BaseController {
         model.addAttribute("phoneNumber", phoneNumber);
         form.setGroupSeq(maindbGroupSeq);
 
-        final MaindbGroupDetailResponse group = maindbGroupApiInterface.get(maindbGroupSeq);
+        final Map<String, String> channelTypes = FormUtils.options(MultichannelChannelType.class);
+        model.addAttribute("channelTypes", channelTypes);
+
+        MaindbCustomInfoEntity entity = null;
+
+        if (StringUtils.isNotEmpty(customId)) {
+            entity = maindbDataApiInterface.get(customId);
+            model.addAttribute("entity", entity);
+            form.setGroupSeq(entity.getMaindbSysGroupId());
+
+            if (entity.getMultichannelList() != null)
+                entity.getMultichannelList().stream().filter(e -> Objects.equals(e.getChannelType(), MultichannelChannelType.PHONE.getCode())).forEach(e -> gradeListSearchRequest.getGradeNumbers().add(e.getChannelData()));
+
+        } else if (StringUtils.isNotEmpty(phoneNumber)) {
+            final MaindbDataSearchRequest search = new MaindbDataSearchRequest();
+            if (maindbGroupSeq != null) search.setGroupSeq(maindbGroupSeq);
+            search.setChannelType(MultichannelChannelType.PHONE);
+            search.setChannelData(phoneNumber);
+            final List<MaindbCustomInfoEntity> rows = maindbDataApiInterface.getPagination(search).getRows();
+
+            if (rows.size() > 0) {
+                entity = rows.get(0);
+                model.addAttribute("entity", entity);
+                form.setGroupSeq(entity.getMaindbSysGroupId());
+
+                if (entity.getMultichannelList() != null)
+                    entity.getMultichannelList().stream().filter(e -> Objects.equals(e.getChannelType(), MultichannelChannelType.PHONE.getCode())).forEach(e -> gradeListSearchRequest.getGradeNumbers().add(e.getChannelData()));
+
+            } else {
+                if (maindbGroupSeq == null)
+                    maindbGroupSeq = groups.get(0).getSeq();
+                form.setGroupSeq(maindbGroupSeq);
+            }
+        } else {
+            if (maindbGroupSeq == null)
+                maindbGroupSeq = groups.get(0).getSeq();
+            form.setGroupSeq(maindbGroupSeq);
+        }
+
+        final MaindbGroupDetailResponse group = maindbGroupApiInterface.get(form.getGroupSeq());
         model.addAttribute("group", group);
         final CommonTypeEntity customDbType = commonTypeApiInterface.get(group.getMaindbType());
         customDbType.setFields(customDbType.getFields().stream().filter(e -> "Y".equals(e.getIsdisplay())).collect(Collectors.toList()));
         model.addAttribute("customDbType", customDbType);
-        final Map<String, String> channelTypes = FormUtils.options(MultichannelChannelType.class);
-        model.addAttribute("channelTypes", channelTypes);
 
         final Map<String, String> fieldToRelatedField = new HashMap<>();
         for (CommonFieldEntity field : customDbType.getFields()) {
@@ -154,13 +188,7 @@ public class CounselCallController extends BaseController {
         }
         model.addAttribute("fieldToRelatedField", fieldToRelatedField);
 
-        if (StringUtils.isNotEmpty(customId)) {
-            final MaindbCustomInfoEntity entity = maindbDataApiInterface.get(customId);
-            model.addAttribute("entity", entity);
-
-            if (entity.getMultichannelList() != null)
-                entity.getMultichannelList().stream().filter(e -> Objects.equals(e.getChannelType(), MultichannelChannelType.PHONE.getCode())).forEach(e -> gradeListSearchRequest.getGradeNumbers().add(e.getChannelData()));
-
+        if(StringUtils.isNotEmpty(customId) && Objects.nonNull(entity)){
             final Map<String, Object> fieldNameToValueMap = MaindbDataController.createFieldNameToValueMap(entity, customDbType);
             model.addAttribute("fieldNameToValueMap", fieldNameToValueMap);
             String phoneNumberData = "";
@@ -173,33 +201,21 @@ public class CounselCallController extends BaseController {
             }
 
             model.addAttribute("phoneNumberData", phoneNumberData);
-        } else if (StringUtils.isNotEmpty(phoneNumber)) {
-            final MaindbDataSearchRequest search = new MaindbDataSearchRequest();
-            search.setChannelType(MultichannelChannelType.PHONE);
-            search.setChannelData(phoneNumber);
-            final List<MaindbCustomInfoEntity> rows = maindbDataApiInterface.getPagination(search).getRows();
+        } else if (StringUtils.isNotEmpty(phoneNumber) && Objects.nonNull(entity)) {
+            final Map<String, Object> fieldNameToValueMap = MaindbDataController.createFieldNameToValueMap(entity, customDbType);
+            model.addAttribute("fieldNameToValueMap", fieldNameToValueMap);
+            String phoneNumberData = "";
 
-            if (rows.size() > 0) {
-                final MaindbCustomInfoEntity entity = rows.get(0);
-                model.addAttribute("entity", entity);
-
-                if (entity.getMultichannelList() != null)
-                    entity.getMultichannelList().stream().filter(e -> Objects.equals(e.getChannelType(), MultichannelChannelType.PHONE.getCode())).forEach(e -> gradeListSearchRequest.getGradeNumbers().add(e.getChannelData()));
-
-                final Map<String, Object> fieldNameToValueMap = MaindbDataController.createFieldNameToValueMap(entity, customDbType);
-                model.addAttribute("fieldNameToValueMap", fieldNameToValueMap);
-                String phoneNumberData = "";
-                for (int i = 0; i < entity.getMultichannelList().size(); i++) {
-                    if (entity.getMultichannelList().get(i).getChannelType().equals(MultichannelChannelType.PHONE.getCode())) {
-                        phoneNumberData = entity.getMultichannelList().get(i).getChannelData();
-                        break;
-                    }
+            for (int i = 0; i < entity.getMultichannelList().size(); i++){
+                if(entity.getMultichannelList().get(i).getChannelType().equals(MultichannelChannelType.PHONE.getCode())){
+                    phoneNumberData = entity.getMultichannelList().get(i).getChannelData();
+                    break;
                 }
-
-                model.addAttribute("phoneNumberData", phoneNumberData);
-            } else {
-                model.addAttribute("phoneNumberData", phoneNumber);
             }
+
+            model.addAttribute("phoneNumberData", phoneNumberData);
+        } else {
+            model.addAttribute("phoneNumberData", phoneNumber);
         }
 
         if (!gradeListSearchRequest.getGradeNumbers().isEmpty()) {
