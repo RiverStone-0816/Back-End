@@ -26,15 +26,21 @@ import kr.co.eicn.ippbx.model.search.TodoListSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.*;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.UrlUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,6 +48,8 @@ import static java.util.Comparator.comparing;
 import static kr.co.eicn.ippbx.util.JsonResult.create;
 import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.replace;
+import static org.springframework.util.StringUtils.cleanPath;
 
 /**
  * 상담화면_메인
@@ -51,6 +59,8 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @RestController
 @RequestMapping(value = "api/v1/consultation/main", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MainApiController extends ApiBaseController {
+    @Value("${file.path.chatbot}")
+    private String savePath;
 
     private final MaindbGroupRepository maindbGroupRepository;
     private final EicnCdrService eicnCdrService;
@@ -71,6 +81,7 @@ public class MainApiController extends ApiBaseController {
     private final CallbackRepository callbackRepository;
 
     private final MaindbCustomInfoService maindbCustomInfoService;
+    private final FileSystemStorageService fileSystemStorageService;
 
     /**
      * 전화번호 검색
@@ -524,5 +535,23 @@ public class MainApiController extends ApiBaseController {
         talkMsgService.getRepository().insert(commonTalkMsgRecord);
 
         return ResponseEntity.ok(create());
+    }
+
+
+    @PostMapping("file")
+    public ResponseEntity<JsonResult<String>> uploadFile(@Valid @RequestParam MultipartFile file, BindingResult bindingResult) {
+        final String[] enabledFileType = {".jpg", "jpeg", ".png", ".gif", ".ppt", ".pptx", ".xlsx", ".pdf", ".hwp", ".hwpx", ".docx", ".mp3", ".wav", ".zip"};
+
+        if (!StringUtils.endsWithAny(Objects.requireNonNull(file.getOriginalFilename()).toLowerCase(), enabledFileType)) {
+            bindingResult.reject("fileType", null, "사용할 수 없는 확장자 입니다.");
+            throw new ValidationException(bindingResult);
+        }
+
+        final Path newPath = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
+
+        final String saveFileName = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()).concat("_") + UrlUtils.decode(cleanPath(Objects.requireNonNull(file.getOriginalFilename()))).replaceAll("[ ()]", "");
+        fileSystemStorageService.store(newPath, saveFileName, file);
+
+        return ResponseEntity.ok(data(saveFileName));
     }
 }
