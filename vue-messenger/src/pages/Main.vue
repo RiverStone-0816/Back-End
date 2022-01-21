@@ -35,7 +35,7 @@
                   <div class="flex flex-row items-center">
                     <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
                       <div v-if="message.data.image" class="relative rounded-lg pt-1 pb-3">
-                        <img class="w-full" :src="`http://122.49.74.102/api-server/api/v1/chat/config/image?fileName=${encodeURIComponent(message.data.image)}`" alt="intro image">
+                        <img class="w-full" :src="getFileUrl(message.company, message.data.image)" alt="intro image">
                       </div>
                       <div>
                         <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.msg }}</p>
