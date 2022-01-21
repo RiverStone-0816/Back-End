@@ -843,8 +843,9 @@
                     this.showingTemplateBlocks = false
                 },
                 uploadFile(file) {
-                    // TODO: url 바꿔야 함: /api/counsel/file
-                    uploadFile(file).done(response => restSelf.post('/api/chat-service/image', response.data).done(response => talkCommunicator.sendFile(this.roomId, this.channelType, this.senderKey, this.userKey, response.data)))
+                    return uploadFile(file)
+                        .done(response => restSelf.post('/api/counsel/file', response.data)
+                            .done(response => talkCommunicator.sendFile(this.roomId, this.channelType, this.senderKey, this.userKey, response.data)))
                 },
                 sendFile: function (event) {
                     const file = event.target.files[0]
