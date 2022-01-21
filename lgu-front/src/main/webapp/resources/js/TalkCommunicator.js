@@ -185,6 +185,20 @@ TalkCommunicator.prototype.sendTemplateBlock = function (roomId, channelType, se
         contents: '' + blockId,
     });
 };
+TalkCommunicator.prototype.sendFile = function (roomId, channelType, senderKey, userKey, filePath) {
+    this.socket.emit('cli_msg', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        channel_type: channelType,
+        sender_key: senderKey,
+        send_receive: "S",
+        user_key: userKey,
+        etc_data: "",
+        type: 'file',
+        contents: filePath,
+    });
+};
 TalkCommunicator.prototype.assignUnassignedRoomToMe = function (roomId, channelType, senderKey, userKey, contents) {
     this.socket.emit('cli_control', {
         company_id: this.request.companyId,

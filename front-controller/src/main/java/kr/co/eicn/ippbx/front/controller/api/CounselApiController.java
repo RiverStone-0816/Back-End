@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
+import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CounselApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -71,14 +73,8 @@ public class CounselApiController extends BaseController {
     }
 
     @SneakyThrows
-    @PostMapping("{roomId}/upload-file")
-    public void uploadFile(@PathVariable String roomId, @Valid @RequestBody CounselApiInterface.FileUploadForm form, BindingResult bindingResult, @Value("${eicn.apiserver}") String apiServer, @Value("${eicn.talk.socket.id}") String talkSocketId) {
-        form.setMy_userid(g.getUser().getId());
-        form.setMy_username(g.getUser().getIdName());
-        form.setCompany_id(g.getUser().getCompanyId());
-        form.setBasic_url(g.getSocketList().get(talkSocketId));
-        form.setWeb_url(apiServer);
-        form.setRoom_id(roomId);
-        apiInterface.uploadFile(form);
+    @PostMapping(value = "file", params = "file")
+    public String uploadImage(@Valid @RequestBody FileForm form, BindingResult bindingResult) {
+        return apiInterface.uploadFile(form, g.getUser().getCompanyId());
     }
 }
