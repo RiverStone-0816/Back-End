@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="list-plus-btn" transform="translate(-1614.5 -464)">
+    <rect id="사각형_7771" data-name="사각형 7771" width="20" height="20" rx="5" transform="translate(1614.5 464)" fill="#39374d"/>
+    <path id="Icon_metro-plus" data-name="Icon metro-plus" d="M13.227,6.053H9.446V2.272A.344.344,0,0,0,9.1,1.928H7.039a.344.344,0,0,0-.344.344V6.053H2.914a.344.344,0,0,0-.344.344V8.459a.344.344,0,0,0,.344.344H6.7v3.781a.344.344,0,0,0,.344.344H9.1a.344.344,0,0,0,.344-.344V8.8h3.781a.344.344,0,0,0,.344-.344V6.4A.344.344,0,0,0,13.227,6.053Z" transform="translate(1616.43 466.572)" fill="#fff"/>
+  </g>
+</svg>

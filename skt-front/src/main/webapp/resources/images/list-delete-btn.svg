@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+  <g id="list-delete-btn" transform="translate(-1614.5 -681)">
+    <g id="그룹_1688" data-name="그룹 1688">
+      <rect id="사각형_7667" data-name="사각형 7667" width="20" height="20" rx="5" transform="translate(1614.5 681)" fill="#b92020"/>
+      <path id="Icon_metro-cross" data-name="Icon metro-cross" d="M13.47,10.765h0L10.133,7.428,13.47,4.091h0a.345.345,0,0,0,0-.486L11.894,2.028a.345.345,0,0,0-.486,0h0L8.071,5.366,4.734,2.029h0a.345.345,0,0,0-.486,0L2.671,3.6a.345.345,0,0,0,0,.486h0L6.008,7.428,2.671,10.765h0a.344.344,0,0,0,0,.486l1.576,1.576a.345.345,0,0,0,.486,0h0L8.071,9.491l3.337,3.337h0a.344.344,0,0,0,.486,0l1.576-1.576a.344.344,0,0,0,0-.486Z" transform="translate(1616.443 683.586)" fill="#fff"/>
+    </g>
+  </g>
+</svg>
