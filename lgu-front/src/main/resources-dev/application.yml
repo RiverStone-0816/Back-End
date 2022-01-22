@@ -60,6 +60,9 @@ eicn:
     location: /tmp
   apiserver: http://122.49.74.102/api-server
   realapiserver: http://122.49.74.102/api-server
+  webchat:
+    image:
+      url: http://122.49.74.102:8100/webchat_bot_image
   admin:
     socket:
       id: monitor_connector

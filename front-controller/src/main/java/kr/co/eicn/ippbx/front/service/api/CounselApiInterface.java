@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.front.service.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.co.eicn.ippbx.exception.UnauthorizedException;
+import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.model.dto.customdb.CustomMultichannelInfoResponse;
@@ -82,53 +83,11 @@ public class CounselApiInterface extends ApiServerInterface {
     }
 
     @SneakyThrows
-    public void uploadFile(FileUploadForm o) {
-        final MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
+    public String uploadFile(FileForm form, String companyId) {
+        final String saveFileName = sendByMultipartFile(HttpMethod.POST, subUrl + "file", form, String.class, Collections.singletonMap("file", new FileResource(form.getFilePath(), form.getOriginalName())));
 
-        if (o != null) {
-            final Map<String, Object> params = objectMapper.convertValue(o, new ObjectMapper().getTypeFactory().constructParametricType(Map.class, String.class, Object.class));
-            params.forEach(parts::add);
-        }
-        parts.add("up_filename", new FileResource(Objects.requireNonNull(o).getFilePath(), o.getOriginalName(), false));
+        uploadWebchatImageToGateway(companyId, saveFileName);
 
-        final RestTemplate restTemplate = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        final String accessToken = getAccessToken();
-        if (StringUtils.isNotEmpty(accessToken))
-            headers.add("Authorization", "Bearer " + accessToken);
-
-        final HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parts, headers);
-
-        try {
-            restTemplate.exchange(o.getBasic_url() + "/talk/fileupload", HttpMethod.POST, requestEntity, String.class);
-        } catch (HttpStatusCodeException e) {
-            if (Objects.equals(e.getStatusCode(), HttpStatus.UNAUTHORIZED))
-                throw new UnauthorizedException(e.getStatusText(), e.getResponseHeaders(), e.getResponseBodyAsByteArray(), Charset.defaultCharset());
-            throw e;
-        }
-    }
-
-    @EqualsAndHashCode(callSuper = true)
-    @Data
-    public static class FileUploadForm extends BaseForm {
-        @NotNull("파일경로")
-        private String filePath;
-        @NotNull("파일이름")
-        private String originalName;
-
-        private String my_userid;
-        private String my_username;
-        private String company_id;
-        private String basic_url;
-        private String web_url;
-        private String room_id;
-        @NotNull("channel_type")
-        private String channel_type;
-        @NotNull("sender_key")
-        private String sender_key;
-        @NotNull("user_key")
-        private String user_key;
+        return saveFileName;
     }
 }

@@ -47,17 +47,14 @@ TalkCommunicator.prototype.log = function (isSend, command, body) {
 TalkCommunicator.prototype.logClear = function () {
     this.status.eventNumber = 0;
 };
-TalkCommunicator.prototype.connect = function (url, companyId, groupCode, groupTreeName, groupLevel, userid, username, authtype, usertype) {
+TalkCommunicator.prototype.connect = function (url, companyId, userid, passwd, authtype, usertype) {
     this.url = url;
     this.request = {
         companyId: companyId,
-        groupCode: groupCode,
-        groupTreeName: groupTreeName,
-        groupLevel: groupLevel,
         userid: userid,
-        username: username,
+        passwd: passwd,
+        usertype: usertype,
         authtype: authtype,
-        usertype: usertype
     };
 
     const _this = this;
@@ -65,13 +62,11 @@ TalkCommunicator.prototype.connect = function (url, companyId, groupCode, groupT
         this.socket = io.connect(url, {'reconnect': true, 'resource': 'socket.io'});
         this.socket.emit('cli_join', {
             company_id: _this.request.companyId,
-            group_code: _this.request.groupCode,
-            group_tree_name: _this.request.groupTreeName,
-            group_level: _this.request.groupLevel,
             userid: _this.request.userid,
-            username: _this.request.username,
+            passwd: _this.request.passwd,
+            usertype: _this.request.usertype,
             authtype: _this.request.authtype,
-            usertype: _this.request.usertype
+            from_ui: 'API',
         }).on('connect', function () {
             _this.log(false, 'connect', arguments);
         }).on('svc_login', function (data) {
@@ -86,6 +81,9 @@ TalkCommunicator.prototype.connect = function (url, companyId, groupCode, groupT
         }).on('svc_control', function (data) {
             _this.log(false, 'svc_control', data);
             _this.process('svc_control', data);
+        }).on('svc_dist_yn', function (data) {
+            _this.log(false, 'svc_dist_yn', data);
+            _this.process('svc_dist_yn', data);
         }).on('svc_end', function (data) {
             _this.log(false, 'svc_end', data);
             _this.process('svc_end', data);
@@ -122,13 +120,10 @@ TalkCommunicator.prototype.recovery = function () {
     this.connect.apply(this, [
         this.url,
         this.request.companyId,
-        this.request.groupCode,
-        this.request.groupTreeName,
-        this.request.groupLevel,
         this.request.userid,
-        this.request.username,
+        this.request.passwd,
+        this.request.usertype,
         this.request.authtype,
-        this.request.usertype
     ]);
 };
 TalkCommunicator.prototype.process = function (event, data) {
@@ -148,51 +143,111 @@ TalkCommunicator.prototype.process = function (event, data) {
 
     return this;
 };
-TalkCommunicator.prototype.sendMessage = function (roomId, senderKey, userKey, contents) {
+TalkCommunicator.prototype.sendMessage = function (roomId, channelType, senderKey, userKey, contents) {
     this.socket.emit('cli_msg', {
         company_id: this.request.companyId,
         room_id: roomId,
         userid: this.request.userid,
+        channel_type: channelType,
         sender_key: senderKey,
         send_receive: "S",
         user_key: userKey,
         etc_data: "",
-        contents: contents
+        type: 'text',
+        contents: contents,
     });
 };
-TalkCommunicator.prototype.assignUnassignedRoomToMe = function (roomId, senderKey, userKey) {
+TalkCommunicator.prototype.sendImageTemplate = function (roomId, channelType, senderKey, userKey, filePath) {
+    this.socket.emit('cli_msg', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        channel_type: channelType,
+        sender_key: senderKey,
+        send_receive: "S",
+        user_key: userKey,
+        etc_data: "",
+        type: 'image_temp',
+        contents: filePath,
+    });
+};
+TalkCommunicator.prototype.sendTemplateBlock = function (roomId, channelType, senderKey, userKey, blockId) {
+    this.socket.emit('cli_msg', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        channel_type: channelType,
+        sender_key: senderKey,
+        send_receive: "S",
+        user_key: userKey,
+        etc_data: "",
+        type: 'block_temp',
+        contents: '' + blockId,
+    });
+};
+TalkCommunicator.prototype.sendFile = function (roomId, channelType, senderKey, userKey, filePath) {
+    this.socket.emit('cli_msg', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        channel_type: channelType,
+        sender_key: senderKey,
+        send_receive: "S",
+        user_key: userKey,
+        etc_data: "",
+        type: 'file',
+        contents: filePath,
+    });
+};
+TalkCommunicator.prototype.assignUnassignedRoomToMe = function (roomId, channelType, senderKey, userKey, contents) {
     this.socket.emit('cli_control', {
         company_id: this.request.companyId,
         room_id: roomId,
         userid: this.request.userid,
+        channel_type: channelType,
         sender_key: senderKey,
         send_receive: "SZ",
         user_key: userKey,
         etc_data: "",
-        contents: ""
+        contents: contents || "",
     });
 };
-TalkCommunicator.prototype.assignAssignedRoomToMe = function (roomId, senderKey, userKey) {
+TalkCommunicator.prototype.assignAssignedRoomToMe = function (roomId, channelType, senderKey, userKey, contents) {
     this.socket.emit('cli_control', {
         company_id: this.request.companyId,
         room_id: roomId,
         userid: this.request.userid,
+        channel_type: channelType,
         sender_key: senderKey,
         send_receive: "SG",
         user_key: userKey,
         etc_data: "",
-        contents: ""
+        contents: contents || "",
     });
 };
-TalkCommunicator.prototype.deleteRoom = function (roomId, senderKey, userKey) {
+TalkCommunicator.prototype.deleteRoom = function (roomId, channelType, senderKey, userKey) {
     this.socket.emit('cli_end', {
         company_id: this.request.companyId,
         room_id: roomId,
         userid: this.request.userid,
+        channel_type: channelType,
         sender_key: senderKey,
         send_receive: "SE",
         user_key: userKey,
         etc_data: "",
         contents: ""
+    });
+};
+TalkCommunicator.prototype.changeDistribution = function (distributed) {
+    this.socket.emit('cli_dist_yn', {
+        company_id: this.request.companyId,
+        room_id: null,
+        userid: this.request.userid,
+        channel_type: null,
+        sender_key: null,
+        send_receive: "S",
+        user_key: null,
+        etc_data: "",
+        contents: distributed ? 'Y' : 'N'
     });
 };

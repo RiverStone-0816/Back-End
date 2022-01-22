@@ -67,6 +67,5 @@
 
     window.doneSubmitMessengerBookmarkFormData = function () {
         modal.find('.modal-close:first').click();
-        messenger.loadBookmarks();
     };
 </script>

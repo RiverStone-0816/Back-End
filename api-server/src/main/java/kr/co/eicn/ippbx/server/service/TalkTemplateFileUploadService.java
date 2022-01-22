@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 import static org.apache.commons.io.FilenameUtils.getFullPath;
@@ -59,7 +61,7 @@ public class TalkTemplateFileUploadService extends ApiBaseService {
                 }
 
                 final String originalFileName = UrlUtils.decode(cleanPath(Objects.requireNonNull(file.getOriginalFilename())));
-                final String saveFileName = System.currentTimeMillis() + "_" + System.nanoTime() + "_" + originalFileName.replaceAll("[ ()]", "");
+                final String saveFileName = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()).concat("_") + originalFileName.replaceAll("[ ()]", "");
 
                 form.setOriginalFileName(originalFileName);
                 form.setFilePath(saveFileName);

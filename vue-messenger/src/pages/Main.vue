@@ -20,7 +20,7 @@
                   <div class="flex flex-row items-center">
                     <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
                       <div v-if="message.data.image" class="relative rounded-lg pt-1 pb-3">
-                        <img class="w-full" :src="`http://122.49.74.102:8100/webchat_bot_image_fetch?company_id=eicn&file_name=${encodeURIComponent(message.data.image)}`" alt="intro image">
+                        <img class="w-full" :src="getFileUrl(message.company, message.data.image)" alt="intro image">
                       </div>
                       <div>
                         <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.text_data }}</p>
@@ -35,7 +35,7 @@
                   <div class="flex flex-row items-center">
                     <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
                       <div v-if="message.data.image" class="relative rounded-lg pt-1 pb-3">
-                        <img class="w-full" :src="`http://122.49.74.102/api-server/api/v1/chat/config/image?fileName=${encodeURIComponent(message.data.image)}`" alt="intro image">
+                        <img class="w-full" :src="getFileUrl(message.company, message.data.image)" alt="intro image">
                       </div>
                       <div>
                         <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.msg }}</p>
@@ -135,11 +135,11 @@
                       <p style="white-space: pre-wrap; line-break: anywhere;">{{ e.element[0]?.content }}</p>
                     </div>
                     <div v-else-if="e.type === 'image'" class="relative">
-                      <img alt="chat_image" class="w-full rounded-lg" :src="`http://122.49.74.102:8100/webchat_bot_image_fetch?company_id=eicn&file_name=${encodeURIComponent(e.element[0]?.image)}`">
+                      <img alt="chat_image" class="w-full rounded-lg" :src="getFileUrl(message.company, e.element[0]?.image)">
                     </div>
                     <div v-else-if="e.type === 'card'" class="relative text-sm bg-white shadow rounded-lg max-w-xs">
                       <div class="relative">
-                        <img alt="chat_image" class="w-full rounded-t-lg" :src="`http://122.49.74.102:8100/webchat_bot_image_fetch?company_id=eicn&file_name=${encodeURIComponent(e.element[0]?.image)}`">
+                        <img alt="chat_image" class="w-full rounded-t-lg" :src="getFileUrl(message.company, e.element[0]?.image)">
                       </div>
                       <div class="p-3 pb-0 text-base font-bold">
                         <p>{{ e.element[0]?.title }}</p>
@@ -156,7 +156,7 @@
                       <template v-if="e.element[1]?.title || e.element[1]?.image || e.element[1]?.content">
                         <div v-for="(e2, j) in getListElements(e)" :key="j" class="grid grid-cols-6 p-3">
                           <div class="col-start-1 h-full">
-                            <img v-if="e2.image" class="rounded-lg w-12 h-12" :src="`http://122.49.74.102:8100/webchat_bot_image_fetch?company_id=eicn&file_name=${encodeURIComponent(e2.image)}`" alt="item image">
+                            <img v-if="e2.image" class="rounded-lg w-12 h-12" :src="getFileUrl(message.company, e2.image)" alt="item image">
                           </div>
                           <div class="col-span-5">
                             <div class="pl-2 pt-0 pb-1">
@@ -216,6 +216,22 @@
                   <div class="flex flex-row">
                     <div class="relative max-w-xs">
                       <img alt="chat_image" class="w-full rounded-lg" :src="message.data.fileUrl">
+                    </div>
+                    <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
+                  </div>
+                </div>
+              </template>
+
+              <template v-if="message.sender === 'SERVER' && message.messageType === 'member_file'">
+                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
+                  <div class="flex flex-row">
+                    <div v-if="isImage(message.data.file_name)" class="relative max-w-xs">
+                      <img alt="chat_image" class="w-full rounded-lg" :src="message.data.fileUrl">
+                    </div>
+                    <div v-else class="relative text-sm bg-white py-2 px-3 pb-0 shadow rounded-lg w-full max-w-xs">
+                      <a class="w-full rounded-lg" :href="message.data.fileUrl">{{ message.data.file_name }}
+                        <hr/>
+                        <b>파일 저장하기</b></a>
                     </div>
                     <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
                   </div>
@@ -287,7 +303,7 @@ function zeroPad(nr, base) {
 
 window.addEventListener("beforeunload", () => window.communicator.disconnect(), false)
 // ref: http://daplus.net/javascript-%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D%EC%9D%84-%ED%97%88%EC%9A%A9%ED%95%98%EB%8A%94-javascript%EC%9D%98-string-indexof-%EB%B2%84%EC%A0%84%EC%9D%B4-%EC%9E%88%EC%8A%B5%EB%8B%88/
-String.prototype.regexIndexOf = function(regex, startpos) {
+String.prototype.regexIndexOf = function (regex, startpos) {
   var indexOf = this.substring(startpos || 0).search(regex);
   return (indexOf >= 0) ? (indexOf + (startpos || 0)) : indexOf;
 }
@@ -438,6 +454,16 @@ export default {
         api_param_value: data
       }, this.lastReceiveMessageType)
     },
+    getFileUrl(company, fileName) {
+      return `https://cloudtalk.eicn.co.kr:8200/webchat_bot_image_fetch?company_id=${encodeURIComponent(company)}&file_name=${encodeURIComponent(fileName)}`
+    },
+    isImage(fileName) {
+      if (!fileName) return false
+      return fileName.toLowerCase().endsWith('.jpg')
+          || fileName.toLowerCase().endsWith('.jpeg')
+          || fileName.toLowerCase().endsWith('.png')
+          || fileName.toLowerCase().endsWith('.bmp')
+    },
   },
   updated() {
     this.debounce(() => this.$refs.chatBody.scroll({top: this.$refs.chatBody.scrollHeight}), 100)
@@ -473,20 +499,20 @@ export default {
                 if (data.message_data.replyingType === 'text') {
                   data.message_data.replyingTarget = replyingTarget
                 } else if (data.message_data.replyingType === 'image_temp') {
-                  data.message_data.replyingTarget = `https://cloudtalk.eicn.co.kr:8200/webchat_bot_image_fetch?company_id=${encodeURIComponent(data.company_id)}&file_name=${encodeURIComponent(replyingTarget)}`
+                  data.message_data.replyingTarget = this.getFileUrl(data.company_id, replyingTarget)
                 } else {
-                  data.message_data.replyingTarget = replyingTarget // TODO: image 리소스 접근 방법 정해야 함.
+                  data.message_data.replyingTarget = this.getFileUrl(data.company_id, replyingTarget) // TODO: 확인 필요
                 }
 
                 data.message_data.text_data = contents.substr(indicator + 1)
               })
             }
-          } else if (data.message_type === "member_image_temp") {
-            data.message_data.fileUrl = `https://cloudtalk.eicn.co.kr:8200/webchat_bot_image_fetch?company_id=${encodeURIComponent(data.company_id)}&file_name=${encodeURIComponent(data.message_data.file_name)}`
+          } else if (['member_image_temp', 'member_file'].includes(data.message_type)) {
+            data.message_data.fileUrl = this.getFileUrl(data.company_id, data.message_data.file_name)
           }
 
-          console.log(data, {sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type})
-          this.messages.push({sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type})
+          console.log(data, {sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type, company: data.company_id})
+          this.messages.push({sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type, company: data.company_id})
         })
         .requestIntro()
   },

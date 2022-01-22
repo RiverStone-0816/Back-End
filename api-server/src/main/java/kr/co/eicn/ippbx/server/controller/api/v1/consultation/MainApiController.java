@@ -1,7 +1,5 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.consultation;
 
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebchatServiceInfo;
-import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonTalkMsg;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.CommonTalkMsgRecord;
@@ -9,6 +7,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoKind;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentTalkRoom;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkServiceInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebchatServiceInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.model.dto.customdb.*;
@@ -23,18 +22,25 @@ import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
 import kr.co.eicn.ippbx.model.form.TodoListUpdateFormRequest;
 import kr.co.eicn.ippbx.model.form.TodoReservationFormRequest;
 import kr.co.eicn.ippbx.model.search.TodoListSearchRequest;
+import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.*;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.UrlUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -42,6 +48,8 @@ import static java.util.Comparator.comparing;
 import static kr.co.eicn.ippbx.util.JsonResult.create;
 import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+import static org.apache.commons.lang3.StringUtils.replace;
+import static org.springframework.util.StringUtils.cleanPath;
 
 /**
  * 상담화면_메인
@@ -51,7 +59,6 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @RestController
 @RequestMapping(value = "api/v1/consultation/main", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MainApiController extends ApiBaseController {
-
     private final MaindbGroupRepository maindbGroupRepository;
     private final EicnCdrService eicnCdrService;
     private final MaindbMultichannelInfoService multichannelInfoService;
@@ -61,7 +68,6 @@ public class MainApiController extends ApiBaseController {
     private final PhoneInfoRepository phoneInfoRepository;
     private final MaindbMultichannelInfoService maindbMultichannelInfoService;
     private final TodoListRepository todoListRepository;
-
     private final TalkRoomService talkRoomService;
     private final CurrentTalkRoomRepository currentTalkRoomRepository;
     private final TalkServiceInfoRepository talkServiceInfoRepository;
@@ -69,8 +75,10 @@ public class MainApiController extends ApiBaseController {
     private final TalkMsgService talkMsgService;
     private final PersonListRepository personListRepository;
     private final CallbackRepository callbackRepository;
-
     private final MaindbCustomInfoService maindbCustomInfoService;
+    private final FileSystemStorageService fileSystemStorageService;
+    @Value("${file.path.chatbot}")
+    private String savePath;
 
     /**
      * 전화번호 검색
@@ -211,11 +219,11 @@ public class MainApiController extends ApiBaseController {
 
         //!!@@## 코드정리 나중에...
         TodoList list = todoListRepository.findOne(form.getSeq());
-        if(list.getTodoKind().getLiteral().equals("CALLBACK")){
+        if (list.getTodoKind().getLiteral().equals("CALLBACK")) {
             CallbackListUpdateFormRequest callbackForm = new CallbackListUpdateFormRequest();
-            if (form.getTodoStatus().getLiteral().equals(TodoListTodoStatus.DONE.getLiteral())){
+            if (form.getTodoStatus().getLiteral().equals(TodoListTodoStatus.DONE.getLiteral())) {
                 callbackForm.setStatus(CallbackStatus.COMPLETE);
-            } else if (form.getTodoStatus().getLiteral().equals(TodoListTodoStatus.ING.getLiteral())){
+            } else if (form.getTodoStatus().getLiteral().equals(TodoListTodoStatus.ING.getLiteral())) {
                 callbackForm.setStatus(CallbackStatus.PROCESSING);
             } else {
                 callbackForm.setStatus(CallbackStatus.NONE);
@@ -397,23 +405,23 @@ public class MainApiController extends ApiBaseController {
                     if ("".equals(e.getMaindbCustomName())) {
                         data.setMaindbCustomName("미등록고객");
                     }
-                    if (StringUtils.isEmpty(mainDb.get(e.getMaindbCustomId()))){
+                    if (StringUtils.isEmpty(mainDb.get(e.getMaindbCustomId()))) {
                         data.setMaindbCustomName("미등록고객");
                         data.setMaindbCustomId("");
                     } else {
-                        if(StringUtils.isEmpty(data.getMaindbCustomName())){
+                        if (StringUtils.isEmpty(data.getMaindbCustomName())) {
                             data.setMaindbCustomName(mainDb.get(e.getMaindbCustomId()));
                         }
                     }
 
                     CommonTalkMsg table = talkMsgService.getRepository().getTABLE();
                     final List<TalkMsgEntity> talkMsgResponseList = talkMsgService.getRepository().findAll(table.COMPANY_ID.eq(g.getUser().getCompanyId())
-                            .and(table.SENDER_KEY.eq(e.getSenderKey()))
-                            .and(table.USER_KEY.eq(e.getUserKey()))
-                            .and(table.INSERT_TIME.ge(e.getRoomStartTime()))
-                            .and(table.INSERT_TIME.le(e.getRoomLastTime()))
-                            .and(table.SEND_RECEIVE.eq("S").or(table.SEND_RECEIVE.eq("R")))
-                    )
+                                    .and(table.SENDER_KEY.eq(e.getSenderKey()))
+                                    .and(table.USER_KEY.eq(e.getUserKey()))
+                                    .and(table.INSERT_TIME.ge(e.getRoomStartTime()))
+                                    .and(table.INSERT_TIME.le(e.getRoomLastTime()))
+                                    .and(table.SEND_RECEIVE.eq("S").or(table.SEND_RECEIVE.eq("R")))
+                            )
                             .stream()
                             .sorted(Comparator.comparing(TalkMsgEntity::getInsertTime).reversed())
                             .limit(1)
@@ -450,8 +458,8 @@ public class MainApiController extends ApiBaseController {
 
         CommonTalkMsg table = talkMsgService.getRepository().getTABLE();
         final List<TalkMsgSummaryResponse> talkMsgResponseList = talkMsgService.getRepository().findAll(table.COMPANY_ID.eq(g.getUser().getCompanyId())
-                .and(table.ROOM_ID.eq(talkRoomEntity.getRoomId()))
-        )
+                        .and(table.ROOM_ID.eq(talkRoomEntity.getRoomId()))
+                )
                 .stream()
                 .map((e) -> {
                     final TalkMsgSummaryResponse data = convertDto(e, TalkMsgSummaryResponse.class);
@@ -524,5 +532,22 @@ public class MainApiController extends ApiBaseController {
         talkMsgService.getRepository().insert(commonTalkMsgRecord);
 
         return ResponseEntity.ok(create());
+    }
+
+
+    @PostMapping("file")
+    public ResponseEntity<JsonResult<String>> uploadFile(@Valid @RequestParam MultipartFile file) {
+        final String[] enabledFileType = {".jpg", "jpeg", ".png", ".gif", ".ppt", ".pptx", ".xlsx", ".pdf", ".hwp", ".hwpx", ".docx", ".mp3", ".wav", ".zip"};
+
+        if (!StringUtils.endsWithAny(Objects.requireNonNull(file.getOriginalFilename()).toLowerCase(), enabledFileType)) {
+            throw new IllegalArgumentException("사용할 수 없는 확장자 입니다.");
+        }
+
+        final Path newPath = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
+
+        final String saveFileName = new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()).concat("_") + UrlUtils.decode(cleanPath(Objects.requireNonNull(file.getOriginalFilename()))).replaceAll("[ ()]", "");
+        fileSystemStorageService.store(newPath, saveFileName, file);
+
+        return ResponseEntity.ok(data(saveFileName));
     }
 }

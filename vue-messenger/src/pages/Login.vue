@@ -42,11 +42,13 @@ export default {
       communicator: window.communicator,
       connected: window.communicator.connected,
       form: {
-        url: 'http://122.49.74.102:8200',
+        // url: 'http://122.49.74.102:8200',
+        url: 'https://cloudtalk.eicn.co.kr:8200',
         senderKey: '049d87baa539f95a3ad40bf96e1f4bf8ac1031cd',
         userKey: sessionUtils.getSessionId(),
         ip: '',
-        mode: 'local',
+        // mode: 'local',
+        mode: 'service',
       },
     }
   },

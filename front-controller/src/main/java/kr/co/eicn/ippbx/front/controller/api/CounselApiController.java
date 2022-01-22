@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.util.ResultFailException;
+import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.front.service.api.CounselApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkCurrentListResponse;
@@ -10,10 +10,10 @@ import kr.co.eicn.ippbx.model.dto.eicn.TalkCurrentMsgResponse;
 import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
 import kr.co.eicn.ippbx.model.form.TodoListUpdateFormRequest;
 import kr.co.eicn.ippbx.model.form.TodoReservationFormRequest;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +39,12 @@ public class CounselApiController extends BaseController {
     @PostMapping("consultation-reservation")
     public void reserveConsultation(@Valid @RequestBody TodoReservationFormRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
         apiInterface.reserveConsultation(form);
+    }
+
+    @SneakyThrows
+    @PostMapping("file")
+    public String uploadFile(@Valid @RequestBody FileForm form, BindingResult bindingResult) {
+        return apiInterface.uploadFile(form, g.getUser().getCompanyId());
     }
 
     @GetMapping("recent-consultation-reservation")
@@ -68,17 +74,5 @@ public class CounselApiController extends BaseController {
     @DeleteMapping("talk-remove-room/{roomId}")
     public void talkRemoveRoom(@PathVariable String roomId) throws IOException, ResultFailException {
         apiInterface.talkRemoveRoom(roomId);
-    }
-
-    @SneakyThrows
-    @PostMapping("{roomId}/upload-file")
-    public void uploadFile(@PathVariable String roomId, @Valid @RequestBody CounselApiInterface.FileUploadForm form, BindingResult bindingResult, @Value("${eicn.apiserver}") String apiServer, @Value("${eicn.talk.socket.id}") String talkSocketId) {
-        form.setMy_userid(g.getUser().getId());
-        form.setMy_username(g.getUser().getIdName());
-        form.setCompany_id(g.getUser().getCompanyId());
-        form.setBasic_url(g.getSocketList().get(talkSocketId));
-        form.setWeb_url(apiServer);
-        form.setRoom_id(roomId);
-        apiInterface.uploadFile(form);
     }
 }

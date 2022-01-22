@@ -1,4 +1,4 @@
-import {connect} from "socket.io-client";
+import {io} from "socket.io-client";
 
 function Communicator() {
     this.socket = null;
@@ -58,7 +58,7 @@ Communicator.prototype.connect = function (url, senderKey, userKey, ip, mode) {
 
     const _this = this;
     try {
-        this.socket = connect(url, {'secure': url.startsWith('https')}, {'reconnect': true, 'resource': 'socket.io'})
+        this.socket = io(url, {'secure': url.startsWith('https')}, {'reconnect': true, 'resource': 'socket.io'})
     } catch (error) {
         console.error(error);
         setTimeout(function () {

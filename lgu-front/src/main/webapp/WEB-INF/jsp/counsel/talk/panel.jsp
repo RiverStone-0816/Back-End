@@ -712,6 +712,8 @@
 
                     const _this = this
 
+                    console.log(message)
+
                     const setBlockInfo = response => {
                         message.displays = response.data.displayList?.sort((a, b) => (a.order - b.order))
                         message.buttonGroups = (() => {
@@ -734,6 +736,18 @@
                         }
                     }
 
+                    // TODO: 항상 모든 파일의 messageType이 file로 전달된다. => photo, audio로 분류해야 한다.
+                    if (message.messageType === 'file') {
+                        const isImage = (fileName) => {
+                            if (!fileName) return false
+                            return fileName.toLowerCase().endsWith('.jpg')
+                                || fileName.toLowerCase().endsWith('.jpeg')
+                                || fileName.toLowerCase().endsWith('.png')
+                                || fileName.toLowerCase().endsWith('.bmp')
+                        }
+                        if (isImage(message.contents)) message.messageType = 'photo'
+                    }
+
                     if (message.messageType === 'block_temp') {
                         const block = this.templateBlocks.filter(e => e.blockId === parseInt(message.contents))[0]
                         block && restSelf.get('/api/chatbot/blocks/' + block.blockId, null, null, true).done(setBlockInfo)
@@ -742,7 +756,7 @@
                         message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: message.contents})
                     } else if (['file', 'photo', 'audio'].includes(message.messageType)) {
                         message.originalFileUrl = message.contents
-                        message.fileUrl = $.addQueryString(message.contents, {token: '${g.escapeQuote(accessToken)}'})
+                        message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: message.contents})
                     } else if (this.REPLYING_INDICATOR === message.contents.charAt(0)) {
                         [message.contents.indexOf(this.REPLYING_TEXT), message.contents.indexOf(this.REPLYING_IMAGE), message.contents.indexOf(this.REPLYING_FILE), message.contents.indexOf(this.REPLYING_IMAGE_TEMP)].forEach((indicator, i) => {
                             if (indicator < 0) return
@@ -754,7 +768,7 @@
                             } else if (message.replyingType === 'image_temp') {
                                 message.replyingTarget = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: replyingTarget})
                             } else {
-                                message.replyingTarget = $.addQueryString(replyingTarget, {token: '${g.escapeQuote(accessToken)}'})
+                                message.replyingTarget = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: replyingTarget})
                             }
 
                             message.contents = message.contents.substr(indicator + 1)
@@ -828,6 +842,11 @@
                     this.replying = null
                     this.showingTemplateBlocks = false
                 },
+                uploadFile(file) {
+                    return uploadFile(file)
+                        .done(response => restSelf.post('/api/counsel/file', response.data)
+                            .done(response => talkCommunicator.sendFile(this.roomId, this.channelType, this.senderKey, this.userKey, response.data)))
+                },
                 sendFile: function (event) {
                     const file = event.target.files[0]
                     event.target.value = null
@@ -835,16 +854,7 @@
                     if (!file || !file.name)
                         return
 
-                    const _this = this
-                    uploadFile(file).done(function (response) {
-                        restSelf.post('/api/counsel/' + _this.roomId + '/upload-file', {
-                            filePath: response.data.filePath,
-                            originalName: response.data.originalName,
-                            channel_type: _this.channelType,
-                            sender_key: _this.senderKey,
-                            user_key: _this.userKey
-                        })
-                    })
+                    this.uploadFile(file)
                 },
                 dropFiles: function (event) {
                     this.showingDropzone = false
@@ -852,36 +862,18 @@
                     if (!event.dataTransfer)
                         return
 
-                    const _this = this
                     for (let i = 0; i < event.dataTransfer.files.length; i++) {
-                        uploadFile(event.dataTransfer.files[i]).done(function (response) {
-                            restSelf.post('/api/counsel/' + _this.roomId + '/upload-file', {
-                                filePath: response.data.filePath,
-                                originalName: response.data.originalName,
-                                channel_type: _this.channelType,
-                                sender_key: _this.senderKey,
-                                user_key: _this.userKey
-                            })
-                        })
+                        this.uploadFile(event.dataTransfer.files[i])
                     }
                 },
                 pasteFromClipboard: function (event) {
-                    const _this = this
                     let hasFile = false
 
                     for (let i = 0; i < event.clipboardData.items.length; i++) {
                         const item = event.clipboardData.items[i]
                         if (item.kind === 'file') {
                             hasFile = true
-                            uploadFile(item.getAsFile()).done(function (response) {
-                                restSelf.post('/api/counsel/' + _this.roomId + '/upload-file', {
-                                    filePath: response.data.filePath,
-                                    originalName: response.data.originalName,
-                                    channel_type: _this.channelType,
-                                    sender_key: _this.senderKey,
-                                    user_key: _this.userKey
-                                })
-                            })
+                            this.uploadFile(item.getAsFile())
                         }
                     }
 
