@@ -115,7 +115,7 @@
     let randNum = rand(1, 25);
     $('.profile-image').html("<img src='../resources/images/kd_" + randNum + ".png'>");
     $('.item[data-tab="talk-list-type-${search.mode}"] span').text(${talkList.size()});
-    ui.find(".-talk-list-wrap").overlayScrollbars({});
+    // ui.find(".-talk-list-wrap").overlayScrollbars({});
     ui.find('.-talk-list').click(function () {
         ui.find('.-talk-list').each(function () {
             $(this).find('.ui.segment').removeClass('active');

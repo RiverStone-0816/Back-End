@@ -16,25 +16,28 @@
 
 <div class="ui bottom attached tab segment remove-margin remove-padding border-top-none" data-tab="talk-panel">
     <div class="display-flex flex-flow-row full-height">
-        <div class="top-chat-list-wrap" id="talk-list-panel">
-            <div class="ui top attached tabular menu light flex">
-                <button class="item active" data-tab="talk-list-type-MY" onclick="$(this).removeClass('newImg_c')">상담중(<span></span>)</button>
-                <button class="item" data-tab="talk-list-type-TOT" onclick="$(this).removeClass('newImg_c')">비접수(<span></span>)</button>
-                <button class="item" data-tab="talk-list-type-OTH" onclick="$(this).removeClass('newImg_c')">타상담(<span></span>)</button>
-                <button class="item" data-tab="talk-list-type-END" onclick="$(this).removeClass('newImg_c')">종료(<span></span>)</button>
+        <div class="top-chat-list-wrap display-flex" id="talk-list-panel">
+            <div>
+                <div class="ui top attached tabular menu light flex">
+                    <button class="item active" data-tab="talk-list-type-MY" onclick="$(this).removeClass('newImg_c')">내대화목록(<span></span>)</button>
+                    <button class="item" data-tab="talk-list-type-TOT" onclick="$(this).removeClass('newImg_c')">신규대화목록(<span></span>)</button>
+                    <button class="item" data-tab="talk-list-type-OTH" onclick="$(this).removeClass('newImg_c')">타상담목록(<span></span>)</button>
+                    <button class="item" data-tab="talk-list-type-END" onclick="$(this).removeClass('newImg_c')">재분배대상(<span></span>)</button>
+                </div>
             </div>
-
-            <div class="ui bottom attached tab segment remove-margin remove-padding active" data-tab="talk-list-type-MY">
-                <div id="talk-list-container-MY"></div>
-            </div>
-            <div class="ui bottom attached tab segment remove-margin remove-padding" data-tab="talk-list-type-TOT">
-                <div id="talk-list-container-TOT"></div>
-            </div>
-            <div class="ui bottom attached tab segment remove-margin remove-padding" data-tab="talk-list-type-OTH">
-                <div id="talk-list-container-OTH"></div>
-            </div>
-            <div class="ui bottom attached tab segment remove-margin remove-padding" data-tab="talk-list-type-END">
-                <div id="talk-list-container-END"></div>
+            <div class="flex-100">
+                <div class="ui bottom attached tab segment remove-margin remove-padding active" data-tab="talk-list-type-MY">
+                    <div id="talk-list-container-MY" ></div>
+                </div>
+                <div class="ui bottom attached tab segment remove-margin remove-padding" data-tab="talk-list-type-TOT">
+                    <div id="talk-list-container-TOT"></div>
+                </div>
+                <div class="ui bottom attached tab segment remove-margin remove-padding" data-tab="talk-list-type-OTH">
+                    <div id="talk-list-container-OTH"></div>
+                </div>
+                <div class="ui bottom attached tab segment remove-margin remove-padding" data-tab="talk-list-type-END">
+                    <div id="talk-list-container-END"></div>
+                </div>
             </div>
         </div>
         <div class="btm-room-wrap">
@@ -49,9 +52,15 @@
                     </div>
                     <div class="chat-body -overlay-scroll" id="talk-chat-body"></div>
                     <div class="write-chat">
+                        <div class="wrap-inp">
+                            <div class="inp-box">
+                                <textarea id="talk-message" placeholder="전송하실 메시지를 입력하세요."></textarea>
+                            </div>
+                            <button type="button" class="send-btn" onclick="sendTalkMessage()">전송</button>
+                        </div>
                         <div class="write-menu">
-                            <button type="button" class="mini ui button compact" onclick="templateSelectPopup()">템플릿</button>
-                            <button type="button" class="mini ui button compact" onclick="uploadTalkFile()">파일전송</button>
+                            <button type="button" onclick="templateSelectPopup()"><img src="<c:url value="/resources/images/chat-template-import-icon.svg"/>"></button>
+                            <button type="button" onclick="uploadTalkFile()"><img src="<c:url value="/resources/images/chat-file-icon.svg"/>"></button>
                             <button type="button" class="mini ui button compact pull-right -assignUnassignedRoomToMe" style="display: none;"
                                     onclick="talkCommunicator.assignUnassignedRoomToMe($('#talk-chat-body').attr('data-id'), $('#talk-chat-body').attr('data-sender-key'), $('#talk-chat-body').attr('data-user-key')); $(this).hide()">
                                 찜하기
@@ -64,12 +73,6 @@
                                     onclick="deleteRoom($('#talk-chat-body').attr('data-id'))">
                                 대화방내리기
                             </button>
-                        </div>
-                        <div class="wrap-inp">
-                            <div class="inp-box">
-                                <textarea id="talk-message" placeholder="전송하실 메시지를 입력하세요."></textarea>
-                            </div>
-                            <button type="button" class="send-btn" onclick="sendTalkMessage()">전송</button>
                         </div>
                     </div>
                 </div>
