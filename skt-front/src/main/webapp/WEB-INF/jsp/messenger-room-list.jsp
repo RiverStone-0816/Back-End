@@ -20,7 +20,7 @@
     <div class="panel-body full-height remove-padding">
         <div class="pd10 panel-border-bottom">
             <div class="ui fluid icon input">
-                <input type="text" placeholder="검색어 입력" /><%--TODO--%>
+                <input type="text" placeholder="검색어 입력" v-model="filterString"/><%--TODO--%>
                 <i class="search link icon"></i>
             </div>
         </div>
@@ -28,26 +28,23 @@
             <div class="organization-chat-list-wrap">
                 <div class="chat-list-header">
                     <text>조직 대화방 목록</text>
-                    <%--TODO--%>
-                    <button type="button" class="ui basic right floated button" onclick="messenger.popupRoomCreationOrganizationModal(true, false)">추가</button>
+                    <button type="button" class="ui basic right floated button" onclick="roomCreationOrganizationModalApp.popupCreationModal()">추가</button>
                 </div>
                 <div class="chat-list-body">
                     <div class="chat-list-container">
                         <ul id="messenger-chat-container">
-                            <li v-for="(e, i) in roomList" :key="i" class="list" @click="loadRoom(e.roomId)">
-                                <div class="header">
-                                    <div class="room-name" @click.stop="popupRoomNameModal(e.roomId)">
-                                        <text>{{ e.roomName }}</text>
+                            <template v-for="(e, i) in roomList" :key="i">
+                                <li v-if="!e.hidden" class="item" @click="loadRoom(e.roomId)">
+                                    <div class="item-header">
+                                        <button class="chat-item-title" @click.stop="popupRoomNameModal(e.roomId)">{{ e.roomName }}</button>
+                                        <div class="chat-unread" v-if="e.unreadMessageTotalCount > 0">{{ e.unreadMessageTotalCount }}</div>
                                     </div>
-                                    <div class="last-message-time">{{ getRoomLastMessageTimeFormat(e.lastTime) }}</div>
-                                </div>
-                                <div class="content">
-                                    <div class="preview">{{ e.lastMsg }}</div>
-                                    <div class="unread">
-                                        <span v-if="e.unreadMessageTotalCount > 0" class="number">{{ e.unreadMessageTotalCount }}</span>
+                                    <div class="item-content">
+                                        <div class="last-chat">{{ e.lastMsg }}</div>
+                                        <div class="last-time">{{ getRoomLastMessageTimeFormat(e.lastTime) }}</div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
+                            </template>
                         </ul>
                     </div>
                 </div>
@@ -62,7 +59,8 @@
             data: function () {
                 return {
                     roomMap: {},
-                    roomList: []
+                    roomList: [],
+                    filterString: '',
                 }
             },
             methods: {
@@ -137,6 +135,13 @@
                 },
                 readMessages: function (roomId) {
                     this.roomMap[roomId] && (this.roomMap[roomId].unreadMessageTotalCount = 0)
+                },
+            },
+            watch: {
+                filterString() {
+                    this.roomList.forEach(e => {
+                        e.hidden = this.filterString && !e.roomName.includes(this.filterString) && !e.lastMsg?.includes(this.filterString)
+                    })
                 },
             },
             updated: function () {

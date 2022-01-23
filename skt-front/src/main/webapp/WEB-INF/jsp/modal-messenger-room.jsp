@@ -15,92 +15,151 @@
 <%--@elvariable id="usingServices" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
-<div class="ui modal tiny" id="modal-messenger-room" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true" @click.stop="showingTemplateLevel=0"
-     style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">
+<div class="ui modal tiny" id="modal-messenger-room">
     <i class="close icon" onclick="messenger.closeRoom()"></i>
-    <div v-if="showingDropzone" class="attach-overlay">
-        <div class="inner">
-            <img src="<c:url value="/resources/images/circle-plus.svg"/>">
-            <p class="attach-text">파일을 채팅창에 바로 업로드하려면<br>여기에 드롭하세요.</p>
-        </div>
-    </div>
+    <%--<div @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true" @click.stop="showingTemplateLevel=0" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">--%>
 
-    <div class="header">
-        <button class="room-title" @click.stop.prevent="popupRoomNameModal">{{ roomName }}</button>
-    </div>
-    <div class="content">
-        <div class="organi-chat-room-container">
-            <div class="organi-chat-room-header">
-                <div class="default-inner">
-                    <div class="search-wrap">
-                        <div class="ui icon input">
-                            <input type="text" v-model="searchingText">
-                            <i class="search link icon -search-icon" style="cursor: pointer;"></i>
+        <%--<div &lt;%&ndash;v-if="showingDropzone"&ndash;%&gt; class="attach-overlay">
+            <div class="inner">
+                <img src="<c:url value="/resources/images/circle-plus.svg"/>">
+                <p class="attach-text">파일을 채팅창에 바로 업로드하려면<br>여기에 드롭하세요.</p>
+            </div>
+        </div>--%>
+
+        <div class="header">
+            <button class="room-title" @click.stop.prevent="popupRoomNameModal">{{ roomName }}</button>
+        </div>
+        <div class="content">
+            <div class="organi-chat-room-container">
+                <div class="organi-chat-room-header">
+                    <div class="default-inner">
+                        <div class="search-wrap">
+                            <div class="ui icon input">
+                                <input type="text" v-model="searchingText">
+                                <i class="search link icon -search-icon" style="cursor: pointer;"></i>
+                            </div>
+                            <div class="search-count">
+                                <text class="-text-count">{{ searchingTexts.length && (searchingTextIndex + 1) || 0 }} / {{ searchingTexts.length || 0 }}</text>
+                            </div>
                         </div>
-                        <div class="search-count">
-                            <text class="-text-count">{{ searchingTexts.length && (searchingTextIndex + 1) || 0 }} / {{ searchingTexts.length || 0 }}</text>
+                        <div class="btn-wrap">
+                            <button type="button" @click.stop="moveToPreviousText"><img src="<c:url value="/resources/images/chat-search-up.svg"/>" alt="이전 검색단어"></button>
+                            <button type="button" @click.stop="moveToNextText"><img src="<c:url value="/resources/images/chat-search-down.svg"/>" alt="다음 검색단어"></button>
+                            <input style="display: none" type="file" @change="sendFile">
+                            <button type="button" onclick="this.previousElementSibling.click()"><img src="<c:url value="/resources/images/chat-file.svg"/>" alt="파일 전송"></button>
+                            <button type="button" onclick="roomCreationOrganizationModalApp.popupInvitationModal()"><img src="<c:url value="/resources/images/chat-user-add.svg"/>" alt="초대"></button>
+                            <button type="button" @click="leave"><img src="<c:url value="/resources/images/chat-exit.svg"/>" alt="나가기"></button>
                         </div>
                     </div>
-                    <div class="btn-wrap">
-                        <button type="button" @click.stop="moveToPreviousText"><img src="<c:url value="/resources/images/chat-search-up.svg"/>" alt="이전 검색단어"></button>
-                        <button type="button" @click.stop="moveToNextText"><img src="<c:url value="/resources/images/chat-search-down.svg"/>" alt="다음 검색단어"></button>
-                        <input style="display: none" type="file" @change="sendFile">
-                        <button type="button" onclick="this.previousElementSibling.click()"><img src="<c:url value="/resources/images/chat-file.svg"/>" alt="파일 전송"></button>
-                        <button type="button" onclick="messenger.popupRoomCreationOrganizationModal(false)"><img src="<c:url value="/resources/images/chat-user-add.svg"/>" alt="초대"></button>
-                        <button type="button" @click="leave"><img src="<c:url value="/resources/images/chat-exit.svg"/>" alt="나가기"></button>
+                    <div class="modify-inner">
+                        <div class="input-wrap">
+                            <div class="ui fluid input">
+                                <input type="text" class="-chatroom-name-input">
+                            </div>
+                        </div>
+                        <div class="btn-wrap">
+                            <button type="button" class="ui button -cancel-chatroom-name">취소</button>
+                            <button type="button" class="ui brand button -change-chatroom-name">변경</button>
+                        </div>
                     </div>
                 </div>
-                <div class="modify-inner">
-                    <div class="input-wrap">
-                        <div class="ui fluid input">
-                            <input type="text" class="-chatroom-name-input">
+                <div class="organi-chat-room-content">
+                    <div class="chat-body" ref="chatBody" @scroll="loadAdditionalMessagesIfTop" style="overflow-y: scroll; scroll-behavior: smooth;">
+                        <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + e.messageId">
+                            <p v-if="['SE', 'RE'].includes(e.sendReceive)" class="info-msg">[{{ getTimeFormat(e.time) }}]</p>
+                            <p v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
+                            <div v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info'" class="chat-item"
+                                 :class="(['AF', 'S'].includes(e.sendReceive) && e.userId === userId && 'chat-me') + ' ' + (activatedSearchingTextMessageId === e.messageId && 'active')">
+                                <div class="wrap-content">
+                                    <div class="txt-segment">
+
+                                        <div class="txt-time">[{{ e.username }}] {{ getTimeFormat(e.time) }}</div>
+                                        <div class="chat">
+                                            <div v-if="e.userId === userId" class="chat-layer" style="visibility: hidden;">
+                                                <div class="buttons">
+                                                    <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="top center"></button>
+                                                    <button @click="popupTemplateModal(e)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
+                                                    <button @click="popupTaskScriptModal(e)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="top center"></button>
+                                                    <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
+                                                </div>
+                                            </div>
+                                            <div class="bubble">
+                                                <div class="count">{{ e.unreadCount || '' }}</div>
+                                                <div class="txt-chat">
+                                                    <img v-if="e.messageType === 'file' && e.fileType === 'image'" :src="e.fileUrl" class="cursor-pointer" @click="popupImageView(e.fileUrl)">
+                                                    <audio v-else-if="e.messageType === 'file' && e.fileType === 'audio'" controls :src="e.fileUrl" style="height: 35px;"></audio>
+                                                    <a v-else-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl">
+                                                        <i class="paperclip icon"></i> {{ e.fileName }}
+                                                        <p style="opacity: 50%; font-size: smaller; padding: 0 0.5em 1em;"> 용량: {{ e.fileSize }}</p>
+                                                    </a>
+                                                    <template v-else>
+                                                        <div v-if="e.replyingType" class="reply-content-container">
+                                                            <div v-if="e.replyingType === 'image'" class="reply-content photo">
+                                                                <img :src="e.replyingTarget">
+                                                            </div>
+                                                            <div class="reply-content">
+                                                                <div class="target-msg">
+                                                                    <template v-if="e.replyingType === 'text'">{{ e.replyingTarget }}</template>
+                                                                    <a v-else :href="e.replyingTarget" target="_blank">{{ e.replyingType === 'image' ? '사진' : '파일' }}</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <p>{{ e.contents }}</p>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                            <div v-if="e.userId !== userId" class="chat-layer" style="visibility: hidden;">
+                                                <div class="buttons">
+                                                    <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="top center"></button>
+                                                    <button @click="popupTemplateModal(e)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
+                                                    <button @click="popupTaskScriptModal(e)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="top center"></button>
+                                                    <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a v-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl"><i class="file icon"></i>저장하기</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="btn-wrap">
-                        <button type="button" class="ui button -cancel-chatroom-name">취소</button>
-                        <button type="button" class="ui brand button -change-chatroom-name">변경</button>
+
+                    <div v-if="showingTemplateLevel" class="template-container">
+                        <div class="template-container-inner">
+                            <ul class="template-ul">
+                                <li v-for="(e, i) in getTemplates()" :key="i" :class="i === activatingTemplateIndex && 'active'" @click.stop="sendTemplate(e)" class="template-list">
+                                    <div class="template-title">/{{ e.name }}</div>
+                                    <img v-if="e.isImage" :src="e.url" class="template-image" :alt="e.fileName"/>
+                                    <div v-if="e.isImage" class="template-content" style="text-decoration: underline">{{ e.fileName }}</div>
+                                    <div v-else class="template-content">{{ e.text }}</div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div v-if="replying !== null" class="view-to-reply">
+                        <div v-if="replying.messageType === 'file' && replying.fileType === 'image'" class="target-image">
+                            <img :src="replying.fileUrl" class="target-image-content">
+                        </div>
+                        <div class="target-text">
+                            <p class="target-user">{{ replying.username }}에게 답장</p>
+                            <p class="target-content">{{ replying.messageType === 'file' ? replying.fileName : replying.contents }}</p>
+                        </div>
+                        <div class="target-close" @click="replying=null">
+                            <img src="<c:url value="/resources/images/icon-close.svg"/>">
+                        </div>
+                    </div>
+
+                    <div class="write-chat">
+                        <textarea ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup"></textarea>
+                        <button type="button" class="send-btn" @click="sendMessage()">전송</button>
                     </div>
                 </div>
             </div>
-            <div class="organi-chat-room-content">
-                <div class="chat-body"></div>
-
-                <div v-if="showingTemplateLevel" class="template-container">
-                    <div class="template-container-inner">
-                        <ul class="template-ul">
-                            <li v-for="(e, i) in getTemplates()" :key="i" :class="i === activatingTemplateIndex && 'active'" @click.stop="sendTemplate(e)" class="template-list">
-                                <div class="template-title">/{{ e.name }}</div>
-                                <img v-if="e.isImage" :src="e.url" class="template-image" :alt="e.fileName"/>
-                                <div v-if="e.isImage" class="template-content" style="text-decoration: underline">{{ e.fileName }}</div>
-                                <div v-else class="template-content">{{ e.text }}</div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div v-if="replying !== null" class="view-to-reply">
-                    <div v-if="replying.messageType === 'file' && replying.fileType === 'image'" class="target-image">
-                        <img :src="replying.fileUrl" class="target-image-content">
-                    </div>
-                    <div class="target-text">
-                        <p class="target-user">{{ replying.username }}에게 답장</p>
-                        <p class="target-content">{{ replying.messageType === 'file' ? replying.fileName : replying.contents }}</p>
-                    </div>
-                    <div class="target-close" @click="replying=null">
-                        <img src="<c:url value="/resources/images/icon-close.svg"/>">
-                    </div>
-                </div>
-
-                <div class="write-chat">
-                    <textarea  ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup"></textarea>
-                    <button type="button" class="send-btn" @click="sendMessage()">전송</button>
-                </div>
-            </div>
         </div>
-    </div>
 </div>
 <tags:scripts>
     <script>
-        const messengerModal = document.getElementById('messenger-modal')
+        const messengerModal = document.getElementById('modal-messenger-room')
         const messenger = Vue.createApp({
             setup: function () {
                 return {
@@ -190,9 +249,7 @@
                         _this.searchingTextIndex = 0
                         _this.activatedSearchingTextMessageId = null
 
-                        $(messengerModal)
-                            .show()
-                            .draggable({containment: '#main'})
+                        $(messengerModal).show()
                     })
                 },
                 loadAdditionalMessages: function (option) {
@@ -236,20 +293,16 @@
                     })
                 },
                 openRoom: function (selectedId) {
-                    const userIds = [userId]
+                    const userIds = []
 
-                    if (selectedId) {
-                        userIds.push(selectedId)
+                    if (selectedId instanceof Array) {
+                        selectedId.forEach(e => !userIds.includes(e) && userIds.push(e))
                     } else {
-                        $('.-messenger-user.active').each(function () {
-                            const id = $(this).attr('data-id')
-                            if (!userIds.includes(id))
-                                userIds.push(id)
-                        })
+                        selectedId && !userIds.includes(selectedId) && userIds.push(selectedId)
                     }
 
-                    if (userIds.length === 1)
-                        return
+                    !userIds.includes(userId) && userIds.push(userId)
+                    if (userIds.length === 1) return
 
                     const _this = this
                     restSelf.post('/api/chatt/', {memberList: userIds}).done(function (response) {
@@ -602,31 +655,13 @@
                         })
                     })
                 },
-                invite: function () {
-                    const members = keys(this.members)
-                    members.push(this.userId)
-                    const list = this.$refs.invitingPanel.querySelectorAll('.-inviting-person.active')
-
-                    const userIds = [], userNames = [], userNameMap = {}
-                    for (let i = 0; i < list.length; i++) {
-                        const id = list[i].getAttribute('data-id')
-                        const name = list[i].getAttribute('data-name')
-                        if (!members.includes(id)) {
-                            userIds.push(id)
-                            userNames.push(name)
-                            userNameMap[id] = name
-                        }
-                    }
-
-                    if (!userIds.length)
-                        return
+                invite: function (userIds, userNames) {
+                    if (!userIds.length) return
 
                     const _this = this
                     messengerCommunicator.invite(this.roomId, userIds, userNames);
-                    restSelf.put('/api/chatt/' + this.roomId + '/chatt-member', {memberList: userIds}).done(function () {
-                        userIds.forEach(function (userId) {
-                            _this.members[userId] = {userid: userId, userName: userNameMap[userId]}
-                        })
+                    restSelf.put('/api/chatt/' + this.roomId + '/chatt-member', {memberList: userIds}).done(() => {
+                        for (let i = 0; i < userIds.length; i++) _this.members[userIds[i]] = {userid: userIds[i], userName: userNames[i]}
                     })
                 },
                 popupTemplateModal: function (message) {
@@ -638,7 +673,7 @@
                         modal.querySelector('[type=file]').value = null
 
                         const selectedTextContents = getSelectedTextContentOfSingleElement()
-                        if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === _this.$refs['message-' + message.messageId].querySelector('.txt_chat p')) {
+                        if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === _this.$refs['message-' + message.messageId].querySelector('.txt-chat p')) {
                             modal.querySelector('[name=ment]').value = selectedTextContents.text
                         } else if (message.fileType === 'image') {
                             modal.querySelector('[name=originalFileName]').value = message.fileName
@@ -662,7 +697,7 @@
                 popupTaskScriptModal: function (message) {
                     let contents = message.contents
                     const selectedTextContents = getSelectedTextContentOfSingleElement()
-                    if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === this.$refs['message-' + message.messageId].querySelector('.txt_chat p'))
+                    if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === this.$refs['message-' + message.messageId].querySelector('.txt-chat p'))
                         contents = selectedTextContents.text
 
                     popupDraggableModalFromReceivedHtml('/admin/service/help/task-script/modal-search?title=' + encodeURIComponent(contents), 'modal-search-task-script')
@@ -674,17 +709,6 @@
             mounted: function () {
                 this.$nextTick(function () {
                     $(messengerModal)
-                        .resizable({
-                            helper: 'ui-resizable-helper',
-                            minWidth: 500,
-                            minHeight: 500,
-                            start: function () {
-                                $('iframe').css('pointer-events', 'none')
-                            },
-                            stop: function () {
-                                $('iframe').css('pointer-events', 'auto')
-                            }
-                        })
                         .dragModalShow()
                         .hide()
                 })
@@ -716,6 +740,14 @@
         }
 
         const messengerCommunicator = new MessengerCommunicator()
+            .on('svc_login', data => {
+                teamList && !teamList.teams.forEach(team => team.person.forEach(person => person.id === data.userid && (person.isLoginChatt = 'L'))) && teamList.$forceUpdate()
+                roomCreationOrganizationModalApp && !roomCreationOrganizationModalApp.teams.forEach(team => team.person.forEach(person => person.id === data.userid && (person.isLoginChatt = 'L'))) && roomCreationOrganizationModalApp.$forceUpdate()
+            })
+            .on('svc_logout', data => {
+                teamList && !teamList.teams.forEach(team => team.person.forEach(person => person.id === data.userid && (person.isLoginChatt = ''))) && teamList.$forceUpdate()
+                roomCreationOrganizationModalApp && !roomCreationOrganizationModalApp.teams.forEach(team => team.person.forEach(person => person.id === data.userid && (person.isLoginChatt = ''))) && roomCreationOrganizationModalApp.$forceUpdate()
+            })
             .on('svc_msg', receiveMessage)
             .on('svc_join_msg', function (data) {
                 receiveMessage(data);
