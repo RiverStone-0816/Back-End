@@ -1723,8 +1723,12 @@ pre {
   .header:hover button {display: inline-block;}
 }
 
+#talk-list-container-MY, #talk-list-container-TOT, #talk-list-container-OTH, #talk-list-container-END {
+  height: 100%;
+}
+
 .top-chat-list-wrap {
-  width: 40%;
+  width: 50%;
   margin: 10px;
   .sort-wrap {
     padding: 5px;
@@ -1735,11 +1739,23 @@ pre {
       }
     }
   }
+  .talk-list-container {
+    height: 100%;
+  }
   .ui.attached.tabular.menu.flex {
-    min-height: 30px;
+    flex-flow: column;
+    margin: 0 -1px 0 0;
     .item {
+      display:block;
       font-size: @font-size-xxsmall;
-      padding: 0;
+      word-break: normal;
+      width: 30px;
+      white-space: normal;
+      padding: 10px 4px;
+      line-height: 16px;
+      span {
+        display: contents;
+      }
     }
   }
   .tab.segment {
@@ -1748,11 +1764,12 @@ pre {
   .talk-list-container {
   }
   .ui.bottom.attached.tab.segment {
-    height: ~"calc(100% - 30px);"
+    height: 100%;
+    border: 1px solid #e0e0e0!important;
   }
 }
 .btm-room-wrap {
-  width: 60%;
+  width: 50%;
   margin: -1px;
 }
 
@@ -2958,6 +2975,9 @@ label.control-label {
 }
 .mt15 {
   margin-top: 15px !important;
+}
+.mt10 {
+  margin-top: 10px !important;
 }
 .ml10 {
   margin-left: 10px !important;
@@ -4486,7 +4506,7 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
     }
     .chat-body {
       font-size: 10pt;
-      height: ~"calc(100% - 143px)";
+      height: ~"calc(100% - 189px)";
       .chat-item {
         overflow: hidden;
         position: relative;
@@ -4594,16 +4614,28 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
   .write-chat {
     position: relative;
     width: 100%;
-    height: 102px;
+    height: 148px;
     background-color: #fff;
     .write-menu {
-      padding: 5px 5px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-      background-color: rgba(0, 0, 0, 0.02);
+      padding: 8px;
+      border: 0;
+      background: @color-white;
+      button {
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        background: @color-white;
+        border-radius: 3px;
+        border: 0;
+        outline: 0;
+        &:hover {
+          background: #F3F3F3;
+        }
+      }
     }
     .wrap-inp {
       position: relative;
-      height: 66px;
+      height: 102px;
       padding: 11px 80px 11px 13px;
       border: 0 none;
       .inp-box {
@@ -4623,13 +4655,17 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
         }
       }
       .send-btn {
+        background-image: url('../../resources/images/send-btn-icon.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        text-indent: -99999px;
         cursor: pointer;
         position: absolute;
         top: 12px;
         right: 10px;
-        width: 60px;
-        height: 43px;
-        border: 1px solid rgba(0, 0, 0, 0.06);
+        width: 50px;
+        height: 50px;
+        border: 0;
         border-radius: 2px;
         background-color: #ffe118;
         color: rgba(0, 0, 0, 0.9);
@@ -5655,7 +5691,8 @@ g {
       justify-content: space-between;
       .inner {
         width: 100%;
-        white-space: nowrap;
+        white-space: normal;
+        height: 12px;
         overflow: hidden;
         text-overflow: ellipsis;
         font-size: @font-size-xxsmall;
@@ -6462,6 +6499,7 @@ g {
 .ui.preview.modal {
   border-radius: 5px;
   width: 422px;
+  overflow: hidden!important;
   .header {
     border-bottom:0;
     background: #FF7902;
@@ -6521,6 +6559,7 @@ g {
               margin: 0 7px 0 0;
               height: 30px;
               padding: 0;
+              border-radius: 5px;
             }
             .unit {
               margin: 0 6px 0 2px;
@@ -6549,6 +6588,7 @@ g {
                 width: 100%;
                 font-weight: 900;
                 margin: 0 0 .8em 0;
+                font-size:@font-size-chatbot-basic;
               }
               .ui.input {
                 width: 100%;
@@ -6665,6 +6705,16 @@ g {
     }
   }
 }
+
+.rows .ui.grid .row.fallback-action {
+  display:none;
+}
+
+.rows .ui.grid .row.fallback-action.active {
+  .flex();
+}
+
+
 
 .ui.chatbot.externaldb.modal {
   width: 660px;
