@@ -44,13 +44,140 @@
             <div class="chat-container">
                 <div class="room">
                     <div class="chat-header" id="talk-chat-header"></div>
-                    <div class="chat-end-btn-wrap">
-                        <button type="button" class="mini ui button compact pull-right -downRoom" style="display: none;"
-                                onclick="talkCommunicator.deleteRoom($('#talk-chat-body').attr('data-id'), $('#talk-chat-body').attr('data-sender-key'), $('#talk-chat-body').attr('data-user-key'))">
-                            대화종료
+                    <div class="chat-search-btn-wrap">
+                        <button type="button" class="chat-search-btn">
+                            <img src="<c:url value="/resources/images/chat-search-icon.svg"/>">
                         </button>
                     </div>
-                    <div class="chat-body -overlay-scroll" id="talk-chat-body"></div>
+                    <div class="chat-search-wrap">
+                        <div class="chat-search-control">
+                            <div class="control-inner">
+                                <input type="text">
+                                <div class="keyword-count">99/99</div>
+                                <button type="button"><img src="<c:url value="/resources/images/chat-arrow-up-icon.svg"/>"></button>
+                                <button type="button"><img src="<c:url value="/resources/images/chat-arrow-down-icon.svg"/>"></button>
+                            </div>
+                        </div>
+                        <button type="button" class="chat-search-close-btn">
+                            <img src="<c:url value="/resources/images/chat-find-close-icon.svg"/>">
+                        </button>
+                    </div>
+                    <div class="chat-body -overlay-scroll" id="talk-chat-body">
+                        <div class="chat-item">
+                            <div class="wrap-content">
+                                <div class="profile-image">
+                                    <img src="/resources/images/kd_2.png">
+                                </div>
+                                <div class="txt-segment">
+                                    <div class="txt-time">
+                                        [미등록고객] 2022-01-24 13:03:35
+                                    </div>
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <div class="chat-more-nav">
+                                                <button type="button">
+                                                    <img src="<c:url value="/resources/images/chat-more-template-icon.svg"/>">템플릿
+                                                </button>
+                                                <button type="button">
+                                                    <img src="<c:url value="/resources/images/chat-more-knowledge-icon.svg"/>">지식관리
+                                                </button>
+                                                <button type="button">
+                                                    <img src="<c:url value="/resources/images/chat-more-dual-icon.svg"/>">듀얼창
+                                                </button>
+                                            </div>
+                                            <pre class="txt-chat">ㄴㅇㄹㄴㅇ</pre>
+                                            <button type="button" class="chat-reply-icon"><img src="<c:url value="/resources/images/chat-reply-icon.svg"/>"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chat-item chat-me">
+                            <div class="wrap-content">
+                                <div class="profile-image">
+                                    <img src="/resources/images/kd_2.png">
+                                </div>
+                                <div class="txt-segment">
+                                    <div class="txt-time">
+                                        [유도윤] 2022-01-20 13:02:06
+                                    </div>
+                                    <div class="chat">
+                                        <div class="bubble">
+
+                                            <%-- 일반메시지 답장 --%>
+                                            <div class="reply-content-container">
+                                                <div class="reply-content">
+                                                    <div class="target-user">[홍길동]에게 답장</div>
+                                                    <div class="target-msg">테스트 메시지 메시지</div>
+                                                </div>
+                                            </div>
+                                            <pre class="txt-chat">반갑습니다 고객님 무엇을 도와드릴까요?</pre>
+
+                                            <%-- 파일 답장 --%>
+                                           <%-- <div class="reply-content-container">
+                                                <div class="reply-content">
+                                                    <div class="target-user">[홍길동]에게 답장</div>
+                                                    <div class="target-msg">abc.hwp</div>
+                                                </div>
+                                            </div>
+                                            <pre class="txt-chat">반갑습니다 고객님 무엇을 도와드릴까요?</pre>--%>
+
+                                            <%-- 사진 답장 --%>
+                                            <%--<div class="reply-content-container">
+                                                <div class="reply-content photo">
+                                                    <img src="https://t1.daumcdn.net/cfile/tistory/9933673A5E604C052F">
+                                                </div>
+                                                <div class="reply-content">
+                                                    <div class="target-user">[홍길동]에게 답장</div>
+                                                    <div class="target-msg">사진</div>
+                                                </div>
+                                            </div>
+                                            <pre class="txt-chat">반갑습니다 고객님 무엇을 도와드릴까요?</pre>--%>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <%--일반 메시지 답장--%>
+                        <div class="view-to-reply">
+                            <div class="target-text">
+                                <p class="target-user">[홍길동]에게 답장</p>
+                                <p class="target-content">메시지메시지메시지메시지메시지메시지메시지메시지</p>
+                            </div>
+                            <div class="target-close">
+                                <img src="<c:url value="/resources/images/chat-reply-close-icon.svg"/>">
+                            </div>
+                        </div>
+
+                        <%--파일 답장--%>
+                        <%--<div class="view-to-reply">
+                            <div class="target-text">
+                                <p class="target-user">[홍길동]에게 답장</p>
+                                <p class="target-content">abc.hwp</p>
+                            </div>
+                            <div class="target-close">
+                                <img src="<c:url value="/resources/images/chat-reply-close-icon.svg"/>">
+                            </div>
+                        </div>--%>
+
+                        <%--사진 답장--%>
+                        <%--<div class="view-to-reply">
+                            <div class="target-image">
+                                <img src="https://t1.daumcdn.net/cfile/tistory/9933673A5E604C052F" class="target-image-content">
+                            </div>
+                            <div class="target-text">
+                                <p class="target-user">[홍길동]에게 답장</p>
+                                <p class="target-content">사진</p>
+                            </div>
+                            <div class="target-close">
+                                <img src="<c:url value="/resources/images/chat-reply-close-icon.svg"/>">
+                            </div>
+                        </div>--%>
+                    </div>
                     <div class="write-chat">
                         <div class="wrap-inp">
                             <div class="inp-box">
@@ -59,20 +186,28 @@
                             <button type="button" class="send-btn" onclick="sendTalkMessage()">전송</button>
                         </div>
                         <div class="write-menu">
-                            <button type="button" onclick="templateSelectPopup()"><img src="<c:url value="/resources/images/chat-template-import-icon.svg"/>"></button>
-                            <button type="button" onclick="uploadTalkFile()"><img src="<c:url value="/resources/images/chat-file-icon.svg"/>"></button>
-                            <button type="button" class="mini ui button compact pull-right -assignUnassignedRoomToMe" style="display: none;"
-                                    onclick="talkCommunicator.assignUnassignedRoomToMe($('#talk-chat-body').attr('data-id'), $('#talk-chat-body').attr('data-sender-key'), $('#talk-chat-body').attr('data-user-key')); $(this).hide()">
-                                찜하기
-                            </button>
-                            <button type="button" class="mini ui button compact pull-right -assignAssignedRoomToMe" style="display: none;"
-                                    onclick="talkCommunicator.assignAssignedRoomToMe($('#talk-chat-body').attr('data-id'), $('#talk-chat-body').attr('data-sender-key'), $('#talk-chat-body').attr('data-user-key')); $(this).hide()">
-                                가져오기
-                            </button>
-                            <button type="button" class="mini ui button compact pull-right -deleteRoom" style="display: none;"
-                                    onclick="deleteRoom($('#talk-chat-body').attr('data-id'))">
-                                대화방내리기
-                            </button>
+                            <div>
+                                <button type="button" onclick="templateSelectPopup()" data-inverted="" data-tooltip="템플릿" data-position="top center"><img src="<c:url value="/resources/images/chat-template-import-icon.svg"/>"></button>
+                                <button type="button" onclick="uploadTalkFile()" data-inverted="" data-tooltip="파일첨부" data-position="top center"><img src="<c:url value="/resources/images/chat-file-icon.svg"/>"></button>
+                                <button type="button" data-inverted="" data-tooltip="찜하기" data-position="top center" class="-assignUnassignedRoomToMe" style="display: none;"
+                                        onclick="talkCommunicator.assignUnassignedRoomToMe($('#talk-chat-body').attr('data-id'), $('#talk-chat-body').attr('data-sender-key'), $('#talk-chat-body').attr('data-user-key')); $(this).hide()">
+                                    <img src="<c:url value="/resources/images/chat-reservation-icon.svg"/>">
+                                </button>
+                                <button type="button" data-inverted="" data-tooltip="가져오기" data-position="top center" class="-assignAssignedRoomToMe" style="display: none;"
+                                        onclick="talkCommunicator.assignAssignedRoomToMe($('#talk-chat-body').attr('data-id'), $('#talk-chat-body').attr('data-sender-key'), $('#talk-chat-body').attr('data-user-key')); $(this).hide()">
+                                    <img src="<c:url value="/resources/images/chat-import-icon.svg"/>">
+                                </button>
+                                <button type="button" data-inverted="" data-tooltip="대화방 내리기" data-position="top center" class="-deleteRoom" style="display: none;"
+                                        onclick="deleteRoom($('#talk-chat-body').attr('data-id'))">
+                                    <img src="<c:url value="/resources/images/chat-down-icon.svg"/>">
+                                </button>
+                            </div>
+                            <div>
+                                <button type="button"  data-inverted="" data-tooltip="대화종료" data-position="top right" class="-downRoom" style="display: none;"
+                                        onclick="talkCommunicator.deleteRoom($('#talk-chat-body').attr('data-id'), $('#talk-chat-body').attr('data-sender-key'), $('#talk-chat-body').attr('data-user-key'))">
+                                    <img src="<c:url value="/resources/images/chat-exit-icon.svg"/>">
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -85,6 +220,15 @@
 
 <tags:scripts>
     <script>
+
+        $('.chat-item:not(.chat-me) .txt-segment .chat').mouseenter(function(){
+            $('.chat-reply-icon').show();
+        });
+
+        $('.chat-item:not(.chat-me) .txt-segment .chat').mouseleave(function(){
+            $('.chat-reply-icon').hide();
+        });
+
         function deleteRoom(roomId) {
             restSelf.delete('/api/counsel/talk-remove-room/' + encodeURIComponent(roomId), null, function () {
             }, true).done(function () {
@@ -272,5 +416,12 @@
                 return sendTalkMessage();
             }
         });
+
+        $('.chat-search-btn').click(function(){
+            $('.chat-search-wrap').toggleClass('active');
+        });
+
+
+
     </script>
 </tags:scripts>
