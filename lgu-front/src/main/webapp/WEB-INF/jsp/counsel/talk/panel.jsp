@@ -260,9 +260,11 @@
                             }
                         }
 
-                        this.roomMap[roomId].content = content
-                        this.roomMap[roomId].roomLastTime = messageTime
-                        this.roomMap[roomId].type = messageType
+                        if (messageTime) {
+                            this.roomMap[roomId].content = content
+                            this.roomMap[roomId].roomLastTime = messageTime
+                            this.roomMap[roomId].type = messageType
+                        }
                         this.roomMap[roomId].status = status
                         this.roomMap[roomId].container = this.statuses[status]
                         this.statuses[status].rooms.push(this.roomMap[roomId])
@@ -287,9 +289,16 @@
                     },
                     reallocate() {
                         $(this.$el.parentElement).asJsonData().done(data => {
-                            console.log(data.reallocating, data.persons)
-                            // TODO: 소켓 프로토콜 준비 되어야 함
-                            alert('소켓 프로토콜 준비 되어야 함')
+                            if (!data?.reallocating?.length || !data?.persons?.[0]?.length)
+                                return $(this.$refs.reallocationModal).modalHide()
+
+                            talkCommunicator.redistribution(
+                                data.reallocating.map(e => ({channel_type: this.roomMap[e].channelType, room_id: e, user_key: this.roomMap[e].userKey,})),
+                                data.persons[0].map(e => ({userid: e})),
+                                // data.persons[0],
+                            )
+
+                            $(this.$refs.reallocationModal).modalHide()
                         })
                     },
                     showReallocationModal() {
@@ -1091,6 +1100,9 @@
         }
 
         function processTalkMessage(data) {
+            if (!data.send_receive)
+                return talkListContainer.updateRoomStatus(data.room_id, data.userid === userId ? 'MY' : 'OTH')
+
             const messageTime = moment().format('YYYY-MM-DD') + ' ' + data.cur_timestr.substring(data.cur_timestr.length - 8, data.cur_timestr.length)
 
             if (['SZ', 'SG'].includes(data.send_receive)) {
@@ -1115,6 +1127,7 @@
         window.talkCommunicator = new TalkCommunicator()
             .on('svc_msg', processTalkMessage)
             .on('svc_control', processTalkMessage)
+            .on('svc_redist', processTalkMessage)
             .on('svc_end', processTalkMessage)
             .on('svc_login', data => $('#distributee').prop("checked", data.dist_yn === 'Y'))
             .on('svc_dist_yn', data => $('#distributee').prop("checked", data.dist_yn === 'Y'))
