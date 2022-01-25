@@ -4,6 +4,8 @@ import io.vavr.control.Option;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.api.ChatbotApiInterface;
+import kr.co.eicn.ippbx.model.search.ChatbotSearchRequest;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -12,10 +14,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 
@@ -50,8 +50,17 @@ public class ChatBotController extends BaseController {
 
     @SneakyThrows
     @GetMapping("")
-    public String page(Model model) {
+    public String page(Model model, @ModelAttribute("search") ChatbotSearchRequest search) throws IOException, ResultFailException {
+        // TODO: search
+        model.addAttribute("list", apiInterface.list());
+
         return "admin/talk/chat-bot/ground";
+    }
+
+    @SneakyThrows
+    @GetMapping("editor")
+    public String editor(Model model) {
+        return "admin/talk/chat-bot/editor";
     }
 
     @SneakyThrows
