@@ -30,20 +30,6 @@
         <div class="preview-header">
             <img src="<c:url value="/resources/images/chatbot-icon-orange.svg"/>" class="chatbot-icon"><span class="customer-title">Chat Bot</span>
         </div>
-        <%--<div class="content">
-            <div class="sample-bubble">
-                <img src="<c:url value="/resources/images/eicn-sample.png"/>" class="customer-img">
-                <p>이아이씨엔 채팅상담을 이용해 주셔서 감사합니다. 문의사항을 입력해주시면 상담원이 답변드리겠습니다. 감사합니다.</p>
-            </div>
-            <div class="sample-bubble">
-                <p>다른 채널을 통한 상담을 원하시면 원하시는 서비스의 아이콘을 눌러주세요.</p>
-                <div class="preview-channel-icon-container">
-                    <a href="#"><img src="<c:url value="/resources/images/kakao-icon.png"/>" class="preview-channel-icon"></a>
-                    <a href="#"><img src="<c:url value="/resources/images/ntalk-icon.png"/>" class="preview-channel-icon"></a>
-                    <a href="#"><img src="<c:url value="/resources/images/nband-icon.png"/>" class="preview-channel-icon"></a>
-                </div>
-            </div>
-        </div>--%>
 
         <div class="preview-content" ref="chatBody">
             <div v-for="(message, iMessage) in messages" :key="iMessage" :class="message.sender === 'SERVER' ? ' editor ' : ' send-message '"

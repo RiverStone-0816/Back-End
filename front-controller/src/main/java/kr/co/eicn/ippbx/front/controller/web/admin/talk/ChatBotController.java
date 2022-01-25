@@ -50,9 +50,11 @@ public class ChatBotController extends BaseController {
 
     @SneakyThrows
     @GetMapping("")
-    public String page(Model model, @ModelAttribute("search") ChatbotSearchRequest search) throws IOException, ResultFailException {
+    public String page(Model model, @ModelAttribute("search") ChatbotSearchRequest search, @RequestParam(required = false) String ip, HttpSession session, HttpServletRequest request) throws IOException, ResultFailException {
         // TODO: search
         model.addAttribute("list", apiInterface.list());
+        model.addAttribute("sessionId", session.getId());
+        model.addAttribute("ip", Option.of(ip).getOrElse(Option.of(request.getHeader("X-FORWARDED-FOR")).getOrElse(request.getRemoteAddr())));
 
         return "admin/talk/chat-bot/ground";
     }
