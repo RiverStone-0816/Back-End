@@ -829,6 +829,39 @@ pre {
   background: transparent;
   color: @color-white;
 }
+#talk-dual-popup {
+  width: 430px;
+  .header {
+   background:#555555;
+    .dual-chat-search-btn-wrap {
+      top: 11px;
+      position: absolute;
+      right: 35px;
+      button {
+        outline: 0;
+        border: 0;
+        cursor: pointer;
+        background: transparent;
+      }
+    }
+  }
+  .content {
+    padding: 0;
+    min-height: 350px;
+    height: 675px;
+    overflow: hidden;
+    .chat-container {
+      .room {
+        .chat-search-wrap {
+          top: 0;
+        }
+        .chat-body {
+          height: ~"calc(100% - 148px)";
+        }
+      }
+    }
+  }
+}
 #modal-messenger-room {
   width: 430px;
   .content {
@@ -935,7 +968,7 @@ pre {
               }
             }
             .chat {
-              display: block;
+              .flex();
               overflow: unset;
               .bubble {
                 float: left;
@@ -1018,6 +1051,7 @@ pre {
             }
           }
           .chat {
+            .flex();
             .bubble {
               float: right;
               background-color: #ffe81a;
@@ -2890,6 +2924,9 @@ label.control-label {
 .align-right {
   text-align: right;
 }
+.modal-grey-txt {
+  color: #a3a3a3;
+}
 .remove-padding {
   padding: 0 !important;
 }
@@ -3640,7 +3677,7 @@ div.ui.slider.checkbox .box:before, .ui.slider.checkbox label:before {
 .ui.menu {font-family: @base-font}
 .ui.modal {
   > .close {
-    top: 14px;
+    top: 12.5px;
     right: 15px;
     margin: 0;
     padding: 0;
@@ -4483,7 +4520,40 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
 }
 
 
+.chat-more-nav {
+  display:none;
+  background: #fff;
+  position: absolute;
+  left: 67px;
+  top: 12px;
+  flex-flow: column;
+  z-index: 30;
+  width: 106px;
+  padding: 10px 0;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, .2) 0 2px 6px;
+  button {
+    .flex();
+    align-items: center;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    background: transparent;
+    text-align: left;
+    padding: 7px 0 7px 14px;
+    font-size: 12px;
+    &:hover {
+      background: #F4F4F4;
+    }
+    img {
+      margin: 0 7px 0 0;
+      width: 11px;
+    }
+  }
+}
+
 .chat-container {
+  position: relative;
   height: 100%;
   border: 0;
   .room {
@@ -4528,6 +4598,9 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
             border-left: 1px solid @color-border;
             padding: 0 10px;
           }
+          .keyword-search-btn {
+            border-left: 0;
+          }
           .keyword-count {
             white-space: nowrap;
             padding: 0 9px;
@@ -4539,6 +4612,7 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
             color: #6d6d6d;
           }
           input[type="text"] {
+            width: 106px;
             border: 0;
             outline: 0;
             margin: 3px 0;
@@ -4575,6 +4649,30 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
     .chat-body {
       font-size: 10pt;
       height: ~"calc(100% - 189px)";
+      .attach-overlay {
+        .flex();
+        align-items: center;
+        justify-content: center;
+        flex-flow: column;
+        background: rgba(0,0,0,.7);
+        color:#fff;
+        position:absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 70;
+        backdrop-filter: blur(3px);
+        img {
+          margin: 0 0 1.5em 0;
+        }
+        p {
+          font-size: 16px;
+          word-break: keep-all;
+          width: 254px;
+          text-align: center;
+        }
+      }
       .reply-content-container {
         .flex();
         border-bottom: 1px solid #e0d14d;
@@ -4601,7 +4699,7 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
         }
       }
       .view-to-reply {
-        .flex();
+        display:none;
         width: 100%;
         background: @color-white;
         position: absolute;
@@ -4663,47 +4761,18 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
             }
           }
           .chat {
-            display: block;
+            .flex();
             overflow: unset;
+            padding: 0 10px 0 0;
             .bubble {
-              .chat-more-nav {
-                background: #fff;
-                position: absolute;
-                right: -86px;
-                bottom: -86px;
-                display: flex;
-                flex-flow: column;
-                z-index: 30;
-                width: 106px;
-                padding: 10px 0;
-                border-radius: 10px;
-                box-shadow: rgba(0, 0, 0, .2) 0 2px 6px;
-                button {
-                  .flex();
-                  align-items: center;
-                  border: 0;
-                  outline: 0;
-                  cursor: pointer;
-                  background: transparent;
-                  text-align: left;
-                  padding: 7px 0 7px 14px;
-                  font-size: 12px;
-                  &:hover {
-                    background: #F4F4F4;
-                  }
-                  img {
-                    margin: 0 7px 0 0;
-                    width: 11px;
-                  }
-                }
-              }
+
               float: left;
               background: #fff;
               box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.10);
               -webkit-box-shadow: 1px 1px 0 0 rgba(0, 0, 0, 0.10);
               margin: 3px 0 2px 0;
               border-radius: 5px;
-              .chat-reply-icon {
+              .chat-reply-btn {
                 display: none;
                 right: -36px;
                 bottom: 0;
@@ -4773,10 +4842,17 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
             display: none;
           }
           .chat {
+            .flex();
+            justify-content: end;
+            overflow: unset;
+            padding: 0 0 0 10px;
             .bubble {
               float: right;
               background-color: rgb(255, 232, 26);
               padding: 9px;
+              .chat-reply-btn {
+                left: -36px;
+              }
               .txt-chat {
                 padding:0;
               }
@@ -4808,6 +4884,64 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
     width: 100%;
     height: 148px;
     background-color: #fff;
+    .template-container {
+      position: absolute;
+      bottom: 130px;
+      width: 100%;
+      padding: 0 10px;
+      z-index: 5;
+      .template-container-inner {
+        background: #fff;
+        border-radius: 5px;
+        border: 1px solid #c5c5c5;
+        max-height: 186px;
+        overflow: overlay;
+        .empty {
+          color: #adadad;
+          text-align: center;
+          padding: 11px 0;
+        }
+      }
+      .template-ul {
+        .template-list {
+          .flex();
+          cursor: pointer;
+          padding: 8px 10px;
+          align-items: center;
+          font-size: 13px;
+          &:hover, &.active {
+            background: #eee;
+          }
+          .template-title {
+            font-weight: 800;
+            white-space: nowrap;
+          }
+          .template-content {
+            font-weight: 300;
+            color: #919191;
+            padding: 0 0 0 10px;
+            white-space: normal;
+            line-height: 1.2;
+            max-height: 3.6em;
+            text-align: left;
+            word-wrap: break-word;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            img {
+              width:50px;
+            }
+          }
+          .template-image {
+            object-fit: cover;
+            width: 8em;
+            height: ~"calc(1em + 16px)";
+            margin: -8px 5px -8px 15px;
+          }
+        }
+      }
+    }
     .write-menu {
       .flex();
       justify-content: space-between;
