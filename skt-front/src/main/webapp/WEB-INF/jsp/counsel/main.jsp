@@ -186,7 +186,7 @@
             if ($(parent.document).find('#main').is('.change-mode')) {
                 setInterval(setReservation, 60000);
             }
-            setInterval(toastReservation, 3000);
+            setInterval(toastReservation, 15000);
         });
     </script>
     <script>

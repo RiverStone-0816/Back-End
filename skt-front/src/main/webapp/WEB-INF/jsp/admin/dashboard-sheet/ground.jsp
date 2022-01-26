@@ -290,7 +290,7 @@
                 });
             }
 
-            setInterval(loadInboundData, 1000 * 3);
+            setInterval(loadInboundData, 1000 * 15);
 
             $(window).on('load', loadInboundData);
 
