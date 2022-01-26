@@ -423,7 +423,7 @@
                             <div class="top aligned row">
                                 <div class="four wide column"><span class="subject">안내 문구</span></div>
                                 <div class="twelve wide column">
-                                    <textarea placeholder="안내 문구를 입력하세요." v-model="data.api.nextApiMent"></textarea>
+                                    <textarea placeholder="안내 문구를 입력하세요." rows="6" v-model="data.api.nextApiMent"></textarea>
                                 </div>
                             </div>
                             <div class="row">
@@ -442,7 +442,7 @@
                                         <div class="list-row align-items-start">
                                             <div class="list-left">정상</div>
                                             <div class="list-right">
-                                                <textarea v-model="data.api.nextApiResultTemplate"></textarea>
+                                                <textarea v-model="data.api.nextApiResultTemplate" rows="4"></textarea>
                                             </div>
                                         </div>
                                         <div class="list-row align-items-start">

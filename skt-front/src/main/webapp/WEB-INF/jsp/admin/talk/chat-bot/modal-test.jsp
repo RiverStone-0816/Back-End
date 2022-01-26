@@ -119,15 +119,15 @@
             </div>
         </div>
 
-        <div v-if="socket" class="action">
+        <div v-if="socket" class="preview-action">
             <div>
-                <button type="button" class="home-btn"><img src="<c:url value="/resources/images/material-home.svg"/>"></button>
+                <button type="button" class="home-btn"></button>
             </div>
             <div class="ui form">
                 <input type="text" placeholder="문의사항을 입력하세요." v-model="input" @keyup.stop.prevent="$event.key === 'Enter' && sendText()">
             </div>
             <div>
-                <button type="button" class="send-btn" @click.stop.prevent="sendText"><img src="<c:url value="/resources/images/material-send.svg"/>"></button>
+                <button type="button" class="send-btn" @click.stop.prevent="sendText"></button>
             </div>
         </div>
     </div>
