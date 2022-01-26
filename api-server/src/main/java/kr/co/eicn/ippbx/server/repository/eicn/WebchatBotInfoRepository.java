@@ -1,11 +1,13 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebchatBotInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.WebchatBotInfoRecord;
 import kr.co.eicn.ippbx.model.search.ChatbotSearchRequest;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
+import org.jooq.UpdateSetMoreStep;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -53,9 +55,23 @@ public class WebchatBotInfoRepository extends EicnBaseRepository<WebchatBotInfo,
                 .value1();
     }
 
-    public void updateById(Integer id, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotInfo data) {
+    public void updateById(Integer id, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotInfo data, boolean fallbackUpdate) {
+        UpdateSetMoreStep<WebchatBotInfoRecord> query = dsl.update(WEBCHAT_BOT_INFO)
+                .set(WEBCHAT_BOT_INFO.NAME, data.getName());
+
+        if (fallbackUpdate) {
+            query.set(WEBCHAT_BOT_INFO.IS_CUSTINPUT_ENABLE, data.getIsCustinputEnable())
+                    .set(WEBCHAT_BOT_INFO.FALLBACK_MENT, data.getFallbackMent())
+                    .set(WEBCHAT_BOT_INFO.FALLBACK_ACTION, data.getFallbackAction())
+                    .set(WEBCHAT_BOT_INFO.FALLBACK_ACTION_DATA, data.getFallbackActionData());
+        }
+
+        query.where(WEBCHAT_BOT_INFO.ID.eq(id))
+                .execute();
+    }
+
+    public void updateFallbackInfo(Integer id, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotInfo data) {
         dsl.update(WEBCHAT_BOT_INFO)
-                .set(WEBCHAT_BOT_INFO.NAME, data.getName())
                 .set(WEBCHAT_BOT_INFO.IS_CUSTINPUT_ENABLE, data.getIsCustinputEnable())
                 .set(WEBCHAT_BOT_INFO.FALLBACK_MENT, data.getFallbackMent())
                 .set(WEBCHAT_BOT_INFO.FALLBACK_ACTION, data.getFallbackAction())

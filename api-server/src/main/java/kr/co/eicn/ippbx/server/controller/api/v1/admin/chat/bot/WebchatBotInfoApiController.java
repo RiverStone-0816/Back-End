@@ -2,8 +2,10 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin.chat.bot;
 
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotFallbackInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotSummaryInfoResponse;
+import kr.co.eicn.ippbx.model.form.WebchatBotFallbackFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.model.search.ChatbotSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
@@ -50,9 +52,16 @@ public class WebchatBotInfoApiController extends ApiBaseController {
 
     @GetMapping("{id}")
     public ResponseEntity<JsonResult<WebchatBotInfoResponse>> getBotInfo(@PathVariable Integer id) {
-        WebchatBotInfoResponse webchatBotInfoResponse = webchatBotService.getBotInfo(id);
+        WebchatBotInfoResponse response = webchatBotService.getBotInfo(id);
 
-        return ResponseEntity.ok(data(webchatBotInfoResponse));
+        return ResponseEntity.ok(data(response));
+    }
+
+    @GetMapping("{id}/fallback")
+    public ResponseEntity<JsonResult<WebchatBotFallbackInfoResponse>> getBotFallbackInfo(@PathVariable Integer id) {
+        WebchatBotFallbackInfoResponse response = webchatBotInfoService.getFallbackInfo(id);
+
+        return ResponseEntity.ok(data(response));
     }
 
     @GetMapping("blocks/{blockId}")
@@ -96,13 +105,41 @@ public class WebchatBotInfoApiController extends ApiBaseController {
         return ResponseEntity.ok(data(saveFileName));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("{id}/")
+    public ResponseEntity<JsonResult<Void>> updateBotInfo(@PathVariable Integer id, @Valid @RequestBody WebchatBotFormRequest form, BindingResult bindingResult) {
+        if (!form.validate(bindingResult))
+            throw new ValidationException(bindingResult);
+
+        try {
+            webchatBotService.updateWebchatBotInfo(id, form, false);
+        } catch (Exception e) {
+            throw new RuntimeException("수정중 오류가 발생하여 이전 데이터로 복구합니다.");
+        }
+
+        return ResponseEntity.ok(create());
+    }
+
+    @PutMapping("{id}/all")
     public ResponseEntity<JsonResult<Void>> update(@PathVariable Integer id, @Valid @RequestBody WebchatBotFormRequest form, BindingResult bindingResult) {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
         try {
-            webchatBotService.updateWebchatBotInfo(id, form);
+            webchatBotService.updateWebchatBotInfo(id, form, true);
+        } catch (Exception e) {
+            throw new RuntimeException("수정중 오류가 발생하여 이전 데이터로 복구합니다.");
+        }
+
+        return ResponseEntity.ok(create());
+    }
+
+    @PutMapping("{id}/fallback")
+    public ResponseEntity<JsonResult<Void>> fallbackUpdate(@PathVariable Integer id, @Valid @RequestBody WebchatBotFallbackFormRequest form, BindingResult bindingResult) {
+        if (!form.validate(bindingResult))
+            throw new ValidationException(bindingResult);
+
+        try {
+            webchatBotInfoService.updateFallbackInfo(id, form);
         } catch (Exception e) {
             throw new RuntimeException("수정중 오류가 발생하여 이전 데이터로 복구합니다.");
         }

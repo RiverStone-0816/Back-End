@@ -3,7 +3,6 @@ package kr.co.eicn.ippbx.model.form;
 import kr.co.eicn.ippbx.model.enums.ApiParameterType;
 import kr.co.eicn.ippbx.model.enums.ButtonAction;
 import kr.co.eicn.ippbx.model.enums.DisplayType;
-import kr.co.eicn.ippbx.model.enums.FallbackAction;
 import kr.co.eicn.ippbx.util.spring.BaseForm;
 import kr.co.eicn.ippbx.util.valid.NotNull;
 import lombok.Data;
@@ -16,17 +15,8 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class WebchatBotFormRequest extends BaseForm {
+public class WebchatBotFormRequest extends WebchatBotFallbackFormRequest {
     private String name;
-    @NotNull("고객입력")
-    private Boolean enableCustomerInput;
-    private String fallbackMent;
-    @NotNull("폴백액션")
-    private FallbackAction fallbackAction;
-    private Integer nextBlockId;
-    private Integer nextGroupId;
-    private String nextUrl;
-    private String nextPhone;
 
     @Valid
     private BlockInfo blockInfo;
