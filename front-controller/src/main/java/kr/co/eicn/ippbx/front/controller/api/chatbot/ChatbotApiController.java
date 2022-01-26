@@ -4,14 +4,13 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.front.service.api.ChatbotApiInterface;
-import kr.co.eicn.ippbx.model.dto.eicn.SummaryWebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotSummaryInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +32,7 @@ public class ChatbotApiController extends BaseController {
 
     @SneakyThrows
     @GetMapping("")
-    public List<SummaryWebchatBotInfoResponse> list() {
+    public List<WebchatBotSummaryInfoResponse> list() {
         return apiInterface.list();
     }
 

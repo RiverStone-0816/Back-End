@@ -45,17 +45,16 @@ public class WebchatBotService extends ApiBaseService {
         return botId;
     }
 
-    public void updateWebchatBotInfo(Integer botId, WebchatBotFormRequest form) {
+    public void updateWebchatBotInfo(Integer botId, WebchatBotFormRequest form, boolean fallbackUpdate) {
         final WebchatBotInfoResponse oldData = getBotInfo(botId);
         if (oldData != null) {
-            deleteAllBlockInfoById(botId);
-
             try {
+                deleteAllBlockInfoById(botId);
                 final Integer realBlockId = insertRootBlock(botId, form).get(form.getNextBlockId());
                 if (FallbackAction.CONNECT_BLOCK.equals(form.getFallbackAction()))
                     form.setNextBlockId(realBlockId);
 
-                webchatBotInfoService.updateById(botId, form);
+                webchatBotInfoService.updateById(botId, form, fallbackUpdate);
             } catch (Exception e) {
                 // FIXME: 발생할 수 있는 Exception 정의하여 특정 Exception에 대응하도록 수정
                 log.error(e.getMessage());

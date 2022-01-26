@@ -54,7 +54,7 @@ public class TalkScheduleGroupController extends BaseController {
         model.addAttribute("isChatbot", TalkChannelType.EICN.getCode().equals(channelType));
         final Map<String, String> talkMentsOfStringSeq = apiInterface.getTalkMent().stream().collect(Collectors.toMap(e -> e.getSeq().toString(), SummaryTalkMentResponse::getMentName));
         model.addAttribute("talkMentsOfStringSeq", talkMentsOfStringSeq);
-        final Map<String, String> chatbotList = chatbotApiInterface.list().stream().collect(Collectors.toMap(e-> e.getId().toString(), SummaryWebchatBotInfoResponse::getName));
+        final Map<String, String> chatbotList = chatbotApiInterface.list().stream().collect(Collectors.toMap(e-> e.getId().toString(), WebchatBotSummaryInfoResponse::getName));
         model.addAttribute("chatbotList", chatbotList);
         final Map<String, String> talkGroupList = talkReceptionGroupApiInterface.list().stream().collect(Collectors.toMap(e -> e.getGroupId().toString(), TalkMemberGroupSummaryResponse::getGroupName));
         model.addAttribute("talkGroupList", talkGroupList);
