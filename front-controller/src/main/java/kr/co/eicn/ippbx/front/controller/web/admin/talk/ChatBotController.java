@@ -61,7 +61,9 @@ public class ChatBotController extends BaseController {
 
     @SneakyThrows
     @GetMapping("editor")
-    public String editor(Model model) {
+    public String editor(Model model, @RequestParam(required = false) Integer id) {
+        model.addAttribute("id", id);
+
         return "admin/talk/chat-bot/editor";
     }
 

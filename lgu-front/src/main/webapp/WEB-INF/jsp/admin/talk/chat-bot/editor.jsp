@@ -83,7 +83,7 @@
                                         <ul id="block-list" class="block-list-ul">
                                             <li v-for="(e,i) in blocks" :key="i" class="block-list">
                                                 <div class="block-name" style="cursor: pointer" @mouseenter="highlight(e)" @mouseleave="dehighlight">{{e.name}}</div>
-                                                <div v-if="e.autoReply" class="block-control">
+                                                <div v-if="e.isTemplateEnable" class="block-control">
                                                     <img src="<c:url value="/resources/images/chatbot-square-mini.svg"/>">
                                                 </div>
                                             </li>
@@ -559,7 +559,7 @@
             <div class="btn-wrap">
                 <button @click.stop="configKeywords" class="ui tiny compact button">키워드 관리</button>
                 <button @click.stop="showPreview" class="ui tiny compact button">미리보기</button>
-                <button @click.stop="autoReply = !autoReply" class="ui tiny compact button preview-button" :class="autoReply && ' active'">{{ autoReply ? 'ON' : 'OFF' }}</button>
+                <button @click.stop="isTemplateEnable = !isTemplateEnable" class="ui tiny compact button preview-button" :class="isTemplateEnable && ' active'">{{ isTemplateEnable ? 'ON' : 'OFF' }}</button>
             </div>
         </div>
         <div class="box">
@@ -693,7 +693,7 @@
                                 posY: block ? editor.getNodeFromId(block.nodeId).pos_y : 0,
                                 name: block?.name,
                                 keyword: block?.keywords.length === 0 ? '' : block?.keywords.reduce((a, b) => (a + '|' + b)),
-                                isTemplateEnable: block?.autoReply,
+                                isTemplateEnable: block?.isTemplateEnable,
                                 displayList: block?.displays.map((e, i) => ({
                                     order: i,
                                     type: e.type,
@@ -787,7 +787,7 @@
 
                                     app.name = block.name
                                     app.keywords = block.keyword?.split('|').filter(keyword => keyword) || []
-                                    app.autoReply = block.isTemplateEnable
+                                    app.isTemplateEnable = block.isTemplateEnable
                                     app.displays = block.displayList.sort((a, b) => (a.order - b.order)).map(e => {
                                         if (e.type === 'text') return {type: 'text', data: {text: e.elementList?.[0]?.content}}
                                         if (e.type === 'image') return {type: 'image', data: {fileUrl: e.elementList?.[0]?.image, fileName: e.elementList?.[0]?.image}}
@@ -880,7 +880,11 @@
                         },
                     },
                     mounted() {
-                        this.load()
+                        this.load().done(() => {
+                            <c:if test="${id != null}">
+                            this.loadBot(${id})
+                            </c:if>
+                        })
                     }
                 }).mount('#bot-list')
                 return o || o
@@ -1330,7 +1334,7 @@
                                 displays: [],
                                 buttons: [],
                                 keywords: [],
-                                autoReply: false,
+                                isTemplateEnable: false,
 
                                 nodeId: nodeId,
                                 showingEmptyDisplayItem: false,

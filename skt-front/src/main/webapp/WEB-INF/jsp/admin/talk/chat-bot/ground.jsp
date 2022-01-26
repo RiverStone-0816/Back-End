@@ -420,9 +420,29 @@
     <tags:scripts>
         <script>
             function chatbotAddPopup() {
+                // TODO
                 alert('TODO: chatbotAddPopup()')
                 $('#chatbot-add-popup').modalShow();
             }
+
+            function fallbackBlockPopup(id) {
+                // TODO
+                alert('TODO: fallbackBlockPopup()')
+                $('#fallback-block-popup').modalShow();
+            }
+
+            function chatbotModifyPopup(id) {
+                window.open(contextPath + '/admin/talk/chat-bot/editor?id=' + id, 'chatbot-modify-window', 'width=1920px,height=1080px,scrollbars=yes');
+            }
+
+            // TODO: 임시
+            $(document).ready(function () {
+                $('#actionSelect').change(function () {
+                    var result = $('#actionSelect option:selected').val();
+                    $('.fallback-action').removeClass('active');
+                    $("#" + result).addClass('active');
+                });
+            });
 
             function chatbotDeletePopup(id) {
                 confirm('정말 삭제하시겠습니까?').done(() => restSelf.delete('/api/chatbot/' + id).done(reload))
@@ -432,28 +452,10 @@
                 confirm('봇을 복사하시겠습니까?').done(() => restSelf.post('/api/chatbot/' + id + '/copy').done(reload))
             }
 
-            function fallbackBlockPopup(id) {
-                alert('TODO: fallbackBlockPopup()')
-                $('#fallback-block-popup').modalShow();
-            }
-
-            function chatbotModifyPopup(id) {
-                alert('TODO: chatbotModifyPopup()')
-                window.open('/sub-url/chatbot', '네이버팝업', 'width=1920px,height=1080px,scrollbars=yes');
-            }
-
             function chatbotTestPopup(id) {
                 $('#chat-preview').dragModalShow();
                 preview.createSocket(id)
             }
-
-            $(document).ready(function () {
-                $('#actionSelect').change(function () {
-                    var result = $('#actionSelect option:selected').val();
-                    $('.fallback-action').removeClass('active');
-                    $("#" + result).addClass('active');
-                });
-            });
 
             const preview = (() => {
                 const SENDER = Object.freeze({SERVER: 'SERVER', USER: 'USER'})
