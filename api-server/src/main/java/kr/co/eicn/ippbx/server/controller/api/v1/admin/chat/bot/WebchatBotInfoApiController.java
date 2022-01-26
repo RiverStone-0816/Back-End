@@ -1,15 +1,17 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.chat.bot;
 
 import kr.co.eicn.ippbx.exception.ValidationException;
-import kr.co.eicn.ippbx.model.dto.eicn.SummaryWebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotSummaryInfoResponse;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
+import kr.co.eicn.ippbx.model.search.ChatbotSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.service.WebchatBotBlockService;
 import kr.co.eicn.ippbx.server.service.WebchatBotInfoService;
 import kr.co.eicn.ippbx.server.service.WebchatBotService;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -37,8 +39,13 @@ public class WebchatBotInfoApiController extends ApiBaseController {
     private final WebchatBotBlockService webchatBotBlockService;
 
     @GetMapping("")
-    public ResponseEntity<JsonResult<List<SummaryWebchatBotInfoResponse>>> list() {
+    public ResponseEntity<JsonResult<List<WebchatBotSummaryInfoResponse>>> list() {
         return ResponseEntity.ok(data(webchatBotInfoService.getAllWebchatBotList()));
+    }
+
+    @GetMapping("pagination")
+    public ResponseEntity<JsonResult<Pagination<WebchatBotSummaryInfoResponse>>> pagination(ChatbotSearchRequest request) {
+        return ResponseEntity.ok(data(webchatBotInfoService.pagination(request)));
     }
 
     @GetMapping("{id}")

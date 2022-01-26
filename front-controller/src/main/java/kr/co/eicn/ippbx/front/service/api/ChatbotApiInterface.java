@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.front.service.api;
 
 import kr.co.eicn.ippbx.front.model.form.FileForm;
-import kr.co.eicn.ippbx.model.dto.eicn.SummaryWebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotSummaryInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
@@ -26,8 +26,8 @@ public class ChatbotApiInterface extends ApiServerInterface {
     private static final String subUrl = "/api/v1/chat/bot/";
 
     @SneakyThrows
-    public List<SummaryWebchatBotInfoResponse> list() {
-        return getList(subUrl, null, SummaryWebchatBotInfoResponse.class).getData();
+    public List<WebchatBotSummaryInfoResponse> list() {
+        return getList(subUrl, null, WebchatBotSummaryInfoResponse.class).getData();
     }
 
     @SneakyThrows
