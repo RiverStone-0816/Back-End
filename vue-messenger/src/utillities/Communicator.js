@@ -52,7 +52,7 @@ Communicator.prototype.log = function (isSend, command, body) {
 Communicator.prototype.logClear = function () {
     this.status.eventNumber = 0;
 };
-Communicator.prototype.connect = function (url, senderKey, userKey, ip, mode) {
+Communicator.prototype.connect = function (url, senderKey, userKey, ip, mode, reconnect) {
     this.url = url;
     this.request = {sender_key: senderKey, user_key: userKey, my_ip: ip, mode: mode,};
 
@@ -66,10 +66,10 @@ Communicator.prototype.connect = function (url, senderKey, userKey, ip, mode) {
         }, 2000);
     }
 
-    const serverCommands = ['webchatsvc_start', 'webchatsvc_message', 'disconnect'];
+    const serverCommands = ['webchatsvc_start', 'webchatsvc_message', 'webchatsvc_close', 'disconnect'];
     const uncheckedServerCommands = ['connect', 'error', 'end', 'close'];
 
-    this.start()
+    reconnect ? this.restart() : this.start()
     this.on('webchatsvc_start', data => this.connected = data.result === 'OK')
     this.socket.on('webchatsvc_ping', data => this.socket.emit('webchatcli_pong', {pong_cnt: data.ping_cnt, receive: 'OK'}))
 
@@ -89,15 +89,22 @@ Communicator.prototype.disconnect = function () {
     this.socket = null;
     this.init();
 };
+Communicator.prototype.close = function () {
+    this.socket?.close();
+    this.socket = null;
+    this.init();
+};
 Communicator.prototype.recovery = function () {
     if (!this.url || !this.request)
         throw 'connect() 수행 필요';
+
     this.connect.apply(this, [
         this.url,
-        this.request.companyId,
-        this.request.userid,
-        this.request.username,
-        this.request.passwd
+        this.request.sender_key,
+        this.request.user_key,
+        this.request.my_ip,
+        this.request.mode,
+        true
     ])
 };
 Communicator.prototype.process = function (event, data) {
@@ -124,6 +131,9 @@ Communicator.prototype.getMessageId = function () {
 }
 Communicator.prototype.start = function () {
     this.socket.emit('webchatcli_start', this.request)
+}
+Communicator.prototype.restart = function () {
+    this.socket.emit('webchatcli_restart', this.request)
 }
 Communicator.prototype.requestIntro = function () {
     this.socket.emit('webchatcli_message', Object.assign(this.request, {message_id: this.getMessageId(), message_type: 'intro'}))
