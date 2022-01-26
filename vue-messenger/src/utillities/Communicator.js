@@ -61,7 +61,7 @@ Communicator.prototype.connect = function (url, senderKey, userKey, ip, mode) {
         this.socket = io(url, {'secure': url.startsWith('https')}, {'reconnect': true, 'resource': 'socket.io'})
     } catch (error) {
         console.error(error);
-        setTimeout(function () {
+        return setTimeout(function () {
             _this.recovery();
         }, 2000);
     }
@@ -71,6 +71,7 @@ Communicator.prototype.connect = function (url, senderKey, userKey, ip, mode) {
 
     this.start()
     this.on('webchatsvc_start', data => this.connected = data.result === 'OK')
+    this.socket.on('webchatsvc_ping', data => this.socket.emit('webchatcli_pong', {pong_cnt: data.ping_cnt, receive: 'OK'}))
 
     serverCommands.map(function (command) {
         _this.socket.on(command, function (data) {
