@@ -66,8 +66,8 @@ Communicator.prototype.connect = function (url, senderKey, userKey, ip, mode) {
         }, 2000);
     }
 
-    const serverCommands = ['webchatsvc_start', 'webchatsvc_message'];
-    const uncheckedServerCommands = ['connect', 'disconnect', 'error', 'end', 'close'];
+    const serverCommands = ['webchatsvc_start', 'webchatsvc_message', 'disconnect'];
+    const uncheckedServerCommands = ['connect', 'error', 'end', 'close'];
 
     this.start()
     this.on('webchatsvc_start', data => this.connected = data.result === 'OK')

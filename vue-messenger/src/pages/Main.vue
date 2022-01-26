@@ -470,7 +470,10 @@ export default {
   },
   mounted() {
     this.communicator
-        .on('disconnect', () => store.commit('alert/show', '연결이 종료되었습니다.'))
+        .on('disconnect', () => {
+          store.commit('alert/show', '연결이 종료되었습니다.')
+          this.inputEnable = false
+        })
         .on('webchatsvc_message', data => {
           this.lastReceiveMessageType = data.message_type
 
