@@ -3281,6 +3281,16 @@ label.control-label {
   }
 }
 
+.modal-title {
+  margin: 5px 0 15px 0!important;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.chat-sns-icon {
+  height: 30px;
+  border-radius: 3px;
+}
 
 .attach-overlay {
   .flex();
@@ -3305,6 +3315,10 @@ label.control-label {
     width: 254px;
     text-align: center;
   }
+}
+
+div.sp-container.sp-flat {
+  margin: 10px 0 30px 0;
 }
 
 .ui.multiple.dropdown > .label {
@@ -4289,6 +4303,15 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
 }
 .file-upload-header {
   text-align: left;
+  display: flex;
+  align-items: center;
+  .file-name {
+    flex: 1;
+    overflow: hidden;
+    padding: 0 0 0 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 .ui.tiny.progress {
   margin: 5px 0;

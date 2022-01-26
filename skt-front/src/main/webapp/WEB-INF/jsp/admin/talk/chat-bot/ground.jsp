@@ -80,6 +80,7 @@
                             <button type="button" class="ui button -control-entity" data-entity="ChatBot" style="display: none" onclick="chatbotModifyPopup(getEntityId('ChatBot'))">수정</button>
                             <button type="button" class="ui button -control-entity" data-entity="ChatBot" style="display: none" onclick="chatbotDeletePopup(getEntityId('ChatBot'))">삭제</button>
                         </div>
+                        <button type="button" onclick="customerChatSetting()" class="ui basic button">고객채팅창설정</button>
                     </div>
                         <%--<div class="pull-right">
                             <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/talk/chat-bot/" pageForm="${search}"/>
@@ -417,8 +418,197 @@
         </div>
     </div>
 
+    <%--TODO: 웹채팅상담정보관리 페이지로 옮겨야함--%>
+    <link rel="stylesheet" href="<c:url value="/resources/vendors/spectrum/spectrum.min.css"/>">
+    <div class="ui modal" id="customer-chat-setting">
+        <i class="close icon"></i>
+        <div class="header">고객 채팅창 설정 [수정]</div>
+        <div class="content rows">
+            <div class="ui divided grid">
+                <div class="nine wide column">
+                    <div class="ui grid">
+                        <div class="row">
+                            <div class="sixteen wide column"><h3 class="modal-title">기본정보 설정</h3></div>
+                            <div class="four wide column"><label class="control-label">표시 이름</label></div>
+                            <div class="twelve wide column">
+                                <div class="ui input fluid"><input type="text"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="four wide column"><label class="control-label">채널 이름</label></div>
+                            <div class="twelve wide column">
+                                <div class="ui input fluid"><input type="text"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="four wide column"><label class="control-label">채널 키</label></div>
+                            <div class="twelve wide column">
+                                <div class="ui input fluid"><input type="text"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="four wide column"><label class="control-label">채널 사용</label></div>
+                            <div class="twelve wide column">
+                                <div class="ui form">
+                                    <div class="inline fields">
+                                        <div class="field">
+                                            <div class="ui radio checkbox">
+                                                <input type="radio" checked="checked">
+                                                <label>활성화(Y)</label>
+                                            </div>
+                                        </div>
+                                        <div class="field">
+                                            <div class="ui radio checkbox">
+                                                <input type="radio">
+                                                <label>비활성화(N)</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="four wide column"><label class="control-label">인사 멘트</label></div>
+                            <div class="twelve wide column">
+                                <div class="ui form fluid">
+                                    <div class="field">
+                                        <textarea rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="four wide column"><label class="control-label">채널 추가</label></div>
+                            <div class="twelve wide column">
+                                <div class="display-flex align-items-center mb10">
+                                    <div class="ui form flex-100">
+                                        <select>
+                                            <option>카카오톡</option>
+                                            <option>라인</option>
+                                            <option>네이버밴드</option>
+                                            <option>네이버톡톡</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" class="ui basic ml10 button">추가하기</button>
+                                </div>
+                                <div class="display-flex align-items-center mb10">
+                                    <img src="<c:url value="/resources/images/kakao-icon.png"/>" class="chat-sns-icon">
+                                    <div class="ui input flex-100 ml10">
+                                        <input type="text" placeholder="채널ID 정보">
+                                    </div>
+                                    <button type="button" class="ui basic ml10 button">삭제하기</button>
+                                </div>
+                                <div class="display-flex align-items-center mb10">
+                                    <img src="<c:url value="/resources/images/ntalk-icon.png"/>" class="chat-sns-icon">
+                                    <div class="ui input flex-100 ml10">
+                                        <input type="text" placeholder="채널ID 정보">
+                                    </div>
+                                    <button type="button" class="ui basic ml10 button">삭제하기</button>
+                                </div>
+                                <div class="display-flex align-items-center mb10">
+                                    <img src="<c:url value="/resources/images/nband-icon.png"/>" class="chat-sns-icon">
+                                    <div class="ui input flex-100 ml10">
+                                        <input type="text" placeholder="채널ID 정보">
+                                    </div>
+                                    <button type="button" class="ui basic ml10 button">삭제하기</button>
+                                </div>
+                                <div class="display-flex align-items-center">
+                                    <img src="<c:url value="/resources/images/line-icon.png"/>" class="chat-sns-icon">
+                                    <div class="ui input flex-100 ml10">
+                                        <input type="text" placeholder="채널ID 정보">
+                                    </div>
+                                    <button type="button" class="ui basic ml10 button">삭제하기</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="seven wide column">
+                    <div class="ui grid">
+                        <div class="row">
+                            <div class="sixteen wide column"><h3 class="modal-title">디자인 설정</h3></div>
+                            <div class="four wide column"><label class="control-label">프로필 이미지</label></div>
+                            <div class="twelve wide column">
+                                <div class="file-upload-header">
+                                    <label for="file" class="ui button brand mini compact">파일찾기</label>
+                                    <input type="file" id="file">
+                                    <span class="file-name">No file selected</span>
+                                </div>
+                                <p class="modal-grey-txt">정방형 이미지를 권장합니다.</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="four wide column"><label class="control-label">이미지</label></div>
+                            <div class="twelve wide column">
+                                <div class="file-upload-header">
+                                    <label for="file" class="ui button brand mini compact">파일찾기</label>
+                                    <input type="file" id="file">
+                                    <span class="file-name">No file selected</span>
+                                </div>
+                                <p class="modal-grey-txt">가로축 100% 형태로 삽입됩니다.</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="four wide column"><label class="control-label">배경색</label></div>
+                            <div class="twelve wide column align-center">
+                                <input id="color-picker" value='#276cb8' />
+                                <div>
+                                    <div class="display-flex align-items-center mb10">
+                                        <div>RGB</div>
+                                        <div class="ui input fluid ml15">
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="display-flex align-items-center mb10">
+                                        <div>HSL</div>
+                                        <div class="ui input fluid ml15">
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="display-flex align-items-center mb10">
+                                        <div>HSV</div>
+                                        <div class="ui input fluid ml15">
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                    <div class="display-flex align-items-center">
+                                        <div>HEX</div>
+                                        <div class="ui input fluid ml15">
+                                            <input type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <button type="button" class="ui button modal-close">취소</button>
+            <button type="submit" class="ui brand button">확인</button>
+        </div>
+    </div>
+
+
     <tags:scripts>
+
+        <script src="<c:url value="/resources/vendors/spectrum/spectrum.min.js"/> "></script>
+
         <script>
+
+            function customerChatSetting() {
+                $('#customer-chat-setting').modalShow();
+            }
+
+            $('#color-picker').spectrum({
+                type: "flat",
+                showPalette: false,
+                showAlpha: false,
+                showButtons: false,
+                allowEmpty: false
+            });
+
             function chatbotAddPopup() {
                 // TODO
                 alert('TODO: chatbotAddPopup()')
