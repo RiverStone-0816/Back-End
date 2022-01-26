@@ -134,11 +134,11 @@
                     <div v-if="e.type === 'text'" class="relative text-sm bg-white shadow rounded-lg max-w-xs py-2 px-3">
                       <p style="white-space: pre-wrap; line-break: anywhere;">{{ e.element[0]?.content }}</p>
                     </div>
-                    <div v-else-if="e.type === 'image'" class="relative">
+                    <div v-else-if="e.type === 'image'" class="relative max-w-xs">
                       <img alt="chat_image" class="w-full rounded-lg" :src="getFileUrl(message.company, e.element[0]?.image)">
                     </div>
                     <div v-else-if="e.type === 'card'" class="relative text-sm bg-white shadow rounded-lg max-w-xs">
-                      <div class="relative">
+                      <div class="relative max-w-xs">
                         <img alt="chat_image" class="w-full rounded-t-lg" :src="getFileUrl(message.company, e.element[0]?.image)">
                       </div>
                       <div class="p-3 pb-0 text-base font-bold">
