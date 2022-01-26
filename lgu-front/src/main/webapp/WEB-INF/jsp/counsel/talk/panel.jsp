@@ -249,6 +249,27 @@
                         this.changeOrdering(this.roomMap[roomId].container.status)
                         if (this.isReallocationStatus(this.roomMap[roomId].container.status)) this.changeOrdering(this.statuses.REALLOCATION.status)
                     },
+                    updateRoomUser: function (roomId, status, userKey, userId) {
+                        if (!this.roomMap[roomId])
+                            return this.load()
+
+                        for (let i = 0; i < this.roomMap[roomId].container.rooms.length; i++) {
+                            if (this.roomMap[roomId].container.rooms[i].roomId === roomId) {
+                                this.roomMap[roomId].container.rooms.splice(i, 1)
+                                break
+                            }
+                        }
+
+                        this.roomMap[roomId].status = status
+                        this.roomMap[roomId].userKey = userKey
+                        this.roomMap[roomId].userId = userId
+                        this.roomMap[roomId].userName = this.persons.filter(person => person.id === userId)[0]?.idName
+                        this.roomMap[roomId].container = this.statuses[status]
+                        this.statuses[status].rooms.push(this.roomMap[roomId])
+
+                        this.changeOrdering(status)
+                        if (this.isReallocationStatus(status)) this.changeOrdering(this.statuses.REALLOCATION.status)
+                    },
                     updateRoomStatus: function (roomId, status, messageType, content, messageTime) {
                         if (!this.roomMap[roomId])
                             return this.load()
@@ -294,8 +315,8 @@
 
                             talkCommunicator.redistribution(
                                 data.reallocating.map(e => ({channel_type: this.roomMap[e].channelType, room_id: e, user_key: this.roomMap[e].userKey,})),
-                                data.persons[0].map(e => ({userid: e})),
-                                // data.persons[0],
+                                // data.persons[0].map(e => ({userid: e})),
+                                data.persons[0],
                             )
 
                             $(this.$refs.reallocationModal).modalHide()
@@ -1127,7 +1148,7 @@
         window.talkCommunicator = new TalkCommunicator()
             .on('svc_msg', processTalkMessage)
             .on('svc_control', processTalkMessage)
-            .on('svc_redist', processTalkMessage)
+            .on('svc_redist', data => talkListContainer.updateRoomUser(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.user_key, data.userid))
             .on('svc_end', processTalkMessage)
             .on('svc_login', data => $('#distributee').prop("checked", data.dist_yn === 'Y'))
             .on('svc_dist_yn', data => $('#distributee').prop("checked", data.dist_yn === 'Y'))
