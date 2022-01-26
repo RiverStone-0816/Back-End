@@ -209,7 +209,7 @@
 
                 const _peerStatuses = values(peerStatuses);
                 $('#login-user-rate').text((_peerStatuses.filter(function (peer) {
-                    return peer.login;
+                    return peer.chatbot;
                 }).length / _peerStatuses.length).toFixed(1) + '%');
 
                 const statusClasses = ['stay', 'call', 'after', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest'];

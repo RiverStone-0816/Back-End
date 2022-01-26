@@ -7025,6 +7025,31 @@ g {
         width: 100%;
         margin: 0 0 .5em 0;
       }
+      .send-message {
+        position: relative;
+        background: #fff;
+        word-break: break-all;
+        box-shadow: rgba(0, 0, 0, .05) 0 4px 7px;
+        padding: 1em;
+        border-radius: 10px;
+        margin: 0 0 1em 0;
+        font-size: 12px;
+        max-width: 306px;
+        .bubble-wrap {
+          .bubble-inner {
+            .bubble {
+
+            }
+            .time-text {
+              position: absolute;
+              bottom: 0;
+              right: -85px;
+              font-size: 11px;
+              color: #8f8f8f;
+            }
+          }
+        }
+      }
       .chatbot-button {
         overflow: hidden;
         background: @color-brand;
@@ -7181,6 +7206,7 @@ g {
         border-radius: 10px;
         margin: 0 0 1em 0;
         font-size: @font-size-xxsmall;
+        word-break: break-all;
         .title {
           font-weight: 800;
           margin-bottom: 5px;
