@@ -28,43 +28,35 @@
 
         <div class="header">
             <button class="room-title" @click.stop.prevent="popupRoomNameModal">{{ roomName }}</button>
+            <div class="messenger-search-btn-wrap">
+                <button type="button" class="messenger-chat-search-btn">
+                    <img src="/resources/images/chat-search-icon.svg">
+                </button>
+            </div>
         </div>
         <div class="content">
             <div class="organi-chat-room-container">
-                <div class="organi-chat-room-header">
-                    <div class="default-inner">
-                        <div class="search-wrap">
-                            <div class="ui icon input">
-                                <input type="text" v-model="searchingText">
-                                <i class="search link icon -search-icon" style="cursor: pointer;"></i>
-                            </div>
-                            <div class="search-count">
-                                <text class="-text-count">{{ searchingTexts.length && (searchingTextIndex + 1) || 0 }} / {{ searchingTexts.length || 0 }}</text>
-                            </div>
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="button" @click.stop="moveToPreviousText"><img src="<c:url value="/resources/images/chat-search-up.svg"/>" alt="이전 검색단어"></button>
-                            <button type="button" @click.stop="moveToNextText"><img src="<c:url value="/resources/images/chat-search-down.svg"/>" alt="다음 검색단어"></button>
-                            <input style="display: none" type="file" @change="sendFile">
-                            <button type="button" onclick="this.previousElementSibling.click()"><img src="<c:url value="/resources/images/chat-file.svg"/>" alt="파일 전송"></button>
-                            <button type="button" onclick="roomCreationOrganizationModalApp.popupInvitationModal()"><img src="<c:url value="/resources/images/chat-user-add.svg"/>" alt="초대"></button>
-                            <button type="button" @click="leave"><img src="<c:url value="/resources/images/chat-exit.svg"/>" alt="나가기"></button>
+                <div class="chat-search-wrap">
+                    <div class="chat-search-control">
+                        <div class="control-inner">
+                            <input type="text" v-model="searchingText">
+                            <button type="button" class="keyword-search-btn -search-icon"><img src="<c:url value="/resources/images/chat-search-grey-icon.svg"/>"></button>
+                            <div class="keyword-count"><text class="-text-count">{{ searchingTexts.length && (searchingTextIndex + 1) || 0 }} / {{ searchingTexts.length || 0 }}</text></div>
+                            <button type="button" @click.stop="moveToPreviousText"><img src="<c:url value="/resources/images/chat-arrow-up-icon.svg"/>" alt="이전 검색단어"></button>
+                            <button type="button" @click.stop="moveToNextText"><img src="<c:url value="/resources/images/chat-arrow-down-icon.svg"/>" alt="다음 검색단어"></button>
                         </div>
                     </div>
-                    <div class="modify-inner">
-                        <div class="input-wrap">
-                            <div class="ui fluid input">
-                                <input type="text" class="-chatroom-name-input">
-                            </div>
-                        </div>
-                        <div class="btn-wrap">
-                            <button type="button" class="ui button -cancel-chatroom-name">취소</button>
-                            <button type="button" class="ui brand button -change-chatroom-name">변경</button>
-                        </div>
-                    </div>
+                    <button type="button" class="chat-search-close-btn">
+                        <img src="<c:url value="/resources/images/chat-find-close-icon.svg"/>">
+                    </button>
                 </div>
                 <div class="organi-chat-room-content">
                     <div class="chat-body" ref="chatBody" @scroll="loadAdditionalMessagesIfTop" style="overflow-y: scroll; scroll-behavior: smooth;">
+                        <%--파일 드래그앤드롭 UI--%>
+                        <%--<div class="attach-overlay">
+                            <img src="<c:url value="/resources/images/attach-plus-icon.svg"/>">
+                            <p>채팅방에 파일을 바로 업로드하려면 여기에 드롭하세요.</p>
+                        </div>--%>
                         <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + e.messageId">
                             <p v-if="['SE', 'RE'].includes(e.sendReceive)" class="info-msg">[{{ getTimeFormat(e.time) }}]</p>
                             <p v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
@@ -122,6 +114,62 @@
                                 </div>
                             </div>
                         </div>
+                        <div>
+                            <div class="chat-item">
+                                <div class="wrap-content">
+                                    <div class="txt-segment">
+                                        <div class="txt-time">[상담사1] 09-22 02:48</div>
+                                        <div class="chat">
+                                            <div class="bubble">
+                                                <div class="chat-more-nav">
+                                                    <button type="button" class="nav-chat-reply-btn">
+                                                        <img src="<c:url value="/resources/images/chat-reply-icon.svg"/>">답장
+                                                    </button>
+                                                    <button type="button" class="nav-template-btn">
+                                                        <img src="<c:url value="/resources/images/chat-more-template-icon.svg"/>">템플릿
+                                                    </button>
+                                                    <button type="button" class="nav-knowhow-btn">
+                                                        <img src="<c:url value="/resources/images/chat-more-knowledge-icon.svg"/>">지식관리
+                                                    </button>
+                                                </div>
+                                                <div class="count">1</div>
+                                                <div class="txt-chat">
+                                                    <p>테스트테스트테스트</p>
+                                                </div>
+                                                <button type="button" class="chat-reply-btn"><img src="<c:url value="/resources/images/chat-reply-icon.svg"/>"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="chat-item chat-me">
+                                <div class="wrap-content">
+                                    <div class="txt-segment">
+                                        <div class="txt-time">[유도윤] 09-22 02:48</div>
+                                        <div class="chat">
+                                            <div class="bubble">
+                                                <div class="count">1</div>
+                                                <div class="reply-content-container">
+                                                    <div class="reply-content">
+                                                        <div class="target-user">[홍길동]에게 답장</div>
+                                                        <div class="target-msg">테스트 메시지 메시지</div>
+                                                    </div>
+                                                </div>
+                                                <div class="txt-chat">
+                                                    <p>테스트테스트테스트</p>
+                                                </div>
+                                                <button type="button" class="chat-reply-btn"><img src="<c:url value="/resources/images/chat-reply-icon.svg"/>"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
                     </div>
 
                     <div v-if="showingTemplateLevel" class="template-container">
@@ -150,8 +198,92 @@
                     </div>
 
                     <div class="write-chat">
-                        <textarea ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup"></textarea>
-                        <button type="button" class="send-btn" @click="sendMessage()">전송</button>
+
+                        <div class="template-container">
+                            <div class="template-container-inner">
+                                <ul class="template-ul">
+                                    <li class="template-list">
+                                        <div class="template-title">/테스트</div>
+                                        <div class="template-content">내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용</div>
+                                    </li>
+                                    <li class="template-list">
+                                        <div class="template-title">/타이틀</div>
+                                        <div class="template-content">내용</div>
+                                    </li>
+                                    <li class="template-list">
+                                        <div class="template-title">/센터이전안내</div>
+                                        <div class="template-content">내용</div>
+                                    </li>
+                                    <li class="template-list">
+                                        <div class="template-title">/테스트테스트</div>
+                                        <div class="template-content">내용</div>
+                                    </li>
+                                    <li class="template-list">
+                                        <div class="template-title">/테스트</div>
+                                        <div class="template-content"><img src="https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202109/28/84a5d147-b802-472c-95df-3d588aab83f9.jpg"></div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <%--일반 메시지 답장--%>
+                        <div class="view-to-reply">
+                            <div class="target-text">
+                                <p class="target-user">[홍길동]에게 답장</p>
+                                <p class="target-content">메시지메시지메시지메시지메시지메시지메시지메시지</p>
+                            </div>
+                            <div class="target-close">
+                                <img src="<c:url value="/resources/images/chat-reply-close-icon.svg"/>">
+                            </div>
+                        </div>
+
+                        <%--파일 답장--%>
+                        <%--<div class="view-to-reply">
+                            <div class="target-text">
+                                <p class="target-user">[홍길동]에게 답장</p>
+                                <p class="target-content">abc.hwp</p>
+                            </div>
+                            <div class="target-close">
+                                <img src="<c:url value="/resources/images/chat-reply-close-icon.svg"/>">
+                            </div>
+                        </div>--%>
+
+                        <%--사진 답장--%>
+                        <%--<div class="view-to-reply">
+                            <div class="target-image">
+                                <img src="https://t1.daumcdn.net/cfile/tistory/9933673A5E604C052F" class="target-image-content">
+                            </div>
+                            <div class="target-text">
+                                <p class="target-user">[홍길동]에게 답장</p>
+                                <p class="target-content">사진</p>
+                            </div>
+                            <div class="target-close">
+                                <img src="<c:url value="/resources/images/chat-reply-close-icon.svg"/>">
+                            </div>
+                        </div>--%>
+                        <div class="wrap-inp">
+                            <textarea ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup" placeholder="전송하실 메시지를 입력하세요."></textarea>
+                            <button type="button" class="send-btn" @click="sendMessage()"></button>
+                        </div>
+                    </div>
+                    <div class="write-menu">
+                        <div>
+                            <button type="button" data-inverted="" data-tooltip="템플릿" data-position="top left">
+                                <img src="<c:url value="/resources/images/chat-template-import-icon.svg"/>">
+                            </button>
+                            <input style="display: none" type="file" @change="sendFile">
+                            <button type="button" data-inverted="" data-tooltip="파일첨부" data-position="top center" onclick="this.previousElementSibling.click()">
+                                <img src="<c:url value="/resources/images/chat-file-icon.svg"/>">
+                            </button>
+                            <button type="button" data-inverted="" data-tooltip="초대" data-position="top right" onclick="roomCreationOrganizationModalApp.popupInvitationModal()">
+                                <img src="<c:url value="/resources/images/chat-user-add-icon.svg"/>">
+                            </button>
+                        </div>
+                        <div>
+                            <button type="button" data-inverted="" data-tooltip="나가기" data-position="top right" @click="leave">
+                                <img src="<c:url value="/resources/images/chat-exit-icon.svg"/>" alt="나가기">
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -768,6 +900,28 @@
         restSelf.get('/api/auth/socket-info').done(function (response) {
             messengerCommunicator.connect(response.data.messengerSocketUrl, response.data.companyId, response.data.userId, response.data.userName, response.data.password)
         })
+
+        $('.messenger-chat-search-btn').click(function(){
+            $('.chat-search-wrap').toggleClass('active');
+        })
+
+        $('.chat-reply-btn').click(function(){
+            $('.view-to-reply').css("display","flex");
+        });
+
+        // 메시지 우측 클릭 메뉴
+        // TODO: 우측 클릭으로 변경, 마우스 우측 클릭한 좌표에서 출력되도록 변경 필요
+
+        $('.chat-body .txt-chat').click(function(){
+            $('.chat-more-nav').css("display","flex");
+        });
+
+        $(document).mouseup(function (e){
+            var chatMoreNav = $('.chat-more-nav');
+            if(chatMoreNav.has(e.target).length === 0){
+                chatMoreNav.hide();
+            }
+        });
     </script>
 </tags:scripts>
 

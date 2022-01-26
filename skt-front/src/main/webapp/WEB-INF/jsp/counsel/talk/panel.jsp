@@ -150,6 +150,9 @@
                             </div>
                         </div>
 
+
+                    </div>
+                    <div class="write-chat">
                         <%--일반 메시지 답장--%>
                         <div class="view-to-reply">
                             <div class="target-text">
@@ -185,8 +188,6 @@
                                 <img src="<c:url value="/resources/images/chat-reply-close-icon.svg"/>">
                             </div>
                         </div>--%>
-                    </div>
-                    <div class="write-chat">
                         <div class="template-container">
                             <div class="template-container-inner">
                                 <ul class="template-ul">
@@ -548,6 +549,9 @@
                         </div>
                     </div>
 
+
+                </div>
+                <div class="write-chat">
                     <%--일반 메시지 답장--%>
                     <div class="view-to-reply">
                         <div class="target-text">
@@ -583,8 +587,6 @@
                             <img src="<c:url value="/resources/images/chat-reply-close-icon.svg"/>">
                         </div>
                     </div>--%>
-                </div>
-                <div class="write-chat">
                     <div class="template-container">
                         <div class="template-container-inner">
                             <ul class="template-ul">
