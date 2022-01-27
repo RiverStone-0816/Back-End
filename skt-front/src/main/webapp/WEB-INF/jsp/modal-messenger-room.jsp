@@ -17,250 +17,127 @@
 
 <div class="ui modal tiny" id="modal-messenger-room">
     <i class="close icon" onclick="messenger.closeRoom()"></i>
-    <%--<div @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true" @click.stop="showingTemplateLevel=0" style="position: absolute; top: 0; right: 0; left: 0; bottom: 0;">--%>
 
-        <%--<div &lt;%&ndash;v-if="showingDropzone"&ndash;%&gt; class="attach-overlay">
-            <div class="inner">
-                <img src="<c:url value="/resources/images/circle-plus.svg"/>">
-                <p class="attach-text">파일을 채팅창에 바로 업로드하려면<br>여기에 드롭하세요.</p>
-            </div>
-        </div>--%>
-
-        <div class="header">
-            <button class="room-title" @click.stop.prevent="popupRoomNameModal">{{ roomName }}</button>
-            <div class="messenger-search-btn-wrap">
-                <button type="button" class="messenger-chat-search-btn">
-                    <img src="/resources/images/chat-search-icon.svg">
+    <div class="header">
+        <button class="room-title" @click.stop.prevent="popupRoomNameModal">{{ roomName }}</button>
+        <div class="messenger-search-btn-wrap">
+            <button type="button" class="messenger-chat-search-btn">
+                <img src="<c:url value="/resources/images/chat-search-icon.svg"/>">
+            </button>
+        </div>
+    </div>
+    <div class="content" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true" @click.stop="showingTemplateLevel=0">
+        <div class="organi-chat-room-container">
+            <div class="chat-search-wrap">
+                <div class="chat-search-control">
+                    <div class="control-inner">
+                        <input type="text" v-model="searchingText">
+                        <button type="button" class="keyword-search-btn -search-icon"><img src="<c:url value="/resources/images/chat-search-grey-icon.svg"/>"></button>
+                        <div class="keyword-count">
+                            <text class="-text-count">{{ searchingTexts.length && (searchingTextIndex + 1) || 0 }} / {{ searchingTexts.length || 0 }}</text>
+                        </div>
+                        <button type="button" @click.stop="moveToPreviousText"><img src="<c:url value="/resources/images/chat-arrow-up-icon.svg"/>" alt="이전 검색단어"></button>
+                        <button type="button" @click.stop="moveToNextText"><img src="<c:url value="/resources/images/chat-arrow-down-icon.svg"/>" alt="다음 검색단어"></button>
+                    </div>
+                </div>
+                <button type="button" class="chat-search-close-btn">
+                    <img src="<c:url value="/resources/images/chat-find-close-icon.svg"/>">
                 </button>
             </div>
-        </div>
-        <div class="content">
-            <div class="organi-chat-room-container">
-                <div class="chat-search-wrap">
-                    <div class="chat-search-control">
-                        <div class="control-inner">
-                            <input type="text" v-model="searchingText">
-                            <button type="button" class="keyword-search-btn -search-icon"><img src="<c:url value="/resources/images/chat-search-grey-icon.svg"/>"></button>
-                            <div class="keyword-count"><text class="-text-count">{{ searchingTexts.length && (searchingTextIndex + 1) || 0 }} / {{ searchingTexts.length || 0 }}</text></div>
-                            <button type="button" @click.stop="moveToPreviousText"><img src="<c:url value="/resources/images/chat-arrow-up-icon.svg"/>" alt="이전 검색단어"></button>
-                            <button type="button" @click.stop="moveToNextText"><img src="<c:url value="/resources/images/chat-arrow-down-icon.svg"/>" alt="다음 검색단어"></button>
-                        </div>
-                    </div>
-                    <button type="button" class="chat-search-close-btn">
-                        <img src="<c:url value="/resources/images/chat-find-close-icon.svg"/>">
-                    </button>
-                </div>
-                <div class="organi-chat-room-content">
-                    <div class="chat-body" ref="chatBody" @scroll="loadAdditionalMessagesIfTop" style="overflow-y: scroll; scroll-behavior: smooth;">
-                        <%--파일 드래그앤드롭 UI--%>
-                        <%--<div class="attach-overlay">
-                            <img src="<c:url value="/resources/images/attach-plus-icon.svg"/>">
-                            <p>채팅방에 파일을 바로 업로드하려면 여기에 드롭하세요.</p>
-                        </div>--%>
-                        <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + e.messageId">
-                            <p v-if="['SE', 'RE'].includes(e.sendReceive)" class="info-msg">[{{ getTimeFormat(e.time) }}]</p>
-                            <p v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
-                            <div v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info'" class="chat-item"
-                                 :class="(['AF', 'S'].includes(e.sendReceive) && e.userId === userId && 'chat-me') + ' ' + (activatedSearchingTextMessageId === e.messageId && 'active')">
-                                <div class="wrap-content">
-                                    <div class="txt-segment">
+            <div class="organi-chat-room-content">
+                <div class="chat-body" ref="chatBody" @scroll="loadAdditionalMessagesIfTop" style="overflow-y: scroll; scroll-behavior: smooth;">
 
-                                        <div class="txt-time">[{{ e.username }}] {{ getTimeFormat(e.time) }}</div>
-                                        <div class="chat">
-                                            <div v-if="e.userId === userId" class="chat-layer" style="visibility: hidden;">
-                                                <div class="buttons">
-                                                    <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="top center"></button>
-                                                    <button @click="popupTemplateModal(e)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
-                                                    <button @click="popupTaskScriptModal(e)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="top center"></button>
-                                                    <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
-                                                </div>
+                    <div v-if="showingDropzone" class="attach-overlay">
+                        <img src="<c:url value="/resources/images/attach-plus-icon.svg"/>">
+                        <p>채팅방에 파일을 바로 업로드하려면 여기에 드롭하세요.</p>
+                    </div>
+
+                    <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + e.messageId">
+                        <p v-if="['SE', 'RE'].includes(e.sendReceive)" class="info-msg">[{{ getTimeFormat(e.time) }}]</p>
+                        <p v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
+                        <div v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info'" class="chat-item"
+                             :class="(['AF', 'S'].includes(e.sendReceive) && e.userId === userId && 'chat-me') + ' ' + (activatedSearchingTextMessageId === e.messageId && 'active')">
+                            <div class="wrap-content">
+                                <div class="txt-segment">
+                                    <div class="txt-time">[{{ e.username }}] {{ getTimeFormat(e.time) }}</div>
+                                    <div class="chat">
+                                        <div class="bubble">
+                                            <div class="chat-more-nav">
+                                                <button @click="replying = e" class="nav-chat-reply-btn">
+                                                    <img src="<c:url value="/resources/images/chat-reply-icon.svg"/>">답장
+                                                </button>
+                                                <button @click="popupTemplateModal(e)" class="nav-template-btn">
+                                                    <img src="<c:url value="/resources/images/chat-more-template-icon.svg"/>">템플릿
+                                                </button>
+                                                <button @click="popupTaskScriptModal(e)" class="nav-knowhow-btn">
+                                                    <img src="<c:url value="/resources/images/chat-more-knowledge-icon.svg"/>">지식관리
+                                                </button>
                                             </div>
-                                            <div class="bubble">
-                                                <div class="count">{{ e.unreadCount || '' }}</div>
-                                                <div class="txt-chat">
-                                                    <img v-if="e.messageType === 'file' && e.fileType === 'image'" :src="e.fileUrl" class="cursor-pointer" @click="popupImageView(e.fileUrl)">
-                                                    <audio v-else-if="e.messageType === 'file' && e.fileType === 'audio'" controls :src="e.fileUrl" style="height: 35px;"></audio>
-                                                    <a v-else-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl">
-                                                        <i class="paperclip icon"></i> {{ e.fileName }}
-                                                        <p style="opacity: 50%; font-size: smaller; padding: 0 0.5em 1em;"> 용량: {{ e.fileSize }}</p>
-                                                    </a>
-                                                    <template v-else>
-                                                        <div v-if="e.replyingType" class="reply-content-container">
-                                                            <div v-if="e.replyingType === 'image'" class="reply-content photo">
-                                                                <img :src="e.replyingTarget">
-                                                            </div>
-                                                            <div class="reply-content">
-                                                                <div class="target-msg">
-                                                                    <template v-if="e.replyingType === 'text'">{{ e.replyingTarget }}</template>
-                                                                    <a v-else :href="e.replyingTarget" target="_blank">{{ e.replyingType === 'image' ? '사진' : '파일' }}</a>
-                                                                </div>
+
+                                            <div class="count">{{ e.unreadCount || '' }}</div>
+                                            <div class="txt-chat">
+                                                <img v-if="e.messageType === 'file' && e.fileType === 'image'" :src="e.fileUrl" class="cursor-pointer" @click="popupImageView(e.fileUrl)">
+                                                <audio v-else-if="e.messageType === 'file' && e.fileType === 'audio'" controls :src="e.fileUrl" style="height: 35px;"></audio>
+                                                <a v-else-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl">
+                                                    <i class="paperclip icon"></i> {{ e.fileName }}
+                                                    <p style="opacity: 50%; font-size: smaller; padding: 0 0.5em 1em;"> 용량: {{ e.fileSize }}</p>
+                                                </a>
+                                                <template v-else>
+                                                    <div v-if="e.replyingType" class="reply-content-container">
+                                                        <div v-if="e.replyingType === 'image'" class="reply-content photo">
+                                                            <img :src="e.replyingTarget">
+                                                        </div>
+                                                        <div class="reply-content">
+                                                            <div class="target-msg">
+                                                                <template v-if="e.replyingType === 'text'">{{ e.replyingTarget }}</template>
+                                                                <a v-else :href="e.replyingTarget" target="_blank">{{ e.replyingType === 'image' ? '사진' : '파일' }}</a>
                                                             </div>
                                                         </div>
-                                                        <p>{{ e.contents }}</p>
-                                                    </template>
-                                                </div>
-                                            </div>
-                                            <div v-if="e.userId !== userId" class="chat-layer" style="visibility: hidden;">
-                                                <div class="buttons">
-                                                    <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="top center"></button>
-                                                    <button @click="popupTemplateModal(e)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
-                                                    <button @click="popupTaskScriptModal(e)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="top center"></button>
-                                                    <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <a v-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl"><i class="file icon"></i>저장하기</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="chat-item">
-                                <div class="wrap-content">
-                                    <div class="txt-segment">
-                                        <div class="txt-time">[상담사1] 09-22 02:48</div>
-                                        <div class="chat">
-                                            <div class="bubble">
-                                                <div class="chat-more-nav">
-                                                    <button type="button" class="nav-chat-reply-btn">
-                                                        <img src="<c:url value="/resources/images/chat-reply-icon.svg"/>">답장
-                                                    </button>
-                                                    <button type="button" class="nav-template-btn">
-                                                        <img src="<c:url value="/resources/images/chat-more-template-icon.svg"/>">템플릿
-                                                    </button>
-                                                    <button type="button" class="nav-knowhow-btn">
-                                                        <img src="<c:url value="/resources/images/chat-more-knowledge-icon.svg"/>">지식관리
-                                                    </button>
-                                                </div>
-                                                <div class="count">1</div>
-                                                <div class="txt-chat">
-                                                    <p>테스트테스트테스트</p>
-                                                </div>
-                                                <button type="button" class="chat-reply-btn"><img src="<c:url value="/resources/images/chat-reply-icon.svg"/>"></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="chat-item chat-me">
-                                <div class="wrap-content">
-                                    <div class="txt-segment">
-                                        <div class="txt-time">[유도윤] 09-22 02:48</div>
-                                        <div class="chat">
-                                            <div class="bubble">
-                                                <div class="count">1</div>
-                                                <div class="reply-content-container">
-                                                    <div class="reply-content">
-                                                        <div class="target-user">[홍길동]에게 답장</div>
-                                                        <div class="target-msg">테스트 메시지 메시지</div>
                                                     </div>
-                                                </div>
-                                                <div class="txt-chat">
-                                                    <p>테스트테스트테스트</p>
-                                                </div>
-                                                <button type="button" class="chat-reply-btn"><img src="<c:url value="/resources/images/chat-reply-icon.svg"/>"></button>
+                                                    <p>{{ e.contents }}</p>
+                                                </template>
+                                            </div>
+                                        </div>
+                                        <div v-if="e.userId !== userId" class="chat-layer" style="visibility: hidden;">
+                                            <div class="buttons">
+                                                <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="top center"></button>
+                                                <button @click="popupTemplateModal(e)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
+                                                <button @click="popupTaskScriptModal(e)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="top center"></button>
                                             </div>
                                         </div>
                                     </div>
+                                    <a v-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl"><i class="file icon"></i>저장하기</a>
                                 </div>
                             </div>
-                        </div>
-
-
-
-                    </div>
-
-                    <div v-if="showingTemplateLevel" class="template-container">
-                        <div class="template-container-inner">
-                            <ul class="template-ul">
-                                <li v-for="(e, i) in getTemplates()" :key="i" :class="i === activatingTemplateIndex && 'active'" @click.stop="sendTemplate(e)" class="template-list">
-                                    <div class="template-title">/{{ e.name }}</div>
-                                    <img v-if="e.isImage" :src="e.url" class="template-image" :alt="e.fileName"/>
-                                    <div v-if="e.isImage" class="template-content" style="text-decoration: underline">{{ e.fileName }}</div>
-                                    <div v-else class="template-content">{{ e.text }}</div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div v-if="replying !== null" class="view-to-reply">
-                        <div v-if="replying.messageType === 'file' && replying.fileType === 'image'" class="target-image">
-                            <img :src="replying.fileUrl" class="target-image-content">
-                        </div>
-                        <div class="target-text">
-                            <p class="target-user">{{ replying.username }}에게 답장</p>
-                            <p class="target-content">{{ replying.messageType === 'file' ? replying.fileName : replying.contents }}</p>
-                        </div>
-                        <div class="target-close" @click="replying=null">
-                            <img src="<c:url value="/resources/images/icon-close.svg"/>">
                         </div>
                     </div>
 
                     <div class="write-chat">
-
-                        <div class="template-container">
+                        <div v-if="showingTemplateLevel" class="template-container">
                             <div class="template-container-inner">
                                 <ul class="template-ul">
-                                    <li class="template-list">
-                                        <div class="template-title">/테스트</div>
-                                        <div class="template-content">내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용</div>
-                                    </li>
-                                    <li class="template-list">
-                                        <div class="template-title">/타이틀</div>
-                                        <div class="template-content">내용</div>
-                                    </li>
-                                    <li class="template-list">
-                                        <div class="template-title">/센터이전안내</div>
-                                        <div class="template-content">내용</div>
-                                    </li>
-                                    <li class="template-list">
-                                        <div class="template-title">/테스트테스트</div>
-                                        <div class="template-content">내용</div>
-                                    </li>
-                                    <li class="template-list">
-                                        <div class="template-title">/테스트</div>
-                                        <div class="template-content"><img src="https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202109/28/84a5d147-b802-472c-95df-3d588aab83f9.jpg"></div>
+                                    <li v-for="(e, i) in getTemplates()" :key="i" :class="i === activatingTemplateIndex && 'active'" @click.stop="sendTemplate(e)" class="template-list">
+                                        <div class="template-title">/{{ e.name }}</div>
+                                        <img v-if="e.isImage" :src="e.url" class="template-image" :alt="e.fileName"/>
+                                        <div v-if="e.isImage" class="template-content" style="text-decoration: underline">{{ e.fileName }}</div>
+                                        <div v-else class="template-content">{{ e.text }}</div>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-
-                        <%--일반 메시지 답장--%>
-                        <div class="view-to-reply">
-                            <div class="target-text">
-                                <p class="target-user">[홍길동]에게 답장</p>
-                                <p class="target-content">메시지메시지메시지메시지메시지메시지메시지메시지</p>
+                        <div v-if="replying !== null" class="view-to-reply">
+                            <div v-if="replying.messageType === 'file' && replying.fileType === 'image'" class="target-image">
+                                <img :src="replying.fileUrl" class="target-image-content">
                             </div>
-                            <div class="target-close">
+                            <div class="target-text">
+                                <p class="target-user">{{ replying.username }}에게 답장</p>
+                                <p class="target-content">{{ replying.messageType === 'file' ? replying.fileName : replying.contents }}</p>
+                            </div>
+                            <div class="target-close" @click="replying=null">
                                 <img src="<c:url value="/resources/images/chat-reply-close-icon.svg"/>">
                             </div>
                         </div>
 
-                        <%--파일 답장--%>
-                        <%--<div class="view-to-reply">
-                            <div class="target-text">
-                                <p class="target-user">[홍길동]에게 답장</p>
-                                <p class="target-content">abc.hwp</p>
-                            </div>
-                            <div class="target-close">
-                                <img src="<c:url value="/resources/images/chat-reply-close-icon.svg"/>">
-                            </div>
-                        </div>--%>
-
-                        <%--사진 답장--%>
-                        <%--<div class="view-to-reply">
-                            <div class="target-image">
-                                <img src="https://t1.daumcdn.net/cfile/tistory/9933673A5E604C052F" class="target-image-content">
-                            </div>
-                            <div class="target-text">
-                                <p class="target-user">[홍길동]에게 답장</p>
-                                <p class="target-content">사진</p>
-                            </div>
-                            <div class="target-close">
-                                <img src="<c:url value="/resources/images/chat-reply-close-icon.svg"/>">
-                            </div>
-                        </div>--%>
                         <div class="wrap-inp">
                             <textarea ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup" placeholder="전송하실 메시지를 입력하세요."></textarea>
                             <button type="button" class="send-btn" @click="sendMessage()"></button>
@@ -288,7 +165,9 @@
                 </div>
             </div>
         </div>
+    </div>
 </div>
+
 <tags:scripts>
     <script>
         const messengerModal = document.getElementById('modal-messenger-room')
