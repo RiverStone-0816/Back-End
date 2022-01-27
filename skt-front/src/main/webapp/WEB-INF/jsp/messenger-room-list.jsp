@@ -20,7 +20,7 @@
     <div class="panel-body full-height remove-padding">
         <div class="pd10 panel-border-bottom">
             <div class="ui fluid icon input">
-                <input type="text" placeholder="검색어 입력" v-model="filterString"/><%--TODO--%>
+                <input type="text" placeholder="검색어 입력" v-model="filterString"/>
                 <i class="search link icon"></i>
             </div>
         </div>
@@ -122,6 +122,8 @@
                         const last = this.roomList[this.roomList.length - 1]
                         this.roomMap[last.roomId] = last
                     }
+
+                    $('#organi-room .message-indicator').text(this.roomList.reduce((sum, e) => sum + (e.unreadMessageTotalCount || 0), 0))
 
                     this.sortRooms()
                 },

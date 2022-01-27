@@ -220,7 +220,6 @@
                 <button type="button" class="ui basic button" id="organi-state">현황</button>
                 <c:if test="${user.isChatt.equals('Y')}">
                     <button type="button" class="ui basic button" id="organi-room">
-                            <%--TODO--%>
                         <text class="message-indicator">0</text>
                         <text>대화방</text>
                     </button>

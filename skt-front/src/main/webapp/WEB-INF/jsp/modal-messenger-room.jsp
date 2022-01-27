@@ -26,7 +26,7 @@
             </button>
         </div>
     </div>
-    <div class="content" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true" @click.stop="showingTemplateLevel=0">
+    <div class="content" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true" @click.stop="showingTemplateLevel=0" @mouseup="mouseup">
         <div class="organi-chat-room-container">
             <div v-if="showingSearchbar" class="chat-search-wrap active">
                 <div class="chat-search-control">
@@ -709,7 +709,7 @@
                 mouseup(event) {
                     event.stopImmediatePropagation()
                     $('.chat-more-nav').hide()
-                    $(event.target).find('.chat-more-nav').css("display","flex")
+                    $(event.target).closest('.chat-item').find('.chat-more-nav').css("display","flex")
                 }
             },
             updated: function () {
@@ -731,12 +731,12 @@
                 data.room_id,
                 data.room_name,
                 data.contents,
-                parseFloat(data.cur_timestr) * 1000
+                moment(data.cur_timestr, 'YYYYMMDDHHmmss')
             )
             messenger.appendMessage({
                 roomId: data.room_id,
                 messageId: data.message_id,
-                time: parseFloat(data.cur_timestr) * 1000,
+                time: moment(data.cur_timestr, 'YYYYMMDDHHmmss'),
                 messageType: data.type,
                 sendReceive: data.send_receive,
                 contents: data.contents,
