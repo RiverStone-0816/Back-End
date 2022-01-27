@@ -21,26 +21,26 @@
     <div class="header">
         <button class="room-title" @click.stop.prevent="popupRoomNameModal">{{ roomName }}</button>
         <div class="messenger-search-btn-wrap">
-            <button type="button" class="messenger-chat-search-btn">
+            <button @click.stop.prevent="showingSearchbar = true" class="messenger-chat-search-btn">
                 <img src="<c:url value="/resources/images/chat-search-icon.svg"/>">
             </button>
         </div>
     </div>
     <div class="content" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true" @click.stop="showingTemplateLevel=0">
         <div class="organi-chat-room-container">
-            <div class="chat-search-wrap">
+            <div v-if="showingSearchbar" class="chat-search-wrap active">
                 <div class="chat-search-control">
                     <div class="control-inner">
                         <input type="text" v-model="searchingText">
-                        <button type="button" class="keyword-search-btn -search-icon"><img src="<c:url value="/resources/images/chat-search-grey-icon.svg"/>"></button>
+                        <button @click.stop.prevent="searchText" class="keyword-search-btn"><img src="<c:url value="/resources/images/chat-search-grey-icon.svg"/>"></button>
                         <div class="keyword-count">
                             <text class="-text-count">{{ searchingTexts.length && (searchingTextIndex + 1) || 0 }} / {{ searchingTexts.length || 0 }}</text>
                         </div>
-                        <button type="button" @click.stop="moveToPreviousText"><img src="<c:url value="/resources/images/chat-arrow-up-icon.svg"/>" alt="이전 검색단어"></button>
-                        <button type="button" @click.stop="moveToNextText"><img src="<c:url value="/resources/images/chat-arrow-down-icon.svg"/>" alt="다음 검색단어"></button>
+                        <button @click.stop.prevent="moveToPreviousText"><img src="<c:url value="/resources/images/chat-arrow-up-icon.svg"/>" alt="이전 검색단어"></button>
+                        <button @click.stop.prevent="moveToNextText"><img src="<c:url value="/resources/images/chat-arrow-down-icon.svg"/>" alt="다음 검색단어"></button>
                     </div>
                 </div>
-                <button type="button" class="chat-search-close-btn">
+                <button @click.stop.prevent="showingSearchbar = false" class="chat-search-close-btn">
                     <img src="<c:url value="/resources/images/chat-find-close-icon.svg"/>">
                 </button>
             </div>
@@ -61,7 +61,7 @@
                                 <div class="txt-segment">
                                     <div class="txt-time">[{{ e.username }}] {{ getTimeFormat(e.time) }}</div>
                                     <div class="chat">
-                                        <div class="bubble">
+                                        <div class="bubble" @mouseup="mouseup">
                                             <div class="chat-more-nav">
                                                 <button @click="replying = e" class="nav-chat-reply-btn">
                                                     <img src="<c:url value="/resources/images/chat-reply-icon.svg"/>">답장
@@ -97,13 +97,7 @@
                                                     <p>{{ e.contents }}</p>
                                                 </template>
                                             </div>
-                                        </div>
-                                        <div v-if="e.userId !== userId" class="chat-layer" style="visibility: hidden;">
-                                            <div class="buttons">
-                                                <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="top center"></button>
-                                                <button @click="popupTemplateModal(e)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
-                                                <button @click="popupTaskScriptModal(e)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="top center"></button>
-                                            </div>
+                                            <button @click="replying = e" class="chat-reply-btn"><img src="<c:url value="/resources/images/chat-reply-icon.svg"/>"></button>
                                         </div>
                                     </div>
                                     <a v-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl"><i class="file icon"></i>저장하기</a>
@@ -145,19 +139,19 @@
                     </div>
                     <div class="write-menu">
                         <div>
-                            <button type="button" data-inverted="" data-tooltip="템플릿" data-position="top left">
+                            <%--<button type="button" data-inverted data-tooltip="템플릿" data-position="top left">
                                 <img src="<c:url value="/resources/images/chat-template-import-icon.svg"/>">
-                            </button>
+                            </button>--%>
                             <input style="display: none" type="file" @change="sendFile">
-                            <button type="button" data-inverted="" data-tooltip="파일첨부" data-position="top center" onclick="this.previousElementSibling.click()">
+                            <button type="button" data-inverted data-tooltip="파일첨부" data-position="top center" onclick="this.previousElementSibling.click()">
                                 <img src="<c:url value="/resources/images/chat-file-icon.svg"/>">
                             </button>
-                            <button type="button" data-inverted="" data-tooltip="초대" data-position="top right" onclick="roomCreationOrganizationModalApp.popupInvitationModal()">
+                            <button type="button" data-inverted data-tooltip="초대" data-position="top right" onclick="roomCreationOrganizationModalApp.popupInvitationModal()">
                                 <img src="<c:url value="/resources/images/chat-user-add-icon.svg"/>">
                             </button>
                         </div>
                         <div>
-                            <button type="button" data-inverted="" data-tooltip="나가기" data-position="top right" @click="leave">
+                            <button type="button" data-inverted data-tooltip="나가기" data-position="top right" @click="leave">
                                 <img src="<c:url value="/resources/images/chat-exit-icon.svg"/>" alt="나가기">
                             </button>
                         </div>
@@ -190,8 +184,8 @@
                     roomName: '',
 
                     showingInvitationPanel: false,
-
                     showingDropzone: false,
+                    showingSearchbar: false,
 
                     showingTemplateLevel: 0,
                     showingTemplateFilter: '',
@@ -712,6 +706,11 @@
                         contents = selectedTextContents.text
 
                     popupDraggableModalFromReceivedHtml('/admin/service/help/task-script/modal-search?title=' + encodeURIComponent(contents), 'modal-search-task-script')
+                },
+                mouseup(event) {
+                    event.stopImmediatePropagation()
+                    $('.chat-more-nav').hide()
+                    $(event.target).find('.chat-more-nav').css("display","flex")
                 }
             },
             updated: function () {
@@ -779,28 +778,6 @@
         restSelf.get('/api/auth/socket-info').done(function (response) {
             messengerCommunicator.connect(response.data.messengerSocketUrl, response.data.companyId, response.data.userId, response.data.userName, response.data.password)
         })
-
-        $('.messenger-chat-search-btn').click(function(){
-            $('.chat-search-wrap').toggleClass('active');
-        })
-
-        $('.chat-reply-btn').click(function(){
-            $('.view-to-reply').css("display","flex");
-        });
-
-        // 메시지 우측 클릭 메뉴
-        // TODO: 우측 클릭으로 변경, 마우스 우측 클릭한 좌표에서 출력되도록 변경 필요
-
-        $('.chat-body .txt-chat').click(function(){
-            $('.chat-more-nav').css("display","flex");
-        });
-
-        $(document).mouseup(function (e){
-            var chatMoreNav = $('.chat-more-nav');
-            if(chatMoreNav.has(e.target).length === 0){
-                chatMoreNav.hide();
-            }
-        });
     </script>
 </tags:scripts>
 
