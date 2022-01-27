@@ -18,7 +18,7 @@
               <template v-if="message.sender === 'SERVER' && message.messageType === 'ipcc_control'">
                 <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row items-center">
-                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
+                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xs">
                       <div v-if="message.data.image" class="relative rounded-lg pt-1 pb-3">
                         <img class="w-full" :src="getFileUrl(message.company, message.data.image)" alt="intro image">
                       </div>
@@ -78,7 +78,7 @@
               <template v-if="message.sender === 'SERVER' && message.messageType === 'api_result'">
                 <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
-                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
+                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xs">
                       <div>
                         <p style="white-space: pre-wrap; line-break: anywhere;">{{ makeApiResultMessage(message.data.next_api_result_tpl, message.data.api_result_body) }}</p>
                       </div>
@@ -91,7 +91,7 @@
               <template v-if="message.sender === 'SERVER' && message.messageType === 'member'">
                 <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
-                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
+                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xs">
                       <div>
                         <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.ment }}</p>
                       </div>
@@ -104,7 +104,7 @@
               <template v-if="message.sender === 'SERVER' && message.messageType === 'member_text'">
                 <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
-                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
+                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xs">
                       <div class="divide-y">
                         <template v-if="message.data.replyingType">
                           <div class="flex pb-2 text-gray-400">
