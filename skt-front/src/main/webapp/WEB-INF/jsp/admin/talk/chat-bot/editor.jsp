@@ -693,7 +693,9 @@
 
                                     app.buttons.forEach(() => editor.addNodeOutput(nodeId))
                                 }
-                                createBlock(data.blockInfo)
+
+                                if (data.blockInfo) createBlock(data.blockInfo)
+                                else createBlock({id: 0, posX: 100, posY: 100, name: '', isTemplateEnable: false, displayList: [], buttonList: []})
 
                                 for (let nodeId in nodeIdToConnections) {
                                     const app = nodeBlockMap[nodeId]

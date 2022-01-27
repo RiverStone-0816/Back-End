@@ -9,7 +9,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class WebchatBotFallbackFormRequest extends BaseForm {
-    @NotNull("봇이름")
     private String name;
     @NotNull("고객입력")
     private Boolean enableCustomerInput;
