@@ -978,7 +978,7 @@ pre {
       background: #dce6f2;
       overflow: auto;
       height: 100%;
-      padding: 10px 0 0 0;
+      padding: 0;
       .event-txt {
         background: #616B77;
         color: @color-white;
@@ -996,7 +996,7 @@ pre {
       .chat-item {
         overflow: unset;
         position: relative;
-        padding: 0 75px 20px 12px;
+        padding: 10px 75px 15px 12px;
         .wrap-content {
           .txt-segment {
             .txt-time {
@@ -3299,7 +3299,7 @@ label.control-label {
   flex-flow: column;
   background: rgba(0,0,0,.7);
   color:#fff;
-  position:absolute;
+  position:sticky;
   left: 0;
   top: 0;
   width: 100%;
@@ -4875,6 +4875,7 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
     .chat-body {
       font-size: 10pt;
       height: ~"calc(100% - 189px)";
+      padding: 0;
       .reply-content-container {
         .flex();
         border-bottom: 1px solid #e0d14d;
@@ -4903,7 +4904,7 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
       .chat-item {
         overflow: unset;
         position: relative;
-        padding: 0 75px 20px 12px;
+        padding: 10px 75px 15px 12px;
         .wrap-content {
           .flex();
           flex-flow: row;

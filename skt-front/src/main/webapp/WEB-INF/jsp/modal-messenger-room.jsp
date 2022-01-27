@@ -111,56 +111,55 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="write-chat">
-                        <div v-if="showingTemplateLevel" class="template-container">
-                            <div class="template-container-inner">
-                                <ul class="template-ul">
-                                    <li v-for="(e, i) in getTemplates()" :key="i" :class="i === activatingTemplateIndex && 'active'" @click.stop="sendTemplate(e)" class="template-list">
-                                        <div class="template-title">/{{ e.name }}</div>
-                                        <img v-if="e.isImage" :src="e.url" class="template-image" :alt="e.fileName"/>
-                                        <div v-if="e.isImage" class="template-content" style="text-decoration: underline">{{ e.fileName }}</div>
-                                        <div v-else class="template-content">{{ e.text }}</div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div v-if="replying !== null" class="view-to-reply">
-                            <div v-if="replying.messageType === 'file' && replying.fileType === 'image'" class="target-image">
-                                <img :src="replying.fileUrl" class="target-image-content">
-                            </div>
-                            <div class="target-text">
-                                <p class="target-user">{{ replying.username }}에게 답장</p>
-                                <p class="target-content">{{ replying.messageType === 'file' ? replying.fileName : replying.contents }}</p>
-                            </div>
-                            <div class="target-close" @click="replying=null">
-                                <img src="<c:url value="/resources/images/chat-reply-close-icon.svg"/>">
-                            </div>
-                        </div>
-
-                        <div class="wrap-inp">
-                            <textarea ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup" placeholder="전송하실 메시지를 입력하세요."></textarea>
-                            <button type="button" class="send-btn" @click="sendMessage()"></button>
+                </div>
+                <div class="write-chat">
+                    <div v-if="showingTemplateLevel" class="template-container">
+                        <div class="template-container-inner">
+                            <ul class="template-ul">
+                                <li v-for="(e, i) in getTemplates()" :key="i" :class="i === activatingTemplateIndex && 'active'" @click.stop="sendTemplate(e)" class="template-list">
+                                    <div class="template-title">/{{ e.name }}</div>
+                                    <img v-if="e.isImage" :src="e.url" class="template-image" :alt="e.fileName"/>
+                                    <div v-if="e.isImage" class="template-content" style="text-decoration: underline">{{ e.fileName }}</div>
+                                    <div v-else class="template-content">{{ e.text }}</div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="write-menu">
-                        <div>
-                            <button type="button" data-inverted="" data-tooltip="템플릿" data-position="top left">
-                                <img src="<c:url value="/resources/images/chat-template-import-icon.svg"/>">
-                            </button>
-                            <input style="display: none" type="file" @change="sendFile">
-                            <button type="button" data-inverted="" data-tooltip="파일첨부" data-position="top center" onclick="this.previousElementSibling.click()">
-                                <img src="<c:url value="/resources/images/chat-file-icon.svg"/>">
-                            </button>
-                            <button type="button" data-inverted="" data-tooltip="초대" data-position="top right" onclick="roomCreationOrganizationModalApp.popupInvitationModal()">
-                                <img src="<c:url value="/resources/images/chat-user-add-icon.svg"/>">
-                            </button>
+                    <div v-if="replying !== null" class="view-to-reply">
+                        <div v-if="replying.messageType === 'file' && replying.fileType === 'image'" class="target-image">
+                            <img :src="replying.fileUrl" class="target-image-content">
                         </div>
-                        <div>
-                            <button type="button" data-inverted="" data-tooltip="나가기" data-position="top right" @click="leave">
-                                <img src="<c:url value="/resources/images/chat-exit-icon.svg"/>" alt="나가기">
-                            </button>
+                        <div class="target-text">
+                            <p class="target-user">{{ replying.username }}에게 답장</p>
+                            <p class="target-content">{{ replying.messageType === 'file' ? replying.fileName : replying.contents }}</p>
                         </div>
+                        <div class="target-close" @click="replying=null">
+                            <img src="<c:url value="/resources/images/chat-reply-close-icon.svg"/>">
+                        </div>
+                    </div>
+
+                    <div class="wrap-inp">
+                        <textarea ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup" placeholder="전송하실 메시지를 입력하세요."></textarea>
+                        <button type="button" class="send-btn" @click="sendMessage()"></button>
+                    </div>
+                </div>
+                <div class="write-menu">
+                    <div>
+                        <button type="button" data-inverted="" data-tooltip="템플릿" data-position="top left">
+                            <img src="<c:url value="/resources/images/chat-template-import-icon.svg"/>">
+                        </button>
+                        <input style="display: none" type="file" @change="sendFile">
+                        <button type="button" data-inverted="" data-tooltip="파일첨부" data-position="top center" onclick="this.previousElementSibling.click()">
+                            <img src="<c:url value="/resources/images/chat-file-icon.svg"/>">
+                        </button>
+                        <button type="button" data-inverted="" data-tooltip="초대" data-position="top right" onclick="roomCreationOrganizationModalApp.popupInvitationModal()">
+                            <img src="<c:url value="/resources/images/chat-user-add-icon.svg"/>">
+                        </button>
+                    </div>
+                    <div>
+                        <button type="button" data-inverted="" data-tooltip="나가기" data-position="top right" @click="leave">
+                            <img src="<c:url value="/resources/images/chat-exit-icon.svg"/>" alt="나가기">
+                        </button>
                     </div>
                 </div>
             </div>
