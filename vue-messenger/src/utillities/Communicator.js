@@ -1,26 +1,21 @@
 import {io} from "socket.io-client";
 
 function Communicator() {
-    this.socket = null;
-    this.init();
-}
-
-Communicator.prototype.CONSTANTS = {
-    EVENT_WHOLE: '*'
-};
-Communicator.prototype.init = function () {
+    this.connected = false
+    this.socket = null
     this.url = null;
     this.request = null;
     this.status = {
         eventNumber: 0
     };
     this.events = {};
-    this.connected = false
     this.sendingMessageSequence = 0
 
     this.logClear();
+}
 
-    return this;
+Communicator.prototype.CONSTANTS = {
+    EVENT_WHOLE: '*'
 };
 Communicator.prototype.on = function (type, processor) {
     if (!processor)
@@ -52,13 +47,13 @@ Communicator.prototype.log = function (isSend, command, body) {
 Communicator.prototype.logClear = function () {
     this.status.eventNumber = 0;
 };
-Communicator.prototype.connect = function (url, senderKey, userKey, ip, mode, reconnect) {
+Communicator.prototype.connect = function (url, senderKey, userKey, ip, mode) {
     this.url = url;
     this.request = {sender_key: senderKey, user_key: userKey, my_ip: ip, mode: mode,};
 
     const _this = this;
     try {
-        this.socket = io(url, {'secure': url.startsWith('https')}, {'reconnect': true, 'resource': 'socket.io'})
+        this.socket = io.connect(url, {secure: url.startsWith('https'), reconnect: true, resource: 'socket.io'})
     } catch (error) {
         console.error(error);
         return setTimeout(function () {
@@ -66,11 +61,11 @@ Communicator.prototype.connect = function (url, senderKey, userKey, ip, mode, re
         }, 2000);
     }
 
-    const serverCommands = ['webchatsvc_start', 'webchatsvc_message', 'webchatsvc_close', 'disconnect'];
-    const uncheckedServerCommands = ['connect', 'error', 'end', 'close'];
+    const serverCommands = ['webchatsvc_start', 'webchatsvc_message', 'webchatsvc_close'];
+    const uncheckedServerCommands = ['connect', 'disconnect', 'error', 'end', 'close'];
 
-    reconnect ? this.restart() : this.start()
     this.on('webchatsvc_start', data => this.connected = data.result === 'OK')
+    this.socket.on('connect', () => this.connected ? this.restart() : this.start())
     this.socket.on('webchatsvc_ping', data => this.socket.emit('webchatcli_pong', {pong_cnt: data.ping_cnt, receive: 'OK'}))
 
     serverCommands.map(function (command) {
@@ -87,12 +82,10 @@ Communicator.prototype.connect = function (url, senderKey, userKey, ip, mode, re
 Communicator.prototype.disconnect = function () {
     this.socket?.disconnect();
     this.socket = null;
-    this.init();
 };
 Communicator.prototype.close = function () {
     this.socket?.close();
     this.socket = null;
-    this.init();
 };
 Communicator.prototype.recovery = function () {
     if (!this.url || !this.request)
@@ -104,7 +97,6 @@ Communicator.prototype.recovery = function () {
         this.request.user_key,
         this.request.my_ip,
         this.request.mode,
-        true
     ])
 };
 Communicator.prototype.process = function (event, data) {

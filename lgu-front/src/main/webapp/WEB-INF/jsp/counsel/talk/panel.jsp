@@ -315,7 +315,6 @@
 
                             talkCommunicator.redistribution(
                                 data.reallocating.map(e => ({channel_type: this.roomMap[e].channelType, room_id: e, user_key: this.roomMap[e].userKey,})),
-                                // data.persons[0].map(e => ({userid: e})),
                                 data.persons[0],
                             )
 

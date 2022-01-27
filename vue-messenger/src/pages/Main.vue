@@ -470,15 +470,8 @@ export default {
   },
   mounted() {
     this.communicator
-        .on('disconnect', () => {
-          console.log('disconnect')
-          let interval = setInterval(function () {
-            if (this.communicator.socket.connected) return interval && clearInterval(interval)
-            this.communicator.recovery()
-          }, 1000)
-        })
         .on('webchatsvc_close', () => {
-          this.communicator.close()
+          this.communicator.disconnect()
           store.commit('alert/show', '연결이 종료되었습니다.')
           this.inputEnable = false
         })
