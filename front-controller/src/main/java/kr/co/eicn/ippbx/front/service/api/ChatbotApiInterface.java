@@ -1,10 +1,14 @@
 package kr.co.eicn.ippbx.front.service.api;
 
 import kr.co.eicn.ippbx.front.model.form.FileForm;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotFallbackInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotSummaryInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.form.WebchatBotFallbackFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
+import kr.co.eicn.ippbx.model.search.ChatbotSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
@@ -31,8 +35,18 @@ public class ChatbotApiInterface extends ApiServerInterface {
     }
 
     @SneakyThrows
+    public Pagination<WebchatBotSummaryInfoResponse> pagination(ChatbotSearchRequest request) {
+        return getPagination(subUrl + "pagination", request, WebchatBotSummaryInfoResponse.class).getData();
+    }
+
+    @SneakyThrows
     public WebchatBotInfoResponse getBotInfo(Integer id) {
         return getData(subUrl + id, null, WebchatBotInfoResponse.class).getData();
+    }
+
+    @SneakyThrows
+    public WebchatBotFallbackInfoResponse getBotFallbackInfo(Integer id) {
+        return getData(subUrl + id + "/fallback", null, WebchatBotFallbackInfoResponse.class).getData();
     }
 
     @SneakyThrows
@@ -47,7 +61,17 @@ public class ChatbotApiInterface extends ApiServerInterface {
 
     @SneakyThrows
     public void update(Integer id, WebchatBotFormRequest form) {
+        put(subUrl + id + "/all", form);
+    }
+
+    @SneakyThrows
+    public void updateBotInfo(Integer id, WebchatBotFormRequest form) {
         put(subUrl + id, form);
+    }
+
+    @SneakyThrows
+    public void fallbackUpdate(Integer id, WebchatBotFallbackFormRequest form) {
+        put(subUrl + id + "/fallback", form);
     }
 
     @SneakyThrows

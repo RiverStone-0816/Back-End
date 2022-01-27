@@ -72,6 +72,7 @@ public class WebchatBotInfoRepository extends EicnBaseRepository<WebchatBotInfo,
 
     public void updateFallbackInfo(Integer id, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotInfo data) {
         dsl.update(WEBCHAT_BOT_INFO)
+                .set(WEBCHAT_BOT_INFO.NAME, data.getName())
                 .set(WEBCHAT_BOT_INFO.IS_CUSTINPUT_ENABLE, data.getIsCustinputEnable())
                 .set(WEBCHAT_BOT_INFO.FALLBACK_MENT, data.getFallbackMent())
                 .set(WEBCHAT_BOT_INFO.FALLBACK_ACTION, data.getFallbackAction())

@@ -73,27 +73,23 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-total-count">전체 <span>${list.size()}</span> 건</h3>
-                            <%--<h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span> 건</h3>--%>
+                        <h3 class="panel-total-count">전체 <span>${pagination.totalCount}</span> 건</h3>
                         <div class="ui basic buttons">
-                            <button type="button" class="ui button" onclick="chatbotAddPopup()">추가</button>
+                            <button type="button" class="ui button" onclick="popupModal()">추가</button>
                             <button type="button" class="ui button -control-entity" data-entity="ChatBot" style="display: none" onclick="chatbotModifyPopup(getEntityId('ChatBot'))">수정</button>
                             <button type="button" class="ui button -control-entity" data-entity="ChatBot" style="display: none" onclick="chatbotDeletePopup(getEntityId('ChatBot'))">삭제</button>
                         </div>
                     </div>
-                        <%--<div class="pull-right">
-                            <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/talk/chat-bot/" pageForm="${search}"/>
-                        </div>--%>
+                    <div class="pull-right">
+                        <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/talk/chat-bot/" pageForm="${search}"/>
+                    </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table num-tbl unstackable ${list.size() > 0 ? "selectable-only" : null}" data-entity="ChatBot">
-                            <%--<table class="ui celled table num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="ChatBot">--%>
+                    <table class="ui celled table num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="ChatBot">
                         <thead>
                         <tr>
                             <th>선택</th>
                             <th>번호</th>
-                            <th class="two wide">봇생성일</th>
-                            <th class="two wide">봇생성자</th>
                             <th>봇 이름</th>
                             <th class="one wide">폴백</th>
                             <th class="one wide">복사</th>
@@ -102,52 +98,29 @@
                         </thead>
                         <tbody>
                         <c:choose>
-                            <c:when test="${list.size() > 0}">
-                                <c:forEach var="e" items="${list}" varStatus="status">
+                            <c:when test="${pagination.rows.size() > 0}">
+                                <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${e.id}">
                                         <td>
-                                            <div class="ui radio checkbox">
-                                                <input type="radio" name="radio">
-                                            </div>
+                                            <div class="ui radio checkbox"><input type="radio" name="radio"></div>
                                         </td>
                                         <td>${status.index + 1}</td>
-                                        <td>TODO: 2022-01-06 15:30:12</td>
-                                        <td>TODO: 마스터</td>
                                         <td>${g.htmlQuote(e.name)}</td>
                                         <td>
-                                            <button class="ui button mini compact" onclick="fallbackBlockPopup(${e.id});">설정</button>
+                                            <button class="ui button mini compact" onclick="popupModal(${e.id})">설정</button>
                                         </td>
                                         <td>
-                                            <button class="ui button mini compact" onclick="chatbotCopyPopup(${e.id});">복사</button>
+                                            <button class="ui button mini compact" onclick="chatbotCopyPopup(${e.id})">복사</button>
                                         </td>
                                         <td>
-                                            <button class="ui button mini compact" onclick="chatbotTestPopup(${e.id});">테스트</button>
+                                            <button class="ui button mini compact" onclick="chatbotTestPopup(${e.id})">테스트</button>
                                         </td>
                                     </tr>
                                 </c:forEach>
                             </c:when>
-                            <%--<c:when test="${pagination.rows.size() > 0}">
-                                <c:forEach var="e" items="${pagination.rows}" varStatus="status">
-                                    <tr data-id="${g.htmlQuote(e.seq)}" data-roomId="${g.htmlQuote(e.roomId)}" data-roomStatus="${g.htmlQuote(e.roomStatus)}">
-                                        <td>
-                                            <div class="ui radio checkbox">
-                                                <input type="radio" name="radio">
-                                            </div>
-                                        </td>
-                                        <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
-                                        <td>${g.htmlQuote(e.roomName)}</td>
-                                        <td>${g.htmlQuote(talkServices.get(e.senderKey))}</td>
-                                        <td>${g.htmlQuote(g.messageOf('RoomStatus', e.roomStatus))}</td>
-                                        <td>${g.htmlQuote(e.idName)}</td>
-                                        <td>${g.htmlQuote(e.roomStartTime)}</td>
-                                        <td>${g.htmlQuote(e.roomLastTime)}</td>
-                                        <td>${g.htmlQuote(e.maindbCustomName == null || e.maindbCustomName == "" ? "미등록고객" : e.maindbCustomName)}</td>
-                                    </tr>
-                                </c:forEach>
-                            </c:when>--%>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="8" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <td colspan="6" class="null-data">조회된 데이터가 없습니다.</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>
@@ -158,155 +131,6 @@
         </div>
     </div>
 
-    <div class="ui modal tiny" id="chatbot-add-popup">
-        <i class="close icon"></i>
-        <div class="header">봇 추가</div>
-        <div class="content rows">
-            <div class="ui grid">
-                <div class="row">
-                    <div class="four wide column"><label class="control-label">멘트입력</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <div class="field">
-                                <textarea rows="3" readonly></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="four wide column"><label class="control-label">동작선택</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <select id="actionSelect">
-                                <option>유형선택</option>
-                                <option>처음으로 가기</option>
-                                <option value="connectBlock">다른 블록으로 연결</option>
-                                <option value="consultGroup">상담그룹 연결</option>
-                                <option value="connectUrl">URL 연결</option>
-                                <option value="connectNumber">전화 연결</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row fallback-action" id="connectBlock">
-                    <div class="four wide column"><label class="control-label">연결 블록 설정</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <select>
-                                <option>블록선택</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row fallback-action" id="consultGroup">
-                    <div class="four wide column"><label class="control-label">상담그룹</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <select>
-                                <option>그룹선택</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row fallback-action" id="connectUrl">
-                    <div class="four wide column"><label class="control-label">연결 URL 설정</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <input type="text" placeholder="URL을 입력하세요.">
-                        </div>
-                    </div>
-                </div>
-                <div class="row fallback-action" id="connectNumber">
-                    <div class="four wide column"><label class="control-label">연결 번호 설정</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <input type="text" placeholder="전화번호를 입력하세요.">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="button" class="ui button modal-close">취소</button>
-            <button type="submit" class="ui brand button">확인</button>
-        </div>
-    </div>
-
-    <div class="ui modal tiny" id="fallback-block-popup">
-        <i class="close icon"></i>
-        <div class="header">폴백블록</div>
-        <div class="content rows">
-            <div class="ui grid">
-                <div class="row">
-                    <div class="four wide column"><label class="control-label">멘트입력</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <div class="field">
-                                <textarea rows="3" readonly></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="four wide column"><label class="control-label">동작선택</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <select id="actionSelect">
-                                <option>유형선택</option>
-                                <option>처음으로 가기</option>
-                                <option value="connectBlock">다른 블록으로 연결</option>
-                                <option value="consultGroup">상담그룹 연결</option>
-                                <option value="connectUrl">URL 연결</option>
-                                <option value="connectNumber">전화 연결</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row fallback-action" id="connectBlock">
-                    <div class="four wide column"><label class="control-label">연결 블록 설정</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <select>
-                                <option>블록선택</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row fallback-action" id="consultGroup">
-                    <div class="four wide column"><label class="control-label">상담그룹</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <select>
-                                <option>그룹선택</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row fallback-action" id="connectUrl">
-                    <div class="four wide column"><label class="control-label">연결 URL 설정</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <input type="text" placeholder="URL을 입력하세요.">
-                        </div>
-                    </div>
-                </div>
-                <div class="row fallback-action" id="connectNumber">
-                    <div class="four wide column"><label class="control-label">연결 번호 설정</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <input type="text" placeholder="전화번호를 입력하세요.">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="button" class="ui button modal-close">취소</button>
-            <button type="submit" class="ui brand button">확인</button>
-        </div>
-    </div>
-
-    <%-- 미리보기 팝업--%>
     <div class="ui preview modal chatbot-modal" id="chat-preview">
         <i class="close icon"></i>
         <div class="header">미리보기</div>
@@ -420,30 +244,13 @@
 
     <tags:scripts>
         <script>
-            function chatbotAddPopup() {
-                // TODO
-                alert('TODO: chatbotAddPopup()')
-                $('#chatbot-add-popup').modalShow();
-            }
-
-            function fallbackBlockPopup(id) {
-                // TODO
-                alert('TODO: fallbackBlockPopup()')
-                $('#fallback-block-popup').modalShow();
+            function popupModal(id) {
+                popupReceivedHtml('/admin/talk/chat-bot/' + (id || 'new') + '/modal', 'modal-chatbot');
             }
 
             function chatbotModifyPopup(id) {
                 window.open(contextPath + '/admin/talk/chat-bot/editor?id=' + id, 'chatbot-modify-window', 'width=1920px,height=1080px,scrollbars=yes');
             }
-
-            // TODO: 임시
-            $(document).ready(function () {
-                $('#actionSelect').change(function () {
-                    var result = $('#actionSelect option:selected').val();
-                    $('.fallback-action').removeClass('active');
-                    $("#" + result).addClass('active');
-                });
-            });
 
             function chatbotDeletePopup(id) {
                 confirm('정말 삭제하시겠습니까?').done(() => restSelf.delete('/api/chatbot/' + id).done(reload))

@@ -4,7 +4,11 @@ import io.vavr.control.Option;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.api.ChatbotApiInterface;
+import kr.co.eicn.ippbx.front.service.api.talk.group.TalkReceptionGroupApiInterface;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.form.WebchatBotFallbackFormRequest;
 import kr.co.eicn.ippbx.model.search.ChatbotSearchRequest;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -25,6 +29,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author tinywind
@@ -37,6 +43,7 @@ import java.nio.file.Files;
 public class ChatBotController extends BaseController {
 
     private final ChatbotApiInterface apiInterface;
+    private final TalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
 
     @Value("${eicn.chatbot.resource.location}")
     private String resourceLocation;
@@ -51,12 +58,43 @@ public class ChatBotController extends BaseController {
     @SneakyThrows
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") ChatbotSearchRequest search, @RequestParam(required = false) String ip, HttpSession session, HttpServletRequest request) throws IOException, ResultFailException {
-        // TODO: search
-        model.addAttribute("list", apiInterface.list());
+        model.addAttribute("pagination", apiInterface.pagination(search));
         model.addAttribute("sessionId", session.getId());
         model.addAttribute("ip", Option.of(ip).getOrElse(Option.of(request.getHeader("X-FORWARDED-FOR")).getOrElse(request.getRemoteAddr())));
 
         return "admin/talk/chat-bot/ground";
+    }
+
+    @SneakyThrows
+    @GetMapping("new/modal")
+    public String modal(Model model, @ModelAttribute("form") WebchatBotFallbackFormRequest form) {
+        model.addAttribute("talkReceptionGroups", talkReceptionGroupApiInterface.list());
+
+        return "admin/talk/chat-bot/modal";
+    }
+
+    @SneakyThrows
+    @GetMapping("{id}/modal")
+    public String modal(@PathVariable Integer id, Model model, @ModelAttribute("form") WebchatBotFallbackFormRequest form) {
+        model.addAttribute("id", id);
+        val entity = apiInterface.getBotInfo(id);
+        model.addAttribute("entity", entity);
+        if (entity.getBlockInfo() != null) model.addAttribute("blocks", extractBlocks(entity.getBlockInfo()));
+
+        ReflectionUtils.copy(form, entity);
+
+        return modal(model, form);
+    }
+
+    private Map<Integer, String> extractBlocks(WebchatBotInfoResponse.BlockInfo block) {
+        val map = new HashMap<Integer, String>();
+        map.put(block.getId(), block.getName());
+
+        if (block.getChildren() != null)
+            for (WebchatBotInfoResponse.BlockInfo child : block.getChildren())
+                map.putAll(extractBlocks(child));
+
+        return map;
     }
 
     @SneakyThrows

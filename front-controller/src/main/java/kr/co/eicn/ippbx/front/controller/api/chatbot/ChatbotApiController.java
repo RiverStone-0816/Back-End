@@ -4,10 +4,14 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.front.service.api.ChatbotApiInterface;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotFallbackInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotSummaryInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.form.WebchatBotFallbackFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
+import kr.co.eicn.ippbx.model.search.ChatbotSearchRequest;
+import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -37,9 +41,21 @@ public class ChatbotApiController extends BaseController {
     }
 
     @SneakyThrows
+    @GetMapping("pagination")
+    public Pagination<WebchatBotSummaryInfoResponse> pagination(ChatbotSearchRequest request) {
+        return apiInterface.pagination(request);
+    }
+
+    @SneakyThrows
     @GetMapping("{id}")
     public WebchatBotInfoResponse getById(@PathVariable Integer id) {
         return apiInterface.getBotInfo(id);
+    }
+
+    @SneakyThrows
+    @GetMapping("{id}/fallback")
+    public WebchatBotFallbackInfoResponse getBotFallbackInfo(@PathVariable Integer id) {
+        return apiInterface.getBotFallbackInfo(id);
     }
 
     @SneakyThrows
@@ -61,9 +77,21 @@ public class ChatbotApiController extends BaseController {
     }
 
     @SneakyThrows
-    @PutMapping("{id}")
+    @PutMapping("{id}/all")
     public void update(@PathVariable Integer id, @Valid @RequestBody WebchatBotFormRequest form, BindingResult bindingResult) {
         apiInterface.update(id, form);
+    }
+
+    @SneakyThrows
+    @PutMapping("{id}")
+    public void updateBotInfo(@PathVariable Integer id, @Valid @RequestBody WebchatBotFormRequest form, BindingResult bindingResult) {
+        apiInterface.updateBotInfo(id, form);
+    }
+
+    @SneakyThrows
+    @PutMapping("{id}/fallback")
+    public void fallbackUpdate(@PathVariable Integer id, @Valid @RequestBody WebchatBotFallbackFormRequest form, BindingResult bindingResult) {
+        apiInterface.fallbackUpdate(id, form);
     }
 
     @SneakyThrows
