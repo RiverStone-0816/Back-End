@@ -16,7 +16,7 @@
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
 <div class="ui modal tiny" id="modal-messenger-room">
-    <i class="close icon" onclick="messenger.closeRoom()"></i>
+    <i class="close icon"></i>
 
     <div class="header">
         <button class="room-title" @click.stop.prevent="popupRoomNameModal">{{ roomName }}</button>
@@ -97,7 +97,7 @@
                                                     <p>{{ e.contents }}</p>
                                                 </template>
                                             </div>
-                                            <button @click="replying = e" class="chat-reply-btn"><img src="<c:url value="/resources/images/chat-reply-icon.svg"/>"></button>
+                                            <button @click.stop.prevent="replying = e" class="chat-reply-btn"><img src="<c:url value="/resources/images/chat-reply-icon.svg"/>"></button>
                                         </div>
                                     </div>
                                     <a v-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl"><i class="file icon"></i>저장하기</a>
@@ -119,7 +119,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div v-if="replying !== null" class="view-to-reply">
+                    <div v-if="replying !== null" class="view-to-reply" style="display: flex">
                         <div v-if="replying.messageType === 'file' && replying.fileType === 'image'" class="target-image">
                             <img :src="replying.fileUrl" class="target-image-content">
                         </div>
@@ -707,8 +707,13 @@
                     popupDraggableModalFromReceivedHtml('/admin/service/help/task-script/modal-search?title=' + encodeURIComponent(contents), 'modal-search-task-script')
                 },
                 mouseup(event) {
+                    if ($(event.target).closest('.chat-reply-btn').length) return
+
+                     $('.chat-more-nav').hide()
+
+                    if ($(event.target).closest('.chat-more-nav').length) return
+
                     event.stopImmediatePropagation()
-                    $('.chat-more-nav').hide()
                     $(event.target).closest('.chat-item').find('.chat-more-nav').css("display","flex")
                 }
             },

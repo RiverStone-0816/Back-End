@@ -997,6 +997,11 @@ pre {
         overflow: unset;
         position: relative;
         padding: 10px 75px 15px 12px;
+
+        &:hover .wrap-content .txt-segment .chat .bubble .chat-reply-btn {
+          display: inline-block;
+        }
+
         .wrap-content {
           .txt-segment {
             .txt-time {
@@ -4751,7 +4756,7 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
   background: #fff;
   position: absolute;
   left: 67px;
-  top: 12px;
+  bottom: -5px;
   flex-flow: column;
   z-index: 30;
   width: 106px;
@@ -4905,6 +4910,11 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
         overflow: unset;
         position: relative;
         padding: 10px 75px 15px 12px;
+
+        &:hover .wrap-content .chat .bubble .chat-reply-btn {
+          display: inline-block;
+        }
+
         .wrap-content {
           .flex();
           flex-flow: row;

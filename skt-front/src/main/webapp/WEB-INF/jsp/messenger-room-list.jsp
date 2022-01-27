@@ -73,6 +73,7 @@
                             const last = _this.roomList[_this.roomList.length - 1]
                             _this.roomMap[last.roomId] = last
                         })
+                        $('#organi-room .message-indicator').text(_this.roomList.reduce((sum, e) => sum + (e.unreadMessageTotalCount || 0), 0))
                         _this.sortRooms()
                     })
                 },

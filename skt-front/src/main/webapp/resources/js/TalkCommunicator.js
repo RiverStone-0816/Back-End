@@ -81,6 +81,9 @@ TalkCommunicator.prototype.connect = function (url, companyId, userid, passwd, a
         }).on('svc_control', function (data) {
             _this.log(false, 'svc_control', data);
             _this.process('svc_control', data);
+        }).on('svc_redist', function (data) {
+            _this.log(false, 'svc_redist', data);
+            _this.process('svc_redist', data);
         }).on('svc_dist_yn', function (data) {
             _this.log(false, 'svc_dist_yn', data);
             _this.process('svc_dist_yn', data);
@@ -249,5 +252,17 @@ TalkCommunicator.prototype.changeDistribution = function (distributed) {
         user_key: null,
         etc_data: "",
         contents: distributed ? 'Y' : 'N'
+    });
+};
+/**
+ * @param room_infos [{channel_type, room_id, user_key}]
+ * @param target_members [{userid}]
+ */
+TalkCommunicator.prototype.redistribution = function (room_infos, target_members) {
+    this.socket.emit('cli_redist', {
+        company_id: this.request.companyId,
+        room_infos: room_infos,
+        target_members: target_members,
+        admin_id: this.request.userid,
     });
 };
