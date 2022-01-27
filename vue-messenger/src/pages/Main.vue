@@ -61,6 +61,16 @@
                     </div>
                   </div>
                 </div>
+
+                <div v-if="['A', 'F'].includes(message.data.schedule_info.schedule_kind)" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
+                  <div class="flex flex-row items-center">
+                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
+                      <div>
+                        <p style="white-space: pre">{{ message.data.schedule_info.schedule_ment }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </template>
 
               <template v-if="message.sender === 'SERVER' && message.messageType === 'fallback'">
@@ -482,9 +492,24 @@ export default {
             this.inputEnable = data.message_data.is_chatt_enable === 'Y'
             this.backgroundColor = data.message_data.bgcolor
             this.displayName = data.message_data.display_company_name
-            this.botId = data.message_data.schedule_info?.schedule_data
 
-            if (this.botId) this.communicator.requestRootBlock(this.botId)
+            if (data.message_data.schedule_info.schedule_kind === 'B') {
+              this.botId = data.message_data.schedule_info.schedule_data
+              if (this.botId) this.communicator.requestRootBlock(this.botId)
+            } else if (data.message_data.schedule_info.schedule_kind === 'G') {
+              this.communicator.sendAction(this.botId, {
+                chatbot_id: '',
+                parent_block_id: '',
+                btn_id: '',
+                btn_name: '',
+                action: 'member',
+                action_data: data.message_data.schedule_info.schedule_data,
+              }, this.lastReceiveMessageType)
+            } else if (data.message_data.schedule_info.schedule_kind === 'A') {
+              this.inputEnable = data.message_data.is_chatt_enable = false
+            } else if (data.message_data.schedule_info.schedule_kind === 'F') {
+              this.inputEnable = data.message_data.is_chatt_enable = false
+            }
           } else if (data.message_type === 'member') {
             this.messages.splice(0, this.messages.length)
           } else if (data.message_type === 'ipcc_control') {
@@ -505,7 +530,7 @@ export default {
                 } else if (data.message_data.replyingType === 'image_temp') {
                   data.message_data.replyingTarget = this.getFileUrl(data.company_id, replyingTarget)
                 } else {
-                  data.message_data.replyingTarget = this.getFileUrl(data.company_id, replyingTarget) // TODO: 확인 필요
+                  data.message_data.replyingTarget = this.getFileUrl(data.company_id, replyingTarget)
                 }
 
                 data.message_data.text_data = contents.substr(indicator + 1)
