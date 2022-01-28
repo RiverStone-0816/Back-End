@@ -4919,16 +4919,165 @@ ul.ui.list ul, ol.ui.list ol, .ui.list .list {
           .flex();
           flex-flow: row;
           justify-content: flex-start;
-          .profile-image {
+          .profile-img {
             margin: 0 10px 0 0;
             img {
               width: 30px;
             }
           }
+          .chat.bot {
+            margin-bottom: 10px;
+            max-width: 260px;
+            .button-inner {
+              width: 100%;
+              padding: .5em;
+              max-width: 230px;
+            }
+            .bubble {
+              width: 230px;
+              .txt_chat {
+                padding: 9px;
+              }
+              .chatbot-button {
+                width: 100%;
+                overflow: hidden;
+                background: #5B9BD5;
+                border: 0;
+                outline: 0;
+                border-radius: 5px;
+                height: 40px;
+                cursor: pointer;
+                color: #fff;
+                margin: 10px 0 0 0;
+                text-overflow: ellipsis;
+                &:first-child {
+                  margin: 0;
+                }
+                &:only-child {
+                  margin: 0;
+                }
+              }
+            }
+            .card {
+              width: 320px;
+              position: relative;
+              .card-img {
+                img {
+                  width: 100%;
+                  display: block;
+
+                }
+              }
+              .card-content {
+                padding: 10px;
+                word-break: break-all;
+                line-height: 15px;
+                .card-title {
+                  font-weight: 900;
+                  margin: 0 0 10px 0;
+                }
+                .card-text {
+
+                }
+              }
+              .card-list {
+                white-space: normal;
+                word-break: break-all;
+                .ui.multi.form {
+                  .flex();
+                  align-items: center;
+                  width: 100%;
+                  .slt {
+                    width: 50px;
+                    margin: 0 7px 0 0;
+                    height: 30px;
+                    padding: 0;
+                  }
+                  .unit {
+                    margin: 0 6px 0 2px;
+                    color: #838383;
+                  }
+                }
+                .calendar-ipt {
+                  background: url("../images/calendar.svg") right 5px bottom 5px no-repeat;
+                }
+                .card-list-title {
+                  line-height: 18px;
+                  font-weight: 500;
+                  border-bottom: 1px solid @color-border;
+                  padding: 1em;
+                  font-size: 14px;
+                }
+                .card-list-ul {
+                  .link-wrap {
+                    .flex();
+                    flex: 1;
+                  }
+                  .item.form {
+                    flex-flow: column;
+                    .label {
+                      width: 100%;
+                      font-weight: 900;
+                      margin: 0 0 .8em 0;
+                    }
+                    .ui.input {
+                      width: 100%;
+                    }
+                  }
+                  .item {
+                    padding: .7em 1em;
+                    .flex();
+                    align-items: center;
+                    border-bottom: 1px solid @color-border;
+                    &:only-child {
+                      border: 0;
+                    }
+                    &:last-child {
+                      border: 0;
+                    }
+                    .button-inner {
+                      padding: 0;
+                    }
+                    .item-thumb {
+                      .flex();
+                      margin: 0 1em 0 0;
+                      align-items: center;
+                      .item-thumb-inner {
+                        .flex();
+                        align-items: center;
+                        justify-content: center;
+                        width: 40px;
+                        height: 40px;
+                        overflow: hidden;
+                        img {
+                          width: 200%;
+                        }
+                      }
+                    }
+                    .item-content {
+                      .flex();
+                      flex: 1;
+                      align-items: start;
+                      justify-content: center;
+                      flex-flow: column;
+                      .subject {
+                        margin: 3px 0;
+                        line-height: 16px;
+                      }
+                      .ment {
+                        margin: 3px 0;
+                        color: #ABABAB;
+                        line-height: 16px;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
           .chat {
             .flex();
             overflow: unset;
-            padding: 0 10px 0 0;
             .bubble {
               float: left;
               background: #fff;
@@ -7139,7 +7288,7 @@ g {
       }
       .chatbot-button {
         overflow: hidden;
-        background: @color-brand;
+        background: #ff7902;
         border: 0;
         outline: 0;
         width: 100%;
@@ -7210,7 +7359,7 @@ g {
               }
             }
             .item {
-              padding: .7em 1em;
+              padding: .5em;
               .flex();
               align-items: center;
               border-bottom: 1px solid @color-border;
