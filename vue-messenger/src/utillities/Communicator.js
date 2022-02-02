@@ -122,10 +122,10 @@ Communicator.prototype.getMessageId = function () {
     return this.request.user_key + '_' + (++this.sendingMessageSequence)
 }
 Communicator.prototype.start = function () {
-    this.socket.emit('webchatcli_start', this.request)
+    this.socket.emit('webchatcli_start', Object.assign(this.request, {device: window?.navigator?.platform}))
 }
 Communicator.prototype.restart = function () {
-    this.socket.emit('webchatcli_restart', this.request)
+    this.socket.emit('webchatcli_restart', Object.assign(this.request, {device: window?.navigator?.platform}))
 }
 Communicator.prototype.requestIntro = function () {
     this.socket.emit('webchatcli_message', Object.assign(this.request, {message_id: this.getMessageId(), message_type: 'intro'}))
