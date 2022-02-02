@@ -133,7 +133,7 @@
 
     <div class="ui preview modal chatbot-modal" id="chat-preview">
         <i class="close icon"></i>
-        <div class="header">미리보기</div>
+        <div class="header">테스트</div>
         <div class="content">
             <div class="preview-header">
                 <img src="<c:url value="/resources/images/chatbot-icon-orange.svg"/>" class="chatbot-icon"><span class="customer-title">Chat Bot</span>
