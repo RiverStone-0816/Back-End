@@ -36,6 +36,8 @@ import axios from 'axios'
 import sessionUtils from '../utillities/sessionUtils'
 import store from '../store/index'
 
+const MODAL_ID = 'modal-eicn-chat'
+
 export default {
   data() {
     return {
@@ -62,11 +64,16 @@ export default {
     },
     openChat() {
       this.connected = true
-      const modal = window.open(location.href, 'chat', `width=460,height=700,top=0,left=0,scrollbars=yes`)
+      const modal = window.open(location.href, MODAL_ID, `width=460,height=700,top=0,left=0,scrollbars=yes`)
       modal.communicator = this.communicator
     },
   },
   async created() {
+    if (window.name === MODAL_ID) {
+      self.close()
+      opener.location.reload()
+    }
+
     if (this.connected) this.openChat()
     this.form.ip = (await axios.get('https://api.ipify.org')).data
   }
