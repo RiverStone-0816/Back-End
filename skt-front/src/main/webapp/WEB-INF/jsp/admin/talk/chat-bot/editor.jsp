@@ -46,7 +46,8 @@
         <div class="header">
             <span>블록</span>
             <div class="ui toggle checkbox">
-                <input type="checkbox" name="public" tabindex="0" class="hidden" v-model="isTemplateEnable"><label></label>
+                <input type="checkbox" name="public" tabindex="0" class="hidden" v-model="isTemplateEnable">
+                <label @click.stop.prevent="toggleTemplateEnable"></label>
             </div>
             <button class="preview-btn" @click.stop.prevent="showPreview">미리보기</button>
         </div>
@@ -1369,6 +1370,9 @@
                             configButtonItem(index) {
                                 $('#button-config').dragModalShow()
                                 buttonConfig.load(o.nodeId, index, o.buttons[index])
+                            },
+                            toggleTemplateEnable() {
+                                o.isTemplateEnable = !o.isTemplateEnable
                             },
                         },
                         updated() {
