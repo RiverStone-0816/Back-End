@@ -7,6 +7,7 @@ import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatBotBlockRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +29,7 @@ public class WebchatBotBlockService extends ApiBaseService {
         WebchatBotBlockFormRequest data = new WebchatBotBlockFormRequest();
 
         data.setName(info.getName());
-        data.setKeyword(info.getKeyword().replaceAll("\\s+", ""));
+        data.setKeyword(StringUtils.isNotEmpty(info.getKeyword()) ? info.getKeyword().replaceAll("\\s+", "") : "");
         data.setIsTemplateEnable(info.getIsTemplateEnable());
         data.setPosX(info.getPosX());
         data.setPosY(info.getPosY());
