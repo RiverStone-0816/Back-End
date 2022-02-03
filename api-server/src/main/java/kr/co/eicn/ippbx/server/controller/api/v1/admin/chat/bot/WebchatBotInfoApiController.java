@@ -105,7 +105,7 @@ public class WebchatBotInfoApiController extends ApiBaseController {
         return ResponseEntity.ok(data(saveFileName));
     }
 
-    @PutMapping("{id}/")
+    @PutMapping("{id}")
     public ResponseEntity<JsonResult<Void>> updateBotInfo(@PathVariable Integer id, @Valid @RequestBody WebchatBotFormRequest form, BindingResult bindingResult) {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
