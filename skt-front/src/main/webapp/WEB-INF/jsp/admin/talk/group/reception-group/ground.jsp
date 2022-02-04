@@ -63,7 +63,7 @@
                                         </td>
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(e.groupName)}</td>
-                                        <td>${g.htmlQuote(g.messageOf("TalkStrategy",e.talkStrategy))}</td>
+                                        <td>${g.htmlQuote(g.messageOf("TalkMemberDistributionType", e.talkStrategy))}</td>
                                         <td>${e.memberCnt}</td>
                                         <td title="<c:forEach var="person" items="${e.persons}">[${g.htmlQuote(person.idName)}(${g.htmlQuote(person.id)})]</c:forEach>">
                                             <c:forEach var="person" items="${e.persons}">[${g.htmlQuote(person.idName)}(${g.htmlQuote(person.id)})] </c:forEach>

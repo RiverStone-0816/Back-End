@@ -65,13 +65,13 @@
                                                     </td>
                                                     <td>${g.htmlQuote(s.kindDataName)}</td>
                                                     <td>
-                                                        <button class="ui button mini compact" onclick="popupScheduleItemModal(${e.parent}, ${s.child})">수정</button>
+                                                        <button class="ui button mini compact" onclick="popupScheduleItemModal(${e.parent}, ${s.child}, '${e.channelType}')">수정</button>
                                                         <button class="ui button mini compact" onclick="deleteScheduleItem(${s.child})">삭제</button>
                                                     </td>
                                                     <c:if test="${scheduleStatus.first}">
                                                         <td rowspan="${e.scheduleGroupLists.size() * 2 + 1}">
                                                             <div class="ui vertical buttons">
-                                                                <button class="ui button mini compact" onclick="popupScheduleItemModal(${e.parent})">항목추가</button>
+                                                                <button class="ui button mini compact" onclick="popupScheduleItemModal(${e.parent}, '', '${e.channelType}')">항목추가</button>
                                                                 <button class="ui button mini compact" onclick="deleteScheduleGroup(${e.parent})">유형삭제</button>
                                                             </div>
                                                         </td>
@@ -113,7 +113,7 @@
                                                 <td></td>
                                                 <td>
                                                     <div class="ui vertical buttons">
-                                                        <button class="ui button mini compact" onclick="popupScheduleItemModal(${e.parent})">항목추가</button>
+                                                        <button class="ui button mini compact" onclick="popupScheduleItemModal(${e.parent}, '', '${e.channelType}')">항목추가</button>
                                                         <button class="ui button mini compact" onclick="deleteScheduleGroup(${e.parent})">유형삭제</button>
                                                     </div>
                                                 </td>
@@ -182,8 +182,8 @@
                 });
             }
 
-            function popupScheduleItemModal(parent, child) {
-                popupReceivedHtml('/admin/talk/schedule/schedule-group/' + parent + '/item/' + (child || 'new') + '/modal', 'modal-schedule-item');
+            function popupScheduleItemModal(parent, child, channelType) {
+                popupReceivedHtml('/admin/talk/schedule/schedule-group/' + parent + '/item/' + (child || 'new') + '/modal?channelType=' + channelType, 'modal-schedule-item');
             }
         </script>
     </tags:scripts>

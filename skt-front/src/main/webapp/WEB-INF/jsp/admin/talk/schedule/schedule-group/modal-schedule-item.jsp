@@ -68,7 +68,7 @@
                                     <label>서비스별그룹연결</label>
                                 </div>
                             </div>
-                            <c:if test="${g.usingServices.contains('CHBOT') && channelType == 'eicn'}">
+                            <c:if test="${g.usingServices.contains('CHBOT') && isChatbot}">
                             <div class="field -channel-data" data-channel="eicn">
                                 <div class="ui radio checkbox">
                                     <form:radiobutton path="kind" value="B" class="hidden"/>
@@ -174,12 +174,4 @@
             return $(this).attr('data-kind') === kind;
         }).show();
     }).change();
-
-    modal.find('[name=channelType]').change(function () {
-        const channel = modal.find('[name=channelType]:checked').val();
-        modal.find('.-channel-data').hide().filter(function () {
-            return $(this).attr('data-channel') === channel;
-        }).show();
-    }).change();
-
 </script>
