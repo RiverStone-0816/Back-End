@@ -89,7 +89,7 @@
             </div>
             <div class="row">
                 <div class="two wide column">
-                    <label class="control-label">이미지</label>
+                    <label class="control-label">봇아이콘</label>
                 </div>
                 <div class="fourteen wide column">
                     <div class="file-upload-header">
