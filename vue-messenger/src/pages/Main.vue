@@ -33,9 +33,9 @@
               <template v-if="message.sender === 'SERVER' && message.messageType === 'intro'">
                 <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row items-center">
-                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
-                      <div v-if="message.data.image" class="relative rounded-lg pt-1 pb-3">
-                        <img class="w-full" :src="getFileUrl(message.company, message.data.image)" alt="intro image">
+                    <div class="relative text-sm bg-white py-2 px-3 w-full shadow rounded-lg max-w-xl">
+                      <div v-if="message.data.profile" class="relative rounded-lg pt-1 pb-3">
+                        <img class="w-full" :src="getFileUrl(message.company, message.data.profile)" alt="intro image">
                       </div>
                       <div>
                         <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.msg }}</p>
@@ -46,7 +46,7 @@
 
                 <div v-if="message.data.channel_list && message.data.channel_list.length" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row items-center">
-                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
+                    <div class="relative text-sm bg-white py-2 px-3 w-full shadow rounded-lg max-w-xl">
                       <div>
                         <p>다른 채널을 통한 상담을 원하시면 원하시는 서비스의 아이콘을 눌러주세요. 해당 서비스에 연결됩니다.</p>
                       </div>
@@ -185,8 +185,8 @@
                 </div>
                 <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
-                    <div v-if="e instanceof Array" class="relative text-sm bg-white py-2 px-3 pb-0 shadow rounded-lg w-full max-w-xs">
-                      <button v-for="(e2, j) in e" :key="j" class="bg-blue-600 hover:bg-blue-700 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop.prevent="actButton(message, e2)">
+                    <div v-if="e instanceof Array" class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
+                      <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 px-2 rounded-md" @click.stop.prevent="actButton(message, e2)">
                         {{ e2.btn_name }}
                       </button>
                     </div>
