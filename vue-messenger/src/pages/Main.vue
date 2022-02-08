@@ -266,7 +266,7 @@
       <!--하단 채팅 입력-->
       <div v-if="inputEnable" class="flex flex-row items-center h-16 rounded-lg-xl bg-white w-full px-3 border-t">
         <div>
-          <button class="flex items-center justify-center rounded-lg hover:bg-gray-200 h-10 w-10 text-white flex-shrink-0 mr-3">
+          <button class="flex items-center justify-center rounded-lg hover:bg-gray-200 h-10 w-10 text-white flex-shrink-0 mr-3" @click.stop.prevent="homeAction">
             <span class="ml-1">
               <svg height="25" viewBox="15 5 10 25" width="36" xmlns="http://www.w3.org/2000/svg">
                 <path d="M15,30V21h6v9h7.5V18H33L18,4.5,3,18H7.5V30Z" fill="#514f65"/>
@@ -395,6 +395,9 @@ export default {
       this.communicator.sendText(this.botId, this.input, this.lastReceiveMessageType)
       this.messages.push({sender: SENDER.USER, time: new Date(), data: JSON.parse(JSON.stringify(this.input)), messageType: 'text'})
       this.input = ''
+    },
+    homeAction() {
+      this.communicator.sendText(this.botId, "처음", this.lastReceiveMessageType)
     },
     actFallback(message) {
       if (message.data.fallback_action === 'first') {

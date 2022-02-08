@@ -132,7 +132,7 @@
 
     <div v-if="socket" class="action">
         <div>
-            <button type="button" class="home-btn"><img src="<c:url value="/resources/images/material-home.svg"/>"></button>
+            <button type="button" class="home-btn" @click.stop.prevent="homeAction"><img src="<c:url value="/resources/images/material-home.svg"/>"></button>
         </div>
         <div class="ui form">
             <input type="text" placeholder="문의사항을 입력하세요." v-model="input" @keyup.stop.prevent="$event.key === 'Enter' && sendText()">
@@ -205,6 +205,12 @@
                         }))
                         o.messages.push({sender: SENDER.USER, time: new Date(), data: JSON.parse(JSON.stringify(o.input)), messageType: 'text'})
                         o.input = ''
+                    },
+                    homeAction() {
+                        o.socket.emit('webchatcli_message', Object.assign(o.request, {message_id: o.getMessageId()}, {
+                            message_type: 'text',
+                            message_data: {last_receive_message_type: o.lastReceiveMessageType, text_data: '처음',}
+                        }))
                     },
                     actButton(message, button) {
                         console.log(message, button)
