@@ -490,7 +490,8 @@ export default {
         })
         .on('webchatsvc_message', data => {
           this.lastReceiveMessageType = data.message_type
-          this.inputEnable = data?.message_data?.is_custinput_enable === 'Y'
+          if (data?.message_data?.is_custinput_enable) this.inputEnable = data?.message_data?.is_custinput_enable === 'Y'
+          if (data?.message_data?.input_enable_yn) this.inputEnable = data?.message_data?.input_enable_yn === 'Y'
 
           if (data.message_type === 'intro') {
             this.backgroundColor = data.message_data.bgcolor
