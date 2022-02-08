@@ -303,6 +303,7 @@ import naverIcon from '../assets/naver-icon.png'
 import lineIcon from '../assets/line-icon.png'
 import debounce from '../utillities/mixins/debounce'
 import store from '../store/index'
+import Communicator from "../utillities/Communicator"
 
 const SENDER = Object.freeze({SERVER: 'SERVER', USER: 'USER'})
 
@@ -311,7 +312,6 @@ function zeroPad(nr, base) {
   return len > 0 ? new Array(len).join('0') + nr : nr;
 }
 
-window.addEventListener("beforeunload", () => window.communicator.disconnect(), false)
 // ref: http://daplus.net/javascript-%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D%EC%9D%84-%ED%97%88%EC%9A%A9%ED%95%98%EB%8A%94-javascript%EC%9D%98-string-indexof-%EB%B2%84%EC%A0%84%EC%9D%B4-%EC%9E%88%EC%8A%B5%EB%8B%88/
 String.prototype.regexIndexOf = function (regex, startpos) {
   var indexOf = this.substring(startpos || 0).search(regex);
@@ -332,7 +332,7 @@ export default {
   },
   data() {
     return {
-      communicator: window.communicator,
+      communicator: new Communicator(),
 
       inputEnable: false,
       backgroundColor: '#f3f3f3',
@@ -547,7 +547,13 @@ export default {
           console.log(data, {sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type, company: data.company_id})
           this.messages.push({sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type, company: data.company_id})
         })
-        .requestIntro()
+        .on('webchatsvc_start', data => {
+          if (data.result !== 'OK') return store.commit('alert/show', `로그인실패 : ${data.result}; ${data.result_data}`)
+          this.communicator.requestIntro()
+        })
+        .connect(window.form.url, window.form.senderKey, window.form.userKey, window.form.ip, window.form.mode,)
+
+    window.addEventListener("beforeunload", () => this.communicator.disconnect(), false)
   },
 }
 </script>

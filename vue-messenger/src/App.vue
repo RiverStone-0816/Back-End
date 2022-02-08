@@ -1,6 +1,6 @@
 <template>
 
-  <template v-if="connected">
+  <template v-if="isModal()">
     <Main/>
   </template>
   <template v-else>
@@ -29,17 +29,14 @@ import AlertModal from './components/singleton/AlertModal'
 import Login from './pages/Login'
 import Main from './pages/Main'
 import sessionUtils from './utillities/sessionUtils'
-import Communicator from './utillities/Communicator'
-
-if (!window.communicator) window.communicator = new Communicator()
+import modalOpener from "./utillities/mixins/modalOpener"
 
 // ref: https://stackoverflow.com/questions/50768678/axios-ajax-show-loading-when-making-ajax-request
 export default {
+  mixins: [modalOpener],
   components: {AlertModal, Login, Main,},
   data() {
     return {
-      communicator: window.communicator,
-      connected: window.communicator.connected,
       refCount: 0,
       isLoading: false
     }
@@ -53,7 +50,7 @@ export default {
         this.refCount--
         this.isLoading = (this.refCount > 0)
       }
-    }
+    },
   },
   created() {
     axios.interceptors.request.use((config) => {
@@ -72,8 +69,7 @@ export default {
 
       if (error.response && error.response.status === 401) {
         sessionUtils.clear()
-        this.connected = false
-        this.communicator.connected = false
+        // FIXME: 401 처리
         return
       }
 

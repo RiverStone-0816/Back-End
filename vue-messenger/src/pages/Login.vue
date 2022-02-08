@@ -4,7 +4,7 @@
   <section class="flex w-full h-screen">
     <div class="m-auto" style="width: 36rem">
 
-      <form v-show="!connected" @submit.stop.prevent="connect">
+      <form v-show="!opened" @submit.stop.prevent="connect">
         <div class="mb-4 relative">
           <input v-model="form.url" :class="form.url && 'filled'" autofocus class="input" type="text">
           <label class="label">URL</label>
@@ -33,16 +33,17 @@
 
 <script>
 import axios from 'axios'
+import Communicator from '../utillities/Communicator'
 import sessionUtils from '../utillities/sessionUtils'
 import store from '../store/index'
-
-const MODAL_ID = 'modal-eicn-chat'
+import modalOpener from "../utillities/mixins/modalOpener"
 
 export default {
+  mixins: [modalOpener],
   data() {
     return {
-      communicator: window.communicator,
-      connected: window.communicator.connected,
+      communicator: new Communicator(),
+      opened: false,
       form: {
         // url: 'http://122.49.74.102:8200',
         url: 'https://cloudtalk.eicn.co.kr:8200',
@@ -59,22 +60,14 @@ export default {
       this.communicator.connect(this.form.url, this.form.senderKey, this.form.userKey, this.form.ip, this.form.mode,)
       this.communicator.on('webchatsvc_start', data => {
         if (data.result !== 'OK') return store.commit('alert/show', `로그인실패 : ${data.result}; ${data.result_data}`)
-        this.openChat()
+        this.communicator.disconnect()
+        this.openChat(this.form.url, this.form.senderKey, this.form.userKey, this.form.ip, this.form.mode,)
+        this.opened = true
       })
-    },
-    openChat() {
-      this.connected = true
-      const modal = window.open(location.href, MODAL_ID, `width=460,height=700,top=0,left=0,scrollbars=yes`)
-      modal.communicator = this.communicator
     },
   },
   async created() {
-    if (window.name === MODAL_ID) {
-      self.close()
-      opener.location.reload()
-    }
-
-    if (this.connected) this.openChat()
+    if (this.opened) this.openChat()
     this.form.ip = (await axios.get('https://api.ipify.org')).data
   }
 }
