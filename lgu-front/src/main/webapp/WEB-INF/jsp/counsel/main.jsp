@@ -291,11 +291,10 @@
         }
 
 
-        function popupSearchMaindbCustomModal(type, roomId, channelType, senderKey, userKey) {
+        function popupSearchMaindbCustomModal(type, roomId, senderKey, userKey) {
             popupDraggableModalFromReceivedHtml($.addQueryString('/counsel/modal-search-maindb-custom', {
                 type: type || 'CALL',
                 roomId: roomId || '',
-                channelType: channelType || '',
                 senderKey: senderKey || '',
                 userKey: userKey || ''
             }), 'modal-search-maindb-custom');

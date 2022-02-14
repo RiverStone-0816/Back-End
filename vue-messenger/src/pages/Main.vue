@@ -191,7 +191,8 @@
                       </button>
                     </div>
                     <div v-else class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent">
-                      <div v-for="(e2, j) in e.api_param" :key="j" class="p-2 pl-3 text-base font-bold">
+                      <div class="p-2 pl-3 "><p>{{ e.next_api_ment }}</p></div>
+                      <div v-for="(e2, j) in e.api_param" :key="j" class="p-2 pl-3 font-bold">
                         <p>{{ e2.display_name }}</p>
                         <div v-if="e2.type !== 'time'" class="relative w-full pt-2">
                           <input class="flex w-full border rounded-lg focus:outline-none focus:border-indigo-300 h-10 pl-2 pr-2" type="text"
@@ -424,6 +425,8 @@ export default {
     },
     actButton(message, button) {
       if (button.action === 'url') return window.open(button.next_action_data, null)
+
+      if (button.action === 'phone') return document.location.href = 'tal:'+button.next_action_data
 
       this.communicator.sendAction(this.botId, {
         chatbot_id: message.data.chatbot_id,
