@@ -265,7 +265,7 @@
 
       <!--하단 채팅 입력-->
       <div v-if="inputEnable" class="flex flex-row items-center h-16 rounded-lg-xl bg-white w-full px-3 border-t">
-        <div>
+        <div v-if="homeEnable">
           <button class="flex items-center justify-center rounded-lg hover:bg-gray-200 h-10 w-10 text-white flex-shrink-0 mr-3" @click.stop.prevent="homeAction">
             <span class="ml-1">
               <svg height="25" viewBox="15 5 10 25" width="36" xmlns="http://www.w3.org/2000/svg">
@@ -340,7 +340,7 @@ export default {
       botId: null,
       lastReceiveMessageType: null,
       input: '',
-
+      homeEnable: true,
       messages: []
     }
   },
@@ -515,6 +515,7 @@ export default {
               this.inputEnable = data.message_data.is_chatt_enable = false
             }
           } else if (data.message_type === 'member') {
+            this.homeEnable = false
             this.messages.splice(0, this.messages.length)
           } else if (data.message_type === 'ipcc_control') {
             this.inputEnable = !(data.message_data.session_keep_yn === 'N')
