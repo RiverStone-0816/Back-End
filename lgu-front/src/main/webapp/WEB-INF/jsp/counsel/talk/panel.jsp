@@ -635,7 +635,7 @@
 
                 <div class="wrap-inp">
                     <div class="inp-box">
-                        <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup"></textarea>
+                        <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup" :disabled="isMessage"></textarea>
                     </div>
                     <button type="button" class="send-btn" @click="sendMessage()">전송</button>
                 </div>
@@ -689,6 +689,9 @@
                     userName: null,
                     customName: null,
 
+                    loginId: '${g.user.id}',
+                    isMessage: false,
+
                     showingDropzone: false,
 
                     showingTemplateLevel: 0,
@@ -722,6 +725,7 @@
                         _this.roomStatus = response.data.roomStatus
                         _this.userId = response.data.userId
                         _this.customName = response.data.customName
+                        _this.isMessage = !(response.data.userId === _this.loginId)
 
                         _this.messageList = []
                         response.data.talkMsgSummaryList.forEach(function (e) {
