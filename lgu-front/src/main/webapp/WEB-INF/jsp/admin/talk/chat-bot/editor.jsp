@@ -1235,6 +1235,7 @@
                                 app.removeConnection(o.buttonIndex)
                                 app.createConnection(o.buttonIndex, data.nextBlockId)
                             }
+                            alert("저장되었습니다.");
                         },
                         checkDataStructure() {
                             if (!this.data) this.data = {}
