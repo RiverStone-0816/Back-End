@@ -383,10 +383,11 @@
                                         <img :src="getImage(roomId)">
                                     </div>
                                     <div class="wrap-content">
-                                        <div class="txt-time">[{{ e.messageType === 'block_temp' ? (e.username || e.userId) : customName }}] {{ getTimeFormat(e.time) }}</div>
+                                        <div v-if="blocks!=null" class="txt-time">[{{ e.messageType === 'block_temp' ? (e.username || e.userId) : customName }}] {{ getTimeFormat(e.time) }}</div>
                                         <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
                                             <div class="bubble" style="background-color: transparent; text-align: center; display: block; box-shadow: none;">
-                                                <img src="<c:url value="/resources/images/loading.svg"/>" alt="loading"/>
+<%--                                                <img src="<c:url value="/resources/images/loading.svg"/>" alt="loading"/>--%>
+                                                <%--<text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>--%>
                                             </div>
                                         </div>
                                         <div v-for="(display, j) in e.displays" class="chat bot">
@@ -485,7 +486,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="'SA' === e.sendReceive" class="chat-item chat-me">
+                                <div v-if="'SA' === e.sendReceive " class="chat-item chat-me">
                                     <div class="wrap-content">
                                         <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
@@ -564,7 +565,7 @@
                                     <text v-if="e.sendReceive === 'SG'">[{{ e.username }}] 상담사가 상담을 가져왔습니다.</text>
                                 </p>
                                 <p v-if="['SE', 'RE', 'AE', 'E'].includes(e.sendReceive) && e.contents" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
-                                <p v-if="e.userId===''" class="info-msg">[{{ getTimeFormat(e.time) }}]대화방이 존재하지않습니다.</p>
+                                <p v-else="blocks === null" class="info-msg">[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</p>
                             </div>
                         </div>
                     </div>
@@ -610,8 +611,9 @@
                         </div>
                     </div>
 
+                   <%-- showingTemplateBlocks = true && loadTemplates && loadTemplateBlocks--%>
                     <div :style="'visibility:'+(roomId?'visible':'hidden')">
-                        <button class="mini ui button compact mr5" @click.stop.prevent="showingTemplateBlocks = true">봇템플릿</button>
+                        <button class="mini ui button compact mr5" @click.stop.prevent="getTemplate">봇템플릿</button>
                         <input style="display: none" type="file" @change="sendFile">
                         <button type="button" class="mini ui button icon compact mr5" data-inverted data-tooltip="파일전송" data-variation="tiny" data-position="top center"
                                 onclick="this.previousElementSibling.click()"><i class="paperclip icon"></i></button>
@@ -1083,6 +1085,11 @@
                     if (!this.roomId)
                         return
                     sideViewModal.loadRoom(this.roomId, this.userName)
+                },
+                getTemplate:function (){
+                    this.showingTemplateBlocks = true
+                    this.loadTemplates()
+                    this.loadTemplateBlocks()
                 },
             },
             mounted: function () {
