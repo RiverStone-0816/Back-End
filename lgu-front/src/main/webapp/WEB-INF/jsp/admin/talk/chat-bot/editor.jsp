@@ -765,7 +765,7 @@
 
                                 fallbackConfig.data = {
                                     name: data.name,
-                                    enableCustomerInput: false,
+                                    enableCustomerInput: data.enableCustomerInput,
                                     fallbackMent: data.fallbackMent,
                                     fallbackAction: data.fallbackAction,
                                     nextBlockId: data.nextBlockId,
