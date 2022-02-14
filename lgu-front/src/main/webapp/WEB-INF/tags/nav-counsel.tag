@@ -66,8 +66,8 @@
                             조직도
                             <c:if test="${activeMessenger}">
                                 <button class="ui basic white very mini compact button ml10" @click.stop.prevent="openRoom()">선택대화</button>
-                                <button type="button" class="ui basic white very mini compact button ml10"
-                                        onclick="$('#team-list,#bookmark-list').find('.-messenger-user').removeClass('active')">Clear</button>
+                                <button type="button" class="ui basic white very mini compact button ml10" style="padding: 5px 5px;"
+                                        onclick="$('#team-list,#bookmark-list').find('.-messenger-user').removeClass('active')">선택해제</button>
                             </c:if>
                         </div>
                         <div onclick="toggleFold(event, this)">

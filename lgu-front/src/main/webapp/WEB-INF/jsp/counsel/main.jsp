@@ -16,9 +16,9 @@
 
 <div class="tab-content-container remove-padding full-height consulting-main">
     <div class="ui container fluid tight consulting-container">
-        <div class="ui grid">
+        <div class="ui grid" style="margin-top: -1.5rem;">
             <div class="sixteen wide column consulting-bookmark">
-                <div class="ui menu">
+                <div class="ui menu" style="padding-top: 0%;">
                     <a class="item -counsel-panel-indicator active" onclick="viewCallPanel()" data-tab="call-panel" data-target="#call-panel">상담화면</a>
                     <c:if test="${user.isTalk.equals('Y')}">
                         <a class="item -counsel-panel-indicator" onclick="viewTalkPanel(); $(this).removeClass('highlight');$(this).removeClass('newImg') " data-tab="talk-panel"

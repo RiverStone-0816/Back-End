@@ -25,7 +25,7 @@
             <span class="ui red basic label mini compact sparkle-red">블랙리스트</span>
         </c:if>
         <c:if test="${serviceKind.equals('SC')}">
-            <button type="button" class="ui button mini compact" onclick="popupArsModal()">ARS</button>
+        <button type="button" class="ui button mini compact" onclick="popupArsModal()">ARS</button>
             <button type="button" class="ui button mini compact" onclick="popupGradeAppModal()">등급관리</button>
             <button type="button" class="ui button mini compact" onclick="popupCmsModal()">CMS</button>
         </c:if>

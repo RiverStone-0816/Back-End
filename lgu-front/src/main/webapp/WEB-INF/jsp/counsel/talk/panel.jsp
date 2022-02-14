@@ -301,12 +301,16 @@
                     },
                     loadActivatedRoomIds: function () {
                         this.activatedRoomIds = talkRoomList.map(e => e.roomId)
+                        console.log("activatedRoomIds:"+this.activatedRoomIds);
                     },
                     timestampFormat: function (e) {
                         return moment(e).format('MM-DD HH:mm')
                     },
                     openRoom: function (roomId, userName) {
-                        talkRoom.loadRoom(roomId, userName).done(() => this.loadActivatedRoomIds())
+                        talkRoom.loadRoom(roomId, userName).done(() => {
+                            loadTalkCustomInput(null,null,roomId,this.roomMap[roomId].channelType,this.roomMap[roomId].senderKey,this.roomMap[roomId].userKey);
+                            this.loadActivatedRoomIds();
+                        })
                     },
                     reallocate() {
                         $(this.$el.parentElement).asJsonData().done(data => {
@@ -353,12 +357,12 @@
             </div>
             <div class="room" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true">
                 <div class="chat-header dp-flex justify-content-space-between align-items-center">
-                    <span :style="'visibility:'+(roomId?'visible':'hidden')">
+                    <span :style="'visibility:'+(roomId?'visible':'hidden')"> <%--v-if="roomName"--%>
                         <img v-if="channelType === 'kakao'" src="<c:url value="/resources/images/kakao-icon.png"/>" class="channel-icon">
                         <img v-if="channelType === 'eicn'" src="<c:url value="/resources/images/chatbot-icon.svg"/>" class="channel-icon">
                         <img v-if="channelType === 'naverline'" src="<c:url value="/resources/images/line-icon.png"/>" class="channel-icon">
                         <img v-if="channelType === 'navertt'" src="<c:url value="/resources/images/ntalk-icon.png"/>" class="channel-icon">
-                        [{{ roomStatus }}]-{{ roomName }}
+                        {{ roomName }}
                     </span>
                     <button :style="'visibility:'+(roomId?'visible':'hidden')" class="ui button tiny compact button-sideview" @click.stop="popupSideViewRoomModal"></button>
                 </div>
@@ -429,9 +433,9 @@
                                             </div>
                                         </div>
                                         <div v-for="(buttonGroup, j) in e.buttonGroups" class="chat bot">
-                                            <div class="bubble">
-                                                <div v-if="buttonGroup instanceof Array" class="button-inner">
-                                                    <button v-for="(e2, j) in buttonGroup" type="button" class="chatbot-button">{{ e2.name }}</button>
+                                            <div class="bubble" style="background-color: #dce6f2; width: 350px;">
+                                                <div v-if="buttonGroup instanceof Array" class="button-inner" style="width: 350px;">
+                                                    <button style="background-color:#a2a7b0; margin: 5px; padding-left:10px; padding-right:10px; height: 30px;" v-for="(e2, j) in buttonGroup" type="button" class="chatbot-button">{{ e2.name }}</button>
                                                 </div>
                                                 <div v-else class="card">
                                                     <div class="card-list">
@@ -756,10 +760,11 @@
                         _this.$forceUpdate()
                     }
 
+                   /* console.log("response:"+response);*/
                     if (message.sendReceive === 'SB') {
                         try {
                             const result = message.contents.match(/^BOT:(\d+)-BLK:(\d+)$/)
-                            restSelf.get('/api/chatbot/blocks/' + result[2], null, null, true).done(setBlockInfo)
+                            restSelf.get('/api/chatbot/blocks/' + result[2], null, null, true).done(setBlockInfo,response)
                         } catch (e) {
                             console.error(e)
                         }
@@ -780,6 +785,8 @@
                     if (message.messageType === 'block_temp') {
                         const block = this.templateBlocks.filter(e => e.blockId === parseInt(message.contents))[0]
                         block && restSelf.get('/api/chatbot/blocks/' + block.blockId, null, null, true).done(setBlockInfo)
+                        /*console.log("블록아이디:"+block.blockId);*/
+                        console.log("여기안댐");
                     } else if (message.messageType === 'image_temp') {
                         message.originalFileUrl = message.contents
                         message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: message.contents})
@@ -1079,6 +1086,7 @@
                     this.messageList = []
                     talkListContainer.loadActivatedRoomIds()
                 },
+
                 loadRoom(roomId, userName) {
                     const _this = this
                     return talkRoomProperties.methods.loadRoom.apply(this, [roomId, userName]).done(() => {
@@ -1089,6 +1097,7 @@
                         _this.scrollToBottom()
                     })
                 }
+
             },
         })).mount('#side-view-modal')
         const talkRoomList = [talkRoom, sideViewModal]
@@ -1098,6 +1107,7 @@
 <tags:scripts>
     <script>
         function loadTalkCustomInput(maindbGroupSeq, customId, roomId, channelType, senderKey, userKey) {
+            console.log("loadTalkCustomInput작동중"+roomId);
             return replaceReceivedHtmlInSilence($.addQueryString('/counsel/talk/custom-input', {
                 maindbGroupSeq: maindbGroupSeq || '',
                 customId: customId || '',
