@@ -26,7 +26,7 @@
         <c:if test="${roomId != null && roomId != '' && channelType != null && channelType != '' && senderKey != null && senderKey != '' && userKey != null && userKey != ''}">
             <button type="button" class="ui button mini right floated compact blue" id="talk-submitButton">${entity != null ? '고객수정' : '신규등록'}</button>
             <button type="button" class="ui button mini right floated compact"
-                    onclick="popupSearchMaindbCustomModal('TALK', '${g.htmlQuote(roomId)}', '${g.htmlQuote(channelType)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}')">고객검색
+                    onclick="popupSearchMaindbCustomModal('TALK', '${g.htmlQuote(roomId)}', '${g.htmlQuote(senderKey)}', '${g.htmlQuote(userKey)}')">고객검색
             </button>
         </c:if>
     </div>

@@ -4,7 +4,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 
 //EMAIL("EMAIL"),
 public enum MultichannelChannelType implements CodeHasable<String> {
-    PHONE("PHONE"),  TALK("TALK");
+    PHONE("PHONE"),  EMAIL("EMAIL"), TALK("TALK");
 
     private final String code;
 
