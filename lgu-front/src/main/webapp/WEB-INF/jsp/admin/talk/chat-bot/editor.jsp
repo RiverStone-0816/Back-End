@@ -82,7 +82,7 @@
                                     <div class="block-list-container">
                                         <ul id="block-list" class="block-list-ul">
                                             <li v-for="(e,i) in blocks" :key="i" class="block-list">
-                                                <div class="block-name" style="cursor: pointer" @mouseenter="highlight(e)" @mouseleave="dehighlight">{{e.name}}</div>
+                                                <div class="block-name" style="cursor: pointer" @mouseenter="highlight(e)" @mouseleave="dehighlight">{{e.name === '' ? '이름 없음' : e.name}}</div>
                                                 <div v-if="e.isTemplateEnable" class="block-control">
                                                     <img src="<c:url value="/resources/images/chatbot-square-mini.svg"/>">
                                                 </div>
