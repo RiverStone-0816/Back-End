@@ -216,24 +216,26 @@ public class WebchatBotService extends ApiBaseService {
 
     public WebchatBotInfoResponse.BlockInfo getBlockInfo(Integer blockId) {
         WebchatBotInfoResponse.BlockInfo blockInfo = webchatBotBlockService.getBlockInfo(blockId);
-        List<Integer> blockIdList = Collections.singletonList(blockId);
-        List<Integer> displayIdList = new ArrayList<>();
-        List<Integer> buttonIdList = new ArrayList<>();
+        if (blockInfo != null) {
 
-        Map<Integer, WebchatBotInfoResponse.BlockInfo> blockInfoById = webchatBotBlockService.findBlockInfoByIdInBlockIdList(blockIdList);
+            List<Integer> blockIdList = Collections.singletonList(blockId);
+            List<Integer> displayIdList = new ArrayList<>();
+            List<Integer> buttonIdList = new ArrayList<>();
 
-        Map<Integer, List<WebchatBotInfoResponse.DisplayInfo>> displayByBlockIdMap = webchatBotDisplayService.findDisplayByBlockId(blockIdList);
-        displayByBlockIdMap.values().forEach(e -> e.forEach(f -> displayIdList.add(f.getId())));
+            Map<Integer, WebchatBotInfoResponse.BlockInfo> blockInfoById = webchatBotBlockService.findBlockInfoByIdInBlockIdList(blockIdList);
 
-        Map<Integer, List<WebchatBotInfoResponse.ButtonInfo>> buttonListByBlockIdMap = webchatBotButtonElementService.findButtonListByBlockId(blockIdList);
-        buttonListByBlockIdMap.values().forEach(e -> e.forEach(f -> buttonIdList.add(f.getId())));
+            Map<Integer, List<WebchatBotInfoResponse.DisplayInfo>> displayByBlockIdMap = webchatBotDisplayService.findDisplayByBlockId(blockIdList);
+            displayByBlockIdMap.values().forEach(e -> e.forEach(f -> displayIdList.add(f.getId())));
 
-        Map<Integer, List<WebchatBotInfoResponse.DisplayElement>> displayElementByDisplayId = webchatBotDisplayElementService.findDisplayElementByDisplayId(displayIdList);
-        Map<Integer, List<WebchatBotInfoResponse.ApiParam>> apiParamListByButtonId = webchatBotApiParamService.findApiParamListByButtonId(buttonIdList);
+            Map<Integer, List<WebchatBotInfoResponse.ButtonInfo>> buttonListByBlockIdMap = webchatBotButtonElementService.findButtonListByBlockId(blockIdList);
+            buttonListByBlockIdMap.values().forEach(e -> e.forEach(f -> buttonIdList.add(f.getId())));
 
-        setBlockDetailInfo(blockInfo, null, blockInfoById, displayByBlockIdMap, displayElementByDisplayId, buttonListByBlockIdMap, apiParamListByButtonId);
+            Map<Integer, List<WebchatBotInfoResponse.DisplayElement>> displayElementByDisplayId = webchatBotDisplayElementService.findDisplayElementByDisplayId(displayIdList);
+            Map<Integer, List<WebchatBotInfoResponse.ApiParam>> apiParamListByButtonId = webchatBotApiParamService.findApiParamListByButtonId(buttonIdList);
 
+            setBlockDetailInfo(blockInfo, null, blockInfoById, displayByBlockIdMap, displayElementByDisplayId, buttonListByBlockIdMap, apiParamListByButtonId);
 
+        }
         return blockInfo;
     }
 }
