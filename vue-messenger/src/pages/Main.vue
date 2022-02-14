@@ -425,6 +425,8 @@ export default {
     actButton(message, button) {
       if (button.action === 'url') return window.open(button.next_action_data, null)
 
+      if (button.action === 'phone') return document.location.href = 'tal:'+button.next_action_data
+
       this.communicator.sendAction(this.botId, {
         chatbot_id: message.data.chatbot_id,
         parent_block_id: message.data.block_id,
