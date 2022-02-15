@@ -436,7 +436,7 @@
                                         <div v-for="(buttonGroup, j) in e.buttonGroups" class="chat bot">
                                             <div class="bubble" style="background-color: #dce6f2; width: 350px;">
                                                 <div v-if="buttonGroup instanceof Array" class="button-inner" style="width: 350px;">
-                                                    <button style="background-color:#a2a7b0; margin: 5px; padding-left:10px; padding-right:10px; height: 30px;" v-for="(e2, j) in buttonGroup" type="button" class="chatbot-button">{{ e2.name }}</button>
+                                                    <span v-for="(e2, j) in buttonGroup"><button v-if="['url', 'phone'].includes(e2.action)" style="background-color:#a2a7b0; margin: 5px; padding-left:10px; padding-right:10px; height: 30px;" type="button" class="chatbot-button">{{ e2.name }}</button></span>
                                                 </div>
                                                 <div v-else class="card">
                                                     <div class="card-list">
