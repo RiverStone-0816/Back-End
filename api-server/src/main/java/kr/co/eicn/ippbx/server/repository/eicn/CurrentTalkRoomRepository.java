@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentTalkRoom;
 import kr.co.eicn.ippbx.model.entity.customdb.TalkRoomEntity;
+import kr.co.eicn.ippbx.model.form.TalkAutoEnableFormRequest;
 import kr.co.eicn.ippbx.model.search.TalkRoomSearchRequest;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
@@ -79,4 +80,11 @@ public class CurrentTalkRoomRepository extends EicnBaseRepository<CurrentTalkRoo
                 .execute();
     }
 
+    public void updateAutoEnableByRoomId(String roomId, TalkAutoEnableFormRequest form) {
+        dsl.update(CURRENT_TALK_ROOM)
+                .set(CURRENT_TALK_ROOM.IS_AUTO_ENABLE, form.getIsAutoEnable())
+                .where(CURRENT_TALK_ROOM.COMPANY_ID.eq(g.getUser().getCompanyId()))
+                .and(CURRENT_TALK_ROOM.ROOM_ID.eq(roomId))
+                .execute();
+    }
 }

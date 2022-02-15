@@ -7,6 +7,7 @@ import kr.co.eicn.ippbx.front.service.api.CounselApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkCurrentListResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkCurrentMsgResponse;
+import kr.co.eicn.ippbx.model.form.TalkAutoEnableFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
 import kr.co.eicn.ippbx.model.form.TodoListUpdateFormRequest;
 import kr.co.eicn.ippbx.model.form.TodoReservationFormRequest;
@@ -74,5 +75,13 @@ public class CounselApiController extends BaseController {
     @DeleteMapping("talk-remove-room/{roomId}")
     public void talkRemoveRoom(@PathVariable String roomId) throws IOException, ResultFailException {
         apiInterface.talkRemoveRoom(roomId);
+    }
+
+    /**
+     * 상담톡 자동멘트 수정
+     */
+    @PutMapping("talk-auto-enable/{roomId}")
+    public void updateTalkAutoEnable(@Valid @RequestBody TalkAutoEnableFormRequest form, BindingResult bindingResult, @PathVariable String roomId) throws IOException, ResultFailException {
+        apiInterface.updateTalkAutoEnable(roomId, form);
     }
 }

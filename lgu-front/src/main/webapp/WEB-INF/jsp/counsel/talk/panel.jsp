@@ -437,7 +437,7 @@
                                         <div v-for="(buttonGroup, j) in e.buttonGroups" class="chat bot">
                                             <div class="bubble" style="background-color: #dce6f2; width: 350px;">
                                                 <div v-if="buttonGroup instanceof Array" class="button-inner" style="width: 350px;">
-                                                    <button style="background-color:#a2a7b0; margin: 5px; padding-left:10px; padding-right:10px; height: 30px;" v-for="(e2, j) in buttonGroup" type="button" class="chatbot-button">{{ e2.name }}</button>
+                                                    <span v-for="(e2, j) in buttonGroup"><button v-if="['url', 'phone'].includes(e2.action)" style="background-color:#a2a7b0; margin: 5px; padding-left:10px; padding-right:10px; height: 30px;" type="button" class="chatbot-button">{{ e2.name }}</button></span>
                                                 </div>
                                                 <div v-else class="card">
                                                     <div class="card-list">
@@ -620,17 +620,17 @@
 
                    <%-- showingTemplateBlocks = true && loadTemplates && loadTemplateBlocks--%>
                     <div :style="'visibility:'+(roomId?'visible':'hidden')">
-                        <button class="mini ui button compact mr5" @click.stop.prevent="getTemplate">봇템플릿</button>
+                        <button v-if="channelType==='eicn'" class="mini ui button compact mr5" @click.stop.prevent="getTemplate">봇템플릿</button>
                         <input style="display: none" type="file" @change="sendFile">
                         <button type="button" class="mini ui button icon compact mr5" data-inverted data-tooltip="파일전송" data-variation="tiny" data-position="top center"
                                 onclick="this.previousElementSibling.click()"><i class="paperclip icon"></i></button>
                         <%--TODO: 음성대화--%>
-                        <%--<button class="ui icon compact mini button mr5" data-inverted data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i class="microphone icon"></i></button>--%>
+                        <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i class="microphone icon"></i></button>
                         <%--TODO: 화상대화--%>
-                        <%--<button class="ui icon compact mini button mr5" data-inverted data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>--%>
+                        <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>
                         <%--TODO: 자동멘트--%>
                         <div class="ui fitted toggle checkbox auto-ment vertical-align-middle">
-                            <input type="checkbox" :value="isAutoEnable" v-model="isAutoEnable">
+                            <input type="checkbox" :value="isAutoEnable" v-model="isAutoEnable" @change="setAutoEnable(roomId)">
                             <label></label>
                         </div>
                     </div>
@@ -919,6 +919,9 @@
                     for (let i = 0; i < event.dataTransfer.files.length; i++) {
                         this.uploadFile(event.dataTransfer.files[i])
                     }
+                },
+                setAutoEnable: function (roomId) {
+                    restSelf.put('/api/counsel/talk-auto-enable/' + roomId, {isAutoEnable: (this.isAutoEnable ? "Y" : "N")})
                 },
                 pasteFromClipboard: function (event) {
                     let hasFile = false

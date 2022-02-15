@@ -17,10 +17,7 @@ import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.TalkMsgEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.TalkRoomEntity;
 import kr.co.eicn.ippbx.model.enums.*;
-import kr.co.eicn.ippbx.model.form.CallbackListUpdateFormRequest;
-import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
-import kr.co.eicn.ippbx.model.form.TodoListUpdateFormRequest;
-import kr.co.eicn.ippbx.model.form.TodoReservationFormRequest;
+import kr.co.eicn.ippbx.model.form.*;
 import kr.co.eicn.ippbx.model.search.TodoListSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
@@ -535,6 +532,15 @@ public class MainApiController extends ApiBaseController {
         return ResponseEntity.ok(create());
     }
 
+    /**
+     * 상담톡 자동멘트 수정
+     */
+    @PutMapping("talk-auto-enable/{roomId}")
+    public ResponseEntity<JsonResult<Void>> updateTalkAutoEnable(@PathVariable String roomId, @Valid @RequestBody TalkAutoEnableFormRequest form) {
+        currentTalkRoomRepository.updateAutoEnableByRoomId(roomId, form);
+
+        return ResponseEntity.ok(create());
+    }
 
     @PostMapping("file")
     public ResponseEntity<JsonResult<String>> uploadFile(@Valid @RequestParam MultipartFile file) {
