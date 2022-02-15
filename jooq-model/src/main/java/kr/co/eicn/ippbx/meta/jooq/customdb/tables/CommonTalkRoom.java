@@ -96,6 +96,11 @@ public class CommonTalkRoom extends TableImpl<TalkRoomRecord> {
      */
     public final TableField<TalkRoomRecord, String> SCHEDULE_DATA = createField(DSL.name("schedule_data"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
+    /**
+     * The column <code>CUSTOMDB.talk_room.is_auto_enable</code>.
+     */
+    public final TableField<TalkRoomRecord, String> IS_AUTO_ENABLE = createField(DSL.name("is_auto_enable"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("'Y'", org.jooq.impl.SQLDataType.CHAR)), this, "");
+
     private String tableName;
 
     /**

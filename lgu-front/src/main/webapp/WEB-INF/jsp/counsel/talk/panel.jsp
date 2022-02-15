@@ -623,7 +623,7 @@
                         <button class="ui icon compact mini button mr5" data-inverted data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>
                         <%--TODO: 자동멘트--%>
                         <div class="ui fitted toggle checkbox auto-ment vertical-align-middle">
-                            <input type="checkbox">
+                            <input type="checkbox" :value="isAutoEnable" v-model="isAutoEnable">
                             <label></label>
                         </div>
                     </div>
@@ -690,6 +690,7 @@
                     userId: null,
                     userName: null,
                     customName: null,
+                    isAutoEnable: false,
 
                     loginId: '${g.user.id}',
                     isMessage: false,
@@ -716,6 +717,7 @@
                 },*/
                 loadRoom: function (roomId, userName) {
                     const _this = this
+
                     return restSelf.get('/api/counsel/current-talk-msg/' + roomId).done(function (response) {
                         _this.roomId = roomId
                         _this.userName = userName
@@ -727,7 +729,6 @@
                         _this.roomStatus = response.data.roomStatus
                         _this.userId = response.data.userId
                         _this.customName = response.data.customName
-                        _this.isMessage = !(response.data.userId === _this.loginId)
 
                         _this.messageList = []
                         response.data.talkMsgSummaryList.forEach(function (e) {
@@ -738,7 +739,7 @@
                                 sendReceive: e.sendReceive,
                                 contents: e.content,
                                 userId: e.userId,
-                                username: e.userName,
+                                username: e.userName
                             })
                         })
                         _this.scrollToBottom()
@@ -1176,14 +1177,8 @@
             .on('svc_control', processTalkMessage)
             .on('svc_redist', data => talkListContainer.updateRoomUser(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.user_key, data.userid))
             .on('svc_end', processTalkMessage)
-            .on('svc_login', data => {
-                    $('#distributee').prop("checked", data.dist_yn === 'Y');
-                    if(data.dist_yn === 'D') $('#isDistributee').hide();
-                })
-            .on('svc_dist_yn', data => {
-                    $('#distributee').prop("checked", data.dist_yn === 'Y');
-                    if(data.dist_yn === 'D') $('#isDistributee').hide();
-                })
+            .on('svc_login', data => $('#distributee').prop("checked", data.dist_yn === 'Y'))
+            .on('svc_dist_yn', data => $('#distributee').prop("checked", data.dist_yn === 'Y'))
 
         $(window).on('load', function () {
             loadTalkCustomInput()

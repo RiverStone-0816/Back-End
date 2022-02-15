@@ -23,4 +23,5 @@ public class CommonTalkRoom implements Serializable {
     private String    roomName;
     private String    scheduleKind;
     private String    scheduleData;
+    private String    isAutoEnable;
 }
