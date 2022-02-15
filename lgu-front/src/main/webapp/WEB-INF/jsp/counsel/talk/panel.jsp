@@ -379,16 +379,16 @@
                             <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + i">
 
                                 <div v-if="'SB' === e.sendReceive || e.messageType === 'block_temp'" class="chat-item" :class="e.messageType === 'block_temp' && ' chat-me '">
-                                    <div class="profile-img">
+                                    <div v-if="blocks!=null" class="profile-img">
                                         <img :src="getImage(roomId)">
                                     </div>
                                     <div class="wrap-content">
                                         <div v-if="blocks!=null" class="txt-time">[{{ e.messageType === 'block_temp' ? (e.username || e.userId) : customName }}] {{ getTimeFormat(e.time) }}</div>
                                         <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
-                                            <div class="bubble" style="background-color: transparent; text-align: center; display: block; box-shadow: none;">
-<%--                                                <img src="<c:url value="/resources/images/loading.svg"/>" alt="loading"/>--%>
-                                                <%--<text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>--%>
-                                            </div>
+                                            <%--<img src="<c:url value="/resources/images/loading.svg"/>" alt="loading"/>--%>
+                                            <p class="info-msg">
+                                            <text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>
+                                            </p>
                                         </div>
                                         <div v-for="(display, j) in e.displays" class="chat bot">
                                             <div class="bubble">
@@ -486,7 +486,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="'SA' === e.sendReceive " class="chat-item chat-me">
+                                <div v-if="['SA', 'AM', 'AW'].includes(e.sendReceive)" class="chat-item chat-me">
                                     <div class="wrap-content">
                                         <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
@@ -565,7 +565,6 @@
                                     <text v-if="e.sendReceive === 'SG'">[{{ e.username }}] 상담사가 상담을 가져왔습니다.</text>
                                 </p>
                                 <p v-if="['SE', 'RE', 'AE', 'E'].includes(e.sendReceive) && e.contents" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
-                                <p v-else="blocks === null" class="info-msg">[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</p>
                             </div>
                         </div>
                     </div>
