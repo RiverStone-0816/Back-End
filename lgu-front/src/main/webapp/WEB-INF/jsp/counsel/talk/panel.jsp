@@ -622,7 +622,7 @@
                         <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>
                         <%--TODO: 자동멘트--%>
                         <div class="ui fitted toggle checkbox auto-ment vertical-align-middle">
-                            <input type="checkbox" :value="isAutoEnable" v-model="isAutoEnable">
+                            <input type="checkbox" :value="isAutoEnable" v-model="isAutoEnable" @change="setAutoEnable(roomId)">
                             <label></label>
                         </div>
                     </div>
@@ -911,6 +911,9 @@
                     for (let i = 0; i < event.dataTransfer.files.length; i++) {
                         this.uploadFile(event.dataTransfer.files[i])
                     }
+                },
+                setAutoEnable: function (roomId) {
+                    restSelf.put('/api/counsel/talk-auto-enable/' + roomId, {isAutoEnable: (this.isAutoEnable ? "Y" : "N")})
                 },
                 pasteFromClipboard: function (event) {
                     let hasFile = false

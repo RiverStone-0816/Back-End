@@ -2,6 +2,8 @@ package kr.co.eicn.ippbx.front.controller.web.admin.talk.statistics;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
+import kr.co.eicn.ippbx.front.service.api.WebchatConfigApiInterface;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatServiceSummaryInfoResponse;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.talk.group.TalkReceptionGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.talk.statistics.TalkPersonStatApiInterface;
@@ -37,13 +39,17 @@ public class TalkPersonStatController extends BaseController {
     private TalkPersonStatApiInterface apiInterface;
     @Autowired
     private TalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
+    @Autowired
+    private WebchatConfigApiInterface webchatConfigApiInterface;
 
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") TalkStatisticsSearchRequest search) throws IOException, ResultFailException {
         final List<TalkStatisticsPersonResponse> list = apiInterface.list(search);
         model.addAttribute("list", list);
 
+        final Map<String, String> chatServiceMap = webchatConfigApiInterface.list().stream().collect(Collectors.toMap(WebchatServiceSummaryInfoResponse::getSenderKey, WebchatServiceSummaryInfoResponse::getChannelName));
         final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryTalkServiceResponse::getSenderKey, SummaryTalkServiceResponse::getKakaoServiceName));
+        talkServices.putAll(chatServiceMap);
         model.addAttribute("talkServices", talkServices);
 
         return "admin/talk/statistics/person/ground";

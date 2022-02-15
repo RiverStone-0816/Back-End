@@ -1,8 +1,7 @@
 package kr.co.eicn.ippbx.front.service.api;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.co.eicn.ippbx.exception.UnauthorizedException;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
+import kr.co.eicn.ippbx.model.form.TalkAutoEnableFormRequest;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.model.dto.customdb.CustomMultichannelInfoResponse;
@@ -76,6 +75,10 @@ public class CounselApiInterface extends ApiServerInterface {
 
     public void talkRemoveRoom(String roomId) throws IOException, ResultFailException {
         delete(subUrl + "talk-remove-room" + "/" + roomId);
+    }
+
+    public void updateTalkAutoEnable(String roomId, TalkAutoEnableFormRequest form) throws IOException, ResultFailException {
+        put(subUrl + "talk-auto-enable/" + roomId, form);
     }
 
     public List<CustomMultichannelInfoResponse> customInfoList(String channelData) throws IOException, ResultFailException {
