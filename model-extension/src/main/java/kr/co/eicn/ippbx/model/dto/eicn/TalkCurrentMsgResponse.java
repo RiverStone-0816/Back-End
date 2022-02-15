@@ -17,4 +17,5 @@ public class TalkCurrentMsgResponse {
 	private String userKey;
 	private String senderKey;
 	private String userId;
+	private String isAutoEnable;
 }

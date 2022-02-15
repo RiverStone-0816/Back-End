@@ -619,7 +619,7 @@
                         <button class="ui icon compact mini button mr5" data-inverted data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>
                         <%--TODO: 자동멘트--%>
                         <div class="ui fitted toggle checkbox auto-ment vertical-align-middle">
-                            <input type="checkbox">
+                            <input type="checkbox" :value="isAutoEnable" v-model="isAutoEnable">
                             <label></label>
                         </div>
                     </div>
@@ -686,6 +686,7 @@
                     userId: null,
                     userName: null,
                     customName: null,
+                    isAutoEnable: false,
 
                     showingDropzone: false,
 
@@ -706,6 +707,7 @@
             methods: {
                 loadRoom: function (roomId, userName) {
                     const _this = this
+
                     return restSelf.get('/api/counsel/current-talk-msg/' + roomId).done(function (response) {
                         _this.roomId = roomId
                         _this.userName = userName
@@ -717,6 +719,7 @@
                         _this.roomStatus = response.data.roomStatus
                         _this.userId = response.data.userId
                         _this.customName = response.data.customName
+                        _this.isAutoEnable = response.data.isAutoEnable === 'Y'
 
                         _this.messageList = []
                         response.data.talkMsgSummaryList.forEach(function (e) {
@@ -727,7 +730,7 @@
                                 sendReceive: e.sendReceive,
                                 contents: e.content,
                                 userId: e.userId,
-                                username: e.userName,
+                                username: e.userName
                             })
                         })
                         _this.scrollToBottom()

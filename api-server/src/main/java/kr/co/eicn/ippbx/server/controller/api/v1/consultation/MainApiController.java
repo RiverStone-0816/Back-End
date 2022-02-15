@@ -495,6 +495,7 @@ public class MainApiController extends ApiBaseController {
         response.setUserKey(talkRoomEntity.getUserKey());
         response.setUserId(talkRoomEntity.getUserid());
         response.setChannelType(TalkChannelType.of(talkRoomEntity.getChannelType()));
+        response.setIsAutoEnable(talkRoomEntity.getIsAutoEnable());
 
         return ResponseEntity.ok(data(response));
     }
