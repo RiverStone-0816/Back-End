@@ -14762,7 +14762,7 @@ a.ui.label {
 .ui.label > img {
     width: auto !important;
     vertical-align: middle;
-    height: 2.1666em !important;
+    height: 1.0666em !important;
 }
 
 /* Icon */
@@ -15116,7 +15116,7 @@ a.ui.label {
     margin: 0em;
     top: 0em;
     left: 0em;
-    padding: 0.75em 1em;
+    /*padding: 0.75em 1em;*/
     border-radius: 0.21428571rem 0.21428571rem 0em 0em;
 }
 

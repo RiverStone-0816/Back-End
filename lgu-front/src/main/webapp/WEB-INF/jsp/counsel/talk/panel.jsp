@@ -56,14 +56,15 @@
                         <li v-for="(room, j) in statuses[e.status].rooms" :key="j" class="talk-list" @click="openRoom(room.roomId, room.userName)">
                             <div v-if="room.showing" class="ui segment" :class="activatedRoomIds.includes(room.roomId) && 'active'">
                                 <div class="ui top left attached label small blue">
-                                    서비스 : {{ room.svcName }}
-                                    <img v-if="room.channelType === 'kakao'" src="<c:url value="/resources/images/kakao-icon.png"/>" class="channel-icon">
-                                    <img v-if="room.channelType === 'eicn'" src="<c:url value="/resources/images/chatbot-icon.svg"/>" class="channel-icon">
-                                    <img v-if="room.channelType === 'naverline'" src="<c:url value="/resources/images/line-icon.png"/>" class="channel-icon">
-                                    <img v-if="room.channelType === 'navertt'" src="<c:url value="/resources/images/ntalk-icon.png"/>" class="channel-icon">
+                                    <img v-if="room.channelType === 'kakao'" src="<c:url value="/resources/images/kakao-icon.png"/>" >
+                                    <img v-if="room.channelType === 'eicn'" src="<c:url value="/resources/images/chatbot-icon.svg"/>" >
+                                    <img v-if="room.channelType === 'naverline'" src="<c:url value="/resources/images/line-icon.png"/>">
+                                    <img v-if="room.channelType === 'navertt'" src="<c:url value="/resources/images/ntalk-icon.png"/>" >
+                                    서비스 : {{ room.svcName }} || 상담원 : {{ room.userName }}
+
                                 </div>
-                                <div class="ui top right attached label small">상담원 : {{ room.userName }}</div>
-                                <div class="ui bottom right attached label small time">{{ timestampFormat(room.roomLastTime) }}</div>
+                                <%--<div class="ui top right attached label small"></div>--%>
+                                <div class="ui top right attached label small time">{{ timestampFormat(room.roomLastTime) }}</div>
                                 <div class="ui divided items">
                                     <div class="item">
                                         <div class="thumb">
@@ -76,7 +77,7 @@
                                             </div>
                                         </div>
                                         <div class="middle aligned content">
-                                            <div class="header">
+                                            <div class="headerpanerl">
                                                 <text class="-custom-name">{{ room.maindbCustomName ? room.maindbCustomName : '미등록고객' }}</text>
                                                 <span v-if="!activatedRoomIds.includes(room.roomId) && room.hasNewMessage" class="ui mini label circular"> N </span>
                                             </div>
@@ -386,9 +387,9 @@
                                         <div v-if="blocks!=null" class="txt-time">[{{ e.messageType === 'block_temp' ? (e.username || e.userId) : customName }}] {{ getTimeFormat(e.time) }}</div>
                                         <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
                                             <%--<img src="<c:url value="/resources/images/loading.svg"/>" alt="loading"/>--%>
-                                            <p class="info-msg">
+                                           <%-- <p class="info-msg">
                                             <text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>
-                                            </p>
+                                            </p>--%>
                                         </div>
                                         <div v-for="(display, j) in e.displays" class="chat bot">
                                             <div class="bubble">
@@ -472,7 +473,7 @@
                                     </div>
                                 </div>
                                 <div v-if="'RB' === e.sendReceive && e.messageType === 'text'" class="chat-item">
-                                    <div class="profile-img">
+                                    <div class="profile-img" style="position: absolute; top: 30px;">
                                         <img :src="getImage(roomId)">
                                     </div>
                                     <div class="wrap-content">
@@ -565,6 +566,13 @@
                                     <text v-if="e.sendReceive === 'SG'">[{{ e.username }}] 상담사가 상담을 가져왔습니다.</text>
                                 </p>
                                 <p v-if="['SE', 'RE', 'AE', 'E'].includes(e.sendReceive) && e.contents" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
+                                <div v-if="'SB' === e.sendReceive || e.messageType === 'block_temp'"  :class="e.messageType === 'block_temp' && ' chat-me '">
+                                <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
+                                <p class="info-msg">
+                                    <text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>
+                                </p>
+                                </div>
+                                </div>
                             </div>
                         </div>
                     </div>
