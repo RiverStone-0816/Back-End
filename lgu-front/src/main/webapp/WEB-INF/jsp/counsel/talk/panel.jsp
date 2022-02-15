@@ -1010,13 +1010,11 @@
                     })
                 },
                 loadTemplateBlocks: function () {
-                    console.log("loadTemplateBlocks동작");
                     const _this = this
                     restSelf.get('/api/chatbot/blocks/template', null, false, null).done(function (response) {
                         _this.templateBlocks = []
                         response.data.forEach(function (e) {
                             _this.templateBlocks.push({botId: e.botId, blockId: e.blockId, name: e.botName + ' - ' + e.blockName})
-                            console.log("뭐찍히징:"+ JSON.stringify(_this.templateBlocks));
                         })
                     })
                 },
@@ -1071,15 +1069,12 @@
                 },
                 assignUnassignedRoomToMe: function () {
                     talkCommunicator.assignUnassignedRoomToMe(this.roomId, this.channelType, this.senderKey, this.userKey)
-                    // setTimeout(talkListContainer.load, 100)
                 },
                 assignAssignedRoomToMe: function () {
                     talkCommunicator.assignAssignedRoomToMe(this.roomId, this.channelType, this.senderKey, this.userKey)
-                    // setTimeout(talkListContainer.load, 100)
                 },
                 finishCounsel: function () {
                     talkCommunicator.deleteRoom(this.roomId, this.channelType, this.senderKey, this.userKey)
-                    // setTimeout(talkListContainer.load, 100)
                 },
                 popupSideViewRoomModal: function () {
                     if (!this.roomId)
@@ -1093,21 +1088,11 @@
                 },
             },
             mounted: function () {
-            //    console.log("mounted동작");
-
-                // setInterval(this.loadTemplates(),3000)
-                 //setInterval(this.loadTemplateBlocks(),3000)
-                // setInterval(this.getTemplates(),3000)
                 this.loadTemplates()
                 this.loadTemplateBlocks()
 
             },
         }
-        //setInterval(this.loadTemplates(),30000)
-        /*this.loadTemplates()*/
-        /*this.loadTemplateBlocks()*/
-        //setInterval(this.loadTemplateBlocks(),30000)
-        //setInterval(this.getTemplates(),30000)
 
         const talkRoom = Vue.createApp(Object.assign({}, talkRoomProperties)).mount('#talk-room')
         const sideViewModal = Vue.createApp(Object.assign({}, talkRoomProperties, {
