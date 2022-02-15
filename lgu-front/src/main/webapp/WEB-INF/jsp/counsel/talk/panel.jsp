@@ -26,7 +26,7 @@
                     </a>
                 </template>
             </div>
-            <div v-for="(e, i) in STATUSES" :key="i" class="ui bottom attached tab segment" :class="statuses[e.status].activated && 'active'">
+            <div v-for="(e, i) in STATUSES" :key="i" class="ui bottom attached tab segment" :class="statuses[e.status].activated && 'active'" style="width: 100%;">
                 <div class="sort-wrap">
                     <div class="ui form">
                         <div class="fields">
@@ -357,7 +357,7 @@
             </div>
             <div class="room" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true">
                 <div class="chat-header dp-flex justify-content-space-between align-items-center">
-                    <span :style="'visibility:'+(roomId?'visible':'hidden')"> <%--v-if="roomName"--%>
+                    <span id="text-line" :style="'visibility:'+(roomId?'visible':'hidden')" style="width:400px; padding:0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"> <%--v-if="roomName"--%>
                         <img v-if="channelType === 'kakao'" src="<c:url value="/resources/images/kakao-icon.png"/>" class="channel-icon">
                         <img v-if="channelType === 'eicn'" src="<c:url value="/resources/images/chatbot-icon.svg"/>" class="channel-icon">
                         <img v-if="channelType === 'naverline'" src="<c:url value="/resources/images/line-icon.png"/>" class="channel-icon">
@@ -383,10 +383,11 @@
                                         <img :src="getImage(roomId)">
                                     </div>
                                     <div class="wrap-content">
-                                        <div class="txt-time">[{{ e.messageType === 'block_temp' ? (e.username || e.userId) : customName }}] {{ getTimeFormat(e.time) }}</div>
+                                        <div v-if="blocks!=null" class="txt-time">[{{ e.messageType === 'block_temp' ? (e.username || e.userId) : customName }}] {{ getTimeFormat(e.time) }}</div>
                                         <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
                                             <div class="bubble" style="background-color: transparent; text-align: center; display: block; box-shadow: none;">
-                                                <img src="<c:url value="/resources/images/loading.svg"/>" alt="loading"/>
+<%--                                                <img src="<c:url value="/resources/images/loading.svg"/>" alt="loading"/>--%>
+                                                <%--<text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>--%>
                                             </div>
                                         </div>
                                         <div v-for="(display, j) in e.displays" class="chat bot">
@@ -485,7 +486,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="'SA' === e.sendReceive" class="chat-item chat-me">
+                                <div v-if="'SA' === e.sendReceive " class="chat-item chat-me">
                                     <div class="wrap-content">
                                         <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
@@ -564,6 +565,7 @@
                                     <text v-if="e.sendReceive === 'SG'">[{{ e.username }}] 상담사가 상담을 가져왔습니다.</text>
                                 </p>
                                 <p v-if="['SE', 'RE', 'AE', 'E'].includes(e.sendReceive) && e.contents" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
+                                <p v-else="blocks === null" class="info-msg">[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</p>
                             </div>
                         </div>
                     </div>
@@ -576,6 +578,7 @@
                             <ul class="template-ul">
                                 <li v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.blockId)" class="template-list">
                                     <div class="template-title">/{{ e.name }}</div>
+                                    <%--여기--%>
                                 </li>
                             </ul>
                         </div>
@@ -608,8 +611,9 @@
                         </div>
                     </div>
 
+                   <%-- showingTemplateBlocks = true && loadTemplates && loadTemplateBlocks--%>
                     <div :style="'visibility:'+(roomId?'visible':'hidden')">
-                        <button class="mini ui button compact mr5" @click.stop.prevent="showingTemplateBlocks = true">봇템플릿</button>
+                        <button class="mini ui button compact mr5" @click.stop.prevent="getTemplate">봇템플릿</button>
                         <input style="display: none" type="file" @change="sendFile">
                         <button type="button" class="mini ui button icon compact mr5" data-inverted data-tooltip="파일전송" data-variation="tiny" data-position="top center"
                                 onclick="this.previousElementSibling.click()"><i class="paperclip icon"></i></button>
@@ -705,6 +709,9 @@
                 }
             },
             methods: {
+             /*   talktemplate:function (){
+                    return restSelf.get('/api/counsel/current-talk-msg/' + roomId).done(function (response){});
+                },*/
                 loadRoom: function (roomId, userName) {
                     const _this = this
 
@@ -935,6 +942,8 @@
                     this.showingTemplateBlocks = false
                 },
                 getTemplates() {
+                    console.log("getTemplates동작");
+
                     const _this = this
                     return this.templates.filter(e => e.permissionLevel >= _this.showingTemplateLevel && e.name.includes(_this.showingTemplateFilter))
                 },
@@ -979,6 +988,7 @@
                     }
                 },
                 loadTemplates: function () {
+                    console.log("loadTemplates동작");
                     const _this = this
                     restSelf.get('/api/talk-template/my/', null, false, null).done(function (response) {
                         _this.templates = []
@@ -999,11 +1009,13 @@
                     })
                 },
                 loadTemplateBlocks: function () {
+                    console.log("loadTemplateBlocks동작");
                     const _this = this
                     restSelf.get('/api/chatbot/blocks/template', null, false, null).done(function (response) {
                         _this.templateBlocks = []
                         response.data.forEach(function (e) {
                             _this.templateBlocks.push({botId: e.botId, blockId: e.blockId, name: e.botName + ' - ' + e.blockName})
+                            console.log("뭐찍히징:"+ JSON.stringify(_this.templateBlocks));
                         })
                     })
                 },
@@ -1073,12 +1085,28 @@
                         return
                     sideViewModal.loadRoom(this.roomId, this.userName)
                 },
+                getTemplate:function (){
+                    this.showingTemplateBlocks = true
+                    this.loadTemplates()
+                    this.loadTemplateBlocks()
+                },
             },
             mounted: function () {
+            //    console.log("mounted동작");
+
+                // setInterval(this.loadTemplates(),3000)
+                 //setInterval(this.loadTemplateBlocks(),3000)
+                // setInterval(this.getTemplates(),3000)
                 this.loadTemplates()
                 this.loadTemplateBlocks()
+
             },
         }
+        //setInterval(this.loadTemplates(),30000)
+        /*this.loadTemplates()*/
+        /*this.loadTemplateBlocks()*/
+        //setInterval(this.loadTemplateBlocks(),30000)
+        //setInterval(this.getTemplates(),30000)
 
         const talkRoom = Vue.createApp(Object.assign({}, talkRoomProperties)).mount('#talk-room')
         const sideViewModal = Vue.createApp(Object.assign({}, talkRoomProperties, {
