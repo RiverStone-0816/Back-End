@@ -41,7 +41,7 @@
                     </c:if>
                     <a class="item" onclick="popupScheduleModal()">일정관리</a>
                     <div class="right menu" style="padding: 0">
-                        <div class="item ui slider checkbox">
+                        <div class="item ui slider checkbox" id="isDistributee">
                             <%--TODO: 초기값 세팅 필요 --%>
                             <input type="checkbox" id="distributee" tabindex="0" class="hidden"><label>분배/제외</label>
                         </div>

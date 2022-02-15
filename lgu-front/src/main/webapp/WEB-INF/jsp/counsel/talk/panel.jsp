@@ -379,16 +379,16 @@
                             <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + i">
 
                                 <div v-if="'SB' === e.sendReceive || e.messageType === 'block_temp'" class="chat-item" :class="e.messageType === 'block_temp' && ' chat-me '">
-                                    <div class="profile-img">
+                                    <div v-if="blocks!=null" class="profile-img">
                                         <img :src="getImage(roomId)">
                                     </div>
                                     <div class="wrap-content">
                                         <div v-if="blocks!=null" class="txt-time">[{{ e.messageType === 'block_temp' ? (e.username || e.userId) : customName }}] {{ getTimeFormat(e.time) }}</div>
                                         <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
-                                            <div class="bubble" style="background-color: transparent; text-align: center; display: block; box-shadow: none;">
-<%--                                                <img src="<c:url value="/resources/images/loading.svg"/>" alt="loading"/>--%>
-                                                <%--<text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>--%>
-                                            </div>
+                                            <%--<img src="<c:url value="/resources/images/loading.svg"/>" alt="loading"/>--%>
+                                            <p class="info-msg">
+                                            <text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>
+                                            </p>
                                         </div>
                                         <div v-for="(display, j) in e.displays" class="chat bot">
                                             <div class="bubble">
@@ -486,7 +486,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="'SA' === e.sendReceive " class="chat-item chat-me">
+                                <div v-if="['SA', 'AM', 'AW'].includes(e.sendReceive)" class="chat-item chat-me">
                                     <div class="wrap-content">
                                         <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
@@ -565,7 +565,6 @@
                                     <text v-if="e.sendReceive === 'SG'">[{{ e.username }}] 상담사가 상담을 가져왔습니다.</text>
                                 </p>
                                 <p v-if="['SE', 'RE', 'AE', 'E'].includes(e.sendReceive) && e.contents" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
-                                <p v-else="blocks === null" class="info-msg">[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</p>
                             </div>
                         </div>
                     </div>
@@ -613,14 +612,14 @@
 
                    <%-- showingTemplateBlocks = true && loadTemplates && loadTemplateBlocks--%>
                     <div :style="'visibility:'+(roomId?'visible':'hidden')">
-                        <button class="mini ui button compact mr5" @click.stop.prevent="getTemplate">봇템플릿</button>
+                        <button v-if="channelType==='eicn'" class="mini ui button compact mr5" @click.stop.prevent="getTemplate">봇템플릿</button>
                         <input style="display: none" type="file" @change="sendFile">
                         <button type="button" class="mini ui button icon compact mr5" data-inverted data-tooltip="파일전송" data-variation="tiny" data-position="top center"
                                 onclick="this.previousElementSibling.click()"><i class="paperclip icon"></i></button>
                         <%--TODO: 음성대화--%>
-                        <button class="ui icon compact mini button mr5" data-inverted data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i class="microphone icon"></i></button>
+                        <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i class="microphone icon"></i></button>
                         <%--TODO: 화상대화--%>
-                        <button class="ui icon compact mini button mr5" data-inverted data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>
+                        <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>
                         <%--TODO: 자동멘트--%>
                         <div class="ui fitted toggle checkbox auto-ment vertical-align-middle">
                             <input type="checkbox" :value="isAutoEnable" v-model="isAutoEnable" @change="setAutoEnable(roomId)">
@@ -637,7 +636,7 @@
 
                 <div class="wrap-inp">
                     <div class="inp-box">
-                        <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup"></textarea>
+                        <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup" :disabled="isMessage"></textarea>
                     </div>
                     <button type="button" class="send-btn" @click="sendMessage()">전송</button>
                 </div>
@@ -692,6 +691,9 @@
                     customName: null,
                     isAutoEnable: false,
 
+                    loginId: '${g.user.id}',
+                    isMessage: false,
+
                     showingDropzone: false,
 
                     showingTemplateLevel: 0,
@@ -726,7 +728,7 @@
                         _this.roomStatus = response.data.roomStatus
                         _this.userId = response.data.userId
                         _this.customName = response.data.customName
-                        _this.isAutoEnable = response.data.isAutoEnable === 'Y'
+                        _this.isMessage = !(response.data.userId === null)
 
                         _this.messageList = []
                         response.data.talkMsgSummaryList.forEach(function (e) {
@@ -795,8 +797,6 @@
                     if (message.messageType === 'block_temp') {
                         const block = this.templateBlocks.filter(e => e.blockId === parseInt(message.contents))[0]
                         block && restSelf.get('/api/chatbot/blocks/' + block.blockId, null, null, true).done(setBlockInfo)
-                        /*console.log("블록아이디:"+block.blockId);*/
-                        console.log("여기안댐");
                     } else if (message.messageType === 'image_temp') {
                         message.originalFileUrl = message.contents
                         message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: message.contents})
@@ -991,7 +991,6 @@
                     }
                 },
                 loadTemplates: function () {
-                    console.log("loadTemplates동작");
                     const _this = this
                     restSelf.get('/api/talk-template/my/', null, false, null).done(function (response) {
                         _this.templates = []
@@ -1012,13 +1011,11 @@
                     })
                 },
                 loadTemplateBlocks: function () {
-                    console.log("loadTemplateBlocks동작");
                     const _this = this
                     restSelf.get('/api/chatbot/blocks/template', null, false, null).done(function (response) {
                         _this.templateBlocks = []
                         response.data.forEach(function (e) {
                             _this.templateBlocks.push({botId: e.botId, blockId: e.blockId, name: e.botName + ' - ' + e.blockName})
-                            console.log("뭐찍히징:"+ JSON.stringify(_this.templateBlocks));
                         })
                     })
                 },
@@ -1073,15 +1070,12 @@
                 },
                 assignUnassignedRoomToMe: function () {
                     talkCommunicator.assignUnassignedRoomToMe(this.roomId, this.channelType, this.senderKey, this.userKey)
-                    // setTimeout(talkListContainer.load, 100)
                 },
                 assignAssignedRoomToMe: function () {
                     talkCommunicator.assignAssignedRoomToMe(this.roomId, this.channelType, this.senderKey, this.userKey)
-                    // setTimeout(talkListContainer.load, 100)
                 },
                 finishCounsel: function () {
                     talkCommunicator.deleteRoom(this.roomId, this.channelType, this.senderKey, this.userKey)
-                    // setTimeout(talkListContainer.load, 100)
                 },
                 popupSideViewRoomModal: function () {
                     if (!this.roomId)
@@ -1095,21 +1089,11 @@
                 },
             },
             mounted: function () {
-            //    console.log("mounted동작");
-
-                // setInterval(this.loadTemplates(),3000)
-                 //setInterval(this.loadTemplateBlocks(),3000)
-                // setInterval(this.getTemplates(),3000)
                 this.loadTemplates()
                 this.loadTemplateBlocks()
 
             },
         }
-        //setInterval(this.loadTemplates(),30000)
-        /*this.loadTemplates()*/
-        /*this.loadTemplateBlocks()*/
-        //setInterval(this.loadTemplateBlocks(),30000)
-        //setInterval(this.getTemplates(),30000)
 
         const talkRoom = Vue.createApp(Object.assign({}, talkRoomProperties)).mount('#talk-room')
         const sideViewModal = Vue.createApp(Object.assign({}, talkRoomProperties, {
@@ -1193,8 +1177,14 @@
             .on('svc_control', processTalkMessage)
             .on('svc_redist', data => talkListContainer.updateRoomUser(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.user_key, data.userid))
             .on('svc_end', processTalkMessage)
-            .on('svc_login', data => $('#distributee').prop("checked", data.dist_yn === 'Y'))
-            .on('svc_dist_yn', data => $('#distributee').prop("checked", data.dist_yn === 'Y'))
+            .on('svc_login', data => {
+                $('#distributee').prop("checked", data.dist_yn === 'Y');
+                if(data.dist_yn === 'D') $('#isDistributee').hide();
+            })
+            .on('svc_dist_yn', data => {
+                $('#distributee').prop("checked", data.dist_yn === 'Y');
+                if(data.dist_yn === 'D') $('#isDistributee').hide();
+            })
 
         $(window).on('load', function () {
             loadTalkCustomInput()
