@@ -612,14 +612,14 @@
 
                    <%-- showingTemplateBlocks = true && loadTemplates && loadTemplateBlocks--%>
                     <div :style="'visibility:'+(roomId?'visible':'hidden')">
-                        <button class="mini ui button compact mr5" @click.stop.prevent="getTemplate">봇템플릿</button>
+                        <button v-if="channelType==='eicn'" class="mini ui button compact mr5" @click.stop.prevent="getTemplate">봇템플릿</button>
                         <input style="display: none" type="file" @change="sendFile">
                         <button type="button" class="mini ui button icon compact mr5" data-inverted data-tooltip="파일전송" data-variation="tiny" data-position="top center"
                                 onclick="this.previousElementSibling.click()"><i class="paperclip icon"></i></button>
                         <%--TODO: 음성대화--%>
-                        <%--<button class="ui icon compact mini button mr5" data-inverted data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i class="microphone icon"></i></button>--%>
+                        <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i class="microphone icon"></i></button>
                         <%--TODO: 화상대화--%>
-                        <%--<button class="ui icon compact mini button mr5" data-inverted data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>--%>
+                        <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>
                         <%--TODO: 자동멘트--%>
                         <div class="ui fitted toggle checkbox auto-ment vertical-align-middle">
                             <input type="checkbox" :value="isAutoEnable" v-model="isAutoEnable">
