@@ -618,9 +618,9 @@
                         <button type="button" class="mini ui button icon compact mr5" data-inverted data-tooltip="파일전송" data-variation="tiny" data-position="top center"
                                 onclick="this.previousElementSibling.click()"><i class="paperclip icon"></i></button>
                         <%--TODO: 음성대화--%>
-                        <button class="ui icon compact mini button mr5" data-inverted data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i class="microphone icon"></i></button>
+                        <%--<button class="ui icon compact mini button mr5" data-inverted data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i class="microphone icon"></i></button>--%>
                         <%--TODO: 화상대화--%>
-                        <button class="ui icon compact mini button mr5" data-inverted data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>
+                        <%--<button class="ui icon compact mini button mr5" data-inverted data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>--%>
                         <%--TODO: 자동멘트--%>
                         <div class="ui fitted toggle checkbox auto-ment vertical-align-middle">
                             <input type="checkbox" :value="isAutoEnable" v-model="isAutoEnable">
@@ -729,6 +729,7 @@
                         _this.roomStatus = response.data.roomStatus
                         _this.userId = response.data.userId
                         _this.customName = response.data.customName
+                        _this.isMessage = !(response.data.userId === null)
 
                         _this.messageList = []
                         response.data.talkMsgSummaryList.forEach(function (e) {
@@ -797,8 +798,6 @@
                     if (message.messageType === 'block_temp') {
                         const block = this.templateBlocks.filter(e => e.blockId === parseInt(message.contents))[0]
                         block && restSelf.get('/api/chatbot/blocks/' + block.blockId, null, null, true).done(setBlockInfo)
-                        /*console.log("블록아이디:"+block.blockId);*/
-                        console.log("여기안댐");
                     } else if (message.messageType === 'image_temp') {
                         message.originalFileUrl = message.contents
                         message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: message.contents})
@@ -990,7 +989,6 @@
                     }
                 },
                 loadTemplates: function () {
-                    console.log("loadTemplates동작");
                     const _this = this
                     restSelf.get('/api/talk-template/my/', null, false, null).done(function (response) {
                         _this.templates = []
@@ -1177,8 +1175,14 @@
             .on('svc_control', processTalkMessage)
             .on('svc_redist', data => talkListContainer.updateRoomUser(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.user_key, data.userid))
             .on('svc_end', processTalkMessage)
-            .on('svc_login', data => $('#distributee').prop("checked", data.dist_yn === 'Y'))
-            .on('svc_dist_yn', data => $('#distributee').prop("checked", data.dist_yn === 'Y'))
+            .on('svc_login', data => {
+                $('#distributee').prop("checked", data.dist_yn === 'Y');
+                if(data.dist_yn === 'D') $('#isDistributee').hide();
+            })
+            .on('svc_dist_yn', data => {
+                $('#distributee').prop("checked", data.dist_yn === 'Y');
+                if(data.dist_yn === 'D') $('#isDistributee').hide();
+            })
 
         $(window).on('load', function () {
             loadTalkCustomInput()
