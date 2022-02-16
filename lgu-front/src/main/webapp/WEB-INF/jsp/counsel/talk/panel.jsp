@@ -19,14 +19,17 @@
         <div class="talk-list-container" style="position: relative">
             <div class="ui top attached tabular menu">
                 <template v-for="(e, i) in STATUSES" :key="i">
-                    <a class="item" :class="(statuses[e.status].activated && ' active ') + (statuses[e.status].newMessages && ' newImg_c ')" @click="activeTab(e.status)"
+                    <a class="item"
+                       :class="(statuses[e.status].activated && ' active ') + (statuses[e.status].newMessages && ' newImg_c ')"
+                       @click="activeTab(e.status)"
                        <c:if test="${!g.user.admin()}">v-if="e.status !== 'REALLOCATION'"</c:if>>
                         <text>{{ e.text }} (<span>{{ statuses[e.status].rooms.length }}</span>)</text>
                         <div></div>
                     </a>
                 </template>
             </div>
-            <div v-for="(e, i) in STATUSES" :key="i" class="ui bottom attached tab segment" :class="statuses[e.status].activated && 'active'" style="width: 100%;">
+            <div v-for="(e, i) in STATUSES" :key="i" class="ui bottom attached tab segment"
+                 :class="statuses[e.status].activated && 'active'" style="width: 100%;">
                 <div class="sort-wrap">
                     <div class="ui form">
                         <div class="fields">
@@ -53,44 +56,60 @@
                 </div>
                 <div class="talk-list-wrap" ref="talk-list-wrap">
                     <ul v-if="statuses[e.status].rooms.length">
-                        <li v-for="(room, j) in statuses[e.status].rooms" :key="j" class="talk-list" @click="openRoom(room.roomId, room.userName)">
-                            <div v-if="room.showing" class="ui segment" :class="activatedRoomIds.includes(room.roomId) && 'active'">
+                        <li v-for="(room, j) in statuses[e.status].rooms" :key="j" class="talk-list"
+                            @click="openRoom(room.roomId, room.userName)">
+                            <div v-if="room.showing" class="ui segment"
+                                 :class="activatedRoomIds.includes(room.roomId) && 'active'">
                                 <div class="ui top left attached label small blue">
-                                    <img v-if="room.channelType === 'kakao'" src="<c:url value="/resources/images/kakao-icon.png"/>" >
-                                    <img v-if="room.channelType === 'eicn'" src="<c:url value="/resources/images/chatbot-icon.svg"/>" >
-                                    <img v-if="room.channelType === 'naverline'" src="<c:url value="/resources/images/line-icon.png"/>">
-                                    <img v-if="room.channelType === 'navertt'" src="<c:url value="/resources/images/ntalk-icon.png"/>" >
+                                    <img v-if="room.channelType === 'kakao'"
+                                         src="<c:url value="/resources/images/kakao-icon.png"/>">
+                                    <img v-if="room.channelType === 'eicn'"
+                                         src="<c:url value="/resources/images/chatbot-icon.svg"/>">
+                                    <img v-if="room.channelType === 'naverline'"
+                                         src="<c:url value="/resources/images/line-icon.png"/>">
+                                    <img v-if="room.channelType === 'navertt'"
+                                         src="<c:url value="/resources/images/ntalk-icon.png"/>">
                                     서비스 : {{ room.svcName }} || 상담원 : {{ room.userName }}
 
                                 </div>
                                 <%--<div class="ui top right attached label small"></div>--%>
-                                <div class="ui top right attached label small time">{{ timestampFormat(room.roomLastTime) }}</div>
+                                <div class="ui top right attached label small time">{{
+                                    timestampFormat(room.roomLastTime) }}
+                                </div>
                                 <div class="ui divided items">
                                     <div class="item">
                                         <div class="thumb">
                                             <div class="profile-img">
                                                 <div v-if="e.status === 'REALLOCATION'" class="ui checkbox" @click.stop>
-                                                    <input type="checkbox" name="reallocating" multiple :value="room.roomId"/>
+                                                    <input type="checkbox" name="reallocating" multiple
+                                                           :value="room.roomId"/>
                                                     <label></label>
                                                 </div>
                                                 <img v-else :src="getImage(room.roomId)">
                                             </div>
                                         </div>
                                         <div class="middle aligned content">
-                                            <div class="headerpanerl" style="padding-top: 8px; width:380px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
-                                                <text class="-custom-name" style="padding-right: 15px; font-size: 0.88571429rem; font-weight: bold;">{{ room.maindbCustomName ? room.maindbCustomName : '미등록고객' }}</text>
-                                                <span v-if="!activatedRoomIds.includes(room.roomId) && room.hasNewMessage" class="ui mini label circular"> N </span>
+                                            <div class="headerpanerl"
+                                                 style="padding-top: 8px; width:380px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                                <text class="-custom-name"
+                                                      style="padding-right: 15px; font-size: 0.88571429rem; font-weight: bold;">
+                                                    {{ room.maindbCustomName ? room.maindbCustomName : '미등록고객' }}
+                                                </text>
+                                                <span v-if="!activatedRoomIds.includes(room.roomId) && room.hasNewMessage"
+                                                      class="ui mini label circular"> N </span>
 
                                                 <text v-if="room.type !== 'text'" style="font-size: 0.88571429rem;">
-                                                    {{ room.type === 'photo' ? '사진' : room.type === 'audio' ? '음원' : room.type === 'file' ? '파일' : room.type }}
+                                                    {{ room.type === 'photo' ? '사진' : room.type === 'audio' ? '음원' :
+                                                    room.type === 'file' ? '파일' : room.type }}
                                                     {{ room.send_receive === 'R' ? '전송됨' : '전달 받음' }}
                                                 </text>
-                                                <text v-else style="font-size: 0.88571429rem; ">{{ room.content }}</text>
+                                                <text v-else style="font-size: 0.88571429rem; ">{{ room.content }}
+                                                </text>
 
                                             </div>
                                             <%--<div class="meta">--%>
 
-                                           <%-- </div>--%>
+                                            <%-- </div>--%>
                                         </div>
                                     </div>
                                 </div>
@@ -102,7 +121,8 @@
             </div>
 
             <button v-if="statuses.REALLOCATION.rooms.length && statuses.REALLOCATION.activated"
-                    class="ui button mini compact blue" @click.stop.prevent="showReallocationModal" style="position: absolute; bottom: 2em; right: 2em; z-index: 1;">
+                    class="ui button mini compact blue" @click.stop.prevent="showReallocationModal"
+                    style="position: absolute; bottom: 2em; right: 2em; z-index: 1;">
                 재분배
             </button>
         </div>
@@ -117,7 +137,8 @@
                         <div class="twelve wide column">
                             <div class="jp-multiselect">
                                 <select class="form-control" name="persons" size="8" multiple="multiple">
-                                    <option v-for="(e, i) in persons" :value="e.id">{{ e.idName }} [{{ e.extension }}]</option>
+                                    <option v-for="(e, i) in persons" :value="e.id">{{ e.idName }} [{{ e.extension }}]
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -136,16 +157,29 @@
             const talkListContainer = Vue.createApp({
                 setup: function () {
                     return {
-                        STATUSES: Object.freeze([{status: 'MY', text: '상담중'}, {status: 'TOT', text: '비접수'}, {status: 'OTH', text: '타상담'}, {status: 'END', text: '종료'},
+                        STATUSES: Object.freeze([{status: 'MY', text: '상담중'}, {
+                            status: 'TOT',
+                            text: '비접수'
+                        }, {status: 'OTH', text: '타상담'}, {status: 'END', text: '종료'},
                             {status: 'REALLOCATION', text: '재분배'},]),
                         SEARCH_TYPE: Object.freeze({CUSTOM_NAME: '고객명', USER_NAME: '상담원명'}),
-                        ORDERING_TYPE: Object.freeze({LAST_MESSAGE_TIME: '최근시간', CUSTOM_NAME: '고객명', USER_NAME: '상담원명'}),
+                        ORDERING_TYPE: Object.freeze({
+                            LAST_MESSAGE_TIME: '최근시간',
+                            CUSTOM_NAME: '고객명',
+                            USER_NAME: '상담원명'
+                        }),
                     }
                 },
                 data: function () {
                     return {
                         statuses: this.STATUSES.reduce((o, e) => {
-                            o[e.status] = {...e, activated: false, newMessages: 0, rooms: [], filter: {type: 'CUSTOM_NAME', value: '', ordering: 'LAST_MESSAGE_TIME'}}
+                            o[e.status] = {
+                                ...e,
+                                activated: false,
+                                newMessages: 0,
+                                rooms: [],
+                                filter: {type: 'CUSTOM_NAME', value: '', ordering: 'LAST_MESSAGE_TIME'}
+                            }
                             return o
                         }, {}),
                         roomMap: {},
@@ -305,14 +339,13 @@
                     },
                     loadActivatedRoomIds: function () {
                         this.activatedRoomIds = talkRoomList.map(e => e.roomId)
-                        console.log("activatedRoomIds:"+this.activatedRoomIds);
                     },
                     timestampFormat: function (e) {
                         return moment(e).format('MM-DD HH:mm')
                     },
                     openRoom: function (roomId, userName) {
                         talkRoom.loadRoom(roomId, userName).done(() => {
-                            loadTalkCustomInput(null,null,roomId,this.roomMap[roomId].channelType,this.roomMap[roomId].senderKey,this.roomMap[roomId].userKey);
+                            loadTalkCustomInput(null, null, roomId, this.roomMap[roomId].channelType, this.roomMap[roomId].senderKey, this.roomMap[roomId].userKey);
                             this.loadActivatedRoomIds();
                         })
                     },
@@ -322,7 +355,11 @@
                                 return $(this.$refs.reallocationModal).modalHide()
 
                             talkCommunicator.redistribution(
-                                data.reallocating.map(e => ({channel_type: this.roomMap[e].channelType, room_id: e, user_key: this.roomMap[e].userKey,})),
+                                data.reallocating.map(e => ({
+                                    channel_type: this.roomMap[e].channelType,
+                                    room_id: e,
+                                    user_key: this.roomMap[e].userKey,
+                                })),
                                 data.persons[0],
                             )
 
@@ -352,8 +389,10 @@
     </tags:scripts>
 
     <div class="seven wide column">
-        <div id="talk-room" class="chat-container overflow-hidden" style="position: relative" @drop.stop="dropFiles" @dragover.prevent @click.stop="showingTemplateLevel = 0">
-            <div v-if="showingDropzone" class="attach-overlay" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true">
+        <div id="talk-room" class="chat-container overflow-hidden" style="position: relative" @drop.stop="dropFiles"
+             @dragover.prevent @click.stop="showingTemplateLevel = 0">
+            <div v-if="showingDropzone" class="attach-overlay" @drop.prevent="dropFiles" @dragover.prevent
+                 @dragenter.stop="showingDropzone=true">
                 <div class="inner">
                     <img src="<c:url value="/resources/images/circle-plus.svg"/>">
                     <p class="attach-text">파일을 채팅창에 바로 업로드하려면<br>여기에 드롭하세요.</p>
@@ -361,14 +400,21 @@
             </div>
             <div class="room" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true">
                 <div class="chat-header dp-flex justify-content-space-between align-items-center">
-                    <span id="text-line" :style="'visibility:'+(roomId?'visible':'hidden')" style="width:400px; padding:0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"> <%--v-if="roomName"--%>
-                        <img v-if="channelType === 'kakao'" src="<c:url value="/resources/images/kakao-icon.png"/>" class="channel-icon">
-                        <img v-if="channelType === 'eicn'" src="<c:url value="/resources/images/chatbot-icon.svg"/>" class="channel-icon">
-                        <img v-if="channelType === 'naverline'" src="<c:url value="/resources/images/line-icon.png"/>" class="channel-icon">
-                        <img v-if="channelType === 'navertt'" src="<c:url value="/resources/images/ntalk-icon.png"/>" class="channel-icon">
+                    <span id="text-line" :style="'visibility:'+(roomId?'visible':'hidden')"
+                          style="width:400px; padding:0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"> <%--v-if="roomName"--%>
+                        <img v-if="channelType === 'kakao'" src="<c:url value="/resources/images/kakao-icon.png"/>"
+                             class="channel-icon">
+                        <img v-if="channelType === 'eicn'" src="<c:url value="/resources/images/chatbot-icon.svg"/>"
+                             class="channel-icon">
+                        <img v-if="channelType === 'naverline'" src="<c:url value="/resources/images/line-icon.png"/>"
+                             class="channel-icon">
+                        <img v-if="channelType === 'navertt'" src="<c:url value="/resources/images/ntalk-icon.png"/>"
+                             class="channel-icon">
                         {{ roomName }}
                     </span>
-                    <button :style="'visibility:'+(roomId?'visible':'hidden')" class="ui button tiny compact button-sideview" @click.stop="popupSideViewRoomModal"></button>
+                    <button :style="'visibility:'+(roomId?'visible':'hidden')"
+                            class="ui button tiny compact button-sideview"
+                            @click.stop="popupSideViewRoomModal"></button>
                 </div>
                 <div class="chat-body os-host os-theme-dark os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition os-host-overflow os-host-overflow-y">
                     <div class="os-resize-observer-host">
@@ -379,20 +425,25 @@
                     </div>
                     <div class="os-content-glue" style="margin: -10px 0 0"></div>
                     <div class="os-padding">
-                        <div ref="chatBody" @scroll="loadAdditionalMessagesIfTop" class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll; scroll-behavior: smooth;">
+                        <div ref="chatBody" @scroll="loadAdditionalMessagesIfTop"
+                             class="os-viewport os-viewport-native-scrollbars-invisible"
+                             style="overflow-y: scroll; scroll-behavior: smooth;">
                             <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + i">
 
-                                <div v-if="'SB' === e.sendReceive || e.messageType === 'block_temp'" class="chat-item" :class="e.messageType === 'block_temp' && ' chat-me '">
+                                <div v-if="'SB' === e.sendReceive || e.messageType === 'block_temp'" class="chat-item"
+                                     :class="e.messageType === 'block_temp' && ' chat-me '">
                                     <div v-if="blocks!=null" class="profile-img">
                                         <img :src="getImage(roomId)">
                                     </div>
                                     <div class="wrap-content">
-                                        <div v-if="blocks!=null" class="txt-time">[{{ e.messageType === 'block_temp' ? (e.username || e.userId) : customName }}] {{ getTimeFormat(e.time) }}</div>
+                                        <div v-if="blocks!=null" class="txt-time">[{{ e.messageType === 'block_temp' ?
+                                            (e.username || e.userId) : customName }}] {{ getTimeFormat(e.time) }}
+                                        </div>
                                         <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
                                             <%--<img src="<c:url value="/resources/images/loading.svg"/>" alt="loading"/>--%>
-                                           <%-- <p class="info-msg">
-                                            <text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>
-                                            </p>--%>
+                                            <%-- <p class="info-msg">
+                                             <text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>
+                                             </p>--%>
                                         </div>
                                         <div v-for="(display, j) in e.displays" class="chat bot">
                                             <div class="bubble">
@@ -408,17 +459,24 @@
                                                             <img :src="'${pageContext.request.contextPath}/admin/talk/chat-bot/image?fileName=' + encodeURIComponent(display.elementList[0]?.image)">
                                                         </div>
                                                         <div class="card-content">
-                                                            <div class="card-title">{{ display.elementList[0]?.title }}</div>
-                                                            <div class="card-text" style="white-space: pre-wrap;">{{ display.elementList[0]?.content }}</div>
+                                                            <div class="card-title">{{ display.elementList[0]?.title
+                                                                }}
+                                                            </div>
+                                                            <div class="card-text" style="white-space: pre-wrap;">{{
+                                                                display.elementList[0]?.content }}
+                                                            </div>
                                                         </div>
                                                     </template>
                                                     <div v-if="display.type === 'list'" class="card-list">
                                                         <div class="card-list-title">
-                                                            <a v-if="display.elementList[0]?.url" :href="display.elementList[0]?.url" target="_blank">{{ display.elementList[0]?.title }}</a>
+                                                            <a v-if="display.elementList[0]?.url"
+                                                               :href="display.elementList[0]?.url" target="_blank">{{
+                                                                display.elementList[0]?.title }}</a>
                                                             <text v-else>{{ display.elementList[0]?.title }}</text>
                                                         </div>
                                                         <ul v-if="display.elementList?.length > 1" class="card-list-ul">
-                                                            <li v-for="(e2, k) in getListElements(display)" class="item">
+                                                            <li v-for="(e2, k) in getListElements(display)"
+                                                                class="item">
                                                                 <a :href="e2.url" target="_blank" class="link-wrap">
                                                                     <div class="item-thumb">
                                                                         <div class="item-thumb-inner">
@@ -428,7 +486,10 @@
                                                                     </div>
                                                                     <div class="item-content">
                                                                         <div class="subject">{{ e2.title }}</div>
-                                                                        <div class="ment" style="white-space: pre-wrap;">{{ e2.content }}</div>
+                                                                        <div class="ment"
+                                                                             style="white-space: pre-wrap;">{{
+                                                                            e2.content }}
+                                                                        </div>
                                                                     </div>
                                                                 </a>
                                                             </li>
@@ -439,33 +500,45 @@
                                         </div>
                                         <div v-for="(buttonGroup, j) in e.buttonGroups" class="chat bot">
                                             <div class="bubble" style="background-color: #dce6f2; width: 350px;">
-                                                <div v-if="buttonGroup instanceof Array" class="button-inner" style="width: 350px;">
-                                                    <span v-for="(e2, j) in buttonGroup"><button v-if="['url', 'phone'].includes(e2.action)" style="background-color:#a2a7b0; margin: 5px; padding-left:10px; padding-right:10px; height: 30px;" type="button" class="chatbot-button">{{ e2.name }}</button></span>
+                                                <div v-if="buttonGroup instanceof Array" class="button-inner"
+                                                     style="width: 350px;">
+                                                    <span v-for="(e2, j) in buttonGroup"><button
+                                                            v-if="['url', 'phone'].includes(e2.action)"
+                                                            style="background-color:#a2a7b0; margin: 5px; padding-left:10px; padding-right:10px; height: 30px;"
+                                                            type="button" class="chatbot-button">{{ e2.name }}</button></span>
                                                 </div>
                                                 <div v-else class="card">
                                                     <div class="card-list">
                                                         <ul class="card-list-ul">
-                                                            <li v-for="(param, k) in buttonGroup.paramList" class="item form">
+                                                            <li v-for="(param, k) in buttonGroup.paramList"
+                                                                class="item form">
                                                                 <div class="label">{{ param.displayName }}</div>
-                                                                <div v-if="param.type !== 'api'" class="ui fluid input"><input type="text"></div>
+                                                                <div v-if="param.type !== 'api'" class="ui fluid input">
+                                                                    <input type="text"></div>
                                                                 <div v-else class="ui multi form">
                                                                     <select class="slt">
                                                                         <option>오전</option>
                                                                         <option>오후</option>
                                                                     </select>
                                                                     <select class="slt">
-                                                                        <option v-for="hour in 12" :key="hour" :value="hour - 1">{{ hour - 1 }}</option>
+                                                                        <option v-for="hour in 12" :key="hour"
+                                                                                :value="hour - 1">{{ hour - 1 }}
+                                                                        </option>
                                                                     </select>
                                                                     <span class="unit">시</span>
                                                                     <select class="slt">
-                                                                        <option v-for="minute in 60" :key="minute" :value="minute - 1">{{ minute - 1 }}</option>
+                                                                        <option v-for="minute in 60" :key="minute"
+                                                                                :value="minute - 1">{{ minute - 1 }}
+                                                                        </option>
                                                                     </select>
                                                                     <span class="unit">분</span>
                                                                 </div>
                                                             </li>
                                                             <li class="item">
                                                                 <div class="button-inner">
-                                                                    <button type="button" class="chatbot-button">{{ buttonGroup.name }}</button>
+                                                                    <button type="button" class="chatbot-button">{{
+                                                                        buttonGroup.name }}
+                                                                    </button>
                                                                 </div>
                                                             </li>
                                                         </ul>
@@ -476,7 +549,7 @@
                                     </div>
                                 </div>
                                 <div v-if="'RB' === e.sendReceive && e.messageType === 'text'" class="chat-item">
-                                    <div class="profile-img" style="position: absolute; top: 30px;">
+                                    <div class="profile-img">
                                         <img :src="getImage(roomId)">
                                     </div>
                                     <div class="wrap-content">
@@ -502,7 +575,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info' && e.messageType !== 'block_temp'" class="chat-item"
+                                <div v-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info' && e.messageType !== 'block_temp'"
+                                     class="chat-item"
                                      :class="['AF', 'S'].includes(e.sendReceive)<%-- && e.userId === ME--%> && 'chat-me'">
                                     <div class="profile-img">
                                         <img :src="getImage(['AF', 'S'].includes(e.sendReceive) ? e.username : roomId)">
@@ -510,37 +584,53 @@
                                     <div class="wrap-content">
                                         <div class="txt-time">
                                             <text v-if="!['AF', 'S'].includes(e.sendReceive) || e.username || e.userId">
-                                                [{{ ['AF', 'S'].includes(e.sendReceive) ? (e.username || e.userId) : customName }}]
+                                                [{{ ['AF', 'S'].includes(e.sendReceive) ? (e.username || e.userId) :
+                                                customName }}]
                                             </text>
                                             {{ getTimeFormat(e.time) }}
                                         </div>
                                         <div class="chat">
-                                            <div v-if="['AF', 'S'].includes(e.sendReceive)<%-- && e.userId === ME--%>" class="chat-layer" style="visibility: hidden;">
+                                            <div v-if="['AF', 'S'].includes(e.sendReceive)<%-- && e.userId === ME--%>"
+                                                 class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
-                                                    <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="top center"></button>
-                                                    <button @click="popupTemplateModal(e,i)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
-                                                    <button @click="popupTaskScriptModal(e,i)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="top center"></button>
+                                                    <button @click="replying = e" class="button-reply" data-inverted
+                                                            data-tooltip="답장 달기" data-position="top center"></button>
+                                                    <button @click="popupTemplateModal(e,i)" class="button-template"
+                                                            data-inverted data-tooltip="템플릿 만들기"
+                                                            data-position="top center"></button>
+                                                    <button @click="popupTaskScriptModal(e,i)" class="button-knowledge"
+                                                            data-inverted data-tooltip="지식관리 호출"
+                                                            data-position="top center"></button>
                                                     <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
                                                 </div>
                                             </div>
                                             <div class="bubble">
                                                 <div class="txt_chat">
-                                                    <img v-if="e.messageType === 'photo'" :src="e.fileUrl" class="cursor-pointer" @click="popupImageView(e.fileUrl)">
-                                                    <img v-else-if="e.messageType === 'image_temp'" :src="e.fileUrl" class="cursor-pointer" @click="popupImageView(e.fileUrl)">
-                                                    <audio v-else-if="e.messageType === 'audio'" controls :src="e.fileUrl"></audio>
-                                                    <a v-else-if="e.messageType === 'file'" target="_blank" :href="e.fileUrl">{{ e.contents }}</a>
+                                                    <img v-if="e.messageType === 'photo'" :src="e.fileUrl"
+                                                         class="cursor-pointer" @click="popupImageView(e.fileUrl)">
+                                                    <img v-else-if="e.messageType === 'image_temp'" :src="e.fileUrl"
+                                                         class="cursor-pointer" @click="popupImageView(e.fileUrl)">
+                                                    <audio v-else-if="e.messageType === 'audio'" controls
+                                                           :src="e.fileUrl"></audio>
+                                                    <a v-else-if="e.messageType === 'file'" target="_blank"
+                                                       :href="e.fileUrl">{{ e.contents }}</a>
                                                     <template v-else-if="e.messageType === 'text'">
                                                         <div v-if="e.replyingType" class="reply-content-container">
-                                                            <div v-if="e.replyingType === 'image'" class="reply-content photo">
+                                                            <div v-if="e.replyingType === 'image'"
+                                                                 class="reply-content photo">
                                                                 <img :src="e.replyingTarget">
                                                             </div>
-                                                            <div v-if="e.replyingType === 'image_temp'" class="reply-content photo">
+                                                            <div v-if="e.replyingType === 'image_temp'"
+                                                                 class="reply-content photo">
                                                                 <img :src="e.replyingTarget">
                                                             </div>
                                                             <div class="reply-content">
                                                                 <div class="target-msg">
-                                                                    <template v-if="e.replyingType === 'text'">{{ e.replyingTarget }}</template>
-                                                                    <a v-else :href="e.replyingTarget" target="_blank">{{ e.replyingType === 'image' ? '사진' : '파일' }}</a>
+                                                                    <template v-if="e.replyingType === 'text'">{{
+                                                                        e.replyingTarget }}
+                                                                    </template>
+                                                                    <a v-else :href="e.replyingTarget" target="_blank">{{
+                                                                        e.replyingType === 'image' ? '사진' : '파일' }}</a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -548,33 +638,44 @@
                                                     </template>
                                                     <p v-else>{{ e.contents }}</p>
                                                 </div>
-                                                <a v-if="['file','photo','audio','image_temp'].includes(e.messageType)" target="_blank" :href="e.fileUrl" class="save-txt">저장하기</a>
+                                                <a v-if="['file','photo','audio','image_temp'].includes(e.messageType)"
+                                                   target="_blank" :href="e.fileUrl" class="save-txt">저장하기</a>
                                             </div>
-                                            <div v-if="!['AF', 'S'].includes(e.sendReceive)<%-- || e.userId !== ME--%>" class="chat-layer" style="visibility: hidden;">
+                                            <div v-if="!['AF', 'S'].includes(e.sendReceive)<%-- || e.userId !== ME--%>"
+                                                 class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
-                                                    <button @click="replying = e" class="button-reply" data-inverted data-tooltip="답장 달기" data-position="top center"></button>
-                                                    <button @click="popupTemplateModal(e,i)" class="button-template" data-inverted data-tooltip="템플릿 만들기" data-position="top center"></button>
-                                                    <button @click="popupTaskScriptModal(e,i)" class="button-knowledge" data-inverted data-tooltip="지식관리 호출" data-position="top center"></button>
+                                                    <button @click="replying = e" class="button-reply" data-inverted
+                                                            data-tooltip="답장 달기" data-position="top center"></button>
+                                                    <button @click="popupTemplateModal(e,i)" class="button-template"
+                                                            data-inverted data-tooltip="템플릿 만들기"
+                                                            data-position="top center"></button>
+                                                    <button @click="popupTaskScriptModal(e,i)" class="button-knowledge"
+                                                            data-inverted data-tooltip="지식관리 호출"
+                                                            data-position="top center"></button>
                                                     <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <p v-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
+                                <p v-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'"
+                                   class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
                                 <p v-if="['RM', 'SZ', 'SG'].includes(e.sendReceive)" class="info-msg">
                                     [{{ getTimeFormat(e.time) }}]
                                     <text v-if="e.sendReceive === 'RM'">상담사연결을 요청하였습니다.</text>
                                     <text v-if="e.sendReceive === 'SZ'">[{{ e.username }}] 상담사가 상담을 찜했습니다.</text>
                                     <text v-if="e.sendReceive === 'SG'">[{{ e.username }}] 상담사가 상담을 가져왔습니다.</text>
                                 </p>
-                                <p v-if="['SE', 'RE', 'AE', 'E'].includes(e.sendReceive) && e.contents" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
-                                <div v-if="'SB' === e.sendReceive || e.messageType === 'block_temp'"  :class="e.messageType === 'block_temp' && ' chat-me '">
-                                <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
-                                <p class="info-msg">
-                                    <text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>
-                                </p>
-                                </div>
+                                <p v-if="['SE', 'RE', 'AE', 'E'].includes(e.sendReceive) && e.contents"
+                                   class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
+<%--                                'SB' === e.sendReceive ||--%>
+                                <div v-if=" e.messageType === 'block_temp'"
+                                     :class="e.messageType === 'block_temp' && ' chat-me '">
+                                    <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
+                                        <p class="info-msg">
+                                            <text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -586,7 +687,8 @@
                     <div v-if="showingTemplateBlocks" class="template-container template-block-container">
                         <div class="template-container-inner">
                             <ul class="template-ul">
-                                <li v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.blockId)" class="template-list">
+                                <li v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.blockId)"
+                                    class="template-list">
                                     <div class="template-title">/{{ e.name }}</div>
                                     <%--여기--%>
                                 </li>
@@ -596,10 +698,14 @@
                     <div v-if="showingTemplateLevel" class="template-container">
                         <div class="template-container-inner">
                             <ul class="template-ul">
-                                <li v-for="(e, i) in getTemplates()" :key="i" :class="i === activatingTemplateIndex && 'active'" @click.stop="sendTemplate(e)" class="template-list">
+                                <li v-for="(e, i) in getTemplates()" :key="i"
+                                    :class="i === activatingTemplateIndex && 'active'" @click.stop="sendTemplate(e)"
+                                    class="template-list">
                                     <div class="template-title">/{{ e.name }}</div>
                                     <img v-if="e.isImage" :src="e.url" class="template-image" :alt="e.fileName"/>
-                                    <div v-if="e.isImage" class="template-content" style="text-decoration: underline">{{ e.fileName }}</div>
+                                    <div v-if="e.isImage" class="template-content" style="text-decoration: underline">{{
+                                        e.fileName }}
+                                    </div>
                                     <div v-else class="template-content">{{ e.text }}</div>
                                 </li>
                             </ul>
@@ -621,33 +727,48 @@
                         </div>
                     </div>
 
-                   <%-- showingTemplateBlocks = true && loadTemplates && loadTemplateBlocks--%>
+                    <%-- showingTemplateBlocks = true && loadTemplates && loadTemplateBlocks--%>
                     <div :style="'visibility:'+(roomId?'visible':'hidden')">
-                        <button v-if="channelType==='eicn'" class="mini ui button compact mr5" @click.stop.prevent="getTemplate">봇템플릿</button>
+                        <button v-if="channelType==='eicn'" class="mini ui button compact mr5"
+                                @click.stop.prevent="getTemplate">봇템플릿
+                        </button>
                         <input style="display: none" type="file" @change="sendFile">
-                        <button type="button" class="mini ui button icon compact mr5" data-inverted data-variation="tiny" data-position="top center"
+                        <button type="button" class="mini ui button icon compact mr5" data-inverted
+                                data-variation="tiny" data-position="top center"
                                 onclick="this.previousElementSibling.click()"><i class="paperclip icon"></i></button>
                         <%--TODO: 음성대화--%>
-                        <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i class="microphone icon"></i></button>
+                        <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted
+                                data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i
+                                class="microphone icon"></i></button>
                         <%--TODO: 화상대화--%>
-                        <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i class="user icon"></i></button>
+                        <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted
+                                data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i
+                                class="user icon"></i></button>
                         <%--TODO: 자동멘트--%>
                         <div class="ui fitted toggle checkbox auto-ment vertical-align-middle">
-                            <input type="checkbox" :value="isAutoEnable" v-model="isAutoEnable" @change="setAutoEnable(roomId)">
+                            <input type="checkbox" :value="isAutoEnable" v-model="isAutoEnable"
+                                   @change="setAutoEnable(roomId)">
                             <label></label>
                         </div>
                     </div>
                     <div :style="'visibility:'+(roomId?'visible':'hidden')">
-                        <button v-if="roomStatus === 'E'" class="mini ui button compact" @click.stop="deleteRoom">대화방내리기</button>
-                        <button v-else-if="!userId" class="mini ui button compact" @click.stop="assignUnassignedRoomToMe">찜하기</button>
-                        <button v-else-if="userId !== ME" class="mini ui button compact" @click.stop="assignAssignedRoomToMe">가져오기</button>
+                        <button v-if="roomStatus === 'E'" class="mini ui button compact" @click.stop="deleteRoom">
+                            대화방내리기
+                        </button>
+                        <button v-else-if="!userId" class="mini ui button compact"
+                                @click.stop="assignUnassignedRoomToMe">찜하기
+                        </button>
+                        <button v-else-if="userId !== ME" class="mini ui button compact"
+                                @click.stop="assignAssignedRoomToMe">가져오기
+                        </button>
                         <button v-else class="mini ui button compact" @click.stop="finishCounsel">대화방종료</button>
                     </div>
                 </div>
 
                 <div class="wrap-inp">
                     <div class="inp-box">
-                        <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup" :disabled="isMessage"></textarea>
+                        <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteFromClipboard"
+                                  @keyup.stop="keyup" :disabled="isMessage"></textarea>
                     </div>
                     <button type="button" class="send-btn" @click="sendMessage()">전송</button>
                 </div>
@@ -722,9 +843,9 @@
                 }
             },
             methods: {
-             /*   talktemplate:function (){
-                    return restSelf.get('/api/counsel/current-talk-msg/' + roomId).done(function (response){});
-                },*/
+                /*   talktemplate:function (){
+                       return restSelf.get('/api/counsel/current-talk-msg/' + roomId).done(function (response){});
+                   },*/
                 loadRoom: function (roomId, userName) {
                     const _this = this
 
@@ -768,7 +889,7 @@
 
                     const _this = this
 
-                    console.log(message)
+                    /*console.log(message)*/
 
                     const setBlockInfo = response => {
                         message.displays = response.data.displayList?.sort((a, b) => (a.order - b.order))
@@ -783,11 +904,10 @@
                         _this.$forceUpdate()
                     }
 
-                   /* console.log("response:"+response);*/
                     if (message.sendReceive === 'SB') {
                         try {
                             const result = message.contents.match(/^BOT:(\d+)-BLK:(\d+)$/)
-                            restSelf.get('/api/chatbot/blocks/' + result[2], null, null, true).done(setBlockInfo,response)
+                            restSelf.get('/api/chatbot/blocks/' + result[2], null, null, true).done(setBlockInfo)
                         } catch (e) {
                             console.error(e)
                         }
@@ -810,10 +930,16 @@
                         block && restSelf.get('/api/chatbot/blocks/' + block.blockId, null, null, true).done(setBlockInfo)
                     } else if (message.messageType === 'image_temp') {
                         message.originalFileUrl = message.contents
-                        message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: message.contents})
+                        message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {
+                            company_id: talkCommunicator.request.companyId,
+                            file_name: message.contents
+                        })
                     } else if (['file', 'photo', 'audio'].includes(message.messageType)) {
                         message.originalFileUrl = message.contents
-                        message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: message.contents})
+                        message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {
+                            company_id: talkCommunicator.request.companyId,
+                            file_name: message.contents
+                        })
                     } else if (this.REPLYING_INDICATOR === message.contents.charAt(0)) {
                         [message.contents.indexOf(this.REPLYING_TEXT), message.contents.indexOf(this.REPLYING_IMAGE), message.contents.indexOf(this.REPLYING_FILE), message.contents.indexOf(this.REPLYING_IMAGE_TEMP)].forEach((indicator, i) => {
                             if (indicator < 0) return
@@ -823,9 +949,15 @@
                             if (message.replyingType === 'text') {
                                 message.replyingTarget = replyingTarget
                             } else if (message.replyingType === 'image_temp') {
-                                message.replyingTarget = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: replyingTarget})
+                                message.replyingTarget = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {
+                                    company_id: talkCommunicator.request.companyId,
+                                    file_name: replyingTarget
+                                })
                             } else {
-                                message.replyingTarget = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: replyingTarget})
+                                message.replyingTarget = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {
+                                    company_id: talkCommunicator.request.companyId,
+                                    file_name: replyingTarget
+                                })
                             }
 
                             message.contents = message.contents.substr(indicator + 1)
@@ -956,8 +1088,6 @@
                     this.showingTemplateBlocks = false
                 },
                 getTemplates() {
-                    console.log("getTemplates동작");
-
                     const _this = this
                     return this.templates.filter(e => e.permissionLevel >= _this.showingTemplateLevel && e.name.includes(_this.showingTemplateFilter))
                 },
@@ -1026,7 +1156,11 @@
                     restSelf.get('/api/chatbot/blocks/template', null, false, null).done(function (response) {
                         _this.templateBlocks = []
                         response.data.forEach(function (e) {
-                            _this.templateBlocks.push({botId: e.botId, blockId: e.blockId, name: e.botName + ' - ' + e.blockName})
+                            _this.templateBlocks.push({
+                                botId: e.botId,
+                                blockId: e.blockId,
+                                name: e.botName + ' - ' + e.blockName
+                            })
                         })
                     })
                 },
@@ -1094,7 +1228,7 @@
                         return
                     sideViewModal.loadRoom(this.roomId, this.userName)
                 },
-                getTemplate:function (){
+                getTemplate: function () {
                     this.showingTemplateBlocks = true
                     this.loadTemplates()
                     this.loadTemplateBlocks()
@@ -1137,7 +1271,6 @@
 <tags:scripts>
     <script>
         function loadTalkCustomInput(maindbGroupSeq, customId, roomId, channelType, senderKey, userKey) {
-            console.log("loadTalkCustomInput작동중"+roomId);
             return replaceReceivedHtmlInSilence($.addQueryString('/counsel/talk/custom-input', {
                 maindbGroupSeq: maindbGroupSeq || '',
                 customId: customId || '',
@@ -1191,11 +1324,11 @@
             .on('svc_end', processTalkMessage)
             .on('svc_login', data => {
                 $('#distributee').prop("checked", data.dist_yn === 'Y');
-                if(data.dist_yn === 'D') $('#isDistributee').hide();
+                if (data.dist_yn === 'D') $('#isDistributee').hide();
             })
             .on('svc_dist_yn', data => {
                 $('#distributee').prop("checked", data.dist_yn === 'Y');
-                if(data.dist_yn === 'D') $('#isDistributee').hide();
+                if (data.dist_yn === 'D') $('#isDistributee').hide();
             })
 
         $(window).on('load', function () {
