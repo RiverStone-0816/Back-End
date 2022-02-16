@@ -398,7 +398,7 @@ export default {
       this.input = ''
     },
     homeAction() {
-      this.communicator.sendText(this.botId, "처음", this.lastReceiveMessageType)
+      this.communicator.sendText(this.botId, "처음으로", this.lastReceiveMessageType)
     },
     actFallback(message) {
       if (message.data.fallback_action === 'first') {
