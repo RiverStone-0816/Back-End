@@ -77,17 +77,20 @@
                                             </div>
                                         </div>
                                         <div class="middle aligned content">
-                                            <div class="headerpanerl">
-                                                <text class="-custom-name">{{ room.maindbCustomName ? room.maindbCustomName : '미등록고객' }}</text>
+                                            <div class="headerpanerl" style="padding-top: 8px; width:380px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                                <text class="-custom-name" style="padding-right: 15px; font-size: 0.88571429rem; font-weight: bold;">{{ room.maindbCustomName ? room.maindbCustomName : '미등록고객' }}</text>
                                                 <span v-if="!activatedRoomIds.includes(room.roomId) && room.hasNewMessage" class="ui mini label circular"> N </span>
-                                            </div>
-                                            <div class="meta">
-                                                <i v-if="room.type !== 'text'">
+
+                                                <text v-if="room.type !== 'text'" style="font-size: 0.88571429rem;">
                                                     {{ room.type === 'photo' ? '사진' : room.type === 'audio' ? '음원' : room.type === 'file' ? '파일' : room.type }}
                                                     {{ room.send_receive === 'R' ? '전송됨' : '전달 받음' }}
-                                                </i>
-                                                <text v-else>{{ room.content }}</text>
+                                                </text>
+                                                <text v-else style="font-size: 0.88571429rem; ">{{ room.content }}</text>
+
                                             </div>
+                                            <%--<div class="meta">--%>
+
+                                           <%-- </div>--%>
                                         </div>
                                     </div>
                                 </div>
