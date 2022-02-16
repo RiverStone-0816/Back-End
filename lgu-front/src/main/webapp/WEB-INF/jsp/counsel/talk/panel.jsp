@@ -330,6 +330,7 @@
 
                         this.changeOrdering(status)
                         if (this.isReallocationStatus(status)) this.changeOrdering(this.statuses.REALLOCATION.status)
+                        this.load()
                     },
                     getImage: function (userName) {
                         return profileImageSources[Math.abs(userName.hashCode()) % profileImageSources.length]
