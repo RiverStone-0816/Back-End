@@ -149,7 +149,7 @@
                     </div>
                     <div v-else-if="e.type === 'card'" class="relative text-sm bg-white shadow rounded-lg max-w-seohui">
                       <div class="relative max-w-xs">
-                        <p>이미지</p><img alt="chat_image" class="w-full rounded-t-lg" :src="getFileUrl(message.company, e.element[0]?.image)">
+                        <p></p><img alt="chat_image" class="w-full rounded-t-lg" :src="getFileUrl(message.company, e.element[0]?.image)">
                       </div>
                       <div class="p-3 pb-0 text-base font-bold">
                         <p>{{ e.element[0]?.title }}</p>
