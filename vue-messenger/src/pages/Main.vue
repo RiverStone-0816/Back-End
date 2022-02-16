@@ -141,15 +141,15 @@
               <template v-if="message.sender === 'SERVER' && ['block', 'member_block_temp'].includes(message.messageType)">
                 <div v-for="(e, i) in message.data?.display" :key="i" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
-                    <div v-if="e.type === 'text'" class="relative text-sm bg-white shadow rounded-lg max-w-xs py-2 px-3">
+                    <div v-if="e.type === 'text'" class="relative text-sm bg-white shadow rounded-lg max-w-seohui py-2 px-3">
                       <p style="white-space: pre-wrap; line-break: anywhere;">{{ e.element[0]?.content }}</p>
                     </div>
-                    <div v-else-if="e.type === 'image'" class="relative max-w-xs">
+                    <div v-else-if="e.type === 'image'" class="relative max-w-seohui">
                       <img alt="chat_image" class="w-full rounded-lg" :src="getFileUrl(message.company, e.element[0]?.image)">
                     </div>
-                    <div v-else-if="e.type === 'card'" class="relative text-sm bg-white shadow rounded-lg max-w-xs">
+                    <div v-else-if="e.type === 'card'" class="relative text-sm bg-white shadow rounded-lg max-w-seohui">
                       <div class="relative max-w-xs">
-                        <img alt="chat_image" class="w-full rounded-t-lg" :src="getFileUrl(message.company, e.element[0]?.image)">
+                        <p></p><img alt="chat_image" class="w-full rounded-t-lg" :src="getFileUrl(message.company, e.element[0]?.image)">
                       </div>
                       <div class="p-3 pb-0 text-base font-bold">
                         <p>{{ e.element[0]?.title }}</p>

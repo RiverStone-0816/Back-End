@@ -13,9 +13,7 @@ import org.jooq.SelectJoinStep;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.jooq.impl.DSL.*;
 import static org.jooq.impl.DSL.field;
@@ -41,21 +39,25 @@ public class TalkStatisticsRepository extends StatDBBaseRepository<CommonStatTal
 
     @Override
     protected SelectConditionStep<Record> query(SelectJoinStep<Record> query) {
-        if (type.equals("day"))
-            query.groupBy(TABLE.STAT_DATE);
-        else if (type.equals("hour"))
-            query.groupBy(TABLE.STAT_HOUR);
-        else if (type.equals("person"))
-            query.groupBy(TABLE.USERID);
+        switch (type) {
+            case "day":
+                query.groupBy(TABLE.STAT_DATE);
+                break;
+            case "hour":
+                query.groupBy(TABLE.STAT_HOUR);
+                break;
+            case "person":
+                query.groupBy(TABLE.USERID);
+                break;
+        }
 
         return query.where();
     }
 
     public List<StatTalkEntity> dailyStatList(TalkStatisticsSearchRequest search) {
         addField(TABLE.STAT_DATE);
-        orderByFields.add(TABLE.STAT_DATE.asc());
         type = "day";
-        return super.findAll(condition(search));
+        return super.findAll(dsl, condition(search), Collections.singletonList(TABLE.STAT_DATE.asc()));
     }
 
     public List<StatTalkEntity> hourlyStatList(TalkStatisticsHourlySearchRequest search) {
@@ -67,9 +69,8 @@ public class TalkStatisticsRepository extends StatDBBaseRepository<CommonStatTal
             conditions.add(TABLE.STAT_HOUR.ge(search.getStartHour()));
         if (search.getEndHour() != null)
             conditions.add(TABLE.STAT_HOUR.le(search.getEndHour()));
-        orderByFields.add(TABLE.STAT_HOUR.asc());
 
-        return super.findAll(conditions);
+        return super.findAll(dsl, conditions, Collections.singletonList(TABLE.STAT_HOUR.asc()));
     }
 
     public List<StatTalkEntity> personStatList(TalkStatisticsSearchRequest search) {
