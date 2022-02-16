@@ -736,7 +736,7 @@
                         _this.roomStatus = response.data.roomStatus
                         _this.userId = response.data.userId
                         _this.customName = response.data.customName
-                        _this.isMessage = !(response.data.userId === null)
+                        _this.isMessage = !(response.data.userId === _this.loginId)
 
                         _this.messageList = []
                         response.data.talkMsgSummaryList.forEach(function (e) {
