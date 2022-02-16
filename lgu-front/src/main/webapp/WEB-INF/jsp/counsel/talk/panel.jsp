@@ -89,24 +89,29 @@
                                             </div>
                                         </div>
                                         <div class="middle aligned content">
+                                            <%--380--%>
                                             <div class="headerpanerl"
-                                                 style="padding-top: 8px; width:380px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
-                                                <text class="-custom-name"
-                                                      style="padding-right: 15px; font-size: 0.88571429rem; font-weight: bold;">
-                                                    {{ room.maindbCustomName ? room.maindbCustomName : '미등록고객' }}
-                                                </text>
-                                                <span v-if="!activatedRoomIds.includes(room.roomId) && room.hasNewMessage"
-                                                      class="ui mini label circular"> N </span>
+                                                 style="padding-top: 8px; width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                                <%--<div style="font-size: 0.88571429rem; font-weight: bold; width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">--%>
+                                                    <text class="-custom-name"
+                                                          style="padding-right: 15px; font-weight: bold;">
+                                                        {{ room.maindbCustomName ? room.maindbCustomName : '미등록고객' }}
+                                                    </text>
+                                                    <span v-if="!activatedRoomIds.includes(room.roomId) && room.hasNewMessage"
+                                                          class="ui mini label circular"> N </span>
 
+                                            </div>
+                                                <%--float:right;--%>
+                                                <div style="position: relative; top: -13px; right: -80px;  font-size: 0.88571429rem; width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
                                                 <text v-if="room.type !== 'text'" style="font-size: 0.88571429rem;">
                                                     {{ room.type === 'photo' ? '사진' : room.type === 'audio' ? '음원' :
                                                     room.type === 'file' ? '파일' : room.type }}
                                                     {{ room.send_receive === 'R' ? '전송됨' : '전달 받음' }}
                                                 </text>
-                                                <text v-else style="font-size: 0.88571429rem; ">{{ room.content }}
-                                                </text>
+                                                <text v-else style="font-size: 0.88571429rem; ">{{ room.content }}</text>
+                                                </div>
 
-                                            </div>
+
                                             <%--<div class="meta">--%>
 
                                             <%-- </div>--%>
@@ -668,7 +673,7 @@
                                 </p>
                                 <p v-if="['SE', 'RE', 'AE', 'E'].includes(e.sendReceive) && e.contents"
                                    class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
-<%--                                'SB' === e.sendReceive ||--%>
+                                <%--                                'SB' === e.sendReceive ||--%>
                                 <div v-if=" e.messageType === 'block_temp'"
                                      :class="e.messageType === 'block_temp' && ' chat-me '">
                                     <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
