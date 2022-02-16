@@ -625,7 +625,7 @@
                     <div :style="'visibility:'+(roomId?'visible':'hidden')">
                         <button v-if="channelType==='eicn'" class="mini ui button compact mr5" @click.stop.prevent="getTemplate">봇템플릿</button>
                         <input style="display: none" type="file" @change="sendFile">
-                        <button type="button" class="mini ui button icon compact mr5" data-inverted data-tooltip="파일전송" data-variation="tiny" data-position="top center"
+                        <button type="button" class="mini ui button icon compact mr5" data-inverted data-variation="tiny" data-position="top center"
                                 onclick="this.previousElementSibling.click()"><i class="paperclip icon"></i></button>
                         <%--TODO: 음성대화--%>
                         <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i class="microphone icon"></i></button>
@@ -739,7 +739,7 @@
                         _this.roomStatus = response.data.roomStatus
                         _this.userId = response.data.userId
                         _this.customName = response.data.customName
-                        _this.isMessage = !(response.data.userId === null)
+                        _this.isMessage = !(response.data.userId === _this.loginId)
 
                         _this.messageList = []
                         response.data.talkMsgSummaryList.forEach(function (e) {
@@ -1041,11 +1041,12 @@
                         const selectedTextContents = getSelectedTextContentOfSingleElement()
                         if (selectedTextContents && selectedTextContents.text && selectedTextContents.parent === _this.$refs['message-' + index].querySelector('.txt_chat p')) {
                             modal.querySelector('[name=ment]').value = selectedTextContents.text
-                        } else if (message.fileType === 'image') {
-                            modal.querySelector('[name=originalFileName]').value = message.fileName
-                            modal.querySelector('[name=filePath]').value = message.originalFileUrl
-                            modal.querySelector('.file-name').innerHTML = message.fileName
+                        } else if (message.messageType === 'photo') {
+                            modal.querySelector('[name=originalFileName]').value = message.originalFileUrl
+                            modal.querySelector('[name=filePath]').value = message.fileUrl
+                            modal.querySelector('.file-name').innerHTML = message.originalFileUrl
                             modal.querySelector('[name=typeMent]').value = 'PHOTO'
+                            modal.querySelector('progress').value = 100
                         } else {
                             modal.querySelector('[name=ment]').value = message.contents
                         }
