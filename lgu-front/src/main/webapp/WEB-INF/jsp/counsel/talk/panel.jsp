@@ -335,6 +335,7 @@
 
                         this.changeOrdering(status)
                         if (this.isReallocationStatus(status)) this.changeOrdering(this.statuses.REALLOCATION.status)
+                        this.load()
                     },
                     getImage: function (userName) {
                         return profileImageSources[Math.abs(userName.hashCode()) % profileImageSources.length]
@@ -1305,7 +1306,7 @@
 
             if (['SZ', 'SG'].includes(data.send_receive)) {
                 talkListContainer.updateRoomStatus(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.type, data.content, messageTime)
-            } else if (['SE', 'RE'].includes(data.send_receive)) {
+            } else if (['SE', 'RE', 'AE'].includes(data.send_receive)) {
                 talkListContainer.updateRoomStatus(data.room_id, 'END', data.type, data.content, messageTime)
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime)

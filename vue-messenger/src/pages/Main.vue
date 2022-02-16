@@ -149,7 +149,7 @@
                     </div>
                     <div v-else-if="e.type === 'card'" class="relative text-sm bg-white shadow rounded-lg max-w-seohui">
                       <div class="relative max-w-xs">
-                        <p></p><img alt="chat_image" class="w-full rounded-t-lg" :src="getFileUrl(message.company, e.element[0]?.image)">
+                        <img alt="chat_image" class="w-full rounded-t-lg" :src="getFileUrl(message.company, e.element[0]?.image)">
                       </div>
                       <div class="p-3 pb-0 text-base font-bold">
                         <p>{{ e.element[0]?.title }}</p>
@@ -398,7 +398,7 @@ export default {
       this.input = ''
     },
     homeAction() {
-      this.communicator.sendText(this.botId, "처음", this.lastReceiveMessageType)
+      this.communicator.sendText(this.botId, "처음으로", this.lastReceiveMessageType)
     },
     actFallback(message) {
       if (message.data.fallback_action === 'first') {
