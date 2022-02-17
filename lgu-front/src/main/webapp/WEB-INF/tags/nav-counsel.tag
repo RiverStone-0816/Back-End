@@ -34,10 +34,9 @@
                         <div class="consulting-accordion-label">
                             <div>
                                 즐겨찾기
-                                <button type="button" class="ui basic white very mini compact button ml10" @click.stop="popupBookmarkModal">편집</button>
                             </div>
                             <div>
-                                <i class="material-icons arrow">keyboard_arrow_down</i>
+                                <button type="button" class="ui basic white very mini compact button ml10" @click.stop="popupBookmarkModal">편집</button>
                             </div>
                         </div>
                         <div class="consulting-accordion-content">
@@ -61,33 +60,31 @@
                     </div>
                 </c:if>
                 <div id="team-list" class="consulting-accordion organization overflow-hidden dp-flex flex-flow-column active">
-                    <div class="consulting-accordion-label">
+                    <div class="consulting-accordion-label" onclick="toggleFold(event, this)">
                         <div>
                             조직도
+                        </div>
+                        <div>
                             <c:if test="${activeMessenger}">
-                                <button class="ui basic white very mini compact button ml10" @click.stop.prevent="openRoom()">선택대화</button>
-                                <button type="button" class="ui basic white very mini compact button ml10" style="padding: 5px 5px;"
+                                <button class="ui basic white very mini compact button ml5" @click.stop.prevent="openRoom()">선택대화</button>
+                                <button type="button" class="ui basic white very mini compact button ml5" style="padding: 5px 5px;"
                                         onclick="$('#team-list,#bookmark-list').find('.-messenger-user').removeClass('active')">선택해제</button>
                             </c:if>
-                        </div>
-                        <div onclick="toggleFold(event, this)">
-                            <i class="material-icons arrow">keyboard_arrow_down</i>
                         </div>
                     </div>
                     <div class="consulting-accordion-content overflow-overlay flex-100">
                         <ul class="side-organization-ul">
                             <li v-for="(team, i) in teams" :key="i" class="consulting-accordion active">
-                                <div class="consulting-accordion-label team">
+                                <div class="consulting-accordion-label team" onclick="toggleFold(event, this)">
                                     <div class="left">
                                         <i class="folder open icon"></i>
                                         <span class="team-name">{{ team.groupName }}</span>
-                                        <button type="button" class="ui basic white very mini compact button ml10"
-                                                onclick="$(this).closest('.consulting-accordion').find('.-messenger-user').addClass('active')">선택</button>
-                                        <button type="button" class="ui basic white very mini compact button ml10"
-                                                onclick="$(this).closest('.consulting-accordion').find('.-messenger-user').removeClass('active')">해제</button>
                                     </div>
-                                    <div class="right" onclick="toggleFold(event, this)">
-                                        <i class="material-icons arrow">keyboard_arrow_down</i>
+                                    <div class="right">
+                                        <button type="button" class="ui basic white very mini compact button ml5"
+                                                onclick="$(this).closest('.consulting-accordion').find('.-messenger-user').addClass('active')">선택</button>
+                                        <button type="button" class="ui basic white very mini compact button ml5"
+                                                onclick="$(this).closest('.consulting-accordion').find('.-messenger-user').removeClass('active')">해제</button>
                                     </div>
                                 </div>
                                 <ul class="treeview-menu consulting-accordion-content">
