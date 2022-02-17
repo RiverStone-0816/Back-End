@@ -1210,15 +1210,7 @@
                     popupDraggableModalFromReceivedHtml('/admin/service/help/task-script/modal-search?title=' + encodeURIComponent(contents), 'modal-search-task-script')
                 },
                 deleteRoom: function () {
-                    const _this = this
-                    restSelf.delete('/api/counsel/talk-remove-room/' + this.roomId, null, null).done(function () {
-                        talkListContainer.removeRoom(_this.roomId)
-
-                        _this.roomId = null
-                        _this.showingTemplateLevel = 0
-                        _this.replying = null
-                        _this.messageList = []
-                    })
+                    talkCommunicator.deleteRoom(this.roomId, this.channelType, this.senderKey, this.userKey)
                 },
                 assignUnassignedRoomToMe: function () {
                     talkCommunicator.assignUnassignedRoomToMe(this.roomId, this.channelType, this.senderKey, this.userKey)
@@ -1227,7 +1219,7 @@
                     talkCommunicator.assignAssignedRoomToMe(this.roomId, this.channelType, this.senderKey, this.userKey)
                 },
                 finishCounsel: function () {
-                    talkCommunicator.deleteRoom(this.roomId, this.channelType, this.senderKey, this.userKey)
+                    talkCommunicator.endRoom(this.roomId, this.channelType, this.senderKey, this.userKey)
                 },
                 popupSideViewRoomModal: function () {
                     if (!this.roomId)
@@ -1308,6 +1300,10 @@
                 talkListContainer.updateRoomStatus(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.type, data.content, messageTime)
             } else if (['SE', 'RE', 'AE'].includes(data.send_receive)) {
                 talkListContainer.updateRoomStatus(data.room_id, 'END', data.type, data.content, messageTime)
+            } else if (['D'].includes(data.send_receive)){
+                talkRoom.roomId = null
+                talkRoom.userName = ""
+                talkListContainer.load()
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime)
             }
@@ -1336,6 +1332,7 @@
                 $('#distributee').prop("checked", data.dist_yn === 'Y');
                 if (data.dist_yn === 'D') $('#isDistributee').hide();
             })
+            .on('svc_delete', processTalkMessage)
 
         $(window).on('load', function () {
             loadTalkCustomInput()

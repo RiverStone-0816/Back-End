@@ -90,6 +90,9 @@ TalkCommunicator.prototype.connect = function (url, companyId, userid, passwd, a
         }).on('svc_end', function (data) {
             _this.log(false, 'svc_end', data);
             _this.process('svc_end', data);
+        }).on('svc_delete', function (data) {
+            _this.log(false, 'svc_delete', data);
+            _this.process('svc_delete', data);
         }).on('svcmsg_ping', function () {
             _this.socket.emit('climsg_pong');
         }).on('disconnect', function () {
@@ -228,7 +231,7 @@ TalkCommunicator.prototype.assignAssignedRoomToMe = function (roomId, channelTyp
         contents: contents || "",
     });
 };
-TalkCommunicator.prototype.deleteRoom = function (roomId, channelType, senderKey, userKey) {
+TalkCommunicator.prototype.endRoom = function (roomId, channelType, senderKey, userKey) {
     this.socket.emit('cli_end', {
         company_id: this.request.companyId,
         room_id: roomId,
@@ -241,6 +244,20 @@ TalkCommunicator.prototype.deleteRoom = function (roomId, channelType, senderKey
         contents: ""
     });
 };
+TalkCommunicator.prototype.deleteRoom = function (roomId, channelType, senderKey, userKey) {
+    this.socket.emit('cli_delete', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        channel_type: channelType,
+        sender_key: senderKey,
+        send_receive: "SE",
+        user_key: userKey,
+        etc_data: "",
+        contents: ""
+    });
+};
+
 TalkCommunicator.prototype.changeDistribution = function (distributed) {
     this.socket.emit('cli_dist_yn', {
         company_id: this.request.companyId,
