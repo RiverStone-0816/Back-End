@@ -762,6 +762,7 @@
                                 fallbackConfig.blocks.splice(0, fallbackConfig.blocks.length)
                                 for (let property in nodeBlockMap) delete nodeBlockMap[property]
                                 editor.clear()
+                                editor.zoom_reset();
 
                                 fallbackConfig.data = {
                                     name: data.name,
@@ -865,7 +866,10 @@
                             })
                         },
                         changeBot() {
-                            const change = () => this.loadBot(o.select)
+                            const change = () => {
+                                this.loadBot(o.select)
+                                this.translateTo(0, 0)
+                            }
 
                             if (o.current && o.current !== o.select) {
                                 confirm('저장되지 않은 내용은 모두 버려집니다. 변경하시겠습니까?')
@@ -878,6 +882,16 @@
                                 change()
                             }
                         },
+                        translateTo(x,y) {
+                            editor.canvas_x = x;
+                            editor.canvas_y = y;
+                            let storedZoom = editor.zoom;
+                            editor.zoom = 1;
+                            editor.precanvas.style.transform = "translate("+editor.canvas_x+"px, "+editor.canvas_y+"px) scale("+editor.zoom+")";
+                            editor.zoom = storedZoom;
+                            editor.zoom_last_value = 1;
+                            editor.zoom_refresh();
+                        }
                     },
                     mounted() {
                         this.load().done(() => {
