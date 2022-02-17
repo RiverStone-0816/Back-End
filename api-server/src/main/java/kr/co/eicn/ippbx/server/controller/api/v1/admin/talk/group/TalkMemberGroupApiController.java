@@ -92,6 +92,7 @@ public class TalkMemberGroupApiController extends ApiBaseController {
 
 		final TalkMemberGroupDetailResponse detail = convertDto(entity, TalkMemberGroupDetailResponse.class);
 
+		detail.setDistributionPolicy(TalkMemberDistributionType.of(entity.getTalkStrategy()));
 		detail.setPersons(
 				talkMemberLists.stream()
 						.filter(e -> e.getGroupId().equals(entity.getGroupId()))
