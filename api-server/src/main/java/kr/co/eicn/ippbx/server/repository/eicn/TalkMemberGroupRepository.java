@@ -70,7 +70,7 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 			talkMemberRecord.setDistTodayCount(0);
 			talkMemberRecord.setDistRemainCount(0);
 			talkMemberRecord.setDistLastTime(Timestamp.valueOf("2020-05-01 00:00:00"));
-			talkMemberRecord.setIsDistEnable("");
+			talkMemberRecord.setIsDistEnable("Y");
 			talkMemberListRepository.insert(talkMemberRecord);
 		}
 
@@ -116,6 +116,7 @@ public class TalkMemberGroupRepository extends EicnBaseRepository<TalkMemberGrou
 			talkMemberRecord.setDistTodayCount(0);
 			talkMemberRecord.setDistRemainCount(0);
 			talkMemberRecord.setDistLastTime(Timestamp.valueOf("2020-05-01 00:00:00"));
+			talkMemberRecord.setIsDistEnable("Y");
 
 			if (Objects.nonNull(persons.get(personId)))
 				talkMemberRecord.setStatus(persons.get(personId).getStatus());
