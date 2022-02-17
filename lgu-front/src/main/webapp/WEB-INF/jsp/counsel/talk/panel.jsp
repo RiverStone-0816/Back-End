@@ -1301,8 +1301,6 @@
             } else if (['SE', 'RE', 'AE'].includes(data.send_receive)) {
                 talkListContainer.updateRoomStatus(data.room_id, 'END', data.type, data.content, messageTime)
             } else if (['D'].includes(data.send_receive)){
-                talkRoom.roomId = null
-                talkRoom.userName = ""
                 talkListContainer.load()
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime)
