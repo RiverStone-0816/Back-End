@@ -771,7 +771,7 @@
                     </div>
                 </div>
 
-                <div class="wrap-inp">
+                <div class="wrap-inp" v-show="!isMessage">
                     <div class="inp-box">
                         <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteFromClipboard"
                                   @keyup.stop="keyup" :disabled="isMessage"></textarea>
@@ -856,6 +856,8 @@
                     const _this = this
 
                     return restSelf.get('/api/counsel/current-talk-msg/' + roomId).done(function (response) {
+                        console.log("response",response)
+
                         _this.roomId = roomId
                         _this.userName = userName
 
@@ -866,6 +868,7 @@
                         _this.roomStatus = response.data.roomStatus
                         _this.userId = response.data.userId
                         _this.customName = response.data.customName
+                        _this.isAutoEnable = response.data.isAutoEnable === 'Y'
                         _this.isMessage = !(response.data.userId === _this.loginId)
 
                         _this.messageList = []
