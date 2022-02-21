@@ -773,8 +773,7 @@
 
                 <div class="wrap-inp" v-show="!isMessage">
                     <div class="inp-box">
-                        <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteFromClipboard"
-                                  @keyup.stop="keyup" :disabled="isMessage"></textarea>
+                        <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup" :disabled="isMessage"></textarea>
                     </div>
                     <button type="button" class="send-btn" @click="sendMessage()">전송</button>
                 </div>
@@ -1217,9 +1216,13 @@
                 },
                 assignUnassignedRoomToMe: function () {
                     talkCommunicator.assignUnassignedRoomToMe(this.roomId, this.channelType, this.senderKey, this.userKey)
+                    this.userId = '${g.user.id}'
+                    this.isMessage = false
                 },
                 assignAssignedRoomToMe: function () {
                     talkCommunicator.assignAssignedRoomToMe(this.roomId, this.channelType, this.senderKey, this.userKey)
+                    this.userId = '${g.user.id}'
+                    this.isMessage = false
                 },
                 finishCounsel: function () {
                     talkCommunicator.endRoom(this.roomId, this.channelType, this.senderKey, this.userKey)
