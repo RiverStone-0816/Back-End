@@ -47,11 +47,11 @@
                                     <div>
                                         <i class="user outline icon -consultant-login" :data-peer="e.peer" data-logon-class="online"></i>
                                         <span class="user">{{ e.idName }}<text v-if="e.extension">[{{ e.extension }}]</text></span>
+                                    </div>
+                                    <div v-if="e.peer">
                                         <button v-if="e.extension" class="ui icon button mini compact" @click.stop.prevent="redirectTo(e.extension)" title="전화돌려주기">
                                             <i class="share icon"></i>
                                         </button>
-                                    </div>
-                                    <div v-if="e.peer">
                                         <span class="ui mini label -consultant-status-with-color" :data-peer="e.peer"></span>
                                     </div>
                                 </li>
@@ -90,14 +90,14 @@
                                 <ul class="treeview-menu consulting-accordion-content">
                                     <li v-for="(person, j) in team.person" :key="j" class="team-item -messenger-user" :data-id="person.id" @click.stop.prevent="toggleActive($event)"
                                         @dblclick.stop.prevent="openRoom(person.id)">
-                                        <div>
+                                        <div style="padding-left: 5px">
                                             <i class="user outline icon -consultant-login" :data-peer="person.peer" data-logon-class="online"></i>
                                             <span class="user">{{ person.idName }}<text v-if="person.extension">[{{ person.extension }}]</text></span>
+                                        </div>
+                                        <div v-if="person.peer">
                                             <button v-if="person.extension" class="ui icon button mini compact" @click.stop.prevent="redirectTo(person.extension)" title="전화돌려주기">
                                                 <i class="share icon"></i>
                                             </button>
-                                        </div>
-                                        <div v-if="person.peer">
                                             <span class="ui mini label -consultant-status-with-color" :data-peer="person.peer"></span>
                                         </div>
                                         <c:if test="${usingservices.contains('IM')}">
