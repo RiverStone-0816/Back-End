@@ -28,7 +28,6 @@
                     </a>
                 </template>
             </div>
-            <%--여기도임시--%>
             <div v-for="(e, i) in STATUSES" :key="i" class="ui bottom attached tab segment"
                  :class="statuses[e.status].activated && 'active'" style="width: 100%;">
                 <div class="sort-wrap">
@@ -60,7 +59,6 @@
                         </div>
                     </div>
                 </div>
-                <%--여기--%>
                 <div class="talk-list-wrap" ref="talk-list-wrap">
                     <ul v-if="statuses[e.status].rooms.length">
                         <li v-for="(room, j) in statuses[e.status].rooms" :key="j" class="talk-list"
@@ -79,7 +77,6 @@
                                     서비스 : {{ room.svcName }} || 상담원 : {{ room.userName }}
 
                                 </div>
-                                <%--<div class="ui top right attached label small"></div>--%>
                                 <div class="ui top right attached label small time">
                                     {{ timestampFormat(room.roomLastTime) }}
                                 </div>
@@ -96,10 +93,8 @@
                                             </div>
                                         </div>
                                         <div class="middle aligned content">
-                                            <%--380--%>
                                             <div class="headerpanerl"
                                                  style="padding-top: 8px; width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
-                                                <%--<div style="font-size: 0.88571429rem; font-weight: bold; width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">--%>
                                                     <text class="-custom-name"
                                                           style="padding-right: 15px; font-weight: bold; font-size: 0.885714rem;">
                                                         {{ room.maindbCustomName ? room.maindbCustomName : '미등록고객' }}
@@ -108,7 +103,6 @@
                                                           class="ui mini label circular"> N </span>
 
                                             </div>
-                                                <%--float:right;--%>
                                                 <div style="position: relative; top: -13px; right: -70px;  font-size: 0.88571429rem; width:350px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
                                                 <text v-if="room.type !== 'text'" style="font-size: 0.88571429rem;">
                                                     {{ room.type === 'photo' ? '사진' : room.type === 'audio' ? '음원' :
@@ -117,11 +111,6 @@
                                                 </text>
                                                 <text v-else style="font-size: 0.88571429rem; ">{{ room.content }}</text>
                                                 </div>
-
-
-                                            <%--<div class="meta">--%>
-
-                                            <%-- </div>--%>
                                         </div>
                                     </div>
                                 </div>
@@ -468,10 +457,6 @@
                                             (e.username || e.userId) : customName }}] {{ getTimeFormat(e.time) }}
                                         </div>
                                         <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
-                                            <%--<img src="<c:url value="/resources/images/loading.svg"/>" alt="loading"/>--%>
-                                            <%-- <p class="info-msg">
-                                             <text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>
-                                             </p>--%>
                                         </div>
                                         <div v-for="(display, j) in e.displays" class="chat bot">
                                             <div class="bubble">
@@ -629,7 +614,6 @@
                                                     <button @click="popupTaskScriptModal(e,i)" class="button-knowledge"
                                                             data-inverted data-tooltip="지식관리 호출"
                                                             data-position="top center"></button>
-                                                    <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
                                                 </div>
                                             </div>
                                             <div class="bubble">
@@ -680,7 +664,6 @@
                                                     <button @click="popupTaskScriptModal(e,i)" class="button-knowledge"
                                                             data-inverted data-tooltip="지식관리 호출"
                                                             data-position="top center"></button>
-                                                    <%--<button class="button-sideview" data-inverted data-tooltip="사이드 뷰" data-position="bottom center"></button>--%>
                                                 </div>
                                             </div>
                                         </div>
@@ -696,7 +679,6 @@
                                 </p>
                                 <p v-if="['SE', 'RE', 'AE', 'E'].includes(e.sendReceive) && e.contents"
                                    class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
-                                <%--                                'SB' === e.sendReceive ||--%>
                                 <div v-if=" e.messageType === 'block_temp'"
                                      :class="e.messageType === 'block_temp' && ' chat-me '">
                                     <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
@@ -754,7 +736,6 @@
                         </div>
                     </div>
 
-                    <%-- showingTemplateBlocks = true && loadTemplates && loadTemplateBlocks--%>
                     <div :style="'visibility:'+(roomId?'visible':'hidden')">
                         <button v-if="channelType==='eicn'" class="mini ui button compact mr5"
                                 @click.stop.prevent="getTemplate">봇템플릿
@@ -870,9 +851,6 @@
                 }
             },
             methods: {
-                /*   talktemplate:function (){
-                       return restSelf.get('/api/counsel/current-talk-msg/' + roomId).done(function (response){});
-                   },*/
                 loadRoom: function (roomId, userName) {
                     const _this = this
                     const statues = talkListContainer.statuses
@@ -1330,12 +1308,15 @@
             const messageTime = moment().format('YYYY-MM-DD') + ' ' + data.cur_timestr.substring(data.cur_timestr.length - 8, data.cur_timestr.length)
 
             if (['SZ', 'SG'].includes(data.send_receive)) {
+                if (data.userid === userId)
+                    talkListContainer.activeTab('MY')
                 talkRoom.talkStatus = talkListContainer.statuses[data.userid === userId ? 'MY' : 'OTH'].text
-                talkListContainer.activeTab(data.userid === userId ? 'MY' : 'OTH')
                 talkListContainer.updateRoomStatus(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.type, data.content, messageTime)
             } else if (['SE', 'RE', 'AE'].includes(data.send_receive)) {
-                talkRoom.talkStatus = talkListContainer.statuses['END'].text
-                talkListContainer.activeTab('END')
+                if (data.userid === userId) {
+                    talkRoom.talkStatus = talkListContainer.statuses['END'].text
+                    talkListContainer.activeTab('END')
+                }
                 talkListContainer.updateRoomStatus(data.room_id, 'END', data.type, data.content, messageTime)
             } else if (['D'].includes(data.send_receive)){
                 talkListContainer.load()
