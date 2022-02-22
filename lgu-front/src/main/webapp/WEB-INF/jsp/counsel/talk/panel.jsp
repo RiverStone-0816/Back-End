@@ -386,7 +386,6 @@
                     $(this.$refs['talk-list-wrap']).overlayScrollbars({})
                 },
                 mounted: function () {
-                    this.activeTab(this.STATUSES[0].status)
                     this.load()
                     this.loadPersons()
                 },
@@ -416,7 +415,7 @@
                              class="channel-icon">
                         <img v-if="channelType === 'navertt'" src="<c:url value="/resources/images/ntalk-icon.png"/>"
                              class="channel-icon">
-                        {{ roomName }}
+                        [{{ talkStatus }}] {{ roomName }}
                     </span>
                     <button :style="'visibility:'+(roomId?'visible':'hidden')"
                             class="ui button tiny compact button-sideview"
@@ -827,6 +826,7 @@
                     userName: null,
                     customName: null,
                     isAutoEnable: false,
+                    talkStatus: null,
 
                     loginId: '${g.user.id}',
                     isMessage: false,
@@ -865,6 +865,7 @@
                         _this.senderKey = response.data.senderKey
                         _this.roomName = response.data.roomName
                         _this.roomStatus = response.data.roomStatus
+                        _this.talkStatus = _this.statuses[_this.roomStatus].text
                         _this.userId = response.data.userId
                         _this.customName = response.data.customName
                         _this.isAutoEnable = response.data.isAutoEnable === 'Y'
@@ -1236,7 +1237,7 @@
                     this.showingTemplateBlocks = true
                     this.loadTemplates()
                     this.loadTemplateBlocks()
-                },
+                }
             },
             mounted: function () {
                 this.loadTemplates()
@@ -1244,7 +1245,6 @@
 
             },
         }
-
         const talkRoom = Vue.createApp(Object.assign({}, talkRoomProperties)).mount('#talk-room')
         const sideViewModal = Vue.createApp(Object.assign({}, talkRoomProperties, {
             methods: {
@@ -1268,7 +1268,9 @@
 
             },
         })).mount('#side-view-modal')
+
         const talkRoomList = [talkRoom, sideViewModal]
+        talkListContainer.activeTab(talkListContainer.STATUSES[0].status)
     </script>
 </tags:scripts>
 
@@ -1305,6 +1307,7 @@
             if (['SZ', 'SG'].includes(data.send_receive)) {
                 talkListContainer.updateRoomStatus(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.type, data.content, messageTime)
             } else if (['SE', 'RE', 'AE'].includes(data.send_receive)) {
+                talkListContainer.activeTab('END')
                 talkListContainer.updateRoomStatus(data.room_id, 'END', data.type, data.content, messageTime)
             } else if (['D'].includes(data.send_receive)){
                 talkListContainer.load()
