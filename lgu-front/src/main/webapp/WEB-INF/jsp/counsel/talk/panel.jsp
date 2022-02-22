@@ -19,7 +19,7 @@
         <div class="talk-list-container" style="position: relative">
             <div class="ui top attached tabular menu">
                 <template v-for="(e, i) in STATUSES" :key="i">
-                    <a class="item"
+                    <a class="item" style="border-top-width: 1px; border-color: #D4D4D5; border-radius: 0.28571429rem 0.28571429rem 0px 0px;"
                        :class="(statuses[e.status].activated && ' active ') + (statuses[e.status].newMessages && ' newImg_c ')"
                        @click="activeTab(e.status)"
                        <c:if test="${!g.user.admin()}">v-if="e.status !== 'REALLOCATION'"</c:if>>

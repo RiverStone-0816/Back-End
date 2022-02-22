@@ -19,7 +19,7 @@
         <div class="ui grid" style="margin-top: -1.5rem;">
             <div class="sixteen wide column consulting-bookmark">
                 <div class="ui menu" style="padding-top: 0%;">
-                    <a class="item -counsel-panel-indicator active" onclick="viewCallPanel()" data-tab="call-panel" data-target="#call-panel">상담화면</a>
+                    <a class="item -counsel-panel-indicator active" onclick="viewCallPanel()" data-tab="call-panel" data-target="#call-panel">전화상담</a>
                     <c:if test="${user.isTalk.equals('Y')}">
                         <a class="item -counsel-panel-indicator" onclick="viewTalkPanel(); $(this).removeClass('highlight');$(this).removeClass('newImg') " data-tab="talk-panel"
                            data-target="#talk-panel">
@@ -53,7 +53,7 @@
         </div>
         <div class="ui tab active" data-tab="consulting-screen">
             <div class="ui grid">
-                <div class="ten wide column">
+                <div class="nine wide column">
                     <jsp:include page="/counsel/call/"/>
                     <c:if test="${user.isTalk.equals('Y')}">
                         <jsp:include page="/counsel/talk/"/>
@@ -62,8 +62,8 @@
                     <div id="etc-panel" class="mt10" style="position: relative;">
                         <div>
                             <div class="ui top attached tabular menu">
-                                <a class="item active" data-tab="todo-list">To-do</a>
-                                <a class="item" data-tab="counsel-list">상담이력</a>
+                                <a class="item active" data-tab="todo-list" style="border-top-width: 1px; border-color: #D4D4D5; border-radius: 0.28571429rem 0.28571429rem 0px 0px; max-width: 11%;">To-do</a>
+                                <a class="item" data-tab="counsel-list" style="border-top-width: 1px; border-color: #D4D4D5; border-radius: 0.28571429rem 0.28571429rem 0px 0px; max-width: 11%;">상담이력</a>
                             </div>
                             <div class="ui bottom attached tab segment active" data-tab="todo-list">
                                 <jsp:include page="/counsel/todo-list"/>
@@ -92,7 +92,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="six wide column">
+                <div class="seven wide column">
                     <div id="call-custom-input-panel">
                         <div id="call-custom-input"></div>
                     </div>
