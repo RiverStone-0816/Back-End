@@ -17,12 +17,7 @@
                 width: '',
                 transform: 'translate(-50%,-50%)'
             },
-            message: function () {
-                if (loadingImageSource)
-                    return $('<img/>', {src: loadingImageSource});
-
-                return $('<div/>', {text: 'Communicating with the server..'});
-            }
+            message: function () {}
         });
     };
 
