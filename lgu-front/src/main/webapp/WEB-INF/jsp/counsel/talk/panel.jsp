@@ -1310,12 +1310,15 @@
             const messageTime = moment().format('YYYY-MM-DD') + ' ' + data.cur_timestr.substring(data.cur_timestr.length - 8, data.cur_timestr.length)
 
             if (['SZ', 'SG'].includes(data.send_receive)) {
+                if (data.userid === userId)
+                    talkListContainer.activeTab('MY')
                 talkRoom.talkStatus = talkListContainer.statuses[data.userid === userId ? 'MY' : 'OTH'].text
-                talkListContainer.activeTab(data.userid === userId ? 'MY' : 'OTH')
                 talkListContainer.updateRoomStatus(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.type, data.content, messageTime)
             } else if (['SE', 'RE', 'AE'].includes(data.send_receive)) {
-                talkRoom.talkStatus = talkListContainer.statuses['END'].text
-                talkListContainer.activeTab('END')
+                if (data.userid === userId) {
+                    talkRoom.talkStatus = talkListContainer.statuses['END'].text
+                    talkListContainer.activeTab('END')
+                }
                 talkListContainer.updateRoomStatus(data.room_id, 'END', data.type, data.content, messageTime)
             } else if (['D'].includes(data.send_receive)){
                 talkListContainer.load()
