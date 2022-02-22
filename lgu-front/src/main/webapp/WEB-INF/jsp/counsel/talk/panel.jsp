@@ -873,6 +873,7 @@
                    },*/
                 loadRoom: function (roomId, userName) {
                     const _this = this
+                    const statues = talkListContainer.statuses
 
                     return restSelf.get('/api/counsel/current-talk-msg/' + roomId).done(function (response) {
                         console.log("response",response)
@@ -885,11 +886,17 @@
                         _this.senderKey = response.data.senderKey
                         _this.roomName = response.data.roomName
                         _this.roomStatus = response.data.roomStatus
-                        _this.talkStatus = _this.statuses[_this.roomStatus].text
                         _this.userId = response.data.userId
                         _this.customName = response.data.customName
                         _this.isAutoEnable = response.data.isAutoEnable === 'Y'
                         _this.isMessage = !(response.data.userId === _this.loginId)
+
+                        const status = _this.roomStatus === 'E' ? statues.END.status
+                            : !_this.userId ? statues.TOT.status
+                                : _this.userId === '${g.user.id}' ? statues.MY.status
+                                    : statues.OTH.status
+
+                        _this.talkStatus = statues[status].text
 
                         _this.messageList = []
                         response.data.talkMsgSummaryList.forEach(function (e) {
@@ -1325,9 +1332,11 @@
             const messageTime = moment().format('YYYY-MM-DD') + ' ' + data.cur_timestr.substring(data.cur_timestr.length - 8, data.cur_timestr.length)
 
             if (['SZ', 'SG'].includes(data.send_receive)) {
+                talkRoom.talkStatus = talkListContainer.statuses[data.userid === userId ? 'MY' : 'OTH'].text
                 talkListContainer.activeTab(data.userid === userId ? 'MY' : 'OTH')
                 talkListContainer.updateRoomStatus(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.type, data.content, messageTime)
             } else if (['SE', 'RE', 'AE'].includes(data.send_receive)) {
+                talkRoom.talkStatus = talkListContainer.statuses['END'].text
                 talkListContainer.activeTab('END')
                 talkListContainer.updateRoomStatus(data.room_id, 'END', data.type, data.content, messageTime)
             } else if (['D'].includes(data.send_receive)){
