@@ -28,6 +28,7 @@
                     </a>
                 </template>
             </div>
+            <%--여기도임시--%>
             <div v-for="(e, i) in STATUSES" :key="i" class="ui bottom attached tab segment"
                  :class="statuses[e.status].activated && 'active'" style="width: 100%;">
                 <div class="sort-wrap">
@@ -40,11 +41,16 @@
                             </div>
                             <div class="nine wide field">
                                 <div class="ui action input">
-                                    <input type="text" v-model="statuses[e.status].filter.value"/>
+                                    <input :style="'display:'+(statuses[e.status].filter.type =='USER_NAME' ?'none':'visible')" type="text" v-model="statuses[e.status].filter.value"/>
+                                    <select :style="'display:'+(statuses[e.status].filter.type =='USER_NAME' ?'visible':'none')" v-model="statuses[e.status].filter.value">
+                                            <option :value=""></option>
+                                            <option v-for="(e, i) in persons" :value="e.idName">{{ e.idName }}</option>
+                                    </select>
                                     <button class="ui icon button" @click.stop="filter(e.status)">
                                         <i class="search icon"></i>
                                     </button>
                                 </div>
+
                             </div>
                             <div class="three wide field">
                                 <select v-model="statuses[e.status].filter.ordering" @change="changeOrdering(e.status)">
@@ -54,6 +60,7 @@
                         </div>
                     </div>
                 </div>
+                <%--여기--%>
                 <div class="talk-list-wrap" ref="talk-list-wrap">
                     <ul v-if="statuses[e.status].rooms.length">
                         <li v-for="(room, j) in statuses[e.status].rooms" :key="j" class="talk-list"
@@ -73,8 +80,8 @@
 
                                 </div>
                                 <%--<div class="ui top right attached label small"></div>--%>
-                                <div class="ui top right attached label small time">{{
-                                    timestampFormat(room.roomLastTime) }}
+                                <div class="ui top right attached label small time">
+                                    {{ timestampFormat(room.roomLastTime) }}
                                 </div>
                                 <div class="ui divided items">
                                     <div class="item">
@@ -94,7 +101,7 @@
                                                  style="padding-top: 8px; width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
                                                 <%--<div style="font-size: 0.88571429rem; font-weight: bold; width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">--%>
                                                     <text class="-custom-name"
-                                                          style="padding-right: 15px; font-weight: bold;">
+                                                          style="padding-right: 15px; font-weight: bold; font-size: 0.885714rem;">
                                                         {{ room.maindbCustomName ? room.maindbCustomName : '미등록고객' }}
                                                     </text>
                                                     <span v-if="!activatedRoomIds.includes(room.roomId) && room.hasNewMessage"
@@ -102,7 +109,7 @@
 
                                             </div>
                                                 <%--float:right;--%>
-                                                <div style="position: relative; top: -13px; right: -80px;  font-size: 0.88571429rem; width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                                <div style="position: relative; top: -13px; right: -70px;  font-size: 0.88571429rem; width:350px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
                                                 <text v-if="room.type !== 'text'" style="font-size: 0.88571429rem;">
                                                     {{ room.type === 'photo' ? '사진' : room.type === 'audio' ? '음원' :
                                                     room.type === 'file' ? '파일' : room.type }}
@@ -162,17 +169,17 @@
             const talkListContainer = Vue.createApp({
                 setup: function () {
                     return {
-                        STATUSES: Object.freeze([{status: 'MY', text: '상담중'}, {
-                            status: 'TOT',
-                            text: '비접수'
-                        }, {status: 'OTH', text: '타상담'}, {status: 'END', text: '종료'},
-                            {status: 'REALLOCATION', text: '재분배'},]),
+                        STATUSES: Object.freeze([
+                            {status: 'MY', text: '상담중'},
+                            {status: 'TOT', text: '비접수'},
+                            {status: 'OTH', text: '타상담'},
+                            {status: 'END', text: '종료'},
+                            {status: 'REALLOCATION', text: '재분배'},
+                        ]),
                         SEARCH_TYPE: Object.freeze({CUSTOM_NAME: '고객명', USER_NAME: '상담원명'}),
-                        ORDERING_TYPE: Object.freeze({
-                            LAST_MESSAGE_TIME: '최근시간',
-                            CUSTOM_NAME: '고객명',
-                            USER_NAME: '상담원명'
-                        }),
+                        SEARCH_TYPE_CODE: Object.freeze({CUSTOM_NAME: 'CUSTOM_NAME', USER_NAME: 'USER_NAME'}),
+                        ORDERING_TYPE: Object.freeze({LAST_MESSAGE_TIME: '최근시간', CUSTOM_NAME: '고객명', USER_NAME: '상담원명'}),
+                        ORDERING_TYPE_CODE: Object.freeze({LAST_MESSAGE_TIME: 'LAST_MESSAGE_TIME', CUSTOM_NAME: 'CUSTOM_NAME', USER_NAME: 'USER_NAME'}),
                     }
                 },
                 data: function () {
@@ -183,7 +190,7 @@
                                 activated: false,
                                 newMessages: 0,
                                 rooms: [],
-                                filter: {type: 'CUSTOM_NAME', value: '', ordering: 'LAST_MESSAGE_TIME'}
+                                filter: {type: 'USER_NAME', value: '', ordering: 'LAST_MESSAGE_TIME'}
                             }
                             return o
                         }, {}),
@@ -261,25 +268,25 @@
                         }
                     },
                     filter: function (status) {
-                        this.changeOrdering(status)
-
                         const condition = this.statuses[status].filter
                         const value = condition.value.trim()
+
                         const _this = this
                         this.statuses[status].rooms.forEach(function (e) {
                             e.showing = !value
-                                || (condition.type === _this.SEARCH_TYPE.CUSTOM_NAME && e.maindbCustomName && e.maindbCustomName.includes(value))
-                                || (condition.type === _this.SEARCH_TYPE.USER_NAME && e.userName && e.userName.includes(value))
+                                || (condition.type === _this.SEARCH_TYPE_CODE.CUSTOM_NAME && e.maindbCustomName && e.maindbCustomName.includes(value))
+                                || (condition.type === _this.SEARCH_TYPE_CODE.USER_NAME && e.userName && e.userName.includes(value))
                         })
                     },
                     changeOrdering: function (status) {
                         const _this = this
                         const condition = this.statuses[status].filter
                         this.statuses[status].rooms.sort(function (a, b) {
-                            if (condition.ordering === _this.ORDERING_TYPE.CUSTOM_NAME) return a.maindbCustomName - b.maindbCustomName
-                            if (condition.ordering === _this.ORDERING_TYPE.USER_NAME) return a.userName - b.userName
-                            return a.roomLastTime - b.roomLastTime
+                            if (condition.ordering === _this.ORDERING_TYPE_CODE.CUSTOM_NAME) return a["maindbCustomName"].localeCompare(b["maindbCustomName"])
+                            if (condition.ordering === _this.ORDERING_TYPE_CODE.USER_NAME) return a["userName"].localeCompare(b["userName"])
+                            return b["roomLastTime"].localeCompare(a["roomLastTime"])
                         })
+                        console.log('ROOM2', _this.statuses[status].rooms);
                     },
                     updateRoom: function (roomId, messageType, content, messageTime) {
                         if (!this.roomMap[roomId])
@@ -341,7 +348,20 @@
                         return profileImageSources[Math.abs(userName.hashCode()) % profileImageSources.length]
                     },
                     activeTab: function (status) {
-                        this.STATUSES.forEach(e => this.statuses[e.status].activated = e.status === status)
+                        const condition = this.statuses[status].filter
+                        const value = '${g.user.idName}'
+                        const _this = this
+
+                        this.STATUSES.forEach(e => {this.statuses[e.status].activated = e.status === status
+                        if(status==='END')
+                            {
+                                this.statuses[status].rooms.forEach(function (e) {
+                                    e.showing = !value
+                                        || (condition.type === _this.SEARCH_TYPE_CODE.CUSTOM_NAME && e.maindbCustomName && e.maindbCustomName.includes(value))
+                                        || (condition.type === _this.SEARCH_TYPE_CODE.USER_NAME && e.userName && e.userName.includes(value))
+                                })
+                            }
+                        })
                     },
                     loadActivatedRoomIds: function () {
                         this.activatedRoomIds = talkRoomList.map(e => e.roomId)
@@ -695,7 +715,6 @@
                                 <li v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.blockId)"
                                     class="template-list">
                                     <div class="template-title">/{{ e.name }}</div>
-                                    <%--여기--%>
                                 </li>
                             </ul>
                         </div>
@@ -898,7 +917,7 @@
 
                     const _this = this
 
-                    /*console.log(message)*/
+                    console.log(message)
 
                     const setBlockInfo = response => {
                         message.displays = response.data.displayList?.sort((a, b) => (a.order - b.order))
