@@ -1324,6 +1324,7 @@
             const messageTime = moment().format('YYYY-MM-DD') + ' ' + data.cur_timestr.substring(data.cur_timestr.length - 8, data.cur_timestr.length)
 
             if (['SZ', 'SG'].includes(data.send_receive)) {
+                talkListContainer.activeTab(data.userid === userId ? 'MY' : 'OTH')
                 talkListContainer.updateRoomStatus(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.type, data.content, messageTime)
             } else if (['SE', 'RE', 'AE'].includes(data.send_receive)) {
                 talkListContainer.activeTab('END')
