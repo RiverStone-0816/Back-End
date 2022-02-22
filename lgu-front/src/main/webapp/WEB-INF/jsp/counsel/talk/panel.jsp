@@ -215,8 +215,10 @@
                                             : _this.statuses.OTH.status
 
                                 talkRoomList.forEach(room => {
-                                    room.roomStatus = e.roomStatus
-                                    room.userId = e.userId
+                                    if (room.roomId === e.roomId){
+                                        room.roomStatus = e.roomStatus
+                                        room.userId = e.userId
+                                    }
                                 })
 
                                 const appendNewRoom = () => {
@@ -286,7 +288,6 @@
                             if (condition.ordering === _this.ORDERING_TYPE_CODE.USER_NAME) return a["userName"].localeCompare(b["userName"])
                             return b["roomLastTime"].localeCompare(a["roomLastTime"])
                         })
-                        console.log('ROOM2', _this.statuses[status].rooms);
                     },
                     updateRoom: function (roomId, messageType, content, messageTime) {
                         if (!this.roomMap[roomId])
@@ -336,6 +337,7 @@
                             this.roomMap[roomId].roomLastTime = messageTime
                             this.roomMap[roomId].type = messageType
                         }
+
                         this.roomMap[roomId].status = status
                         this.roomMap[roomId].container = this.statuses[status]
                         this.statuses[status].rooms.push(this.roomMap[roomId])
@@ -876,8 +878,6 @@
                     const statues = talkListContainer.statuses
 
                     return restSelf.get('/api/counsel/current-talk-msg/' + roomId).done(function (response) {
-                        console.log("response",response)
-
                         _this.roomId = roomId
                         _this.userName = userName
 
@@ -924,8 +924,6 @@
                         return
 
                     const _this = this
-
-                    console.log(message)
 
                     const setBlockInfo = response => {
                         message.displays = response.data.displayList?.sort((a, b) => (a.order - b.order))
