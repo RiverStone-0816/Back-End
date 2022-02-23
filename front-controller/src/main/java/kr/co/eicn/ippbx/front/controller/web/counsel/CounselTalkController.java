@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbDataController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.api.CounselApiInterface;
+import kr.co.eicn.ippbx.front.service.api.WebchatConfigApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.grade.GradelistApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbDataApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbGroupApiInterface;
@@ -63,6 +64,8 @@ public class CounselTalkController extends BaseController {
     private CommonTypeApiInterface commonTypeApiInterface;
     @Autowired
     private TalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
+    @Autowired
+    private WebchatConfigApiInterface webchatConfigApiInterface;
 
     @Value("${eicn.talk.socket.id}")
     private String talkSocketId;
@@ -146,7 +149,6 @@ public class CounselTalkController extends BaseController {
                               @RequestParam(required = false) Integer maindbGroupSeq,
                               @RequestParam(required = false) String customId,
                               @RequestParam(required = false) String roomId,
-                              @RequestParam(required = false) String channelType,
                               @RequestParam(required = false) String senderKey,
                               @RequestParam(required = false) String userKey) throws IOException, ResultFailException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         final List<MaindbGroupSummaryResponse> groups = maindbGroupApiInterface.list(new MaindbGroupSearchRequest());
@@ -154,7 +156,9 @@ public class CounselTalkController extends BaseController {
         if (groups.isEmpty())
             return "counsel/talk/custom-input";
 
+        final Map<String, String> chatServiceMap = webchatConfigApiInterface.list().stream().collect(Collectors.toMap(WebchatServiceSummaryInfoResponse::getSenderKey, WebchatServiceSummaryInfoResponse::getChannelName));
         final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryTalkServiceResponse::getSenderKey, SummaryTalkServiceResponse::getKakaoServiceName));
+        talkServices.putAll(chatServiceMap);
         model.addAttribute("talkServices", talkServices);
         if (talkServices.isEmpty())
             return "counsel/talk/custom-input";
@@ -166,7 +170,6 @@ public class CounselTalkController extends BaseController {
             if (talkCurrentListResponses.size() > 0) {
                 final TalkCurrentListResponse talk = talkCurrentListResponses.get(0);
 
-                channelType = talk.getChannelType().getCode();
                 senderKey = talk.getSenderKey();
                 userKey = talk.getUserKey();
 
@@ -181,7 +184,6 @@ public class CounselTalkController extends BaseController {
             maindbGroupSeq = groups.get(0).getSeq();
 
         model.addAttribute("roomId", roomId);
-        model.addAttribute("channelType", channelType);
         model.addAttribute("senderKey", senderKey);
         model.addAttribute("userKey", userKey);
 
@@ -220,7 +222,7 @@ public class CounselTalkController extends BaseController {
 
             final Map<String, Object> fieldNameToValueMap = MaindbDataController.createFieldNameToValueMap(entity, customDbType);
             model.addAttribute("fieldNameToValueMap", fieldNameToValueMap);
-        } else if (StringUtils.isNotEmpty(channelType) && StringUtils.isNotEmpty(senderKey) && StringUtils.isNotEmpty(userKey)) {
+        } else if (StringUtils.isNotEmpty(senderKey) && StringUtils.isNotEmpty(userKey)) {
             final MaindbDataSearchRequest search = new MaindbDataSearchRequest();
             search.setChannelType(MultichannelChannelType.TALK);
             search.setChannelData(senderKey + "_" + userKey); // TODO: channelType 어쩔?
@@ -254,7 +256,6 @@ public class CounselTalkController extends BaseController {
                                   @RequestParam(required = false) Integer maindbGroupSeq,
                                   @RequestParam(required = false) String customId,
                                   @RequestParam(required = false) String roomId,
-                                  @RequestParam(required = false) String channelType,
                                   @RequestParam(required = false) String senderKey,
                                   @RequestParam(required = false) String userKey) throws IOException, ResultFailException {
         if (maindbGroupSeq == null) {
@@ -266,7 +267,6 @@ public class CounselTalkController extends BaseController {
         }
 
         model.addAttribute("roomId", roomId);
-        model.addAttribute("channelType", channelType);
         model.addAttribute("senderKey", senderKey);
         model.addAttribute("userKey", userKey);
 
