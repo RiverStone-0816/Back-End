@@ -64,6 +64,9 @@
                                     <div class="display-item list" draggable="true" ondragstart="event.dataTransfer.setData('node', 'display-item-list')">
                                         <img src="<c:url value="/resources/images/item-list-icon.svg"/>"> 리스트
                                     </div>
+                                    <div class="display-item input" draggable="true" ondragstart="event.dataTransfer.setData('node', 'display-item-input')">
+                                        <img src="<c:url value="/resources/images/item-input-icon.svg"/>" style="margin-left: -3px"> 입력폼
+                                    </div>
                                 </div>
                                 <div class="chatbot-box-label">블록리스트</div>
                                 <div>
@@ -318,6 +321,58 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="input-display-config" class="chatbot-control-panel input-display-manage">
+                                <div class="chatbot-control-container active">
+                                    <button type="button" class="arrow-button"></button>
+                                    <div class="chatbot-control-inner">
+                                        <div class="chatbot-box-label">입력폼 디스플레이 관리
+                                            <button class="ui mini button" @click.stop="save">저장</button>
+                                        </div>
+                                        <div class="chatbot-control-body">
+                                            <div class="mb15">항목설정</div>
+                                            <div v-for="(e,i) in data.params" :key="i" class="list-control-container mb15">
+                                                <div class="list-control-header">
+                                                    <div>항목{{ i + 1 }}</div>
+                                                    <button v-if="i === 0" @click.stop="addApiParameterItem" class="ui icon small compact black button"><i class="plus icon"></i></button>
+                                                    <button v-if="i !== 0" @click.stop="removeApiParameterItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
+                                                </div>
+                                                <table class="list-control-table">
+                                                    <tr>
+                                                        <th>타입</th>
+                                                        <td>
+                                                            <div class="ui form fluid">
+                                                                <select v-model="e.type">
+                                                                    <option value="text">텍스트</option>
+                                                                    <option value="number">숫자</option>
+                                                                    <option value="calendar">날짜</option>
+                                                                    <option value="time">시간</option>
+                                                                    <option value="secret">비밀데이터</option>
+                                                                </select>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>항목명</th>
+                                                        <td>
+                                                            <div class="ui form fluid">
+                                                                <input type="text" v-model="e.displayName">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>파라미터</th>
+                                                        <td>
+                                                            <div class="ui form fluid">
+                                                                <input type="text" v-model="e.paramName">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div id="button-config" class="chatbot-control-panel button-action-manage">
                                 <div class="chatbot-control-container active">
                                     <button type="button" class="arrow-button"></button>
@@ -383,45 +438,6 @@
                                                 <div class="mb15">안내문구 입력</div>
                                                 <div class="ui form fluid mb15">
                                                     <textarea rows="5" v-model="data.api.nextApiMent"></textarea>
-                                                </div>
-                                                <div class="mb15">항목설정</div>
-                                                <div v-for="(e,i) in data.api.parameters" :key="i" class="list-control-container mb15">
-                                                    <div class="list-control-header">
-                                                        <div>항목{{ i + 1 }}</div>
-                                                        <button v-if="i === 0" @click.stop="addApiParameterItem" class="ui icon small compact black button"><i class="plus icon"></i></button>
-                                                        <button v-if="i !== 0" @click.stop="removeApiParameterItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
-                                                    </div>
-                                                    <table class="list-control-table">
-                                                        <tr>
-                                                            <th>타입</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <select v-model="e.type">
-                                                                        <option value="text">텍스트</option>
-                                                                        <option value="number">숫자</option>
-                                                                        <option value="calendar">날짜</option>
-                                                                        <option value="time">시간</option>
-                                                                    </select>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>항목명</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text" v-model="e.name">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>파라미터</th>
-                                                            <td>
-                                                                <div class="ui form fluid">
-                                                                    <input type="text" v-model="e.value">
-                                                                </div>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
                                                 </div>
                                                 <div class="mb15 dp-flex align-items-center justify-content-space-between">
                                                     <div>답변 대사 사용</div>
@@ -700,8 +716,10 @@
                                     elementList: e.type === 'text' ? [{order: 0, content: e.data?.text}]
                                         : e.type === 'image' ? [{order: 0, image: e.data?.fileUrl}]
                                             : e.type === 'card' ? [{order: 0, image: e.data?.fileUrl, title: e.data?.title, content: e.data?.announcement}]
-                                                : [{order: 0, title: e.data?.title, url: e.data?.titleUrl}].concat(e.data?.list?.map((e2, j) =>
+                                                : e.type === 'list' ? [{order: 0, title: e.data?.title, url: e.data?.titleUrl}].concat(e.data?.list?.map((e2, j) =>
                                                     ({order: j + 1, title: e2.title, content: e2.announcement, url: e2.url, image: e2.fileUrl})))
+                                                    : e.data?.params?.map((e2, j) => ({order: j + 1, inputType: e2.type, paramName: e2.paramName, displayName: e2.displayName}))
+
                                 })),
                                 buttonList: block?.buttons.map((e, i) => ({
                                     order: i,
@@ -716,7 +734,6 @@
                                     isResultTemplateEnable: e.api?.usingResponse,
                                     nextApiResultTemplate: e.api?.nextApiResultTemplate,
                                     nextApiErrorMent: e.api?.nextApiErrorMent,
-                                    paramList: e.api?.parameters?.map(e2 => ({type: e2.type, paramName: e2.value, displayName: e2.name})),
                                     // connectedBlockInfo: e.action === '' ? convertBlock(nodeBlockMap[e.childNodeId]) : null
                                 })),
                                 children: block?.buttons.filter(e => e.action === '').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
@@ -801,6 +818,12 @@
                                                 announcement: e.elementList?.[0]?.content,
                                             }
                                         }
+                                        if (e.type === 'input') return {
+                                            type: 'input',
+                                            data: {
+                                                params: e.elementList.map(e2 => ({type: e2?.inputType, paramName: e2?.paramName, displayName: e2?.displayName}))
+                                            }
+                                        }
 
                                         if (!e.elementList) return {type: 'list'}
                                         e.elementList.sort((a, b) => (a.order - b.order))
@@ -838,8 +861,7 @@
                                                 nextApiMent: e.nextApiMent,
                                                 usingResponse: e.isResultTemplateEnable,
                                                 nextApiResultTemplate: e.nextApiResultTemplate,
-                                                nextApiErrorMent: e.nextApiErrorMent,
-                                                parameters: e.paramList?.sort((a, b) => (a.order - b.order)).map(e2 => ({type: e2.type, value: e2.paramName, name: e2.displayName}))
+                                                nextApiErrorMent: e.nextApiErrorMent
                                             }
                                         }
                                     })
@@ -1190,8 +1212,45 @@
                 }).mount('#list-display-config')
                 return o || o
             })()
+            const formDisplayConfig = (() => {
+                const API_PARAMETER_TYPES = Object.freeze({text: 'text', number: 'number', calendar: 'calendar', time: 'time', secret: 'secret'})
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            nodeId: null,
+                            displayIndex: null,
+                            data: {title: null, titleUrl: null, params: [{type: null, paramName: null, displayName: null,}],},
+                        }
+                    },
+                    methods: {
+                        load(nodeId, displayIndex, data) {
+                            o.nodeId = nodeId
+                            o.displayIndex = displayIndex
+                            o.data = {params: []}
+                            data?.params.forEach(param => o.data.params.push({type: param?.type, paramName: param?.paramName, displayName: param?.displayName}))
+                            if (!o.data.params || !o.data.params.length) o.data.params = [{type: API_PARAMETER_TYPES.text, paramName: null, displayName: null}]
+                        },
+                        save() {
+                            if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'input') return
+                            nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {params: []}
+                            o.data.params.forEach(e => nodeBlockMap[o.nodeId].displays[o.displayIndex].data.params.push({
+                                type: e?.type,
+                                paramName: e?.paramName,
+                                displayName: e?.displayName
+                            }))
+                        },
+                        addApiParameterItem() {
+                            o.data.params.push({type: API_PARAMETER_TYPES.text, paramName: null, displayName: null})
+                        },
+                        removeApiParameterItem(index) {
+                            if (index === 0) return
+                            o.data.params.splice(index, 1)
+                        },
+                    },
+                }).mount('#input-display-config')
+                return o || o
+            })()
             const buttonConfig = (() => {
-                const API_PARAMETER_TYPES = Object.freeze({text: 'text', number: 'number', calendar: 'calendar', time: 'time'})
                 const o = Vue.createApp({
                     data() {
                         return {
@@ -1210,8 +1269,6 @@
                             if (data) for (let property in data) o.data[property] = data[property]
                             o.data.api = {}
                             if (data.api) for (let property in data.api) o.data.api[property] = data.api[property]
-                            o.data.api.parameters = []
-                            data.api && data.api.parameters && data.api.parameters.forEach(e => o.data.api.parameters.push({type: e.type, name: e.name, value: e.value}))
                             o.checkDataStructure()
                         },
                         save() {
@@ -1227,8 +1284,6 @@
                             for (let property in o.data) data[property] = o.data[property]
                             data.api = {}
                             for (let property in o.data.api) data.api[property] = o.data.api[property]
-                            data.api.parameters = []
-                            o.data.api.parameters.forEach(e => data.api.parameters.push({type: e.type, name: e.name, value: e.value}))
                             app.buttons[o.buttonIndex] = data
 
                             if (prevAction !== currentAction) {
@@ -1264,17 +1319,9 @@
                             if (!this.data.api) this.data.api = {}
                             if (this.data.api.nextApiUrl === undefined) this.data.api.nextApiUrl = null
                             if (this.data.api.nextApiMent === undefined) this.data.api.nextApiMent = null
-                            if (!this.data.api.parameters || !this.data.api.parameters.length) this.data.api.parameters = [{type: API_PARAMETER_TYPES.text, name: null, value: null}]
                             if (this.data.api.usingResponse === undefined) this.data.api.usingResponse = false
                             if (this.data.api.nextApiResultTemplate === undefined) this.data.api.nextApiResultTemplate = null
                             if (this.data.api.nextApiErrorMent === undefined) this.data.api.nextApiErrorMent = null
-                        },
-                        addApiParameterItem() {
-                            o.data.api.parameters.push({type: API_PARAMETER_TYPES.text, name: null, value: null})
-                        },
-                        removeApiParameterItem(index) {
-                            if (index === 0) return
-                            o.data.api.parameters.splice(index, 1)
                         },
                     },
                     created() {
@@ -1358,11 +1405,11 @@
                         },
                         methods: {
                             getDisplayClass(type) {
-                                const DISPLAY_TYPE_TO_CLASS = {text: 'text', image: 'image', card: 'card', list: 'list'}
+                                const DISPLAY_TYPE_TO_CLASS = {text: 'text', image: 'image', card: 'card', list: 'list', input: 'form'}
                                 return DISPLAY_TYPE_TO_CLASS[type]
                             },
                             getDisplayText(type) {
-                                const DISPLAY_TYPE_TO_TEXT = {text: '텍스트', image: '이미지', card: '카드', list: '리스트'}
+                                const DISPLAY_TYPE_TO_TEXT = {text: '텍스트', image: '이미지', card: '카드', list: '리스트', input: '입력폼'}
                                 return DISPLAY_TYPE_TO_TEXT[type]
                             },
                             moveUpDisplayItem(index) {
@@ -1390,6 +1437,8 @@
                                     o.displays.push({type: 'card', name: ''})
                                 } else if (type === 'display-item-list') {
                                     o.displays.push({type: 'list', name: ''})
+                                } else if (type === 'display-item-input') {
+                                    o.displays.push({type: 'input', name: ''})
                                 } else {
                                     o.showingEmptyDisplayItem = true
                                 }
@@ -1483,6 +1532,10 @@
                                 if (o.displays[index].type === 'list') {
                                     $('.list-display-manage').addClass('active')
                                     listDisplayConfig.load(o.nodeId, index, o.displays[index].data)
+                                }
+                                if (o.displays[index].type === 'input') {
+                                    $('.input-display-manage').addClass('active')
+                                    formDisplayConfig.load(o.nodeId, index, o.displays[index].data)
                                 }
                             },
                             configButtonItem(index) {

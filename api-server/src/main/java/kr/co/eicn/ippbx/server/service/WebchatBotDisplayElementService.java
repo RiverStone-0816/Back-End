@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.server.service;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotDispElement;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.enums.DisplayElementInputType;
 import kr.co.eicn.ippbx.model.form.WebchatBotDisplayElementFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatBotDisplayElementRepository;
@@ -29,6 +30,9 @@ public class WebchatBotDisplayElementService extends ApiBaseService {
             data.setContent(elementInfo.getContent());
             data.setImage(elementInfo.getImage());
             data.setUrl(elementInfo.getUrl());
+            data.setInputType(elementInfo.getInputType());
+            data.setParamName(elementInfo.getParamName());
+            data.setDisplayName(elementInfo.getDisplayName());
 
             webchatBotDisplayElementRepository.insert(data);
         } else
@@ -49,6 +53,9 @@ public class WebchatBotDisplayElementService extends ApiBaseService {
         response.setContent(entity.getContent());
         response.setImage(entity.getImage());
         response.setUrl(entity.getUrl());
+        response.setInputType(DisplayElementInputType.of(entity.getInputType()));
+        response.setParamName(entity.getInputParamName());
+        response.setDisplayName(entity.getInputDisplayName());
 
         return response;
     }

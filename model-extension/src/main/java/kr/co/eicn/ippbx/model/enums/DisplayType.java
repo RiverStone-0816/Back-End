@@ -6,7 +6,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 import java.util.Objects;
 
 public enum DisplayType implements CodeHasable<String> {
-    TEXT("text"), IMAGE("image"), CARD("card"), LIST("list");
+    TEXT("text"), IMAGE("image"), CARD("card"), LIST("list"), INPUT("input");
 
     private final String code;
 
