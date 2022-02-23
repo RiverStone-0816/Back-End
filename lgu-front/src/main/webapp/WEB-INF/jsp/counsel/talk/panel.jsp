@@ -361,7 +361,7 @@
                     },
                     openRoom: function (roomId, userName) {
                         talkRoom.loadRoom(roomId, userName).done(() => {
-                            loadTalkCustomInput(null, null, roomId, this.roomMap[roomId].channelType, this.roomMap[roomId].senderKey, this.roomMap[roomId].userKey);
+                            loadTalkCustomInput(null, null, roomId, this.roomMap[roomId].senderKey, this.roomMap[roomId].userKey);
                             this.loadActivatedRoomIds();
                         })
                     },
@@ -1281,23 +1281,21 @@
 
 <tags:scripts>
     <script>
-        function loadTalkCustomInput(maindbGroupSeq, customId, roomId, channelType, senderKey, userKey) {
+        function loadTalkCustomInput(maindbGroupSeq, customId, roomId, senderKey, userKey) {
             return replaceReceivedHtmlInSilence($.addQueryString('/counsel/talk/custom-input', {
                 maindbGroupSeq: maindbGroupSeq || '',
                 customId: customId || '',
                 roomId: roomId || '',
-                channelType: channelType || '',
                 senderKey: senderKey || '',
                 userKey: userKey || '',
             }), '#talk-custom-input');
         }
 
-        function loadTalkCounselingInput(maindbGroupSeq, customId, roomId, channelType, senderKey, userKey) {
+        function loadTalkCounselingInput(maindbGroupSeq, customId, roomId, senderKey, userKey) {
             replaceReceivedHtmlInSilence($.addQueryString('/counsel/talk/counseling-input', {
                 maindbGroupSeq: maindbGroupSeq || '',
                 customId: customId || '',
                 roomId: roomId || '',
-                channelType: channelType || '',
                 senderKey: senderKey || '',
                 userKey: userKey || '',
             }), '#talk-counseling-input');

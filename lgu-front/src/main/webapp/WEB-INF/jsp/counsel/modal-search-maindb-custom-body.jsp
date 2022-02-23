@@ -218,7 +218,6 @@
         <c:otherwise>
         loadTalkCustomInput(${search.groupSeq}, customId,
             '${g.escapeQuote(pageContext.request.getParameter('roomId'))}',
-            '${g.escapeQuote(pageContext.request.getParameter('channelType'))}',
             '${g.escapeQuote(pageContext.request.getParameter('senderKey'))}',
             '${g.escapeQuote(pageContext.request.getParameter('userKey'))}');
         </c:otherwise>
