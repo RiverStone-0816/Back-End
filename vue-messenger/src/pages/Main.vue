@@ -180,17 +180,44 @@
                         </div>
                       </template>
                     </div>
+                    <div v-else-if="e.type === 'input'" class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent">
+                      <div v-for="(e2, j) in getInputElements(e)" :key="j" class="p-2 pl-3 font-bold">
+                        <p>{{ e2.input_display_name }}</p>
+                        <div v-if="e2.input_type !== 'time' && e2.input_type !== 'secret'" class="relative w-full pt-2">
+                          <input class="flex w-full border rounded-lg focus:outline-none focus:border-indigo-300 h-10 pl-2 pr-2" type="text"
+                                 :name="e2.input_param_name" :class="(e2.input_type === 'calendar' && ' -datepicker ') || (e2.input_type === 'number' && ' -input-numerical ')">
+                        </div>
+                        <div v-else-if="e2.input_type === 'secret'" class="relative w-full pt-2">
+                          <input class="flex w-full border rounded-lg focus:outline-none focus:border-indigo-300 h-10 pl-2 pr-2" type="password"
+                                 :name="e2.input_param_name">
+                        </div>
+                        <div v-else class="ui multi form">
+                          <select :name="e2.input_param_name + '.meridiem'" class="slt">
+                            <option value="am">오전</option>
+                            <option value="pm">오후</option>
+                          </select>
+                          <select :name="e2.input_param_name + '.hour'" class="slt">
+                            <option v-for="hour in 12" :key="hour" :value="hour - 1">{{ hour - 1 }}</option>
+                          </select>
+                          <span class="unit">시</span>
+                          <select :name="e2.input_param_name + '.minute'" class="slt">
+                            <option v-for="minute in 60" :key="minute" :value="minute - 1">{{ minute - 1 }}</option>
+                          </select>
+                          <span class="unit">분</span>
+                        </div>
+                      </div>
+                    </div>
                     <div v-if="!(message.data?.button?.length) && (i + 1 === message.data.display.length)" class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
                   </div>
                 </div>
                 <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
                     <div v-if="e instanceof Array" class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
-                      <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 px-2 rounded-md" @click.stop.prevent="actButton(message, e2)">
+                      <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop.prevent="actButton(message, e2)">
                         {{ e2.btn_name }}
                       </button>
                     </div>
-                    <div v-else class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent">
+<!--                    <div v-else class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent">
                       <div class="p-2 pl-3 "><p>{{ e.next_api_ment }}</p></div>
                       <div v-for="(e2, j) in e.api_param" :key="j" class="p-2 pl-3 font-bold">
                         <p>{{ e2.display_name }}</p>
@@ -216,7 +243,7 @@
                       <div class="relative text-sm bg-white py-2 px-3 pb-0 shadow rounded-b-lg w-full max-w-xs">
                         <button class="bg-blue-600 hover:bg-blue-700 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop.prevent="actApi(message, e, $event)">제출</button>
                       </div>
-                    </div>
+                    </div>-->
                     <div v-if="i + 1 === getButtonGroups(message).length" class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
                   </div>
                 </div>
@@ -363,6 +390,9 @@ export default {
     },
     getListElements(display) {
       return JSON.parse(JSON.stringify(display)).element?.sort((a, b) => (a.sequence - b.sequence)).splice(1)
+    },
+    getInputElements(display) {
+      return JSON.parse(JSON.stringify(display)).element?.sort((a, b) => (a.sequence - b.sequence))
     },
     makeApiResultMessage(next_api_result_tpl, api_result_body) {
       const KEYWORD_CHAR = '$'
