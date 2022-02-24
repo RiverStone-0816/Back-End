@@ -958,6 +958,7 @@
                     methods: {
                         save() {
                             for (let property in o.input) o.data[property] = o.input[property]
+                            alert('저장되었습니다.')
                         },
                         show() {
                             if (!o.data)
@@ -1046,6 +1047,7 @@
                             if (!nodeBlockMap[o.nodeId]) return
                             nodeBlockMap[o.nodeId].keywords = []
                             o.keywords.forEach(e => nodeBlockMap[o.nodeId].keywords.push(e))
+                            alert('저장되었습니다.')
                         },
                         addKeyword() {
                             if (!o.input.trim()) return
@@ -1086,6 +1088,7 @@
                         save() {
                             if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'text') return
                             nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {text: o.data.text}
+                            alert('저장되었습니다.')
                         },
                     },
                 }).mount('#text-display-config')
@@ -1109,6 +1112,7 @@
                         save() {
                             if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'image') return
                             nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {fileName: o.data.fileName, fileUrl: o.data.fileUrl,}
+                            alert('저장되었습니다')
                         },
                         uploadFile(event) {
                             const file = event.target.files[0]
@@ -1144,6 +1148,7 @@
                         save() {
                             if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'card') return
                             nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {fileName: o.data.fileName, fileUrl: o.data.fileUrl, title: o.data.title, announcement: o.data.announcement,}
+                            alert('저장되었습니다.')
                         },
                         uploadFile(event) {
                             const file = event.target.files[0]
@@ -1188,6 +1193,7 @@
                                 fileName: e?.fileName,
                                 fileUrl: e?.fileUrl
                             }))
+                            alert("저장되었습니다.");
                         },
                         addListItem() {
                             o.data.list.push({title: null, announcement: null, url: null, fileName: null, fileUrl: null})
@@ -1238,6 +1244,7 @@
                                 paramName: e?.paramName,
                                 displayName: e?.displayName
                             }))
+                            alert("저장되었습니다.");
                         },
                         addApiParameterItem() {
                             o.data.params.push({type: API_PARAMETER_TYPES.text, paramName: null, displayName: null})
