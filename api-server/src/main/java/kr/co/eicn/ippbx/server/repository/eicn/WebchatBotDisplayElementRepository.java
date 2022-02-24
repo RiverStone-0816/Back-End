@@ -30,7 +30,7 @@ public class WebchatBotDisplayElementRepository extends EicnBaseRepository<Webch
                 .set(WEBCHAT_BOT_DISP_ELEMENT.CONTENT, request.getContent())
                 .set(WEBCHAT_BOT_DISP_ELEMENT.IMAGE, request.getImage())
                 .set(WEBCHAT_BOT_DISP_ELEMENT.URL, request.getUrl())
-                .set(WEBCHAT_BOT_DISP_ELEMENT.INPUT_TYPE, request.getInputType().getCode())
+                .set(WEBCHAT_BOT_DISP_ELEMENT.INPUT_TYPE, request.getInputType() != null ? request.getInputType().getCode() : "")
                 .set(WEBCHAT_BOT_DISP_ELEMENT.INPUT_PARAM_NAME, request.getParamName())
                 .set(WEBCHAT_BOT_DISP_ELEMENT.INPUT_DISPLAY_NAME, request.getDisplayName())
                 .set(WEBCHAT_BOT_DISP_ELEMENT.COMPANY_ID, getCompanyId())
