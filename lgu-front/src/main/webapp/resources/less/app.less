@@ -3448,6 +3448,9 @@ g {
   .display-item.list {
     background: @color-display-list;
   }
+  .display-item.input {
+    background: @color-display-input;
+  }
   .chatbot-box-sub-label {
     background: #f3f3f3;
     height: 30px;
@@ -3853,6 +3856,15 @@ g {
               background-color: #D676BF;
               &:hover {
                 background-color: #c358aa;
+              }
+            }
+          }
+          .button-item.form {
+            background-color: @color-display-input;
+            .up-button, .down-button, .ui.button {
+              background-color: #ffbb98;
+              &:hover {
+                background-color: #ffa06d;
               }
             }
           }

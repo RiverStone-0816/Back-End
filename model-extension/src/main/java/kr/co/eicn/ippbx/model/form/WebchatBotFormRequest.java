@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.model.form;
 
-import kr.co.eicn.ippbx.model.enums.ApiParameterType;
 import kr.co.eicn.ippbx.model.enums.ButtonAction;
+import kr.co.eicn.ippbx.model.enums.DisplayElementInputType;
 import kr.co.eicn.ippbx.model.enums.DisplayType;
 import kr.co.eicn.ippbx.util.spring.BaseForm;
 import kr.co.eicn.ippbx.util.valid.NotNull;
@@ -66,6 +66,9 @@ public class WebchatBotFormRequest extends WebchatBotFallbackFormRequest {
         private String content;
         private String image;
         private String url;
+        private DisplayElementInputType inputType;
+        private String paramName;
+        private String displayName;
     }
 
     @EqualsAndHashCode(callSuper = true)
@@ -85,17 +88,5 @@ public class WebchatBotFormRequest extends WebchatBotFallbackFormRequest {
         private String nextApiResultTemplate;
         private String nextApiNoResultMent;
         private String nextApiErrorMent;
-
-        @Valid
-        private List<ApiParam> paramList;
-    }
-
-    @EqualsAndHashCode(callSuper = true)
-    @Data
-    public static class ApiParam extends BaseForm {
-        @NotNull("API 파라미터 타입")
-        private ApiParameterType type;
-        private String paramName;
-        private String displayName;
     }
 }
