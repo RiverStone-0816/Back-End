@@ -695,10 +695,10 @@
             <div class="write-chat" @drop.stop="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true">
                 <div class="write-menu">
                     <div v-if="showingTemplateBlocks" class="template-container template-block-container">
-                        <div class="template-container-inner">
+                        <div class="template-container-inner" >
                             <ul class="template-ul">
                                 <li v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.blockId)"
-                                    class="template-list">
+                                    class="template-list" >
                                     <div class="template-title">/{{ e.name }}</div>
                                 </li>
                             </ul>
@@ -739,6 +739,9 @@
                     <div :style="'visibility:'+(roomId?'visible':'hidden')">
                         <button v-if="channelType==='eicn'" class="mini ui button compact mr5"
                                 @click.stop.prevent="getTemplate">봇템플릿
+                        </button>
+                        <button v-if="channelType==='kakao'" class="mini ui button compact mr5"
+                                @click.stop.prevent="getTemplateAll">템플릿
                         </button>
                         <input style="display: none" type="file" @change="sendFile">
                         <button type="button" class="mini ui button icon compact mr5" data-inverted
@@ -1099,6 +1102,10 @@
                     talkCommunicator.sendTemplateBlock(this.roomId, this.channelType, this.senderKey, this.userKey, blockId)
                     this.showingTemplateBlocks = false
                 },
+                getTemplateAll:function (){
+                    this.getTemplates()
+                    this.showingTemplateLevel=1
+                },
                 getTemplates() {
                     const _this = this
                     return this.templates.filter(e => e.permissionLevel >= _this.showingTemplateLevel && e.name.includes(_this.showingTemplateFilter))
@@ -1240,7 +1247,8 @@
                     this.showingTemplateBlocks = true
                     this.loadTemplates()
                     this.loadTemplateBlocks()
-                }
+                },
+
             },
             mounted: function () {
                 this.loadTemplates()
