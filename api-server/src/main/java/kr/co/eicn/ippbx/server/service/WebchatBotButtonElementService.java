@@ -105,14 +105,9 @@ public class WebchatBotButtonElementService extends ApiBaseService {
         return webchatBotButtonElementRepository.findButtonListByBlockIdList(blockIdList).stream().map(this::convertEntityToResponse).collect(Collectors.groupingBy(WebchatBotInfoResponse.ButtonInfo::getBlockId));
     }
 
-    public void setButtonList(WebchatBotInfoResponse.BlockInfo block, Map<Integer, List<WebchatBotInfoResponse.ButtonInfo>> buttonListByBlockIdMap, Map<Integer, List<WebchatBotInfoResponse.ApiParam>> apiParamListByButtonId) {
+    public void setButtonList(WebchatBotInfoResponse.BlockInfo block, Map<Integer, List<WebchatBotInfoResponse.ButtonInfo>> buttonListByBlockIdMap) {
         if (buttonListByBlockIdMap.containsKey(block.getId())) {
             List<WebchatBotInfoResponse.ButtonInfo> buttonInfoList = buttonListByBlockIdMap.get(block.getId());
-
-            buttonInfoList.forEach(e -> {
-                if (apiParamListByButtonId.containsKey(e.getId()))
-                    e.setParamList(apiParamListByButtonId.get(e.getId()));
-            });
 
             block.setButtonList(buttonInfoList);
         } else {

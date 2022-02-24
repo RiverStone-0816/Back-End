@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.model.dto.eicn;
 
-import kr.co.eicn.ippbx.model.enums.ApiParameterType;
 import kr.co.eicn.ippbx.model.enums.ButtonAction;
+import kr.co.eicn.ippbx.model.enums.DisplayElementInputType;
 import kr.co.eicn.ippbx.model.enums.DisplayType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -48,6 +48,9 @@ public class WebchatBotInfoResponse extends WebchatBotFallbackInfoResponse {
         private String content;
         private String image;
         private String url;
+        private DisplayElementInputType inputType;
+        private String paramName;
+        private String displayName;
     }
 
     @Data
@@ -67,16 +70,5 @@ public class WebchatBotInfoResponse extends WebchatBotFallbackInfoResponse {
         private String nextApiResultTemplate;
         private String nextApiNoResultMent;
         private String nextApiErrorMent;
-
-        private List<ApiParam> paramList;
-    }
-
-    @Data
-    public static class ApiParam {
-        private Integer id;
-        private Integer buttonId;
-        private ApiParameterType type;
-        private String paramName;
-        private String displayName;
     }
 }

@@ -5,12 +5,12 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 
 import java.util.Objects;
 
-public enum ApiParameterType implements CodeHasable<String> {
-    NUMBER("number"), TEXT("text"), CALENDAR("calendar"), TIME("time");
+public enum DisplayElementInputType implements CodeHasable<String> {
+    NUMBER("number"), TEXT("text"), CALENDAR("calendar"), TINE("time"), SECRET("secret");
 
     private final String code;
 
-    ApiParameterType(String code) {
+    DisplayElementInputType(String code) {
         this.code = code;
     }
 
@@ -20,8 +20,8 @@ public enum ApiParameterType implements CodeHasable<String> {
         return code;
     }
 
-    public static ApiParameterType of(String value) {
-        for (ApiParameterType type : ApiParameterType.values()) {
+    public static DisplayElementInputType of(String value) {
+        for (DisplayElementInputType type : DisplayElementInputType.values()) {
             if (Objects.equals(type.code, value))
                 return type;
         }

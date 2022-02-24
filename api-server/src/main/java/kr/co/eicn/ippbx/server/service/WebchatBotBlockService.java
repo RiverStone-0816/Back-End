@@ -46,7 +46,6 @@ public class WebchatBotBlockService extends ApiBaseService {
     }
 
     public WebchatBotInfoResponse.BlockInfo getBlockInfo(Integer blockId) {
-       /* return webchatbotBlockRepository.findOne(blockId)!=null ? webchatbotBlockRepository.findOne(blockId):null;*/
         return webchatbotBlockRepository.findOne(blockId);
     }
 }
