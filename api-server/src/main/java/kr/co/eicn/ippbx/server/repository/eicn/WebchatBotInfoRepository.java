@@ -24,6 +24,8 @@ public class WebchatBotInfoRepository extends EicnBaseRepository<WebchatBotInfo,
 
     public WebchatBotInfoRepository() {
         super(WEBCHAT_BOT_INFO, WEBCHAT_BOT_INFO.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotInfo.class);
+
+        orderByFields.add(WEBCHAT_BOT_INFO.NAME.asc());
     }
 
     public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotInfo> pagination(ChatbotSearchRequest search) {
