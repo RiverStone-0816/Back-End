@@ -96,6 +96,23 @@
                     <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
                   </div>
                 </div>
+                <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
+                  <div class="flex flex-row">
+                    <div class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
+                      <span v-if="e instanceof Array">
+                        <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop.prevent="actButton(message, e2)">
+                          {{ e2.btn_name }}
+                        </button>
+                      </span>
+                      <span v-else>
+                        <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop.prevent="actApi(message, e, $event)">
+                          {{ e.btn_name }}
+                        </button>
+                      </span>
+                    </div>
+                    <div v-if="i + 1 === getButtonGroups(message).length" class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
+                  </div>
+                </div>
               </template>
 
               <template v-if="message.sender === 'SERVER' && message.messageType === 'member'">
