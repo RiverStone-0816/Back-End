@@ -269,10 +269,6 @@
                                             <div class="ui form fluid mb15">
                                                 <input type="text" v-model="data.title">
                                             </div>
-                                            <div class="mb15">타이틀 URL 입력</div>
-                                            <div class="ui form fluid mb15">
-                                                <input type="text" v-model="data.titleUrl">
-                                            </div>
                                             <div class="mb15">리스트 설정</div>
                                             <div v-for="(e,i) in data.list" :key="i" class="list-control-container mb15">
                                                 <div class="list-control-header">
@@ -329,6 +325,10 @@
                                             <button class="ui mini button" @click.stop="save">저장</button>
                                         </div>
                                         <div class="chatbot-control-body">
+                                            <div class="mb15">타이틀 입력</div>
+                                            <div class="ui form fluid mb15">
+                                                <input type="text" v-model="data.title">
+                                            </div>
                                             <div class="mb15">항목설정</div>
                                             <div v-for="(e,i) in data.params" :key="i" class="list-control-container mb15">
                                                 <div class="list-control-header">
@@ -678,7 +678,7 @@
             const botList = (() => {
                 const o = Vue.createApp({
                     data() {
-                        return {current: '', select: '', bots: []}
+                        return {current: '', select: '', changed: false, bots: []}
                     },
                     methods: {
                         load() {
@@ -716,9 +716,9 @@
                                     elementList: e.type === 'text' ? [{order: 0, content: e.data?.text}]
                                         : e.type === 'image' ? [{order: 0, image: e.data?.fileUrl}]
                                             : e.type === 'card' ? [{order: 0, image: e.data?.fileUrl, title: e.data?.title, content: e.data?.announcement}]
-                                                : e.type === 'list' ? [{order: 0, title: e.data?.title, url: e.data?.titleUrl}].concat(e.data?.list?.map((e2, j) =>
+                                                : e.type === 'list' ? [{order: 0, title: e.data?.title}].concat(e.data?.list?.map((e2, j) =>
                                                     ({order: j + 1, title: e2.title, content: e2.announcement, url: e2.url, image: e2.fileUrl})))
-                                                    : e.data?.params?.map((e2, j) => ({order: j + 1, inputType: e2.type, paramName: e2.paramName, displayName: e2.displayName}))
+                                                    : [{order: 0, title: e.data?.title}].concat(e.data?.params?.map((e2, j) => ({order: j + 1, inputType: e2.type, paramName: e2.paramName, displayName: e2.displayName})))
 
                                 })),
                                 buttonList: block?.buttons.map((e, i) => ({
@@ -771,6 +771,7 @@
                             return restSelf.get('/api/chatbot/' + botId).done(response => {
                                 o.current = botId
                                 o.select = botId
+                                o.changed = false
 
                                 const data = response.data
 
@@ -821,7 +822,8 @@
                                         if (e.type === 'input') return {
                                             type: 'input',
                                             data: {
-                                                params: e.elementList.map(e2 => ({type: e2?.inputType, paramName: e2?.paramName, displayName: e2?.displayName}))
+                                                title: e.elementList[0]?.title,
+                                                params: e.elementList.splice(1).map(e2 => ({type: e2?.inputType, paramName: e2?.paramName, displayName: e2?.displayName}))
                                             }
                                         }
 
@@ -831,7 +833,6 @@
                                             type: 'list',
                                             data: {
                                                 title: e.elementList[0]?.title,
-                                                titleUrl: e.elementList[0]?.url,
                                                 list: e.elementList.splice(1).map(e2 => ({title: e2.title, announcement: e2.content, url: e2.url, fileUrl: e2.image, fileName: e2.image,}))
                                             }
                                         }
@@ -893,7 +894,7 @@
                                 this.translateTo(0, 0)
                             }
 
-                            if (o.current && o.current !== o.select) {
+                            if (o.current && o.changed && o.current !== o.select) {
                                 confirm('저장되지 않은 내용은 모두 버려집니다. 변경하시겠습니까?')
                                     .done(() => {
                                         if (!o.select) o.init()
@@ -957,6 +958,7 @@
                     },
                     methods: {
                         save() {
+                            botList.changed = true;
                             for (let property in o.input) o.data[property] = o.input[property]
                         },
                         show() {
@@ -1043,6 +1045,7 @@
                             keywords.forEach(e => o.keywords.push(e))
                         },
                         save() {
+                            botList.changed = true;
                             if (!nodeBlockMap[o.nodeId]) return
                             nodeBlockMap[o.nodeId].keywords = []
                             o.keywords.forEach(e => nodeBlockMap[o.nodeId].keywords.push(e))
@@ -1084,6 +1087,7 @@
                             o.data = {text: data?.text}
                         },
                         save() {
+                            botList.changed = true;
                             if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'text') return
                             nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {text: o.data.text}
                         },
@@ -1107,6 +1111,7 @@
                             o.data = {fileName: data?.fileName, fileUrl: data?.fileUrl}
                         },
                         save() {
+                            botList.changed = true;
                             if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'image') return
                             nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {fileName: o.data.fileName, fileUrl: o.data.fileUrl,}
                         },
@@ -1142,6 +1147,7 @@
                             o.data = {fileName: data?.fileName, fileUrl: data?.fileUrl, title: data?.title, announcement: data?.announcement,}
                         },
                         save() {
+                            botList.changed = true;
                             if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'card') return
                             nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {fileName: o.data.fileName, fileUrl: o.data.fileUrl, title: o.data.title, announcement: o.data.announcement,}
                         },
@@ -1167,20 +1173,21 @@
                         return {
                             nodeId: null,
                             displayIndex: null,
-                            data: {title: null, titleUrl: null, list: [{title: null, announcement: null, url: null, fileName: null, fileUrl: null}],},
+                            data: {title: null, list: [{title: null, announcement: null, url: null, fileName: null, fileUrl: null}],},
                         }
                     },
                     methods: {
                         load(nodeId, displayIndex, data) {
                             o.nodeId = nodeId
                             o.displayIndex = displayIndex
-                            o.data = {title: data?.title, titleUrl: data?.titleUrl, list: []}
+                            o.data = {title: data?.title, list: []}
                             data && data.list && data.list.forEach(e => o.data.list.push({title: e?.title, announcement: e?.announcement, url: e?.url, fileName: e?.fileName, fileUrl: e?.fileUrl}))
                             if (!o.data.list || !o.data.list.length) o.data.list = [{title: null, announcement: null, url: null, fileName: null, fileUrl: null}]
                         },
                         save() {
+                            botList.changed = true;
                             if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'list') return
-                            nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {title: o.data?.title, titleUrl: o.data?.titleUrl, list: []}
+                            nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {title: o.data?.title, list: []}
                             o.data.list.forEach(e => nodeBlockMap[o.nodeId].displays[o.displayIndex].data.list.push({
                                 title: e?.title,
                                 announcement: e?.announcement,
@@ -1219,20 +1226,21 @@
                         return {
                             nodeId: null,
                             displayIndex: null,
-                            data: {title: null, titleUrl: null, params: [{type: null, paramName: null, displayName: null,}],},
+                            data: {title: null, params: [{type: null, paramName: null, displayName: null,}],},
                         }
                     },
                     methods: {
                         load(nodeId, displayIndex, data) {
                             o.nodeId = nodeId
                             o.displayIndex = displayIndex
-                            o.data = {params: []}
+                            o.data = {title: data?.title, params: []}
                             data?.params.forEach(param => o.data.params.push({type: param?.type, paramName: param?.paramName, displayName: param?.displayName}))
                             if (!o.data.params || !o.data.params.length) o.data.params = [{type: API_PARAMETER_TYPES.text, paramName: null, displayName: null}]
                         },
                         save() {
+                            botList.changed = true;
                             if (!nodeBlockMap[o.nodeId].displays[o.displayIndex] || nodeBlockMap[o.nodeId].displays[o.displayIndex].type !== 'input') return
-                            nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {params: []}
+                            nodeBlockMap[o.nodeId].displays[o.displayIndex].data = {title: o.data?.title, params: []}
                             o.data.params.forEach(e => nodeBlockMap[o.nodeId].displays[o.displayIndex].data.params.push({
                                 type: e?.type,
                                 paramName: e?.paramName,
@@ -1272,6 +1280,7 @@
                             o.checkDataStructure()
                         },
                         save() {
+                            botList.changed = true;
                             const app = nodeBlockMap[o.nodeId]
                             if (!app || !app.buttons[o.buttonIndex]) return
 
