@@ -180,7 +180,8 @@
                         </div>
                       </template>
                     </div>
-                    <div v-else-if="e.type === 'input'" class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent">
+                    <div v-else-if="e.type === 'input'" class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent" ref="apiparent">
+                      <div class="p-2 pl-3 "><p>{{ e.element[0]?.title }}</p></div>
                       <div v-for="(e2, j) in getInputElements(e)" :key="j" class="p-2 pl-3 font-bold">
                         <p>{{ e2.input_display_name }}</p>
                         <div v-if="e2.input_type !== 'time'" class="relative w-full pt-2">
@@ -217,37 +218,10 @@
                       </span>
                       <span v-else>
                         <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop.prevent="actApi(message, e, $event)">
-                          제출
+                          {{ e.btn_name }}
                         </button>
                       </span>
                     </div>
-<!--                    <div v-else class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent">
-                      <div class="p-2 pl-3 "><p>{{ e.next_api_ment }}</p></div>
-                      <div v-for="(e2, j) in e.api_param" :key="j" class="p-2 pl-3 font-bold">
-                        <p>{{ e2.display_name }}</p>
-                        <div v-if="e2.type !== 'time'" class="relative w-full pt-2">
-                          <input class="flex w-full border rounded-lg focus:outline-none focus:border-indigo-300 h-10 pl-2 pr-2" type="text"
-                                 :name="e2.param_name" :class="(e2.type === 'calendar' && ' -datepicker ') || (e2.type === 'number' && ' -input-numerical ')">
-                        </div>
-                        <div v-else class="ui multi form">
-                          <select :name="e2.param_name + '.meridiem'" class="slt">
-                            <option value="am">오전</option>
-                            <option value="pm">오후</option>
-                          </select>
-                          <select :name="e2.param_name + '.hour'" class="slt">
-                            <option v-for="hour in 12" :key="hour" :value="hour - 1">{{ hour - 1 }}</option>
-                          </select>
-                          <span class="unit">시</span>
-                          <select :name="e2.param_name + '.minute'" class="slt">
-                            <option v-for="minute in 60" :key="minute" :value="minute - 1">{{ minute - 1 }}</option>
-                          </select>
-                          <span class="unit">분</span>
-                        </div>
-                      </div>
-                      <div class="relative text-sm bg-white py-2 px-3 pb-0 shadow rounded-b-lg w-full max-w-xs">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop.prevent="actApi(message, e, $event)">제출</button>
-                      </div>
-                    </div>-->
                     <div v-if="i + 1 === getButtonGroups(message).length" class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
                   </div>
                 </div>
@@ -396,7 +370,7 @@ export default {
       return JSON.parse(JSON.stringify(display)).element?.sort((a, b) => (a.sequence - b.sequence)).splice(1)
     },
     getInputElements(display) {
-      return JSON.parse(JSON.stringify(display)).element?.sort((a, b) => (a.sequence - b.sequence))
+      return JSON.parse(JSON.stringify(display)).element?.sort((a, b) => (a.sequence - b.sequence)).splice(1)
     },
     makeApiResultMessage(next_api_result_tpl, api_result_body) {
       const KEYWORD_CHAR = '$'
@@ -471,10 +445,10 @@ export default {
         action_data: button.next_action_data,
       }, this.lastReceiveMessageType)
     },
-    actApi(message, button, event) {
+    actApi(message, button) {
       const data = {}
       const result = {}
-      const elements = event.target.closest('.-api-parent').querySelectorAll('[name]')
+      const elements = this.$refs.apiparent.querySelectorAll('[name]')
       for (let i = 0; i < elements.length; i++) {
         if (!elements[i].value) return store.commit('alert/show', 'API 호출을 위해 필요 정보를 모두 입력해야 합니다.')
 
