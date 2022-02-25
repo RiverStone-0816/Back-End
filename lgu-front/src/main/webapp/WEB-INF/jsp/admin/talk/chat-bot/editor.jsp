@@ -435,10 +435,6 @@
                                                         <input type="text" v-model="data.api.nextApiUrl">
                                                     </div>
                                                 </div>
-                                                <div class="mb15">안내문구 입력</div>
-                                                <div class="ui form fluid mb15">
-                                                    <textarea rows="5" v-model="data.api.nextApiMent"></textarea>
-                                                </div>
                                                 <div class="mb15 dp-flex align-items-center justify-content-space-between">
                                                     <div>답변 대사 사용</div>
                                                     <div class="ui fitted toggle checkbox">
@@ -730,7 +726,6 @@
                                     nextUrl: e.nextUrl,
                                     nextPhone: e.nextPhone,
                                     nextApiUrl: e.api?.nextApiUrl,
-                                    nextApiMent: e.api?.nextApiMent,
                                     isResultTemplateEnable: e.api?.usingResponse,
                                     nextApiResultTemplate: e.api?.nextApiResultTemplate,
                                     nextApiErrorMent: e.api?.nextApiErrorMent,
@@ -859,7 +854,6 @@
                                             nextPhone: e.nextPhone,
                                             api: {
                                                 nextApiUrl: e.nextApiUrl,
-                                                nextApiMent: e.nextApiMent,
                                                 usingResponse: e.isResultTemplateEnable,
                                                 nextApiResultTemplate: e.nextApiResultTemplate,
                                                 nextApiErrorMent: e.nextApiErrorMent
@@ -1334,7 +1328,6 @@
 
                             if (!this.data.api) this.data.api = {}
                             if (this.data.api.nextApiUrl === undefined) this.data.api.nextApiUrl = null
-                            if (this.data.api.nextApiMent === undefined) this.data.api.nextApiMent = null
                             if (this.data.api.usingResponse === undefined) this.data.api.usingResponse = false
                             if (this.data.api.nextApiResultTemplate === undefined) this.data.api.nextApiResultTemplate = null
                             if (this.data.api.nextApiErrorMent === undefined) this.data.api.nextApiErrorMent = null
