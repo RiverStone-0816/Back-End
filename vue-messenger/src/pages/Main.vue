@@ -183,12 +183,9 @@
                     <div v-else-if="e.type === 'input'" class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent">
                       <div v-for="(e2, j) in getInputElements(e)" :key="j" class="p-2 pl-3 font-bold">
                         <p>{{ e2.input_display_name }}</p>
-                        <div v-if="e2.input_type !== 'time' && e2.input_type !== 'secret'" class="relative w-full pt-2">
-                          <input class="flex w-full border rounded-lg focus:outline-none focus:border-indigo-300 h-10 pl-2 pr-2" type="text"
-                                 :name="e2.input_param_name" :class="(e2.input_type === 'calendar' && ' -datepicker ') || (e2.input_type === 'number' && ' -input-numerical ')">
-                        </div>
-                        <div v-else-if="e2.input_type === 'secret'" class="relative w-full pt-2">
-                          <input class="flex w-full border rounded-lg focus:outline-none focus:border-indigo-300 h-10 pl-2 pr-2" type="password"
+                        <div v-if="e2.input_type !== 'time'" class="relative w-full pt-2">
+                          <input class="flex w-full border rounded-lg focus:outline-none focus:border-indigo-300 h-10 pl-2 pr-2"
+                                 :type="(e2.input_type === 'calendar' && 'date') || (e2.input_type === 'number' && 'number') || (e2.input_type === 'secret' && 'password') || (e2.input_type === 'text' && 'text')"
                                  :name="e2.input_param_name">
                         </div>
                         <div v-else class="ui multi form">
@@ -212,10 +209,17 @@
                 </div>
                 <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
-                    <div v-if="e instanceof Array" class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
-                      <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop.prevent="actButton(message, e2)">
-                        {{ e2.btn_name }}
-                      </button>
+                    <div class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
+                      <span v-if="e instanceof Array">
+                        <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop.prevent="actButton(message, e2)">
+                          {{ e2.btn_name }}
+                        </button>
+                      </span>
+                      <span v-else>
+                        <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop.prevent="actApi(message, e, $event)">
+                          제출
+                        </button>
+                      </span>
                     </div>
 <!--                    <div v-else class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent">
                       <div class="p-2 pl-3 "><p>{{ e.next_api_ment }}</p></div>
