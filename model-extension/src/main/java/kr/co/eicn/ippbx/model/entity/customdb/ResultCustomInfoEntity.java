@@ -22,4 +22,5 @@ public class ResultCustomInfoEntity extends CommonResultCustomInfo {
     private String userOrgName;
     private String userTrName;
     private PersonList personList; // 상담원 정보
+    private String talkRoomName;
 }

@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbCustomInfo;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonResultCustomInfo;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbMultichannelInfo;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.ResultCustomInfoRecord;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentTalkRoom;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.ResultCustomInfoEntity;
@@ -43,6 +44,8 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
     private final CommonMaindbCustomInfo customInfoTable;
     private final CommonEicnCdr eicnCdrTable;
     private final kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo multichannelInfoTable;
+    private final CurrentTalkRoom CURRENT_TALK_ROOM_TABLE;
+
     @Autowired
     private MaindbMultichannelInfoService maindbMultichannelInfoService;
     @Autowired
@@ -68,10 +71,12 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
         customInfoTable = new CommonMaindbCustomInfo(companyId);
         multichannelInfoTable = new kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo(companyId);
         eicnCdrTable = new CommonEicnCdr(companyId);
+        CURRENT_TALK_ROOM_TABLE = new CurrentTalkRoom(companyId);
 
         addField(TABLE);
         addField(customInfoTable);
         addField(eicnCdrTable);
+        addField(CURRENT_TALK_ROOM_TABLE.ROOM_NAME);
 
         addOrderingField(TABLE.RESULT_DATE.desc());
     }
@@ -84,6 +89,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
                 .join(customInfoTable).on(customInfoTable.MAINDB_SYS_CUSTOM_ID.eq(TABLE.CUSTOM_ID))
                 .leftJoin(multichannelInfoTable).on(multichannelInfoTable.MAINDB_CUSTOM_ID.eq(TABLE.CUSTOM_ID))
                 .leftJoin(eicnCdrTable).on(eicnCdrTable.UNIQUEID.eq(TABLE.UNIQUEID).and(eicnCdrTable.USERID.eq(TABLE.USERID)).and(eicnCdrTable.BILLSEC.gt(0)))
+                .leftOuterJoin(CURRENT_TALK_ROOM_TABLE).on(TABLE.HANGUP_MSG.eq(CURRENT_TALK_ROOM_TABLE.ROOM_ID))
                 .where();
     }
 
@@ -91,8 +97,11 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
     protected RecordMapper<Record, ResultCustomInfoEntity> getMapper() {
         return record -> {
             final ResultCustomInfoEntity entity = record.into(TABLE).into(ResultCustomInfoEntity.class);
+
             entity.setCustomInfo(record.into(customInfoTable).into(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbCustomInfo.class));
             entity.setEicnCdr(record.into(eicnCdrTable).into(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonEicnCdr.class));
+            entity.setTalkRoomName(record.get(CURRENT_TALK_ROOM_TABLE.ROOM_NAME));
+
             return entity;
         };
     }

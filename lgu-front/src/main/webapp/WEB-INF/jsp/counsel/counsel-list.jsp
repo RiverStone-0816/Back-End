@@ -30,14 +30,7 @@
             </c:if>
         </c:forEach>
         <td title="${g.htmlQuote(value)}">${g.htmlQuote(value)}</td>
-
-        <c:set var="value" value="${''}"/>
-        <c:forEach var="field" items="${e.multichannelList}">
-            <c:if test="${field.channelType == 'TALK'}">
-                <c:set var="value" value="${value.concat(field.channelData).concat(' ').split('_')[1]}"/>
-            </c:if>
-        </c:forEach>
-        <td title="${g.htmlQuote(value)}">${g.htmlQuote(value)}</td>
+        <td title="${g.htmlQuote(e.talkRoomName)}">${g.htmlQuote(e.talkRoomName)}</td>
         <td title="${g.htmlQuote(e.userName)}">${g.htmlQuote(e.userName)}</td>
         <td>
             <button type="button" class="ui button mini compact" onclick="popupCounselingInfo(${e.seq})">열람</button>
