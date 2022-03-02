@@ -87,7 +87,7 @@
                                 </table>
                             </div>
                         </div>
-                        <button id="etc-panel-resizer" type="button" style="display: none; border-radius: 0.28571429rem;">
+                        <button id="etc-panel-resizer" type="button" style="display: none; border-radius: 0.28571429rem; border: solid 1px; border-color: #D4D4D5;">
                             <i class="material-icons arrow">keyboard_arrow_up</i>
                         </button>
                     </div>
