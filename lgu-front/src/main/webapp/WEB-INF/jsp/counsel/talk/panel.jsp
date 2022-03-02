@@ -186,6 +186,7 @@
                         roomMap: {},
                         activatedRoomIds: [],
                         persons: [],
+                        isSearch: false,
                     }
                 },
                 methods: {
@@ -346,9 +347,10 @@
                         this.STATUSES.forEach(e => {this.statuses[e.status].activated = e.status === status
                         if(status==='END')
                             {
-                                if(value==='') {
+                                if(!this.isSearch) {
                                     value='${g.user.idName}'
                                     this.statuses[status].filter.value='${g.user.idName}'
+                                    this.isSearch = true
                                 }
                                 this.statuses[status].rooms.forEach(function (e) {
                                     e.showing = !value
