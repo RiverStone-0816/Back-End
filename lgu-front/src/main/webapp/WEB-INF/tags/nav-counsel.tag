@@ -42,8 +42,8 @@
                         <div class="consulting-accordion-content">
                             <ul class="treeview-menu treeview-on consulting-accordion-content favorite overflow-overlay">
                                 <li v-if="!list.length" class="empty">등록된 즐겨찾기가 없습니다.</li>
-                                <li v-else v-for="(e, i) in list" :key="i" style="cursor: pointer" class="-messenger-user" :data-id="e.id" onclick="toggleActive(event, this)"
-                                    @dblclick.stop.prevent="openRoom(e.id)">
+                                <li v-else v-for="(e, i) in list" :key="i" style="cursor: pointer; padding-right: 0px;" class="-messenger-user" :data-id="e.id" onclick="toggleActive(event, this)"
+                                    @dblclick.stop.prevent="openRoom(e.id)" >
                                     <div>
                                         <i class="user outline icon -consultant-login" :data-peer="e.peer" data-logon-class="online"></i>
                                         <span class="user">{{ e.idName }}<text v-if="e.extension">[{{ e.extension }}]</text></span>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="consulting-accordion-content overflow-overlay flex-100">
                         <ul class="side-organization-ul">
-                            <li v-for="(team, i) in teams" :key="i" class="consulting-accordion active">
+                            <li v-for="(team, i) in teams" :key="i" class="consulting-accordion active" style="padding-right: 0px;">
                                 <div class="consulting-accordion-label team" onclick="toggleFold(event, this)">
                                     <div class="left">
                                         <i class="folder open icon"></i>
@@ -89,7 +89,7 @@
                                 </div>
                                 <ul class="treeview-menu consulting-accordion-content">
                                     <li v-for="(person, j) in team.person" :key="j" class="team-item -messenger-user" :data-id="person.id" @click.stop.prevent="toggleActive($event)"
-                                        @dblclick.stop.prevent="openRoom(person.id)">
+                                        @dblclick.stop.prevent="openRoom(person.id)" style="padding-right: 0px;">
                                         <div style="padding-left: 5px">
                                             <i class="user outline icon -consultant-login" :data-peer="person.peer" data-logon-class="online"></i>
                                             <span class="user">{{ person.idName }}<text v-if="person.extension">[{{ person.extension }}]</text></span>
