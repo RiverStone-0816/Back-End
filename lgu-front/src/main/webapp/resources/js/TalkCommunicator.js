@@ -93,6 +93,9 @@ TalkCommunicator.prototype.connect = function (url, companyId, userid, passwd, a
         }).on('svc_delete', function (data) {
             _this.log(false, 'svc_delete', data);
             _this.process('svc_delete', data);
+        }).on('svc_custom_match', function (data) {
+            _this.log(false, 'svc_custom_match', data);
+            _this.process('svc_custom_match', data);
         }).on('svcmsg_ping', function () {
             _this.socket.emit('climsg_pong');
         }).on('disconnect', function () {
@@ -161,6 +164,19 @@ TalkCommunicator.prototype.sendMessage = function (roomId, channelType, senderKe
         etc_data: "",
         type: 'text',
         contents: contents,
+    });
+};
+TalkCommunicator.prototype.sendCustomMatch = function (roomId, senderKey, userKey, groupId, customId, customName) {
+    this.socket.emit('cli_custom_match', {
+        company_id : this.request.companyId,
+        sender_key : senderKey,
+        user_key : userKey,
+        room_id : roomId,
+        userid : this.request.userid,
+        maindb_group_id : groupId,
+        maindb_custom_id : customId,
+        maindb_custom_name : customName
+
     });
 };
 TalkCommunicator.prototype.sendImageTemplate = function (roomId, channelType, senderKey, userKey, filePath) {
