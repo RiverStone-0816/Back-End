@@ -19,6 +19,7 @@
         <th>요청시간</th>
         <th>고객정보</th>
         <th>처리상태</th>
+        <th>완료/삭제</th>
     </tr>
     </thead>
     <tbody>
@@ -35,7 +36,30 @@
                 </div>
             </td>
             <td>${g.htmlQuote(message.getEnumText(e.todoStatus))}</td>
+            <td style="width: 150px;">
+                <button type="button" class="ui button mini compact" data-method="put" style="width:36px;" onclick="changeToDoDone(${e.seq})"><i class="check icon" ></i></button>
+                <button type="button" class="ui button mini compact" style="width:36px;" onclick="changeToDoDelete(${e.seq})"><i class="x icon"></i></button>
+            </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
+
+<script>
+    function changeToDoDone(seq) {
+        confirm('정말 완료하시겠습니까?').done(function () {
+            restSelf.put("api/counsel/to-do/done/" + seq).done(function () {
+                loadTodoList();
+            });
+        });
+
+    }
+
+    function changeToDoDelete(seq) {
+        confirm('정말 삭제하시겠습니까?').done(function () {
+            restSelf.delete("api/counsel/to-do/delete/" + seq).done(function () {
+                loadTodoList();
+            });
+        });
+    }
+</script>
