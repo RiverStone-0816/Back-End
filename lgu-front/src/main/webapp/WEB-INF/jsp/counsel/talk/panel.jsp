@@ -15,7 +15,7 @@
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 
 <div class="ui column grid" id="talk-panel">
-    <div class="nine wide column" id="talk-list-container">
+    <div class="nine wide column" id="talk-list-container" style="padding-right: 0px;">
         <div class="talk-list-container" style="position: relative">
             <div class="ui top attached tabular menu">
                 <template v-for="(e, i) in STATUSES" :key="i">
