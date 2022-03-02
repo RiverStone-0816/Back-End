@@ -900,6 +900,11 @@
                         _this.scrollToBottom()
                     })
                 },
+                clearRoom: function () {
+                    const _this = this
+                    _this.roomId = null
+                    _this.messageList = []
+                },
                 popupImageView: function (url) {
                     popupImageView(url)
                 },
@@ -1332,8 +1337,7 @@
                 talkListContainer.updateRoomStatus(data.room_id, 'END', data.type, data.content, messageTime)
             } else if (['D'].includes(data.send_receive)){
                 talkListContainer.load()
-                talkRoom.roomId=null
-                talkRoom.messageList=[]
+                talkRoom.clearRoom()
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime)
             }
