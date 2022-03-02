@@ -340,19 +340,25 @@
                     },
                     activeTab: function (status) {
                         const condition = this.statuses[status].filter
-                        const value = '${g.user.idName}'
+                        var value = this.statuses[status].filter.value
                         const _this = this
 
                         this.STATUSES.forEach(e => {this.statuses[e.status].activated = e.status === status
                         if(status==='END')
                             {
-                                this.statuses[status].filter.value = '${g.user.idName}'
+                                if(value==='') {
+                                    value='${g.user.idName}'
+                                    this.statuses[status].filter.value='${g.user.idName}'
+                                }
                                 this.statuses[status].rooms.forEach(function (e) {
                                     e.showing = !value
                                         || (condition.type === _this.SEARCH_TYPE_CODE.CUSTOM_NAME && e.maindbCustomName && e.maindbCustomName.includes(value))
                                         || (condition.type === _this.SEARCH_TYPE_CODE.USER_NAME && e.userName && e.userName.includes(value))
                                 })
                             }
+                        else{
+                                this.statuses[status].filter.type='CUSTOM_NAME'
+                        }
                         })
                     },
                     loadActivatedRoomIds: function () {
