@@ -65,7 +65,7 @@
                             @click="openRoom(room.roomId, room.userName)">
                             <div v-if="room.showing" class="ui segment"
                                  :class="activatedRoomIds.includes(room.roomId) && 'active'">
-                                <div class="ui top left attached label small grey">
+                                <div class="ui top left attached label small grey" style="width: 50%">
                                     <img v-if="room.channelType === 'kakao'"
                                          src="<c:url value="/resources/images/kakao-icon.png"/>">
                                     <img v-if="room.channelType === 'eicn'"
@@ -1332,6 +1332,8 @@
                 talkListContainer.updateRoomStatus(data.room_id, 'END', data.type, data.content, messageTime)
             } else if (['D'].includes(data.send_receive)){
                 talkListContainer.load()
+                talkRoom.roomId=null
+                talkRoom.messageList=[]
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime)
             }
