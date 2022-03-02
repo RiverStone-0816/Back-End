@@ -694,7 +694,7 @@
             </div>
             <div class="write-chat" @drop.stop="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true">
                 <div class="write-menu">
-                    <div v-if="showingTemplateBlocks" class="template-container template-block-container">
+                    <div v-if="showingTemplateBlocks" class="template-container template-block-container" style="min-width: 80%;">
                         <div class="template-container-inner" >
                             <ul class="template-ul">
                                 <li v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.blockId)"
