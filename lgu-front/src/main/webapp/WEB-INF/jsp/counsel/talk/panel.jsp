@@ -65,7 +65,7 @@
                             @click="openRoom(room.roomId, room.userName)">
                             <div v-if="room.showing" class="ui segment"
                                  :class="activatedRoomIds.includes(room.roomId) && 'active'">
-                                <div class="ui top left attached label small grey" style="width: 50%">
+                                <div class="ui top left attached label small grey" style="width:47%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
                                     <img v-if="room.channelType === 'kakao'"
                                          src="<c:url value="/resources/images/kakao-icon.png"/>">
                                     <img v-if="room.channelType === 'eicn'"
