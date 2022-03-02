@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.front.service.api.CounselApiInterface;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkCurrentListResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkCurrentMsgResponse;
@@ -34,6 +35,23 @@ public class CounselApiController extends BaseController {
     //todolist 처리결과 수정
     @PutMapping("to-do")
     public void put(@Valid @RequestBody TodoListUpdateFormRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
+        apiInterface.updateTodoStatus(form);
+    }
+
+    //상태 done으로 변경
+    @PutMapping("to-do/done/{seq}")
+    public void toDoDone(@PathVariable int seq) throws IOException, ResultFailException {
+        TodoListUpdateFormRequest form = new TodoListUpdateFormRequest();
+        form.setSeq(seq);
+        form.setTodoStatus(TodoListTodoStatus.DONE);
+        apiInterface.updateTodoStatus(form);
+    }
+    //상태 delete로 변경
+    @DeleteMapping("to-do/delete/{seq}")
+    public void toDoDelete(@PathVariable int seq) throws IOException, ResultFailException {
+        TodoListUpdateFormRequest form = new TodoListUpdateFormRequest();
+        form.setSeq(seq);
+        form.setTodoStatus(TodoListTodoStatus.DELETE);
         apiInterface.updateTodoStatus(form);
     }
 
