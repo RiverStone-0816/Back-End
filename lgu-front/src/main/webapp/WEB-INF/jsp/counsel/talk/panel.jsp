@@ -421,7 +421,7 @@
                     <p class="attach-text">파일을 채팅창에 바로 업로드하려면<br>여기에 드롭하세요.</p>
                 </div>
             </div>
-            <div class="room" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true">
+            <div class="room" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true" style="background-color: #dce6f2;">
                 <div class="chat-header dp-flex justify-content-space-between align-items-center">
                     <span id="text-line" :style="'visibility:'+(roomId?'visible':'hidden')"
                           style="width:400px; padding:0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"> <%--v-if="roomName"--%>
