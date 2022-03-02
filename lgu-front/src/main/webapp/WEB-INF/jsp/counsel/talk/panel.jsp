@@ -179,7 +179,7 @@
                                 activated: false,
                                 newMessages: 0,
                                 rooms: [],
-                                filter: {type: 'USER_NAME', value: '', ordering: 'LAST_MESSAGE_TIME'}
+                                filter: {type: 'CUSTOM_NAME', value: '', ordering: 'LAST_MESSAGE_TIME'}
                             }
                             return o
                         }, {}),
@@ -349,6 +349,7 @@
                             {
                                 if(!this.isSearch) {
                                     value='${g.user.idName}'
+                                    this.statuses[status].filter.type='USER_NAME'
                                     this.statuses[status].filter.value='${g.user.idName}'
                                     this.isSearch = true
                                 }
@@ -358,9 +359,6 @@
                                         || (condition.type === _this.SEARCH_TYPE_CODE.USER_NAME && e.userName && e.userName.includes(value))
                                 })
                             }
-                        else{
-                                this.statuses[status].filter.type='CUSTOM_NAME'
-                        }
                         })
                     },
                     loadActivatedRoomIds: function () {
