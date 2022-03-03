@@ -48,7 +48,7 @@
 <script>
     function changeToDoDone(seq) {
         confirm('정말 완료하시겠습니까?').done(function () {
-            restSelf.put("api/counsel/to-do/done/" + seq).done(function () {
+            restSelf.put("/api/counsel/to-do/done/" + seq).done(function () {
                 loadTodoList();
             });
         });
@@ -57,7 +57,7 @@
 
     function changeToDoDelete(seq) {
         confirm('정말 삭제하시겠습니까?').done(function () {
-            restSelf.delete("api/counsel/to-do/delete/" + seq).done(function () {
+            restSelf.delete("/api/counsel/to-do/delete/" + seq).done(function () {
                 loadTodoList();
             });
         });
