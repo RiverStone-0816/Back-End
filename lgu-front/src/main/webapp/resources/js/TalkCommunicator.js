@@ -175,8 +175,7 @@ TalkCommunicator.prototype.sendCustomMatch = function (roomId, senderKey, userKe
         userid : this.request.userid,
         maindb_group_id : groupId,
         maindb_custom_id : customId,
-        maindb_custom_name : customName
-
+        maindb_custom_name : customName,
     });
 };
 TalkCommunicator.prototype.sendImageTemplate = function (roomId, channelType, senderKey, userKey, filePath) {

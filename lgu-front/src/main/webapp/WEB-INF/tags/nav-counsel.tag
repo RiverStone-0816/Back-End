@@ -30,9 +30,9 @@
         <div class="organization-area-inner">
             <div class="sidebar-menu-container">
                 <c:if test="${activeMessenger}">
-                    <div id="bookmark-list" class="consulting-accordion favorite active" onclick="toggleFold(event, this)">
+                    <div id="bookmark-list" class="consulting-accordion favorite active">
                         <div class="consulting-accordion-label">
-                            <div>
+                            <div onclick="toggleFold(event, this)">
                                 즐겨찾기
                             </div>
                             <div>
@@ -60,8 +60,8 @@
                     </div>
                 </c:if>
                 <div id="team-list" class="consulting-accordion organization overflow-hidden dp-flex flex-flow-column active">
-                    <div class="consulting-accordion-label" onclick="toggleFold(event, this)">
-                        <div>
+                    <div class="consulting-accordion-label">
+                        <div onclick="toggleFold(event, this)">
                             조직도
                         </div>
                         <div>
@@ -75,8 +75,8 @@
                     <div class="consulting-accordion-content overflow-overlay flex-100">
                         <ul class="side-organization-ul">
                             <li v-for="(team, i) in teams" :key="i" class="consulting-accordion active" style="padding-right: 0px;">
-                                <div class="consulting-accordion-label team" onclick="toggleFold(event, this)">
-                                    <div class="left">
+                                <div class="consulting-accordion-label team">
+                                    <div class="left" onclick="toggleFold(event, this)">
                                         <i class="folder open icon"></i>
                                         <span class="team-name">{{ team.groupName }}</span>
                                     </div>
