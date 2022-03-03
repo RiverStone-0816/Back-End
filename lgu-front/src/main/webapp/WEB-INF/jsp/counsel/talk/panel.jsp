@@ -575,7 +575,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="['SA', 'AM', 'AW'].includes(e.sendReceive)" class="chat-item chat-me">
+                                <div v-if="['SA', 'AM', 'AW', 'SAV'].includes(e.sendReceive)" class="chat-item chat-me">
                                     <div class="wrap-content">
                                         <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
