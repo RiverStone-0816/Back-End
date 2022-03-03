@@ -514,6 +514,36 @@
                                                             </li>
                                                         </ul>
                                                     </div>
+                                                    <div v-if="display.type === 'input'" class="card-list">
+                                                        <div class="card-list">
+                                                            <ul class="card-list-ul">
+                                                                <li v-for="(param, k) in getListElements(display)"
+                                                                    class="item form">
+                                                                    <div class="label">{{ param.displayName }}</div>
+                                                                    <div v-if="param.inputType !== 'time'" class="ui fluid input">
+                                                                        <input :type="(param.input_type === 'calendar' && 'date') || (param.input_type === 'number' && 'number') || (param.input_type === 'secret' && 'password') || (param.input_type === 'text' && 'text')"></div>
+                                                                    <div v-else class="ui multi form">
+                                                                        <select class="slt">
+                                                                            <option>오전</option>
+                                                                            <option>오후</option>
+                                                                        </select>
+                                                                        <select class="slt">
+                                                                            <option v-for="hour in 12" :key="hour"
+                                                                                    :value="hour - 1">{{ hour - 1 }}
+                                                                            </option>
+                                                                        </select>
+                                                                        <span class="unit">시</span>
+                                                                        <select class="slt">
+                                                                            <option v-for="minute in 60" :key="minute"
+                                                                                    :value="minute - 1">{{ minute - 1 }}
+                                                                            </option>
+                                                                        </select>
+                                                                        <span class="unit">분</span>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -525,43 +555,6 @@
                                                             v-if="['url', 'phone'].includes(e2.action)"
                                                             style="background-color:#a2a7b0; margin: 5px; padding-left:10px; padding-right:10px; height: 30px;"
                                                             type="button" class="chatbot-button">{{ e2.name }}</button></span>
-                                                </div>
-                                                <div v-else class="card">
-                                                    <div class="card-list">
-                                                        <ul class="card-list-ul">
-                                                            <li v-for="(param, k) in buttonGroup.paramList"
-                                                                class="item form">
-                                                                <div class="label">{{ param.displayName }}</div>
-                                                                <div v-if="param.type !== 'api'" class="ui fluid input">
-                                                                    <input type="text"></div>
-                                                                <div v-else class="ui multi form">
-                                                                    <select class="slt">
-                                                                        <option>오전</option>
-                                                                        <option>오후</option>
-                                                                    </select>
-                                                                    <select class="slt">
-                                                                        <option v-for="hour in 12" :key="hour"
-                                                                                :value="hour - 1">{{ hour - 1 }}
-                                                                        </option>
-                                                                    </select>
-                                                                    <span class="unit">시</span>
-                                                                    <select class="slt">
-                                                                        <option v-for="minute in 60" :key="minute"
-                                                                                :value="minute - 1">{{ minute - 1 }}
-                                                                        </option>
-                                                                    </select>
-                                                                    <span class="unit">분</span>
-                                                                </div>
-                                                            </li>
-                                                            <li class="item">
-                                                                <div class="button-inner">
-                                                                    <button type="button" class="chatbot-button">{{
-                                                                        buttonGroup.name }}
-                                                                    </button>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

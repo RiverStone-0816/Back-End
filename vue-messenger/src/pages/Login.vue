@@ -3,30 +3,12 @@
 <template>
   <section class="flex w-full h-screen">
     <div class="m-auto" style="width: 36rem">
-
-      <form v-show="!opened" @submit.stop.prevent="connect">
-        <div class="mb-4 relative">
-          <input v-model="form.url" :class="form.url && 'filled'" autofocus class="input" type="text">
-          <label class="label">URL</label>
-        </div>
-        <div class="mb-4 relative">
-          <input v-model="form.senderKey" :class="form.senderKey && 'filled'" autofocus class="input" type="text">
-          <label class="label">SENDER KEY</label>
-        </div>
-        <div class="mb-4 relative">
-          <input v-model="form.ip" :class="form.ip && 'filled'" class="input" type="text">
-          <label class="label">IP</label>
-        </div>
-        <div class="mb-4 relative">
-          <input v-model="form.userKey" :class="form.userKey && 'filled'" class="input" type="text">
-          <label class="label">USER KEY</label>
-        </div>
-        <div class="mb-4 relative">
-          <input v-model="form.mode" :class="form.mode && 'filled'" class="input" type="text">
-          <label class="label">MODE</label>
-        </div>
-        <button class="bg-indigo-600 hover:bg-blue-dark text-white font-bold py-3 px-6 rounded w-full">Connect</button>
-      </form>
+      <div class="mb-4 relative text-center rounded w-full">
+        <text style="font-size: 80px;">테스트 페이지</text>
+      </div>
+      <div class="w-full text-center">
+        <button class="bg-indigo-600 hover:bg-blue-dark text-white font-bold py-3 px-6 rounded" @click.stop.prevent="connect">챗봇열기</button>
+      </div>
     </div>
   </section>
 </template>
@@ -43,7 +25,7 @@ export default {
   data() {
     return {
       communicator: new Communicator(),
-      opened: false,
+      opened: true,
       form: {
         // url: 'http://122.49.74.102:8200',
         url: 'https://cloudtalk.eicn.co.kr:8200',
@@ -67,8 +49,8 @@ export default {
     },
   },
   async created() {
-    if (this.opened) this.openChat()
     this.form.ip = (await axios.get('https://api.ipify.org')).data
+    if (this.opened) this.openChat(this.form.url, this.form.senderKey, this.form.userKey, this.form.ip, this.form.mode,)
   }
 }
 </script>
