@@ -871,7 +871,7 @@
                         _this.userId = response.data.userId
                         _this.customName = response.data.customName
                         _this.isAutoEnable = response.data.isAutoEnable === 'Y'
-                        _this.isMessage = !(response.data.userId === _this.loginId)
+                        _this.isMessage = !(response.data.userId === _this.loginId && response.data.roomStatus === 'G')
 
                         const status = _this.roomStatus === 'E' ? statues.END.status
                             : !_this.userId ? statues.TOT.status
