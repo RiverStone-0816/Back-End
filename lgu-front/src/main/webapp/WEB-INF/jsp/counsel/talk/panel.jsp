@@ -586,7 +586,7 @@
                                     <div class="wrap-content">
                                         <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
-                                            <div class="bubble">
+                                            <div class="bubble" style="background-color: #e0399747;">
                                                 <div class="txt_chat">
                                                     <p>{{ e.contents }}</p>
                                                 </div>
