@@ -465,11 +465,11 @@
                                         <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
                                         </div>
                                         <div v-for="(display, j) in e.displays" class="chat bot">
-                                            <div class="bubble">
+                                            <div class="bubble" style="border-radius: .5rem;">
                                                 <div v-if="display.type === 'text'" class="txt_chat">
                                                     <p>{{ display.elementList[0]?.content }}</p>
                                                 </div>
-                                                <div v-else class="card">
+                                                <div v-else class="card" >
                                                     <div v-if="display.type === 'image'" class="card-img">
                                                         <img :src="'${pageContext.request.contextPath}/admin/talk/chat-bot/image?fileName=' + encodeURIComponent(display.elementList[0]?.image)">
                                                     </div>
@@ -514,31 +514,33 @@
                                                             </li>
                                                         </ul>
                                                     </div>
-                                                    <div v-if="display.type === 'input'" class="card-list">
+                                                    <div v-if="display.type === 'input'" class="card-list" style="border-radius: .5rem; border-color: black">
                                                         <div class="card-list">
                                                             <ul class="card-list-ul">
+                                                                <div align="left" class="label" style="padding: 0.7em 1em; border-bottom: 1px solid #dcdcdc;">회원조회를 위해 정보를 입력 해 주세요.</div>
                                                                 <li v-for="(param, k) in getListElements(display)"
                                                                     class="item form">
-                                                                    <div class="label">{{ param.displayName }}</div>
+                                                                    <div align="left" class="label">{{ param.displayName }}</div>
                                                                     <div v-if="param.inputType !== 'time'" class="ui fluid input">
-                                                                        <input :type="(param.input_type === 'calendar' && 'date') || (param.input_type === 'number' && 'number') || (param.input_type === 'secret' && 'password') || (param.input_type === 'text' && 'text')"></div>
+                                                                        <input :type="(param.input_type === 'calendar' && 'date') || (param.input_type === 'number' && 'number') || (param.input_type === 'secret' && 'password') || (param.input_type === 'text' && 'text')"
+                                                                        style="border-color: #0c0c0c; border-radius: .5rem;"></div>
                                                                     <div v-else class="ui multi form">
-                                                                        <select class="slt">
+                                                                        <select class="slt" style="border-color: #0c0c0c">
                                                                             <option>오전</option>
                                                                             <option>오후</option>
                                                                         </select>
-                                                                        <select class="slt">
+                                                                        <select class="slt" style="border-color: #0c0c0c">
                                                                             <option v-for="hour in 12" :key="hour"
                                                                                     :value="hour - 1">{{ hour - 1 }}
                                                                             </option>
                                                                         </select>
-                                                                        <span class="unit">시</span>
-                                                                        <select class="slt">
+                                                                        <span class="unit" style="font-weight: 900; color: black">시</span>
+                                                                        <select class="slt" style="border-color: #0c0c0c">
                                                                             <option v-for="minute in 60" :key="minute"
                                                                                     :value="minute - 1">{{ minute - 1 }}
                                                                             </option>
                                                                         </select>
-                                                                        <span class="unit">분</span>
+                                                                        <span class="unit" style="font-weight: 900; color: black">분</span>
                                                                     </div>
                                                                 </li>
                                                             </ul>
