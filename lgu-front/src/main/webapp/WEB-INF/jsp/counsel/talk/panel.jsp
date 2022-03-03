@@ -1333,6 +1333,7 @@
                 if (data.userid === userId) {
                     talkRoom.talkStatus = talkListContainer.statuses['END'].text
                     talkListContainer.activeTab('END')
+                    talkRoom.isMessage = true
                 }
                 talkListContainer.updateRoomStatus(data.room_id, 'END', data.type, data.content, messageTime)
             } else if (['D'].includes(data.send_receive)){
