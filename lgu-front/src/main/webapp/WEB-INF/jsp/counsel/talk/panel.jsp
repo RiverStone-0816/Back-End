@@ -1367,12 +1367,12 @@
             .on('svc_redist', data => talkListContainer.updateRoomUser(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.user_key, data.userid))
             .on('svc_end', processTalkMessage)
             .on('svc_login', data => {
-                $('#distributee').prop("checked", data.dist_yn === 'Y');
-                if (data.dist_yn === 'D') $('#isDistributee').hide();
+                if (data.userid === userId) $('#distributee').prop("checked", data.dist_yn === 'Y');
+                if (data.dist_yn === 'D' && data.userid === userId) $('#isDistributee').hide();
             })
             .on('svc_dist_yn', data => {
-                $('#distributee').prop("checked", data.dist_yn === 'Y');
-                if (data.dist_yn === 'D') $('#isDistributee').hide();
+                if (data.userid === userId) $('#distributee').prop("checked", data.dist_yn === 'Y');
+                if (data.dist_yn === 'D' && data.userid === userId) $('#isDistributee').hide();
             })
             .on('svc_delete', processTalkMessage)
 
