@@ -29,26 +29,12 @@
     <div class="header">
         <img src="<c:url value="/resources/images/chatbot-icon.svg"/>" class="chatbot-icon"><span class="customer-title">Chat Bot</span>
     </div>
-    <%--<div class="content">
-        <div class="sample-bubble">
-            <img src="<c:url value="/resources/images/eicn-sample.png"/>" class="customer-img">
-            <p>이아이씨엔 채팅상담을 이용해 주셔서 감사합니다. 문의사항을 입력해주시면 상담원이 답변드리겠습니다. 감사합니다.</p>
-        </div>
-        <div class="sample-bubble">
-            <p>다른 채널을 통한 상담을 원하시면 원하시는 서비스의 아이콘을 눌러주세요.</p>
-            <div class="preview-channel-icon-container">
-                <a href="#"><img src="<c:url value="/resources/images/kakao-icon.png"/>" class="preview-channel-icon"></a>
-                <a href="#"><img src="<c:url value="/resources/images/ntalk-icon.png"/>" class="preview-channel-icon"></a>
-                <a href="#"><img src="<c:url value="/resources/images/nband-icon.png"/>" class="preview-channel-icon"></a>
-            </div>
-        </div>
-    </div>--%>
 
     <div v-for="(message, iMessage) in messages" :key="iMessage" :class="message.sender === 'SERVER' ? ' editor ' : ' send-message '" class=" content "
          @mouseenter="highlight(message.data?.block_id)" @mouseleave="dehighlight">
         <template v-if="message.sender === 'SERVER' && message.messageType === 'api_result'">
-            <div class="sample-bubble">
-                <p style="white-space: pre-wrap">{{ makeApiResultMessage(message.data.next_api_result_tpl, message.data.api_result_body) }}</p>
+            <div class="card">
+                <p style="white-space: pre-wrap">{{ makeApiResultMessage(message.data) }}</p>
                 <span class="time-text">{{ getTimeFormat(message.time) }}</span>
             </div>
         </template>
@@ -86,37 +72,45 @@
                         </li>
                     </ul>
                 </div>
-                <span v-if="!(message.data?.button?.length) && (i + 1 === message.data.display.length)" class="time-text">{{ getTimeFormat(message.time) }}</span>
-            </div>
-            <div v-if="message.data?.button?.length" v-for="(e, i) in getButtonGroups(message)" :key="i" :class="e instanceof Array ? 'sample-bubble' : 'card'">
-                <button v-if="e instanceof Array" v-for="(e2, j) in e" :key="j" type="button" class="chatbot-button" @click.stop.prevent="actButton(message, e2)">{{ e2.btn_name }}</button>
-                <div v-else class="card-list">
+                <div v-if="e.type === 'input'" class="card-list">
                     <ul class="card-list-ul">
-                        <li v-if="e.api_param" v-for="(e2, j) in e.api_param" :key="j" class="item form">
-                            <div class="label">{{ e2.display_name }}</div>
-                            <div v-if="e2.type !== 'time'" class="ui fluid input">
-                                <input type="text" :name="e2.param_name" :class="(e2.type === 'calendar' && '-datepicker') || (e2.type === 'number' && '-input-numerical')">
-                            </div>
+                        <div align="left" class="label" style="padding: 0.7em 1em; border-bottom: 1px solid #dcdcdc;">{{ e.element[0]?.title }}</div>
+                        <li v-for="(param, k) in getListElements(e)"
+                            class="item form">
+                            <div align="left" class="label">{{ param.input_display_name }}</div>
+                            <div v-if="param.inputType !== 'time'" class="ui fluid input">
+                                <input :type="(param.input_type === 'calendar' && 'date') || (param.input_type === 'number' && 'number') || (param.input_type === 'secret' && 'password') || (param.input_type === 'text' && 'text')"
+                                       style="border-color: #0c0c0c; border-radius: .5rem;"></div>
                             <div v-else class="ui multi form">
-                                <select :name="e2.param_name + '.meridiem'" class="slt">
-                                    <option value="am">오전</option>
-                                    <option value="pm">오후</option>
+                                <select class="slt" style="border-color: #0c0c0c">
+                                    <option>오전</option>
+                                    <option>오후</option>
                                 </select>
-                                <select :name="e2.param_name + '.hour'" class="slt">
-                                    <option v-for="hour in 12" :key="hour" :value="hour - 1">{{ hour - 1 }}</option>
+                                <select class="slt" style="border-color: #0c0c0c">
+                                    <option v-for="hour in 12" :key="hour"
+                                            :value="hour - 1">{{ hour - 1 }}
+                                    </option>
                                 </select>
-                                <span class="unit">시</span>
-                                <select :name="e2.param_name + '.minute'" class="slt">
-                                    <option v-for="minute in 60" :key="minute" :value="minute - 1">{{ minute - 1 }}</option>
+                                <span class="unit" style="font-weight: 900; color: black">시</span>
+                                <select class="slt" style="border-color: #0c0c0c">
+                                    <option v-for="minute in 60" :key="minute"
+                                            :value="minute - 1">{{ minute - 1 }}
+                                    </option>
                                 </select>
-                                <span class="unit">분</span>
+                                <span class="unit" style="font-weight: 900; color: black">분</span>
                             </div>
-                        </li>
-                        <li class="item">
-                            <button type="button" class="chatbot-button" @click.stop.prevent="actApi(message, e, $event)">제출</button>
                         </li>
                     </ul>
                 </div>
+                <span v-if="!(message.data?.button?.length) && (i + 1 === message.data.display.length)" class="time-text">{{ getTimeFormat(message.time) }}</span>
+            </div>
+            <div v-if="message.data?.button?.length" v-for="(e, i) in getButtonGroups(message)" :key="i" class="sample-bubble">
+                <span v-if="e instanceof Array">
+                    <button v-for="(e2, j) in e" :key="j" type="button" class="chatbot-button" @click.stop.prevent="actButton(message, e2)">{{ e2.btn_name }}</button>
+                </span>
+                <span v-else>
+                    <button type="button" class="chatbot-button" @click.stop.prevent="actApi(message, e, $event)">{{ e.btn_name }}</button>
+                </span>
                 <span v-if="i + 1 === getButtonGroups(message).length" class="time-text">{{ getTimeFormat(message.time) }}</span>
             </div>
         </template>
@@ -182,6 +176,7 @@
                                 .on('end', () => ({}))
                                 .on('close', () => ({}))
                                 .on('webchatsvc_message', data => {
+                                    console.log(data)
                                     o.lastReceiveMessageType = data.message_type
                                     o.messages.push({sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type})
                                 })
@@ -209,7 +204,7 @@
                     homeAction() {
                         o.socket.emit('webchatcli_message', Object.assign(o.request, {message_id: o.getMessageId()}, {
                             message_type: 'text',
-                            message_data: {last_receive_message_type: o.lastReceiveMessageType, text_data: '처음',}
+                            message_data: {last_receive_message_type: o.lastReceiveMessageType, text_data: '처음으로',}
                         }))
                     },
                     actButton(message, button) {
@@ -273,32 +268,38 @@
                     getTimeFormat(value) {
                         return moment(value).format('YY-MM-DD HH:mm')
                     },
-                    makeApiResultMessage(next_api_result_tpl, api_result_body) {
-                        const KEYWORD_CHAR = '$'
-                        let result = ''
+                    makeApiResultMessage(data) {
+                        if (data.is_custinput_enable === 'Y') {
+                            const next_api_result_tpl = data.next_api_result_tpl
+                            const api_result_body = data.api_result_body
+                            const KEYWORD_CHAR = '$'
+                            let result = ''
 
-                        for (let position = 0; ;) {
-                            const indexKeywordChar = next_api_result_tpl.indexOf(KEYWORD_CHAR, position)
-                            if (indexKeywordChar < 0) {
-                                result += next_api_result_tpl.substr(position)
-                                break
-                            }
-                            const indexSpace = next_api_result_tpl.regexIndexOf(/\s/, indexKeywordChar)
-                            if (indexKeywordChar + 1 !== indexSpace) {
-                                result += next_api_result_tpl.substr(position, indexKeywordChar - position)
-                                const keyword = next_api_result_tpl.substr(indexKeywordChar + 1, indexSpace - indexKeywordChar - 1)
-                                if (api_result_body[keyword] !== undefined) {
-                                    result += api_result_body[keyword]
-                                } else {
-                                    result += KEYWORD_CHAR + keyword
+                            for (let position = 0; ;) {
+                                const indexKeywordChar = next_api_result_tpl.indexOf(KEYWORD_CHAR, position)
+                                if (indexKeywordChar < 0) {
+                                    result += next_api_result_tpl.substr(position)
+                                    break
                                 }
-                            } else {
-                                result += KEYWORD_CHAR
+                                const indexSpace = next_api_result_tpl.regexIndexOf(/\s/, indexKeywordChar)
+                                if (indexKeywordChar + 1 !== indexSpace) {
+                                    result += next_api_result_tpl.substr(position, indexKeywordChar - position)
+                                    const keyword = next_api_result_tpl.substr(indexKeywordChar + 1, indexSpace - indexKeywordChar - 1)
+                                    if (api_result_body[keyword] !== undefined) {
+                                        result += api_result_body[keyword]
+                                    } else {
+                                        result += KEYWORD_CHAR + keyword
+                                    }
+                                } else {
+                                    result += KEYWORD_CHAR
+                                }
+                                position = indexSpace
                             }
-                            position = indexSpace
-                        }
 
-                        return result
+                            return result
+                        } else {
+                            return data.api_result_error_ment
+                        }
                     },
                     debounce(func, wait = 500) {
                         clearTimeout(this.timeout)
