@@ -269,7 +269,7 @@
                         return moment(value).format('YY-MM-DD HH:mm')
                     },
                     makeApiResultMessage(data) {
-                        if (data.is_custinput_enable === 'Y') {
+                        if (!data.api_result_error_ment) {
                             const next_api_result_tpl = data.next_api_result_tpl
                             const api_result_body = data.api_result_body
                             const KEYWORD_CHAR = '$'

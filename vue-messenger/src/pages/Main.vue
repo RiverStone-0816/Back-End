@@ -390,7 +390,7 @@ export default {
       return JSON.parse(JSON.stringify(display)).element?.sort((a, b) => (a.sequence - b.sequence)).splice(1)
     },
     makeApiResultMessage(data) {
-      if (data.is_custinput_enable === 'Y') {
+      if (!data.api_result_error_ment) {
         const next_api_result_tpl = data.next_api_result_tpl
         const api_result_body = data.api_result_body
         const KEYWORD_CHAR = '$'
