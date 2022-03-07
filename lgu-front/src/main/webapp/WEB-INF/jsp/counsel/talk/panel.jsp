@@ -65,7 +65,7 @@
                             @click="openRoom(room.roomId, room.userName)">
                             <div v-if="room.showing" class="ui segment"
                                  :class="activatedRoomIds.includes(room.roomId) && 'active'">
-                                <div class="ui top left attached label small grey" style="width:47%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                <div class="ui top left attached label small" style="width:47%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; background-color:#616b77; color: white;">
                                     <img v-if="room.channelType === 'kakao'"
                                          src="<c:url value="/resources/images/kakao-icon.png"/>">
                                     <img v-if="room.channelType === 'eicn'"
@@ -716,7 +716,7 @@
                                     <div v-if="e.isImage" class="template-content" style="text-decoration: underline">{{
                                         e.fileName }}
                                     </div>
-                                    <div v-else class="template-content">{{ e.text }}</div>
+                                    <div v-else class="template-content">카톡?{{ e.text }}</div>
                                 </li>
                             </ul>
                         </div>
@@ -855,6 +855,14 @@
                 }
             },
             methods: {
+   /*             keydown:function (event){
+                    if (event.key === 'Escape') {
+                        this.showingTemplateLevel = 0
+                        this.showingTemplateFilter = ''
+                        this.replying = null
+                        return
+                    }
+                },*/
                 loadRoom: function (roomId, userName) {
                     const _this = this
                     const statues = talkListContainer.statuses
@@ -912,8 +920,12 @@
 
                     const _this = this
 
+                    console.log("message:"+JSON.stringify(message))
+
                     const setBlockInfo = response => {
                         message.displays = response.data.displayList?.sort((a, b) => (a.order - b.order))
+                        console.log("response:"+JSON.stringify(message.displays))
+
                         message.buttonGroups = (() => {
                             return response.data.buttonList?.sort((a, b) => (a.order - b.order)).reduce((list, e) => {
                                 if (e.action === 'api') list.push(e)
