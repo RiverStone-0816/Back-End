@@ -495,6 +495,37 @@
                                                             <div class="card-title">{{ e.data.title }}</div>
                                                             <div class="card-text" style="white-space: pre-wrap">{{ e.data.announcement }}</div>
                                                         </div>
+                                                        <div v-if="e.data && e.type === 'input'" class="card-list" style="border-radius: .5rem; border-color: black">
+                                                            <div class="card-list">
+                                                                <ul class="card-list-ul">
+                                                                    <div align="left" class="label" style="padding: 0.7em 1em; border-bottom: 1px solid #dcdcdc;">{{ e.data.title }}</div>
+                                                                    <li v-for="(param, k) in getListElements(e.data)" class="item form">
+                                                                        <div align="left" class="label">{{ param.displayName }}</div>
+                                                                        <div v-if="param.inputType !== 'time'" class="ui fluid input">
+                                                                            <input :type="(param.input_type === 'calendar' && 'date') || (param.input_type === 'number' && 'number') || (param.input_type === 'secret' && 'password') || (param.input_type === 'text' && 'text')"
+                                                                                   style="border-color: #0c0c0c; border-radius: .5rem;"></div>
+                                                                        <div v-else class="ui multi form">
+                                                                            <select class="slt" style="border-color: #0c0c0c">
+                                                                                <option>오전</option>
+                                                                                <option>오후</option>
+                                                                            </select>
+                                                                            <select class="slt" style="border-color: #0c0c0c">
+                                                                                <option v-for="hour in 12" :key="hour"
+                                                                                        :value="hour - 1">{{ hour - 1 }}
+                                                                                </option>
+                                                                            </select>
+                                                                            <span class="unit" style="font-weight: 900; color: black">시</span>
+                                                                            <select class="slt" style="border-color: #0c0c0c">
+                                                                                <option v-for="minute in 60" :key="minute"
+                                                                                        :value="minute - 1">{{ minute - 1 }}
+                                                                                </option>
+                                                                            </select>
+                                                                            <span class="unit" style="font-weight: 900; color: black">분</span>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
                                                         <div v-if="e.data && e.type === 'list'" class="card-list">
                                                             <div class="card-list-title">
                                                                 <a v-if="e.data.titleUrl" :href="e.data.titleUrl" target="_blank">{{ e.data.title }}</a>
@@ -1359,6 +1390,9 @@
                                 else list[list.length - 1].push(e)
                                 return list
                             }, [])
+                        },
+                        getListElements(display) {
+                            return JSON.parse(JSON.stringify(display)).params?.sort((a, b) => (a.order - b.order)).splice(1)
                         },
                     },
                 }).mount('#block-preview')

@@ -517,7 +517,7 @@
                                                     <div v-if="display.type === 'input'" class="card-list" style="border-radius: .5rem; border-color: black">
                                                         <div class="card-list">
                                                             <ul class="card-list-ul">
-                                                                <div align="left" class="label" style="padding: 0.7em 1em; border-bottom: 1px solid #dcdcdc;">회원조회를 위해 정보를 입력 해 주세요.</div>
+                                                                <div align="left" class="label" style="padding: 0.7em 1em; border-bottom: 1px solid #dcdcdc;">{{ display.elementList[0]?.title }}</div>
                                                                 <li v-for="(param, k) in getListElements(display)"
                                                                     class="item form">
                                                                     <div align="left" class="label">{{ param.displayName }}</div>

@@ -90,7 +90,7 @@
                   <div class="flex flex-row">
                     <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xs">
                       <div>
-                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ makeApiResultMessage(message.data.next_api_result_tpl, message.data.api_result_body) }}</p>
+                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ makeApiResultMessage(message.data) }}</p>
                       </div>
                     </div>
                     <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
@@ -389,32 +389,38 @@ export default {
     getInputElements(display) {
       return JSON.parse(JSON.stringify(display)).element?.sort((a, b) => (a.sequence - b.sequence)).splice(1)
     },
-    makeApiResultMessage(next_api_result_tpl, api_result_body) {
-      const KEYWORD_CHAR = '$'
-      let result = ''
+    makeApiResultMessage(data) {
+      if (!data.api_result_error_ment) {
+        const next_api_result_tpl = data.next_api_result_tpl
+        const api_result_body = data.api_result_body
+        const KEYWORD_CHAR = '$'
+        let result = ''
 
-      for (let position = 0; ;) {
-        const indexKeywordChar = next_api_result_tpl.indexOf(KEYWORD_CHAR, position)
-        if (indexKeywordChar < 0) {
-          result += next_api_result_tpl.substr(position)
-          break
-        }
-        const indexSpace = next_api_result_tpl.regexIndexOf(/\s/, indexKeywordChar)
-        if (indexKeywordChar + 1 !== indexSpace) {
-          result += next_api_result_tpl.substr(position, indexKeywordChar - position)
-          const keyword = next_api_result_tpl.substr(indexKeywordChar + 1, indexSpace - indexKeywordChar - 1)
-          if (api_result_body[keyword] !== undefined) {
-            result += api_result_body[keyword]
-          } else {
-            result += KEYWORD_CHAR + keyword
+        for (let position = 0; ;) {
+          const indexKeywordChar = next_api_result_tpl.indexOf(KEYWORD_CHAR, position)
+          if (indexKeywordChar < 0) {
+            result += next_api_result_tpl.substr(position)
+            break
           }
-        } else {
-          result += KEYWORD_CHAR
+          const indexSpace = next_api_result_tpl.regexIndexOf(/\s/, indexKeywordChar)
+          if (indexKeywordChar + 1 !== indexSpace) {
+            result += next_api_result_tpl.substr(position, indexKeywordChar - position)
+            const keyword = next_api_result_tpl.substr(indexKeywordChar + 1, indexSpace - indexKeywordChar - 1)
+            if (api_result_body[keyword] !== undefined) {
+              result += api_result_body[keyword]
+            } else {
+              result += KEYWORD_CHAR + keyword
+            }
+          } else {
+            result += KEYWORD_CHAR
+          }
+          position = indexSpace
         }
-        position = indexSpace
-      }
 
-      return result
+        return result
+      } else {
+        return data.api_result_error_ment
+      }
     },
     sendText() {
       if (!this.input) return
