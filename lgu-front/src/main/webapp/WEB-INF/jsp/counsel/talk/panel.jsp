@@ -450,7 +450,7 @@
                     <div class="os-padding">
                         <div ref="chatBody" @scroll="loadAdditionalMessagesIfTop"
                              class="os-viewport os-viewport-native-scrollbars-invisible"
-                             style="overflow-y: scroll; scroll-behavior: smooth;">
+                             style="overflow-y: scroll; scroll-behavior: smooth;" @click.stop.prevent="showingTemplateBlocks=false">
                             <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + i">
 
                                 <div v-if="'SB' === e.sendReceive || e.messageType === 'block_temp'" class="chat-item"
@@ -693,7 +693,7 @@
                     </div>
                 </div>
             </div>
-            <div class="write-chat" @drop.stop="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true">
+            <div class="write-chat" @drop.stop="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true" @click.stop.prevent="showingTemplateBlocks=false">
                 <div class="write-menu">
                     <div v-if="showingTemplateBlocks" class="template-container template-block-container" style="min-width: 80%;">
                         <div class="template-container-inner" >
