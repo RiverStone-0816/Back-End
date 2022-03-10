@@ -104,13 +104,8 @@
                           {{ e2.btn_name }}
                         </button>
                       </span>
-                      <span v-else>
-                        <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop.prevent="actApi(message, e, $event)">
-                          {{ e.btn_name }}
-                        </button>
-                      </span>
                     </div>
-                    <div v-if="i + 1 === getButtonGroups(message).length" class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
+                    <div v-if="i === getButtonGroups(message).length" class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
                   </div>
                 </div>
               </template>
@@ -429,7 +424,7 @@ export default {
       this.input = ''
     },
     homeAction() {
-      this.communicator.sendText(this.botId, "처음으로", this.lastReceiveMessageType)
+      this.communicator.requestRootBlock(this.botId)
     },
     actFallback(message) {
       if (message.data.fallback_action === 'first') {
