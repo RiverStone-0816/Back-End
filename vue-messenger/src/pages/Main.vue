@@ -197,20 +197,20 @@
                       <div v-for="(e2, j) in getInputElements(e)" :key="j" class="p-2 pl-3 font-bold">
                         <p>{{ e2.input_display_name }}</p>
                         <div v-if="e2.input_type !== 'time'" class="relative w-full pt-2">
-                          <input class="flex w-full border rounded-lg focus:outline-none focus:border-indigo-300 h-10 pl-2 pr-2"
+                          <input class="flex w-full border rounded-lg focus:outline-none focus:border-indigo-300 h-8 pl-2 pr-2"
                                  :type="(e2.input_type === 'calendar' && 'date') || (e2.input_type === 'number' && 'number') || (e2.input_type === 'secret' && 'password') || (e2.input_type === 'text' && 'text')"
                                  :name="e2.input_param_name">
                         </div>
                         <div v-else class="ui multi form">
-                          <select :name="e2.input_param_name + '.meridiem'" class="slt">
+                          <select :name="e2.input_param_name + '.meridiem'" class="slt rounded-lg h-10">
                             <option value="am">오전</option>
                             <option value="pm">오후</option>
                           </select>
-                          <select :name="e2.input_param_name + '.hour'" class="slt">
+                          <select :name="e2.input_param_name + '.hour'" class="slt rounded-lg h-10">
                             <option v-for="hour in 12" :key="hour" :value="hour - 1">{{ hour - 1 }}</option>
                           </select>
                           <span class="unit">시</span>
-                          <select :name="e2.input_param_name + '.minute'" class="slt">
+                          <select :name="e2.input_param_name + '.minute'" class="slt rounded-lg h-10">
                             <option v-for="minute in 60" :key="minute" :value="minute - 1">{{ minute - 1 }}</option>
                           </select>
                           <span class="unit">분</span>
