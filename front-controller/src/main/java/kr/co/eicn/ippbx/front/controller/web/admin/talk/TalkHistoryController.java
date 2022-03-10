@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.talk;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
+import kr.co.eicn.ippbx.front.controller.api.chatbot.ChatbotApiController;
 import kr.co.eicn.ippbx.front.controller.api.user.user.UserApiController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.util.ResultFailException;
@@ -21,6 +22,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -47,6 +49,11 @@ public class TalkHistoryController extends BaseController {
     private TalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
     @Autowired
     private UserApiController userApiController;
+    @Autowired
+    private ChatbotApiController chatbotApiController;
+
+    @Value("${eicn.talk.socket.id}")
+    private String talkSocketId;
 
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") TalkRoomSearchRequest search) throws IOException, ResultFailException {
@@ -96,7 +103,11 @@ public class TalkHistoryController extends BaseController {
         final TalkRoomResponse entity = apiInterface.get(roomId);
         model.addAttribute("entity", entity);
 
-        final List<TalkMsgResponse> messageHistory = apiInterface.messageHistory(roomId);
+        final List<TalkMsgResponse> messageHistory = apiInterface.messageHistory(roomId).stream().map(e -> {
+            if (e.getSendReceive().equals("SB") && e.getType().equals("block")) e.setBlockInfo(chatbotApiController.getByBlockId(Integer.parseInt(e.getContent().split(":")[2])));
+            if (e.getSendReceive().equals("S") && e.getType().equals("block")) e.setBlockInfo(chatbotApiController.getByBlockId(Integer.parseInt(e.getContent())));
+            return e;
+        }).collect(Collectors.toList());
         messageHistory.sort(Comparator.comparingInt(TalkMsgResponse::getSeq));
         model.addAttribute("messageHistory", messageHistory);
 

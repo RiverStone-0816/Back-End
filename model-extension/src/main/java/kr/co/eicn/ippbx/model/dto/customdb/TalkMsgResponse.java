@@ -1,5 +1,7 @@
 package kr.co.eicn.ippbx.model.dto.customdb;
 
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import lombok.Data;
 
 @Data
@@ -17,4 +19,5 @@ public class TalkMsgResponse {
      */
     private String type;
     private String content;     //내용
+    private WebchatBotInfoResponse.BlockInfo blockInfo;
 }
