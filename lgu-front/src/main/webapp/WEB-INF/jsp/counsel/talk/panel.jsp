@@ -453,13 +453,13 @@
                              style="overflow-y: scroll; scroll-behavior: smooth;" @click.stop.prevent="showingTemplateBlocks=false">
                             <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + i">
 
-                                <div v-if="'SB' === e.sendReceive || e.messageType === 'block_temp'" class="chat-item"
-                                     :class="e.messageType === 'block_temp' && ' chat-me '">
+                                <div v-if="'SB' === e.sendReceive || e.messageType === 'block'" class="chat-item"
+                                     :class="e.messageType === 'block' && ' chat-me '">
                                     <div v-if="blocks!=null" class="profile-img">
                                         <img :src="getImage(roomId)">
                                     </div>
                                     <div class="wrap-content">
-                                        <div v-if="blocks!=null" class="txt-time">[{{ e.messageType === 'block_temp' ?
+                                        <div v-if="blocks!=null" class="txt-time">[{{ e.messageType === 'block' ?
                                             (e.username || e.userId) : customName }}] {{ getTimeFormat(e.time) }}
                                         </div>
                                         <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
@@ -589,7 +589,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info' && e.messageType !== 'block_temp'"
+                                <div v-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info' && e.messageType !== 'block'"
                                      class="chat-item"
                                      :class="['AF', 'S'].includes(e.sendReceive)<%-- && e.userId === ME--%> && 'chat-me'">
                                     <div class="profile-img">
@@ -680,8 +680,8 @@
                                 </p>
                                 <p v-if="['SE', 'RE', 'AE', 'E'].includes(e.sendReceive) && e.contents"
                                    class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
-                                <div v-if=" e.messageType === 'block_temp'"
-                                     :class="e.messageType === 'block_temp' && ' chat-me '">
+                                <div v-if=" e.messageType === 'block'"
+                                     :class="e.messageType === 'block' && ' chat-me '">
                                     <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
                                         <p class="info-msg">
                                             <text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>
@@ -958,7 +958,7 @@
                         if (isImage(message.contents)) message.messageType = 'photo'
                     }
 
-                    if (message.messageType === 'block_temp') {
+                    if (message.messageType === 'block') {
                         const block = this.templateBlocks.filter(e => e.blockId === parseInt(message.contents))[0]
                         block && restSelf.get('/api/chatbot/blocks/' + block.blockId, null, null, true).done(setBlockInfo)
                     } else if (message.messageType === 'image_temp') {
