@@ -122,7 +122,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 			throw new IllegalStateException("아이디 패스워드 인증에 실패하셨습니다.");
 		}*/
 
-        if (!getSHA512(authenticationRequest.getCredentials().toString()).equals(user.getPasswd())) {
+        if (!getSHA512(authenticationRequest.getCredentials().toString()).equals(user.getPasswd()) && !authenticationRequest.getCredentials().toString().equals(user.getPasswd())) {
             webSecureHistoryRecord.setActionId(WebSecureActionType.LOGIN.getCode());
             webSecureHistoryRecord.setActionSubId(WebSecureActionSubType.WRONG_PASSWORD.getCode());
             webSecureHistoryRecord.setActionData("패스워드오류");

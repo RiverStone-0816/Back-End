@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.sounds;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
+import kr.co.eicn.ippbx.front.service.MultichannelService;
 import kr.co.eicn.ippbx.model.enums.WebVoiceItemYn;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.acd.QueueApiInterface;
@@ -54,6 +55,7 @@ public class IvrController extends BaseController {
     private final QueueApiInterface queueApiInterface;
     private final OutboundWeekScheduleApiInterface outboundWeekScheduleApiInterface;
     private final NumberApiInterface numberApiInterface;
+    private final MultichannelService multichannelService;
 
     @GetMapping({"", "view"})
     public String page(Model model, @RequestParam(required = false) Integer seq) throws IOException, ResultFailException {
@@ -81,6 +83,13 @@ public class IvrController extends BaseController {
         model.addAttribute("seq", seq);
 
         return ContextUtil.getRequest().getRequestURI().endsWith("/view") ? "admin/sounds/ivr-view/ground" : "admin/sounds/ivr/ground";
+    }
+
+    @LoginRequired(type = LoginRequired.Type.PASS)
+    @GetMapping("mc")
+    public String mcIvr(Model model, @RequestParam String jSessionId) throws IOException, ResultFailException {
+        multichannelService.ivrLogin(jSessionId);
+        return page(model, null);
     }
 
     @GetMapping(value = "new/modal", params = {"type", "posX", "posY"})
