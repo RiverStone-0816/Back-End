@@ -93,7 +93,11 @@ public class TalkRoomApiController extends ApiBaseController {
             throw new IllegalArgumentException(message.getText("messages.validator.blank", "방상태"));
 
         TalkRoomEntity roomEntity;
-        if (RoomStatus.PROCESS.getCode().equals(roomStatus) || RoomStatus.STOP.getCode().equals(roomStatus))
+        if (RoomStatus.PROCESS.getCode().equals(roomStatus)
+                || RoomStatus.STOP.getCode().equals(roomStatus)
+                || RoomStatus.PROCESS_OR_STOP.getCode().equals(roomStatus)
+                || RoomStatus.BOT_PLAY.getCode().equals(roomStatus)
+                || RoomStatus.SERVICE_BY_GROUP_CONNECT.getCode().equals(roomStatus))
             roomEntity = currentTalkRoomRepository.findOneIfNullThrow(seq);
         else if (RoomStatus.DOWN.getCode().equals(roomStatus))
             roomEntity = talkRoomService.getRepository().findOneIfNullThrow(seq);
