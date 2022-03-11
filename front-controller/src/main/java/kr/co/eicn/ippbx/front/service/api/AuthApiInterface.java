@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.front.service.api;
 
 import kr.co.eicn.ippbx.front.model.ArsAuthInfo;
 import kr.co.eicn.ippbx.front.model.form.LoginForm;
+import kr.co.eicn.ippbx.model.dto.eicn.PersonListSummary;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SipBuddies;
 import org.slf4j.Logger;
@@ -17,6 +18,11 @@ public class AuthApiInterface extends ApiServerInterface {
 
     public void login(LoginForm form) throws IOException, ResultFailException {
         final String accessToken = getData(HttpMethod.POST, "/auth/authenticate", form, String.class, false).getData();
+        setAccessToken(accessToken);
+    }
+
+    public void login(PersonListSummary user) throws IOException, ResultFailException {
+        final String accessToken = getData(HttpMethod.POST, "/auth/ivr-only", user, String.class, false).getData();
         setAccessToken(accessToken);
     }
 

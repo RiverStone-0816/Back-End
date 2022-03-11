@@ -735,7 +735,7 @@
                                 posX: block ? editor.getNodeFromId(block.nodeId).pos_x : 0,
                                 posY: block ? editor.getNodeFromId(block.nodeId).pos_y : 0,
                                 name: block?.name,
-                                keyword: block?.keywords.length === 0 ? '' : block?.keywords.reduce((a, b) => (a + '|' + b)),
+                                keyword: block?.keywords.length === 0 ? '' : block?.keywords.reduce((a, b) => (a + b + '|'), '|'),
                                 isTemplateEnable: block?.isTemplateEnable,
                                 displayList: block?.displays.map((e, i) => ({
                                     order: i,

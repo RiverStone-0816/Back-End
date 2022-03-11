@@ -21,6 +21,6 @@ public @interface LoginRequired {
     String mainPage() default "/";
 
     enum Type {
-        API, PAGE, POPUP
+        API, PAGE, POPUP, PASS
     }
 }

@@ -20,6 +20,7 @@ import sessionUtils from '../utillities/sessionUtils'
 import store from '../store/index'
 import modalOpener from "../utillities/mixins/modalOpener"
 
+
 export default {
   mixins: [modalOpener],
   data() {
@@ -29,7 +30,9 @@ export default {
       form: {
         // url: 'http://122.49.74.102:8200',
         url: 'https://cloudtalk.eicn.co.kr:8200',
-        senderKey: '049d87baa539f95a3ad40bf96e1f4bf8ac1031cd',
+        senderKey: null,
+        //senderKey: '049d87baa539f95a3ad40bf96e1f4bf8ac1031cd',
+        // senderKey: 'b63867b715be9433b29025ddf747238c5e3f75d1',
         userKey: sessionUtils.getSessionId(),
         ip: '',
         // mode: 'local',
@@ -49,6 +52,8 @@ export default {
     },
   },
   async created() {
+    const UrlParams = new URLSearchParams(location.search)
+    this.form.senderKey = UrlParams.get('senderKey')
     this.form.ip = (await axios.get('https://api.ipify.org')).data
     if (this.opened) this.openChat(this.form.url, this.form.senderKey, this.form.userKey, this.form.ip, this.form.mode,)
   }
