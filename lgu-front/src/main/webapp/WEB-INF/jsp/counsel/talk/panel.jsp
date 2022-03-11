@@ -1349,7 +1349,7 @@
                     talkRoom.isMessage = true
                 }
                 talkListContainer.updateRoomStatus(data.room_id, 'END', data.type, data.content, messageTime)
-            } else if (['D'].includes(data.send_receive)){
+            } else if (['SD'].includes(data.send_receive)){
                 talkListContainer.load()
                 talkRoom.clearRoom()
             } else {
