@@ -578,6 +578,7 @@ export default {
           this.messages.push({sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type, company: data.company_id})
         })
         .on('webchatsvc_start', data => {
+          if (data.result_data === 'NO_CHANNEL') return store.commit('alert/show', '채널키가 없음.')
           if (data.result !== 'OK') return store.commit('alert/show', `로그인실패 : ${data.result}; ${data.result_data}`)
           this.communicator.requestIntro()
         })
