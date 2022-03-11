@@ -75,12 +75,19 @@
 
               <template v-if="message.sender === 'SERVER' && message.messageType === 'fallback'">
                 <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row">
-                    <div class="relative text-sm bg-white py-2 px-3 pb-0 shadow rounded-lg w-full max-w-xs">
-                      <button class="bg-blue-600 hover:bg-blue-700 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop.prevent="actFallback(message)">
-                        {{ message.data.fallback_ment }}
-                      </button>
+                  <div class="flex flex-row items-center">
+                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
+                      <div>
+                        <p>{{ message.data.fallback_ment }}</p>
+                      </div>
                     </div>
+                  </div>
+                </div>
+                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
+                  <div class="flex flex-row">
+                    <button class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop.prevent="actFallback(message)">
+                      {{ getFallbackButtonName(message.data.fallback_action) }}
+                    </button>
                   </div>
                 </div>
               </template>
@@ -359,7 +366,7 @@ export default {
       lastReceiveMessageType: null,
       input: '',
       homeEnable: true,
-      messages: []
+      messages: [],
     }
   },
   methods: {
@@ -425,6 +432,21 @@ export default {
     },
     homeAction() {
       this.communicator.requestRootBlock(this.botId)
+    },
+    getFallbackButtonName(action){
+      if (action === 'first') {
+        return "처음으로"
+      } else if (action === 'url') {
+        return "홈페이지 보기"
+      } else if (action === 'member') {
+        return "고객센터 연결"
+      } else if (action === 'block') {
+        return "이전으로"
+      } else if (action === 'phone') {
+        return "전화하기"
+      } else {
+        store.commit('alert/show', `미처리된 부분이 있음: ${action}`)
+      }
     },
     actFallback(message) {
       if (message.data.fallback_action === 'first') {
