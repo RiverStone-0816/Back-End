@@ -8,6 +8,7 @@ public class PersonListSummary {
     private String idName;              //사용자 이름
     private String extension;           //내선번호
     private String peer;                //개인번호
+    private String companyId;
     /**
      * @see kr.co.eicn.ippbx.model.enums.PersonPausedStatus
      * */

@@ -24,7 +24,7 @@ public class LoginRequireInterceptor extends AnnotationHandlerInterceptorAdapter
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, HandlerMethod handler, LoginRequired annotation) throws Exception {
         final PersonDetailResponse user = g.getUser();
-        if (user == null || !g.checkLogin())
+        if ((user == null || !g.checkLogin()) && !annotation.type().equals(LoginRequired.Type.PASS))
             return processFail(request, response, annotation);
 
         return true;
