@@ -445,7 +445,7 @@ export default {
       } else if (action === 'phone') {
         return "전화하기"
       } else {
-        store.commit('alert/show', `미처리된 부분이 있음: ${action}`)
+        return "설정된 키워드가 없습니다."
       }
     },
     actFallback(message) {
