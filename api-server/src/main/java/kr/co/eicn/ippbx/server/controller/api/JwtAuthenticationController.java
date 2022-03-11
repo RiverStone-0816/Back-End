@@ -74,7 +74,7 @@ public class JwtAuthenticationController extends ApiBaseController {
 		loginRequest.setId(user.getId());
 		loginRequest.setExtension(user.getExtension());
 		loginRequest.setPassword(user.getPasswd());
-		loginRequest.setCompany(user.getCompanyId());
+		loginRequest.setCompany(data.getCompanyId());
 
 		final Authentication authenticate = authenticationManagerBuilder.getObject().authenticate(new CompanyIdUsernamePasswordAuthenticationToken(loginRequest, session.getId()));
 
