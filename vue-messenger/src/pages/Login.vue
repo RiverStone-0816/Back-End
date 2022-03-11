@@ -30,6 +30,7 @@ export default {
         // url: 'http://122.49.74.102:8200',
         url: 'https://cloudtalk.eicn.co.kr:8200',
         senderKey: '049d87baa539f95a3ad40bf96e1f4bf8ac1031cd',
+        // senderKey: 'b63867b715be9433b29025ddf747238c5e3f75d1',
         userKey: sessionUtils.getSessionId(),
         ip: '',
         // mode: 'local',
