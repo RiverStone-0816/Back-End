@@ -337,18 +337,18 @@
         </div>
     </div>
 
-    <div class="ui modal tiny" id="modal-consulting-history-talk-view">
+    <div class="ui modal tiny" id="modal-consulting-history-talk-view" style="height: 750px;">
         <i class="close icon"></i>
         <div class="header">
             상담톡대화방메시지
         </div>
-        <div class="scrolling content rows">
+        <div class="scrolling content rows" style="height: 690px;">
             <div class="chat-container">
-                <div class="room">
+                <div class="room" style=" height:640px;">
                     <div class="chat-header">
                         [타상담]-대화방TVbHHGl8Y3Wx
                     </div>
-                    <div class="chat-body">
+                    <div class="chat-body" style="height: 605px;">
                         <div class="chat-item chat-me">
                             <div class="wrap-content">
                                 <div class="txt-time">[김옥중] 2019-07-18 17:56:17</div>

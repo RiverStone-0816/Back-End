@@ -49,7 +49,6 @@
                                         <i class="search icon"></i>
                                     </button>
                                 </div>
-
                             </div>
                             <div class="three wide field">
                                 <select v-model="statuses[e.status].filter.ordering" @change="changeOrdering(e.status)">
@@ -65,17 +64,24 @@
                             @click="openRoom(room.roomId, room.userName)">
                             <div v-if="room.showing" class="ui segment"
                                  :class="activatedRoomIds.includes(room.roomId) && 'active'">
-                                <div class="ui top left attached label small" style="width:47%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; background-color:#616b77; color: white;">
+                                <div class="ui top left attached label small" style="width:65%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; background-color:#616b77; color: white;">
+                                    <table>
+                                        <thead>
+                                        <th>
                                     <img v-if="room.channelType === 'kakao'"
-                                         src="<c:url value="/resources/images/kakao-icon.png"/>">
+                                         src="<c:url value="/resources/images/kakao-icon.png"/>" style="padding-right: 3%; height: 15px; position: absolute;">
                                     <img v-if="room.channelType === 'eicn'"
-                                         src="<c:url value="/resources/images/chatbot-icon.svg"/>">
+                                         src="<c:url value="/resources/images/chatbot-icon.svg"/>" style="padding-right: 3%; height: 15px; position: absolute;">
                                     <img v-if="room.channelType === 'naverline'"
-                                         src="<c:url value="/resources/images/line-icon.png"/>">
+                                         src="<c:url value="/resources/images/line-icon.png"/>" style="padding-right: 3%; height: 15px; position: absolute;">
                                     <img v-if="room.channelType === 'navertt'"
-                                         src="<c:url value="/resources/images/ntalk-icon.png"/>">
-                                    서비스 : {{ room.svcName }} || 상담원 : {{ room.userName }}
-
+                                         src="<c:url value="/resources/images/ntalk-icon.png"/>" style="padding-right: 3%; height: 15px; position: absolute;">
+                                        </th>
+                                    <th style="padding-left: 20px; width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display: inline-block; font-weight: normal;">서비스 : {{ room.svcName }} </th>
+                                    <th style="padding-right: 10px; display: inline-block;">/</th>
+                                    <th style="width:130px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; display: inline-block; font-weight: normal;"> 상담원 : {{ room.userName }}</th>
+                                        </thead>
+                                    </table>
                                 </div>
                                 <div class="ui top right attached label small time">
                                     {{ timestampFormat(room.roomLastTime) }}
