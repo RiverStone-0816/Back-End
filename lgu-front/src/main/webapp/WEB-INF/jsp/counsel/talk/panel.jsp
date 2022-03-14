@@ -776,9 +776,12 @@
                         <button v-else-if="!userId" class="mini ui button compact"
                                 @click.stop="assignUnassignedRoomToMe">찜하기
                         </button>
-                        <button v-else-if="userId !== ME" class="mini ui button compact"
-                                @click.stop="assignAssignedRoomToMe">가져오기
-                        </button>
+                        <div v-else-if="userId !== ME">
+                            <button class="mini ui button compact" @click.stop="interruptingRoom" :style="'margin-right: 5px'">끼어들기
+                            </button>
+                            <button class="mini ui button compact" @click.stop="assignAssignedRoomToMe">가져오기
+                            </button>
+                        </div>
                         <button v-else class="mini ui button compact" @click.stop="finishCounsel">대화방종료</button>
                     </div>
                 </div>
@@ -1257,6 +1260,9 @@
                 assignAssignedRoomToMe: function () {
                     talkCommunicator.assignAssignedRoomToMe(this.roomId, this.channelType, this.senderKey, this.userKey)
                     this.userId = '${g.user.id}'
+                    this.isMessage = false
+                },
+                interruptingRoom: function () {
                     this.isMessage = false
                 },
                 finishCounsel: function () {
