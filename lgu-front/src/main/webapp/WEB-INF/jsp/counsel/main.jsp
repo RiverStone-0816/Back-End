@@ -51,15 +51,15 @@
                 </div>
             </div>
         </div>
-        <div class="ui tab active" data-tab="consulting-screen">
-            <div class="ui grid">
-                <div class="nine wide column">
+        <div class="ui tab active" id="consulting-screen" data-tab="consulting-screen">
+            <div class="ui grid consulting-panel">
+                <div class="nine wide column" style="height: 100%">
                     <jsp:include page="/counsel/call/"/>
                     <c:if test="${user.isTalk.equals('Y')}">
                         <jsp:include page="/counsel/talk/"/>
                     </c:if>
 
-                    <div id="etc-panel" class="mt10" style="position: relative;">
+                    <div id="etc-panel" class="mt10" style="position: absolute; bottom: 0; width: 97%;">
                         <div>
                             <div class="ui top attached tabular menu">
                                 <a class="item active" data-tab="todo-list" style="border-top-width: 1px; border-color: #D4D4D5; border-radius: 0.28571429rem 0.28571429rem 0px 0px; max-width: 11%;">To-do</a>
@@ -92,14 +92,14 @@
                         </button>
                     </div>
                 </div>
-                <div class="seven wide column">
+                <div class="seven wide column" style="height: 100%">
                     <div id="call-custom-input-panel">
                         <div id="call-custom-input"></div>
                     </div>
                     <div id="call-counseling-input-panel">
                         <div id="call-counseling-input"></div>
                     </div>
-                    <div id="talk-custom-input-panel" style="display: none">
+                    <div id="talk-custom-input-panel" style="display: none;">
                         <div id="talk-custom-input"></div>
                     </div>
                     <div id="talk-counseling-input-panel" style="display: none">
@@ -221,6 +221,8 @@
             $('#call-panel').addClass('active');
             $('#call-custom-input-panel,#call-counseling-input-panel').show();
             $('#talk-custom-input-panel,#talk-counseling-input-panel').hide();
+            $('#etc-panel').parent().removeClass("ten wide column").addClass("nine wide column");
+            $('#talk-custom-input-panel').parent().removeClass("six wide column").addClass("seven wide column");
 
             $('#etc-panel-resizer').hide();
             callExpandEtcPanel();
@@ -231,6 +233,8 @@
             $('#talk-panel').addClass('active');
             $('#call-custom-input-panel,#call-counseling-input-panel').hide();
             $('#talk-custom-input-panel,#talk-counseling-input-panel').show();
+            $('#etc-panel').parent().removeClass("nine wide column").addClass("ten wide column");
+            $('#talk-custom-input-panel').parent().removeClass("seven wide column").addClass("six wide column");
 
             $('#etc-panel-resizer').show();
             reduceEtcPanel();

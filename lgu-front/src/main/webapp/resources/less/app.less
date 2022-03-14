@@ -301,7 +301,22 @@ pre {
     display: none;
   }
   .consulting-main {
+    height: 100%;
     .flex();
+    #consulting-screen {
+      .consulting-panel {
+        height: 100%;
+        #call-custom-input-panel, #talk-custom-input-panel {
+          height: 40%;
+        }
+        #call-counseling-input-panel, #talk-counseling-input-panel {
+          height: 60%;
+          #call-counseling-input, #talk-counseling-input {
+            height: 100%;
+          }
+        }
+      }
+    }
   }
   .tab-content {
     display: none;
@@ -3357,11 +3372,11 @@ g {
   position: absolute; right: 5px; top: 5px; background: rgba(100, 100, 100, 0.1); border: none; cursor: pointer;
   i {vertical-align: middle;}
 }
-#etc-panel.reduce-panel .segment {height: 0px;}
+#etc-panel.reduce-panel .segment {height: 5em;}
 
-#talk-panel.reduce-panel .talk-list-container .talk-list-wrap {min-height: 388px; height: 399px;}
-#talk-panel.reduce-panel .chat-container .room .chat-body {height: 338px;}
-#etc-panel.expand-panel .segment {height: 216px; margin:0;}
+#talk-panel.reduce-panel .talk-list-container {margin-bottom:3em; .talk-list-wrap {min-height: 388px; height: 399px;} }
+#talk-panel.reduce-panel .chat-container {margin-bottom: 3em; .room .chat-body {height: 338px;} }
+#etc-panel.expand-panel {.segment {height: 216px; margin:0;} bottom: 0;}
 
 .calendar.user-schedule-modal .view-container table td {height: 80px;}
 
