@@ -43,7 +43,7 @@
                     <div class="right menu" style="padding: 0">
                         <div class="item ui slider checkbox" id="isDistributee">
                             <%--TODO: 초기값 세팅 필요 --%>
-                            <input type="checkbox" id="distributee" tabindex="0" class="hidden"><label>분배/제외</label>
+                            <input type="checkbox" id="distributee" tabindex="0" class="hidden"><label>톡상담 분배/제외</label>
                         </div>
                         <a class="item" onclick="popupCounselDisplayConfiguration()"><i class="cog icon"></i>메뉴관리</a>
                         <a class="item" onclick="popupBookmarkConfiguration()"><i class="cog icon"></i>즐겨찾기설정</a>
