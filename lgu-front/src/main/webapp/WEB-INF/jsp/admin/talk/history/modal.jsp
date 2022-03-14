@@ -63,89 +63,61 @@
                                             <c:when test="${ e.type == 'block' && e.blockInfo.displayList.get(0).type=='INPUT'}">
                                                 <div class="chat bot">
                                                     <div class="bubble">
-                                                    <div class="card">
-                                                        <div class="card-list" style="border-radius: .5rem; border-color: black">
-                                                            <ul class="card-list-ul">
-                                                                <div class="label" align="left"
-                                                                     style="padding: 0.7em 1em; border-bottom: 1px solid #dcdcdc;">${e.blockInfo.displayList.get(0).elementList.get(0).title}</div>
-                                                                <c:forEach var="k"
-                                                                           items="${e.blockInfo.displayList.get(0).elementList}">
+                                                        <div class="card">
+                                                            <div class="card-list"
+                                                                 style="border-radius: .5rem; border-color: black">
+                                                                <ul class="card-list-ul">
+                                                                    <div class="label" align="left"
+                                                                         style="padding: 0.7em 1em; border-bottom: 1px solid #dcdcdc;">${e.blockInfo.displayList.get(0).elementList.get(0).title}</div>
+                                                                    <c:forEach var="k"
+                                                                               items="${e.blockInfo.displayList.get(0).elementList}">
 
                                                                         <c:choose>
                                                                             <c:when test="${k.inputType.code=='time'}">
                                                                                 <li class="item form">
-                                                                                <div align="left" class="label">
-                                                                                        ${k.displayName}
-                                                                                </div>
-                                                                                <div class="ui multi form">
-                                                                                    <select class="slt"
-                                                                                            style="border-color: #0c0c0c">
-                                                                                        <option>오전</option>
-                                                                                        <option>오후</option>
-                                                                                    </select>
-                                                                                    <select class="slt"
-                                                                                            style="border-color: #0c0c0c">
-                                                                                        <option>0
-                                                                                        </option>
-                                                                                    </select>
-                                                                                    <span class="unit"
-                                                                                          style="font-weight: 900; color: black">시</span>
-                                                                                    <select class="slt"
-                                                                                            style="border-color: #0c0c0c">
-                                                                                        <option>0
-                                                                                        </option>
-                                                                                    </select>
-                                                                                    <span class="unit"
-                                                                                          style="font-weight: 900; color: black">분</span>
-                                                                                </div>
+                                                                                    <div align="left" class="label">
+                                                                                            ${k.displayName}
+                                                                                    </div>
+                                                                                    <div class="ui multi form">
+                                                                                        <select class="slt"
+                                                                                                style="border-color: #0c0c0c">
+                                                                                            <option>오전</option>
+                                                                                            <option>오후</option>
+                                                                                        </select>
+                                                                                        <select class="slt"
+                                                                                                style="border-color: #0c0c0c">
+                                                                                            <option>0
+                                                                                            </option>
+                                                                                        </select>
+                                                                                        <span class="unit"
+                                                                                              style="font-weight: 900; color: black">시</span>
+                                                                                        <select class="slt"
+                                                                                                style="border-color: #0c0c0c">
+                                                                                            <option>0
+                                                                                            </option>
+                                                                                        </select>
+                                                                                        <span class="unit"
+                                                                                              style="font-weight: 900; color: black">분</span>
+                                                                                    </div>
                                                                                 </li>
                                                                             </c:when>
                                                                             <c:when test="${k.inputType.code=='text' || k.inputType.code=='number' || k.inputType.code=='calendar' || k.inputType.code=='date' ||
                                                                             k.inputType.code=='secret' && k.inputType != null}">
-                                                                <li class="item form">
-                                                                    <div align="left" class="label">
-                                                                            ${k.displayName}
-                                                                    </div>
-                                                                                <div class="ui fluid input">
-                                                                                <input style="border-color: #0c0c0c; border-radius: .5rem;">
-                                                                            </div>
-                                                                </li>
+                                                                                <li class="item form">
+                                                                                    <div align="left" class="label">
+                                                                                            ${k.displayName}
+                                                                                    </div>
+                                                                                    <div class="ui fluid input">
+                                                                                        <input style="border-color: #0c0c0c; border-radius: .5rem;">
+                                                                                    </div>
+                                                                                </li>
                                                                             </c:when>
-                                                                         <%--   <c:when test="${k.inputType=='time'}">
-                                                                                <div class="ui multi form">
-                                                                                    <select class="slt"
-                                                                                            style="border-color: #0c0c0c">
-                                                                                        <option>오전</option>
-                                                                                        <option>오후</option>
-                                                                                    </select>
-                                                                                    <select class="slt"
-                                                                                            style="border-color: #0c0c0c">
-                                                                                        <option v-for="hour in 12"
-                                                                                                :key="hour"
-                                                                                                :value="hour - 1">{{
-                                                                                            hour - 1 }}
-                                                                                        </option>
-                                                                                    </select>
-                                                                                    <span class="unit"
-                                                                                          style="font-weight: 900; color: black">시</span>
-                                                                                    <select class="slt"
-                                                                                            style="border-color: #0c0c0c">
-                                                                                        <option v-for="minute in 60"
-                                                                                                :key="minute"
-                                                                                                :value="minute - 1">{{
-                                                                                            minute - 1 }}
-                                                                                        </option>
-                                                                                    </select>
-                                                                                    <span class="unit"
-                                                                                          style="font-weight: 900; color: black">분</span>
-                                                                                </div>
-                                                                            </c:when>--%>
                                                                         </c:choose>
 
-                                                                </c:forEach>
-                                                            </ul>
+                                                                    </c:forEach>
+                                                                </ul>
+                                                            </div>
                                                         </div>
-                                                    </div>
                                                     </div>
                                                 </div>
                                             </c:when>
@@ -273,12 +245,6 @@
                                     </div>
                                 </div>
                             </c:when>
-
-                            <c:otherwise>
-                                unknown sendReceive: ${e.sendReceive}
-                                <br/>
-                                ${g.htmlQuote(e.content)}
-                            </c:otherwise>
                         </c:choose>
                     </c:forEach>
                 </div>
