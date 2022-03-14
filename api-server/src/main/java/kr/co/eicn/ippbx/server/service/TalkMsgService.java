@@ -1,5 +1,7 @@
 package kr.co.eicn.ippbx.server.service;
 
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonTalkMsg;
+import kr.co.eicn.ippbx.model.entity.customdb.TalkMsgEntity;
 import kr.co.eicn.ippbx.server.repository.customdb.TalkMsgRepository;
 import kr.co.eicn.ippbx.server.repository.customdb.TalkRoomRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class TalkMsgService extends ApiBaseService implements ApplicationContextAware {
@@ -33,5 +37,9 @@ public class TalkMsgService extends ApiBaseService implements ApplicationContext
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         this.applicationContext = applicationContext;
+    }
+
+    public Map<String, TalkMsgEntity> getAllLastMessageByRoomId(Set<String> roomIdList) {
+        return getRepository().getAllLastMessagesInRoomIds(roomIdList).stream().collect(Collectors.toMap(CommonTalkMsg::getRoomId, e -> e));
     }
 }

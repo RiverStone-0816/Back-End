@@ -150,7 +150,8 @@ public class CounselTalkController extends BaseController {
                               @RequestParam(required = false) String customId,
                               @RequestParam(required = false) String roomId,
                               @RequestParam(required = false) String senderKey,
-                              @RequestParam(required = false) String userKey) throws IOException, ResultFailException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+                              @RequestParam(required = false) String userKey,
+                              @RequestParam(required = false) String channel) throws IOException, ResultFailException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         final List<MaindbGroupSummaryResponse> groups = maindbGroupApiInterface.list(new MaindbGroupSearchRequest());
         model.addAttribute("maindbGroups", groups);
         if (groups.isEmpty())
@@ -247,6 +248,8 @@ public class CounselTalkController extends BaseController {
             if (gradeListEntities.stream().anyMatch(e -> e.getGrade() != null && e.getGrade().startsWith("BLACK")))
                 model.addAttribute("blacklist", Boolean.TRUE);
         }
+
+        model.addAttribute("channel", channel);
 
         return "counsel/talk/custom-input";
     }

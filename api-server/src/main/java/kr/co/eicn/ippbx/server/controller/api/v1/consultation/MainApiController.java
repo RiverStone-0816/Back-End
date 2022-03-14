@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.server.controller.api.v1.consultation;
 
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonTalkMsg;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonTalkRoom;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.CommonTalkMsgRecord;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoKind;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
@@ -364,30 +365,9 @@ public class MainApiController extends ApiBaseController {
             if (Objects.isNull(e.getMaindbString_1()))
                 e.setMaindbString_1("");
         }).collect(Collectors.toMap(MaindbCustomInfoEntity::getMaindbSysCustomId, MaindbCustomInfoEntity::getMaindbString_1));
-        final List<TalkCurrentListResponse> response = currentTalkRoomRepository.findAll().stream()
-                .filter(e -> {
-                    if (e.getRoomStatus().startsWith("B"))
-                        return false;
-                    if (Objects.equals(search.getMode(), "MY") && !(Objects.equals(e.getUserid(), g.getUser().getId()) && !Objects.equals(e.getRoomStatus(), "E")))
-                        return false;
-
-                    if (Objects.equals(search.getMode(), "END") && !(Objects.equals(e.getUserid(), g.getUser().getId()) && Objects.equals(e.getRoomStatus(), "E")))
-                        return false;
-
-                    if (Objects.equals(search.getMode(), "TOT") && !(StringUtils.isEmpty(e.getUserid()) && !Objects.equals(e.getRoomStatus(), "E")))
-                        return false;
-
-                    if (Objects.equals(search.getMode(), "OTH")) {
-                        if (Objects.equals(search.getAuthType(), "MONIT")) {
-                            if (!(!e.getUserid().equals("") && !e.getRoomStatus().equals("E")))
-                                return false;
-                        } else if (!(!e.getUserid().equals(g.getUser().getId()) && !StringUtils.isEmpty(e.getUserid()) && !Objects.equals(e.getRoomStatus(), "E"))) {
-                            return false;
-                        }
-                    }
-
-                    return !StringUtils.isNotEmpty(search.getRoomId()) || Objects.equals(e.getRoomId(), search.getRoomId());
-                })
+        final List<TalkRoomEntity> talkRoomList = currentTalkRoomRepository.findAll(search);
+        final Map<String, TalkMsgEntity> lastMessageByRoomId = talkMsgService.getAllLastMessageByRoomId(talkRoomList.stream().map(CommonTalkRoom::getRoomId).collect(Collectors.toSet()));
+        final List<TalkCurrentListResponse> response = talkRoomList.stream()
                 .map((e) -> {
                     final TalkCurrentListResponse data = convertDto(e, TalkCurrentListResponse.class);
                     if (isNotEmpty(e.getSenderKey())) {
@@ -411,25 +391,13 @@ public class MainApiController extends ApiBaseController {
                         }
                     }
 
-                    CommonTalkMsg table = talkMsgService.getRepository().getTABLE();
-                    final List<TalkMsgEntity> talkMsgResponseList = talkMsgService.getRepository().findAll(table.COMPANY_ID.eq(g.getUser().getCompanyId())
-                                    .and(table.SENDER_KEY.eq(e.getSenderKey()))
-                                    .and(table.USER_KEY.eq(e.getUserKey()))
-                                    .and(table.INSERT_TIME.ge(e.getRoomStartTime()))
-                                    .and(table.INSERT_TIME.le(e.getRoomLastTime()))
-                                    .and(table.SEND_RECEIVE.eq("S").or(table.SEND_RECEIVE.eq("R")))
-                            )
-                            .stream()
-                            .sorted(Comparator.comparing(TalkMsgEntity::getInsertTime).reversed())
-                            .limit(1)
-                            .collect(Collectors.toList());
-                    if (talkMsgResponseList.size() > 0) {
-                        data.setContent(talkMsgResponseList.get(0).getContent());
-                        data.setType(talkMsgResponseList.get(0).getType());
-                        data.setSend_receive(talkMsgResponseList.get(0).getSendReceive());
-                        final OptionalInt maxOptional = talkMsgResponseList.stream().mapToInt(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonTalkMsg::getSeq).max();
-                        if (maxOptional.isPresent())
-                            data.setLastMessageSeq(maxOptional.getAsInt());
+                    final TalkMsgEntity lastTalkMessage = lastMessageByRoomId.get(e.getRoomId());
+
+                    if (lastTalkMessage != null) {
+                        data.setContent(lastTalkMessage.getContent());
+                        data.setType(lastTalkMessage.getType());
+                        data.setSend_receive(lastTalkMessage.getSendReceive());
+                        data.setLastMessageSeq(lastTalkMessage.getSeq());
                     }
                     data.setChannelType(TalkChannelType.of(e.getChannelType()));
 

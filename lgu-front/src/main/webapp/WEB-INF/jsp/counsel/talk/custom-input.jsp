@@ -295,6 +295,7 @@
                 }
             }
         }
+        //TODO 웹챗고객 저장 시 소켓 전송
         $('#talk-custom-input').submit();
     });
 

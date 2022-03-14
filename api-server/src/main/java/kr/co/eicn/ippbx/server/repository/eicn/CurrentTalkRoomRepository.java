@@ -2,7 +2,9 @@ package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentTalkRoom;
 import kr.co.eicn.ippbx.model.entity.customdb.TalkRoomEntity;
+import kr.co.eicn.ippbx.model.enums.RoomStatus;
 import kr.co.eicn.ippbx.model.form.TalkAutoEnableFormRequest;
+import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
 import kr.co.eicn.ippbx.model.search.TalkRoomSearchRequest;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
@@ -30,6 +32,30 @@ public class CurrentTalkRoomRepository extends EicnBaseRepository<CurrentTalkRoo
 
     public Pagination<TalkRoomEntity> pagination(TalkRoomSearchRequest search) {
         return pagination(search, conditions(search));
+    }
+
+    public List<TalkRoomEntity> findAll(TalkCurrentListSearchRequest search) {
+        return findAll(conditions(search));
+    }
+
+    private List<Condition> conditions(TalkCurrentListSearchRequest search) {
+        final List<Condition> conditions = new ArrayList<>();
+
+        if ("MY".equals(search.getMode()))
+            conditions.add(CURRENT_TALK_ROOM.USERID.eq(g.getUser().getId()).and(CURRENT_TALK_ROOM.ROOM_STATUS.ne(RoomStatus.STOP.getCode())));
+        else if ("TOT".equals(search.getMode()))
+            conditions.add(CURRENT_TALK_ROOM.USERID.eq("").and(CURRENT_TALK_ROOM.ROOM_STATUS.ne(RoomStatus.STOP.getCode())));
+        else if ("OTH".equals(search.getMode())) {
+            if ("MONIT".equals(search.getAuthType()))
+                conditions.add(CURRENT_TALK_ROOM.USERID.ne("").and(CURRENT_TALK_ROOM.ROOM_STATUS.ne(RoomStatus.STOP.getCode())));
+            else
+                conditions.add(CURRENT_TALK_ROOM.USERID.ne(g.getUser().getId()).and(CURRENT_TALK_ROOM.USERID.ne("")).and(CURRENT_TALK_ROOM.ROOM_STATUS.ne(RoomStatus.STOP.getCode())));
+        }
+
+        if (StringUtils.isNotEmpty(search.getRoomId()))
+            conditions.add(CURRENT_TALK_ROOM.ROOM_ID.eq(search.getRoomId()));
+
+        return conditions;
     }
 
     private List<Condition> conditions(TalkRoomSearchRequest search) {

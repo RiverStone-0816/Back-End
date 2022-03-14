@@ -99,24 +99,17 @@
                                             </div>
                                         </div>
                                         <div class="middle aligned content">
-                                            <div class="headerpanerl"
-                                                 style="padding-top: 8px; width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
-                                                    <text class="-custom-name"
-                                                          style="padding-right: 15px; font-weight: bold; font-size: 0.885714rem;">
-                                                        {{ room.maindbCustomName ? room.maindbCustomName : '미등록고객' }}
-                                                    </text>
-                                                    <span v-if="!activatedRoomIds.includes(room.roomId) && room.hasNewMessage"
-                                                          class="ui mini label circular"> N </span>
-
-                                            </div>
-                                                <div style="position: relative; top: -13px; right: -70px;  font-size: 0.88571429rem; width:350px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
-                                                <text v-if="room.type !== 'text'" style="font-size: 0.88571429rem;">
-                                                    {{ room.type === 'photo' ? '사진' : room.type === 'audio' ? '음원' :
-                                                    room.type === 'file' ? '파일' : room.type }}
-                                                    {{ room.send_receive === 'R' ? '전송됨' : '전달 받음' }}
+                                            <div class="headerpanerl" style="padding-top: 8px; width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                                <text class="-custom-name"
+                                                      style="padding-right: 15px; font-weight: bold; font-size: 0.885714rem;">
+                                                    {{ room.maindbCustomName ? room.maindbCustomName : '미등록고객' }}
                                                 </text>
-                                                <text v-else style="font-size: 0.88571429rem; ">{{ room.content }}</text>
-                                                </div>
+                                                <span v-if="!activatedRoomIds.includes(room.roomId) && room.hasNewMessage"
+                                                      class="ui mini label circular"> N </span>
+                                            </div>
+                                            <div style="position: relative; top: -13px; right: -70px;  font-size: 0.88571429rem; width:350px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+                                                <text style="font-size: 0.88571429rem; ">{{ room.lastMessage }}</text>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -210,6 +203,8 @@
                                         : e.userId === userId ? _this.statuses.MY.status
                                             : _this.statuses.OTH.status
 
+                                e.lastMessage = _this.getLastMessage(e.send_receive, e.type, e.content, e.userName)
+
                                 talkRoomList.forEach(room => {
                                     if (room.roomId === e.roomId){
                                         room.roomStatus = e.roomStatus
@@ -285,13 +280,14 @@
                             return b["roomLastTime"].localeCompare(a["roomLastTime"])
                         })
                     },
-                    updateRoom: function (roomId, messageType, content, messageTime) {
+                    updateRoom: function (roomId, messageType, content, messageTime, sendReceive) {
                         if (!this.roomMap[roomId])
                             return this.load()
 
                         this.roomMap[roomId].content = content
                         this.roomMap[roomId].roomLastTime = messageTime
                         this.roomMap[roomId].type = messageType
+                        this.roomMap[roomId].lastMessage = this.getLastMessage(sendReceive, messageType, content, this.roomMap[roomId].userName)
 
                         this.changeOrdering(this.roomMap[roomId].container.status)
                         if (this.isReallocationStatus(this.roomMap[roomId].container.status)) this.changeOrdering(this.statuses.REALLOCATION.status)
@@ -317,7 +313,7 @@
                         this.changeOrdering(status)
                         if (this.isReallocationStatus(status)) this.changeOrdering(this.statuses.REALLOCATION.status)
                     },
-                    updateRoomStatus: function (roomId, status, messageType, content, messageTime) {
+                    updateRoomStatus: function (roomId, status, sendReceive, messageType, content, messageTime) {
                         if (!this.roomMap[roomId])
                             return this.load()
 
@@ -332,6 +328,7 @@
                             this.roomMap[roomId].content = content
                             this.roomMap[roomId].roomLastTime = messageTime
                             this.roomMap[roomId].type = messageType
+                            this.roomMap[roomId].lastMessage = this.getLastMessage(sendReceive, messageType, content, this.roomMap[roomId].userName)
                         }
 
                         this.roomMap[roomId].status = status
@@ -404,6 +401,34 @@
                     loadPersons() {
                         const _this = this
                         restSelf.get('/api/monit/').done(response => _this.persons = response.data.map(team => team.person).flatMap(persons => persons))
+                    },
+                    getLastMessage(sendReceive, type, content, userName) {
+                        let lastMessage = ""
+
+                        if (type === 'block') {
+                            if (sendReceive === 'SB')
+                                lastMessage = '블록을 전송하였습니다.'
+                            else if (sendReceive === 'S')
+                                lastMessage = '템플릿을 전송하였습니다.'
+                            else if (['RE', 'E'].includes(sendReceive))
+                                lastMessage = '챗봇이 존재하지 않습니다.'
+                        } else if (['RM', 'SZ', 'SG', 'SD', 'SE'].includes(sendReceive)) {
+                            if (sendReceive === 'RM') {
+                                lastMessage = '상담사연결을 요청하였습니다.'
+                            } else if (sendReceive === 'SZ') {
+                                lastMessage = userName + '상담사가 상담을 찜했습니다.'
+                            } else if (sendReceive === 'SG') {
+                                lastMessage = userName + '상담사가 상담을 가져왔습니다.'
+                            } else if (sendReceive === 'SD') {
+                                lastMessage = userName + '상담사가 상담을 내렸습니다.'
+                            } else if (sendReceive === 'SE') {
+                                lastMessage = userName + '상담사가 상담을 종료했습니다.'
+                            }
+                        }
+                        else
+                            lastMessage = content
+
+                        return lastMessage
                     }
                 },
                 updated: function () {
@@ -583,11 +608,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="['SA', 'AM', 'AW', 'SAV'].includes(e.sendReceive)" class="chat-item chat-me">
+                                <div v-if="['SA', 'AM', 'AW', 'SAA', 'AE'].includes(e.sendReceive) || ('SB' === e.sendReceive && 'text' === e.type)" class="chat-item chat-me">
                                     <div class="wrap-content">
                                         <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
-                                            <div class="bubble" style="background-color: #e0399747;">
+                                            <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
                                                 <div class="txt_chat">
                                                     <p>{{ e.contents }}</p>
                                                 </div>
@@ -676,15 +701,17 @@
                                         </div>
                                     </div>
                                 </div>
-                                <p v-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'"
+                                <p v-if="['S', 'R'].includes(e.sendReceive) && e.messageType === 'info'"
                                    class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
-                                <p v-if="['RM', 'SZ', 'SG'].includes(e.sendReceive)" class="info-msg">
+                                <p v-if="['RM', 'SZ', 'SG', 'SD', 'SE'].includes(e.sendReceive)" class="info-msg">
                                     [{{ getTimeFormat(e.time) }}]
                                     <text v-if="e.sendReceive === 'RM'">상담사연결을 요청하였습니다.</text>
                                     <text v-if="e.sendReceive === 'SZ'">[{{ e.username }}] 상담사가 상담을 찜했습니다.</text>
                                     <text v-if="e.sendReceive === 'SG'">[{{ e.username }}] 상담사가 상담을 가져왔습니다.</text>
+                                    <text v-if="e.sendReceive === 'SD'">[{{ e.username }}] 상담사가 상담을 내렸습니다.</text>
+                                    <text v-if="e.sendReceive === 'SE'">[{{ e.username }}] 상담사가 상담을 종료했습니다.</text>
                                 </p>
-                                <p v-if="['SE', 'RE', 'AE', 'E'].includes(e.sendReceive) && e.contents"
+                                <p v-if="['RE', 'E', 'RR', 'RT'].includes(e.sendReceive) && e.contents"
                                    class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
                                 <div v-if=" e.messageType === 'block'"
                                      :class="e.messageType === 'block' && ' chat-me '">
@@ -929,11 +956,8 @@
 
                     const _this = this
 
-                    console.log("message:"+JSON.stringify(message))
-
                     const setBlockInfo = response => {
                         message.displays = response.data.displayList?.sort((a, b) => (a.order - b.order))
-                        console.log("response:"+JSON.stringify(message.displays))
 
                         message.buttonGroups = (() => {
                             return response.data.buttonList?.sort((a, b) => (a.order - b.order)).reduce((list, e) => {
@@ -956,7 +980,7 @@
                     }
 
                     // TODO: 항상 모든 파일의 messageType이 file로 전달된다. => photo, audio로 분류해야 한다.
-                    if (message.messageType === 'file') {
+                    if (message.messageType === 'file' || message.messageType === 'image') {
                         const isImage = (fileName) => {
                             if (!fileName) return false
                             return fileName.toLowerCase().endsWith('.jpg')
@@ -1317,13 +1341,14 @@
 
 <tags:scripts>
     <script>
-        function loadTalkCustomInput(maindbGroupSeq, customId, roomId, senderKey, userKey) {
+        function loadTalkCustomInput(maindbGroupSeq, customId, roomId, senderKey, userKey, channel) {
             return replaceReceivedHtmlInSilence($.addQueryString('/counsel/talk/custom-input', {
                 maindbGroupSeq: maindbGroupSeq || '',
                 customId: customId || '',
                 roomId: roomId || '',
                 senderKey: senderKey || '',
                 userKey: userKey || '',
+                channel: channel || ''
             }), '#talk-custom-input');
         }
 
@@ -1347,19 +1372,19 @@
                 if (data.userid === userId)
                     talkListContainer.activeTab('MY')
                 talkRoom.talkStatus = talkListContainer.statuses[data.userid === userId ? 'MY' : 'OTH'].text
-                talkListContainer.updateRoomStatus(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.type, data.content, messageTime)
+                talkListContainer.updateRoomStatus(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.send_receive, data.type, data.content, messageTime)
             } else if (['SE', 'RE', 'AE'].includes(data.send_receive)) {
                 if (data.userid === userId) {
                     talkRoom.talkStatus = talkListContainer.statuses['END'].text
                     talkListContainer.activeTab('END')
                     talkRoom.isMessage = true
                 }
-                talkListContainer.updateRoomStatus(data.room_id, 'END', data.type, data.content, messageTime)
+                talkListContainer.updateRoomStatus(data.room_id, 'END', data.send_receive, data.type, data.content, messageTime)
             } else if (['SD'].includes(data.send_receive)){
                 talkListContainer.load()
                 talkRoom.clearRoom()
             } else {
-                talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime)
+                talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive)
             }
 
             talkRoomList.forEach(e => e.appendMessage({
