@@ -106,7 +106,12 @@
                 <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
                     <div class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
-                      <span v-if="e instanceof Array">
+                      <span v-if="(e instanceof Array) && e.action === 'phone'">
+                        <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click="document.location.href=`tel:${e2.next_action_data}`">
+                          {{ e2.btn_name }}
+                        </button>
+                      </span>
+                      <span v-else-if="e instanceof Array">
                         <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop.prevent="actButton(message, e2)">
                           {{ e2.btn_name }}
                         </button>
@@ -230,7 +235,12 @@
                 <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
                     <div class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
-                      <span v-if="e instanceof Array">
+                      <span v-if="(e instanceof Array) && e.action === 'phone'">
+                        <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click="document.location.href=`tel:${e2.next_action_data}`">
+                          {{ e2.btn_name }}
+                        </button>
+                      </span>
+                      <span v-else-if="e instanceof Array">
                         <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop.prevent="actButton(message, e2)">
                           {{ e2.btn_name }}
                         </button>
@@ -474,7 +484,7 @@ export default {
     actButton(message, button) {
       if (button.action === 'url') return window.open(button.next_action_data, null)
 
-      if (button.action === 'phone') return document.location.href = 'tal:'+button.next_action_data
+      if (button.action === 'phone') return document.location.href = 'tel:'+button.next_action_data
 
       this.communicator.sendAction(this.botId, {
         chatbot_id: message.data.chatbot_id,
