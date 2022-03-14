@@ -91,7 +91,11 @@ public class TalkHistoryController extends BaseController {
         final TalkRoomResponse entity = apiInterface.get(seq, roomStatus);
         model.addAttribute("entity", entity);
 
-        final List<TalkMsgResponse> messageHistory = apiInterface.messageHistory(roomId);
+        final List<TalkMsgResponse> messageHistory =  apiInterface.messageHistory(roomId).stream().map(e -> {
+            if (e.getSendReceive().equals("SB") && e.getType().equals("block")) e.setBlockInfo(chatbotApiController.getByBlockId(Integer.parseInt(e.getContent().split(":")[2])));
+            if (e.getSendReceive().equals("S") && e.getType().equals("block")) e.setBlockInfo(chatbotApiController.getByBlockId(Integer.parseInt(e.getContent())));
+            return e;
+        }).collect(Collectors.toList());;
         messageHistory.sort(Comparator.comparingInt(TalkMsgResponse::getSeq));
         model.addAttribute("messageHistory", messageHistory);
 
