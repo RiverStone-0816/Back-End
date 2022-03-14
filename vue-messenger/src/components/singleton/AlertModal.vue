@@ -14,7 +14,7 @@
           <TransitionChild as="template"
                            enter="duration-300 ease-out" enter-from="opacity-0 scale-95" enter-to="opacity-100 scale-100"
                            leave="duration-200 ease-in" leave-from="opacity-100 scale-100" leave-to="opacity-0 scale-95">
-            <div class="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+            <div style="width: 200px" class="inline-block max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
               <div class="mt-2">
                 <p class="text-sm text-gray-500 py-5" v-html="store.body"></p>
               </div>
@@ -24,7 +24,7 @@
                     ref="closeButton"
                     class="inline-flex justify-center px-4 py-2 text-sm font-medium text-blue-900 bg-blue-100 border border-transparent rounded-md hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     type="button" @click="this.$store.commit('alert/close')">
-                  Close
+                  닫기
                 </button>
               </div>
             </div>

@@ -21,6 +21,7 @@ export default {
         },
         close(state) {
             state.showing = false
+            self.close()
         }
     }
 }
