@@ -30,7 +30,7 @@
             </c:if>
         </c:forEach>
         <td title="${g.htmlQuote(value)}">${g.htmlQuote(value)}</td>
-        <td title="${g.htmlQuote(e.talkRoomName)}">${g.htmlQuote(e.talkRoomName)}</td>
+        <td title="${g.htmlQuote(e.customInfo.maindbString_1)}">${g.htmlQuote(e.customInfo.maindbString_1)}</td>
         <td title="${g.htmlQuote(e.userName)}">${g.htmlQuote(e.userName)}</td>
         <td>
             <button type="button" class="ui button mini compact" onclick="popupCounselingInfo(${e.seq})">열람</button>
