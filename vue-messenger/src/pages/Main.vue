@@ -1,5 +1,5 @@
 <template>
-  <body class="font-sans-kr text-gray-800">
+  <body class="font-sans-kr text-gray-800" @contextmenu.prevent>
   <div class="h-screen min-w-full">
     <div class="flex flex-col flex-auto flex-shrink-0 rounded-lg-2xl h-full" :style="'background-color: ' + backgroundColor">
       <div class="flex flex-col h-full overflow-x-auto mb-1" ref="chatBody" style="scroll-behavior: smooth">
