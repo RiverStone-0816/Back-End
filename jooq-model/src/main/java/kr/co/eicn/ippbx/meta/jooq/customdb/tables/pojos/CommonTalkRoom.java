@@ -13,6 +13,7 @@ public class CommonTalkRoom implements Serializable {
     private Timestamp roomStartTime;
     private Timestamp roomLastTime;
     private String    roomStatus;
+    private String    roomMode;
     private Integer   maindbGroupId;
     private String    maindbCustomId;
     private String    maindbCustomName;

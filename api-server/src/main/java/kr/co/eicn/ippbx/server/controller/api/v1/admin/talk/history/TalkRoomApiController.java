@@ -1,5 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.history;
 
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonTalkRoom;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.TalkRoom;
 import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
@@ -116,12 +118,13 @@ public class TalkRoomApiController extends ApiBaseController {
     public ResponseEntity<JsonResult<TalkRoomResponse>> get(@RequestParam String roomId) {
 
         TalkRoomEntity roomEntity;
-        roomEntity = currentTalkRoomRepository.findOneIfNullThrow(CURRENT_TALK_ROOM.ROOM_ID.eq(roomId));
+        roomEntity = currentTalkRoomRepository.findOne(CURRENT_TALK_ROOM.ROOM_ID.eq(roomId));
+        if(Objects.isNull(roomEntity))
+            roomEntity = talkRoomService.getRepository().findOne(new CommonTalkRoom(g.getUser().getCompanyId()).ROOM_ID.eq(roomId));
 
         TalkRoomResponse talkRoomResponse = convertDto(roomEntity, TalkRoomResponse.class);
         talkRoomResponse.setIdName(personListRepository.findOne(roomEntity.getUserid()).getIdName());
         talkRoomResponse.setChannelType(TalkChannelType.of(roomEntity.getChannelType()));
-
         return ResponseEntity.ok(data(talkRoomResponse));
     }
 

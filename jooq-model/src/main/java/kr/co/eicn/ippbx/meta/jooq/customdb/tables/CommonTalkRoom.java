@@ -29,22 +29,27 @@ public class CommonTalkRoom extends TableImpl<TalkRoomRecord> {
     /**
      * The column <code>CUSTOMDB.talk_room.room_id</code>.
      */
-    public final TableField<TalkRoomRecord, String> ROOM_ID = createField(DSL.name("room_id"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<TalkRoomRecord, String> ROOM_ID = createField(DSL.name("room_id"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>CUSTOMDB.talk_room.room_start_time</code>.
      */
-    public final TableField<TalkRoomRecord, Timestamp> ROOM_START_TIME = createField(DSL.name("room_start_time"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("2009-07-01 00:00:00", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<TalkRoomRecord, Timestamp> ROOM_START_TIME = createField(DSL.name("room_start_time"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("'2009-07-01 00:00:00'", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
     /**
      * The column <code>CUSTOMDB.talk_room.room_last_time</code>.
      */
-    public final TableField<TalkRoomRecord, Timestamp> ROOM_LAST_TIME = createField(DSL.name("room_last_time"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("2009-07-01 00:00:00", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<TalkRoomRecord, Timestamp> ROOM_LAST_TIME = createField(DSL.name("room_last_time"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("'2009-07-01 00:00:00'", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
     /**
      * The column <code>CUSTOMDB.talk_room.room_status</code>.
      */
-    public final TableField<TalkRoomRecord, String> ROOM_STATUS = createField(DSL.name("room_status"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("S", org.jooq.impl.SQLDataType.CHAR)), this, "");
+    public final TableField<TalkRoomRecord, String> ROOM_STATUS = createField(DSL.name("room_status"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("'S'", org.jooq.impl.SQLDataType.CHAR)), this, "");
+
+    /**
+     * The column <code>CUSTOMDB.talk_room.room_mode</code>. 대화방이테스트인지서비스인지구별
+     */
+    public final TableField<TalkRoomRecord, String> ROOM_MODE = createField(DSL.name("room_mode"), org.jooq.impl.SQLDataType.VARCHAR(10).defaultValue(org.jooq.impl.DSL.inline("'service'", org.jooq.impl.SQLDataType.VARCHAR)), this, "대화방이테스트인지서비스인지구별");
 
     /**
      * The column <code>CUSTOMDB.talk_room.maindb_group_id</code>.
@@ -54,47 +59,47 @@ public class CommonTalkRoom extends TableImpl<TalkRoomRecord> {
     /**
      * The column <code>CUSTOMDB.talk_room.maindb_custom_id</code>.
      */
-    public final TableField<TalkRoomRecord, String> MAINDB_CUSTOM_ID = createField(DSL.name("maindb_custom_id"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<TalkRoomRecord, String> MAINDB_CUSTOM_ID = createField(DSL.name("maindb_custom_id"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>CUSTOMDB.talk_room.maindb_custom_name</code>.
      */
-    public final TableField<TalkRoomRecord, String> MAINDB_CUSTOM_NAME = createField(DSL.name("maindb_custom_name"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<TalkRoomRecord, String> MAINDB_CUSTOM_NAME = createField(DSL.name("maindb_custom_name"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>CUSTOMDB.talk_room.userid</code>.
      */
-    public final TableField<TalkRoomRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<TalkRoomRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>CUSTOMDB.talk_room.user_key</code>.
      */
-    public final TableField<TalkRoomRecord, String> USER_KEY = createField(DSL.name("user_key"), org.jooq.impl.SQLDataType.VARCHAR(30).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<TalkRoomRecord, String> USER_KEY = createField(DSL.name("user_key"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>CUSTOMDB.talk_room.sender_key</code>.
      */
-    public final TableField<TalkRoomRecord, String> SENDER_KEY = createField(DSL.name("sender_key"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<TalkRoomRecord, String> SENDER_KEY = createField(DSL.name("sender_key"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>CUSTOMDB.talk_room.company_id</code>.
      */
-    public final TableField<TalkRoomRecord, String> COMPANY_ID = createField(DSL.name("company_id"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<TalkRoomRecord, String> COMPANY_ID = createField(DSL.name("company_id"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>CUSTOMDB.talk_room.room_name</code>.
      */
-    public final TableField<TalkRoomRecord, String> ROOM_NAME = createField(DSL.name("room_name"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<TalkRoomRecord, String> ROOM_NAME = createField(DSL.name("room_name"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>CUSTOMDB.talk_room.schedule_kind</code>.
      */
-    public final TableField<TalkRoomRecord, String> SCHEDULE_KIND = createField(DSL.name("schedule_kind"), org.jooq.impl.SQLDataType.CHAR(1).nullable(false).defaultValue(org.jooq.impl.DSL.inline("D", org.jooq.impl.SQLDataType.CHAR)), this, "");
+    public final TableField<TalkRoomRecord, String> SCHEDULE_KIND = createField(DSL.name("schedule_kind"), org.jooq.impl.SQLDataType.CHAR(1).nullable(false).defaultValue(org.jooq.impl.DSL.inline("'D'", org.jooq.impl.SQLDataType.CHAR)), this, "");
 
     /**
      * The column <code>CUSTOMDB.talk_room.schedule_data</code>.
      */
-    public final TableField<TalkRoomRecord, String> SCHEDULE_DATA = createField(DSL.name("schedule_data"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<TalkRoomRecord, String> SCHEDULE_DATA = createField(DSL.name("schedule_data"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>CUSTOMDB.talk_room.is_auto_enable</code>.
