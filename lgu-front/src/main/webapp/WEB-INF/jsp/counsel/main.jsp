@@ -59,7 +59,7 @@
                         <jsp:include page="/counsel/talk/"/>
                     </c:if>
 
-                    <div id="etc-panel" class="mt10" style="position: absolute; bottom: 0; width: 97%;">
+                    <div id="etc-panel" class="mt10">
                         <div>
                             <div class="ui top attached tabular menu">
                                 <a class="item active" data-tab="todo-list" style="border-top-width: 1px; border-color: #D4D4D5; border-radius: 0.28571429rem 0.28571429rem 0px 0px; max-width: 11%;">To-do</a>

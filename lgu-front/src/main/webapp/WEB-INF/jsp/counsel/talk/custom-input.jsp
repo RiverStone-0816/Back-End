@@ -30,7 +30,7 @@
             </button>
         </c:if>
     </div>
-    <div class="panel-body" style="height: 270px;">
+    <div class="panel-body">
         <div style="height: 100%;">
             <table class="ui table celled definition">
                 <tbody>

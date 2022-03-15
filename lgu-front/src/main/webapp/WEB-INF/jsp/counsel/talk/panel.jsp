@@ -15,8 +15,8 @@
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 
 <div class="ui column grid" id="talk-panel">
-    <div class="eight wide column" id="talk-list-container" style="padding-right: 0px;">
-        <div class="talk-list-container" style="position: relative">
+    <div class="eight wide column" id="talk-list-container">
+        <div class="talk-list-container">
             <div class="ui top attached tabular menu">
                 <template v-for="(e, i) in STATUSES" :key="i">
                     <a class="item" style="border-top-width: 1px; border-color: #D4D4D5; border-radius: 0.28571429rem 0.28571429rem 0px 0px;"
@@ -442,8 +442,8 @@
         </script>
     </tags:scripts>
 
-    <div class="eight wide column">
-        <div id="talk-room" class="chat-container overflow-hidden" style="position: relative" @drop.stop="dropFiles"
+    <div class="eight wide column talk-room" style="height: 100%;">
+        <div id="talk-room" class="chat-container overflow-hidden" @drop.stop="dropFiles"
              @dragover.prevent @click.stop="showingTemplateLevel = 0">
             <div v-if="showingDropzone" class="attach-overlay" @drop.prevent="dropFiles" @dragover.prevent
                  @dragenter.stop="showingDropzone=true">
@@ -452,7 +452,7 @@
                     <p class="attach-text">파일을 채팅창에 바로 업로드하려면<br>여기에 드롭하세요.</p>
                 </div>
             </div>
-            <div class="room" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true" style="background-color: #dce6f2;">
+            <div class="room" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true">
                 <div class="chat-header dp-flex justify-content-space-between align-items-center">
                     <span id="text-line" :style="'visibility:'+(roomId?'visible':'hidden')"
                           style="width:400px; padding:0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;"> <%--v-if="roomName"--%>
@@ -1105,13 +1105,14 @@
                             .done(response => talkCommunicator.sendFile(this.roomId, this.channelType, this.senderKey, this.userKey, response.data)))
                 },
                 sendFile: function (event) {
+                    const _this = this
                     const file = event.target.files[0]
                     event.target.value = null
 
                     if (!file || !file.name)
                         return
 
-                    this.uploadFile(file)
+                    _this.uploadFile(file)
                 },
                 dropFiles: function (event) {
                     this.showingDropzone = false

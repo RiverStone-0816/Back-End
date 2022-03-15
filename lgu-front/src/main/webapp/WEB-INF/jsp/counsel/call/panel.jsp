@@ -13,7 +13,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 
 <div id="call-panel" class="active">
-    <div class="panel">
+    <div class="panel call-info">
         <div class="panel-heading">
             <label class="control-label">수발신정보</label>
             <%--<div class="ui label">
@@ -68,7 +68,7 @@
             </table>
         </div>
     </div>
-    <div class="panel">
+    <div class="panel call-setting">
         <div class="panel-heading">
             <label class="control-label">발신설정/전화걸기</label>
         </div>

@@ -217,7 +217,7 @@
       background: #fbfbfb;
       border-bottom: 1px solid #efefef;
       font-weight: 500;
-      line-height: 30px;
+      line-height: 22px;
       .ui.checkbox {
         margin: 0 0 0 5px;
       }
@@ -307,8 +307,6 @@
 
 .talk-list-container {
   .talk-list-wrap {
-    min-height: 301px;
-    height: 301px;
     .null-data {
       .flex;
       align-items: center;
@@ -1125,14 +1123,58 @@
   }
 }
 #call-panel {display: none;}
-#call-panel.active {display: block}
+#call-panel.active {
+  display: block;
+  height: 86%;
+  .call-info {
+    height: 33%;
+    margin-bottom: 18px !important;
+  }
+  .call-setting {
+    height: 25%;
+  }
+}
 #talk-panel {display: none;}
 #talk-panel.active {
   .flex;
+  height: 88%;
+  #talk-list-container {
+    padding-right: 0;
+    height: 100%;
+    .talk-list-container {
+      position: relative;
+      height: 100%;
+      .tabular {
+        height: 6%;
+      }
+      .segment {
+        height: 94.5%;
+        .sort-wrap {
+          height: 6%;
+        }
+        .talk-list-wrap {
+          height: 95%;
+        }
+      }
+    }
+  }
+  #talk-room {
+    position: relative;
+    height: 100%;
+    .room {
+      background-color: #dce6f2; height: 80%;
+      .chat-body {
+        height: 92.5%;
+      }
+    }
+    .write-chat {
+      height: 20%;
+    }
+  }
 }
 #etc-panel {
   .segment {
-    height: 285px;
+    height: 295px;
   }
 }
 
