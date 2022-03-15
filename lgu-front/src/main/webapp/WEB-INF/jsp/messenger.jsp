@@ -83,12 +83,12 @@
                     <div ref="chatBody" @scroll="loadAdditionalMessagesIfTop" class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll; scroll-behavior: smooth;">
                         <div class="os-content" style="padding: 10px 0 0; height: 100%; width: 100%;">
                             <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + e.messageId">
-                                <p v-if="['SE', 'RE'].includes(e.sendReceive)" class="info-msg">[{{ getTimeFormat(e.time) }}]</p>
-                                <p v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
+                                <p v-if="['SE', 'RE'].includes(e.sendReceive)" class="info-msg">[{{ getTimeFormat(e.cur_timestr) }}]</p>
+                                <p v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.cur_timestr) }}] {{ e.contents }}</p>
                                 <div v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info'" class="chat-item"
                                      :class="(['AF', 'S'].includes(e.sendReceive) && e.userId === userId && 'chat-me') + ' ' + (activatedSearchingTextMessageId === e.messageId && 'active')">
                                     <div class="wrap-content">
-                                        <div class="txt-time">[{{ e.username }}] {{ getTimeFormat(e.time) }}</div>
+                                        <div class="txt-time">[{{ e.username }}] {{ getTimeFormat(e.cur_timestr) }}</div>
                                         <div class="chat">
                                             <div v-if="e.userId === userId" class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
