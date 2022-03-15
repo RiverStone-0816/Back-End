@@ -749,7 +749,7 @@
                                     <div v-if="e.isImage" class="template-content" style="text-decoration: underline">{{
                                         e.fileName }}
                                     </div>
-                                    <div v-else class="template-content">카톡?{{ e.text }}</div>
+                                    <div v-else class="template-content">{{ e.text }}</div>
                                 </li>
                             </ul>
                         </div>
@@ -998,13 +998,13 @@
                         block && restSelf.get('/api/chatbot/blocks/' + block.blockId, null, null, true).done(setBlockInfo)
                     } else if (message.messageType === 'image_temp') {
                         message.originalFileUrl = message.contents
-                        message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {
+                        message.fileUrl = message.sendReceive === 'R'? message.contents : $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {
                             company_id: talkCommunicator.request.companyId,
                             file_name: message.contents
                         })
                     } else if (['file', 'photo', 'audio'].includes(message.messageType)) {
                         message.originalFileUrl = message.contents
-                        message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {
+                        message.fileUrl = message.sendReceive === 'R'? message.contents : $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {
                             company_id: talkCommunicator.request.companyId,
                             file_name: message.contents
                         })
