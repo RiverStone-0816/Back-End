@@ -295,7 +295,7 @@
                 }
             }
         }
-        //TODO 웹챗고객 저장 시 소켓 전송
+
         $('#talk-custom-input').submit();
     });
 
@@ -335,6 +335,11 @@
     window.donePostTalkCustomInfo = function (form, response) {
         alert('고객정보가 저장되었습니다.');
         //loadTalkCustomInput(${form.groupSeq}, response.data || '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', '${g.escapeQuote(roomId)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}');
+
+        console.log(form)
+        if (${channel == "eicn"}) {
+            talkCommunicator.sendCustomMatch('${g.escapeQuote(roomId)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}', '${g.escapeQuote(form.groupSeq)}', response.data || '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', $(form).find('#string_1').val());
+        }
 
         talkListContainer.roomMap['${g.escapeQuote(roomId)}'].maindbCustomName = $('#talk-custom-input').find('[name=string_1]').val();
     };

@@ -372,7 +372,7 @@
                     },
                     openRoom: function (roomId, userName) {
                         talkRoom.loadRoom(roomId, userName).done(() => {
-                            loadTalkCustomInput(null, null, roomId, this.roomMap[roomId].senderKey, this.roomMap[roomId].userKey);
+                            loadTalkCustomInput(null, null, roomId, this.roomMap[roomId].senderKey, this.roomMap[roomId].userKey, this.roomMap[roomId].channelType);
                             this.loadActivatedRoomIds();
                         })
                     },
