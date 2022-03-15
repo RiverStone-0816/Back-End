@@ -713,14 +713,9 @@
                                 </p>
                                 <p v-if="['RE', 'E', 'RR', 'RT'].includes(e.sendReceive) && e.contents"
                                    class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
-                                <div v-if=" e.messageType === 'block'"
-                                     :class="e.messageType === 'block' && ' chat-me '">
-                                    <div v-if="!e.displays && !e.buttonGroups" class="chat bot">
-                                        <p class="info-msg">
-                                            <text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>
-                                        </p>
-                                    </div>
-                                </div>
+                                <p v-if="e.messageType === 'block' && !e.displays && !e.buttonGroups" class="info-msg">
+                                    <text>[{{ getTimeFormat(e.time) }}]챗봇이 존재하지않습니다.</text>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -954,6 +949,9 @@
                 },
                 appendMessage: function (message) {
                     if (this.roomId !== message.roomId)
+                        return
+
+                    if (['RI', 'SI', 'RB'].includes(message.sendReceive))
                         return
 
                     const _this = this
