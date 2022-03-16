@@ -383,8 +383,7 @@ public class MainApiController extends ApiBaseController {
                         data.setMaindbCustomName("미등록고객");
                     }
                     if (StringUtils.isEmpty(mainDb.get(e.getMaindbCustomId()))) {
-                        data.setMaindbCustomName("미등록고객");
-                        data.setMaindbCustomId("");
+                        data.setMaindbCustomName("이름없음");
                     } else {
                         if (StringUtils.isEmpty(data.getMaindbCustomName())) {
                             data.setMaindbCustomName(mainDb.get(e.getMaindbCustomId()));
@@ -450,6 +449,8 @@ public class MainApiController extends ApiBaseController {
         String customName = talkRoomEntity.getMaindbCustomName();
         if (customName != null && !customName.equals("")) {
             response.setCustomName(customName);
+        } else if (StringUtils.isNotEmpty(talkRoomEntity.getMaindbCustomId()) && StringUtils.isEmpty(customName)) {
+            response.setCustomName("이름없음");
         } else {
             response.setCustomName("미등록고객");
         }
