@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.controller.api.chatbot.ChatbotApiController;
 import kr.co.eicn.ippbx.front.controller.api.user.user.UserApiController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
+import kr.co.eicn.ippbx.front.service.api.ChatbotApiInterface;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.talk.group.TalkReceptionGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.talk.history.TalkHistoryApiInterface;
@@ -51,6 +52,8 @@ public class TalkHistoryController extends BaseController {
     private UserApiController userApiController;
     @Autowired
     private ChatbotApiController chatbotApiController;
+    @Autowired
+    private ChatbotApiInterface chatbotApiInterface;
 
     @Value("${eicn.talk.socket.id}")
     private String talkSocketId;
@@ -92,8 +95,8 @@ public class TalkHistoryController extends BaseController {
         model.addAttribute("entity", entity);
 
         final List<TalkMsgResponse> messageHistory =  apiInterface.messageHistory(roomId).stream().map(e -> {
-            if (e.getSendReceive().equals("SB") && e.getType().equals("block")) e.setBlockInfo(chatbotApiController.getByBlockId(Integer.parseInt(e.getContent().split(":")[2])));
-            if (e.getSendReceive().equals("S") && e.getType().equals("block")) e.setBlockInfo(chatbotApiController.getByBlockId(Integer.parseInt(e.getContent())));
+            if (e.getSendReceive().equals("SB") && e.getType().equals("block")) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent().split(":")[2])));
+            if (e.getSendReceive().equals("S") && e.getType().equals("block")) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent())));
             return e;
         }).collect(Collectors.toList());;
         messageHistory.sort(Comparator.comparingInt(TalkMsgResponse::getSeq));
@@ -108,8 +111,8 @@ public class TalkHistoryController extends BaseController {
         model.addAttribute("entity", entity);
 
         final List<TalkMsgResponse> messageHistory = apiInterface.messageHistory(roomId).stream().map(e -> {
-            if (e.getSendReceive().equals("SB") && e.getType().equals("block")) e.setBlockInfo(chatbotApiController.getByBlockId(Integer.parseInt(e.getContent().split(":")[2])));
-            if (e.getSendReceive().equals("S") && e.getType().equals("block")) e.setBlockInfo(chatbotApiController.getByBlockId(Integer.parseInt(e.getContent())));
+            if (e.getSendReceive().equals("SB") && e.getType().equals("block") ) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent().split(":")[2])));
+            if (e.getSendReceive().equals("S") && e.getType().equals("block")) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent())));
             return e;
         }).collect(Collectors.toList());
         messageHistory.sort(Comparator.comparingInt(TalkMsgResponse::getSeq));
