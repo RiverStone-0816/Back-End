@@ -188,7 +188,7 @@ TalkCommunicator.prototype.sendImageTemplate = function (roomId, channelType, se
         send_receive: "S",
         user_key: userKey,
         etc_data: "",
-        type: 'image_temp',
+        type: 'image',
         contents: filePath,
     });
 };
@@ -202,7 +202,7 @@ TalkCommunicator.prototype.sendTemplateBlock = function (roomId, channelType, se
         send_receive: "S",
         user_key: userKey,
         etc_data: "",
-        type: 'block_temp',
+        type: 'block',
         contents: '' + blockId,
     });
 };
