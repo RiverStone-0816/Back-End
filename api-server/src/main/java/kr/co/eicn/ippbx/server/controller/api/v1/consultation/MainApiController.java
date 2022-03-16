@@ -512,7 +512,7 @@ public class MainApiController extends ApiBaseController {
 
     @PostMapping("file")
     public ResponseEntity<JsonResult<String>> uploadFile(@Valid @RequestParam MultipartFile file) {
-        final String[] enabledFileType = {".jpg", "jpeg", ".png", ".gif", ".ppt", ".pptx", ".xlsx", ".pdf", ".hwp", ".hwpx", ".docx", ".mp3", ".wav", ".zip"};
+        final String[] enabledFileType = {".jpg", "jpeg", ".png", ".gif", ".ppt", ".pptx", ".xls", ".xlsx", ".pdf", ".hwp", ".hwpx", ".docx", ".mp3", ".mp4", ".wav", ".zip", ".txt", ".mov", ".avi", ".wmv"};
 
         if (!StringUtils.endsWithAny(Objects.requireNonNull(file.getOriginalFilename()).toLowerCase(), enabledFileType)) {
             throw new IllegalArgumentException("사용할 수 없는 확장자 입니다.");
