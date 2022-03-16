@@ -176,7 +176,7 @@
                                             ${g.htmlQuote(channel.channelType == 'TALK' ? channel.channelData.split('[_]')[1] : channel.channelData)}
                                     </option>
                                 </c:forEach>
-                                <c:if test="${senderKey != null && senderKey != '' && userKey != null && userKey != '' && talkServices != null && talkServices.get(senderKey) != null && !existRoomIdInMultichannelList}">
+                                <c:if test="${channel == 'kakao' && senderKey != null && senderKey != '' && userKey != null && userKey != '' && talkServices != null && talkServices.get(senderKey) != null && !existRoomIdInMultichannelList}">
                                     <option value="${g.htmlQuote(senderKey.concat('_').concat(userKey))}" data-type="TALK">
                                         [${g.htmlQuote(talkServices.get(senderKey))}] ${g.htmlQuote(userKey)}
                                     </option>
@@ -336,7 +336,6 @@
         alert('고객정보가 저장되었습니다.');
         //loadTalkCustomInput(${form.groupSeq}, response.data || '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', '${g.escapeQuote(roomId)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}');
 
-        console.log(form)
         if (${channel == "eicn"}) {
             talkCommunicator.sendCustomMatch('${g.escapeQuote(roomId)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}', '${g.escapeQuote(form.groupSeq)}', response.data || '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', $(form).find('#string_1').val());
         }

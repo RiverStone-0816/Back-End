@@ -53,22 +53,22 @@
         </div>
         <div class="ui tab active" id="consulting-screen" data-tab="consulting-screen">
             <div class="ui grid consulting-panel">
-                <div class="nine wide column" style="height: 100%">
+                <div class="nine wide column" id="consulting-call">
                     <jsp:include page="/counsel/call/"/>
                     <c:if test="${user.isTalk.equals('Y')}">
                         <jsp:include page="/counsel/talk/"/>
                     </c:if>
 
                     <div id="etc-panel" class="mt10">
-                        <div>
+                        <div style="height: 100%;">
                             <div class="ui top attached tabular menu">
                                 <a class="item active" data-tab="todo-list" style="border-top-width: 1px; border-color: #D4D4D5; border-radius: 0.28571429rem 0.28571429rem 0px 0px; max-width: 11%;">To-do</a>
                                 <a class="item" data-tab="counsel-list" style="border-top-width: 1px; border-color: #D4D4D5; border-radius: 0.28571429rem 0.28571429rem 0px 0px; max-width: 11%;">상담이력</a>
                             </div>
-                            <div class="ui bottom attached tab segment active" data-tab="todo-list">
+                            <div class="ui bottom attached tab segment active" data-tab="todo-list" style="height: calc(100% - 30px);">
                                 <jsp:include page="/counsel/todo-list"/>
                             </div>
-                            <div class="ui bottom attached tab segment" data-tab="counsel-list">
+                            <div class="ui bottom attached tab segment" data-tab="counsel-list" style="height: calc(100% - 30px);">
                                 <table class="table celled ui">
                                     <thead>
                                     <tr>
@@ -92,7 +92,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="seven wide column" style="height: 100%">
+                <div class="seven wide column" id="consulting-input">
                     <div id="call-custom-input-panel">
                         <div id="call-custom-input"></div>
                     </div>

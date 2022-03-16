@@ -383,8 +383,7 @@ public class MainApiController extends ApiBaseController {
                         data.setMaindbCustomName("미등록고객");
                     }
                     if (StringUtils.isEmpty(mainDb.get(e.getMaindbCustomId()))) {
-                        data.setMaindbCustomName("미등록고객");
-                        data.setMaindbCustomId("");
+                        data.setMaindbCustomName("이름없음");
                     } else {
                         if (StringUtils.isEmpty(data.getMaindbCustomName())) {
                             data.setMaindbCustomName(mainDb.get(e.getMaindbCustomId()));
@@ -450,6 +449,8 @@ public class MainApiController extends ApiBaseController {
         String customName = talkRoomEntity.getMaindbCustomName();
         if (customName != null && !customName.equals("")) {
             response.setCustomName(customName);
+        } else if (StringUtils.isNotEmpty(talkRoomEntity.getMaindbCustomId()) && StringUtils.isEmpty(customName)) {
+            response.setCustomName("이름없음");
         } else {
             response.setCustomName("미등록고객");
         }
@@ -512,7 +513,7 @@ public class MainApiController extends ApiBaseController {
 
     @PostMapping("file")
     public ResponseEntity<JsonResult<String>> uploadFile(@Valid @RequestParam MultipartFile file) {
-        final String[] enabledFileType = {".jpg", "jpeg", ".png", ".gif", ".ppt", ".pptx", ".xlsx", ".pdf", ".hwp", ".hwpx", ".docx", ".mp3", ".wav", ".zip"};
+        final String[] enabledFileType = {".jpg", "jpeg", ".png", ".gif", ".ppt", ".pptx", ".xls", ".xlsx", ".pdf", ".hwp", ".hwpx", ".docx", ".mp3", ".mp4", ".wav", ".zip", ".txt", ".mov", ".avi", ".wmv"};
 
         if (!StringUtils.endsWithAny(Objects.requireNonNull(file.getOriginalFilename()).toLowerCase(), enabledFileType)) {
             throw new IllegalArgumentException("사용할 수 없는 확장자 입니다.");
