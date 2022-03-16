@@ -53,7 +53,7 @@
         </div>
         <div class="ui tab active" id="consulting-screen" data-tab="consulting-screen">
             <div class="ui grid consulting-panel">
-                <div class="nine wide column" style="height: 100%">
+                <div class="nine wide column" id="consulting-call">
                     <jsp:include page="/counsel/call/"/>
                     <c:if test="${user.isTalk.equals('Y')}">
                         <jsp:include page="/counsel/talk/"/>
@@ -92,7 +92,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="seven wide column" style="height: 100%">
+                <div class="seven wide column" id="consulting-input">
                     <div id="call-custom-input-panel">
                         <div id="call-custom-input"></div>
                     </div>
