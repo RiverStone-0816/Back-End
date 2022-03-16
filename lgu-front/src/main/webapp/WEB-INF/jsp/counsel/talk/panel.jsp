@@ -194,7 +194,7 @@
                     },
                     load: function () {
                         const _this = this
-                        return restSelf.get('/api/counsel/current-talk-list').done(function (response) {
+                        return restSelf.get('/api/counsel/current-talk-list', null, null, true).done(function (response) {
                             _this.roomMap = {}
                             _this.STATUSES.forEach(e => _this.statuses[e.status].rooms = [])
                             response.data.forEach(function (e) {
