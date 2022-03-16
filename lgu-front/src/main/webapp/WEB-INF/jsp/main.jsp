@@ -540,7 +540,7 @@
         </div>
     </div>
 
-    <div class="ui modal tiny" id="modal-consulting-history-talk-view">
+    <div class="ui modal tiny" id="modal-consulting-history-talk-view" style="height: 750px;">
 
     </div>
 

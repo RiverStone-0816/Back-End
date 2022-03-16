@@ -12,18 +12,18 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<div class="ui modal tiny">
+<div class="ui modal tiny" style="height: 750px; max-height: none;">
     <i class="close icon"></i>
     <div class="header">
         상담톡대화방메시지
     </div>
-    <div class="scrolling content rows">
+    <div class="scrolling content rows"  style="height: 690px; max-height: none;" >
         <div class="chat-container">
-            <div class="room" style="background-color:#dce6f2;">
+            <div class="room" style="background-color:#dce6f2; height:640px; max-height: none;">
                 <div class="chat-header">
                     ${g.htmlQuote(entity.roomName)}
                 </div>
-                <div class="chat-body">
+                <div class="chat-body" style="height: 605px; max-height: none;">
                     <c:forEach var="e" items="${messageHistory}">
                         <c:choose>
 
