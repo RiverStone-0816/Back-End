@@ -372,7 +372,7 @@
                     },
                     openRoom: function (roomId, userName) {
                         talkRoom.loadRoom(roomId, userName).done(() => {
-                            loadTalkCustomInput(null, null, roomId, this.roomMap[roomId].senderKey, this.roomMap[roomId].userKey, this.roomMap[roomId].channelType);
+                            loadTalkCustomInput(this.roomMap[roomId].maindbGroupId, this.roomMap[roomId].maindbCustomId, roomId, this.roomMap[roomId].senderKey, this.roomMap[roomId].userKey, this.roomMap[roomId].channelType);
                             this.loadActivatedRoomIds();
                         })
                     },
@@ -429,6 +429,9 @@
                             lastMessage = content
 
                         return lastMessage
+                    },
+                    changeCustomName(data) {
+                        this.roomMap[data.roomId].maindbCustomName = data.maindb_custom_name;
                     }
                 },
                 updated: function () {
@@ -951,7 +954,7 @@
                     if (this.roomId !== message.roomId)
                         return
 
-                    if (['RI', 'SI', 'RB'].includes(message.sendReceive))
+                    if (['RI', 'SI', 'RB'].includes(message.sendReceive) && message.type !== 'text')
                         return
 
                     const _this = this
@@ -1413,6 +1416,9 @@
                 if (data.dist_yn === 'D' && data.userid === userId) $('#isDistributee').hide();
             })
             .on('svc_delete', processTalkMessage)
+            .on('svc_custom_match', data => {
+                talkListContainer.changeCustomName(data)
+            })
 
         $(window).on('load', function () {
             loadTalkCustomInput()
