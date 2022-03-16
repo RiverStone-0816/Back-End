@@ -276,14 +276,8 @@ TalkCommunicator.prototype.deleteRoom = function (roomId, channelType, senderKey
 TalkCommunicator.prototype.changeDistribution = function (distributed) {
     this.socket.emit('cli_dist_yn', {
         company_id: this.request.companyId,
-        room_id: null,
         userid: this.request.userid,
-        channel_type: null,
-        sender_key: null,
-        send_receive: "S",
-        user_key: null,
-        etc_data: "",
-        contents: distributed ? 'Y' : 'N'
+        dist_yn: distributed ? 'Y' : 'N'
     });
 };
 /**
