@@ -1075,7 +1075,7 @@
                     return profileImageSources[Math.abs(userName.hashCode()) % profileImageSources.length]
                 },
                 sendMessage: function (message) {
-                    if (!message) message = this.$refs.message.value
+                    if (!message) message = this.$refs.message.value.trim()
                     if (!message || !this.roomStatus || this.roomStatus === 'E') return
 
                     if (this.replying) {
