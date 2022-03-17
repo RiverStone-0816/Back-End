@@ -911,12 +911,17 @@
                                 }
 
                                 lastBlockId = Math.max.apply(null, [0].concat(blockList.blocks.map(e => e.id))) + 1
+
+                                function convertOppositeValue(pos) {
+                                    return pos * -1 + 100   // 초기 위치값을 조절하려면 뒤 + 값을 조정하면 됨
+                                }
+
+                                this.translateTo(convertOppositeValue(data.blockInfo.posX), convertOppositeValue(data.blockInfo.posY));
                             })
                         },
                         changeBot() {
                             const change = () => {
                                 this.loadBot(o.select)
-                                this.translateTo(0, 0)
                             }
 
                             if (o.current && o.changed && o.current !== o.select) {
