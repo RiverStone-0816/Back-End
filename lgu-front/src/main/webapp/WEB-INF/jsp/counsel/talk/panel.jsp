@@ -584,7 +584,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div v-for="(buttonGroup, j) in e.buttonGroups" class="chat bot">
+                                        <%--<div v-for="(buttonGroup, j) in e.buttonGroups" class="chat bot">
                                             <div class="bubble" style="background-color: #dce6f2; width: 350px;">
                                                 <div v-if="buttonGroup instanceof Array" class="button-inner"
                                                      style="width: 350px;">
@@ -594,7 +594,7 @@
                                                             type="button" class="chatbot-button">{{ e2.name }}</button></span>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div>--%>
                                     </div>
                                 </div>
                                 <div v-if="'RB' === e.sendReceive && e.messageType === 'text'" class="chat-item">
