@@ -1763,6 +1763,35 @@ label.control-label {
   }
 }
 
+.ui.toggle.checkbox.distributee {
+
+  width: 100px;
+  margin: 10px 10px 0 0;
+  input {
+    width: 100%;
+  }
+  label {
+    width: 100%;
+    &:before {
+      width: 100%;
+      content: '톡상담분배받기';
+      font-size: 12px;
+      letter-spacing: -1px;
+      text-align: right;
+      line-height: 20px;
+      padding: 0 7px 0 0;
+    }
+  }
+  input:checked ~ label:after {
+    left: 6rem;
+  }
+  input:checked ~ label:before {
+    text-align: left;
+    color: #fff;
+    padding: 0 0 0 8px;
+  }
+}
+
 .ui.form {
   textarea {
     resize: none;
