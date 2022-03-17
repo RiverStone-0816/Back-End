@@ -1175,7 +1175,8 @@
                         }
                         this.activatingTemplateIndex = null
                         return
-                    }
+                    } else
+                        this.showingTemplateLevel = 0
 
                     if (event.key === 'Escape') {
                         this.showingTemplateLevel = 0
