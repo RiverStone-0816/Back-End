@@ -343,6 +343,7 @@
                         return profileImageSources[Math.abs(userName.hashCode()) % profileImageSources.length]
                     },
                     activeTab: function (status) {
+                        this.statuses[status].newMessages = 0
                         const condition = this.statuses[status].filter
                         var value = this.statuses[status].filter.value
                         const _this = this
@@ -1389,6 +1390,15 @@
                 talkRoom.clearRoom()
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive)
+                if (data.send_receive === 'R' && data.userid === userId && talkRoom.roomId !== data.room_id) {
+                    talkListContainer.statuses['MY'].newMessages++
+                    $('.item[data-tab="talk-panel"]').addClass('newImg');
+                }
+                if (data.send_receive === 'SA' && data.userid === '') {
+                    talkListContainer.statuses['TOT'].newMessages++
+                    $('.item[data-tab="talk-panel"]').addClass('newImg');
+
+                }
             }
 
             talkRoomList.forEach(e => e.appendMessage({
