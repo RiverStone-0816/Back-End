@@ -85,7 +85,7 @@
                 </div>
                 <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
-                    <button class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop.prevent="actFallback(message)">
+                    <button class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop="actFallback(message)">
                       {{ getFallbackButtonName(message.data.fallback_action) }}
                     </button>
                   </div>
@@ -112,7 +112,7 @@
                         </button>
                       </span>
                       <span v-else-if="e instanceof Array">
-                        <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop.prevent="actButton(message, e2)">
+                        <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop="actButton(message, e2)">
                           {{ e2.btn_name }}
                         </button>
                       </span>
@@ -235,18 +235,13 @@
                 <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
                     <div class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
-                      <span v-if="(e instanceof Array) && e.action === 'phone'">
-                        <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click="document.location.href=`tel:${e2.next_action_data}`">
-                          {{ e2.btn_name }}
-                        </button>
-                      </span>
-                      <span v-else-if="e instanceof Array">
-                        <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop.prevent="actButton(message, e2)">
+                      <span v-if="e instanceof Array">
+                        <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop="actButton(message, e2)">
                           {{ e2.btn_name }}
                         </button>
                       </span>
                       <span v-else>
-                        <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop.prevent="actApi(message, e, $event)">
+                        <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop="actApi(message, e, $event)">
                           {{ e.btn_name }}
                         </button>
                       </span>
@@ -301,7 +296,7 @@
       <!--하단 채팅 입력-->
       <div v-if="inputEnable" class="flex flex-row items-center h-16 rounded-lg-xl bg-white w-full px-3 border-t">
         <div v-if="homeEnable">
-          <button class="flex items-center justify-center rounded-lg hover:bg-gray-200 h-10 w-10 text-white flex-shrink-0 mr-3" @click.stop.prevent="homeAction">
+          <button class="flex items-center justify-center rounded-lg hover:bg-gray-200 h-10 w-10 text-white flex-shrink-0 mr-3" @click.stop="homeAction">
             <span class="ml-1">
               <svg height="25" viewBox="15 5 10 25" width="36" xmlns="http://www.w3.org/2000/svg">
                 <path d="M15,30V21h6v9h7.5V18H33L18,4.5,3,18H7.5V30Z" fill="#514f65"/>
@@ -315,7 +310,7 @@
           </div>
         </div>
         <div class="ml-2">
-          <button class="flex items-center justify-center bg-gray-700 hover:bg-gray-800 rounded-lg h-10 w-10 text-white flex-shrink-0" @click.stop.prevent="sendText">
+          <button class="flex items-center justify-center bg-gray-700 hover:bg-gray-800 rounded-lg h-10 w-10 text-white flex-shrink-0" @click.stop="sendText">
             <span class="ml-1">
               <svg height="16" viewBox="0 0 18 16" width="18" xmlns="http://www.w3.org/2000/svg">
                 <path d="M3.009,20.5,21,12.5,3.009,4.5,3,10.722,15.857,12.5,3,14.278Z" fill="#fff" transform="translate(-3 -4.5)"/>
@@ -328,7 +323,7 @@
   </div>
   </body>
 </template>
-
+<iframe style="display: none" ref="runPhone"></iframe>
 <script>
 import moment from 'moment'
 import botIcon from '../assets/bot-icon.png'
@@ -485,7 +480,7 @@ export default {
     actButton(message, button) {
       if (button.action === 'url') return window.open(button.next_action_data, null)
 
-      if (button.action === 'phone') return document.location.href = 'tel:'+button.next_action_data
+      if (button.action === 'phone') return window.open('tel:'+button.next_action_data, "_blank")
 
       this.communicator.sendAction(this.botId, {
         chatbot_id: message.data.chatbot_id,
