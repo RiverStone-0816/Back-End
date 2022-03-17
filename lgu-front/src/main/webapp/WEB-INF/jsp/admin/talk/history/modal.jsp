@@ -54,6 +54,7 @@
 
                             <c:when test="${e.sendReceive == 'AF' || e.sendReceive == 'S' || e.sendReceive == 'R'}">
                                 <div class="chat-item ${e.sendReceive == 'AF' || e.sendReceive == 'S' ? 'chat-me' : ''}">
+                                    <c:if test="${e.blockInfo.displayList.size()!=0}">
                                     <div class="wrap-content">
                                         <c:set var="name"
                                                value="${e.sendReceive == 'AF' || e.sendReceive == 'S' ? (e.idName == '' || e.idName == null ? '자동발신' : e.idName) : (entity.maindbCustomName == '' || entity.maindbCustomName == null ? '' : entity.maindbCustomName)}"/>
@@ -122,6 +123,48 @@
                                                 </div>
                                             </c:when>
 
+
+                                            <c:when test="${ e.type == 'block' && e.blockInfo.displayList.get(0).type=='IMAGE'}">
+                                                <div class="chat bot">
+                                                    <div class="bubble">
+                                                        <div class="card">
+                                                            <div class="card-list"
+                                                                 style="border-radius: .5rem; border-color: black">
+                                                                <ul class="card-list-ul">
+                                                                    <c:forEach var="k"
+                                                                               items="${e.blockInfo.displayList}">
+                                                                        <c:choose>
+                                                                            <c:when test="${k.type.code=='text' || k.type.code=='number' || k.type.code=='calendar' || k.type.code=='date' ||
+                                                                            k.type.code=='secret' && k.type != null}">
+                                                                                <div class="chat">
+                                                                                    <div class="bubble">
+                                                                                        <p class="txt_chat">
+                                                                                                ${k.elementList.get(0).content}"
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:when>
+                                                                            <c:when test="${k.type.code=='image' && k.type != null}">
+                                                                                <div class="chat">
+                                                                                    <div class="bubble">
+                                                                                        <p class="txt_chat">
+                                                                                            <img src="'${pageContext.request.contextPath}/admin/talk/chat-bot/image?fileName=' + encodeURIComponent(k.elementList.get(0).image)">
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </c:when>
+                                                                        </c:choose>
+                                                                    </c:forEach>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </c:when>
+
+
+
+
                                             <c:when test="${e.type == 'block' && e.blockInfo.displayList.get(0).elementList.get(0).content !=null}">
                                                 <c:choose>
                                                     <c:when test="${ e.blockInfo.displayList.get(0).elementList.get(0).image!=null}">
@@ -133,7 +176,7 @@
                                                                     </div>
                                                                     <div class="card-content" style="padding: 10px;">
                                                                         <div class="card-title"
-                                                                             style="font-weight: 900; margin: 0 0 10px 0;">${e.blockInfo.displayList.size()}입니다. ${e.blockInfo.name}
+                                                                             style="font-weight: 900; margin: 0 0 10px 0;">${e.blockInfo.name}
                                                                         </div>
                                                                         <div class="card-text"
                                                                              style="white-space: pre-wrap;"> ${g.htmlQuote(e.blockInfo.displayList.get(0).elementList.get(0).content)}
@@ -191,12 +234,14 @@
                                                 </div>
                                             </c:otherwise>
                                         </c:choose>
+
                                     </div>
+                                    </c:if>
                                 </div>
                             </c:when>
 
-                            <c:when test="${e.sendReceive == 'SA' || e.sendReceive == 'AM' || e.sendReceive == 'AW'  || e.sendReceive == 'SAV'}">
-                                <div class="chat-item ${e.sendReceive == 'SA' || e.sendReceive == 'AM' || e.sendReceive == 'AW' || e.sendReceive == 'SAV' ? 'chat-me' : ''}">
+                            <c:when test="${e.sendReceive == 'SA' || e.sendReceive == 'AM' || e.sendReceive == 'AW'  || e.sendReceive == 'SAV' || e.sendReceive == 'AE' }">
+                                <div class="chat-item ${e.sendReceive == 'SA' || e.sendReceive == 'AM' || e.sendReceive == 'AW' || e.sendReceive == 'SAV' || e.sendReceive == 'AE'  ? 'chat-me' : ''}">
                                     <div class="wrap-content">
                                         <c:set var="name" value='오토멘트'/>
                                         <div class="txt-time">[${g.htmlQuote(name)}] ${e.insertTime}</div>
