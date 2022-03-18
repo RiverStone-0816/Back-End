@@ -525,7 +525,7 @@ export default {
       }, this.lastReceiveMessageType)
     },
     getFileUrl(company, fileName) {
-      return `https://cloudtalk.eicn.co.kr:8200/webchat_bot_image_fetch?company_id=${encodeURIComponent(company)}&file_name=${encodeURIComponent(fileName)}`
+      return `https://cloudtalk.eicn.co.kr:8200/webchat_bot_image_fetch?company_id=${encodeURIComponent(company)}&file_name=${encodeURIComponent(fileName)}&channel_type=${encodeURIComponent("eicn")}`
     },
     isImage(fileName) {
       if (!fileName) return false
@@ -553,7 +553,7 @@ export default {
           if (data.message_type === 'intro') {
             this.backgroundColor = data.message_data.bgcolor
             this.displayName = data.message_data.display_company_name
-            if (data.message_data.image !== '') this.botIcon = `https://cloudtalk.eicn.co.kr:8200/webchat_bot_image_fetch?company_id=${encodeURIComponent(data.company_id)}&file_name=${encodeURIComponent(data.message_data.image)}`
+            if (data.message_data.image !== '') this.botIcon = `https://cloudtalk.eicn.co.kr:8200/webchat_bot_image_fetch?company_id=${encodeURIComponent(data.company_id)}&file_name=${encodeURIComponent(data.message_data.image)}&channel_type=${encodeURIComponent("eicn")}`
 
             if (data.message_data.schedule_info.schedule_kind === 'B') {
               this.botId = data.message_data.schedule_info.schedule_data
