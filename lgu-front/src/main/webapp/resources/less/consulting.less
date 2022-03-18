@@ -975,9 +975,9 @@
             font-weight: 800;
           }
           .template-content {
-            font-weight: 300;
-            color: #919191;
-            padding: 0 0 0 10px;
+            font-weight: 400;
+            color: #626262;
+            padding: 0 0 0 2px;
             white-space: normal;
             line-height: 1.2;
             max-height: 3.6em;
@@ -990,9 +990,10 @@
           }
           .template-image {
             object-fit: cover;
-            width: 8em;
-            height: ~"calc(1em + 16px)";
-            margin: -8px 5px -8px 15px;
+            width: 11em;
+            font-size: 9.5pt;
+            height: ~"calc(1em + 2px)";
+            margin: -8px 5px -8px 2px;
           }
         }
       }
@@ -1141,16 +1142,19 @@
   #talk-list-container {
     padding-right: 0;
     height: 100%;
+    .tabular {
+      height: 42px;
+    }
     .talk-list-container {
       position: relative;
       height: 100%;
       .segment {
-        height: 94%;
+        height: ~"calc(100% - 42px)";
         .sort-wrap {
           height: 6%;
         }
         .talk-list-wrap {
-          height: 95%;
+          height: 93%;
         }
       }
     }

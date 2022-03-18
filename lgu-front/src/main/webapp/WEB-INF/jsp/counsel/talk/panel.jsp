@@ -727,12 +727,25 @@
             </div>
             <div class="write-chat" @drop.stop="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true" @click.stop="showingTemplateBlocks=false">
                 <div class="write-menu">
-                    <div v-if="showingTemplateBlocks" class="template-container template-block-container" style="min-width: 80%;">
-                        <div class="template-container-inner" >
+                    <div v-if="showingTemplateBlocks" class="template-container template-block-container" style="min-width: 90%;">
+                        <div class="template-container-inner">
                             <ul class="template-ul">
                                 <li v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.blockId)"
                                     class="template-list" >
-                                    <div class="template-title">/{{ e.name }}</div>
+                                    <div class="template-title">/[봇]</div>
+                                    <div class="template-content">[ {{ e.name }} ]</div>
+                                </li>
+                                <li v-for="(e, i) in getTemplates()" :key="i"
+                                    :class="i === activatingTemplateIndex && 'active'" @click.stop="sendTemplate(e)"
+                                    class="template-list">
+                                    <div class="template-title">/[{{ e.isImage ? '이미지' : '텍스트'}}]</div>
+                                    <div v-if="e.isImage">
+                                        <div class="template-content">[<img :src="e.url" class="template-image" :alt="e.fileName"/></div>
+                                    </div>
+                                    <div v-if="e.isImage" class="template-content" style="text-decoration: underline">-{{ e.fileName }}]</div>
+                                    <div v-else>
+                                        <div class="template-content">[{{ e.name }} - {{ e.text }}]</div>
+                                    </div>
                                 </li>
                             </ul>
                         </div>
@@ -743,12 +756,19 @@
                                 <li v-for="(e, i) in getTemplates()" :key="i"
                                     :class="i === activatingTemplateIndex && 'active'" @click.stop="sendTemplate(e)"
                                     class="template-list">
-                                    <div class="template-title">/{{ e.name }}</div>
-                                    <img v-if="e.isImage" :src="e.url" class="template-image" :alt="e.fileName"/>
-                                    <div v-if="e.isImage" class="template-content" style="text-decoration: underline">{{
-                                        e.fileName }}
+                                    <div class="template-title">/[{{ e.isImage ? '이미지' : '텍스트'}}]</div>
+                                    <div v-if="e.isImage">
+                                        <div class="template-content">[<img :src="e.url" class="template-image" :alt="e.fileName"/></div>
                                     </div>
-                                    <div v-else class="template-content">{{ e.text }}</div>
+                                    <div v-if="e.isImage" class="template-content" style="text-decoration: underline">-{{ e.fileName }}]</div>
+                                    <div v-else>
+                                        <div class="template-content">[{{ e.name }} - {{ e.text }}]</div>
+                                    </div>
+                                </li>
+                                <li v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.blockId)"
+                                    class="template-list" >
+                                    <div class="template-title">/[봇]</div>
+                                    <div class="template-content">[ {{ e.name }} ]</div>
                                 </li>
                             </ul>
                         </div>
@@ -772,7 +792,7 @@
                     <div :style="'visibility:'+(roomId?'visible':'hidden')">
                         <span v-show="!isMessage">
                             <button v-if="channelType==='eicn'" class="mini ui button compact mr5"
-                                    @click.stop="getTemplate">봇템플릿
+                                    @click.stop="getTemplate">템플릿
                             </button>
                             <button v-if="channelType==='kakao'" class="mini ui button compact mr5"
                                     @click.stop="getTemplateAll">템플릿
