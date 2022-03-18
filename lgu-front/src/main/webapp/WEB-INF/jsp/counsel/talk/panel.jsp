@@ -730,7 +730,7 @@
                     <div v-if="showingTemplateBlocks" class="template-container template-block-container" style="min-width: 90%;">
                         <div class="template-container-inner">
                             <ul class="template-ul">
-                                <li v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.blockId)"
+                                <li v-if="channelType==='eicn'" v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.blockId)"
                                     class="template-list" >
                                     <div class="template-title">/[봇]</div>
                                     <div class="template-content">[ {{ e.name }} ]</div>
@@ -765,7 +765,7 @@
                                         <div class="template-content">[{{ e.name }} - {{ e.text }}]</div>
                                     </div>
                                 </li>
-                                <li v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.blockId)"
+                                <li v-if="channelType==='eicn'" v-for="(e, i) in templateBlocks" :key="i" @click.stop="sendTemplateBlock(e.blockId)"
                                     class="template-list" >
                                     <div class="template-title">/[봇]</div>
                                     <div class="template-content">[ {{ e.name }} ]</div>
