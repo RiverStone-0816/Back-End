@@ -18,7 +18,7 @@ import java.io.IOException;
 @AllArgsConstructor
 @Service
 public class MultichannelService extends ApiServerInterface {
-    private static final String subUrl = "http://122.49.74.102/ipcc/multichannel/remote/session_check.jsp;jsessionid=";
+    private static final String subUrl = "https://dev.eicn.co.kr/ipcc/multichannel/remote/session_check.jsp;jsessionid=";
 
     protected RequestGlobal g;
     private final UserApiInterface userApiInterface;
