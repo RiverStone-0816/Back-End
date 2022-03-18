@@ -3411,7 +3411,7 @@ g {
 
 .ui.dimmer {z-index: 91000;}
 
-#talk-panel.expand-panel {height: 85%; .send-btn {height: 60px;} .talk-list-container .talk-list-wrap {overflow:auto;}}
+#talk-panel.expand-panel {height: 85%; .send-btn {height: 60px;} .talk-list-container {.talk-list-wrap {overflow:auto;}}}
 #talk-panel.expand-panel .talk-list-container .talk-list-wrap::-webkit-scrollbar{display: none;}
 #etc-panel-resizer {
   position: absolute; right: 5px; top: 5px; background: rgba(100, 100, 100, 0.1); border: none; cursor: pointer;
@@ -3420,8 +3420,8 @@ g {
 #etc-panel.reduce-panel {height: 15%; margin-bottom: -7px; .segment {height: 5em;}}
 
 #talk-panel.reduce-panel {
-  height: 68.5%; .chat-body {height: 90% !important;} .talk-room {height: 101% !important;} .send-btn {height: 40px;}
-  .talk-list-container {margin-bottom:3em; .sort-wrap {height: 5.5% !important;} .talk-list-wrap {height: 93% !important;}}
+  height: 68.5%; .chat-body {height: 90% !important;} .talk-room .send-btn {height: 40px;}
+  .talk-list-container {margin-bottom:3em; .sort-wrap {height: 5.5% !important;}}
 }
 #talk-panel.reduce-panel .chat-container {margin-bottom: 3em;}
 #etc-panel.expand-panel {height: 33%;}
