@@ -1393,12 +1393,14 @@
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive)
                 if (data.send_receive === 'R' && data.userid === userId && talkRoom.roomId !== data.room_id) {
                     talkListContainer.statuses['MY'].newMessages++
-                    $('.item[data-tab="talk-panel"]').addClass('newImg');
+                }
+                if (data.send_receive === 'R' && data.userid === userId && $('#mode').text() === '관리모드') {
+                    $('#newChangeMode').addClass('admin-new-img');
                 }
                 if (data.send_receive === 'SA' && data.userid === '') {
                     talkListContainer.statuses['TOT'].newMessages++
                     $('.item[data-tab="talk-panel"]').addClass('newImg');
-
+                    if ($('#mode').text() === '관리모드') $('#newChangeMode').addClass('admin-new-img');
                 }
             }
 

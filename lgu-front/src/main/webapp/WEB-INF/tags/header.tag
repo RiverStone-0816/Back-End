@@ -41,7 +41,7 @@
         <div class="pull-right">
             <div class="mode-set">
                 <div class="selectbox header-nav-container">
-                    <div class="select"><text id="mode">관리모드</text> <span>ON</span><i class="material-icons arrow"> keyboard_arrow_down </i></div>
+                    <div class="select"><div id="newChangeMode"></div><text id="mode">관리모드</text> <span>ON</span><i class="material-icons arrow"> keyboard_arrow_down </i></div>
                     <div class="option nav-ul">
                         <ul>
                             <c:if test="${hasExtension && isStat}">
@@ -101,6 +101,7 @@
             if ($('#main').is('.change-mode')) {
                 $('#mode').text('상담모드');
                 $('.tab-menu').contents().find('.excel-down-button').hide();
+                $('#newChangeMode').removeClass('admin-new-img');
             } else {
                 $('#mode').text('관리모드');
                 $('.tab-menu').contents().find('.excel-down-button').show();
