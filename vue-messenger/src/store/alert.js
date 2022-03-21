@@ -3,7 +3,8 @@ export default {
     state() {
         return {
             showing: false,
-            body: null
+            body: null,
+            isClose: false
         }
     },
     getters: {
@@ -17,11 +18,12 @@ export default {
     mutations: {
         show(state, body) {
             state.showing = true
-            state.body = body
+            state.body = body.body
+            state.isClose = body.isClose
         },
         close(state) {
             state.showing = false
-            self.close()
+            if(state.isClose) self.close()
         }
     }
 }

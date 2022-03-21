@@ -44,7 +44,7 @@ export default {
     connect() {
       this.communicator.connect(this.form.url, this.form.senderKey, this.form.userKey, this.form.ip, this.form.mode,)
       this.communicator.on('webchatsvc_start', data => {
-        if (data.result !== 'OK') return store.commit('alert/show', `로그인실패 : ${data.result}; ${data.result_data}`)
+        if (data.result !== 'OK') return store.commit('alert/show', {body: `로그인실패 : ${data.result}; ${data.result_data}` ,isClose: true})
         this.communicator.disconnect()
         this.openChat(this.form.url, this.form.senderKey, this.form.userKey, this.form.ip, this.form.mode,)
         this.opened = true

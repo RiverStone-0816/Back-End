@@ -106,12 +106,7 @@
                 <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
                     <div class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
-                      <span v-if="(e instanceof Array) && e.action === 'phone'">
-                        <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click="document.location.href=`tel:${e2.next_action_data}`">
-                          {{ e2.btn_name }}
-                        </button>
-                      </span>
-                      <span v-else-if="e instanceof Array">
+                      <span v-if="e instanceof Array">
                         <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop="actButton(message, e2)">
                           {{ e2.btn_name }}
                         </button>
@@ -211,18 +206,18 @@
                         <div v-if="e2.input_type !== 'time'" class="relative w-full pt-2">
                           <input class="flex w-full border rounded-lg focus:outline-none focus:border-indigo-300 h-8 pl-2 pr-2"
                                  :type="(e2.input_type === 'calendar' && 'date') || (e2.input_type === 'number' && 'number') || (e2.input_type === 'secret' && 'password') || (e2.input_type === 'text' && 'text')"
-                                 :name="e2.input_param_name">
+                                 :name="e2.input_param_name" :data-value="e2.input_need_yn">
                         </div>
                         <div v-else class="ui multi form">
-                          <select :name="e2.input_param_name + '.meridiem'" class="slt rounded-lg h-10">
+                          <select :name="e2.input_param_name + '.meridiem'" :data-value="e2.input_need_yn" class="slt rounded-lg h-10">
                             <option value="am">오전</option>
                             <option value="pm">오후</option>
                           </select>
-                          <select :name="e2.input_param_name + '.hour'" class="slt rounded-lg h-10">
+                          <select :name="e2.input_param_name + '.hour'" :data-value="e2.input_need_yn" class="slt rounded-lg h-10">
                             <option v-for="hour in 12" :key="hour" :value="hour - 1">{{ hour - 1 }}</option>
                           </select>
                           <span class="unit">시</span>
-                          <select :name="e2.input_param_name + '.minute'" class="slt rounded-lg h-10">
+                          <select :name="e2.input_param_name + '.minute'" :data-value="e2.input_need_yn" class="slt rounded-lg h-10">
                             <option v-for="minute in 60" :key="minute" :value="minute - 1">{{ minute - 1 }}</option>
                           </select>
                           <span class="unit">분</span>
@@ -472,7 +467,7 @@ export default {
           action_data: message.data.fallback_action_data,
         }, this.lastReceiveMessageType)
       } else if (message.data.fallback_action === 'phone') {
-        store.commit('alert/show', 'phone 처리 방법을 전달받아야 함')
+        return window.open('tel:', "_blank")
       } else {
         store.commit('alert/show', `미처리된 부분이 있음: ${message.data.fallback_action}:${message.data.fallback_action_data}`)
       }
@@ -496,7 +491,7 @@ export default {
       const result = {}
       const elements = this.$refs.apiparent.querySelectorAll('[name]')
       for (let i = 0; i < elements.length; i++) {
-        if (!elements[i].value) return store.commit('alert/show', 'API 호출을 위해 필요 정보를 모두 입력해야 합니다.')
+        if (!elements[i].value && elements[i].dataset.value === 'Y') return store.commit('alert/show', {body: 'API 호출을 위해 필요 정보를 모두 입력해야 합니다.', isClose: false})
 
         const split = elements[i].name.split('.')
         if (split.length === 1) {
@@ -542,7 +537,7 @@ export default {
     this.communicator
         .on('webchatsvc_close', () => {
           this.communicator.disconnect()
-          store.commit('alert/show', '연결이 종료되었습니다.')
+          store.commit('alert/show', {body: '연결이 종료되었습니다.', isClose: true})
           this.inputEnable = false
         })
         .on('webchatsvc_message', data => {
@@ -607,8 +602,8 @@ export default {
           this.messages.push({sender: SENDER.SERVER, time: new Date(), data: data.message_data, messageType: data.message_type, company: data.company_id})
         })
         .on('webchatsvc_start', data => {
-          if (data.result_data === 'NO_CHANNEL') return store.commit('alert/show', '채널키가 없음.')
-          if (data.result !== 'OK') return store.commit('alert/show', `로그인실패 : ${data.result}; ${data.result_data}`)
+          if (data.result_data === 'NO_CHANNEL') return store.commit('alert/show', {body:'채널키가 없음.' ,isClose: true})
+          if (data.result !== 'OK') return store.commit('alert/show', {body: `로그인실패 : ${data.result}; ${data.result_data}` ,isClose: true})
           this.communicator.requestIntro()
         })
         .connect(window.form.url, window.form.senderKey, window.form.userKey, window.form.ip, window.form.mode,)
