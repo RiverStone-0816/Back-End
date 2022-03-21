@@ -148,9 +148,9 @@ public class DashboardController extends BaseController {
         }).collect(Collectors.toList()));
 
         final Map<String, Set<String>> serviceNumberToQueueName = new HashMap<>();
-        callbackDistributionApiInterface.list().forEach(e -> {
-            final Set<String> queueNames = serviceNumberToQueueName.computeIfAbsent(e.getSvcNumber(), (k) -> new HashSet<>());
-            e.getHunts().forEach(hunt -> queues.stream().filter(e2 -> Objects.equals(e2.getNumber(), hunt.getQueueNumber())).forEach(e2 -> queueNames.add(e2.getName())));
+        queues.forEach(e->{
+            final Set<String> queueNames =  serviceNumberToQueueName.computeIfAbsent(e.getSvcNumber(),(k)->new HashSet<>());
+            queueNames.add(e.getName());
         });
         model.addAttribute("serviceNumberToQueueName", serviceNumberToQueueName);
 
