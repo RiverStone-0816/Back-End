@@ -14,4 +14,5 @@ public class WebchatBotDisplayElementFormRequest {
     private DisplayElementInputType inputType;
     private String paramName;
     private String displayName;
+    private String needYn;
 }

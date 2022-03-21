@@ -69,6 +69,7 @@ public class WebchatBotFormRequest extends WebchatBotFallbackFormRequest {
         private DisplayElementInputType inputType;
         private String paramName;
         private String displayName;
+        private String needYn;
     }
 
     @EqualsAndHashCode(callSuper = true)

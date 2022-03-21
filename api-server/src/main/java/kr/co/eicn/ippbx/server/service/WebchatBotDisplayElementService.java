@@ -33,6 +33,7 @@ public class WebchatBotDisplayElementService extends ApiBaseService {
             data.setInputType(elementInfo.getInputType());
             data.setParamName(elementInfo.getParamName());
             data.setDisplayName(elementInfo.getDisplayName());
+            data.setNeedYn(elementInfo.getNeedYn());
 
             webchatBotDisplayElementRepository.insert(data);
         } else
@@ -56,6 +57,7 @@ public class WebchatBotDisplayElementService extends ApiBaseService {
         response.setInputType(DisplayElementInputType.of(entity.getInputType()));
         response.setParamName(entity.getInputParamName());
         response.setDisplayName(entity.getInputDisplayName());
+        response.setNeedYn(entity.getInputNeedYn());
 
         return response;
     }

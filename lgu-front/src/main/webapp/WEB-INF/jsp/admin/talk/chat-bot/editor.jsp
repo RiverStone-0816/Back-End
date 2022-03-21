@@ -367,6 +367,17 @@
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    <tr>
+                                                        <th>필수여부</th>
+                                                        <td>
+                                                            <div class="ui form fluid">
+                                                                <select v-model="e.needYn">
+                                                                    <option value="Y">Y</option>
+                                                                    <option value="N">N</option>
+                                                                </select>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
                                                 </table>
                                             </div>
                                         </div>
@@ -745,7 +756,7 @@
                                             : e.type === 'card' ? [{order: 0, image: e.data?.fileUrl, title: e.data?.title, content: e.data?.announcement}]
                                                 : e.type === 'list' ? [{order: 0, title: e.data?.title}].concat(e.data?.list?.map((e2, j) =>
                                                     ({order: j + 1, title: e2.title, content: e2.announcement, url: e2.url, image: e2.fileUrl})))
-                                                    : [{order: 0, title: e.data?.title}].concat(e.data?.params?.map((e2, j) => ({order: j + 1, inputType: e2.type, paramName: e2.paramName, displayName: e2.displayName})))
+                                                    : [{order: 0, title: e.data?.title}].concat(e.data?.params?.map((e2, j) => ({order: j + 1, inputType: e2.type, paramName: e2.paramName, displayName: e2.displayName, needYn: e2.needYn})))
 
                                 })),
                                 buttonList: block?.buttons.map((e, i) => ({
@@ -849,7 +860,7 @@
                                             type: 'input',
                                             data: {
                                                 title: e.elementList[0]?.title,
-                                                params: e.elementList.splice(1).map(e2 => ({type: e2?.inputType, paramName: e2?.paramName, displayName: e2?.displayName}))
+                                                params: e.elementList.splice(1).map(e2 => ({type: e2?.inputType, paramName: e2?.paramName, displayName: e2?.displayName, needYn: e2?.needYn}))
                                             }
                                         }
 
@@ -1257,12 +1268,13 @@
             })()
             const formDisplayConfig = (() => {
                 const API_PARAMETER_TYPES = Object.freeze({text: 'text', number: 'number', calendar: 'calendar', time: 'time', secret: 'secret'})
+                const API_PARAMETER_ISNULL = Object.freeze({Y: 'Y', N: 'N'})
                 const o = Vue.createApp({
                     data() {
                         return {
                             nodeId: null,
                             displayIndex: null,
-                            data: {title: null, params: [{type: null, paramName: null, displayName: null,}],},
+                            data: {title: null, params: [{type: null, paramName: null, displayName: null, needYn: null}],},
                         }
                     },
                     methods: {
@@ -1270,7 +1282,7 @@
                             o.nodeId = nodeId
                             o.displayIndex = displayIndex
                             o.data = {title: data?.title, params: []}
-                            data?.params.forEach(param => o.data.params.push({type: param?.type, paramName: param?.paramName, displayName: param?.displayName}))
+                            data?.params.forEach(param => o.data.params.push({type: param?.type, paramName: param?.paramName, displayName: param?.displayName, needYn: param?.needYn}))
                             if (!o.data.params || !o.data.params.length) o.data.params = [{type: API_PARAMETER_TYPES.text, paramName: null, displayName: null}]
                         },
                         save() {
@@ -1280,12 +1292,13 @@
                             o.data.params.forEach(e => nodeBlockMap[o.nodeId].displays[o.displayIndex].data.params.push({
                                 type: e?.type,
                                 paramName: e?.paramName,
-                                displayName: e?.displayName
+                                displayName: e?.displayName,
+                                needYn: e?.needYn
                             }))
                             alert("저장되었습니다.");
                         },
                         addApiParameterItem() {
-                            o.data.params.push({type: API_PARAMETER_TYPES.text, paramName: null, displayName: null})
+                            o.data.params.push({type: API_PARAMETER_TYPES.text, paramName: null, displayName: null, needYn: API_PARAMETER_ISNULL.N})
                         },
                         removeApiParameterItem(index) {
                             if (index === 0) return

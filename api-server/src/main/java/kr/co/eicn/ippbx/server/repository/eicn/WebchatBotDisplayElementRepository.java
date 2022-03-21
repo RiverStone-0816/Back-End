@@ -3,6 +3,8 @@ package kr.co.eicn.ippbx.server.repository.eicn;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebchatBotDispElement;
 import kr.co.eicn.ippbx.model.form.WebchatBotDisplayElementFormRequest;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -34,6 +36,7 @@ public class WebchatBotDisplayElementRepository extends EicnBaseRepository<Webch
                 .set(WEBCHAT_BOT_DISP_ELEMENT.INPUT_PARAM_NAME, request.getParamName())
                 .set(WEBCHAT_BOT_DISP_ELEMENT.INPUT_DISPLAY_NAME, request.getDisplayName())
                 .set(WEBCHAT_BOT_DISP_ELEMENT.COMPANY_ID, getCompanyId())
+                .set(WEBCHAT_BOT_DISP_ELEMENT.INPUT_NEED_YN, StringUtils.isNotEmpty(request.getNeedYn()) ? request.getNeedYn() : "N")
                 .execute();
     }
 

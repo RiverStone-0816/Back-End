@@ -51,6 +51,7 @@ public class WebchatBotInfoResponse extends WebchatBotFallbackInfoResponse {
         private DisplayElementInputType inputType;
         private String paramName;
         private String displayName;
+        private String needYn;
     }
 
     @Data
