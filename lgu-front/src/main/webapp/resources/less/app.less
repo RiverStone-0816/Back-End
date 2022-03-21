@@ -321,13 +321,13 @@ pre {
           max-height: 42px;
         }
         #call-custom-input-panel, #talk-custom-input-panel {
-          height: 51%;
+          height: ~"calc(49.5% + 1rem)";
           #call-custom-input, #talk-custom-input {
             height: 95%;
           }
         }
         #call-counseling-input-panel, #talk-counseling-input-panel {
-          height: 52.5%;
+          height: ~"calc(50% + 1rem)";
           #call-counseling-input, #talk-counseling-input {
             height: 100%;
           }
@@ -3418,21 +3418,21 @@ g {
 
 .ui.dimmer {z-index: 91000;}
 
-#talk-panel.expand-panel {height: 85%; .send-btn {height: 60px;} .talk-list-container {.talk-list-wrap {overflow:auto;}}}
+#talk-panel.expand-panel {height: ~"calc(98% - 100px)"; .send-btn {height: 60px;} .talk-list-container {.talk-list-wrap {overflow:auto;}}}
 #talk-panel.expand-panel .talk-list-container .talk-list-wrap::-webkit-scrollbar{display: none;}
 #etc-panel-resizer {
   position: absolute; right: 5px; top: 5px; background: rgba(100, 100, 100, 0.1); border: none; cursor: pointer;
   i {vertical-align: middle;}
 }
-#etc-panel.reduce-panel {height: 15%; margin-bottom: -7px; .segment {height: 5em;}}
+#etc-panel.reduce-panel {height: 120px; margin: 0; .segment {height: 5em;}}
 
 #talk-panel.reduce-panel {
-  height: 68.5%; .chat-body {height: 90% !important;} .talk-room .send-btn {height: 40px;}
+  height: 68%; .chat-body {height: 89% !important;} .talk-room .send-btn {height: 40px;}
   .talk-list-container {margin-bottom:3em; .sort-wrap {height: 5.5% !important;}}
 }
 #talk-panel.reduce-panel .chat-container {margin-bottom: 3em;}
 #etc-panel.expand-panel {height: 33%;}
-#etc-panel {position: absolute; bottom: 0; width: 97%; height: 42%; margin-bottom: -6px; }
+#etc-panel {position: absolute; bottom: 0; width: 97%; height: 41%; margin-bottom: -2px; }
 
 .calendar.user-schedule-modal .view-container table td {height: 80px;}
 
