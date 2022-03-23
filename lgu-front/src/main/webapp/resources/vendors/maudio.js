@@ -151,4 +151,6 @@ function maudio(_opt){
     var s = parseInt(sec%60);
     return (m < 10 ?  '0' + m : m)+ ':' + (s < 10 ?  '0' + s : s)
   }
+
+  return $(thisWindow);
 }

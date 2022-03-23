@@ -263,6 +263,23 @@
                     <div v-if="isImage(message.data.file_name)" class="relative max-w-xs">
                       <img alt="chat_image" class="w-full rounded-lg" :src="message.data.fileUrl">
                     </div>
+                    <div v-else-if="isAudio(message.data.file_name)" class="relative max-w-xs maudio">
+                      <audio :src="e.fileUrl" initaudio="false"></audio>
+                      <div class="audio-control">
+                        <a href="javascript:" class="fast-reverse"></a>
+                        <a href="javascript:" class="play"></a>
+                        <a href="javascript:" class="fast-forward"></a>
+                        <div class="progress-bar">
+                          <div class="progress-pass"></div>
+                        </div>
+                        <div class="time-keep">
+                          <span class="current-time">00:00</span> / <span class="duration">00:00</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div v-else-if="isVideo(message.data.file_name)" class="relative max-w-xs">
+                      <video controls :src="e.fileUrl"></video>
+                    </div>
                     <div v-else class="relative text-sm bg-white py-2 px-3 pb-0 shadow rounded-lg w-full max-w-xs">
                       <a class="w-full rounded-lg" :href="message.data.fileUrl">{{ message.data.file_name }}
                         <hr/>
@@ -329,6 +346,7 @@ import lineIcon from '../assets/line-icon.png'
 import debounce from '../utillities/mixins/debounce'
 import store from '../store/index'
 import Communicator from "../utillities/Communicator"
+import maudio from "../utillities/maudio"
 
 const SENDER = Object.freeze({SERVER: 'SERVER', USER: 'USER'})
 
@@ -528,10 +546,30 @@ export default {
           || fileName.toLowerCase().endsWith('.jpeg')
           || fileName.toLowerCase().endsWith('.png')
           || fileName.toLowerCase().endsWith('.bmp')
+          || fileName.toLowerCase().endsWith('.gif')
+    },
+    isAudio(fileName) {
+      if (!fileName) return false
+      return fileName.toLowerCase().endsWith('.mp3')
+          || fileName.toLowerCase().endsWith('.wav')
+    },
+    isVideo(fileName) {
+      if (!fileName) return false
+      return fileName.toLowerCase().endsWith('.mp4')
+          || fileName.toLowerCase().endsWith('.avi')
+          || fileName.toLowerCase().endsWith('.wmv')
+          || fileName.toLowerCase().endsWith('.mov')
     },
   },
   updated() {
     this.debounce(() => this.$refs.chatBody.scroll({top: this.$refs.chatBody.scrollHeight}), 100)
+    this.$nextTick(function () {
+      const audio = $(this).find('audio');
+      if (audio) {
+        const audioControl = maudio(audio);
+        audioControl.find('.mute, .volume-bar').remove()
+      }
+    })
   },
   mounted() {
     this.communicator

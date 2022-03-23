@@ -406,6 +406,8 @@
                     getLastMessage(sendReceive, type, content, userName) {
                         let lastMessage = ""
 
+                        const fileType = checkFileType(type, content);
+
                         if (type === 'block') {
                             if (sendReceive === 'SB')
                                 lastMessage = '블록을 전송하였습니다.'
@@ -426,6 +428,12 @@
                                 lastMessage = userName + '상담사가 상담을 종료했습니다.'
                             }
                         }
+                        else if (fileType === 'photo')
+                            lastMessage = '사진을 전송했습니다.'
+                        else if (fileType === 'video')
+                            lastMessage = '비디오를 전송했습니다.'
+                        else if (fileType === 'audio')
+                            lastMessage = '음원을 전송했습니다.'
                         else
                             lastMessage = content
 
@@ -658,8 +666,10 @@
                                                          class="cursor-pointer" @click="popupImageView(e.fileUrl)">
                                                     <img v-else-if="e.messageType === 'image_temp'" :src="e.fileUrl"
                                                          class="cursor-pointer" @click="popupImageView(e.fileUrl)">
-                                                    <audio v-else-if="e.messageType === 'audio'" controls
-                                                           :src="e.fileUrl"></audio>
+                                                    <div v-else-if="e.messageType === 'audio'" class="maudio" style="width: 330px">
+                                                        <audio controls :src="e.fileUrl" initaudio="false"></audio>
+                                                    </div>
+                                                    <video v-else-if="e.messageType === 'video'" controls :src="e.fileUrl"></video>
                                                     <a v-else-if="e.messageType === 'file'" target="_blank"
                                                        :href="e.fileUrl">{{ e.contents }}</a>
                                                     <template v-else-if="e.messageType === 'text'">
@@ -911,6 +921,15 @@
                     messageList: [],
                 }
             },
+            updated: function () {
+                this.$nextTick(function () {
+                    const audio = $(this).find('audio');
+                    if (audio) {
+                        const audioControl = maudio(audio);
+                        audioControl.find('.mute, .volume-bar').remove()
+                    }
+                })
+            },
             methods: {
    /*             keydown:function (event){
                     if (event.key === 'Escape') {
@@ -1003,17 +1022,7 @@
                         }
                     }
 
-                    // TODO: 항상 모든 파일의 messageType이 file로 전달된다. => photo, audio로 분류해야 한다.
-                    if (message.messageType === 'file' || message.messageType === 'image') {
-                        const isImage = (fileName) => {
-                            if (!fileName) return false
-                            return fileName.toLowerCase().endsWith('.jpg')
-                                || fileName.toLowerCase().endsWith('.jpeg')
-                                || fileName.toLowerCase().endsWith('.png')
-                                || fileName.toLowerCase().endsWith('.bmp')
-                        }
-                        if (isImage(message.contents)) message.messageType = 'photo'
-                    }
+                    message.messageType = checkFileType(message.messageType, message.contents)
 
                     if (message.messageType === 'block') {
                         const block = this.templateBlocks.filter(e => e.blockId === parseInt(message.contents))[0]
@@ -1073,6 +1082,8 @@
                     this.messageList.sort(function (a, b) {
                         return a.time - b.time
                     })
+
+                    talkListContainer.roomMap[message.roomId].lastMessage = talkListContainer.getLastMessage(message.sendReceive, message.messageType, message.content, message.userName)
                 },
                 getListElements(display) {
                     return JSON.parse(JSON.stringify(display)).elementList?.sort((a, b) => (a.order - b.order)).splice(1)
@@ -1456,6 +1467,37 @@
             .on('svc_custom_match', data => {
                 talkListContainer.changeCustomName(data)
             })
+
+        function checkFileType(type, content) {
+            if (['file', 'image', 'audio', 'video'].includes(type)) {
+                const isImage = (fileName) => {
+                    if (!fileName) return false
+                    return fileName.toLowerCase().endsWith('.jpg')
+                        || fileName.toLowerCase().endsWith('.jpeg')
+                        || fileName.toLowerCase().endsWith('.png')
+                        || fileName.toLowerCase().endsWith('.bmp')
+                        || fileName.toLowerCase().endsWith('.gif')
+                }
+                const isAudio = (fileName) => {
+                    if (!fileName) return false
+                    return fileName.toLowerCase().endsWith('.mp3')
+                        || fileName.toLowerCase().endsWith('.wav')
+                }
+                const isVideo = (fileName) => {
+                    if (!fileName) return false
+                    return fileName.toLowerCase().endsWith('.mp4')
+                        || fileName.toLowerCase().endsWith('.avi')
+                        || fileName.toLowerCase().endsWith('.wmv')
+                        || fileName.toLowerCase().endsWith('.mov')
+                }
+
+                if (isImage(content)) return 'photo'
+                else if(isAudio(content)) return 'audio'
+                else if(isVideo(content)) return 'video'
+            }
+
+            return type;
+        }
 
         $(window).on('load', function () {
             loadTalkCustomInput()
