@@ -54,7 +54,7 @@
                             <td colspan="3">
                                 <div class="ui form"><form:input path="soundName"/></div>
                             </td>
-                            <th>파일명(한글)</th>
+                            <th>파일명(영어)</th>
                             <td colspan="3">
                                 <div class="ui form"><form:input path="fileName"/></div>
                             </td>
