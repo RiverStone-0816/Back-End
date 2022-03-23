@@ -54,7 +54,7 @@ IpccPdsCommunicator.prototype.connect = function (url, companyId, userId, passwo
 
     const _this = this;
     try {
-        this.socket = io.connect(url, {'reconnect': true, 'resource': 'socket.io'});
+        this.socket = io.connect(url, {'reconnection': true, 'resource': 'socket.io'});
         this.socket.emit('climsg_login', {
             company_id: _this.request.companyId,
             userid: _this.request.userId,

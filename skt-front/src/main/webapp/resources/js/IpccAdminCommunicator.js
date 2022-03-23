@@ -54,7 +54,7 @@ IpccAdminCommunicator.prototype.connect = function (url, companyId, userId, pbxN
 
     const _this = this;
     try {
-        this.socket = io.connect(url, {'secure': url.contains('https')}, {'reconnect': true, 'resource': 'socket.io'});
+        this.socket = io.connect(url, {'secure': url.contains('https')}, {'reconnection': true, 'resource': 'socket.io'});
         this.socket.emit('climsg_join', {
             company_id: _this.request.companyId,
             userid: _this.request.userId,
