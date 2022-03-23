@@ -55,11 +55,12 @@ IpccAdminCommunicator.prototype.connect = function (url, companyId, userId, pbxN
     const _this = this;
     try {
         this.socket = io.connect(url, {'secure': url.contains('https')}, {'reconnection': true, 'resource': 'socket.io'});
-        this.socket.emit('climsg_join', {
-            company_id: _this.request.companyId,
-            userid: _this.request.userId,
-            pbxname: _this.request.pbxName
-        }).on('connect', function () {
+        this.socket.on('connect', function () {
+            _this.socket.emit('climsg_join', {
+                company_id: _this.request.companyId,
+                userid: _this.request.userId,
+                pbxname: _this.request.pbxName
+            })
             _this.parse("NODEJS|KIND:CONNECT");
         }).on('svcmsg', function (data) {
             _this.parse(data);
