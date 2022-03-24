@@ -6,7 +6,8 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 import java.util.Objects;
 
 public enum ButtonAction implements CodeHasable<String> {
-    CONNECT_NEXT_BLOCK(""), CONNECT_BLOCK("block"), CONNECT_URL("url"), CONNECT_MEMBER("member"), CONNECT_PHONE("phone"), CONNECT_API("api");
+    CONNECT_NEXT_BLOCK(""), CONNECT_BLOCK("block"), CONNECT_URL("url"), CONNECT_MEMBER("member"), CONNECT_PHONE("phone"), CONNECT_API("api"),
+    CONNECT_FIRST_BLOCK("first"), CONNECT_PREVIOUS_BLOCK("previous");
 
     private final String code;
 
