@@ -3418,21 +3418,21 @@ g {
 
 .ui.dimmer {z-index: 91000;}
 
-#talk-panel.expand-panel {height: ~"calc(98% - 100px)"; .send-btn {height: 60px;} .talk-list-container {.talk-list-wrap {overflow:auto;}}}
+#talk-panel.expand-panel {height: ~"calc(100% - 100px)"; .send-btn {height: 60px;} .talk-list-container {.talk-list-wrap {overflow:auto;}}}
 #talk-panel.expand-panel .talk-list-container .talk-list-wrap::-webkit-scrollbar{display: none;}
 #etc-panel-resizer {
   position: absolute; right: 5px; top: 5px; background: rgba(100, 100, 100, 0.1); border: none; cursor: pointer;
   i {vertical-align: middle;}
 }
-#etc-panel.reduce-panel {height: 120px; margin: 0; .segment {height: 5em;}}
+#etc-panel.reduce-panel {height: 120px; margin: 0; .segment {height: ~"calc(100% - 70px)";}}
 
 #talk-panel.reduce-panel {
   height: 68%; .chat-body {height: 89% !important;} .talk-room .send-btn {height: 40px;}
   .talk-list-container {margin-bottom:3em; .sort-wrap {height: 5.5% !important;}}
 }
 #talk-panel.reduce-panel .chat-container {margin-bottom: 3em;}
-#etc-panel.expand-panel {height: 33%;}
-#etc-panel {position: absolute; bottom: 0; width: 97%; height: 41%; margin-bottom: -2px; }
+#etc-panel.expand-panel {height: 33%; .segment {height: ~"calc(100% - 30px)";}}
+#etc-panel {position: absolute; bottom: 0; height: 40%; width: ~"calc(100% - 30px)"; .segment{height: ~"calc(100% - 30px)";}}
 
 .calendar.user-schedule-modal .view-container table td {height: 80px;}
 
