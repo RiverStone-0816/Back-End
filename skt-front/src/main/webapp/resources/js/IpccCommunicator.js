@@ -62,17 +62,18 @@ IpccCommunicator.prototype.connect = function (url, serverIp, companyId, userId,
     const _this = this;
     try {
         this.socket = io.connect(url, {'reconnection': true, 'resource': 'socket.io'});
-        this.socket.emit('climsg_login', {
-            company_id: _this.request.companyId,
-            userid: _this.request.userId,
-            exten: _this.request.extension,
-            passwd: _this.request.password,
-            pbxhost: _this.request.serverIp,
-            usertype: _this.request.userType,
-            option: _this.request.option,
-            fromUi: _this.request.fromUi,
-            multi_yn: _this.request.multi_yn
-        }).on('connect', function () {
+        this.socket.on('connect', function () {
+            _this.socket.emit('climsg_login', {
+                company_id: _this.request.companyId,
+                userid: _this.request.userId,
+                exten: _this.request.extension,
+                passwd: _this.request.password,
+                pbxhost: _this.request.serverIp,
+                usertype: _this.request.userType,
+                option: _this.request.option,
+                fromUi: _this.request.fromUi,
+                multi_yn: _this.request.multi_yn
+            });
             _this.parse("NODEJS|KIND:CONNECT_OK");
         }).on('svcmsg', function (data) {
             _this.parse(data);

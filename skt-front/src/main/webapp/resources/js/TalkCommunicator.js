@@ -60,14 +60,15 @@ TalkCommunicator.prototype.connect = function (url, companyId, userid, passwd, a
     const _this = this;
     try {
         this.socket = io.connect(url, {'reconnection': true, 'resource': 'socket.io'});
-        this.socket.emit('cli_join', {
-            company_id: _this.request.companyId,
-            userid: _this.request.userid,
-            passwd: _this.request.passwd,
-            usertype: _this.request.usertype,
-            authtype: _this.request.authtype,
-            from_ui: 'IPCC',
-        }).on('connect', function () {
+        this.socket.on('connect', function () {
+            _this.socket.emit('cli_join', {
+                company_id: _this.request.companyId,
+                userid: _this.request.userid,
+                passwd: _this.request.passwd,
+                usertype: _this.request.usertype,
+                authtype: _this.request.authtype,
+                from_ui: 'IPCC',
+            });
             _this.log(false, 'connect', arguments);
         }).on('svc_login', function (data) {
             _this.log(false, 'svc_login', data);
