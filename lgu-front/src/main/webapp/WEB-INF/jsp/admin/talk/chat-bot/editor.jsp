@@ -402,7 +402,7 @@
                                                     <option value="">다음 블록으로 연결</option>
                                                     <option value="block">다른 블록으로 연결</option>
                                                     <option value="first">첫 블록으로 연결</option>
-                                                    <option value="previous">이전 블록으로 연결</option>
+                                                    <option value="before">이전 블록으로 연결</option>
                                                     <option value="member">상담원 연결</option>
                                                     <option value="url">URL 연결</option>
                                                     <option value="phone">전화 연결</option>
