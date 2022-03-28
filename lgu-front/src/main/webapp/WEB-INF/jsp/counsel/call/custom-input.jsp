@@ -225,7 +225,7 @@
                     <div class="twelve wide column"><label class="control-label">멀티채널(전화번호,상담톡) 추가</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
-                            <select name="channels" multiple="multiple" class="one-multiselect" style="height: 100px;">
+                            <select name="channels" multiple="multiple" class="one-multiselect channels">
                                 <c:forEach var="channel" items="${entity.multichannelList}">
                                     <option value="${channel.channelData}" data-type="${g.htmlQuote(channel.channelType)}">
                                         [${channel.channelType == 'TALK' ? g.htmlQuote(talkServices.get(channel.channelData.split('[_]')[0])) : g.htmlQuote(channelTypes.get(channel.channelType))}]
