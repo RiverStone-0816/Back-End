@@ -338,6 +338,7 @@
 <iframe style="display: none" ref="runPhone"></iframe>
 <script>
 import moment from 'moment'
+import $ from 'jquery'
 import botIcon from '../assets/bot-icon.png'
 import eicnIcon from '../assets/bot-icon.png'
 import kakaoIcon from '../assets/kakao-icon.png'

@@ -1,4 +1,5 @@
 /*https://www.jqueryscript.net/other/HTML5-Audio-Player-maudio.html*/
+import $ from 'jquery'
 
 function maudio(_opt){
     var opt = {

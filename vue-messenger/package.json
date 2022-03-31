@@ -14,11 +14,12 @@
     "@zhuowenli/vue-feather-icons": "^5.0.2",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "jquery": "^3.6.0",
     "moment": "^2.29.1",
     "socket.io-client": "4.2.0",
     "vue": "^3.0.0",
-    "vuex": "^4.0.2",
-    "vue-router": "^4.0.13"
+    "vue-router": "^4.0.13",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
