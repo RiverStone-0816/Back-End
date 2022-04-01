@@ -812,11 +812,11 @@
                                     data-variation="tiny" data-position="top center"
                                     onclick="this.previousSibling.click()"><i class="paperclip icon"></i></button>
                             <%--TODO: 음성대화--%>
-                            <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted
+                            <button v-if="channelType==='eicn' && isVChat" class="ui icon compact mini button mr5" data-inverted
                                     data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i
                                     class="microphone icon"></i></button>
                             <%--TODO: 화상대화--%>
-                            <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted
+                            <button v-if="channelType==='eicn' && isVChat" class="ui icon compact mini button mr5" data-inverted
                                     data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i
                                     class="user icon"></i></button>
                             <%--TODO: 자동멘트--%>
@@ -904,6 +904,7 @@
 
                     loginId: '${g.user.id}',
                     isMessage: false,
+                    isVChat: false,
 
                     showingDropzone: false,
 
@@ -942,7 +943,6 @@
                 loadRoom: function (roomId, userName) {
                     const _this = this
                     const statues = talkListContainer.statuses
-
                     return restSelf.get('/api/counsel/current-talk-msg/' + roomId).done(function (response) {
                         _this.roomId = roomId
                         _this.userName = userName
@@ -956,6 +956,7 @@
                         _this.customName = response.data.customName
                         _this.isAutoEnable = response.data.isAutoEnable === 'Y'
                         _this.isMessage = !(response.data.userId === _this.loginId && response.data.roomStatus === 'G')
+                        _this.isVChat = is_support_vchat(response.data.channelType === 'eicn' ? 'Y' : 'N')
 
                         const status = _this.roomStatus === 'E' ? statues.END.status
                             : !_this.userId ? statues.TOT.status
@@ -1500,6 +1501,8 @@
         }
 
         $(window).on('load', function () {
+
+
             loadTalkCustomInput()
             $('#side-view-modal').dragModalShow().hide()
         })

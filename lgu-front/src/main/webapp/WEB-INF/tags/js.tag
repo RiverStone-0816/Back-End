@@ -62,6 +62,7 @@
         <script src="<c:url value="/resources/js/MessengerCommunicator.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/softphone-common.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/softphone-api.js?version=${version}"/>"></script>
+        <script src="<c:url value="/resources/js/voicechat-api.js?version=${version}"/>"></script>
 
         <%-- functions --%>
         <script src="<c:url value="/resources/js/common.func.js?version=${version}"/>" data-type="library"></script>

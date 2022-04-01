@@ -101,7 +101,6 @@ function is_support_softphone(phoneKind) {
 
     // https인지 확인
     if (location.protocol !== "https:") {
-        alert("You must use HTTPS protocol in order to support WebRTC!!!");
         console.log("location.protocol: " + location.protocol);
         return false;
     }
@@ -115,13 +114,16 @@ function is_support_softphone(phoneKind) {
     return true;
 }
 
-function is_support_vchat() {
+function is_support_vchat(chatKind) {
     // 보이스챗인지 검사
     // TODO:
+    if (!chatKind || chatKind != "Y") {
+        console.log("No Chat... ");
+        return false;
+    }
 
     // https인지 확인
     if (location.protocol !== "https:") {
-        alert("You must use HTTPS protocol in order to support WebRTC!!!");
         console.log("location.protocol: " + location.protocol);
         return false;
     }
