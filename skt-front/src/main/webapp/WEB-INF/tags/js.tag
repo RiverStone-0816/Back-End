@@ -56,6 +56,7 @@
         <script src="<c:url value="/resources/js/IpccCommunicator.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/TalkCommunicator.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/MessengerCommunicator.js?version=${version}"/>"></script>
+        <script src="<c:url value="/resources/js/softphone-common.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/softphone-api.js?version=${version}"/>"></script>
 
         <%-- functions --%>

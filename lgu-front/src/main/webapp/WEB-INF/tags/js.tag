@@ -44,6 +44,9 @@
 
 <c:choose>
     <c:when test="${devel}">
+        <script src="<c:url value="/resources/js/adapter.js?version=${version}"/>" data-type="library"></script>
+        <script src="<c:url value="/resources/js/janus.js?version=${version}"/>" data-type="library"></script>
+
         <%-- user library --%>
         <script src="<c:url value="/resources/js/string.ex.js?version=${version}"/>" data-type="library"></script>
         <script src="<c:url value="/resources/js/formData.ex.js?version=${version}"/>" data-type="library"></script>
@@ -57,13 +60,12 @@
         <script src="<c:url value="/resources/js/IpccCommunicator.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/TalkCommunicator.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/MessengerCommunicator.js?version=${version}"/>"></script>
+        <script src="<c:url value="/resources/js/softphone-common.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/softphone-api.js?version=${version}"/>"></script>
 
         <%-- functions --%>
         <script src="<c:url value="/resources/js/common.func.js?version=${version}"/>" data-type="library"></script>
         <script src="<c:url value="/resources/js/depend.func.js?version=${version}"/>" data-type="library"></script>
-        <script src="<c:url value="/resources/js/adapter.js?version=${version}"/>" data-type="library"></script>
-        <script src="<c:url value="/resources/js/janus.js?version=${version}"/>" data-type="library"></script>
 
         <%-- use strict --%>
         <script src="<c:url value="/resources/js/depend.use.strict.js?version=${version}"/>" data-type="library"></script>

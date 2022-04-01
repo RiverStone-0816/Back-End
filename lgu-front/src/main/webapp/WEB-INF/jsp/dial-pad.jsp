@@ -20,7 +20,7 @@
     </div>
     <div class="content">
         <div class="number-result">
-            <input type="text" class="" id="dial-pad-input"/>
+            <input type="number" style="width: 145px" id="dial-pad-input"/>
         </div>
         <div class="ui three column grid number">
             <c:forEach var="e" items="${'123456789*0#'.toCharArray()}">
@@ -46,49 +46,7 @@
 
 <tags:scripts>
     <script>
-        const softPhoneApi = new SoftPhoneApi();
         const dialPadInput = $('#dial-pad-input');
-
-        $(document).ready(() => {
-            // WebRTC 소프트폰 사용 가능 여부 확인
-            if (softPhoneApi.is_support_webrtc('${g.user.phoneKind}') === false) {
-                return false;
-            }
-
-            softPhoneApi.set_ringtone_volume(1.0);
-            softPhoneApi.set_busytone_volume(1.0);
-
-            softPhoneApi.set_local_stream_object($('#myVideo'));
-            softPhoneApi.set_remote_stream_object($('#remoteVideo'));
-
-            softPhoneApi.set_accept_call_btn_object($(".-call-receive"));
-
-            softPhoneApi.set_callback_registered_status(() => {
-                $('div.dial-pad .header').css('background-color','lime');
-            });
-            softPhoneApi.set_callback_unregistered_status(() => {
-                $('div.dial-pad .header').css('background-color','red');
-            });
-            softPhoneApi.set_callback_disconnected_status(() => {
-                $('div.dial-pad .header').css('background-color','grey');
-            });
-
-
-            restSelf.get('/api/auth/softPhone-info').done(function (response) {
-                softPhoneApi.start_webrtc(response.data.peerNum, response.data.peerSecret
-                    , response.data.serverInformation.pbxServerIp
-                    , response.data.serverInformation.pbxServerPort
-                    , response.data.serverInformation.webrtcServerIp
-                    , response.data.serverInformation.webrtcServerPort
-                    , response.data.serverInformation.turnServerIp
-                    , response.data.serverInformation.turnServerPort
-                    , response.data.serverInformation.turnUser
-                    , response.data.serverInformation.turnSecret);
-            });
-
-            console.log("=========== WEBRTC_INFO ===========");
-            console.dir(softPhoneApi.WEBRTC_INFO);
-        })
 
         function removeLastDialNumber() {
             if (dialPadInput.val().length <= 0)
@@ -100,12 +58,12 @@
 
         function appendDialPadInput(letter) {
             dialPadInput.val(dialPadInput.val() + letter);
-            softPhoneApi.sipcall.dtmf({dtmf: {tones: letter}});
+            sipcall.dtmf({dtmf: {tones: letter}});
             dialPadInput.keyup();
         }
 
         function tryDialByDialPadInput() {
-            ipccCommunicator.clickDial('', $.onlyNumber(dialPadInput.val()));
+            ipccCommunicator.clickDial('', dialPadInput.val());
         }
     </script>
 </tags:scripts>
