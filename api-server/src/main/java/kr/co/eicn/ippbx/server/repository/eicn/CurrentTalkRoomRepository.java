@@ -44,7 +44,7 @@ public class CurrentTalkRoomRepository extends EicnBaseRepository<CurrentTalkRoo
         if ("MY".equals(search.getMode()))
             conditions.add(CURRENT_TALK_ROOM.USERID.eq(g.getUser().getId()).and(CURRENT_TALK_ROOM.ROOM_STATUS.ne(RoomStatus.STOP.getCode())));
         else if ("TOT".equals(search.getMode()))
-            conditions.add(CURRENT_TALK_ROOM.USERID.eq("").and(CURRENT_TALK_ROOM.ROOM_STATUS.ne(RoomStatus.STOP.getCode())));
+            conditions.add(CURRENT_TALK_ROOM.USERID.eq("").and(CURRENT_TALK_ROOM.ROOM_STATUS.eq(RoomStatus.SERVICE_BY_GROUP_CONNECT.getCode())));
         else if ("OTH".equals(search.getMode())) {
             if ("MONIT".equals(search.getAuthType()))
                 conditions.add(CURRENT_TALK_ROOM.USERID.ne("").and(CURRENT_TALK_ROOM.ROOM_STATUS.ne(RoomStatus.STOP.getCode())));
