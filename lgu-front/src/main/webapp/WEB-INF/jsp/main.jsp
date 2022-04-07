@@ -11,6 +11,7 @@
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
+<%--@elvariable id="usingServices" type="java.lang.String"--%>
 
 <c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
 <c:set var="isStat" value="${user.isStat == 'Y'}"/>
@@ -586,6 +587,7 @@
                 popupReceivedHtml('/admin/talk/history/modal?roomId=' + encodeURIComponent(roomId), 'modal-consulting-history-talk-view');
             }
 
+            <c:if test="${usingServices.contains('SPHONE')}">
             $(document).ready(() => {
                 // WebRTC 소프트폰 사용 가능 여부 확인
                 if (is_support_softphone('${g.user.phoneKind}') === false) {
@@ -617,6 +619,7 @@
                     }
                 });
             })
+            </c:if>
         </script>
     </tags:scripts>
 </tags:layout>

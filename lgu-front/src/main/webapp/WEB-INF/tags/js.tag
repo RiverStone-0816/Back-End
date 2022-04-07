@@ -10,6 +10,7 @@
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
+<%--@elvariable id="usingServices" type="java.lang.String"--%>
 
 <%--@elvariable id="devel" type="java.lang.Boolean"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
@@ -44,8 +45,6 @@
 
 <c:choose>
     <c:when test="${devel}">
-        <script src="<c:url value="/resources/js/adapter.js?version=${version}"/>" data-type="library"></script>
-        <script src="<c:url value="/resources/js/janus.js?version=${version}"/>" data-type="library"></script>
 
         <%-- user library --%>
         <script src="<c:url value="/resources/js/string.ex.js?version=${version}"/>" data-type="library"></script>
@@ -60,10 +59,13 @@
         <script src="<c:url value="/resources/js/IpccCommunicator.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/TalkCommunicator.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/MessengerCommunicator.js?version=${version}"/>"></script>
+        <c:if test="${usingServices.contains('SPHONE')}">
+        <script src="<c:url value="/resources/js/adapter.js?version=${version}"/>" data-type="library"></script>
+        <script src="<c:url value="/resources/js/janus.js?version=${version}"/>" data-type="library"></script>
         <script src="<c:url value="/resources/js/softphone-common.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/softphone-api.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/voicechat-api.js?version=${version}"/>"></script>
-
+        </c:if>
         <%-- functions --%>
         <script src="<c:url value="/resources/js/common.func.js?version=${version}"/>" data-type="library"></script>
         <script src="<c:url value="/resources/js/depend.func.js?version=${version}"/>" data-type="library"></script>
