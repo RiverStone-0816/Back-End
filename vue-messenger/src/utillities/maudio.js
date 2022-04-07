@@ -25,7 +25,7 @@ function maudio(_opt){
           </div>\
       </div>\
     </div>';
-    // var currentAudio,currentAudioBox
+    var currentAudio,currentAudioBox
 
     var thisWindow = $(opt.obj).parents(window);
 
@@ -49,6 +49,7 @@ function maudio(_opt){
     }
 
 
+    // eslint-disable-next-line no-unused-vars
     function progressBar(audio,pgp){
         var p = 100*currentAudio.currentTime/currentAudio.duration;
         currentAudioBox.find('.progress-pass').css({'width':p + '%'});
@@ -57,7 +58,7 @@ function maudio(_opt){
         // 播放结束
         if(currentAudio.currentTime >= currentAudio.duration){
             currentAudioBox.removeClass('playing');
-            clearInterval(t)
+            clearInterval()
         }
     }
 
@@ -107,6 +108,7 @@ function maudio(_opt){
         });
         // 静音
         $(thisWindow).find('.audio-control .mute').off('click');
+        // eslint-disable-next-line no-unused-vars
         $(thisWindow).find('.audio-control .mute').on('click', function(e){
             var audioBox = $(this).parent('.audio-control').parent('.maudio');
             var audio = audioBox.children('audio')[0];
