@@ -594,6 +594,7 @@
                     return false;
                 }
 
+
                 set_ringtone_volume(1.0);
                 set_busytone_volume(1.0);
 

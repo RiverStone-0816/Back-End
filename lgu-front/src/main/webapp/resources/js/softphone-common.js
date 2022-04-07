@@ -7,11 +7,6 @@ WEBRTC_INFO.server = {};
 WEBRTC_INFO.phone = {};
 WEBRTC_INFO.env = { "ringtone": true, "busytone": true };
 
-var RINGTONE = new Audio('/ubiz/resources/sounds/SimpleTone.mp3');
-var BUSYTONE = new Audio('/ubiz/resources/sounds/BusySignal.mp3');
-RINGTONE.loop = true;
-
-
 function playTone(tone) {
     if (!WEBRTC_INFO.env.ringtone) { return; }
 
