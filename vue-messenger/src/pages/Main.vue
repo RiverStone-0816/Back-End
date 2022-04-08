@@ -348,6 +348,8 @@ import debounce from '../utillities/mixins/debounce'
 import store from '../store/index'
 import Communicator from "../utillities/Communicator"
 import maudio from "../utillities/maudio"
+import sessionUtils from "@/utillities/sessionUtils";
+import axios from "axios";
 
 const SENDER = Object.freeze({SERVER: 'SERVER', USER: 'USER'})
 
@@ -387,6 +389,17 @@ export default {
       homeEnable: true,
       messages: [],
       botIcon: '',
+      form: {
+        // url: 'http://122.49.74.102:8200',
+        url: 'https://cloudtalk.eicn.co.kr:8200',
+        senderKey: null,
+        //senderKey: '049d87baa539f95a3ad40bf96e1f4bf8ac1031cd',
+        // senderKey: 'b63867b715be9433b29025ddf747238c5e3f75d1',
+        userKey: sessionUtils.getSessionId(),
+        ip: '',
+        // mode: 'local',
+        mode: 'service',
+      },
     }
   },
   methods: {
@@ -562,6 +575,10 @@ export default {
           || fileName.toLowerCase().endsWith('.mov')
     },
   },
+  created() {
+    const UrlParams = new URLSearchParams(location.search)
+    this.form.senderKey = UrlParams.get('senderKey')
+  },
   updated() {
     this.debounce(() => this.$refs.chatBody.scroll({top: this.$refs.chatBody.scrollHeight}), 100)
     this.$nextTick(function () {
@@ -572,7 +589,8 @@ export default {
       }
     })
   },
-  mounted() {
+  async mounted() {
+    this.form.ip = (await axios.get('https://api.ipify.org')).data
     this.communicator
         .on('webchatsvc_close', () => {
           this.communicator.disconnect()
@@ -645,7 +663,7 @@ export default {
           if (data.result !== 'OK') return store.commit('alert/show', {body: `로그인실패 : ${data.result}; ${data.result_data}` ,isClose: true})
           this.communicator.requestIntro()
         })
-        .connect(window.form.url, window.form.senderKey, window.form.userKey, window.form.ip, window.form.mode,)
+        .connect(this.form.url, this.form.senderKey, this.form.userKey, this.form.ip, this.form.mode,)
 
     window.addEventListener("beforeunload", () => this.communicator.disconnect(), false)
   },
