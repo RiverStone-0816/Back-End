@@ -167,7 +167,7 @@
                     <div class="twelve wide column"><label class="control-label">멀티채널(전화번호,상담톡) 추가</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
-                            <select name="channels" multiple="multiple" class="one-multiselect channels">
+                            <select name="channels" multiple="multiple" class="one-multiselect channels" data-channel="${channel}">
                                 <c:set var="existRoomIdInMultichannelList" value="${false}"/>
                                 <c:forEach var="channel" items="${entity.multichannelList}">
                                     <c:set var="existRoomIdInMultichannelList" value="${existRoomIdInMultichannelList || channel.channelData == senderKey.concat('_').concat(userKey)}"/>
@@ -335,10 +335,6 @@
     window.donePostTalkCustomInfo = function (form, response) {
         alert('고객정보가 저장되었습니다.');
         //loadTalkCustomInput(${form.groupSeq}, response.data || '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', '${g.escapeQuote(roomId)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}');
-
-        if (${channel == "eicn"}) {
-            talkCommunicator.sendCustomMatch('${g.escapeQuote(roomId)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}', '${g.escapeQuote(form.groupSeq)}', response.data || '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', $(form).find('#string_1').val());
-        }
 
         talkListContainer.roomMap['${g.escapeQuote(roomId)}'].maindbCustomName = $('#talk-custom-input').find('[name=string_1]').val();
     };

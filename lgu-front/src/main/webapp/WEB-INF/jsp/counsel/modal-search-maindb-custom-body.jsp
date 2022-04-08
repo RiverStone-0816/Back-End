@@ -132,7 +132,7 @@
                 <c:choose>
                     <c:when test="${pagination.rows.size() > 0}">
                         <c:forEach var="e" items="${pagination.rows}" varStatus="status">
-                            <tr data-id="${g.htmlQuote(e.maindbSysCustomId)}" data-group="${search.groupSeq}">
+                            <tr data-id="${g.htmlQuote(e.maindbSysCustomId)}" data-custom="${g.htmlQuote(e.maindbString_1)}" data-group="${search.groupSeq}">
                                 <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                 <td><fmt:formatDate value="${e.maindbSysUploadDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 
@@ -182,9 +182,9 @@
                                     </c:forEach>
                                 </td>
                                 <td>
-                                    <c:forEach var="field" items="${e.multichannelList}">
-                                        <c:if test="${field.channelType == 'TALK'}">
-                                            ${g.htmlQuote(field.channelData.split('_')[1])}&ensp;
+                                    <c:forEach var="channel" items="${e.multichannelList}">
+                                        <c:if test="${channel.channelType == 'TALK'}">
+                                            ${g.htmlQuote(channel.channelData.split('_')[1])}&ensp;
                                         </c:if>
                                     </c:forEach>
                                 </td>
@@ -206,6 +206,8 @@
 <script>
     function setCustomInfo() {
         const customId = getEntityId('MaindbData');
+        const customName = getEntityId('MaindbData', 'custom');
+        const channel = $('#talk-custom-input').find('[name=channels]').attr('data-channel');
         if (!customId) return;
 
         // if (ipccCommunicator.status.cMemberStatus !== 1 && ipccCommunicator.status.cMemberStatus !== 2)
@@ -216,6 +218,12 @@
         loadCustomInput(${search.groupSeq}, customId);
         </c:when>
         <c:otherwise>
+        if (channel === 'eicn')
+            talkCommunicator.sendCustomMatch('${g.escapeQuote(pageContext.request.getParameter('roomId'))}', '${g.escapeQuote(pageContext.request.getParameter('senderKey'))}',
+                '${g.escapeQuote(pageContext.request.getParameter('userKey'))}', '${search.groupSeq}', customId, customName);
+
+        talkListContainer.roomMap['${g.escapeQuote(pageContext.request.getParameter('roomId'))}'].maindbCustomName = customName;
+
         loadTalkCustomInput(${search.groupSeq}, customId,
             '${g.escapeQuote(pageContext.request.getParameter('roomId'))}',
             '${g.escapeQuote(pageContext.request.getParameter('senderKey'))}',
