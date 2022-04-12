@@ -2,7 +2,7 @@ package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentTalkRoom;
 import kr.co.eicn.ippbx.model.entity.customdb.TalkRoomEntity;
-import kr.co.eicn.ippbx.model.enums.RoomStatus;
+import kr.co.eicn.ippbx.model.enums.TalkRoomMode;
 import kr.co.eicn.ippbx.model.form.TalkAutoEnableFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
 import kr.co.eicn.ippbx.model.search.TalkRoomSearchRequest;
@@ -30,6 +30,21 @@ public class CurrentTalkRoomRepository extends EicnBaseRepository<CurrentTalkRoo
         super(CURRENT_TALK_ROOM, CURRENT_TALK_ROOM.SEQ, TalkRoomEntity.class);
     }
 
+    @Override
+    protected void postProcedure(List<TalkRoomEntity> entities) {
+        entities.forEach(e -> {
+            if ("G".equals(e.getRoomStatus())) {
+                if (e.getUserid().equals(g.getUser().getId()))
+                    e.setTalkRoomMode(TalkRoomMode.MINE);
+                else if (StringUtils.isEmpty(e.getUserid()))
+                    e.setTalkRoomMode(TalkRoomMode.TOT);
+                else if (StringUtils.isNotEmpty(e.getUserid()) && !e.getUserid().equals(g.getUser().getId()))
+                    e.setTalkRoomMode(TalkRoomMode.OTHER);
+            } else if ("E".equals(e.getRoomStatus()))
+                e.setTalkRoomMode(TalkRoomMode.END);
+        });
+    }
+
     public Pagination<TalkRoomEntity> pagination(TalkRoomSearchRequest search) {
         return pagination(search, conditions(search));
     }
@@ -40,17 +55,6 @@ public class CurrentTalkRoomRepository extends EicnBaseRepository<CurrentTalkRoo
 
     private List<Condition> conditions(TalkCurrentListSearchRequest search) {
         final List<Condition> conditions = new ArrayList<>();
-
-        if ("MY".equals(search.getMode()))
-            conditions.add(CURRENT_TALK_ROOM.USERID.eq(g.getUser().getId()).and(CURRENT_TALK_ROOM.ROOM_STATUS.ne(RoomStatus.STOP.getCode())));
-        else if ("TOT".equals(search.getMode()))
-            conditions.add(CURRENT_TALK_ROOM.USERID.eq("").and(CURRENT_TALK_ROOM.ROOM_STATUS.eq(RoomStatus.SERVICE_BY_GROUP_CONNECT.getCode())));
-        else if ("OTH".equals(search.getMode())) {
-            if ("MONIT".equals(search.getAuthType()))
-                conditions.add(CURRENT_TALK_ROOM.USERID.ne("").and(CURRENT_TALK_ROOM.ROOM_STATUS.ne(RoomStatus.STOP.getCode())));
-            else
-                conditions.add(CURRENT_TALK_ROOM.USERID.ne(g.getUser().getId()).and(CURRENT_TALK_ROOM.USERID.ne("")).and(CURRENT_TALK_ROOM.ROOM_STATUS.ne(RoomStatus.STOP.getCode())));
-        }
 
         if (StringUtils.isNotEmpty(search.getRoomId()))
             conditions.add(CURRENT_TALK_ROOM.ROOM_ID.eq(search.getRoomId()));

@@ -68,6 +68,7 @@ public class MainApiController extends ApiBaseController {
     private final TodoListRepository todoListRepository;
     private final TalkRoomService talkRoomService;
     private final CurrentTalkRoomRepository currentTalkRoomRepository;
+    private final CurrentTalkRoomService currentTalkRoomService;
     private final TalkServiceInfoRepository talkServiceInfoRepository;
     private final WebchatServiceInfoRepository webchatServiceInfoRepository;
     private final TalkMsgService talkMsgService;
@@ -365,7 +366,7 @@ public class MainApiController extends ApiBaseController {
             if (Objects.isNull(e.getMaindbString_1()))
                 e.setMaindbString_1("");
         }).collect(Collectors.toMap(MaindbCustomInfoEntity::getMaindbSysCustomId, MaindbCustomInfoEntity::getMaindbString_1));
-        final List<TalkRoomEntity> talkRoomList = currentTalkRoomRepository.findAll(search);
+        final List<TalkRoomEntity> talkRoomList = currentTalkRoomService.findAll(search);
         final Map<String, TalkMsgEntity> lastMessageByRoomId = talkMsgService.getAllLastMessageByRoomId(talkRoomList.stream().map(CommonTalkRoom::getRoomId).collect(Collectors.toSet()));
         final List<TalkCurrentListResponse> response = talkRoomList.stream()
                 .map((e) -> {

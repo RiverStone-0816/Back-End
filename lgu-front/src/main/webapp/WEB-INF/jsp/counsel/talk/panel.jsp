@@ -198,10 +198,10 @@
                             _this.roomMap = {}
                             _this.STATUSES.forEach(e => _this.statuses[e.status].rooms = [])
                             response.data.forEach(function (e) {
-                                const status = e.roomStatus === 'E' ? _this.statuses.END.status
-                                    : !e.userId && e.roomStatus === 'G' ? _this.statuses.TOT.status
-                                        : e.userId === userId ? _this.statuses.MY.status
-                                            : _this.statuses.OTH.status
+                                if (!e.talkRoomMode)
+                                    return
+
+                                const status = e.talkRoomMode
 
                                 e.lastMessage = _this.getLastMessage(e.send_receive, e.type, e.content, e.userName)
 
