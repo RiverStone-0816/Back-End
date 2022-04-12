@@ -600,6 +600,20 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div id="test-preview" class="chatbot-control-panel chat-test-manage">
+                                <div class="chatbot-control-container active">
+                                    <button type="button" class="arrow-button"></button>
+                                    <div class="chatbot-control-inner chatbot-ui">
+                                        <div class="chatbot-box-label">봇 테스트<%--<button type="button" class="ui mini button">새로고침</button>--%></div>
+                                        <div class="chatbot-control-body">
+                                            <div class="chat-test">
+                                                <iframe :src="testUrl" style="width: 100%; height: 100%"></iframe>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -729,10 +743,9 @@
                         test() {
                             if (!$.isNumeric(o.current)) return alert('봇 시나리오가 선택되지 않았습니다.')
                             confirm('봇 테스트 선택 시 수정하신 내용은 자동으로 적용 됩니다.').done(() => o.save().done(() => o.loadBot(o.current).done(() => {
-                                const popup = window.open(contextPath + '/admin/talk/chat-bot/' + o.current + '/modal-test', '_blank', 'width=420px,height=800px,top=100,left=100,scrollbars=yes,resizable=no')
-                                popup.parentWindowBlocks = {}
-                                for (let nodeId in nodeBlockMap)
-                                    popup.parentWindowBlocks[nodeBlockMap[nodeId].id] = document.querySelector('#node-' + nodeId)
+                                $('.chatbot-control-panel').removeClass('active');
+                                $('.chat-test-manage').addClass('active');
+                                testPreview.testPreviewLoad(o.current);
                             })))
                         },
                         copy() {
@@ -1416,6 +1429,23 @@
                         },
                     },
                 }).mount('#block-preview')
+                return o || o
+            })()
+
+            const testPreview = (() => {
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            testUrl: ''
+                        }
+                    },
+                    methods: {
+                        testPreviewLoad(botId) {
+                            this.testUrl = contextPath + '/admin/talk/chat-bot/' + botId + '/modal-test'
+                        }
+                    }
+                }).mount('#test-preview')
+
                 return o || o
             })()
 
