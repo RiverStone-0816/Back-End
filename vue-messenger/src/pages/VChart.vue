@@ -14,8 +14,8 @@
         <button :disabled="!DIAL_VIDEO_VCHAT_BTN" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-dial-video" @click.stop="doVideoChat">영상전화걸기</button>
         <button :disabled="!ACCEPT_VCHAT_BTN" class="bg-gray-400 hover:bg-gray`-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-accept" @click.stop="accept_vchat">전화받기</button>
         <button :disabled="!HANGUP_VCHAT_BTN" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-hangup" @click.stop="doHangup">전화끊기</button>
-        <button class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-mute">MUTE</button>
-        <button class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-unmute">UNMUTE</button>
+        <button class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-mute" @click.stop="doMute">MUTE</button>
+        <button class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-unmute" @click.stop="doUnmute">UNMUTE</button>
         <select id="select_audio_input"></select>
         <select id="select_audio_output"></select>
         <!--<button id="btn-toggle-speaker">Toggle Speaker</button>-->
@@ -445,6 +445,22 @@ export default {
             }
           }
       );
+    },
+    doMute() {
+      var msg = {
+        request: "set",
+        audio: false,
+      };
+      this.vchat.send({message: msg});
+      Janus.debug("Do Mute");
+    },
+    doUnmute() {
+      var msg = {
+        request: "set",
+        audio: true,
+      };
+      this.vchat.send({message: msg});
+      Janus.debug("Do Unmute");
     },
     register_vchat(username) {
       if (username === "") {
