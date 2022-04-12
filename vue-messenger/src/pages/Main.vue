@@ -11,7 +11,7 @@
                   <div class="h-8 w-8 rounded-lg-full overflow-hidden">
                     <img class="w-full" :src="botIcon === '' ? getBotIcon : botIcon" alt="bot-icon">
                   </div>
-                  <div class="flex items-center p-3 font-bold">{{ displayName }}</div>
+                  <div class="flex items-center p-3 font-bold">{{ displayName }}<button type="button" @click.stop="this.openChat()">테스트</button></div>
                 </div>
               </div>
 
@@ -350,6 +350,7 @@ import Communicator from "../utillities/Communicator"
 import maudio from "../utillities/maudio"
 import sessionUtils from "@/utillities/sessionUtils";
 import axios from "axios";
+import modalOpener from "@/utillities/mixins/modalOpener";
 
 const SENDER = Object.freeze({SERVER: 'SERVER', USER: 'USER'})
 
@@ -365,7 +366,7 @@ String.prototype.regexIndexOf = function (regex, startpos) {
 }
 
 export default {
-  mixins: [debounce],
+  mixins: [debounce, modalOpener],
   components: {},
   setup() {
     return {
@@ -393,8 +394,6 @@ export default {
         // url: 'http://122.49.74.102:8200',
         url: 'https://cloudtalk.eicn.co.kr:8200',
         senderKey: null,
-        //senderKey: '049d87baa539f95a3ad40bf96e1f4bf8ac1031cd',
-        // senderKey: 'b63867b715be9433b29025ddf747238c5e3f75d1',
         userKey: sessionUtils.getSessionId(),
         ip: '',
         // mode: 'local',

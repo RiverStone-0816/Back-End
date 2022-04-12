@@ -1,11 +1,11 @@
 <template>
 
-<!--  <template>-->
-  <Main/>
-<!--  </template>-->
-<!--  <template v-else>
-    <Login/>
-  </template>-->
+  <template v-if="isModal()">
+    <VChart/>
+  </template>
+  <template v-else>
+    <Main/>
+  </template>
 
   <teleport to="#modals">
     <AlertModal/>
@@ -27,6 +27,7 @@
 import axios from 'axios'
 import AlertModal from './components/singleton/AlertModal'
 /*import Login from './pages/Login'*/
+import VChart from './pages/VChart'
 import Main from './pages/Main'
 import sessionUtils from './utillities/sessionUtils'
 import modalOpener from "./utillities/mixins/modalOpener"
@@ -34,7 +35,7 @@ import modalOpener from "./utillities/mixins/modalOpener"
 // ref: https://stackoverflow.com/questions/50768678/axios-ajax-show-loading-when-making-ajax-request
 export default {
   mixins: [modalOpener],
-  components: {AlertModal, /*Login,*/ Main,},
+  components: {AlertModal, VChart, Main,},
   data() {
     return {
       refCount: 0,
