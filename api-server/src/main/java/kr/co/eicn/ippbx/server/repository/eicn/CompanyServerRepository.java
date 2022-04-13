@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CompanyServer;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServerInfo;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.ServerInfoEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.WebrtcServerInfoEntity;
 import kr.co.eicn.ippbx.model.enums.ServerType;
 import lombok.Getter;
 import org.jooq.Record;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CompanyServer.COMPANY_SERVER;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ServerInfo.SERVER_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebrtcServerInfo.WEBRTC_SERVER_INFO;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
@@ -44,6 +46,7 @@ public class CompanyServerRepository extends EicnBaseRepository<CompanyServer, C
 		return record -> {
 			final CompanyServerEntity entity = record.into(COMPANY_SERVER).into(CompanyServerEntity.class);
 			entity.setServer(record.into(SERVER_INFO).into(ServerInfoEntity.class));
+			entity.setWebrtcServerInfo(record.into(WEBRTC_SERVER_INFO).into(WebrtcServerInfoEntity.class));
 			return entity;
 		};
 	}
@@ -81,10 +84,22 @@ public class CompanyServerRepository extends EicnBaseRepository<CompanyServer, C
 				.fetchOneInto(ServerInfo.class);
 	}
 
-	public ServerInfo findSoftPhoneInfo() {
-		return dsl.selectDistinct(SERVER_INFO.fields())
+	public List<CompanyServerEntity> findSoftPhoneInfo() {
+		return dsl.select(COMPANY_SERVER.fields())
+				.select(SERVER_INFO.fields())
+				.select(WEBRTC_SERVER_INFO.fields())
 				.from(SERVER_INFO)
-				.where(SERVER_INFO.TYPE.like("%" + ServerType.WEBRTC_SERVER.getCode() + "%"))
-				.fetchOneInto(ServerInfo.class);
+				.leftJoin(COMPANY_SERVER)
+				.on(SERVER_INFO.HOST.eq(COMPANY_SERVER.HOST))
+				.leftJoin(WEBRTC_SERVER_INFO)
+				.on(WEBRTC_SERVER_INFO.WEBRTC_HOST.eq(COMPANY_SERVER.HOST))
+				.where(COMPANY_SERVER.COMPANY_ID.eq(getCompanyId()))
+				.and(SERVER_INFO.TYPE.like("%" + ServerType.WEBRTC_SERVER.getCode() + "%"))
+				.fetch(record -> {
+					final CompanyServerEntity entity = record.into(COMPANY_SERVER).into(CompanyServerEntity.class);
+					entity.setServer(record.into(SERVER_INFO).into(ServerInfoEntity.class));
+					entity.setWebrtcServerInfo(record.into(WEBRTC_SERVER_INFO).into(WebrtcServerInfoEntity.class));
+					return entity;
+				});
 	}
 }

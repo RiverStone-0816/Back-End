@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.service.api;
 
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServerInfo;
@@ -45,8 +46,8 @@ public class CompanyApiInterface extends ApiServerInterface {
         return getData(subUrl + "pbx-server", null, ServerInfo.class).getData();
     }
 
-    public ServerInfo webrtcServerInfo() throws IOException, ResultFailException {
-        return getData(subUrl + "webrtc-server", null, ServerInfo.class).getData();
+    public List<CompanyServerEntity> webrtcServerInfo() throws IOException, ResultFailException {
+        return getList(subUrl + "webrtc-server", null, CompanyServerEntity.class).getData();
     }
 
     public boolean checkService(String service) throws IOException, ResultFailException {

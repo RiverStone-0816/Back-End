@@ -8,4 +8,5 @@ import lombok.EqualsAndHashCode;
 @Data
 public class CompanyServerEntity extends CompanyServer {
 	private ServerInfoEntity server;
+	private WebrtcServerInfoEntity webrtcServerInfo;
 }

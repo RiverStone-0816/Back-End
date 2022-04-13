@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.SummaryCompanyServerResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.CmpMemberStatusCodeEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyLicenceEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
 import kr.co.eicn.ippbx.model.enums.ServerType;
 import kr.co.eicn.ippbx.server.repository.eicn.CmpMemberStatusCodeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyServerRepository;
@@ -82,8 +83,8 @@ public class CompanyApiController extends ApiBaseController {
     }
 
     @GetMapping("webrtc-server")
-    public ResponseEntity<JsonResult<ServerInfo>> webrtcServerInfo() {
-        ServerInfo serverInfo = companyServerRepository.findSoftPhoneInfo();
+    public ResponseEntity<JsonResult<List<CompanyServerEntity>>> webrtcServerInfo() {
+        List<CompanyServerEntity> serverInfo = companyServerRepository.findSoftPhoneInfo();
         return ResponseEntity.ok(data(serverInfo));
     }
 

@@ -7,6 +7,7 @@ import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.ArsAuthInfo;
 import kr.co.eicn.ippbx.front.model.CurrentUserMenu;
 import kr.co.eicn.ippbx.front.model.form.LoginForm;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.AuthApiInterface;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
@@ -202,16 +203,16 @@ public class AuthApiController extends BaseController {
         final PersonDetailResponse user = g.getUser();
         final LoginForm loginForm = g.getLoginInputs();
         final ServerInfo pbx = companyApiInterface.pbxServerInfo();
-        final ServerInfo webrtc = companyApiInterface.webrtcServerInfo();
+        final List<CompanyServerEntity> webrtc = companyApiInterface.webrtcServerInfo();
         ServerInformation serverInformation = ServerInformation.builder()
                 .pbxServerIp(pbx.getIp())
                 .pbxServerPort("5060")
-                .webrtcServerIp(webrtc.getDomain())
-                .webrtcServerPort("8200")
-                .turnServerIp(webrtc.getDomain())
-                .turnServerPort("3478")
-                .turnUser("turn")
-                .turnSecret("turnrw")
+                .webrtcServerIp(webrtc.get(0).getWebrtcServerInfo().getWebrtcHost())
+                .webrtcServerPort(String.valueOf(webrtc.get(0).getWebrtcServerInfo().getWebrtcServerPort()))
+                .turnServerIp(webrtc.get(0).getWebrtcServerInfo().getTurnServerIp())
+                .turnServerPort(String.valueOf(webrtc.get(0).getWebrtcServerInfo().getTurnServerPort()))
+                .turnUser(webrtc.get(0).getWebrtcServerInfo().getTurnUser())
+                .turnSecret(webrtc.get(0).getWebrtcServerInfo().getTurnSecret())
                 .build();
 
         //소프트폰이 아닐경우 리턴
