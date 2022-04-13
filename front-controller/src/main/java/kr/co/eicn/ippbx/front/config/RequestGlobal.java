@@ -9,6 +9,7 @@ import kr.co.eicn.ippbx.util.spring.SpringApplicationContextAware;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -38,6 +39,9 @@ public class RequestGlobal {
 
     private final HttpSession session;
     private final FileService fileService;
+
+    @Value("${server.servlet.session.timeout}")
+    private int sessionTimeout;
 
     public CurrentUserMenu getMenus() {
         return (CurrentUserMenu) session.getAttribute(REQUEST_GLOBAL_CURRENT_USER_MENUS);
@@ -89,6 +93,7 @@ public class RequestGlobal {
     }
 
     public void setCurrentUser(PersonDetailResponse user) {
+        session.setMaxInactiveInterval(sessionTimeout);
         session.setAttribute(REQUEST_GLOBAL_CURRENT_USER, user);
     }
 

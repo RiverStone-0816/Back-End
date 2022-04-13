@@ -6,11 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import javax.servlet.http.HttpSessionListener;
 
 @Slf4j
 @ServletComponentScan
@@ -28,8 +26,4 @@ public class FrontApplication extends SpringBootServletInitializer {
         return builder.sources(FrontApplication.class);
     }
 
-    @Bean
-    public HttpSessionListener httpSessionListener() {
-        return new SessionListener();
-    }
 }
