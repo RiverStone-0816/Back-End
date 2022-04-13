@@ -207,7 +207,7 @@ public class AuthApiController extends BaseController {
         ServerInformation serverInformation = ServerInformation.builder()
                 .pbxServerIp(pbx.getIp())
                 .pbxServerPort("5060")
-                .webrtcServerIp(webrtc.get(0).getWebrtcServerInfo().getWebrtcHost())
+                .webrtcServerIp(webrtc.get(0).getWebrtcServerInfo().getWebrtcServerIp())
                 .webrtcServerPort(String.valueOf(webrtc.get(0).getWebrtcServerInfo().getWebrtcServerPort()))
                 .turnServerIp(webrtc.get(0).getWebrtcServerInfo().getTurnServerIp())
                 .turnServerPort(String.valueOf(webrtc.get(0).getWebrtcServerInfo().getTurnServerPort()))
