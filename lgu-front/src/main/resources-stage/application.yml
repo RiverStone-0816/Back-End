@@ -2,7 +2,7 @@ server:
   port: 80
   servlet:
     session:
-      timeout: 10h
+      timeout: 43200
 spring:
   profiles:
     active: dev
