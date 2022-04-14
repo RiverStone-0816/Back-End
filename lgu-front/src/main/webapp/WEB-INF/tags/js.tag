@@ -86,8 +86,8 @@
     window.disableLog = ${devel};
     window.contextPath = '${pageContext.request.contextPath}';
     window.loadingImageSource = contextPath + '/resources/images/loading.svg';
-    window.RINGTONE = new Audio('${pageContext.request.contextPath ? pageContext.request.contextPath : ""}/resources/sounds/SimpleTone.mp3');
-    window.BUSYTONE = new Audio('${pageContext.request.contextPath ? pageContext.request.contextPath : ""}/resources/sounds/BusySignal.mp3');
+    window.RINGTONE = new Audio(contextPath ? contextPath + '/resources/sounds/SimpleTone.mp3' : '/resources/sounds/SimpleTone.mp3');
+    window.BUSYTONE = new Audio(contextPath ? contextPath + '/resources/sounds/BusySignal.mp3' : '/resources/sounds/SimpleTone.mp3');
     RINGTONE.loop = true;
 
     <c:if test="${g.login}">
