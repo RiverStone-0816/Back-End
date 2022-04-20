@@ -16,7 +16,7 @@
 
 <div class="sub-content ui container fluid unstackable" id="modal-search-maindb-custom-body">
     <form:form id="search-maindb-custom-form" modelAttribute="search" method="get" class="panel panel-search -ajax-loader"
-               action="${pageContext.request.contextPath}/counsel/modal-search-maindb-custom-body"
+               action="${pageContext.request.contextPath}/counsel/modal-search-maindb-custom-body?type=${pageContext.request.getParameter('type')}&roomId=${pageContext.request.getParameter('roomId')}&senderKey=${pageContext.request.getParameter('senderKey')}&userKey=${pageContext.request.getParameter('userKey')}"
                data-target="#modal-search-maindb-custom-body">
         <input type="hidden" name="type" value="${pageContext.request.getParameter('type')}"/>
         <div class="panel-heading">
