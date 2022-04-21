@@ -415,7 +415,7 @@
                                 lastMessage = '템플릿을 전송하였습니다.'
                             else if (['RE', 'E'].includes(sendReceive))
                                 lastMessage = '챗봇이 존재하지 않습니다.'
-                        } else if (['RM', 'SZ', 'SG', 'SD', 'SE'].includes(sendReceive)) {
+                        } else if (['RM', 'SZ', 'SG', 'SD', 'SE', 'SAS', 'SVS', 'RAR', 'RVR'].includes(sendReceive)) {
                             if (sendReceive === 'RM') {
                                 lastMessage = '상담사연결을 요청하였습니다.'
                             } else if (sendReceive === 'SZ') {
@@ -426,6 +426,22 @@
                                 lastMessage = userName + '상담사가 상담을 내렸습니다.'
                             } else if (sendReceive === 'SE') {
                                 lastMessage = userName + '상담사가 상담을 종료했습니다.'
+                            } else if (sendReceive === 'SAS') {
+                                lastMessage = '음성통화를 요청합니다.'
+                            } else if (sendReceive === 'SVS') {
+                                lastMessage = '영상통화를 요청합니다.'
+                            } else if (sendReceive === 'RAR') {
+                                if (content.ready_result === '0') {
+                                    lastMessage = '음성통화를 수락합니다.'
+                                } else {
+                                    lastMessage = '음성통화를 거절합니다.'
+                                }
+                            } else if (sendReceive === 'RVR') {
+                                if (content.ready_result === '0') {
+                                    lastMessage = '영상통화를 수락합니다.'
+                                } else {
+                                    lastMessage = '영상통화를 거절합니다.'
+                                }
                             }
                         }
                         else if (fileType === 'photo')
@@ -813,11 +829,11 @@
                                     onclick="this.previousSibling.click()"><i class="paperclip icon"></i></button>
                             <%--TODO: 음성대화--%>
                             <button v-if="channelType==='eicn' && isVChat" class="ui icon compact mini button mr5" data-inverted
-                                    data-tooltip="음성대화" data-variation="tiny" data-position="top center"><i
+                                    data-tooltip="음성대화" data-variation="tiny" data-position="top center" @click="startWebrtc('SAS')"><i
                                     class="microphone icon"></i></button>
                             <%--TODO: 화상대화--%>
                             <button v-if="channelType==='eicn' && isVChat" class="ui icon compact mini button mr5" data-inverted
-                                    data-tooltip="화상대화" data-variation="tiny" data-position="top center"><i
+                                    data-tooltip="화상대화" data-variation="tiny" data-position="top center" @click="startWebrtc('SVS')"><i
                                     class="user icon"></i></button>
                             <%--TODO: 자동멘트--%>
                             <div class="ui fitted toggle checkbox auto-ment vertical-align-middle">
@@ -904,7 +920,7 @@
 
                     loginId: '${g.user.id}',
                     isMessage: false,
-                    isVChat: false,
+                    isVChat: true,
 
                     showingDropzone: false,
 
@@ -920,6 +936,10 @@
                     bodyScrollingTimer: null,
 
                     messageList: [],
+
+                    myUserName: null,
+                    remoteUserName: null,
+                    recordFile: null,
                 }
             },
             updated: function () {
@@ -956,7 +976,8 @@
                         _this.customName = response.data.customName
                         _this.isAutoEnable = response.data.isAutoEnable === 'Y'
                         _this.isMessage = !(response.data.userId === _this.loginId && response.data.roomStatus === 'G')
-                        _this.isVChat = is_support_vchat(response.data.channelType === 'eicn' ? 'Y' : 'N')
+                        //_this.isVChat = is_support_vchat(response.data.channelType === 'eicn' ? 'Y' : 'N')
+                        _this.isVChat = response.data.channelType === 'eicn'
 
                         const status = _this.roomStatus === 'E' ? statues.END.status
                             : !_this.userId ? statues.TOT.status
@@ -1344,6 +1365,9 @@
                     this.loadTemplates()
                     this.loadTemplateBlocks()
                 },
+                startWebrtc: function (receive) {
+                    talkCommunicator.sendWebrtc(this.roomId, this.channelType, this.senderKey, this.userKey, receive)
+                },
 
             },
             mounted: function () {
@@ -1422,9 +1446,13 @@
                     talkRoom.isMessage = true
                 }
                 talkListContainer.updateRoomStatus(data.room_id, 'END', data.send_receive, data.type, data.content, messageTime)
-            } else if (['SD'].includes(data.send_receive)){
+            } else if (['SD'].includes(data.send_receive)) {
                 talkListContainer.load()
                 talkRoom.clearRoom()
+            } else if (['RAS'].includes(data.send_receive)) {
+                talkRoom.myUserName = data.content.my_username
+                talkRoom.remoteUserName = data.content.remote_username
+                talkRoom.recordFile = data.content.recoed_file
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive)
                 if (data.send_receive === 'R' && data.userid === userId && talkRoom.roomId !== data.room_id) {
@@ -1468,6 +1496,7 @@
             .on('svc_custom_match', data => {
                 talkListContainer.changeCustomName(data)
             })
+            .on('svc_webrtc', processTalkMessage)
 
         function checkFileType(type, content) {
             if (['file', 'image', 'audio', 'video'].includes(type)) {

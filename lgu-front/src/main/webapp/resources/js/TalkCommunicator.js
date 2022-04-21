@@ -73,6 +73,12 @@ TalkCommunicator.prototype.connect = function (url, companyId, userid, passwd, a
         }).on('svc_login', function (data) {
             _this.log(false, 'svc_login', data);
             _this.process('svc_login', data);
+        }).on('svc_webrtc', function (data) {
+            _this.log(false, 'svc_webrtc', data);
+            _this.process('svc_webrtc', data);
+        }).on('svc_webrtc_ready', function (data) {
+            _this.log(false, 'svc_webrtc_ready', data);
+            _this.process('svc_webrtc_ready', data);
         }).on('svc_logout', function (data) {
             _this.log(false, 'svc_logout', data);
             _this.process('svc_logout', data);
@@ -165,6 +171,19 @@ TalkCommunicator.prototype.sendMessage = function (roomId, channelType, senderKe
         etc_data: "",
         type: 'text',
         contents: contents,
+    });
+};
+TalkCommunicator.prototype.sendWebrtc = function (roomId, channelType, senderKey, userKey, sendReceive) {
+    this.socket.emit('cli_webrtc', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        channel_type: channelType,
+        sender_key: senderKey,
+        send_receive: sendReceive,
+        user_key: userKey,
+        etc_data: "",
+        contents: "",
     });
 };
 TalkCommunicator.prototype.sendCustomMatch = function (roomId, senderKey, userKey, groupId, customId, customName) {
