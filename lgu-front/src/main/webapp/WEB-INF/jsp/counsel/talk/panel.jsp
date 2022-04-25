@@ -1184,7 +1184,7 @@
                 },
                 uploadFile(file) {
                     return uploadFile(file)
-                        .done(response => restSelf.post('/api/counsel/file', response.data)
+                        .done(response => restSelf.post('/api/counsel/file/' + this.channelType, response.data)
                             .done(response => talkCommunicator.sendFile(this.roomId, this.channelType, this.senderKey, this.userKey, response.data)))
                 },
                 sendFile: function (event) {

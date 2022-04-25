@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.front.service.api.talk;
 
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkTemplateSummaryResponse;
+import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
 import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
 import kr.co.eicn.ippbx.util.JsonResult;
@@ -42,7 +43,7 @@ public class TalkTemplateApiInterface extends ApiServerInterface {
             form.setOriginalFileName(null);
             Object o = sendByMultipartFile(HttpMethod.POST, subUrl, form, jsonResultType(String.class), file);
             if (StringUtils.isNotEmpty(companyId))
-                uploadWebchatImageToGateway(companyId, (String) o);
+                uploadWebchatImageToGateway(companyId, (String) o, TalkChannelType.KAKAO);
 
             return (String) o;
         } else {
@@ -61,7 +62,7 @@ public class TalkTemplateApiInterface extends ApiServerInterface {
             sendByMultipartFile(HttpMethod.PUT, subUrl + seq, form, JsonResult.class, file);
 
             if (StringUtils.isNotEmpty(companyId))
-                uploadWebchatImageToGateway(companyId, fileName);
+                uploadWebchatImageToGateway(companyId, fileName, TalkChannelType.KAKAO);
         } else {
             sendByMultipartFile(HttpMethod.PUT, subUrl + seq, form, JsonResult.class, Collections.emptyMap());
         }

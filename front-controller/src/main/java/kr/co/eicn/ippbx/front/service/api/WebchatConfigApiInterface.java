@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.front.service.api;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatServiceInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatServiceSummaryInfoResponse;
+import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.model.form.WebchatServiceInfoFormRequest;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,7 @@ public class WebchatConfigApiInterface extends ApiServerInterface {
     public String uploadImage(FileForm form, String companyId) {
         final String saveFileName = sendByMultipartFile(HttpMethod.POST, subUrl + "image", form, String.class, Collections.singletonMap("image", new FileResource(form.getFilePath(), form.getOriginalName())));
 
-        uploadWebchatImageToGateway(companyId, saveFileName);
+        uploadWebchatImageToGateway(companyId, saveFileName, TalkChannelType.EICN);
 
         return saveFileName;
     }
