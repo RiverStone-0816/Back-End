@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotFallbackInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotSummaryInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.model.form.WebchatBotFallbackFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.model.search.ChatbotSearchRequest;
@@ -93,7 +94,7 @@ public class ChatbotApiInterface extends ApiServerInterface {
     public String uploadImage(FileForm form, String companyId) {
         final String saveFileName = sendByMultipartFile(HttpMethod.POST, subUrl + "image", form, String.class, Collections.singletonMap("image", new FileResource(form.getFilePath(), form.getOriginalName())));
 
-        uploadWebchatImageToGateway(companyId, saveFileName);
+        uploadWebchatImageToGateway(companyId, saveFileName, TalkChannelType.EICN);
 
         return saveFileName;
     }

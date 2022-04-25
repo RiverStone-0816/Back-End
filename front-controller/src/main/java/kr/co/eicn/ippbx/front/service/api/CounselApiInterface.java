@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.front.service.api;
 
 import kr.co.eicn.ippbx.front.model.form.FileForm;
+import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.model.form.TalkAutoEnableFormRequest;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
@@ -86,10 +87,10 @@ public class CounselApiInterface extends ApiServerInterface {
     }
 
     @SneakyThrows
-    public String uploadFile(FileForm form, String companyId) {
+    public String uploadFile(FileForm form, String companyId, String channelType) {
         final String saveFileName = sendByMultipartFile(HttpMethod.POST, subUrl + "file", form, String.class, Collections.singletonMap("file", new FileResource(form.getFilePath(), form.getOriginalName())));
 
-        uploadWebchatImageToGateway(companyId, saveFileName);
+        uploadWebchatImageToGateway(companyId, saveFileName, Objects.requireNonNull(TalkChannelType.of(channelType)));
 
         return saveFileName;
     }

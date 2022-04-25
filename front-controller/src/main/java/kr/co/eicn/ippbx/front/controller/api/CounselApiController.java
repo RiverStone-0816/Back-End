@@ -61,9 +61,9 @@ public class CounselApiController extends BaseController {
     }
 
     @SneakyThrows
-    @PostMapping("file")
-    public String uploadFile(@Valid @RequestBody FileForm form, BindingResult bindingResult) {
-        return apiInterface.uploadFile(form, g.getUser().getCompanyId());
+    @PostMapping("file/{channelType}")
+    public String uploadFile(@PathVariable String channelType, @Valid @RequestBody FileForm form, BindingResult bindingResult) {
+        return apiInterface.uploadFile(form, g.getUser().getCompanyId(), channelType);
     }
 
     @GetMapping("recent-consultation-reservation")

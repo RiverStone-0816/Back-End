@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import kr.co.eicn.ippbx.exception.UnauthorizedException;
+import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.util.AbstractRestInterface;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.ResultFailException;
@@ -333,11 +334,12 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
         return attr.getRequest().getRemoteHost();
     }
 
-    protected void uploadWebchatImageToGateway(String companyId, String fileName) throws JsonProcessingException {
+    protected void uploadWebchatImageToGateway(String companyId, String fileName, TalkChannelType channelType) throws JsonProcessingException {
         HashMap<String, String> parameterMap = new HashMap<>();
 
         parameterMap.put("company_id", companyId);
         parameterMap.put("file_name", fileName);
+        parameterMap.put("channelType", channelType.getCode());
 
         getResponse(webchatUrl, parameterMap, HttpMethod.POST, false);
     }
