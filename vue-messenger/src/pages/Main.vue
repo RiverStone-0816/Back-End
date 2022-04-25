@@ -11,7 +11,7 @@
                   <div class="h-8 w-8 rounded-lg-full overflow-hidden">
                     <img class="w-full" :src="botIcon === '' ? getBotIcon : botIcon" alt="bot-icon">
                   </div>
-                  <div class="flex items-center p-3 font-bold">{{ displayName }}<button type="button" @click.stop="this.openChat()">테스트</button></div>
+                  <div class="flex items-center p-3 font-bold">{{ displayName }}</div>
                 </div>
               </div>
 
@@ -257,6 +257,44 @@
                 </div>
               </template>
 
+              <template v-if="message.sender === 'SERVER' && message.messageType === 'audio_start'">
+                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
+                  <div class="flex flex-row">
+                    <div class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent" ref="apiparent">
+                      <div class="p-2 pl-3 "><p>상담원이 음성통화를 요청합니다.</p></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
+                  <div class="flex flex-row">
+                    <div class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
+                      <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop="audioStart(true)">수락</button>
+                      <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop="audioStart(false)">거절</button>
+                    </div>
+                    <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
+                  </div>
+                </div>
+              </template>
+
+              <template v-if="message.sender === 'SERVER' && message.messageType === 'video_start'">
+                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
+                  <div class="flex flex-row">
+                    <div class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent" ref="apiparent">
+                      <div class="p-2 pl-3 "><p>상담원이 영상통화를 요청합니다.</p></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
+                  <div class="flex flex-row">
+                    <div class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
+                      <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop="videoStart(true)">수락</button>
+                      <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop="videoStart(false)">거절</button>
+                    </div>
+                    <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
+                  </div>
+                </div>
+              </template>
+
               <template v-if="message.sender === 'SERVER' && message.messageType === 'member_file'">
                 <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
                   <div class="flex flex-row">
@@ -399,6 +437,7 @@ export default {
         // mode: 'local',
         mode: 'service',
       },
+      webrtcData: null,
     }
   },
   methods: {
@@ -573,6 +612,22 @@ export default {
           || fileName.toLowerCase().endsWith('.wmv')
           || fileName.toLowerCase().endsWith('.mov')
     },
+    audioStart(chk) {
+      if (chk) {
+        this.communicator.sendWebrtcReady('audio_start_ready',{ready_result: 0, ready_result_msg: '준비완료'})
+        this.openChat(this.webrtcData)
+      } else{
+        this.communicator.sendWebrtcReady('audio_start_ready',{ready_result: 1, ready_result_msg: '거절'})
+      }
+    },
+    videoStart(chk) {
+      if (chk) {
+        this.communicator.sendWebrtcReady('video_start_ready',{ready_result: 0, ready_result_msg: '준비완료'})
+        this.openChat(this.webrtcData)
+      } else{
+        this.communicator.sendWebrtcReady('video_start_ready',{ready_result: 1, ready_result_msg: '거절'})
+      }
+    },
   },
   created() {
     const UrlParams = new URLSearchParams(location.search)
@@ -628,6 +683,10 @@ export default {
             this.messages.splice(0, this.messages.length)
           } else if (data.message_type === 'ipcc_control') {
             this.inputEnable = !(data.message_data.session_keep_yn === 'N')
+          } else if (data.message_type === 'audio_start') {
+            this.webrtcData = data.message_data
+          } else if (data.message_type === 'video_start') {
+            this.webrtcData = data.message_data
           }
 
           if (data.message_type === "member_text") {

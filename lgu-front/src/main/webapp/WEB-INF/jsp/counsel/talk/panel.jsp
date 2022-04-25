@@ -648,6 +648,30 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div v-if="['SAS', 'RAR'].includes(e.sendReceive)" class="chat-item chat-me">
+                                    <div class="wrap-content">
+                                        <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
+                                        <div class="chat">
+                                            <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
+                                                <div class="txt_chat">
+                                                    <p>{{ e.sendReceive === 'SAS' ? '음성통화 수락 대기중...' : e.contents.ready_result === 0 ? '음성통화 수락' : '음성통화 거절' }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="['SVS', 'RVR'].includes(e.sendReceive)" class="chat-item chat-me">
+                                    <div class="wrap-content">
+                                        <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
+                                        <div class="chat">
+                                            <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
+                                                <div class="txt_chat">
+                                                    <p>{{ e.sendReceive === 'SVS' ? '영상통화 수락 대기중...' : e.contents.ready_result === 0 ? '영상통화 수락' : '영상통화 거절' }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div v-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info' && e.messageType !== 'block'"
                                      class="chat-item"
                                      :class="['AF', 'S'].includes(e.sendReceive)<%-- && e.userId === ME--%> && 'chat-me'">
@@ -1063,7 +1087,7 @@
                             file_name: message.contents,
                             channel_type: _this.channelType
                         })
-                    } else if (this.REPLYING_INDICATOR === message.contents.charAt(0)) {
+                    } else if (!['SAS','RAR'].includes(message.sendReceive) && this.REPLYING_INDICATOR === message.contents.charAt(0)) {
                         [message.contents.indexOf(this.REPLYING_TEXT), message.contents.indexOf(this.REPLYING_IMAGE), message.contents.indexOf(this.REPLYING_FILE), message.contents.indexOf(this.REPLYING_IMAGE_TEMP)].forEach((indicator, i) => {
                             if (indicator < 0) return
                             message.replyingType = i === 0 ? 'text' : i === 1 ? 'image' : i === 2 ? 'file' : 'image_temp'
@@ -1396,7 +1420,6 @@
                         _this.scrollToBottom()
                     })
                 }
-
             },
         })).mount('#side-view-modal')
 
@@ -1449,10 +1472,12 @@
             } else if (['SD'].includes(data.send_receive)) {
                 talkListContainer.load()
                 talkRoom.clearRoom()
-            } else if (['RAS'].includes(data.send_receive)) {
+            } else if (['SAS','SVS'].includes(data.send_receive)) {
                 talkRoom.myUserName = data.content.my_username
                 talkRoom.remoteUserName = data.content.remote_username
                 talkRoom.recordFile = data.content.recoed_file
+            } else if (['RAR','RVR'].includes(data.send_receive)) {
+                console.log(data)
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive)
                 if (data.send_receive === 'R' && data.userid === userId && talkRoom.roomId !== data.room_id) {
@@ -1497,6 +1522,7 @@
                 talkListContainer.changeCustomName(data)
             })
             .on('svc_webrtc', processTalkMessage)
+            .on('svc_webrtc_ready', processTalkMessage)
 
         function checkFileType(type, content) {
             if (['file', 'image', 'audio', 'video'].includes(type)) {

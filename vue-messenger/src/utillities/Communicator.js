@@ -147,5 +147,13 @@ Communicator.prototype.sendAction = function (botId, data, lastReceiveMessageTyp
         message_data: Object.assign({last_receive_message_type: lastReceiveMessageType}, data)
     }))
 }
+Communicator.prototype.sendWebrtcReady = function (type, data) {
+    this.socket.emit('webchatcli_message', Object.assign(this.request, {
+        device: window?.navigator?.platform, user_agent: window?.navigator?.userAgent,
+        message_id: this.getMessageId(),
+        message_type: 'audio_start_ready',
+        message_data: data,
+    }))
+}
 
 export default Communicator

@@ -48,18 +48,16 @@ export default {
   },
   data() {
     return {
+
       WEBRTC_INFO: {
         server: {
-          "pbx_server_ip": "122.49.74.101",
-          "pbx_server_port": "5060",
-          "webrtc_server_ip": "webrtc.eicn.co.kr",
-          "webrtc_server_port": "9200",
-          "turn_server_ip": "webrtc.eicn.co.kr",
-          "turn_server_port": "3478",
-          "turn_user": "turn",
-          "turn_secret": "turnrw"
+          "webrtc_server_ip": window.form.webrtc_server_ip,
+          "webrtc_server_port": window.form.webrtc_server_port,
+          "turn_server_ip": window.form.turn_server_ip,
+          "turn_server_port": window.form.turn_server_port,
+          "turn_user": window.form.turn_user,
+          "turn_secret": window.form.turn_secret
         },
-        phone: {},
         env: { "ringtone": true, "busytone": true },
       },
       RINGTONE: new Audio(SimpleTone),
@@ -70,8 +68,8 @@ export default {
       vchatOpaqueId: "vchat-"+Janus.randomString(12),
       vchatBitrateTimer: null,
       vchatSpinner: null,
-      myUsername: "chat-client-BBB",
-      remoteUsername: "agent-AAA",
+      myUsername: window.form.remote_username,
+      remoteUsername: window.form.my_username,
       doSimulcast: (getQueryStringValue("simulcast") === "yes" || getQueryStringValue("simulcast") === "true"),
       simulcastStarted: false,
       vchatRegistered: false,
@@ -99,6 +97,7 @@ export default {
   created() {
   },
   mounted() {
+    console.log(window.form);
     if (!window.RTCPeerConnection) store.commit('alert/show', {body: '이 브라우저는 WEBRTC 를 지원하지 않습니다.', isClose: true})
     this.create_vchat_session()
   },
