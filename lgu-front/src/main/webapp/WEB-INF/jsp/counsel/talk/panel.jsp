@@ -280,7 +280,7 @@
                             return b["roomLastTime"].localeCompare(a["roomLastTime"])
                         })
                     },
-                    updateRoom: function (roomId, messageType, content, messageTime, sendReceive) {
+                    updateRoom: function (roomId, messageType, content, messageTime, sendReceive, customName) {
                         if (!this.roomMap[roomId])
                             return this.load()
 
@@ -456,7 +456,10 @@
                         return lastMessage
                     },
                     changeCustomName(data) {
-                        this.roomMap[data.roomId].maindbCustomName = data.maindb_custom_name;
+                        this.roomMap[data.room_id].maindbCustomName = data.maindb_custom_name;
+                        this.roomMap[data.room_id].maindbCustomId = data.maindb_custom_id;
+                        this.roomMap[data.room_id].maindbGroupId = data.maindb_group_id;
+                        talkRoom.customName = data.maindb_custom_name;
                     }
                 },
                 updated: function () {
@@ -1479,7 +1482,7 @@
             } else if (['RAR','RVR'].includes(data.send_receive)) {
                 console.log(data)
             } else {
-                talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive)
+                talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive, data.customname)
                 if (data.send_receive === 'R' && data.userid === userId && talkRoom.roomId !== data.room_id) {
                     talkListContainer.statuses['MY'].newMessages++
                 }

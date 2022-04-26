@@ -218,11 +218,9 @@
         loadCustomInput(${search.groupSeq}, customId);
         </c:when>
         <c:otherwise>
-        if (channel === 'eicn')
+        if (['eicn','kakao'].includes(channel))
             talkCommunicator.sendCustomMatch('${g.escapeQuote(pageContext.request.getParameter('roomId'))}', '${g.escapeQuote(pageContext.request.getParameter('senderKey'))}',
-                '${g.escapeQuote(pageContext.request.getParameter('userKey'))}', '${search.groupSeq}', customId, customName);
-
-        talkListContainer.roomMap['${g.escapeQuote(pageContext.request.getParameter('roomId'))}'].maindbCustomName = customName;
+                '${g.escapeQuote(pageContext.request.getParameter('userKey'))}', '${search.groupSeq}', customId, customName, channel);
 
         loadTalkCustomInput(${search.groupSeq}, customId,
             '${g.escapeQuote(pageContext.request.getParameter('roomId'))}',

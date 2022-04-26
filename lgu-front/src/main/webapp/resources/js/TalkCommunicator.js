@@ -186,12 +186,13 @@ TalkCommunicator.prototype.sendWebrtc = function (roomId, channelType, senderKey
         contents: "",
     });
 };
-TalkCommunicator.prototype.sendCustomMatch = function (roomId, senderKey, userKey, groupId, customId, customName) {
+TalkCommunicator.prototype.sendCustomMatch = function (roomId, senderKey, userKey, groupId, customId, customName, channelType) {
     this.socket.emit('cli_custom_match', {
         company_id : this.request.companyId,
         sender_key : senderKey,
         user_key : userKey,
         room_id : roomId,
+        channel_type: channelType,
         userid : this.request.userid,
         maindb_group_id : groupId,
         maindb_custom_id : customId,
