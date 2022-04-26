@@ -339,7 +339,7 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
 
         parameterMap.put("company_id", companyId);
         parameterMap.put("file_name", fileName);
-        parameterMap.put("channelType", channelType.getCode());
+        parameterMap.put("channel_type", channelType.getCode());
 
         getResponse(webchatUrl, parameterMap, HttpMethod.POST, false);
     }
