@@ -10,14 +10,14 @@
         </div>
       </div>
       <div class="input-box">
-        <button :disabled="!DIAL_AUDIO_VCHAT_BTN" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-dial-audio" @click.stop="doVoiceChat">음성전화걸기</button>
-        <button :disabled="!DIAL_VIDEO_VCHAT_BTN" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-dial-video" @click.stop="doVideoChat">영상전화걸기</button>
+<!--        <button :disabled="!DIAL_AUDIO_VCHAT_BTN" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-dial-audio" @click.stop="doVoiceChat">음성전화걸기</button>
+        <button :disabled="!DIAL_VIDEO_VCHAT_BTN" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-dial-video" @click.stop="doVideoChat">영상전화걸기</button>-->
         <button :disabled="!ACCEPT_VCHAT_BTN" class="bg-gray-400 hover:bg-gray`-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-accept" @click.stop="accept_vchat">전화받기</button>
         <button :disabled="!HANGUP_VCHAT_BTN" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-hangup" @click.stop="doHangup">전화끊기</button>
         <button class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-mute" @click.stop="doMute">MUTE</button>
         <button class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" id="btn-unmute" @click.stop="doUnmute">UNMUTE</button>
-        <select id="select_audio_input"></select>
-        <select id="select_audio_output"></select>
+<!--        <select id="select_audio_input"></select>
+        <select id="select_audio_output"></select>-->
         <!--<button id="btn-toggle-speaker">Toggle Speaker</button>-->
         <span id="print_text"></span>
       </div>
@@ -99,6 +99,7 @@ export default {
   mounted() {
     console.log(window.form);
     if (!window.RTCPeerConnection) store.commit('alert/show', {body: '이 브라우저는 WEBRTC 를 지원하지 않습니다.', isClose: true})
+    this.set_record_file(window.form.record_file)
     this.create_vchat_session()
   },
   methods: {
