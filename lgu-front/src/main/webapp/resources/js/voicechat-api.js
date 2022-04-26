@@ -413,17 +413,21 @@ function create_vchat_session() {
     );
 }
 
+var chkInit = true;
 function start_vchat() {
-    if (vchatReconnectTimerId) {
-        clearInterval(vchatReconnectTimerId);
-        vchatReconnectTimerId = null;
-    }
-    if (janusVChat) {
-        delete janusVChat;
-        janusVChat = null;
-    }
+    if (chkInit) {
+        if (vchatReconnectTimerId) {
+            clearInterval(vchatReconnectTimerId);
+            vchatReconnectTimerId = null;
+        }
+        if (janusVChat) {
+            delete janusVChat;
+            janusVChat = null;
+        }
 
-    Janus.init({debug: "all", callback: create_vchat_session});
+        Janus.init({debug: "all", callback: create_vchat_session});
+        chkInit = false;
+    }
 }
 
 function set_myusername_vchat(name) {

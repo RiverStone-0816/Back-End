@@ -228,8 +228,8 @@
                             <select name="channels" multiple="multiple" class="one-multiselect channels">
                                 <c:forEach var="channel" items="${entity.multichannelList}">
                                     <option value="${channel.channelData}" data-type="${g.htmlQuote(channel.channelType)}">
-                                        [${channel.channelType == 'TALK' ? g.htmlQuote(talkServices.get(channel.channelData.split('[_]')[0])) : g.htmlQuote(channelTypes.get(channel.channelType))}]
-                                            ${g.htmlQuote(channel.channelType == 'TALK' ? channel.channelData.split('[_]')[1] : channel.channelData)}
+                                        [${channel.channelType == 'TALK' ? g.htmlQuote(talkServices.get(channel.channelData.split('[-]')[0])) : g.htmlQuote(channelTypes.get(channel.channelType))}]
+                                            ${g.htmlQuote(channel.channelData)}
                                     </option>
                                 </c:forEach>
                                 <c:if test="${phoneNumber != null && phoneNumber != '' && (entity == null || entity.multichannelList.stream().map(e -> e.channelData == phoneNumber).count() == 0)}">

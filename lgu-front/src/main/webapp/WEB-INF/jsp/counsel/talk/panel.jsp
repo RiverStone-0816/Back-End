@@ -651,25 +651,27 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="['SAS', 'RAR'].includes(e.sendReceive)" class="chat-item chat-me">
+                                <div v-if="['SAS', 'SVS'].includes(e.sendReceive)" class="chat-item chat-me">
                                     <div class="wrap-content">
                                         <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
                                             <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
                                                 <div class="txt_chat">
-                                                    <p>{{ e.sendReceive === 'SAS' ? '음성통화 수락 대기중...' : e.contents.ready_result === 0 ? '음성통화 수락' : '음성통화 거절' }}</p>
+                                                    <video id="remotevideo" autoplay playsinline></video>
+                                                    <video id="myvideo" autoplay playsinline muted="muted"></video>
+                                                    <p>{{ e.sendReceive === 'SAS' ? '음성통화 수락 대기중...' : '영상통화 수락 대기중...' }}</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="['SVS', 'RVR'].includes(e.sendReceive)" class="chat-item chat-me">
+                                <div v-if="['RAR', 'RVR'].includes(e.sendReceive) && e.contents.ready_result !== 0" class="chat-item chat-me">
                                     <div class="wrap-content">
                                         <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
                                             <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
                                                 <div class="txt_chat">
-                                                    <p>{{ e.sendReceive === 'SVS' ? '영상통화 수락 대기중...' : e.contents.ready_result === 0 ? '영상통화 수락' : '영상통화 거절' }}</p>
+                                                    <p>{{ e.sendReceive === 'RAR' ? '음성통화 거절' : '영상통화 거절' }}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -1090,7 +1092,7 @@
                             file_name: message.contents,
                             channel_type: _this.channelType
                         })
-                    } else if (!['SAS','RAR'].includes(message.sendReceive) && this.REPLYING_INDICATOR === message.contents.charAt(0)) {
+                    } else if (!['SAS','RAR','SVS','RVR'].includes(message.sendReceive) && this.REPLYING_INDICATOR === message.contents.charAt(0)) {
                         [message.contents.indexOf(this.REPLYING_TEXT), message.contents.indexOf(this.REPLYING_IMAGE), message.contents.indexOf(this.REPLYING_FILE), message.contents.indexOf(this.REPLYING_IMAGE_TEMP)].forEach((indicator, i) => {
                             if (indicator < 0) return
                             message.replyingType = i === 0 ? 'text' : i === 1 ? 'image' : i === 2 ? 'file' : 'image_temp'
@@ -1479,8 +1481,22 @@
                 talkRoom.myUserName = data.content.my_username
                 talkRoom.remoteUserName = data.content.remote_username
                 talkRoom.recordFile = data.content.recoed_file
+                WEBRTC_INFO.server=data.content
+
+                set_myusername_vchat(data.content.my_username)
+                set_remoteusername_vchat(data.content.remote_username)
+                set_record_file(data.content.recoed_file)
+                set_ringtone_volume(0.2)
+                set_busytone_volume(0.2)
+
             } else if (['RAR','RVR'].includes(data.send_receive)) {
-                console.log(data)
+                set_local_vchat_stream_object($('#myvideo'))
+                set_remote_vchat_stream_object($('#remotevideo'))
+
+                start_vchat();
+
+                setTimeout(function () {data.send_receive === 'RAR' ? doVideoChat() : doVoiceChat()},10000)
+
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive, data.customname)
                 if (data.send_receive === 'R' && data.userid === userId && talkRoom.roomId !== data.room_id) {

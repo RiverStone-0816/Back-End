@@ -151,7 +151,7 @@ Communicator.prototype.sendWebrtcReady = function (type, data) {
     this.socket.emit('webchatcli_message', Object.assign(this.request, {
         device: window?.navigator?.platform, user_agent: window?.navigator?.userAgent,
         message_id: this.getMessageId(),
-        message_type: 'audio_start_ready',
+        message_type: type,
         message_data: data,
     }))
 }
