@@ -1,8 +1,6 @@
 package kr.co.eicn.ippbx.model.form;
 
-import kr.co.eicn.ippbx.model.enums.ButtonAction;
-import kr.co.eicn.ippbx.model.enums.DisplayElementInputType;
-import kr.co.eicn.ippbx.model.enums.DisplayType;
+import kr.co.eicn.ippbx.model.enums.*;
 import kr.co.eicn.ippbx.util.spring.BaseForm;
 import kr.co.eicn.ippbx.util.valid.NotNull;
 import lombok.Data;
@@ -20,6 +18,38 @@ public class WebchatBotFormRequest extends WebchatBotFallbackFormRequest {
 
     @Valid
     private BlockInfo blockInfo;
+    @Valid
+    private List<AuthBlockInfo> authBlockList;
+
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    public static class AuthBlockInfo extends BaseForm {
+        private Integer id;
+        private String name;
+        private String title;
+        private List<AuthParamInfo> params;
+        private List<AuthButtonInfo> buttons;
+    }
+
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    public static class AuthParamInfo extends BaseForm {
+        private AuthDisplayType type;
+        private String name;
+        private String paramName;
+        private Boolean needYn;
+    }
+
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    public static class AuthButtonInfo extends BaseForm {
+        private String name;
+        private AuthButtonAction action;
+        private String actionData;
+        private Boolean usingResultMent;
+        private String successMent;
+        private String errorMent;
+    }
 
     @EqualsAndHashCode(callSuper = true)
     @Data

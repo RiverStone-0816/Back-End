@@ -33,14 +33,14 @@ public class WebchatBotButtonElementService extends ApiBaseService {
         data.setAction(buttonElement.getAction());
 
         if (ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction())
-                || ButtonAction.CONNECT_BEFORE_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_FIRST_BLOCK.equals(buttonElement.getAction())) {
+                || ButtonAction.CONNECT_BEFORE_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_FIRST_BLOCK.equals(buttonElement.getAction())
+                || ButtonAction.CONNECT_AUTH_BLOCK.equals(buttonElement.getAction())) {
             if (ButtonAction.CONNECT_BEFORE_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_FIRST_BLOCK.equals(buttonElement.getAction()))
                 data.setActionData(buttonElement.getAction().getCode());
             else
                 data.setActionData(String.valueOf(buttonElement.getNextBlockId()));
             data.setAction(ButtonAction.CONNECT_BLOCK);
-        }
-        else if (ButtonAction.CONNECT_MEMBER.equals(buttonElement.getAction()))
+        } else if (ButtonAction.CONNECT_MEMBER.equals(buttonElement.getAction()))
             data.setActionData(String.valueOf(buttonElement.getNextGroupId()));
         else if (ButtonAction.CONNECT_URL.equals(buttonElement.getAction()))
             data.setActionData(String.valueOf(buttonElement.getNextUrl()));
@@ -57,8 +57,8 @@ public class WebchatBotButtonElementService extends ApiBaseService {
         return webchatBotButtonElementRepository.insert(data);
     }
 
-    public void updateNextBlockId(Integer buttonId, Integer nextBlockId) {
-        webchatBotButtonElementRepository.updateNextBlockId(buttonId, nextBlockId);
+    public void updateNextBlockId(Integer buttonId, Integer nextBlockId, boolean isAuthButton) {
+        webchatBotButtonElementRepository.updateNextBlockId(buttonId, nextBlockId, isAuthButton);
     }
 
     public List<Integer> findIdListByBlockIdList(List<Integer> blockIdList) {
@@ -90,7 +90,7 @@ public class WebchatBotButtonElementService extends ApiBaseService {
 
         if (ButtonAction.CONNECT_BEFORE_BLOCK.equals(ButtonAction.of(entity.getNextActionData())) || ButtonAction.CONNECT_FIRST_BLOCK.equals(ButtonAction.of(entity.getNextActionData())))
             response.setAction(ButtonAction.of(entity.getNextActionData()));
-        else if (ButtonAction.CONNECT_BLOCK.equals(ButtonAction.of(entity.getAction())) || ButtonAction.CONNECT_NEXT_BLOCK.equals(ButtonAction.of(entity.getAction())))
+        else if (ButtonAction.CONNECT_BLOCK.equals(ButtonAction.of(entity.getAction())) || ButtonAction.CONNECT_NEXT_BLOCK.equals(ButtonAction.of(entity.getAction())) || ButtonAction.CONNECT_AUTH_BLOCK.equals(ButtonAction.of(entity.getAction())))
             response.setNextBlockId(convertStringToInteger(entity.getNextActionData()));
         else if (ButtonAction.CONNECT_MEMBER.equals(ButtonAction.of(entity.getAction())))
             response.setNextGroupId(convertStringToInteger(entity.getNextActionData()));

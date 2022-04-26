@@ -81,6 +81,23 @@
                                             </li>
                                         </ul>
                                     </div>
+                                    <div class="chatbot-box-sub-label blue">
+                                        인증 블록
+                                        <div style="display: inline; float: right; margin: 5px 14px 0 0">
+                                            <button onclick="authBlockListContainer.addNewBlock()" class="ui icon mini button"><i class="plus icon"></i></button>
+                                        </div>
+                                    </div>
+                                    <div id="auth-block" class="block-list-container">
+                                        <ul class="block-list-ul">
+                                            <li v-for="(e, i) in authBlocks" :key="i" class="block-list">
+                                                <div class="block-name">{{ e.name }}</div>
+                                                <div class="block-control">
+                                                    <button @click.stop="configAuthBlock(i)" class="ui mini button">수정</button>
+                                                    <button @click.stop="removeBlock(i)" class="ui icon mini button"><i class="x icon"></i></button>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
                                     <div class="chatbot-box-sub-label skyblue">일반 블록</div>
                                     <div class="block-list-container">
                                         <ul id="block-list" class="block-list-ul">
@@ -401,6 +418,7 @@
                                                 <select v-model="data.action">
                                                     <option value="">다음 블록으로 연결</option>
                                                     <option value="block">다른 블록으로 연결</option>
+                                                    <option value="auth">인증 블록으로 연결</option>
                                                     <option value="first">첫 블록으로 연결</option>
                                                     <option value="before">이전 블록으로 연결</option>
                                                     <option value="member">상담원 연결</option>
@@ -414,6 +432,14 @@
                                                 <div class="ui form fluid mb15">
                                                     <select v-model="data.nextBlockId">
                                                         <option v-for="(e,i) in blocks" :key="i" :value="e.id">{{ e.name }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div v-if="data.action === 'auth'">
+                                                <div class="mb15">인증 블록 설정</div>
+                                                <div class="ui form fluid mb15">
+                                                    <select v-model="data.nextBlockId">
+                                                        <option v-for="(e,i) in authBlockList()" :key="i" :value="e.id">{{ e.name }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -477,6 +503,135 @@
                                                             </td>
                                                         </tr>
                                                     </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="auth-block-config" class="chatbot-control-panel auth-block-manage">
+                                <div class="chatbot-control-container active">
+                                    <button type="button" class="arrow-button"></button>
+                                    <div class="chatbot-control-inner">
+                                        <div class="chatbot-box-label">인증 블록 관리
+                                            <button class="ui mini button" @click.stop="save">저장</button>
+                                        </div>
+                                        <div class="chatbot-control-body">
+                                            <div class="mb15">인증블록명</div>
+                                            <div class="ui form fluid mb15">
+                                                <input type="text" v-model="data.name">
+                                            </div>
+                                            <div class="mb15">타이틀 입력</div>
+                                            <div class="ui form fluid mb15">
+                                                <input type="text" v-model="data.title">
+                                            </div>
+                                            <div class="mb15">항목설정</div>
+                                            <div v-for="(e,i) in data.params" :key="i" class="list-control-container mb15">
+                                                <div class="list-control-header">
+                                                    <div>항목{{ i + 1 }}</div>
+                                                    <button v-if="i === 0" @click.stop="addApiParameterItem" class="ui icon small compact black button"><i class="plus icon"></i></button>
+                                                    <button v-if="i !== 0" @click.stop="removeApiParameterItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
+                                                </div>
+                                                <table class="list-control-table">
+                                                    <tr>
+                                                        <th>타입</th>
+                                                        <td>
+                                                            <div class="ui form fluid">
+                                                                <select v-model="e.type">
+                                                                    <option value="text">텍스트</option>
+                                                                    <option value="number">숫자</option>
+                                                                    <option value="secret">비밀데이터</option>
+                                                                </select>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>항목명</th>
+                                                        <td>
+                                                            <div class="ui form fluid">
+                                                                <input type="text" v-model="e.name">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>파라미터</th>
+                                                        <td>
+                                                            <div class="ui form fluid">
+                                                                <input type="text" v-model="e.paramName">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>필수여부</th>
+                                                        <td>
+                                                            <div class="ui form fluid">
+                                                                <select v-model="e.needYn">
+                                                                    <option value="true">Y</option>
+                                                                    <option value="false">N</option>
+                                                                </select>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                            <div class="mb15">항목설정</div>
+                                            <div v-for="(e,i) in data.buttons" :key="i" class="list-control-container mb15">
+                                                <div class="list-control-header">
+                                                    <div>버튼{{ i + 1 }}</div>
+                                                    <button v-if="i === 0" @click.stop="addButton" class="ui icon small compact black button"><i class="plus icon"></i></button>
+                                                    <button v-if="i !== 0" @click.stop="removeButton(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
+                                                </div>
+                                                <div class="list-control-body">
+                                                    <div class="mb15">버튼 이름</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <input type="text" v-model="e.name">
+                                                    </div>
+                                                    <div class="mb15">버튼 액션</div>
+                                                    <div class="ui form fluid mb15">
+                                                        <select v-model="e.action">
+                                                            <option value="first">첫 블록으로 연결</option>
+                                                            <option value="before">이전 블록으로 연결</option>
+                                                            <option value="api">외부연동</option>
+                                                        </select>
+                                                    </div>
+                                                    <div v-if="e.action === 'api'">
+                                                        <div class="mb15">외부연동 URL 입력</div>
+                                                        <div class="ui form fluid mb15">
+                                                            <div class="ui form fluid mb15">
+                                                                <input type="text" v-model="e.actionData">
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb15 dp-flex align-items-center justify-content-space-between">
+                                                            <div>답변 대사 사용</div>
+                                                            <div class="ui fitted toggle checkbox">
+                                                                <input type="checkbox" @change="e.usingResultMent = $event.target.checked" :checked="e.usingResultMent">
+                                                                <label></label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="list-control-container mb15">
+                                                            <div class="list-control-header">
+                                                                <div>답변 설정</div>
+                                                            </div>
+                                                            <table class="list-control-table">
+                                                                <tr>
+                                                                    <th>정상</th>
+                                                                    <td>
+                                                                        <div class="ui form fluid mb15">
+                                                                            <textarea rows="4" v-model="e.successMent"></textarea>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th>조회불가</th>
+                                                                    <td>
+                                                                        <div class="ui form fluid">
+                                                                            <input type="text" v-model="e.errorMent">
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -791,7 +946,8 @@
                                 children: block?.buttons.filter(e => e.action === '').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
                             })
 
-                            const form = Object.assign({}, fallbackConfig.data, {blockInfo: convertBlock(blockList.blocks[0])})
+                            const form = Object.assign({}, fallbackConfig.data, {authBlockList: authBlockListContainer.getAuthBlockList()}, {blockInfo: convertBlock(blockList.blocks[0])})
+
                             if ($.isNumeric(o.current)) {
                                 return restSelf.put('/api/chatbot/' + o.current + '/all', form).done(() => alert('저장되었습니다.', o.load))
                             } else {
@@ -830,6 +986,7 @@
                                 blockList.blocks.splice(0, blockList.blocks.length)
                                 buttonConfig.blocks.splice(0, buttonConfig.blocks.length)
                                 fallbackConfig.blocks.splice(0, fallbackConfig.blocks.length)
+                                for (let property in authBlockListContainer.authBlocks) delete authBlockListContainer.authBlocks[property]
                                 for (let property in nodeBlockMap) delete nodeBlockMap[property]
                                 editor.clear()
                                 editor.zoom_reset();
@@ -844,6 +1001,13 @@
                                     nextUrl: data.nextUrl,
                                     nextPhone: data.nextPhone
                                 }
+
+                                if (data.authBlockList) {
+                                    data.authBlockList.forEach(e => {
+                                        authBlockListContainer.authBlocks[e.id] = e
+                                    })
+                                }
+
                                 chatbotSettingModal.hide()
 
                                 $('.chatbot-control-panel').removeClass('active')
@@ -891,6 +1055,7 @@
                                     })
 
                                     app.buttons = block.buttonList.sort((a, b) => (a.order - b.order)).map((e, i) => {
+                                        console.log(e)
                                         const childNodeId = (() => {
                                             if (e.action !== 'block' && e.action !== '') return
                                             const childBlockId = block.children?.filter(childBlock => (childBlock.parentButtonId === e.id))[0]?.id
@@ -937,6 +1102,7 @@
                                 }
 
                                 lastBlockId = Math.max.apply(null, [0].concat(blockList.blocks.map(e => e.id))) + 1
+                                lastAuthBlockId = Math.max.apply(null, [0].concat(data.authBlockList.map(e => e.id))) + 1
 
                                 function convertOppositeValue(pos) {
                                     return pos * -1 + 100   // 초기 위치값을 조절하려면 뒤 + 값을 조정하면 됨
@@ -1340,6 +1506,7 @@
                             o.buttonIndex = buttonIndex
                             o.data = {}
                             if (data) for (let property in data) o.data[property] = data[property]
+                            console.log(data)
                             o.data.api = {}
                             if (data.api) for (let property in data.api) o.data.api[property] = data.api[property]
                             o.checkDataStructure()
@@ -1380,6 +1547,9 @@
                             }
                             alert("저장되었습니다.");
                         },
+                        authBlockList() {
+                            return authBlockListContainer.getAuthBlockList();
+                        },
                         checkDataStructure() {
                             if (!this.data) this.data = {}
                             if (this.data.name === undefined) this.data.name = null
@@ -1401,6 +1571,93 @@
                         this.checkDataStructure()
                     }
                 }).mount('#button-config')
+                return o || o
+            })()
+            const authBlockListContainer = (() => {
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            authBlocks: {}
+                        }
+                    },
+                    methods: {
+                        addNewBlock() {
+                            const newBlockId = createAuthBlockId()
+                            o.authBlocks[newBlockId] = {
+                                id: newBlockId,
+                                name: '새로운 인증블럭',
+                                title: null,
+                                otherBotUseYn: false,
+                                params: [{type: 'text', paramName: null, displayName: null, needYn: false}],
+                                buttons: [{name: null, action: 'first', actionData: null}]
+                            }
+                        },
+                        removeBlock(blockId) {
+                            delete o.authBlocks[blockId]
+                        },
+                        configAuthBlock(blockId) {
+                            authBlockConfig.load(blockId)
+                        },
+                        getAuthBlockList() {
+                            const authBlocks = []
+                            for (let property in o.authBlocks)
+                                authBlocks.push(o.authBlocks[property])
+                            return authBlocks
+                        }
+                    }
+                }).mount('#auth-block')
+                return o || o
+            })()
+            const authBlockConfig = (() => {
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            data: {
+                                blockId: null,
+                                name: null,
+                                title: null,
+                                params: [],
+                                buttons: []
+                            }
+                        }
+                    },
+                    methods: {
+                        load(blockId) {
+                            const authBlock = authBlockListContainer.authBlocks[blockId]
+
+                            if (!authBlock)
+                                return alert('인증블록정보가 없습니다.')
+
+                            o.data.blockId = blockId
+                            o.data.name = authBlock.name
+                            o.data.title = authBlock.title
+                            o.data.params = authBlock.params
+                            o.data.buttons = authBlock.buttons
+
+                            $('.chatbot-control-panel').removeClass('active')
+                            $('.auth-block-manage').addClass('active')
+                        },
+                        addApiParameterItem() {
+                            o.data.params.push({type: 'text', paramName: null, displayName: null, needYn: false})
+                        },
+                        removeApiParameterItem(index) {
+                            if (index === 0) return
+                            o.data.params.splice(index, 1)
+                        },
+                        addButton() {
+                            o.data.buttons.push({name: null, action: '', actionData: null, usingResultMent: false, successMent: null, errorMent: null})
+                        },
+                        removeButton(index) {
+                            if (index === 0) return
+                            o.data.buttons.splice(index, 1)
+                        },
+                        save() {
+                            botList.changed = true
+                            authBlockListContainer.authBlocks[o.data.blockId] = o.data;
+                            alert('저장되었습니다.')
+                        }
+                    }
+                }).mount('#auth-block-config')
                 return o || o
             })()
             const blockPreview = (() => {
@@ -1458,6 +1715,8 @@
 
             let lastBlockId = 0
             const createBlockId = () => (++lastBlockId)
+            let lastAuthBlockId = 0
+            const createAuthBlockId = () => (++lastAuthBlockId)
 
             function createNode(blockId, x, y) {
                 if (typeof x !== 'number' || typeof y !== 'number') {

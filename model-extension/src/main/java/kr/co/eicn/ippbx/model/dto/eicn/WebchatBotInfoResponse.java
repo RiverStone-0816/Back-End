@@ -1,11 +1,10 @@
 package kr.co.eicn.ippbx.model.dto.eicn;
 
-import kr.co.eicn.ippbx.model.enums.ButtonAction;
-import kr.co.eicn.ippbx.model.enums.DisplayElementInputType;
-import kr.co.eicn.ippbx.model.enums.DisplayType;
+import kr.co.eicn.ippbx.model.enums.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -14,6 +13,42 @@ public class WebchatBotInfoResponse extends WebchatBotFallbackInfoResponse {
     private Integer id;
     private String name;
     private BlockInfo blockInfo;
+
+    @Valid
+    private List<AuthBlockInfo> authBlockList;
+
+    @Data
+    public static class AuthBlockInfo {
+        private Integer id;
+        private String name;
+        private String title;
+        private List<AuthParamInfo> params;
+        private List<AuthButtonInfo> buttons;
+    }
+
+    @Data
+    public static class AuthParamInfo {
+        private Integer id;
+        private Integer blockId;
+        private Integer sequence;
+        private AuthDisplayType type;
+        private String name;
+        private String paramName;
+        private Boolean needYn;
+    }
+
+    @Data
+    public static class AuthButtonInfo {
+        private Integer id;
+        private Integer blockId;
+        private Integer sequence;
+        private String name;
+        private AuthButtonAction action;
+        private String actionData;
+        private Boolean usingResultMent;
+        private String successMent;
+        private String errorMent;
+    }
 
     @Data
     public static class BlockInfo {
