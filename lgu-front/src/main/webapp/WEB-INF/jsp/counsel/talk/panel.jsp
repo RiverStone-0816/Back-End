@@ -1485,7 +1485,7 @@
 
                 set_myusername_vchat(data.content.my_username)
                 set_remoteusername_vchat(data.content.remote_username)
-                set_record_file(data.content.recoed_file)
+                set_record_file(data.content.record_file)
                 set_ringtone_volume(0.2)
                 set_busytone_volume(0.2)
 
