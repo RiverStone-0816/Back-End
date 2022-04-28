@@ -1495,7 +1495,7 @@
 
                 start_vchat();
 
-                setTimeout(function () {data.send_receive === 'RAR' ? doVideoChat() : doVoiceChat()},10000)
+                setTimeout(function () {data.send_receive === 'RAR' ? doVoiceChat() : doVideoChat()},10000)
 
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive, data.customname)
