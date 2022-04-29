@@ -1477,6 +1477,7 @@
             } else if (['SD'].includes(data.send_receive)) {
                 talkListContainer.load()
                 talkRoom.clearRoom()
+
             } else if (['SAS','SVS'].includes(data.send_receive)) {
                 talkRoom.myUserName = data.content.my_username
                 talkRoom.remoteUserName = data.content.remote_username
@@ -1575,8 +1576,6 @@
         }
 
         $(window).on('load', function () {
-
-
             loadTalkCustomInput()
             $('#side-view-modal').dragModalShow().hide()
         })

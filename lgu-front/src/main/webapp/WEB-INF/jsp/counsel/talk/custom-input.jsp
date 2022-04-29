@@ -334,9 +334,11 @@
 
     window.donePostTalkCustomInfo = function (form, response) {
         alert('고객정보가 저장되었습니다.');
-        //loadTalkCustomInput(${form.groupSeq}, response.data || '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', '${g.escapeQuote(roomId)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}');
-
-        talkListContainer.roomMap['${g.escapeQuote(roomId)}'].maindbCustomName = $('#talk-custom-input').find('[name=string_1]').val();
+        const customId = response.data !== null ? response.data : '${entity.maindbSysCustomId}';
+        restSelf.get("/api/maindb-data/"+customId).done(res => {
+            talkCommunicator.sendCustomMatch(talkRoom.roomId, talkRoom.senderKey,
+                talkRoom.userKey, res.data.maindbSysGroupId, response.data, res.data.maindbString_1, talkRoom.channelType);
+        })
     };
 
     ui.find('[name="channelType"]').change(function () {
