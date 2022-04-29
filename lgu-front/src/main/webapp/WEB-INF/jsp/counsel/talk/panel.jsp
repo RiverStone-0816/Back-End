@@ -1367,6 +1367,8 @@
                 },
                 deleteRoom: function () {
                     talkCommunicator.deleteRoom(this.roomId, this.channelType, this.senderKey, this.userKey)
+                    loadTalkCustomInput()
+                    loadTalkCounselingInput()
                 },
                 assignUnassignedRoomToMe: function () {
                     talkCommunicator.assignUnassignedRoomToMe(this.roomId, this.channelType, this.senderKey, this.userKey)
