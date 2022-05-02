@@ -577,7 +577,7 @@
                     /*if (counselDisplayConfiguration.useCallNoticePopup)
                         viewCallReception();
 */
-                    loadCustomInput(null, null, phoneNumber).done(function () {
+                    loadCustomInput(null, null, phoneNumber, data8).done(function () {
                         $('.item[data-tab="counsel-list"]').click();
                     });
                 } else if (kind === 'ID') { // 인바운드 통화시작
