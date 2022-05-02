@@ -5,7 +5,6 @@ export default {
         openChat(message) {
             const modal = window.open(location.href, MODAL_NAME, `width=460,height=700,top=0,left=0,scrollbars=yes`)
             modal.form = message;
-            console.log(modal.form);
             return modal
         },
         isModal() {

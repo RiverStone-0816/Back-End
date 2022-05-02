@@ -1,56 +1,164 @@
 <template>
-  <body class="font-sans-kr text-gray-800" @contextmenu.prevent>
-  <div class="h-screen min-w-full">
-    <div class="flex flex-col flex-auto flex-shrink-0 rounded-lg-2xl h-full" :style="'background-color: ' + backgroundColor">
-      <div class="flex flex-col h-full overflow-x-auto mb-1" ref="chatBody" style="scroll-behavior: smooth">
-        <div class="flex flex-col h-full">
-          <div class="grid grid-cols-12 gap-y-2">
-            <template v-for="(message, iMessage) in messages" :key="iMessage">
-              <div v-if="message.sender === 'SERVER' && (message.messageType !== 'custom_text' && message.messageType !== 'ipcc_control')" class="col-start-1 col-end-10 pl-3 pt-0 rounded-lg">
-                <div class="flex flex-row items-center">
-                  <div class="h-8 w-8 rounded-lg-full overflow-hidden">
-                    <img class="w-full" :src="botIcon === '' ? getBotIcon : botIcon" alt="bot-icon">
-                  </div>
-                  <div class="flex items-center p-3 font-bold">{{ displayName }}</div>
-                </div>
-              </div>
+  <body class="font-sans-kr text-gray-800 bg-blue-100" @contextmenu.prevent>
+  <div class="h-screen py-14 m-auto max-w-sm">
+    <div class="flex flex-col flex-auto h-full rounded-3xl shadow-body">
+      <!--상단 홈 영역-->
+      <!--bg-[#~~~~~~]이 버튼색상, 텍스트색상등과 같이 움직여야 하는 배경색, text-[#~~], border-[#~~]로 사용-->
+      <div class="flex flex-row items-center h-14 rounded-t-3xl bg-white w-full px-3" style="background-color: #0C4DA2">
+        <!--홈버튼-->
+        <button class="flex items-center justify-center rounded-lg hover:bg-slate-900/20 h-10 w-10 text-white" @click.stop="homeAction">
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="23" height="18" viewBox="15 5 5 25">
+                <path d="M15,30V21h6v9h7.5V18H33L18,4.5,3,18H7.5V30Z" fill="#fff" />
+              </svg>
+            </span>
+        </button>
+        <div class="flex-grow">
+          <div class="relative w-full text-white text-sm text-center">
+            {{ displayName }}
+          </div>
+        </div>
+        <button class="flex items-center justify-center hover:bg-slate-900/20 rounded-lg h-10 w-10 text-white">
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 23.828 23.828">
+                <line x2="21" y2="21" transform="translate(1.414 1.414)" fill="none" stroke="#fff" stroke-linecap="round"
+                      stroke-width="2" />
+                <line y1="21" x2="21" transform="translate(1.414 1.414)" fill="none" stroke="#fff" stroke-linecap="round"
+                      stroke-width="2" />
+              </svg>
+            </span>
+        </button>
+      </div>
 
-              <template v-if="message.sender === 'SERVER' && message.messageType === 'ipcc_control'">
-                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row items-center">
-                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xs">
-                      <div v-if="message.data.image" class="relative rounded-lg pt-1 pb-3">
-                        <img class="w-full" :src="getFileUrl(message.company, message.data.image)" alt="intro image">
+      <!-- 음성통화 start -->
+      <div class="bg-white border-b-2" v-show="audioChat">
+        <div class="px-3 py-2 inline-block w-full">
+          <div class="flex">
+            <video id="aRemoteVideo" autoplay playsinline style="display: none"/>
+            <video id="aMyVideo" autoplay playsinline muted="muted" style="display: none"/>
+            <span class="flex m-auto text-base w-2/3 text-gray-500">
+              {{ audioChatText }}
+            </span>
+            <button class="flex w-1/9 text-white py-2 px-3 rounded-lg h-10  hover:bg-gray-300/20">
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="29" viewBox="0 0 25 40">
+                <path id="Icon_awesome-microphone" data-name="Icon awesome-microphone"
+                      d="M12.375,24.75A6.75,6.75,0,0,0,19.125,18V6.75a6.75,6.75,0,0,0-13.5,0V18A6.75,6.75,0,0,0,12.375,24.75ZM23.625,13.5H22.5a1.125,1.125,0,0,0-1.125,1.125V18a9.01,9.01,0,0,1-9.9,8.956,9.273,9.273,0,0,1-8.1-9.357V14.625A1.125,1.125,0,0,0,2.25,13.5H1.125A1.125,1.125,0,0,0,0,14.625v2.824A12.762,12.762,0,0,0,10.688,30.224v2.4H6.75A1.125,1.125,0,0,0,5.625,33.75v1.125A1.125,1.125,0,0,0,6.75,36H18a1.125,1.125,0,0,0,1.125-1.125V33.75A1.125,1.125,0,0,0,18,32.625H14.063V30.251A12.387,12.387,0,0,0,24.75,18V14.625A1.125,1.125,0,0,0,23.625,13.5Z"
+                      fill="#e1e1e1" />
+              </svg>
+            </button>
+            <button class="flex text-white py-2 px-3 rounded-lg h-10 hover:bg-gray-300/20">
+              <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="27" height="26" viewBox="0 0 19.354 15">
+                <g transform="translate(-1191.495 -10717.04)">
+                  <path
+                      d="M11.848,18.856a.848.848,0,0,1-.5-.157l-5.5-4.129H3.284c-.394,0-.714-.24-.714-.536V8.677c0-.3.32-.536.714-.536H5.843l5.5-4.129a.894.894,0,0,1,.778-.116.559.559,0,0,1,.441.495V18.32c0,.3-.319.536-.714.536Z"
+                      transform="translate(1188.924 10713.184)" fill="#e1e1e1" />
+                  <path
+                      d="M380.22,874.562l-2.248,2.248,2.248,2.248-.562.562-2.248-2.248-2.248,2.248-.562-.562,2.248-2.248-2.248-2.248.562-.562,2.248,2.248L379.658,874Z"
+                      transform="translate(830.275 9847.731)" fill="#e1e1e1" stroke="#e1e1e1" stroke-width="1" />
+                </g>
+              </svg>
+            </button>
+            <button class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10">
+              <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 16">
+                <g transform="translate(-1155.078 -10717.04)">
+                  <g transform="translate(1155.078 10717.04)">
+                    <path id="path"
+                          d="M380.7,874.61l-2.44,2.44,2.44,2.44-.61.61-2.44-2.44-2.44,2.44-.61-.61,2.44-2.44-2.44-2.44.61-.61,2.44,2.44,2.44-2.44Z"
+                          transform="translate(-367 -873.099)" fill="#fff" stroke="#fff" stroke-width="0.5" />
+                    <path
+                        d="M412.6,78.117a12.533,12.533,0,0,0,5.5,5.5l1.834-1.833a.663.663,0,0,1,.833-.167,8.716,8.716,0,0,0,3,.5.855.855,0,0,1,.833.833v2.917a.855.855,0,0,1-.833.833A14.226,14.226,0,0,1,409.6,72.533a.854.854,0,0,1,.833-.833h2.917a.854.854,0,0,1,.833.833,9.43,9.43,0,0,0,.5,3,.911.911,0,0,1-.167.833Z"
+                        transform="translate(-409.6 -71.7)" fill="#fff" />
+                  </g>
+                </g>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- 음성통화 end -->
+
+      <!-- 영상통화 start -->
+      <div class="bg-white border-b-2" v-show="videoChat">
+        <div class="px-3 py-2 inline-block w-full">
+          <div class="flex h-60 mb-2">
+            <video id="vRemoteVideo" autoplay playsinline/>
+            <video id="vMyVideo" autoplay playsinline muted="muted"/>
+          </div>
+          <div class="flex">
+            <span class="flex m-auto text-base w-2/3 text-gray-500">
+              {{ videoChatText }}
+            </span>
+            <button class="flex w-1/9 text-white py-2 px-3 rounded-lg h-10">
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="29" viewBox="0 0 25 38">
+                <path id="Icon_awesome-microphone" data-name="Icon awesome-microphone"
+                      d="M12.375,24.75A6.75,6.75,0,0,0,19.125,18V6.75a6.75,6.75,0,0,0-13.5,0V18A6.75,6.75,0,0,0,12.375,24.75ZM23.625,13.5H22.5a1.125,1.125,0,0,0-1.125,1.125V18a9.01,9.01,0,0,1-9.9,8.956,9.273,9.273,0,0,1-8.1-9.357V14.625A1.125,1.125,0,0,0,2.25,13.5H1.125A1.125,1.125,0,0,0,0,14.625v2.824A12.762,12.762,0,0,0,10.688,30.224v2.4H6.75A1.125,1.125,0,0,0,5.625,33.75v1.125A1.125,1.125,0,0,0,6.75,36H18a1.125,1.125,0,0,0,1.125-1.125V33.75A1.125,1.125,0,0,0,18,32.625H14.063V30.251A12.387,12.387,0,0,0,24.75,18V14.625A1.125,1.125,0,0,0,23.625,13.5Z"
+                      fill="#e1e1e1" />
+              </svg>
+            </button>
+            <button class="flex text-white py-2 px-3 rounded-lg h-10">
+              <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="27" height="26" viewBox="0 0 19.354 15">
+                <g transform="translate(-1191.495 -10717.04)">
+                  <path
+                      d="M11.848,18.856a.848.848,0,0,1-.5-.157l-5.5-4.129H3.284c-.394,0-.714-.24-.714-.536V8.677c0-.3.32-.536.714-.536H5.843l5.5-4.129a.894.894,0,0,1,.778-.116.559.559,0,0,1,.441.495V18.32c0,.3-.319.536-.714.536Z"
+                      transform="translate(1188.924 10713.184)" fill="#e1e1e1" />
+                  <path
+                      d="M380.22,874.562l-2.248,2.248,2.248,2.248-.562.562-2.248-2.248-2.248,2.248-.562-.562,2.248-2.248-2.248-2.248.562-.562,2.248,2.248L379.658,874Z"
+                      transform="translate(830.275 9847.731)" fill="#e1e1e1" stroke="#e1e1e1" stroke-width="1" />
+                </g>
+              </svg>
+            </button>
+            <button class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10">
+              <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 16">
+                <g transform="translate(-1155.078 -10717.04)">
+                  <g transform="translate(1155.078 10717.04)">
+                    <path id="path"
+                          d="M380.7,874.61l-2.44,2.44,2.44,2.44-.61.61-2.44-2.44-2.44,2.44-.61-.61,2.44-2.44-2.44-2.44.61-.61,2.44,2.44,2.44-2.44Z"
+                          transform="translate(-367 -873.099)" fill="#fff" stroke="#fff" stroke-width="0.5" />
+                    <path
+                        d="M412.6,78.117a12.533,12.533,0,0,0,5.5,5.5l1.834-1.833a.663.663,0,0,1,.833-.167,8.716,8.716,0,0,0,3,.5.855.855,0,0,1,.833.833v2.917a.855.855,0,0,1-.833.833A14.226,14.226,0,0,1,409.6,72.533a.854.854,0,0,1,.833-.833h2.917a.854.854,0,0,1,.833.833,9.43,9.43,0,0,0,.5,3,.911.911,0,0,1-.167.833Z"
+                        transform="translate(-409.6 -71.7)" fill="#fff" />
+                  </g>
+                </g>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- 영상통화 end -->
+
+      <!--중단 말풍선 영역, 여기에 배경 컬러를 넣을 수 있음, 스크롤 스타일 적용-->
+      <div class="h-full overflow-x-auto bg-gray-100" id="slim-scroll" ref="chatBody" style="scroll-behavior: smooth">
+        <template v-for="(message, iMessage) in messages" :key="iMessage">
+
+          <!-- intro start -->
+          <template v-if="message.sender === 'SERVER' && message.messageType === 'intro'">
+            <div class="pl-3 pt-3">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4">
+                  <!--회사로고 이미지 + 텍스트 출력-->
+                  <div class="rounded-lg shadow">
+                    <div class="bg-white py-2 px-3 rounded-lg">
+                      <div class="pt-1">
+                        <img :src="getFileUrl(message.company, message.data.profile)" class="w-full rounded-lg">
                       </div>
-                      <div>
-                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.text_data }}</p>
+                      <div class="pt-4">
+                        <span>
+                          <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.msg }}</p>
+                        </span>
                       </div>
                     </div>
                   </div>
-                </div>
-              </template>
-
-              <template v-if="message.sender === 'SERVER' && message.messageType === 'intro'">
-                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row items-center">
-                    <div class="relative text-sm bg-white py-2 px-3 w-full shadow rounded-lg max-w-xl">
-                      <div v-if="message.data.profile" class="relative rounded-lg pt-1 pb-3">
-                        <img class="w-full" :src="getFileUrl(message.company, message.data.profile)" alt="intro image">
-                      </div>
+                  <!--텍스트 출력 + 다른 채널 링크-->
+                  <div v-if="message.data.channel_list && message.data.channel_list.length" class="rounded-lg shadow">
+                    <div class="relative text-main bg-white py-2 px-3 shadow rounded-lg">
                       <div>
-                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.msg }}</p>
+                        <span>
+                          다른 채널을 통한 상담을 원하시면 원하시는 서비스의 아이콘을 눌러주세요.
+                        </span>
                       </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div v-if="message.data.channel_list && message.data.channel_list.length" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row items-center">
-                    <div class="relative text-sm bg-white py-2 px-3 w-full shadow rounded-lg max-w-xl">
-                      <div>
-                        <p>다른 채널을 통한 상담을 원하시면 원하시는 서비스의 아이콘을 눌러주세요. 해당 서비스에 연결됩니다.</p>
-                      </div>
-                      <div class="flex flex-row-reverse pt-2">
+                      <div class="flex flex-row-reverse pt-3">
                         <div v-for="(channel, i) in message.data.channel_list" :key="i" class="pl-2">
                           <a :href="channel.channel_url" target="_blank">
                             <img alt="kakao" :src="channel.channel_type === 'eicn' ? getEicnIcon() : channel.channel_type === 'kakao' ? getKakaoIcon()
@@ -60,312 +168,418 @@
                       </div>
                     </div>
                   </div>
-                </div>
-
-                <div v-if="['A', 'F'].includes(message.data.schedule_info.schedule_kind)" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row items-center">
-                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
-                      <div>
-                        <p style="white-space: pre">{{ message.data.schedule_info.schedule_ment }}</p>
-                      </div>
-                    </div>
+                  <div class="text-xxs text-gray-600/100">
+                    {{ getTimeFormat(message.time) }}
                   </div>
                 </div>
-              </template>
-
-              <template v-if="message.sender === 'SERVER' && message.messageType === 'fallback'">
-                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row items-center">
-                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xl">
-                      <div>
-                        <p>{{ message.data.fallback_ment }}</p>
-                      </div>
-                    </div>
+              </div>
+            </div>
+            <div v-if="['A', 'F'].includes(message.data.schedule_info.schedule_kind)" class="pl-3 pt-1">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <!--텍스트 출력-->
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
+                  <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
+                  <span>
+                    <p style="white-space: pre">{{ message.data.schedule_info.schedule_ment }}</p>
+                  </span>
                   </div>
                 </div>
-                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row">
-                    <button class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop="actFallback(message)">
+              </div>
+            </div>
+          </template>
+          <!-- intro end -->
+
+          <!-- fallback start -->
+          <template v-if="message.sender === 'SERVER' && message.messageType === 'fallback'">
+            <div class="pl-3 pt-1">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <!--텍스트 출력-->
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
+                  <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
+                    <span>
+                      <p>{{ message.data.fallback_ment }}</p>
+                    </span>
+                  </div>
+                </div>
+                <div class="flex flex-col space-y-2 m-2 mt-0 mr-4 w-button">
+                  <div class="text-main bg-white py-2 px-3 space-y-2 shadow rounded-lg max-w-xxs">
+                    <button class="w-full text-white py-2 px-4 rounded-full hover:shadow-lg" style="background-color: #0C4DA2" @click.stop="actFallback(message)">
                       {{ getFallbackButtonName(message.data.fallback_action) }}
                     </button>
                   </div>
                 </div>
-              </template>
+              </div>
+            </div>
+          </template>
+          <!-- fallback end -->
 
-              <template v-if="message.sender === 'SERVER' && message.messageType === 'api_result'">
-                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row">
-                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xs">
-                      <div>
+          <!-- api_result start -->
+          <template v-if="message.sender === 'SERVER' && message.messageType === 'api_result'">
+            <div class="pl-3 pt-1">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <!--이미지 출력 + 텍스트-->
+
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4">
+                  <div class="bg-white shadow rounded-lg">
+                    <div class="p-3 pt-2 text-main">
+                      <span>
                         <p style="white-space: pre-wrap; line-break: anywhere;">{{ makeApiResultMessage(message.data) }}</p>
-                      </div>
-                    </div>
-                    <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
-                  </div>
-                </div>
-                <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row">
-                    <div class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
-                      <span v-if="e instanceof Array">
-                        <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop="actButton(message, e2)">
-                          {{ e2.btn_name }}
-                        </button>
                       </span>
                     </div>
-                    <div v-if="i === getButtonGroups(message).length" class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
+                  </div>
+                  <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="space-y-2">
+                  <span v-if="e instanceof Array">
+                    <button v-for="(e2, j) in e" :key="j"  class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg" style="background-color: #0C4DA2" @click.stop="actButton(message, e2)">
+                      {{ e2.btn_name }}
+                    </button>
+                  </span>
+                  </div>
+                  <div class="text-xxs text-gray-600/100">
+                    {{ getTimeFormat(message.time) }}
                   </div>
                 </div>
-              </template>
+              </div>
+            </div>
+          </template>
+          <!-- api_result end -->
 
-              <template v-if="message.sender === 'SERVER' && message.messageType === 'member'">
-                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row">
-                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xs">
-                      <div>
-                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.ment }}</p>
-                      </div>
+          <!-- member start -->
+          <template v-if="message.sender === 'SERVER' && message.messageType === 'member'">
+            <div class="pl-3 pt-1">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <!--텍스트 출력-->
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
+                  <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
+                  <span>
+                    <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.ment }}</p>
+                  </span>
+                  </div>
+                  <div class="text-xxs text-gray-600/100">
+                    {{ getTimeFormat(message.time) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- member end -->
+
+          <!-- member_text start -->
+          <template v-if="message.sender === 'SERVER' && message.messageType === 'member_text'">
+            <div class="pl-3 pt-1">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <!--텍스트 출력-->
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
+                  <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
+                  <span>
+                    <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.text_data }}</p>
+                  </span>
+                  </div>
+                  <div class="text-xxs text-gray-600/100">
+                    {{ getTimeFormat(message.time) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- member_text end -->
+
+          <!-- block,member_block_temp start -->
+          <template v-if="message.sender === 'SERVER' && ['block', 'member_block_temp'].includes(message.messageType)">
+            <div v-for="(e, i) in message.data?.display" :key="i" class="pl-3 pt-1">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+
+                <!-- text block start -->
+                <div v-if="e.type === 'text'" class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
+                  <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
+                  <span>
+                    <p style="white-space: pre-wrap; line-break: anywhere;">{{ e.element[0]?.content }}</p>
+                  </span>
+                  </div>
+                </div>
+                <!-- text block end -->
+
+                <!-- image block start -->
+                <div v-else-if="e.type === 'image'" class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4">
+                  <div>
+                    <img :src="getFileUrl(message.company, e.element[0]?.image)" alt="chat_image" class="w-full rounded-lg">
+                  </div>
+                </div>
+                <!-- image block end -->
+
+                <!-- card block start -->
+                <div v-else-if="e.type === 'card'" class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4">
+                  <div class="bg-white shadow rounded-lg">
+                    <div>
+                      <img :src="getFileUrl(message.company, e.element[0]?.image)" class="w-full rounded-t-lg">
                     </div>
-                    <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
-                  </div>
-                </div>
-              </template>
-
-              <template v-if="message.sender === 'SERVER' && message.messageType === 'member_text'">
-                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row">
-                    <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xs">
-                      <div class="divide-y">
-                        <template v-if="message.data.replyingType">
-                          <div class="flex pb-2 text-gray-400">
-                            <div v-if="['image', 'image_temp'].includes(message.data.replyingType)" class="pr-4">
-                              <img :src="message.data.replyingTarget" class="h-10">
-                            </div>
-                            <div>
-                              <div class="pb-2">
-                                <p v-if="message.data.replyingType === 'text'" style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.replyingTarget }}</p>
-                                <a v-else :href="message.data.replyingTarget" target="_blank">{{ ['image', 'image_temp'].includes(message.data.replyingType) ? '사진' : '파일' }}</a>
-                              </div>
-                            </div>
-                          </div>
-                          <p class="pt-2" style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.text_data }}</p>
-                        </template>
-                        <p v-else style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.text_data }}</p>
-                      </div>
+                    <div class="p-3 pb-0 text-sm font-bold">
+                    <span>
+                      <p>{{ e.element[0]?.title }}</p>
+                    </span>
                     </div>
-                    <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
-                  </div>
-                </div>
-              </template>
-
-              <template v-if="message.sender === 'SERVER' && ['block', 'member_block_temp'].includes(message.messageType)">
-                <div v-for="(e, i) in message.data?.display" :key="i" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row">
-                    <div v-if="e.type === 'text'" class="relative text-sm bg-white shadow rounded-lg max-w-seohui py-2 px-3">
+                    <div class="p-3 pt-2 text-main">
+                    <span>
                       <p style="white-space: pre-wrap; line-break: anywhere;">{{ e.element[0]?.content }}</p>
+                    </span>
                     </div>
-                    <div v-else-if="e.type === 'image'" class="relative max-w-seohui">
-                      <img alt="chat_image" class="w-full rounded-lg" :src="getFileUrl(message.company, e.element[0]?.image)">
-                    </div>
-                    <div v-else-if="e.type === 'card'" class="relative text-sm bg-white shadow rounded-lg max-w-seohui">
-                      <div class="relative max-w-xs">
-                        <img alt="chat_image" class="w-full rounded-t-lg" :src="getFileUrl(message.company, e.element[0]?.image)">
-                      </div>
-                      <div class="p-3 pb-0 text-base font-bold">
-                        <p>{{ e.element[0]?.title }}</p>
-                      </div>
-                      <div class="p-3 pt-2">
-                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ e.element[0]?.content }}</p>
-                      </div>
-                    </div>
-                    <div v-else-if="e.type === 'list'" class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300">
-                      <div class="p-2 pl-3 text-base font-bold">
+                  </div>
+                </div>
+                <!-- card block end -->
+
+                <!-- list block start -->
+                <div v-else-if="e.type === 'list'" class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4">
+                  <div class="flex flex-row">
+                    <div class="relative bg-white shadow rounded-lg max-w-xs w-full">
+                      <div class="p-2 pl-3 border-b">
+                      <span>
                         <p v-if="e.element[0]?.url"><a target="_blank" :href="e.element[0]?.url">{{ e.element[0]?.title }}</a></p>
                         <p v-else>{{ e.element[0]?.title }}</p>
+                      </span>
                       </div>
                       <template v-if="e.element[1]?.title || e.element[1]?.image || e.element[1]?.content">
                         <div v-for="(e2, j) in getListElements(e)" :key="j" class="grid grid-cols-6 p-3">
-                          <div class="col-start-1 h-full">
-                            <img v-if="e2.image" class="rounded-lg w-12 h-12" :src="getFileUrl(message.company, e2.image)" alt="item image">
+                          <div class="col-span-1">
+                            <img v-if="e2.image" :src="getFileUrl(message.company, e2.image)" class="rounded-lg w-10 h-10">
                           </div>
                           <div class="col-span-5">
-                            <div class="pl-2 pt-0 pb-1">
-                              <p v-if="e2.url"><a target="_blank" :href="e2.url">{{ e2.title }}</a></p>
-                              <p v-else>{{ e2.title }}</p>
+                            <div class="pl-2 pt-0 pb-1 text-sm font-bold">
+                          <span>
+                            <p v-if="e2.url"><a target="_blank" :href="e2.url">{{ e2.title }}</a></p>
+                            <p v-else>{{ e2.title }}</p>
+                          </span>
                             </div>
-                            <div class="pl-2 pt-0 text-gray-600">
-                              <p style="white-space: pre-wrap; line-break: anywhere;">{{ e2.content }}</p>
+                            <div class="pl-2 pt-0 text-gray-700">
+                          <span>
+                            <p style="white-space: pre-wrap; line-break: anywhere;">{{ e2.content }}</p>
+                          </span>
                             </div>
                           </div>
                         </div>
                       </template>
                     </div>
-                    <div v-else-if="e.type === 'input'" class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent" ref="apiparent">
-                      <div class="p-2 pl-3 "><p>{{ e.element[0]?.title }}</p></div>
-                      <div v-for="(e2, j) in getInputElements(e)" :key="j" class="p-2 pl-3 font-bold">
-                        <p>{{ e2.input_display_name }}</p>
-                        <div v-if="e2.input_type !== 'time'" class="relative w-full pt-2">
-                          <input class="flex w-full border rounded-lg focus:outline-none focus:border-indigo-300 h-8 pl-2 pr-2"
-                                 :type="(e2.input_type === 'calendar' && 'date') || (e2.input_type === 'number' && 'number') || (e2.input_type === 'secret' && 'password') || (e2.input_type === 'text' && 'text')"
-                                 :name="e2.input_param_name" :data-value="e2.input_need_yn">
-                        </div>
-                        <div v-else class="ui multi form">
-                          <select :name="e2.input_param_name + '.meridiem'" :data-value="e2.input_need_yn" class="slt rounded-lg h-10">
-                            <option value="am">오전</option>
-                            <option value="pm">오후</option>
-                          </select>
-                          <select :name="e2.input_param_name + '.hour'" :data-value="e2.input_need_yn" class="slt rounded-lg h-10">
-                            <option v-for="hour in 12" :key="hour" :value="hour - 1">{{ hour - 1 }}</option>
-                          </select>
-                          <span class="unit">시</span>
-                          <select :name="e2.input_param_name + '.minute'" :data-value="e2.input_need_yn" class="slt rounded-lg h-10">
-                            <option v-for="minute in 60" :key="minute" :value="minute - 1">{{ minute - 1 }}</option>
-                          </select>
-                          <span class="unit">분</span>
+                  </div>
+                </div>
+                <!-- list block end -->
+
+                <!-- input block start -->
+                <div v-else-if="e.type === 'input'" class="flex flex-col space-y-2 text-main m-2 mt-0 mr-4 w-button -api-parent" ref="apiparent">
+                  <div class="flex flex-row">
+                    <div class="relative text-sm bg-white shadow rounded-lg w-full">
+                      <div class="p-2 pl-3 text-main border-b">
+                      <span>
+                        <p>{{ e.element[0]?.title }}</p>
+                      </span>
+                      </div>
+                      <div class="p-2 pl-3 text-main">
+                        <div class="space-y-2">
+                          <div v-for="(e2, j) in getInputElements(e)" :key="j"  class="grid grid-cols-12 pt-2">
+                            <div class="col-span-4">
+                              <div class="py-2 relative font-bold flex justify-left">
+                              <span class="inline-block align-middle">
+                                <p>{{ e2.input_display_name }}</p>
+                              </span>
+                              </div>
+                            </div>
+                            <div class="col-span-8">
+                              <div class="relative w-full">
+                                <input :type="(e2.input_type === 'calendar' && 'date') || (e2.input_type === 'number' && 'number') || (e2.input_type === 'secret' && 'password') || (e2.input_type === 'text' && 'text') || (e2.input_type === 'time' && 'time')"
+                                       :name="e2.input_param_name" :data-value="e2.input_need_yn"
+                                       class="py-1.5 px-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-main focus:outline-none rounded-lg w-full">
+                              </div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </div>
-                    <div v-if="!(message.data?.button?.length) && (i + 1 === message.data.display.length)" class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
                   </div>
                 </div>
-                <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row">
-                    <div class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
-                      <span v-if="e instanceof Array">
-                        <button v-for="(e2, j) in e" :key="j" class="bg-gray-400 hover:bg-gray-500 text-white mb-2 ml-1 py-1 p-2 rounded-md" @click.stop="actButton(message, e2)">
-                          {{ e2.btn_name }}
-                        </button>
-                      </span>
-                      <span v-else>
-                        <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop="actApi(message, e, $event)">
-                          {{ e.btn_name }}
-                        </button>
-                      </span>
-                    </div>
-                    <div v-if="i + 1 === getButtonGroups(message).length" class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
-                  </div>
-                </div>
-              </template>
+                <!-- input block end -->
 
-              <template v-if="message.sender === 'SERVER' && message.messageType === 'member_image_temp'">
-                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row">
-                    <div class="relative max-w-xs">
-                      <img alt="chat_image" class="w-full rounded-lg" :src="message.data.fileUrl">
-                    </div>
-                    <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
+              </div>
+            </div>
+            <div class="pl-3 pt-1">
+              <div class="flex items-start">
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <!-- button start -->
+                <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4">
+                  <div class="space-y-2">
+                    <span v-if="e instanceof Array">
+                      <button v-for="(e2, j) in e" :key="j" class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actButton(message, e2)">
+                        {{ e2.btn_name }}
+                      </button>
+                    </span>
+                    <span v-else>
+                      <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actApi(message, e, $event)">
+                        {{ e2.btn_name }}
+                      </button>
+                    </span>
                   </div>
                 </div>
-              </template>
+                <!-- button end -->
 
-              <template v-if="message.sender === 'SERVER' && message.messageType === 'audio_start'">
-                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row">
-                    <div class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent" ref="apiparent">
-                      <div class="p-2 pl-3 "><p>상담원이 음성통화를 요청합니다.</p></div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row">
-                    <div class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
-                      <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop="audioStart(true)">수락</button>
-                      <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop="audioStart(false)">거절</button>
-                    </div>
-                    <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
-                  </div>
-                </div>
-              </template>
+              </div>
+            </div>
+          </template>
+          <!-- block,member_block_temp end -->
 
-              <template v-if="message.sender === 'SERVER' && message.messageType === 'video_start'">
-                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row">
-                    <div class="relative text-sm bg-white shadow rounded-lg max-w-xs w-full divide-y divide-fuchsia-300 -api-parent" ref="apiparent">
-                      <div class="p-2 pl-3 "><p>상담원이 영상통화를 요청합니다.</p></div>
-                    </div>
+          <!-- member_image_temp block start -->
+          <template v-if="message.sender === 'SERVER' && message.messageType === 'member_image_temp'">
+            <div class="pl-3 pt-1">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <!--이미지 출력-->
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4">
+                  <div>
+                    <img :src="message.data.fileUrl" alt="chat_image" class="w-full rounded-lg">
                   </div>
                 </div>
-                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row">
-                    <div class="relative text-sm pb-0 rounded-lg w-full max-w-xs">
-                      <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop="videoStart(true)">수락</button>
-                      <button class="bg-gray-400 hover:bg-gray-500 text-white w-full mb-2 py-2 px-4 rounded-md" @click.stop="videoStart(false)">거절</button>
-                    </div>
-                    <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
-                  </div>
-                </div>
-              </template>
+              </div>
+            </div>
+          </template>
+          <!-- member_image_temp block end -->
 
-              <template v-if="message.sender === 'SERVER' && message.messageType === 'member_file'">
-                <div class="col-start-1 col-end-13 p-3 pt-0 rounded-lg">
-                  <div class="flex flex-row">
-                    <div v-if="isImage(message.data.file_name)" class="relative max-w-xs">
-                      <img alt="chat_image" class="w-full rounded-lg" :src="message.data.fileUrl">
-                    </div>
-                    <div v-else-if="isAudio(message.data.file_name)" class="relative max-w-xs maudio">
-                      <audio :src="e.fileUrl" initaudio="false"></audio>
-                      <div class="audio-control">
-                        <a href="javascript:" class="fast-reverse"></a>
-                        <a href="javascript:" class="play"></a>
-                        <a href="javascript:" class="fast-forward"></a>
-                        <div class="progress-bar">
-                          <div class="progress-pass"></div>
-                        </div>
-                        <div class="time-keep">
-                          <span class="current-time">00:00</span> / <span class="duration">00:00</span>
-                        </div>
+          <!-- member_file block start -->
+          <template v-if="message.sender === 'SERVER' && message.messageType === 'member_file'">
+            <div class="pl-3 pt-1">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <!--이미지 출력-->
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4">
+                  <div v-if="isImage(message.data.file_name)">
+                    <img :src="message.data.fileUrl" alt="chat_image" class="w-full rounded-lg">
+                  </div>
+                  <div v-else-if="isAudio(message.data.file_name)" class="maudio">
+                    <audio :src="e.fileUrl" initaudio="false"></audio>
+                    <div class="audio-control">
+                      <a href="javascript:" class="fast-reverse"></a>
+                      <a href="javascript:" class="play"></a>
+                      <a href="javascript:" class="fast-forward"></a>
+                      <div class="progress-bar">
+                        <div class="progress-pass"></div>
+                      </div>
+                      <div class="time-keep">
+                        <span class="current-time">00:00</span> / <span class="duration">00:00</span>
                       </div>
                     </div>
-                    <div v-else-if="isVideo(message.data.file_name)" class="relative max-w-xs">
-                      <video controls :src="e.fileUrl"></video>
-                    </div>
-                    <div v-else class="relative text-sm bg-white py-2 px-3 pb-0 shadow rounded-lg w-full max-w-xs">
-                      <a class="w-full rounded-lg" :href="message.data.fileUrl">{{ message.data.file_name }}
-                        <hr/>
-                        <b>파일 저장하기</b></a>
-                    </div>
-                    <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>
+                  </div>
+                  <div v-else-if="isVideo(message.data.file_name)">
+                    <video controls :src="e.fileUrl"></video>
+                  </div>
+                  <div v-else>
+                    <a class="w-full rounded-lg" :href="message.data.fileUrl">{{ message.data.file_name }}
+                      <hr/>
+                      <b>파일 저장하기</b></a>
                   </div>
                 </div>
-              </template>
+              </div>
+            </div>
+          </template>
+          <!-- member_file block end -->
 
-              <template v-if="message.sender !== 'SERVER' && message.messageType === 'text'">
-                <div class="col-start-1 col-end-13 pb-2 rounded-lg">
-                  <div class="flex justify-start flex-row-reverse">
-                    <div class="relative mr-3 text-sm bg-gray-700 py-2 px-3 shadow rounded-lg max-w-xs text-white">
-                      <div style="white-space: pre-wrap; line-break: anywhere;">{{ message.data }}</div>
-                    </div>
-                    <div class="flex text-xs pr-3 items-end">{{ getTimeFormat(message.time) }}</div>
+          <!-- text block start -->
+          <template v-if="message.sender !== 'SERVER' && message.messageType === 'text'">
+            <div class="pr-1 pt-1">
+              <div class="flex items-end justify-end">
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 order-1 items-end">
+                  <div class="px-3 py-2 rounded-lg inline-block bg-indigo-900 text-white shadow">
+                  <span>
+                    <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data }}</p>
+                  </span>
+                  </div>
+                  <div class="text-xxs text-gray-600/100">
+                    {{ getTimeFormat(message.time) }}
                   </div>
                 </div>
-              </template>
-            </template>
-          </div>
-        </div>
+              </div>
+            </div>
+          </template>
+          <!-- text block end -->
+
+          <!-- audio start -->
+          <template v-if="message.sender === 'SERVER' && message.messageType === 'audio_start'">
+            <div class="pl-3 pt-1">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <!--텍스트 출력-->
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
+                  <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
+                    <span>
+                      <p>상담원이 음성통화를 요청합니다.</p>
+                    </span>
+                  </div>
+                </div>
+                <div class="flex flex-col space-y-2 m-2 mt-0 mr-4 w-button">
+                  <div class="text-main bg-white py-2 px-3 space-y-2 shadow rounded-lg max-w-xxs">
+                    <button class="w-full text-white py-2 px-4 rounded-full hover:shadow-lg" style="background-color: #0C4DA2"  @click.stop="audioStart(true)">수락</button>
+                    <button class="w-full text-white py-2 px-4 rounded-full hover:shadow-lg" style="background-color: #0C4DA2"  @click.stop="audioStart(false)">거절</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- audio end -->
+
+          <!-- video start -->
+          <template v-if="message.sender === 'SERVER' && message.messageType === 'video_start'">
+            <div class="pl-3 pt-1">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <!--텍스트 출력-->
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
+                  <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
+                    <span>
+                      <p>상담원이 영상통화를 요청합니다.</p>
+                    </span>
+                  </div>
+                </div>
+                <div class="flex flex-col space-y-2 m-2 mt-0 mr-4 w-button">
+                  <div class="text-main bg-white py-2 px-3 space-y-2 shadow rounded-lg max-w-xxs">
+                    <button class="w-full text-white py-2 px-4 rounded-full hover:shadow-lg" style="background-color: #0C4DA2"  @click.stop="videoStart(true)">수락</button>
+                    <button class="w-full text-white py-2 px-4 rounded-full hover:shadow-lg" style="background-color: #0C4DA2"  @click.stop="videoStart(false)">거절</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- video end -->
+
+        </template>
       </div>
 
       <!--하단 채팅 입력-->
-      <div v-if="inputEnable" class="flex flex-row items-center h-16 rounded-lg-xl bg-white w-full px-3 border-t">
-        <div v-if="homeEnable">
-          <button class="flex items-center justify-center rounded-lg hover:bg-gray-200 h-10 w-10 text-white flex-shrink-0 mr-3" @click.stop="homeAction">
-            <span class="ml-1">
-              <svg height="25" viewBox="15 5 10 25" width="36" xmlns="http://www.w3.org/2000/svg">
-                <path d="M15,30V21h6v9h7.5V18H33L18,4.5,3,18H7.5V30Z" fill="#514f65"/>
-              </svg>
-            </span>
-          </button>
-        </div>
+      <div v-if="inputEnable" class="flex flex-row items-center h-16 rounded-b-3xl bg-white w-full px-3 border-t">
         <div class="flex-grow">
           <div class="relative w-full">
-            <input class="flex w-full border rounded-lg focus:outline-none focus:border-indigo-300 h-10 pl-2 pr-2" type="text" v-model="input" @keyup.stop.prevent="$event.key==='Enter'&&sendText()">
+            <input type="text" placeholder="질문을 입력해 주세요."
+                   class="flex w-full rounded-lg focus:outline-none h-10 py-1 px-2 text-sm" v-model="input" @keyup.stop.prevent="$event.key==='Enter'&&sendText()">
           </div>
         </div>
         <div class="ml-2">
-          <button class="flex items-center justify-center bg-gray-700 hover:bg-gray-800 rounded-lg h-10 w-10 text-white flex-shrink-0" @click.stop="sendText">
-            <span class="ml-1">
-              <svg height="16" viewBox="0 0 18 16" width="18" xmlns="http://www.w3.org/2000/svg">
-                <path d="M3.009,20.5,21,12.5,3.009,4.5,3,10.722,15.857,12.5,3,14.278Z" fill="#fff" transform="translate(-3 -4.5)"/>
-              </svg>
-            </span>
+          <button
+              class="flex items-center justify-center hover:bg-gray-300/20 rounded-lg h-10 w-10 text-white flex-shrink-0" @click.stop="sendText">
+              <span class="ml-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="23" height="20.444" viewBox="0 0 23 20.444">
+                  <path id="Icon_material-send" data-name="Icon material-send"
+                        d="M3.011,24.944,26,14.722,3.011,4.5,3,12.451l16.429,2.272L3,16.994Z" transform="translate(-3 -4.5)"
+                        fill="#929292" />
+                </svg>
+              </span>
           </button>
         </div>
       </div>
@@ -373,7 +587,6 @@
   </div>
   </body>
 </template>
-<iframe style="display: none" ref="runPhone"></iframe>
 <script>
 import moment from 'moment'
 import $ from 'jquery'
@@ -392,7 +605,6 @@ import sessionUtils from "@/utillities/sessionUtils"
 import axios from "axios"
 import modalOpener from "@/utillities/mixins/modalOpener"
 import Janus from "../utillities/janus"
-
 
 const SENDER = Object.freeze({SERVER: 'SERVER', USER: 'USER'})
 
@@ -440,12 +652,10 @@ export default {
       messages: [],
       botIcon: '',
       form: {
-        // url: 'http://122.49.74.102:8200',
         url: 'https://cloudtalk.eicn.co.kr:8200',
         senderKey: null,
         userKey: sessionUtils.getSessionId(),
         ip: '',
-        // mode: 'local',
         mode: 'service',
       },
       webrtcData: null,
@@ -470,8 +680,8 @@ export default {
       vchatOpaqueId: "vchat-"+Janus.randomString(12),
       vchatBitrateTimer: null,
       vchatSpinner: null,
-      myUsername: window.form.remote_username,
-      remoteUsername: window.form.my_username,
+      myUsername: null,
+      remoteUsername: null,
       doSimulcast: (getQueryStringValue("simulcast") === "yes" || getQueryStringValue("simulcast") === "true"),
       simulcastStarted: false,
       vchatRegistered: false,
@@ -491,9 +701,16 @@ export default {
       HANGUP_VCHAT_BTN: false,
       ACCEPT_VCHAT_BTN: false,
       $ACCEPT_VCHAT_BTN: null,
-      LOCAL_VCHAT_STREAM_OBJECT: $('#myvideo'),
-      REMOTE_VCHAT_STREAM_OBJECT: $('#remotevideo'),
+      LOCAL_VCHAT_STREAM_OBJECT: null,
+      REMOTE_VCHAT_STREAM_OBJECT: null,
       start_recording: null,
+
+      audioChat: false,
+      audioChatText: '음성통화 연결중',
+
+      videoChat: false,
+      videoChatText: '영상통화 연결중',
+
     }
   },
   methods: {
@@ -503,7 +720,7 @@ export default {
     getLineIcon: () => lineIcon,
     getEicnIcon: () => eicnIcon,
     showAlert: content => store.commit('alert/show', content),
-    getTimeFormat: value => moment(value).format('YY-MM-DD HH:mm'),
+    getTimeFormat: value => moment(value).format('HH:mm'),
     getButtonGroups(message) {
       return message.data?.button?.reduce((list, e) => {
         if (e.action === 'api') list.push(e)
@@ -672,6 +889,8 @@ export default {
       if (chk) {
         this.set_record_file(this.webrtcData.record_file)
         this.start_vchat()
+        this.audioChat = true
+        this.audioChatText = '음성통화 연결'
         this.communicator.sendWebrtcReady('audio_start_ready',{ready_result: 0, ready_result_msg: '준비완료'})
       } else{
         this.communicator.sendWebrtcReady('audio_start_ready',{ready_result: 1, ready_result_msg: '거절'})
@@ -681,6 +900,8 @@ export default {
       if (chk) {
         this.set_record_file(this.webrtcData.record_file)
         this.start_vchat()
+        this.videoChat = true
+        this.videoChatText = '영상통화 연결'
         this.communicator.sendWebrtcReady('video_start_ready',{ready_result: 0, ready_result_msg: '준비완료'})
       } else{
         this.communicator.sendWebrtcReady('video_start_ready',{ready_result: 1, ready_result_msg: '거절'})
@@ -1262,6 +1483,10 @@ export default {
             this.WEBRTC_INFO.server.turn_server_port = data.message_data.turn_server_port
             this.WEBRTC_INFO.server.turn_user = data.message_data.turn_user
             this.WEBRTC_INFO.server.turn_secret = data.message_data.turn_secret
+            this.myUsername = data.message_data.remote_username
+            this.remoteUsername = data.message_data.my_username
+            this.LOCAL_VCHAT_STREAM_OBJECT = $('#aMyVideo')
+            this.REMOTE_VCHAT_STREAM_OBJECT = $('#aRemoteVideo')
           } else if (data.message_type === 'video_start') {
             this.webrtcData = data.message_data
             this.WEBRTC_INFO.server.webrtc_server_ip = data.message_data.webrtc_server_ip
@@ -1270,6 +1495,10 @@ export default {
             this.WEBRTC_INFO.server.turn_server_port = data.message_data.turn_server_port
             this.WEBRTC_INFO.server.turn_user = data.message_data.turn_user
             this.WEBRTC_INFO.server.turn_secret = data.message_data.turn_secret
+            this.myUsername = data.message_data.remote_username
+            this.remoteUsername = data.message_data.my_username
+            this.LOCAL_VCHAT_STREAM_OBJECT = $('#vMyVideo')
+            this.REMOTE_VCHAT_STREAM_OBJECT = $('#vRemoteVideo')
           }
 
           if (data.message_type === "member_text") {
@@ -1310,3 +1539,164 @@ export default {
   },
 }
 </script>
+
+<!--tailwind 제공 css가 아닌 별도로 삽입-->
+<style scoped>
+.rounded-3xl {
+  border-radius: 1.5rem;
+}
+.py-14 {
+  padding-top: 3.5rem;
+  padding-bottom: 3.5rem;
+}
+.max-w-sm {
+  max-width: 24rem;
+}
+.max-w-xxs {
+  max-width: 17rem;
+}
+
+.text-xxs {
+  font-size: 0.7rem;
+}
+
+.text-main {
+  font-size: 0.8rem;
+}
+
+.w-button {
+  width: 17rem;
+}
+
+.shadow-body {
+  box-shadow: 0 15px 50px 5px rgb(0 0 0 / 0.25);
+}
+
+#slim-scroll::-webkit-scrollbar {
+  width: 4px;
+  cursor: pointer;
+  /*background-color: rgba(229, 231, 235, var(--bg-opacity));*/
+}
+
+#slim-scroll::-webkit-scrollbar-track {
+  background-color: rgba(229, 231, 235, var(--bg-opacity));
+  cursor: pointer;
+  /*background: red;*/
+}
+
+#slim-scroll::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  background-color: #80808038;
+  /*outline: 1px solid slategrey;*/
+}
+.h-14 {
+  height: 3.5rem;
+}
+.rounded-t-3xl {
+  border-top-left-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
+}
+.bg-gray-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
+.pt-3 {
+  padding-top: 0.75rem;
+}
+.items-start {
+  align-items: flex-start;
+}
+.rounded-full {
+  border-radius: 9999px;
+}
+.m-1 {
+  margin: 0.1rem;
+}
+.m-2 {
+  margin: 0.5rem;
+}
+.mt-0 {
+  margin-top: 0px;
+}
+.mr-4 {
+  margin-right: 1rem;
+}
+.text-gray-600\/100 {
+  color: rgb(75 85 99);
+}
+.max-w-xs {
+  max-width: 20rem;
+}
+.border-b {
+  border-bottom-width: 1px;
+}
+.py-1\.5 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+.px-2\.5 {
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+.col-span-1 {
+  grid-column: span 1 / span 1;
+}
+.col-span-4 {
+  grid-column: span 4 / span 4;
+}
+.col-span-8 {
+  grid-column: span 8 / span 8;
+}
+.bg-gray-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+}
+.border-gray-300 {
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
+}
+.order-1 {
+  order: 1;
+}
+.bg-indigo-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(49 46 129 / var(--tw-bg-opacity));
+}
+.rounded-b-3xl {
+  border-bottom-right-radius: 1.5rem;
+  border-bottom-left-radius: 1.5rem;
+}
+.justify-end {
+  justify-content:end
+}
+.justify-left {
+  justify-content:left
+}
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+.hover\:shadow-lg:hover{
+  --tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)
+}
+.focus\:outline-none:focus{
+  outline:2px solid transparent;outline-offset:2px
+}
+.border-b-2 {
+  border-bottom-width: 2px;
+}
+.w-2\/3 {
+  width: 66.666667%;
+}
+.bg-red-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+}
+.px-7 {
+  padding-left: 1.75rem;
+  padding-right: 1.75rem;
+}
+</style>

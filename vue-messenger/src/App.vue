@@ -28,7 +28,8 @@ import axios from 'axios'
 import AlertModal from './components/singleton/AlertModal'
 /*import Login from './pages/Login'*/
 import VChart from './pages/VChart'
-import Main from './pages/Main'
+/*import Main from './pages/Main'*/
+import Main from './pages/Main2'
 import sessionUtils from './utillities/sessionUtils'
 import modalOpener from "./utillities/mixins/modalOpener"
 
