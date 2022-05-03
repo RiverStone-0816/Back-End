@@ -422,7 +422,7 @@
                     </span>
                     <span v-else>
                       <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actApi(message, e, $event)">
-                        {{ e2.btn_name }}
+                        {{ e.btn_name }}
                       </button>
                     </span>
                   </div>
