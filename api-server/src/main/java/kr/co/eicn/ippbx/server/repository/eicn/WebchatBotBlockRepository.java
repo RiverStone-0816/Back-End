@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.server.repository.eicn;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebchatBotBlock;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.enums.BlockType;
 import kr.co.eicn.ippbx.model.enums.Bool;
 import kr.co.eicn.ippbx.model.form.WebchatBotBlockFormRequest;
 import lombok.Getter;
@@ -44,6 +45,7 @@ public class WebchatBotBlockRepository extends EicnBaseRepository<WebchatBotBloc
             val entity = record.into(WEBCHAT_BOT_BLOCK).into(WebchatBotInfoResponse.BlockInfo.class);
             entity.setIsTemplateEnable(Objects.equals("Y", record.getValue(WEBCHAT_BOT_BLOCK.IS_TPL_ENABLE)));
             entity.setParentButtonId(record.getValue(WEBCHAT_BOT_TREE.PARENT_BTN_ID));
+            entity.setType(BlockType.of(record.getValue(WEBCHAT_BOT_BLOCK.BLOCK_KIND)));
             return entity;
         };
     }
@@ -67,6 +69,8 @@ public class WebchatBotBlockRepository extends EicnBaseRepository<WebchatBotBloc
                 .set(WEBCHAT_BOT_BLOCK.POS_Y, request.getPosY())
                 .set(WEBCHAT_BOT_BLOCK.NAME, request.getName())
                 .set(WEBCHAT_BOT_BLOCK.KEYWORD, request.getKeyword())
+                .set(WEBCHAT_BOT_BLOCK.BLOCK_KIND, request.getType().getCode())
+                .set(WEBCHAT_BOT_BLOCK.AUTH_BLOCK_ID, request.getAuthBlockId())
                 .set(WEBCHAT_BOT_BLOCK.IS_TPL_ENABLE, Objects.equals(request.getIsTemplateEnable(), true) ? "Y" : "N")
                 .set(WEBCHAT_BOT_BLOCK.COMPANY_ID, getCompanyId())
                 .returning()

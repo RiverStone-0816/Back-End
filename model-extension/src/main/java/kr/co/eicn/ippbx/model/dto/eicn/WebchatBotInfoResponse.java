@@ -22,6 +22,7 @@ public class WebchatBotInfoResponse extends WebchatBotFallbackInfoResponse {
         private Integer id;
         private String name;
         private String title;
+        private Boolean usingOtherBot;
         private List<AuthParamInfo> params;
         private List<AuthButtonInfo> buttons;
     }
@@ -45,9 +46,7 @@ public class WebchatBotInfoResponse extends WebchatBotFallbackInfoResponse {
         private String name;
         private AuthButtonAction action;
         private String actionData;
-        private Boolean usingResultMent;
-        private String successMent;
-        private String errorMent;
+        private String resultParamName;
     }
 
     @Data
@@ -58,11 +57,14 @@ public class WebchatBotInfoResponse extends WebchatBotFallbackInfoResponse {
         private Integer posY;
         private String name;
         private String keyword;
+        private BlockType type;
+        private Integer authBlockId;
         private Boolean isTemplateEnable;
 
         private List<DisplayInfo> displayList;
         private List<ButtonInfo> buttonList;
         private List<BlockInfo> children;
+        private List<AuthResultElement> authResultElementList;
     }
 
     @Data
@@ -106,5 +108,15 @@ public class WebchatBotInfoResponse extends WebchatBotFallbackInfoResponse {
         private String nextApiResultTemplate;
         private String nextApiNoResultMent;
         private String nextApiErrorMent;
+    }
+
+    @Data
+    public static class AuthResultElement {
+        private Integer id;
+        private Integer blockId;
+        private String value;
+        private String ment;
+        private String action;
+        private String nextActionData;
     }
 }

@@ -33,7 +33,7 @@ public class WebchatAuthBlockRepository extends EicnBaseRepository<kr.co.eicn.ip
                 .set(WEBCHAT_AUTH_BLOCK.BOT_ID, botId)
                 .set(WEBCHAT_AUTH_BLOCK.NAME, form.getName())
                 .set(WEBCHAT_AUTH_BLOCK.TITLE, form.getTitle())
-                .set(WEBCHAT_AUTH_BLOCK.OTHER_BOT_USE_YN, "N")
+                .set(WEBCHAT_AUTH_BLOCK.OTHER_BOT_USE_YN, form.getUsingOtherBot() ? "Y" : "N")
                 .set(WEBCHAT_AUTH_BLOCK.COMPANY_ID, g.getUser().getCompanyId())
                 .returning(WEBCHAT_AUTH_BLOCK.ID)
                 .fetchOne()

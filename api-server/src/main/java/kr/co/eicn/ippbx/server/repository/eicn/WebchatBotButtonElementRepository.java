@@ -41,9 +41,8 @@ public class WebchatBotButtonElementRepository extends EicnBaseRepository<Webcha
                 .value1();
     }
 
-    public void updateNextBlockId(Integer buttonId, Integer nextBlockId, boolean isAuthButton) {
+    public void updateNextBlockId(Integer buttonId, Integer nextBlockId) {
         dsl.update(WEBCHAT_BOT_BTN_ELEMENT)
-                .set(WEBCHAT_BOT_BTN_ELEMENT.ACTION, isAuthButton ? ButtonAction.CONNECT_AUTH_BLOCK.getCode() :ButtonAction.CONNECT_BLOCK.getCode())
                 .set(WEBCHAT_BOT_BTN_ELEMENT.NEXT_ACTION_DATA, String.valueOf(nextBlockId))
                 .where(WEBCHAT_BOT_BTN_ELEMENT.ID.eq(buttonId))
                 .execute();

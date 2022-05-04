@@ -49,14 +49,15 @@ public class WebchatBotAuthBlockService extends ApiBaseService {
     }
 
     public List<WebchatBotInfoResponse.AuthBlockInfo> findAllByBotId(Integer botId) {
-        List<WebchatAuthBlock> allByBotId = webchatAuthBlockRepository.findAllByBotId(botId);
-        List<Integer> authBlockIdList = allByBotId.stream().map(WebchatAuthBlock::getId).collect(Collectors.toList());
+        List<WebchatAuthBlock> authBlockList = webchatAuthBlockRepository.findAllByBotId(botId);
+        List<Integer> authBlockIdList = authBlockList.stream().map(WebchatAuthBlock::getId).collect(Collectors.toList());
         Map<Integer, List<WebchatAuthDispElement>> authDisplayByBlockIdMap = webchatAuthDisplayElementRepository.findAllByBlockIdList(authBlockIdList);
         Map<Integer, List<WebchatAuthBtnElement>> authButtonByBlockIdMap = webchatAuthButtonElementRepository.findAllByBlockIds(authBlockIdList);
 
-        return allByBotId.stream().map(e -> {
+        return authBlockList.stream().map(e -> {
             WebchatBotInfoResponse.AuthBlockInfo response = convertDto(e, WebchatBotInfoResponse.AuthBlockInfo.class);
 
+            response.setUsingOtherBot("Y".equals(e.getOtherBotUseYn()));
             response.setParams(convertAuthDisplay(authDisplayByBlockIdMap.get(e.getId())));
             response.setButtons(convertAuthButton(authButtonByBlockIdMap.get(e.getId())));
 
@@ -90,6 +91,7 @@ public class WebchatBotAuthBlockService extends ApiBaseService {
             response.setName(e.getBtnName());
             response.setAction(AuthButtonAction.of(e.getAction()));
             response.setActionData(e.getNextActionData());
+            response.setResultParamName(e.getApiResultParamName());
 
             return response;
         }).collect(Collectors.toList());

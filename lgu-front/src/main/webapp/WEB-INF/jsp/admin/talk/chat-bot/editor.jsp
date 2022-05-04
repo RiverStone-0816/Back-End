@@ -509,6 +509,40 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="auth-element-config" class="chatbot-control-panel auth-element-manage">
+                                <div class="chatbot-control-container active">
+                                    <button type="button" class="arrow-button"></button>
+                                    <div class="chatbot-control-inner">
+                                        <div class="chatbot-box-label">인증 결과 설정
+                                            <button class="ui mini button" @click.stop="save">저장</button>
+                                        </div>
+                                        <div class="chatbot-control-body">
+                                            <div class="mb15">인증결과값</div>
+                                            <div class="ui action fluid input mb15">
+                                                <input type="text" v-model="data.value">
+                                            </div>
+                                            <div class="mb15">멘트</div>
+                                            <div class="ui form fluid mb15">
+                                                <textarea rows="4" v-model="data.ment"></textarea>
+                                            </div>
+                                            <div class="mb15">버튼 클릭시 동작</div>
+                                            <div class="ui form fluid mb15">
+                                                <select v-model="data.action">
+                                                    <option value="first">첫 블록으로 연결</option>
+                                                    <option value="before">이전 블록으로 연결</option>
+                                                    <option value="api">외부연동</option>
+                                                </select>
+                                            </div>
+                                            <div v-if="data.action === 'api'">
+                                                <div class="mb15">버튼 클릭시 동작 데이터</div>
+                                                <div class="ui form fluid mb15">
+                                                    <textarea rows="4" v-model="data.nextActionData"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div id="auth-block-config" class="chatbot-control-panel auth-block-manage">
                                 <div class="chatbot-control-container active">
                                     <button type="button" class="arrow-button"></button>
@@ -517,6 +551,13 @@
                                             <button class="ui mini button" @click.stop="save">저장</button>
                                         </div>
                                         <div class="chatbot-control-body">
+                                            <div class="mb15 dp-flex align-items-center justify-content-space-between">
+                                                <div>다른 블록 사용 여부</div>
+                                                <div class="ui fitted toggle checkbox">
+                                                    <input type="checkbox" @change="data.usingOtherBot != ''" :checked="data.usingOtherBot">
+                                                    <label></label>
+                                                </div>
+                                            </div>
                                             <div class="mb15">인증블록명</div>
                                             <div class="ui form fluid mb15">
                                                 <input type="text" v-model="data.name">
@@ -601,35 +642,11 @@
                                                                 <input type="text" v-model="e.actionData">
                                                             </div>
                                                         </div>
-                                                        <div class="mb15 dp-flex align-items-center justify-content-space-between">
-                                                            <div>답변 대사 사용</div>
-                                                            <div class="ui fitted toggle checkbox">
-                                                                <input type="checkbox" @change="e.usingResultMent = $event.target.checked" :checked="e.usingResultMent">
-                                                                <label></label>
+                                                        <div class="mb15">결과 파라미터네임</div>
+                                                        <div class="ui form fluid mb15">
+                                                            <div class="ui form fluid mb15">
+                                                                <input type="text" v-model="e.resultParamName">
                                                             </div>
-                                                        </div>
-                                                        <div class="list-control-container mb15">
-                                                            <div class="list-control-header">
-                                                                <div>답변 설정</div>
-                                                            </div>
-                                                            <table class="list-control-table">
-                                                                <tr>
-                                                                    <th>정상</th>
-                                                                    <td>
-                                                                        <div class="ui form fluid mb15">
-                                                                            <textarea rows="4" v-model="e.successMent"></textarea>
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <th>조회불가</th>
-                                                                    <td>
-                                                                        <div class="ui form fluid">
-                                                                            <input type="text" v-model="e.errorMent">
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -797,7 +814,7 @@
                         </div>
                         <div class="button-item-inner">
                             <div class="start">{{ getDisplayText(e.type) }}</div>
-                            <div class="end">
+                            <div v-if="type === 'BLOCK'" class="end">
                                 <button v-if="i === 0 && !showingEmptyDisplayItem" @click.stop="showingEmptyDisplayItem = true" class="ui icon small compact button"><i class="plus icon"></i></button>
                                 <button @click.stop="configDisplayItem(i)" class="ui icon small compact button"><i class="cog icon"></i></button>
                                 <button @click.stop="removeDisplayItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
@@ -818,7 +835,7 @@
                             <div class="start">
                                 <text>{{ e.name }}</text>
                             </div>
-                            <div class="end">
+                            <div v-if="type === 'BLOCK'" class="end">
                                 <button v-if="i === 0 && !showingEmptyButtonItem" @click.stop="createButton" class="ui icon small compact button"><i class="plus icon"></i></button>
                                 <button @click.stop="configButtonItem(i)" class="ui icon small compact button"><i class="cog icon"></i></button>
                                 <button @click.stop="removeButtonItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
@@ -827,6 +844,27 @@
                     </li>
                 </ul>
                 <button v-if="showingEmptyButtonItem" @click.stop="createButton" class="empty-item">클릭시 버튼이 생성됩니다.</button>
+            </div>
+            <div v-if="type === 'AUTH'" class="inner">
+                <ul v-if="authElements && authElements.length" class="button-item-ul">
+                    <li v-for="(e,i) in authElements" :key="i" class="button-item button">
+                        <div class="button-item-order-wrap">
+                            <button @click.stop="moveUpResultElementItem(i)" class="up-button"></button>
+                            <button @click.stop="moveDownResultElementItem(i)" class="down-button"></button>
+                        </div>
+                        <div class="button-item-inner">
+                            <div class="start">
+                                <text>{{ e.value }}</text>
+                            </div>
+                            <div class="end">
+                                <button v-if="i === 0 && !showingEmptyResultElementItem" @click.stop="createResultElement" class="ui icon small compact button"><i class="plus icon"></i></button>
+                                <button @click.stop="configResultElementItem(i)" class="ui icon small compact button"><i class="cog icon"></i></button>
+                                <button @click.stop="removeResultElementItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <button v-if="showingEmptyResultElementItem" @click.stop="createResultElement" class="empty-item">클릭시 인증결과가 생성됩니다.</button>
             </div>
         </div>
     </div>
@@ -916,6 +954,8 @@
                                 posX: block ? editor.getNodeFromId(block.nodeId).pos_x : 0,
                                 posY: block ? editor.getNodeFromId(block.nodeId).pos_y : 0,
                                 name: block?.name,
+                                type: block?.type,
+                                authBlockId: block?.authBlockId,
                                 keyword: block?.keywords.length === 0 ? '' : block?.keywords.reduce((a, b) => (a + b + '|'), '|'),
                                 isTemplateEnable: block?.isTemplateEnable,
                                 displayList: block?.displays.map((e, i) => ({
@@ -933,7 +973,7 @@
                                     order: i,
                                     buttonName: e.name,
                                     action: e.action,
-                                    nextBlockId: e.action === '' ? nodeBlockMap[e.childNodeId].id : e.nextBlockId,
+                                    nextBlockId: e.action === '' || e.action === 'auth' ? nodeBlockMap[e.childNodeId].id : e.nextBlockId,
                                     nextGroupId: e.nextGroupId,
                                     nextUrl: e.nextUrl,
                                     nextPhone: e.nextPhone,
@@ -943,7 +983,13 @@
                                     nextApiErrorMent: e.api?.nextApiErrorMent,
                                     // connectedBlockInfo: e.action === '' ? convertBlock(nodeBlockMap[e.childNodeId]) : null
                                 })),
-                                children: block?.buttons.filter(e => e.action === '').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
+                                authResultElementList: block?.authElements.map((e) => ({
+                                    value: e.value,
+                                    ment: e.ment,
+                                    action: e.action,
+                                    nextActionData: e.nextActionData
+                                })),
+                                children: block?.buttons.filter(e => e.action === '' || e.action === 'auth').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
                             })
 
                             const form = Object.assign({}, fallbackConfig.data, {authBlockList: authBlockListContainer.getAuthBlockList()}, {blockInfo: convertBlock(blockList.blocks[0])})
@@ -1015,15 +1061,22 @@
 
                                 const nodeIdToConnections = {}
                                 const createBlock = block => {
+                                    if (!block)
+                                        return
                                     block.children?.forEach(e => createBlock(e))
 
-                                    const nodeId = createNode(block.id, block.posX, block.posY)
+                                    const nodeId = createNode(block.id, block.posX, block.posY, block.type, block.authBlockId)
                                     const app = nodeBlockMap[nodeId]
+                                    const authBlock = authBlockListContainer.authBlocks[block.authBlockId]
 
+
+                                    console.log(authBlock)
                                     app.name = block.name
                                     app.keywords = block.keyword?.split('|').filter(keyword => keyword) || []
                                     app.isTemplateEnable = block.isTemplateEnable
-                                    app.displays = block.displayList.sort((a, b) => (a.order - b.order)).map(e => {
+                                    app.type = block.type
+                                    app.authBlockId = block.authBlockId
+                                    app.displays = block.type === 'AUTH' ? authBlock.params : block.displayList.sort((a, b) => (a.order - b.order)).map(e => {
                                         if (e.type === 'text') return {type: 'text', data: {text: e.elementList?.[0]?.content}}
                                         if (e.type === 'image') return {type: 'image', data: {fileUrl: e.elementList?.[0]?.image, fileName: e.elementList?.[0]?.image}}
                                         if (e.type === 'card') return {
@@ -1054,8 +1107,7 @@
                                         }
                                     })
 
-                                    app.buttons = block.buttonList.sort((a, b) => (a.order - b.order)).map((e, i) => {
-                                        console.log(e)
+                                    app.buttons = block.type === 'AUTH' ? authBlock.buttons : block.buttonList.sort((a, b) => (a.order - b.order)).map((e, i) => {
                                         const childNodeId = (() => {
                                             if (e.action !== 'block' && e.action !== '') return
                                             const childBlockId = block.children?.filter(childBlock => (childBlock.parentButtonId === e.id))[0]?.id
@@ -1082,8 +1134,19 @@
                                             }
                                         }
                                     })
+
+                                    app.authElements = block.authResultElementList.sort((a, b) => (a.id - b.id)).map((e, i) => {
+                                        return {
+                                            value: e.value,
+                                            ment: e.ment,
+                                            action: e.action,
+                                            nextActionData: e.nextActionData
+                                        }
+                                    })
+
                                     app.showingEmptyDisplayItem = !app.displays.length
                                     app.showingEmptyButtonItem = !app.buttons.length
+                                    app.showingEmptyResultElementItem = !app.authElements.length
 
                                     app.buttons.forEach(() => editor.addNodeOutput(nodeId))
                                 }
@@ -1506,7 +1569,6 @@
                             o.buttonIndex = buttonIndex
                             o.data = {}
                             if (data) for (let property in data) o.data[property] = data[property]
-                            console.log(data)
                             o.data.api = {}
                             if (data.api) for (let property in data.api) o.data.api[property] = data.api[property]
                             o.checkDataStructure()
@@ -1520,6 +1582,7 @@
                             const preChildNodeId = app.buttons[o.buttonIndex].childNodeId
                             const preBlock = app.buttons[o.buttonIndex].block
                             const currentAction = o.data.action
+                            const actionData = o.data.nextBlockId
 
                             const data = {}
                             for (let property in o.data) data[property] = o.data[property]
@@ -1536,7 +1599,11 @@
 
                                 if (currentAction === '') {
                                     const node = editor.getNodeFromId(o.nodeId)
-                                    data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y)
+                                    data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'BLOCK')
+                                    app.createConnection(o.buttonIndex, nodeBlockMap[data.childNodeId].id)
+                                } else if (currentAction === 'auth') {
+                                    const node = editor.getNodeFromId(o.nodeId)
+                                    data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'AUTH', actionData)
                                     app.createConnection(o.buttonIndex, nodeBlockMap[data.childNodeId].id)
                                 } else if (currentAction === 'block') {
                                     app.createConnection(o.buttonIndex, data.nextBlockId)
@@ -1573,6 +1640,37 @@
                 }).mount('#button-config')
                 return o || o
             })()
+            const authElementConfig = (() => {
+                const o = Vue.createApp({
+                    data() {
+                        return {
+                            nodeId: null,
+                            index: null,
+                            data: {},
+                        }
+                    },
+                    methods: {
+                        load(nodeId, index, data) {
+                            o.nodeId = nodeId
+                            o.index = index
+                            o.data = {}
+                            if (data) for (let property in data) o.data[property] = data[property]
+                        },
+                        save() {
+                            botList.changed = true;
+                            const app = nodeBlockMap[o.nodeId]
+                            if (!app || !app.authElements[o.index]) return
+
+                            const data = {}
+                            for (let property in o.data) data[property] = o.data[property]
+                            app.authElements[o.index] = data
+
+                            alert("저장되었습니다.");
+                        },
+                    },
+                }).mount('#auth-element-config')
+                return o || o
+            })()
             const authBlockListContainer = (() => {
                 const o = Vue.createApp({
                     data() {
@@ -1587,7 +1685,7 @@
                                 id: newBlockId,
                                 name: '새로운 인증블럭',
                                 title: null,
-                                otherBotUseYn: false,
+                                usingOtherBot: false,
                                 params: [{type: 'text', paramName: null, displayName: null, needYn: false}],
                                 buttons: [{name: null, action: 'first', actionData: null}]
                             }
@@ -1616,6 +1714,7 @@
                                 blockId: null,
                                 name: null,
                                 title: null,
+                                usingOtherBot: false,
                                 params: [],
                                 buttons: []
                             }
@@ -1631,6 +1730,7 @@
                             o.data.blockId = blockId
                             o.data.name = authBlock.name
                             o.data.title = authBlock.title
+                            o.data.usingOtherBot = authBlock.usingOtherBot
                             o.data.params = authBlock.params
                             o.data.buttons = authBlock.buttons
 
@@ -1718,7 +1818,7 @@
             let lastAuthBlockId = 0
             const createAuthBlockId = () => (++lastAuthBlockId)
 
-            function createNode(blockId, x, y) {
+            function createNode(blockId, x, y, type = 'BLOCK', authBlockId) {
                 if (typeof x !== 'number' || typeof y !== 'number') {
                     editor.zoom_reset()
                     editor.canvas_x = 0
@@ -1736,6 +1836,7 @@
                 const nodeId = editor.addNode('BLOCK', 1, 0, x, y, '', {}, '')
                 const template = document.getElementById('block-template')
                 const block = document.getElementById('node-' + nodeId).querySelector('.drawflow_content_node')
+                const authBlock = authBlockListContainer.authBlocks[authBlockId]
                 for (let i = 0; i < template.children.length; i++)
                     block.append(template.children[i].cloneNode(true))
 
@@ -1745,14 +1846,18 @@
                             return {
                                 id: blockId ?? createBlockId(),
                                 name: '',
+                                type: type,
+                                authBlockId: authBlockId,
                                 displays: [],
                                 buttons: [],
+                                authElements: [],
                                 keywords: [],
                                 isTemplateEnable: false,
 
                                 nodeId: nodeId,
                                 showingEmptyDisplayItem: false,
                                 showingEmptyButtonItem: false,
+                                showingEmptyResultElementItem: false,
                             }
                         },
                         methods: {
@@ -1862,6 +1967,25 @@
                                 o.configButtonItem(o.buttons.length - 1)
                                 o.showingEmptyButtonItem = false
                             },
+                            moveUpResultElementItem(index) {
+                                if (index <= 0) return
+                                const item = o.authElements.splice(index, 1)[0]
+                                o.authElements.splice(index - 1, 0, item)
+                            },
+                            moveDownResultElementItem(index) {
+                                if (index >= o.authElements.length - 1) return
+                                const item = o.authElements.splice(index, 1)[0]
+                                o.authElements.splice(index + 1, 0, item)
+                            },
+                            removeResultElementItem(index) {
+                                o.authElements.splice(index, 1)[0]
+                                o.showingEmptyButtonItem = !o.authElements || !o.authElements.length
+                            },
+                            createResultElement() {
+                                o.authElements.push({})
+                                o.configResultElementItem(o.authElements.length - 1)
+                                o.showingEmptyResultElementItem = false
+                            },
                             configKeywords() {
                                 $('.chatbot-control-panel').removeClass('active')
                                 $('.keyword-manage').addClass('active')
@@ -1894,6 +2018,11 @@
                                 $('.chatbot-control-panel').removeClass('active')
                                 $('.button-action-manage').addClass('active')
                                 buttonConfig.load(o.nodeId, index, o.buttons[index])
+                            },
+                            configResultElementItem(index) {
+                                $('.chatbot-control-panel').removeClass('active')
+                                $('.auth-element-manage').addClass('active')
+                                authElementConfig.load(o.nodeId, index, o.authElements[index])
                             },
                             showPreview() {
                                 $('.chatbot-control-panel').removeClass('active');
@@ -1931,6 +2060,7 @@
                         mounted() {
                             this.showingEmptyDisplayItem = !this.displays || !this.displays.length
                             this.showingEmptyButtonItem = !this.buttons || !this.buttons.length
+                            this.showingEmptyResultElementItem = !this.authElements || !this.authElements.length
                         }
                     }).mount(block)
                     return o || o

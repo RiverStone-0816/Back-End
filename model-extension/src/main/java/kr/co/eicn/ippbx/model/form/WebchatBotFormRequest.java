@@ -27,6 +27,7 @@ public class WebchatBotFormRequest extends WebchatBotFallbackFormRequest {
         private Integer id;
         private String name;
         private String title;
+        private Boolean usingOtherBot;
         private List<AuthParamInfo> params;
         private List<AuthButtonInfo> buttons;
     }
@@ -46,9 +47,7 @@ public class WebchatBotFormRequest extends WebchatBotFallbackFormRequest {
         private String name;
         private AuthButtonAction action;
         private String actionData;
-        private Boolean usingResultMent;
-        private String successMent;
-        private String errorMent;
+        private String resultParamName;
     }
 
     @EqualsAndHashCode(callSuper = true)
@@ -60,11 +59,14 @@ public class WebchatBotFormRequest extends WebchatBotFallbackFormRequest {
         private Integer posY;
         private String name;
         private String keyword;
+        private BlockType type;
+        private Integer authBlockId;
         private Boolean isTemplateEnable;
         @Valid
         private List<DisplayInfo> displayList;
         @Valid
         private List<ButtonElement> buttonList;
+        private List<AuthResultElement> authResultElementList;
         @Valid
         private List<BlockInfo> children;
     }
@@ -119,5 +121,14 @@ public class WebchatBotFormRequest extends WebchatBotFallbackFormRequest {
         private String nextApiResultTemplate;
         private String nextApiNoResultMent;
         private String nextApiErrorMent;
+    }
+
+    @EqualsAndHashCode(callSuper = true)
+    @Data
+    public static class AuthResultElement extends BaseForm {
+        private String value;
+        private String ment;
+        private String action;
+        private String nextActionData;
     }
 }
