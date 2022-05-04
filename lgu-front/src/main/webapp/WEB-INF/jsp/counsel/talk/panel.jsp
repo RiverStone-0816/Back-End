@@ -657,15 +657,13 @@
                                         <div class="chat">
                                             <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
                                                 <div class="txt_chat">
-                                                    <video id="remotevideo" autoplay playsinline></video>
-                                                    <video id="myvideo" autoplay playsinline muted="muted"></video>
-                                                    <p>{{ e.sendReceive === 'SAS' ? '음성통화 수락 대기중...' : '영상통화 수락 대기중...' }}</p>
+                                                    <p>{{ e.sendReceive === 'SAS' ? '음성통화를 시도합니다' : '영상통화를 시도합니다' }}</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="['RAR', 'RVR'].includes(e.sendReceive) && e.contents.ready_result !== 0" class="chat-item chat-me">
+                                <%--<div v-if="['RAR', 'RVR'].includes(e.sendReceive) && e.contents.ready_result !== 0" class="chat-item chat-me">
                                     <div class="wrap-content">
                                         <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
@@ -676,7 +674,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div>--%>
                                 <div v-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info' && e.messageType !== 'block'"
                                      class="chat-item"
                                      :class="['AF', 'S'].includes(e.sendReceive)<%-- && e.userId === ME--%> && 'chat-me'">
@@ -1437,6 +1435,10 @@
 
 <tags:scripts>
     <script>
+        function popupWebrtcModal() {
+            popupDraggableModalFromReceivedHtml('/counsel/talk/modal-webrtc', 'modal-webrtc')
+        }
+
         function loadTalkCustomInput(maindbGroupSeq, customId, roomId, senderKey, userKey, channel) {
             return replaceReceivedHtmlInSilence($.addQueryString('/counsel/talk/custom-input', {
                 maindbGroupSeq: maindbGroupSeq || '',
@@ -1492,14 +1494,35 @@
                 set_ringtone_volume(0.2)
                 set_busytone_volume(0.2)
 
+                popupWebrtcModal()
+
             } else if (['RAR','RVR'].includes(data.send_receive)) {
-                set_local_vchat_stream_object($('#myvideo'))
-                set_remote_vchat_stream_object($('#remotevideo'))
+                if (data.content.ready_result === 0) {
+                    $('#chatText').text('고객이 통화를 수락했습니다.');
+                    set_local_vchat_stream_object($('#myvideo'))
+                    set_remote_vchat_stream_object($('#remotevideo'))
 
-                start_vchat();
+                    set_callback_vchat_hangup(() => {
+                        $('#chatText').text('통화가 종료 되었습니다.')
+                        talkCommunicator.sendWebrtcEnd(data.room_id, data.channel_type, data.sender_key, data.user_key, data.send_receive === 'RAR' ? 'SAE' : 'SVE', WEBRTC_INFO.server.webrtc_server_ip, WEBRTC_INFO.server.my_username, WEBRTC_INFO.server.remote_username, WEBRTC_INFO.server.record_file)
+                        setTimeout(()=>{$('#modal-webrtc').hide()},1500)
+                    })
 
-                setTimeout(function () {data.send_receive === 'RAR' ? doVoiceChat() : doVideoChat()},10000)
+                    set_callback_vchat_outgoing_call(() => {
+                        $('#chatText').text(data.send_receive === 'RAR' ? '고객과 음성통화를 시도합니다.' :  '고객과 영상통화를 시도합니다.')
+                    })
 
+                    set_callback_vchat_accept(() => {
+                        $('#chatText').text(data.send_receive === 'RAR' ? '고객과 음성통화중.' :  '고객과 영상통화중.')
+                    })
+
+                    start_vchat();
+
+                    setTimeout(function () {data.send_receive === 'RAR' ? doVoiceChat() : doVideoChat()},3000)
+                } else {
+                    $('#chatText').text('고객이 통화를 거절합니다. ');
+                    setTimeout(function () {$('#modal-webrtc').hide()},1500)
+                }
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive, data.customname)
                 if (data.send_receive === 'R' && data.userid === userId && talkRoom.roomId !== data.room_id) {

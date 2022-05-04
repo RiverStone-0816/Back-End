@@ -186,6 +186,25 @@ TalkCommunicator.prototype.sendWebrtc = function (roomId, channelType, senderKey
         contents: "",
     });
 };
+TalkCommunicator.prototype.sendWebrtcEnd = function (roomId, channelType, senderKey, userKey, sendReceive, serverIp, myName, remoteName, recordFile) {
+    this.socket.emit('cli_webrtc', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        channel_type: channelType,
+        sender_key: senderKey,
+        send_receive: sendReceive,
+        user_key: userKey,
+        etc_data: '',
+        type: 'json',
+        contents: {
+            webrtc_server_ip: serverIp,
+            my_username: myName,
+            remote_username: remoteName,
+            record_file: recordFile,
+        },
+    });
+};
 TalkCommunicator.prototype.sendCustomMatch = function (roomId, senderKey, userKey, groupId, customId, customName, channelType) {
     this.socket.emit('cli_custom_match', {
         company_id : this.request.companyId,

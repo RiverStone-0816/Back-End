@@ -254,6 +254,9 @@ public class CounselTalkController extends BaseController {
         return "counsel/talk/custom-input";
     }
 
+    @GetMapping("modal-webrtc")
+    public String modalWebrtc() { return "counsel/talk/modal-webrtc"; }
+
     @GetMapping("counseling-input")
     public String counselingInput(Model model, @ModelAttribute("form") ResultCustomInfoFormRequest form,
                                   @RequestParam(required = false) Integer maindbGroupSeq,

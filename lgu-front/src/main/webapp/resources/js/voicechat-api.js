@@ -59,7 +59,12 @@ var accept_vchat = null;
 var callback_vchat_outgoing_call = function(){};
 var callback_vchat_incoming_call = function(){};
 var callback_vchat_accept = function(){};
-var callback_vchat_hangup = function(){};
+var callback_vchat_hangup = function(){
+
+    WEBRTC_INFO.server.webrtc_server_ip
+    WEBRTC_INFO.server.my_username
+    WEBRTC_INFO.server.remote_username
+};
 
 function register_vchat(username) {
     if (username === "") {
@@ -512,14 +517,26 @@ function set_record_file(record_file)
     };
 }
 
+var muteFlag = true;
 function doMute()
 {
-    var msg = {
-        request: "set",
-        audio: false,
-    };
-    vchat.send({message: msg});
-    Janus.debug("Do Mute");
+    if (muteFlag) {
+        var msg = {
+            request: "set",
+            audio: false,
+        };
+        vchat.send({message: msg});
+        Janus.debug("Do Mute");
+        muteFlag = false
+    } else {
+        var msg = {
+            request: "set",
+            audio: true,
+        };
+        vchat.send({message: msg});
+        Janus.debug("Do Unmute");
+        muteFlag = true
+    }
 }
 
 function doUnmute()

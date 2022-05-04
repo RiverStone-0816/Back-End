@@ -90,8 +90,6 @@ public class WebchatBotAuthBlockService extends ApiBaseService {
             response.setName(e.getBtnName());
             response.setAction(AuthButtonAction.of(e.getAction()));
             response.setActionData(e.getNextActionData());
-            response.setSuccessMent(e.getNextApiResultTpl());
-            response.setErrorMent(e.getNextApiErrorMent());
 
             return response;
         }).collect(Collectors.toList());
