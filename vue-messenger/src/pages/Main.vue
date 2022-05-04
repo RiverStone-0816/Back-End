@@ -97,7 +97,7 @@
                   <div class="flex flex-row">
                     <div class="relative text-sm bg-white py-2 px-3 shadow rounded-lg max-w-xs">
                       <div>
-                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ makeApiResultMessage(message.data) }}</p>
+                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ mmessage.data.result_content }}</p>
                       </div>
                     </div>
                     <div class="flex text-xs pl-3 items-end">{{ getTimeFormat(message.time) }}</div>

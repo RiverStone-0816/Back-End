@@ -39,14 +39,14 @@
             <span class="flex m-auto text-base w-2/3 text-gray-500">
               {{ audioChatText }}
             </span>
-            <button class="flex w-1/9 text-white py-2 px-3 rounded-lg h-10  hover:bg-gray-300/20">
+            <button class="flex w-1/9 text-white py-2 px-3 rounded-lg h-10  hover:bg-gray-300/20" @click.stop="isMuteChange ? doUnmute : doMute">
               <svg xmlns="http://www.w3.org/2000/svg" width="17" height="29" viewBox="0 0 25 40">
                 <path id="Icon_awesome-microphone" data-name="Icon awesome-microphone"
                       d="M12.375,24.75A6.75,6.75,0,0,0,19.125,18V6.75a6.75,6.75,0,0,0-13.5,0V18A6.75,6.75,0,0,0,12.375,24.75ZM23.625,13.5H22.5a1.125,1.125,0,0,0-1.125,1.125V18a9.01,9.01,0,0,1-9.9,8.956,9.273,9.273,0,0,1-8.1-9.357V14.625A1.125,1.125,0,0,0,2.25,13.5H1.125A1.125,1.125,0,0,0,0,14.625v2.824A12.762,12.762,0,0,0,10.688,30.224v2.4H6.75A1.125,1.125,0,0,0,5.625,33.75v1.125A1.125,1.125,0,0,0,6.75,36H18a1.125,1.125,0,0,0,1.125-1.125V33.75A1.125,1.125,0,0,0,18,32.625H14.063V30.251A12.387,12.387,0,0,0,24.75,18V14.625A1.125,1.125,0,0,0,23.625,13.5Z"
                       fill="#e1e1e1" />
               </svg>
             </button>
-            <button class="flex text-white py-2 px-3 rounded-lg h-10 hover:bg-gray-300/20">
+<!--            <button class="flex text-white py-2 px-3 rounded-lg h-10 hover:bg-gray-300/20">
               <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="27" height="26" viewBox="0 0 19.354 15">
                 <g transform="translate(-1191.495 -10717.04)">
                   <path
@@ -57,8 +57,22 @@
                       transform="translate(830.275 9847.731)" fill="#e1e1e1" stroke="#e1e1e1" stroke-width="1" />
                 </g>
               </svg>
+            </button>-->
+            <button v-show="audioActionButton" class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" id="btn-accept" @click.stop="accept_vchat">
+              <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 16">
+                <g transform="translate(-1155.078 -10717.04)">
+                  <g transform="translate(1155.078 10717.04)">
+                    <path id="path"
+                          d="M380.7,874.61l-2.44,2.44,2.44,2.44-.61.61-2.44-2.44-2.44,2.44-.61-.61,2.44-2.44-2.44-2.44.61-.61,2.44,2.44,2.44-2.44Z"
+                          transform="translate(-367 -873.099)" fill="#fff" stroke="#fff" stroke-width="0.5" />
+                    <path
+                        d="M412.6,78.117a12.533,12.533,0,0,0,5.5,5.5l1.834-1.833a.663.663,0,0,1,.833-.167,8.716,8.716,0,0,0,3,.5.855.855,0,0,1,.833.833v2.917a.855.855,0,0,1-.833.833A14.226,14.226,0,0,1,409.6,72.533a.854.854,0,0,1,.833-.833h2.917a.854.854,0,0,1,.833.833,9.43,9.43,0,0,0,.5,3,.911.911,0,0,1-.167.833Z"
+                        transform="translate(-409.6 -71.7)" fill="#fff" />
+                  </g>
+                </g>
+              </svg>
             </button>
-            <button class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10">
+            <button v-show="!audioActionButton" class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" id="btn-hangup" @click.stop="doHangup">
               <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 16">
                 <g transform="translate(-1155.078 -10717.04)">
                   <g transform="translate(1155.078 10717.04)">
@@ -81,21 +95,21 @@
       <div class="bg-white border-b-2" v-show="videoChat">
         <div class="px-3 py-2 inline-block w-full">
           <div class="flex h-60 mb-2">
-            <video id="vRemoteVideo" autoplay playsinline/>
-            <video id="vMyVideo" autoplay playsinline muted="muted"/>
+            <video id="vRemoteVideo" autoplay playsinline width="180"/>
+            <video id="vMyVideo" autoplay playsinline muted="muted" width="180"/>
           </div>
           <div class="flex">
             <span class="flex m-auto text-base w-2/3 text-gray-500">
               {{ videoChatText }}
             </span>
             <button class="flex w-1/9 text-white py-2 px-3 rounded-lg h-10">
-              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="29" viewBox="0 0 25 38">
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="29" viewBox="0 0 25 38" @click.stop="isMuteChange ? doUnmute : doMute">
                 <path id="Icon_awesome-microphone" data-name="Icon awesome-microphone"
                       d="M12.375,24.75A6.75,6.75,0,0,0,19.125,18V6.75a6.75,6.75,0,0,0-13.5,0V18A6.75,6.75,0,0,0,12.375,24.75ZM23.625,13.5H22.5a1.125,1.125,0,0,0-1.125,1.125V18a9.01,9.01,0,0,1-9.9,8.956,9.273,9.273,0,0,1-8.1-9.357V14.625A1.125,1.125,0,0,0,2.25,13.5H1.125A1.125,1.125,0,0,0,0,14.625v2.824A12.762,12.762,0,0,0,10.688,30.224v2.4H6.75A1.125,1.125,0,0,0,5.625,33.75v1.125A1.125,1.125,0,0,0,6.75,36H18a1.125,1.125,0,0,0,1.125-1.125V33.75A1.125,1.125,0,0,0,18,32.625H14.063V30.251A12.387,12.387,0,0,0,24.75,18V14.625A1.125,1.125,0,0,0,23.625,13.5Z"
                       fill="#e1e1e1" />
               </svg>
             </button>
-            <button class="flex text-white py-2 px-3 rounded-lg h-10">
+<!--            <button class="flex text-white py-2 px-3 rounded-lg h-10">
               <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="27" height="26" viewBox="0 0 19.354 15">
                 <g transform="translate(-1191.495 -10717.04)">
                   <path
@@ -106,8 +120,22 @@
                       transform="translate(830.275 9847.731)" fill="#e1e1e1" stroke="#e1e1e1" stroke-width="1" />
                 </g>
               </svg>
+            </button>-->
+            <button v-show="videoActionButton" class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" id="btn-accept" @click.stop="accept_vchat">
+              <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 16">
+                <g transform="translate(-1155.078 -10717.04)">
+                  <g transform="translate(1155.078 10717.04)">
+                    <path id="path"
+                          d="M380.7,874.61l-2.44,2.44,2.44,2.44-.61.61-2.44-2.44-2.44,2.44-.61-.61,2.44-2.44-2.44-2.44.61-.61,2.44,2.44,2.44-2.44Z"
+                          transform="translate(-367 -873.099)" fill="#fff" stroke="#fff" stroke-width="0.5" />
+                    <path
+                        d="M412.6,78.117a12.533,12.533,0,0,0,5.5,5.5l1.834-1.833a.663.663,0,0,1,.833-.167,8.716,8.716,0,0,0,3,.5.855.855,0,0,1,.833.833v2.917a.855.855,0,0,1-.833.833A14.226,14.226,0,0,1,409.6,72.533a.854.854,0,0,1,.833-.833h2.917a.854.854,0,0,1,.833.833,9.43,9.43,0,0,0,.5,3,.911.911,0,0,1-.167.833Z"
+                        transform="translate(-409.6 -71.7)" fill="#fff" />
+                  </g>
+                </g>
+              </svg>
             </button>
-            <button class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10">
+            <button v-show="!videoActionButton" class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" id="btn-hangup" @click.stop="doHangup">
               <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 16">
                 <g transform="translate(-1155.078 -10717.04)">
                   <g transform="translate(1155.078 10717.04)">
@@ -204,10 +232,8 @@
                       <p>{{ message.data.fallback_ment }}</p>
                     </span>
                   </div>
-                </div>
-                <div class="flex flex-col space-y-2 m-2 mt-0 mr-4 w-button">
-                  <div class="text-main bg-white py-2 px-3 space-y-2 shadow rounded-lg max-w-xxs">
-                    <button class="w-full text-white py-2 px-4 rounded-full hover:shadow-lg" style="background-color: #0C4DA2" @click.stop="actFallback(message)">
+                  <div class="space-y-2">
+                    <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actFallback(message)">
                       {{ getFallbackButtonName(message.data.fallback_action) }}
                     </button>
                   </div>
@@ -229,16 +255,16 @@
                   <div class="bg-white shadow rounded-lg">
                     <div class="p-3 pt-2 text-main">
                       <span>
-                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ makeApiResultMessage(message.data) }}</p>
+                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.result_content }}</p>
                       </span>
                     </div>
                   </div>
                   <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="space-y-2">
-                  <span v-if="e instanceof Array">
-                    <button v-for="(e2, j) in e" :key="j"  class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg" style="background-color: #0C4DA2" @click.stop="actButton(message, e2)">
-                      {{ e2.btn_name }}
-                    </button>
-                  </span>
+                    <span v-if="e instanceof Array">
+                      <button v-for="(e2, j) in e" :key="j"  class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actButton(message, e2)">
+                        {{ e2.btn_name }}
+                      </button>
+                    </span>
                   </div>
                   <div class="text-xxs text-gray-600/100">
                     {{ getTimeFormat(message.time) }}
@@ -411,7 +437,7 @@
             </div>
             <div class="pl-3 pt-1">
               <div class="flex items-start">
-                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <span class="rounded-full" style="width: 32px;height: 32px;"></span>
                 <!-- button start -->
                 <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4">
                   <div class="space-y-2">
@@ -522,11 +548,9 @@
                       <p>상담원이 음성통화를 요청합니다.</p>
                     </span>
                   </div>
-                </div>
-                <div class="flex flex-col space-y-2 m-2 mt-0 mr-4 w-button">
-                  <div class="text-main bg-white py-2 px-3 space-y-2 shadow rounded-lg max-w-xxs">
-                    <button class="w-full text-white py-2 px-4 rounded-full hover:shadow-lg" style="background-color: #0C4DA2"  @click.stop="audioStart(true)">수락</button>
-                    <button class="w-full text-white py-2 px-4 rounded-full hover:shadow-lg" style="background-color: #0C4DA2"  @click.stop="audioStart(false)">거절</button>
+                  <div class="space-y-2">
+                    <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="audioStart(true)">수락</button>
+                    <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="audioStart(false)">거절</button>
                   </div>
                 </div>
               </div>
@@ -547,11 +571,9 @@
                       <p>상담원이 영상통화를 요청합니다.</p>
                     </span>
                   </div>
-                </div>
-                <div class="flex flex-col space-y-2 m-2 mt-0 mr-4 w-button">
-                  <div class="text-main bg-white py-2 px-3 space-y-2 shadow rounded-lg max-w-xxs">
-                    <button class="w-full text-white py-2 px-4 rounded-full hover:shadow-lg" style="background-color: #0C4DA2"  @click.stop="videoStart(true)">수락</button>
-                    <button class="w-full text-white py-2 px-4 rounded-full hover:shadow-lg" style="background-color: #0C4DA2"  @click.stop="videoStart(false)">거절</button>
+                  <div class="space-y-2">
+                    <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="videoStart(true)">수락</button>
+                    <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="videoStart(false)">거절</button>
                   </div>
                 </div>
               </div>
@@ -596,8 +618,8 @@ import kakaoIcon from '../assets/kakao-icon.png'
 import naverIcon from '../assets/naver-icon.png'
 import lineIcon from '../assets/line-icon.png'
 import debounce from '../utillities/mixins/debounce'
-import SimpleTone from "@/assets/sounds/SimpleTone.mp3"
-import BusySignal from "@/assets/sounds/BusySignal.mp3"
+import SimpleTone from "../assets/sounds/SimpleTone.mp3"
+import BusySignal from "../assets/sounds/BusySignal.mp3"
 import store from '../store/index'
 import Communicator from "../utillities/Communicator"
 import maudio from "../utillities/maudio"
@@ -705,11 +727,18 @@ export default {
       REMOTE_VCHAT_STREAM_OBJECT: null,
       start_recording: null,
 
+      isMuteChange: false,
+
       audioChat: false,
       audioChatText: '음성통화 연결중',
+      audioActionButton: false,
 
       videoChat: false,
       videoChatText: '영상통화 연결중',
+      videoActionButton: false,
+
+      chkInit: true,
+
 
     }
   },
@@ -832,7 +861,7 @@ export default {
     actApi(message, button) {
       const data = {}
       const result = {}
-      const elements = this.$refs.apiparent.querySelectorAll('[name]')
+      const elements = this.$refs.apiparent[this.$refs.apiparent.length-1].querySelectorAll('[name]')
       for (let i = 0; i < elements.length; i++) {
         if (!elements[i].value && elements[i].dataset.value === 'Y') return store.commit('alert/show', {body: 'API 호출을 위해 필요 정보를 모두 입력해야 합니다.', isClose: false})
 
@@ -908,8 +937,63 @@ export default {
       }
     },
     //webrtc
+    set_callback_vchat_registered_status(callback) {
+      this.callback_vchat_registered_status = callback;
+    },
+    set_callback_vchat_unregistered_status(callback) {
+      this.callback_vchat_unregistered_status = callback;
+    },
+    set_callback_vchat_disconnected_status(callback) {
+      this.callback_vchat_disconnected_status = callback;
+    },
+    set_callback_vchat_outgoing_call(callback) {
+      this.callback_vchat_outgoing_call = callback;
+    },
+    set_callback_vchat_incoming_call(callback) {
+      this.callback_vchat_incoming_call = callback;
+    },
+    set_callback_vchat_accept(callback) {
+      this.callback_vchat_accept = callback;
+    },
+    set_callback_vchat_hangup(callback) {
+      this.callback_vchat_hangup = callback
+    },
     start_vchat() {
       const _this = this
+      this.set_callback_vchat_incoming_call(()=>{
+        _this.audioChatText = '전화옴'
+        _this.videoChatText = '전화옴'
+        _this.audioActionButton = true
+        _this.videoActionButton = true
+      })
+      this.set_callback_vchat_registered_status(()=>{
+        _this.audioChatText = '음성통화 대기.'
+        _this.videoChatText = '영상통화 대기.'
+      })
+      this.set_callback_vchat_unregistered_status(()=>{
+        _this.audioChatText = '준비중..'
+        _this.videoChatText = '준비중..'
+      })
+      this.set_callback_vchat_outgoing_call(()=>{
+        _this.audioChatText = '전화거는중'
+        _this.videoChatText = '전화거는중'
+      })
+      this.set_callback_vchat_disconnected_status(()=>{
+        _this.audioChatText = '전화거는중'
+        _this.videoChatText = '전화거는중'
+      })
+      this.set_callback_vchat_accept(()=>{
+        _this.audioChatText = '통화중'
+        _this.videoChatText = '통화중'
+        _this.audioActionButton = false
+        _this.videoActionButton = false
+      })
+      this.set_callback_vchat_hangup(()=>{
+        _this.audioChatText = '통화종료'
+        _this.videoChatText = '통화종료'
+        _this.audioChat = false
+        _this.videoChat = false
+      })
       if (_this.vchatReconnectTimerId) {
         clearInterval(_this.vchatReconnectTimerId);
         _this.vchatReconnectTimerId = null;
@@ -918,8 +1002,10 @@ export default {
         delete _this.janusVChat;
         _this.janusVChat = null;
       }
-
-      Janus.init({debug: "all", callback: this.create_vchat_session});
+      if (this.chkInit) {
+        Janus.init({debug: "all", callback: this.create_vchat_session});
+        _this.chkInit = false
+      }
     },
     create_vchat_session() {
       const webrtc_server = "wss://" + this.WEBRTC_INFO.server.webrtc_server_ip + ":" + this.WEBRTC_INFO.server.webrtc_server_port;
@@ -1122,8 +1208,6 @@ export default {
                             if (_this.vchatSpinner) {
                               _this.vchatSpinner.stop();
                             }
-                            if (_this.$LOCAL_VCHAT_STREAM_OBJECT) _this.$LOCAL_VCHAT_STREAM_OBJECT.hide();
-                            if (_this.$REMOTE_VCHAT_STREAM_OBJECT) _this.$REMOTE_VCHAT_STREAM_OBJECT.hide();
 
                             // Busytone 플레이
                             _this.playTone("busy");
@@ -1186,8 +1270,8 @@ export default {
                     onlocalstream: function(stream) {
                       Janus.debug(" ::: Got a local stream :::", stream);
                       // 내 음성/영상스트림을 VIDEO 객체에 연결
-                      Janus.attachMediaStream($('#myvideo').get(0), stream);
-                      $('#myvideo').get(0).muted = "muted";
+                      Janus.attachMediaStream(_this.LOCAL_VCHAT_STREAM_OBJECT.get(0), stream);
+                      _this.LOCAL_VCHAT_STREAM_OBJECT.get(0).muted = "muted";
                       // FIXME : 영상통화용 코드 작성
                     },
                     onremotestream: function(stream) {
@@ -1196,17 +1280,13 @@ export default {
                       // 상대방의 스트림에 영상이 없으면, local/remote video 객체를 숨김
                       if (stream.getVideoTracks().length == 0) {
                         Janus.debug(" ::: No Remote Video stream :::");
-                        if (_this.$LOCAL_VCHAT_STREAM_OBJECT) _this.$LOCAL_VCHAT_STREAM_OBJECT.hide();
-                        if (_this.$REMOTE_VCHAT_STREAM_OBJECT) _this.$REMOTE_VCHAT_STREAM_OBJECT.hide();
                       }
                       else {
                         Janus.debug(" ::: Found Remote Video stream :::");
-                        if (_this.$LOCAL_VCHAT_STREAM_OBJECT) _this.$LOCAL_VCHAT_STREAM_OBJECT.show();
-                        if (_this.$REMOTE_VCHAT_STREAM_OBJECT) _this.$REMOTE_VCHAT_STREAM_OBJECT.show();
                       }
 
                       // 상대방의 음성/영상스트림을 VIDEO 객체에 연결
-                      Janus.attachMediaStream($('#remotevideo').get(0), stream);
+                      Janus.attachMediaStream(_this.REMOTE_VCHAT_STREAM_OBJECT.get(0), stream);
                       // FIXME : 영상통화용 코드 작성
                     },
                     oncleanup: function() {
