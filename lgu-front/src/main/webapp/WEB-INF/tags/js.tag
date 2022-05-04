@@ -87,7 +87,7 @@
     window.contextPath = '${pageContext.request.contextPath}';
     window.loadingImageSource = contextPath + '/resources/images/loading.svg';
     window.RINGTONE = new Audio(contextPath ? contextPath + '/resources/sounds/SimpleTone.mp3' : '/resources/sounds/SimpleTone.mp3');
-    window.BUSYTONE = new Audio(contextPath ? contextPath + '/resources/sounds/BusySignal.mp3' : '/resources/sounds/SimpleTone.mp3');
+    window.BUSYTONE = new Audio(contextPath ? contextPath + '/resources/sounds/BusySignal.mp3' : '/resources/sounds/BusySignal.mp3');
     RINGTONE.loop = true;
 
     <c:if test="${g.login}">
