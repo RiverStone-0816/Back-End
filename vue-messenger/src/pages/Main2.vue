@@ -102,8 +102,8 @@
             <span class="flex m-auto text-base w-2/3 text-gray-500">
               {{ videoChatText }}
             </span>
-            <button class="flex w-1/9 text-white py-2 px-3 rounded-lg h-10">
-              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="29" viewBox="0 0 25 38" @click.stop="isMuteChange ? doUnmute : doMute">
+            <button class="flex w-1/9 text-white py-2 px-3 rounded-lg h-10" @click.stop="doMute">
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="29" viewBox="0 0 25 38">
                 <path id="Icon_awesome-microphone" data-name="Icon awesome-microphone"
                       d="M12.375,24.75A6.75,6.75,0,0,0,19.125,18V6.75a6.75,6.75,0,0,0-13.5,0V18A6.75,6.75,0,0,0,12.375,24.75ZM23.625,13.5H22.5a1.125,1.125,0,0,0-1.125,1.125V18a9.01,9.01,0,0,1-9.9,8.956,9.273,9.273,0,0,1-8.1-9.357V14.625A1.125,1.125,0,0,0,2.25,13.5H1.125A1.125,1.125,0,0,0,0,14.625v2.824A12.762,12.762,0,0,0,10.688,30.224v2.4H6.75A1.125,1.125,0,0,0,5.625,33.75v1.125A1.125,1.125,0,0,0,6.75,36H18a1.125,1.125,0,0,0,1.125-1.125V33.75A1.125,1.125,0,0,0,18,32.625H14.063V30.251A12.387,12.387,0,0,0,24.75,18V14.625A1.125,1.125,0,0,0,23.625,13.5Z"
                       fill="#e1e1e1" />
@@ -1332,12 +1332,24 @@ export default {
       );
     },
     doMute() {
-      var msg = {
-        request: "set",
-        audio: false,
-      };
-      this.vchat.send({message: msg});
-      Janus.debug("Do Mute");
+      const _this = this
+      if( this.isMuteChange) {
+        var msg = {
+          request: "set",
+          audio: false,
+        };
+        _this.vchat.send({message: msg});
+        Janus.debug("Do Mute");
+        _this.isMuteChange = false
+      } else {
+        var msg = {
+          request: "set",
+          audio: true,
+        };
+        _this.vchat.send({message: msg});
+        Janus.debug("Do Unmute");
+        _this.isMuteChange = true
+      }
     },
     doUnmute() {
       var msg = {
