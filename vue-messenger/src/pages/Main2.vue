@@ -1334,7 +1334,7 @@ export default {
     doMute() {
       const _this = this
       if( this.isMuteChange) {
-        var msg = {
+        let msg = {
           request: "set",
           audio: false,
         };
@@ -1342,7 +1342,7 @@ export default {
         Janus.debug("Do Mute");
         _this.isMuteChange = false
       } else {
-        var msg = {
+        let msg = {
           request: "set",
           audio: true,
         };
