@@ -14,7 +14,7 @@
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
-<div class="ui modal inverted large">
+<div class="ui modal inverted small">
     <i class="close icon"></i>
     <div class="header">음성/영상 통화</div>
 
@@ -32,16 +32,15 @@
                 </div>
                 <div class="panel-body" style="width: 100%; overflow-x: auto;">
                     <div class="pull-left">
-                        <video id="remotevideo" autoplay playsinline width="450" height="300"/>
+                        <img src="<c:url value='/resources/images/volume.gif'/>" id="remotevideoTmp" width="300" height="200" style="display: none">
+                        <video id="remotevideo" autoplay playsinline width="300" height="200"/>
                     </div>
                     <div class="pull-right">
-                        <video id="myvideo" autoplay playsinline muted="muted" width="450" height="300"/>
+                        <img src="<c:url value='/resources/images/volume.gif'/>" id="myvideoTmp" width="300" height="200" style="display: none">
+                        <video id="myvideo" autoplay playsinline muted="muted" width="300" height="200"/>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<script>
-    console.log(talkRoom);
-</script>

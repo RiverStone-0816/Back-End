@@ -289,6 +289,8 @@ function create_vchat_session() {
                                         }
                                         if ($LOCAL_VCHAT_STREAM_OBJECT) $LOCAL_VCHAT_STREAM_OBJECT.hide();
                                         if ($REMOTE_VCHAT_STREAM_OBJECT) $REMOTE_VCHAT_STREAM_OBJECT.hide();
+                                        if ($LOCAL_VCHAT_STREAM_OBJECT_NO) $LOCAL_VCHAT_STREAM_OBJECT_NO.hide();
+                                        if ($REMOTE_VCHAT_STREAM_OBJECT_NO) $REMOTE_VCHAT_STREAM_OBJECT_NO.hide();
 
                                         // Busytone 플레이
                                         playTone("busy");
@@ -363,11 +365,15 @@ function create_vchat_session() {
                                 Janus.debug(" ::: No Remote Video stream :::");
                                 if ($LOCAL_VCHAT_STREAM_OBJECT) $LOCAL_VCHAT_STREAM_OBJECT.hide();
                                 if ($REMOTE_VCHAT_STREAM_OBJECT) $REMOTE_VCHAT_STREAM_OBJECT.hide();
+                                if ($LOCAL_VCHAT_STREAM_OBJECT_NO) $LOCAL_VCHAT_STREAM_OBJECT_NO.show();
+                                if ($REMOTE_VCHAT_STREAM_OBJECT_NO) $REMOTE_VCHAT_STREAM_OBJECT_NO.show();
                             }
                             else {
                                 Janus.debug(" ::: Found Remote Video stream :::");
                                 if ($LOCAL_VCHAT_STREAM_OBJECT) $LOCAL_VCHAT_STREAM_OBJECT.show();
                                 if ($REMOTE_VCHAT_STREAM_OBJECT) $REMOTE_VCHAT_STREAM_OBJECT.show();
+                                if ($LOCAL_VCHAT_STREAM_OBJECT_NO) $LOCAL_VCHAT_STREAM_OBJECT_NO.hide();
+                                if ($REMOTE_VCHAT_STREAM_OBJECT_NO) $REMOTE_VCHAT_STREAM_OBJECT_NO.hide();
                             }
 
                             // 상대방의 음성/영상스트림을 VIDEO 객체에 연결
@@ -753,4 +759,14 @@ function set_local_vchat_stream_object($my_obj) {
 var $REMOTE_VCHAT_STREAM_OBJECT = null;
 function set_remote_vchat_stream_object($remote_obj) {
     $REMOTE_VCHAT_STREAM_OBJECT = $remote_obj;
+}
+
+var $LOCAL_VCHAT_STREAM_OBJECT_NO = null;
+function set_local_vchat_stream_object_no($remote_obj) {
+    $LOCAL_VCHAT_STREAM_OBJECT_NO = $remote_obj;
+}
+
+var $REMOTE_VCHAT_STREAM_OBJECT_NO = null;
+function set_remote_vchat_stream_object_no($remote_obj) {
+    $REMOTE_VCHAT_STREAM_OBJECT_NO = $remote_obj;
 }

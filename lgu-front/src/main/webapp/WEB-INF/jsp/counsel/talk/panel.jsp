@@ -1502,6 +1502,8 @@
                     $('#chatText').text('고객이 통화를 수락했습니다.');
                     set_local_vchat_stream_object($('#myvideo'))
                     set_remote_vchat_stream_object($('#remotevideo'))
+                    set_local_vchat_stream_object_no($('#myvideoTmp'))
+                    set_remote_vchat_stream_object_no($('#remotevideoTmp'))
 
                     set_callback_vchat_hangup(() => {
                         $('#chatText').text('통화가 종료 되었습니다.')
@@ -1532,6 +1534,7 @@
                 }
             } else if (['RARC','RVRC'].includes(data.send_receive) && data.userid === userId) {
                 //파일 레코드
+                console.log($('#webChatLoder'));
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive, data.customname)
                 if (data.send_receive === 'R' && data.userid === userId && talkRoom.roomId !== data.room_id) {
