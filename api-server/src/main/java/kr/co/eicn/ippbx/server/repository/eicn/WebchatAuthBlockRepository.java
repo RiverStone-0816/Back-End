@@ -21,7 +21,7 @@ public class WebchatAuthBlockRepository extends EicnBaseRepository<kr.co.eicn.ip
     }
 
     public List<WebchatAuthBlock> findAllByBotId(Integer botId) {
-        return findAll(WEBCHAT_AUTH_BLOCK.BOT_ID.eq(botId));
+        return findAll(WEBCHAT_AUTH_BLOCK.BOT_ID.eq(botId).or(WEBCHAT_AUTH_BLOCK.OTHER_BOT_USE_YN.eq("Y")));
     }
 
     public void deleteByBotId(Integer botId) {
