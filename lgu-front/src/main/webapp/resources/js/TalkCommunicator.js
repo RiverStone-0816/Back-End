@@ -103,6 +103,9 @@ TalkCommunicator.prototype.connect = function (url, companyId, userid, passwd, a
         }).on('svc_custom_match', function (data) {
             _this.log(false, 'svc_custom_match', data);
             _this.process('svc_custom_match', data);
+        }).on('svc_webrtc_record', function (data) {
+            _this.log(false, 'svc_webrtc_record', data);
+            _this.process('svc_webrtc_record', data);
         }).on('svcmsg_ping', function () {
             _this.socket.emit('climsg_pong');
         }).on('disconnect', function () {

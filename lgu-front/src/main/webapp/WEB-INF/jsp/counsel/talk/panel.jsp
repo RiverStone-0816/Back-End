@@ -656,8 +656,9 @@
                                         <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
                                             <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
-                                                <div class="txt_chat">
-                                                    <p>{{ e.sendReceive === 'SAS' ? '음성통화를 시도합니다' : '영상통화를 시도합니다' }}</p>
+                                                <div class="txt_chat" id="webChatLoder" style="width: 100px;height: 50px">
+                                                    <div class="loader10"></div>
+                                                    <%--<p>{{ e.sendReceive === 'SAS' ? '음성통화를 시도합니다' : '영상통화를 시도합니다' }}</p>--%>
                                                 </div>
                                             </div>
                                         </div>
@@ -1482,7 +1483,7 @@
                 talkListContainer.load()
                 talkRoom.clearRoom()
 
-            } else if (['SAS','SVS'].includes(data.send_receive)) {
+            } else if (['SAS','SVS'].includes(data.send_receive) && data.userid === userId) {
                 talkRoom.myUserName = data.content.my_username
                 talkRoom.remoteUserName = data.content.remote_username
                 talkRoom.recordFile = data.content.recoed_file
@@ -1496,7 +1497,7 @@
 
                 popupWebrtcModal()
 
-            } else if (['RAR','RVR'].includes(data.send_receive)) {
+            } else if (['RAR','RVR'].includes(data.send_receive) && data.userid === userId) {
                 if (data.content.ready_result === 0) {
                     $('#chatText').text('고객이 통화를 수락했습니다.');
                     set_local_vchat_stream_object($('#myvideo'))
@@ -1505,24 +1506,32 @@
                     set_callback_vchat_hangup(() => {
                         $('#chatText').text('통화가 종료 되었습니다.')
                         talkCommunicator.sendWebrtcEnd(data.room_id, data.channel_type, data.sender_key, data.user_key, data.send_receive === 'RAR' ? 'SAE' : 'SVE', WEBRTC_INFO.server.webrtc_server_ip, WEBRTC_INFO.server.my_username, WEBRTC_INFO.server.remote_username, WEBRTC_INFO.server.record_file)
-                        setTimeout(()=>{$('#modal-webrtc').hide()},1500)
+                        setTimeout(() => {
+                            $('#modal-webrtc').hide()
+                        }, 1500)
                     })
 
                     set_callback_vchat_outgoing_call(() => {
-                        $('#chatText').text(data.send_receive === 'RAR' ? '고객과 음성통화를 시도합니다.' :  '고객과 영상통화를 시도합니다.')
+                        $('#chatText').text(data.send_receive === 'RAR' ? '고객과 음성통화를 시도합니다.' : '고객과 영상통화를 시도합니다.')
                     })
 
                     set_callback_vchat_accept(() => {
-                        $('#chatText').text(data.send_receive === 'RAR' ? '고객과 음성통화중.' :  '고객과 영상통화중.')
+                        $('#chatText').text(data.send_receive === 'RAR' ? '고객과 음성통화중.' : '고객과 영상통화중.')
                     })
 
                     start_vchat();
 
-                    setTimeout(function () {data.send_receive === 'RAR' ? doVoiceChat() : doVideoChat()},3000)
+                    setTimeout(function () {
+                        data.send_receive === 'RAR' ? doVoiceChat() : doVideoChat()
+                    }, 3000)
                 } else {
                     $('#chatText').text('고객이 통화를 거절합니다. ');
-                    setTimeout(function () {$('#modal-webrtc').hide()},1500)
+                    setTimeout(function () {
+                        $('#modal-webrtc').hide()
+                    }, 1500)
                 }
+            } else if (['RARC','RVRC'].includes(data.send_receive) && data.userid === userId) {
+                //파일 레코드
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive, data.customname)
                 if (data.send_receive === 'R' && data.userid === userId && talkRoom.roomId !== data.room_id) {
@@ -1568,6 +1577,8 @@
             })
             .on('svc_webrtc', processTalkMessage)
             .on('svc_webrtc_ready', processTalkMessage)
+            .on('svc_webrtc_record', processTalkMessage)
+
 
         function checkFileType(type, content) {
             if (['file', 'image', 'audio', 'video'].includes(type)) {
