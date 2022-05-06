@@ -686,8 +686,8 @@
                                                                     <div align="left" class="label" style="padding: 0.7em 1em; border-bottom: 1px solid #dcdcdc;">{{ e.data.title }}</div>
                                                                     <li v-for="(param, k) in getListElements(e.data)" class="item form">
                                                                         <div align="left" class="label">{{ param.displayName }}</div>
-                                                                        <div v-if="param.inputType !== 'time'" class="ui fluid input">
-                                                                            <input :type="(param.input_type === 'calendar' && 'date') || (param.input_type === 'number' && 'number') || (param.input_type === 'secret' && 'password') || (param.input_type === 'text' && 'text')"
+                                                                        <div v-if="param.type !== 'time'" class="ui fluid input">
+                                                                            <input :type="(param.type === 'calendar' && 'date') || (param.type === 'number' && 'number') || (param.type === 'secret' && 'password') || (param.type === 'text' && 'text')"
                                                                                    style="border-color: #0c0c0c; border-radius: .5rem;"></div>
                                                                         <div v-else class="ui multi form">
                                                                             <select class="slt" style="border-color: #0c0c0c">
@@ -737,33 +737,6 @@
 
                                                     <div v-if="buttons.length" v-for="(e, i) in getButtonGroups()" :key="i" :class="e instanceof Array ? 'sample-bubble' : 'card'">
                                                         <button v-if="e instanceof Array" v-for="(e2, j) in e" :key="j" type="button" class="chatbot-button">{{ e2.name }}</button>
-                                                        <div v-else class="card-list">
-                                                            <ul class="card-list-ul">
-                                                                <li v-for="(e2, j) in e.api.parameters" :key="j" class="item form">
-                                                                    <div class="label">{{ e2.name }}</div>
-                                                                    <div v-if="e2.type !== 'time'" class="ui fluid input">
-                                                                        <input type="text">
-                                                                    </div>
-                                                                    <div v-else class="ui multi form">
-                                                                        <select class="slt">
-                                                                            <option>오전</option>
-                                                                            <option>오후</option>
-                                                                        </select>
-                                                                        <select class="slt">
-                                                                            <option>12</option>
-                                                                        </select>
-                                                                        <span class="unit">시</span>
-                                                                        <select class="slt">
-                                                                            <option>55</option>
-                                                                        </select>
-                                                                        <span class="unit">분</span>
-                                                                    </div>
-                                                                </li>
-                                                                <li class="item">
-                                                                    <button type="button" class="chatbot-button">제출</button>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
                                                         <span v-if="i + 1 === getButtonGroups().length" class="time-text">21-04-11 04:33</span>
                                                     </div>
                                                 </div>
@@ -799,9 +772,9 @@
                 <input type="text" placeholder="블록명입력" v-model="name">
             </div>
             <div class="btn-wrap">
-                <button @click.stop="configKeywords" class="ui tiny compact button">키워드 관리</button>
+                <button v-if="type === 'BLOCK'" @click.stop="configKeywords" class="ui tiny compact button">키워드 관리</button>
                 <button @click.stop="showPreview" class="ui tiny compact button">미리보기</button>
-                <button @click.stop="isTemplateEnable = !isTemplateEnable" class="ui tiny compact button preview-button" :class="isTemplateEnable && ' active'">{{ isTemplateEnable ? 'ON' : 'OFF' }}</button>
+                <button v-if="type === 'BLOCK'" @click.stop="isTemplateEnable = !isTemplateEnable" class="ui tiny compact button preview-button" :class="isTemplateEnable && ' active'">{{ isTemplateEnable ? 'ON' : 'OFF' }}</button>
             </div>
         </div>
         <div class="box">
@@ -1018,6 +991,7 @@
                             blockList.blocks.splice(0, blockList.blocks.length)
                             buttonConfig.blocks.splice(0, buttonConfig.blocks.length)
                             fallbackConfig.blocks.splice(0, fallbackConfig.blocks.length)
+                            for (let property in authBlockListContainer.authBlocks) delete authBlockListContainer.authBlocks[property]
                             for (let property in nodeBlockMap) delete nodeBlockMap[property]
                             editor.clear()
                         },
@@ -1069,43 +1043,58 @@
                                     const app = nodeBlockMap[nodeId]
                                     const authBlock = authBlockListContainer.authBlocks[block.authBlockId]
 
-
-                                    console.log(authBlock)
                                     app.name = block.name
                                     app.keywords = block.keyword?.split('|').filter(keyword => keyword) || []
                                     app.isTemplateEnable = block.isTemplateEnable
                                     app.type = block.type
                                     app.authBlockId = block.authBlockId
-                                    app.displays = block.type === 'AUTH' ? authBlock.params : block.displayList.sort((a, b) => (a.order - b.order)).map(e => {
-                                        if (e.type === 'text') return {type: 'text', data: {text: e.elementList?.[0]?.content}}
-                                        if (e.type === 'image') return {type: 'image', data: {fileUrl: e.elementList?.[0]?.image, fileName: e.elementList?.[0]?.image}}
-                                        if (e.type === 'card') return {
-                                            type: 'card',
-                                            data: {
-                                                fileUrl: e.elementList?.[0]?.image,
-                                                fileName: e.elementList?.[0]?.image,
-                                                title: e.elementList?.[0]?.title,
-                                                announcement: e.elementList?.[0]?.content,
-                                            }
-                                        }
-                                        if (e.type === 'input') return {
+                                    if (block.type === 'AUTH') {
+                                        app.displays = [{
                                             type: 'input',
                                             data: {
-                                                title: e.elementList[0]?.title,
-                                                params: e.elementList.splice(1).map(e2 => ({type: e2?.inputType, paramName: e2?.paramName, displayName: e2?.displayName, needYn: e2?.needYn}))
+                                                title: authBlock.title,
+                                                params: authBlock.params.map(e => {
+                                                    return {
+                                                        type: e.type,
+                                                        paramName: e.paramName,
+                                                        displayName: e.name,
+                                                        needYn: e.needYn
+                                                    }
+                                                })
                                             }
-                                        }
+                                        }]
+                                    } else {
+                                        app.displays = block.displayList.sort((a, b) => (a.order - b.order)).map(e => {
+                                            if (e.type === 'text') return {type: 'text', data: {text: e.elementList?.[0]?.content}}
+                                            if (e.type === 'image') return {type: 'image', data: {fileUrl: e.elementList?.[0]?.image, fileName: e.elementList?.[0]?.image}}
+                                            if (e.type === 'card') return {
+                                                type: 'card',
+                                                data: {
+                                                    fileUrl: e.elementList?.[0]?.image,
+                                                    fileName: e.elementList?.[0]?.image,
+                                                    title: e.elementList?.[0]?.title,
+                                                    announcement: e.elementList?.[0]?.content,
+                                                }
+                                            }
+                                            if (e.type === 'input') return {
+                                                type: 'input',
+                                                data: {
+                                                    title: e.elementList[0]?.title,
+                                                    params: e.elementList.splice(1).map(e2 => ({type: e2?.inputType, paramName: e2?.paramName, displayName: e2?.displayName, needYn: e2?.needYn}))
+                                                }
+                                            }
 
-                                        if (!e.elementList) return {type: 'list'}
-                                        e.elementList.sort((a, b) => (a.order - b.order))
-                                        return {
-                                            type: 'list',
-                                            data: {
-                                                title: e.elementList[0]?.title,
-                                                list: e.elementList.splice(1).map(e2 => ({title: e2.title, announcement: e2.content, url: e2.url, fileUrl: e2.image, fileName: e2.image,}))
+                                            if (!e.elementList) return {type: 'list'}
+                                            e.elementList.sort((a, b) => (a.order - b.order))
+                                            return {
+                                                type: 'list',
+                                                data: {
+                                                    title: e.elementList[0]?.title,
+                                                    list: e.elementList.splice(1).map(e2 => ({title: e2.title, announcement: e2.content, url: e2.url, fileUrl: e2.image, fileName: e2.image,}))
+                                                }
                                             }
-                                        }
-                                    })
+                                        })
+                                    }
 
                                     app.buttons = block.type === 'AUTH' ? authBlock.buttons : block.buttonList.sort((a, b) => (a.order - b.order)).map((e, i) => {
                                         const childNodeId = (() => {
@@ -1290,6 +1279,7 @@
                             blockList.blocks.splice(0, blockList.blocks.length)
                             buttonConfig.blocks.splice(0, buttonConfig.blocks.length)
                             fallbackConfig.blocks.splice(0, fallbackConfig.blocks.length)
+                            for (let property in authBlockListContainer.authBlocks) delete authBlockListContainer.authBlocks[property]
                             for (let property in nodeBlockMap) delete nodeBlockMap[property]
                             editor.clear()
 
@@ -1770,19 +1760,21 @@
                     },
                     methods: {
                         load(displays, buttons) {
+                            console.log(displays)
                             o.displays = displays
                             o.buttons = buttons
                         },
                         getButtonGroups() {
                             return o.buttons.reduce((list, e) => {
-                                if (e.action === 'api') list.push(e)
-                                else if (!list.length || !(list[list.length - 1] instanceof Array)) list.push([e])
+                                if (!list.length || !(list[list.length - 1] instanceof Array)) list.push([e])
                                 else list[list.length - 1].push(e)
                                 return list
                             }, [])
                         },
                         getListElements(display) {
-                            return JSON.parse(JSON.stringify(display)).params?.sort((a, b) => (a.order - b.order)).splice(1)
+                            const result = JSON.parse(JSON.stringify(display)).params?.sort((a, b) => (a.order - b.order))
+                            console.log(result)
+                            return result
                         },
                     },
                 }).mount('#block-preview')
