@@ -197,11 +197,11 @@ public class UserApiController extends ApiBaseController {
         Integer email = StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
         Integer chatt = StringUtils.isNotEmpty(form.getIsChatt()) && form.getIsChatt().equals("Y") ? licence.getChattLicense().getCurrentLicence()+1 : licence.getChattLicense().getCurrentLicence();
 
-        if(StringUtils.isNotEmpty(form.getIsPds()) && detail.getIsPds().equals("Y")) pds = pds-1;
-        if(StringUtils.isNotEmpty(form.getIsStat()) && detail.getIsStat().equals("Y")) stat = stat-1;
-        if(StringUtils.isNotEmpty(form.getIsTalk()) && detail.getIsTalk().equals("Y")) talk = talk-1;
-        if(StringUtils.isNotEmpty(form.getIsEmail()) && detail.getIsEmail().equals("Y")) email = email-1;
-        if(StringUtils.isNotEmpty(form.getIsChatt()) && detail.getIsChatt().equals("Y")) chatt = chatt-1;
+        if(StringUtils.isNotEmpty(form.getIsPds()) && "Y".equals(detail.getIsPds())) pds = pds-1;
+        if(StringUtils.isNotEmpty(form.getIsStat()) && "Y".equals(detail.getIsStat())) stat = stat-1;
+        if(StringUtils.isNotEmpty(form.getIsTalk()) && "Y".equals(detail.getIsTalk())) talk = talk-1;
+        if(StringUtils.isNotEmpty(form.getIsEmail()) && "Y".equals(detail.getIsEmail())) email = email-1;
+        if(StringUtils.isNotEmpty(form.getIsChatt()) && "Y".equals(detail.getIsChatt())) chatt = chatt-1;
 
         if((licence.getPdsLicense().getLicence() < pds && StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y"))
                 || (licence.getStatLicence().getLicence() < stat && StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y"))
