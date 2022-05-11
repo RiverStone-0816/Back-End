@@ -58,19 +58,8 @@
                 </g>
               </svg>
             </button>-->
-            <button v-show="audioActionButton" class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" id="btn-accept" @click.stop="accept_vchat">
-              <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 16">
-                <g transform="translate(-1155.078 -10717.04)">
-                  <g transform="translate(1155.078 10717.04)">
-                    <path id="path"
-                          d="M380.7,874.61l-2.44,2.44,2.44,2.44-.61.61-2.44-2.44-2.44,2.44-.61-.61,2.44-2.44-2.44-2.44.61-.61,2.44,2.44,2.44-2.44Z"
-                          transform="translate(-367 -873.099)" fill="#fff" stroke="#fff" stroke-width="0.5" />
-                    <path
-                        d="M412.6,78.117a12.533,12.533,0,0,0,5.5,5.5l1.834-1.833a.663.663,0,0,1,.833-.167,8.716,8.716,0,0,0,3,.5.855.855,0,0,1,.833.833v2.917a.855.855,0,0,1-.833.833A14.226,14.226,0,0,1,409.6,72.533a.854.854,0,0,1,.833-.833h2.917a.854.854,0,0,1,.833.833,9.43,9.43,0,0,0,.5,3,.911.911,0,0,1-.167.833Z"
-                        transform="translate(-409.6 -71.7)" fill="#fff" />
-                  </g>
-                </g>
-              </svg>
+            <button v-show="audioActionButton" class="flex text-white ml-1 py-2 pl-4 pr-4 rounded-lg hover:shadow-lg h-10" id="btn-accept" @click.stop="accept_vchat" style="background-color: #0C4DA2">
+              받기
             </button>
             <button v-show="!audioActionButton" class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" id="btn-hangup" @click.stop="doHangup">
               <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 16">
@@ -121,19 +110,8 @@
                 </g>
               </svg>
             </button>-->
-            <button v-show="videoActionButton" class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" id="btn-accept" @click.stop="accept_vchat">
-              <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 16">
-                <g transform="translate(-1155.078 -10717.04)">
-                  <g transform="translate(1155.078 10717.04)">
-                    <path id="path"
-                          d="M380.7,874.61l-2.44,2.44,2.44,2.44-.61.61-2.44-2.44-2.44,2.44-.61-.61,2.44-2.44-2.44-2.44.61-.61,2.44,2.44,2.44-2.44Z"
-                          transform="translate(-367 -873.099)" fill="#fff" stroke="#fff" stroke-width="0.5" />
-                    <path
-                        d="M412.6,78.117a12.533,12.533,0,0,0,5.5,5.5l1.834-1.833a.663.663,0,0,1,.833-.167,8.716,8.716,0,0,0,3,.5.855.855,0,0,1,.833.833v2.917a.855.855,0,0,1-.833.833A14.226,14.226,0,0,1,409.6,72.533a.854.854,0,0,1,.833-.833h2.917a.854.854,0,0,1,.833.833,9.43,9.43,0,0,0,.5,3,.911.911,0,0,1-.167.833Z"
-                        transform="translate(-409.6 -71.7)" fill="#fff" />
-                  </g>
-                </g>
-              </svg>
+            <button v-show="videoActionButton" class="flex text-white ml-1 py-2 pl-4 pr-4 rounded-lg hover:shadow-lg h-10" id="btn-accept" @click.stop="accept_vchat" style="background-color: #0C4DA2">
+              받기
             </button>
             <button v-show="!videoActionButton" class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" id="btn-hangup" @click.stop="doHangup">
               <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 16">
