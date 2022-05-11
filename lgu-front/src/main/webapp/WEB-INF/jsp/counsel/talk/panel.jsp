@@ -1091,7 +1091,7 @@
                             file_name: message.contents,
                             channel_type: _this.channelType
                         })
-                    } else if (!['SAS','RAR','SVS','RVR'].includes(message.sendReceive) && this.REPLYING_INDICATOR === message.contents.charAt(0)) {
+                    } else if (!['SAS','SVS'].includes(message.sendReceive) && this.REPLYING_INDICATOR === message.contents.charAt(0)) {
                         [message.contents.indexOf(this.REPLYING_TEXT), message.contents.indexOf(this.REPLYING_IMAGE), message.contents.indexOf(this.REPLYING_FILE), message.contents.indexOf(this.REPLYING_IMAGE_TEMP)].forEach((indicator, i) => {
                             if (indicator < 0) return
                             message.replyingType = i === 0 ? 'text' : i === 1 ? 'image' : i === 2 ? 'file' : 'image_temp'
