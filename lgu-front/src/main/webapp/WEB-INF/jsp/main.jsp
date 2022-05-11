@@ -587,13 +587,12 @@
                 popupReceivedHtml('/admin/talk/history/modal?roomId=' + encodeURIComponent(roomId), 'modal-consulting-history-talk-view');
             }
 
-            <c:if test="${usingServices.contains('SPHONE')}">
+            <c:if test="${usingServices.contains('SPHONE') && g.user.softphone.equals('Y')}">
             $(document).ready(() => {
                 // WebRTC 소프트폰 사용 가능 여부 확인
                 if (is_support_softphone('${g.user.phoneKind}') === false) {
                     return false;
                 }
-
 
                 set_ringtone_volume(1.0);
                 set_busytone_volume(1.0);

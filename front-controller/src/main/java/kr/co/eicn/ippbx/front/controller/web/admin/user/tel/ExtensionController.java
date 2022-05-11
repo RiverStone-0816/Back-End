@@ -59,7 +59,11 @@ public class ExtensionController extends BaseController {
         model.addAttribute("pagination", pagination);
 
         final LicenseInfo licenseInfo = companyApiInterface.getLicense().getRecordLicense();
+        final LicenseInfo sttLicenseInfo = companyApiInterface.getLicense().getSttLicense();
+        final LicenseInfo softPhoneLicenseInfo = companyApiInterface.getLicense().getSoftPhoneLicense();
         model.addAttribute("licenseInfo", licenseInfo);
+        model.addAttribute("sttLicenseInfo", sttLicenseInfo);
+        model.addAttribute("softPhoneLicenseInfo", softPhoneLicenseInfo);
 
         return "admin/user/tel/extension/ground";
     }
@@ -67,7 +71,11 @@ public class ExtensionController extends BaseController {
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") PhoneInfoFormRequest form) throws IOException, ResultFailException {
         final LicenseInfo licenseInfo = companyApiInterface.getLicense().getRecordLicense();
+        final LicenseInfo sttLicenseInfo = companyApiInterface.getLicense().getSttLicense();
+        final LicenseInfo softPhoneLicenseInfo = companyApiInterface.getLicense().getSoftPhoneLicense();
         model.addAttribute("licenseInfo", licenseInfo);
+        model.addAttribute("sttLicenseInfo", sttLicenseInfo);
+        model.addAttribute("softPhoneLicenseInfo", softPhoneLicenseInfo);
 
         SearchNumber070Request number070Request = new SearchNumber070Request();
         number070Request.setStatus(Number070Status.NON_USE.getCode());
@@ -102,7 +110,13 @@ public class ExtensionController extends BaseController {
 
     @GetMapping("{peer}/modal")
     public String modal(Model model, @PathVariable String peer, @ModelAttribute("form") PhoneInfoFormRequest form) throws IOException, ResultFailException {
-        final PhoneInfoDetailResponse entity = apiInterface.get(peer);
+        final LicenseInfo licenseInfo = companyApiInterface.getLicense().getRecordLicense();
+        final LicenseInfo sttLicenseInfo = companyApiInterface.getLicense().getSttLicense();
+        final LicenseInfo softPhoneLicenseInfo = companyApiInterface.getLicense().getSoftPhoneLicense();
+        model.addAttribute("licenseInfo", licenseInfo);
+        model.addAttribute("sttLicenseInfo", sttLicenseInfo);
+        model.addAttribute("softPhoneLicenseInfo", softPhoneLicenseInfo);        final PhoneInfoDetailResponse entity = apiInterface.get(peer);
+
         ReflectionUtils.copy(form, entity);
         form.setNumber(entity.getNumber070().getNumber());
 

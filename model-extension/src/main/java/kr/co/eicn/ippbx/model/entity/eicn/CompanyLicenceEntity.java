@@ -13,4 +13,6 @@ public class CompanyLicenceEntity {
 	private LicenseInfo talkLicense;    // 상담톡 라이센스 정보
 	private LicenseInfo emailLicense;   // 이메일상담여부 라이센스 정보
 	private LicenseInfo chattLicense;	// 채팅 라이센스 정보
+	private LicenseInfo sttLicense;		// stt 라이센스 정보
+	private LicenseInfo softPhoneLicense; // 소프트폰 라이선스 정보
 }

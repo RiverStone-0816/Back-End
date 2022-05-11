@@ -133,6 +133,8 @@ public class AuthApiController extends BaseController {
         // if (isNotEmpty(form.getExtension()))
         user.setExtension(form.getExtension());
         user.setPhoneKind(phone != null ? phone.getPhoneKind() : "N");
+        user.setStt(phone != null ? phone.getStt() : "N");
+        user.setSoftphone(phone != null ? phone.getSoftphone() : "N");
         final List<UserMenuCompanyResponse> menus = menuApiInterface.getUserMenus(user.getId());
 
         g.setMenus(new CurrentUserMenu(menus));

@@ -90,6 +90,18 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
                 form.setRecordType(RecordType.NONE_RECORDING.getCode());
         }
 
+        if (form.getStt().equals(SttType.STT.getCode())) {
+            if (!companyLicenceInfo.getStatLicence().isUseLicense())
+                form.setStt(SttType.NONE_STT.getCode());
+        }
+
+        if (form.getSoftphone().equals(SoftPhoneType.SOFTPHONE.getCode())) {
+            if (!companyLicenceInfo.getSoftPhoneLicense().isUseLicense()) {
+                form.setSoftphone(SoftPhoneType.NONE_SOFTPHONE.getCode());
+                form.setPhoneKind("N");
+            }
+        }
+
         final PhoneInfoRecord insertRecord = new PhoneInfoRecord();
         insertRecord.setPeer(form.getPeer());
         insertRecord.setExtension(form.getExtension());
@@ -112,6 +124,8 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         insertRecord.setDialStatus((byte) 2);
         insertRecord.setPhoneStatus("registered");
         insertRecord.setCompanyId(getCompanyId());
+        insertRecord.setStt(SttType.STT.getCode().equals(form.getStt()) ? SttType.STT.getCode() : SttType.NONE_STT.getCode() );
+        insertRecord.setSoftphone(SoftPhoneType.SOFTPHONE.getCode().equals(form.getSoftphone()) ? SoftPhoneType.SOFTPHONE.getCode() : SoftPhoneType.NONE_SOFTPHONE.getCode());
 
         insertRecord.setPhoneKind(StringUtils.isEmpty(form.getPhoneKind()) ? "N" : form.getPhoneKind()); //사용안함
         insertRecord.setHpDeviceId(EMPTY); //사용안함
@@ -224,6 +238,18 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
                 form.setRecordType(RecordType.NONE_RECORDING.getCode());
         }
 
+        if (SttType.NONE_STT.getCode().equals(old.getStt()) && SttType.STT.getCode().equals(form.getStt())) {
+            if (!companyLicenceInfo.getSttLicense().isUseLicense())
+                form.setStt(SttType.NONE_STT.getCode());
+        }
+
+        if (SoftPhoneType.NONE_SOFTPHONE.getCode().equals(old.getSoftphone()) && SoftPhoneType.SOFTPHONE.getCode().equals(form.getSoftphone())) {
+            if (!companyLicenceInfo.getSoftPhoneLicense().isUseLicense()) {
+                form.setSoftphone(SoftPhoneType.NONE_SOFTPHONE.getCode());
+                form.setPhoneKind("N");
+            }
+        }
+
         final Number_070 oldNumber070 = numberRepository.findOne(old.getVoipTel());
         // number_070번호가 바꼈다면 number_070 사용유무 변경
         if (oldNumber070 != null)
@@ -254,6 +280,8 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         insertRecord.setDialStatus(old.getDialStatus());
         insertRecord.setPhoneStatus("registered");
         insertRecord.setPickup(old.getPickup());
+        insertRecord.setStt(SttType.STT.getCode().equals(form.getStt()) ? SttType.STT.getCode() : SttType.NONE_STT.getCode());
+        insertRecord.setSoftphone(SoftPhoneType.SOFTPHONE.getCode().equals(form.getSoftphone()) ? SoftPhoneType.SOFTPHONE.getCode() : SoftPhoneType.NONE_SOFTPHONE.getCode());
         insertRecord.setPhoneKind(StringUtils.isEmpty(form.getPhoneKind()) ? "N" : form.getPhoneKind());
         insertRecord.setHpNumber(EMPTY);
         insertRecord.setHpDeviceId(EMPTY);

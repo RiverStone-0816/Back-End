@@ -58,16 +58,38 @@
                 </div>
             </div>
             <c:if test="${g.usingServices.contains('SPHONE')}">
-            <div class="four wide column"><label class="control-label">소프트폰사용여부</label></div>
-            <div class="four wide column">
-                <div class="ui input fluid">
-                    <form:select path="phoneKind">
-                        <form:option value="N" label="사용안함"/>
-                        <form:option value="S" label="사용함"/>
-                    </form:select>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">소프트폰사용여부</label></div>
+                <div class="four wide column">
+                    <div class="ui input fluid">
+                        <form:select path="softphone">
+                            <form:option value="N" label="사용안함"/>
+                            <form:option value="Y" label="사용함"/>
+                        </form:select>&nbsp; (라이센스:${softPhoneLicenseInfo.currentLicence}/${softPhoneLicenseInfo.licence})
+                    </div>
+                </div>
+                <div class="four wide column -soft-phone"><label class="control-label">소프트폰연결여부</label></div>
+                <div class="four wide column -soft-phone">
+                    <div class="ui input fluid">
+                        <form:select path="phoneKind">
+                            <form:option value="N" label="사용안함"/>
+                            <form:option value="S" label="사용함"/>
+                        </form:select>
+                    </div>
                 </div>
             </div>
             </c:if>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">STT사용여부</label></div>
+                <div class="four wide column">
+                    <div class="ui input fluid">
+                        <form:select path="stt">
+                            <form:option value="N" label="사용안함"/>
+                            <form:option value="Y" label="사용함"/>
+                        </form:select>&nbsp; (라이센스:${sttLicenseInfo.currentLicence}/${sttLicenseInfo.licence})
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="four wide column"><label class="control-label">전화기아이디</label></div>
                 <div class="four wide column">
@@ -205,6 +227,16 @@
 </form:form>
 
 <script>
+    modal.find('[name="softphone"]').change(function () {
+        const softPhone = modal.find('[name="softphone"]').val();
+        if (softPhone === 'Y')
+            modal.find('.-soft-phone').show();
+        else {
+            modal.find('[name="phoneKind"]').val('N').prop("selected",true);
+            modal.find('.-soft-phone').hide();
+        }
+    }).change();
+
     modal.find('[name=forwardWhen]').change(function () {
         const forwardData = modal.find('[name=forwardWhen]:checked').val();
         const forwardNumber = modal.find('.-forward-number');
@@ -242,6 +274,7 @@
         </c:forEach>
     });
 
+
     window.prepareWriteFormData = function (data) {
         if (data.forwardKind) {
             data.forwardNum = data['forwarding' + data.forwardKind];
@@ -265,5 +298,7 @@
                     modal.find('.-express-unusable-extension').hide();
                 }
             });
+
+
     };
 </script>

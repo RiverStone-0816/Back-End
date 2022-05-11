@@ -88,6 +88,8 @@
                             <th>지역번호</th>
                             <th>CID</th>
                             <th>녹취여부(${licenseInfo.currentLicence} / ${licenseInfo.licence})</th>
+                            <th>STT(${sttLicenseInfo.currentLicence} / ${sttLicenseInfo.licence})</th>
+                            <th>소프트폰(${softPhoneLicenseInfo.currentLicence} / ${softPhoneLicenseInfo.licence})</th>
                             <th>착신전환</th>
                         </tr>
                         </thead>
@@ -103,6 +105,8 @@
                                         <td>${g.htmlQuote(e.localPrefix)}</td>
                                         <td>${g.htmlQuote(e.cid)}</td>
                                         <td>${g.htmlQuote(g.messageOf('RecordType', e.recordType))}</td>
+                                        <td>${g.htmlQuote(g.messageOf('SttType', e.stt))}</td>
+                                        <td>${g.htmlQuote(g.messageOf('SoftPhoneType', e.softphone))}</td>
                                         <td>
                                             <c:set var="when" value="${ForwardWhen.of(e.forwardWhen)}"/>
                                             <c:choose>

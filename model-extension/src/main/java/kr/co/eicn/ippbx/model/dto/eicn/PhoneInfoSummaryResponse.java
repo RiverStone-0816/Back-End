@@ -14,6 +14,8 @@ public class PhoneInfoSummaryResponse {
 	private String  fwKind;
 	private String  fwNum;
 	private String  recordType;   // 녹취 여부
+	private String	stt;
+	private String	softphone;
 	private String  cid;          // 발신번호
 	private String  billingNumber;// 과금번호
 	private String  localPrefix;  // 지역번호

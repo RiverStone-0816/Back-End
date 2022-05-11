@@ -6,6 +6,8 @@ import kr.co.eicn.ippbx.model.LicenseInfo;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyLicenceEntity;
 import kr.co.eicn.ippbx.model.enums.IdStatus;
 import kr.co.eicn.ippbx.model.enums.RecordType;
+import kr.co.eicn.ippbx.model.enums.SoftPhoneType;
+import kr.co.eicn.ippbx.model.enums.SttType;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PhoneInfoRepository;
@@ -75,7 +77,18 @@ public class CompanyService extends ApiBaseService {
 						.currentLicence(personLists.stream().filter(e -> "Y".equals(e.getIsChatt())).mapToInt(e -> 1).sum())
 						.build()
 		);
-
+		licence.setSttLicense(
+				LicenseInfo.builder()
+						.licence(company.getSttLicense())
+						.currentLicence(phoneInfoRepository.fetchCount(PHONE_INFO.STT.notEqual(SttType.NONE_STT.getCode())))
+						.build()
+		);
+		licence.setSoftPhoneLicense(
+				LicenseInfo.builder()
+						.licence(company.getSoftphoneLicense())
+						.currentLicence(phoneInfoRepository.fetchCount(PHONE_INFO.SOFTPHONE.notEqual(SoftPhoneType.NONE_SOFTPHONE.getCode())))
+						.build()
+		);
 		return licence;
 	}
 
