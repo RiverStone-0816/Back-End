@@ -60,15 +60,11 @@ public class WebchatBotButtonElementService extends ApiBaseService {
         webchatBotButtonElementRepository.updateNextBlockId(buttonId, nextBlockId);
     }
 
-    public List<Integer> findIdListByBlockIdList(List<Integer> blockIdList) {
-        return webchatBotButtonElementRepository.findButtonListByBlockIdList(blockIdList).stream().map(WebchatBotBtnElement::getId).collect(Collectors.toList());
-    }
-
     public void deleteByBlockIdList(List<Integer> blockIdList) {
         webchatBotButtonElementRepository.deleteByBlockIdList(blockIdList);
     }
 
-    public Integer convertStringToInteger(String value) {
+    private Integer convertStringToInteger(String value) {
         try {
             return Integer.valueOf(value);
         } catch (NumberFormatException e) {
@@ -76,7 +72,7 @@ public class WebchatBotButtonElementService extends ApiBaseService {
         }
     }
 
-    public WebchatBotInfoResponse.ButtonInfo convertEntityToResponse(WebchatBotBtnElement entity) {
+    private WebchatBotInfoResponse.ButtonInfo convertEntityToResponse(WebchatBotBtnElement entity) {
         WebchatBotInfoResponse.ButtonInfo response = new WebchatBotInfoResponse.ButtonInfo();
 
         response.setId(entity.getId());

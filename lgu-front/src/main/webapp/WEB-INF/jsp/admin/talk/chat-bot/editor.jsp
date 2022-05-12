@@ -525,18 +525,96 @@
                                             <div class="ui form fluid mb15">
                                                 <textarea rows="4" v-model="data.ment"></textarea>
                                             </div>
-                                            <div class="mb15">버튼 클릭시 동작</div>
+                                            <div class="mb15">결과에 따른 동작</div>
                                             <div class="ui form fluid mb15">
                                                 <select v-model="data.action">
+                                                    <option value="">다음 블록으로 연결</option>
+                                                    <option value="block">다른 블록으로 연결</option>
+                                                    <option value="auth">인증 블록으로 연결</option>
                                                     <option value="first">첫 블록으로 연결</option>
                                                     <option value="before">이전 블록으로 연결</option>
+                                                    <option value="member">상담원 연결</option>
+                                                    <option value="url">URL 연결</option>
+                                                    <option value="phone">전화 연결</option>
                                                     <option value="api">외부연동</option>
                                                 </select>
                                             </div>
-                                            <div v-if="data.action === 'api'">
-                                                <div class="mb15">버튼 클릭시 동작 데이터</div>
+                                            <div v-if="data.action === 'block'">
+                                                <div class="mb15">연결 블록 설정</div>
                                                 <div class="ui form fluid mb15">
-                                                    <textarea rows="4" v-model="data.nextActionData"></textarea>
+                                                    <select v-model="data.nextActionData">
+                                                        <option v-for="(e,i) in blocks" :key="i" :value="e.id">{{ e.name }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div v-if="data.action === 'auth'">
+                                                <div class="mb15">인증 블록 설정</div>
+                                                <div class="ui form fluid mb15">
+                                                    <select v-model="data.nextActionData">
+                                                        <option v-for="(e,i) in authBlockList()" :key="i" :value="e.id">{{ e.name }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div v-if="data.action === 'member'">
+                                                <div class="mb15">연결 그룹 설정</div>
+                                                <div class="ui form fluid mb15">
+                                                    <select v-model="data.nextActionData">
+                                                        <option v-for="(e,i) in groups" :key="i" :value="e.groupId">{{ e.groupName }}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div v-if="data.action === 'url'">
+                                                <div class="mb15">연결 URL 설정</div>
+                                                <div class="ui form fluid mb15">
+                                                    <div class="ui form fluid mb15">
+                                                        <input type="text" v-model="data.nextActionData">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div v-if="data.action === 'phone'">
+                                                <div class="mb15">연결 번호 설정</div>
+                                                <div class="ui form fluid mb15">
+                                                    <div class="ui form fluid mb15">
+                                                        <input type="text" v-model="data.nextActionData">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div v-if="data.action === 'api'">
+                                                <div class="mb15">외부연동 URL 입력</div>
+                                                <div class="ui form fluid mb15">
+                                                    <div class="ui form fluid mb15">
+                                                        <input type="text" v-model="data.nextActionData">
+                                                    </div>
+                                                </div>
+                                                <div class="mb15 dp-flex align-items-center justify-content-space-between">
+                                                    <div>답변 대사 사용</div>
+                                                    <div class="ui fitted toggle checkbox">
+                                                        <input type="checkbox" @change="data.enableResultTemplate = $event.target.checked" :checked="data.enableResultTemplate">
+                                                        <label></label>
+                                                    </div>
+                                                </div>
+                                                <div class="list-control-container mb15">
+                                                    <div class="list-control-header">
+                                                        <div>답변 설정</div>
+                                                    </div>
+                                                    <table class="list-control-table">
+                                                        <tr>
+                                                            <th>정상</th>
+                                                            <td>
+                                                                <div class="ui form fluid mb15">
+                                                                    <textarea rows="4" v-model="data.nextApiResultTemplate"></textarea>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>조회불가</th>
+                                                            <td>
+                                                                <div class="ui form fluid">
+                                                                    <input type="text" v-model="data.nextApiErrorMent">
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -554,7 +632,7 @@
                                             <div class="mb15 dp-flex align-items-center justify-content-space-between">
                                                 <div>다른 블록 사용 여부</div>
                                                 <div class="ui fitted toggle checkbox">
-                                                    <input type="checkbox" @change="data.usingOtherBot != ''" :checked="data.usingOtherBot">
+                                                    <input type="checkbox" @change="data.usingOtherBot = $event.target.checked" :checked="data.usingOtherBot">
                                                     <label></label>
                                                 </div>
                                             </div>
@@ -772,72 +850,85 @@
                 <input type="text" placeholder="블록명입력" v-model="name">
             </div>
             <div class="btn-wrap">
-                <button v-if="type === 'BLOCK'" @click.stop="configKeywords" class="ui tiny compact button">키워드 관리</button>
+                <button @click.stop="configKeywords" class="ui tiny compact button">키워드 관리</button>
                 <button @click.stop="showPreview" class="ui tiny compact button">미리보기</button>
-                <button v-if="type === 'BLOCK'" @click.stop="isTemplateEnable = !isTemplateEnable" class="ui tiny compact button preview-button" :class="isTemplateEnable && ' active'">{{ isTemplateEnable ? 'ON' : 'OFF' }}</button>
+                <button @click.stop="isTemplateEnable = !isTemplateEnable" class="ui tiny compact button preview-button" :class="isTemplateEnable && ' active'">{{ isTemplateEnable ? 'ON' : 'OFF' }}</button>
             </div>
         </div>
         <div class="box">
-            <div class="inner">
-                <ul v-if="displays && displays.length" class="button-item-ul">
-                    <li v-for="(e,i) in displays" :key="i" class="button-item " :class="getDisplayClass(e.type)">
-                        <div class="button-item-order-wrap">
-                            <button @click.stop="moveUpDisplayItem(i)" class="up-button"></button>
-                            <button @click.stop="moveDownDisplayItem(i)" class="down-button"></button>
-                        </div>
-                        <div class="button-item-inner">
-                            <div class="start">{{ getDisplayText(e.type) }}</div>
-                            <div v-if="type === 'BLOCK'" class="end">
-                                <button v-if="i === 0 && !showingEmptyDisplayItem" @click.stop="showingEmptyDisplayItem = true" class="ui icon small compact button"><i class="plus icon"></i></button>
-                                <button @click.stop="configDisplayItem(i)" class="ui icon small compact button"><i class="cog icon"></i></button>
-                                <button @click.stop="removeDisplayItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
+            <div v-if="type !== 'AUTH'">
+                <div class="inner">
+                    <ul v-if="displays && displays.length" class="button-item-ul">
+                        <li v-for="(e,i) in displays" :key="i" class="button-item " :class="getDisplayClass(e.type)">
+                            <div class="button-item-order-wrap">
+                                <button @click.stop="moveUpDisplayItem(i)" class="up-button"></button>
+                                <button @click.stop="moveDownDisplayItem(i)" class="down-button"></button>
                             </div>
-                        </div>
-                    </li>
-                </ul>
-                <div v-if="showingEmptyDisplayItem" @drop="dropDisplayItem" class="empty-item">디스플레이를 넣어주세요</div>
+                            <div class="button-item-inner">
+                                <div class="start">{{ getDisplayText(e.type) }}</div>
+                                <div class="end">
+                                    <button v-if="i === 0 && !showingEmptyDisplayItem" @click.stop="showingEmptyDisplayItem = true" class="ui icon small compact button"><i class="plus icon"></i></button>
+                                    <button @click.stop="configDisplayItem(i)" class="ui icon small compact button"><i class="cog icon"></i></button>
+                                    <button @click.stop="removeDisplayItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div v-if="showingEmptyDisplayItem" @drop="dropDisplayItem" class="empty-item">디스플레이를 넣어주세요</div>
+                </div>
+                <div class="inner">
+                    <ul v-if="buttons && buttons.length" class="button-item-ul">
+                        <li v-for="(e,i) in buttons" :key="i" class="button-item button">
+                            <div class="button-item-order-wrap">
+                                <button @click.stop="moveUpButtonItem(i)" class="up-button"></button>
+                                <button @click.stop="moveDownButtonItem(i)" class="down-button"></button>
+                            </div>
+                            <div class="button-item-inner">
+                                <div class="start">
+                                    <text>{{ e.name }}</text>
+                                </div>
+                                <div v-if="type === 'BLOCK'" class="end">
+                                    <button v-if="i === 0 && !showingEmptyButtonItem" @click.stop="createButton" class="ui icon small compact button"><i class="plus icon"></i></button>
+                                    <button @click.stop="configButtonItem(i)" class="ui icon small compact button"><i class="cog icon"></i></button>
+                                    <button @click.stop="removeButtonItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <button v-if="showingEmptyButtonItem" @click.stop="createButton" class="empty-item">클릭시 버튼이 생성됩니다.</button>
+                </div>
             </div>
-            <div class="inner">
-                <ul v-if="buttons && buttons.length" class="button-item-ul">
-                    <li v-for="(e,i) in buttons" :key="i" class="button-item button">
-                        <div class="button-item-order-wrap">
-                            <button @click.stop="moveUpButtonItem(i)" class="up-button"></button>
-                            <button @click.stop="moveDownButtonItem(i)" class="down-button"></button>
-                        </div>
-                        <div class="button-item-inner">
-                            <div class="start">
-                                <text>{{ e.name }}</text>
+            <div v-else>
+                <div class="inner">
+                    <ul class="button-item-ul">
+                        <li class="button-item auth">
+                            <div class="button-item-inner">
+                                <div class="start">{{ authBlockName }}</div>
                             </div>
-                            <div v-if="type === 'BLOCK'" class="end">
-                                <button v-if="i === 0 && !showingEmptyButtonItem" @click.stop="createButton" class="ui icon small compact button"><i class="plus icon"></i></button>
-                                <button @click.stop="configButtonItem(i)" class="ui icon small compact button"><i class="cog icon"></i></button>
-                                <button @click.stop="removeButtonItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="inner">
+                    <ul v-if="authElements && authElements.length" class="button-item-ul">
+                        <li v-for="(e,i) in authElements" :key="i" class="button-item button">
+                            <div class="button-item-order-wrap">
+                                <button @click.stop="moveUpResultElementItem(i)" class="up-button"></button>
+                                <button @click.stop="moveDownResultElementItem(i)" class="down-button"></button>
                             </div>
-                        </div>
-                    </li>
-                </ul>
-                <button v-if="showingEmptyButtonItem" @click.stop="createButton" class="empty-item">클릭시 버튼이 생성됩니다.</button>
-            </div>
-            <div v-if="type === 'AUTH'" class="inner">
-                <ul v-if="authElements && authElements.length" class="button-item-ul">
-                    <li v-for="(e,i) in authElements" :key="i" class="button-item button">
-                        <div class="button-item-order-wrap">
-                            <button @click.stop="moveUpResultElementItem(i)" class="up-button"></button>
-                            <button @click.stop="moveDownResultElementItem(i)" class="down-button"></button>
-                        </div>
-                        <div class="button-item-inner">
-                            <div class="start">
-                                <text>{{ e.value }}</text>
+                            <div class="button-item-inner">
+                                <div class="start">
+                                    <text>{{ e.value }}</text>
+                                </div>
+                                <div class="end">
+                                    <button v-if="i === 0 && !showingEmptyResultElementItem" @click.stop="createResultElement" class="ui icon small compact button"><i class="plus icon"></i></button>
+                                    <button @click.stop="configResultElementItem(i)" class="ui icon small compact button"><i class="cog icon"></i></button>
+                                    <button @click.stop="removeResultElementItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
+                                </div>
                             </div>
-                            <div class="end">
-                                <button v-if="i === 0 && !showingEmptyResultElementItem" @click.stop="createResultElement" class="ui icon small compact button"><i class="plus icon"></i></button>
-                                <button @click.stop="configResultElementItem(i)" class="ui icon small compact button"><i class="cog icon"></i></button>
-                                <button @click.stop="removeResultElementItem(i)" class="ui icon small compact brand button"><i class="x icon"></i></button>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-                <button v-if="showingEmptyResultElementItem" @click.stop="createResultElement" class="empty-item">클릭시 인증결과가 생성됩니다.</button>
+                        </li>
+                    </ul>
+                    <button v-if="showingEmptyResultElementItem" @click.stop="createResultElement" class="empty-item">클릭시 인증결과가 생성됩니다.</button>
+                </div>
             </div>
         </div>
     </div>
@@ -960,7 +1051,12 @@
                                     value: e.value,
                                     ment: e.ment,
                                     action: e.action,
-                                    nextActionData: e.nextActionData
+                                    nextActionData: e.nextActionData,
+                                    nextApiMent: e.nextApiMent,
+                                    enableResultTemplate: e.enableResultTemplate,
+                                    nextApiResultTemplate: e.nextApiResultTemplate,
+                                    nextApiNoResultMent: e.nextApiNoResultMent,
+                                    nextApiErrorMent: e.nextApiErrorMent
                                 })),
                                 children: block?.buttons.filter(e => e.action === '' || e.action === 'auth').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
                             })
@@ -1041,29 +1137,13 @@
 
                                     const nodeId = createNode(block.id, block.posX, block.posY, block.type, block.authBlockId)
                                     const app = nodeBlockMap[nodeId]
-                                    const authBlock = authBlockListContainer.authBlocks[block.authBlockId]
 
                                     app.name = block.name
                                     app.keywords = block.keyword?.split('|').filter(keyword => keyword) || []
                                     app.isTemplateEnable = block.isTemplateEnable
                                     app.type = block.type
                                     app.authBlockId = block.authBlockId
-                                    if (block.type === 'AUTH') {
-                                        app.displays = [{
-                                            type: 'input',
-                                            data: {
-                                                title: authBlock.title,
-                                                params: authBlock.params.map(e => {
-                                                    return {
-                                                        type: e.type,
-                                                        paramName: e.paramName,
-                                                        displayName: e.name,
-                                                        needYn: e.needYn
-                                                    }
-                                                })
-                                            }
-                                        }]
-                                    } else {
+                                    if (block.type !== 'AUTH') {
                                         app.displays = block.displayList.sort((a, b) => (a.order - b.order)).map(e => {
                                             if (e.type === 'text') return {type: 'text', data: {text: e.elementList?.[0]?.content}}
                                             if (e.type === 'image') return {type: 'image', data: {fileUrl: e.elementList?.[0]?.image, fileName: e.elementList?.[0]?.image}}
@@ -1094,42 +1174,47 @@
                                                 }
                                             }
                                         })
-                                    }
 
-                                    app.buttons = block.type === 'AUTH' ? authBlock.buttons : block.buttonList.sort((a, b) => (a.order - b.order)).map((e, i) => {
-                                        const childNodeId = (() => {
-                                            if (e.action !== 'block' && e.action !== '') return
-                                            const childBlockId = block.children?.filter(childBlock => (childBlock.parentButtonId === e.id))[0]?.id
-                                            return blockList.blocks.filter(createdBlock => createdBlock.id === childBlockId)[0]?.nodeId
-                                        })()
-                                        const action = $.isNumeric(childNodeId) ? '' : e.action === 'block' || e.action === '' ? 'block' : e.action
-                                        if (e.action === 'block' || e.action === '') {
-                                            if (!nodeIdToConnections[nodeId]) nodeIdToConnections[nodeId] = {}
-                                            nodeIdToConnections[nodeId][i] = e.nextBlockId
-                                        }
-                                        return {
-                                            name: e.name,
-                                            action: action,
-                                            nextBlockId: action ? e.nextBlockId : null,
-                                            childNodeId: action ? null : childNodeId,
-                                            nextGroupId: e.nextGroupId,
-                                            nextUrl: e.nextUrl,
-                                            nextPhone: e.nextPhone,
-                                            api: {
-                                                nextApiUrl: e.nextApiUrl,
-                                                usingResponse: e.isResultTemplateEnable,
-                                                nextApiResultTemplate: e.nextApiResultTemplate,
-                                                nextApiErrorMent: e.nextApiErrorMent
+                                        app.buttons = block.buttonList.sort((a, b) => (a.order - b.order)).map((e, i) => {
+                                            const childNodeId = (() => {
+                                                if (e.action !== 'block' && e.action !== 'auth' && e.action !== '') return
+                                                const childBlockId = block.children?.filter(childBlock => (childBlock.parentButtonId === e.id))[0]?.id
+                                                return blockList.blocks.filter(createdBlock => createdBlock.id === childBlockId)[0]?.nodeId
+                                            })()
+                                            const action = $.isNumeric(childNodeId) && e.action !== 'auth' ? '' : e.action === 'block' || e.action === '' ? 'block' : e.action
+                                            if (e.action === 'block' || e.action === 'auth' || e.action === '') {
+                                                if (!nodeIdToConnections[nodeId]) nodeIdToConnections[nodeId] = {}
+                                                nodeIdToConnections[nodeId][i] = e.nextBlockId
                                             }
-                                        }
-                                    })
+                                            return {
+                                                name: e.name,
+                                                action: action,
+                                                nextBlockId: action === 'auth' ? nodeBlockMap[childNodeId].authBlockId : action ? e.nextBlockId : null,
+                                                childNodeId: action && action !== 'auth' ? null : childNodeId,
+                                                nextGroupId: e.nextGroupId,
+                                                nextUrl: e.nextUrl,
+                                                nextPhone: e.nextPhone,
+                                                api: {
+                                                    nextApiUrl: e.nextApiUrl,
+                                                    usingResponse: e.isResultTemplateEnable,
+                                                    nextApiResultTemplate: e.nextApiResultTemplate,
+                                                    nextApiErrorMent: e.nextApiErrorMent
+                                                }
+                                            }
+                                        })
+                                    }
 
                                     app.authElements = block.authResultElementList.sort((a, b) => (a.id - b.id)).map((e, i) => {
                                         return {
                                             value: e.value,
                                             ment: e.ment,
                                             action: e.action,
-                                            nextActionData: e.nextActionData
+                                            nextActionData: e.nextActionData,
+                                            nextApiMent: e.nextApiMent,
+                                            enableResultTemplate: e.enableResultTemplate,
+                                            nextApiResultTemplate: e.nextApiResultTemplate,
+                                            nextApiNoResultMent: e.nextApiNoResultMent,
+                                            nextApiErrorMent: e.nextApiErrorMent
                                         }
                                     })
 
@@ -1154,7 +1239,7 @@
                                 }
 
                                 lastBlockId = Math.max.apply(null, [0].concat(blockList.blocks.map(e => e.id))) + 1
-                                lastAuthBlockId = Math.max.apply(null, [0].concat(data.authBlockList.map(e => e.id))) + 1
+                                lastAuthBlockId = Math.max.apply(null, [0].concat(data.authBlockList?.map(e => e.id))) + 1
 
                                 function convertOppositeValue(pos) {
                                     return pos * -1 + 100   // 초기 위치값을 조절하려면 뒤 + 값을 조정하면 됨
@@ -1673,6 +1758,7 @@
                             const newBlockId = createAuthBlockId()
                             o.authBlocks[newBlockId] = {
                                 id: newBlockId,
+                                botId: botList.current,
                                 name: '새로운 인증블럭',
                                 title: null,
                                 usingOtherBot: false,
@@ -1690,6 +1776,13 @@
                             const authBlocks = []
                             for (let property in o.authBlocks)
                                 authBlocks.push(o.authBlocks[property])
+                            return authBlocks
+                        },
+                        getOwnAuthBlockList() {
+                            const authBlocks = []
+                            for (let property in o.authBlocks)
+                                if (!property.botId || property.botId === botList.current)
+                                    authBlocks.push(o.authBlocks[property])
                             return authBlocks
                         }
                     }
@@ -1760,7 +1853,6 @@
                     },
                     methods: {
                         load(displays, buttons) {
-                            console.log(displays)
                             o.displays = displays
                             o.buttons = buttons
                         },
@@ -1772,9 +1864,7 @@
                             }, [])
                         },
                         getListElements(display) {
-                            const result = JSON.parse(JSON.stringify(display)).params?.sort((a, b) => (a.order - b.order))
-                            console.log(result)
-                            return result
+                            return JSON.parse(JSON.stringify(display)).params?.sort((a, b) => (a.order - b.order))
                         },
                     },
                 }).mount('#block-preview')
@@ -1840,8 +1930,22 @@
                                 name: '',
                                 type: type,
                                 authBlockId: authBlockId,
-                                displays: [],
-                                buttons: [],
+                                authBlockName: authBlock?.name,
+                                displays: type === 'AUTH' && authBlock ? [{
+                                    type: 'input',
+                                    data: {
+                                        title: authBlock?.title,
+                                        params: authBlock?.params.map(e => {
+                                            return {
+                                                type: e.type,
+                                                paramName: e.paramName,
+                                                displayName: e.name,
+                                                needYn: e.needYn
+                                            }
+                                        })
+                                    }
+                                }] : [],
+                                buttons: type === 'AUTH' && authBlock ? authBlock.buttons : [],
                                 authElements: [],
                                 keywords: [],
                                 isTemplateEnable: false,

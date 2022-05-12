@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.server.service;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotAuthresultElement;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.enums.ButtonAction;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatBotAuthResultElementRepository;
 import lombok.AllArgsConstructor;
@@ -32,13 +33,22 @@ public class WebchatBotAuthResultElementService extends ApiBaseService {
         response.setBlockId(entity.getBlockId());
         response.setValue(entity.getResultValue());
         response.setMent(entity.getResultMent());
-        response.setAction(entity.getResultAction());
-        response.setNextActionData(entity.getResultNextActionData());
+        response.setAction(ButtonAction.of(entity.getAction()));
+        response.setNextActionData(entity.getNextActionData());
+        response.setNextApiMent(entity.getNextApiMent());
+        response.setEnableResultTemplate("Y".equals(entity.getIsResultTplEnable()));
+        response.setNextApiResultTemplate(entity.getNextApiResultTpl());
+        response.setNextApiNoResultMent(entity.getNextApiNoResultMent());
+        response.setNextApiErrorMent(entity.getNextApiErrorMent());
 
         return response;
     }
 
     public void insert(Integer blockId, List<WebchatBotFormRequest.AuthResultElement> authResultElementList) {
         webchatBotAuthResultElementRepository.insert(blockId, authResultElementList);
+    }
+
+    public void deleteByBlockIdList(List<Integer> blockIdList) {
+        webchatBotAuthResultElementRepository.deleteByBlockIdList(blockIdList);
     }
 }

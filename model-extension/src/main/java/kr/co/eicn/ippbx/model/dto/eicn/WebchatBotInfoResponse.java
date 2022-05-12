@@ -20,6 +20,7 @@ public class WebchatBotInfoResponse extends WebchatBotFallbackInfoResponse {
     @Data
     public static class AuthBlockInfo {
         private Integer id;
+        private Integer botId;
         private String name;
         private String title;
         private Boolean usingOtherBot;
@@ -116,7 +117,12 @@ public class WebchatBotInfoResponse extends WebchatBotFallbackInfoResponse {
         private Integer blockId;
         private String value;
         private String ment;
-        private String action;
+        private ButtonAction action;
         private String nextActionData;
+        private String nextApiMent;
+        private Boolean enableResultTemplate;
+        private String nextApiResultTemplate;
+        private String nextApiNoResultMent;
+        private String nextApiErrorMent;
     }
 }
