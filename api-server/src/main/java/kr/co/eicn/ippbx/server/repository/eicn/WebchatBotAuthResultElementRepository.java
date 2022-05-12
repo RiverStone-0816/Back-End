@@ -39,7 +39,7 @@ public class WebchatBotAuthResultElementRepository extends EicnBaseRepository<kr
                     e.getAction(),
                     e.getNextActionData(),
                     e.getNextApiMent(),
-                    e.getEnableResultTemplate() ? "Y" : "N",
+                    e.getEnableResultTemplate() != null && e.getEnableResultTemplate() ? "Y" : "N",
                     e.getNextApiResultTemplate(),
                     e.getNextApiNoResultMent(),
                     e.getNextApiErrorMent(),

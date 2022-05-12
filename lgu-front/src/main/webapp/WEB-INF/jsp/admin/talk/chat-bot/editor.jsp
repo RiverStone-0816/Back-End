@@ -93,7 +93,7 @@
                                                 <div class="block-name">{{ e.name }}</div>
                                                 <div class="block-control">
                                                     <button @click.stop="configAuthBlock(i)" class="ui mini button">수정</button>
-                                                    <button @click.stop="removeBlock(i)" class="ui icon mini button"><i class="x icon"></i></button>
+                                                    <button @click.stop="removeAuthBlock(i)" class="ui icon mini button"><i class="x icon"></i></button>
                                                 </div>
                                             </li>
                                         </ul>
@@ -543,7 +543,7 @@
                                                 <div class="mb15">연결 블록 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <select v-model="data.nextActionData">
-                                                        <option v-for="(e,i) in blocks" :key="i" :value="e.id">{{ e.name }}</option>
+                                                        <option v-for="(e,i) in blockList()" :key="i" :value="e.id">{{ e.name }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1061,7 +1061,7 @@
                                 children: block?.buttons.filter(e => e.action === '' || e.action === 'auth').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
                             })
 
-                            const form = Object.assign({}, fallbackConfig.data, {authBlockList: authBlockListContainer.getAuthBlockList()}, {blockInfo: convertBlock(blockList.blocks[0])})
+                            const form = Object.assign({}, fallbackConfig.data, {authBlockList: authBlockListContainer.getOwnAuthBlockList()}, {blockInfo: convertBlock(blockList.blocks[0])})
 
                             if ($.isNumeric(o.current)) {
                                 return restSelf.put('/api/chatbot/' + o.current + '/all', form).done(() => alert('저장되었습니다.', o.load))
@@ -1087,6 +1087,7 @@
                             blockList.blocks.splice(0, blockList.blocks.length)
                             buttonConfig.blocks.splice(0, buttonConfig.blocks.length)
                             fallbackConfig.blocks.splice(0, fallbackConfig.blocks.length)
+                            blocks.splice(0, blocks.length)
                             for (let property in authBlockListContainer.authBlocks) delete authBlockListContainer.authBlocks[property]
                             for (let property in nodeBlockMap) delete nodeBlockMap[property]
                             editor.clear()
@@ -1102,6 +1103,7 @@
                                 blockList.blocks.splice(0, blockList.blocks.length)
                                 buttonConfig.blocks.splice(0, buttonConfig.blocks.length)
                                 fallbackConfig.blocks.splice(0, fallbackConfig.blocks.length)
+                                blocks.splice(0, blocks.length)
                                 for (let property in authBlockListContainer.authBlocks) delete authBlockListContainer.authBlocks[property]
                                 for (let property in nodeBlockMap) delete nodeBlockMap[property]
                                 editor.clear()
@@ -1364,6 +1366,7 @@
                             blockList.blocks.splice(0, blockList.blocks.length)
                             buttonConfig.blocks.splice(0, buttonConfig.blocks.length)
                             fallbackConfig.blocks.splice(0, fallbackConfig.blocks.length)
+                            blocks.splice(0, blocks.length)
                             for (let property in authBlockListContainer.authBlocks) delete authBlockListContainer.authBlocks[property]
                             for (let property in nodeBlockMap) delete nodeBlockMap[property]
                             editor.clear()
@@ -1693,6 +1696,11 @@
                             } else if (currentAction === 'block' && preBlock !== data.nextBlockId) {
                                 app.removeConnection(o.buttonIndex)
                                 app.createConnection(o.buttonIndex, data.nextBlockId)
+                            } else if (currentAction === 'auth') {
+                                nodeBlockMap[preChildNodeId].delete()
+                                const node = editor.getNodeFromId(o.nodeId)
+                                data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'AUTH', actionData)
+                                app.createConnection(o.buttonIndex, nodeBlockMap[data.childNodeId].id)
                             }
                             alert("저장되었습니다.");
                         },
@@ -1749,7 +1757,78 @@
 
                             alert("저장되었습니다.");
                         },
+                        save() {
+                            botList.changed = true;
+                            const app = nodeBlockMap[o.nodeId]
+                            if (!app || !app.authElements[o.index]) return
+
+                            const prevAction = app.authElements[o.index].action
+                            const preChildNodeId = app.authElements[o.index].childNodeId
+                            const preBlock = app.authElements[o.index].block
+                            const currentAction = o.data.action
+                            const actionData = o.data.nextActionData
+
+                            const data = {}
+                            for (let property in o.data) data[property] = o.data[property]
+                            data.api = {}
+                            for (let property in o.data.api) data.api[property] = o.data.api[property]
+                            app.authElements[o.index] = data
+
+                            if (prevAction !== currentAction) {
+                                if (prevAction === '' || prevAction === 'auth') {
+                                    nodeBlockMap[preChildNodeId].delete()
+                                } else if (prevAction === 'block') {
+                                    app.removeConnection(o.index)
+                                }
+
+                                if (currentAction === '') {
+                                    const node = editor.getNodeFromId(o.nodeId)
+                                    data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'BLOCK')
+                                    app.createConnection(o.index, nodeBlockMap[data.childNodeId].id)
+                                } else if (currentAction === 'auth') {
+                                    const node = editor.getNodeFromId(o.nodeId)
+                                    data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'AUTH', actionData)
+                                    app.createConnection(o.index, nodeBlockMap[data.childNodeId].id)
+                                } else if (currentAction === 'block') {
+                                    app.createConnection(o.index, data.nextActionData)
+                                }
+                            } else if (currentAction === 'block' && preBlock !== data.nextActionData) {
+                                app.removeConnection(o.index)
+                                app.createConnection(o.index, data.nextActionData)
+                            } else if (currentAction === 'auth') {
+                                nodeBlockMap[preChildNodeId].delete()
+                                const node = editor.getNodeFromId(o.nodeId)
+                                data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'AUTH', actionData)
+                                app.createConnection(o.index, nodeBlockMap[data.childNodeId].id)
+                            }
+                            alert("저장되었습니다.");
+                        },
+                        blockList() {
+                            return blocks;
+                        },
+                        authBlockList() {
+                            return authBlockListContainer.getAuthBlockList();
+                        },
+                        checkDataStructure() {
+                            if (!this.data) this.data = {}
+                            if (this.data.name === undefined) this.data.name = null
+                            if (this.data.action === undefined) this.data.action = null
+
+                            if (this.data.nextBlockId === undefined) this.data.nextBlockId = null
+                            if (this.data.nextGroupId === undefined) this.data.nextGroupId = null
+                            if (this.data.nextUrl === undefined) this.data.nextUrl = null
+                            if (this.data.nextPhone === undefined) this.data.nextPhone = null
+
+                            if (!this.data.api) this.data.api = {}
+                            if (this.data.api.nextApiUrl === undefined) this.data.api.nextApiUrl = null
+                            if (this.data.api.usingResponse === undefined) this.data.api.usingResponse = false
+                            if (this.data.api.nextApiResultTemplate === undefined) this.data.api.nextApiResultTemplate = null
+                            if (this.data.api.nextApiErrorMent === undefined) this.data.api.nextApiErrorMent = null
+                        },
                     },
+                    created() {
+                        this.checkDataStructure()
+                    }
                 }).mount('#auth-element-config')
                 return o || o
             })()
@@ -1773,7 +1852,7 @@
                                 buttons: [{name: null, action: 'first', actionData: null}]
                             }
                         },
-                        removeBlock(blockId) {
+                        removeAuthBlock(blockId) {
                             delete o.authBlocks[blockId]
                         },
                         configAuthBlock(blockId) {
@@ -1787,9 +1866,11 @@
                         },
                         getOwnAuthBlockList() {
                             const authBlocks = []
-                            for (let property in o.authBlocks)
-                                if (!property.botId || property.botId === botList.current)
-                                    authBlocks.push(o.authBlocks[property])
+                            for (let property in o.authBlocks) {
+                                const authBlock = o.authBlocks[property]
+                                if (authBlock.botId === botList.current)
+                                    authBlocks.push(authBlock)
+                            }
                             return authBlocks
                         }
                     }
@@ -1801,7 +1882,8 @@
                     data() {
                         return {
                             data: {
-                                blockId: null,
+                                id: null,
+                                botId: null,
                                 name: null,
                                 title: null,
                                 usingOtherBot: false,
@@ -1814,10 +1896,12 @@
                         load(blockId) {
                             const authBlock = authBlockListContainer.authBlocks[blockId]
 
+                            o.data = {}
                             if (!authBlock)
                                 return alert('인증블록정보가 없습니다.')
 
-                            o.data.blockId = blockId
+                            o.data.id = blockId
+                            o.data.botId = authBlock.botId
                             o.data.name = authBlock.name
                             o.data.title = authBlock.title
                             o.data.usingOtherBot = authBlock.usingOtherBot
@@ -1843,7 +1927,7 @@
                         },
                         save() {
                             botList.changed = true
-                            authBlockListContainer.authBlocks[o.data.blockId] = o.data;
+                            authBlockListContainer.authBlocks[o.data.id] = o.data;
                             alert('저장되었습니다.')
                         }
                     }
@@ -1901,6 +1985,7 @@
             editor.container.addEventListener('mousedown', event => event.target.classList.contains('output') && event.stopImmediatePropagation(), true)
 
             const nodeBlockMap = {}
+            const blocks = []
 
             let lastBlockId = 0
             const createBlockId = () => (++lastBlockId)
@@ -2172,10 +2257,12 @@
                 blockList.blocks.push(app)
                 buttonConfig.blocks.push(app)
                 fallbackConfig.blocks.push(app)
+                blocks.push(app)
 
                 blockList.blocks.sort((a, b) => (a.id - b.id))
                 buttonConfig.blocks.sort((a, b) => (a.id - b.id))
                 fallbackConfig.blocks.sort((a, b) => (a.id - b.id))
+                blocks.sort((a, b) => (a.id - b.id))
 
                 return nodeId
             }
@@ -2185,6 +2272,7 @@
                 blockList.blocks.splice(blockList.blocks.indexOf(app), 1)
                 buttonConfig.blocks.splice(buttonConfig.blocks.indexOf(app), 1)
                 fallbackConfig.blocks.splice(fallbackConfig.blocks.indexOf(app), 1)
+                blocks.splice(blocks.indexOf(app), 1)
                 delete nodeBlockMap[nodeId]
             })
 

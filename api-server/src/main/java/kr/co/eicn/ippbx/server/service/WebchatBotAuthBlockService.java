@@ -15,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,7 +44,7 @@ public class WebchatBotAuthBlockService extends ApiBaseService {
     }
 
     public void deleteAuthBlockByBotId(Integer botId) {
-        List<Integer> authBlockIdList = webchatAuthBlockRepository.findAllByBotId(botId).stream().map(WebchatAuthBlock::getId).collect(Collectors.toList());
+        List<Integer> authBlockIdList = webchatAuthBlockRepository.findAllDeleteBlockByBotId(botId).stream().map(WebchatAuthBlock::getId).collect(Collectors.toList());
         webchatAuthBlockRepository.deleteByBotId(botId);
         webchatAuthButtonElementRepository.deleteByBlockIdList(authBlockIdList);
         webchatAuthDisplayElementRepository.deleteByBlockIdList(authBlockIdList);
@@ -67,6 +68,8 @@ public class WebchatBotAuthBlockService extends ApiBaseService {
     }
 
     private List<WebchatBotAuthBlockInfo.AuthParamInfo> convertAuthDisplay(List<WebchatAuthDispElement> displayList) {
+        if (displayList == null || displayList.size() == 0)
+            return new ArrayList<>();
         return displayList.stream().map(e -> {
             WebchatBotAuthBlockInfo.AuthParamInfo response = new WebchatBotAuthBlockInfo.AuthParamInfo();
 
@@ -83,6 +86,8 @@ public class WebchatBotAuthBlockService extends ApiBaseService {
     }
 
     private List<WebchatBotAuthBlockInfo.AuthButtonInfo> convertAuthButton(List<WebchatAuthBtnElement> buttonList) {
+        if (buttonList == null || buttonList.size() == 0)
+            return new ArrayList<>();
         return buttonList.stream().map(e -> {
             WebchatBotAuthBlockInfo.AuthButtonInfo response = new WebchatBotAuthBlockInfo.AuthButtonInfo();
 
