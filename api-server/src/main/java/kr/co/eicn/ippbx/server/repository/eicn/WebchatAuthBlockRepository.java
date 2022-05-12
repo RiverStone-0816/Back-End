@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.server.repository.eicn;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatAuthBlock;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import lombok.Getter;
+import org.jooq.Condition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -21,7 +22,11 @@ public class WebchatAuthBlockRepository extends EicnBaseRepository<kr.co.eicn.ip
     }
 
     public List<WebchatAuthBlock> findAllByBotId(Integer botId) {
-        return findAll(WEBCHAT_AUTH_BLOCK.BOT_ID.eq(botId).or(WEBCHAT_AUTH_BLOCK.OTHER_BOT_USE_YN.eq("Y")));
+        Condition condition = WEBCHAT_AUTH_BLOCK.OTHER_BOT_USE_YN.eq("Y");
+        if (botId != null)
+            condition = condition.or(WEBCHAT_AUTH_BLOCK.BOT_ID.eq(botId));
+
+        return findAll(condition);
     }
 
     public void deleteByBotId(Integer botId) {

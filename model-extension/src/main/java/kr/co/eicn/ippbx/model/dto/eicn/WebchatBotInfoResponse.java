@@ -15,40 +15,7 @@ public class WebchatBotInfoResponse extends WebchatBotFallbackInfoResponse {
     private BlockInfo blockInfo;
 
     @Valid
-    private List<AuthBlockInfo> authBlockList;
-
-    @Data
-    public static class AuthBlockInfo {
-        private Integer id;
-        private Integer botId;
-        private String name;
-        private String title;
-        private Boolean usingOtherBot;
-        private List<AuthParamInfo> params;
-        private List<AuthButtonInfo> buttons;
-    }
-
-    @Data
-    public static class AuthParamInfo {
-        private Integer id;
-        private Integer blockId;
-        private Integer sequence;
-        private AuthDisplayType type;
-        private String name;
-        private String paramName;
-        private Boolean needYn;
-    }
-
-    @Data
-    public static class AuthButtonInfo {
-        private Integer id;
-        private Integer blockId;
-        private Integer sequence;
-        private String name;
-        private AuthButtonAction action;
-        private String actionData;
-        private String resultParamName;
-    }
+    private List<WebchatBotAuthBlockInfo> authBlockList;
 
     @Data
     public static class BlockInfo {

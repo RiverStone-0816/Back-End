@@ -1368,6 +1368,13 @@
                             for (let property in nodeBlockMap) delete nodeBlockMap[property]
                             editor.clear()
 
+                            restSelf.get('/api/chatbot/auth-blocks').done(response => {
+                                if (response.data) {
+                                    response.data.forEach(e => {
+                                        authBlockListContainer.authBlocks[e.id] = e
+                                    })
+                                }
+                            })
                             fallbackConfig.data = {
                                 name: o.name,
                                 enableCustomerInput: o.enableCustomerInput,
