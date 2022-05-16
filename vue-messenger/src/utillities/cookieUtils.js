@@ -10,6 +10,6 @@ export default {
         return o && o.value;
     },
     set: function (key, value) {
-        document.cookie = key + '=' + value
+        document.cookie = key + '=' + value +'; SameSite=None; Secure'
     }
 }
