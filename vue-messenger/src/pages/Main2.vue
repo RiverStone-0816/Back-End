@@ -1,6 +1,6 @@
 <template>
   <body class="font-sans-kr text-gray-800 bg-blue-100" @contextmenu.prevent>
-  <div class="h-screen py-14 m-auto max-w-sm">
+  <div :class="{'h-screen m-auto max-w-sm' : true, 'py-14' : !isIframe}">
     <div class="flex flex-col flex-auto h-full rounded-3xl shadow-body">
       <!--상단 홈 영역-->
       <!--bg-[#~~~~~~]이 버튼색상, 텍스트색상등과 같이 움직여야 하는 배경색, text-[#~~], border-[#~~]로 사용-->
@@ -18,7 +18,7 @@
             {{ displayName }}
           </div>
         </div>
-        <button class="flex items-center justify-center hover:bg-slate-900/20 rounded-lg h-10 w-10 text-white">
+        <button class="flex items-center justify-center hover:bg-slate-900/20 rounded-lg h-10 w-10 text-white close-icon" @click.stop="closeAction" >
             <span>
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 23.828 23.828">
                 <line x2="21" y2="21" transform="translate(1.414 1.414)" fill="none" stroke="#fff" stroke-linecap="round"
@@ -671,6 +671,7 @@ export default {
       lastReceiveMessageType: null,
       input: '',
       homeEnable: true,
+      isIframe: false,
       messages: [],
       botIcon: '',
       form: {
@@ -805,6 +806,11 @@ export default {
     },
     homeAction() {
       this.communicator.requestRootBlock(this.botId)
+    },
+    closeAction() {
+      if(!this.isIframe) return
+      window.parent.postMessage('closeIframe', '*')
+      window.parent.focus()
     },
     getFallbackButtonName(action){
       if (action === 'first') {
@@ -1516,6 +1522,7 @@ export default {
   created() {
     const UrlParams = new URLSearchParams(location.search)
     this.form.senderKey = UrlParams.get('senderKey')
+    this.isIframe = UrlParams.get('isIframe') !== 'true' ? null : true;
   },
   updated() {
     this.debounce(() => this.$refs.chatBody.scroll({top: this.$refs.chatBody.scrollHeight}), 100)
@@ -1526,6 +1533,7 @@ export default {
         audioControl.find('.mute, .volume-bar').remove()
       }
     })
+
   },
   async mounted() {
     this.form.ip = (await axios.get('https://api.ipify.org')).data
@@ -1628,6 +1636,7 @@ export default {
         .connect(this.form.url, this.form.senderKey, this.form.userKey, this.form.ip, this.form.mode,)
 
     window.addEventListener("beforeunload", () => this.communicator.disconnect(), false)
+
   },
 }
 </script>
