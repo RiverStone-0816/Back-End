@@ -1,14 +1,12 @@
 package kr.co.eicn.ippbx.front.service.api;
 
 import kr.co.eicn.ippbx.front.model.form.FileForm;
-import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotFallbackInfoResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotSummaryInfoResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.model.form.WebchatBotFallbackFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.model.search.ChatbotSearchRequest;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +19,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.List;
@@ -53,6 +52,10 @@ public class ChatbotApiInterface extends ApiServerInterface {
     @SneakyThrows
     public WebchatBotInfoResponse.BlockInfo getBlock(Integer blockId) {
         return getData(subUrl + "blocks/" + blockId, null, WebchatBotInfoResponse.BlockInfo.class).getData();
+    }
+
+    public List<WebchatBotAuthBlockInfo> getAuthBlockList() throws IOException, ResultFailException {
+        return getList(subUrl + "auth-blocks", null, WebchatBotAuthBlockInfo.class).getData();
     }
 
     @SneakyThrows

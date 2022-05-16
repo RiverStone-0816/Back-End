@@ -25,7 +25,7 @@ public class WebchatAuthButtonElementRepository extends EicnBaseRepository<kr.co
     }
 
     public Map<Integer, List<WebchatAuthBtnElement>> findAllByBlockIds(List<Integer> blockIds) {
-        return findAll(WEBCHAT_AUTH_BTN_ELEMENT.ID.in(blockIds)).stream().collect(Collectors.groupingBy(WebchatAuthBtnElement::getAuthBlockId));
+        return findAll(WEBCHAT_AUTH_BTN_ELEMENT.AUTH_BLOCK_ID.in(blockIds)).stream().collect(Collectors.groupingBy(WebchatAuthBtnElement::getAuthBlockId));
     }
 
     public void deleteByBlockIdList(List<Integer> blockIdList) {

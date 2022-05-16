@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.server.service;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatAuthBlock;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatAuthBtnElement;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatAuthDispElement;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotAuthBlockInfo;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.enums.AuthButtonAction;
 import kr.co.eicn.ippbx.model.enums.AuthDisplayType;
@@ -14,6 +15,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,20 +44,20 @@ public class WebchatBotAuthBlockService extends ApiBaseService {
     }
 
     public void deleteAuthBlockByBotId(Integer botId) {
-        List<Integer> authBlockIdList = webchatAuthBlockRepository.findAllByBotId(botId).stream().map(WebchatAuthBlock::getId).collect(Collectors.toList());
+        List<Integer> authBlockIdList = webchatAuthBlockRepository.findAllDeleteBlockByBotId(botId).stream().map(WebchatAuthBlock::getId).collect(Collectors.toList());
         webchatAuthBlockRepository.deleteByBotId(botId);
         webchatAuthButtonElementRepository.deleteByBlockIdList(authBlockIdList);
         webchatAuthDisplayElementRepository.deleteByBlockIdList(authBlockIdList);
     }
 
-    public List<WebchatBotInfoResponse.AuthBlockInfo> findAllByBotId(Integer botId) {
+    public List<WebchatBotAuthBlockInfo> findAllByBotId(Integer botId) {
         List<WebchatAuthBlock> authBlockList = webchatAuthBlockRepository.findAllByBotId(botId);
         List<Integer> authBlockIdList = authBlockList.stream().map(WebchatAuthBlock::getId).collect(Collectors.toList());
         Map<Integer, List<WebchatAuthDispElement>> authDisplayByBlockIdMap = webchatAuthDisplayElementRepository.findAllByBlockIdList(authBlockIdList);
         Map<Integer, List<WebchatAuthBtnElement>> authButtonByBlockIdMap = webchatAuthButtonElementRepository.findAllByBlockIds(authBlockIdList);
 
         return authBlockList.stream().map(e -> {
-            WebchatBotInfoResponse.AuthBlockInfo response = convertDto(e, WebchatBotInfoResponse.AuthBlockInfo.class);
+            WebchatBotAuthBlockInfo response = convertDto(e, WebchatBotAuthBlockInfo.class);
 
             response.setUsingOtherBot("Y".equals(e.getOtherBotUseYn()));
             response.setParams(convertAuthDisplay(authDisplayByBlockIdMap.get(e.getId())));
@@ -65,9 +67,11 @@ public class WebchatBotAuthBlockService extends ApiBaseService {
         }).collect(Collectors.toList());
     }
 
-    private List<WebchatBotInfoResponse.AuthParamInfo> convertAuthDisplay(List<WebchatAuthDispElement> displayList) {
+    private List<WebchatBotAuthBlockInfo.AuthParamInfo> convertAuthDisplay(List<WebchatAuthDispElement> displayList) {
+        if (displayList == null || displayList.size() == 0)
+            return new ArrayList<>();
         return displayList.stream().map(e -> {
-            WebchatBotInfoResponse.AuthParamInfo response = new WebchatBotInfoResponse.AuthParamInfo();
+            WebchatBotAuthBlockInfo.AuthParamInfo response = new WebchatBotAuthBlockInfo.AuthParamInfo();
 
             response.setId(e.getId());
             response.setBlockId(e.getAuthBlockId());
@@ -81,9 +85,11 @@ public class WebchatBotAuthBlockService extends ApiBaseService {
         }).collect(Collectors.toList());
     }
 
-    private List<WebchatBotInfoResponse.AuthButtonInfo> convertAuthButton(List<WebchatAuthBtnElement> buttonList) {
+    private List<WebchatBotAuthBlockInfo.AuthButtonInfo> convertAuthButton(List<WebchatAuthBtnElement> buttonList) {
+        if (buttonList == null || buttonList.size() == 0)
+            return new ArrayList<>();
         return buttonList.stream().map(e -> {
-            WebchatBotInfoResponse.AuthButtonInfo response = new WebchatBotInfoResponse.AuthButtonInfo();
+            WebchatBotAuthBlockInfo.AuthButtonInfo response = new WebchatBotAuthBlockInfo.AuthButtonInfo();
 
             response.setId(e.getId());
             response.setBlockId(e.getAuthBlockId());

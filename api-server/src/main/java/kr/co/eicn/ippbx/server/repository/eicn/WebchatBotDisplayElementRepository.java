@@ -41,10 +41,11 @@ public class WebchatBotDisplayElementRepository extends EicnBaseRepository<Webch
     }
 
     public void deleteByDisplayIdList(List<Integer> displayIdList) {
-        dsl.deleteFrom(WEBCHAT_BOT_DISP_ELEMENT)
-                .where(compareCompanyId())
-                .and(WEBCHAT_BOT_DISP_ELEMENT.DISPLAY_ID.in(displayIdList))
-                .execute();
+        if (displayIdList != null && displayIdList.size() > 0)
+            dsl.deleteFrom(WEBCHAT_BOT_DISP_ELEMENT)
+                    .where(compareCompanyId())
+                    .and(WEBCHAT_BOT_DISP_ELEMENT.DISPLAY_ID.in(displayIdList))
+                    .execute();
     }
 
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotDispElement> findAllInDisplayIdList(List<Integer> displayIdList) {

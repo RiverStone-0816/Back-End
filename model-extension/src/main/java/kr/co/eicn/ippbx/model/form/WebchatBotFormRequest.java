@@ -130,5 +130,10 @@ public class WebchatBotFormRequest extends WebchatBotFallbackFormRequest {
         private String ment;
         private String action;
         private String nextActionData;
+        private String nextApiMent;
+        private Boolean enableResultTemplate;
+        private String nextApiResultTemplate;
+        private String nextApiNoResultMent;
+        private String nextApiErrorMent;
     }
 }

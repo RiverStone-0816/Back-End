@@ -4,13 +4,11 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.front.service.api.ChatbotApiInterface;
-import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotFallbackInfoResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotSummaryInfoResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.form.WebchatBotFallbackFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.model.search.ChatbotSearchRequest;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
@@ -20,6 +18,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -62,6 +61,11 @@ public class ChatbotApiController extends BaseController {
     @GetMapping("blocks/{blockId}")
     public WebchatBotInfoResponse.BlockInfo getByBlockId(@PathVariable Integer blockId) {
         return apiInterface.getBlock(blockId);
+    }
+
+    @GetMapping("auth-blocks")
+    public List<WebchatBotAuthBlockInfo> getAuthBlockList() throws IOException, ResultFailException {
+        return apiInterface.getAuthBlockList();
     }
 
     @SneakyThrows

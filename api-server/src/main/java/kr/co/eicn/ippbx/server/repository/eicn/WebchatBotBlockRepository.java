@@ -79,9 +79,10 @@ public class WebchatBotBlockRepository extends EicnBaseRepository<WebchatBotBloc
     }
 
     public void deleteByBlockIdList(List<Integer> blockIdList) {
-        dsl.deleteFrom(WEBCHAT_BOT_BLOCK)
-                .where(WEBCHAT_BOT_BLOCK.ID.in(blockIdList))
-                .execute();
+        if (blockIdList != null && blockIdList.size() > 0)
+            dsl.deleteFrom(WEBCHAT_BOT_BLOCK)
+                    .where(WEBCHAT_BOT_BLOCK.ID.in(blockIdList))
+                    .execute();
     }
 
     public List<WebchatBotInfoResponse.BlockInfo> findBlockInfoByIdInBlockIdList(List<Integer> blockIdList) {

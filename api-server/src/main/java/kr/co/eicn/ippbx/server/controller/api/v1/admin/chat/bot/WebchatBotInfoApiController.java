@@ -1,14 +1,12 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.chat.bot;
 
 import kr.co.eicn.ippbx.exception.ValidationException;
-import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotBlockSummaryResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotFallbackInfoResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotSummaryInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.form.WebchatBotFallbackFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.model.search.ChatbotSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
+import kr.co.eicn.ippbx.server.service.WebchatBotAuthBlockService;
 import kr.co.eicn.ippbx.server.service.WebchatBotBlockService;
 import kr.co.eicn.ippbx.server.service.WebchatBotInfoService;
 import kr.co.eicn.ippbx.server.service.WebchatBotService;
@@ -39,6 +37,7 @@ public class WebchatBotInfoApiController extends ApiBaseController {
     private final WebchatBotInfoService webchatBotInfoService;
     private final WebchatBotService webchatBotService;
     private final WebchatBotBlockService webchatBotBlockService;
+    private final WebchatBotAuthBlockService webchatBotAuthBlockService;
 
     @GetMapping("")
     public ResponseEntity<JsonResult<List<WebchatBotSummaryInfoResponse>>> list() {
@@ -76,6 +75,13 @@ public class WebchatBotInfoApiController extends ApiBaseController {
         List<WebchatBotBlockSummaryResponse> templateBlockList = webchatBotBlockService.getTemplateBlockList();
 
         return ResponseEntity.ok(data(templateBlockList));
+    }
+
+    @GetMapping("auth-blocks")
+    public ResponseEntity<JsonResult<List<WebchatBotAuthBlockInfo>>> getAuthBlockList() {
+        List<WebchatBotAuthBlockInfo> response = webchatBotAuthBlockService.findAllByBotId(null);
+
+        return ResponseEntity.ok(data(response));
     }
 
     @PostMapping("")

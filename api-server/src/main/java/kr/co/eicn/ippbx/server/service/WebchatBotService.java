@@ -140,6 +140,7 @@ public class WebchatBotService extends ApiBaseService {
         final List<Integer> displayIdList = webchatBotDisplayService.findDisplayIdListByBlockIdList(blockIdList);
 
         webchatBotAuthBlockService.deleteAuthBlockByBotId(botId);
+        webchatBotAuthResultElementService.deleteByBlockIdList(blockIdList);
         webchatBotButtonElementService.deleteByBlockIdList(blockIdList);
         webchatBotDisplayElementService.deleteByDisplayIdList(displayIdList);
         webchatBotDisplayService.deleteByBlockIdList(blockIdList);
