@@ -90,7 +90,7 @@
                                     <div id="auth-block" class="block-list-container">
                                         <ul class="block-list-ul">
                                             <li v-for="(e, i) in authBlocks" :key="i" class="block-list">
-                                                <div class="block-name">{{ e.name }}</div>
+                                                <div class="block-name">{{ e.usingOtherBot ? "[공용블록]" : ""}}{{ e.name }}</div>
                                                 <div class="block-control">
                                                     <button @click.stop="configAuthBlock(i)" class="ui mini button">수정</button>
                                                     <button @click.stop="removeAuthBlock(i)" class="ui icon mini button"><i class="x icon"></i></button>
@@ -630,7 +630,7 @@
                                         </div>
                                         <div class="chatbot-control-body">
                                             <div class="mb15 dp-flex align-items-center justify-content-space-between">
-                                                <div>다른 블록 사용 여부</div>
+                                                <div>다른 봇 공용 여부</div>
                                                 <div class="ui fitted toggle checkbox">
                                                     <input type="checkbox" @change="data.usingOtherBot = $event.target.checked" :checked="data.usingOtherBot">
                                                     <label></label>
