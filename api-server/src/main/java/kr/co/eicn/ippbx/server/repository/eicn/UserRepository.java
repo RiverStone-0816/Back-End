@@ -190,6 +190,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
         final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList record = findOneIfNullThrow(id);
         final PhoneInfo phone = phoneInfoRepository.findOne(PHONE_INFO.EXTENSION.eq(form.getExtension()));
         final CompanyTree companyTree = companyTreeRepository.findOneGroupCodeIfNullThrow(form.getGroupCode());
+        final Optional<String> originalExtension = Optional.ofNullable(record.getExtension());
 
         if (phone != null)
             form.setExtension(phone.getExtension());
@@ -219,20 +220,22 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
                     personListRepository.updateByKey(pbxDsl, record, id);
                 });
 
-        final QueueMemberTable queueMemberTableRecord = new QueueMemberTable();
-        queueMemberTableRecord.setQueueName("PDS_" + getCompanyId());
-        queueMemberTableRecord.setInterface(StringUtils.isNotEmpty(record.getPeer()) ? "SIP/".concat(record.getPeer()) : "SIP/");
-        queueMemberTableRecord.setMembername(id);
-        queueMemberTableRecord.setInterface(EMPTY);
-        queueMemberTableRecord.setPenalty(0);
-        queueMemberTableRecord.setPaused(3);
-        queueMemberTableRecord.setIsLogin("N");
-        queueMemberTableRecord.setUserid(id);
-        queueMemberTableRecord.setBlendingMode("M");
-        queueMemberTableRecord.setCompanyId(getCompanyId());
+        if (!originalExtension.orElse("").equals(record.getExtension())) {
+            final QueueMemberTable queueMemberTableRecord = new QueueMemberTable();
+            queueMemberTableRecord.setQueueName("PDS_" + getCompanyId());
+            queueMemberTableRecord.setInterface(StringUtils.isNotEmpty(record.getPeer()) ? "SIP/".concat(record.getPeer()) : "SIP/");
+            queueMemberTableRecord.setMembername(id);
+            queueMemberTableRecord.setInterface(EMPTY);
+            queueMemberTableRecord.setPenalty(0);
+            queueMemberTableRecord.setPaused(3);
+            queueMemberTableRecord.setIsLogin("N");
+            queueMemberTableRecord.setUserid(id);
+            queueMemberTableRecord.setBlendingMode("M");
+            queueMemberTableRecord.setCompanyId(getCompanyId());
 
-        queueMemberTableRepository.insertOnConflictDoNothingAllPbxServers(queueMemberTableRecord);
-        queueMemberTableRepository.updatePeerByUserId(record);
+            queueMemberTableRepository.insertOnConflictDoNothingAllPbxServers(queueMemberTableRecord);
+            queueMemberTableRepository.updatePeerByUserId(record);
+        }
 
         webSecureHistoryRepository.insert(WebSecureActionType.PERSON, WebSecureActionSubType.MOD, id);
     }

@@ -178,12 +178,34 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
     }
 
     public void updatePeerByUserId(PersonList record) {
+        updateUserId(dsl, record.getId(), record.getPeer());
         updatePeerByUserId(dsl, record);
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
                     DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    updateUserId(pbxDsl, record.getId(), record.getPeer());
                     updatePeerByUserId(pbxDsl, record);
                 });
+    }
+
+    public void updateUserId(DSLContext dslContext, String userId, String peer) {
+        dslContext.update(QUEUE_MEMBER_TABLE)
+                .set(QUEUE_MEMBER_TABLE.USERID, (String) null)
+                .where(compareCompanyId())
+                .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.startsWith("QUEUE"))
+                .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.ne("QUEUE" + QUEUE_MEMBER_TABLE.MEMBERNAME))
+                .and(QUEUE_MEMBER_TABLE.USERID.eq(userId))
+                .execute();
+
+        if (StringUtils.isNotEmpty(peer)) {
+            dslContext.update(QUEUE_MEMBER_TABLE)
+                    .set(QUEUE_MEMBER_TABLE.USERID, userId)
+                    .where(compareCompanyId())
+                    .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.startsWith("QUEUE"))
+                    .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.ne("QUEUE" + QUEUE_MEMBER_TABLE.MEMBERNAME))
+                    .and(QUEUE_MEMBER_TABLE.MEMBERNAME.eq(peer))
+                    .execute();
+        }
     }
 
     public void updatePeerByUserId(DSLContext dslContext, PersonList record) {
