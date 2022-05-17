@@ -559,7 +559,7 @@
                                                 <div class="mb15">연결 그룹 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <select v-model="data.nextActionData">
-                                                        <option v-for="(e,i) in groups" :key="i" :value="e.groupId">{{ e.groupName }}</option>
+                                                        <option v-for="(e,i) in groupList()" :key="i" :value="e.groupId">{{ e.groupName }}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -1751,17 +1751,6 @@
                             const app = nodeBlockMap[o.nodeId]
                             if (!app || !app.authElements[o.index]) return
 
-                            const data = {}
-                            for (let property in o.data) data[property] = o.data[property]
-                            app.authElements[o.index] = data
-
-                            alert("저장되었습니다.");
-                        },
-                        save() {
-                            botList.changed = true;
-                            const app = nodeBlockMap[o.nodeId]
-                            if (!app || !app.authElements[o.index]) return
-
                             const prevAction = app.authElements[o.index].action
                             const preChildNodeId = app.authElements[o.index].childNodeId
                             const preBlock = app.authElements[o.index].block
@@ -1802,6 +1791,9 @@
                                 app.createConnection(o.index, nodeBlockMap[data.childNodeId].id)
                             }
                             alert("저장되었습니다.");
+                        },
+                        groupList() {
+                            return groups;
                         },
                         blockList() {
                             return blocks;
@@ -1986,6 +1978,7 @@
 
             const nodeBlockMap = {}
             const blocks = []
+            const gorups = []
 
             let lastBlockId = 0
             const createBlockId = () => (++lastBlockId)
@@ -2280,6 +2273,7 @@
                 chatbotSettingModal.groups = response.data
                 fallbackConfig.groups = response.data
                 buttonConfig.groups = response.data
+                groups = response.data
             })
 
             const allowDrop = event => event.preventDefault()
