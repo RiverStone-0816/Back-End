@@ -415,7 +415,7 @@
                                 lastMessage = '템플릿을 전송하였습니다.'
                             else if (['RE', 'E'].includes(sendReceive))
                                 lastMessage = '챗봇이 존재하지 않습니다.'
-                        } else if (['RM', 'SZ', 'SG', 'SD', 'SE', 'SAS', 'SVS', 'RAR', 'RVR'].includes(sendReceive)) {
+                        } else if (['RM', 'SZ', 'SG', 'SD', 'SE', 'SAS', 'SVS', 'RAR', 'RVR', 'RARC', 'RVRC'].includes(sendReceive)) {
                             if (sendReceive === 'RM') {
                                 lastMessage = '상담사연결을 요청하였습니다.'
                             } else if (sendReceive === 'SZ') {
@@ -426,22 +426,14 @@
                                 lastMessage = userName + '상담사가 상담을 내렸습니다.'
                             } else if (sendReceive === 'SE') {
                                 lastMessage = userName + '상담사가 상담을 종료했습니다.'
-                            } else if (sendReceive === 'SAS') {
+                            } else if (['RAR','SAS'].includes(sendReceive)) {
                                 lastMessage = '음성통화를 요청합니다.'
-                            } else if (sendReceive === 'SVS') {
+                            } else if (['RVR','SVS'].includes(sendReceive)) {
                                 lastMessage = '영상통화를 요청합니다.'
-                            } else if (sendReceive === 'RAR') {
-                                if (content.ready_result === '0') {
-                                    lastMessage = '음성통화를 수락합니다.'
-                                } else {
-                                    lastMessage = '음성통화를 거절합니다.'
-                                }
-                            } else if (sendReceive === 'RVR') {
-                                if (content.ready_result === '0') {
-                                    lastMessage = '영상통화를 수락합니다.'
-                                } else {
-                                    lastMessage = '영상통화를 거절합니다.'
-                                }
+                            } else if (sendReceive === 'RARC') {
+                                lastMessage = '음성통화 완료'
+                            } else if (sendReceive === 'RVRC') {
+                                lastMessage = '영상통화 완료'
                             }
                         }
                         else if (fileType === 'photo')
@@ -651,31 +643,18 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="['SAS', 'SVS'].includes(e.sendReceive)" class="chat-item chat-me">
+                                <div v-if="['SAS', 'SVS'].includes(e.sendReceive)" class="chat-item chat-me" :id="jsonDataParse(e.contents).record_file_key">
                                     <div class="wrap-content">
                                         <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
                                             <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
                                                 <div class="txt_chat" id="webChatLoder" style="width: 100px;height: 50px">
                                                     <div class="loader10"></div>
-                                                    <%--<p>{{ e.sendReceive === 'SAS' ? '음성통화를 시도합니다' : '영상통화를 시도합니다' }}</p>--%>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <%--<div v-if="['RAR', 'RVR'].includes(e.sendReceive) && e.contents.ready_result !== 0" class="chat-item chat-me">
-                                    <div class="wrap-content">
-                                        <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
-                                        <div class="chat">
-                                            <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
-                                                <div class="txt_chat">
-                                                    <p>{{ e.sendReceive === 'RAR' ? '음성통화 거절' : '영상통화 거절' }}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>--%>
                                 <div v-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info' && e.messageType !== 'block'"
                                      class="chat-item"
                                      :class="['AF', 'S'].includes(e.sendReceive)<%-- && e.userId === ME--%> && 'chat-me'">
@@ -980,14 +959,9 @@
                 })
             },
             methods: {
-   /*             keydown:function (event){
-                    if (event.key === 'Escape') {
-                        this.showingTemplateLevel = 0
-                        this.showingTemplateFilter = ''
-                        this.replying = null
-                        return
-                    }
-                },*/
+                jsonDataParse: function (data) {
+                    return JSON.parse(JSON.stringify(data))
+                },
                 loadRoom: function (roomId, userName) {
                     const _this = this
                     const statues = talkListContainer.statuses
@@ -1004,7 +978,6 @@
                         _this.customName = response.data.customName
                         _this.isAutoEnable = response.data.isAutoEnable === 'Y'
                         _this.isMessage = !(response.data.userId === _this.loginId && response.data.roomStatus === 'G')
-                        //_this.isVChat = is_support_vchat(response.data.channelType === 'eicn' ? 'Y' : 'N')
                         _this.isVChat = response.data.channelType === 'eicn'
 
                         const status = _this.roomStatus === 'E' ? statues.END.status
@@ -1533,8 +1506,7 @@
                     }, 1500)
                 }
             } else if (['RARC','RVRC'].includes(data.send_receive) && data.userid === userId) {
-                //파일 레코드
-                console.log($('#webChatLoder'));
+                console.log($('#'+data.content.record_file_key));
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive, data.customname)
                 if (data.send_receive === 'R' && data.userid === userId && talkRoom.roomId !== data.room_id) {

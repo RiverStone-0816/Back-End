@@ -46,22 +46,7 @@
                       fill="#e1e1e1" />
               </svg>
             </button>
-<!--            <button class="flex text-white py-2 px-3 rounded-lg h-10 hover:bg-gray-300/20">
-              <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="27" height="26" viewBox="0 0 19.354 15">
-                <g transform="translate(-1191.495 -10717.04)">
-                  <path
-                      d="M11.848,18.856a.848.848,0,0,1-.5-.157l-5.5-4.129H3.284c-.394,0-.714-.24-.714-.536V8.677c0-.3.32-.536.714-.536H5.843l5.5-4.129a.894.894,0,0,1,.778-.116.559.559,0,0,1,.441.495V18.32c0,.3-.319.536-.714.536Z"
-                      transform="translate(1188.924 10713.184)" fill="#e1e1e1" />
-                  <path
-                      d="M380.22,874.562l-2.248,2.248,2.248,2.248-.562.562-2.248-2.248-2.248,2.248-.562-.562,2.248-2.248-2.248-2.248.562-.562,2.248,2.248L379.658,874Z"
-                      transform="translate(830.275 9847.731)" fill="#e1e1e1" stroke="#e1e1e1" stroke-width="1" />
-                </g>
-              </svg>
-            </button>-->
-            <button v-show="audioActionButton" class="flex text-white ml-1 py-2 pl-4 pr-4 rounded-lg hover:shadow-lg h-10" id="btn-accept" @click.stop="accept_vchat" style="background-color: #0C4DA2">
-              받기
-            </button>
-            <button v-show="!audioActionButton" class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" id="btn-hangup" @click.stop="doHangup">
+            <button v-show="audioActionButton" class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" id="btn-hangup" @click.stop="doHangup">
               <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 16">
                 <g transform="translate(-1155.078 -10717.04)">
                   <g transform="translate(1155.078 10717.04)">
@@ -98,22 +83,7 @@
                       fill="#e1e1e1" />
               </svg>
             </button>
-<!--            <button class="flex text-white py-2 px-3 rounded-lg h-10">
-              <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="27" height="26" viewBox="0 0 19.354 15">
-                <g transform="translate(-1191.495 -10717.04)">
-                  <path
-                      d="M11.848,18.856a.848.848,0,0,1-.5-.157l-5.5-4.129H3.284c-.394,0-.714-.24-.714-.536V8.677c0-.3.32-.536.714-.536H5.843l5.5-4.129a.894.894,0,0,1,.778-.116.559.559,0,0,1,.441.495V18.32c0,.3-.319.536-.714.536Z"
-                      transform="translate(1188.924 10713.184)" fill="#e1e1e1" />
-                  <path
-                      d="M380.22,874.562l-2.248,2.248,2.248,2.248-.562.562-2.248-2.248-2.248,2.248-.562-.562,2.248-2.248-2.248-2.248.562-.562,2.248,2.248L379.658,874Z"
-                      transform="translate(830.275 9847.731)" fill="#e1e1e1" stroke="#e1e1e1" stroke-width="1" />
-                </g>
-              </svg>
-            </button>-->
-            <button v-show="videoActionButton" class="flex text-white ml-1 py-2 pl-4 pr-4 rounded-lg hover:shadow-lg h-10" id="btn-accept" @click.stop="accept_vchat" style="background-color: #0C4DA2">
-              받기
-            </button>
-            <button v-show="!videoActionButton" class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" id="btn-hangup" @click.stop="doHangup">
+            <button v-show="videoActionButton" class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" id="btn-hangup" @click.stop="doHangup">
               <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 16">
                 <g transform="translate(-1155.078 -10717.04)">
                   <g transform="translate(1155.078 10717.04)">
@@ -904,7 +874,7 @@ export default {
         this.start_vchat()
         this.audioChat = true
         this.audioChatText = '음성통화 연결'
-        this.communicator.sendWebrtcReady('audio_start_ready',{ready_result: 0, ready_result_msg: '준비완료'})
+        this.communicator.sendWebrtcReady('audio_start_ready',{ready_result: 0, ready_result_msg: '준비완료', record_file_key: this.webrtcData.record_file_key})
       } else{
         this.communicator.sendWebrtcReady('audio_start_ready',{ready_result: 1, ready_result_msg: '거절'})
       }
@@ -915,7 +885,7 @@ export default {
         this.start_vchat()
         this.videoChat = true
         this.videoChatText = '영상통화 연결'
-        this.communicator.sendWebrtcReady('video_start_ready',{ready_result: 0, ready_result_msg: '준비완료'})
+        this.communicator.sendWebrtcReady('video_start_ready',{ready_result: 0, ready_result_msg: '준비완료', record_file_key: this.webrtcData.record_file_key})
       } else{
         this.communicator.sendWebrtcReady('video_start_ready',{ready_result: 1, ready_result_msg: '거절'})
       }
@@ -947,8 +917,6 @@ export default {
       this.set_callback_vchat_incoming_call(()=>{
         _this.audioChatText = '전화옴'
         _this.videoChatText = '전화옴'
-        _this.audioActionButton = true
-        _this.videoActionButton = true
       })
       this.set_callback_vchat_registered_status(()=>{
         _this.audioChatText = '음성통화 대기.'
@@ -969,14 +937,16 @@ export default {
       this.set_callback_vchat_accept(()=>{
         _this.audioChatText = '통화중'
         _this.videoChatText = '통화중'
-        _this.audioActionButton = false
-        _this.videoActionButton = false
+        _this.audioActionButton = true
+        _this.videoActionButton = true
       })
       this.set_callback_vchat_hangup(()=>{
         _this.audioChatText = '통화종료'
         _this.videoChatText = '통화종료'
         _this.audioChat = false
         _this.videoChat = false
+        _this.audioActionButton = false
+        _this.videoActionButton = false
       })
       if (_this.vchatReconnectTimerId) {
         clearInterval(_this.vchatReconnectTimerId);
@@ -1134,9 +1104,10 @@ export default {
                             }
 
                             // Ringtone 플레이
-                            _this.playTone("ring");
+                            //_this.playTone("ring");
 
                             _this.callback_vchat_incoming_call();
+                            setTimeout(() => {_this.accept_vchat()}, 500);
                           }
                           else if (event === 'accepted') {
                             var peer = result["username"];
