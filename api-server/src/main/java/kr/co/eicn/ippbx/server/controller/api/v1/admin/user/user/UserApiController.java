@@ -30,6 +30,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.util.Comparator;
 import java.util.List;
@@ -55,12 +56,15 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @RequestMapping(value = "api/v1/admin/user/user", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserApiController extends ApiBaseController {
 
+    private final static String COMMEND = "/home/ippbxmng/lib/doub_adminfo_update.sh ";
+
     private final UserRepository repository;
     private final PersonListRepository personListRepository;
     private final OrganizationService organizationService;
     private final PhoneInfoRepository phoneInfoRepository;
     private final UserService userService;
     private final CompanyService companyService;
+
 
     /**
      * 사용자 목록조회
@@ -163,6 +167,9 @@ public class UserApiController extends ApiBaseController {
             throw new IllegalArgumentException("라이센스를 확인하세요.");
 
         repository.insert(form);
+
+        doubAdminFoUpdate();
+
         return ResponseEntity.created(URI.create("api/v1/admin/user/user")).body(create());
     }
 
@@ -211,6 +218,9 @@ public class UserApiController extends ApiBaseController {
             throw new IllegalArgumentException("라이센스를 확인하세요.");
 
         repository.updateByKey(form, id);
+
+        doubAdminFoUpdate();
+
         return ResponseEntity.ok(create());
     }
 
@@ -226,6 +236,9 @@ public class UserApiController extends ApiBaseController {
             throw new IllegalArgumentException("삭제할 수 없습니다.");
 
         repository.deleteOnIfNullThrow(id);
+
+        doubAdminFoUpdate();
+
         return ResponseEntity.ok(create());
     }
 
@@ -243,6 +256,8 @@ public class UserApiController extends ApiBaseController {
                 && !g.getUser().getIdType().equals(IdType.SUPER_ADMIN.getCode())
                 && !g.getUser().getIdType().equals(IdType.ADMIN.getCode()))
             throw new IllegalArgumentException("등록할 수 없습니다.");
+
+        doubAdminFoUpdate();
 
         return ResponseEntity.created(URI.create("api/v1/admin/user/user/data-upload")).body(data(repository.doUpdate(forms)));
     }
@@ -263,6 +278,9 @@ public class UserApiController extends ApiBaseController {
             throw new IllegalArgumentException("본인 아이디만 변경 가능 합니다.");
 
         repository.updatePassword(id, form.getPassword());
+
+        doubAdminFoUpdate();
+
         return ResponseEntity.ok(create());
     }
 
@@ -308,5 +326,23 @@ public class UserApiController extends ApiBaseController {
                     return response;
                 })
                 .collect(Collectors.toList())));
+    }
+
+    private void doubAdminFoUpdate() {
+        if (g.getUser().getCompany().getService().contains("DUTA") || g.getUser().getCompany().getService().contains("DUSTT")) {
+            try {
+                Runtime runtime = Runtime.getRuntime();
+                Process process = runtime.exec(COMMEND + " " + g.getUser().getCompanyId());
+                process.waitFor();
+
+                if (process.exitValue() == 0)
+                    log.info(COMMEND + " 호출성공");
+                else
+                    log.info(COMMEND + " 호출실패");
+
+            } catch (InterruptedException | IOException e) {
+                log.error(String.valueOf(e));
+            }
+        }
     }
 }

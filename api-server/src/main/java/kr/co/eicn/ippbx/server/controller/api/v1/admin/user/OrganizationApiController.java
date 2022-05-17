@@ -19,6 +19,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.beans.IntrospectionException;
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
@@ -37,7 +39,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RequestMapping(value = "api/v1/admin/user/organization", produces = MediaType.APPLICATION_JSON_VALUE)
 public class OrganizationApiController extends ApiBaseController {
 	private final OrganizationService organizationService;
-
+	private final static String COMMEND = "/home/ippbxmng/lib/doub_orginfo_update.sh ";
 	/**
 	 * 전체 조직구성 전달
 	 * @return
@@ -73,6 +75,7 @@ public class OrganizationApiController extends ApiBaseController {
 		if (bindingResult.hasErrors())
 			throw new ValidationException(bindingResult);
 
+		doubOrginFoUpdate();
 		return ResponseEntity.created(URI.create("api/v1/admin/user/organization")).body(data(organizationService.insertOrganization(form)));
 	}
 
@@ -85,6 +88,7 @@ public class OrganizationApiController extends ApiBaseController {
 			throw new ValidationException(bindingResult);
 
 		organizationService.updateOrganization(form, seq);
+		doubOrginFoUpdate();
 		return ResponseEntity.ok(create());
 	}
 
@@ -94,6 +98,7 @@ public class OrganizationApiController extends ApiBaseController {
 	@DeleteMapping("{seq}")
 	public ResponseEntity<JsonResult<Void>> delete(@PathVariable Integer seq) {
 		organizationService.deleteOrganization(seq);
+		doubOrginFoUpdate();
 		return ResponseEntity.ok(create());
 	}
 
@@ -111,6 +116,27 @@ public class OrganizationApiController extends ApiBaseController {
 			throw new ValidationException(bindingResult);
 
 		organizationService.updateMetaType(forms);
+
+		doubOrginFoUpdate();
+
 		return ResponseEntity.ok(create());
+	}
+
+	private void doubOrginFoUpdate() {
+		if (g.getUser().getCompany().getService().contains("DUTA") || g.getUser().getCompany().getService().contains("DUSTT")) {
+			try {
+				Runtime runtime = Runtime.getRuntime();
+				Process process = runtime.exec(COMMEND + g.getUser().getCompanyId());
+				process.waitFor();
+
+				if (process.exitValue() == 0)
+					log.info(COMMEND + " 호출성공");
+				else
+					log.info(COMMEND + " 호출실패");
+
+			} catch (InterruptedException | IOException e) {
+				log.error(String.valueOf(e));
+			}
+		}
 	}
 }
