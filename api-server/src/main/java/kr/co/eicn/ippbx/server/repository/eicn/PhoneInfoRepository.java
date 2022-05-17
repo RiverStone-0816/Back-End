@@ -131,6 +131,9 @@ public class PhoneInfoRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
             DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
             phoneInfoMap.putAll(getPhoneInfoMap(pbxDsl));
         });
+        if(pbxServerList.size() == 0)
+            phoneInfoMap.putAll(getPhoneInfoMap(dsl));
+
         return phoneInfoMap;
     }
 
