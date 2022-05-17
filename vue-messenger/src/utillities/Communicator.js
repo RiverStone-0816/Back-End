@@ -49,7 +49,7 @@ Communicator.prototype.logClear = function () {
 };
 Communicator.prototype.connect = function (url, senderKey, userKey, ip, mode) {
     this.url = url;
-    this.request = {sender_key: senderKey, user_key: userKey, my_ip: ip, mode: mode,};
+    this.request = {sender_key: senderKey, user_key: userKey, room_id: null, my_ip: ip, mode: mode,};
 
     const _this = this;
     try {
@@ -64,7 +64,10 @@ Communicator.prototype.connect = function (url, senderKey, userKey, ip, mode) {
     const serverCommands = ['webchatsvc_start', 'webchatsvc_message', 'webchatsvc_close'];
     const uncheckedServerCommands = ['connect', 'disconnect', 'error', 'end', 'close'];
 
-    this.on('webchatsvc_start', data => this.connected = data.result === 'OK')
+    this.on('webchatsvc_start', (data) => {
+        this.connected = data.result === 'OK'
+        this.request.room_id = data.room_id
+    })
     this.socket.on('connect', () => this.connected ? this.restart() : this.start())
     this.socket.on('webchatsvc_ping', data => this.socket.emit('webchatcli_pong', {pong_cnt: data.ping_cnt, receive: 'OK'}))
 
