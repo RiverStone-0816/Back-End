@@ -1,10 +1,10 @@
 <template>
   <body class="font-sans-kr text-gray-800 bg-blue-100" @contextmenu.prevent>
-  <div :class="{'h-screen m-auto max-w-sm' : true, 'py-14' : !isIframe}">
+  <div :class="{'h-screen m-auto' : true, 'py-14 max-w-sm' : !isIframe}">
     <div class="flex flex-col flex-auto h-full rounded-3xl shadow-body">
       <!--상단 홈 영역-->
       <!--bg-[#~~~~~~]이 버튼색상, 텍스트색상등과 같이 움직여야 하는 배경색, text-[#~~], border-[#~~]로 사용-->
-      <div class="flex flex-row items-center h-14 rounded-t-3xl bg-white w-full px-3" style="background-color: #0C4DA2">
+      <div :class="{'flex flex-row items-center h-14 bg-white w-full px-3' : true, 'rounded-t-3xl' : !isIframe}" style="background-color: #0C4DA2">
         <!--홈버튼-->
         <button class="flex items-center justify-center rounded-lg hover:bg-slate-900/20 h-10 w-10 text-white" @click.stop="homeAction">
             <span>
@@ -533,7 +533,7 @@
       </div>
 
       <!--하단 채팅 입력-->
-      <div v-if="inputEnable" class="flex flex-row items-center h-16 rounded-b-3xl bg-white w-full px-3 border-t">
+      <div v-if="inputEnable" :class="{'flex flex-row items-center h-16 bg-white w-full px-3 border-t' : true, 'rounded-b-3xl' : !isIframe}">
         <div class="flex-grow">
           <div class="relative w-full">
             <input type="text" placeholder="질문을 입력해 주세요."
@@ -1604,6 +1604,9 @@ export default {
 }
 .max-w-xxs {
   max-width: 17rem;
+}
+.max-w-100vw{
+  max-width: 100vw;
 }
 
 .text-xxs {
