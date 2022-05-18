@@ -1060,7 +1060,7 @@ export default {
                             _this.HANGUP_VCHAT_BTN = true
 
                             // Ringtone 플레이
-                            _this.playTone("ring");
+                            //_this.playTone("ring");
 
                             _this.callback_vchat_outgoing_call();
                           }
@@ -1165,7 +1165,7 @@ export default {
                             }
 
                             // Busytone 플레이
-                            _this.playTone("busy");
+                            //_this.playTone("busy");
 
                             // TODO: 통화가 종료될 때 해야 할 일들 ... 버큰 재등록???
 
@@ -1203,19 +1203,6 @@ export default {
                           _this.vchatSpinner.stop();
                         }
                         // TODO: 아래 동작에 상응하는 동작 추가 필요
-                        /*
-                        $('#waitingvideo').remove();
-                        $('#videos').hide();
-                        $('#peer').removeAttr('disabled').val('');
-                        $('#call').removeAttr('disabled').html('Call')
-                            .removeClass("btn-danger").addClass("btn-success")
-                            .unbind('click').click(doCall);
-                        $('#toggleaudio').attr('disabled', true);
-                        $('#togglevideo').attr('disabled', true);
-                        $('#bitrate').attr('disabled', true);
-                        $('#curbitrate').hide();
-                        $('#curres').hide();
-                        */
                         if (_this.vchatBitrateTimer) {
                           clearInterval(_this.vchatBitrateTimer);
                         }
@@ -1448,7 +1435,7 @@ export default {
         navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
           console.log("-------- RINGTONE.play()");
           _this.RINGTONE.currentTime = 0;
-          _this.RINGTONE.play();
+          //_this.RINGTONE.play();
 
           // stop microphone stream acquired by getUserMedia
           stream.getTracks().forEach(function (track) { track.stop(); });
@@ -1460,7 +1447,7 @@ export default {
         navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
           console.log("-------- BUSYTONE.play()");
           _this.BUSYTONE.currentTime = 0;
-          _this.BUSYTONE.play();
+          //_this.BUSYTONE.play();
 
           // stop microphone stream acquired by getUserMedia
           stream.getTracks().forEach(function (track) { track.stop(); });
