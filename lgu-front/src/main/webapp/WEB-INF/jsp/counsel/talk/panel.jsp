@@ -643,13 +643,39 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="['SAS', 'SVS'].includes(e.sendReceive)" class="chat-item chat-me" :id="jsonDataParse(e.contents).record_file_key">
+                                <div v-if="['SAS', 'SVS'].includes(e.sendReceive)" class="chat-item chat-me" >
                                     <div class="wrap-content">
                                         <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
                                             <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
-                                                <div class="txt_chat" id="webChatLoder" style="width: 100px;height: 50px">
+                                                <div class="txt_chat" style="width: 100px;height: 50px">
                                                     <div class="loader10"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="['RARC'].includes(e.sendReceive)" class="chat-item chat-me" >
+                                    <div class="wrap-content">
+                                        <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
+                                        <div class="chat">
+                                            <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
+                                                <div class="txt_chat">
+                                                    <div style="width: 320px">
+                                                        <audio controls :src="'${apiServerUrl}/api/v1/admin/record/file/resource?fileName='+jsonDataParse(e.contents).record_file+'&token=${accessToken}'" initaudio="false"></audio>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="['RVRC'].includes(e.sendReceive)" class="chat-item chat-me" >
+                                    <div class="wrap-content">
+                                        <div class="txt-time">[오토멘트] {{ getTimeFormat(e.time) }}</div>
+                                        <div class="chat">
+                                            <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
+                                                <div class="txt_chat">
+                                                    <video controls :src="'${apiServerUrl}/api/v1/admin/record/file/resource?fileName='+jsonDataParse(e.contents).record_file+'&token=${accessToken}'"></video>
                                                 </div>
                                             </div>
                                         </div>
@@ -960,7 +986,7 @@
             },
             methods: {
                 jsonDataParse: function (data) {
-                    return JSON.parse(JSON.stringify(data))
+                    return typeof data === 'string' ? JSON.parse(data) : JSON.parse(JSON.stringify(data))
                 },
                 loadRoom: function (roomId, userName) {
                     const _this = this
@@ -1087,6 +1113,21 @@
                             }
 
                             message.contents = message.contents.substr(indicator + 1)
+                        })
+                    }
+
+                    if (['RARC','RVRC'].includes(message.sendReceive)) {
+
+                        let i = 0
+                        this.messageList.forEach((data) =>{
+                            if(['SAS','SVS'].includes(data.sendReceive)){
+                                console.log(typeof data.contents);
+                                let contents = typeof data.contents === 'string' ? JSON.parse(data.contents) : data.contents
+                                let mContents = typeof message.contents === 'string' ? JSON.parse(message.contents) : message.contents
+                                if(contents.record_file_key === mContents.record_file_key)
+                                    _this.messageList.splice(i,1)
+                            }
+                            i++
                         })
                     }
 
@@ -1506,7 +1547,7 @@
                     }, 1500)
                 }
             } else if (['RARC','RVRC'].includes(data.send_receive) && data.userid === userId) {
-                console.log($('#'+data.content.record_file_key));
+                console.log(data.content);
             } else {
                 talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive, data.customname)
                 if (data.send_receive === 'R' && data.userid === userId && talkRoom.roomId !== data.room_id) {
