@@ -25,14 +25,14 @@ window.onload = function () {
         chatButton.id = "chat-button";
         chatButton.onclick = showChat;
         document.getElementById('chat-bot').appendChild(chatButton);
-        document.getElementById('chat-button').innerHTML = '<img src=' + CHAT_ICON_IMG_URL + ' width="100%" height="100%" >';
+        document.getElementById('chat-button').innerHTML = '<img src=' + CHAT_ICON_IMG_URL + ' width="100%" height="100%" allow="camera *;microphone *">';
     }
     if (!document.getElementById('chat-load')) {
         let chatLoad = document.createElement('div');
         chatLoad.id = "chat-load";
         document.getElementById('chat-bot').appendChild(chatLoad);
 
-        document.getElementById('chat-load').innerHTML = '<iframe id="chat-iframe" src=' + CHAT_SRC + '></iframe>';
+        document.getElementById('chat-load').innerHTML = '<iframe id="chat-iframe" src=' + CHAT_SRC + ' allow="camera *;microphone *"></iframe>';
 
         if(isMobile()){
             document.getElementById('chat-load').classList.add('chat-load-mobile');
