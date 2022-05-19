@@ -1061,7 +1061,7 @@
                                 children: block?.buttons.filter(e => e.action === '' || e.action === 'auth').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
                             })
 
-                            const form = Object.assign({}, fallbackConfig.data, {authBlockList: authBlockListContainer.getOwnAuthBlockList()}, {blockInfo: convertBlock(blockList.blocks[0])})
+                            const form = Object.assign({}, fallbackConfig.data, {blockInfo: convertBlock(blockList.blocks[0])})
 
                             if ($.isNumeric(o.current)) {
                                 return restSelf.put('/api/chatbot/' + o.current + '/all', form).done(() => alert('저장되었습니다.', o.load))
@@ -1093,7 +1093,7 @@
                             editor.clear()
                         },
                         loadBot(botId) {
-                            return restSelf.get('/api/chatbot/' + botId).done(response => {
+                            return restSelf.get('/api/chatbot/' + botId).done(async (response) => {
                                 o.current = botId
                                 o.select = botId
                                 o.changed = false
@@ -1120,11 +1120,7 @@
                                     nextPhone: data.nextPhone
                                 }
 
-                                if (data.authBlockList) {
-                                    data.authBlockList.forEach(e => {
-                                        authBlockListContainer.authBlocks[e.id] = e
-                                    })
-                                }
+                                await authBlockListContainer.load(botId)
 
                                 chatbotSettingModal.hide()
 
@@ -1241,7 +1237,6 @@
                                 }
 
                                 lastBlockId = Math.max.apply(null, [0].concat(blockList.blocks.map(e => e.id))) + 1
-                                lastAuthBlockId = Math.max.apply(null, [0].concat(data.authBlockList?.map(e => e.id))) + 1
 
                                 function convertOppositeValue(pos) {
                                     return pos * -1 + 100   // 초기 위치값을 조절하려면 뒤 + 값을 조정하면 됨
@@ -1371,13 +1366,7 @@
                             for (let property in nodeBlockMap) delete nodeBlockMap[property]
                             editor.clear()
 
-                            restSelf.get('/api/chatbot/auth-blocks').done(response => {
-                                if (response.data) {
-                                    response.data.forEach(e => {
-                                        authBlockListContainer.authBlocks[e.id] = e
-                                    })
-                                }
-                            })
+                            authBlockListContainer.load(null)
                             fallbackConfig.data = {
                                 name: o.name,
                                 enableCustomerInput: o.enableCustomerInput,
@@ -1832,10 +1821,25 @@
                         }
                     },
                     methods: {
+                        async load(botId) {
+                            if (!botId || botId === '')
+                                botId = ''
+                            await restSelf.get('/api/chatbot/auth-blocks?botId=' + botId).done(response => {
+                                if (response.data) {
+                                    response.data.forEach(e => {
+                                        o.authBlocks[e.id] = e
+                                    })
+                                }
+                            })
+                        },
                         addNewBlock() {
-                            const newBlockId = createAuthBlockId()
-                            o.authBlocks[newBlockId] = {
-                                id: newBlockId,
+                            if (!botList.current) {
+                                alert('봇 선택/저장 후 추가해 주세요.')
+                                return
+                            }
+
+                            const data = {
+                                id: null,
                                 botId: botList.current,
                                 name: '새로운 인증블럭',
                                 title: null,
@@ -1843,9 +1847,17 @@
                                 params: [{type: 'text', paramName: null, displayName: null, needYn: false}],
                                 buttons: [{name: null, action: 'first', actionData: null}]
                             }
+
+                            restSelf.post('/api/chatbot/' + botList.current + '/auth-block', data, null, true).done(response => {
+                                authBlockListContainer.authBlocks[response.data] = data;
+                            })
                         },
                         removeAuthBlock(blockId) {
-                            delete o.authBlocks[blockId]
+                            alert('삭제하시겠습니까?', () => {
+                                restSelf.delete('/api/chatbot/' + botList.current + '/auth-block/' + blockId).done(response => {
+                                    delete o.authBlocks[blockId]
+                                })
+                            })
                         },
                         configAuthBlock(blockId) {
                             authBlockConfig.load(blockId)
@@ -1918,8 +1930,14 @@
                             o.data.buttons.splice(index, 1)
                         },
                         save() {
-                            botList.changed = true
-                            authBlockListContainer.authBlocks[o.data.id] = o.data;
+                            if (!o.data.id) {
+                                restSelf.post('/api/chatbot/' + o.data.botId + '/auth-block', o.data).done(response => {
+                                    o.data.id = response.data
+                                    authBlockListContainer.authBlocks[o.data.id] = o.data;
+                                })
+                            } else {
+                                restSelf.put('/api/chatbot/' + o.data.botId + '/auth-block/' + o.data.id, o.data)
+                            }
                             alert('저장되었습니다.')
                         }
                     }
@@ -1982,8 +2000,6 @@
 
             let lastBlockId = 0
             const createBlockId = () => (++lastBlockId)
-            let lastAuthBlockId = 0
-            const createAuthBlockId = () => (++lastAuthBlockId)
 
             function createNode(blockId, x, y, type = 'BLOCK', authBlockId) {
                 if (typeof x !== 'number' || typeof y !== 'number') {

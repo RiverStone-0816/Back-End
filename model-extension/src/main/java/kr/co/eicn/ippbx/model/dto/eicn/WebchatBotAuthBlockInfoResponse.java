@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class WebchatBotAuthBlockInfo {
+public class WebchatBotAuthBlockInfoResponse {
     private Integer id;
     private Integer botId;
     private String name;

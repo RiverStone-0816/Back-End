@@ -74,7 +74,6 @@ public class WebchatBotService extends ApiBaseService {
     public HashMap<Integer, Integer> insertRootBlock(Integer botId, WebchatBotFormRequest form) {
         final HashMap<Integer, Integer> realBlockIdByVirtualBlockId = new HashMap<>();
         final HashMap<Integer, Integer> buttonUpdateSchedule = new HashMap<>();
-        final Map<Integer, Integer> authIdMap = webchatBotAuthBlockService.insertAuthBlock(botId, form.getAuthBlockList());
 
         WebchatBotFormRequest.BlockInfo blockInfo = form.getBlockInfo();
 
@@ -82,7 +81,7 @@ public class WebchatBotService extends ApiBaseService {
         String parentTreeName = "";
         Integer level = 0;
 
-        insertBlock(botId, null, null, parentButtonId, parentTreeName, level, blockInfo, realBlockIdByVirtualBlockId, buttonUpdateSchedule, authIdMap);
+        insertBlock(botId, null, null, parentButtonId, parentTreeName, level, blockInfo, realBlockIdByVirtualBlockId, buttonUpdateSchedule);
 
         buttonUpdateSchedule.forEach((k, v) -> webchatBotButtonElementService.updateNextBlockId(k, realBlockIdByVirtualBlockId.get(v)));
 
@@ -90,10 +89,7 @@ public class WebchatBotService extends ApiBaseService {
     }
 
     public void insertBlock(Integer botId, Integer rootId, Integer parentId, Integer parentButtonId, String parentTreeName, Integer level, WebchatBotFormRequest.BlockInfo blockInfo,
-                            HashMap<Integer, Integer> realBlockIdByVirtualBlockId, HashMap<Integer, Integer> buttonUpdateSchedule,
-                            Map<Integer, Integer> authIdMap) {
-        if (BlockType.AUTH.equals(blockInfo.getType()))
-            blockInfo.setAuthBlockId(authIdMap.get(blockInfo.getAuthBlockId()));
+                            HashMap<Integer, Integer> realBlockIdByVirtualBlockId, HashMap<Integer, Integer> buttonUpdateSchedule) {
         final Integer blockId = webchatBotBlockService.insert(blockInfo);
         realBlockIdByVirtualBlockId.put(blockInfo.getId(), blockId);
 
@@ -121,7 +117,7 @@ public class WebchatBotService extends ApiBaseService {
                 for (WebchatBotFormRequest.ButtonElement buttonElement : blockInfo.getButtonList()) {
                     final Integer buttonId = webchatBotButtonElementService.insertButtonElement(blockId, buttonElement);
                     if ((ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_AUTH_BLOCK.equals(buttonElement.getAction())) && blockInfoByVirtualId.containsKey(buttonElement.getNextBlockId()))
-                        insertBlock(botId, rootId, blockId, buttonId, treeName, level + 1, blockInfoByVirtualId.get(buttonElement.getNextBlockId()), realBlockIdByVirtualBlockId, buttonUpdateSchedule, authIdMap);
+                        insertBlock(botId, rootId, blockId, buttonId, treeName, level + 1, blockInfoByVirtualId.get(buttonElement.getNextBlockId()), realBlockIdByVirtualBlockId, buttonUpdateSchedule);
 
                     if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_AUTH_BLOCK.equals(buttonElement.getAction()))
                         buttonUpdateSchedule.put(buttonId, buttonElement.getNextBlockId());
@@ -132,6 +128,7 @@ public class WebchatBotService extends ApiBaseService {
 
     public void deleteBot(Integer botId) {
         deleteAllBlockInfoById(botId);
+        webchatBotAuthBlockService.deleteAuthBlockByBotId(botId);
         webchatBotInfoService.deleteById(botId);
     }
 
@@ -139,7 +136,6 @@ public class WebchatBotService extends ApiBaseService {
         final List<Integer> blockIdList = webchatBotTreeService.findBlockIdListByBotId(botId);
         final List<Integer> displayIdList = webchatBotDisplayService.findDisplayIdListByBlockIdList(blockIdList);
 
-        webchatBotAuthBlockService.deleteAuthBlockByBotId(botId);
         webchatBotAuthResultElementService.deleteByBlockIdList(blockIdList);
         webchatBotButtonElementService.deleteByBlockIdList(blockIdList);
         webchatBotDisplayElementService.deleteByDisplayIdList(displayIdList);
