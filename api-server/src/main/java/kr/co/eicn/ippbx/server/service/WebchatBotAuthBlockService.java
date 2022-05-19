@@ -87,6 +87,7 @@ public class WebchatBotAuthBlockService extends ApiBaseService {
             response.setBlockId(e.getAuthBlockId());
             response.setSequence(e.getSequence());
             response.setType(AuthDisplayType.of(e.getInputType()));
+            response.setTitle(e.getTitle());
             response.setName(e.getInputDisplayName());
             response.setParamName(e.getInputParamName());
             response.setNeedYn("Y".equals(e.getInputNeedYn()));

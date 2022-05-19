@@ -11,7 +11,6 @@ public class WebchatBotAuthBlockInfoResponse {
     private Integer id;
     private Integer botId;
     private String name;
-    private String title;
     private Boolean usingOtherBot;
     private List<AuthParamInfo> params;
     private List<AuthButtonInfo> buttons;
@@ -22,6 +21,7 @@ public class WebchatBotAuthBlockInfoResponse {
         private Integer blockId;
         private Integer sequence;
         private AuthDisplayType type;
+        private String title;
         private String name;
         private String paramName;
         private Boolean needYn;

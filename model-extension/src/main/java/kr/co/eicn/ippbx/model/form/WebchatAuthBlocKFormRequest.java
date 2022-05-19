@@ -21,6 +21,7 @@ public class WebchatAuthBlocKFormRequest extends BaseForm {
     @Data
     public static class AuthParamInfo extends BaseForm {
         private AuthDisplayType type;
+        private String title;
         private String name;
         private String paramName;
         private Boolean needYn;

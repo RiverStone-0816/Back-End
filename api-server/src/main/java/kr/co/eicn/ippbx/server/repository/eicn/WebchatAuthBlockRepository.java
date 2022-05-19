@@ -41,7 +41,6 @@ public class WebchatAuthBlockRepository extends EicnBaseRepository<kr.co.eicn.ip
         return dsl.insertInto(WEBCHAT_AUTH_BLOCK)
                 .set(WEBCHAT_AUTH_BLOCK.BOT_ID, botId)
                 .set(WEBCHAT_AUTH_BLOCK.NAME, request.getName())
-                .set(WEBCHAT_AUTH_BLOCK.TITLE, request.getTitle())
                 .set(WEBCHAT_AUTH_BLOCK.OTHER_BOT_USE_YN, request.getUsingOtherBot() ? "Y" : "N")
                 .set(WEBCHAT_AUTH_BLOCK.COMPANY_ID, g.getUser().getCompanyId())
                 .returning(WEBCHAT_AUTH_BLOCK.ID)
@@ -52,7 +51,6 @@ public class WebchatAuthBlockRepository extends EicnBaseRepository<kr.co.eicn.ip
     public void update(Integer id, WebchatAuthBlocKFormRequest request) {
         dsl.update(WEBCHAT_AUTH_BLOCK)
                 .set(WEBCHAT_AUTH_BLOCK.NAME, request.getName())
-                .set(WEBCHAT_AUTH_BLOCK.TITLE, request.getTitle())
                 .set(WEBCHAT_AUTH_BLOCK.OTHER_BOT_USE_YN, request.getUsingOtherBot() ? "Y" : "N")
                 .where(WEBCHAT_AUTH_BLOCK.ID.eq(id))
                 .execute();

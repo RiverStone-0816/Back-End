@@ -23,6 +23,7 @@ public class WebchatAuthButtonElementRepository extends EicnBaseRepository<kr.co
 
     public WebchatAuthButtonElementRepository() {
         super(WEBCHAT_AUTH_BTN_ELEMENT, WEBCHAT_AUTH_BTN_ELEMENT.ID, WebchatAuthBtnElement.class);
+        orderByFields.add(WEBCHAT_AUTH_BTN_ELEMENT.SEQUENCE.asc());
     }
 
     public Map<Integer, List<WebchatAuthBtnElement>> findAllByBlockIds(List<Integer> blockIds) {

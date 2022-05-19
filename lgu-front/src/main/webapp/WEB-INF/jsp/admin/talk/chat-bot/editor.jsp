@@ -1842,9 +1842,8 @@
                                 id: null,
                                 botId: botList.current,
                                 name: '새로운 인증블럭',
-                                title: null,
                                 usingOtherBot: false,
-                                params: [{type: 'text', paramName: null, displayName: null, needYn: false}],
+                                params: [{type: 'text', title: '', needYn: false}, {type: 'text', paramName: null, displayName: null, needYn: false}],
                                 buttons: [{name: null, action: 'first', actionData: null}]
                             }
 
@@ -1907,9 +1906,9 @@
                             o.data.id = blockId
                             o.data.botId = authBlock.botId
                             o.data.name = authBlock.name
-                            o.data.title = authBlock.title
+                            o.data.title = authBlock.params?.[0]?.title
                             o.data.usingOtherBot = authBlock.usingOtherBot
-                            o.data.params = authBlock.params
+                            o.data.params = authBlock.params.slice(1)
                             o.data.buttons = authBlock.buttons
 
                             $('.chatbot-control-panel').removeClass('active')
@@ -1930,13 +1929,22 @@
                             o.data.buttons.splice(index, 1)
                         },
                         save() {
+                            const data = {
+                                id: o.data.id,
+                                botId: o.data.botId,
+                                name: o.data.name,
+                                usingOtherBot: o.data.usingOtherBot,
+                                params: [{type: 'text', sequence: 0, title: o.data.title, needYn: false}].concat(o.data.params),
+                                buttons: o.data.buttons
+                            }
+
                             if (!o.data.id) {
-                                restSelf.post('/api/chatbot/' + o.data.botId + '/auth-block', o.data).done(response => {
-                                    o.data.id = response.data
-                                    authBlockListContainer.authBlocks[o.data.id] = o.data;
-                                })
+                                alert('인증블럭을 선택해주세요')
+                                return
                             } else {
-                                restSelf.put('/api/chatbot/' + o.data.botId + '/auth-block/' + o.data.id, o.data)
+                                restSelf.put('/api/chatbot/' + o.data.botId + '/auth-block/' + o.data.id, data).done(() => {
+                                    authBlockListContainer.authBlocks[o.data.id] = data;
+                                })
                             }
                             alert('저장되었습니다.')
                         }

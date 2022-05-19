@@ -33,9 +33,9 @@ public class WebchatAuthBlockApiController extends ApiBaseController {
     }
 
     @PostMapping("{botId}")
-    public ResponseEntity<JsonResult<Void>> post(@PathVariable Integer botId, @RequestBody @Valid WebchatAuthBlocKFormRequest request, BindingResult bindingResult) {
-        webchatBotAuthBlockService.insertAuthBlock(botId, request);
-        return ResponseEntity.ok(create());
+    public ResponseEntity<JsonResult<Integer>> post(@PathVariable Integer botId, @RequestBody @Valid WebchatAuthBlocKFormRequest request, BindingResult bindingResult) {
+        final Integer authBlockId = webchatBotAuthBlockService.insertAuthBlock(botId, request);
+        return ResponseEntity.ok(data(authBlockId));
     }
 
     @PutMapping("{authBlockId}")
