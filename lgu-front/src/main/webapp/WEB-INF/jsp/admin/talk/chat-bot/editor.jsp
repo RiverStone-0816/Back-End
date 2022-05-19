@@ -90,7 +90,7 @@
                                     <div id="auth-block" class="block-list-container">
                                         <ul class="block-list-ul">
                                             <li v-for="(e, i) in authBlocks" :key="i" class="block-list">
-                                                <div class="block-name">{{ e.usingOtherBot ? "[공용블록]" : ""}}{{ e.name }}</div>
+                                                <div class="block-name">{{ e.usingOtherBot ? "[공용]" : ""}}{{ e.name }}</div>
                                                 <div class="block-control">
                                                     <button @click.stop="configAuthBlock(i)" class="ui mini button">수정</button>
                                                     <button @click.stop="removeAuthBlock(i)" class="ui icon mini button"><i class="x icon"></i></button>
