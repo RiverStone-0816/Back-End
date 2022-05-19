@@ -275,9 +275,9 @@ const ipccCommunicator = new IpccCommunicator()
     .on('BYE', function (message, kind/*[ SAME_UID | SAME_PID ]*/, data1, data2, data3) {
         switch (kind) {
             case"SAME_UID":
-                return alert("다른 컴퓨터에서 같은 아이디로 로긴되어서 서버와 끊김");
+                return alert("다른 컴퓨터에서 같은 아이디로 로긴되어서 서버와 끊김", logout);
             case "SAME_PID":
-                return alert("다른 컴퓨터에서 같은 내선으로로 로긴되어서 서버와 끊김");
+                return alert("다른 컴퓨터에서 같은 내선으로로 로긴되어서 서버와 끊김", logout);
             default:
                 return alert("[" + kind + "]" + data3 + "(" + data1 + ")");
         }
