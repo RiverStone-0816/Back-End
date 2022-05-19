@@ -693,7 +693,7 @@
                                                     </tr>
                                                 </table>
                                             </div>
-                                            <div class="mb15">항목설정</div>
+                                            <div class="mb15">버튼설정</div>
                                             <div v-for="(e,i) in data.buttons" :key="i" class="list-control-container mb15">
                                                 <div class="list-control-header">
                                                     <div>버튼{{ i + 1 }}</div>
@@ -1996,7 +1996,7 @@
 
             const nodeBlockMap = {}
             const blocks = []
-            const gorups = []
+            let groups = []
 
             let lastBlockId = 0
             const createBlockId = () => (++lastBlockId)
