@@ -59,6 +59,8 @@ public class CurrentTalkRoomRepository extends EicnBaseRepository<CurrentTalkRoo
         if (StringUtils.isNotEmpty(search.getRoomId()))
             conditions.add(CURRENT_TALK_ROOM.ROOM_ID.eq(search.getRoomId()));
 
+        conditions.add(CURRENT_TALK_ROOM.SCHEDULE_KIND.eq("G"));
+
         return conditions;
     }
 
