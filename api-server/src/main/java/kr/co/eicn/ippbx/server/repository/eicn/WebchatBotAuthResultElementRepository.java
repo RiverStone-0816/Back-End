@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.WEBCHAT_AUTH_BTN_ELEMENT;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.WEBCHAT_BOT_AUTHRESULT_ELEMENT;
 
 @Getter
@@ -28,26 +29,30 @@ public class WebchatBotAuthResultElementRepository extends EicnBaseRepository<kr
         return findAll(WEBCHAT_BOT_AUTHRESULT_ELEMENT.BLOCK_ID.in(idList));
     }
 
-    public void insert(Integer blockId, List<WebchatBotFormRequest.AuthResultElement> request) {
-        if (request != null && request.size() > 0) {
-            InsertValuesStep11<WebchatBotAuthresultElementRecord, Integer, String, String, String, String, String, String, String, String, String, String> query = dsl.insertInto(WEBCHAT_BOT_AUTHRESULT_ELEMENT, WEBCHAT_BOT_AUTHRESULT_ELEMENT.BLOCK_ID, WEBCHAT_BOT_AUTHRESULT_ELEMENT.RESULT_VALUE, WEBCHAT_BOT_AUTHRESULT_ELEMENT.RESULT_MENT, WEBCHAT_BOT_AUTHRESULT_ELEMENT.ACTION, WEBCHAT_BOT_AUTHRESULT_ELEMENT.NEXT_ACTION_DATA, WEBCHAT_BOT_AUTHRESULT_ELEMENT.NEXT_API_MENT, WEBCHAT_BOT_AUTHRESULT_ELEMENT.IS_RESULT_TPL_ENABLE, WEBCHAT_BOT_AUTHRESULT_ELEMENT.NEXT_API_RESULT_TPL, WEBCHAT_BOT_AUTHRESULT_ELEMENT.NEXT_API_NO_RESULT_MENT, WEBCHAT_BOT_AUTHRESULT_ELEMENT.NEXT_API_ERROR_MENT, WEBCHAT_BOT_AUTHRESULT_ELEMENT.COMPANY_ID);
+    public Integer insert(Integer blockId, WebchatBotFormRequest.AuthResultElement request) {
+        return dsl.insertInto(WEBCHAT_BOT_AUTHRESULT_ELEMENT)
+                .set(WEBCHAT_BOT_AUTHRESULT_ELEMENT.BLOCK_ID, blockId)
+                .set(WEBCHAT_BOT_AUTHRESULT_ELEMENT.RESULT_VALUE, request.getValue())
+                .set(WEBCHAT_BOT_AUTHRESULT_ELEMENT.RESULT_MENT, request.getMent())
+                .set(WEBCHAT_BOT_AUTHRESULT_ELEMENT.ACTION, request.getAction().getCode())
+                .set(WEBCHAT_BOT_AUTHRESULT_ELEMENT.NEXT_ACTION_DATA, request.getNextActionData())
+                .set(WEBCHAT_BOT_AUTHRESULT_ELEMENT.NEXT_API_MENT, request.getNextApiMent())
+                .set(WEBCHAT_BOT_AUTHRESULT_ELEMENT.IS_RESULT_TPL_ENABLE, request.getEnableResultTemplate() != null && request.getEnableResultTemplate() ? "Y" : "N")
+                .set(WEBCHAT_BOT_AUTHRESULT_ELEMENT.NEXT_API_RESULT_TPL, request.getNextApiResultTemplate())
+                .set(WEBCHAT_BOT_AUTHRESULT_ELEMENT.NEXT_API_NO_RESULT_MENT, request.getNextApiNoResultMent())
+                .set(WEBCHAT_BOT_AUTHRESULT_ELEMENT.NEXT_API_ERROR_MENT, request.getNextApiErrorMent())
+                .set(WEBCHAT_BOT_AUTHRESULT_ELEMENT.COMPANY_ID, getCompanyId())
+                .returning()
+                .fetchOne()
+                .value1();
+    }
 
-            request.forEach(e -> query.values(
-                    blockId,
-                    e.getValue(),
-                    e.getMent(),
-                    e.getAction(),
-                    e.getNextActionData(),
-                    e.getNextApiMent(),
-                    e.getEnableResultTemplate() != null && e.getEnableResultTemplate() ? "Y" : "N",
-                    e.getNextApiResultTemplate(),
-                    e.getNextApiNoResultMent(),
-                    e.getNextApiErrorMent(),
-                    getCompanyId()
-            ));
-
-            query.execute();
-        }
+    public void updateBlockId(Integer elementId, Integer blockId) {
+        dsl.update(WEBCHAT_BOT_AUTHRESULT_ELEMENT)
+                .set(WEBCHAT_BOT_AUTHRESULT_ELEMENT.NEXT_ACTION_DATA, String.valueOf(blockId))
+                .where(compareCompanyId())
+                .and(WEBCHAT_BOT_AUTHRESULT_ELEMENT.ID.eq(elementId))
+                .execute();
     }
 
     public void deleteByBlockIdList(List<Integer> blockIdList) {

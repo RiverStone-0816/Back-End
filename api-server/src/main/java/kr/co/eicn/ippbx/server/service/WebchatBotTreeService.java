@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.server.service;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotTree;
+import kr.co.eicn.ippbx.model.enums.BlockType;
 import kr.co.eicn.ippbx.model.form.WebchatBotTreeFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatBotTreeRepository;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ public class WebchatBotTreeService extends ApiBaseService {
 
     private final WebchatBotTreeRepository webchatBotTreeRepository;
 
-    public String insert(Integer botId, Integer blockId, Integer rootId, Integer parentId, Integer buttonId, String parentTreeName, Integer level) {
+    public String insert(Integer botId, Integer blockId, Integer rootId, BlockType parentType, Integer parentId, Integer buttonId, String parentTreeName, Integer level) {
         WebchatBotTreeFormRequest data = new WebchatBotTreeFormRequest();
 
         String treeName = createTreeName(blockId, parentTreeName);
@@ -29,6 +30,7 @@ public class WebchatBotTreeService extends ApiBaseService {
         data.setChatBotId(botId);
         data.setBlockId(blockId);
         data.setRootId(rootId);
+        data.setType(parentType);
         data.setParentId(parentId);
         data.setParentButtonId(buttonId);
         data.setLevel(level);

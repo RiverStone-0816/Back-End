@@ -42,7 +42,8 @@ public class WebchatBotButtonElementRepository extends EicnBaseRepository<kr.co.
     public void updateNextBlockId(Integer buttonId, Integer nextBlockId) {
         dsl.update(WEBCHAT_BOT_BTN_ELEMENT)
                 .set(WEBCHAT_BOT_BTN_ELEMENT.NEXT_ACTION_DATA, String.valueOf(nextBlockId))
-                .where(WEBCHAT_BOT_BTN_ELEMENT.ID.eq(buttonId))
+                .where(compareCompanyId())
+                .and(WEBCHAT_BOT_BTN_ELEMENT.ID.eq(buttonId))
                 .execute();
     }
 

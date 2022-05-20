@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.enums.ButtonAction;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatBotAuthResultElementRepository;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,8 +45,25 @@ public class WebchatBotAuthResultElementService extends ApiBaseService {
         return response;
     }
 
-    public void insert(Integer blockId, List<WebchatBotFormRequest.AuthResultElement> authResultElementList) {
-        webchatBotAuthResultElementRepository.insert(blockId, authResultElementList);
+    public Integer insert(Integer blockId, WebchatBotFormRequest.AuthResultElement authResultElement) {
+        WebchatBotFormRequest.AuthResultElement data = new WebchatBotFormRequest.AuthResultElement();
+
+        ReflectionUtils.copy(data, authResultElement);
+
+        if (ButtonAction.CONNECT_BLOCK.equals(authResultElement.getAction()) || ButtonAction.CONNECT_NEXT_BLOCK.equals(authResultElement.getAction())
+                || ButtonAction.CONNECT_BEFORE_BLOCK.equals(authResultElement.getAction()) || ButtonAction.CONNECT_FIRST_BLOCK.equals(authResultElement.getAction())) {
+            if (ButtonAction.CONNECT_BEFORE_BLOCK.equals(authResultElement.getAction()) || ButtonAction.CONNECT_FIRST_BLOCK.equals(authResultElement.getAction()))
+                data.setNextActionData(authResultElement.getAction().getCode());
+            else
+                data.setNextActionData(String.valueOf(authResultElement.getNextActionData()));
+            data.setAction(ButtonAction.CONNECT_BLOCK);
+        }
+
+        return webchatBotAuthResultElementRepository.insert(blockId, data);
+    }
+
+    public void updateNextBlockId(Integer elementId, Integer blockId) {
+        webchatBotAuthResultElementRepository.updateBlockId(elementId, blockId);
     }
 
     public void deleteByBlockIdList(List<Integer> blockIdList) {

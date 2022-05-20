@@ -45,7 +45,7 @@ public class WebchatBotFormRequest extends WebchatBotFallbackFormRequest {
     @Data
     public static class AuthButtonInfo extends BaseForm {
         private String name;
-        private AuthButtonAction action;
+        private ButtonAction action;
         private String actionData;
         private String resultParamName;
     }
@@ -128,7 +128,7 @@ public class WebchatBotFormRequest extends WebchatBotFallbackFormRequest {
     public static class AuthResultElement extends BaseForm {
         private String value;
         private String ment;
-        private String action;
+        private ButtonAction action;
         private String nextActionData;
         private String nextApiMent;
         private Boolean enableResultTemplate;

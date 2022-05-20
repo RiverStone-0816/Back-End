@@ -1051,14 +1051,15 @@
                                     value: e.value,
                                     ment: e.ment,
                                     action: e.action,
-                                    nextActionData: e.nextActionData,
+                                    nextActionData: e.action === '' || e.action === 'auth' ? nodeBlockMap[e.childNodeId].id : e.nextActionData,
                                     nextApiMent: e.nextApiMent,
                                     enableResultTemplate: e.enableResultTemplate,
                                     nextApiResultTemplate: e.nextApiResultTemplate,
                                     nextApiNoResultMent: e.nextApiNoResultMent,
                                     nextApiErrorMent: e.nextApiErrorMent
                                 })),
-                                children: block?.buttons.filter(e => e.action === '' || e.action === 'auth').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
+                                children: block?.type === 'BLOCK' ? block?.buttons.filter(e => e.action === '' || e.action === 'auth').map(e => convertBlock(nodeBlockMap[e.childNodeId]))
+                                : block?.authElements.filter(e => e.action === '' || e.action === 'auth').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
                             })
 
                             const form = Object.assign({}, fallbackConfig.data, {blockInfo: convertBlock(blockList.blocks[0])})
@@ -1203,11 +1204,23 @@
                                     }
 
                                     app.authElements = block.authResultElementList.sort((a, b) => (a.id - b.id)).map((e, i) => {
+                                        const childNodeId = (() => {
+                                            if (e.action !== 'block' && e.action !== 'auth' && e.action !== '') return
+                                            const childBlockId = block.children?.filter(childBlock => (childBlock.parentButtonId === e.id))[0]?.id
+                                            return blockList.blocks.filter(createdBlock => createdBlock.id === childBlockId)[0]?.nodeId
+                                        })()
+                                        const action = $.isNumeric(childNodeId) && e.action !== 'auth' ? '' : e.action === 'block' || e.action === '' ? 'block' : e.action
+                                        if (e.action === 'block' || e.action === 'auth' || e.action === '') {
+                                            if (!nodeIdToConnections[nodeId]) nodeIdToConnections[nodeId] = {}
+                                            nodeIdToConnections[nodeId][i] = parseInt(e.nextActionData)
+                                        }
+
                                         return {
                                             value: e.value,
                                             ment: e.ment,
-                                            action: e.action,
+                                            action: action,
                                             nextActionData: e.nextActionData,
+                                            childNodeId: action && action !== 'auth' ? null : childNodeId,
                                             nextApiMent: e.nextApiMent,
                                             enableResultTemplate: e.enableResultTemplate,
                                             nextApiResultTemplate: e.nextApiResultTemplate,
@@ -1220,7 +1233,10 @@
                                     app.showingEmptyButtonItem = !app.buttons.length
                                     app.showingEmptyResultElementItem = !app.authElements.length
 
-                                    app.buttons.forEach(() => editor.addNodeOutput(nodeId))
+                                    if (block.type !== 'AUTH')
+                                        app.buttons.forEach(() => editor.addNodeOutput(nodeId))
+                                    else
+                                        app.authElements.forEach(() => editor.addNodeOutput(nodeId))
                                 }
                                 createBlock(data.blockInfo)
 
@@ -2183,11 +2199,17 @@
                                 o.authElements.splice(index + 1, 0, item)
                             },
                             removeResultElementItem(index) {
-                                o.authElements.splice(index, 1)[0]
+                                const removedElement = o.authElements.splice(index, 1)[0]
                                 o.showingEmptyButtonItem = !o.authElements || !o.authElements.length
+
+                                editor.removeNodeOutput(o.nodeId, o.getOutputClass(index))
+
+                                if (removedElement.action === '')
+                                    nodeBlockMap[removedElement.childNodeId].delete()
                             },
                             createResultElement() {
                                 o.authElements.push({})
+                                editor.addNodeOutput(o.nodeId)
                                 o.configResultElementItem(o.authElements.length - 1)
                                 o.showingEmptyResultElementItem = false
                             },

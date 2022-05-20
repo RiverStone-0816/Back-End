@@ -26,6 +26,7 @@ public class WebchatBotTreeRepository extends EicnBaseRepository<WebchatBotTree,
                 .set(WEBCHAT_BOT_TREE.CHATBOT_ID, request.getChatBotId())
                 .set(WEBCHAT_BOT_TREE.BLOCK_ID, request.getBlockId())
                 .set(WEBCHAT_BOT_TREE.ROOT_ID, request.getRootId())
+                .set(WEBCHAT_BOT_TREE.PARENT_BLOCK_KIND, request.getType().getCode())
                 .set(WEBCHAT_BOT_TREE.PARENT_ID, request.getParentId())
                 .set(WEBCHAT_BOT_TREE.PARENT_BTN_ID, request.getParentButtonId())
                 .set(WEBCHAT_BOT_TREE.LEVEL, request.getLevel())
