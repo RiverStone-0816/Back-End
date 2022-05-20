@@ -3,11 +3,10 @@ package kr.co.eicn.ippbx.server.service;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatAuthBlock;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatAuthBtnElement;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatAuthDispElement;
-import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotAuthBlockInfo;
-import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotAuthBlockInfoResponse;
 import kr.co.eicn.ippbx.model.enums.AuthButtonAction;
 import kr.co.eicn.ippbx.model.enums.AuthDisplayType;
-import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
+import kr.co.eicn.ippbx.model.form.WebchatAuthBlocKFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatAuthBlockRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatAuthButtonElementRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatAuthDisplayElementRepository;
@@ -15,10 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -29,35 +25,49 @@ public class WebchatBotAuthBlockService extends ApiBaseService {
     private final WebchatAuthDisplayElementRepository webchatAuthDisplayElementRepository;
     private final WebchatAuthButtonElementRepository webchatAuthButtonElementRepository;
 
-    public Map<Integer, Integer> insertAuthBlock(Integer botId, List<WebchatBotFormRequest.AuthBlockInfo> authBlockList) {
-        Map<Integer, Integer> authIdMap = new HashMap<>();
-        for (WebchatBotFormRequest.AuthBlockInfo authBlock : authBlockList) {
-            Integer blockId = webchatAuthBlockRepository.insert(botId, authBlock);
+    public Integer insertAuthBlock(Integer botId, WebchatAuthBlocKFormRequest authBlock) {
+        Integer blockId = webchatAuthBlockRepository.insert(botId, authBlock);
 
-            webchatAuthButtonElementRepository.insert(blockId, authBlock.getButtons());
-            webchatAuthDisplayElementRepository.insert(blockId, authBlock.getParams());
+        webchatAuthButtonElementRepository.insert(blockId, authBlock.getButtons());
+        webchatAuthDisplayElementRepository.insert(blockId, authBlock.getParams());
 
-            authIdMap.put(authBlock.getId(), blockId);
-        }
+        return blockId;
+    }
 
-        return authIdMap;
+    public void updateAuthBlock(Integer authBlockId, WebchatAuthBlocKFormRequest authBlock) {
+        webchatAuthBlockRepository.update(authBlockId, authBlock);
+
+        deleteAuthElements(Collections.singleton(authBlockId));
+
+        webchatAuthButtonElementRepository.insert(authBlockId, authBlock.getButtons());
+        webchatAuthDisplayElementRepository.insert(authBlockId, authBlock.getParams());
+    }
+
+    public void deleteById(Integer authBlockId) {
+        webchatAuthBlockRepository.delete(authBlockId);
+
+        deleteAuthElements(Collections.singleton(authBlockId));
     }
 
     public void deleteAuthBlockByBotId(Integer botId) {
-        List<Integer> authBlockIdList = webchatAuthBlockRepository.findAllDeleteBlockByBotId(botId).stream().map(WebchatAuthBlock::getId).collect(Collectors.toList());
+        Set<Integer> authBlockIdSet = webchatAuthBlockRepository.findAllDeleteBlockByBotId(botId).stream().map(WebchatAuthBlock::getId).collect(Collectors.toSet());
         webchatAuthBlockRepository.deleteByBotId(botId);
-        webchatAuthButtonElementRepository.deleteByBlockIdList(authBlockIdList);
-        webchatAuthDisplayElementRepository.deleteByBlockIdList(authBlockIdList);
+        deleteAuthElements(authBlockIdSet);
     }
 
-    public List<WebchatBotAuthBlockInfo> findAllByBotId(Integer botId) {
+    private void deleteAuthElements(Set<Integer> authBlockIdSet) {
+        webchatAuthButtonElementRepository.deleteByBlockIdList(authBlockIdSet);
+        webchatAuthDisplayElementRepository.deleteByBlockIdList(authBlockIdSet);
+    }
+
+    public List<WebchatBotAuthBlockInfoResponse> findAllByBotId(Integer botId) {
         List<WebchatAuthBlock> authBlockList = webchatAuthBlockRepository.findAllByBotId(botId);
         List<Integer> authBlockIdList = authBlockList.stream().map(WebchatAuthBlock::getId).collect(Collectors.toList());
         Map<Integer, List<WebchatAuthDispElement>> authDisplayByBlockIdMap = webchatAuthDisplayElementRepository.findAllByBlockIdList(authBlockIdList);
         Map<Integer, List<WebchatAuthBtnElement>> authButtonByBlockIdMap = webchatAuthButtonElementRepository.findAllByBlockIds(authBlockIdList);
 
         return authBlockList.stream().map(e -> {
-            WebchatBotAuthBlockInfo response = convertDto(e, WebchatBotAuthBlockInfo.class);
+            WebchatBotAuthBlockInfoResponse response = convertDto(e, WebchatBotAuthBlockInfoResponse.class);
 
             response.setUsingOtherBot("Y".equals(e.getOtherBotUseYn()));
             response.setParams(convertAuthDisplay(authDisplayByBlockIdMap.get(e.getId())));
@@ -67,16 +77,17 @@ public class WebchatBotAuthBlockService extends ApiBaseService {
         }).collect(Collectors.toList());
     }
 
-    private List<WebchatBotAuthBlockInfo.AuthParamInfo> convertAuthDisplay(List<WebchatAuthDispElement> displayList) {
+    private List<WebchatBotAuthBlockInfoResponse.AuthParamInfo> convertAuthDisplay(List<WebchatAuthDispElement> displayList) {
         if (displayList == null || displayList.size() == 0)
             return new ArrayList<>();
         return displayList.stream().map(e -> {
-            WebchatBotAuthBlockInfo.AuthParamInfo response = new WebchatBotAuthBlockInfo.AuthParamInfo();
+            WebchatBotAuthBlockInfoResponse.AuthParamInfo response = new WebchatBotAuthBlockInfoResponse.AuthParamInfo();
 
             response.setId(e.getId());
             response.setBlockId(e.getAuthBlockId());
             response.setSequence(e.getSequence());
             response.setType(AuthDisplayType.of(e.getInputType()));
+            response.setTitle(e.getTitle());
             response.setName(e.getInputDisplayName());
             response.setParamName(e.getInputParamName());
             response.setNeedYn("Y".equals(e.getInputNeedYn()));
@@ -85,11 +96,11 @@ public class WebchatBotAuthBlockService extends ApiBaseService {
         }).collect(Collectors.toList());
     }
 
-    private List<WebchatBotAuthBlockInfo.AuthButtonInfo> convertAuthButton(List<WebchatAuthBtnElement> buttonList) {
+    private List<WebchatBotAuthBlockInfoResponse.AuthButtonInfo> convertAuthButton(List<WebchatAuthBtnElement> buttonList) {
         if (buttonList == null || buttonList.size() == 0)
             return new ArrayList<>();
         return buttonList.stream().map(e -> {
-            WebchatBotAuthBlockInfo.AuthButtonInfo response = new WebchatBotAuthBlockInfo.AuthButtonInfo();
+            WebchatBotAuthBlockInfoResponse.AuthButtonInfo response = new WebchatBotAuthBlockInfoResponse.AuthButtonInfo();
 
             response.setId(e.getId());
             response.setBlockId(e.getAuthBlockId());

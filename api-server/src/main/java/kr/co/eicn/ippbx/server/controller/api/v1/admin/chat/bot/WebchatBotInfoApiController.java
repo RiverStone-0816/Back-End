@@ -77,13 +77,6 @@ public class WebchatBotInfoApiController extends ApiBaseController {
         return ResponseEntity.ok(data(templateBlockList));
     }
 
-    @GetMapping("auth-blocks")
-    public ResponseEntity<JsonResult<List<WebchatBotAuthBlockInfo>>> getAuthBlockList() {
-        List<WebchatBotAuthBlockInfo> response = webchatBotAuthBlockService.findAllByBotId(null);
-
-        return ResponseEntity.ok(data(response));
-    }
-
     @PostMapping("")
     public ResponseEntity<JsonResult<Integer>> post(@Valid @RequestBody WebchatBotFormRequest form, BindingResult bindingResult) {
         if (!form.validate(bindingResult))

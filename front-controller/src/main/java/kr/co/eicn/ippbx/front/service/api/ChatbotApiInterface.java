@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.front.service.api;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.enums.TalkChannelType;
+import kr.co.eicn.ippbx.model.form.WebchatAuthBlocKFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFallbackFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.model.search.ChatbotSearchRequest;
@@ -28,6 +29,7 @@ import java.util.List;
 @Service
 public class ChatbotApiInterface extends ApiServerInterface {
     private static final String subUrl = "/api/v1/chat/bot/";
+    private static final String authSubUrl = "/api/v1/chat/bot/auth-block/";
 
     @SneakyThrows
     public List<WebchatBotSummaryInfoResponse> list() {
@@ -54,8 +56,20 @@ public class ChatbotApiInterface extends ApiServerInterface {
         return getData(subUrl + "blocks/" + blockId, null, WebchatBotInfoResponse.BlockInfo.class).getData();
     }
 
-    public List<WebchatBotAuthBlockInfo> getAuthBlockList() throws IOException, ResultFailException {
-        return getList(subUrl + "auth-blocks", null, WebchatBotAuthBlockInfo.class).getData();
+    public List<WebchatBotAuthBlockInfoResponse> getAuthBlockList(Integer botId) throws IOException, ResultFailException {
+        return getList(authSubUrl, Collections.singletonMap("botId", botId), WebchatBotAuthBlockInfoResponse.class).getData();
+    }
+
+    public Integer addAuthBlock(Integer botId, WebchatAuthBlocKFormRequest form) throws IOException, ResultFailException {
+        return getData(HttpMethod.POST, authSubUrl + botId, form, Integer.class, false).getData();
+    }
+
+    public void updateAuthBlock(Integer blockId, WebchatAuthBlocKFormRequest form) throws IOException, ResultFailException {
+        put(authSubUrl + blockId, form);
+    }
+
+    public void deleteAuthBlock(Integer blockId) throws IOException, ResultFailException {
+        delete(authSubUrl + blockId);
     }
 
     @SneakyThrows

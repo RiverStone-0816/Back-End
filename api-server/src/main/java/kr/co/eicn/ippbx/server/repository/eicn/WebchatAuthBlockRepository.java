@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatAuthBlock;
-import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
+import kr.co.eicn.ippbx.model.form.WebchatAuthBlocKFormRequest;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.slf4j.Logger;
@@ -37,15 +37,22 @@ public class WebchatAuthBlockRepository extends EicnBaseRepository<kr.co.eicn.ip
         delete(WEBCHAT_AUTH_BLOCK.BOT_ID.eq(botId));
     }
 
-    public Integer insert(Integer botId, WebchatBotFormRequest.AuthBlockInfo form) {
+    public Integer insert(Integer botId, WebchatAuthBlocKFormRequest request) {
         return dsl.insertInto(WEBCHAT_AUTH_BLOCK)
                 .set(WEBCHAT_AUTH_BLOCK.BOT_ID, botId)
-                .set(WEBCHAT_AUTH_BLOCK.NAME, form.getName())
-                .set(WEBCHAT_AUTH_BLOCK.TITLE, form.getTitle())
-                .set(WEBCHAT_AUTH_BLOCK.OTHER_BOT_USE_YN, form.getUsingOtherBot() ? "Y" : "N")
+                .set(WEBCHAT_AUTH_BLOCK.NAME, request.getName())
+                .set(WEBCHAT_AUTH_BLOCK.OTHER_BOT_USE_YN, request.getUsingOtherBot() ? "Y" : "N")
                 .set(WEBCHAT_AUTH_BLOCK.COMPANY_ID, g.getUser().getCompanyId())
                 .returning(WEBCHAT_AUTH_BLOCK.ID)
                 .fetchOne()
                 .value1();
+    }
+
+    public void update(Integer id, WebchatAuthBlocKFormRequest request) {
+        dsl.update(WEBCHAT_AUTH_BLOCK)
+                .set(WEBCHAT_AUTH_BLOCK.NAME, request.getName())
+                .set(WEBCHAT_AUTH_BLOCK.OTHER_BOT_USE_YN, request.getUsingOtherBot() ? "Y" : "N")
+                .where(WEBCHAT_AUTH_BLOCK.ID.eq(id))
+                .execute();
     }
 }

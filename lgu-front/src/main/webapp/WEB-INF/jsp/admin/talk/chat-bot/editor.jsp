@@ -90,7 +90,7 @@
                                     <div id="auth-block" class="block-list-container">
                                         <ul class="block-list-ul">
                                             <li v-for="(e, i) in authBlocks" :key="i" class="block-list">
-                                                <div class="block-name">{{ e.usingOtherBot ? "[공용블록]" : ""}}{{ e.name }}</div>
+                                                <div class="block-name">{{ e.usingOtherBot ? "[공용]" : ""}}{{ e.name }}</div>
                                                 <div class="block-control">
                                                     <button @click.stop="configAuthBlock(i)" class="ui mini button">수정</button>
                                                     <button @click.stop="removeAuthBlock(i)" class="ui icon mini button"><i class="x icon"></i></button>
@@ -693,7 +693,7 @@
                                                     </tr>
                                                 </table>
                                             </div>
-                                            <div class="mb15">항목설정</div>
+                                            <div class="mb15">버튼설정</div>
                                             <div v-for="(e,i) in data.buttons" :key="i" class="list-control-container mb15">
                                                 <div class="list-control-header">
                                                     <div>버튼{{ i + 1 }}</div>
@@ -1061,7 +1061,7 @@
                                 children: block?.buttons.filter(e => e.action === '' || e.action === 'auth').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
                             })
 
-                            const form = Object.assign({}, fallbackConfig.data, {authBlockList: authBlockListContainer.getOwnAuthBlockList()}, {blockInfo: convertBlock(blockList.blocks[0])})
+                            const form = Object.assign({}, fallbackConfig.data, {blockInfo: convertBlock(blockList.blocks[0])})
 
                             if ($.isNumeric(o.current)) {
                                 return restSelf.put('/api/chatbot/' + o.current + '/all', form).done(() => alert('저장되었습니다.', o.load))
@@ -1093,7 +1093,7 @@
                             editor.clear()
                         },
                         loadBot(botId) {
-                            return restSelf.get('/api/chatbot/' + botId).done(response => {
+                            return restSelf.get('/api/chatbot/' + botId).done(async (response) => {
                                 o.current = botId
                                 o.select = botId
                                 o.changed = false
@@ -1120,11 +1120,7 @@
                                     nextPhone: data.nextPhone
                                 }
 
-                                if (data.authBlockList) {
-                                    data.authBlockList.forEach(e => {
-                                        authBlockListContainer.authBlocks[e.id] = e
-                                    })
-                                }
+                                await authBlockListContainer.load(botId)
 
                                 chatbotSettingModal.hide()
 
@@ -1241,7 +1237,6 @@
                                 }
 
                                 lastBlockId = Math.max.apply(null, [0].concat(blockList.blocks.map(e => e.id))) + 1
-                                lastAuthBlockId = Math.max.apply(null, [0].concat(data.authBlockList?.map(e => e.id))) + 1
 
                                 function convertOppositeValue(pos) {
                                     return pos * -1 + 100   // 초기 위치값을 조절하려면 뒤 + 값을 조정하면 됨
@@ -1371,13 +1366,7 @@
                             for (let property in nodeBlockMap) delete nodeBlockMap[property]
                             editor.clear()
 
-                            restSelf.get('/api/chatbot/auth-blocks').done(response => {
-                                if (response.data) {
-                                    response.data.forEach(e => {
-                                        authBlockListContainer.authBlocks[e.id] = e
-                                    })
-                                }
-                            })
+                            authBlockListContainer.load(null)
                             fallbackConfig.data = {
                                 name: o.name,
                                 enableCustomerInput: o.enableCustomerInput,
@@ -1832,20 +1821,42 @@
                         }
                     },
                     methods: {
+                        async load(botId) {
+                            if (!botId || botId === '')
+                                botId = ''
+                            await restSelf.get('/api/chatbot/auth-blocks?botId=' + botId).done(response => {
+                                if (response.data) {
+                                    response.data.forEach(e => {
+                                        o.authBlocks[e.id] = e
+                                    })
+                                }
+                            })
+                        },
                         addNewBlock() {
-                            const newBlockId = createAuthBlockId()
-                            o.authBlocks[newBlockId] = {
-                                id: newBlockId,
+                            if (!botList.current) {
+                                alert('봇 선택/저장 후 추가해 주세요.')
+                                return
+                            }
+
+                            const data = {
+                                id: null,
                                 botId: botList.current,
                                 name: '새로운 인증블럭',
-                                title: null,
                                 usingOtherBot: false,
-                                params: [{type: 'text', paramName: null, displayName: null, needYn: false}],
+                                params: [{type: 'text', title: '', needYn: false}, {type: 'text', paramName: null, displayName: null, needYn: false}],
                                 buttons: [{name: null, action: 'first', actionData: null}]
                             }
+
+                            restSelf.post('/api/chatbot/' + botList.current + '/auth-block', data, null, true).done(response => {
+                                authBlockListContainer.authBlocks[response.data] = data;
+                            })
                         },
                         removeAuthBlock(blockId) {
-                            delete o.authBlocks[blockId]
+                            alert('삭제하시겠습니까?', () => {
+                                restSelf.delete('/api/chatbot/' + botList.current + '/auth-block/' + blockId).done(response => {
+                                    delete o.authBlocks[blockId]
+                                })
+                            })
                         },
                         configAuthBlock(blockId) {
                             authBlockConfig.load(blockId)
@@ -1895,9 +1906,9 @@
                             o.data.id = blockId
                             o.data.botId = authBlock.botId
                             o.data.name = authBlock.name
-                            o.data.title = authBlock.title
+                            o.data.title = authBlock.params?.[0]?.title
                             o.data.usingOtherBot = authBlock.usingOtherBot
-                            o.data.params = authBlock.params
+                            o.data.params = authBlock.params.slice(1)
                             o.data.buttons = authBlock.buttons
 
                             $('.chatbot-control-panel').removeClass('active')
@@ -1918,8 +1929,23 @@
                             o.data.buttons.splice(index, 1)
                         },
                         save() {
-                            botList.changed = true
-                            authBlockListContainer.authBlocks[o.data.id] = o.data;
+                            const data = {
+                                id: o.data.id,
+                                botId: o.data.botId,
+                                name: o.data.name,
+                                usingOtherBot: o.data.usingOtherBot,
+                                params: [{type: 'text', sequence: 0, title: o.data.title, needYn: false}].concat(o.data.params),
+                                buttons: o.data.buttons
+                            }
+
+                            if (!o.data.id) {
+                                alert('인증블럭을 선택해주세요')
+                                return
+                            } else {
+                                restSelf.put('/api/chatbot/' + o.data.botId + '/auth-block/' + o.data.id, data).done(() => {
+                                    authBlockListContainer.authBlocks[o.data.id] = data;
+                                })
+                            }
                             alert('저장되었습니다.')
                         }
                     }
@@ -1978,12 +2004,10 @@
 
             const nodeBlockMap = {}
             const blocks = []
-            const gorups = []
+            let groups = []
 
             let lastBlockId = 0
             const createBlockId = () => (++lastBlockId)
-            let lastAuthBlockId = 0
-            const createAuthBlockId = () => (++lastAuthBlockId)
 
             function createNode(blockId, x, y, type = 'BLOCK', authBlockId) {
                 if (typeof x !== 'number' || typeof y !== 'number') {
