@@ -62,6 +62,7 @@ public class ScreenDataApiController extends ApiBaseController {
             }
         });
 
+        result.setInboundCall(dashServiceStat.getTotalCnt());
         result.setConnectionRequest(dashServiceStat.getConnReqCnt());
         result.setSuccessCall(dashServiceStat.getSuccessCnt());
         result.setCancelCall(dashServiceStat.getConnReqCnt() - dashServiceStat.getSuccessCnt());
