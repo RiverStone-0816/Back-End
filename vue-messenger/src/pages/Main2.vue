@@ -225,7 +225,7 @@
 
           <!-- member start -->
           <template v-if="message.sender === 'SERVER' && message.messageType === 'member'">
-            <div class="pl-3 pt-1">
+            <div class="pl-3 pt-3">
               <div class="flex items-start">
                 <!--채널봇 아이콘-->
                 <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
