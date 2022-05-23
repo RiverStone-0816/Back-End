@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.service;
 
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchTalkServiceInfoResponse;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkServiceInfoRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkServiceInfoRepository;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 public class TalkServiceInfoService extends ApiBaseService {
     private final Logger logger = LoggerFactory.getLogger(TalkServiceInfoService.class);
 
-    private final TalkServiceInfoRepository talkServiceInfoRepository;
+    private final WtalkServiceInfoRepository talkServiceInfoRepository;
 
     public List<SearchTalkServiceInfoResponse> getAllTalkServiceList() {
         return talkServiceInfoRepository.findAll().stream()

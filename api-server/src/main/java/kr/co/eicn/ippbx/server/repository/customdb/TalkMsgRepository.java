@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonTalkMsg;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonWtalkMsg;
 import kr.co.eicn.ippbx.model.entity.customdb.TalkMsgEntity;
 import lombok.Getter;
 import org.jooq.impl.DSL;
@@ -11,13 +11,13 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
-public class TalkMsgRepository extends CustomDBBaseRepository<CommonTalkMsg, TalkMsgEntity, Integer> {
+public class TalkMsgRepository extends CustomDBBaseRepository<CommonWtalkMsg, TalkMsgEntity, Integer> {
     private final Logger logger = LoggerFactory.getLogger(TalkMsgRepository.class);
-    private CommonTalkMsg TABLE;
+    private CommonWtalkMsg TABLE;
 
     public TalkMsgRepository(String companyId) {
-        super(new CommonTalkMsg(companyId), new CommonTalkMsg(companyId).SEQ, TalkMsgEntity.class);
-        this.TABLE = new CommonTalkMsg(companyId);
+        super(new CommonWtalkMsg(companyId), new CommonWtalkMsg(companyId).SEQ, TalkMsgEntity.class);
+        this.TABLE = new CommonWtalkMsg(companyId);
     }
 
     public List<TalkMsgEntity> findAll(String roomId) {
@@ -25,8 +25,8 @@ public class TalkMsgRepository extends CustomDBBaseRepository<CommonTalkMsg, Tal
     }
 
     public List<TalkMsgEntity> getAllLastMessagesInRoomIds(Set<String> roomIdList) {
-        final CommonTalkMsg table1 = TABLE.as("TABLE1");
-        final CommonTalkMsg table2 = TABLE.as("TABLE2");
+        final CommonWtalkMsg table1 = TABLE.as("TABLE1");
+        final CommonWtalkMsg table2 = TABLE.as("TABLE2");
 
         return dsl.select(table1.ROOM_ID, table2.SEQ, table2.CONTENT, table2.TYPE, table2.SEND_RECEIVE)
                 .from(

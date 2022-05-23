@@ -1,9 +1,8 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonTalkMsg;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonWtalkMsg;
 import kr.co.eicn.ippbx.model.entity.customdb.TalkMsgEntity;
 import kr.co.eicn.ippbx.server.repository.customdb.TalkMsgRepository;
-import kr.co.eicn.ippbx.server.repository.customdb.TalkRoomRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +39,6 @@ public class TalkMsgService extends ApiBaseService implements ApplicationContext
     }
 
     public Map<String, TalkMsgEntity> getAllLastMessageByRoomId(Set<String> roomIdList) {
-        return getRepository().getAllLastMessagesInRoomIds(roomIdList).stream().collect(Collectors.toMap(CommonTalkMsg::getRoomId, e -> e));
+        return getRepository().getAllLastMessagesInRoomIds(roomIdList).stream().collect(Collectors.toMap(CommonWtalkMsg::getRoomId, e -> e));
     }
 }

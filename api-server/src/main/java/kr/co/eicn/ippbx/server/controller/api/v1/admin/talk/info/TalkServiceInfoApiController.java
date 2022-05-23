@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkServiceDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkServiceSummaryResponse;
 import kr.co.eicn.ippbx.model.form.TalkServiceInfoFormRequest;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkServiceInfoRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkServiceInfoRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RequestMapping(value = "api/v1/admin/talk/info/service", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TalkServiceInfoApiController extends ApiBaseController {
 
-	private final TalkServiceInfoRepository talkServiceInfoRepository;
+	private final WtalkServiceInfoRepository talkServiceInfoRepository;
 
 	/**
 	 * 상담톡 목록조회

@@ -9,7 +9,7 @@ import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.sounds.schedule.HolidayApiInterface;
 import kr.co.eicn.ippbx.front.service.api.talk.schedule.TalkDayScheduleApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
-import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleGroupEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.WtalkScheduleGroupEntity;
 import kr.co.eicn.ippbx.model.form.DayTalkScheduleInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.HolyTalkScheduleInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormUpdateRequest;
@@ -109,7 +109,7 @@ public class TalkDayScheduleController extends BaseController {
 
     @GetMapping("modal-view-schedule-group")
     public String modal(Model model, @RequestParam Integer parent) throws IOException, ResultFailException {
-        final TalkScheduleGroupEntity entity = apiInterface.getType(parent);
+        final WtalkScheduleGroupEntity entity = apiInterface.getType(parent);
         model.addAttribute("entity", entity);
 
         return "admin/talk/schedule/day/modal-view-schedule-group";

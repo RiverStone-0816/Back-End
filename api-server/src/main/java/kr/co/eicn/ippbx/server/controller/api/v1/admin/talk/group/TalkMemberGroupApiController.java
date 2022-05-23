@@ -5,13 +5,13 @@ import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
-import kr.co.eicn.ippbx.model.entity.eicn.TalkMemberListEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.WtalkMemberListEntity;
 import kr.co.eicn.ippbx.model.enums.IdType;
 import kr.co.eicn.ippbx.model.form.TalkMemberGroupFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkMemberGroupRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkMemberListRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkServiceInfoRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkMemberGroupRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkMemberListRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkServiceInfoRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
@@ -27,8 +27,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkMemberGroup.TALK_MEMBER_GROUP;
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkMemberList.TALK_MEMBER_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.WtalkMemberGroup.WTALK_MEMBER_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.WtalkMemberList.WTALK_MEMBER_LIST;
 import static kr.co.eicn.ippbx.util.JsonResult.create;
 import static kr.co.eicn.ippbx.util.JsonResult.data;
 
@@ -41,9 +41,9 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RequestMapping(value = "api/v1/admin/talk/group/reception-group", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TalkMemberGroupApiController extends ApiBaseController {
 
-	private final TalkMemberGroupRepository repository;
-	private final TalkMemberListRepository talkMemberListRepository;
-	private final TalkServiceInfoRepository talkServiceInfoRepository;
+	private final WtalkMemberGroupRepository repository;
+	private final WtalkMemberListRepository talkMemberListRepository;
+	private final WtalkServiceInfoRepository talkServiceInfoRepository;
 	private final PersonListRepository personListRepository;
 	private final OrganizationService organizationService;
 
@@ -52,8 +52,8 @@ public class TalkMemberGroupApiController extends ApiBaseController {
 	 */
 	@GetMapping("")
 	public ResponseEntity<JsonResult<List<TalkMemberGroupSummaryResponse>>> list() {
-		final Map<String, String> talkServiceMap = talkServiceInfoRepository.findAll().stream().collect(Collectors.toMap(TalkServiceInfo::getSenderKey, TalkServiceInfo::getKakaoServiceName));
-		final List<TalkMemberListEntity> talkMemberLists = talkMemberListRepository.getTalkMemberListEntities();
+		final Map<String, String> talkServiceMap = talkServiceInfoRepository.findAll().stream().collect(Collectors.toMap(WtalkServiceInfo::getSenderKey, WtalkServiceInfo::getKakaoServiceName));
+		final List<WtalkMemberListEntity> talkMemberLists = talkMemberListRepository.getTalkMemberListEntities();
 
 		final List<TalkMemberGroupSummaryResponse> list = repository.findAll().stream()
 				.map((e) -> {
@@ -85,10 +85,10 @@ public class TalkMemberGroupApiController extends ApiBaseController {
 	 */
 	@GetMapping("{groupId}")
 	public ResponseEntity<JsonResult<TalkMemberGroupDetailResponse>> get(@PathVariable Integer groupId) {
-		final TalkMemberGroup entity = repository.findOneIfNullThrow(groupId);
-		final Map<String, String> talkServiceMap = talkServiceInfoRepository.findAll().stream().collect(Collectors.toMap(TalkServiceInfo::getSenderKey, TalkServiceInfo::getKakaoServiceName));
+		final WtalkMemberGroup entity = repository.findOneIfNullThrow(groupId);
+		final Map<String, String> talkServiceMap = talkServiceInfoRepository.findAll().stream().collect(Collectors.toMap(WtalkServiceInfo::getSenderKey, WtalkServiceInfo::getKakaoServiceName));
 		final List<CompanyTree> companyTrees = organizationService.getAllCompanyTrees();
-		final List<TalkMemberListEntity> talkMemberLists = talkMemberListRepository.getTalkMemberListEntities();
+		final List<WtalkMemberListEntity> talkMemberLists = talkMemberListRepository.getTalkMemberListEntities();
 
 		final TalkMemberGroupDetailResponse detail = convertDto(entity, TalkMemberGroupDetailResponse.class);
 
@@ -119,7 +119,7 @@ public class TalkMemberGroupApiController extends ApiBaseController {
 			throw new ValidationException(bindingResult);
 
 		return ResponseEntity.created(URI.create("api/v1/admin/talk/group/reception-group"))
-				.body(data(repository.insertOnGeneratedKey(form).getValue(TALK_MEMBER_GROUP.GROUP_ID)));
+				.body(data(repository.insertOnGeneratedKey(form).getValue(WTALK_MEMBER_GROUP.GROUP_ID)));
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class TalkMemberGroupApiController extends ApiBaseController {
 	 */
 	@GetMapping("add-on-persons")
 	public ResponseEntity<JsonResult<List<SummaryTalkGroupPersonResponse>>> addOnPersons(@RequestParam(required = false) Integer groupId) {
-		final List<TalkMemberList> talkMembers = Objects.nonNull(groupId) ? talkMemberListRepository.findAll(TALK_MEMBER_LIST.GROUP_ID.eq(groupId)) : Collections.emptyList();
+		final List<WtalkMemberList> talkMembers = Objects.nonNull(groupId) ? talkMemberListRepository.findAll(WTALK_MEMBER_LIST.GROUP_ID.eq(groupId)) : Collections.emptyList();
 		final List<PersonList> personLists = personListRepository.findAll(PERSON_LIST.ID_TYPE.ne(IdType.MASTER.getCode())).stream().sorted(Comparator.comparing(PersonList::getIdName)).collect(Collectors.toList());
 		final List<CompanyTree> companyTrees = organizationService.getAllCompanyTrees();
 

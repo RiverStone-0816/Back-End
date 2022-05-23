@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonTalkRoom;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonWtalkRoom;
 import kr.co.eicn.ippbx.model.entity.customdb.TalkRoomEntity;
 import kr.co.eicn.ippbx.model.search.TalkRoomSearchRequest;
 import kr.co.eicn.ippbx.util.page.Pagination;
@@ -18,14 +18,14 @@ import java.util.Objects;
 import static org.jooq.impl.DSL.name;
 
 @Getter
-public class TalkRoomRepository extends CustomDBBaseRepository<CommonTalkRoom, TalkRoomEntity, Integer> {
+public class TalkRoomRepository extends CustomDBBaseRepository<CommonWtalkRoom, TalkRoomEntity, Integer> {
     protected Logger logger = LoggerFactory.getLogger(TalkRoomRepository.class);
 
-    private CommonTalkRoom TABLE;
+    private CommonWtalkRoom TABLE;
 
     public TalkRoomRepository(String companyId) {
-        super(new CommonTalkRoom(companyId), new CommonTalkRoom(companyId).SEQ, TalkRoomEntity.class);
-        this.TABLE = new CommonTalkRoom(companyId);
+        super(new CommonWtalkRoom(companyId), new CommonWtalkRoom(companyId).SEQ, TalkRoomEntity.class);
+        this.TABLE = new CommonWtalkRoom(companyId);
     }
 
     public Pagination<TalkRoomEntity> pagination(TalkRoomSearchRequest search) {

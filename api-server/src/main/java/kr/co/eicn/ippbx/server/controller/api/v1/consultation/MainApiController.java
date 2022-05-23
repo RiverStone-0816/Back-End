@@ -2,13 +2,15 @@ package kr.co.eicn.ippbx.server.controller.api.v1.consultation;
 
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonTalkMsg;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonTalkRoom;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonWtalkMsg;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonWtalkRoom;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.CommonTalkMsgRecord;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoKind;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentTalkRoom;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkServiceInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebchatServiceInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WtalkServiceInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.model.dto.customdb.*;
@@ -69,7 +71,7 @@ public class MainApiController extends ApiBaseController {
     private final TalkRoomService talkRoomService;
     private final CurrentTalkRoomRepository currentTalkRoomRepository;
     private final CurrentTalkRoomService currentTalkRoomService;
-    private final TalkServiceInfoRepository talkServiceInfoRepository;
+    private final WtalkServiceInfoRepository talkServiceInfoRepository;
     private final WebchatServiceInfoRepository webchatServiceInfoRepository;
     private final TalkMsgService talkMsgService;
     private final PersonListRepository personListRepository;
@@ -347,12 +349,12 @@ public class MainApiController extends ApiBaseController {
             search.setOrderBy("room_last_time");
         }
 
-        Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo> talkServiceInfoMap = talkServiceInfoRepository.findAll(TalkServiceInfo.TALK_SERVICE_INFO.COMPANY_ID.eq(g.getUser().getCompanyId()))
+        Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServiceInfo> talkServiceInfoMap = talkServiceInfoRepository.findAll(WtalkServiceInfo.WTALK_SERVICE_INFO.COMPANY_ID.eq(g.getUser().getCompanyId()))
                 .stream()
-                .collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo::getSenderKey, e -> e));
+                .collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServiceInfo::getSenderKey, e -> e));
         webchatServiceInfoRepository.findAll(WebchatServiceInfo.WEBCHAT_SERVICE_INFO.COMPANY_ID.eq(g.getUser().getCompanyId()))
                 .forEach(e -> {
-                    final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo info = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo();
+                    final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServiceInfo info = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServiceInfo();
                     info.setSenderKey(e.getSenderKey());
                     info.setIsChattEnable(e.getIsChattEnable());
                     info.setKakaoServiceName(e.getWebchatServiceName());
@@ -367,12 +369,12 @@ public class MainApiController extends ApiBaseController {
                 e.setMaindbString_1("");
         }).collect(Collectors.toMap(MaindbCustomInfoEntity::getMaindbSysCustomId, MaindbCustomInfoEntity::getMaindbString_1));
         final List<TalkRoomEntity> talkRoomList = currentTalkRoomService.findAll(search);
-        final Map<String, TalkMsgEntity> lastMessageByRoomId = talkMsgService.getAllLastMessageByRoomId(talkRoomList.stream().map(CommonTalkRoom::getRoomId).collect(Collectors.toSet()));
+        final Map<String, TalkMsgEntity> lastMessageByRoomId = talkMsgService.getAllLastMessageByRoomId(talkRoomList.stream().map(CommonWtalkRoom::getRoomId).collect(Collectors.toSet()));
         final List<TalkCurrentListResponse> response = talkRoomList.stream()
                 .map((e) -> {
                     final TalkCurrentListResponse data = convertDto(e, TalkCurrentListResponse.class);
                     if (isNotEmpty(e.getSenderKey())) {
-                        Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo> talkServiceInfo = Optional.ofNullable(talkServiceInfoMap.get(e.getSenderKey()));
+                        Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServiceInfo> talkServiceInfo = Optional.ofNullable(talkServiceInfoMap.get(e.getSenderKey()));
                         talkServiceInfo.ifPresent(talkService -> data.setSvcName(talkService.getKakaoServiceName()));
                     }
                     if (isNotEmpty(e.getUserid()) && isNotEmpty(personListMap.get(e.getUserid()))) {
@@ -421,7 +423,7 @@ public class MainApiController extends ApiBaseController {
         final TalkCurrentMsgResponse response = new TalkCurrentMsgResponse();
 
 
-        CommonTalkMsg table = talkMsgService.getRepository().getTABLE();
+        CommonWtalkMsg table = talkMsgService.getRepository().getTABLE();
         final List<TalkMsgSummaryResponse> talkMsgResponseList = talkMsgService.getRepository().findAll(table.COMPANY_ID.eq(g.getUser().getCompanyId())
                         .and(table.ROOM_ID.eq(talkRoomEntity.getRoomId()))
                 )
@@ -481,7 +483,7 @@ public class MainApiController extends ApiBaseController {
         currentTalkRoomRepository.delete(CurrentTalkRoom.CURRENT_TALK_ROOM.ROOM_ID.eq(roomId));
 
 
-        CommonTalkMsg table = talkMsgService.getRepository().getTABLE();
+        CommonWtalkMsg table = talkMsgService.getRepository().getTABLE();
         final CommonTalkMsgRecord commonTalkMsgRecord = new CommonTalkMsgRecord(table);
 
         commonTalkMsgRecord.setSendReceive("SE");

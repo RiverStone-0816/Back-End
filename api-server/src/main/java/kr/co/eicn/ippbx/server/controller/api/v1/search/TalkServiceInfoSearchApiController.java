@@ -2,7 +2,6 @@ package kr.co.eicn.ippbx.server.controller.api.v1.search;
 
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchTalkServiceInfoResponse;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkServiceInfoRepository;
 import kr.co.eicn.ippbx.server.service.TalkServiceInfoService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;

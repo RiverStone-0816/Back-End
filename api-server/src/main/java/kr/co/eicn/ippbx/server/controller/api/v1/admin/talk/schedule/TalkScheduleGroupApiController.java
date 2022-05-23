@@ -1,6 +1,5 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.schedule;
 
-import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.model.enums.TalkScheduleKind;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
@@ -9,9 +8,9 @@ import kr.co.eicn.ippbx.model.dto.eicn.TalkScheduleGroupListDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkScheduleGroupSummaryResponse;
 import kr.co.eicn.ippbx.model.form.TalkScheduleGroupFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkScheduleGroupListFormRequest;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkMentRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkScheduleGroupListRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkScheduleGroupRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkMentRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkScheduleGroupListRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkScheduleGroupRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,9 +36,9 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RequestMapping(value = "api/v1/admin/talk/schedule/type", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TalkScheduleGroupApiController extends ApiBaseController {
 
-	private final TalkScheduleGroupRepository repository;
-	private final TalkScheduleGroupListRepository talkScheduleGroupListRepository;
-	private final TalkMentRepository talkMentRepository;
+	private final WtalkScheduleGroupRepository repository;
+	private final WtalkScheduleGroupListRepository talkScheduleGroupListRepository;
+	private final WtalkMentRepository talkMentRepository;
 
 	/**
 	 * 스케쥴유형 목록조회

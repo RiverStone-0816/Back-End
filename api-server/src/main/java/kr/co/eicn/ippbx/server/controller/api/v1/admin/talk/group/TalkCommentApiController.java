@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkMentDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkMentSummaryResponse;
 import kr.co.eicn.ippbx.model.form.TalkMentFormRequest;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkMentRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkMentRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +32,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RequestMapping(value = "api/v1/admin/talk/group/auto-comment", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TalkCommentApiController extends ApiBaseController {
 
-	private final TalkMentRepository repository;
+	private final WtalkMentRepository repository;
 
 	/**
 	 * 상담톡자동멘트 목록조회

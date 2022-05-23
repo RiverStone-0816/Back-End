@@ -1,11 +1,11 @@
 package kr.co.eicn.ippbx.server.service;
 
 import kr.co.eicn.ippbx.model.dto.eicn.TalkServiceInfoResponse;
-import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleInfoEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.WtalkScheduleInfoEntity;
 import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.model.search.TalkServiceInfoSearchRequest;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkScheduleInfoRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkServiceInfoRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkScheduleInfoRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkServiceInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatServiceInfoRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,13 +19,13 @@ import java.util.Map;
 @AllArgsConstructor
 @Service
 public class TalkScheduleService extends ApiBaseService {
-    private final TalkServiceInfoRepository talkServiceInfoRepository;
-    private final TalkScheduleInfoRepository talkScheduleInfoRepository;
+    private final WtalkServiceInfoRepository talkServiceInfoRepository;
+    private final WtalkScheduleInfoRepository talkScheduleInfoRepository;
     private final WebchatServiceInfoRepository webchatServiceInfoRepository;
 
     public List<TalkServiceInfoResponse> list(TalkServiceInfoSearchRequest search) {
         final List<TalkServiceInfoResponse> response = new ArrayList<>();
-        final Map<String, List<TalkScheduleInfoEntity>> talkScheduleInfoMap = talkScheduleInfoRepository.getTalkServiceInfoLists(search);
+        final Map<String, List<WtalkScheduleInfoEntity>> talkScheduleInfoMap = talkScheduleInfoRepository.getTalkServiceInfoLists(search);
 
         talkServiceInfoRepository.findAll().forEach(e -> {
             TalkServiceInfoResponse row = convertDto(e, TalkServiceInfoResponse.class);

@@ -1,12 +1,12 @@
 package kr.co.eicn.ippbx.front.service.api.talk.schedule;
 
+import kr.co.eicn.ippbx.model.entity.eicn.WtalkScheduleGroupEntity;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryTalkScheduleInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryTalkServiceResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkScheduleInfoDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkServiceInfoResponse;
-import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleGroupEntity;
 import kr.co.eicn.ippbx.model.form.DayTalkScheduleInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.HolyTalkScheduleInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormUpdateRequest;
@@ -39,8 +39,8 @@ public class TalkDayScheduleApiInterface extends ApiServerInterface {
         super.delete(subUrl + senderKey);
     }
 
-    public TalkScheduleGroupEntity getType(Integer parent) throws IOException, ResultFailException {
-        return getData(subUrl + "service/type/" + parent, null, TalkScheduleGroupEntity.class).getData();
+    public WtalkScheduleGroupEntity getType(Integer parent) throws IOException, ResultFailException {
+        return getData(subUrl + "service/type/" + parent, null, WtalkScheduleGroupEntity.class).getData();
     }
 
     public void updateType(Integer seq, TalkScheduleInfoFormUpdateRequest form) throws IOException, ResultFailException {

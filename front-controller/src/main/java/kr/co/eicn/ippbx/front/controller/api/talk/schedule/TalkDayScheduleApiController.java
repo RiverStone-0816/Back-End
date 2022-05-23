@@ -8,7 +8,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.SummaryTalkScheduleInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryTalkServiceResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkScheduleInfoDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.TalkServiceInfoResponse;
-import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleGroupEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.WtalkScheduleGroupEntity;
 import kr.co.eicn.ippbx.model.form.DayTalkScheduleInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.HolyTalkScheduleInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormUpdateRequest;
@@ -48,7 +48,7 @@ public class TalkDayScheduleApiController extends BaseController {
      * 상담톡 일별스케쥴러 유형보기
      */
     @GetMapping("service/type/{parent}")
-    public TalkScheduleGroupEntity getType(@PathVariable Integer parent) throws IOException, ResultFailException {
+    public WtalkScheduleGroupEntity getType(@PathVariable Integer parent) throws IOException, ResultFailException {
         return apiInterface.getType(parent);
     }
 

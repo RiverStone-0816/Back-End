@@ -1,13 +1,13 @@
 package kr.co.eicn.ippbx.model.dto.eicn;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMent;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkMent;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class TalkMentSummaryResponse extends TalkMent {
+public class TalkMentSummaryResponse extends WtalkMent {
 
 	@JsonIgnore
 	@Override

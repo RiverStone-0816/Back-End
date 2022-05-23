@@ -13,7 +13,7 @@ import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkTemplateRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkTemplateRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
 import kr.co.eicn.ippbx.server.service.TalkTemplateFileUploadService;
 import kr.co.eicn.ippbx.util.JsonResult;
@@ -50,7 +50,7 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 public class TalkTemplateApiController extends ApiBaseController {
     private static final Logger logger = LoggerFactory.getLogger(TalkTemplateApiController.class);
 
-    private final TalkTemplateRepository repository;
+    private final WtalkTemplateRepository repository;
     private final PersonListRepository personListRepository;
     private final CompanyInfoRepository companyInfoRepository;
     private final OrganizationService organizationService;

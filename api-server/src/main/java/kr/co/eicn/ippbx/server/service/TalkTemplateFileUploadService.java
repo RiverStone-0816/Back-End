@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.service;
 
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkTemplateRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkTemplateRepository;
 import kr.co.eicn.ippbx.util.UrlUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ import static org.springframework.util.StringUtils.cleanPath;
 @Service
 public class TalkTemplateFileUploadService extends ApiBaseService {
 
-    private final TalkTemplateRepository repository;
+    private final WtalkTemplateRepository repository;
     private final ImageFileStorageService imageFileStorageService;
     @Value("${file.path.chatbot}")
     private String savePath;

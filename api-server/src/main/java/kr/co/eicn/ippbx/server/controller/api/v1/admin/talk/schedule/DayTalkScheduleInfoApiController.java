@@ -1,21 +1,21 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.schedule;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatServiceInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WtalkServiceInfo;
 import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.EntityNotFoundException;
 import kr.co.eicn.ippbx.exception.ValidationException;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkServiceInfo;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
-import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleGroupEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.WtalkScheduleGroupEntity;
 import kr.co.eicn.ippbx.model.enums.ScheduleType;
 import kr.co.eicn.ippbx.model.form.DayTalkScheduleInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.HolyTalkScheduleInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormUpdateRequest;
 import kr.co.eicn.ippbx.model.search.TalkServiceInfoSearchRequest;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkScheduleGroupRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkScheduleInfoRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.TalkServiceInfoRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkScheduleGroupRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkScheduleInfoRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WtalkServiceInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.WebchatServiceInfoRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
 import kr.co.eicn.ippbx.server.service.TalkScheduleService;
@@ -46,10 +46,10 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RequestMapping(value = "api/v1/admin/talk/schedule/day", produces = MediaType.APPLICATION_JSON_VALUE)
 public class DayTalkScheduleInfoApiController extends ApiBaseController {
 
-	private final TalkScheduleInfoRepository repository;
-	private final TalkServiceInfoRepository talkServiceInfoRepository;
+	private final WtalkScheduleInfoRepository repository;
+	private final WtalkServiceInfoRepository talkServiceInfoRepository;
 	private final WebchatServiceInfoRepository webchatServiceInfoRepository;
-	private final TalkScheduleGroupRepository talkScheduleGroupRepository;
+	private final WtalkScheduleGroupRepository talkScheduleGroupRepository;
 	private final OrganizationService organizationService;
 	private final TalkScheduleService talkScheduleService;
 
@@ -66,7 +66,7 @@ public class DayTalkScheduleInfoApiController extends ApiBaseController {
 	 * 상담톡 일별스케쥴러 유형보기
 	 */
 	@GetMapping("service/type/{parent}")
-	public ResponseEntity<JsonResult<TalkScheduleGroupEntity>> getType(@PathVariable Integer parent) {
+	public ResponseEntity<JsonResult<WtalkScheduleGroupEntity>> getType(@PathVariable Integer parent) {
 		return ResponseEntity.ok(data(talkScheduleGroupRepository.getTalkScheduleGroupLists().stream()
 				.filter(e -> e.getParent().equals(parent))
 				.findFirst()
@@ -83,7 +83,7 @@ public class DayTalkScheduleInfoApiController extends ApiBaseController {
 				.map(e -> {
 					final TalkScheduleInfoDetailResponse response = convertDto(e, TalkScheduleInfoDetailResponse.class);
 					if (TalkChannelType.KAKAO.getCode().equals(e.getChannelType())) {
-						final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo entity = talkServiceInfoRepository.findOne(TalkServiceInfo.TALK_SERVICE_INFO.SENDER_KEY.eq(e.getSenderKey()));
+						final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServiceInfo entity = talkServiceInfoRepository.findOne(WtalkServiceInfo.WTALK_SERVICE_INFO.SENDER_KEY.eq(e.getSenderKey()));
 						if (entity != null) {
 							response.setKakaoServiceName(entity.getKakaoServiceName());
 							response.setSenderKey(entity.getSenderKey());
