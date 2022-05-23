@@ -72,6 +72,8 @@ public class AuthApiController extends BaseController {
     private String callControlSocketId;
     @Value("${eicn.talk.socket.id}")
     private String talkSocketId;
+    @Value("${eicn.wtalk.socket.id}")
+    private String wtalkSocketId;
     @Value("${eicn.pds.socket.id}")
     private String pdsSocketId;
     @Value("${eicn.messenger.socket.id}")
@@ -180,7 +182,7 @@ public class AuthApiController extends BaseController {
         return SocketIoInformation.builder()
                 .adminSocketUrl(socketMap.get(adminSocketId))
                 .callControlSocketUrl(socketMap.get(callControlSocketId))
-                .talkSocketUrl(socketMap.get(talkSocketId))
+                .talkSocketUrl(socketMap.get(wtalkSocketId))
                 .pdsSocketUrl(socketMap.get(pdsSocketId))
                 .messengerSocketUrl(socketMap.get(messengerSocketId))
                 .chatbotSocketUrl(socketMap.get(chatbotSocketId))

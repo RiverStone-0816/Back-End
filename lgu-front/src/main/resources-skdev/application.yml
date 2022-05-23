@@ -72,6 +72,9 @@ eicn:
   talk:
     socket:
       id: talk_connector
+  wtalk:
+    socket:
+      id: wtalk_connector
   pds:
     socket:
       id: pds_connector

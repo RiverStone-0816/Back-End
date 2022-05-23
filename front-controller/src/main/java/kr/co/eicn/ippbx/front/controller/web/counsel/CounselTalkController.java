@@ -67,12 +67,12 @@ public class CounselTalkController extends BaseController {
     @Autowired
     private WebchatConfigApiInterface webchatConfigApiInterface;
 
-    @Value("${eicn.talk.socket.id}")
-    private String talkSocketId;
+    @Value("${eicn.wtalk.socket.id}")
+    private String wtalkSocketId;
 
     @GetMapping("")
     public String talkPanel(Model model) {
-        model.addAttribute("talkSocketUrl", g.getSocketList().get(talkSocketId));
+        model.addAttribute("talkSocketUrl", g.getSocketList().get(wtalkSocketId));
         return "counsel/talk/panel";
     }
 
@@ -82,7 +82,7 @@ public class CounselTalkController extends BaseController {
         model.addAttribute("channelType", channelType);
         model.addAttribute("senderKey", senderKey);
         model.addAttribute("userKey", userKey);
-        model.addAttribute("socketUrl", g.getSocketList().get(talkSocketId));
+        model.addAttribute("socketUrl", g.getSocketList().get(wtalkSocketId));
         return "counsel/talk/fileupload";
     }
 

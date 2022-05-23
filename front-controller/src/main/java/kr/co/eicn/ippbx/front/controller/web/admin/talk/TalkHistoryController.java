@@ -55,7 +55,7 @@ public class TalkHistoryController extends BaseController {
     @Autowired
     private ChatbotApiInterface chatbotApiInterface;
 
-    @Value("${eicn.talk.socket.id}")
+    @Value("${eicn.wtalk.socket.id}")
     private String talkSocketId;
 
     @GetMapping("")
