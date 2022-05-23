@@ -111,7 +111,7 @@ public class CommonWtalkRoom extends TableImpl<TalkRoomRecord> {
      * Create a <code>CUSTOMDB.talk_room</code> table reference
      */
     public CommonWtalkRoom(String tableName) {
-        this(DSL.name("talk_room_" + tableName), null);
+        this(DSL.name("wtalk_room_" + tableName), null);
     }
 
     private CommonWtalkRoom(Name alias, Table<TalkRoomRecord> aliased) {

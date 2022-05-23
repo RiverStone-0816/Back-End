@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.talk.history;
 
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonTalkRoom;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonWtalkRoom;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.TalkRoom;
 import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
@@ -10,11 +10,11 @@ import kr.co.eicn.ippbx.model.dto.eicn.TalkRoomResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.TalkRoomEntity;
 import kr.co.eicn.ippbx.model.enums.RoomStatus;
 import kr.co.eicn.ippbx.model.search.TalkRoomSearchRequest;
-import kr.co.eicn.ippbx.server.repository.eicn.CurrentTalkRoomRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.CurrentWtalkRoomRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.service.StorageService;
-import kr.co.eicn.ippbx.server.service.TalkMsgService;
-import kr.co.eicn.ippbx.server.service.TalkRoomService;
+import kr.co.eicn.ippbx.server.service.WtalkMsgService;
+import kr.co.eicn.ippbx.server.service.WtalkRoomService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
@@ -43,10 +43,10 @@ import static org.apache.commons.lang3.StringUtils.replace;
 @RestController
 @RequestMapping(value = "api/v1/admin/talk/history", produces = MediaType.APPLICATION_JSON_VALUE)
 public class TalkRoomApiController extends ApiBaseController {
-    private final CurrentTalkRoomRepository currentTalkRoomRepository;
-    private final TalkRoomService talkRoomService;
+    private final CurrentWtalkRoomRepository currentTalkRoomRepository;
+    private final WtalkRoomService talkRoomService;
     private final PersonListRepository personListRepository;
-    private final TalkMsgService talkMsgService;
+    private final WtalkMsgService talkMsgService;
     private final StorageService fileSystemStorageService;
     @Value("${file.path.talk}")
     private String location;
@@ -120,7 +120,7 @@ public class TalkRoomApiController extends ApiBaseController {
         TalkRoomEntity roomEntity;
         roomEntity = currentTalkRoomRepository.findOne(CURRENT_TALK_ROOM.ROOM_ID.eq(roomId));
         if(Objects.isNull(roomEntity))
-            roomEntity = talkRoomService.getRepository().findOne(new CommonTalkRoom(g.getUser().getCompanyId()).ROOM_ID.eq(roomId));
+            roomEntity = talkRoomService.getRepository().findOne(new CommonWtalkRoom(g.getUser().getCompanyId()).ROOM_ID.eq(roomId));
 
         TalkRoomResponse talkRoomResponse = convertDto(roomEntity, TalkRoomResponse.class);
         talkRoomResponse.setIdName(personListRepository.findOne(roomEntity.getUserid()).getIdName());

@@ -5,10 +5,11 @@ import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonTalkMsg;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonWtalkMsg;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonWtalkRoom;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.CommonTalkMsgRecord;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.CommonWtalkMsgRecord;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoKind;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentTalkRoom;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkServiceInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WtalkServiceInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebchatServiceInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WtalkServiceInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
@@ -68,12 +69,12 @@ public class MainApiController extends ApiBaseController {
     private final PhoneInfoRepository phoneInfoRepository;
     private final MaindbMultichannelInfoService maindbMultichannelInfoService;
     private final TodoListRepository todoListRepository;
-    private final TalkRoomService talkRoomService;
-    private final CurrentTalkRoomRepository currentTalkRoomRepository;
-    private final CurrentTalkRoomService currentTalkRoomService;
+    private final WtalkRoomService talkRoomService;
+    private final CurrentWtalkRoomRepository currentTalkRoomRepository;
+    private final CurrentWtalkRoomService currentTalkRoomService;
     private final WtalkServiceInfoRepository talkServiceInfoRepository;
     private final WebchatServiceInfoRepository webchatServiceInfoRepository;
-    private final TalkMsgService talkMsgService;
+    private final WtalkMsgService talkMsgService;
     private final PersonListRepository personListRepository;
     private final CallbackRepository callbackRepository;
     private final MaindbCustomInfoService maindbCustomInfoService;
@@ -418,7 +419,7 @@ public class MainApiController extends ApiBaseController {
 
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
 
-        final TalkRoomEntity talkRoomEntity = currentTalkRoomRepository.findOne(CurrentTalkRoom.CURRENT_TALK_ROOM.ROOM_ID.eq(roomId));
+        final TalkRoomEntity talkRoomEntity = currentTalkRoomRepository.findOne(CurrentWtalkRoom.CURRENT_WTALK_ROOM.ROOM_ID.eq(roomId));
 
         final TalkCurrentMsgResponse response = new TalkCurrentMsgResponse();
 
@@ -475,16 +476,16 @@ public class MainApiController extends ApiBaseController {
     @DeleteMapping("talk-remove-room/{roomId}")
     public ResponseEntity<JsonResult<Void>> talkRemoveRoom(@PathVariable String roomId) {
 
-        final TalkRoomEntity talkRoomEntity = currentTalkRoomRepository.findOne(CurrentTalkRoom.CURRENT_TALK_ROOM.ROOM_ID.eq(roomId));
+        final TalkRoomEntity talkRoomEntity = currentTalkRoomRepository.findOne(CurrentWtalkRoom.CURRENT_WTALK_ROOM.ROOM_ID.eq(roomId));
 
         talkRoomEntity.setRoomStatus("X");
         talkRoomService.getRepository().insert(talkRoomEntity);
 
-        currentTalkRoomRepository.delete(CurrentTalkRoom.CURRENT_TALK_ROOM.ROOM_ID.eq(roomId));
+        currentTalkRoomRepository.delete(CurrentWtalkRoom.CURRENT_WTALK_ROOM.ROOM_ID.eq(roomId));
 
 
         CommonWtalkMsg table = talkMsgService.getRepository().getTABLE();
-        final CommonTalkMsgRecord commonTalkMsgRecord = new CommonTalkMsgRecord(table);
+        final CommonWtalkMsgRecord commonTalkMsgRecord = new CommonWtalkMsgRecord(table);
 
         commonTalkMsgRecord.setSendReceive("SE");
 //        commonTalkMsgRecord.setCompanyId();
