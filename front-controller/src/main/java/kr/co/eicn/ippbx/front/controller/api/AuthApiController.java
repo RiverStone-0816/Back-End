@@ -151,7 +151,7 @@ public class AuthApiController extends BaseController {
         g.setServiceKind(serviceKind);
         g.setSocketList(daemonInfoInterface.getSocketList());
         g.setDoubUrl(companyServerEntity.getDoubServerInfo().getDoubWebUrl() + "/api/session/" + g.getSessionId() + "?ipccUrl=");
-        g.setBaseUrl(baseUri + "/api/user/session-chack");
+        g.setBaseUrl(baseUri + "/api/user/session-check");
     }
 
     @ApiOperation("로그아웃")
