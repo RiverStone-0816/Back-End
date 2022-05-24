@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServerInfo;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.ServerInfoEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.WebrtcServerInfoEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.DoubServerInfoEntity;
 import kr.co.eicn.ippbx.model.enums.ServerType;
 import lombok.Getter;
 import org.jooq.Record;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CompanyServer.COMPANY_SERVER;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ServerInfo.SERVER_INFO;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebrtcServerInfo.WEBRTC_SERVER_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.DoubServerInfo.DOUB_SERVER_INFO;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Getter
@@ -38,6 +40,7 @@ public class CompanyServerRepository extends EicnBaseRepository<CompanyServer, C
 	protected SelectConditionStep<Record> query(SelectJoinStep<Record> query) {
 		return query
 				.leftJoin(SERVER_INFO).on(SERVER_INFO.HOST.eq(COMPANY_SERVER.HOST))
+				.leftJoin(DOUB_SERVER_INFO).on(DOUB_SERVER_INFO.DOUB_HOST.eq(COMPANY_SERVER.HOST))
 				.where();
 	}
 
@@ -47,6 +50,7 @@ public class CompanyServerRepository extends EicnBaseRepository<CompanyServer, C
 			final CompanyServerEntity entity = record.into(COMPANY_SERVER).into(CompanyServerEntity.class);
 			entity.setServer(record.into(SERVER_INFO).into(ServerInfoEntity.class));
 			entity.setWebrtcServerInfo(record.into(WEBRTC_SERVER_INFO).into(WebrtcServerInfoEntity.class));
+			entity.setDoubServerInfo(record.into(DOUB_SERVER_INFO).into(DoubServerInfoEntity.class));
 			return entity;
 		};
 	}
@@ -54,13 +58,16 @@ public class CompanyServerRepository extends EicnBaseRepository<CompanyServer, C
 	public List<CompanyServerEntity> findAllCompanyId(final String companyId) {
 		return dsl.select(COMPANY_SERVER.fields())
 				.select(SERVER_INFO.fields())
+				.select(DOUB_SERVER_INFO.fields())
 				.from(COMPANY_SERVER)
 				.leftJoin(SERVER_INFO).on(SERVER_INFO.HOST.eq(COMPANY_SERVER.HOST))
+				.leftJoin(DOUB_SERVER_INFO).on(DOUB_SERVER_INFO.DOUB_HOST.eq(COMPANY_SERVER.HOST))
 				.where(DSL.trueCondition())
 				.and(COMPANY_SERVER.COMPANY_ID.eq(companyId))
 				.fetch(record -> {
 					final CompanyServerEntity entity = record.into(COMPANY_SERVER).into(CompanyServerEntity.class);
 					entity.setServer(record.into(SERVER_INFO).into(ServerInfoEntity.class));
+					entity.setDoubServerInfo(record.into(DOUB_SERVER_INFO).into(DoubServerInfoEntity.class));
 					return entity;
 				});
 	}

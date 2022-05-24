@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.model.entity.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyServer;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.DoubServerInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -9,4 +10,5 @@ import lombok.EqualsAndHashCode;
 public class CompanyServerEntity extends CompanyServer {
 	private ServerInfoEntity server;
 	private WebrtcServerInfoEntity webrtcServerInfo;
+	private DoubServerInfoEntity doubServerInfo;
 }

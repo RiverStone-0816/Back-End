@@ -43,6 +43,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * @author tinywind
@@ -82,6 +83,8 @@ public class AuthApiController extends BaseController {
     private String chatbotSocketId;
     @Value("${eicn.service.servicekind}")
     private String serviceKind;
+    @Value("${eicn.service.base-url}")
+    private String baseUri;
 
     @LoginRequired
     @GetMapping("access-token")
@@ -139,12 +142,16 @@ public class AuthApiController extends BaseController {
         user.setSoftphone(phone != null ? phone.getSoftphone() : "N");
         final List<UserMenuCompanyResponse> menus = menuApiInterface.getUserMenus(user.getId());
 
+        final CompanyServerEntity companyServerEntity = authApiInterface.getServer().stream().filter(e -> e.getType().equals("U")).collect(Collectors.toList()).get(0);
+
         g.setMenus(new CurrentUserMenu(menus));
         g.setCurrentUser(user);
         g.setLoginInputs(form);
         g.setUsingServices(companyInfo.getService());
         g.setServiceKind(serviceKind);
         g.setSocketList(daemonInfoInterface.getSocketList());
+        g.setDoubUrl(companyServerEntity.getDoubServerInfo().getDoubWebUrl() + "/api/session/" + g.getSessionId() + "?ipccUrl=");
+        g.setBaseUrl(baseUri + "/api/user/session-chack");
     }
 
     @ApiOperation("로그아웃")

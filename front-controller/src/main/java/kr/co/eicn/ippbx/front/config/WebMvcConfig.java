@@ -12,6 +12,8 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -63,6 +65,13 @@ public class WebMvcConfig extends WebSecurityConfigurerAdapter implements WebMvc
         final CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
         multipartResolver.setDefaultEncoding("UTF-8");
         return multipartResolver;
+    }
+
+    @Bean
+    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowSemicolon(true);
+        return firewall;
     }
 
     @Override

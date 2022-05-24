@@ -36,6 +36,8 @@ public class RequestGlobal {
     private static final String REQUEST_GLOBAL_SOCKET_LIST = "REQUEST_GLOBAL_SOCKET_LIST";
     private static final String REQUEST_GLOBAL_ALERTS = "REQUEST_GLOBAL_ALERTS";
     private static final String REQUEST_GLOBAL_SERVICE_KIND = "REQUEST_GLOBAL_SERVICE_KIND";
+    private static final String REQUEST_GLOBAL_DOUB_URL = "REQUEST_GLOBAL_DOUB_URL";
+    private static final String REQUEST_GLOBAL_BASE_URL = "REQUEST_GLOBAL_BASE_URL";
 
     private final HttpSession session;
     private final FileService fileService;
@@ -53,6 +55,10 @@ public class RequestGlobal {
 
     public PersonDetailResponse getUser() {
         return (PersonDetailResponse) session.getAttribute(REQUEST_GLOBAL_CURRENT_USER);
+    }
+
+    public String getSessionId() {
+        return session.getId();
     }
 
     public LoginForm getLoginInputs() {
@@ -79,6 +85,21 @@ public class RequestGlobal {
         session.setAttribute(REQUEST_GLOBAL_SERVICE_KIND, service);
     }
 
+    public void setDoubUrl(String url) {
+        session.setAttribute(REQUEST_GLOBAL_DOUB_URL, url);
+    }
+
+    public String getDoubUrl() {
+        return (String) session.getAttribute(REQUEST_GLOBAL_DOUB_URL);
+    }
+
+    public void setBaseUrl(String url) {
+        session.setAttribute(REQUEST_GLOBAL_BASE_URL, url);
+    }
+
+    public String getBaseUrl() {
+        return (String) session.getAttribute(REQUEST_GLOBAL_BASE_URL);
+    }
 
     public boolean checkLogin() {
         final PersonDetailResponse user = getUser();

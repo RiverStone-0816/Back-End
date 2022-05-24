@@ -51,6 +51,9 @@
                                 <li><a href="javascript:" onclick="changeMode();" id="mode-switcher">모드변경</a></li>
                             </c:if>
                             <li><a href="javascript:" onclick="sitemapOpen();">사이트맵</a></li>
+                            <c:if test="${('A|B'.contains(g.user.idType)) && (usingServices.contains('DUTA') || usingServices.contains('DUSTT'))}">
+                            <li><a href="${g.doubUrl.concat(g.urlEncode(g.baseUrl.concat(g.urlEncode(';jsessionid='.concat(g.sessionId)))))}" target="_blank">AI 분석</a></li>
+                            </c:if>
                         </ul>
                     </div>
                 </div>
