@@ -1065,11 +1065,16 @@
                             const form = Object.assign({}, fallbackConfig.data, {blockInfo: convertBlock(blockList.blocks[0])})
 
                             if ($.isNumeric(o.current)) {
-                                return restSelf.put('/api/chatbot/' + o.current + '/all', form).done(() => alert('저장되었습니다.', o.load))
+                                return restSelf.put('/api/chatbot/' + o.current + '/all', form).done(() => alert('저장되었습니다.', o.load)).fail(() => {
+                                    console.log('오류')
+                                    console.log(form)
+                                    o.loadBot(o.current)
+                                })
                             } else {
                                 return restSelf.post('/api/chatbot/', form).done(response => {
                                     o.current = response.data
                                     o.select = response.data
+                                    o.changed = false
                                     alert('저장되었습니다.', o.load)
                                 })
                             }

@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static kr.co.eicn.ippbx.util.EicnUtils.convertStringToInteger;
 import static org.apache.commons.lang3.StringUtils.replace;
 
 @Slf4j
@@ -109,8 +110,9 @@ public class WebchatBotService extends ApiBaseService {
                 if ((ButtonAction.CONNECT_NEXT_BLOCK.equals(authResultElement.getAction()) || ButtonAction.CONNECT_AUTH_BLOCK.equals(authResultElement.getAction())) && blockInfoByVirtualId.containsKey(Integer.valueOf(authResultElement.getNextActionData())))
                     insertBlock(botId, rootId, blockInfo.getType(), blockId, authResultId, treeName, level + 1, blockInfoByVirtualId.get(Integer.valueOf(authResultElement.getNextActionData())), realBlockIdByVirtualBlockId, buttonUpdateSchedule, authElementUpdateSchedule);
 
-                if (ButtonAction.CONNECT_NEXT_BLOCK.equals(authResultElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(authResultElement.getAction()) || ButtonAction.CONNECT_AUTH_BLOCK.equals(authResultElement.getAction()))
-                    authElementUpdateSchedule.put(authResultId, Integer.valueOf(authResultElement.getNextActionData()));
+                if (ButtonAction.CONNECT_NEXT_BLOCK.equals(authResultElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(authResultElement.getAction()) || ButtonAction.CONNECT_AUTH_BLOCK.equals(authResultElement.getAction())) {
+                    authElementUpdateSchedule.put(authResultId, convertStringToInteger(authResultElement.getNextActionData()));
+                }
             }
         } else {
             if (blockInfo.getDisplayList() != null) {

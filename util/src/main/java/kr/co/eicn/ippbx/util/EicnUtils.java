@@ -87,4 +87,12 @@ public class EicnUtils {
 
         return rdstr;
     }
+
+    public static Integer convertStringToInteger(String value) {
+        try {
+            return Integer.valueOf(value);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 }

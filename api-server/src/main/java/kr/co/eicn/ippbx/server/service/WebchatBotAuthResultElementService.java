@@ -35,6 +35,10 @@ public class WebchatBotAuthResultElementService extends ApiBaseService {
         response.setValue(entity.getResultValue());
         response.setMent(entity.getResultMent());
         response.setAction(ButtonAction.of(entity.getAction()));
+
+        if (ButtonAction.CONNECT_BEFORE_BLOCK.equals(ButtonAction.of(entity.getNextActionData())) || ButtonAction.CONNECT_FIRST_BLOCK.equals(ButtonAction.of(entity.getNextActionData())))
+            response.setAction(ButtonAction.of(entity.getNextActionData()));
+
         response.setNextActionData(entity.getNextActionData());
         response.setNextApiMent(entity.getNextApiMent());
         response.setEnableResultTemplate("Y".equals(entity.getIsResultTplEnable()));
