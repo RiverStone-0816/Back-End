@@ -147,7 +147,9 @@ public class AuthApiController extends BaseController {
         user.setSoftphone(phone != null ? phone.getSoftphone() : "N");
         final List<UserMenuCompanyResponse> menus = menuApiInterface.getUserMenus(user.getId());
 
-        final CompanyServerEntity companyServerEntity = authApiInterface.getServer().stream().filter(e -> e.getType().equals("U")).collect(Collectors.toList()).get(0);
+        CompanyServerEntity companyServerEntity = null;
+        if (authApiInterface.getServer().stream().anyMatch(e -> e.getType().equals("U")))
+            companyServerEntity = authApiInterface.getServer().stream().filter(e -> e.getType().equals("U")).collect(Collectors.toList()).get(0);
 
         g.setMenus(new CurrentUserMenu(menus));
         g.setCurrentUser(user);
@@ -155,7 +157,8 @@ public class AuthApiController extends BaseController {
         g.setUsingServices(companyInfo.getService());
         g.setServiceKind(serviceKind);
         g.setSocketList(daemonInfoInterface.getSocketList());
-        g.setDoubUrl(companyServerEntity.getDoubServerInfo().getDoubWebUrl() + "/api/session_link/" + g.getSessionId() + "?ipccUrl=");
+        if (Objects.nonNull(companyServerEntity))
+            g.setDoubUrl(companyServerEntity.getDoubServerInfo().getDoubWebUrl() + "/api/session_link/" + g.getSessionId() + "?ipccUrl=");
         g.setBaseUrl(baseUri + "/ubiz/api/user/session-check");
     }
 
