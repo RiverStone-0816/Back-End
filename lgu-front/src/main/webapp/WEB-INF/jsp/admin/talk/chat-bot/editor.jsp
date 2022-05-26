@@ -71,7 +71,7 @@
                                 <div class="chatbot-box-label">블록리스트</div>
                                 <div>
                                     <div class="chatbot-box-sub-label blue">
-                                        폼 블록
+                                        입력폼 블록
                                         <div style="display: inline; float: right; margin: 5px 14px 0 0">
                                             <button onclick="authBlockListContainer.addNewBlock()" class="ui icon mini button"><i class="plus icon"></i></button>
                                         </div>
@@ -418,7 +418,7 @@
                                                 <select v-model="data.action">
                                                     <option value="">다음 블록으로 연결</option>
                                                     <option value="block">다른 블록으로 연결</option>
-                                                    <option value="auth">폼 블록으로 연결</option>
+                                                    <option value="auth">입력폼 블록으로 연결</option>
                                                     <option value="first">첫 블록으로 연결</option>
                                                     <option value="before">이전 블록으로 연결</option>
                                                     <option value="member">상담원 연결</option>
@@ -436,7 +436,7 @@
                                                 </div>
                                             </div>
                                             <div v-if="data.action === 'auth'">
-                                                <div class="mb15">폼 블록 설정</div>
+                                                <div class="mb15">입력폼 블록 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <select v-model="data.nextBlockId">
                                                         <option v-for="(e,i) in authBlockList()" :key="i" :value="e.id">{{ e.name }}</option>
@@ -530,7 +530,7 @@
                                                 <select v-model="data.action">
                                                     <option value="">다음 블록으로 연결</option>
                                                     <option value="block">다른 블록으로 연결</option>
-                                                    <option value="auth">폼 블록으로 연결</option>
+                                                    <option value="auth">입력폼 블록으로 연결</option>
                                                     <option value="first">첫 블록으로 연결</option>
                                                     <option value="before">이전 블록으로 연결</option>
                                                     <option value="member">상담원 연결</option>
@@ -548,7 +548,7 @@
                                                 </div>
                                             </div>
                                             <div v-if="data.action === 'auth'">
-                                                <div class="mb15">폼 블록 설정</div>
+                                                <div class="mb15">입력폼 블록 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <select v-model="data.nextActionData">
                                                         <option v-for="(e,i) in authBlockList()" :key="i" :value="e.id">{{ e.name }}</option>
@@ -625,11 +625,11 @@
                                 <div class="chatbot-control-container active">
                                     <button type="button" class="arrow-button"></button>
                                     <div class="chatbot-control-inner">
-                                        <div class="chatbot-box-label">폼 블록 관리
+                                        <div class="chatbot-box-label">입력폼 블록 관리
                                             <button class="ui mini button" @click.stop="save">저장</button>
                                         </div>
                                         <div class="chatbot-control-body">
-                                            <div class="mb15">폼 블록명</div>
+                                            <div class="mb15">입력폼 블록명</div>
                                             <div class="ui form fluid mb15">
                                                 <input type="text" v-model="data.name">
                                             </div>
@@ -1905,7 +1905,7 @@
 
                             o.data = {}
                             if (!authBlock)
-                                return alert('폼블록정보가 없습니다.')
+                                return alert('입력폼 블록정보가 없습니다.')
 
                             o.data.id = blockId
                             o.data.name = authBlock.name
