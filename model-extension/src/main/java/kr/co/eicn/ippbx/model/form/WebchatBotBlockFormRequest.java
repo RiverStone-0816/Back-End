@@ -11,5 +11,5 @@ public class WebchatBotBlockFormRequest {
     private Integer posX;
     private Integer posY;
     private BlockType type;
-    private Integer authBlockId;
+    private Integer formBlockId;
 }

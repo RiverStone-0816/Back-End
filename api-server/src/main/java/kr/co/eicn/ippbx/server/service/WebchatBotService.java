@@ -32,7 +32,7 @@ public class WebchatBotService extends ApiBaseService {
     private final WebchatBotDisplayElementService webchatBotDisplayElementService;
     private final WebchatBotButtonElementService webchatBotButtonElementService;
     private final ImageFileStorageService imageFileStorageService;
-    private final WebchatBotAuthBlockService webchatBotAuthBlockService;
+    private final WebchatBotFormBlockService webchatBotAuthBlockService;
     private final WebchatBotAuthResultElementService webchatBotAuthResultElementService;
 
     @Value("${file.path.chatbot}")
@@ -101,7 +101,7 @@ public class WebchatBotService extends ApiBaseService {
 
         String treeName = webchatBotTreeService.insert(botId, blockId, rootId, parentType, parentId, parentButtonId, parentTreeName, level);
 
-        if (BlockType.AUTH.equals(blockInfo.getType()) && blockInfo.getChildren() != null) {
+        if (BlockType.FORM.equals(blockInfo.getType()) && blockInfo.getChildren() != null) {
             final Map<Integer, WebchatBotFormRequest.BlockInfo> blockInfoByVirtualId = blockInfo.getChildren().stream().collect(Collectors.toMap(WebchatBotFormRequest.BlockInfo::getId, e -> e));
 
             for (WebchatBotFormRequest.AuthResultElement authResultElement : blockInfo.getAuthResultElementList()) {
@@ -142,7 +142,6 @@ public class WebchatBotService extends ApiBaseService {
 
     public void deleteBot(Integer botId) {
         deleteAllBlockInfoById(botId);
-        webchatBotAuthBlockService.deleteAuthBlockByBotId(botId);
         webchatBotInfoService.deleteById(botId);
     }
 
@@ -160,7 +159,7 @@ public class WebchatBotService extends ApiBaseService {
 
     public WebchatBotInfoResponse getBotInfo(Integer botId) {
         final WebchatBotInfoResponse response = webchatBotInfoService.get(botId);
-        response.setAuthBlockList(webchatBotAuthBlockService.findAllByBotId(botId));
+        response.setAuthBlockList(webchatBotAuthBlockService.getAll());
         final WebchatBotTree rootBlock = webchatBotTreeService.findRootBlock(botId);
 
         if (rootBlock != null) {
@@ -181,7 +180,7 @@ public class WebchatBotService extends ApiBaseService {
 
             Map<Integer, List<WebchatBotInfoResponse.DisplayElement>> displayElementByDisplayId = webchatBotDisplayElementService.findDisplayElementByDisplayId(displayIdList);
 
-            Map<Integer, List<WebchatBotInfoResponse.AuthResultElement>> authResultElementListByBlockId = webchatBotAuthResultElementService.findAllByBlockIdList(blockInfoById.values().stream().filter(e -> BlockType.AUTH.equals(e.getType())).map(WebchatBotInfoResponse.BlockInfo::getId).collect(Collectors.toList()));
+            Map<Integer, List<WebchatBotInfoResponse.AuthResultElement>> authResultElementListByBlockId = webchatBotAuthResultElementService.findAllByBlockIdList(blockInfoById.values().stream().filter(e -> BlockType.FORM.equals(e.getType())).map(WebchatBotInfoResponse.BlockInfo::getId).collect(Collectors.toList()));
 
             response.setBlockInfo(setBlockDetailInfo(blockInfoById.get(rootBlockId), blockIdByParentId, blockInfoById, displayByBlockIdMap, displayElementByDisplayId, buttonListByBlockIdMap, authResultElementListByBlockId));
         }
@@ -195,7 +194,7 @@ public class WebchatBotService extends ApiBaseService {
 
         webchatBotDisplayService.setDisplayList(block, displayByBlockIdMap, displayElementByDisplayId);
         webchatBotButtonElementService.setButtonList(block, buttonListByBlockIdMap);
-        if (BlockType.AUTH.equals(block.getType()))
+        if (BlockType.FORM.equals(block.getType()))
             block.setAuthResultElementList(authResultElementListByBlockId.get(block.getId()));
         else
             block.setAuthResultElementList(new ArrayList<>());
@@ -251,7 +250,7 @@ public class WebchatBotService extends ApiBaseService {
 
             Map<Integer, List<WebchatBotInfoResponse.DisplayElement>> displayElementByDisplayId = webchatBotDisplayElementService.findDisplayElementByDisplayId(displayIdList);
 
-            Map<Integer, List<WebchatBotInfoResponse.AuthResultElement>> authResultElementListByBlockId = webchatBotAuthResultElementService.findAllByBlockIdList(blockInfoById.values().stream().filter(e -> BlockType.AUTH.equals(e.getType())).map(WebchatBotInfoResponse.BlockInfo::getId).collect(Collectors.toList()));
+            Map<Integer, List<WebchatBotInfoResponse.AuthResultElement>> authResultElementListByBlockId = webchatBotAuthResultElementService.findAllByBlockIdList(blockInfoById.values().stream().filter(e -> BlockType.FORM.equals(e.getType())).map(WebchatBotInfoResponse.BlockInfo::getId).collect(Collectors.toList()));
 
             setBlockDetailInfo(blockInfo, null, blockInfoById, displayByBlockIdMap, displayElementByDisplayId, buttonListByBlockIdMap, authResultElementListByBlockId);
         }

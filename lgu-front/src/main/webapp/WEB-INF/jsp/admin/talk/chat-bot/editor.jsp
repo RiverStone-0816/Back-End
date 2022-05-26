@@ -90,7 +90,7 @@
                                     <div id="auth-block" class="block-list-container">
                                         <ul class="block-list-ul">
                                             <li v-for="(e, i) in authBlocks" :key="i" class="block-list">
-                                                <div class="block-name">{{ e.usingOtherBot ? "[공용]" : ""}}{{ e.name }}</div>
+                                                <div class="block-name">{{ e.name }}</div>
                                                 <div class="block-control">
                                                     <button @click.stop="configAuthBlock(i)" class="ui mini button">수정</button>
                                                     <button @click.stop="removeAuthBlock(i)" class="ui icon mini button"><i class="x icon"></i></button>
@@ -629,13 +629,6 @@
                                             <button class="ui mini button" @click.stop="save">저장</button>
                                         </div>
                                         <div class="chatbot-control-body">
-                                            <div class="mb15 dp-flex align-items-center justify-content-space-between">
-                                                <div>다른 봇 공용 여부</div>
-                                                <div class="ui fitted toggle checkbox">
-                                                    <input type="checkbox" @change="data.usingOtherBot = $event.target.checked" :checked="data.usingOtherBot">
-                                                    <label></label>
-                                                </div>
-                                            </div>
                                             <div class="mb15">인증블록명</div>
                                             <div class="ui form fluid mb15">
                                                 <input type="text" v-model="data.name">
@@ -856,7 +849,7 @@
             </div>
         </div>
         <div class="box">
-            <div v-if="type !== 'AUTH'">
+            <div v-if="type !== 'FORM'">
                 <div class="inner">
                     <ul v-if="displays && displays.length" class="button-item-ul">
                         <li v-for="(e,i) in displays" :key="i" class="button-item " :class="getDisplayClass(e.type)">
@@ -1019,7 +1012,7 @@
                                 posY: block ? editor.getNodeFromId(block.nodeId).pos_y : 0,
                                 name: block?.name,
                                 type: block?.type,
-                                authBlockId: block?.authBlockId,
+                                formBlockId: block?.formBlockId,
                                 keyword: block?.keywords.length === 0 ? '' : block?.keywords.reduce((a, b) => (a + b + '|'), '|'),
                                 isTemplateEnable: block?.isTemplateEnable,
                                 displayList: block?.displays.map((e, i) => ({
@@ -1139,15 +1132,15 @@
                                         return
                                     block.children?.forEach(e => createBlock(e))
 
-                                    const nodeId = createNode(block.id, block.posX, block.posY, block.type, block.authBlockId)
+                                    const nodeId = createNode(block.id, block.posX, block.posY, block.type, block.formBlockId)
                                     const app = nodeBlockMap[nodeId]
 
                                     app.name = block.name
                                     app.keywords = block.keyword?.split('|').filter(keyword => keyword) || []
                                     app.isTemplateEnable = block.isTemplateEnable
                                     app.type = block.type
-                                    app.authBlockId = block.authBlockId
-                                    if (block.type !== 'AUTH') {
+                                    app.formBlockId = block.formBlockId
+                                    if (block.type !== 'FORM') {
                                         app.displays = block.displayList.sort((a, b) => (a.order - b.order)).map(e => {
                                             if (e.type === 'text') return {type: 'text', data: {text: e.elementList?.[0]?.content}}
                                             if (e.type === 'image') return {type: 'image', data: {fileUrl: e.elementList?.[0]?.image, fileName: e.elementList?.[0]?.image}}
@@ -1193,7 +1186,7 @@
                                             return {
                                                 name: e.name,
                                                 action: action,
-                                                nextBlockId: action === 'auth' ? nodeBlockMap[childNodeId].authBlockId : action ? e.nextBlockId : null,
+                                                nextBlockId: action === 'auth' ? nodeBlockMap[childNodeId].formBlockId : action ? e.nextBlockId : null,
                                                 childNodeId: action && action !== 'auth' ? null : childNodeId,
                                                 nextGroupId: e.nextGroupId,
                                                 nextUrl: e.nextUrl,
@@ -1238,7 +1231,7 @@
                                     app.showingEmptyButtonItem = !app.buttons.length
                                     app.showingEmptyResultElementItem = !app.authElements.length
 
-                                    if (block.type !== 'AUTH')
+                                    if (block.type !== 'FORM')
                                         app.buttons.forEach(() => editor.addNodeOutput(nodeId))
                                     else
                                         app.authElements.forEach(() => editor.addNodeOutput(nodeId))
@@ -1698,7 +1691,7 @@
                                     app.createConnection(o.buttonIndex, nodeBlockMap[data.childNodeId].id)
                                 } else if (currentAction === 'auth') {
                                     const node = editor.getNodeFromId(o.nodeId)
-                                    data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'AUTH', actionData)
+                                    data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'FORM', actionData)
                                     app.createConnection(o.buttonIndex, nodeBlockMap[data.childNodeId].id)
                                 } else if (currentAction === 'block') {
                                     app.createConnection(o.buttonIndex, data.nextBlockId)
@@ -1709,7 +1702,7 @@
                             } else if (currentAction === 'auth') {
                                 nodeBlockMap[preChildNodeId].delete()
                                 const node = editor.getNodeFromId(o.nodeId)
-                                data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'AUTH', actionData)
+                                data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'FORM', actionData)
                                 app.createConnection(o.buttonIndex, nodeBlockMap[data.childNodeId].id)
                             }
                             alert("저장되었습니다.");
@@ -1786,7 +1779,7 @@
                                     app.createConnection(o.index, nodeBlockMap[data.childNodeId].id)
                                 } else if (currentAction === 'auth') {
                                     const node = editor.getNodeFromId(o.nodeId)
-                                    data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'AUTH', actionData)
+                                    data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'FORM', actionData)
                                     app.createConnection(o.index, nodeBlockMap[data.childNodeId].id)
                                 } else if (currentAction === 'block') {
                                     app.createConnection(o.index, data.nextActionData)
@@ -1797,7 +1790,7 @@
                             } else if (currentAction === 'auth') {
                                 nodeBlockMap[preChildNodeId].delete()
                                 const node = editor.getNodeFromId(o.nodeId)
-                                data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'AUTH', actionData)
+                                data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'FORM', actionData)
                                 app.createConnection(o.index, nodeBlockMap[data.childNodeId].id)
                             }
                             alert("저장되었습니다.");
@@ -1843,9 +1836,7 @@
                     },
                     methods: {
                         async load(botId) {
-                            if (!botId || botId === '')
-                                botId = ''
-                            await restSelf.get('/api/chatbot/auth-blocks?botId=' + botId).done(response => {
+                            await restSelf.get('/api/chatbot/auth-blocks').done(response => {
                                 if (response.data) {
                                     response.data.forEach(e => {
                                         o.authBlocks[e.id] = e
@@ -1854,27 +1845,25 @@
                             })
                         },
                         addNewBlock() {
-                            if (!botList.current) {
-                                alert('봇 선택/저장 후 추가해 주세요.')
+                            if (botList.current) {
+                                alert('봇 선택시 추가가 불가능합니다.')
                                 return
                             }
 
                             const data = {
                                 id: null,
-                                botId: botList.current,
                                 name: '새로운 인증블럭',
-                                usingOtherBot: false,
                                 params: [{type: 'text', title: '', needYn: false}, {type: 'text', paramName: null, displayName: null, needYn: false}],
                                 buttons: [{name: null, action: 'first', actionData: null}]
                             }
 
-                            restSelf.post('/api/chatbot/' + botList.current + '/auth-block', data, null, true).done(response => {
+                            restSelf.post('/api/chatbot/auth-block', data, null, true).done(response => {
                                 authBlockListContainer.authBlocks[response.data] = data;
                             })
                         },
                         removeAuthBlock(blockId) {
                             alert('삭제하시겠습니까?', () => {
-                                restSelf.delete('/api/chatbot/' + botList.current + '/auth-block/' + blockId).done(response => {
+                                restSelf.delete('/api/chatbot/auth-block/' + blockId).done(response => {
                                     delete o.authBlocks[blockId]
                                 })
                             })
@@ -1907,10 +1896,8 @@
                         return {
                             data: {
                                 id: null,
-                                botId: null,
                                 name: null,
                                 title: null,
-                                usingOtherBot: false,
                                 params: [],
                                 buttons: []
                             }
@@ -1925,10 +1912,8 @@
                                 return alert('인증블록정보가 없습니다.')
 
                             o.data.id = blockId
-                            o.data.botId = authBlock.botId
                             o.data.name = authBlock.name
                             o.data.title = authBlock.params?.[0]?.title
-                            o.data.usingOtherBot = authBlock.usingOtherBot
                             o.data.params = authBlock.params.slice(1)
                             o.data.buttons = authBlock.buttons
 
@@ -1952,21 +1937,15 @@
                         save() {
                             const data = {
                                 id: o.data.id,
-                                botId: o.data.botId,
                                 name: o.data.name,
-                                usingOtherBot: o.data.usingOtherBot,
                                 params: [{type: 'text', sequence: 0, title: o.data.title, needYn: false}].concat(o.data.params),
                                 buttons: o.data.buttons
                             }
 
-                            if (!o.data.id) {
-                                alert('인증블럭을 선택해주세요')
-                                return
-                            } else {
-                                restSelf.put('/api/chatbot/' + o.data.botId + '/auth-block/' + o.data.id, data).done(() => {
-                                    authBlockListContainer.authBlocks[o.data.id] = data;
-                                })
-                            }
+                            restSelf.put('/api/chatbot/auth-block/' + o.data.id, data).done(() => {
+                                authBlockListContainer.authBlocks[o.data.id] = data;
+                            })
+
                             alert('저장되었습니다.')
                         }
                     }
@@ -2030,7 +2009,7 @@
             let lastBlockId = 0
             const createBlockId = () => (++lastBlockId)
 
-            function createNode(blockId, x, y, type = 'BLOCK', authBlockId) {
+            function createNode(blockId, x, y, type = 'BLOCK', formBlockId) {
                 if (typeof x !== 'number' || typeof y !== 'number') {
                     editor.zoom_reset()
                     editor.canvas_x = 0
@@ -2048,7 +2027,7 @@
                 const nodeId = editor.addNode('BLOCK', 1, 0, x, y, '', {}, '')
                 const template = document.getElementById('block-template')
                 const block = document.getElementById('node-' + nodeId).querySelector('.drawflow_content_node')
-                const authBlock = authBlockListContainer.authBlocks[authBlockId]
+                const authBlock = authBlockListContainer.authBlocks[formBlockId]
                 for (let i = 0; i < template.children.length; i++)
                     block.append(template.children[i].cloneNode(true))
 
@@ -2059,9 +2038,9 @@
                                 id: blockId ?? createBlockId(),
                                 name: '',
                                 type: type,
-                                authBlockId: authBlockId,
+                                formBlockId: formBlockId,
                                 authBlockName: authBlock?.name,
-                                displays: type === 'AUTH' && authBlock ? [{
+                                displays: type === 'FORM' && authBlock ? [{
                                     type: 'input',
                                     data: {
                                         title: authBlock?.title,
@@ -2075,7 +2054,7 @@
                                         })
                                     }
                                 }] : [],
-                                buttons: type === 'AUTH' && authBlock ? authBlock.buttons : [],
+                                buttons: type === 'FORM' && authBlock ? authBlock.buttons : [],
                                 authElements: [],
                                 keywords: [],
                                 isTemplateEnable: false,

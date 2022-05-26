@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.front.service.api;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.enums.TalkChannelType;
-import kr.co.eicn.ippbx.model.form.WebchatAuthBlocKFormRequest;
+import kr.co.eicn.ippbx.model.form.WebchatFormBlocKFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFallbackFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.model.search.ChatbotSearchRequest;
@@ -56,15 +56,15 @@ public class ChatbotApiInterface extends ApiServerInterface {
         return getData(subUrl + "blocks/" + blockId, null, WebchatBotInfoResponse.BlockInfo.class).getData();
     }
 
-    public List<WebchatBotAuthBlockInfoResponse> getAuthBlockList(Integer botId) throws IOException, ResultFailException {
-        return getList(authSubUrl, Collections.singletonMap("botId", botId), WebchatBotAuthBlockInfoResponse.class).getData();
+    public List<WebchatBotFormBlockInfoResponse> getAuthBlockList() throws IOException, ResultFailException {
+        return getList(authSubUrl, null, WebchatBotFormBlockInfoResponse.class).getData();
     }
 
-    public Integer addAuthBlock(Integer botId, WebchatAuthBlocKFormRequest form) throws IOException, ResultFailException {
-        return getData(HttpMethod.POST, authSubUrl + botId, form, Integer.class, false).getData();
+    public Integer addAuthBlock(WebchatFormBlocKFormRequest form) throws IOException, ResultFailException {
+        return getData(HttpMethod.POST, authSubUrl, form, Integer.class, false).getData();
     }
 
-    public void updateAuthBlock(Integer blockId, WebchatAuthBlocKFormRequest form) throws IOException, ResultFailException {
+    public void updateAuthBlock(Integer blockId, WebchatFormBlocKFormRequest form) throws IOException, ResultFailException {
         put(authSubUrl + blockId, form);
     }
 

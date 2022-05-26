@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.front.service.api.ChatbotApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
-import kr.co.eicn.ippbx.model.form.WebchatAuthBlocKFormRequest;
+import kr.co.eicn.ippbx.model.form.WebchatFormBlocKFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFallbackFormRequest;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import kr.co.eicn.ippbx.model.search.ChatbotSearchRequest;
@@ -65,23 +65,23 @@ public class ChatbotApiController extends BaseController {
     }
 
     @GetMapping("auth-blocks")
-    public List<WebchatBotAuthBlockInfoResponse> getAuthBlockList(@RequestParam(required = false) Integer botId) throws IOException, ResultFailException {
-        return apiInterface.getAuthBlockList(botId);
+    public List<WebchatBotFormBlockInfoResponse> getAuthBlockList() throws IOException, ResultFailException {
+        return apiInterface.getAuthBlockList();
     }
 
-    @PostMapping("{botId}/auth-block")
-    public Integer addAuthBlock(@PathVariable Integer botId, @Valid @RequestBody WebchatAuthBlocKFormRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
-        return apiInterface.addAuthBlock(botId, form);
+    @PostMapping("auth-block")
+    public Integer addAuthBlock(@Valid @RequestBody WebchatFormBlocKFormRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
+        return apiInterface.addAuthBlock(form);
     }
 
-    @PutMapping("{botId}/auth-block/{authBlockId}")
-    public void updateAuthBlock(@PathVariable Integer botId, @PathVariable Integer authBlockId, @Valid @RequestBody WebchatAuthBlocKFormRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
-        apiInterface.updateAuthBlock(authBlockId, form);
+    @PutMapping("auth-block/{formBlockId}")
+    public void updateAuthBlock(@PathVariable Integer formBlockId, @Valid @RequestBody WebchatFormBlocKFormRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
+        apiInterface.updateAuthBlock(formBlockId, form);
     }
 
-    @DeleteMapping("{botId}/auth-block/{authBlockId}")
-    public void deleteAuthBlock(@PathVariable Integer botId, @PathVariable Integer authBlockId) throws IOException, ResultFailException {
-        apiInterface.deleteAuthBlock(authBlockId);
+    @DeleteMapping("auth-block/{formBlockId}")
+    public void deleteAuthBlock(@PathVariable Integer formBlockId) throws IOException, ResultFailException {
+        apiInterface.deleteAuthBlock(formBlockId);
     }
 
     @SneakyThrows

@@ -33,7 +33,7 @@ public class WebchatBotBlockService extends ApiBaseService {
         data.setIsTemplateEnable(info.getIsTemplateEnable());
         data.setPosX(info.getPosX());
         data.setPosY(info.getPosY());
-        data.setAuthBlockId(info.getAuthBlockId());
+        data.setFormBlockId(info.getFormBlockId());
         data.setType(info.getType());
 
         return webchatbotBlockRepository.insert(data);

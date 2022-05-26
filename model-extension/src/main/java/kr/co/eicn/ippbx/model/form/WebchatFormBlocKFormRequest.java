@@ -10,10 +10,9 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class WebchatAuthBlocKFormRequest extends BaseForm {
+public class WebchatFormBlocKFormRequest extends BaseForm {
     private String name;
     private String title;
-    private Boolean usingOtherBot;
     private List<AuthParamInfo> params;
     private List<AuthButtonInfo> buttons;
 

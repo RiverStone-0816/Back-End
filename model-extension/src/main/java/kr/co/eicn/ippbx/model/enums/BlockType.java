@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 import java.util.Objects;
 
 public enum BlockType implements CodeHasable<String> {
-    BLOCK("BL"), AUTH("AUTH");
+    BLOCK("BL"), FORM("FORM");
 
     private final String code;
 

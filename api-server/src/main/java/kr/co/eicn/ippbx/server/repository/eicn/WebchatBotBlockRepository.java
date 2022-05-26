@@ -70,7 +70,7 @@ public class WebchatBotBlockRepository extends EicnBaseRepository<WebchatBotBloc
                 .set(WEBCHAT_BOT_BLOCK.NAME, request.getName())
                 .set(WEBCHAT_BOT_BLOCK.KEYWORD, request.getKeyword())
                 .set(WEBCHAT_BOT_BLOCK.BLOCK_KIND, request.getType().getCode())
-                .set(WEBCHAT_BOT_BLOCK.AUTH_BLOCK_ID, request.getAuthBlockId())
+                .set(WEBCHAT_BOT_BLOCK.FORM_BLOCK_ID, request.getFormBlockId())
                 .set(WEBCHAT_BOT_BLOCK.IS_TPL_ENABLE, Objects.equals(request.getIsTemplateEnable(), true) ? "Y" : "N")
                 .set(WEBCHAT_BOT_BLOCK.COMPANY_ID, getCompanyId())
                 .returning()
