@@ -22,7 +22,10 @@ public class JsonResultMessageConverter extends MappingJackson2HttpMessageConver
             "/swagger-resources/configuration/ui",
             "/swagger-resources/configuration/security",
             "/swagger-resources",
-            "/v2/api-docs"
+            "/v2/api-docs",
+            "/api/user/session-check",
+            "/ubiz/api/user/session-check"
+
     );
 
     private final HttpServletRequest request;
@@ -30,7 +33,7 @@ public class JsonResultMessageConverter extends MappingJackson2HttpMessageConver
     @SneakyThrows
     @Override
     protected void writeInternal(@NotNull Object object, Type type, @NotNull HttpOutputMessage outputMessage) {
-        if (excludingRequests.contains(request.getRequestURI())) {
+        if (excludingRequests.stream().anyMatch(e -> request.getRequestURI().startsWith(e))) {
             super.writeInternal(object, type, outputMessage);
         } else {
             super.writeInternal(JsonResult.data(object), type, outputMessage);

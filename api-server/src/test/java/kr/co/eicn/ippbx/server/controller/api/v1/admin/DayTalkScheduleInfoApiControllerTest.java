@@ -139,7 +139,7 @@ public class DayTalkScheduleInfoApiControllerTest extends BaseControllerTest {
 	 *  상담톡 주간스케쥴러 목록조회
 	 */
 //	@Test
-	public void list() throws Exception {
+	/*public void list() throws Exception {
 		final MvcResult result = this.mockMvc.perform(RestDocumentationRequestBuilders.get(TEST_URL)
 				.accept(MediaType.APPLICATION_JSON)
 				.with(new JwtRequestPostProcessor())
@@ -183,7 +183,7 @@ public class DayTalkScheduleInfoApiControllerTest extends BaseControllerTest {
 						, scheduleInfo.getScheduleGroup().getScheduleGroupLists().size());
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * 상담톡주간스케쥴러 유형보기

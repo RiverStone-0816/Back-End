@@ -177,7 +177,7 @@
                                     </option>
                                 </c:forEach>
                                 <c:if test="${channel == 'kakao' && senderKey != null && senderKey != '' && userKey != null && userKey != '' && talkServices != null && talkServices.get(senderKey) != null && !existRoomIdInMultichannelList}">
-                                    <option value="${g.htmlQuote(senderKey.concat('_').concat(userKey))}" data-type="TALK">
+                                    <option value="${g.htmlQuote(senderKey.concat('-').concat(userKey))}" data-type="TALK">
                                         [${g.htmlQuote(talkServices.get(senderKey))}] ${g.htmlQuote(userKey)}
                                     </option>
                                 </c:if>

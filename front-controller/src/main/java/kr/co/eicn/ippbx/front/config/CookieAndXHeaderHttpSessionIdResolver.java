@@ -49,9 +49,14 @@ public class CookieAndXHeaderHttpSessionIdResolver implements HttpSessionIdResol
         cookieSerializer.setUseBase64Encoding(false);
     }
 
+    // todo: header 에 SESSIONID 가 없는 경우 session 를 다시 생성 함으로써 url rewriting 에 문제 발생하여 일부 수정. 해당내용은 다시 수정 될 수 있음.
     @Override
     public List<String> resolveSessionIds(HttpServletRequest request) {
-        final String headerSessionId = request.getHeader(HEADER_X_SESSION_ID);
+        String jsessionid = null;
+        if (request.getRequestURL().toString().split(";").length > 1)
+            jsessionid = request.getRequestURL().toString().split(";")[1].split("=").length > 1 ? request.getRequestURL().toString().split(";")[1].split("=")[1] : null;
+
+        final String headerSessionId = StringUtils.isNotEmpty(request.getHeader(HEADER_X_SESSION_ID)) ? request.getHeader(HEADER_X_SESSION_ID) : jsessionid;
         if (StringUtils.isNotEmpty(headerSessionId)) {
             final Session session = sessionRepository.findById(headerSessionId);
             if (session == null)
