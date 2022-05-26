@@ -64,25 +64,14 @@
                                     <div class="display-item list" draggable="true" ondragstart="event.dataTransfer.setData('node', 'display-item-list')">
                                         <img src="<c:url value="/resources/images/item-list-icon.svg"/>"> 리스트
                                     </div>
-                                    <div class="display-item input" draggable="true" ondragstart="event.dataTransfer.setData('node', 'display-item-input')">
+                                    <%--<div class="display-item input" draggable="true" ondragstart="event.dataTransfer.setData('node', 'display-item-input')">
                                         <img src="<c:url value="/resources/images/item-input-icon.svg"/>" style="margin-left: -3px"> 입력폼
-                                    </div>
+                                    </div>--%>
                                 </div>
                                 <div class="chatbot-box-label">블록리스트</div>
                                 <div>
-                                    <div class="chatbot-box-sub-label blue">특수 블록</div>
-                                    <div class="block-list-container">
-                                        <ul class="block-list-ul">
-                                            <li class="block-list">
-                                                <div class="block-name">폴백 블록</div>
-                                                <div class="block-control">
-                                                    <button type="button" class="ui mini button remove-margin" onclick="fallbackConfig.show()">수정</button>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
                                     <div class="chatbot-box-sub-label blue">
-                                        인증 블록
+                                        폼 블록
                                         <div style="display: inline; float: right; margin: 5px 14px 0 0">
                                             <button onclick="authBlockListContainer.addNewBlock()" class="ui icon mini button"><i class="plus icon"></i></button>
                                         </div>
@@ -94,6 +83,17 @@
                                                 <div class="block-control">
                                                     <button @click.stop="configAuthBlock(i)" class="ui mini button">수정</button>
                                                     <button @click.stop="removeAuthBlock(i)" class="ui icon mini button"><i class="x icon"></i></button>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="chatbot-box-sub-label blue">특수 블록</div>
+                                    <div class="block-list-container">
+                                        <ul class="block-list-ul">
+                                            <li class="block-list">
+                                                <div class="block-name">폴백 블록</div>
+                                                <div class="block-control">
+                                                    <button type="button" class="ui mini button remove-margin" onclick="fallbackConfig.show()">수정</button>
                                                 </div>
                                             </li>
                                         </ul>
@@ -418,7 +418,7 @@
                                                 <select v-model="data.action">
                                                     <option value="">다음 블록으로 연결</option>
                                                     <option value="block">다른 블록으로 연결</option>
-                                                    <option value="auth">인증 블록으로 연결</option>
+                                                    <option value="auth">폼 블록으로 연결</option>
                                                     <option value="first">첫 블록으로 연결</option>
                                                     <option value="before">이전 블록으로 연결</option>
                                                     <option value="member">상담원 연결</option>
@@ -436,7 +436,7 @@
                                                 </div>
                                             </div>
                                             <div v-if="data.action === 'auth'">
-                                                <div class="mb15">인증 블록 설정</div>
+                                                <div class="mb15">폼 블록 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <select v-model="data.nextBlockId">
                                                         <option v-for="(e,i) in authBlockList()" :key="i" :value="e.id">{{ e.name }}</option>
@@ -530,7 +530,7 @@
                                                 <select v-model="data.action">
                                                     <option value="">다음 블록으로 연결</option>
                                                     <option value="block">다른 블록으로 연결</option>
-                                                    <option value="auth">인증 블록으로 연결</option>
+                                                    <option value="auth">폼 블록으로 연결</option>
                                                     <option value="first">첫 블록으로 연결</option>
                                                     <option value="before">이전 블록으로 연결</option>
                                                     <option value="member">상담원 연결</option>
@@ -548,7 +548,7 @@
                                                 </div>
                                             </div>
                                             <div v-if="data.action === 'auth'">
-                                                <div class="mb15">인증 블록 설정</div>
+                                                <div class="mb15">폼 블록 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <select v-model="data.nextActionData">
                                                         <option v-for="(e,i) in authBlockList()" :key="i" :value="e.id">{{ e.name }}</option>
@@ -625,11 +625,11 @@
                                 <div class="chatbot-control-container active">
                                     <button type="button" class="arrow-button"></button>
                                     <div class="chatbot-control-inner">
-                                        <div class="chatbot-box-label">인증 블록 관리
+                                        <div class="chatbot-box-label">폼 블록 관리
                                             <button class="ui mini button" @click.stop="save">저장</button>
                                         </div>
                                         <div class="chatbot-control-body">
-                                            <div class="mb15">인증블록명</div>
+                                            <div class="mb15">폼 블록명</div>
                                             <div class="ui form fluid mb15">
                                                 <input type="text" v-model="data.name">
                                             </div>
@@ -904,10 +904,6 @@
                 <div class="inner">
                     <ul v-if="authElements && authElements.length" class="button-item-ul">
                         <li v-for="(e,i) in authElements" :key="i" class="button-item button">
-                            <div class="button-item-order-wrap">
-                                <button @click.stop="moveUpResultElementItem(i)" class="up-button"></button>
-                                <button @click.stop="moveDownResultElementItem(i)" class="down-button"></button>
-                            </div>
                             <div class="button-item-inner">
                                 <div class="start">
                                     <text>{{ e.value }}</text>
@@ -1119,7 +1115,7 @@
                                     nextPhone: data.nextPhone
                                 }
 
-                                await authBlockListContainer.load(botId)
+                                await authBlockListContainer.load()
 
                                 chatbotSettingModal.hide()
 
@@ -1380,7 +1376,7 @@
                             for (let property in nodeBlockMap) delete nodeBlockMap[property]
                             editor.clear()
 
-                            authBlockListContainer.load(null)
+                            authBlockListContainer.load()
                             fallbackConfig.data = {
                                 name: o.name,
                                 enableCustomerInput: o.enableCustomerInput,
@@ -1835,7 +1831,7 @@
                         }
                     },
                     methods: {
-                        async load(botId) {
+                        async load() {
                             await restSelf.get('/api/chatbot/auth-blocks').done(response => {
                                 if (response.data) {
                                     response.data.forEach(e => {
@@ -1852,7 +1848,7 @@
 
                             const data = {
                                 id: null,
-                                name: '새로운 인증블럭',
+                                name: '새로운 폼블럭',
                                 params: [{type: 'text', title: '', needYn: false}, {type: 'text', paramName: null, displayName: null, needYn: false}],
                                 buttons: [{name: null, action: 'first', actionData: null}]
                             }
@@ -1909,7 +1905,7 @@
 
                             o.data = {}
                             if (!authBlock)
-                                return alert('인증블록정보가 없습니다.')
+                                return alert('폼블록정보가 없습니다.')
 
                             o.data.id = blockId
                             o.data.name = authBlock.name
@@ -2001,6 +1997,7 @@
             editor.start();
             editor.container.addEventListener('keydown', event => event.stopImmediatePropagation(), true)
             editor.container.addEventListener('mousedown', event => event.target.classList.contains('output') && event.stopImmediatePropagation(), true)
+            authBlockListContainer.load()
 
             const nodeBlockMap = {}
             const blocks = []

@@ -14,9 +14,6 @@ public class WebchatBotInfoResponse extends WebchatBotFallbackInfoResponse {
     private String name;
     private BlockInfo blockInfo;
 
-    @Valid
-    private List<WebchatBotFormBlockInfoResponse> authBlockList;
-
     @Data
     public static class BlockInfo {
         private Integer id;

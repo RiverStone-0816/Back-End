@@ -56,19 +56,19 @@ public class ChatbotApiInterface extends ApiServerInterface {
         return getData(subUrl + "blocks/" + blockId, null, WebchatBotInfoResponse.BlockInfo.class).getData();
     }
 
-    public List<WebchatBotFormBlockInfoResponse> getAuthBlockList() throws IOException, ResultFailException {
+    public List<WebchatBotFormBlockInfoResponse> getFormBlockList() throws IOException, ResultFailException {
         return getList(authSubUrl, null, WebchatBotFormBlockInfoResponse.class).getData();
     }
 
-    public Integer addAuthBlock(WebchatFormBlocKFormRequest form) throws IOException, ResultFailException {
+    public Integer addFormBlock(WebchatFormBlocKFormRequest form) throws IOException, ResultFailException {
         return getData(HttpMethod.POST, authSubUrl, form, Integer.class, false).getData();
     }
 
-    public void updateAuthBlock(Integer blockId, WebchatFormBlocKFormRequest form) throws IOException, ResultFailException {
+    public void updateFormBlock(Integer blockId, WebchatFormBlocKFormRequest form) throws IOException, ResultFailException {
         put(authSubUrl + blockId, form);
     }
 
-    public void deleteAuthBlock(Integer blockId) throws IOException, ResultFailException {
+    public void deleteFormBlock(Integer blockId) throws IOException, ResultFailException {
         delete(authSubUrl + blockId);
     }
 
