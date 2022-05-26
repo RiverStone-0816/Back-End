@@ -27,6 +27,7 @@ import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +40,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -48,6 +52,7 @@ import java.util.stream.Collectors;
 /**
  * @author tinywind
  */
+@Slf4j
 @Api(tags = "사용자정보", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 @RestController
 @RequestMapping(value = "api/auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -244,6 +249,18 @@ public class AuthApiController extends BaseController {
 
         authApiInterface.update(user.getPeer(), sipBuddies.getMd5secret());
         sipBuddies = authApiInterface.getSoftPhoneAuth(user.getPeer());
+
+        try (final InputStream in = Runtime.getRuntime().exec("ssh root@"+ pbx.getHost() +" asterisk -rx \\\\\"sip prune realtime peer "+ user.getPeer() +"\\\\\"").getInputStream();
+             final InputStreamReader reader = new InputStreamReader(in);
+             final BufferedReader br = new BufferedReader(reader)) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                log.info("asterisk message[message={}]", line);
+            }
+        } catch (IOException e) {
+            log.error("asterisk script ERROR[error={}]", e.getMessage());
+            throw new IllegalArgumentException("실행 할 수 없습니다.");
+        }
 
         return SoftPhoneInformation.builder().result("OK")
                 .message("")
