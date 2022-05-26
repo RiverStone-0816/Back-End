@@ -46,7 +46,7 @@
                       fill="#e1e1e1" />
               </svg>
             </button>
-            <button v-show="audioActionButton" class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" id="btn-hangup" @click.stop="doHangup">
+            <button class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" @click.stop="doHangup">
               <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 16">
                 <g transform="translate(-1155.078 -10717.04)">
                   <g transform="translate(1155.078 10717.04)">
@@ -83,7 +83,7 @@
                       fill="#e1e1e1" />
               </svg>
             </button>
-            <button v-show="videoActionButton" class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" id="btn-hangup" @click.stop="doHangup">
+            <button class="flex bg-red-500 text-white ml-2 py-2 px-7 rounded-lg hover:shadow-lg h-10" @click.stop="doHangup">
               <svg class="m-auto" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 17 16">
                 <g transform="translate(-1155.078 -10717.04)">
                   <g transform="translate(1155.078 10717.04)">
@@ -180,7 +180,7 @@
                       <p>{{ message.data.fallback_ment }}</p>
                     </span>
                   </div>
-                  <div class="space-y-2">
+                  <div class="space-y-2" v-show="getLastOrder(iMessage)">
                     <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actFallback(message)">
                       {{ getFallbackButtonName(message.data.fallback_action) }}
                     </button>
@@ -207,7 +207,7 @@
                       </span>
                     </div>
                   </div>
-                  <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="space-y-2">
+                  <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="space-y-2" v-show="getLastOrder(iMessage)">
                     <span v-if="e instanceof Array">
                       <button v-for="(e2, j) in e" :key="j"  class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actButton(message, e2)">
                         {{ e2.btn_name }}
@@ -388,7 +388,7 @@
                 <span class="rounded-full" style="width: 32px;height: 32px;"></span>
                 <!-- button start -->
                 <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4">
-                  <div class="space-y-2">
+                  <div class="space-y-2" v-show="getLastOrder(iMessage)">
                     <span v-if="e instanceof Array">
                       <button v-for="(e2, j) in e" :key="j" class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actButton(message, e2)">
                         {{ e2.btn_name }}
@@ -496,7 +496,7 @@
                       <p>상담원이 음성통화를 요청합니다.</p>
                     </span>
                   </div>
-                  <div class="space-y-2">
+                  <div class="space-y-2" v-show="getLastOrder(iMessage)">
                     <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="audioStart(true)">수락</button>
                     <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="audioStart(false)">거절</button>
                   </div>
@@ -519,7 +519,7 @@
                       <p>상담원이 영상통화를 요청합니다.</p>
                     </span>
                   </div>
-                  <div class="space-y-2">
+                  <div class="space-y-2" v-show="getLastOrder(iMessage)">
                     <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="videoStart(true)">수락</button>
                     <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="videoStart(false)">거절</button>
                   </div>
@@ -680,11 +680,9 @@ export default {
 
       audioChat: false,
       audioChatText: '음성통화 연결중',
-      audioActionButton: false,
 
       videoChat: false,
       videoChatText: '영상통화 연결중',
-      videoActionButton: false,
 
       chkInit: true,
 
@@ -706,6 +704,11 @@ export default {
         else list[list.length - 1].push(e)
         return list
       }, [])
+    },
+    getLastOrder(chkNum) {
+      console.log(this.messages.length);
+      console.log(chkNum);
+      return (this.messages.length - 1) === chkNum
     },
     getListElements(display) {
       return JSON.parse(JSON.stringify(display)).element?.sort((a, b) => (a.sequence - b.sequence)).splice(1)
@@ -937,16 +940,12 @@ export default {
       this.set_callback_vchat_accept(()=>{
         _this.audioChatText = '통화중'
         _this.videoChatText = '통화중'
-        _this.audioActionButton = true
-        _this.videoActionButton = true
       })
       this.set_callback_vchat_hangup(()=>{
         _this.audioChatText = '통화종료'
         _this.videoChatText = '통화종료'
         _this.audioChat = false
         _this.videoChat = false
-        _this.audioActionButton = false
-        _this.videoActionButton = false
       })
       if (_this.vchatReconnectTimerId) {
         clearInterval(_this.vchatReconnectTimerId);
