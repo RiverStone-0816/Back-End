@@ -66,22 +66,22 @@ public class ChatbotApiController extends BaseController {
 
     @GetMapping("auth-blocks")
     public List<WebchatBotFormBlockInfoResponse> getAuthBlockList() throws IOException, ResultFailException {
-        return apiInterface.getAuthBlockList();
+        return apiInterface.getFormBlockList();
     }
 
     @PostMapping("auth-block")
     public Integer addAuthBlock(@Valid @RequestBody WebchatFormBlocKFormRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
-        return apiInterface.addAuthBlock(form);
+        return apiInterface.addFormBlock(form);
     }
 
     @PutMapping("auth-block/{formBlockId}")
     public void updateAuthBlock(@PathVariable Integer formBlockId, @Valid @RequestBody WebchatFormBlocKFormRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
-        apiInterface.updateAuthBlock(formBlockId, form);
+        apiInterface.updateFormBlock(formBlockId, form);
     }
 
     @DeleteMapping("auth-block/{formBlockId}")
     public void deleteAuthBlock(@PathVariable Integer formBlockId) throws IOException, ResultFailException {
-        apiInterface.deleteAuthBlock(formBlockId);
+        apiInterface.deleteFormBlock(formBlockId);
     }
 
     @SneakyThrows

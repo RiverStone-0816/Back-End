@@ -32,7 +32,6 @@ public class WebchatBotService extends ApiBaseService {
     private final WebchatBotDisplayElementService webchatBotDisplayElementService;
     private final WebchatBotButtonElementService webchatBotButtonElementService;
     private final ImageFileStorageService imageFileStorageService;
-    private final WebchatBotFormBlockService webchatBotAuthBlockService;
     private final WebchatBotAuthResultElementService webchatBotAuthResultElementService;
 
     @Value("${file.path.chatbot}")
@@ -159,7 +158,6 @@ public class WebchatBotService extends ApiBaseService {
 
     public WebchatBotInfoResponse getBotInfo(Integer botId) {
         final WebchatBotInfoResponse response = webchatBotInfoService.get(botId);
-        response.setAuthBlockList(webchatBotAuthBlockService.getAll());
         final WebchatBotTree rootBlock = webchatBotTreeService.findRootBlock(botId);
 
         if (rootBlock != null) {
