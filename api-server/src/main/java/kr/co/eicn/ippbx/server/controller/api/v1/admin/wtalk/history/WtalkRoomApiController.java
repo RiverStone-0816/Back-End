@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentTalkRoom.CURRENT_TALK_ROOM;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
 import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static org.apache.commons.lang3.StringUtils.replace;
 
@@ -117,7 +117,7 @@ public class WtalkRoomApiController extends ApiBaseController {
     public ResponseEntity<JsonResult<WtalkRoomResponse>> get(@RequestParam String roomId) {
 
         WtalkRoomEntity roomEntity;
-        roomEntity = currentWtalkRoomRepository.findOne(CURRENT_TALK_ROOM.ROOM_ID.eq(roomId));
+        roomEntity = currentWtalkRoomRepository.findOne(CURRENT_WTALK_ROOM.ROOM_ID.eq(roomId));
         if(Objects.isNull(roomEntity))
             roomEntity = wtalkRoomService.getRepository().findOne(new CommonWtalkRoom(g.getUser().getCompanyId()).ROOM_ID.eq(roomId));
 

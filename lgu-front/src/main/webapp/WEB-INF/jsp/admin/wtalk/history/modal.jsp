@@ -11,6 +11,7 @@
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
+<%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 
 <div class="ui modal tiny" style="height: 750px; max-height: none;">
     <i class="close icon"></i>
@@ -287,6 +288,40 @@
                                                 </div>
                                             </c:otherwise>
                                         </c:choose>
+                                    </div>
+                                </div>
+                            </c:when>
+                            <c:when test="${e.sendReceive == 'RARC'}">
+                                <div class="chat-item ${e.sendReceive == 'RARC' ? 'chat-me' : ''}">
+                                    <div class="wrap-content">
+                                        <c:set var="name" value='오토멘트'/>
+                                        <div class="txt-time">[${g.htmlQuote(name)}] ${e.insertTime}</div>
+                                        <div class="chat">
+                                            <div class="bubble"
+                                                 style="background-color: rgba(224, 57, 151, 0.28)">
+                                                <div class="txt_chat">
+                                                    <div style="width: 320px">
+                                                        <audio controls :src="'${apiServerUrl}/api/v1/admin/record/file/resource?fileName=${e.content}&token=${accessToken}'" initaudio="false"></audio>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:when>
+                            <c:when test="${e.sendReceive == 'RVRC'}">
+                                <div class="chat-item ${e.sendReceive == 'RVRC' ? 'chat-me' : ''}">
+                                    <div class="wrap-content">
+                                        <c:set var="name" value='오토멘트'/>
+                                        <div class="txt-time">[${g.htmlQuote(name)}] ${e.insertTime}</div>
+                                        <div class="chat">
+                                            <div class="bubble"
+                                                 style="background-color: rgba(224, 57, 151, 0.28)">
+                                                <div class="txt_chat">
+                                                    <video controls :src="'${apiServerUrl}/api/v1/admin/record/file/resource?fileName=${e.content}&token=${accessToken}'"></video>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </c:when>
