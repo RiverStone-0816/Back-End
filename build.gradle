@@ -196,6 +196,8 @@ project(':jooq-model') {
                             '| result_custom_info_.*' +
                             '| talk_msg_.*' +
                             '| talk_room_.*' +
+                            '| wtalk_msg_.*' +
+                            '| wtalk_room_.*' +
                             '| voc_result_.*' +
                             '| execute_pds_custom_info_.*' +
                             '| pds_custom_info_.*' +
@@ -204,6 +206,7 @@ project(':jooq-model') {
                             '| stat_member_.*' +
                             '| stat_outbound_.*' +
                             '| stat_talk_.*' +
+                            '| stat_wtalk_.*' +
                             '| stat_user_inbound_.*' +
                             '| stat_user_outbound_.*' +
                             '| stat_voc_.*' +
