@@ -13,10 +13,10 @@ import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.WEBCHAT_BOT_FORMRESULT_ELEM
 
 @Getter
 @Repository
-public class WebchatBotAuthResultElementRepository extends EicnBaseRepository<kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebchatBotFormresultElement, WebchatBotFormresultElement, Integer> {
-    private final Logger logger = LoggerFactory.getLogger(WebchatBotAuthResultElementRepository.class);
+public class WebchatBotFormResultElementRepository extends EicnBaseRepository<kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebchatBotFormresultElement, WebchatBotFormresultElement, Integer> {
+    private final Logger logger = LoggerFactory.getLogger(WebchatBotFormResultElementRepository.class);
 
-    public WebchatBotAuthResultElementRepository() {
+    public WebchatBotFormResultElementRepository() {
         super(WEBCHAT_BOT_FORMRESULT_ELEMENT, WEBCHAT_BOT_FORMRESULT_ELEMENT.ID, WebchatBotFormresultElement.class);
 
         orderByFields.add(WEBCHAT_BOT_FORMRESULT_ELEMENT.ID.asc());

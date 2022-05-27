@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotAuthresultElement;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WebchatBotFormresultElement;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
 import kr.co.eicn.ippbx.model.enums.ButtonAction;
 import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
-import kr.co.eicn.ippbx.server.repository.eicn.WebchatBotAuthResultElementRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.WebchatBotFormResultElementRepository;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,17 +17,17 @@ import java.util.stream.Collectors;
 @Slf4j
 @AllArgsConstructor
 @Service
-public class WebchatBotAuthResultElementService extends ApiBaseService {
-    private final WebchatBotAuthResultElementRepository webchatBotAuthResultElementRepository;
+public class WebchatBotFormResultElementService extends ApiBaseService {
+    private final WebchatBotFormResultElementRepository webchatBotFormResultElementRepository;
 
     public Map<Integer, List<WebchatBotInfoResponse.AuthResultElement>> findAllByBlockIdList(List<Integer> blockIdList) {
-        return webchatBotAuthResultElementRepository.findAllByBLockIdList(blockIdList)
+        return webchatBotFormResultElementRepository.findAllByBLockIdList(blockIdList)
                 .stream()
                 .map(this::convertEntityToResponse)
                 .collect(Collectors.groupingBy(WebchatBotInfoResponse.AuthResultElement::getBlockId));
     }
 
-    private WebchatBotInfoResponse.AuthResultElement convertEntityToResponse(WebchatBotAuthresultElement entity) {
+    private WebchatBotInfoResponse.AuthResultElement convertEntityToResponse(WebchatBotFormresultElement entity) {
         WebchatBotInfoResponse.AuthResultElement response = new WebchatBotInfoResponse.AuthResultElement();
 
         response.setId(entity.getId());
@@ -63,14 +63,14 @@ public class WebchatBotAuthResultElementService extends ApiBaseService {
             data.setAction(ButtonAction.CONNECT_BLOCK);
         }
 
-        return webchatBotAuthResultElementRepository.insert(blockId, data);
+        return webchatBotFormResultElementRepository.insert(blockId, data);
     }
 
     public void updateNextBlockId(Integer elementId, Integer blockId) {
-        webchatBotAuthResultElementRepository.updateBlockId(elementId, blockId);
+        webchatBotFormResultElementRepository.updateBlockId(elementId, blockId);
     }
 
     public void deleteByBlockIdList(List<Integer> blockIdList) {
-        webchatBotAuthResultElementRepository.deleteByBlockIdList(blockIdList);
+        webchatBotFormResultElementRepository.deleteByBlockIdList(blockIdList);
     }
 }
