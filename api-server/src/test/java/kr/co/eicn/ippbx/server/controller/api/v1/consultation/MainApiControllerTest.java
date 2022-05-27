@@ -3,8 +3,8 @@ package kr.co.eicn.ippbx.server.controller.api.v1.consultation;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
-import kr.co.eicn.ippbx.model.dto.eicn.TalkCurrentListResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.TalkCurrentMsgResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WtalkCurrentListResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WtalkCurrentMsgResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.TodoDataResponse;
 import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
 import kr.co.eicn.ippbx.model.form.TodoListUpdateFormRequest;
@@ -167,7 +167,7 @@ public class MainApiControllerTest extends BaseControllerTest {
 //                ))
                 .andReturn();
 
-        final List<TalkCurrentListResponse> data = listData(result, TalkCurrentListResponse.class);
+        final List<WtalkCurrentListResponse> data = listData(result, WtalkCurrentListResponse.class);
         log.info("data {}", data);
     }
 
@@ -190,7 +190,7 @@ public class MainApiControllerTest extends BaseControllerTest {
 //                ))
                 .andReturn();
 
-        final TalkCurrentMsgResponse data = getData(result, TalkCurrentMsgResponse.class);
+        final WtalkCurrentMsgResponse data = getData(result, WtalkCurrentMsgResponse.class);
         log.info("data {}", data);
     }
 

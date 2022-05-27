@@ -16,10 +16,7 @@ import kr.co.eicn.ippbx.model.entity.eicn.UserEntity;
 import kr.co.eicn.ippbx.model.enums.MultichannelChannelType;
 import kr.co.eicn.ippbx.model.form.MaindbCustomInfoFormRequest;
 import kr.co.eicn.ippbx.model.search.MaindbDataSearchRequest;
-import kr.co.eicn.ippbx.server.repository.eicn.CommonFieldRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.CurrentTalkRoomRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.MaindbGroupRepository;
-import kr.co.eicn.ippbx.server.repository.eicn.UserRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.MaindbCustomInfoService;
 import kr.co.eicn.ippbx.server.service.MaindbKeyInfoService;
 import kr.co.eicn.ippbx.server.service.MaindbMultichannelInfoService;
@@ -63,7 +60,7 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
     @Autowired
     private MaindbKeyInfoService maindbKeyInfoService;
     @Autowired
-    private CurrentTalkRoomRepository currentTalkRoomRepository;
+    private CurrentWtalkRoomRepository currentWtalkRoomRepository;
     @Autowired
     private MaindbCustomInfoService maindbCustomInfoService;
     @Value("${file.path.custom}")
@@ -303,7 +300,7 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
             for (MaindbCustomInfoFormRequest.ChannelForm channel : form.getChannels()) {
                 maindbMultichannelInfoService.getRepository().insert(id, customName, channel);
                 if (channel.getType().equals(MultichannelChannelType.TALK)) {
-                    currentTalkRoomRepository.updateGroupIdCustomIdCustomName(form.getGroupSeq(), id, customName, form.getRoomId());
+                    currentWtalkRoomRepository.updateGroupIdCustomIdCustomName(form.getGroupSeq(), id, customName, form.getRoomId());
                 }
             }
             maindbMultichannelInfoService.getRepository().updateCustomName(id, customName);
@@ -474,7 +471,7 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
             for (MaindbCustomInfoFormRequest.ChannelForm channel : form.getChannels()) {
                 maindbMultichannelInfoService.getRepository().insert(id, customName, channel);
                 if (channel.getType().equals(MultichannelChannelType.TALK)) {
-                    currentTalkRoomRepository.updateGroupIdCustomIdCustomName(form.getGroupSeq(), id, customName, form.getRoomId());
+                    currentWtalkRoomRepository.updateGroupIdCustomIdCustomName(form.getGroupSeq(), id, customName, form.getRoomId());
                 }
             }
             maindbMultichannelInfoService.getRepository().updateCustomName(id, customName);

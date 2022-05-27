@@ -17,7 +17,6 @@ import kr.co.eicn.ippbx.model.search.TalkServiceInfoSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.StatInboundService;
 import kr.co.eicn.ippbx.server.service.StatQueueWaitService;
-import kr.co.eicn.ippbx.server.service.TalkStatisticsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Record;

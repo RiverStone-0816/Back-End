@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServiceInfo;
 import kr.co.eicn.ippbx.model.dto.customdb.ChatbotKakaoCustomerProfileResponse;
 import kr.co.eicn.ippbx.model.dto.customdb.ChatbotSendEventDataResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.ChatbotKakaoCustomerProfileEntity;
@@ -27,7 +27,7 @@ public class ChatbotKakakoCustomerProfileService extends ApiBaseService implemen
     private final Map<String, KakaoProfileRepository> repositories = new HashMap<>();
     private ApplicationContext applicationContext;
 
-    private final TalkServiceInfoService talkServiceInfoService;
+    private final WtalkServiceInfoService talkServiceInfoService;
 
     public KakaoProfileRepository getRepository() {
         return repositories.computeIfAbsent(g.getUser().getCompanyId(), companyId -> {
@@ -44,7 +44,7 @@ public class ChatbotKakakoCustomerProfileService extends ApiBaseService implemen
 
     public Pagination<ChatbotKakaoCustomerProfileResponse> getPagination(ChatbotKakaoCustomerProfileSearchRequest search) {
         final Pagination<ChatbotKakaoCustomerProfileEntity> pagination = getRepository().getPagination(search);
-        final Map<String, String> botNameByIdMap = talkServiceInfoService.getAllTalkServiceList().stream().collect(Collectors.toMap(TalkServiceInfo::getBotId, TalkServiceInfo::getBotName));
+        final Map<String, String> botNameByIdMap = talkServiceInfoService.getAllTalkServiceList().stream().collect(Collectors.toMap(WtalkServiceInfo::getBotId, WtalkServiceInfo::getBotName));
 
         final List<ChatbotKakaoCustomerProfileResponse> rows = pagination.getRows().stream().map(e -> convertDto(e, botNameByIdMap)).collect(Collectors.toList());
 
@@ -52,7 +52,7 @@ public class ChatbotKakakoCustomerProfileService extends ApiBaseService implemen
     }
 
     public ChatbotSendEventDataResponse get(Integer seq) {
-        final Map<String, String> botNameByIdMap = talkServiceInfoService.getAllTalkServiceList().stream().collect(Collectors.toMap(TalkServiceInfo::getBotId, TalkServiceInfo::getBotName));
+        final Map<String, String> botNameByIdMap = talkServiceInfoService.getAllTalkServiceList().stream().collect(Collectors.toMap(WtalkServiceInfo::getBotId, WtalkServiceInfo::getBotName));
         final ChatbotKakaoCustomerProfileEntity result = getRepository().findOneIfNullThrow(seq);
         final ChatbotSendEventDataResponse response = convertDto(result, ChatbotSendEventDataResponse.class);
 

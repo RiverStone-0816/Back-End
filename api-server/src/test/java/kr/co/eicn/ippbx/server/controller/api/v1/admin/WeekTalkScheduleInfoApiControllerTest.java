@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
+import kr.co.eicn.ippbx.model.entity.eicn.WtalkScheduleInfoEntity;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
 import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.TalkServiceInfoResponse;
-import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleInfoEntity;
+import kr.co.eicn.ippbx.model.dto.eicn.WtalkServiceInfoResponse;
 import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormUpdateRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -158,9 +158,9 @@ public class WeekTalkScheduleInfoApiControllerTest extends BaseControllerTest {
 				))
 				.andReturn();
 
-		final List<TalkServiceInfoResponse> talkServiceInfoResponses = listData(result, TalkServiceInfoResponse.class);
-		for (TalkServiceInfoResponse response : talkServiceInfoResponses) {
-			for (TalkScheduleInfoEntity scheduleInfo : response.getScheduleInfos()) {
+		final List<WtalkServiceInfoResponse> talkServiceInfoResponses = listData(result, WtalkServiceInfoResponse.class);
+		for (WtalkServiceInfoResponse response : talkServiceInfoResponses) {
+			for (WtalkScheduleInfoEntity scheduleInfo : response.getScheduleInfos()) {
 				log.info("번호 ({}), 소속정보 ({}), 요일 ({}), 유형 ({}), 스케쥴 KEY ({}), 항목 ({})"
 						, response.getKakaoServiceName()
 						, scheduleInfo.getCompanyTrees().stream().map(OrganizationSummaryResponse::getGroupName).collect(Collectors.joining(","))

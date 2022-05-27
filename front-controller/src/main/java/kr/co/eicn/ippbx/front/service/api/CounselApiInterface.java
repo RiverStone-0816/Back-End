@@ -7,34 +7,23 @@ import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.model.dto.customdb.CustomMultichannelInfoResponse;
 import kr.co.eicn.ippbx.model.dto.customdb.MainReceivePathResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.TalkCurrentListResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.TalkCurrentMsgResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WtalkCurrentListResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WtalkCurrentMsgResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.TodoDataResponse;
 import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
 import kr.co.eicn.ippbx.model.form.TodoListUpdateFormRequest;
 import kr.co.eicn.ippbx.model.form.TodoReservationFormRequest;
 import kr.co.eicn.ippbx.model.search.TodoListSearchRequest;
 import kr.co.eicn.ippbx.util.UrlUtils;
-import kr.co.eicn.ippbx.util.spring.BaseForm;
-import kr.co.eicn.ippbx.util.valid.NotNull;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -66,20 +55,20 @@ public class CounselApiInterface extends ApiServerInterface {
         return getList(subUrl + "calling-path", UrlUtils.makeParamMap("iniNum", iniNum, "secondNum", secondNum == null ? "" : secondNum), MainReceivePathResponse.class).getData();
     }
 
-    public List<TalkCurrentListResponse> currentTalkList(TalkCurrentListSearchRequest search) throws IOException, ResultFailException {
-        return getList(subUrl + "current-talk-list", search, TalkCurrentListResponse.class).getData();
+    public List<WtalkCurrentListResponse> currentTalkList(TalkCurrentListSearchRequest search) throws IOException, ResultFailException {
+        return getList(subUrl + "current-wtalk-list", search, WtalkCurrentListResponse.class).getData();
     }
 
-    public TalkCurrentMsgResponse currentTalkMsg(String roomId) throws IOException, ResultFailException {
-        return getData(subUrl + "current-talk-msg" + "/" + roomId, null, TalkCurrentMsgResponse.class).getData();
+    public WtalkCurrentMsgResponse currentTalkMsg(String roomId) throws IOException, ResultFailException {
+        return getData(subUrl + "current-wtalk-msg" + "/" + roomId, null, WtalkCurrentMsgResponse.class).getData();
     }
 
     public void talkRemoveRoom(String roomId) throws IOException, ResultFailException {
-        delete(subUrl + "talk-remove-room" + "/" + roomId);
+        delete(subUrl + "wtalk-remove-room" + "/" + roomId);
     }
 
     public void updateTalkAutoEnable(String roomId, TalkAutoEnableFormRequest form) throws IOException, ResultFailException {
-        put(subUrl + "talk-auto-enable/" + roomId, form);
+        put(subUrl + "wtalk-auto-enable/" + roomId, form);
     }
 
     public List<CustomMultichannelInfoResponse> customInfoList(String channelData) throws IOException, ResultFailException {

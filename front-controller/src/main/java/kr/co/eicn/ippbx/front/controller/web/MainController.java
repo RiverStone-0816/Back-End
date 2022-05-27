@@ -7,7 +7,7 @@ import kr.co.eicn.ippbx.front.service.FileService;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ChattingApiInterface;
 import kr.co.eicn.ippbx.front.service.api.DaemonInfoInterface;
-import kr.co.eicn.ippbx.front.service.api.talk.group.TalkReceptionGroupApiInterface;
+import kr.co.eicn.ippbx.front.service.api.wtalk.group.WtalkReceptionGroupApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonSummaryResponse;
 import kr.co.eicn.ippbx.model.form.ChattingMemberFormRequest;
 import kr.co.eicn.ippbx.model.search.ChattingMemberSearchRequest;
@@ -40,7 +40,7 @@ import java.util.Objects;
 @Controller
 public class MainController extends BaseController {
     private final DaemonInfoInterface daemonInfoInterface;
-    private final TalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
+    private final WtalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
     private final ChattingApiInterface chattingApiInterface;
 
     @Value("${eicn.admin.socket.id}")

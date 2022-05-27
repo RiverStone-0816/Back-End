@@ -59,7 +59,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
     @Autowired
     private TodoListRepository todoListRepository;
     @Autowired
-    private CurrentTalkRoomRepository currentTalkRoomRepository;
+    private CurrentWtalkRoomRepository currentWtalkRoomRepository;
     @Autowired
     private CurrentVocCustomListRepository vocCustomListRepository;
     @Value("${file.path.custom}")
@@ -278,7 +278,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
         }
 
         if (form.getGroupKind() != null && form.getGroupKind().equals("TALK")) {
-            currentTalkRoomRepository.updateRoomNameByRoomId(form.getHangupMsg(), form.getRoomName());
+            currentWtalkRoomRepository.updateRoomNameByRoomId(form.getHangupMsg(), form.getRoomName());
         }
 
         if (StringUtils.isNotEmpty(form.getUserIdTr())) {
@@ -345,7 +345,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
         }
 
         if (form.getGroupKind().equals("TALK")) {
-            currentTalkRoomRepository.updateRoomNameByRoomId(form.getHangupMsg(), form.getRoomName());
+            currentWtalkRoomRepository.updateRoomNameByRoomId(form.getHangupMsg(), form.getRoomName());
         }
 
         if (Objects.nonNull(form.getVocGroup())) {

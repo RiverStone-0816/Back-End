@@ -118,7 +118,7 @@
         </script>
         <script>
             function consultingHistoryTalkView(roomId) {
-                popupReceivedHtml('/admin/talk/history/modal?roomId=' + encodeURIComponent(roomId), 'modal-consulting-history-talk-view');
+                popupReceivedHtml('/admin/wtalk/history/modal?roomId=' + encodeURIComponent(roomId), 'modal-consulting-history-talk-view');
             }
 
             const searchForm = $('#search-form');

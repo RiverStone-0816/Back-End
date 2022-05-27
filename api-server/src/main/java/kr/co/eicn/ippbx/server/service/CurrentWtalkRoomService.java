@@ -1,6 +1,6 @@
 package kr.co.eicn.ippbx.server.service;
 
-import kr.co.eicn.ippbx.model.entity.customdb.TalkRoomEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.WtalkRoomEntity;
 import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
 import kr.co.eicn.ippbx.model.search.TalkRoomSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.CurrentWtalkRoomRepository;
@@ -17,17 +17,17 @@ import java.util.stream.Collectors;
 public class CurrentWtalkRoomService extends ApiBaseService {
     private final CurrentWtalkRoomRepository currentTalkRoomRepository;
 
-    public Pagination<TalkRoomEntity> pagination(TalkRoomSearchRequest search) {
+    public Pagination<WtalkRoomEntity> pagination(TalkRoomSearchRequest search) {
         return currentTalkRoomRepository.pagination(search);
     }
 
-    public List<TalkRoomEntity> findAll(TalkCurrentListSearchRequest search) {
-        List<TalkRoomEntity> list = currentTalkRoomRepository.findAll(search);
+    public List<WtalkRoomEntity> findAll(TalkCurrentListSearchRequest search) {
+        List<WtalkRoomEntity> list = currentTalkRoomRepository.findAll(search);
 
         return filter(list, search.getMode());
     }
 
-    public List<TalkRoomEntity> filter(List<TalkRoomEntity> list, String mode) {
+    public List<WtalkRoomEntity> filter(List<WtalkRoomEntity> list, String mode) {
         return list.stream().filter(e -> StringUtils.isEmpty(mode) || e.getTalkRoomMode().getCode().equals(mode)).collect(Collectors.toList());
     }
 }

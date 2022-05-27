@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom;
-import kr.co.eicn.ippbx.model.entity.customdb.TalkRoomEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.WtalkRoomEntity;
 import kr.co.eicn.ippbx.model.enums.TalkRoomMode;
 import kr.co.eicn.ippbx.model.form.TalkAutoEnableFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
@@ -23,15 +23,15 @@ import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WT
 
 @Getter
 @Repository
-public class CurrentWtalkRoomRepository extends EicnBaseRepository<CurrentWtalkRoom, TalkRoomEntity, Integer> {
+public class CurrentWtalkRoomRepository extends EicnBaseRepository<CurrentWtalkRoom, WtalkRoomEntity, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(CurrentWtalkRoomRepository.class);
 
     CurrentWtalkRoomRepository() {
-        super(CURRENT_WTALK_ROOM, CURRENT_WTALK_ROOM.SEQ, TalkRoomEntity.class);
+        super(CURRENT_WTALK_ROOM, CURRENT_WTALK_ROOM.SEQ, WtalkRoomEntity.class);
     }
 
     @Override
-    protected void postProcedure(List<TalkRoomEntity> entities) {
+    protected void postProcedure(List<WtalkRoomEntity> entities) {
         entities.forEach(e -> {
             if ("G".equals(e.getRoomStatus())) {
                 if (e.getUserid().equals(g.getUser().getId()))
@@ -45,11 +45,11 @@ public class CurrentWtalkRoomRepository extends EicnBaseRepository<CurrentWtalkR
         });
     }
 
-    public Pagination<TalkRoomEntity> pagination(TalkRoomSearchRequest search) {
+    public Pagination<WtalkRoomEntity> pagination(TalkRoomSearchRequest search) {
         return pagination(search, conditions(search));
     }
 
-    public List<TalkRoomEntity> findAll(TalkCurrentListSearchRequest search) {
+    public List<WtalkRoomEntity> findAll(TalkCurrentListSearchRequest search) {
         return findAll(conditions(search));
     }
 

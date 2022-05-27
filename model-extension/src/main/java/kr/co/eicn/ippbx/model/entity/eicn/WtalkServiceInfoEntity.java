@@ -9,5 +9,5 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class WtalkServiceInfoEntity extends WtalkServiceInfo {
-	private List<TalkScheduleInfoEntity> scheduleInfos; // 스케쥴러 목록
+	private List<WtalkScheduleInfoEntity> scheduleInfos; // 스케쥴러 목록
 }

@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.model.dto.eicn.SummaryTalkGroupPersonResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.TalkMemberGroupDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryWtalkGroupPersonResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WtalkMemberGroupDetailResponse;
 import kr.co.eicn.ippbx.model.form.TalkMemberGroupFormRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
@@ -14,9 +14,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -150,7 +148,7 @@ public class TalkMemberGroupApiControllerTest extends BaseControllerTest {
 				))
 				.andReturn();
 
-		final TalkMemberGroupDetailResponse data = getData(result, TalkMemberGroupDetailResponse.class);
+		final WtalkMemberGroupDetailResponse data = getData(result, WtalkMemberGroupDetailResponse.class);
 
 		log.info("data {}", data);
 	}
@@ -257,8 +255,8 @@ public class TalkMemberGroupApiControllerTest extends BaseControllerTest {
 				))
 				.andReturn();
 
-		final List<SummaryTalkGroupPersonResponse> responses = listData(result, SummaryTalkGroupPersonResponse.class);
-		for (SummaryTalkGroupPersonResponse response : responses) {
+		final List<SummaryWtalkGroupPersonResponse> responses = listData(result, SummaryWtalkGroupPersonResponse.class);
+		for (SummaryWtalkGroupPersonResponse response : responses) {
 			log.info(response.toString());
 		}
 	}

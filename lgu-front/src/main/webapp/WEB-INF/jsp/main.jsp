@@ -584,7 +584,7 @@
             }
 
             function talkHistoryView(roomId) {
-                popupReceivedHtml('/admin/talk/history/modal?roomId=' + encodeURIComponent(roomId), 'modal-consulting-history-talk-view');
+                popupReceivedHtml('/admin/wtalk/history/modal?roomId=' + encodeURIComponent(roomId), 'modal-consulting-history-talk-view');
             }
 
             <c:if test="${usingServices.contains('SPHONE') && g.user.softphone.equals('Y')}">

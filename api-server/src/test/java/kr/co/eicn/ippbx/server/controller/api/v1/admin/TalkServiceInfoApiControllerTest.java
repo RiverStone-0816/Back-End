@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.model.dto.eicn.TalkServiceSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WtalkServiceSummaryResponse;
 import kr.co.eicn.ippbx.model.form.TalkServiceInfoFormRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
@@ -67,8 +67,8 @@ public class TalkServiceInfoApiControllerTest extends BaseControllerTest {
 				))
 				.andReturn();
 
-		final List<TalkServiceSummaryResponse> summaryResponses = listData(result, TalkServiceSummaryResponse.class);
-		for (TalkServiceSummaryResponse summaryResponse : summaryResponses) {
+		final List<WtalkServiceSummaryResponse> summaryResponses = listData(result, WtalkServiceSummaryResponse.class);
+		for (WtalkServiceSummaryResponse summaryResponse : summaryResponses) {
 			log.info(summaryResponse.toString());
 		}
 	}

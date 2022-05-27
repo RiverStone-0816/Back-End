@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.chatbot.info;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
-import kr.co.eicn.ippbx.front.service.api.talk.info.TalkServiceApiInterface;
-import kr.co.eicn.ippbx.model.dto.eicn.TalkServiceSummaryResponse;
+import kr.co.eicn.ippbx.front.service.api.wtalk.info.WtalkServiceApiInterface;
+import kr.co.eicn.ippbx.model.dto.eicn.WtalkServiceSummaryResponse;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -21,11 +21,11 @@ import java.util.List;
 public class ChatbotServiceInfoController extends BaseController {
     private final Logger logger = LoggerFactory.getLogger(ChatbotServiceInfoController.class);
 
-    private final TalkServiceApiInterface talkServiceApiInterface;
+    private final WtalkServiceApiInterface talkServiceApiInterface;
 
     @GetMapping("")
     public String page(Model model) throws IOException, ResultFailException {
-        final List<TalkServiceSummaryResponse> list = talkServiceApiInterface.list();
+        final List<WtalkServiceSummaryResponse> list = talkServiceApiInterface.list();
         model.addAttribute("list", list);
 
         return "admin/chatbot/info/service/ground";

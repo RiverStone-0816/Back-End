@@ -1,25 +1,22 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.consultation;
 
 import kr.co.eicn.ippbx.exception.ValidationException;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonTalkMsg;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonWtalkMsg;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonWtalkRoom;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.CommonTalkMsgRecord;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.CommonWtalkMsgRecord;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoKind;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WtalkServiceInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebchatServiceInfo;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WtalkServiceInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.model.dto.customdb.*;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
-import kr.co.eicn.ippbx.model.entity.customdb.TalkMsgEntity;
-import kr.co.eicn.ippbx.model.entity.customdb.TalkRoomEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.WtalkMsgEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.WtalkRoomEntity;
 import kr.co.eicn.ippbx.model.enums.*;
 import kr.co.eicn.ippbx.model.form.*;
 import kr.co.eicn.ippbx.model.search.TodoListSearchRequest;
@@ -69,12 +66,12 @@ public class MainApiController extends ApiBaseController {
     private final PhoneInfoRepository phoneInfoRepository;
     private final MaindbMultichannelInfoService maindbMultichannelInfoService;
     private final TodoListRepository todoListRepository;
-    private final WtalkRoomService talkRoomService;
-    private final CurrentWtalkRoomRepository currentTalkRoomRepository;
-    private final CurrentWtalkRoomService currentTalkRoomService;
-    private final WtalkServiceInfoRepository talkServiceInfoRepository;
+    private final WtalkRoomService wtalkRoomService;
+    private final CurrentWtalkRoomRepository currentWtalkRoomRepository;
+    private final CurrentWtalkRoomService currentWtalkRoomService;
+    private final WtalkServiceInfoRepository wtalkServiceInfoRepository;
     private final WebchatServiceInfoRepository webchatServiceInfoRepository;
-    private final WtalkMsgService talkMsgService;
+    private final WtalkMsgService wtalkMsgService;
     private final PersonListRepository personListRepository;
     private final CallbackRepository callbackRepository;
     private final MaindbCustomInfoService maindbCustomInfoService;
@@ -340,8 +337,8 @@ public class MainApiController extends ApiBaseController {
     /**
      * 상담원 상담톡 리스트
      */
-    @GetMapping("current-talk-list")
-    public ResponseEntity<JsonResult<List<TalkCurrentListResponse>>> currentTalkList(TalkCurrentListSearchRequest search) {
+    @GetMapping("current-wtalk-list")
+    public ResponseEntity<JsonResult<List<WtalkCurrentListResponse>>> currentTalkList(TalkCurrentListSearchRequest search) {
 
         if (search.getAuthType() == null || search.getAuthType().equals("")) {
             search.setAuthType("USER");
@@ -350,7 +347,7 @@ public class MainApiController extends ApiBaseController {
             search.setOrderBy("room_last_time");
         }
 
-        Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServiceInfo> talkServiceInfoMap = talkServiceInfoRepository.findAll(WtalkServiceInfo.WTALK_SERVICE_INFO.COMPANY_ID.eq(g.getUser().getCompanyId()))
+        Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServiceInfo> talkServiceInfoMap = wtalkServiceInfoRepository.findAll(WtalkServiceInfo.WTALK_SERVICE_INFO.COMPANY_ID.eq(g.getUser().getCompanyId()))
                 .stream()
                 .collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServiceInfo::getSenderKey, e -> e));
         webchatServiceInfoRepository.findAll(WebchatServiceInfo.WEBCHAT_SERVICE_INFO.COMPANY_ID.eq(g.getUser().getCompanyId()))
@@ -369,11 +366,11 @@ public class MainApiController extends ApiBaseController {
             if (Objects.isNull(e.getMaindbString_1()))
                 e.setMaindbString_1("");
         }).collect(Collectors.toMap(MaindbCustomInfoEntity::getMaindbSysCustomId, MaindbCustomInfoEntity::getMaindbString_1));
-        final List<TalkRoomEntity> talkRoomList = currentTalkRoomService.findAll(search);
-        final Map<String, TalkMsgEntity> lastMessageByRoomId = talkMsgService.getAllLastMessageByRoomId(talkRoomList.stream().map(CommonWtalkRoom::getRoomId).collect(Collectors.toSet()));
-        final List<TalkCurrentListResponse> response = talkRoomList.stream()
+        final List<WtalkRoomEntity> talkRoomList = currentWtalkRoomService.findAll(search);
+        final Map<String, WtalkMsgEntity> lastMessageByRoomId = wtalkMsgService.getAllLastMessageByRoomId(talkRoomList.stream().map(CommonWtalkRoom::getRoomId).collect(Collectors.toSet()));
+        final List<WtalkCurrentListResponse> response = talkRoomList.stream()
                 .map((e) -> {
-                    final TalkCurrentListResponse data = convertDto(e, TalkCurrentListResponse.class);
+                    final WtalkCurrentListResponse data = convertDto(e, WtalkCurrentListResponse.class);
                     if (isNotEmpty(e.getSenderKey())) {
                         Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServiceInfo> talkServiceInfo = Optional.ofNullable(talkServiceInfoMap.get(e.getSenderKey()));
                         talkServiceInfo.ifPresent(talkService -> data.setSvcName(talkService.getKakaoServiceName()));
@@ -394,7 +391,7 @@ public class MainApiController extends ApiBaseController {
                         }
                     }
 
-                    final TalkMsgEntity lastTalkMessage = lastMessageByRoomId.get(e.getRoomId());
+                    final WtalkMsgEntity lastTalkMessage = lastMessageByRoomId.get(e.getRoomId());
 
                     if (lastTalkMessage != null) {
                         data.setContent(lastTalkMessage.getContent());
@@ -406,7 +403,7 @@ public class MainApiController extends ApiBaseController {
 
                     return data;
                 })
-                .sorted(comparing(TalkCurrentListResponse::getRoomLastTime).reversed())
+                .sorted(comparing(WtalkCurrentListResponse::getRoomLastTime).reversed())
                 .collect(Collectors.toList());
         return ResponseEntity.ok(data(response));
     }
@@ -414,23 +411,23 @@ public class MainApiController extends ApiBaseController {
     /**
      * 상담원 상담톡 내용
      */
-    @GetMapping("current-talk-msg/{roomId}")
-    public ResponseEntity<JsonResult<TalkCurrentMsgResponse>> currentTalkMsg(@PathVariable String roomId) {
+    @GetMapping("current-wtalk-msg/{roomId}")
+    public ResponseEntity<JsonResult<WtalkCurrentMsgResponse>> currentTalkMsg(@PathVariable String roomId) {
 
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
 
-        final TalkRoomEntity talkRoomEntity = currentTalkRoomRepository.findOne(CurrentWtalkRoom.CURRENT_WTALK_ROOM.ROOM_ID.eq(roomId));
+        final WtalkRoomEntity wtalkRoomEntity = currentWtalkRoomRepository.findOne(CurrentWtalkRoom.CURRENT_WTALK_ROOM.ROOM_ID.eq(roomId));
 
-        final TalkCurrentMsgResponse response = new TalkCurrentMsgResponse();
+        final WtalkCurrentMsgResponse response = new WtalkCurrentMsgResponse();
 
 
-        CommonWtalkMsg table = talkMsgService.getRepository().getTABLE();
-        final List<TalkMsgSummaryResponse> talkMsgResponseList = talkMsgService.getRepository().findAll(table.COMPANY_ID.eq(g.getUser().getCompanyId())
-                        .and(table.ROOM_ID.eq(talkRoomEntity.getRoomId()))
+        CommonWtalkMsg table = wtalkMsgService.getRepository().getTABLE();
+        final List<WtalkMsgSummaryResponse> talkMsgResponseList = wtalkMsgService.getRepository().findAll(table.COMPANY_ID.eq(g.getUser().getCompanyId())
+                        .and(table.ROOM_ID.eq(wtalkRoomEntity.getRoomId()))
                 )
                 .stream()
                 .map((e) -> {
-                    final TalkMsgSummaryResponse data = convertDto(e, TalkMsgSummaryResponse.class);
+                    final WtalkMsgSummaryResponse data = convertDto(e, WtalkMsgSummaryResponse.class);
                     if (isNotEmpty(e.getUserid()) && (personListMap.get(e.getUserid()) != null && isNotEmpty(personListMap.get(e.getUserid())))) {
                         data.setUserName(personListMap.get(e.getUserid()));
                     } else {
@@ -441,7 +438,7 @@ public class MainApiController extends ApiBaseController {
                     return data;
                 })
                 .limit(300)
-                .sorted(comparing(TalkMsgSummaryResponse::getInsertTime).reversed().thenComparing(TalkMsgSummaryResponse::getSeq).reversed())
+                .sorted(comparing(WtalkMsgSummaryResponse::getInsertTime).reversed().thenComparing(WtalkMsgSummaryResponse::getSeq).reversed())
                 .collect(Collectors.toList());
         if (talkMsgResponseList.size() > 0) {
             response.setLastMsgSeq(talkMsgResponseList.get(talkMsgResponseList.size() - 1).getSeq());
@@ -450,22 +447,22 @@ public class MainApiController extends ApiBaseController {
         }
 
         response.setTalkMsgSummaryList(talkMsgResponseList);
-        String customName = talkRoomEntity.getMaindbCustomName();
+        String customName = wtalkRoomEntity.getMaindbCustomName();
         if (customName != null && !customName.equals("")) {
             response.setCustomName(customName);
-        } else if (StringUtils.isNotEmpty(talkRoomEntity.getMaindbCustomId()) && StringUtils.isEmpty(customName)) {
+        } else if (StringUtils.isNotEmpty(wtalkRoomEntity.getMaindbCustomId()) && StringUtils.isEmpty(customName)) {
             response.setCustomName("이름없음");
         } else {
             response.setCustomName("미등록고객");
         }
-        response.setRoomName(talkRoomEntity.getRoomName());
-        response.setRoomStatus(talkRoomEntity.getRoomStatus());
-        response.setRoomId(talkRoomEntity.getRoomId());
-        response.setSenderKey(talkRoomEntity.getSenderKey());
-        response.setUserKey(talkRoomEntity.getUserKey());
-        response.setUserId(talkRoomEntity.getUserid());
-        response.setChannelType(TalkChannelType.of(talkRoomEntity.getChannelType()));
-        response.setIsAutoEnable(talkRoomEntity.getIsAutoEnable());
+        response.setRoomName(wtalkRoomEntity.getRoomName());
+        response.setRoomStatus(wtalkRoomEntity.getRoomStatus());
+        response.setRoomId(wtalkRoomEntity.getRoomId());
+        response.setSenderKey(wtalkRoomEntity.getSenderKey());
+        response.setUserKey(wtalkRoomEntity.getUserKey());
+        response.setUserId(wtalkRoomEntity.getUserid());
+        response.setChannelType(TalkChannelType.of(wtalkRoomEntity.getChannelType()));
+        response.setIsAutoEnable(wtalkRoomEntity.getIsAutoEnable());
 
         return ResponseEntity.ok(data(response));
     }
@@ -473,25 +470,25 @@ public class MainApiController extends ApiBaseController {
     /**
      * 상담톡 내리기
      */
-    @DeleteMapping("talk-remove-room/{roomId}")
+    @DeleteMapping("wtalk-remove-room/{roomId}")
     public ResponseEntity<JsonResult<Void>> talkRemoveRoom(@PathVariable String roomId) {
 
-        final TalkRoomEntity talkRoomEntity = currentTalkRoomRepository.findOne(CurrentWtalkRoom.CURRENT_WTALK_ROOM.ROOM_ID.eq(roomId));
+        final WtalkRoomEntity wtalkRoomEntity = currentWtalkRoomRepository.findOne(CurrentWtalkRoom.CURRENT_WTALK_ROOM.ROOM_ID.eq(roomId));
 
-        talkRoomEntity.setRoomStatus("X");
-        talkRoomService.getRepository().insert(talkRoomEntity);
+        wtalkRoomEntity.setRoomStatus("X");
+        wtalkRoomService.getRepository().insert(wtalkRoomEntity);
 
-        currentTalkRoomRepository.delete(CurrentWtalkRoom.CURRENT_WTALK_ROOM.ROOM_ID.eq(roomId));
+        currentWtalkRoomRepository.delete(CurrentWtalkRoom.CURRENT_WTALK_ROOM.ROOM_ID.eq(roomId));
 
 
-        CommonWtalkMsg table = talkMsgService.getRepository().getTABLE();
+        CommonWtalkMsg table = wtalkMsgService.getRepository().getTABLE();
         final CommonWtalkMsgRecord commonTalkMsgRecord = new CommonWtalkMsgRecord(table);
 
         commonTalkMsgRecord.setSendReceive("SE");
 //        commonTalkMsgRecord.setCompanyId();
-        commonTalkMsgRecord.setUserid(talkRoomEntity.getUserid());
-        commonTalkMsgRecord.setUserKey(talkRoomEntity.getUserKey());
-        commonTalkMsgRecord.setSenderKey(talkRoomEntity.getSenderKey());
+        commonTalkMsgRecord.setUserid(wtalkRoomEntity.getUserid());
+        commonTalkMsgRecord.setUserKey(wtalkRoomEntity.getUserKey());
+        commonTalkMsgRecord.setSenderKey(wtalkRoomEntity.getSenderKey());
         commonTalkMsgRecord.setMessageId("");
         commonTalkMsgRecord.setTime("");
         commonTalkMsgRecord.setType("text");
@@ -500,7 +497,7 @@ public class MainApiController extends ApiBaseController {
         commonTalkMsgRecord.setExtra("");
         commonTalkMsgRecord.setRoomId(roomId);
 
-        talkMsgService.getRepository().insert(commonTalkMsgRecord);
+        wtalkMsgService.getRepository().insert(commonTalkMsgRecord);
 
         return ResponseEntity.ok(create());
     }
@@ -508,9 +505,9 @@ public class MainApiController extends ApiBaseController {
     /**
      * 상담톡 자동멘트 수정
      */
-    @PutMapping("talk-auto-enable/{roomId}")
+    @PutMapping("wtalk-auto-enable/{roomId}")
     public ResponseEntity<JsonResult<Void>> updateTalkAutoEnable(@PathVariable String roomId, @Valid @RequestBody TalkAutoEnableFormRequest form) {
-        currentTalkRoomRepository.updateAutoEnableByRoomId(roomId, form);
+        currentWtalkRoomRepository.updateAutoEnableByRoomId(roomId, form);
 
         return ResponseEntity.ok(create());
     }

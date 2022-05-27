@@ -676,7 +676,7 @@
                 },
                 loadTemplates: function () {
                     const _this = this
-                    restSelf.get('/api/talk-template/my/', null, false, null).done(function (response) {
+                    restSelf.get('/api/wtalk-template/my/', null, false, null).done(function (response) {
                         _this.templates = []
                         response.data.forEach(function (e) {
                             // note: 이미지 템플릿은 적용안하기로 함.
@@ -689,7 +689,7 @@
                                 isImage: e.typeMent === 'P',
                                 fileName: e.originalFileName,
                                 filePath: e.filePath,
-                                url: e.typeMent === 'P' ? $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/talk/template/image', {filePath: e.filePath, token: '${g.escapeQuote(accessToken)}'})
+                                url: e.typeMent === 'P' ? $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/wtalk/template/image', {filePath: e.filePath, token: '${g.escapeQuote(accessToken)}'})
                                         : null
                             })
                         })
@@ -738,7 +738,7 @@
                 popupTemplateModal: function (message) {
                     const _this = this
                     const modalId = 'modal-talk-template'
-                    popupDraggableModalFromReceivedHtml('/admin/talk/template/new/modal', modalId).done(function () {
+                    popupDraggableModalFromReceivedHtml('/admin/wtalk/template/new/modal', modalId).done(function () {
                         const modal = document.getElementById(modalId)
                         modal.querySelector('[name=typeMent]').value = 'TEXT'
                         modal.querySelector('[type=file]').value = null

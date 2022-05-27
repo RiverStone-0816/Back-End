@@ -1,9 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.TalkServiceInfoResponse;
-import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleInfoEntity;
 import kr.co.eicn.ippbx.model.form.DayTalkScheduleInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormUpdateRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +13,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;

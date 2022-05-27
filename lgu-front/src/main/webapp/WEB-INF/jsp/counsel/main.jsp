@@ -56,7 +56,7 @@
                 <div class="nine wide column" id="consulting-call">
                     <jsp:include page="/counsel/call/"/>
                     <c:if test="${user.isTalk.equals('Y')}">
-                        <jsp:include page="/counsel/talk/"/>
+                        <jsp:include page="/counsel/wtalk/"/>
                     </c:if>
 
                     <div id="etc-panel" class="mt10">

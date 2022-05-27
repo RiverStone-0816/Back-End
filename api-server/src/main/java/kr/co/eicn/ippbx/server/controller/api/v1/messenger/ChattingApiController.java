@@ -50,7 +50,7 @@ public class ChattingApiController extends ApiBaseController {
     private final FileSystemStorageService fileSystemStorageService;
     private final StatUserInboundService statUserInboundService;
     private final StatUserOutboundService statUserOutboundService;
-    private final TalkStatisticsService talkStatisticsService;
+    private final WtalkStatisticsService wtalkStatisticsService;
 
     @Value("${file.path.chatt}")
     private String savePath;
@@ -169,7 +169,7 @@ public class ChattingApiController extends ApiBaseController {
         final List<String> person = personListRepository.personAllId();
         final Map<String, Object> inbound = statUserInboundService.getRepository().findChatUserInboundMonitor(person);
         final Map<String, Object> outbound = statUserOutboundService.getRepository().findChatUserOutboundMonitor(person);
-        final Map<String, Object> talk = talkStatisticsService.getRepository().findChatUserTalkMonitor(person);
+        final Map<String, Object> talk = wtalkStatisticsService.getRepository().findChatUserTalkMonitor(person);
 
         List<ScoreMonitorResponse> list = person.stream().map(e -> {
             ScoreMonitorResponse response = new ScoreMonitorResponse();

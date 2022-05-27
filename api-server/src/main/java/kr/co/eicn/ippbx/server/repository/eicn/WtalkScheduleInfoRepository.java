@@ -3,7 +3,6 @@ package kr.co.eicn.ippbx.server.repository.eicn;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WtalkScheduleInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
 import kr.co.eicn.ippbx.model.dto.eicn.OrganizationSummaryResponse;
-import kr.co.eicn.ippbx.model.entity.eicn.TalkScheduleInfoEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.WtalkScheduleGroupEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.WtalkScheduleInfoEntity;
 import kr.co.eicn.ippbx.model.enums.ScheduleType;

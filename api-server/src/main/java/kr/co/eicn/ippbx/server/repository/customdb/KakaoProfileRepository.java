@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkServiceInfo.TALK_SERVICE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.WtalkServiceInfo.WTALK_SERVICE_INFO;
 
 @Getter
 public class KakaoProfileRepository extends CustomDBBaseRepository<CommonKakaoProfile, ChatbotKakaoCustomerProfileEntity, Integer> {
@@ -31,10 +31,10 @@ public class KakaoProfileRepository extends CustomDBBaseRepository<CommonKakaoPr
     }
 
     public ChatKaKaoProfileInfoResponse getProfileInfo(ChatbotProfileMsgSearchRequest search) {
-        String botId = dsl.select(TALK_SERVICE_INFO.BOT_ID)
-                .from(TALK_SERVICE_INFO)
+        String botId = dsl.select(WTALK_SERVICE_INFO.BOT_ID)
+                .from(WTALK_SERVICE_INFO)
                 .where(compareCompanyId())
-                .and(TALK_SERVICE_INFO.SENDER_KEY.eq(search.getSenderKey()))
+                .and(WTALK_SERVICE_INFO.SENDER_KEY.eq(search.getSenderKey()))
                 .fetchOneInto(String.class);
 
         return dsl.selectFrom(TABLE)

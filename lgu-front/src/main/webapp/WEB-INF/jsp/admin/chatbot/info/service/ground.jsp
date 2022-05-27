@@ -76,12 +76,12 @@
     <tags:scripts>
         <script>
             function popupModal(seq) {
-                popupReceivedHtml('/admin/talk/info/service/' + (seq || 'new') + '/modal', 'modal-talk-service');
+                popupReceivedHtml('/admin/wtalk/info/service/' + (seq || 'new') + '/modal', 'modal-talk-service');
             }
 
             function deleteEntity(seq) {
                 confirm('정말 삭제하시겠습니까?').done(function () {
-                    restSelf.delete('/api/talk-service/' + seq).done(function () {
+                    restSelf.delete('/api/wtalk-service/' + seq).done(function () {
                         reload();
                     });
                 });

@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.WtalkTemplate;
-import kr.co.eicn.ippbx.model.entity.eicn.TalkTemplateEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.WtalkTemplateEntity;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
 import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
 import kr.co.eicn.ippbx.util.page.Pagination;
@@ -23,11 +23,11 @@ import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.WtalkTemplate.WTALK_TEMPLAT
 
 @Getter
 @Repository
-public class WtalkTemplateRepository extends EicnBaseRepository<WtalkTemplate, TalkTemplateEntity, Integer> {
+public class WtalkTemplateRepository extends EicnBaseRepository<WtalkTemplate, WtalkTemplateEntity, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(WtalkTemplateRepository.class);
 
     WtalkTemplateRepository() {
-        super(WTALK_TEMPLATE, WTALK_TEMPLATE.SEQ, TalkTemplateEntity.class);
+        super(WTALK_TEMPLATE, WTALK_TEMPLATE.SEQ, WtalkTemplateEntity.class);
 
         addField(WTALK_TEMPLATE);
         addField(PERSON_LIST);
@@ -58,7 +58,7 @@ public class WtalkTemplateRepository extends EicnBaseRepository<WtalkTemplate, T
         return super.insertOnGeneratedKey(record);
     }
 
-    public Pagination<TalkTemplateEntity> pagination(TemplateSearchRequest search) {
+    public Pagination<WtalkTemplateEntity> pagination(TemplateSearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 
@@ -82,7 +82,7 @@ public class WtalkTemplateRepository extends EicnBaseRepository<WtalkTemplate, T
         return conditions;
     }
 
-    public List<TalkTemplateEntity> list() {
+    public List<WtalkTemplateEntity> list() {
 
         return dsl.select(WTALK_TEMPLATE.fields())
                 .select(PERSON_LIST.fields())
@@ -91,7 +91,7 @@ public class WtalkTemplateRepository extends EicnBaseRepository<WtalkTemplate, T
                 .on(WTALK_TEMPLATE.WRITE_USERID.eq(PERSON_LIST.ID))
                 .where(compareCompanyId())
                 .fetch(record -> {
-                    final TalkTemplateEntity entity = record.into(WTALK_TEMPLATE).into(TalkTemplateEntity.class);
+                    final WtalkTemplateEntity entity = record.into(WTALK_TEMPLATE).into(WtalkTemplateEntity.class);
                     entity.setPerson(record.into(PERSON_LIST).into(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList.class));
                     return entity;
                 });

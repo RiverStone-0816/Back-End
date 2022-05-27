@@ -7,13 +7,13 @@ import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbDataApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.type.CommonTypeApiInterface;
-import kr.co.eicn.ippbx.front.service.api.talk.group.TalkReceptionGroupApiInterface;
+import kr.co.eicn.ippbx.front.service.api.wtalk.group.WtalkReceptionGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.excel.MaindbDataExcel;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbCustomInfo;
 import kr.co.eicn.ippbx.model.dto.eicn.MaindbGroupDetailResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.SummaryTalkServiceResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryWtalkServiceResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchMaindbGroupResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CommonCodeEntity;
@@ -50,7 +50,7 @@ public class MaindbDataController extends BaseController {
     private final MaindbDataApiInterface apiInterface;
     private final MaindbGroupApiInterface maindbGroupApiInterface;
     private final CommonTypeApiInterface commonTypeApiInterface;
-    private final TalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
+    private final WtalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
 
     public static Map<String, Map<String, Object>> createCustomIdToFieldNameToValueMap(List<CommonMaindbCustomInfo> list, CommonTypeEntity customDbType) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = new HashMap<>();
@@ -137,7 +137,7 @@ public class MaindbDataController extends BaseController {
 
         form.setGroupSeq(entity.getMaindbSysGroupId());
 
-        final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryTalkServiceResponse::getSenderKey, SummaryTalkServiceResponse::getKakaoServiceName));
+        final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
         model.addAttribute("talkServices", talkServices);
 
         final MaindbGroupDetailResponse customGroup = maindbGroupApiInterface.get(entity.getMaindbSysGroupId());

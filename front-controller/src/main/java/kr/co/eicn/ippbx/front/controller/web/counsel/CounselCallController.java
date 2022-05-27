@@ -18,7 +18,7 @@ import kr.co.eicn.ippbx.front.service.api.monitor.display.ScreenDataApiInterface
 import kr.co.eicn.ippbx.front.service.api.outbound.voc.VocGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.record.history.RecordingHistoryApiInterface;
 import kr.co.eicn.ippbx.front.service.api.stat.ConsultantStatApiInterface;
-import kr.co.eicn.ippbx.front.service.api.talk.group.TalkReceptionGroupApiInterface;
+import kr.co.eicn.ippbx.front.service.api.wtalk.group.WtalkReceptionGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.user.user.UserApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoKind;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
@@ -31,7 +31,7 @@ import kr.co.eicn.ippbx.model.dto.customdb.CustomMultichannelInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.MaindbGroupDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.MaindbGroupSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonSummaryResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.SummaryTalkServiceResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryWtalkServiceResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.ResultCustomInfoEntity;
@@ -82,7 +82,7 @@ public class CounselCallController extends BaseController {
     private final CommonTypeApiInterface commonTypeApiInterface;
     private final GradelistApiInterface gradelistApiInterface;
     private final VocGroupApiInterface vocGroupApiInterface;
-    private final TalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
+    private final WtalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
     private final MaindbResultApiInterface maindbResultApiInterface;
     private final ScreenDataApiInterface screenDataApiInterface;
     private final CompanyApiInterface companyApiInterface;
@@ -121,7 +121,7 @@ public class CounselCallController extends BaseController {
         if (groups.isEmpty())
             return "counsel/call/custom-input";
 
-        final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryTalkServiceResponse::getSenderKey, SummaryTalkServiceResponse::getKakaoServiceName));
+        final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
         model.addAttribute("talkServices", talkServices);
 
         final GradeListSearchRequest gradeListSearchRequest = new GradeListSearchRequest();

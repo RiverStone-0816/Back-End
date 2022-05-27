@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
-import kr.co.eicn.ippbx.model.dto.eicn.TalkMentSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WtalkMentSummaryResponse;
 import kr.co.eicn.ippbx.model.form.TalkMentFormRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Order;
@@ -60,8 +60,8 @@ public class TalkCommentApiControllerTest extends BaseControllerTest {
 				))
 				.andReturn();
 
-		final List<TalkMentSummaryResponse> summaryResponses = listData(result, TalkMentSummaryResponse.class);
-		for (TalkMentSummaryResponse summaryResponse : summaryResponses) {
+		final List<WtalkMentSummaryResponse> summaryResponses = listData(result, WtalkMentSummaryResponse.class);
+		for (WtalkMentSummaryResponse summaryResponse : summaryResponses) {
 			log.info(summaryResponse.toString());
 		}
 	}

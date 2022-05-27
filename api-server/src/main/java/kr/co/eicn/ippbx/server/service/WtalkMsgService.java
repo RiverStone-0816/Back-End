@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.service;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonWtalkMsg;
-import kr.co.eicn.ippbx.model.entity.customdb.TalkMsgEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.WtalkMsgEntity;
 import kr.co.eicn.ippbx.server.repository.customdb.WtalkMsgRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -38,7 +38,7 @@ public class WtalkMsgService extends ApiBaseService implements ApplicationContex
         this.applicationContext = applicationContext;
     }
 
-    public Map<String, TalkMsgEntity> getAllLastMessageByRoomId(Set<String> roomIdList) {
+    public Map<String, WtalkMsgEntity> getAllLastMessageByRoomId(Set<String> roomIdList) {
         return getRepository().getAllLastMessagesInRoomIds(roomIdList).stream().collect(Collectors.toMap(CommonWtalkMsg::getRoomId, e -> e));
     }
 }

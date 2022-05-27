@@ -39,7 +39,7 @@ public class WtalkMemberGroupRepository extends EicnBaseRepository<WtalkMemberGr
 	public Record insertOnGeneratedKey(TalkMemberGroupFormRequest form) {
 		// 상담톡 서비스별로 그룹을 1개씩만 설정 가능
 
-		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkMemberGroup();
+		final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkMemberGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkMemberGroup();
 		record.setGroupName(form.getGroupName());
 		record.setCompanyId(getCompanyId());
 		record.setTalkStrategy(form.getDistributionPolicy().getCode());

@@ -6,8 +6,8 @@ import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.front.service.api.CounselApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
-import kr.co.eicn.ippbx.model.dto.eicn.TalkCurrentListResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.TalkCurrentMsgResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WtalkCurrentListResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WtalkCurrentMsgResponse;
 import kr.co.eicn.ippbx.model.form.TalkAutoEnableFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
 import kr.co.eicn.ippbx.model.form.TodoListUpdateFormRequest;
@@ -75,7 +75,7 @@ public class CounselApiController extends BaseController {
      * 상담원 상담톡 리스트
      */
     @GetMapping("current-talk-list")
-    public List<TalkCurrentListResponse> currentTalkList(TalkCurrentListSearchRequest search) throws IOException, ResultFailException {
+    public List<WtalkCurrentListResponse> currentTalkList(TalkCurrentListSearchRequest search) throws IOException, ResultFailException {
         return apiInterface.currentTalkList(search);
     }
 
@@ -83,7 +83,7 @@ public class CounselApiController extends BaseController {
      * 상담원 상담톡 내용
      */
     @GetMapping("current-talk-msg/{roomId}")
-    public TalkCurrentMsgResponse currentTalkMsg(@PathVariable String roomId) throws IOException, ResultFailException {
+    public WtalkCurrentMsgResponse currentTalkMsg(@PathVariable String roomId) throws IOException, ResultFailException {
         return apiInterface.currentTalkMsg(roomId);
     }
 

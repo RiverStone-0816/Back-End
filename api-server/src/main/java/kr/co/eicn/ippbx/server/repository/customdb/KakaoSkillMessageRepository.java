@@ -20,7 +20,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TalkServiceInfo.TALK_SERVICE_INFO;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.WtalkServiceInfo.WTALK_SERVICE_INFO;
 
 @Getter
 public class KakaoSkillMessageRepository extends CustomDBBaseRepository<CommonKakaoSkillMsg, ChatbotHistoryEntity, String> {
@@ -62,10 +62,10 @@ public class KakaoSkillMessageRepository extends CustomDBBaseRepository<CommonKa
         cal.setTime(new java.util.Date());
         cal.add(Calendar.MINUTE, -10);
 
-        String botId = dsl.select(TALK_SERVICE_INFO.BOT_ID)
-                .from(TALK_SERVICE_INFO)
+        String botId = dsl.select(WTALK_SERVICE_INFO.BOT_ID)
+                .from(WTALK_SERVICE_INFO)
                 .where(compareCompanyId())
-                .and(TALK_SERVICE_INFO.SENDER_KEY.eq(search.getSenderKey()))
+                .and(WTALK_SERVICE_INFO.SENDER_KEY.eq(search.getSenderKey()))
                 .fetchOneInto(String.class);
 
         conditions.add(TABLE.BOT_ID.eq(botId).and(TABLE.INSERT_DATE.ge(DSL.timestamp(new Date(System.currentTimeMillis()))))

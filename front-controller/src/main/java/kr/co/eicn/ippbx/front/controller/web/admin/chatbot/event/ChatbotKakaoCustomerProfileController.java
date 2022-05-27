@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.chatbot.event;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
 import kr.co.eicn.ippbx.front.service.api.chatbot.event.ChatbotKakaoCustomerProfileApiInterface;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TalkServiceInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServiceInfo;
 import kr.co.eicn.ippbx.model.dto.customdb.ChatbotSendEventDataResponse;
 import kr.co.eicn.ippbx.model.form.ChatbotSendEventFormRequest;
 import kr.co.eicn.ippbx.model.search.ChatbotKakaoCustomerProfileSearchRequest;
@@ -34,7 +34,7 @@ public class ChatbotKakaoCustomerProfileController extends BaseController {
     @GetMapping("")
     public String getPagination(Model model, @ModelAttribute("search") ChatbotKakaoCustomerProfileSearchRequest search) throws IOException, ResultFailException {
         model.addAttribute("pagination", chatbotKakaoCustomerProfileApiInterface.getPagination(search));
-        model.addAttribute("talkServiceList", searchApiInterface.getChatbotServiceInfoList().stream().collect(Collectors.toMap(TalkServiceInfo::getBotId, TalkServiceInfo::getBotName)));
+        model.addAttribute("talkServiceList", searchApiInterface.getChatbotServiceInfoList().stream().collect(Collectors.toMap(WtalkServiceInfo::getBotId, WtalkServiceInfo::getBotName)));
 
         return "admin/chatbot/event/profile/ground";
     }
