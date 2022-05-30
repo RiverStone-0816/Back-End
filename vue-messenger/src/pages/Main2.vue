@@ -103,7 +103,7 @@
       <!-- 영상통화 end -->
 
       <!--중단 말풍선 영역, 여기에 배경 컬러를 넣을 수 있음, 스크롤 스타일 적용-->
-      <div class="h-full overflow-x-auto bg-gray-100" id="slim-scroll" ref="chatBody" style="scroll-behavior: smooth">
+      <div class="h-full overflow-x-auto bg-gray-100" id="slim-scroll" ref="chatBody" :style="'scroll-behavior: smooth;background-color: '+backgroundColor">
         <template v-for="(message, iMessage) in messages" :key="iMessage">
 
           <!-- intro start -->
