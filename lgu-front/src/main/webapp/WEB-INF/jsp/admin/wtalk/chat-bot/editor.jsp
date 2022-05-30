@@ -652,6 +652,8 @@
                                                                 <select v-model="e.type">
                                                                     <option value="text">텍스트</option>
                                                                     <option value="number">숫자</option>
+                                                                    <option value="calendar">날짜</option>
+                                                                    <option value="time">시간</option>
                                                                     <option value="secret">비밀데이터</option>
                                                                 </select>
                                                             </div>
@@ -700,10 +702,11 @@
                                                     </div>
                                                     <div class="mb15">버튼 액션</div>
                                                     <div class="ui form fluid mb15">
-                                                        <select v-model="e.action">
+                                                        <select v-model="e.action" @change="changeFormValue(i)">
                                                             <option value="first">첫 블록으로 연결</option>
                                                             <option value="before">이전 블록으로 연결</option>
                                                             <option value="api">외부연동</option>
+                                                            <option value="ipcc">IPCC 고객 인증</option>
                                                         </select>
                                                     </div>
                                                     <div v-if="e.action === 'api'">
@@ -903,7 +906,7 @@
                 </div>
                 <div class="inner">
                     <ul v-if="authElements && authElements.length" class="button-item-ul">
-                        <li v-for="(e,i) in authElements" :key="i" class="button-item button">
+                        <li v-for="(e,i) in authElements" :key="i" class="button-item result">
                             <div class="button-item-inner">
                                 <div class="start">
                                     <text>{{ e.value }}</text>
@@ -1196,33 +1199,35 @@
                                                 }
                                             }
                                         })
+                                    } else {
+                                        if (block.authResultElementList.length > 0) {
+                                            app.authElements = block.authResultElementList.sort((a, b) => (a.id - b.id)).map((e, i) => {
+                                                const childNodeId = (() => {
+                                                    if (e.action !== 'block' && e.action !== 'auth' && e.action !== '') return
+                                                    const childBlockId = block.children?.filter(childBlock => (childBlock.parentButtonId === e.id))[0]?.id
+                                                    return blockList.blocks.filter(createdBlock => createdBlock.id === childBlockId)[0]?.nodeId
+                                                })()
+                                                const action = $.isNumeric(childNodeId) && e.action !== 'auth' ? '' : e.action === 'block' || e.action === '' ? 'block' : e.action
+                                                if (e.action === 'block' || e.action === 'auth' || e.action === '') {
+                                                    if (!nodeIdToConnections[nodeId]) nodeIdToConnections[nodeId] = {}
+                                                    nodeIdToConnections[nodeId][i] = parseInt(e.nextActionData)
+                                                }
+
+                                                return {
+                                                    value: e.value,
+                                                    ment: e.ment,
+                                                    action: action,
+                                                    nextActionData: e.nextActionData,
+                                                    childNodeId: action && action !== 'auth' ? null : childNodeId,
+                                                    nextApiMent: e.nextApiMent,
+                                                    enableResultTemplate: e.enableResultTemplate,
+                                                    nextApiResultTemplate: e.nextApiResultTemplate,
+                                                    nextApiNoResultMent: e.nextApiNoResultMent,
+                                                    nextApiErrorMent: e.nextApiErrorMent
+                                                }
+                                            })
+                                        }
                                     }
-
-                                    app.authElements = block.authResultElementList.sort((a, b) => (a.id - b.id)).map((e, i) => {
-                                        const childNodeId = (() => {
-                                            if (e.action !== 'block' && e.action !== 'auth' && e.action !== '') return
-                                            const childBlockId = block.children?.filter(childBlock => (childBlock.parentButtonId === e.id))[0]?.id
-                                            return blockList.blocks.filter(createdBlock => createdBlock.id === childBlockId)[0]?.nodeId
-                                        })()
-                                        const action = $.isNumeric(childNodeId) && e.action !== 'auth' ? '' : e.action === 'block' || e.action === '' ? 'block' : e.action
-                                        if (e.action === 'block' || e.action === 'auth' || e.action === '') {
-                                            if (!nodeIdToConnections[nodeId]) nodeIdToConnections[nodeId] = {}
-                                            nodeIdToConnections[nodeId][i] = parseInt(e.nextActionData)
-                                        }
-
-                                        return {
-                                            value: e.value,
-                                            ment: e.ment,
-                                            action: action,
-                                            nextActionData: e.nextActionData,
-                                            childNodeId: action && action !== 'auth' ? null : childNodeId,
-                                            nextApiMent: e.nextApiMent,
-                                            enableResultTemplate: e.enableResultTemplate,
-                                            nextApiResultTemplate: e.nextApiResultTemplate,
-                                            nextApiNoResultMent: e.nextApiNoResultMent,
-                                            nextApiErrorMent: e.nextApiErrorMent
-                                        }
-                                    })
 
                                     app.showingEmptyDisplayItem = !app.displays.length
                                     app.showingEmptyButtonItem = !app.buttons.length
@@ -1945,6 +1950,12 @@
                             })
 
                             alert('저장되었습니다.')
+                        },
+                        changeFormValue(index) {
+                            const data = o.data.buttons[index]
+
+                            data.actionData = ""
+                            data.resultParamName = "ipcc_custom_yn"
                         }
                     }
                 }).mount('#auth-block-config')
@@ -2054,7 +2065,10 @@
                                     }
                                 }] : [],
                                 buttons: type === 'FORM' && authBlock ? authBlock.buttons : [],
-                                authElements: [],
+                                authElements: type === 'FORM' && authBlock?.buttons?.filter(button => button.action === 'ipcc').length > 0 ? [
+                                    {value: 'YES', ment: '', action: 'first', childNodeId: '', nextActionData: '', nextApiMent: '', enableResultTemplate: '', nextApiResultTemplate: '', nextApiNoResultMent: '', nextApiErrorMent: ''},
+                                    {value: 'NO', ment: '', action: 'before', childNodeId: '', nextActionData: '', nextApiMent: '', enableResultTemplate: '', nextApiResultTemplate: '', nextApiNoResultMent: '', nextApiErrorMent: ''}
+                                ] :[],
                                 keywords: [],
                                 isTemplateEnable: false,
 
@@ -2162,7 +2176,7 @@
 
                                 editor.removeNodeOutput(o.nodeId, o.getOutputClass(index))
 
-                                if (removedButton.action === '')
+                                if (removedButton.action === '' || removedButton.action === 'auth')
                                     nodeBlockMap[removedButton.childNodeId].delete()
                             },
                             createButton() {
@@ -2183,7 +2197,7 @@
                             },
                             removeResultElementItem(index) {
                                 const removedElement = o.authElements.splice(index, 1)[0]
-                                o.showingEmptyButtonItem = !o.authElements || !o.authElements.length
+                                o.showingEmptyResultElementItem = !o.authElements || !o.authElements.length
 
                                 editor.removeNodeOutput(o.nodeId, o.getOutputClass(index))
 
@@ -2259,7 +2273,10 @@
                                 return Object.keys(editor.getNodeFromId(o.nodeId).inputs)[0]
                             },
                             delete() {
-                                o.buttons.filter(e => e.action === '').forEach(e => nodeBlockMap[e.childNodeId].delete())
+                                if (o.type === 'BLOCK')
+                                    o.buttons.filter(e => e.action === '' || e.action === 'auth').forEach(e => nodeBlockMap[e.childNodeId].delete())
+                                else if (o.type === 'FORM')
+                                    o.authElements.filter(e => e.action === '' || e.action === 'auth').forEach(e => nodeBlockMap[e.childNodeId].delete())
                                 editor.removeNodeId('node-' + o.nodeId)
                                 o.$.appContext.app.unmount()
                             }

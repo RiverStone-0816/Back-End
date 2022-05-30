@@ -6,7 +6,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 import java.util.Objects;
 
 public enum AuthButtonAction implements CodeHasable<String> {
-    CONNECT_FIRST("first"), CONNECT_BEFORE("before"), CONNECT_API("api");
+    CONNECT_FIRST("first"), CONNECT_BEFORE("before"), CONNECT_API("api"), AUTH_IPCC("ipcc");
 
     private final String code;
 
