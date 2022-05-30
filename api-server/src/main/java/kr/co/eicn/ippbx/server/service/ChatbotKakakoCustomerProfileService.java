@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.service;
 
+import io.micrometer.core.instrument.util.StringUtils;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServiceInfo;
 import kr.co.eicn.ippbx.model.dto.customdb.ChatbotKakaoCustomerProfileResponse;
 import kr.co.eicn.ippbx.model.dto.customdb.ChatbotSendEventDataResponse;
@@ -44,7 +45,7 @@ public class ChatbotKakakoCustomerProfileService extends ApiBaseService implemen
 
     public Pagination<ChatbotKakaoCustomerProfileResponse> getPagination(ChatbotKakaoCustomerProfileSearchRequest search) {
         final Pagination<ChatbotKakaoCustomerProfileEntity> pagination = getRepository().getPagination(search);
-        final Map<String, String> botNameByIdMap = talkServiceInfoService.getAllTalkServiceList().stream().collect(Collectors.toMap(WtalkServiceInfo::getBotId, WtalkServiceInfo::getBotName));
+        final Map<String, String> botNameByIdMap = talkServiceInfoService.getAllTalkServiceList().stream().filter(e -> StringUtils.isNotEmpty(e.getBotId())).collect(Collectors.toMap(WtalkServiceInfo::getBotId, WtalkServiceInfo::getBotName));
 
         final List<ChatbotKakaoCustomerProfileResponse> rows = pagination.getRows().stream().map(e -> convertDto(e, botNameByIdMap)).collect(Collectors.toList());
 
