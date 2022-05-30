@@ -706,7 +706,7 @@
                                                             <option value="first">첫 블록으로 연결</option>
                                                             <option value="before">이전 블록으로 연결</option>
                                                             <option value="api">외부연동</option>
-                                                            <option value="ipcc">IPCC 인증</option>
+                                                            <option value="ipcc">IPCC 고객 인증</option>
                                                         </select>
                                                     </div>
                                                     <div v-if="e.action === 'api'">
