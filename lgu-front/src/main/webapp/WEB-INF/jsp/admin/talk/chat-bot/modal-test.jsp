@@ -152,6 +152,9 @@
                             user_key: '${g.escapeQuote(sessionId)}',
                             mode: 'bottest',
                             my_ip: '${g.escapeQuote(ip)}',
+                            device: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'MOBILE' : 'PC',
+                            user_agent: navigator.userAgent,
+                            room_id: null,
                         }
                     }
                 },
@@ -182,6 +185,7 @@
                                 })
                                 .on('webchatsvc_start', data => {
                                     if (data.result !== 'OK') return alert('로그인실패 :' + data.result + '; ' + data.result_data)
+                                    o.request.room_id = data.room_id
                                     $.isNumeric(o.botId) ? o.requestRootBlock() : o.requestIntro()
                                 })
                         })

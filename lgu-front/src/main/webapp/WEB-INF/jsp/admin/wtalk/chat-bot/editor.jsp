@@ -989,6 +989,7 @@
                         test() {
                             if (!$.isNumeric(o.current)) return alert('봇 시나리오가 선택되지 않았습니다.')
                             confirm('봇 테스트 선택 시 수정하신 내용은 자동으로 적용 됩니다.').done(() => o.save().done(() => o.loadBot(o.current).done(() => {
+                                console.log('123')
                                 $('.chatbot-control-panel').removeClass('active');
                                 $('.chat-test-manage').addClass('active');
                                 testPreview.testPreviewLoad(o.current);
@@ -1115,12 +1116,12 @@
                                     nextPhone: data.nextPhone
                                 }
 
+                                $('.chatbot-control-panel').removeClass('active')
+                                $('.empty-panel').addClass('active')
+
                                 await authBlockListContainer.load()
 
                                 chatbotSettingModal.hide()
-
-                                $('.chatbot-control-panel').removeClass('active')
-                                $('.empty-panel').addClass('active')
 
                                 const nodeIdToConnections = {}
                                 const createBlock = block => {
@@ -1253,6 +1254,7 @@
                                 }
 
                                 this.translateTo(convertOppositeValue(data.blockInfo.posX), convertOppositeValue(data.blockInfo.posY));
+
                             })
                         },
                         changeBot() {
