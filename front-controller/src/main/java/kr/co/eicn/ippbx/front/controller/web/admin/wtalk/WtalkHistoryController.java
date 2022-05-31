@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -98,8 +99,11 @@ public class WtalkHistoryController extends BaseController {
             if (e.getSendReceive().equals("SB") && e.getType().equals("block")) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent().split(":")[2])));
             if (e.getSendReceive().equals("S") && e.getType().equals("block")) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent())));
             if ("RARC|RVRC".contains(e.getSendReceive())) {
-                String record = e.getContent().split(",")[e.getContent().split(",").length - 1].replaceAll("\"","");
-                record = record.replaceAll("record_file:","").replaceAll("}","");
+                String[] records = e.getContent().replaceAll("\"","").split(",");
+                String record = "";
+                for (String r : records) {
+                    if (r.contains("record_file:")) record = r.replaceAll("record_file:","").replaceAll("}","");
+                };
                 e.setContent(record);
             }
             return e;
@@ -119,8 +123,11 @@ public class WtalkHistoryController extends BaseController {
             if (e.getSendReceive().equals("SB") && e.getType().equals("block") ) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent().split(":")[2])));
             if (e.getSendReceive().equals("S") && e.getType().equals("block")) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent())));
             if ("RARC|RVRC".contains(e.getSendReceive())) {
-                String record = e.getContent().split(",")[e.getContent().split(",").length - 1].replaceAll("\"","");
-                record = record.replaceAll("record_file:","").replaceAll("}","");
+                String[] records = e.getContent().replaceAll("\"","").split(",");
+                String record = "";
+                for (String r : records) {
+                    if (r.contains("record_file:")) record = r.replaceAll("record_file:","").replaceAll("}","");
+                };
                 e.setContent(record);
             }
             return e;
