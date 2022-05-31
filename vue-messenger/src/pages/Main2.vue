@@ -699,7 +699,7 @@ export default {
     getTimeFormat: value => moment(value).format('HH:mm'),
     getButtonGroups(message) {
       return message.data?.button?.reduce((list, e) => {
-        if (e.action === 'api') list.push(e)
+        if (['api','ipcc'].includes(e.action)) list.push(e)
         else if (!list.length || !(list[list.length - 1] instanceof Array)) list.push([e])
         else list[list.length - 1].push(e)
         return list
