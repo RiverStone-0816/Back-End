@@ -84,7 +84,7 @@ public class WebchatBotButtonElementService extends ApiBaseService {
 
         if (ButtonAction.CONNECT_BEFORE_BLOCK.equals(ButtonAction.of(entity.getNextActionData())) || ButtonAction.CONNECT_FIRST_BLOCK.equals(ButtonAction.of(entity.getNextActionData())))
             response.setAction(ButtonAction.of(entity.getNextActionData()));
-        else if (ButtonAction.CONNECT_BLOCK.equals(ButtonAction.of(entity.getAction())) || ButtonAction.CONNECT_NEXT_BLOCK.equals(ButtonAction.of(entity.getAction())) || ButtonAction.CONNECT_AUTH_BLOCK.equals(ButtonAction.of(entity.getAction())))
+        else if (ButtonAction.CONNECT_BLOCK.equals(ButtonAction.of(entity.getAction())) || ButtonAction.CONNECT_NEXT_BLOCK.equals(ButtonAction.of(entity.getAction())) || ButtonAction.CONNECT_FORM_BLOCK.equals(ButtonAction.of(entity.getAction())))
             response.setNextBlockId(convertStringToInteger(entity.getNextActionData()));
         else if (ButtonAction.CONNECT_MEMBER.equals(ButtonAction.of(entity.getAction())))
             response.setNextGroupId(convertStringToInteger(entity.getNextActionData()));

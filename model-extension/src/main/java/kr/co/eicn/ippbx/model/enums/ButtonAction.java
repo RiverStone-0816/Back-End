@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public enum ButtonAction implements CodeHasable<String> {
     CONNECT_NEXT_BLOCK(""), CONNECT_BLOCK("block"), CONNECT_URL("url"), CONNECT_MEMBER("member"), CONNECT_PHONE("phone"), CONNECT_API("api"),
-    CONNECT_FIRST_BLOCK("first"), CONNECT_BEFORE_BLOCK("before"), CONNECT_AUTH_BLOCK("auth"), AUTH_IPCC("ipcc");
+    CONNECT_FIRST_BLOCK("first"), CONNECT_BEFORE_BLOCK("before"), CONNECT_FORM_BLOCK("form"), AUTH_IPCC("ipcc");
 
     private final String code;
 

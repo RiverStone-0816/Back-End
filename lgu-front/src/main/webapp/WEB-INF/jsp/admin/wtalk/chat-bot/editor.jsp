@@ -418,7 +418,7 @@
                                                 <select v-model="data.action">
                                                     <option value="">다음 블록으로 연결</option>
                                                     <option value="block">다른 블록으로 연결</option>
-                                                    <option value="auth">입력폼 블록으로 연결</option>
+                                                    <option value="form">입력폼 블록으로 연결</option>
                                                     <option value="first">첫 블록으로 연결</option>
                                                     <option value="before">이전 블록으로 연결</option>
                                                     <option value="member">상담원 연결</option>
@@ -435,7 +435,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div v-if="data.action === 'auth'">
+                                            <div v-if="data.action === 'form'">
                                                 <div class="mb15">입력폼 블록 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <select v-model="data.nextBlockId">
@@ -530,7 +530,7 @@
                                                 <select v-model="data.action">
                                                     <option value="">다음 블록으로 연결</option>
                                                     <option value="block">다른 블록으로 연결</option>
-                                                    <option value="auth">입력폼 블록으로 연결</option>
+                                                    <option value="form">입력폼 블록으로 연결</option>
                                                     <option value="first">첫 블록으로 연결</option>
                                                     <option value="before">이전 블록으로 연결</option>
                                                     <option value="member">상담원 연결</option>
@@ -547,7 +547,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div v-if="data.action === 'auth'">
+                                            <div v-if="data.action === 'form'">
                                                 <div class="mb15">입력폼 블록 설정</div>
                                                 <div class="ui form fluid mb15">
                                                     <select v-model="data.nextActionData">
@@ -897,7 +897,7 @@
             <div v-else>
                 <div class="inner">
                     <ul class="button-item-ul">
-                        <li class="button-item auth">
+                        <li class="button-item form">
                             <div class="button-item-inner">
                                 <div class="start">{{ authBlockName }}</div>
                             </div>
@@ -1030,7 +1030,7 @@
                                     order: i,
                                     buttonName: e.name,
                                     action: e.action,
-                                    nextBlockId: e.action === '' || e.action === 'auth' ? nodeBlockMap[e.childNodeId].id : e.nextBlockId,
+                                    nextBlockId: e.action === '' || e.action === 'form' ? nodeBlockMap[e.childNodeId].id : e.nextBlockId,
                                     nextGroupId: e.nextGroupId,
                                     nextUrl: e.nextUrl,
                                     nextPhone: e.nextPhone,
@@ -1044,15 +1044,15 @@
                                     value: e.value,
                                     ment: e.ment,
                                     action: e.action,
-                                    nextActionData: e.action === '' || e.action === 'auth' ? nodeBlockMap[e.childNodeId].id : e.nextActionData,
+                                    nextActionData: e.action === '' || e.action === 'form' ? nodeBlockMap[e.childNodeId].id : e.nextActionData,
                                     nextApiMent: e.nextApiMent,
                                     enableResultTemplate: e.enableResultTemplate,
                                     nextApiResultTemplate: e.nextApiResultTemplate,
                                     nextApiNoResultMent: e.nextApiNoResultMent,
                                     nextApiErrorMent: e.nextApiErrorMent
                                 })),
-                                children: block?.type === 'BLOCK' ? block?.buttons.filter(e => e.action === '' || e.action === 'auth').map(e => convertBlock(nodeBlockMap[e.childNodeId]))
-                                : block?.authElements.filter(e => e.action === '' || e.action === 'auth').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
+                                children: block?.type === 'BLOCK' ? block?.buttons.filter(e => e.action === '' || e.action === 'form').map(e => convertBlock(nodeBlockMap[e.childNodeId]))
+                                : block?.authElements.filter(e => e.action === '' || e.action === 'form').map(e => convertBlock(nodeBlockMap[e.childNodeId])),
                             })
 
                             const form = Object.assign({}, fallbackConfig.data, {blockInfo: convertBlock(blockList.blocks[0])})
@@ -1174,20 +1174,20 @@
 
                                         app.buttons = block.buttonList.sort((a, b) => (a.order - b.order)).map((e, i) => {
                                             const childNodeId = (() => {
-                                                if (e.action !== 'block' && e.action !== 'auth' && e.action !== '') return
+                                                if (e.action !== 'block' && e.action !== 'form' && e.action !== '') return
                                                 const childBlockId = block.children?.filter(childBlock => (childBlock.parentButtonId === e.id))[0]?.id
                                                 return blockList.blocks.filter(createdBlock => createdBlock.id === childBlockId)[0]?.nodeId
                                             })()
-                                            const action = $.isNumeric(childNodeId) && e.action !== 'auth' ? '' : e.action === 'block' || e.action === '' ? 'block' : e.action
-                                            if (e.action === 'block' || e.action === 'auth' || e.action === '') {
+                                            const action = $.isNumeric(childNodeId) && e.action !== 'form' ? '' : e.action === 'block' || e.action === '' ? 'block' : e.action
+                                            if (e.action === 'block' || e.action === 'form' || e.action === '') {
                                                 if (!nodeIdToConnections[nodeId]) nodeIdToConnections[nodeId] = {}
                                                 nodeIdToConnections[nodeId][i] = e.nextBlockId
                                             }
                                             return {
                                                 name: e.name,
                                                 action: action,
-                                                nextBlockId: action === 'auth' ? nodeBlockMap[childNodeId].formBlockId : action ? e.nextBlockId : null,
-                                                childNodeId: action && action !== 'auth' ? null : childNodeId,
+                                                nextBlockId: action === 'form' ? nodeBlockMap[childNodeId].formBlockId : action ? e.nextBlockId : null,
+                                                childNodeId: action && action !== 'form' ? null : childNodeId,
                                                 nextGroupId: e.nextGroupId,
                                                 nextUrl: e.nextUrl,
                                                 nextPhone: e.nextPhone,
@@ -1203,12 +1203,12 @@
                                         if (block.authResultElementList.length > 0) {
                                             app.authElements = block.authResultElementList.sort((a, b) => (a.id - b.id)).map((e, i) => {
                                                 const childNodeId = (() => {
-                                                    if (e.action !== 'block' && e.action !== 'auth' && e.action !== '') return
+                                                    if (e.action !== 'block' && e.action !== 'form' && e.action !== '') return
                                                     const childBlockId = block.children?.filter(childBlock => (childBlock.parentButtonId === e.id))[0]?.id
                                                     return blockList.blocks.filter(createdBlock => createdBlock.id === childBlockId)[0]?.nodeId
                                                 })()
-                                                const action = $.isNumeric(childNodeId) && e.action !== 'auth' ? '' : e.action === 'block' || e.action === '' ? 'block' : e.action
-                                                if (e.action === 'block' || e.action === 'auth' || e.action === '') {
+                                                const action = $.isNumeric(childNodeId) && e.action !== 'form' ? '' : e.action === 'block' || e.action === '' ? 'block' : e.action
+                                                if (e.action === 'block' || e.action === 'form' || e.action === '') {
                                                     if (!nodeIdToConnections[nodeId]) nodeIdToConnections[nodeId] = {}
                                                     nodeIdToConnections[nodeId][i] = parseInt(e.nextActionData)
                                                 }
@@ -1218,7 +1218,7 @@
                                                     ment: e.ment,
                                                     action: action,
                                                     nextActionData: e.nextActionData,
-                                                    childNodeId: action && action !== 'auth' ? null : childNodeId,
+                                                    childNodeId: action && action !== 'form' ? null : childNodeId,
                                                     nextApiMent: e.nextApiMent,
                                                     enableResultTemplate: e.enableResultTemplate,
                                                     nextApiResultTemplate: e.nextApiResultTemplate,
@@ -1692,7 +1692,7 @@
                                     const node = editor.getNodeFromId(o.nodeId)
                                     data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'BLOCK')
                                     app.createConnection(o.buttonIndex, nodeBlockMap[data.childNodeId].id)
-                                } else if (currentAction === 'auth') {
+                                } else if (currentAction === 'form') {
                                     const node = editor.getNodeFromId(o.nodeId)
                                     data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'FORM', actionData)
                                     app.createConnection(o.buttonIndex, nodeBlockMap[data.childNodeId].id)
@@ -1702,7 +1702,7 @@
                             } else if (currentAction === 'block' && preBlock !== data.nextBlockId) {
                                 app.removeConnection(o.buttonIndex)
                                 app.createConnection(o.buttonIndex, data.nextBlockId)
-                            } else if (currentAction === 'auth') {
+                            } else if (currentAction === 'form') {
                                 nodeBlockMap[preChildNodeId].delete()
                                 const node = editor.getNodeFromId(o.nodeId)
                                 data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'FORM', actionData)
@@ -1770,7 +1770,7 @@
                             app.authElements[o.index] = data
 
                             if (prevAction !== currentAction) {
-                                if (prevAction === '' || prevAction === 'auth') {
+                                if (prevAction === '' || prevAction === 'form') {
                                     nodeBlockMap[preChildNodeId].delete()
                                 } else if (prevAction === 'block') {
                                     app.removeConnection(o.index)
@@ -1780,7 +1780,7 @@
                                     const node = editor.getNodeFromId(o.nodeId)
                                     data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'BLOCK')
                                     app.createConnection(o.index, nodeBlockMap[data.childNodeId].id)
-                                } else if (currentAction === 'auth') {
+                                } else if (currentAction === 'form') {
                                     const node = editor.getNodeFromId(o.nodeId)
                                     data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'FORM', actionData)
                                     app.createConnection(o.index, nodeBlockMap[data.childNodeId].id)
@@ -1790,7 +1790,7 @@
                             } else if (currentAction === 'block' && preBlock !== data.nextActionData) {
                                 app.removeConnection(o.index)
                                 app.createConnection(o.index, data.nextActionData)
-                            } else if (currentAction === 'auth') {
+                            } else if (currentAction === 'form') {
                                 nodeBlockMap[preChildNodeId].delete()
                                 const node = editor.getNodeFromId(o.nodeId)
                                 data.childNodeId = createNode(null, node.pos_x + 300, node.pos_y, 'FORM', actionData)
@@ -2176,7 +2176,7 @@
 
                                 editor.removeNodeOutput(o.nodeId, o.getOutputClass(index))
 
-                                if (removedButton.action === '' || removedButton.action === 'auth')
+                                if (removedButton.action === '' || removedButton.action === 'form')
                                     nodeBlockMap[removedButton.childNodeId].delete()
                             },
                             createButton() {
@@ -2274,9 +2274,9 @@
                             },
                             delete() {
                                 if (o.type === 'BLOCK')
-                                    o.buttons.filter(e => e.action === '' || e.action === 'auth').forEach(e => nodeBlockMap[e.childNodeId].delete())
+                                    o.buttons.filter(e => e.action === '' || e.action === 'form').forEach(e => nodeBlockMap[e.childNodeId].delete())
                                 else if (o.type === 'FORM')
-                                    o.authElements.filter(e => e.action === '' || e.action === 'auth').forEach(e => nodeBlockMap[e.childNodeId].delete())
+                                    o.authElements.filter(e => e.action === '' || e.action === 'form').forEach(e => nodeBlockMap[e.childNodeId].delete())
                                 editor.removeNodeId('node-' + o.nodeId)
                                 o.$.appContext.app.unmount()
                             }

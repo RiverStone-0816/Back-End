@@ -106,10 +106,10 @@ public class WebchatBotService extends ApiBaseService {
             for (WebchatBotFormRequest.AuthResultElement authResultElement : blockInfo.getAuthResultElementList()) {
                 Integer authResultId = webchatBotFormResultElementService.insert(blockId, authResultElement);
 
-                if ((ButtonAction.CONNECT_NEXT_BLOCK.equals(authResultElement.getAction()) || ButtonAction.CONNECT_AUTH_BLOCK.equals(authResultElement.getAction())) && blockInfoByVirtualId.containsKey(Integer.valueOf(authResultElement.getNextActionData())))
+                if ((ButtonAction.CONNECT_NEXT_BLOCK.equals(authResultElement.getAction()) || ButtonAction.CONNECT_FORM_BLOCK.equals(authResultElement.getAction())) && blockInfoByVirtualId.containsKey(Integer.valueOf(authResultElement.getNextActionData())))
                     insertBlock(botId, rootId, blockInfo.getType(), blockId, authResultId, treeName, level + 1, blockInfoByVirtualId.get(Integer.valueOf(authResultElement.getNextActionData())), realBlockIdByVirtualBlockId, buttonUpdateSchedule, authElementUpdateSchedule);
 
-                if (ButtonAction.CONNECT_NEXT_BLOCK.equals(authResultElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(authResultElement.getAction()) || ButtonAction.CONNECT_AUTH_BLOCK.equals(authResultElement.getAction())) {
+                if (ButtonAction.CONNECT_NEXT_BLOCK.equals(authResultElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(authResultElement.getAction()) || ButtonAction.CONNECT_FORM_BLOCK.equals(authResultElement.getAction())) {
                     authElementUpdateSchedule.put(authResultId, convertStringToInteger(authResultElement.getNextActionData()));
                 }
             }
@@ -129,10 +129,10 @@ public class WebchatBotService extends ApiBaseService {
 
                 for (WebchatBotFormRequest.ButtonElement buttonElement : blockInfo.getButtonList()) {
                     final Integer buttonId = webchatBotButtonElementService.insertButtonElement(blockId, buttonElement);
-                    if ((ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_AUTH_BLOCK.equals(buttonElement.getAction())) && blockInfoByVirtualId.containsKey(buttonElement.getNextBlockId()))
+                    if ((ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_FORM_BLOCK.equals(buttonElement.getAction())) && blockInfoByVirtualId.containsKey(buttonElement.getNextBlockId()))
                         insertBlock(botId, rootId, blockInfo.getType(), blockId, buttonId, treeName, level + 1, blockInfoByVirtualId.get(buttonElement.getNextBlockId()), realBlockIdByVirtualBlockId, buttonUpdateSchedule, authElementUpdateSchedule);
 
-                    if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_AUTH_BLOCK.equals(buttonElement.getAction()))
+                    if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_FORM_BLOCK.equals(buttonElement.getAction()))
                         buttonUpdateSchedule.put(buttonId, buttonElement.getNextBlockId());
                 }
             }
