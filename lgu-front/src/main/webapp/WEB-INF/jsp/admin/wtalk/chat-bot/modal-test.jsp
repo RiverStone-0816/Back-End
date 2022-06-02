@@ -167,7 +167,7 @@
                 methods: {
                     createSocket() {
                         restSelf.get('/api/auth/socket-info').done(response => {
-                            const url = response.data.chatbotSocketUrl
+                            const url = response.data.talkSocketUrl
                             o.socket = io.connect(url, {'secure': url.startsWith('https')}, {'reconnect': true, 'resource': 'socket.io'})
                             o.socket.on('connect', () => o.socket.emit('webchatcli_start', o.request))
                                 .on('disconnect', () => alert('연결이 종료되었습니다.'))
