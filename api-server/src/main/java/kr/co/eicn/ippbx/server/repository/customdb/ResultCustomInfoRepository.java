@@ -5,7 +5,6 @@ import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbCustomInfo;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonResultCustomInfo;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbMultichannelInfo;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.ResultCustomInfoRecord;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentTalkRoom;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
