@@ -31,6 +31,7 @@ public class WebchatBotFormRequest extends WebchatBotFallbackFormRequest {
         private BlockType type;
         private Integer formBlockId;
         private Boolean isTemplateEnable;
+        private Integer parentButtonId;
         @Valid
         private List<DisplayInfo> displayList;
         @Valid
@@ -76,6 +77,7 @@ public class WebchatBotFormRequest extends WebchatBotFallbackFormRequest {
     @EqualsAndHashCode(callSuper = true)
     @Data
     public static class ButtonElement extends BaseForm {
+        private Integer id;
         private Integer order;
         private String buttonName;
         @NotNull("버튼액션")

@@ -129,7 +129,7 @@ public class WebchatBotService extends ApiBaseService {
 
                 for (WebchatBotFormRequest.ButtonElement buttonElement : blockInfo.getButtonList()) {
                     final Integer buttonId = webchatBotButtonElementService.insertButtonElement(blockId, buttonElement);
-                    if ((ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_FORM_BLOCK.equals(buttonElement.getAction())) && blockInfoByVirtualId.containsKey(buttonElement.getNextBlockId()))
+                    if (blockInfoByVirtualId.containsKey(buttonElement.getNextBlockId()) && (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_FORM_BLOCK.equals(buttonElement.getAction()) || (ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()) && buttonElement.getId() != null && buttonElement.getId().equals(blockInfoByVirtualId.get(buttonElement.getNextBlockId()).getParentButtonId()))))
                         insertBlock(botId, rootId, blockInfo.getType(), blockId, buttonId, treeName, level + 1, blockInfoByVirtualId.get(buttonElement.getNextBlockId()), realBlockIdByVirtualBlockId, buttonUpdateSchedule, authElementUpdateSchedule);
 
                     if (ButtonAction.CONNECT_NEXT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_BLOCK.equals(buttonElement.getAction()) || ButtonAction.CONNECT_FORM_BLOCK.equals(buttonElement.getAction()))
