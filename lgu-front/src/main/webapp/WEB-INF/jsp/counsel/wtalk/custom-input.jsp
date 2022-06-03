@@ -337,7 +337,7 @@
         const customId = response.data !== null ? response.data : '${entity.maindbSysCustomId}';
         restSelf.get("/api/maindb-data/"+customId).done(res => {
             talkCommunicator.sendCustomMatch(talkRoom.roomId, talkRoom.senderKey,
-                talkRoom.userKey, res.data.maindbSysGroupId, response.data, res.data.maindbString_1, talkRoom.channelType);
+                talkRoom.userKey, res.data.maindbSysGroupId, customId, res.data.maindbString_1, talkRoom.channelType);
         })
     };
 
