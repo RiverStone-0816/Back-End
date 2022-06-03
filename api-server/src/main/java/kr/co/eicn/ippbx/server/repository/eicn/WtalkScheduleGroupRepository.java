@@ -96,11 +96,6 @@ public class WtalkScheduleGroupRepository extends EicnBaseRepository<WtalkSchedu
 		record.setChannelType(form.getChannelType().getCode());
 
 		super.insert(record);
-		cacheService.pbxServerList(getCompanyId())
-				.forEach(e -> {
-					DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
-					super.insert(pbxDsl, record);
-				});
 	}
 
 	private List<WtalkMent> getTalkMentLists() {
