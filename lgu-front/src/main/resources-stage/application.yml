@@ -62,7 +62,7 @@ eicn:
   realapiserver: http://61.34.203.54/api-server
   webchat:
     image:
-      url: http://61.34.203.54:8100/webchat_bot_image
+      url: http://61.34.203.54:8200/webchat_bot_image
   admin:
     socket:
       id: monitor_connector
