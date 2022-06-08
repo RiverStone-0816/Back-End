@@ -1941,7 +1941,7 @@
                             const data = {
                                 id: o.data.id,
                                 name: o.data.name,
-                                params: [{type: 'text', sequence: 0, title: o.data.title, needYn: false}].concat(o.data.params),
+                                params: [{type: '', sequence: 0, title: o.data.title, needYn: false}].concat(o.data.params),
                                 buttons: o.data.buttons
                             }
 
