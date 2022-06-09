@@ -49,6 +49,7 @@ public class WebchatConfigApiController extends ApiBaseController {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
+        form.setSenderKey(form.getSenderKey().trim());
         webChattingConfigService.insert(form);
 
         return ResponseEntity.ok(JsonResult.create());
