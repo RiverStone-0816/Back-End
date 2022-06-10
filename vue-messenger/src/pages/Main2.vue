@@ -1740,5 +1740,6 @@ export default {
 }
 .touch-y {
   touch-action: pan-y;
+  font-size:  max(0.8rem, 16px) !important;
 }
 </style>
