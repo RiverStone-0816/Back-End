@@ -1,10 +1,10 @@
 <template>
   <body class="font-sans-kr text-gray-800 bg-blue-100" @contextmenu.prevent>
-  <div :class="{'h-screen m-auto' : true, 'py-14 max-w-sm' : !isIframe}">
+  <div class="h-screen m-auto">
     <div class="flex flex-col flex-auto h-full rounded-3xl shadow-body">
       <!--상단 홈 영역-->
       <!--bg-[#~~~~~~]이 버튼색상, 텍스트색상등과 같이 움직여야 하는 배경색, text-[#~~], border-[#~~]로 사용-->
-      <div :class="{'flex flex-row items-center h-14 bg-white w-full px-3' : true, 'rounded-t-3xl' : !isIframe}" style="background-color: #0C4DA2">
+      <div class="flex flex-row items-center h-14 bg-white w-full px-3" style="background-color: #0C4DA2">
         <!--홈버튼-->
         <button class="flex items-center justify-center rounded-lg hover:bg-slate-900/20 h-10 w-10 text-white" @click.stop="homeAction">
             <span>
@@ -370,7 +370,7 @@
                               <div class="relative w-full">
                                 <input :type="(e2.input_type === 'calendar' && 'date') || (e2.input_type === 'number' && 'number') || (e2.input_type === 'secret' && 'password') || (e2.input_type === 'text' && 'text') || (e2.input_type === 'time' && 'time')"
                                        :name="e2.input_param_name" :data-value="e2.input_need_yn"
-                                       class="py-1.5 px-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-main focus:outline-none rounded-lg w-full">
+                                       class="py-1.5 px-2.5 bg-gray-50 border border-gray-300 text-gray-900 text-main focus:outline-none rounded-lg w-full touch-y">
                               </div>
                             </div>
                           </div>
@@ -533,11 +533,11 @@
       </div>
 
       <!--하단 채팅 입력-->
-      <div v-if="inputEnable" :class="{'flex flex-row items-center h-16 bg-white w-full px-3 border-t' : true, 'rounded-b-3xl' : !isIframe}">
+      <div v-if="inputEnable" class="flex flex-row items-center h-16 bg-white w-full px-3 border-t">
         <div class="flex-grow">
           <div class="relative w-full">
             <input type="text" placeholder="질문을 입력해 주세요."
-                   class="flex w-full rounded-lg focus:outline-none h-10 py-1 px-2 text-sm" v-model="input" @keyup.stop.prevent="$event.key==='Enter'&&sendText()">
+                   class="flex w-full rounded-lg focus:outline-none h-10 py-1 px-2 text-sm touch-y" v-model="input" @keyup.stop.prevent="$event.key==='Enter'&&sendText()">
           </div>
         </div>
         <div class="ml-2">
@@ -1457,7 +1457,7 @@ export default {
   created() {
     const UrlParams = new URLSearchParams(location.search)
     this.form.senderKey = UrlParams.get('senderKey')
-    this.isIframe = UrlParams.get('isIframe') !== 'true' ? null : true;
+    this.isIframe = UrlParams.get('isIframe') === 'true';
   },
   updated() {
     this.debounce(() => this.$refs.chatBody.scroll({top: this.$refs.chatBody.scrollHeight}), 100)
@@ -1737,5 +1737,8 @@ export default {
 .px-7 {
   padding-left: 1.75rem;
   padding-right: 1.75rem;
+}
+.touch-y {
+  touch-action: pan-y;
 }
 </style>
