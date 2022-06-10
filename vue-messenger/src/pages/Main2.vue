@@ -1738,7 +1738,7 @@ export default {
   padding-left: 1.75rem;
   padding-right: 1.75rem;
 }
-.touch-y {
+ input[type="text"],select:focus,textarea .touch-y{
   touch-action: pan-y;
   font-size:  max(0.8rem, 16px) !important;
 }
