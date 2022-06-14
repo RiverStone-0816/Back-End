@@ -84,43 +84,47 @@
                     </div>
                 </div>
                 <div class="panel-body" style="overflow-x: auto;">
-                    <div class="sixteen wide column">
-                        <h3 class="ui header center aligned">
-                            <text class="content">
-                                상담결과통계(개별)
-                                <div class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</div>
-                            </text>
-                        </h3>
-                    </div>
-                    <table class="ui celled table compact unstackable">
-                        <thead>
-                        <tr>
-                            <th>문의유형</th>
-                            <c:forEach var="date" items="${dates}">
-                                <th>${g.htmlQuote(date)}</th>
-                            </c:forEach>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:choose>
-                            <c:when test="${list.size() > 0}">
-                                <c:forEach var="e" items="${list}">
-                                    <tr>
-                                        <td>${g.htmlQuote(e.codeName)}</td>
-                                        <c:forEach var="date" items="${dates}">
-                                            <td>${codeToDateToCountMap.get(e).getOrDefault(date, 0)}</td>
-                                        </c:forEach>
-                                    </tr>
-                                </c:forEach>
-                            </c:when>
-                            <c:otherwise>
+                    <div class="ui grid">
+                        <div class="sixteen wide column">
+                            <h3 class="ui header center aligned">
+                                <text class="content">
+                                    상담결과통계(개별)
+                                    <div class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</div>
+                                </text>
+                            </h3>
+                        </div>
+                        <div class="sixteen wide column">
+                            <table class="ui celled table compact unstackable">
+                                <thead>
                                 <tr>
-                                    <td colspan="${1 + dates.size()}" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <th>문의유형</th>
+                                    <c:forEach var="date" items="${dates}">
+                                        <th>${g.htmlQuote(date)}</th>
+                                    </c:forEach>
                                 </tr>
-                            </c:otherwise>
-                        </c:choose>
-                        </tbody>
-                    </table>
+                                </thead>
+                                <tbody>
+                                <c:choose>
+                                    <c:when test="${list.size() > 0}">
+                                        <c:forEach var="e" items="${list}">
+                                            <tr>
+                                                <td>${g.htmlQuote(e.codeName)}</td>
+                                                <c:forEach var="date" items="${dates}">
+                                                    <td>${codeToDateToCountMap.get(e).getOrDefault(date, 0)}</td>
+                                                </c:forEach>
+                                            </tr>
+                                        </c:forEach>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <tr>
+                                            <td colspan="${1 + dates.size()}" class="null-data">조회된 데이터가 없습니다.</td>
+                                        </tr>
+                                    </c:otherwise>
+                                </c:choose>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
