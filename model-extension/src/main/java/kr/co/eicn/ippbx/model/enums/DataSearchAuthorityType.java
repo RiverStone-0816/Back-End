@@ -5,7 +5,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 import java.util.Objects;
 
 public enum DataSearchAuthorityType implements CodeHasable<String> {
-    NONE("NO"), MINE("MY"), BRANCH("BRANCH"), AREA("AREA"), PART("PART"), ALL("ALL");
+    NONE("NO"), MINE("MY"), GROUP("GROUP"), ALL("ALL");
 
     private final String code;
 

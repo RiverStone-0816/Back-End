@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.application.maindb;
 
 
+import kr.co.eicn.ippbx.model.search.MaindbGroupSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.model.dto.eicn.ConCodeFieldResponse;
@@ -64,8 +65,8 @@ public class MaindbCustomInfoApiController extends ApiBaseController {
 
     //고객DB조회.
     @GetMapping("customdb_group")
-    public ResponseEntity<JsonResult<List<SearchMaindbGroupResponse>>> customdb_group() {
-        final List<SearchMaindbGroupResponse> list = maindbGroupRepository.findAll().stream()
+    public ResponseEntity<JsonResult<List<SearchMaindbGroupResponse>>> customdbGroup() {
+        final List<SearchMaindbGroupResponse> list = maindbGroupRepository.findAll(new MaindbGroupSearchRequest()).stream()
                 .map((e) -> convertDto(e, SearchMaindbGroupResponse.class))
                 .collect(Collectors.toList());
 
@@ -74,7 +75,7 @@ public class MaindbCustomInfoApiController extends ApiBaseController {
 
     //검색항목조회.
     @GetMapping("search_item")
-    public ResponseEntity<JsonResult<List<ConCodeFieldResponse>>> search_item() {
+    public ResponseEntity<JsonResult<List<ConCodeFieldResponse>>> searchItem() {
         final List<ConCodeFieldResponse> list = commonFieldRepository.findAll().stream()
                 .map((e) -> convertDto(e, ConCodeFieldResponse.class))
                 .collect(Collectors.toList());

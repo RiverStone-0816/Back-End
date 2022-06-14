@@ -59,6 +59,18 @@ public class QueueNameRepository extends EicnBaseRepository<QueueName, kr.co.eic
         final List<Condition> conditions = new ArrayList<>();
         Condition serviceCondition = noCondition();
 
+        if (g.getUser().getDataSearchAuthorityType() != null) {
+            switch (g.getUser().getDataSearchAuthorityType()) {
+                case NONE:
+                    conditions.add(DSL.falseCondition());
+                    return conditions;
+                case MINE:
+                case GROUP:
+                    conditions.add(QUEUE_NAME.GROUP_TREE_NAME.like(g.getUser().getGroupTreeName() + "%"));
+                    break;
+            }
+        }
+
         for (String serviceNumber : search.getServiceNumbers()) {
             serviceCondition = serviceCondition.or(QUEUE_NAME.SVC_NUMBER.eq(serviceNumber));
         }

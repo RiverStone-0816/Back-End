@@ -9,6 +9,7 @@ import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectJoinStep;
+import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,6 +72,20 @@ public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatU
 
     public List<Condition> conditions(StatUserSearchRequest search) {
         List<Condition> conditions = new ArrayList<>();
+
+        if (g.getUser().getDataSearchAuthorityType() != null) {
+            switch (g.getUser().getDataSearchAuthorityType()) {
+                case NONE:
+                    conditions.add(DSL.falseCondition());
+                    return conditions;
+                case MINE:
+                    conditions.add(TABLE.USERID.eq(g.getUser().getId()));
+                    break;
+                case GROUP:
+                    conditions.add(TABLE.GROUP_TREE_NAME.like(g.getUser().getGroupTreeName() + "%"));
+                    break;
+            }
+        }
 
         standardTime = search.getTimeUnit();
 

@@ -34,6 +34,7 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.MaindbGroup.MAINDB_GROUP;
 import static org.apache.commons.lang3.StringUtils.replace;
 
 @Getter
@@ -41,9 +42,9 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
     protected final Logger logger = LoggerFactory.getLogger(ResultCustomInfoRepository.class);
 
     private final CommonResultCustomInfo TABLE;
-    private final CommonMaindbCustomInfo customInfoTable;
-    private final CommonEicnCdr eicnCdrTable;
-    private final kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo multichannelInfoTable;
+    private final CommonMaindbCustomInfo MAINDB_CUSTOM_INFO_TABLE;
+    private final CommonEicnCdr EICN_CDR_TABLE;
+    private final kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo MAINDB_MULTICHANNEL_INFO_TABLE;
     private final CurrentWtalkRoom CURRENT_WTALK_ROOM_TABLE;
 
     @Autowired
@@ -68,14 +69,15 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
     public ResultCustomInfoRepository(String companyId) {
         super(new CommonResultCustomInfo(companyId), new CommonResultCustomInfo(companyId).SEQ, ResultCustomInfoEntity.class);
         TABLE = new CommonResultCustomInfo(companyId);
-        customInfoTable = new CommonMaindbCustomInfo(companyId);
-        multichannelInfoTable = new kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo(companyId);
-        eicnCdrTable = new CommonEicnCdr(companyId);
+        MAINDB_CUSTOM_INFO_TABLE = new CommonMaindbCustomInfo(companyId);
+        MAINDB_MULTICHANNEL_INFO_TABLE = new kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo(companyId);
+        EICN_CDR_TABLE = new CommonEicnCdr(companyId);
         CURRENT_WTALK_ROOM_TABLE = new CurrentWtalkRoom(companyId);
 
         addField(TABLE);
-        addField(customInfoTable);
-        addField(eicnCdrTable);
+        addField(MAINDB_CUSTOM_INFO_TABLE);
+        addField(EICN_CDR_TABLE);
+        addField(MAINDB_GROUP.GROUP_TREE_NAME);
         addField(CURRENT_WTALK_ROOM_TABLE.ROOM_NAME);
 
         addOrderingField(TABLE.RESULT_DATE.desc());
@@ -86,9 +88,10 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
         query.groupBy(getSelectingFields());
 
         return query
-                .join(customInfoTable).on(customInfoTable.MAINDB_SYS_CUSTOM_ID.eq(TABLE.CUSTOM_ID))
-                .leftJoin(multichannelInfoTable).on(multichannelInfoTable.MAINDB_CUSTOM_ID.eq(TABLE.CUSTOM_ID))
-                .leftJoin(eicnCdrTable).on(eicnCdrTable.UNIQUEID.eq(TABLE.UNIQUEID).and(eicnCdrTable.USERID.eq(TABLE.USERID)).and(eicnCdrTable.BILLSEC.gt(0)))
+                .join(MAINDB_CUSTOM_INFO_TABLE).on(MAINDB_CUSTOM_INFO_TABLE.MAINDB_SYS_CUSTOM_ID.eq(TABLE.CUSTOM_ID))
+                .join(MAINDB_GROUP).on(MAINDB_GROUP.SEQ.eq(TABLE.GROUP_ID))
+                .leftJoin(MAINDB_MULTICHANNEL_INFO_TABLE).on(MAINDB_MULTICHANNEL_INFO_TABLE.MAINDB_CUSTOM_ID.eq(TABLE.CUSTOM_ID))
+                .leftJoin(EICN_CDR_TABLE).on(EICN_CDR_TABLE.UNIQUEID.eq(TABLE.UNIQUEID).and(EICN_CDR_TABLE.USERID.eq(TABLE.USERID)).and(EICN_CDR_TABLE.BILLSEC.gt(0)))
                 .leftOuterJoin(CURRENT_WTALK_ROOM_TABLE).on(TABLE.HANGUP_MSG.eq(CURRENT_WTALK_ROOM_TABLE.ROOM_ID))
                 .where();
     }
@@ -98,8 +101,8 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
         return record -> {
             final ResultCustomInfoEntity entity = record.into(TABLE).into(ResultCustomInfoEntity.class);
 
-            entity.setCustomInfo(record.into(customInfoTable).into(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbCustomInfo.class));
-            entity.setEicnCdr(record.into(eicnCdrTable).into(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonEicnCdr.class));
+            entity.setCustomInfo(record.into(MAINDB_CUSTOM_INFO_TABLE).into(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbCustomInfo.class));
+            entity.setEicnCdr(record.into(EICN_CDR_TABLE).into(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonEicnCdr.class));
             entity.setTalkRoomName(record.get(CURRENT_WTALK_ROOM_TABLE.ROOM_NAME));
 
             return entity;
@@ -164,6 +167,20 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
     private List<Condition> conditions(ResultCustomInfoSearchRequest search) {
         final List<Condition> conditions = new ArrayList<>();
 
+        if (g.getUser().getDataSearchAuthorityType() != null) {
+            switch (g.getUser().getDataSearchAuthorityType()) {
+                case NONE:
+                    conditions.add(DSL.falseCondition());
+                    break;
+                case MINE:
+                    conditions.add(TABLE.USERID.eq(g.getUser().getId()));
+                    break;
+                case GROUP:
+                    conditions.add(MAINDB_GROUP.GROUP_TREE_NAME.like(g.getUser().getGroupTreeName() + "%"));
+                    break;
+            }
+        }
+
         conditions.add(TABLE.GROUP_KIND.ne("PHONE_TMP"));
 
         if (search.getSeq() != null)
@@ -180,21 +197,21 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
 
         if (StringUtils.isNotEmpty(search.getChannelData()) && search.getChannelType() != null) {
             if (search.getChannelType().equals("PHONE")) {
-                conditions.add(multichannelInfoTable.CHANNEL_TYPE.eq(search.getChannelType())
-                        .and(multichannelInfoTable.CHANNEL_DATA.replace("-", "").like("%" + search.getChannelData().replace("-", "") + "%")));
+                conditions.add(MAINDB_MULTICHANNEL_INFO_TABLE.CHANNEL_TYPE.eq(search.getChannelType())
+                        .and(MAINDB_MULTICHANNEL_INFO_TABLE.CHANNEL_DATA.replace("-", "").like("%" + search.getChannelData().replace("-", "") + "%")));
             } else {
-                conditions.add(multichannelInfoTable.CHANNEL_TYPE.eq(search.getChannelType())
-                        .and(multichannelInfoTable.CHANNEL_DATA.like("%" + search.getChannelData() + "%")));
+                conditions.add(MAINDB_MULTICHANNEL_INFO_TABLE.CHANNEL_TYPE.eq(search.getChannelType())
+                        .and(MAINDB_MULTICHANNEL_INFO_TABLE.CHANNEL_DATA.like("%" + search.getChannelData() + "%")));
             }
         }
         if (StringUtils.isNotEmpty(search.getClickKey()))
             conditions.add(TABLE.CLICK_KEY.eq(search.getClickKey()));
 
         search.getDbTypeFields().forEach((k, v) -> {
-            final Field<?> field = TABLE.field(k) != null ? TABLE.field(k) : customInfoTable.field(k);
+            final Field<?> field = TABLE.field(k) != null ? TABLE.field(k) : MAINDB_CUSTOM_INFO_TABLE.field(k);
 
             if (k.equals("CUSTOM_ID")) {
-                conditions.add(customInfoTable.MAINDB_SYS_CUSTOM_ID.eq(v.getKeyword()));
+                conditions.add(MAINDB_CUSTOM_INFO_TABLE.MAINDB_SYS_CUSTOM_ID.eq(v.getKeyword()));
             } else if (field == null) {
                 logger.warn("invalid type: " + k);
             } else if (field.getType().equals(Date.class) || field.getType().equals(Timestamp.class)) {
@@ -237,6 +254,9 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
                 .set(TABLE.CUSTOM_ID, form.getCustomId())
                 .set(TABLE.CLICK_KEY, StringUtils.isEmpty(resultCustomInfoEntity.getClickKey()) ? "nonClickKey" : resultCustomInfoEntity.getClickKey());
 
+        if (StringUtils.isNotEmpty(form.getCustomNumber()))
+            query.set(TABLE.CUSTOM_NUMBER, form.getCustomNumber());
+
         final List<? extends Class<? extends Serializable>> insertableFieldTypes = Arrays.asList(Date.class, Timestamp.class, Integer.class, String.class);
         for (java.lang.reflect.Field field : form.getClass().getDeclaredFields()) {
             if (!insertableFieldTypes.contains(field.getType()))
@@ -273,7 +293,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
 
         form.setSeq(resultCustomInfoEntity.getSeq());
         if (StringUtils.isEmpty(form.getCustomNumber())) {
-            final Optional<MaindbMultichannelInfoEntity> optionalChannelInfo = Optional.ofNullable(maindbMultichannelInfoService.getRepository().findAll(multichannelInfoTable.MAINDB_CUSTOM_ID.eq(form.getCustomId()).and(multichannelInfoTable.CHANNEL_TYPE.eq("PHONE"))).get(0));
+            final Optional<MaindbMultichannelInfoEntity> optionalChannelInfo = Optional.ofNullable(maindbMultichannelInfoService.getRepository().findAll(MAINDB_MULTICHANNEL_INFO_TABLE.MAINDB_CUSTOM_ID.eq(form.getCustomId()).and(MAINDB_MULTICHANNEL_INFO_TABLE.CHANNEL_TYPE.eq("PHONE"))).get(0));
             optionalChannelInfo.ifPresent(e -> form.setCustomNumber(e.getChannelData()));
         }
 
@@ -287,11 +307,10 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
     }
 
     public void insert(ResultCustomInfoFormRequest form) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        //final MaindbGroup maindbGroup = maindbGroupRepository.findOne(form.getSeq());
         final InsertSetMoreStep<ResultCustomInfoRecord> query = dsl.insertInto(TABLE)
                 .set(TABLE.RESULT_TYPE, form.getResultType())
                 .set(TABLE.CALL_TYPE, form.getCallType())
-                .set(TABLE.UNIQUEID, form.getUniqueId())
+                .set(TABLE.UNIQUEID, form.getUniqueId() == null ? "" : form.getUniqueId())
                 .set(TABLE.CUSTOM_NUMBER, form.getCustomNumber() == null ? "" : form.getCustomNumber())
                 .set(TABLE.CLICK_KEY, StringUtils.isEmpty(form.getClickKey()) ? "nonClickKey" : form.getClickKey())
                 .set(TABLE.FROM_ORG, form.getFromOrg())

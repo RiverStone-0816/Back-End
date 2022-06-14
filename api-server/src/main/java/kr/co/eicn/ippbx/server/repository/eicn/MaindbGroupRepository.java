@@ -13,6 +13,7 @@ import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.Record;
+import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -113,11 +114,24 @@ public class MaindbGroupRepository extends EicnBaseRepository<MaindbGroup, kr.co
     private List<Condition> conditions(MaindbGroupSearchRequest search) {
         final List<Condition> conditions = new ArrayList<>();
 
+        if (g.getUser().getDataSearchAuthorityType() != null) {
+            switch (g.getUser().getDataSearchAuthorityType()) {
+                case NONE:
+                    conditions.add(DSL.falseCondition());
+                    return conditions;
+                case MINE:
+                case GROUP:
+                    conditions.add(MAINDB_GROUP.GROUP_TREE_NAME.like(g.getUser().getGroupTreeName() + "%"));
+                    break;
+            }
+        }
+
         if(search.getMaindbType() != null)
             conditions.add(MAINDB_GROUP.MAINDB_TYPE.eq(search.getMaindbType()));
 
         if(isNotEmpty(search.getName()))
             conditions.add(MAINDB_GROUP.NAME.like("%" + search.getName() + "%"));
+
         return conditions;
     }
 

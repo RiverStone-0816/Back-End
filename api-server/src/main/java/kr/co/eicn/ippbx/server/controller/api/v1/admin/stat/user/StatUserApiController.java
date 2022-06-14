@@ -62,7 +62,7 @@ public class StatUserApiController extends ApiBaseController {
         List<StatUserInboundEntity> userInboundList = statUserInboundService.getRepository().findAllUserStat(search);
         List<StatUserOutboundEntity> userOutboundList = statUserOutboundService.getRepository().findAll(search);
         List<StatMemberStatusEntity> memberStatusList = StatMemberStatusService.getRepository().findAll(search);
-        List<PersonList> personList = personListRepository.findAllByServiceHunt(search);
+        List<PersonList> personList = personListRepository.findAllStatUser(search);
         List<CmpMemberStatusCodeEntity> statusCodeList = cmpMemberStatusCodeRepository.findAll();
         List<Organization> allOrganization = companyTreeRepository.getAllOrganization();
 

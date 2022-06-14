@@ -70,6 +70,20 @@ public class EicnCdrRepository extends CustomDBBaseRepository<CommonEicnCdr, Eic
     private List<Condition> conditions(RecordCallSearch search) {
         final List<Condition> conditions = new ArrayList<>();
 
+        if (g.getUser().getDataSearchAuthorityType() != null) {
+            switch (g.getUser().getDataSearchAuthorityType()) {
+                case NONE:
+                    conditions.add(DSL.falseCondition());
+                    return conditions;
+                case MINE:
+                    conditions.add(TABLE.USERID.eq(g.getUser().getId()));
+                    break;
+                case GROUP:
+                    conditions.add(TABLE.GROUP_TREE_NAME.like(g.getUser().getGroupTreeName() + "%"));
+                    break;
+            }
+        }
+
         if (search.getSeqList() != null && !search.getSeqList().isEmpty())
             conditions.add(TABLE.SEQ.in(search.getSeqList()));
         if (search.getStartTimestamp() != null)

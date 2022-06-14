@@ -47,6 +47,18 @@ public class MaindbUploadRepository extends EicnBaseRepository<HistoryUploadInfo
     private List<Condition> conditions(MaindbUploadSearchRequest search) {
         final List<Condition> conditions = new ArrayList<>();
 
+        if (g.getUser().getDataSearchAuthorityType() != null) {
+            switch (g.getUser().getDataSearchAuthorityType()) {
+                case NONE:
+                    conditions.add(DSL.falseCondition());
+                    return conditions;
+                case MINE:
+                case GROUP:
+                    conditions.add(MAINDB_GROUP.GROUP_TREE_NAME.like(g.getUser().getGroupTreeName() + "%"));
+                    break;
+            }
+        }
+
         if (search.getStartDate() != null)
             conditions.add(HISTORY_UPLOAD_INFO.UPLOAD_DATE.ge(DSL.timestamp(search.getStartDate() + " 00:00:00")));
 

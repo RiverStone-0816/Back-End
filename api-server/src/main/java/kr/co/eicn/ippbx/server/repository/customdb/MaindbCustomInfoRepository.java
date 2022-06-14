@@ -174,6 +174,20 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
     private List<Condition> conditions(MaindbDataSearchRequest search, boolean isCounselling) {
         final List<Condition> conditions = new ArrayList<>();
 
+        if (g.getUser().getDataSearchAuthorityType() != null) {
+            switch (g.getUser().getDataSearchAuthorityType()) {
+                case NONE:
+                    conditions.add(DSL.falseCondition());
+                    break;
+                case MINE:
+                    conditions.add(TABLE.MAINDB_SYS_DAMDANG_ID.eq(g.getUser().getId()));
+                    break;
+                case GROUP:
+                    conditions.add(MAINDB_GROUP.GROUP_TREE_NAME.like(g.getUser().getGroupTreeName() + "%"));
+                    break;
+            }
+        }
+
         if (search.getGroupSeq() != null)
             conditions.add(TABLE.MAINDB_SYS_GROUP_ID.eq(search.getGroupSeq()));
         if (search.getCreatedStartDate() != null)
@@ -183,9 +197,9 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
 
         Condition multichannelCondition = noCondition();
 
-        if (search.getChannelType() != null)
+        if (search.getChannelType() != null && StringUtils.isNotEmpty(search.getChannelData())) {
             multichannelCondition = multichannelInfoTable.CHANNEL_TYPE.eq(search.getChannelType().getCode());
-        if (StringUtils.isNotEmpty(search.getChannelData())) {
+
             if (isCounselling) {
                 if (search.getChannelType() != null && search.getChannelType().equals(MultichannelChannelType.PHONE)) {
                     multichannelCondition = multichannelCondition.and(multichannelInfoTable.CHANNEL_DATA.replace("-", "").eq(search.getChannelData().replace("-", "")));

@@ -138,9 +138,23 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
         dslContext.batch(queries).execute();
     }
 
-    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> findAllByServiceHunt(StatUserSearchRequest search) {
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> findAllStatUser(StatUserSearchRequest search) {
         orderByFields.add(PERSON_LIST.GROUP_CODE.asc());
         List<Condition> conditions = new ArrayList<>();
+
+        if (g.getUser().getDataSearchAuthorityType() != null) {
+            switch (g.getUser().getDataSearchAuthorityType()) {
+                case NONE:
+                    conditions.add(DSL.falseCondition());
+                    break;
+                case MINE:
+                    conditions.add(PERSON_LIST.ID.eq(g.getUser().getId()));
+                    break;
+                case GROUP:
+                    conditions.add(PERSON_LIST.GROUP_TREE_NAME.like(g.getUser().getGroupTreeName() + "%"));
+                    break;
+            }
+        }
 
         conditions.add(PERSON_LIST.ID_TYPE.notEqual("J"));
 

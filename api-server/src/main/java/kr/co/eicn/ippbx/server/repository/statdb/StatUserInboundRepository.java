@@ -13,6 +13,7 @@ import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectJoinStep;
+import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,13 +99,22 @@ public class StatUserInboundRepository extends StatDBBaseRepository<CommonStatUs
         return conditions;
     }
 
-    public List<StatUserInboundEntity> findAllCallStat(StatUserSearchRequest search) {
-        search.setTimeUnit(null);
-        return findAll(userConditions(search));
-    }
-
     public List<Condition> userConditions(StatUserSearchRequest search) {
         List<Condition> conditions = defaultConditions(search);
+
+        if (g.getUser().getDataSearchAuthorityType() != null) {
+            switch (g.getUser().getDataSearchAuthorityType()) {
+                case NONE:
+                    conditions.add(DSL.falseCondition());
+                    return conditions;
+                case MINE:
+                    conditions.add(TABLE.USERID.eq(g.getUser().getId()));
+                    break;
+                case GROUP:
+                    conditions.add(TABLE.GROUP_TREE_NAME.like(g.getUser().getGroupTreeName() + "%"));
+                    break;
+            }
+        }
 
         if (search.getServiceNumbers().size() > 0) {
             Condition serviceCondition = null;
@@ -141,6 +151,20 @@ public class StatUserInboundRepository extends StatDBBaseRepository<CommonStatUs
     public List<Condition> huntConditions(StatHuntSearchRequest search, List<QueueName> queueNameList, String searchGroupTreeName) {
         List<Condition> conditions = new ArrayList<>();
         standardTime = search.getTimeUnit();
+
+        if (g.getUser().getDataSearchAuthorityType() != null) {
+            switch (g.getUser().getDataSearchAuthorityType()) {
+                case NONE:
+                    conditions.add(DSL.falseCondition());
+                    return conditions;
+                case MINE:
+                    conditions.add(TABLE.USERID.eq(g.getUser().getId()));
+                    break;
+                case GROUP:
+                    conditions.add(TABLE.GROUP_TREE_NAME.like(g.getUser().getGroupTreeName() + "%"));
+                    break;
+            }
+        }
 
         conditions.add(getDefaultCondition("inbound", TABLE.DCONTEXT.eq(ContextType.HUNT_CALL.getCode()), search));
 

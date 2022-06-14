@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.model;
 
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyEntity;
+import kr.co.eicn.ippbx.model.enums.DataSearchAuthorityType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,7 @@ public class UserDetails extends User {
 	private String    peer;
 	private String    phoneStatus;
 	private String    etc;
+	private DataSearchAuthorityType dataSearchAuthorityType;
 	private Byte      logoutStatus;
 	private Byte      dialStatus;
 	private String    companyId;

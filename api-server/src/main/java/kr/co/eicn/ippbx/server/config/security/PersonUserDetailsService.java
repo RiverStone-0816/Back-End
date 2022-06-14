@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.model.UserDetails;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyEntity;
+import kr.co.eicn.ippbx.model.enums.DataSearchAuthorityType;
 import kr.co.eicn.ippbx.model.enums.IdType;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
@@ -58,6 +59,7 @@ public class PersonUserDetailsService implements UserDetailsService {
 
         details.setCompanyId(company.getCompanyId());
         details.setCompany(modelMapper.map(company, CompanyEntity.class));
+        details.setDataSearchAuthorityType(person.getEtc().contains("S:") ? DataSearchAuthorityType.of(person.getEtc().substring(person.getEtc().lastIndexOf("S:")+2)) : DataSearchAuthorityType.NONE);
 
         return details;
     }
