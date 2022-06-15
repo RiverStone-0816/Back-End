@@ -496,7 +496,7 @@
                       <p>상담원이 음성통화를 요청합니다.</p>
                     </span>
                   </div>
-                  <div class="space-y-2" v-show="getLastOrder(iMessage)">
+                  <div class="space-y-2" v-show="getLastOrder(iMessage) && vChatButton">
                     <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="audioStart(true)">수락</button>
                     <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="audioStart(false)">거절</button>
                   </div>
@@ -519,7 +519,7 @@
                       <p>상담원이 영상통화를 요청합니다.</p>
                     </span>
                   </div>
-                  <div class="space-y-2" v-show="getLastOrder(iMessage)">
+                  <div class="space-y-2" v-show="getLastOrder(iMessage) && vChatButton">
                     <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="videoStart(true)">수락</button>
                     <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="videoStart(false)">거절</button>
                   </div>
@@ -686,6 +686,8 @@ export default {
 
       chkInit: true,
 
+      vChatButton: false,
+
 
     }
   },
@@ -706,8 +708,6 @@ export default {
       }, [])
     },
     getLastOrder(chkNum) {
-      console.log(this.messages.length);
-      console.log(chkNum);
       return (this.messages.length - 1) === chkNum
     },
     getListElements(display) {
@@ -881,6 +881,7 @@ export default {
       } else{
         this.communicator.sendWebrtcReady('audio_start_ready',{ready_result: 1, ready_result_msg: '거절'})
       }
+      this.vChatButton = false
     },
     videoStart(chk) {
       if (chk) {
@@ -892,6 +893,7 @@ export default {
       } else{
         this.communicator.sendWebrtcReady('video_start_ready',{ready_result: 1, ready_result_msg: '거절'})
       }
+      this.vChatButton = false
     },
     //webrtc
     set_callback_vchat_registered_status(callback) {
@@ -1522,6 +1524,7 @@ export default {
             this.remoteUsername = data.message_data.my_username
             this.LOCAL_VCHAT_STREAM_OBJECT = $('#aMyVideo')
             this.REMOTE_VCHAT_STREAM_OBJECT = $('#aRemoteVideo')
+            this.vChatButton = true
           } else if (data.message_type === 'video_start') {
             this.webrtcData = data.message_data
             this.WEBRTC_INFO.server.webrtc_server_ip = data.message_data.webrtc_server_ip
@@ -1534,6 +1537,7 @@ export default {
             this.remoteUsername = data.message_data.my_username
             this.LOCAL_VCHAT_STREAM_OBJECT = $('#vMyVideo')
             this.REMOTE_VCHAT_STREAM_OBJECT = $('#vRemoteVideo')
+            this.vChatButton = true
           }
 
           if (data.message_type === "member_text") {
