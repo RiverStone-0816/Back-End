@@ -43,9 +43,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
 
     private final CommonResultCustomInfo TABLE;
     private final CommonMaindbCustomInfo MAINDB_CUSTOM_INFO_TABLE;
-    private final CommonEicnCdr EICN_CDR_TABLE;
     private final kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo MAINDB_MULTICHANNEL_INFO_TABLE;
-    private final CurrentWtalkRoom CURRENT_WTALK_ROOM_TABLE;
 
     @Autowired
     private MaindbMultichannelInfoService maindbMultichannelInfoService;
@@ -71,14 +69,10 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
         TABLE = new CommonResultCustomInfo(companyId);
         MAINDB_CUSTOM_INFO_TABLE = new CommonMaindbCustomInfo(companyId);
         MAINDB_MULTICHANNEL_INFO_TABLE = new kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo(companyId);
-        EICN_CDR_TABLE = new CommonEicnCdr(companyId);
-        CURRENT_WTALK_ROOM_TABLE = new CurrentWtalkRoom(companyId);
 
         addField(TABLE);
         addField(MAINDB_CUSTOM_INFO_TABLE);
-        addField(EICN_CDR_TABLE);
         addField(MAINDB_GROUP.GROUP_TREE_NAME);
-        addField(CURRENT_WTALK_ROOM_TABLE.ROOM_NAME);
 
         addOrderingField(TABLE.RESULT_DATE.desc());
     }
@@ -91,8 +85,6 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
                 .join(MAINDB_CUSTOM_INFO_TABLE).on(MAINDB_CUSTOM_INFO_TABLE.MAINDB_SYS_CUSTOM_ID.eq(TABLE.CUSTOM_ID))
                 .join(MAINDB_GROUP).on(MAINDB_GROUP.SEQ.eq(TABLE.GROUP_ID))
                 .leftJoin(MAINDB_MULTICHANNEL_INFO_TABLE).on(MAINDB_MULTICHANNEL_INFO_TABLE.MAINDB_CUSTOM_ID.eq(TABLE.CUSTOM_ID))
-                .leftJoin(EICN_CDR_TABLE).on(EICN_CDR_TABLE.UNIQUEID.eq(TABLE.UNIQUEID).and(EICN_CDR_TABLE.USERID.eq(TABLE.USERID)).and(EICN_CDR_TABLE.BILLSEC.gt(0)))
-                .leftOuterJoin(CURRENT_WTALK_ROOM_TABLE).on(TABLE.HANGUP_MSG.eq(CURRENT_WTALK_ROOM_TABLE.ROOM_ID))
                 .where();
     }
 
@@ -100,10 +92,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
     protected RecordMapper<Record, ResultCustomInfoEntity> getMapper() {
         return record -> {
             final ResultCustomInfoEntity entity = record.into(TABLE).into(ResultCustomInfoEntity.class);
-
             entity.setCustomInfo(record.into(MAINDB_CUSTOM_INFO_TABLE).into(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbCustomInfo.class));
-            entity.setEicnCdr(record.into(EICN_CDR_TABLE).into(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonEicnCdr.class));
-            entity.setTalkRoomName(record.get(CURRENT_WTALK_ROOM_TABLE.ROOM_NAME));
 
             return entity;
         };

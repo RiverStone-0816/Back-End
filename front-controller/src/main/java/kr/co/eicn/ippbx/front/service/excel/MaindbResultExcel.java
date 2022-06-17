@@ -50,7 +50,7 @@ public class MaindbResultExcel extends AbstractExcel {
         final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = MaindbDataController.createCustomIdToFieldNameToValueMap(list.stream().map(ResultCustomInfoEntity::getCustomInfo).collect(Collectors.toList()), customDbType);
         final Map<Integer, Map<String, Object>> seqToFieldNameToValueMap = MaindbResultController.createSeqToFieldNameToValueMap((List<CommonResultCustomInfo>) (List<?>) list, resultType);
         for (ResultCustomInfoEntity e : list) {
-            final List<String> row = new ArrayList<>(Arrays.asList(e.getGroupKind(), Objects.nonNull(e.getEicnCdr().getInOut()) ? (e.getEicnCdr().getInOut().equals("I") ? "수신" : "발신") : "",
+            final List<String> row = new ArrayList<>(Arrays.asList(e.getGroupKind(), Objects.nonNull(e.getCallType()) ? (e.getCallType().equals("I") ? "수신" : "발신") : "",
                     niceFormat(e.getResultDate()), e.getUserName(), e.getCustomNumber()));
             resultType.getFields().forEach(field -> {
                 final Object value = seqToFieldNameToValueMap.get(e.getSeq()).get(field.getFieldId());

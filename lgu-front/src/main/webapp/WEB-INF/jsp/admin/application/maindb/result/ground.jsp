@@ -206,7 +206,7 @@
                                                 <c:when test="${e.groupKind == 'TALK'}">상담톡</c:when>
                                             </c:choose>
                                         </td>
-                                        <td>${g.htmlQuote(e.eicnCdr.inOut == 'I' ? '수신' : e.eicnCdr.inOut == 'O' ? '발신' : '')}</td>
+                                        <td>${g.htmlQuote(e.callType == 'I' ? '수신' : e.callType == 'O' ? '발신' : '')}</td>
                                         <td><fmt:formatDate value="${e.resultDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>${g.htmlQuote(e.userName)}</td>
                                         <td>${g.htmlQuote(e.userTrName)}</td>

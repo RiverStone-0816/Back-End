@@ -15,12 +15,10 @@ import java.util.List;
 @Data
 public class ResultCustomInfoEntity extends CommonResultCustomInfo {
     private CommonMaindbCustomInfo customInfo;
-    private CommonEicnCdr eicnCdr;
     private List<MultiChannelInfoResponse> multiChannelInfo;
     private List<MaindbMultichannelInfoEntity> multichannelList = new ArrayList<>();
     private String userName;
     private String userOrgName;
     private String userTrName;
     private PersonList personList; // 상담원 정보
-    private String talkRoomName;
 }

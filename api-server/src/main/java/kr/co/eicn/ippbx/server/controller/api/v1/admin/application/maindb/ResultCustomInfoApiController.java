@@ -73,6 +73,7 @@ public class ResultCustomInfoApiController extends ApiBaseController {
 
                     if (Objects.nonNull(personListMap.get(response.getUserid())))
                         response.setPersonList(personListMap.get(response.getUserid()));
+                    response.setCallType(StringUtils.isNotEmpty(response.getCallType()) ? response.getCallType() : StringUtils.isNotEmpty(response.getUniqueid()) ? "I" : "");
 
                     return response;
                 })
@@ -93,6 +94,7 @@ public class ResultCustomInfoApiController extends ApiBaseController {
 
                     if (Objects.nonNull(personListMap.get(response.getUserid())))
                         response.setPersonList(personListMap.get(response.getUserid()));
+                    response.setCallType(StringUtils.isNotEmpty(response.getCallType()) ? response.getCallType() : StringUtils.isNotEmpty(response.getUniqueid()) ? "I" : "");
 
                     return response;
                 })
@@ -109,6 +111,8 @@ public class ResultCustomInfoApiController extends ApiBaseController {
         ResultCustomInfoEntity response = service.getRepository().findOneIfNullThrow(seq);
         if(Objects.nonNull(personListMap.get(response.getUserid())))
             response.setPersonList(personListMap.get(response.getUserid()));
+
+        response.setCallType(StringUtils.isNotEmpty(response.getCallType()) ? response.getCallType() : StringUtils.isNotEmpty(response.getUniqueid()) ? "I" : "");
 
         return ResponseEntity.ok(data(convertDto(response, ResultCustomInfoEntity.class)));
     }
