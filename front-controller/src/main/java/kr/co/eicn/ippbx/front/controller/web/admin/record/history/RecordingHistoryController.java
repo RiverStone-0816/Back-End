@@ -4,6 +4,8 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.search.RecordCallSearchForm;
 import kr.co.eicn.ippbx.front.service.OrganizationService;
+import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
+import kr.co.eicn.ippbx.model.dto.eicn.search.SearchPersonListResponse;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.grade.GradelistApiInterface;
@@ -63,12 +65,12 @@ public class RecordingHistoryController extends BaseController {
     private final RecordingHistoryApiInterface apiInterface;
     private final ServiceApiInterface serviceApiInterface;
     private final OrganizationService organizationService;
-    private final UserApiInterface userApiInterface;
     private final OutboundDayScheduleApiInterface outboundDayScheduleApiInterface;
     private final GradelistApiInterface gradelistApiInterface;
     private final IvrApiInterface ivrApiInterface;
     private final EvaluationFormApiInterface evaluationFormApiInterface;
     private final CompanyApiInterface companyApiInterface;
+    private final SearchApiInterface searchApiInterface;
 
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") RecordCallSearchForm search) throws IOException, ResultFailException {
@@ -79,10 +81,8 @@ public class RecordingHistoryController extends BaseController {
 
         model.addAttribute("searchOrganizationNames", organizationService.getHierarchicalOrganizationNames(search.getGroupCode()));
 
-        final PersonSearchRequest personSearchRequest = new PersonSearchRequest();
-        personSearchRequest.setLimit(1000);
         model.addAttribute("services", serviceApiInterface.addServices());
-        model.addAttribute("persons", userApiInterface.pagination(personSearchRequest).getRows());
+        model.addAttribute("persons", searchApiInterface.persons());
         model.addAttribute("extensions", outboundDayScheduleApiInterface.addExtensions().stream().filter(e -> e.getExtension() != null && e.getInUseIdName() != null)
                 .sorted(Comparator.comparing(SummaryPhoneInfoResponse::getExtension)).collect(Collectors.toList()));
         // model.addAttribute("numbers", pdsGroupApiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber)));
@@ -176,12 +176,8 @@ public class RecordingHistoryController extends BaseController {
         final List<EvaluationForm> forms = evaluationFormApiInterface.search(search);
         model.addAttribute("forms", forms);
 
-        final PersonSearchRequest personSearchRequest = new PersonSearchRequest();
-        personSearchRequest.setLimit(1000);
-        List<PersonSummaryResponse> userList = userApiInterface.pagination(personSearchRequest).getRows();
-        model.addAttribute("persons", userList.stream().collect(Collectors.toMap(PersonSummaryResponse::getId, PersonSummaryResponse::getIdName)));
-        model.addAttribute("users", userList.stream().filter(e -> e.getIdType().contains(IdType.USER.getCode()))
-                .collect(Collectors.toMap(PersonSummaryResponse::getId, PersonSummaryResponse::getIdName)));
+        List<SearchPersonListResponse> persons = searchApiInterface.persons();
+        model.addAttribute("users", persons.stream().filter(e -> e.getIdType().contains(IdType.USER.getCode())).collect(Collectors.toList()));
 
         return "admin/record/history/history/cdr-evaluation-form";
     }

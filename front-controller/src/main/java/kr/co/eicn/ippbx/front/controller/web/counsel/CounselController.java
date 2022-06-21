@@ -76,7 +76,6 @@ public class CounselController extends BaseController {
     private final PersonLinkApiInterface personLinkApiInterface;
     private final CounselApiInterface counselApiInterface;
     private final SearchApiInterface searchApiInterface;
-    private final UserApiInterface userApiInterface;
     private final RecordingHistoryApiInterface recordingHistoryApiInterface;
     private final MaindbGroupApiInterface maindbGroupApiInterface;
     private final MaindbDataApiInterface maindbDataApiInterface;
@@ -282,10 +281,7 @@ public class CounselController extends BaseController {
         model.addAttribute("seqToFieldNameToValueMap", MaindbResultController.createSeqToFieldNameToValueMap((List<CommonResultCustomInfo>) (List<?>) pagination.getRows(), resultType));
         model.addAttribute("customIdToFieldNameToValueMap", MaindbDataController.createCustomIdToFieldNameToValueMap(pagination.getRows().stream().map(ResultCustomInfoEntity::getCustomInfo).collect(Collectors.toList()), customDbType));
 
-        final PersonSearchRequest personSearchRequest = new PersonSearchRequest();
-        personSearchRequest.setLimit(1000);
-        final Map<String, String> users = userApiInterface.pagination(personSearchRequest).getRows().stream().collect(Collectors.toMap(PersonSummaryResponse::getId, PersonSummaryResponse::getIdName));
-        model.addAttribute("users", users);
+        model.addAttribute("users", searchApiInterface.persons());
 
         return "counsel/modal-search-counseling-history-body";
     }
@@ -304,9 +300,7 @@ public class CounselController extends BaseController {
 
         model.addAttribute("searchOrganizationNames", organizationService.getHierarchicalOrganizationNames(search.getGroupCode()));
 
-        final PersonSearchRequest personSearchRequest = new PersonSearchRequest();
-        personSearchRequest.setLimit(1000);
-        model.addAttribute("persons", userApiInterface.pagination(personSearchRequest).getRows().stream().collect(Collectors.toMap(PersonSummaryResponse::getId, PersonSummaryResponse::getIdName)));
+        model.addAttribute("persons", searchApiInterface.persons());
         model.addAttribute("extensions", outboundDayScheduleApiInterface.addExtensions().stream().filter(e -> e.getExtension() != null && e.getInUseIdName() != null)
                 .sorted(Comparator.comparing(SummaryPhoneInfoResponse::getInUseIdName)).collect(Collectors.toList()));
         // model.addAttribute("numbers", pdsGroupApiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber)));

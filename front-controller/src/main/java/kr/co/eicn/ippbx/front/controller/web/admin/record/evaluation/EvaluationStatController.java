@@ -2,20 +2,17 @@ package kr.co.eicn.ippbx.front.controller.web.admin.record.evaluation;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.util.ResultFailException;
+import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
 import kr.co.eicn.ippbx.front.service.api.record.evaluation.EvaluationFormApiInterface;
 import kr.co.eicn.ippbx.front.service.api.record.evaluation.EvaluationResultApiInterface;
-import kr.co.eicn.ippbx.front.service.api.record.history.RecordingHistoryApiInterface;
-import kr.co.eicn.ippbx.front.service.api.user.user.UserApiInterface;
 import kr.co.eicn.ippbx.front.service.excel.EvaluationStatExcel;
-import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.EvaluationResultProcessStatus;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationForm;
-import kr.co.eicn.ippbx.model.dto.eicn.PersonSummaryResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.EvaluationResultStatResponse;
 import kr.co.eicn.ippbx.model.search.EvaluationFormSearchRequest;
 import kr.co.eicn.ippbx.model.search.EvaluationResultSearchRequest;
-import kr.co.eicn.ippbx.model.search.PersonSearchRequest;
+import kr.co.eicn.ippbx.util.FormUtils;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,8 +41,7 @@ public class EvaluationStatController extends BaseController {
 
     private final EvaluationResultApiInterface apiInterface;
     private final EvaluationFormApiInterface evaluationFormApiInterface;
-    private final UserApiInterface userApiInterface;
-    private final RecordingHistoryApiInterface recordingHistoryApiInterface;
+    private final SearchApiInterface searchApiInterface;
 
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") EvaluationResultSearchRequest search) throws IOException, ResultFailException {
@@ -55,9 +51,7 @@ public class EvaluationStatController extends BaseController {
 
         model.addAttribute("forms", evaluationFormApiInterface.search(new EvaluationFormSearchRequest()).stream().collect(Collectors.toMap(EvaluationForm::getId, EvaluationForm::getName)));
 
-        final PersonSearchRequest personSearchRequest = new PersonSearchRequest();
-        personSearchRequest.setLimit(1000);
-        model.addAttribute("persons", userApiInterface.pagination(personSearchRequest).getRows().stream().collect(Collectors.toMap(PersonSummaryResponse::getId, PersonSummaryResponse::getIdName)));
+        model.addAttribute("persons", searchApiInterface.persons());
 
         final Map<String, String> statuses = FormUtils.options(EvaluationResultProcessStatus.class);
         model.addAttribute("statuses", statuses);

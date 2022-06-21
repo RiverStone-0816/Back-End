@@ -120,7 +120,7 @@
                                     <div class="ui form">
                                         <form:select path="personIds" multiple="multiple" class="ui fluid dropdown">
                                             <form:option value="" label="상담원선택"/>
-                                            <form:options items="${persons}"/>
+                                            <form:options items="${persons}" itemValue="id" itemLabel="idName"/>
                                         </form:select>
                                     </div>
                                 </div>

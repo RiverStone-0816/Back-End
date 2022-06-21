@@ -48,7 +48,6 @@ public class HuntStatController extends BaseController {
     private final HuntStatApiInterface apiInterface;
     private final SearchApiInterface searchApiInterface;
     private final CsRouteApiInterface csRouteApiInterface;
-    private final UserApiInterface userApiInterface;
     private final OrganizationService organizationService;
 
     @GetMapping("")
@@ -68,9 +67,7 @@ public class HuntStatController extends BaseController {
         final Map<String, String> queues = csRouteApiInterface.queue().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName));
         model.addAttribute("queues", queues);
 
-        final PersonSearchRequest personSearchRequest = new PersonSearchRequest();
-        personSearchRequest.setLimit(1000);
-        model.addAttribute("persons", userApiInterface.pagination(personSearchRequest).getRows().stream().collect(Collectors.toMap(PersonSummaryResponse::getId, PersonSummaryResponse::getIdName)));
+        model.addAttribute("persons", searchApiInterface.persons());
 
         if (StringUtils.isNotEmpty(search.getGroupCode()))
             model.addAttribute("searchOrganizationNames", organizationService.getHierarchicalOrganizationNames(search.getGroupCode()));
