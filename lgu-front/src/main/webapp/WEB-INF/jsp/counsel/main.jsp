@@ -491,7 +491,7 @@
     <script>
         window.ipccCommunicator = new IpccCommunicator();
 
-        let audioId, phoneNumber;
+        let audioId, phoneNumber, customId, callType;
         ipccCommunicator
             .on('LOGIN', function (message, kind /*[ LOGIN_OK | LOGIN_ALREADY | LOGOUT | ... ]*/) {
                 if (kind === "LOGOUT")
@@ -533,6 +533,7 @@
 
                 if (kind === 'IR') { // 인바운드 링울림
                     audioId = data8;
+                    callType = 'I';
                     phoneNumber = data1;
                     const callingPath = data3;
                     const extension = data2;
@@ -559,6 +560,7 @@
                     });
                 } else if (kind === 'PICKUP') { //픽업
                     audioId = data8;
+                    callType = 'I';
                     phoneNumber = data1;
                     const callingPath = data3;
                     const extension = data2;
@@ -584,6 +586,7 @@
                     });
                 } else if (kind === 'ID') { // 인바운드 통화시작
                     audioId = data8;
+                    callType = 'I';
                     phoneNumber = data1;
 
                     $('.-calling-number').val(phoneNumber).text(phoneNumber);
@@ -592,6 +595,7 @@
                     $('#user-call-history').empty().append('<option>통화진행중</option>');
                 } else if (kind === 'OR') { // 아웃바운드 링울림
                     audioId = data8;
+                    callType = 'O';
                     phoneNumber = data2;
 
                     if (data9 === 'PRV') {
@@ -611,6 +615,7 @@
                     }
                 } else if (kind === 'OD') { // 아웃바운드 통화시작
                     audioId = data8;
+                    callType = 'O';
                     phoneNumber = data2;
 
                     $('.-calling-number').val(phoneNumber).text(phoneNumber);

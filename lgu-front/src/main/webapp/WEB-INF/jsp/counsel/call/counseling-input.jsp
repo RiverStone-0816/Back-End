@@ -374,6 +374,7 @@
         delete data.saveWaitStatusAfterPostCounselingInfo;
 
         data.uniqueId = audioId;
+        data.callType = callType;
         data.customNumber = phoneNumber !== '' ? phoneNumber : $('#call-custom-input').find('[name=channels] option:first').val();
 
         const transferredUser = getTransferredUser();

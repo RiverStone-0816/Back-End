@@ -134,6 +134,7 @@
 
         function clearCustomerAndCounselingInput() {
             audioId = null;
+            callType = null;
             phoneNumber = null;
             clearTransferredUser();
 

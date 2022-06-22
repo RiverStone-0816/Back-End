@@ -15,6 +15,6 @@
 <select id="user-call-history" onchange="loadCustomInput('','', this.value);">
     <option value="" label="">통화이력선택</option>
     <c:forEach var="e" items="${list}">
-        <option value="${e.src}">[<fmt:formatDate value="${e.ringDate}" pattern="yyyy-MM-dd HH:mm:ss"/>] ${g.htmlQuote(e.src)} > ${g.htmlQuote(e.dst)} (${g.htmlQuote(e.callStatusValue)})</option>
+        <option value="${e.src}" data-unique-id="${e.uniqueid}" data-call-type="${e.inOut}">[<fmt:formatDate value="${e.ringDate}" pattern="yyyy-MM-dd HH:mm:ss"/>] ${g.htmlQuote(e.src)} > ${g.htmlQuote(e.dst)} (${g.htmlQuote(e.callStatusValue)})</option>
     </c:forEach>
 </select>
