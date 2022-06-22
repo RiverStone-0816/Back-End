@@ -41,7 +41,7 @@
                 <th>상담원</th>
                 <td>
                     <div class="ui form">
-                        <form:select path="targetUserid" disabled="true" items="${persons}"/>
+                        <form:select path="targetUserid" disabled="true" items="${persons}" itemLabel="idName" itemValue="id"/>
                     </div>
                 </td>
                 <th>수/발</th>

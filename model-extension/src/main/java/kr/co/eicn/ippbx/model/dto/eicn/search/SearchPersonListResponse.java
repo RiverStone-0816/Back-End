@@ -6,4 +6,7 @@ import lombok.Data;
 public class SearchPersonListResponse {
     private String id;
     private String idName;
+    private String groupCode;
+    private String groupTreeName;
+    private String idType;
 }

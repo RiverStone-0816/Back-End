@@ -104,7 +104,7 @@
                             <div class="ui form">
                                 <form:select path="userId">
                                     <form:option value="" label="선택안함"/>
-                                    <form:options items="${persons}"/>
+                                    <form:options items="${persons}" itemValue="id" itemLabel="idName"/>
                                 </form:select>
                             </div>
                         </div>

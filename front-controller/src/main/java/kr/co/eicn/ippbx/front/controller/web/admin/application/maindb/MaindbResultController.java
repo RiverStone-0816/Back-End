@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.application.maindb;
 
+import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -59,7 +60,7 @@ public class MaindbResultController extends BaseController {
     private final MaindbGroupApiInterface maindbGroupApiInterface;
     private final MaindbDataApiInterface maindbDataApiInterface;
     private final CommonTypeApiInterface commonTypeApiInterface;
-    private final UserApiInterface userApiInterface;
+    private final SearchApiInterface searchApiInterface;
 
     public static Map<Integer, Map<String, Object>> createSeqToFieldNameToValueMap(List<CommonResultCustomInfo> list, CommonTypeEntity resultType) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         final Map<Integer, Map<String, Object>> seqToFieldNameToValueMap = new HashMap<>();
@@ -125,10 +126,7 @@ public class MaindbResultController extends BaseController {
             model.addAttribute("seqToFieldNameToValueMap", createSeqToFieldNameToValueMap((List<CommonResultCustomInfo>) (List<?>) pagination.getRows(), resultType));
             model.addAttribute("customIdToFieldNameToValueMap", MaindbDataController.createCustomIdToFieldNameToValueMap(pagination.getRows().stream().map(ResultCustomInfoEntity::getCustomInfo).collect(Collectors.toList()), customDbType));
 
-            final PersonSearchRequest personSearchRequest = new PersonSearchRequest();
-            personSearchRequest.setLimit(1000);
-            final Map<String, String> users = userApiInterface.pagination(personSearchRequest).getRows().stream().collect(Collectors.toMap(PersonSummaryResponse::getId, PersonSummaryResponse::getIdName));
-            model.addAttribute("users", users);
+            model.addAttribute("users", searchApiInterface.persons());
         }
         return "admin/application/maindb/result/ground";
     }

@@ -109,12 +109,10 @@
                                 <div class="two wide column"><label class="control-label">통화자</label></div>
                                 <div class="two wide column">
                                     <div class="ui form">
-                                        <select name="userId">
-                                            <option value="" label="선택안함"></option>
-                                            <c:forEach var="e" items="${persons}">
-                                                <option value="${g.htmlQuote(e.id)}">${g.htmlQuote(e.idName)}</option>
-                                            </c:forEach>
-                                        </select>
+                                        <form:select path="userId">
+                                            <form:option value="" label="선택안함"/>
+                                            <form:options items="${persons}" itemValue="id" itemLabel="idName"/>
+                                        </form:select>
                                     </div>
                                 </div>
                             </div>

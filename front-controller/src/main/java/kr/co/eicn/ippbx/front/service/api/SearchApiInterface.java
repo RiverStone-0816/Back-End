@@ -48,6 +48,10 @@ public class SearchApiInterface extends ApiServerInterface {
         return getList(subUrl + "pds-group", null, SearchPDSGroupResponse.class).getData();
     }
 
+    public List<SearchPersonListResponse> persons() throws IOException, ResultFailException {
+        return getList(subUrl + "person", null, SearchPersonListResponse.class).getData();
+    }
+
     public List<SearchTalkServiceInfoResponse> getChatbotServiceInfoList() throws IOException, ResultFailException {
         List<SearchTalkServiceInfoResponse> talkServiceList = getList(subUrl + "wtalk-service", null, SearchTalkServiceInfoResponse.class).getData();
         return talkServiceList.stream().filter(e -> StringUtils.isNotEmpty(e.getBotId())).collect(Collectors.toList());

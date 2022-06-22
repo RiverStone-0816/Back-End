@@ -5,7 +5,6 @@ import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbData
 import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbResultController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.search.RecordCallSearchForm;
-import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.CounselApiInterface;
 import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
@@ -18,8 +17,8 @@ import kr.co.eicn.ippbx.front.service.api.monitor.display.ScreenDataApiInterface
 import kr.co.eicn.ippbx.front.service.api.outbound.voc.VocGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.record.history.RecordingHistoryApiInterface;
 import kr.co.eicn.ippbx.front.service.api.stat.ConsultantStatApiInterface;
-import kr.co.eicn.ippbx.front.service.api.wtalk.group.WtalkReceptionGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.user.user.UserApiInterface;
+import kr.co.eicn.ippbx.front.service.api.wtalk.group.WtalkReceptionGroupApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoKind;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CmpMemberStatusCode;
@@ -30,8 +29,8 @@ import kr.co.eicn.ippbx.model.dto.customdb.CommonEicnCdrResponse;
 import kr.co.eicn.ippbx.model.dto.customdb.CustomMultichannelInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.MaindbGroupDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.MaindbGroupSummaryResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.PersonSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryWtalkServiceResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.search.SearchPersonListResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.ResultCustomInfoEntity;
@@ -42,10 +41,14 @@ import kr.co.eicn.ippbx.model.entity.eicn.GradeListEntity;
 import kr.co.eicn.ippbx.model.enums.MultichannelChannelType;
 import kr.co.eicn.ippbx.model.form.MaindbCustomInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.ResultCustomInfoFormRequest;
-import kr.co.eicn.ippbx.model.search.*;
+import kr.co.eicn.ippbx.model.search.GradeListSearchRequest;
+import kr.co.eicn.ippbx.model.search.MaindbDataSearchRequest;
+import kr.co.eicn.ippbx.model.search.MaindbGroupSearchRequest;
+import kr.co.eicn.ippbx.model.search.TodoListSearchRequest;
 import kr.co.eicn.ippbx.model.search.search.SearchServiceRequest;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
@@ -75,7 +78,6 @@ public class CounselCallController extends BaseController {
 
     private final CounselApiInterface counselApiInterface;
     private final SearchApiInterface searchApiInterface;
-    private final UserApiInterface userApiInterface;
     private final RecordingHistoryApiInterface recordingHistoryApiInterface;
     private final MaindbGroupApiInterface maindbGroupApiInterface;
     private final MaindbDataApiInterface maindbDataApiInterface;
@@ -336,7 +338,7 @@ public class CounselCallController extends BaseController {
 
     @GetMapping("modal-counseling-transfer")
     public String modalCounselingTransfer(Model model) throws IOException, ResultFailException {
-        model.addAttribute("users", userApiInterface.list(new PersonSearchRequest()).stream().collect(Collectors.toMap(PersonSummaryResponse::getId, PersonSummaryResponse::getIdName)));
+        model.addAttribute("users", searchApiInterface.persons().stream().collect(Collectors.toMap(SearchPersonListResponse::getId, SearchPersonListResponse::getIdName)));
         return "counsel/call/modal-counseling-transfer";
     }
 

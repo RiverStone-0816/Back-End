@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public class PersonListSearchApiController extends ApiBaseController {
 
     @GetMapping("")
     public ResponseEntity<JsonResult<List<SearchPersonListResponse>>> search(@RequestParam (required = false) List<String> group){
-        List<SearchPersonListResponse> list = repository.findAllByGroup(group).stream().map(e -> convertDto(e, SearchPersonListResponse.class)).collect(Collectors.toList());
+        List<SearchPersonListResponse> list = repository.findAllByGroup(group).stream().map(e -> convertDto(e, SearchPersonListResponse.class)).sorted(Comparator.comparing(SearchPersonListResponse::getIdName)).collect(Collectors.toList());
         return ResponseEntity.ok(data(list));
     }
 }
