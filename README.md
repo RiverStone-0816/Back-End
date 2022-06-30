@@ -196,3 +196,32 @@ ALTER TABLE `talk_template`
 	ADD COLUMN `original_file_name` VARCHAR(150) NULL DEFAULT '' COMMENT '파일이름' AFTER `ment`,
 	ADD COLUMN `file_path` VARCHAR(300) NULL DEFAULT '' COMMENT '파일경로' AFTER `original_file_name`;
 ```
+
+* 2021-10-06 CUSTOMDB function fn_enc_string_text / fn_dec_string_text 추가
+```
+ROOT 실행
+
+SET GLOBAL log_bin_trust_function_creators = ON;
+
+USE CUSTOMDB;
+
+DELIMITER $$
+CREATE FUNCTION fn_enc_string_text (
+stringText VARCHAR(500)
+,secretKey VARCHAR(50)
+) RETURNS VARCHAR(500)
+BEGIN
+	RETURN hex(aes_encrypt(stringText,secretKey));
+END $$
+DELIMITER ;
+
+DELIMITER $$
+CREATE FUNCTION fn_dec_string_text (
+stringText VARCHAR(500)
+,secretKey VARCHAR(50)
+) RETURNS VARCHAR(500)
+BEGIN
+	RETURN aes_decrypt(unhex(stringText),secretKey);
+END $$
+DELIMITER ;
+```
