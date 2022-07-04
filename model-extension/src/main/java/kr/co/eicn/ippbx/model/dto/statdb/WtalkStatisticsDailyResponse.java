@@ -5,10 +5,9 @@ import lombok.Data;
 @Data
 public class WtalkStatisticsDailyResponse {
     private String statDate;
-    private Integer startRoomCnt;
-    private Integer endRoomCnt;
-    private Integer inMsgCnt;
-    private Integer outMsgCnt;
-    private Integer autoMentCnt;
-    private Integer autoMentExceedCnt;
+    private Integer startRoomCnt = 0;
+    private Integer endRoomCnt = 0;
+    private Integer inMsgCnt = 0;
+    private Integer outMsgCnt = 0;
+    private Integer autoMentCnt = 0;
 }

@@ -93,7 +93,6 @@
                             <th>수신메시지수</th>
                             <th>발신메시지수</th>
                             <th>자동멘트수</th>
-                            <th>초과자동멘트수</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -101,13 +100,12 @@
                             <c:when test="${list.size() > 0}">
                                 <c:forEach var="e" items="${list}">
                                     <tr>
-                                        <td>${g.htmlQuote(e.idName.equals('') ? '비접수' : e.idName)}</td>
+                                        <td>${g.htmlQuote(e.idName.equals('') ? '- 비접수 -' : e.idName)}</td>
                                         <td>${e.startRoomCnt}</td>
                                         <td>${e.endRoomCnt}</td>
                                         <td>${e.inMsgCnt}</td>
                                         <td>${e.outMsgCnt}</td>
                                         <td>${e.autoMentCnt}</td>
-                                        <td>${e.autoMentExceedCnt}</td>
                                     </tr>
                                 </c:forEach>
                                 <tr>
@@ -117,13 +115,11 @@
                                     <td>${list.stream().map(e2 -> e2.inMsgCnt).sum()}</td>
                                     <td>${list.stream().map(e2 -> e2.outMsgCnt).sum()}</td>
                                     <td>${list.stream().map(e2 -> e2.autoMentCnt).sum()}</td>
-                                    <td>${list.stream().map(e2 -> e2.autoMentExceedCnt).sum()}</td>
                                 </tr>
                             </c:when>
                             <c:otherwise>
                                 <tr>
                                     <td>합계</td>
-                                    <td>0</td>
                                     <td>0</td>
                                     <td>0</td>
                                     <td>0</td>

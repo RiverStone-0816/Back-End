@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.util.spring.RequestMessage;
 import kr.co.eicn.ippbx.util.spring.SpringApplicationContextAware;
 import kr.co.eicn.ippbx.model.dto.statdb.WtalkStatisticsPersonResponse;
 import kr.co.eicn.ippbx.model.search.TalkStatisticsSearchRequest;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -18,17 +19,16 @@ public class TalkPersonStatExcel extends AbstractExcel {
     }
 
     private void createBody() {
-        addRow(sheetHeadStyle, "상담원", "개설대화방수", "종료대화방수", "수신메시지수", "발신메시지수", "자동멘트수", "초과자동멘트수");
+        addRow(sheetHeadStyle, "상담원", "개설대화방수", "종료대화방수", "수신메시지수", "발신메시지수", "자동멘트수");
         final RequestMessage message = SpringApplicationContextAware.requestMessage();
         for (WtalkStatisticsPersonResponse e : list) {
             addRow(defaultStyle,
-                    niceFormat(e.getIdName()),
+                    niceFormat(StringUtils.defaultIfEmpty(e.getIdName(), "- 비접수 -")),
                     niceFormat(e.getStartRoomCnt()),
                     niceFormat(e.getEndRoomCnt()),
                     niceFormat(e.getInMsgCnt()),
                     niceFormat(e.getOutMsgCnt()),
-                    niceFormat(e.getAutoMentCnt()),
-                    niceFormat(e.getAutoMentExceedCnt())
+                    niceFormat(e.getAutoMentCnt())
             );
         }
         addRow(sheetHeadStyle, "합계",
@@ -36,8 +36,7 @@ public class TalkPersonStatExcel extends AbstractExcel {
                 niceFormat(list.stream().mapToInt(WtalkStatisticsPersonResponse::getEndRoomCnt).sum()),
                 niceFormat(list.stream().mapToInt(WtalkStatisticsPersonResponse::getInMsgCnt).sum()),
                 niceFormat(list.stream().mapToInt(WtalkStatisticsPersonResponse::getOutMsgCnt).sum()),
-                niceFormat(list.stream().mapToInt(WtalkStatisticsPersonResponse::getAutoMentCnt).sum()),
-                niceFormat(list.stream().mapToInt(WtalkStatisticsPersonResponse::getAutoMentExceedCnt).sum())
+                niceFormat(list.stream().mapToInt(WtalkStatisticsPersonResponse::getAutoMentCnt).sum())
         );
     }
 }

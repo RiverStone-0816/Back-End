@@ -31,12 +31,9 @@ public class WtalkStatisticsRepository extends StatDBBaseRepository<CommonStatWt
     public WtalkStatisticsRepository(String companyId) {
         super(new CommonStatWtalk(companyId), new CommonStatWtalk(companyId).SEQ, StatWtalkEntity.class);
         TABLE = new CommonStatWtalk(companyId);
-        addField(ifnull(sum(TABLE.START_ROOM_CNT), 0).as(TABLE.START_ROOM_CNT),
-                ifnull(sum(TABLE.END_ROOM_CNT), 0).as(TABLE.END_ROOM_CNT),
-                ifnull(sum(TABLE.IN_MSG_CNT), 0).as(TABLE.IN_MSG_CNT),
-                ifnull(sum(TABLE.OUT_MSG_CNT), 0).as(TABLE.OUT_MSG_CNT),
-                ifnull(sum(TABLE.AUTO_MENT_CNT), 0).as(TABLE.AUTO_MENT_CNT),
-                ifnull(sum(TABLE.AUTO_MENT_EXCEED_CNT), 0).as(TABLE.AUTO_MENT_EXCEED_CNT));
+
+        addField(TABLE.ACTION_TYPE);
+        addField(ifnull(sum(TABLE.CNT), 0).as(TABLE.CNT));
     }
 
     @Override
@@ -52,6 +49,9 @@ public class WtalkStatisticsRepository extends StatDBBaseRepository<CommonStatWt
                 query.groupBy(TABLE.USERID);
                 break;
         }
+
+        query.groupBy(TABLE.ACTION_TYPE);
+
 
         return query.where();
     }
@@ -79,7 +79,7 @@ public class WtalkStatisticsRepository extends StatDBBaseRepository<CommonStatWt
         addField(TABLE.USERID);
         type = "person";
         List<Condition> conditions = condition(search);
-        conditions.add(TABLE.USERID.notEqual(""));
+//        conditions.add(TABLE.USERID.notEqual(""));
 
         return super.findAll(conditions);
     }
@@ -99,9 +99,10 @@ public class WtalkStatisticsRepository extends StatDBBaseRepository<CommonStatWt
 
     public Map<String, Object> findChatUserTalkMonitor(List<String> person){
         return dsl.select(TABLE.USERID
-                , ifnull(sum(TABLE.END_ROOM_CNT), 0).as("talk_success"))
+                , ifnull(sum(TABLE.CNT), 0).as("talk_success"))
                 .from(TABLE)
                 .where(compareCompanyId())
+                .and(TABLE.ACTION_TYPE.eq("USER_END_ROOM").or(TABLE.ACTION_TYPE.eq("CUSTOM_END_ROOM")))
                 .and(TABLE.STAT_DATE.eq(currentDate()))
                 .and(TABLE.USERID.in(person))
                 .groupBy(TABLE.USERID)

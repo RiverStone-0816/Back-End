@@ -27,199 +27,171 @@ public class CommonStatWtalkRecord extends UpdatableRecordImpl<CommonStatWtalkRe
 	}
 
 	/**
-	 * Setter for <code>STATDB.stat_talk.sender_key</code>.
+	 * Setter for <code>STATDB.stat_wtalk.company_id</code>. 회사아이디
 	 */
-	public void setSenderKey(String value) {
+	public void setCompanyId(String value) {
 		set(1, value);
 	}
 
 	/**
-	 * Getter for <code>STATDB.stat_talk.sender_key</code>.
+	 * Getter for <code>STATDB.stat_wtalk.company_id</code>. 회사아이디
 	 */
-	public String getSenderKey() {
+	public String getCompanyId() {
 		return (String) get(1);
 	}
 
 	/**
-	 * Setter for <code>STATDB.stat_talk.userid</code>. 상담원 아이디
+	 * Setter for <code>STATDB.stat_wtalk.channel_type</code>. 상담톡서비스유형
 	 */
-	public void setUserid(String value) {
+	public void setChannelType(String value) {
 		set(2, value);
 	}
 
 	/**
-	 * Getter for <code>STATDB.stat_talk.userid</code>. 상담원 아이디
+	 * Getter for <code>STATDB.stat_wtalk.channel_type</code>. 상담톡서비스유형
 	 */
-	public String getUserid() {
+	public String getChannelType() {
 		return (String) get(2);
 	}
 
 	/**
-	 * Setter for <code>STATDB.stat_talk.group_code</code>. 같은 group_level 에서 unique한 코드 4자리 ex&gt;0001
+	 * Setter for <code>STATDB.stat_wtalk.sender_key</code>. 상담톡카카오가입서비스아이디
 	 */
-	public void setGroupCode(String value) {
+	public void setSenderKey(String value) {
 		set(3, value);
 	}
 
 	/**
-	 * Getter for <code>STATDB.stat_talk.group_code</code>. 같은 group_level 에서 unique한 코드 4자리 ex&gt;0001
+	 * Getter for <code>STATDB.stat_wtalk.sender_key</code>. 상담톡카카오가입서비스아이디
 	 */
-	public String getGroupCode() {
+	public String getSenderKey() {
 		return (String) get(3);
 	}
 
 	/**
-	 * Setter for <code>STATDB.stat_talk.group_tree_name</code>. 윗레벨의 코드를 포함한 코드의 나열 ex&gt;0003_0008_0001
+	 * Setter for <code>STATDB.stat_wtalk.userid</code>. 상담원 아이디
 	 */
-	public void setGroupTreeName(String value) {
+	public void setUserid(String value) {
 		set(4, value);
 	}
 
 	/**
-	 * Getter for <code>STATDB.stat_talk.group_tree_name</code>. 윗레벨의 코드를 포함한 코드의 나열 ex&gt;0003_0008_0001
+	 * Getter for <code>STATDB.stat_wtalk.userid</code>. 상담원 아이디
 	 */
-	public String getGroupTreeName() {
+	public String getUserid() {
 		return (String) get(4);
 	}
 
 	/**
-	 * Setter for <code>STATDB.stat_talk.group_level</code>. 해당조직의 레벨 MAX 보다 같거나 작을것
+	 * Setter for <code>STATDB.stat_wtalk.group_code</code>. 조직코드
 	 */
-	public void setGroupLevel(Integer value) {
+	public void setGroupCode(String value) {
 		set(5, value);
 	}
 
 	/**
-	 * Getter for <code>STATDB.stat_talk.group_level</code>. 해당조직의 레벨 MAX 보다 같거나 작을것
+	 * Getter for <code>STATDB.stat_wtalk.group_code</code>. 조직코드
 	 */
-	public Integer getGroupLevel() {
-		return (Integer) get(5);
+	public String getGroupCode() {
+		return (String) get(5);
 	}
 
 	/**
-	 * Setter for <code>STATDB.stat_talk.stat_date</code>.
+	 * Setter for <code>STATDB.stat_wtalk.group_tree_name</code>. 조직트리명
 	 */
-	public void setStatDate(Date value) {
+	public void setGroupTreeName(String value) {
 		set(6, value);
 	}
 
 	/**
-	 * Getter for <code>STATDB.stat_talk.stat_date</code>.
+	 * Getter for <code>STATDB.stat_wtalk.group_tree_name</code>. 조직트리명
 	 */
-	public Date getStatDate() {
-		return (Date) get(6);
+	public String getGroupTreeName() {
+		return (String) get(6);
 	}
 
 	/**
-	 * Setter for <code>STATDB.stat_talk.stat_hour</code>.
+	 * Setter for <code>STATDB.stat_wtalk.group_level</code>. 조직레벨
 	 */
-	public void setStatHour(Byte value) {
+	public void setGroupLevel(Integer value) {
 		set(7, value);
 	}
 
 	/**
-	 * Getter for <code>STATDB.stat_talk.stat_hour</code>.
+	 * Getter for <code>STATDB.stat_wtalk.group_level</code>. 조직레벨
 	 */
-	public Byte getStatHour() {
-		return (Byte) get(7);
+	public Integer getGroupLevel() {
+		return (Integer) get(7);
 	}
 
 	/**
-	 * Setter for <code>STATDB.stat_talk.start_room_cnt</code>.
+	 * Setter for <code>STATDB.stat_wtalk.worktime_yn</code>.
 	 */
-	public void setStartRoomCnt(Integer value) {
+	public void setWorktimeYn(String value) {
 		set(8, value);
 	}
 
 	/**
-	 * Getter for <code>STATDB.stat_talk.start_room_cnt</code>.
+	 * Getter for <code>STATDB.stat_wtalk.worktime_yn</code>.
 	 */
-	public Integer getStartRoomCnt() {
-		return (Integer) get(8);
+	public String getWorktimeYn() {
+		return (String) get(8);
 	}
 
 	/**
-	 * Setter for <code>STATDB.stat_talk.end_room_cnt</code>.
+	 * Setter for <code>STATDB.stat_wtalk.stat_date</code>.
 	 */
-	public void setEndRoomCnt(Integer value) {
+	public void setStatDate(Date value) {
 		set(9, value);
 	}
 
 	/**
-	 * Getter for <code>STATDB.stat_talk.end_room_cnt</code>.
+	 * Getter for <code>STATDB.stat_wtalk.stat_date</code>.
 	 */
-	public Integer getEndRoomCnt() {
-		return (Integer) get(9);
+	public Date getStatDate() {
+		return (Date) get(9);
 	}
 
 	/**
-	 * Setter for <code>STATDB.stat_talk.in_msg_cnt</code>.
+	 * Setter for <code>STATDB.stat_wtalk.stat_hour</code>.
 	 */
-	public void setInMsgCnt(Integer value) {
+	public void setStatHour(Byte value) {
 		set(10, value);
 	}
 
 	/**
-	 * Getter for <code>STATDB.stat_talk.in_msg_cnt</code>.
+	 * Getter for <code>STATDB.stat_wtalk.stat_hour</code>.
 	 */
-	public Integer getInMsgCnt() {
-		return (Integer) get(10);
+	public Byte getStatHour() {
+		return (Byte) get(10);
 	}
 
 	/**
-	 * Setter for <code>STATDB.stat_talk.out_msg_cnt</code>.
+	 * Setter for <code>STATDB.stat_wtalk.action_type</code>. 액션타입
 	 */
-	public void setOutMsgCnt(Integer value) {
+	public void setActionType(String value) {
 		set(11, value);
 	}
 
 	/**
-	 * Getter for <code>STATDB.stat_talk.out_msg_cnt</code>.
+	 * Getter for <code>STATDB.stat_wtalk.action_type</code>. 액션타입
 	 */
-	public Integer getOutMsgCnt() {
-		return (Integer) get(11);
+	public String getActionType() {
+		return (String) get(11);
 	}
 
 	/**
-	 * Setter for <code>STATDB.stat_talk.auto_ment_cnt</code>.
+	 * Setter for <code>STATDB.stat_wtalk.cnt</code>.
 	 */
-	public void setAutoMentCnt(Integer value) {
+	public void setCnt(Integer value) {
 		set(12, value);
 	}
 
 	/**
-	 * Getter for <code>STATDB.stat_talk.auto_ment_cnt</code>.
+	 * Getter for <code>STATDB.stat_wtalk.cnt</code>.
 	 */
-	public Integer getAutoMentCnt() {
+	public Integer getCnt() {
 		return (Integer) get(12);
-	}
-
-	/**
-	 * Setter for <code>STATDB.stat_talk.auto_ment_exceed_cnt</code>.
-	 */
-	public void setAutoMentExceedCnt(Integer value) {
-		set(13, value);
-	}
-
-	/**
-	 * Getter for <code>STATDB.stat_talk.auto_ment_exceed_cnt</code>.
-	 */
-	public Integer getAutoMentExceedCnt() {
-		return (Integer) get(13);
-	}
-
-	/**
-	 * Setter for <code>STATDB.stat_talk.room_time_sum</code>.
-	 */
-	public void setRoomTimeSum(Integer value) {
-		set(14, value);
-	}
-
-	/**
-	 * Getter for <code>STATDB.stat_talk.room_time_sum</code>.
-	 */
-	public Integer getRoomTimeSum() {
-		return (Integer) get(14);
 	}
 
 	// -------------------------------------------------------------------------

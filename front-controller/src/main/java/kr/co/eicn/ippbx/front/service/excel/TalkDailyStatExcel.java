@@ -18,7 +18,7 @@ public class TalkDailyStatExcel extends AbstractExcel {
     }
 
     private void createBody() {
-        addRow(sheetHeadStyle, "날짜", "개설대화방수", "종료대화방수", "수신메시지수", "발신메시지수", "자동멘트수", "초과자동멘트수");
+        addRow(sheetHeadStyle, "날짜", "개설대화방수", "종료대화방수", "수신메시지수", "발신메시지수", "자동멘트수");
         final RequestMessage message = SpringApplicationContextAware.requestMessage();
         for (WtalkStatisticsDailyResponse e : list) {
             addRow(defaultStyle,
@@ -27,8 +27,7 @@ public class TalkDailyStatExcel extends AbstractExcel {
                     niceFormat(e.getEndRoomCnt()),
                     niceFormat(e.getInMsgCnt()),
                     niceFormat(e.getOutMsgCnt()),
-                    niceFormat(e.getAutoMentCnt()),
-                    niceFormat(e.getAutoMentExceedCnt())
+                    niceFormat(e.getAutoMentCnt())
             );
         }
         addRow(sheetHeadStyle, "합계",
@@ -36,8 +35,7 @@ public class TalkDailyStatExcel extends AbstractExcel {
                 niceFormat(list.stream().mapToInt(WtalkStatisticsDailyResponse::getEndRoomCnt).sum()),
                 niceFormat(list.stream().mapToInt(WtalkStatisticsDailyResponse::getInMsgCnt).sum()),
                 niceFormat(list.stream().mapToInt(WtalkStatisticsDailyResponse::getOutMsgCnt).sum()),
-                niceFormat(list.stream().mapToInt(WtalkStatisticsDailyResponse::getAutoMentCnt).sum()),
-                niceFormat(list.stream().mapToInt(WtalkStatisticsDailyResponse::getAutoMentExceedCnt).sum())
+                niceFormat(list.stream().mapToInt(WtalkStatisticsDailyResponse::getAutoMentCnt).sum())
         );
     }
 }

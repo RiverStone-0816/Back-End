@@ -40,28 +40,39 @@ public class WtalkStatisticsHourlyApiController extends ApiBaseController {
                     throw new IllegalArgumentException(message.getText("messages.validator.endhour.after.starthour"));
         }
 
-        final List<StatWtalkEntity> list = wtalkStatisticsService.getRepository().hourlyStatList(search);
         final List<WtalkStatisticsHourlyResponse> rows = new ArrayList<>();
+        final List<StatWtalkEntity> list = wtalkStatisticsService.getRepository().hourlyStatList(search);
 
         for (byte i = 0; i < 24; i++) {
             final byte hour = i;
             final Optional<StatWtalkEntity> stat = list.stream().filter(e -> e.getStatHour().equals(hour)).findFirst();
 
+            WtalkStatisticsHourlyResponse row = new WtalkStatisticsHourlyResponse();
+            row.setStatHour(i);
+
             if (stat.isPresent()) {
-                rows.add(convertDto(stat.get(), WtalkStatisticsHourlyResponse.class));
-            } else {
-                final WtalkStatisticsHourlyResponse row = new WtalkStatisticsHourlyResponse();
-
-                row.setStatHour(i);
-                row.setAutoMentCnt(0);
-                row.setAutoMentExceedCnt(0);
-                row.setEndRoomCnt(0);
-                row.setInMsgCnt(0);
-                row.setOutMsgCnt(0);
-                row.setStartRoomCnt(0);
-
-                rows.add(row);
+                list.stream().filter(e -> e.getStatHour().equals(hour)).forEach(e -> {
+                    switch (e.getActionType()){
+                        case "START_ROOM": // 개설대화방수
+                            row.setStartRoomCnt(row.getStartRoomCnt() + e.getCnt());
+                            break;
+                        case "USER_END_ROOM": case "CUSTOM_END_ROOM": // 종료대화방수
+                            row.setEndRoomCnt(row.getEndRoomCnt() + e.getCnt());
+                            break;
+                        case "RECEIVE_MSG": case "RECEIVE_FILE": // 수신메시지수
+                            row.setInMsgCnt(row.getInMsgCnt() + e.getCnt());
+                            break;
+                        case "SEND_MSG": case "SEND_FILE": // 발신메시지수
+                            row.setOutMsgCnt(row.getOutMsgCnt() + e.getCnt());
+                            break;
+                        case "AUTOMSG_SA": case "AUTOMSG_AW": case "AUTOMSG_AE":// 자동멘트수
+                            row.setAutoMentCnt(row.getAutoMentCnt() + e.getCnt());
+                            break;
+                    }
+                });
             }
+
+            rows.add(row);
         }
 
         return ResponseEntity.ok(data(rows));
