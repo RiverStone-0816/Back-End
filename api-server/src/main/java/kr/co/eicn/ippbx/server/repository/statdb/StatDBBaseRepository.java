@@ -90,7 +90,6 @@ public abstract class StatDBBaseRepository<TABLE extends TableImpl<?>, ENTITY, P
             query.groupBy(statHour);
         } else if (SearchCycle.WEEK.equals(standardTime)) {
             query.groupBy(year(statDate));
-            query.groupBy(month(statDate));
             query.groupBy(week(statDate));
         } else if (SearchCycle.MONTH.equals(standardTime)) {
             query.groupBy(year(statDate));
