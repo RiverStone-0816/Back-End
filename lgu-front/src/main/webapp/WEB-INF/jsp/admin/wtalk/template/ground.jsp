@@ -32,8 +32,8 @@
                         <thead>
                         <tr>
                             <th class="one wide">번호</th>
-                            <th>유형</th>
-                            <th>유형데이터</th>
+                            <th>권한</th>
+                            <th>권한대상</th>
                             <th>작성자</th>
                             <th>템플릿 타입</th>
                             <th>템플릿명</th>
