@@ -254,9 +254,15 @@
                 <!--텍스트 출력-->
                 <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
                   <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
-                  <span>
-                    <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.text_data }}</p>
-                  </span>
+                    <div v-if="message.data?.replyingTarget && message.data?.replyingType === 'text'" class="replying">
+                      {{ message.data.replyingTarget }}
+                    </div>
+                    <div v-if="message.data?.replyingTarget && message.data?.replyingType === 'image'" class="replying">
+                      <img :src="message.data.replyingTarget">
+                    </div>
+                    <span>
+                      <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.text_data }}</p>
+                    </span>
                   </div>
                   <div class="text-xxs text-gray-600/100">
                     {{ getTimeFormat(message.time) }}
@@ -1742,8 +1748,19 @@ export default {
   padding-left: 1.75rem;
   padding-right: 1.75rem;
 }
- input[type="text"],select:focus,textarea .touch-y{
+input[type="text"],select:focus,textarea .touch-y{
   touch-action: pan-y;
   font-size:  max(0.8rem, 16px) !important;
 }
+.replying {
+  color: #998D1F;
+  border-bottom: 1px solid #998D1F;
+  padding: 0 0 4px 0;
+  margin: 0 0 4px 0;
+  img {
+    width: auto;
+    height: 50px;
+  }
+}
+
 </style>
