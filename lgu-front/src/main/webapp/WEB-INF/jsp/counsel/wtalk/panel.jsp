@@ -861,7 +861,7 @@
                                     data-variation="tiny" data-position="top center"
                                     onclick="this.previousSibling.click()"><i class="paperclip icon"></i></button>
                             <%--TODO: 음성대화--%>
-                            <button v-if="channelType==='eicn' && isVChat" class="ui icon compact mini button mr5" data-inverted
+                            <button v-if="channelType==='eicn' && isAChat" class="ui icon compact mini button mr5" data-inverted
                                     data-tooltip="음성대화" data-variation="tiny" data-position="top center" @click="startWebrtc('SAS')"><i
                                     class="microphone icon"></i></button>
                             <%--TODO: 화상대화--%>
@@ -953,7 +953,8 @@
 
                     loginId: '${g.user.id}',
                     isMessage: false,
-                    isVChat: true,
+                    isVChat: false,
+                    isAchat: false,
 
                     showingDropzone: false,
 
@@ -1004,7 +1005,8 @@
                         _this.customName = response.data.customName
                         _this.isAutoEnable = response.data.isAutoEnable === 'Y'
                         _this.isMessage = !(response.data.userId === _this.loginId && response.data.roomStatus === 'G')
-                        _this.isVChat = response.data.channelType === 'eicn'
+                        _this.isVChat = response.data.channelType === 'eicn' && 'true' === '${g.usingServices.contains("VDTLK")}'
+                        _this.isAChat = response.data.channelType === 'eicn' && 'true' === '${g.usingServices.contains("ADTLK")}'
 
                         const status = _this.roomStatus === 'E' ? statues.END.status
                             : !_this.userId ? statues.TOT.status
