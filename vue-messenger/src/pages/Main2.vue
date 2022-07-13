@@ -116,7 +116,7 @@
                   <!--회사로고 이미지 + 텍스트 출력-->
                   <div class="rounded-lg shadow">
                     <div class="bg-white py-2 px-3 rounded-lg">
-                      <div class="pt-1">
+                      <div v-if="message.data?.profile" class="pt-1">
                         <img :src="getFileUrl(message.company, message.data.profile)" class="w-full rounded-lg">
                       </div>
                       <div class="pt-4">
@@ -1494,7 +1494,7 @@ export default {
           if (data.message_type === 'intro') {
             this.backgroundColor = data.message_data.bgcolor
             this.displayName = data.message_data.display_company_name
-            if (data.message_data.image !== '') this.botIcon = `https://cloudtalk.eicn.co.kr:442/webchat_bot_image_fetch?company_id=${encodeURIComponent(data.company_id)}&file_name=${encodeURIComponent(data.message_data.image)}&channel_type=${encodeURIComponent("eicn")}`
+            this.botIcon = data.message_data.image === '' ? this.getBotIcon() : `https://cloudtalk.eicn.co.kr:442/webchat_bot_image_fetch?company_id=${encodeURIComponent(data.company_id)}&file_name=${encodeURIComponent(data.message_data.image)}&channel_type=${encodeURIComponent("eicn")}`
 
             if (data.message_data.schedule_info.schedule_kind === 'B') {
               this.botId = data.message_data.schedule_info.schedule_data
