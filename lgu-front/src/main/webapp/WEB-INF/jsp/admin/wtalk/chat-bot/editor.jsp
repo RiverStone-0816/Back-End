@@ -652,8 +652,6 @@
                                                                 <select v-model="e.type">
                                                                     <option value="text">텍스트</option>
                                                                     <option value="number">숫자</option>
-                                                                    <option value="calendar">날짜</option>
-                                                                    <option value="time">시간</option>
                                                                     <option value="secret">비밀데이터</option>
                                                                 </select>
                                                             </div>
