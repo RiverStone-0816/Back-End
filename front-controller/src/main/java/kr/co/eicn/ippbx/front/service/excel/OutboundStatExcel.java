@@ -40,8 +40,8 @@ public class OutboundStatExcel extends AbstractExcel {
                     niceFormat(e.getStatOutboundResponse().getCancel()),
                     niceFormat(e.getStatOutboundResponse().getSuccessAvg()),
 
-                    niceFormat(g.timeFormatFromSeconds(e.getStatOutboundResponse().getBillSecSum())),
-                    niceFormat(g.timeFormatFromSeconds(e.getStatOutboundResponse().getBillSecAvg()))
+                    niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(e.getStatOutboundResponse().getBillSecSum())),
+                    niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(e.getStatOutboundResponse().getBillSecAvg()))
             );
         }
 
@@ -52,8 +52,8 @@ public class OutboundStatExcel extends AbstractExcel {
                 niceFormat(total.getCancel()),
                 niceFormat(String.format("%.1f", total.getSuccessAvg())),
 
-                niceFormat(g.timeFormatFromSeconds(total.getBillSecSum())),
-                niceFormat(g.timeFormatFromSeconds(total.getBillSecAvg()))
+                niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getBillSecSum())),
+                niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getBillSecAvg()))
         );
     }
 }

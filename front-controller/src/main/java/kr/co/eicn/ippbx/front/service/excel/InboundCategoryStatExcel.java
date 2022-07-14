@@ -58,8 +58,8 @@ public class InboundCategoryStatExcel extends AbstractExcel {
                             niceFormat(e.getRecord().getSuccess()),
                             niceFormat(e.getRecord().getCancel()),
 
-                            niceFormat(g.timeFormatFromSeconds(e.getRecord().getBillSecAvg())),
-                            niceFormat(g.timeFormatFromSeconds(e.getRecord().getWaitAvg())),
+                            niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(e.getRecord().getBillSecAvg())),
+                            niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(e.getRecord().getWaitAvg())),
                             niceFormat(e.getRecord().getResponseRate()),
                             niceFormat(e.getRecord().getSvcLevelAvg()),
                             niceFormat(e.getRecord().getIvrAvg()),

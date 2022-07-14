@@ -36,14 +36,14 @@ public class TotalStatExcel extends AbstractExcel {
                     niceFormat(row.getTimeInformation().toString()),
 
                     niceFormat(row.getTotalCount()),
-                    g.timeFormatFromSeconds(row.getTotalBillSec()),
+                    g.timeFormatFromSecondsWithoutSimpleDateFormat(row.getTotalBillSec()),
 
                     niceFormat(row.getOutboundStat().getTotal()),
                     niceFormat(row.getOutboundStat().getSuccess()),
                     niceFormat(row.getOutboundStat().getCancel()),
                     niceFormat(row.getOutboundStat().getSuccessAvg()),
-                    g.timeFormatFromSeconds(row.getOutboundStat().getBillSecSum()),
-                    g.timeFormatFromSeconds(row.getOutboundStat().getBillSecAvg()),
+                    g.timeFormatFromSecondsWithoutSimpleDateFormat(row.getOutboundStat().getBillSecSum()),
+                    g.timeFormatFromSecondsWithoutSimpleDateFormat(row.getOutboundStat().getBillSecAvg()),
 
                     niceFormat(row.getInboundStat().getTotal()),
                     niceFormat(row.getInboundStat().getOnlyRead()),
@@ -51,9 +51,9 @@ public class TotalStatExcel extends AbstractExcel {
                     niceFormat(row.getInboundStat().getSuccess()),
                     niceFormat(row.getInboundStat().getCancel()),
                     niceFormat(row.getInboundStat().getCallbackSuccess()),
-                    g.timeFormatFromSeconds(row.getInboundStat().getBillSecSum()),
-                    g.timeFormatFromSeconds(row.getInboundStat().getBillSecAvg()),
-                    g.timeFormatFromSeconds(row.getInboundStat().getWaitAvg()),
+                    g.timeFormatFromSecondsWithoutSimpleDateFormat(row.getInboundStat().getBillSecSum()),
+                    g.timeFormatFromSecondsWithoutSimpleDateFormat(row.getInboundStat().getBillSecAvg()),
+                    g.timeFormatFromSecondsWithoutSimpleDateFormat(row.getInboundStat().getWaitAvg()),
                     niceFormat(row.getInboundStat().getResponseRate()),
                     niceFormat(row.getInboundStat().getIvrAvg())
             );
@@ -63,14 +63,14 @@ public class TotalStatExcel extends AbstractExcel {
                 "합계",
 
                 niceFormat(total.getTotalCount()),
-                g.timeFormatFromSeconds(total.getTotalBillSec()),
+                g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getTotalBillSec()),
 
                 niceFormat(total.getOutboundStat().getTotal()),
                 niceFormat(total.getOutboundStat().getSuccess()),
                 niceFormat(total.getOutboundStat().getCancel()),
                 niceFormat(String.format("%.1f", total.getOutboundStat().getSuccessAvg())),
-                g.timeFormatFromSeconds(total.getOutboundStat().getBillSecSum()),
-                g.timeFormatFromSeconds(total.getOutboundStat().getBillSecAvg()),
+                g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getOutboundStat().getBillSecSum()),
+                g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getOutboundStat().getBillSecAvg()),
 
                 niceFormat(total.getInboundStat().getTotal()),
                 niceFormat(total.getInboundStat().getOnlyRead()),
@@ -78,9 +78,9 @@ public class TotalStatExcel extends AbstractExcel {
                 niceFormat(total.getInboundStat().getSuccess()),
                 niceFormat(total.getInboundStat().getCancel()),
                 niceFormat(total.getInboundStat().getCallbackSuccess()),
-                g.timeFormatFromSeconds(total.getInboundStat().getBillSecSum()),
-                g.timeFormatFromSeconds(total.getInboundStat().getBillSecAvg()),
-                g.timeFormatFromSeconds(total.getInboundStat().getWaitAvg()),
+                g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getInboundStat().getBillSecSum()),
+                g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getInboundStat().getBillSecAvg()),
+                g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getInboundStat().getWaitAvg()),
                 niceFormat(String.format("%.1f", total.getInboundStat().getResponseRate())),
                 niceFormat(String.format("%.1f", total.getInboundStat().getIvrAvg()))
         );

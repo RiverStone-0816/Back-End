@@ -48,8 +48,8 @@ public class HuntStatExcel extends AbstractExcel {
                         niceFormat(e.getInSuccess()),
                         niceFormat(e.getCancel()),
                         niceFormat(e.getCallbackCount()),
-                        niceFormat(g.timeFormatFromSeconds(e.getInBillSecSum())),
-                        niceFormat(g.timeFormatFromSeconds(e.getAvgBillSec())),
+                        niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(e.getInBillSecSum())),
+                        niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(e.getAvgBillSec())),
                         niceFormat(e.getAvgRateValue()),
                         niceFormat(e.getServiceLevelOk())
                 );
@@ -65,8 +65,8 @@ public class HuntStatExcel extends AbstractExcel {
                     niceFormat(total.getInSuccess()),
                     niceFormat(total.getCancel()),
                     niceFormat(total.getCallbackCount()),
-                    niceFormat(g.timeFormatFromSeconds(total.getInBillSecSum())),
-                    niceFormat(g.timeFormatFromSeconds(total.getAvgBillSec())),
+                    niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getInBillSecSum())),
+                    niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getAvgBillSec())),
                     niceFormat(String.format("%.1f", total.getAvgRateValue())),
                     niceFormat(total.getServiceLevelOk())
             );

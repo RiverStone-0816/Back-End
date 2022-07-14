@@ -58,26 +58,26 @@ public class ConsultantCallStatExcel extends AbstractExcel {
                         niceFormat(userStat.getIdName()),
 
                         niceFormat(userStat.getTotalCnt()),
-                        niceFormat(g.timeFormatFromSeconds(userStat.getTotalBillSec())),
+                        niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(userStat.getTotalBillSec())),
 
                         niceFormat(userStat.getOutboundStat().getOutTotal()),
                         niceFormat(userStat.getOutboundStat().getOutSuccess()),
                         niceFormat(userStat.getOutboundStat().getFails()),
-                        niceFormat(g.timeFormatFromSeconds(userStat.getOutboundStat().getOutBillSecSum())),
-                        niceFormat(g.timeFormatFromSeconds(userStat.getOutboundStat().getAvgBillSec())),
+                        niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(userStat.getOutboundStat().getOutBillSecSum())),
+                        niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(userStat.getOutboundStat().getAvgBillSec())),
                         niceFormat(userStat.getOutboundStat().getAvgRate()),
 
                         niceFormat(userStat.getInboundStat().getTotal()),
                         niceFormat(userStat.getInboundStat().getSuccess()),
-                        niceFormat(g.timeFormatFromSeconds(userStat.getInboundStat().getBillSecSum())),
-                        niceFormat(g.timeFormatFromSeconds(userStat.getInboundStat().getAvgBillSec())),
-                        niceFormat(g.timeFormatFromSeconds(userStat.getInboundStat().getAvgWaitSec().longValue())),
+                        niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(userStat.getInboundStat().getBillSecSum())),
+                        niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(userStat.getInboundStat().getAvgBillSec())),
+                        niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(userStat.getInboundStat().getAvgWaitSec().longValue())),
                         niceFormat(userStat.getInboundStat().getCancel()),
                         niceFormat(userStat.getInboundStat().getAvgRate()),
 
                         niceFormat(userStat.getMemberStatusStat().getPostProcess()),
-                        niceFormat(g.timeFormatFromSeconds(userStat.getMemberStatusStat().getPostProcessTime())),
-                        niceFormat(g.timeFormatFromSeconds(userStat.getMemberStatusStat().getPostPrecessAvgTime()))
+                        niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(userStat.getMemberStatusStat().getPostProcessTime())),
+                        niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(userStat.getMemberStatusStat().getPostPrecessAvgTime()))
                 ));
 
                 memberStatuses.forEach((k, v) -> row.add("" + userStat.getMemberStatusStat().getStatusCountMap().getOrDefault(k.toString(), 0L)));
@@ -89,26 +89,26 @@ public class ConsultantCallStatExcel extends AbstractExcel {
                 "합계", "", "",
 
                 niceFormat(total.getTotalCnt()),
-                niceFormat(g.timeFormatFromSeconds(total.getTotalBillSec())),
+                niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getTotalBillSec())),
 
                 niceFormat(total.getOutboundStat().getOutTotal()),
                 niceFormat(total.getOutboundStat().getOutSuccess()),
                 niceFormat(total.getOutboundStat().getFails()),
-                niceFormat(g.timeFormatFromSeconds(total.getOutboundStat().getOutBillSecSum())),
-                niceFormat(g.timeFormatFromSeconds(total.getOutboundStat().getAvgBillSec())),
+                niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getOutboundStat().getOutBillSecSum())),
+                niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getOutboundStat().getAvgBillSec())),
                 niceFormat(String.format("%.1f", total.getOutboundStat().getAvgRate())),
 
                 niceFormat(total.getInboundStat().getTotal()),
                 niceFormat(total.getInboundStat().getSuccess()),
-                niceFormat(g.timeFormatFromSeconds(total.getInboundStat().getBillSecSum())),
-                niceFormat(g.timeFormatFromSeconds(total.getInboundStat().getAvgBillSec())),
-                niceFormat(g.timeFormatFromSeconds(total.getInboundStat().getAvgWaitSec())),
+                niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getInboundStat().getBillSecSum())),
+                niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getInboundStat().getAvgBillSec())),
+                niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getInboundStat().getAvgWaitSec())),
                 niceFormat(total.getInboundStat().getCancel()),
                 niceFormat(String.format("%.1f", total.getInboundStat().getAvgRate())),
 
                 niceFormat(total.getMemberStatusStat().getPostProcess()),
-                niceFormat(g.timeFormatFromSeconds(total.getMemberStatusStat().getPostProcessTime())),
-                niceFormat(g.timeFormatFromSeconds(total.getMemberStatusStat().getPostPrecessAvgTime()))
+                niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getMemberStatusStat().getPostProcessTime())),
+                niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getMemberStatusStat().getPostPrecessAvgTime()))
         ));
         memberStatuses.forEach((k, v) -> row.add("" + total.getMemberStatusStat().getStatusCountMap().getOrDefault(k.toString(), 0L)));
         addRow(defaultStyle, row.toArray());
