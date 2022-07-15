@@ -38,8 +38,10 @@ public class MaindbResultExcel extends AbstractExcel {
         addRow(sheetHeadStyle, firstHeader.toArray());
 
         getSheet().addMergedRegion(new CellRangeAddress(0, 0, 0, 4));
-        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 5, 5 + resultType.getFields().size() - 1));
-        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 5 + resultType.getFields().size(), 5 + resultType.getFields().size() + customDbType.getFields().size() - 1));
+        if (resultType.getFields().size() > 1)
+            getSheet().addMergedRegion(new CellRangeAddress(0, 0, 5, 5 + resultType.getFields().size() - 1));
+        if (customDbType.getFields().size() > 1)
+            getSheet().addMergedRegion(new CellRangeAddress(0, 0, 5 + resultType.getFields().size(), 5 + resultType.getFields().size() + customDbType.getFields().size() - 1));
         getSheet().addMergedRegion(new CellRangeAddress(0, 0, 5 + resultType.getFields().size() + customDbType.getFields().size(), 5 + resultType.getFields().size() + customDbType.getFields().size() + 2));
 
         final List<String> secondHeader = new ArrayList<>(Arrays.asList("채널", "수/발신", "상담등록시간", "상담원", "고객채널정보"));
