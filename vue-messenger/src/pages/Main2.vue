@@ -443,7 +443,7 @@
                     <img :src="message.data.fileUrl" alt="chat_image" class="w-full rounded-lg">
                   </div>
                   <div v-else-if="isAudio(message.data.file_name)" class="maudio">
-                    <audio :src="e.fileUrl" initaudio="false"></audio>
+                    <audio :src="message.data" initaudio="false"></audio>
                     <div class="audio-control">
                       <a href="javascript:" class="fast-reverse"></a>
                       <a href="javascript:" class="play"></a>
@@ -457,7 +457,7 @@
                     </div>
                   </div>
                   <div v-else-if="isVideo(message.data.file_name)">
-                    <video controls :src="e.fileUrl"></video>
+                    <video controls :src="message.data"></video>
                   </div>
                   <div v-else>
                     <a class="w-full rounded-lg" :href="message.data.fileUrl">{{ message.data.file_name }}
