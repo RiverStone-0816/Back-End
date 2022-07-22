@@ -134,7 +134,7 @@
                                 </c:if>
                             </th>
                             </c:if>
-                            <c:if test="${services.contains('TALK')}">
+                            <c:if test="${services.contains('KATLK') || services.contains('ECHBT')}">
                             <th data-sortable-value="TALK">상담톡여부<br>(라이센스:${license.talkLicense.currentLicence}/${license.talkLicense.licence})
                                 <c:if test="${search.sort.name() == 'TALK'}">
                                     <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
@@ -185,7 +185,7 @@
                                         <c:if test="${services.contains('APP') || services.contains('API')}">
                                         <td>${e.isStat == 'Y' ? '허용됨' : '허용되지 않음'}</td>
                                         </c:if>
-                                        <c:if test="${services.contains('TALK')}">
+                                        <c:if test="${services.contains('KATLK') || services.contains('ECHBT')}">
                                         <td>${e.isTalk == 'Y' ? '허용됨' : '허용되지 않음'}</td>
                                         </c:if>
                                         <c:if test="${!serviceKind.equals('CC')}">
