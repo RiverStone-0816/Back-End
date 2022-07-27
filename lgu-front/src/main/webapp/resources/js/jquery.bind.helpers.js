@@ -226,7 +226,12 @@
             $(this).click(function () {
                 $('.content-wrapper').toggleClass('remove-padding');
                 $('.tab-label-container').toggleClass('hide-navbar');
-                $(this).parent().toggleClass('nav-bar-hide');
+                if($(this).parent().hasClass('manage-side') || $(this).parent().hasClass('consulting-side')){
+                    $('.side-bar.manage-side').toggleClass('nav-bar-hide');
+                    $('.side-bar.consulting-side').toggleClass('nav-bar-hide');
+                } else {
+                    $(this).parent().toggleClass('nav-bar-hide');
+                }
             });
         });
         findAndMe('td .form, .table button, .table a', this).on("click", function () {
