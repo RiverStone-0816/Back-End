@@ -1494,7 +1494,7 @@ export default {
           if (data.message_type === 'intro') {
             this.backgroundColor = data.message_data.bgcolor
             this.displayName = data.message_data.display_company_name
-            this.botIcon = data.message_data.image === '' ? this.getBotIcon() : `https://cloudtalk.eicn.co.kr:442/webchat_bot_image_fetch?company_id=${encodeURIComponent(data.company_id)}&file_name=${encodeURIComponent(data.message_data.image)}&channel_type=${encodeURIComponent("eicn")}`
+            this.botIcon = data.message_data.image === '' ? this.getBotIcon() : `https://www.talk.eicn.co.kr:442/webchat_bot_image_fetch?company_id=${encodeURIComponent(data.company_id)}&file_name=${encodeURIComponent(data.message_data.image)}&channel_type=${encodeURIComponent("eicn")}`
 
             if (data.message_data.schedule_info.schedule_kind === 'B') {
               this.botId = data.message_data.schedule_info.schedule_data
