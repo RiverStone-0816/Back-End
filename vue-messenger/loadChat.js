@@ -1,4 +1,4 @@
-const CHAT_SERVER_ORIGIN = "https://cloudtalk.eicn.co.kr:444";
+const CHAT_SERVER_ORIGIN = "https://cloudtalk.eicn.co.kr:442";
 const CHAT_SERVER_URL = CHAT_SERVER_ORIGIN + "/vchat/index.html";
 const CHAT_ICON_IMG_URL = CHAT_SERVER_ORIGIN + "/chat-icon.png";
 
