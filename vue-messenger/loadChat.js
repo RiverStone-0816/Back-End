@@ -1,6 +1,6 @@
 const CHAT_SERVER_ORIGIN = "https://cloudtalk.eicn.co.kr:442";
 const CHAT_SERVER_URL = CHAT_SERVER_ORIGIN + "/vchat/index.html";
-const CHAT_ICON_IMG_URL = CHAT_SERVER_ORIGIN + "/chat-icon.png";
+const CHAT_ICON_IMG_URL = CHAT_SERVER_ORIGIN + "/icon/chat-icon.png";
 
 const senderKey = document.getElementById("chat-bot-script").getAttribute("data-sender-key");
 const isIframe = document.getElementById("chat-bot-script").getAttribute("data-isIframe");
@@ -9,7 +9,7 @@ const CHAT_SRC = CHAT_SERVER_URL + '?senderKey=' + senderKey + '&isIframe=' + is
 window.onload = function () {
     let chatStyle = document.createElement('style',);
     chatStyle.type = "text/css";
-    chatStyle.innerHTML = "#chat-load {display: none;position: fixed !important;overflow: hidden !important;}.chat-load-pc {right: 50px !important;bottom: 50px !important;width: fit-content;min-width: 380px;height: 80% !important;min-height: 600px !important;max-height: 850px !important;background-color: transparent !important;box-shadow: rgb(0 0 0 / 20%) 0px 12px 30px 5px !important;border-radius: 1.5rem !important;}.chat-load-mobile {inset: 0px !important;bottom: 0px;width: fit-content;width: 100% !important;height: 100% !important;}#chat-iframe {position: relative !important;height: 100%;width: 100% !important;border: none !important;}#chat-button {position: absolute;bottom: 50px;right: 50px;width: 64px;height: 64px;margin: 0;padding: 0;border: 0;}";
+    chatStyle.innerHTML = "#chat-load {display: none;position: fixed !important;overflow: hidden !important;}.chat-load-pc {right: 50px !important;bottom: 50px !important;width: fit-content;min-width: 380px;height: 80% !important;min-height: 600px !important;max-height: 850px !important;background-color: transparent !important;box-shadow: rgb(0 0 0 / 20%) 0px 12px 30px 5px !important;border-radius: 1.5rem !important;}.chat-load-mobile {inset: 0px !important;bottom: 0px;width: fit-content;width: 100% !important;height: 100% !important;}#chat-iframe {position: relative !important;height: 100%;width: 100% !important;border: none !important;}#chat-button {position: absolute;bottom: 50px;right: 50px;width: 64px;height: 64px;margin: 0;padding: 0;border: 0;border-radius: 70%;}";
     document.body.appendChild(chatStyle);
 
     document.head.innerHTML += '<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">';
@@ -25,7 +25,7 @@ window.onload = function () {
         chatButton.id = "chat-button";
         chatButton.onclick = showChat;
         document.getElementById('chat-bot').appendChild(chatButton);
-        document.getElementById('chat-button').innerHTML = '<img src=' + CHAT_ICON_IMG_URL + ' width="100%" height="100%" allow="camera *;microphone *">';
+        document.getElementById('chat-button').innerHTML = '<img src=' + CHAT_ICON_IMG_URL + ' width="100%" height="100%" allow="camera *;microphone *" style="border-radius: 70%;">';
     }
     if (!document.getElementById('chat-load')) {
         let chatLoad = document.createElement('div');
