@@ -50,7 +50,7 @@ security:
 # 정의 설정
 eicn:
   service:
-    base-url: http://61.34.203.54
+    base-url: https://dev.eicn.co.kr
     servicekind: SC
   version: 20210525
   debugging: true
@@ -58,11 +58,11 @@ eicn:
     api-package: kr.co.eicn.ippbx.front.controller.api
   file:
     location: /tmp
-  apiserver: http://61.34.203.54/api-server
-  realapiserver: http://61.34.203.54/api-server
+  apiserver: https://dev.eicn.co.kr/api-server
+  realapiserver: https://dev.eicn.co.kr/api-server
   webchat:
     image:
-      url: http://61.34.203.54:8200/webchat_bot_image
+      url: https://dev.eicn.co.kr:8200/webchat_bot_image
   admin:
     socket:
       id: monitor_connector
