@@ -12,6 +12,7 @@ public class PersonDetailResponse extends PersonSummaryResponse {
 	private String idStatus;    // 근무상태
 	private String hpNumber;    // 휴대전화번호
 	private String emailInfo;   // 이메일
+	private String telco;		// 통신사
 
 	private String profilePhoto; //프로필 사진 정보
 	private String phoneKind;

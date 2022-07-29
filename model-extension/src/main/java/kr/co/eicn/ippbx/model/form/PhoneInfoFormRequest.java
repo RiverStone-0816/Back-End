@@ -29,6 +29,7 @@ public class PhoneInfoFormRequest extends BaseForm {
 	private String passwd;
 	@NotNull("게이트웨이")
 	private String outboundGw;
+	private String billingNumber;
 	private String cid;
 	@NotNull("지역번호")
 	private String localPrefix = "02";

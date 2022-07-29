@@ -113,7 +113,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         insertRecord.setRecordType(form.getRecordType());
         insertRecord.setCid(isEmpty(form.getCid()) ? number.getNumber() : form.getCid());
         insertRecord.setOutboundGw(form.getOutboundGw());
-        insertRecord.setBillingNumber(number.getNumber());
+        insertRecord.setBillingNumber(StringUtils.isNotEmpty(form.getBillingNumber()) ? form.getBillingNumber() : number.getNumber());
         insertRecord.setLocalPrefix(form.getLocalPrefix());
         insertRecord.setGroupCode(number.getGroupCode());
         insertRecord.setGroupLevel(number.getGroupLevel());
@@ -269,7 +269,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         insertRecord.setRecordType(form.getRecordType());
         insertRecord.setCid(Objects.isNull(form.getCid()) ? number.getNumber() : form.getCid());
         insertRecord.setOutboundGw(form.getOutboundGw());
-        insertRecord.setBillingNumber(form.getBillingNumber());
+        insertRecord.setBillingNumber(StringUtils.isNotEmpty(form.getBillingNumber()) ? form.getBillingNumber() : number.getNumber());
         insertRecord.setLocalPrefix(form.getLocalPrefix());
         insertRecord.setHost(defaultString(number.getHost(), "localhost"));
         insertRecord.setCompanyId(getCompanyId());

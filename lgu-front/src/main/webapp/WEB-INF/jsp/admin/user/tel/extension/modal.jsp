@@ -147,6 +147,22 @@
                     </div>
                 </div>
             </div>
+            <c:if test="${user.telco.equals('SKBB')}">
+                <div class="row">
+                    <div class="four wide column"><label class="control-label">과금번호</label></div>
+                    <div class="four wide column">
+                        <div class="ui form">
+                            <form:select path="billingNumber">
+                                <form:option value="" label="선택안함"/>
+                                <c:forEach var="e" items="${billingNumbers}">
+                                    <form:option value="${e.number}" label="${e.number}"/>
+                                </c:forEach>
+                            </form:select>
+                        </div>
+                    </div>
+                    <div class="eight wide column"><label class="control-label" style="color: red">* 선택하지 않는경우 개인 번호로 적용</label></div>
+                </div>
+            </c:if>
             <div class="row">
                 <div class="four wide column"><label class="control-label">녹취여부</label></div>
                 <div class="twelve wide column">

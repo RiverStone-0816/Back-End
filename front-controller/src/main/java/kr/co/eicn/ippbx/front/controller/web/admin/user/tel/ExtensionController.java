@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.user.tel;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -33,6 +34,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -99,6 +101,7 @@ public class ExtensionController extends BaseController {
         number070Request.setType(NumberType.SERVICE.getCode());
         final List<SearchNumber070Response> serviceNumbers = searchApiInterface.numbers(number070Request);
         model.addAttribute("serviceNumbers", serviceNumbers);
+        model.addAttribute("billingNumbers",serviceNumbers.stream().filter(e -> e.getKind().contains("B")).sorted(Comparator.comparing(Number_070::getNumber)).collect(Collectors.toList()));
 
         final PhoneSearchRequest phoneSearchRequest = new PhoneSearchRequest();
         phoneSearchRequest.setLimit(10000);

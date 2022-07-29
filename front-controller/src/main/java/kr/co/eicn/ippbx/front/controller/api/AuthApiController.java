@@ -135,6 +135,7 @@ public class AuthApiController extends BaseController {
         if (Objects.equals(IdType.MASTER, IdType.of(user.getIdType()))) {
             user.setCompanyId(companyInfo.getCompanyId());
             user.setCompanyName(companyInfo.getCompanyName());
+            user.setTelco(companyInfo.getTelco());
         } else {
             if (StringUtils.isNotEmpty(user.getPeer()))
                 phone = phoneApiInterface.get(user.getPeer());
