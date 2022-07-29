@@ -47,6 +47,16 @@
                 $('.-control-entity[data-entity="' + $(this).closest('table').attr('data-entity') + '"]').show();
             }
         });
+        findAndMe('.selectable-only tr', this).not('.ui').dblclick(function () {
+            if (!$(this).attr('data-id')) return;
+
+            $(this).siblings().removeClass('active');
+
+            $(this).addClass('active');
+            $('.-control-entity[data-entity="' + $(this).closest('table').attr('data-entity') + '"]').show();
+
+            $(this).closest('.panel').find('.ui.basic.green.button').trigger("click");
+        });
         findAndMe('.selectable tr', this).not('.ui').click(function () {
             if (!$(this).attr('data-id')) return;
 
