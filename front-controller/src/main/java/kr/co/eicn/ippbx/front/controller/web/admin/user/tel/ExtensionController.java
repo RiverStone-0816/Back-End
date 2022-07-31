@@ -101,7 +101,10 @@ public class ExtensionController extends BaseController {
         number070Request.setType(NumberType.SERVICE.getCode());
         final List<SearchNumber070Response> serviceNumbers = searchApiInterface.numbers(number070Request);
         model.addAttribute("serviceNumbers", serviceNumbers);
-        model.addAttribute("billingNumbers",serviceNumbers.stream().filter(e -> e.getKind().contains("B")).sorted(Comparator.comparing(Number_070::getNumber)).collect(Collectors.toList()));
+
+        SearchNumber070Request number070RequestBO = new SearchNumber070Request();
+        final List<SearchNumber070Response> serviceNumbersBO = searchApiInterface.numbers(number070RequestBO);
+        model.addAttribute("billingNumbers",serviceNumbersBO.stream().filter(e -> e.getKind().contains("B")).sorted(Comparator.comparing(Number_070::getNumber)).collect(Collectors.toList()));
 
         final PhoneSearchRequest phoneSearchRequest = new PhoneSearchRequest();
         phoneSearchRequest.setLimit(10000);
