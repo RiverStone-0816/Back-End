@@ -43,7 +43,9 @@ public class MaindbDataSearch extends PageForm {
         if (Objects.equals(SEARCH_TYPE_CREATE_DATE, searchType)) {
             search.setCreatedStartDate(startDate);
             search.setCreatedEndDate(endDate);
-        } else if (StringUtils.isNotEmpty(searchType)) {
+        }
+
+        if (StringUtils.isNotEmpty(searchType)) {
             search.getDbTypeFields().put(dbTypeFieldPrefix + searchType, new MaindbDataSearchRequest.FieldCondition(keyword, code, startDate, endDate));
         }
 
