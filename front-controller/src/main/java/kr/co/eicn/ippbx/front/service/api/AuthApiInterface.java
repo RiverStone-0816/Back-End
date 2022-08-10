@@ -25,7 +25,7 @@ public class AuthApiInterface extends ApiServerInterface {
     }
 
     public void login(PersonListSummary user) throws IOException, ResultFailException {
-        final String accessToken = getData(HttpMethod.POST, "/auth/ivr-only", user, String.class, false).getData();
+        final String accessToken = getData(HttpMethod.POST, "/auth/mc-only", user, String.class, false).getData();
         setAccessToken(accessToken);
     }
 

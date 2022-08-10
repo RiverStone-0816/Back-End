@@ -1,10 +1,29 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.sounds;
 
+import static org.apache.commons.lang3.StringUtils.defaultString;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.MultichannelService;
-import kr.co.eicn.ippbx.model.enums.WebVoiceItemYn;
-import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.acd.QueueApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.grade.GradelistApiInterface;
 import kr.co.eicn.ippbx.front.service.api.sounds.IvrApiInterface;
@@ -12,10 +31,16 @@ import kr.co.eicn.ippbx.front.service.api.sounds.schedule.OutboundWeekScheduleAp
 import kr.co.eicn.ippbx.front.service.api.sounds.schedule.ScheduleGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.user.tel.NumberApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree;
-import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.dto.eicn.IvrResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.NumberSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryContextInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.SummaryPhoneInfoResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WebVoiceItemsResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.WebVoiceResponse;
 import kr.co.eicn.ippbx.model.enums.IsWebVoiceYn;
 import kr.co.eicn.ippbx.model.enums.IvrMenuType;
 import kr.co.eicn.ippbx.model.enums.NumberType;
+import kr.co.eicn.ippbx.model.enums.WebVoiceItemYn;
 import kr.co.eicn.ippbx.model.form.IvrFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsDtmfFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsFormRequest;
@@ -24,20 +49,8 @@ import kr.co.eicn.ippbx.model.search.NumberSearchRequest;
 import kr.co.eicn.ippbx.util.ContextUtil;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static java.util.Comparator.comparing;
-import static org.apache.commons.lang3.StringUtils.defaultString;
 
 /**
  * @author tinywind
@@ -88,7 +101,7 @@ public class IvrController extends BaseController {
     @LoginRequired(type = LoginRequired.Type.PASS)
     @GetMapping("mc")
     public String mcIvr(Model model, @RequestParam String jSessionId) throws IOException, ResultFailException {
-        multichannelService.ivrLogin(jSessionId);
+        multichannelService.mcLogin(jSessionId);
         return page(model, null);
     }
 

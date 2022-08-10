@@ -62,7 +62,7 @@ public class JwtAuthenticationController extends ApiBaseController {
 		return ResponseEntity.ok(data(token));
 	}
 
-	@PostMapping(value = "ivr-only")
+	@PostMapping(value = "mc-only")
 	public ResponseEntity<JsonResult<String>> loginWithCreateAuthenticationToken(@RequestBody PersonListSummary data, HttpSession session) {
 		if (StringUtils.isEmpty(data.getId()))
 			throw new IllegalArgumentException();

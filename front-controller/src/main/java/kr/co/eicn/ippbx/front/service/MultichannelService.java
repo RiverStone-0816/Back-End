@@ -29,7 +29,7 @@ public class MultichannelService extends ApiServerInterface {
         return get(subUrl.concat(jSessionId), null, MultichannelLoginResponse.class);
     }
 
-    public void ivrLogin(String jSessionId) throws IOException, ResultFailException {
+    public void mcLogin(String jSessionId) throws IOException, ResultFailException {
         if (!g.isLogin() || !g.checkLogin()) {
             MultichannelLoginResponse response = checkSession(jSessionId);
             logger.info(response.toString());

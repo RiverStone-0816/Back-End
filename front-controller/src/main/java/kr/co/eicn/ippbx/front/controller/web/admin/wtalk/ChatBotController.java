@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.wtalk;
 import io.vavr.control.Option;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
+import kr.co.eicn.ippbx.front.service.MultichannelService;
 import kr.co.eicn.ippbx.front.service.api.ChatbotApiInterface;
 import kr.co.eicn.ippbx.front.service.api.wtalk.group.WtalkReceptionGroupApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
@@ -44,6 +45,7 @@ public class ChatBotController extends BaseController {
 
     private final ChatbotApiInterface apiInterface;
     private final WtalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
+    private final MultichannelService multichannelService;
 
     @Value("${eicn.chatbot.resource.location}")
     private String resourceLocation;
@@ -53,6 +55,14 @@ public class ChatBotController extends BaseController {
     public void setup() {
         location = new File(resourceLocation);
         location.mkdirs();
+    }
+
+    @LoginRequired(type = LoginRequired.Type.PASS)
+    @GetMapping("mc")
+    public String mcEditor(Model model, @RequestParam String jSessionId, @RequestParam(required = false) String ip, HttpSession session, HttpServletRequest request) throws IOException, ResultFailException {
+        multichannelService.mcLogin(jSessionId);
+
+        return page(model, null, ip, session, request);
     }
 
     @SneakyThrows
