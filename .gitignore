@@ -87,6 +87,13 @@ cmake-build-*/
 # IntelliJ
 out/
 
+# VSC
+.vscode/**
+api-server/bin/**
+front-controller/bin/**
+lgu-front/bin/**
+skt-front/bin/**
+
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
