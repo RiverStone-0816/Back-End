@@ -266,7 +266,7 @@
                         <c:choose>
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
-                                    <c:set var="isFile" value="${g.htmlQuote(e.callStatusValue.contains('정상통화')) and fn:length(g.htmlQuote(e.recordFile)) > 0}"/>
+                                    <c:set var="isFile" value="${g.htmlQuote(e.callStatusValue.contains('정상통화')) && fn:length(g.htmlQuote(e.recordFile)) > 0 && e.recordInfo != 'S'}"/>
                                     <tr data-id="${e.seq}" data-file="${isFile}">
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.service.svcName)}</td>
