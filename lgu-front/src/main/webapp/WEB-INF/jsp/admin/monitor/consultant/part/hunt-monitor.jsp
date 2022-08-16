@@ -65,7 +65,8 @@
                 </c:when>
                 <c:otherwise>
                     <tr>
-                        <td colspan="11" class="null-data">조회된 데이터가 없습니다.</td>
+                        <c:set var="statuseSize" value="${statuses.size()}"/>
+                        <td colspan="${5 + statuseSize - 1}" class="null-data">조회된 데이터가 없습니다.</td>
                     </tr>
                 </c:otherwise>
             </c:choose>
