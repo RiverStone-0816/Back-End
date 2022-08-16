@@ -57,14 +57,6 @@ public class ChatBotController extends BaseController {
         location.mkdirs();
     }
 
-    @LoginRequired(type = LoginRequired.Type.PASS)
-    @GetMapping("mc")
-    public String mcEditor(Model model, @RequestParam String jSessionId, @RequestParam(required = false) String ip, HttpSession session, HttpServletRequest request) throws IOException, ResultFailException {
-        multichannelService.mcLogin(jSessionId);
-
-        return page(model, null, ip, session, request);
-    }
-
     @SneakyThrows
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") ChatbotSearchRequest search, @RequestParam(required = false) String ip, HttpSession session, HttpServletRequest request) throws IOException, ResultFailException {
@@ -105,6 +97,14 @@ public class ChatBotController extends BaseController {
                 map.putAll(extractBlocks(child));
 
         return map;
+    }
+
+    @LoginRequired(type = LoginRequired.Type.PASS)
+    @GetMapping("mc/editor")
+    public String mcEditor(Model model, @RequestParam String jSessionId, @RequestParam(required = false) String ip, HttpSession session, HttpServletRequest request) throws IOException, ResultFailException {
+        multichannelService.mcLogin(jSessionId);
+
+        return editor(model, null);
     }
 
     @SneakyThrows

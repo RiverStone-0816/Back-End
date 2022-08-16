@@ -16,13 +16,7 @@
 <link rel="stylesheet" href="<c:url value="/resources/vendors/drawflow/0.0.53/drawflow.min.css?version=${version}"/>"/>
 <tags:tabContentLayout>
     <div class="content-wrapper-frame">
-        <div class="menu-tab">
-            <div class="inner">
-                <ul>
-                    <li><a href="#" class="tab-on tab-indicator">채팅 봇</a></li>
-                </ul>
-            </div>
-        </div>
+        <tags:page-menu-tab url="/admin/wtalk/chat-bot/"/>
         <div class="sub-content ui container fluid unstackable">
             <div class="tab-content active">
                 <div class="panel">
