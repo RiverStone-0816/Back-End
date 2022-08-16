@@ -95,6 +95,7 @@ public class WtalkScheduleInfoRepository extends EicnBaseRepository<WtalkSchedul
 		record.setGroupId(form.getGroupId());
 		record.setCompanyId(getCompanyId());
 		record.setIsStat(EMPTY);
+		record.setChannelType(form.getChannelType().getCode());
 
 		if (isNotEmpty(form.getGroupCode())) {
 			final CompanyTree companyTree = companyTreeRepository.findOneByGroupCode(form.getGroupCode());

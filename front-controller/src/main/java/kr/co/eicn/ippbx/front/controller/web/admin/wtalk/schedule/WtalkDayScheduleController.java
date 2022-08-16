@@ -93,11 +93,15 @@ public class WtalkDayScheduleController extends BaseController {
         final List<HolyInfoResponse> holidays = holidayApiInterface.list();
         model.addAttribute("holidays", holidays);
 
-        final Map<Integer, String> scheduleGroups = apiInterface.scheduleInfos().stream().collect(Collectors.toMap(SummaryWtalkScheduleInfoResponse::getParent, SummaryWtalkScheduleInfoResponse::getName));
-        model.addAttribute("scheduleGroups", scheduleGroups);
+        final List<SummaryWtalkScheduleInfoResponse> scheduleInfos = apiInterface.scheduleInfos();
+        model.addAttribute("scheduleInfos", scheduleInfos);
 
-        final Map<String, String> talkServices = apiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getKakaoServiceName, e -> Optional.ofNullable(e.getSenderKey()).orElse("")));
+        final Map<String, String> talkServices = apiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
         model.addAttribute("talkServices", talkServices);
+
+        final Map<String, String> chatBotServices = webchatConfigApiInterface.list().stream().filter(e -> StringUtils.isNotEmpty(e.getSenderKey()))
+                .collect(Collectors.toMap(WebchatServiceSummaryInfoResponse::getSenderKey, WebchatServiceSummaryInfoResponse::getChannelName));
+        model.addAttribute("chatBotServices", chatBotServices);
 
         final Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
