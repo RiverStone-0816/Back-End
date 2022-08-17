@@ -365,7 +365,7 @@
                                 <div class="chat">
                                     <div class="bubble">
                                         <p class="txt_chat">
-                                            <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Yuumi_0.jpg">
+                                            <img src="<c:url value="/resources/ipcc-messenger/images/person.png"/>">
                                         </p>
                                     </div>
                                 </div>
@@ -390,7 +390,7 @@
                                 <div class="chat">
                                     <div class="bubble">
                                         <p class="txt_chat">
-                                            <img src="https://ddragon.leagueoflegends.com/cdn/img/champion/tiles/Yuumi_0.jpg">
+                                            <img src="<c:url value="/resources/ipcc-messenger/images/person.png"/>">
                                         </p>
                                     </div>
                                 </div>
