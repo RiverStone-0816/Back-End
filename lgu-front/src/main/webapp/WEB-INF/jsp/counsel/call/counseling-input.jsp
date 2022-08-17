@@ -17,7 +17,6 @@
            data-method="${entity != null ? 'put' : 'post'}"
            action="${pageContext.request.contextPath}/api/maindb-result/${entity != null ? entity.seq : null}"
            data-before="prepareCounselingInfoFormData" data-done="donePostCounselingInfo">
-
     <div class="panel-heading">
         <label class="control-label">상담정보</label>
         <div class="ui checkbox">
@@ -44,12 +43,6 @@
     <div class="panel-body consulting-info-panel">
         <table class="ui table celled definition">
             <tbody>
-            <form:hidden path="groupKind"/>
-            <form:hidden path="customId"/>
-            <form:hidden path="maindbType"/>
-            <form:hidden path="resultType"/>
-            <form:hidden path="groupId"/>
-            <form:hidden path="clickKey"/>
             <c:forEach var="field" items="${resultType.fields}">
                 <c:set var="name"
                        value="${field.fieldId.substring(resultType.kind.length() + '_'.length()).toLowerCase()}"/>
@@ -296,6 +289,12 @@
                     </tr>
                 </c:if>
             </c:if>
+            <form:hidden path="groupKind"/>
+            <form:hidden path="customId"/>
+            <form:hidden path="maindbType"/>
+            <form:hidden path="resultType"/>
+            <form:hidden path="groupId"/>
+            <form:hidden path="clickKey"/>
             </tbody>
         </table>
     </div>

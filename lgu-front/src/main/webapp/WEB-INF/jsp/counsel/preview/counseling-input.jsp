@@ -25,12 +25,6 @@
     <div class="panel-body consulting-info-panel">
         <table class="ui table celled definition">
             <tbody>
-            <form:hidden path="maindbType"/>
-            <form:hidden path="resultType"/>
-            <form:hidden path="groupId"/>
-            <form:hidden path="customId"/>
-            <form:hidden path="groupKind"/>
-            <form:hidden path="clickKey"/>
             <c:forEach var="field" items="${resultType.fields}">
                 <c:set var="name" value="${field.fieldId.substring(resultType.kind.length() + '_'.length()).toLowerCase()}"/>
                 <c:set var="value" value=""/>
@@ -131,6 +125,12 @@
                     </td>
                 </tr>
             </c:forEach>
+            <form:hidden path="maindbType"/>
+            <form:hidden path="resultType"/>
+            <form:hidden path="groupId"/>
+            <form:hidden path="customId"/>
+            <form:hidden path="groupKind"/>
+            <form:hidden path="clickKey"/>
             </tbody>
         </table>
     </div>
