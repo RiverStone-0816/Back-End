@@ -17,7 +17,7 @@
         <label class="control-label">통계</label>
     </div>
     <div class="panel-body">
-        <table class="ui table celled fixed">
+        <table class="ui table celled fixed structured">
             <tbody>
             <tr>
                 <th>응대율</th>
