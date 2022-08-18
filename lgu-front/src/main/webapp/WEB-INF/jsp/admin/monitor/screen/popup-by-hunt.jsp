@@ -95,7 +95,7 @@
                                         <table class="blue">
                                             <thead>
                                             <tr style="line-height: 80px">
-                                                <th>헌트명</th>
+                                                <th>큐(그룹)명</th>
                                                 <th>고객대기</th>
                                                 <c:forEach var="e" items="${statusCodes}">
                                                     <th>${e.value}</th>
@@ -157,7 +157,7 @@
                                         <table>
                                             <thead>
                                             <tr style="line-height: 80px">
-                                                <th>헌트명</th>
+                                                <th>큐(그룹)명</th>
                                                 <th>고객대기</th>
                                                 <c:forEach var="e" items="${statusCodes}">
                                                     <th>${e.value}</th>
@@ -219,7 +219,7 @@
                                         <table class="blue">
                                             <thead>
                                             <tr style="line-height: 80px">
-                                                <th>헌트명</th>
+                                                <th>큐(그룹)명</th>
                                                 <th>고객대기</th>
                                                 <c:forEach var="e" items="${statusCodes}">
                                                     <th>${e.value}</th>

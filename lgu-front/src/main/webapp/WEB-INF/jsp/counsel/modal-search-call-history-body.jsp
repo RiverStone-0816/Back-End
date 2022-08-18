@@ -127,7 +127,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="three wide column"><label class="control-label">헌트경로</label></div>
+                    <div class="three wide column"><label class="control-label">큐(그룹)경로</label></div>
                     <div class="three wide column">
                         <div class="ui form">
                             <form:select path="iniNum">

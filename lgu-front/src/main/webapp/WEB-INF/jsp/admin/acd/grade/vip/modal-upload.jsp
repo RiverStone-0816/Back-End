@@ -31,9 +31,9 @@
                     <text style="display: inline-block; margin-right: 1em;">고객명[STRING]</text>
                     <text style="display: inline-block; margin-right: 1em;">전화번호[NUMBER]</text>
                     <text style="display: inline-block; margin-right: 1em;">인입방법[STRING]</text>
-                    <text style="display: inline-block; margin-right: 1em;">헌트번호[NUMBER]</text>
+                    <text style="display: inline-block; margin-right: 1em;">큐번호[NUMBER]</text>
                     <div class="twelve wide column">
-                        * 특정헌트 선택시 헌트번호 입력
+                        * 특정큐(그룹) 선택시 큐번호 입력
                     </div>
                 </div>
             </div>
@@ -42,7 +42,7 @@
                 <div class="twelve wide column">
                     <div class="twelve wide column">
                         <text style="display: inline-block; margin-right: 1em;">차단[A]</text>
-                        <text style="display: inline-block; margin-right: 1em;">특정헌트 선택[B]</text>
+                        <text style="display: inline-block; margin-right: 1em;">특정큐(그룹) 선택[B]</text>
                     </div>
                 </div>
             </div>

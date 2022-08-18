@@ -17,7 +17,7 @@
         <label class="control-label">모니터링</label>
             <%--<div class="pull-right">
                 <div class="ui action input">
-                    <form:input path="huntName" placeholder="헌트명"/>
+                    <form:input path="huntName" placeholder="큐(그룹)명"/>
                     <button type="submit" class="ui icon button">
                         <i class="search icon"></i>
                     </button>

@@ -291,7 +291,7 @@
                                 <option value="${g.htmlQuote(e.key)}" ${e.key == form.huntForwarding && form.isForwarding == 'I' ? 'selected' : ''}>[대표번호] ${g.htmlQuote(e.value)}</option>
                             </c:forEach>
                             <c:forEach var="e" items="${queues}">
-                                <option value="${g.htmlQuote(e.key)}" ${e.key == form.huntForwarding && form.isForwarding == 'I' ? 'selected' : ''}>[헌트그룹] ${g.htmlQuote(e.value)}</option>
+                                <option value="${g.htmlQuote(e.key)}" ${e.key == form.huntForwarding && form.isForwarding == 'I' ? 'selected' : ''}>[큐그룹] ${g.htmlQuote(e.value)}</option>
                             </c:forEach>
                         </select>
                     </div>
