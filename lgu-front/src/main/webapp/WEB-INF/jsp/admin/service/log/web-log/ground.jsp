@@ -85,7 +85,7 @@
                                         </form:select>
                                     </div>
                                 </div>
-                                <div class="two wide column"><label class="control-label">상담자</label></div>
+                                <div class="two wide column"><label class="control-label">실행자명</label></div>
                                 <div class="two wide column">
                                     <div class="ui form"><form:input path="userName"/></div>
                                 </div>

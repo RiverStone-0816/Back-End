@@ -18,13 +18,13 @@ public class LoginHistoryExcel extends AbstractExcel {
     }
 
     private void createBody() {
-        addRow(sheetHeadStyle, "로그인 아이디","사용자명", "로그인", "로그아웃", "로그인내선", "내선부서", "로그인 시 전화 끊은 후 상태", "로그아웃상태");
+        addRow(sheetHeadStyle, "로그인명", "아이디", "로그인", "로그아웃", "로그인내선", "내선부서", "로그인 시 전화 끊은 후 상태", "로그아웃상태");
 
         final RequestMessage message = SpringApplicationContextAware.requestMessage();
         for (LoginHistoryResponse e : list) {
             addRow(defaultStyle,
-                    niceFormat(e.getUserId()),
                     niceFormat(e.getUserName()),
+                    niceFormat(e.getUserId()),
                     niceFormat(e.getLoginDate()),
                     niceFormat(e.getLogoutDate()),
                     niceFormat(e.getExtension()),
