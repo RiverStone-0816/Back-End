@@ -84,7 +84,7 @@ eicn:
     cipher:
       key: eicn
   screen:
-    variation: true
+    variation: false
   chatbot:
     socket:
       id: webchatcli_connector
