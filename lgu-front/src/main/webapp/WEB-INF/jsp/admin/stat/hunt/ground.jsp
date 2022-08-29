@@ -217,10 +217,12 @@
                             </h3>
                         </div>
                         <div class="sixteen wide column">
-                            <div class="-chart" id="total-call-chart" style="height: 300px;"></div>
-                            <div style="text-align: center; padding: 2em 0;">
-                                <text style="display: inline-block;"><i class="circle color-red"></i>응대호</text>
-                                <text style="display: inline-block;"><i class="circle color-blue"></i>포기호</text>
+                            <div class="-chart basic-chart-container" id="total-call-chart"></div>
+                            <div class="chart-label-container">
+                                <div class="ui segment secondary">
+                                    <text class="label-list"><i class="point color-red"></i>응대호</text>
+                                    <text class="label-list"><i class="point color-blue"></i>포기호</text>
+                                </div>
                             </div>
                         </div>
                     </div>

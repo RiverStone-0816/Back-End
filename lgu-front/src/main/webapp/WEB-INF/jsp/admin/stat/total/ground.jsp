@@ -271,8 +271,8 @@
                                 </div>
                                 <div class="chart-label-container">
                                     <div class="ui segment secondary">
-                                        <text class="label-list">성공호 <span class="color-bar1">${total.inboundStat.success}</span></text>
-                                        <text class="label-list">비수신 <span class="color-bar2">${total.inboundStat.cancel}</span></text>
+                                        <text class="label-list">응대호 <span class="color-bar1">${total.inboundStat.success}</span></text>
+                                        <text class="label-list">포기호 <span class="color-bar2">${total.inboundStat.cancel}</span></text>
                                     </div>
                                 </div>
 
@@ -357,8 +357,8 @@
             const data = [
                     <c:forEach var="e" items="${list}">{
                     time: '${g.escapeQuote(e.timeInformation)}',
-                    inboundTotal: ${e.inboundStat.total},
-                    outboundTotal: ${e.outboundStat.total},
+                    inboundTotal: ${e.inboundStat.success},
+                    outboundTotal: ${e.outboundStat.success},
                     inboundSuccess: ${e.inboundStat.success},
                     outboundSuccess: ${e.outboundStat.success},
                     inboundCancel: ${e.inboundStat.cancel},
@@ -392,14 +392,14 @@
 
             drawPieChart(
                 '#inbound-outer-pie-chart',
-                ${total.inboundStat.success.doubleValue() / (total.inboundStat.success + total.inboundStat.cancel)},
+                ${total.inboundStat.cancel.doubleValue() / (total.inboundStat.success + total.inboundStat.cancel)},
                 {
                     startAngle: 0,
                     endAngle: 360,
                     innerRadius: 100,
                     outerRadius: 120,
                     innerLabel: ' ',
-                    colorClasses: ['bcolor-bar1', 'bcolor-bar2']
+                    colorClasses: ['bcolor-bar2', 'bcolor-bar1']
                 }
             );
             </c:if>

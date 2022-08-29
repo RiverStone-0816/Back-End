@@ -164,8 +164,8 @@
                                 </div>
                                 <div class="chart-label-container">
                                     <div class="ui segment secondary">
-                                        <text class="label-list">응대호 <span class="color-bar1">${total.success}</span></text>
-                                        <text class="label-list">포기호 <span class="color-bar2">${total.cancel}</span></text>
+                                        <text class="label-list">성공호 <span class="color-bar1">${total.success}</span></text>
+                                        <text class="label-list">비수신 <span class="color-bar2">${total.cancel}</span></text>
                                     </div>
                                 </div>
                             </div>
@@ -176,8 +176,8 @@
                                 <div class="-chart basic-chart-container" id="chart"></div>
                                 <div class="chart-label-container">
                                     <div class="ui segment secondary">
-                                        <text class="label-list"><span class="point color-red"></span>응대호</text>
-                                        <text class="label-list"><span class="point color-blue"></span>포기호</text>
+                                        <text class="label-list"><span class="point color-red"></span>성공호</text>
+                                        <text class="label-list"><span class="point color-blue"></span>비수신</text>
                                     </div>
                                 </div>
                             </div>
