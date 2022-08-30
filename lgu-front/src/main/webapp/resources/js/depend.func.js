@@ -840,6 +840,7 @@ function drawPieChart(svgSelector, rate, options) {
             .attr("class", function (d, i) {
                 return colorClasses[i % colorClasses.length];
             })
+            .attr("stroke-width", "0.1")
             .transition()
             .duration(200)
             .delay(function (d, i) {
