@@ -138,6 +138,11 @@ public class WtalkScheduleInfoRepository extends EicnBaseRepository<WtalkSchedul
 				.and(WTALK_SCHEDULE_INFO.TYPE.eq(type)));
 	}
 
+	public void deleteBySenderKey(String type, Integer seq) {
+		super.delete(WTALK_SCHEDULE_INFO.SEQ.eq(seq)
+				.and(WTALK_SCHEDULE_INFO.TYPE.eq(type)));
+	}
+
 	public Map<String, List<WtalkScheduleInfoEntity>> getTalkServiceInfoLists(TalkServiceInfoSearchRequest search) {
 		final SelectConditionStep<Record> query = dsl.select()
 				.from(WTALK_SCHEDULE_INFO)

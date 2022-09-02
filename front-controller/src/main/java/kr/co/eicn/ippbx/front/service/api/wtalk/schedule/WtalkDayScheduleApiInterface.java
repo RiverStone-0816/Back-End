@@ -39,6 +39,10 @@ public class WtalkDayScheduleApiInterface extends ApiServerInterface {
         super.delete(subUrl + senderKey);
     }
 
+    public void oneDelete(Integer seq) throws IOException, ResultFailException {
+        super.delete(subUrl + "one/" + seq);
+    }
+
     public WtalkScheduleGroupEntity getType(Integer parent) throws IOException, ResultFailException {
         return getData(subUrl + "service/type/" + parent, null, WtalkScheduleGroupEntity.class).getData();
     }

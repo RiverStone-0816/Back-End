@@ -152,6 +152,7 @@
                                                     <td>
                                                         <button class="ui button mini compact" onclick="popupViewScheduleGroupModal(${info.scheduleGroup.parent})">유형보기</button>
                                                         <button class="ui button mini compact" onclick="popupScheduleInfoModal(${info.seq})">수정</button>
+                                                        <button class="ui button mini compact" onclick="deleteScheduleInfo(${info.seq})">삭제</button>
                                                     </td>
                                                     <c:if test="${infoStatus.first}">
                                                         <td rowspan="${e.scheduleInfos.size()}">
@@ -203,6 +204,14 @@
 
             function popupViewScheduleGroupModal(parent) {
                 popupReceivedHtml('/admin/wtalk/schedule/day/modal-view-schedule-group?parent=' + parent, 'modal-view-schedule-group');
+            }
+
+            function deleteScheduleInfo(seq) {
+                confirm('정말 삭제하시겠습니까?').done(function () {
+                    restSelf.delete('/api/talk-schedule-day/one/' + encodeURIComponent(seq)).done(function () {
+                        reload();
+                    });
+                });
             }
 
             function deleteEntity(senderKey) {

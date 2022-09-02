@@ -77,6 +77,14 @@ public class WtalkDayScheduleApiController extends BaseController {
     }
 
     /**
+     * 상담톡 일별스케쥴러 삭제
+     */
+    @DeleteMapping("one/{seq}")
+    public void oneDelete(@PathVariable Integer seq) throws IOException, ResultFailException {
+        apiInterface.oneDelete(seq);
+    }
+
+    /**
      * 상담톡 일별스케쥴러 스케쥴유형 수정
      */
     @PutMapping("service/type/{seq}")

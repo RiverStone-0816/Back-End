@@ -139,6 +139,15 @@ public class DayWtalkScheduleInfoApiController extends ApiBaseController {
 	}
 
 	/**
+	 * 상담톡 일별스케쥴러 삭제
+	 */
+	@DeleteMapping("one/{seq}")
+	public ResponseEntity<JsonResult<Void>> oneDelete(@PathVariable Integer seq) {
+		repository.deleteBySenderKey(ScheduleType.DAY.getCode(), seq);
+		return ResponseEntity.ok(create());
+	}
+
+	/**
 	 * 상담톡 일별스케쥴러 스케쥴유형 수정
 	 */
 	@PutMapping("service/type/{seq}")
