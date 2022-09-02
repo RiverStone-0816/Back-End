@@ -1,5 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.record.history;
 
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonEicnCdr;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.EicnCdr;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.GradeList;
@@ -27,6 +29,7 @@ import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.http.*;
 import org.springframework.validation.BindingResult;
@@ -187,6 +190,30 @@ public class RecordApiController extends ApiBaseController {
 
     @GetMapping(value = "resource", params = {"token"})
     public ResponseEntity<Resource> resource(@RequestParam("path") String recordFile/*파일명을 포함한 파일경로*/, @RequestParam("mode") String mode) {
+        final RecordFileService.Result actualExistingFile = recordFileService.getActualExistingFile(recordFile, mode);
+
+        if (actualExistingFile.getCode() != 1)
+            throw new IllegalArgumentException(actualExistingFile.getMessage());
+
+        final Resource resource = fileSystemStorageService.loadAsResource(actualExistingFile.getPath(), actualExistingFile.getFileName());
+
+        return ResponseEntity.ok()
+                .contentType(MediaTypeFactory.getMediaType(resource).isPresent() ? MediaTypeFactory.getMediaType(resource).get() : MediaType.APPLICATION_OCTET_STREAM)
+                .headers(header -> {
+                    header.add(HttpHeaders.CONTENT_DISPOSITION,
+                            ContentDisposition.builder("attachment")
+                                    .filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8)
+                                    .build().toString());
+                    header.setPragma("no-cache");
+                    header.setCacheControl(CacheControl.noCache());
+                })
+                .body(resource);
+    }
+
+    @GetMapping(value = "down-resource", params = {"token"})
+    public ResponseEntity<Resource> resource(@RequestParam("path") String recordFile/*파일명을 포함한 파일경로*/, @RequestParam("mode") String mode, @RequestParam("companyId") String company) {
+        if (StringUtils.isNotEmpty(company))
+            recordFileService.fetchAll(Collections.singletonList(eicnCdrService.getRepository().findOneIfNullThrow(new CommonEicnCdr(company).RECORD_FILE.eq(recordFile))));
         final RecordFileService.Result actualExistingFile = recordFileService.getActualExistingFile(recordFile, mode);
 
         if (actualExistingFile.getCode() != 1)
