@@ -4,6 +4,9 @@ server:
   port: 8080
   servlet:
     context-path: /api-server
+    encoding:
+      charset: utf-8
+      force-response: true
   error:
     path: /error
 ---
