@@ -645,6 +645,14 @@
             })
             .on('PDSMEMBERSTATUS', function (message, kind) {
             })
+            .on('HOLD_START', function (message, kind, data1) {
+                if(kind === "OK")
+                    $(".-call-hold").addClass("active");
+            })
+            .on('HOLD_STOP', function (message, kind, data1) {
+                if(kind === "OK")
+                    $(".-call-hold").removeClass("active");
+            })
             .on('MSG', function (message, kind, data1, data2) {
                 if (!data1 || !data2)
                     return;
@@ -781,10 +789,10 @@
 
                 if ($(this).hasClass("active")) {
                     ipccCommunicator.stopHolding();
-                    $(this).removeClass("active");
+                    //$(this).removeClass("active");
                 } else {
                     ipccCommunicator.startHolding();
-                    $(this).addClass("active");
+                    //$(this).addClass("active");
                 }
             });
 
