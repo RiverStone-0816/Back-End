@@ -384,7 +384,7 @@
             if ($this.attr('data-has-records'))
                 return;
 
-            popupReceivedHtml(contextPath + '/admin/record/history/history/' + $this.attr('data-id') + '/modal-records', 'modal-records').done(function (html) {
+            popupReceivedHtml('/admin/record/history/history/' + $this.attr('data-id') + '/modal-records', 'modal-records').done(function (html) {
                 const mixedNodes = $.parseHTML(html, null, true);
 
                 const modal = (function () {
