@@ -246,7 +246,7 @@
                                 <div class="btn-wrap">
                                     <span class="ui mini label -consultant-status-with-color" :data-peer="e.peer" :style="'visibility: ' + (e.peer ? 'visible' : 'hidden')"></span>
                                     <div class="buttons">
-                                        <button class="arrow button" data-inverted data-tooltip="호전환" data-position="bottom center" @click.stop.prevent="attendedTo(e.extension)"></button>
+                                        <button class="arrow button" data-inverted data-tooltip="호전환" data-position="bottom center" @click.stop.prevent="redirectTo(e.extension)"></button>
                                         <button class="talk ${user.isTalk.equals('Y') ? 'on' : 'off'} button" @click.stop.prevent="toTalkSearch(e.id)"></button>
                                         <button class="info button" data-inverted data-tooltip="정보" data-position="bottom center" @click.stop.prevent="popupUserModal(e)"></button>
                                     </div>
@@ -283,9 +283,6 @@
                             },
                             redirectTo: function (extension) {
                                 ipccCommunicator.redirect(extension)
-                            },
-                            attendedTo: function (extension) {
-                                ipccCommunicator.attended(extension)
                             },
                             popupBookmarkModal: function () {
                                 const _this = this
@@ -372,7 +369,7 @@
                                     <div class="btn-wrap">
                                         <span class="ui mini label -consultant-status-with-color" :data-peer="person.peer" :style="'visibility: ' + (person.peer ? 'visible' : 'hidden')"></span>
                                         <div class="buttons">
-                                            <button class="arrow button" data-inverted data-tooltip="호전환" data-position="bottom center" @click.stop.prevent="attendedTo(person.extension)"></button>
+                                            <button class="arrow button" data-inverted data-tooltip="호전환" data-position="bottom center" @click.stop.prevent="redirectTo(person.extension)"></button>
                                             <button class="talk ${user.isTalk.equals('Y') ? 'on' : 'off'} button" @click.stop.prevent="toTalkSearch(person.id)"></button>
                                             <button class="info button" data-inverted data-tooltip="정보" data-position="bottom center" @click.stop.prevent="popupUserModal(person)"></button>
                                         </div>
@@ -428,9 +425,6 @@
                             },
                             redirectTo: function (extension) {
                                 ipccCommunicator.redirect(extension)
-                            },
-                            attendedTo: function (extension) {
-                                ipccCommunicator.attended(extension)
                             },
                             toTalkSearch(userId) {
                                 <c:if test="${user.isTalk.equals('Y')}">
