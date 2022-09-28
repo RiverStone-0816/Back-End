@@ -40,7 +40,7 @@
                     <c:forEach var="person" items="${e.person}">
                         <li class="item">
                             <div class="user">${g.htmlQuote(person.idName)}[${g.htmlQuote(person.extension)}]
-                                <button class="forwarded-btn -redirect-to" data-extension="${person.extension}" title="전화돌려주기"></button>
+                                <button class="forwarded-btn -attended-to" data-extension="${person.extension}" title="전화돌려주기"></button>
                             </div>
                             <div class="title">
                                 <span class="ui mini label -consultant-status-with-color" data-peer="${g.htmlQuote(person.peer)}" style="color: white;"></span>
@@ -68,7 +68,7 @@
     if (updatePersonStatus)
         updatePersonStatus();
 
-    ui.find('.-redirect-to').click(function () {
-        ipccCommunicator.redirect($(this).attr('data-extension'));
+    ui.find('.-attended-to').click(function () {
+        ipccCommunicator.attended($(this).attr('data-extension'));
     });
 </script>

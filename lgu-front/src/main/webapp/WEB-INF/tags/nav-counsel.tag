@@ -49,7 +49,7 @@
                                         <span class="user">{{ e.idName }}<text v-if="e.extension">[{{ e.extension }}]</text></span>
                                     </div>
                                     <div v-if="e.peer">
-                                        <button v-if="e.extension" class="ui icon button mini compact" @click.stop.prevent="redirectTo(e.extension)" title="전화돌려주기">
+                                        <button v-if="e.extension" class="ui icon button mini compact" @click.stop.prevent="attendedTo(e.extension)" title="전화돌려주기">
                                             <i class="share icon"></i>
                                         </button>
                                         <span class="ui mini label -consultant-status-with-color" :data-peer="e.peer"></span>
@@ -95,7 +95,7 @@
                                             <span class="user">{{ person.idName }}<text v-if="person.extension">[{{ person.extension }}]</text></span>
                                         </div>
                                         <div v-if="person.peer">
-                                            <button v-if="person.extension" class="ui icon button mini compact" @click.stop.prevent="redirectTo(person.extension)" title="전화돌려주기">
+                                            <button v-if="person.extension" class="ui icon button mini compact" @click.stop.prevent="attendedTo(person.extension)" title="전화돌려주기">
                                                 <i class="share icon"></i>
                                             </button>
                                             <span class="ui mini label -consultant-status-with-color" :data-peer="person.peer"></span>
@@ -203,6 +203,9 @@
                 redirectTo: function (extension) {
                     ipccCommunicator.redirect(extension)
                 },
+                attendedTo: function (extension) {
+                    ipccCommunicator.attended(extension)
+                },
                 popupNoteModal: function (person) {
                     noteSendPopup(person.extension, person.idName)
                 },
@@ -266,6 +269,9 @@
                 },
                 redirectTo: function (extension) {
                     ipccCommunicator.redirect(extension)
+                },
+                attendedTo: function (extension) {
+                    ipccCommunicator.attended(extension)
                 },
                 popupBookmarkModal: function () {
                     const _this = this
