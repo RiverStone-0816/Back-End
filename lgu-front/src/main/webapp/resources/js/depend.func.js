@@ -308,7 +308,12 @@ $.fn.dragModalShow = function (container) {
         }).draggable({
             iframeFix: true,
             containment: 'body',
-            handle: '[class="header"],[class="header ui-draggable-handle"],[data-act=draggable]'
+            handle: '[class="header"],[class="header ui-draggable-handle"],[data-act=draggable]',
+            drag: function (e, ui) {
+                if (ui.position.top < 70) {
+                    ui.position.top = 70;
+                }
+            }
         });
     }, 100);
 
