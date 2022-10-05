@@ -333,18 +333,6 @@
                                             </div>
                                         </div>
                                     </li>
-                                    <li>
-                                        <button class="ui icon brand button" id="setting-tab-indicator" style="overflow-x: hidden; text-align: center; width: 46px; margin-top: 30px">
-                                            <i class="ellipsis horizontal icon"></i>
-                                            <div class="state-name" style="margin: 2px -11px -4px; font-size: 12px;">더보기</div>
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button class="ui icon brand button" onclick="logout()" style="overflow-x: hidden; text-align: center; width: 46px;">
-                                            <i class="window close outline icon"></i>
-                                            <div class="state-name" style="margin: 2px -11px -4px; font-size: 12px;">로그아웃</div>
-                                        </button>
-                                    </li>
                                 </ul>
                             </section>
                         </aside>
@@ -413,6 +401,15 @@
                                                     <div class="explain">통화보류</div>
                                                 </button>
                                             </li>
+                                            <li>
+                                                <button class="ui icon button brand state" onclick="logout()">
+                                                    <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/logout.jsp">
+                                                        <jsp:param name="width" value="20"/>
+                                                        <jsp:param name="height" value="20"/>
+                                                    </jsp:include>
+                                                    <div class="explain">로그아웃</div>
+                                                </button>
+                                            </li>
                                         </ul>
                                         <ul>
                                             <c:forEach var="e" items="${ProtectArs}">
@@ -429,11 +426,6 @@
                                 </div>
                             </div>
 
-                            <div class="tab-container">
-                                <div id="tab-setting" class="tab-cont pt80">
-                                    <jsp:include page="/ipcc-messenger/tab-navigation"/>
-                                </div>
-                            </div>
                             <div class="remote-panel shadow-box">
                                 <ul>
                                     <c:forEach var="e" items="${statusCodes}">
@@ -463,21 +455,6 @@
                                     </c:forEach>
                                 </ul>
                             </div>
-                            <span class="-call-count">
-                                <span class="absensce">
-                                    <button type="button" class="ui icon button absensce -history-tab-indicator" data-value="/admin/record/history/history/ibk">
-                                        <span class="explain">부재중전화</span>
-                                    </button>:
-                                    <span class="absensce-count">0</span>건
-                                </span>
-                                &ensp;
-                                <span class="callback">
-                                    <button type="button" class="ui icon button callback -history-tab-indicator" data-value="/admin/record/callback/history/ibk">
-                                        <span class="explain">콜백</span>
-                                    </button>:
-                                    <span class="callback-count">0</span>건
-                                </span>
-                            </span>
                         </div>
                     </main>
                 </c:otherwise>
@@ -603,9 +580,14 @@
                         const messenger = new Messenger('${g.escapeQuote(user.id)}', '${g.escapeQuote(user.isEmail)}', '${g.escapeQuote(accessToken)}');
 
                     $(window).on('load', function () {
-                        <c:if test="${usingServices.contains('CHATWIN') && user.isChatt == 'Y'}">
-                            messenger.init();
-                        </c:if>
+                        <c:choose>
+                        <c:when test="${usingServices.contains('CHATWIN') && user.isChatt == 'Y'}">
+                        messenger.init();
+                        </c:when>
+                        <c:otherwise>
+                        messenger.loginSuccess()
+                        </c:otherwise>
+                        </c:choose>
                     });
 
                     $('.-tab-indicator').click(function () {

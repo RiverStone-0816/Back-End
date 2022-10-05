@@ -982,6 +982,10 @@ Messenger.prototype.popupMemoModal = function (seq, withReply) {
     ipcRenderer.send('openMemoModal', {"seq": seq, "withReply": withReply});
 }
 
+Messenger.prototype.loginSuccess = function () {
+        ipcRenderer.send('loginSuccess');
+}
+
 Messenger.prototype.init = function () {
     const messenger = this;
 
