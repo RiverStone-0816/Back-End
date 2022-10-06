@@ -42,7 +42,7 @@
                                             <audio controls src="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY&token=${accessToken}"></audio>
                                         </div>
                                     </c:if>
-                                    <c:if test="${user.downloadRecordingAuthority.equals('GROUP') && entity.personList.groupCode.equals(user.user.groupCode)}">
+                                    <c:if test="${user.downloadRecordingAuthority.equals('GROUP') && entity.personList.groupCode.equals(user.groupCode)}">
                                         <div class="ui center aligned segment">
                                             <a target="_blank" href="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN&token=${accessToken}">[ 파일다운로드 ]</a>
                                         </div>
