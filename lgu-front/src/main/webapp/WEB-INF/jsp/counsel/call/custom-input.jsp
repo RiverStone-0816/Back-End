@@ -25,9 +25,10 @@
             <span class="ui red basic label mini compact sparkle-red">블랙리스트</span>
         </c:if>
         <c:if test="${serviceKind.equals('SC')}">
-        <button type="button" class="ui button mini compact" onclick="popupArsModal()">ARS</button>
+            <button type="button" class="ui button mini compact" onclick="popupArsModal()">ARS</button>
             <button type="button" class="ui button mini compact" onclick="popupGradeAppModal()">등급관리</button>
-            <button type="button" class="ui button mini compact" onclick="popupCmsModal()">CMS</button>
+                <%--CMS를 사용하는 고객인 경우에만 주석 해제--%>
+<%--            <button type="button" class="ui button mini compact" onclick="popupCmsModal()">CMS</button>--%>
         </c:if>
         <button type="button" class="ui button mini right floated compact blue"
                 id="call-submitButton">${entity != null ? '고객수정' : '신규등록'}</button>
