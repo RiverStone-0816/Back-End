@@ -58,6 +58,20 @@ public class SendMessageTemplateApiController extends ApiBaseController {
         return ResponseEntity.ok(data(new Pagination<>(rows, pagination.getPage(), pagination.getTotalCount(), search.getLimit())));
     }
 
+    @GetMapping("list")
+    public ResponseEntity<JsonResult<List<SendMessageTemplateResponse>>> list(SendMessageTemplateSearchRequest search) {
+        final Map<String, String> categoryMap = sendSmsCategoryRepository.findAll().stream().collect(Collectors.toMap(SendCategory::getCategoryCode, SendCategory::getCategoryName));
+
+        return ResponseEntity.ok(data(repository.findAll(search).stream().map(e -> {
+            SendMessageTemplateResponse response = convertDto(e, SendMessageTemplateResponse.class);
+
+            if(Objects.nonNull(categoryMap.get(e.getCategoryCode())))
+                response.setCategoryName(categoryMap.get(e.getCategoryCode()));
+
+            return response;
+        }).collect(Collectors.toList())));
+    }
+
     @GetMapping(value = "{id}")
     public ResponseEntity<JsonResult<SendMessageTemplateResponse>> get(@PathVariable Integer id) {
         final SendMessageTemplateResponse response = convertDto(repository.findOneIfNullThrow(Long.valueOf(id)), SendMessageTemplateResponse.class);

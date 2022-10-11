@@ -60,6 +60,6 @@ public class SmsCategoryApiController extends BaseController {
 
     @GetMapping("category")
     public List<SendSmsCategorySummaryResponse> sendCategory() throws IOException, ResultFailException {
-        return apiInterface.sendCategory();
+        return apiInterface.list();
     }
 }

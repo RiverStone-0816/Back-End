@@ -8,6 +8,10 @@ import kr.co.eicn.ippbx.front.model.search.MaindbDataSearch;
 import kr.co.eicn.ippbx.front.model.search.MaindbResultSearch;
 import kr.co.eicn.ippbx.front.model.search.RecordCallSearchForm;
 import kr.co.eicn.ippbx.front.service.OrganizationService;
+import kr.co.eicn.ippbx.front.service.api.application.sms.SmsCategoryApiInterface;
+import kr.co.eicn.ippbx.front.service.api.application.sms.SmsMessageTemplateApiInterface;
+import kr.co.eicn.ippbx.model.form.SendMessageTemplateFormRequest;
+import kr.co.eicn.ippbx.model.form.SendSmsCategoryFormRequest;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.*;
 import kr.co.eicn.ippbx.front.service.api.acd.QueueApiInterface;
@@ -23,7 +27,6 @@ import kr.co.eicn.ippbx.front.service.api.service.etc.MonitApiInterface;
 import kr.co.eicn.ippbx.front.service.api.sounds.IvrApiInterface;
 import kr.co.eicn.ippbx.front.service.api.sounds.schedule.OutboundDayScheduleApiInterface;
 import kr.co.eicn.ippbx.front.service.api.sounds.sounds.ArsApiInterface;
-import kr.co.eicn.ippbx.front.service.api.user.user.UserApiInterface;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbCustomInfo;
@@ -88,6 +91,8 @@ public class CounselController extends BaseController {
     private final IvrApiInterface ivrApiInterface;
     private final CallbackHistoryApiInterface callbackHistoryApiInterface;
     private final ArsApiInterface arsApiInterface;
+    private final SmsCategoryApiInterface smsCategoryApiInterface;
+    private final SmsMessageTemplateApiInterface smsMessageTemplateApiInterface;
 
     @GetMapping("")
     public String page(Model model) throws IOException, ResultFailException {
@@ -383,6 +388,21 @@ public class CounselController extends BaseController {
     @GetMapping("modal-route-application")
     public String modalRouteApplication(Model model) {
         return "counsel/modal-route-application";
+    }
+
+    @GetMapping("modal-sms-category")
+    public String modalSmsCategory(Model model, @ModelAttribute("form") SendSmsCategoryFormRequest form) throws IOException, ResultFailException {
+        model.addAttribute("categories", smsCategoryApiInterface.list());
+
+        return "counsel/modal-sms-category";
+    }
+
+    @GetMapping("modal-sms-template")
+    public String modalSmsTemplate(Model model, @ModelAttribute("form") SendMessageTemplateFormRequest form) throws IOException, ResultFailException {
+        model.addAttribute("categories", smsCategoryApiInterface.list());
+        model.addAttribute("templates", smsMessageTemplateApiInterface.list());
+
+        return "counsel/modal-sms-template";
     }
 
     enum MaindbCustomSearchType {

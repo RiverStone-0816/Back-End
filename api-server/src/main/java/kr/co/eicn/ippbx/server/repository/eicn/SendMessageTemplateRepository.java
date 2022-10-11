@@ -32,6 +32,10 @@ public class SendMessageTemplateRepository extends EicnBaseRepository<SendMessag
         return super.pagination(search, conditions(search));
     }
 
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessageTemplate> findAll(SendMessageTemplateSearchRequest request) {
+        return super.findAll(conditions(request));
+    }
+
     public Record insertOnGeneratedKey(SendMessageTemplateFormRequest formRequest) {
         final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessageTemplate sendRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessageTemplate();
         sendRecord.setCategoryCode(formRequest.getCategoryCode());

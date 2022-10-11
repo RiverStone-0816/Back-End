@@ -42,7 +42,7 @@ public class SmsCategoryApiInterface extends ApiServerInterface {
         super.delete(subUrl + categoryCode);
     }
 
-    public List<SendSmsCategorySummaryResponse> sendCategory() throws IOException, ResultFailException {
-        return getList(subUrl + "category", null, SendSmsCategorySummaryResponse.class).getData();
+    public List<SendSmsCategorySummaryResponse> list() throws IOException, ResultFailException {
+        return getList(subUrl + "list", null, SendSmsCategorySummaryResponse.class).getData();
     }
 }

@@ -85,7 +85,7 @@ public class SendSmsCategoryApiController extends ApiBaseController {
     /**
      *   카테고리 조회
      */
-    @GetMapping("category")
+    @GetMapping("list")
     public ResponseEntity<JsonResult<List<SendSmsCategorySummaryResponse>>> sendCategory() {
         return ResponseEntity.ok(data(repository.findAll().stream().filter(category -> category.getCategoryType().equals(SendCategoryType.SMS.getCode()))
                 .map(e -> convertDto(e, SendSmsCategorySummaryResponse.class)).collect(Collectors.toList())));

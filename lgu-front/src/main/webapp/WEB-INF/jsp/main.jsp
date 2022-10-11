@@ -419,128 +419,6 @@
         </div>
     </div>
 
-    <div class="ui modal inverted tiny" id="modal-sms-category-add-popup">
-        <i class="close icon"></i>
-        <div class="header">
-            SMS 카테고리 등록
-        </div>
-        <div class="content rows scrolling">
-            <div class="ui grid">
-                <div class="row">
-                    <div class="four wide column"><label class="control-label">카테고리 코드</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui input fluid">
-                            <input type="text">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="four wide column"><label class="control-label">카테고리 명</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui input fluid">
-                            <input type="text">
-                        </div>
-                    </div>
-                    <div class="sixteen wide column">
-                        <button class="fluid ui button mini tb-margin">추가</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <table class="ui table celled">
-                        <thead>
-                        <tr>
-                            <th>코드</th>
-                            <th>카테고리명</th>
-                            <th class="one wide">관리</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <%--<tr>
-                                <td colspan="3" class="null-data">등록된 데이터가 없습니다.</td>
-                            </tr>--%>
-                        <tr>
-                            <td>3a0ff322</td>
-                            <td>카테고리명</td>
-                            <td>
-                                <button class="ui button mini compact">삭제</button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <button class="ui button modal-close">취소</button>
-            <button class="ui blue button">확인</button>
-        </div>
-    </div>
-
-    <div class="ui modal inverted tiny" id="modal-sms-template-add-popup">
-        <i class="close icon"></i>
-        <div class="header">
-            SMS 상용문구 등록
-        </div>
-        <div class="content rows scrolling">
-            <div class="ui grid">
-                <div class="row">
-                    <div class="four wide column"><label class="control-label">카테고리</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <select>
-                                <option>선택</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="four wide column"><label class="control-label">내용</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form fluid">
-                            <div class="field">
-                                <textarea rows="5"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="sixteen wide column">
-                        <button class="fluid ui button mini tb-margin">추가</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <table class="ui table celled break">
-                        <thead>
-                        <tr>
-                            <th>카테고리</th>
-                            <th>내용</th>
-                            <th class="one wide">관리</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <%--<tr>
-                                <td colspan="3" class="null-data">등록된 데이터가 없습니다.</td>
-                            </tr>--%>
-                        <tr>
-                            <td>3a0ff322</td>
-                            <td>
-                                <div class="item">
-                                    카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명카테고리명
-                                </div>
-                            </td>
-                            <td>
-                                <button class="ui button mini compact">삭제</button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <button class="ui button modal-close">취소</button>
-            <button class="ui blue button">확인</button>
-        </div>
-    </div>
-
     <div class="ui modal tiny" id="modal-consulting-history-talk-view" style="height: 750px;">
 
     </div>
@@ -564,7 +442,7 @@
             });
 
             function smsCategoryAdd() {
-                $('#modal-sms-category-add-popup').dragModalShow();
+                popupDraggableModalFromReceivedHtml('/counsel/modal-sms-category', 'modal-sms-category-add-popup')
             }
 
             function ratingConfirmPopup() {
@@ -572,7 +450,7 @@
             }
 
             function smsTemplateAdd() {
-                $('#modal-sms-template-add-popup').dragModalShow();
+                popupDraggableModalFromReceivedHtml('/counsel/modal-sms-template', 'modal-sms-template-add-popup')
             }
 
             function smsSend() {

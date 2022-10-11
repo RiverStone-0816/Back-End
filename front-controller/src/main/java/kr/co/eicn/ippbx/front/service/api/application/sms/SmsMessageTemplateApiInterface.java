@@ -26,6 +26,10 @@ public class SmsMessageTemplateApiInterface extends ApiServerInterface {
         return getPagination(subUrl, search, SendMessageTemplateResponse.class).getData();
     }
 
+    public List<SendMessageTemplateResponse> list() throws IOException, ResultFailException {
+        return getList(subUrl + "list", new SendMessageTemplateFormRequest(), SendMessageTemplateResponse.class).getData();
+    }
+
     public SendMessageTemplateResponse get(Integer id) throws IOException, ResultFailException {
         return getData(subUrl + id, null, SendMessageTemplateResponse.class).getData();
     }
