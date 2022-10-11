@@ -114,8 +114,21 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
                 });
     }
 
-    public void insertItem(DSLContext dslContext, ScheduleGroupList scheduleGroupList, Integer targetParent) {
+    public Record insertItem(DSLContext dslContext, ScheduleGroupList scheduleGroupList, Integer targetParent, boolean chk) {
+        if (chk)
+            return dslContext.insertInto(SCHEDULE_GROUP_LIST)
+                    .set(SCHEDULE_GROUP_LIST.CHILD_NAME, scheduleGroupList.getChildName())
+                    .set(SCHEDULE_GROUP_LIST.PARENT, targetParent)
+                    .set(SCHEDULE_GROUP_LIST.FROMHOUR, scheduleGroupList.getFromhour())
+                    .set(SCHEDULE_GROUP_LIST.TOHOUR, scheduleGroupList.getTohour())
+                    .set(SCHEDULE_GROUP_LIST.KIND, scheduleGroupList.getKind())
+                    .set(SCHEDULE_GROUP_LIST.KIND_DATA, scheduleGroupList.getKindData())
+                    .set(SCHEDULE_GROUP_LIST.KIND_SOUND_CODE, scheduleGroupList.getKindSoundCode())
+                    .set(SCHEDULE_GROUP_LIST.COMPANY_ID, scheduleGroupList.getCompanyId())
+                    .returning().fetchOne();
+
         dslContext.insertInto(SCHEDULE_GROUP_LIST)
+                .set(SCHEDULE_GROUP_LIST.CHILD, scheduleGroupList.getChild())
                 .set(SCHEDULE_GROUP_LIST.CHILD_NAME, scheduleGroupList.getChildName())
                 .set(SCHEDULE_GROUP_LIST.PARENT, targetParent)
                 .set(SCHEDULE_GROUP_LIST.FROMHOUR, scheduleGroupList.getFromhour())
@@ -125,6 +138,7 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
                 .set(SCHEDULE_GROUP_LIST.KIND_SOUND_CODE, scheduleGroupList.getKindSoundCode())
                 .set(SCHEDULE_GROUP_LIST.COMPANY_ID, scheduleGroupList.getCompanyId())
                 .execute();
+        return null;
     }
 
     public void itemCopy(Integer parent, Integer targetParent) {
@@ -142,16 +156,15 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
                     .orderBy(SCHEDULE_GROUP_LIST.FROMHOUR)
                     .fetchInto(ScheduleGroupList.class);
             for (ScheduleGroupList scheduleGroupList : scheduleGroupLists) {
-                insertItem(dsl, scheduleGroupList, targetParent);
+                Record record = insertItem(dsl, scheduleGroupList, targetParent, true);
+                final ScheduleGroupList list = record.into(ScheduleGroupList.class);
+                cacheService.pbxServerList(getCompanyId())
+                        .forEach(e -> {
+                            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
+                                insertItem(pbxDsl, list, targetParent, false);
+                            }
+                        });
             }
-
-            cacheService.pbxServerList(getCompanyId())
-                    .forEach(e -> {
-                        DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
-                        for (ScheduleGroupList scheduleGroupList : scheduleGroupLists) {
-                            insertItem(pbxDsl, scheduleGroupList, targetParent);
-                        }
-                    });
         }
     }
 
