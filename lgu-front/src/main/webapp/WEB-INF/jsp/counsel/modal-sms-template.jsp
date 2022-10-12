@@ -55,12 +55,12 @@
                     <c:choose>
                         <c:when test="${templates.size() > 0}">
                             <c:forEach var="e" items="${templates}">
-                                <tr data-id="${e.id}">
+                                <tr>
                                     <td>${g.htmlQuote(e.categoryName)}</td>
                                     <td>${g.htmlQuote(e.content)}</td>
                                     <td><fmt:formatDate value="${e.createdAt}" pattern="yyyy-MM-dd"/></td>
                                     <td>
-                                        <button class="ui button mini compact">삭제</button>
+                                        <button type="button" class="ui button mini compact" onclick="removeTemplate('${e.id}')">삭제</button>
                                     </td>
                                 </tr>
                             </c:forEach>

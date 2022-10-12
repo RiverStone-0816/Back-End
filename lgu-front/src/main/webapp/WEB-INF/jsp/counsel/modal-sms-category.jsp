@@ -54,7 +54,7 @@
                                     <td>${g.htmlQuote(e.categoryCode)}</td>
                                     <td>${g.htmlQuote(e.categoryName)}</td>
                                     <td>
-                                        <button class="ui button mini compact">삭제</button>
+                                        <button type="button" class="ui button mini compact" onclick="removeCategory('${e.categoryCode}')">삭제</button>
                                     </td>
                                 </tr>
                             </c:forEach>

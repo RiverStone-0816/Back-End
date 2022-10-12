@@ -807,5 +807,23 @@
                 }
             });
         });
+
+        function removeCategory(id) {
+            confirm('정말 삭제하시겠습니까?').done(function () {
+                restSelf.delete('/api/sms-category/' + id).done(function () {
+                    $('#modal-sms-category-add-popup').modalHide()
+                    alert('삭제되었습니다.')
+                });
+            });
+        }
+
+        function removeTemplate(id) {
+            confirm('정말 삭제하시겠습니까?').done(function () {
+                restSelf.delete('/api/sms-message-template/' + id).done(function () {
+                    $('#modal-sms-template-add-popup').modalHide()
+                    alert('삭제되었습니다.')
+                });
+            });
+        }
     </script>
 </tags:scripts>
