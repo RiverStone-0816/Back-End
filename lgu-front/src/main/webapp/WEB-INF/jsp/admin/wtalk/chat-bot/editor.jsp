@@ -1007,7 +1007,7 @@
                                 formBlockId: block?.formBlockId,
                                 keyword: block?.keywords.length === 0 ? '' : block?.keywords.reduce((a, b) => (a + b + '|'), '|'),
                                 isTemplateEnable: block?.isTemplateEnable,
-                                displayList: block?.displays.map((e, i) => ({
+                                displayList: block?.type !== 'FORM' ? block?.displays.map((e, i) => ({
                                     order: i,
                                     type: e.type,
                                     elementList: e.type === 'text' ? [{order: 0, content: e.data?.text}]
@@ -1017,7 +1017,7 @@
                                                     ({order: j + 1, title: e2.title, content: e2.announcement, url: e2.url, image: e2.fileUrl})))
                                                     : [{order: 0, title: e.data?.title}].concat(e.data?.params?.map((e2, j) => ({order: j + 1, inputType: e2.type, paramName: e2.paramName, displayName: e2.displayName, needYn: e2.needYn})))
 
-                                })),
+                                })) : [],
                                 buttonList: block?.buttons.map((e, i) => ({
                                     order: i,
                                     buttonName: e.name,
