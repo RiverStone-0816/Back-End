@@ -909,7 +909,7 @@ function confirm(text) {
         class: 'alert-modal',
         style: 'display: none;'
     }).appendTo($('body'));
-    modal.find('.content').text(text);
+    modal.find('.content').text(text.replace('\\n', '\n'));
     modal.click(function (event) {
         event.stopPropagation();
     });

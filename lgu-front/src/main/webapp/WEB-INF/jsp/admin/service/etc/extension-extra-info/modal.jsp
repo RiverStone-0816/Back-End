@@ -14,7 +14,8 @@
 
 <form:form modelAttribute="forms" cssClass="ui modal large -json-submit" data-method="put"
            action="${pageContext.request.contextPath}/api/extension-extra-info/"
-           data-before="prepareWriteForm" data-done="reload">
+           data-before="prepareWriteForm" data-done="reload"
+           data-confirm-message="설정 후에는 수정된 내선에 대한 재로그인이 필수입니다.\n재로그인 이후 수정 부분이 적용됩니다.">
 
     <i class="close icon"></i>
     <div class="header">내선기타정보수정</div>
