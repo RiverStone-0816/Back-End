@@ -80,4 +80,8 @@ public class MaindbDataApiInterface extends ApiServerInterface {
     public MaindbCustomInfoEntity get(String id) throws IOException, ResultFailException {
         return getData(subUrl + id, null, MaindbCustomInfoEntity.class).getData();
     }
+
+    public String getCustomName(String phoneNumber) throws IOException, ResultFailException {
+        return getData(subUrl + phoneNumber + "/name", null, String.class).getData();
+    }
 }

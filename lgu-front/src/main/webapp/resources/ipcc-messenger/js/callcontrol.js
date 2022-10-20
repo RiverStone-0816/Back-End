@@ -21,7 +21,7 @@ $(window).on('load', function () {
     restSelf.get('/api/auth/socket-info').done(function (response) {
         const fromUi = "EICN_CHATT";
         if (response.data.extension)
-            ipccCommunicator.connect(response.data.callControlSocketUrl, response.data.pbxHost, response.data.companyId, response.data.userId, response.data.extension, response.data.password, response.data.idType, fromUi, response.data.isMulti);
+            ipccCommunicator.connect(response.data.callControlSocketUrl, response.data.pbxHost, response.data.companyId, response.data.userId, response.data.extension, hex_sha512(response.data.password), response.data.idType, fromUi, response.data.isMulti);
     });
 });
 
@@ -185,7 +185,7 @@ const ipccCommunicator = new IpccCommunicator()
             // $(".-calling-path").text((services[callingPath] != null ? services[callingPath] + '(' + callingPath + ')' : callingPath) + (queueName ? ' ' + queueName + '(' + secondNum + ')' : ''));
             $('.-calling-number').val(phoneNumber).text(phoneNumber);
             $('.-call-waiting-time').text('0초');
-            restSelf.get('/api/maindb-data/custom-info/' + phoneNumber).done(function (response) {
+            restSelf.get('/api/maindb-data/' + phoneNumber + '/name').done(function (response) {
                 const customName = response.data;
                 if (customName !== phoneNumber) {
                     const idName = customName.split('[')[0];
@@ -219,7 +219,7 @@ const ipccCommunicator = new IpccCommunicator()
             phoneNumber = data1;
 
             $('.-calling-number').val(phoneNumber).text(phoneNumber);
-            restSelf.get('/api/maindb-data/custom-info/' + phoneNumber).done(function (response) {
+            restSelf.get('/api/maindb-data/' + phoneNumber + '/name').done(function (response) {
                 const customName = response.data;
                 if (customName !== phoneNumber) {
                     const idName = customName.split('[')[0];
@@ -246,7 +246,7 @@ const ipccCommunicator = new IpccCommunicator()
             $('.-calling-number').val(phoneNumber).text(phoneNumber);
             console.log('[발신] 전화받음 [' + moment().format('HH시 mm분') + ']');
         }
-        restSelf.get('/api/maindb-data/custom-info/' + phoneNumber).done(function (response) {
+        restSelf.get('/api/maindb-data/' + phoneNumber + '/name').done(function (response) {
             const customName = response.data;
             if (customName !== phoneNumber) {
                 const idName = customName.split('[')[0];

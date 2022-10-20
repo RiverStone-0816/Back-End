@@ -8,6 +8,7 @@ import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbMultichannel
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.MaindbCustomInfoRecord;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbCustomInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup;
 import kr.co.eicn.ippbx.model.dto.eicn.MaindbCustomFieldResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
@@ -542,5 +543,14 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
                 .from(TABLE)
                 .where(TABLE.MAINDB_SYS_CUSTOM_ID.eq(id))
                 .fetchOneInto(MaindbCustomInfoService.customInfo.class);
+    }
+
+    public List<MaindbCustomInfo> findAllByCustomNumber(String phoneNumber) {
+        return dsl.select(TABLE.fields())
+                .from(TABLE)
+                .join(multichannelInfoTable)
+                .on(TABLE.MAINDB_SYS_CUSTOM_ID.eq(multichannelInfoTable.MAINDB_CUSTOM_ID))
+                .where(multichannelInfoTable.CHANNEL_TYPE.eq(MultichannelChannelType.PHONE.getCode()).and(multichannelInfoTable.CHANNEL_DATA.eq(phoneNumber)))
+                .fetchInto(MaindbCustomInfo.class);
     }
 }

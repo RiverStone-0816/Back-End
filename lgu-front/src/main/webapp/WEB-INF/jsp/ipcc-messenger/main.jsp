@@ -537,7 +537,7 @@
                             return;
                         }
 
-                        restSelf.get('/api/maindb-data/custom-info/' + number).done(function (response) {
+                        restSelf.get('/api/maindb-data/' + number + '/name').done(function (response) {
                             const customName = response.data;
                             if (customName !== phoneNumber) {
                                 const idName = customName.split('[')[0];

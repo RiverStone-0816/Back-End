@@ -88,6 +88,11 @@ public class MaindbCustomInfoApiController extends ApiBaseController {
         return JsonResult.data(service.getRepository().findOne(customId));
     }
 
+    @GetMapping("{phoneNumber}/name")
+    public ResponseEntity<JsonResult<String>> getCustomName(@PathVariable String phoneNumber) {
+        return ResponseEntity.ok(JsonResult.data(service.getCustomNameByPhoneNumber(phoneNumber)));
+    }
+
 /*
     //고객정보필드목록조회
     @GetMapping("{type}")
