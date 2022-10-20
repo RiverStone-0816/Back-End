@@ -130,7 +130,11 @@ public class RecordManagerApiController extends ApiBaseController {
 			}
 		} catch (IOException e) {
 			log.error("RecordManagerApiController.disk ERROR[error={}]", e.getMessage());
-			throw new IllegalArgumentException("시스템 정보를 읽어올 수 없습니다.");
+			disk.setAvail("0");
+			disk.setUse("0");
+			disk.setUsed("0");
+			return ResponseEntity.ok().body(data(disk));
+			//throw new IllegalArgumentException("시스템 정보를 읽어올 수 없습니다.");
 		}
 
 		return ResponseEntity.ok().body(data(disk));

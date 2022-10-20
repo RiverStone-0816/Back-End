@@ -51,7 +51,7 @@
             <div class="row">
                 <div class="four wide column"><label class="control-label">암호키</label></div>
                 <div class="twelve wide column">
-                    <div class="ui input fluid"><form:input path="encKey"/></div>
+                    <div class="ui input fluid"><form:password path="encKey"/></div>
                 </div>
             </div>
         </div>

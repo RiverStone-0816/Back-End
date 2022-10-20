@@ -47,7 +47,7 @@
                                     <tr data-id="${e.id}">
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td><fmt:formatDate value="${e.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                        <td>${g.htmlQuote(e.encKey)}</td>
+                                        <td>${g.htmlQuote(e.encKey.substring(0,3).concat("****") )}</td>
                                     </tr>
                                 </c:forEach>
                             </c:when>
