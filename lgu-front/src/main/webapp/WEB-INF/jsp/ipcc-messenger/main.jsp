@@ -142,6 +142,9 @@
                                                 <input id="calling-custom" class="-calling-custom" type="text" value="" placeholder="고객명">
                                                     <%--<span class="pull-right" id="status-keeping-time"></span>--%>
                                             </div>
+                                            <div class="service">
+                                                <input id="calling-service" class="-calling-service" type="text" value="" placeholder="인입경로">
+                                            </div>
                                         </div>
                                         <div class="state-control">
                                             <ul>
@@ -585,7 +588,7 @@
                         messenger.init();
                         </c:when>
                         <c:otherwise>
-                        messenger.loginSuccess()
+                        messenger.setWindowSize(580, 149)
                         </c:otherwise>
                         </c:choose>
                     });
@@ -714,6 +717,7 @@
                     function logout() {
                         restSelf.get("/api/auth/logout").done(function () {
                             location.href = contextPath + '/ipcc-messenger';
+                            messenger.setWindowSize(536, 700)
                         });
                     }
                 </script>

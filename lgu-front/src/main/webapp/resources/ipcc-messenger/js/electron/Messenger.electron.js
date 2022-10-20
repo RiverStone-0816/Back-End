@@ -982,8 +982,8 @@ Messenger.prototype.popupMemoModal = function (seq, withReply) {
     ipcRenderer.send('openMemoModal', {"seq": seq, "withReply": withReply});
 }
 
-Messenger.prototype.loginSuccess = function () {
-        ipcRenderer.send('loginSuccess');
+Messenger.prototype.setWindowSize = function (width, height) {
+        ipcRenderer.send('setWindowSize', {"width": width, "height": height});
 }
 
 Messenger.prototype.init = function () {
