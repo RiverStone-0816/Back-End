@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
+import kr.co.eicn.ippbx.model.dto.eicn.WtalkTemplateSummaryResponse;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
 
-import kr.co.eicn.ippbx.model.dto.eicn.TalkTemplateSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchPersonListResponse;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -71,8 +71,8 @@ public class WtalkTemplateApiControllerTest extends BaseControllerTest {
                 )
                 .andReturn();
 
-        final List<TalkTemplateSummaryResponse> summaryResponses = listData(result, TalkTemplateSummaryResponse.class);
-        for(TalkTemplateSummaryResponse summaryResponse : summaryResponses){
+        final List<WtalkTemplateSummaryResponse> summaryResponses = listData(result, WtalkTemplateSummaryResponse.class);
+        for(WtalkTemplateSummaryResponse summaryResponse : summaryResponses){
             log.info(summaryResponse.toString());
         }
     }
