@@ -319,7 +319,7 @@
                 <c:otherwise>
                     <main class="container no-messenger">
                         <aside class="left-panel no-drag">
-                            <section style="margin: 10px 0; height: 81px; border-bottom: solid 1px #dbdbdb; !important;">
+                            <section style="margin: 10px 0; height: 100px; border-bottom: solid 1px #dbdbdb; !important;">
                                 <ul class="nav">
                                     <li>
                                         <button class="ui icon button brand" id="user-state-change" title="내상태">
@@ -354,7 +354,9 @@
                                         </div>
                                         <div class="name">
                                             <input id="calling-custom" class="-calling-custom" type="text" value="" placeholder="고객명">
-                                                <%--<span class="pull-right" id="status-keeping-time"></span>--%>
+                                        </div>
+                                        <div class="service">
+                                            <input id="calling-service" class="-calling-service" type="text" value="" placeholder="인입경로">
                                         </div>
                                     </div>
                                     <div class="state-control">
@@ -588,7 +590,7 @@
                         messenger.init();
                         </c:when>
                         <c:otherwise>
-                        messenger.setWindowSize(580, 149)
+                        messenger.setWindowSize(580, 169)
                         </c:otherwise>
                         </c:choose>
                     });

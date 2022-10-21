@@ -840,7 +840,7 @@ ol li {
 
 #call-remote-container {
     position: relative;
-    height: 91px;
+    height: 110px;
     padding-top: 35px;
 }
 
@@ -854,13 +854,15 @@ ol li {
     font-size: 13px;
 }
 
-.call-state .num {
+.call-state .num,
+.call-state .name{
     border-bottom: 1px solid #dbdbdb;
     padding: 2px;
 }
 
 .call-state .num input,
-.call-state .name input {
+.call-state .name input,
+.call-state .service input{
     border: 0;
     outline: 0;
     width: 100%;

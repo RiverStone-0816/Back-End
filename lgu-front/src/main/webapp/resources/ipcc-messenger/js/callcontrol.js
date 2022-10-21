@@ -182,7 +182,7 @@ const ipccCommunicator = new IpccCommunicator()
 
             const queueName = candidateQueues && candidateQueues.length > 0 ? candidateQueues[0].hanName : null;
 
-            // $(".-calling-path").text((services[callingPath] != null ? services[callingPath] + '(' + callingPath + ')' : callingPath) + (queueName ? ' ' + queueName + '(' + secondNum + ')' : ''));
+            $(".-calling-service").text((services[callingPath] != null ? services[callingPath] + '(' + callingPath + ')' : callingPath) + (queueName ? ' ' + queueName + '(' + secondNum + ')' : ''));
             $('.-calling-number').val(phoneNumber).text(phoneNumber);
             $('.-call-waiting-time').text('0초');
             restSelf.get('/api/maindb-data/' + phoneNumber + '/name').done(function (response) {
