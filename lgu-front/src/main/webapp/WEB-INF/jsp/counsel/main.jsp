@@ -704,10 +704,10 @@
             restSelf.get('/api/auth/socket-info').done(function (response) {
                 const fromUi = "EICN_IPCC";
                 if (response.data.extension != null)
-                    ipccCommunicator.connect(response.data.callControlSocketUrl, response.data.pbxHost, response.data.companyId, response.data.userId, response.data.extension, hex_sha512(response.data.password), response.data.idType, fromUi, response.data.isMulti);
+                    ipccCommunicator.connect(response.data.callControlSocketUrl, response.data.pbxHost, response.data.companyId, response.data.userId, response.data.extension, response.data.password, response.data.idType, fromUi, response.data.isMulti);
 
                 <c:if test="${user.isTalk.equals('Y')}">
-                talkCommunicator.connect(response.data.talkSocketUrl, response.data.companyId, response.data.userId, hex_sha512(response.data.password), "USER", response.data.idType);
+                talkCommunicator.connect(response.data.talkSocketUrl, response.data.companyId, response.data.userId, response.data.password, "USER", response.data.idType);
                 </c:if>
             });
 
