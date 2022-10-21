@@ -21,7 +21,7 @@ $(window).on('load', function () {
     restSelf.get('/api/auth/socket-info').done(function (response) {
         const fromUi = "EICN_CHATT";
         if (response.data.extension)
-            ipccCommunicator.connect(response.data.callControlSocketUrl, response.data.pbxHost, response.data.companyId, response.data.userId, response.data.extension, hex_sha512(response.data.password), response.data.idType, fromUi, response.data.isMulti);
+            ipccCommunicator.connect(response.data.callControlSocketUrl, response.data.pbxHost, response.data.companyId, response.data.userId, response.data.extension, response.data.password, response.data.idType, fromUi, response.data.isMulti);
     });
 });
 
