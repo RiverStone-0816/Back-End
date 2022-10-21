@@ -44,6 +44,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -206,7 +208,7 @@ public class AuthApiController extends BaseController {
                 .pbxHost(serverInfo == null ? "" : serverInfo.getIp())
                 .userId(user.getId())
                 .userName(user.getIdName())
-                .password(loginForm.getPassword())
+                .password(getSHA512(getSHA512(loginForm.getPassword())+user.getSoltPw()))
                 .companyId(user.getCompanyId())
                 .extension(loginForm.getExtension())
                 .idType(user.getIdType())
@@ -318,5 +320,23 @@ public class AuthApiController extends BaseController {
         private String turnServerPort;
         private String turnUser;
         private String turnSecret;
+    }
+
+    private String getSHA512(String str) {
+        String rtnSHA = "";
+        try{
+            MessageDigest sh = MessageDigest.getInstance("SHA-512");
+            sh.update(str.getBytes());
+            byte[] byteData = sh.digest();
+            StringBuffer sb = new StringBuffer();
+            for (byte byteDatum : byteData) {
+                sb.append(Integer.toString((byteDatum & 0xff) + 0x100, 16).substring(1));
+            }
+            rtnSHA = sb.toString();
+        }catch(NoSuchAlgorithmException e){
+            e.printStackTrace();
+            rtnSHA = null;
+        }
+        return rtnSHA;
     }
 }
