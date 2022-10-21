@@ -51,10 +51,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     private final PasswordEncoder passwordEncoder;
     private final ArsAuthRepository arsAuthRepository;
     private final PBXServerInterface pbxServerInterface;
+    private final UserRepository userRepository;
 
     public CustomAuthenticationProvider(PersonListRepository personListRepository, CompanyInfoRepository companyInfoRepository,
                                         CompanyServerRepository companyServerRepository, WebSecureHistoryRepository webSecureHistoryRepository
-            , ExtensionRepository extensionRepository, PasswordEncoder passwordEncoder, ArsAuthRepository arsAuthRepository, PBXServerInterface pbxServerInterface) {
+            , ExtensionRepository extensionRepository, PasswordEncoder passwordEncoder, ArsAuthRepository arsAuthRepository, PBXServerInterface pbxServerInterface, UserRepository userRepository) {
         this.personListRepository = personListRepository;
         this.companyInfoRepository = companyInfoRepository;
         this.companyServerRepository = companyServerRepository;
@@ -63,6 +64,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         this.passwordEncoder = passwordEncoder;
         this.arsAuthRepository = arsAuthRepository;
         this.pbxServerInterface = pbxServerInterface;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -114,21 +116,17 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             }
         }
 
-		/*if (!passwordEncoder.matches(authenticationRequest.getCredentials().toString(), user.getPasswd())) {
-			webSecureHistoryRecord.setActionId("LOGIN");
-			webSecureHistoryRecord.setActionSubId("WRONG_PASSWORD");
-			webSecureHistoryRecord.setActionData("패스워드오류");
-			webSecureHistoryRepository.insert(webSecureHistoryRecord);
-			throw new IllegalStateException("아이디 패스워드 인증에 실패하셨습니다.");
-		}*/
-
-        if (!getSHA512(authenticationRequest.getCredentials().toString()).equals(user.getPasswd()) && !authenticationRequest.getCredentials().toString().equals(user.getPasswd())) {
-            webSecureHistoryRecord.setActionId(WebSecureActionType.LOGIN.getCode());
-            webSecureHistoryRecord.setActionSubId(WebSecureActionSubType.WRONG_PASSWORD.getCode());
-            webSecureHistoryRecord.setActionData("패스워드오류");
-            personListRepository.countLoginFail(user.getId(), user.getTryLoginCount() + 1);
-            webSecureHistoryRepository.insert(webSecureHistoryRecord);
-            throw new IllegalStateException("아이디 패스워드 인증에 실패하셨습니다.");
+        if (!getSHA512(getSHA512(authenticationRequest.getCredentials().toString())+user.getSoltPw()).equals(user.getPasswd())) {
+            if(!getSHA512(authenticationRequest.getCredentials().toString()).equals(user.getPasswd())) {
+                webSecureHistoryRecord.setActionId(WebSecureActionType.LOGIN.getCode());
+                webSecureHistoryRecord.setActionSubId(WebSecureActionSubType.WRONG_PASSWORD.getCode());
+                webSecureHistoryRecord.setActionData("패스워드오류");
+                personListRepository.countLoginFail(user.getId(), user.getTryLoginCount() + 1);
+                webSecureHistoryRepository.insert(webSecureHistoryRecord);
+                throw new IllegalStateException("아이디 패스워드 인증에 실패하셨습니다.");
+            } else {
+                userRepository.loginUpdatePassword(user.getId(), authenticationRequest.getCredentials().toString(), user.getCompanyId());
+            }
         }
 
         final Optional<CompanyServerEntity> optionalPbxServer = companyServerRepository.findAllType(ServerType.PBX).stream().findAny();

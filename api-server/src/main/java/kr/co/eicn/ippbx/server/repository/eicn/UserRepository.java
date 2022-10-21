@@ -35,6 +35,8 @@ import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
 import static org.apache.commons.lang3.StringUtils.*;
+import static org.jooq.impl.DSL.left;
+import static org.jooq.impl.DSL.md5;
 
 @Getter
 @Repository
@@ -130,11 +132,13 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
             });
         }
 
+        final String solt_pw =  getMD5(String.valueOf(Math.random() * 10000000)).substring(0,10);
+
         final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList();
 
         record.setId(form.getId());
         record.setIdType(form.getIdType());
-        record.setPasswd(getSHA512(form.getPassword()));
+        record.setPasswd(getSHA512(getSHA512(form.getPassword())+solt_pw));
         record.setIdName(form.getIdName());
 
         if (companyTree != null) {
@@ -172,7 +176,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
         if("Y".equals(form.getIsStat())) licenseList += "STAT|";
         if("Y".equals(form.getIsChatt())) licenseList += "CHATT|";
         record.setLicenseList(licenseList);
-
+        record.setSoltPw(solt_pw);
         if (phone != null)
             record.setPeer(phone.getPeer());
 
@@ -274,10 +278,10 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
     }
 
     public void updatePassword(String id, String password) {
-        findOneIfNullThrow(id);
+        final UserEntity entity = solt(id);
 
         dsl.update(PERSON_LIST)
-                .set(PERSON_LIST.PASSWD, getSHA512(password))
+                .set(PERSON_LIST.PASSWD, getSHA512(getSHA512(password)+entity.getSoltPw()))
                 .set(PERSON_LIST.PASS_CHANGE_DATE, DSL.now())
                 .where(getCondition(id))
                 .execute();
@@ -286,11 +290,45 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
                 .forEach(e -> {
                     DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
                     pbxDsl.update(PERSON_LIST)
-                            .set(PERSON_LIST.PASSWD, getSHA512(password))
+                            .set(PERSON_LIST.PASSWD, getSHA512(getSHA512(password)+ entity.getSoltPw()))
                             .set(PERSON_LIST.PASS_CHANGE_DATE, DSL.now())
+                            .set(PERSON_LIST.SOLT_PW, entity.getSoltPw())
                             .where(getCondition(id))
                             .execute();
                 });
+    }
+
+    public void loginUpdatePassword(String id, String password, String company) {
+        final UserEntity entity = solt(id);
+
+        dsl.update(PERSON_LIST)
+                .set(PERSON_LIST.PASSWD, getSHA512(getSHA512(password)+entity.getSoltPw()))
+                .set(PERSON_LIST.PASS_CHANGE_DATE, DSL.now())
+                .where(getCondition(id))
+                .execute();
+
+        cacheService.pbxServerList(company)
+                .forEach(e -> {
+                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
+                        pbxDsl.update(PERSON_LIST)
+                                .set(PERSON_LIST.PASSWD, getSHA512(getSHA512(password)+ entity.getSoltPw()))
+                                .set(PERSON_LIST.PASS_CHANGE_DATE, DSL.now())
+                                .set(PERSON_LIST.SOLT_PW, entity.getSoltPw())
+                                .where(getCondition(id))
+                                .execute();
+                    }
+                });
+    }
+
+    public UserEntity solt(String id){
+        final UserEntity entity = findOneIfNullThrow(id);
+        if (StringUtils.isEmpty(entity.getSoltPw())) {
+            dsl.update(PERSON_LIST)
+                    .set(PERSON_LIST.SOLT_PW, left(md5(String.valueOf(Math.random() * 10000000)), 10))
+                    .where(getCondition(id))
+                    .execute();
+        }
+        return findOneIfNullThrow(id);
     }
 
     private List<Condition> conditions(PersonSearchRequest search) {
@@ -348,5 +386,23 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
         return rtnSHA;
     }
 
+    private String getMD5(String pwd) {
+        String MD5 = "";
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(pwd.getBytes());
+            byte byteData[] = md.digest();
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < byteData.length; i++) {
+                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            MD5 = sb.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            MD5 = null;
+        }
+        return MD5;
+    }
 
 }
