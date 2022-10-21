@@ -190,6 +190,7 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
         return dsl.select(PERSON_LIST.fields())
                 .from(PERSON_LIST)
                 .where(PERSON_LIST.ID.eq(id))
+                .and(PERSON_LIST.COMPANY_ID.eq(getCompanyId()))
                 .fetch().size() > 0;
     }
 

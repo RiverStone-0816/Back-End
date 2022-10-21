@@ -23,6 +23,7 @@ public class PersonSummaryResponse {
 	private String removeRecordingAuthority; // 녹취권한 삭제
 	private String dataSearchAuthority;
 
+	private String licenseList;	// license 통합
 	private String isPds;       // pds 사용여부
 	private String isStat;      // 통계,모니터링,상담원연결여부
 	private String isTalk;      // 상담톡 여부
@@ -33,5 +34,25 @@ public class PersonSummaryResponse {
 	public boolean admin() {
 		val ADMIN_TYPES = Arrays.asList(IdType.MASTER, IdType.SUPER_ADMIN, IdType.ADMIN);
 		return ADMIN_TYPES.contains(IdType.of(idType));
+	}
+
+	public String getIsPds(){
+		return this.licenseList.contains("PDS") ? "Y" : "N";
+	}
+
+	public String getIsStat(){
+		return this.licenseList.contains("STAT") ? "Y" : "N";
+	}
+
+	public String getIsTalk(){
+		return this.licenseList.contains("TALK") ? "Y" : "N";
+	}
+
+	public String getIsEmail(){
+		return this.licenseList.contains("EMAIL") ? "Y" : "N";
+	}
+
+	public String getIsChatt(){
+		return this.licenseList.contains("CHATT") ? "Y" : "N";
 	}
 }

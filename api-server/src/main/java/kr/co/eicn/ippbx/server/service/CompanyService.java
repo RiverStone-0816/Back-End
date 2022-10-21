@@ -50,31 +50,31 @@ public class CompanyService extends ApiBaseService {
 		licence.setPdsLicense(
 				LicenseInfo.builder()
 						.licence(company.getPdsLicense())
-						.currentLicence(personLists.stream().filter(e -> "Y".equals(e.getIsPds())).mapToInt(e -> 1).sum())
+						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains("PDS")).mapToInt(e -> 1).sum())
 						.build()
 		);
 		licence.setStatLicence(
 				LicenseInfo.builder()
 						.licence(company.getStatLicense())
-						.currentLicence(personLists.stream().filter(e -> "Y".equals(e.getIsStat())).mapToInt(e -> 1).sum())
+						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains("STAT")).mapToInt(e -> 1).sum())
 						.build()
 		);
 		licence.setTalkLicense(
 				LicenseInfo.builder()
 						.licence(company.getTalkLicense())
-						.currentLicence(personLists.stream().filter(e -> "Y".equals(e.getIsTalk())).mapToInt(e -> 1).sum())
+						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains("TALK")).mapToInt(e -> 1).sum())
 						.build()
 		);
 		licence.setEmailLicense(
 				LicenseInfo.builder()
 						.licence(company.getEmailLicense())
-						.currentLicence(personLists.stream().filter(e -> "Y".equals(e.getIsEmail())).mapToInt(e -> 1).sum())
+						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains("EMAIL")).mapToInt(e -> 1).sum())
 						.build()
 		);
 		licence.setChattLicense(
 				LicenseInfo.builder()
 						.licence(company.getChattLicense())
-						.currentLicence(personLists.stream().filter(e -> "Y".equals(e.getIsChatt())).mapToInt(e -> 1).sum())
+						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains("CHATT")).mapToInt(e -> 1).sum())
 						.build()
 		);
 		licence.setSttLicense(

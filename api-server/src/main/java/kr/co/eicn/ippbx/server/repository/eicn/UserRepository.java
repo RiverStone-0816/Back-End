@@ -165,6 +165,14 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
         record.setPeer(EMPTY);
         record.setTryLoginCount(0);
 
+        String licenseList = "|";
+        if("Y".equals(form.getIsPds())) licenseList += "PDS|";
+        if("Y".equals(form.getIsTalk())) licenseList += "TALK|";
+        if("Y".equals(form.getIsEmail())) licenseList += "EMAIL|";
+        if("Y".equals(form.getIsStat())) licenseList += "STAT|";
+        if("Y".equals(form.getIsChatt())) licenseList += "CHATT|";
+        record.setLicenseList(licenseList);
+
         if (phone != null)
             record.setPeer(phone.getPeer());
 
@@ -211,6 +219,14 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
             record.setGroupLevel(companyTree.getGroupLevel());
             record.setGroupTreeName(companyTree.getGroupTreeName());
         }
+
+        String licenseList = "|";
+        if("Y".equals(form.getIsPds())) licenseList += "PDS|";
+        if("Y".equals(form.getIsTalk())) licenseList += "TALK|";
+        if("Y".equals(form.getIsEmail())) licenseList += "EMAIL|";
+        if("Y".equals(form.getIsStat())) licenseList += "STAT|";
+        if("Y".equals(form.getIsChatt())) licenseList += "CHATT|";
+        record.setLicenseList(licenseList);
 
         personListRepository.updateByKey(record, id);
 
@@ -331,4 +347,6 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
         }
         return rtnSHA;
     }
+
+
 }
