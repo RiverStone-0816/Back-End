@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.service;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbCustomInfo;
 import kr.co.eicn.ippbx.server.repository.customdb.MaindbCustomInfoRepository;
 import lombok.Data;
 import lombok.SneakyThrows;
@@ -95,5 +96,14 @@ public class MaindbCustomInfoService extends ApiBaseService implements Applicati
     @Data
     public static class customInfo {
         private List<String> customImgList = new ArrayList<>();
+    }
+
+    public String getCustomNameByPhoneNumber(String phoneNumber) {
+        List<MaindbCustomInfo> allByCustomNumber = getRepository().findAllByCustomNumber(phoneNumber);
+
+        if (allByCustomNumber.size() > 0)
+            return allByCustomNumber.get(0).getMaindbString_1();
+        else
+            return "등록되지 않은 고객";
     }
 }

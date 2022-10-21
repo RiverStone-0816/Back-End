@@ -60,6 +60,11 @@ public class MaindbDataApiController extends BaseController {
         return apiInterface.get(id);
     }
 
+    @GetMapping("{phoneNumber}/name")
+    public String getCustomName(@PathVariable String phoneNumber) throws IOException, ResultFailException {
+        return apiInterface.getCustomName(phoneNumber);
+    }
+
     @DeleteMapping("{id}")
     public void deleteData(@PathVariable String id) throws IOException, ResultFailException {
         apiInterface.deleteData(id);
