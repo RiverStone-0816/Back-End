@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.repository;
 
+import kr.co.eicn.ippbx.model.search.MainBoardRequest;
 import kr.co.eicn.ippbx.server.config.Constants;
 import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
@@ -73,23 +74,11 @@ public class RepositoryTest extends BaseControllerTest {
 	@Autowired
 	private PersonListRepository personListRepository;
 	@Autowired
-	private TalkMemberGroupRepository talkMemberGroupRepository;
-	@Autowired
-	private TalkMemberListRepository talkMemberListRepository;
-	@Autowired
 	private UserRepository userRepository;
 	@Autowired
 	private CompanyTreeRepository companyTreeRepository;
 	@Autowired
 	private CallbackDistRepository callbackDistRepository;
-	@Autowired
-	private TalkScheduleGroupRepository talkScheduleGroupRepository;
-	@Autowired
-	private TalkServiceInfoRepository talkServiceInfoRepository;
-	@Autowired
-	private TalkScheduleInfoRepository talkScheduleInfoRepository;
-	@Autowired
-	private TalkStatisticsService talkStatisticsService;
 	@Autowired
 	private OutScheduleSeedRepository outScheduleSeedRepository;
 	@Autowired
@@ -124,6 +113,17 @@ public class RepositoryTest extends BaseControllerTest {
 	private StatQueueWaitService statQueueWaitService;
 	@Autowired
 	private ArsAuthRepository arsAuthRepository;
+	@Autowired
+	private MainBoardRepository mainBoardRepository;
+
+//	@Test
+	public void mainBoardTest(){
+		final MainBoardRequest request = new MainBoardRequest();
+		//log.info("Main Board Before TEST -> {}",mainBoardRepository.findAllLoginBefore());
+		log.info("Main Board After TEST -> {}",mainBoardRepository.findAllLoginAfter());
+		log.info("Main Board topFixList TEST -> {}",mainBoardRepository.topFixList());
+		log.info("Main Board pagination TEST -> {}",mainBoardRepository.pagination(request).getRows());
+	}
 
 //	@Test
 	public void get_talk_serviceinfo_lists() {
