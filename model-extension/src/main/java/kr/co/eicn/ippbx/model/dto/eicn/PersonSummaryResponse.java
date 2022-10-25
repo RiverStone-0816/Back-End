@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.model.dto.eicn;
 
 import kr.co.eicn.ippbx.model.enums.IdType;
+import kr.co.eicn.ippbx.model.enums.LicenseListType;
 import lombok.Data;
 import lombok.val;
 
@@ -38,22 +39,22 @@ public class PersonSummaryResponse {
 	}
 
 	public String getIsPds(){
-		return this.licenseList.contains("PDS") ? "Y" : "N";
+		return this.licenseList.contains(LicenseListType.PDS.getCode()) ? "Y" : "N";
 	}
 
 	public String getIsStat(){
-		return this.licenseList.contains("STAT") ? "Y" : "N";
+		return this.licenseList.contains(LicenseListType.STAT.getCode()) ? "Y" : "N";
 	}
 
 	public String getIsTalk(){
-		return this.licenseList.contains("TALK") ? "Y" : "N";
+		return this.licenseList.contains(LicenseListType.TALK.getCode()) ? "Y" : "N";
 	}
 
 	public String getIsEmail(){
-		return this.licenseList.contains("EMAIL") ? "Y" : "N";
+		return this.licenseList.contains(LicenseListType.EMAIL.getCode()) ? "Y" : "N";
 	}
 
 	public String getIsChatt(){
-		return this.licenseList.contains("CHATT") ? "Y" : "N";
+		return this.licenseList.contains(LicenseListType.CHATT.getCode()) ? "Y" : "N";
 	}
 }
