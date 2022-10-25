@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonOnHunt;
 import kr.co.eicn.ippbx.model.enums.ChattingJoinStatus;
 import kr.co.eicn.ippbx.model.enums.IdStatus;
+import kr.co.eicn.ippbx.model.enums.LicenseListType;
 import kr.co.eicn.ippbx.model.search.ChattingMemberSearchRequest;
 import kr.co.eicn.ippbx.model.search.StatUserSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
@@ -198,7 +199,7 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
         return dsl.selectFrom(PERSON_LIST)
                 .where(PERSON_LIST.ID_STATUS.notEqual(IdStatus.RETIRE.getCode()))
                 .and(PERSON_LIST.COMPANY_ID.eq(getCompanyId()))
-                .and(PERSON_LIST.IS_CHATT.eq(ChattingJoinStatus.ACTIVE.getCode()))
+                .and(PERSON_LIST.LICENSE_LIST.like("%"+ LicenseListType.CHATT.getCode() +"%"))
                 .and(StringUtils.isNotEmpty(search.getUserName()) ?
                         PERSON_LIST.ID_NAME.like("%" + search.getUserName() + "%").or(PERSON_LIST.ID.like("%" + search.getUserName() + "%")) : noCondition())
                 .fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList.class);

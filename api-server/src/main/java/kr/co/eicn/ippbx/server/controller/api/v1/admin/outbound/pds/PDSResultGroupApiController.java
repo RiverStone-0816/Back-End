@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.pds;
 
+import kr.co.eicn.ippbx.model.enums.LicenseListType;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
@@ -94,7 +95,7 @@ public class PDSResultGroupApiController extends ApiBaseController {
 
 		//final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo> phoneInfos = phoneInfoRepository.findAll(PHONE_INFO.HOST.eq(queue.getHost()));
 
-		final Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> personListMap = personListRepository.findAll(PERSON_LIST.IS_PDS.eq("Y"))
+		final Map<String, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> personListMap = personListRepository.findAll(PERSON_LIST.LICENSE_LIST.like("%"+ LicenseListType.PDS.getCode() +"%"))
 				.stream()
 				.collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList::getId, e -> e));
 
@@ -205,7 +206,7 @@ public class PDSResultGroupApiController extends ApiBaseController {
 				.stream()
 				.collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList::getExtension, e -> e));
 */
-		final List<SummaryPersonResponse> persons = personListRepository.findAll(PERSON_LIST.IS_PDS.eq("Y")).stream()
+		final List<SummaryPersonResponse> persons = personListRepository.findAll(PERSON_LIST.LICENSE_LIST.like("%"+LicenseListType.PDS.getCode()+"%")).stream()
 				.map((e) -> {
 					final SummaryPersonResponse summaryPerson = convertDto(e, SummaryPersonResponse.class);
 

@@ -4,10 +4,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.model.LicenseInfo;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyLicenceEntity;
-import kr.co.eicn.ippbx.model.enums.IdStatus;
-import kr.co.eicn.ippbx.model.enums.RecordType;
-import kr.co.eicn.ippbx.model.enums.SoftPhoneType;
-import kr.co.eicn.ippbx.model.enums.SttType;
+import kr.co.eicn.ippbx.model.enums.*;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.PhoneInfoRepository;
@@ -50,31 +47,31 @@ public class CompanyService extends ApiBaseService {
 		licence.setPdsLicense(
 				LicenseInfo.builder()
 						.licence(company.getPdsLicense())
-						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains("PDS")).mapToInt(e -> 1).sum())
+						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains(LicenseListType.PDS.getCode())).mapToInt(e -> 1).sum())
 						.build()
 		);
 		licence.setStatLicence(
 				LicenseInfo.builder()
 						.licence(company.getStatLicense())
-						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains("STAT")).mapToInt(e -> 1).sum())
+						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains(LicenseListType.STAT.getCode())).mapToInt(e -> 1).sum())
 						.build()
 		);
 		licence.setTalkLicense(
 				LicenseInfo.builder()
 						.licence(company.getTalkLicense())
-						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains("TALK")).mapToInt(e -> 1).sum())
+						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains(LicenseListType.TALK.getCode())).mapToInt(e -> 1).sum())
 						.build()
 		);
 		licence.setEmailLicense(
 				LicenseInfo.builder()
 						.licence(company.getEmailLicense())
-						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains("EMAIL")).mapToInt(e -> 1).sum())
+						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains(LicenseListType.EMAIL.getCode())).mapToInt(e -> 1).sum())
 						.build()
 		);
 		licence.setChattLicense(
 				LicenseInfo.builder()
 						.licence(company.getChattLicense())
-						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains("CHATT")).mapToInt(e -> 1).sum())
+						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains(LicenseListType.CHATT.getCode())).mapToInt(e -> 1).sum())
 						.build()
 		);
 		licence.setSttLicense(

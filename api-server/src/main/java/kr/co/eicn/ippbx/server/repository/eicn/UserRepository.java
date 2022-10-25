@@ -161,20 +161,15 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
         record.setIdStatus(defaultString(form.getIdStatus()));
         record.setHpNumber(form.getHpNumber());
         record.setEmailInfo(form.getEmailInfo());
-        record.setIsPds(form.getIsPds());
-        record.setIsTalk(form.getIsTalk());
-        record.setIsEmail(form.getIsEmail());
-        record.setIsStat(form.getIsStat());
-        record.setIsChatt(form.getIsChatt());
         record.setPeer(EMPTY);
         record.setTryLoginCount(0);
 
         String licenseList = "|";
-        if("Y".equals(form.getIsPds())) licenseList += "PDS|";
-        if("Y".equals(form.getIsTalk())) licenseList += "TALK|";
-        if("Y".equals(form.getIsEmail())) licenseList += "EMAIL|";
-        if("Y".equals(form.getIsStat())) licenseList += "STAT|";
-        if("Y".equals(form.getIsChatt())) licenseList += "CHATT|";
+        if("Y".equals(form.getIsPds())) licenseList += LicenseListType.PDS.getCode() + "|";
+        if("Y".equals(form.getIsTalk())) licenseList += LicenseListType.TALK.getCode() + "|";
+        if("Y".equals(form.getIsEmail())) licenseList += LicenseListType.EMAIL.getCode() + "|";
+        if("Y".equals(form.getIsStat())) licenseList += LicenseListType.STAT.getCode() + "|";
+        if("Y".equals(form.getIsChatt())) licenseList += LicenseListType.CHATT.getCode() + "|";
         record.setLicenseList(licenseList);
         record.setSoltPw(solt_pw);
         if (phone != null)
@@ -225,11 +220,11 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
         }
 
         String licenseList = "|";
-        if("Y".equals(form.getIsPds())) licenseList += "PDS|";
-        if("Y".equals(form.getIsTalk())) licenseList += "TALK|";
-        if("Y".equals(form.getIsEmail())) licenseList += "EMAIL|";
-        if("Y".equals(form.getIsStat())) licenseList += "STAT|";
-        if("Y".equals(form.getIsChatt())) licenseList += "CHATT|";
+        if("Y".equals(form.getIsPds())) licenseList += LicenseListType.PDS.getCode() + "|";
+        if("Y".equals(form.getIsTalk())) licenseList += LicenseListType.TALK.getCode() + "|";
+        if("Y".equals(form.getIsEmail())) licenseList += LicenseListType.EMAIL.getCode() + "|";
+        if("Y".equals(form.getIsStat())) licenseList += LicenseListType.STAT.getCode() + "|";
+        if("Y".equals(form.getIsChatt())) licenseList += LicenseListType.CHATT.getCode() + "|";
         record.setLicenseList(licenseList);
 
         personListRepository.updateByKey(record, id);
