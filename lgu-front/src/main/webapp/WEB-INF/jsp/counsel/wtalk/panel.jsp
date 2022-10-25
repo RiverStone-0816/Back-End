@@ -1268,22 +1268,18 @@
                     return this.templates.filter(e => e.permissionLevel >= _this.showingTemplateLevel && e.name.includes(_this.showingTemplateFilter))
                 },
                 keyup: function (event) {
-                    if (event.key === '/' && ['///', '//', '/'].includes(this.$refs.message.value)) {
-                        if (this.getTemplates().length > 0) {
-                            this.showingTemplateLevel = this.$refs.message.value === '///' ? 3 : this.$refs.message.value === '//' ? 2 : 1
-                        } else {
-                            this.showingTemplateLevel = 0
-                        }
-                        this.activatingTemplateIndex = null
-                        return
-                    } else
-                        this.showingTemplateLevel = 0
-
-                    if (event.key === 'Escape') {
+                    if (this.$refs.message.value.startsWith('/')) {
+                        this.showingTemplateLevel = this.$refs.message.value.startsWith('///') ? 3 : this.$refs.message.value.startsWith('//') ? 2 : 1
+                        this.showingTemplateFilter = this.$refs.message.value.substr(this.showingTemplateLevel).trim()
+                    } else {
                         this.showingTemplateLevel = 0
                         this.showingTemplateFilter = ''
-                        this.replying = null
+                        this.activatingTemplateIndex = null
                         this.showingTemplateBlocks = false
+                    }
+
+                    if (event.key === 'Escape') {
+                        this.replying = null
                         return
                     }
 
@@ -1300,8 +1296,6 @@
                         if (templates[this.activatingTemplateIndex] && event.key === 'Enter') {
                             return this.sendTemplate(templates[this.activatingTemplateIndex])
                         }
-                        this.showingTemplateFilter = this.$refs.message.value.substr(this.showingTemplateLevel).trim()
-                        this.activatingTemplateIndex = 0
                     }
 
                     if (event.key === 'Enter') {
