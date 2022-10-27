@@ -98,7 +98,7 @@ public class CounselApiController extends BaseController {
     /**
      * 상담톡 자동멘트 수정
      */
-    @PutMapping("talk-auto-enable/{roomId}")
+    @PutMapping("wtalk-auto-enable/{roomId}")
     public void updateTalkAutoEnable(@Valid @RequestBody TalkAutoEnableFormRequest form, BindingResult bindingResult, @PathVariable String roomId) throws IOException, ResultFailException {
         apiInterface.updateTalkAutoEnable(roomId, form);
     }
