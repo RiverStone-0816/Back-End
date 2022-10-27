@@ -1228,7 +1228,7 @@
                     }
                 },
                 setAutoEnable: function (roomId) {
-                    restSelf.put('/api/counsel/talk-auto-enable/' + roomId, {isAutoEnable: (this.isAutoEnable ? "Y" : "N")})
+                    restSelf.put('/api/counsel/wtalk-auto-enable/' + roomId, {isAutoEnable: (this.isAutoEnable ? "Y" : "N")})
                 },
                 pasteFromClipboard: function (event) {
                     let hasFile = false
