@@ -21,7 +21,7 @@ public class GradeListFormRequest extends BaseForm {
     /**
      * @see kr.co.eicn.ippbx.model.enums.RouteType
      */
-    @NotNull("우선순위 부여방법")
+    @NotNull("인입 방법")
     private String type;
     private String queueNumber;
 

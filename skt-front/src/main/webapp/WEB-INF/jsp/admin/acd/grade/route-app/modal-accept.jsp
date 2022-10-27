@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">우선순위부여방법</label></div>
+                <div class="four wide column"><label class="control-label">인입방법</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <div class="inline fields">
