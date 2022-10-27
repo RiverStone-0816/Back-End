@@ -895,7 +895,7 @@
 
                 <div class="wrap-inp" v-show="!isMessage">
                     <div class="inp-box">
-                        <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup" :disabled="isMessage"></textarea>
+                        <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteFromClipboard" @keydown.stop="keyDown" @keyup.stop="keyup" :disabled="isMessage"></textarea>
                     </div>
                     <button type="button" class="send-btn" @click="sendMessage()">전송</button>
                 </div>
@@ -1267,6 +1267,34 @@
                     const _this = this
                     return this.templates.filter(e => e.permissionLevel >= _this.showingTemplateLevel && e.name.includes(_this.showingTemplateFilter))
                 },
+                keyDown: function(event) {
+                    if (event.key === 'Escape') {
+                        this.replying = null
+                        return
+                    }
+
+                    if (this.showingTemplateLevel) {
+                        const templates = this.getTemplates()
+                        if (templates.length > 0 && event.key === 'ArrowDown') {
+                            event.preventDefault()
+                            if (this.activatingTemplateIndex === null) return this.activatingTemplateIndex = 0
+                            return this.activatingTemplateIndex = (this.activatingTemplateIndex + 1) % templates.length
+                        }
+                        if (templates.length > 0 && event.key === 'ArrowUp') {
+                            event.preventDefault()
+                            if (this.activatingTemplateIndex === null) return this.activatingTemplateIndex = templates.length - 1
+                            return this.activatingTemplateIndex = (this.activatingTemplateIndex - 1 + templates.length) % templates.length
+                        }
+                        if (templates[this.activatingTemplateIndex] && event.key === 'Enter') {
+                            event.preventDefault()
+                            return this.sendTemplate(templates[this.activatingTemplateIndex])
+                        }
+                    }
+
+                    if (event.key === 'Enter') {
+                        return this.sendMessage()
+                    }
+                },
                 keyup: function (event) {
                     if (this.$refs.message.value.startsWith('/')) {
                         this.showingTemplateLevel = this.$refs.message.value.startsWith('///') ? 3 : this.$refs.message.value.startsWith('//') ? 2 : 1
@@ -1276,30 +1304,6 @@
                         this.showingTemplateFilter = ''
                         this.activatingTemplateIndex = null
                         this.showingTemplateBlocks = false
-                    }
-
-                    if (event.key === 'Escape') {
-                        this.replying = null
-                        return
-                    }
-
-                    if (this.showingTemplateLevel) {
-                        const templates = this.getTemplates()
-                        if (templates.length > 0 && event.key === 'ArrowDown') {
-                            if (this.activatingTemplateIndex === null) return this.activatingTemplateIndex = 0
-                            return this.activatingTemplateIndex = (this.activatingTemplateIndex + 1) % templates.length
-                        }
-                        if (templates.length > 0 && event.key === 'ArrowUp') {
-                            if (this.activatingTemplateIndex === null) return this.activatingTemplateIndex = templates.length - 1
-                            return this.activatingTemplateIndex = (this.activatingTemplateIndex - 1 + templates.length) % templates.length
-                        }
-                        if (templates[this.activatingTemplateIndex] && event.key === 'Enter') {
-                            return this.sendTemplate(templates[this.activatingTemplateIndex])
-                        }
-                    }
-
-                    if (event.key === 'Enter') {
-                        return this.sendMessage()
                     }
                 },
                 loadTemplates: function () {
