@@ -1289,6 +1289,8 @@
                             event.preventDefault()
                             return this.sendTemplate(templates[this.activatingTemplateIndex])
                         }
+                        if (templates.length > 0 && !['ArrowDown', 'ArrowUp', 'Enter'].includes(event.key))
+                            return this.activatingTemplateIndex = 0
                     }
 
                     if (event.key === 'Enter') {
