@@ -116,8 +116,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             }
         }
 
-        if (!getSHA512(getSHA512(authenticationRequest.getCredentials().toString())+user.getSoltPw()).equals(user.getPasswd())) {
-            if(!getSHA512(authenticationRequest.getCredentials().toString()).equals(user.getPasswd())) {
+        //아래 조건식에 && 이후 조건을 지우지 마세요. MC버전 IVR 로그인 등에 필요한 코드입니다.
+        if (!getSHA512(getSHA512(authenticationRequest.getCredentials().toString()) + user.getSoltPw()).equals(user.getPasswd()) && !authenticationRequest.getCredentials().toString().equals(user.getPasswd())) {
+            if (!getSHA512(authenticationRequest.getCredentials().toString()).equals(user.getPasswd())) {
                 webSecureHistoryRecord.setActionId(WebSecureActionType.LOGIN.getCode());
                 webSecureHistoryRecord.setActionSubId(WebSecureActionSubType.WRONG_PASSWORD.getCode());
                 webSecureHistoryRecord.setActionData("패스워드오류");
