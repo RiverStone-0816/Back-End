@@ -35,7 +35,7 @@
         </div>
         <tags:nav/>
         <c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
-        <c:if test="${hasExtension}">
+        <c:if test="${(hasExtension && user.isStat == 'Y') || user.isTalk == 'Y'}">
             <tags:nav-counsel/>
         </c:if>
     </main>

@@ -15,6 +15,7 @@
 
 <c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
 <c:set var="isStat" value="${user.isStat == 'Y'}"/>
+<c:set var="isTalk" value="${user.isTalk == 'Y'}"/>
 <tags:layout>
     <div class="tab-label-flow-container">
         <ul class="tab-label-container" style="left: 0;"></ul>
@@ -24,7 +25,7 @@
 
     <div class="tab-content-container manage-main"></div>
 
-    <c:if test="${hasExtension && isStat}">
+    <c:if test="${(hasExtension && isStat) || isTalk}">
         <jsp:include page="/counsel/"/>
     </c:if>
 
