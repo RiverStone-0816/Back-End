@@ -47,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests().antMatchers(HttpMethod.POST,  "/auth/**").permitAll()
 				.antMatchers("/error").permitAll()
 				.antMatchers("/api/daemon").permitAll()
+				.antMatchers("/api/main-board-notice/after").permitAll()
 				.antMatchers("/api/v1/admin/record/history/**").permitAll()
 				.antMatchers("/api/v*/master/**").hasAnyRole(IdType.MASTER.name())
 				.anyRequest().authenticated().and()

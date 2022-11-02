@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Service
 public class DaemonInfoInterface extends ApiServerInterface {
-    private static final Logger logger = LoggerFactory.getLogger(AuthApiInterface.class);
+    private static final Logger logger = LoggerFactory.getLogger(DaemonInfoInterface.class);
 
     @SuppressWarnings("unchecked")
     public Map<String, String> getSocketList() throws IOException, ResultFailException {

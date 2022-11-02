@@ -4,6 +4,8 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.form.LoginForm;
 import kr.co.eicn.ippbx.front.service.FileService;
+import kr.co.eicn.ippbx.front.service.api.MainBoardNoticeApiInterface;
+import kr.co.eicn.ippbx.model.entity.eicn.MainBoardEntity;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ChattingApiInterface;
 import kr.co.eicn.ippbx.front.service.api.DaemonInfoInterface;
@@ -29,6 +31,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -42,6 +45,7 @@ public class MainController extends BaseController {
     private final DaemonInfoInterface daemonInfoInterface;
     private final WtalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
     private final ChattingApiInterface chattingApiInterface;
+    private final MainBoardNoticeApiInterface mainBoardNoticeApiInterface;
 
     @Value("${eicn.admin.socket.id}")
     private String adminSocketId;
@@ -69,8 +73,9 @@ public class MainController extends BaseController {
             return "redirect:/main";
 
         final Map<String, String> socketMap = daemonInfoInterface.getSocketList();
-
+        final List<MainBoardEntity> mainBoardEntities = mainBoardNoticeApiInterface.after();
         model.addAttribute("adminSocketUrl", socketMap.get(adminSocketId));
+        model.addAttribute("noticeList", mainBoardEntities);
 
         return "login";
     }
