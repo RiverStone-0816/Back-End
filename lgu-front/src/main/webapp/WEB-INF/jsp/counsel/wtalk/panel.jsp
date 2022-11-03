@@ -1294,7 +1294,10 @@
                     }
 
                     if (event.key === 'Enter') {
-                        return this.sendMessage()
+                        if (!event.shiftKey) {
+                            event.preventDefault();
+                            return this.sendMessage()
+                        }
                     }
                 },
                 keyup: function (event) {
