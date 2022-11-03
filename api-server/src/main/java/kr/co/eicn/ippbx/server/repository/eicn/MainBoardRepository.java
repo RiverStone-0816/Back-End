@@ -9,7 +9,6 @@ import kr.co.eicn.ippbx.model.enums.MainBoardPopupPoint;
 import kr.co.eicn.ippbx.model.enums.MainBoardPopupTarget;
 import kr.co.eicn.ippbx.model.enums.MainBoardTargetCompany;
 import kr.co.eicn.ippbx.model.search.MainBoardRequest;
-import kr.co.eicn.ippbx.util.page.PageForm;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.*;
@@ -59,20 +58,20 @@ public class MainBoardRepository extends EicnBaseRepository<MainBoard, MainBoard
                 .where();
     }
 
-    public List<MainBoardEntity> findAllLoginAfter(){
+    public List<MainBoardEntity> findAllLoginBefore(){
         final List<Condition> conditions = new ArrayList<>();
 
-        conditions.add(MAIN_BOARD_POPUP.POPUP_POINT.eq(MainBoardPopupPoint.AFTER.getCode()));
+        conditions.add(MAIN_BOARD_POPUP.POPUP_POINT.eq(MainBoardPopupPoint.BEFORE.getCode()));
         conditions.add(MAIN_BOARD_POPUP.START_DATE.le(new Timestamp(System.currentTimeMillis()))
                 .and(MAIN_BOARD_POPUP.END_DATE.ge(new Timestamp(System.currentTimeMillis()))));
 
         return super.findAll(conditions);
     }
 
-    public List<MainBoardEntity> findAllLoginBefore(){
+    public List<MainBoardEntity> findAllLoginAfter(){
         final List<Condition> conditions = new ArrayList<>();
 
-        conditions.add(MAIN_BOARD_POPUP.POPUP_POINT.eq(MainBoardPopupPoint.BEFORE.getCode()));
+        conditions.add(MAIN_BOARD_POPUP.POPUP_POINT.eq(MainBoardPopupPoint.AFTER.getCode()));
         conditions.add(MAIN_BOARD_TARGET.COMPANY_ID.eq(getCompanyId())
                 .or(MAIN_BOARD_TARGET.COMPANY_ID.eq(MainBoardTargetCompany.TOTAL.getCode())));
 

@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.model.enums;
 import kr.co.eicn.ippbx.util.CodeHasable;
 
 public enum MainBoardPopupTarget implements CodeHasable<String> {
-    ALL("A"), ADMIN("B"), CUSTOMER("C");
+    ADMIN("A"), CUSTOMER("B"), ALL("C");
 
     private final String code;
 

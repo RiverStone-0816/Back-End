@@ -73,7 +73,7 @@ public class MainController extends BaseController {
             return "redirect:/main";
 
         final Map<String, String> socketMap = daemonInfoInterface.getSocketList();
-        final List<MainBoardEntity> mainBoardEntities = mainBoardNoticeApiInterface.after();
+        final List<MainBoardEntity> mainBoardEntities = mainBoardNoticeApiInterface.before();
         model.addAttribute("adminSocketUrl", socketMap.get(adminSocketId));
         model.addAttribute("noticeList", mainBoardEntities);
 
@@ -82,7 +82,10 @@ public class MainController extends BaseController {
 
     @LoginRequired
     @GetMapping("main")
-    public String mainPage(Model model) {
+    public String mainPage(Model model) throws IOException, ResultFailException {
+        final List<MainBoardEntity> mainBoardEntities = mainBoardNoticeApiInterface.after();
+        model.addAttribute("noticeList", mainBoardEntities);
+
         return "main";
     }
 

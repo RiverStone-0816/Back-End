@@ -119,8 +119,8 @@ public class RepositoryTest extends BaseControllerTest {
 //	@Test
 	public void mainBoardTest(){
 		final MainBoardRequest request = new MainBoardRequest();
-		//log.info("Main Board Before TEST -> {}",mainBoardRepository.findAllLoginBefore());
-		log.info("Main Board After TEST -> {}",mainBoardRepository.findAllLoginAfter());
+		log.info("Main Board Before TEST -> {}",mainBoardRepository.findAllLoginBefore());
+//		log.info("Main Board After TEST -> {}",mainBoardRepository.findAllLoginAfter());
 		log.info("Main Board topFixList TEST -> {}",mainBoardRepository.topFixList());
 		log.info("Main Board pagination TEST -> {}",mainBoardRepository.pagination(request).getRows());
 	}

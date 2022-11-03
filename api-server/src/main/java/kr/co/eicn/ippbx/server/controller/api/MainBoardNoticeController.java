@@ -46,17 +46,23 @@ public class MainBoardNoticeController {
     /**
      * 로그인 전 공지팝업
      * */
-    @GetMapping("after")
-    public ResponseEntity<JsonResult<List<MainBoardEntity>>> after() {
-        return ResponseEntity.ok(data(mainBoardRepository.findAllLoginAfter()));
+    @GetMapping("before")
+    public ResponseEntity<JsonResult<List<MainBoardEntity>>> before() {
+        final List<MainBoardEntity> mainBoardList = mainBoardRepository.findAllLoginBefore();
+        mainBoardList.forEach(e -> e.setMainBoardFiles(mainBoardFileRepository.findByMainBoardId(e.getId())));
+
+        return ResponseEntity.ok(data(mainBoardList));
     }
 
     /**
      * 로그인 후 공지팝업
      * */
-    @GetMapping("before")
-    public ResponseEntity<JsonResult<List<MainBoardEntity>>> before() {
-        return ResponseEntity.ok(data(mainBoardRepository.findAllLoginBefore()));
+    @GetMapping("after")
+    public ResponseEntity<JsonResult<List<MainBoardEntity>>> after() {
+        final List<MainBoardEntity> mainBoardList = mainBoardRepository.findAllLoginAfter();
+        mainBoardList.forEach(e -> e.setMainBoardFiles(mainBoardFileRepository.findByMainBoardId(e.getId())));
+
+        return ResponseEntity.ok(data(mainBoardList));
     }
 
     /**
@@ -84,11 +90,27 @@ public class MainBoardNoticeController {
     }
 
     /**
-     * 특정 파일 다운로드
+     * 로그인 전 특정 파일 다운로드
      */
-    @GetMapping(value = "{fileId}/specific-file-resource", params = {"token"})
-    public ResponseEntity<Resource> specificFileResource(@PathVariable Long fileId, HttpServletRequest request) {
-        final MainBoardFile entity = mainBoardFileRepository.findOneIfNullThrow(fileId);
+    @GetMapping(value = "before/{fileId}/{boardId}/specific-file-resource")
+    public ResponseEntity<Resource> specificFileResourceBefore(@PathVariable Long fileId, @PathVariable Long boardId, HttpServletRequest request) {
+        final MainBoardFile entity = mainBoardFileRepository.findByFileAndBoardId(fileId, boardId);
+
+        final Resource resource = this.fileSystemStorageService.loadAsResource(Paths.get(getFullPath(entity.getPath())), getName(entity.getPath()));
+
+        return ResponseEntity.ok()
+                .contentType(MediaTypeFactory.getMediaType(resource).isPresent() ? MediaTypeFactory.getMediaType(resource).get() : MediaType.APPLICATION_OCTET_STREAM)
+                .headers(headers -> headers.add(HttpHeaders.CONTENT_DISPOSITION,
+                        ContentDisposition.builder("attachment").filename(Objects.requireNonNull(entity.getOriginalName()), StandardCharsets.UTF_8).build().toString()))
+                .body(resource);
+    }
+
+    /**
+     * 로그인 후 특정 파일 다운로드
+     */
+    @GetMapping(value = "after/{fileId}/{boardId}/specific-file-resource", params = {"token"})
+    public ResponseEntity<Resource> specificFileResourceAfter(@PathVariable Long fileId, @PathVariable Long boardId, HttpServletRequest request) {
+        final MainBoardFile entity = mainBoardFileRepository.findByFileAndBoardId(fileId, boardId);
 
         final Resource resource = this.fileSystemStorageService.loadAsResource(Paths.get(getFullPath(entity.getPath())), getName(entity.getPath()));
 
