@@ -435,23 +435,17 @@
                      data-id="${notice.id}"
                      style="display: ${noticeMax == 1 ? 'block' : 'none'}; position: relative; margin-top: -1rem !important;">
                     <div class="row">
-                        <div class="three wide column">
-                            <label class="control-label">제목</label>
-                        </div>
+                        <div class="three wide column"><label class="control-label">제목</label></div>
                         <div class="thirteen wide column">
-                            <div class="board-con-inner"
-                                 style="white-space: pre-wrap;">${g.htmlQuote(notice.title)}</div>
+                            <div class="board-con-inner" style="white-space: pre-wrap;">${g.htmlQuote(notice.title)}</div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="three wide column">
-                            <label class="control-label">내용</label>
-                        </div>
+                        <div class="three wide column"><label class="control-label">내용</label></div>
                         <div class="thirteen wide column">
                             <c:choose>
                                 <c:when test="${notice.contentType == 'T'}">
-                                    <div class="board-con-inner"
-                                         style="white-space: pre-wrap;">${g.htmlQuote(notice.content)}</div>
+                                    <div class="board-con-inner" style="white-space: pre-wrap;">${g.htmlQuote(notice.content)}</div>
                                 </c:when>
                                 <c:when test="${notice.contentType == 'H'}">
                                     ${notice.content}
@@ -460,17 +454,14 @@
                                     <a href="${notice.content}" target="_blank">${g.htmlQuote(notice.content)}</a>
                                 </c:when>
                                 <c:otherwise>
-                                    <div class="board-con-inner"
-                                         style="white-space: pre-wrap;">${g.htmlQuote(notice.content)}</div>
+                                    <div class="board-con-inner" style="white-space: pre-wrap;">${g.htmlQuote(notice.content)}</div>
                                 </c:otherwise>
                             </c:choose>
                         </div>
                     </div>
                     <c:if test="${notice.mainBoardFiles != null && notice.mainBoardFiles.size() > 0}">
                         <div class="row">
-                            <div class="three wide column">
-                                <label class="control-label">첨부파일</label>
-                            </div>
+                            <div class="three wide column"><label class="control-label">첨부파일</label></div>
                             <div class="thirteen wide column">
                                 <div class="ui list filelist">
                                     <c:forEach var="e" items="${notice.mainBoardFiles}">
@@ -498,8 +489,10 @@
                 </div>
             </div>
             <div class="ui row buttons pull-right">
-                <button type="button" class="ui blue button" onclick="noticeMove(-1, 'main-notice-after')"><i class="angle left icon"></i></button>
-                <button type="button" class="ui blue button" onclick="noticeMove(1,'main-notice-after')"><i class="angle right icon"></i></button>
+                <button type="button" class="ui blue button" onclick="noticeMove(-1, 'main-notice-after')"><i
+                        class="angle left icon"></i></button>
+                <button type="button" class="ui blue button" onclick="noticeMove(1,'main-notice-after')"><i
+                        class="angle right icon"></i></button>
             </div>
             <div class="ui row center" style="text-align: center;">
                 <label> <span class="current-page">1</span> / ${noticeMax}</label>

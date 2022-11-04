@@ -154,9 +154,8 @@
         <c:set var="noticeMax" value="${0}"/>
         <c:forEach var="notice" items="${noticeList}" varStatus="status">
             <c:set var="noticeMax" value="${noticeMax+1}"/>
-            <div class="ui grid main-notice" id="main-notice-list-${status.index+1}" data-status="${status.index+1}"
-                 data-id="${notice.id}"
-                 style="display: ${status.first ? 'block' : 'none'}; position: relative; margin-top: -1rem !important;">
+            <div class="ui grid main-notice" id="main-notice-list-${noticeMax}" data-status="${noticeMax}" data-id="${notice.id}"
+                 style="display: ${noticeMax == 1 ? 'block' : 'none'}; position: relative; margin-top: -1rem !important;">
                 <div class="row">
                     <div class="three wide column"><label class="control-label">제목</label></div>
                     <div class="thirteen wide column"><div class="board-con-inner" style="white-space: pre-wrap;">${g.htmlQuote(notice.title)}</div></div>
@@ -215,7 +214,7 @@
             <button type="button" class="ui blue button" onclick="noticeMove(1, 'main-notice-before')"><i class="angle right icon"></i></button>
         </div>
         <div class="ui row center" style="text-align: center;">
-            <label> <span class="current-page">1</span> / ${noticeList != null ? noticeList.size() : 0}</label>
+            <label> <span class="current-page">1</span> / ${noticeMax}</label>
         </div>
     </div>
 </div>
