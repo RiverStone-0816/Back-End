@@ -151,7 +151,9 @@
     <i class="close icon"></i>
     <div class="header">공지사항</div>
     <div class="scrolling content rows">
+        <c:set var="noticeMax" value="${0}"/>
         <c:forEach var="notice" items="${noticeList}" varStatus="status">
+            <c:set var="noticeMax" value="${noticeMax+1}"/>
             <div class="ui grid main-notice" id="main-notice-list-${status.index+1}" data-status="${status.index+1}"
                  data-id="${notice.id}"
                  style="display: ${status.first ? 'block' : 'none'}; position: relative; margin-top: -1rem !important;">
@@ -234,7 +236,7 @@
         })
 
         <c:if test="${noticeList != null}">
-        if (handleStorage.getStorage("mainNoticeBefore"))
+        if (handleStorage.getStorage("mainNoticeBefore") && ${noticeMax} > 0 )
             mainNoticePrevius.dragModalShow();
         </c:if>
 
