@@ -212,7 +212,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
 
             // 하위IVR code 는 parent ivr_tree.type_data에 저장됨
             dsl.update(IVR_TREE)
-                    .set(IVR_TREE.TYPE_DATA, Objects.nonNull(form.getTypeDataStrings()) ? defaultString(join(form.getTypeDataStrings(), "|").replaceAll("\\[","").replaceAll("]","")) + code : String.valueOf(code))
+                    .set(IVR_TREE.TYPE_DATA, Objects.nonNull(form.getTypeDataStrings()) ? defaultString(join(form.getTypeDataStrings(), "|").replaceAll("\\[","").replaceAll("]","")) + "|" + code : String.valueOf(code))
                     .set(IVR_TREE.TYPE, Objects.requireNonNull(IvrMenuType.of(form.getType())).getCode())
                     .where(IVR_TREE.SEQ.eq(parentNode.getSeq()))
                     .execute();
@@ -220,7 +220,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
             cacheService.pbxServerList(getCompanyId()).forEach(e -> {
                 DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
                 pbxDsl.update(IVR_TREE)
-                        .set(IVR_TREE.TYPE_DATA, Objects.nonNull(form.getTypeDataStrings()) ? defaultString(join(form.getTypeDataStrings(), "|").replaceAll("\\[","").replaceAll("]","")) + code : String.valueOf(code))
+                        .set(IVR_TREE.TYPE_DATA, Objects.nonNull(form.getTypeDataStrings()) ? defaultString(join(form.getTypeDataStrings(), "|").replaceAll("\\[","").replaceAll("]","")) + "|"  + code : String.valueOf(code))
                         .set(IVR_TREE.TYPE, Objects.requireNonNull(IvrMenuType.of(form.getType())).getCode())
                         .where(IVR_TREE.SEQ.eq(pbxDsl.select(IVR_TREE.SEQ).from(IVR_TREE).where(compareCompanyId()).and(IVR_TREE.TREE_NAME.eq(parentNode.getTreeName()))))
                         .execute();
