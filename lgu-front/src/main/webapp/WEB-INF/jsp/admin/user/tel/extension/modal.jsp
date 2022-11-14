@@ -79,6 +79,7 @@
                 </div>
             </div>
             </c:if>
+            <c:if test="${g.usingServices.contains('DUSTT')}">
             <div class="row">
                 <div class="four wide column"><label class="control-label">STT사용여부</label></div>
                 <div class="four wide column">
@@ -90,6 +91,7 @@
                     </div>
                 </div>
             </div>
+            </c:if>
             <div class="row">
                 <div class="four wide column"><label class="control-label">전화기아이디</label></div>
                 <div class="four wide column">

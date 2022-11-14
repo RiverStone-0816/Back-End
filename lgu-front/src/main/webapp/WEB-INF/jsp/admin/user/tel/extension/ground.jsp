@@ -88,8 +88,12 @@
                             <th>지역번호</th>
                             <th>CID</th>
                             <th>녹취여부(${licenseInfo.currentLicence} / ${licenseInfo.licence})</th>
+                            <c:if test="${g.usingServices.contains('DUSTT')}">
                             <th>STT(${sttLicenseInfo.currentLicence} / ${sttLicenseInfo.licence})</th>
+                            </c:if>
+                            <c:if test="${g.usingServices.contains('SPHONE')}">
                             <th>소프트폰(${softPhoneLicenseInfo.currentLicence} / ${softPhoneLicenseInfo.licence})</th>
+                            </c:if>
                             <th>착신전환</th>
                         </tr>
                         </thead>
