@@ -109,8 +109,12 @@
                                         <td>${g.htmlQuote(e.localPrefix)}</td>
                                         <td>${g.htmlQuote(e.cid)}</td>
                                         <td>${g.htmlQuote(g.messageOf('RecordType', e.recordType))}</td>
+                                        <c:if test="${g.usingServices.contains('DUSTT')}">
                                         <td>${g.htmlQuote(g.messageOf('SttType', e.stt))}</td>
+                                        </c:if>
+                                        <c:if test="${g.usingServices.contains('SPHONE')}">
                                         <td>${g.htmlQuote(g.messageOf('SoftPhoneType', e.softphone))}</td>
+                                        </c:if>
                                         <td>
                                             <c:set var="when" value="${ForwardWhen.of(e.forwardWhen)}"/>
                                             <c:choose>
