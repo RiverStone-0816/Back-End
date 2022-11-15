@@ -32,440 +32,187 @@
             </tags:scripts>
         </c:when>
         <c:otherwise>
-            <c:choose>
-                <c:when test="${usingServices.contains('CHATWIN') && user.isChatt == 'Y'}">
-                    <main class="container">
-                        <aside class="left-panel no-drag">
-                                <%--<div class="logo">
-                                    <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/uplus.jsp">
-                                        <jsp:param name="width" value="35"/>
-                                        <jsp:param name="height" value="30"/>
-                                    </jsp:include>
-                                </div>--%>
-                            <section>
-                                <ul class="nav">
-                                    <c:if test="${hasExtension}">
-                                        <li style="margin: 10px 0; height: 70px !important;">
-                                            <button class="ui icon button brand" id="user-state-change" title="내상태">
-                                                <c:forEach var="e" items="${statusCodes}">
-                                                    <c:if test="${e.statusNumber == 0}">
-                                                        <span class="material-icons">${e.icon == null || e.icon.trim() == '' ? 'person' : g.htmlQuote(e.icon)}</span>
-                                                        <span class="state-name">${g.escapeQuote(e.statusName)}</span>
-                                                    </c:if>
-                                                </c:forEach>
+            <main class="container no-messenger">
+                <aside class="left-panel no-drag">
+                    <section style="margin: 10px 0; height: 100px; !important;">
+                        <ul class="nav">
+                            <li>
+                                <button class="ui icon button brand" id="user-state-change" title="내상태">
+                                    <c:forEach var="e" items="${statusCodes}">
+                                        <c:if test="${e.statusNumber == 0}">
+                                            <span class="material-icons">${e.icon == null || e.icon.trim() == '' ? 'person' : g.htmlQuote(e.icon)}</span>
+                                            <span class="state-name">${g.escapeQuote(e.statusName)}</span>
+                                        </c:if>
+                                    </c:forEach>
+                                </button>
+                                <div class="call-state" style="margin: 2px 0 0 -5px; width: 50px; align-content: center;">
+                                    <div class="detail overflow-hidden" id="status-keeping-time" style="text-align: center">
+                                            <%--<span class="pull-right" id="status-keeping-time"></span>--%>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                </aside>
+                <div class="right-panel">
+                    <div class="header">
+                        <div class="call-state" style="height: 25px; margin-top: 7px;">
+                            <div class="num" style="text-align: center; background-color: #dedede">
+                                <span style="font-size: 12px; width: 100%;">${g.htmlQuote(g.user.idName)}[내선:${g.user.extension}]</span>
+                                    <%--<input id="" type="text" value="" style="width: 100%; text-align: center;">--%>
+                            </div>
+                        </div>
+                        <div id="call-remote-container">
+                            <div class="call-state">
+                                <div class="num" style="background-color: #C8FFD4">
+                                    <div class="ui tiny form">
+                                        <select id="outbound-number">
+                                            <option value="">발신번호선택</option>
+                                            <c:forEach var="e" items="${cids}">
+                                                <option value="${e.svcCid}">${e.svcName}</option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="num">
+                                    <input id="calling-number" class="-calling-number" type="text" value="" placeholder="전화번호 입력">
+                                </div>
+                                <div class="service">
+                                    <input id="calling-service" class="-calling-path" type="text" value="" placeholder="인입경로">
+                                </div>
+                            </div>
+                            <div class="state-control">
+                                <ul>
+                                    <c:forEach var="e" items="${statusCodes}">
+                                        <li>
+                                            <button type="button" class="ui icon button brand state -member-status ${e.statusName == 'PDS' ? '-pds-status' : ''}" data-status="${e.statusNumber}">
+                                                <span class="material-icons">${e.icon == null || e.icon.trim() == '' ? 'person' : g.htmlQuote(e.icon)}</span>
+                                                <span  class="explain">${g.escapeQuote(e.statusName)}</span>
                                             </button>
-                                            <div class="call-state" style="margin: 2px 0 0 -5px; width: 50px; align-content: center;">
-                                                <div class="detail overflow-hidden" id="status-keeping-time" style="text-align: center">
-                                                        <%--<span class="pull-right" id="status-keeping-time"></span>--%>
-                                                </div>
-                                            </div>
                                         </li>
-                                        <li class="delimiter"></li>
-                                    </c:if>
+                                        <c:if test="${e.statusName == 'PDS'}">
+                                            <li class="pds-status-button-container" style="display: none">
+                                                <button type="button" class="ui icon button brand state -member-status-pds" data-status="0">
+                                                    <span class="state-name">대기</span>
+                                                </button>
+                                            </li>
+                                            <li class="pds-status-button-container" style="display: none">
+                                                <button type="button" class="ui icon button brand state -member-status-pds" data-status="1">
+                                                    <span class="state-name">상담중</span>
+                                                </button>
+                                            </li>
+                                            <li class="pds-status-button-container" style="display: none">
+                                                <button type="button" class="ui icon button brand state -member-status-pds" data-status="2">
+                                                    <span class="state-name">후처리</span>
+                                                </button>
+                                            </li>
+                                        </c:if>
+                                    </c:forEach>
                                     <li>
-                                        <button type="button" class="ui icon brand button -tab-indicator" data-tab="tab-profile" title="프로필관리" id="profile-setting-indicator"
-                                                style="padding: calc(0.78571429em - 3px); margin-top: 15px; position: relative;">
-                                            <c:choose>
-                                                <c:when test="${user.profilePhoto != null && user.profilePhoto != ''}">
-                                                    <img class="profile-picture -picture" data-id="${user.id}"
-                                                         src="${apiServerUrl}/api/memo/profile-resource?path=${g.urlEncode(user.profilePhoto)}&token=${accessToken}"
-                                                         style="border-radius: 50%; width: 31px; height: 31px; overflow: hidden;"/>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <img class="profile-picture -picture" data-id="${user.id}" src="<c:url value="/resources/ipcc-messenger/images/person.png"/>"
-                                                         style="border-radius: 50%; width: 31px; height: 31px; overflow: hidden;"/>
-                                                </c:otherwise>
-                                            </c:choose>
-                                            <i class="cog icon" style="position: absolute; bottom: 9px; right: 3px;"></i>
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button type="button" class="ui icon brand button active -tab-indicator" title="조직도" data-tab="tab1">
-                                            <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/list.jsp">
-                                                <jsp:param name="width" value="25"/>
-                                                <jsp:param name="height" value="25"/>
+                                        <button class="ui icon button brand state" onclick="logout()">
+                                            <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/logout.jsp">
+                                                <jsp:param name="width" value="20"/>
+                                                <jsp:param name="height" value="20"/>
                                             </jsp:include>
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <span class="number -message-indicator"></span>
-                                        <button type="button" class="ui icon brand button -tab-indicator" title="채팅" data-tab="tab2">
-                                            <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/chat.jsp">
-                                                <jsp:param name="width" value="25"/>
-                                                <jsp:param name="height" value="25"/>
-                                            </jsp:include>
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <span class="number" id="unread-memo-indicator" style="display: ${unreadMemoCount > 0 ? '' : 'none'};">${unreadMemoCount}</span>
-                                        <button type="button" class="ui icon brand button -tab-indicator" title="받은쪽지" data-tab="tab4">
-                                            <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/message-in.jsp">
-                                                <jsp:param name="width" value="25"/>
-                                                <jsp:param name="height" value="25"/>
-                                            </jsp:include>
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button type="button" class="ui icon brand button -tab-indicator" title="보낸쪽지" data-tab="tab5">
-                                            <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/message-out.jsp">
-                                                <jsp:param name="width" value="25"/>
-                                                <jsp:param name="height" value="25"/>
-                                            </jsp:include>
+                                            <div class="explain">로그아웃</div>
                                         </button>
                                     </li>
                                 </ul>
-                            </section>
+                                <ul>
+                                    <li>
+                                        <button type="button" class="ui icon button brand state" onclick="tryDial('MAINDB')">
+                                            <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call-out.jsp">
+                                                <jsp:param name="width" value="20"/>
+                                                <jsp:param name="height" value="20"/>
+                                            </jsp:include>
+                                            <div class="explain">전화걸기</div>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="ui icon button brand state -call-receive">
+                                            <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call.jsp">
+                                                <jsp:param name="width" value="20"/>
+                                                <jsp:param name="height" value="20"/>
+                                            </jsp:include>
+                                            <div class="explain">전화받기</div>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="ui icon button brand state -call-hangup">
+                                            <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call-stop.jsp">
+                                                <jsp:param name="width" value="20"/>
+                                                <jsp:param name="height" value="20"/>
+                                            </jsp:include>
+                                            <div class="explain">전화끊기</div>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="ui icon button brand state -call-pickup">
+                                            <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call-in.jsp">
+                                                <jsp:param name="width" value="20"/>
+                                                <jsp:param name="height" value="20"/>
+                                            </jsp:include>
+                                            <div class="explain">당겨받기</div>
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button type="button" class="ui icon button brand state -call-hold">
+                                            <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call-pause.jsp">
+                                                <jsp:param name="width" value="20"/>
+                                                <jsp:param name="height" value="20"/>
+                                            </jsp:include>
+                                            <div class="explain">통화보류</div>
+                                        </button>
+                                    </li>
+                                </ul>
+                                    <%--<ul>
+                                        <c:forEach var="e" items="${ProtectArs}">
+                                            <li>
+                                                <button type="button" class="ui icon button ment">
+                                                    <div class="explain" data-value="${g.htmlQuote(e.key)}"
+                                                         title="${e.key.startsWith('S') ? (e.key.endsWith('1') ? '성희롱 경고 멘트 후 전화 재연결' : '성희롱 경고 멘트 후 전화 종료') :
+                                                                 (e.key.endsWith('1') ? '폭언 경고 멘트 후 전화 재연결' : '폭언 경고 멘트 후 전화 종료')}">${g.htmlQuote(e.value)}</div>
+                                                </button>
+                                            </li>
+                                        </c:forEach>
+                                    </ul>--%>
+                            </div>
+                        </div>
+                    </div>
 
-                            <button class="ui icon brand button state" id="setting-tab-indicator" style="bottom: 60px; overflow-x: hidden; text-align: center; width: 46px;">
-                                <i class="ellipsis horizontal icon"></i><span class="state-name">더보기</span>
-                            </button>
-
-                            <button class="ui icon brand button state" onclick="logout()" style="overflow-x: hidden; text-align: center; width: 46px;">
-                                <i class="window close outline icon"></i><span class="state-name" style="font-size: 12px;">로그아웃</span>
-                            </button>
-                        </aside>
-                        <div class="right-panel ${hasExtension ? '' : 'none-callcontrol'}">
-                            <div class="header">
-                                <c:if test="${hasExtension}">
-                                    <div class="call-state" style="height: 25px; margin-top: 7px;">
-                                        <div class="num" style="text-align: center;">
-                                            <span style="font-size: 12px; width: 100%;">${g.user.idName.length() > 3 ? g.user.idName.substring(0, 3).concat('..') : g.user.idName}[내선:${g.user.extension}]</span>
-                                                <%--<input id="" type="text" value="" style="width: 100%; text-align: center;">--%>
-                                        </div>
-                                    </div>
-                                    <div class="inner-box" id="call-remote-container">
-                                        <div class="call-state">
-                                            <div class="num">
-                                                <input id="calling-number" class="-calling-number" type="text" value="" placeholder="전화번호 입력">
-                                            </div>
-                                            <div class="name">
-                                                <input id="calling-custom" class="-calling-custom" type="text" value="" placeholder="고객명">
-                                                    <%--<span class="pull-right" id="status-keeping-time"></span>--%>
-                                            </div>
-                                            <div class="service">
-                                                <input id="calling-service" class="-calling-service" type="text" value="" placeholder="인입경로">
-                                            </div>
-                                        </div>
-                                        <div class="state-control">
-                                            <ul>
-                                                <li>
-                                                    <button type="button" class="ui icon button brand state" onclick="tryDial('MAINDB')">
-                                                        <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call-out.jsp">
-                                                            <jsp:param name="width" value="20"/>
-                                                            <jsp:param name="height" value="20"/>
-                                                        </jsp:include>
-                                                        <div class="explain">전화걸기</div>
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button type="button" class="ui icon button brand state -call-receive">
-                                                        <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call.jsp">
-                                                            <jsp:param name="width" value="20"/>
-                                                            <jsp:param name="height" value="20"/>
-                                                        </jsp:include>
-                                                        <div class="explain">전화받기</div>
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button type="button" class="ui icon button brand state -call-hangup">
-                                                        <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call-stop.jsp">
-                                                            <jsp:param name="width" value="20"/>
-                                                            <jsp:param name="height" value="20"/>
-                                                        </jsp:include>
-                                                        <div class="explain">전화끊기</div>
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button type="button" class="ui icon button brand state -call-pickup">
-                                                        <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call-in.jsp">
-                                                            <jsp:param name="width" value="20"/>
-                                                            <jsp:param name="height" value="20"/>
-                                                        </jsp:include>
-                                                        <div class="explain">당겨받기</div>
-                                                    </button>
-                                                </li>
-                                                <li>
-                                                    <button type="button" class="ui icon button brand state -call-hold">
-                                                        <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call-pause.jsp">
-                                                            <jsp:param name="width" value="20"/>
-                                                            <jsp:param name="height" value="20"/>
-                                                        </jsp:include>
-                                                        <div class="explain">통화보류</div>
-                                                    </button>
-                                                </li>
-                                            </ul>
-                                            <ul>
-                                                <c:forEach var="e" items="${ProtectArs}">
-                                                    <li>
-                                                        <button type="button" class="ui icon button ment">
-                                                            <div class="explain" data-value="${g.htmlQuote(e.key)}"
-                                                                 title="${e.key.startsWith('s') ? (e.key.endsWith('1') ? '성희롱 경고 멘트 후 전화 재연결' : '성희롱 경고 멘트 후 전화 종료') :
-                                                             (e.key.endsWith('1') ? '폭언 경고 멘트 후 전화 재연결' : '폭언 경고 멘트 후 전화 종료')}">${g.htmlQuote(e.value)}</div>
-                                                        </button>
-                                                    </li>
-                                                </c:forEach>
-                                            </ul>
-                                        </div>
-                                    </div>
+                    <div class="remote-panel shadow-box">
+                        <ul>
+                            <c:forEach var="e" items="${statusCodes}">
+                                <li>
+                                    <button type="button" class="ui icon button brand state -member-status ${e.statusName == 'PDS' ? '-pds-status' : ''}" data-status="${e.statusNumber}">
+                                        <span class="material-icons">${e.icon == null || e.icon.trim() == '' ? 'person' : g.htmlQuote(e.icon)}</span>
+                                        <span class="state-name">${g.escapeQuote(e.statusName)}</span>
+                                    </button>
+                                </li>
+                                <c:if test="${e.statusName == 'PDS'}">
+                                    <li class="pds-status-button-container" style="display: none">
+                                        <button type="button" class="ui icon button brand state -member-status-pds" data-status="0">
+                                            <span class="state-name">대기</span>
+                                        </button>
+                                    </li>
+                                    <li class="pds-status-button-container" style="display: none">
+                                        <button type="button" class="ui icon button brand state -member-status-pds" data-status="1">
+                                            <span class="state-name">상담중</span>
+                                        </button>
+                                    </li>
+                                    <li class="pds-status-button-container" style="display: none">
+                                        <button type="button" class="ui icon button brand state -member-status-pds" data-status="2">
+                                            <span class="state-name">후처리</span>
+                                        </button>
+                                    </li>
                                 </c:if>
-                                <div class="inner-box flex" id="search-container" style="border-color: transparent;">
-                                    <div class="ui icon fluid input small flex-auto">
-                                        <input type="text" id="messenger-filter-text">
-                                        <i class="search link icon"></i>
-                                    </div>
-                                    <div class="pl10">
-                                        <button type="button" class="ui icon brand button" title="즐겨찾기" onclick="messenger.popupBookmarkModal()">
-                                            <span class="material-icons">grade</span>
-                                        </button>
-                                        <button type="button" class="ui icon brand button" title="채팅" onclick="messenger.openRoom()">
-                                            <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/chat.jsp">
-                                                <jsp:param name="width" value="20"/>
-                                                <jsp:param name="height" value="20"/>
-                                            </jsp:include>
-                                        </button>
-                                        <button type="button" class="ui icon brand button" title="쪽지" onclick="messenger.popupMessageSendModal()">
-                                            <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/message-out.jsp">
-                                                <jsp:param name="width" value="20"/>
-                                                <jsp:param name="height" value="20"/>
-                                            </jsp:include>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-container">
-                                <div id="tab1" class="tab-cont active">
-                                    <div>
-                                        <div class="inner-box" style="border-color: transparent; margin-top: 20px;">
-                                            <h1 class="sub-title no-drag"><i class="star icon"></i>즐겨찾기</h1>
-                                            <ul class="favorites-list" id="messenger-bookmark-panel"></ul>
-                                        </div>
-                                        <div class="inner-box" style="margin-top: -15px;">
-                                                <%--<h1 class="sub-title no-drag">조직도</h1>--%>
-                                            <div class="ui list organization-container" id="messenger-organization-panel"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="tab2" class="tab-cont">
-                                    <div class="inner-box bb-unset">
-                                        <h1 class="sub-title no-drag">채팅목록</h1>
-                                        <div class="room-list-wrap">
-                                            <ul class="room-list" id="messenger-chat-container"></ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="tab3" class="tab-cont pt80">
-                                    <jsp:include page="/ipcc-messenger/tab-call-history"/>
-                                </div>
-                                <div id="tab4" class="tab-cont pt80">
-                                    <jsp:include page="/ipcc-messenger/tab-received-memo"/>
-                                </div>
-                                <div id="tab5" class="tab-cont pt80">
-                                    <jsp:include page="/ipcc-messenger/tab-sent-memo"/>
-                                </div>
-                                <div id="tab-profile" class="tab-cont pt80">
-                                    <jsp:include page="/ipcc-messenger/tab-profile"/>
-                                </div>
-                                <div id="tab-setting" class="tab-cont pt80">
-                                    <jsp:include page="/ipcc-messenger/tab-navigation"/>
-                                </div>
-                            </div>
-                            <div class="remote-panel shadow-box">
-                                <ul>
-                                    <c:forEach var="e" items="${statusCodes}">
-                                        <li>
-                                            <button type="button" class="ui icon button brand state -member-status ${e.statusName == 'PDS' ? '-pds-status' : ''}" data-status="${e.statusNumber}">
-                                                <span class="material-icons">${e.icon == null || e.icon.trim() == '' ? 'person' : g.htmlQuote(e.icon)}</span>
-                                                <span class="state-name">${g.escapeQuote(e.statusName)}</span>
-                                            </button>
-                                        </li>
-                                        <c:if test="${e.statusName == 'PDS'}">
-                                            <li class="pds-status-button-container" style="display: none">
-                                                <button type="button" class="ui icon button brand state -member-status-pds" data-status="0">
-                                                    <span class="state-name">대기</span>
-                                                </button>
-                                            </li>
-                                            <li class="pds-status-button-container" style="display: none">
-                                                <button type="button" class="ui icon button brand state -member-status-pds" data-status="1">
-                                                    <span class="state-name">상담중</span>
-                                                </button>
-                                            </li>
-                                            <li class="pds-status-button-container" style="display: none">
-                                                <button type="button" class="ui icon button brand state -member-status-pds" data-status="2">
-                                                    <span class="state-name">후처리</span>
-                                                </button>
-                                            </li>
-                                        </c:if>
-                                    </c:forEach>
-                                </ul>
-                            </div>
-                            <div class="-call-count">
-                                <span class="absensce">
-                                    <button type="button" class="ui icon button absensce -history-tab-indicator" data-value="/admin/record/history/history/ibk">
-                                        <span class="explain">부재중전화</span>
-                                    </button>:
-                                    <span class="absensce-count">0</span>건
-                                </span>
-                                &ensp;
-                                <span class="callback">
-                                    <button type="button" class="ui icon button callback -history-tab-indicator" data-value="/admin/record/callback/history/ibk">
-                                        <span class="explain">콜백</span>
-                                    </button>:
-                                    <span class="callback-count">0</span>건
-                                </span>
-                            </div>
-                        </div>
-                    </main>
-                </c:when>
-                <c:otherwise>
-                    <main class="container no-messenger">
-                        <aside class="left-panel no-drag">
-                            <section style="margin: 10px 0; height: 100px; border-bottom: solid 1px #dbdbdb; !important;">
-                                <ul class="nav">
-                                    <li>
-                                        <button class="ui icon button brand" id="user-state-change" title="내상태">
-                                            <c:forEach var="e" items="${statusCodes}">
-                                                <c:if test="${e.statusNumber == 0}">
-                                                    <span class="material-icons">${e.icon == null || e.icon.trim() == '' ? 'person' : g.htmlQuote(e.icon)}</span>
-                                                    <span class="state-name">${g.escapeQuote(e.statusName)}</span>
-                                                </c:if>
-                                            </c:forEach>
-                                        </button>
-                                        <div class="call-state" style="margin: 2px 0 0 -5px; width: 50px; align-content: center;">
-                                            <div class="detail overflow-hidden" id="status-keeping-time" style="text-align: center">
-                                                    <%--<span class="pull-right" id="status-keeping-time"></span>--%>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </section>
-                        </aside>
-                        <div class="right-panel">
-                            <div class="header">
-                                <div class="call-state" style="height: 25px; margin-top: 7px;">
-                                    <div class="num" style="text-align: center;">
-                                        <span style="font-size: 12px; width: 100%;">${g.user.idName.length() > 3 ? g.user.idName.substring(0, 3).concat('..') : g.user.idName}[내선:${g.user.extension}]</span>
-                                            <%--<input id="" type="text" value="" style="width: 100%; text-align: center;">--%>
-                                    </div>
-                                </div>
-                                <div class="inner-box" id="call-remote-container">
-                                    <div class="call-state">
-                                        <div class="num">
-                                            <input id="calling-number" class="-calling-number" type="text" value="" placeholder="전화번호 입력">
-                                        </div>
-                                        <div class="name">
-                                            <input id="calling-custom" class="-calling-custom" type="text" value="" placeholder="고객명">
-                                        </div>
-                                        <div class="service">
-                                            <input id="calling-service" class="-calling-service" type="text" value="" placeholder="인입경로">
-                                        </div>
-                                    </div>
-                                    <div class="state-control">
-                                        <ul>
-                                            <li>
-                                                <button type="button" class="ui icon button brand state" onclick="tryDial('MAINDB')">
-                                                    <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call-out.jsp">
-                                                        <jsp:param name="width" value="20"/>
-                                                        <jsp:param name="height" value="20"/>
-                                                    </jsp:include>
-                                                    <div class="explain">전화걸기</div>
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button type="button" class="ui icon button brand state -call-receive">
-                                                    <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call.jsp">
-                                                        <jsp:param name="width" value="20"/>
-                                                        <jsp:param name="height" value="20"/>
-                                                    </jsp:include>
-                                                    <div class="explain">전화받기</div>
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button type="button" class="ui icon button brand state -call-hangup">
-                                                    <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call-stop.jsp">
-                                                        <jsp:param name="width" value="20"/>
-                                                        <jsp:param name="height" value="20"/>
-                                                    </jsp:include>
-                                                    <div class="explain">전화끊기</div>
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button type="button" class="ui icon button brand state -call-pickup">
-                                                    <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call-in.jsp">
-                                                        <jsp:param name="width" value="20"/>
-                                                        <jsp:param name="height" value="20"/>
-                                                    </jsp:include>
-                                                    <div class="explain">당겨받기</div>
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button type="button" class="ui icon button brand state -call-hold">
-                                                    <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/call-pause.jsp">
-                                                        <jsp:param name="width" value="20"/>
-                                                        <jsp:param name="height" value="20"/>
-                                                    </jsp:include>
-                                                    <div class="explain">통화보류</div>
-                                                </button>
-                                            </li>
-                                            <li>
-                                                <button class="ui icon button brand state" onclick="logout()">
-                                                    <jsp:include page="/WEB-INF/jsp/ipcc-messenger/svg/logout.jsp">
-                                                        <jsp:param name="width" value="20"/>
-                                                        <jsp:param name="height" value="20"/>
-                                                    </jsp:include>
-                                                    <div class="explain">로그아웃</div>
-                                                </button>
-                                            </li>
-                                        </ul>
-                                        <ul>
-                                            <c:forEach var="e" items="${ProtectArs}">
-                                                <li>
-                                                    <button type="button" class="ui icon button ment">
-                                                        <div class="explain" data-value="${g.htmlQuote(e.key)}"
-                                                             title="${e.key.startsWith('S') ? (e.key.endsWith('1') ? '성희롱 경고 멘트 후 전화 재연결' : '성희롱 경고 멘트 후 전화 종료') :
-                                                             (e.key.endsWith('1') ? '폭언 경고 멘트 후 전화 재연결' : '폭언 경고 멘트 후 전화 종료')}">${g.htmlQuote(e.value)}</div>
-                                                    </button>
-                                                </li>
-                                            </c:forEach>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+                            </c:forEach>
+                        </ul>
+                    </div>
+                </div>
+            </main>
 
-                            <div class="remote-panel shadow-box">
-                                <ul>
-                                    <c:forEach var="e" items="${statusCodes}">
-                                        <li>
-                                            <button type="button" class="ui icon button brand state -member-status ${e.statusName == 'PDS' ? '-pds-status' : ''}" data-status="${e.statusNumber}">
-                                                <span class="material-icons">${e.icon == null || e.icon.trim() == '' ? 'person' : g.htmlQuote(e.icon)}</span>
-                                                <span class="state-name">${g.escapeQuote(e.statusName)}</span>
-                                            </button>
-                                        </li>
-                                        <c:if test="${e.statusName == 'PDS'}">
-                                            <li class="pds-status-button-container" style="display: none">
-                                                <button type="button" class="ui icon button brand state -member-status-pds" data-status="0">
-                                                    <span class="state-name">대기</span>
-                                                </button>
-                                            </li>
-                                            <li class="pds-status-button-container" style="display: none">
-                                                <button type="button" class="ui icon button brand state -member-status-pds" data-status="1">
-                                                    <span class="state-name">상담중</span>
-                                                </button>
-                                            </li>
-                                            <li class="pds-status-button-container" style="display: none">
-                                                <button type="button" class="ui icon button brand state -member-status-pds" data-status="2">
-                                                    <span class="state-name">후처리</span>
-                                                </button>
-                                            </li>
-                                        </c:if>
-                                    </c:forEach>
-                                </ul>
-                            </div>
-                        </div>
-                    </main>
-                </c:otherwise>
-            </c:choose>
-
-            <jsp:include page="/counsel/modal-calling"/>
+            <jsp:include page="/ipcc-messenger/modal-calling"/>
             <tags:scripts>
                 <script id="status-script">
                     const statusCodes = {
@@ -507,16 +254,13 @@
                         },
                         </c:forEach>
                     };
+
+                    const services = {<c:forEach var="e" items="${services}">'${g.escapeQuote(e.key)}': '${g.escapeQuote(e.value)}', </c:forEach>};
                 </script>
                 <script src="<c:url value="/resources/ipcc-messenger/js/callcontrol.js?version=${version}"/>"></script>
-                <c:if test="${user.isChatt.equals('Y')}">
                 <script>
-                    if (window.isElectron)
-                        $('head').append('<script src="<c:url value="/resources/ipcc-messenger/js/electron/Messenger.electron.js?version=${version}"/>"><\/script>')
-                    else
-                        $('head').append('<script src="<c:url value="/resources/ipcc-messenger/js/Messenger.js?version=${version}"/>"><\/script>')
+                    $('head').append('<script src="<c:url value="/resources/ipcc-messenger/js/electron/Messenger.electron.js?version=${version}"/>"><\/script>')
                 </script>
-                </c:if>
                 <script>
                     function updateUserStatus(userId, status) {
                         const dom = $('.-status-icon').filter(function () {
@@ -534,21 +278,13 @@
                     }
 
                     function tryDial(type) {
-                        const cid = ''; // 비워두면 기본 cid로 시도함
+                        const cid = $('#outbound-number').val(); // 비워두면 기본 cid로 시도함
                         const number = $('#calling-number').val();
 
                         if (!number) {
                             alert("존재하지 않는 번호입니다.");
                             return;
                         }
-
-                        restSelf.get('/api/maindb-data/' + number + '/name').done(function (response) {
-                            const customName = response.data;
-                            if (customName !== phoneNumber) {
-                                const idName = customName.split('[')[0];
-                                $('.-calling-custom').val(idName.length > 5 ? idName.substring(0,4).concat('..').concat(customName.replace(idName, '')) : customName);
-                            }
-                        });
 
                         if (ipccCommunicator.status.cMemberStatus === 1) {
                             alert("상담중 상태에서는 전화 걸기가 불가능합니다.");
@@ -582,17 +318,10 @@
                             updateUserStatus(userId, false);
                         });
 
-                        const messenger = new Messenger('${g.escapeQuote(user.id)}', '${g.escapeQuote(user.isEmail)}', '${g.escapeQuote(accessToken)}');
+                    const messenger = new Messenger('${g.escapeQuote(user.id)}', '${g.escapeQuote(user.isEmail)}', '${g.escapeQuote(accessToken)}');
 
                     $(window).on('load', function () {
-                        <c:choose>
-                        <c:when test="${usingServices.contains('CHATWIN') && user.isChatt == 'Y'}">
-                        messenger.init();
-                        </c:when>
-                        <c:otherwise>
-                        messenger.setWindowSize(580, 169)
-                        </c:otherwise>
-                        </c:choose>
+                        messenger.setWindowSize(584 + ${statusCodes.size() > 4 ? (statusCodes.size() - 4) * 57 : 0}, 210)
                     });
 
                     $('.-tab-indicator').click(function () {
