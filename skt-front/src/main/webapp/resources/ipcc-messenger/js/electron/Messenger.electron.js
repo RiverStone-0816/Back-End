@@ -983,7 +983,7 @@ Messenger.prototype.popupMemoModal = function (seq, withReply) {
 }
 
 Messenger.prototype.setWindowSize = function (width, height) {
-    ipcRenderer.send('setWindowSize', {"width": width, "height": height});
+        ipcRenderer.send('setWindowSize', {"width": width, "height": height});
 }
 
 Messenger.prototype.init = function () {

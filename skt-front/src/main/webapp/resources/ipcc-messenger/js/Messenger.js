@@ -1,5 +1,3 @@
-const ipcRenderer = window.ipcRenderer;
-
 function Messenger(userId, isEmail, accessToken) {
     const messenger = this;
 
@@ -18,6 +16,9 @@ function Messenger(userId, isEmail, accessToken) {
     };
 
     function receiveMessage(data) {
+        if (messenger.ui.roomWindow && messenger.ui.roomWindow.closed)
+            messenger.closeRoom();
+
         const roomId = data.room_id;
         const roomName = data.room_name;
         const messageId = data.message_id;
@@ -28,7 +29,7 @@ function Messenger(userId, isEmail, accessToken) {
         const formUserId = data.userid;
         const formUserName = data.username;
 
-        ipcRenderer.send('receiveMessage', {"roomId": data.room_id, "data": data});
+        messenger._appendMessage(roomId, messageId, time, messageType, sendReceive, contents, formUserId, formUserName, parseInt(data.member_cnt) - 1);
 
         messenger._inputRoomInfo({roomId: roomId, roomName: roomName, lastMsg: contents, lastTime: time, lastUserid: formUserId,},
             messenger.currentRoom && messenger.currentRoom.id === roomId ? 0 : (messenger.rooms[roomId] && messenger.rooms[roomId].unreadMessageTotalCount || 0) + 1);
@@ -36,6 +37,13 @@ function Messenger(userId, isEmail, accessToken) {
         messenger._sortChatListItem();
         messenger.filterItem();
         messenger._showMessageIndicator();
+
+        if (messenger.currentRoom && messenger.currentRoom.id === roomId) {
+            messenger.communicator.confirmMessage(roomId, messageId);
+            messenger.currentRoom.members[formUserId].lastReadMessageId = messageId;
+            messenger.currentRoom.members[messenger.me].lastReadMessageId = messageId;
+            messenger.updateMessageReadCount();
+        }
     }
 
     messenger.communicator = new MessengerCommunicator()
@@ -74,6 +82,7 @@ function Messenger(userId, isEmail, accessToken) {
                 messenger.filterItem();
                 messenger._showMessageIndicator();
             });
+
         })
         .on('svc_leave_room', function (data) {
             const roomId = data.room_id;
@@ -99,7 +108,8 @@ function Messenger(userId, isEmail, accessToken) {
             const lastReadMessageId = data.last_read_message_id;
 
             if (messenger.currentRoom && messenger.currentRoom.id === roomId) {
-                ipcRenderer.send('readConfirm', {'roomId': roomId, 'userId': userid, 'lastReadMessageId': lastReadMessageId});
+                messenger.currentRoom.members[userid].lastReadMessageId = lastReadMessageId;
+                messenger.updateMessageReadCount();
 
                 messenger.rooms[roomId].unreadMessageTotalCount = 0;
                 messenger._appendChatListItem(roomId);
@@ -140,94 +150,6 @@ function Messenger(userId, isEmail, accessToken) {
                 .addClass('import');
             tr.find('.-sent-memo-read-count').text(tr.find('.-sent-memo-read-user').length + '/' + (tr.find('.-sent-memo-read-user').length + tr.find('.-sent-memo-unread-user').length));
         });
-
-    ipcRenderer.on("changeRoomName", function (event, arg) {
-        messenger.communicator.changeRoomName(arg.roomId, arg.roomName)
-    });
-
-    ipcRenderer.on("requestLoadMessages", function (event, arg) {
-        messenger.loadMessages(arg.roomId, arg.option);
-    });
-
-    ipcRenderer.on("sendMessage", function (event, arg) {
-        messenger.sendMessage(arg.roomId, arg.ciphertext);
-    });
-
-    ipcRenderer.on('confirmMessage', function (event, arg) {
-        messenger.communicator.confirmMessage(arg.roomId, arg.messageId);
-    });
-
-    ipcRenderer.on('leaveRoom', function (event, arg) {
-        restSelf.delete('/api/chatt/' + encodeURIComponent(arg.roomId), null, null, true).done(function () {
-            messenger.ui.chatContainer.find('.-messenger-chat-item').filter(function () {
-                return $(this).attr('data-id') === arg.roomId;
-            }).remove();
-            messenger.communicator.leave(arg.roomId);
-        });
-    });
-
-    ipcRenderer.on('loadOrganizationPanel', function (event, arg) {
-        console.log('try load')
-        restSelf.get('/api/chatt/', null, null, true).done(function (response) {
-            console.log('calling api success')
-            ipcRenderer.send('responseOrganizationPanel', {
-                'roomId': arg.roomId,
-                'members': arg.members,
-                "organizationData": response,
-                'statusCodes': statusCodes,
-                'userStatuses': userStatuses
-            });
-
-            console.log('load success')
-        });
-    });
-
-    ipcRenderer.on('inviteUsers', function (event, arg) {
-        messenger.communicator.invite(arg.roomId, arg.users, arg.userNames);
-    });
-
-    ipcRenderer.on('inviteSuccess', function (event, arg) {
-        messenger._loadRoomName(arg.roomId)
-    })
-
-    ipcRenderer.on('roomFocusOn', function (event, arg) {
-        messenger.currentRoom = arg.roomInfo;
-        messenger.rooms[arg.roomInfo.id].unreadMessageTotalCount = 0;
-        if (arg.roomInfo && arg.roomInfo.id && arg.roomInfo.endMessageId) {
-            messenger.communicator.confirmMessage(arg.roomInfo.id, arg.roomInfo.endMessageId);
-        }
-
-        messenger._showMessageIndicator();
-    });
-
-    ipcRenderer.on('roomFocusOut', function (event, arg) {
-        messenger.currentRoom = null;
-    });
-
-    ipcRenderer.on('sendMemo', function (event, arg) {
-        messenger.communicator.sendMemo(arg.receiveUserId, arg.data);
-
-        $('#tab5 button[type=submit]').click();
-    });
-
-    ipcRenderer.on('loadBookmarks', function (event, arg) {
-        messenger.loadBookmarks();
-    });
-
-    ipcRenderer.on('logout', function (event, arg) {
-        restSelf.get("/api/auth/logout").done(function () {
-            location.href = contextPath + '/ipcc-messenger';
-        });
-    });
-
-    ipcRenderer.on('clickDial', function (event, arg) {
-        ipccCommunicator.clickDial('', arg.value);
-        $(document).click();
-    });
-
-    ipcRenderer.on('profileChange', function (event, args) {
-        $(window.document).find(`.-picture[data-id="${args.userId}"]`).attr('src', args.src);
-    });
 }
 
 Messenger.prototype.READ_LIMIT = 10;
@@ -250,9 +172,8 @@ Messenger.prototype._inputRoomInfo = function (entity, unreadMessageTotalCount) 
                 : 0;
     }
 
-    if (entity.roomId && entity.roomName){
-        ipcRenderer.send('changedRoomName', {'roomId': entity.roomId, 'roomName': entity.roomName});
-    }
+    if (messenger.ui.roomWindow && messenger.currentRoom && messenger.currentRoom.id === entity.roomId)
+        messenger.ui.roomName.text(entity.roomName);
 
     messenger._appendChatListItem(roomId);
 };
@@ -270,10 +191,21 @@ Messenger.prototype._loadRoomName = function (roomId) {
     });
 };
 
-Messenger.prototype.sendMessage = function (roomId, ciphertext) {
+Messenger.prototype.sendMessage = function () {
     const messenger = this;
 
-    messenger.communicator.sendMessage(roomId, ciphertext);
+    if (messenger.currentRoom) {
+        const roomId = messenger.currentRoom.id;
+        const message = messenger.ui.messageInput.val();
+
+        if (!roomId || !message)
+            return;
+
+        const ciphertext = CryptoJS.AES.encrypt(message, cipherKey).toString();
+
+        messenger.communicator.sendMessage(roomId, ciphertext);
+        messenger.ui.messageInput.val('');
+    }
 };
 
 // 조직도에서 대화방 열기를 시도한다.. 메서드 이름 변경좀....
@@ -327,8 +259,6 @@ Messenger.prototype._appendMessage = function (roomId, messageId, time, messageT
     if (messenger.currentRoom.messages[messageId])
         return;
 
-    console.log({sendReceive: sendReceive, messageType: messageType})
-
     const item = (function () {
         if (['SZ', 'SG'].indexOf(sendReceive) >= 0)
             return $('<li/>', {class: '-chat-message -ignored-message', 'data-id': messageId, 'data-time': time});
@@ -357,7 +287,7 @@ Messenger.prototype._appendMessage = function (roomId, messageId, time, messageT
                 if (!split || split.length < 2)
                     bubble.append($('<p/>', {class: 'chat', text: contents}));
                 else {
-                    if (split[1].endsWith('g'))
+                    if (split[1].endsWith('g') || split[1].endsWith('G'))
                         bubble.append($('<p/>', {class: "chat"}).append($('<img/>', {src: url})));
                     else if (split[1].contains('wav') || split[1].contains('mp'))
                         bubble.append($('<p/>', {class: "chat"}).append($('<div/>', {class: 'maudio'}).append($('<audio/>', {controls: 'controls', src: url}))));
@@ -474,10 +404,16 @@ Messenger.prototype._appendChatListItem = function (roomId) {
         }
 
         existChatItem.find('.-unread-message-number').text(unreadMessageTotalCount).attr('style', 'display: ' + (unreadMessageTotalCount || 'none'));
+
+        if (!messenger.rooms[roomId].lastMsg)
+            existChatItem.hide();
+        else
+            existChatItem.show();
+
         return;
     }
 
-    $('<li/>', {class: 'room-item -messenger-chat-item', 'data-id': roomId})
+    const chatItem = $('<li/>', {class: 'room-item -messenger-chat-item', 'data-id': roomId})
         .append(
             $('<div/>', {
                 class: 'title',
@@ -511,6 +447,11 @@ Messenger.prototype._appendChatListItem = function (roomId) {
         .click(function () {
             messenger.loadRoom(roomId);
         });
+
+    if (!messenger.rooms[roomId].lastMsg)
+        chatItem.hide();
+    else
+        chatItem.show();
 };
 
 Messenger.prototype.filterItem = function () {
@@ -562,7 +503,7 @@ Messenger.prototype.filterItem = function () {
     });
 };
 
-// 떠다니는 버튼 옆에 안 읽은 메세지 총 갯수를 적는다.
+// 플로팅 버튼 옆에 안 읽은 메세지 총 갯수를 적는다.
 Messenger.prototype._showMessageIndicator = function () {
     const messenger = this;
 
@@ -592,7 +533,7 @@ Messenger.prototype._sortChatListItem = function () {
     });
 };
 
-// 채팅방 모달의 타이틀을 변경
+// 채팅방 모달의 타이틀 변경
 Messenger.prototype.showRoomTitle = function () {
     const messenger = this;
 
@@ -688,6 +629,7 @@ Messenger.prototype.loadBookmarks = function () {
                 li.append($('<span/>', {class: 'detail word', text: e.extension ? ' / ' : ''})).append($('<span/>', {class: 'detail word hover-focus -hp-number', text: '휴대폰:' + e.hpNumber, 'data-value': e.hpNumber}));
             if (e.emailInfo)
                 li.append($('<span/>', {class: 'detail word', text: e.extension || (e.hpNumber && messenger.isPosition === 'N') ? ' / ' : ''})).append($('<span/>', {class: 'detail word', text: '이메일:' + e.emailInfo}));
+
         });
         messenger.filterItem();
     });
@@ -700,7 +642,9 @@ Messenger.prototype._loadOrganization = function (response) {
         level = level || 1;
 
         const item = $('<div/>', {class: 'item -messenger-folder'})
-            .append($('<span/>', {class: 'material-icons', text: 'filter_' + (level > 9 ? '9_plus' : level)}))
+            .append($('<span/>', {
+                class: 'material-icons', id: 'setting-tab-indicator', text: 'filter_' + (level > 9 ? '9_plus' : level)
+            }))
             .appendTo(container);
 
         const content = $('<div/>', {class: 'content'})
@@ -732,8 +676,8 @@ Messenger.prototype._loadOrganization = function (response) {
             .appendTo(content);
 
         if (e.personList)
-            e.personList.map(function (e) {
-                attachPerson(childrenContainer, e);
+            e.personList.map(function (p) {
+                attachPerson(childrenContainer, p);
             });
 
         if (e.organizationMetaChatt)
@@ -747,7 +691,7 @@ Messenger.prototype._loadOrganization = function (response) {
         //     return;
 
         const header = $('<div/>', {class: 'header'})
-            .append($('<span/>', {class: 'name', text: e.idName + (e.userDivs ? ' [' + e.userDivs + ']' : '')}))
+            .append($('<span/>', {class: 'name', text: e.idName + (e.userDivs ? ' [' + e.userDivs + ']' : '')}));
 
         if (e.extension)
             header.append($('<span/>', {class: 'detail word hover-focus -extension', text: '내선:' + e.extension, 'data-value': e.extension}));
@@ -833,7 +777,7 @@ Messenger.prototype._loadOrganization = function (response) {
 
     messenger.filterItem();
 
-    $('.material-icons').on('click',function(){
+    $('.material-icons').on('click', function () {
         const list = $(this).next(".content").find('.list');
         const folderHeader = $(this).text().contains('1') ? $(this).find('.list') : $(this).next(".content").find('.-messenger-folder-header');
         list.slideToggle(0, '', function () {
@@ -858,15 +802,147 @@ Messenger.prototype.loadRoom = function (roomId) {
     const messenger = this;
 
     restSelf.get('/api/chatt/' + roomId + '/chatting', {limit: messenger.READ_LIMIT}).done(function (response) {
-        ipcRenderer.send('roomOpen', {"roomId": roomId, "responseData": response.data, "messengerSocketUrl": messenger.communicator.request.url});
+        messenger.closeRoom();
 
-        const entity = response.data;
-        messenger._inputRoomInfo(entity, 0);
+        const popup = window.open("modal-room/" + roomId, "_blank", "width=600, height=750");
+        popup.messenger = messenger;
+
+        $(popup).on('load', function () {
+
+            messenger.ui.roomWindow = popup;
+            messenger.ui.room = $(popup.document);
+            messenger.ui.roomName = messenger.ui.room.find('.-chatroom-name');
+            messenger.ui.searchingTextCountExpression = messenger.ui.room.find('.-text-count');
+            messenger.ui.roomMembers = messenger.ui.room.find('#messenger-room-members');
+            messenger.ui.messageInput = messenger.ui.room.find('#messenger-message');
+
+            messenger.initRoom();
+
+            const entity = response.data;
+            messenger._inputRoomInfo(entity, 0);
+            messenger._showMessageIndicator();
+
+            messenger.currentRoom = {
+                id: roomId,
+                roomName: entity.roomName,
+                members: {},
+                messages: {},
+                searchingMessage: null,
+                searchingMessages: [],
+                startMessageTime: entity.chattingMessages.length > 0 ? entity.chattingMessages[0].insertTime : null,
+                startMessageId: entity.chattingMessages.length > 0 ? entity.chattingMessages[0].messageId : null,
+                endMessageTime: entity.chattingMessages.length > 0 ? entity.chattingMessages[entity.chattingMessages.length - 1].insertTime : null,
+                endMessageId: entity.chattingMessages.length > 0 ? entity.chattingMessages[entity.chattingMessages.length - 1].messageId : null,
+            };
+
+            entity.chattingMembers.map(function (e) {
+                messenger.currentRoom.members[e.userid] = e;
+                messenger.ui.roomMembers.append($('<li/>', {text: e.userName}));
+            });
+
+            messenger.showRoomTitle();
+
+            entity.chattingMessages.sort(function (a, b) {
+                return a.insertTime - b.insertTime;
+            });
+
+            entity.chattingMessages.map(function (e) {
+                messenger._appendMessage(e.roomId, e.messageId, e.insertTime, e.type, e.sendReceive, e.content, e.userid, e.userName, e.unreadMessageCount);
+            });
+
+            if (messenger.currentRoom.endMessageId)
+                messenger.communicator.confirmMessage(messenger.currentRoom.id, messenger.currentRoom.endMessageId);
+        });
     }).done(function () {
         messenger.ui.chatContainer.find('.-messenger-chat-item').filter(function () {
             return $(this).attr('data-id') === roomId;
         }).find('.-unread-message').text(0);
         messenger._showMessageIndicator();
+    });
+};
+
+Messenger.prototype.openInvitationModal = function () {
+    const messenger = this;
+
+    if (messenger.ui.invitationWindow)
+        messenger.ui.invitationWindow.close();
+
+    const popup = window.open(contextPath + "/ipcc-messenger/modal-invitation", "_blank", "width=600, height=485");
+    popup.messenger = messenger;
+    messenger.ui.invitationWindow = popup;
+
+    $(popup).on('load', function () {
+        const document = $(popup.document);
+        document.find('#organization').append(messenger.ui.organizationPanel.clone(false).children());
+        document.find('.detail').remove();
+        /*document.find('.-messenger-folder-header').click(function (event) {
+            const item = $(this).closest('.item');
+            if (event.ctrlKey) {
+                item.toggleClass('active');
+            } else {
+                document.find('.-messenger-user').removeClass('active');
+                document.find('.-messenger-bookmark').removeClass('active');
+                document.find('.-messenger-folder').removeClass('active');
+                item.addClass('active');
+            }
+        });*/
+        document.find('.-messenger-user').click(function (event) {
+            event.stopPropagation();
+
+            if (event.ctrlKey) {
+                $(this).toggleClass('active');
+
+                if ($(this).hasClass('active')) {
+                    popup.lastActiveElement = this;
+                }
+
+                return false;
+            }
+            if (event.shiftKey && popup.lastActiveElement) {
+                document.find('.-messenger-user').removeClass('active');
+                document.find('.-messenger-bookmark').removeClass('active');
+                document.find('.-messenger-folder').removeClass('active');
+                $(popup.lastActiveElement).addClass('active');
+
+                const _this = this;
+
+                if (_this === popup.lastActiveElement)
+                    return false;
+
+                let meetActiveElement = false;
+                let meetMe = false;
+                document.find('.-messenger-user').each(function () {
+                    if (this === popup.lastActiveElement) {
+                        $(this).addClass('active');
+                        meetActiveElement = true;
+                    } else if (this === _this) {
+                        $(this).addClass('active');
+                        meetMe = true;
+                    } else {
+                        if (meetActiveElement ^ meetMe)
+                            $(this).addClass('active');
+                    }
+                });
+            } else {
+                document.find('.-messenger-user').removeClass('active');
+                document.find('.-messenger-bookmark').removeClass('active');
+                document.find('.-messenger-folder').removeClass('active');
+                $(this).addClass('active');
+                popup.lastActiveElement = this;
+            }
+
+            return false;
+        });
+        document.find('.material-icons').click(function () {
+            const list = $(this).next(".content").find('.list');
+            const folderHeader = $(this).text().contains('1') ? $(this).find('.list') : $(this).next(".content").find('.-messenger-folder-header');
+            list.slideToggle(100, '', function () {
+                if (list.css('display') === 'none')
+                    folderHeader.css({'color': '#dbdbdb'})
+                else
+                    folderHeader.css({'color': ''})
+            });
+        });
     });
 };
 
@@ -881,11 +957,11 @@ Messenger.prototype.clearSearching = function () {
     }
 };
 
-Messenger.prototype.loadMessages = function (roomId, option) {
+Messenger.prototype.loadMessages = function (option) {
     const messenger = this;
 
-    return restSelf.get('/api/chatt/' + encodeURIComponent(roomId) + '/chatting', option, undefined, true).done(function (response) {
-        // messenger._inputRoomInfo(response.data);
+    return restSelf.get('/api/chatt/' + encodeURIComponent(messenger.currentRoom.id) + '/chatting', option, undefined, true).done(function (response) {
+        messenger._inputRoomInfo(response.data);
 
         if (response.data.chattingMessages.length <= 0)
             return;
@@ -894,7 +970,18 @@ Messenger.prototype.loadMessages = function (roomId, option) {
             return parseFloat(a.cur_timestr || a.insertTime) - parseFloat(b.cur_timestr || b.insertTime);
         });
 
-        ipcRenderer.send('responseLoadMessages', {"roomId": roomId, "response": response});
+        for (let i = response.data.chattingMessages.length - 1; i >= 0; i--) {
+            if (response.data.chattingMessages[i].messageId !== messenger.currentRoom.startMessageId)
+                messenger._appendMessage(response.data.chattingMessages[i].roomId,
+                    response.data.chattingMessages[i].messageId,
+                    response.data.chattingMessages[i].insertTime,
+                    response.data.chattingMessages[i].type,
+                    response.data.chattingMessages[i].sendReceive,
+                    response.data.chattingMessages[i].content,
+                    response.data.chattingMessages[i].userid,
+                    response.data.chattingMessages[i].userName,
+                    response.data.chattingMessages[i].unreadMessageCount);
+        }
     });
 };
 
@@ -925,31 +1012,57 @@ Messenger.prototype._moveToText = function (index) {
     chatBody.scrollTop(elementScrollTop - containerScrollTop);
 };
 
+// 대화방 안에서의 안읽은 메세지 카운트 갱신
+Messenger.prototype.updateMessageReadCount = function () {
+    const messenger = this;
+
+    const memberIds = keys(messenger.currentRoom.members);
+    const lastReadMessageTimesOfEachMember = {};
+
+    memberIds.map(function (userid) {
+        const lastReadMessageId = messenger.currentRoom.members[userid].lastReadMessageId;
+        lastReadMessageTimesOfEachMember[userid] = lastReadMessageId && messenger.currentRoom.messages[lastReadMessageId]
+            ? messenger.currentRoom.messages[lastReadMessageId].insertTime
+            : (messenger.currentRoom.startMessageTime || 0) - 1;
+    });
+
+    messenger.ui.room.find('.-chat-message').each(function () {
+        const messageId = $(this).attr('data-id');
+        const message = messenger.currentRoom.messages[messageId];
+        if (!message)
+            throw 'ui에 표시된 message인데, 정보가 없다는 건 messages 관리하는 로직에 문제가 있다는 뜻.';
+
+        $(this).find('.-unread-count').text(memberIds.filter(function (userid) {
+            return lastReadMessageTimesOfEachMember[userid] < message.insertTime;
+        }).length || '');
+    });
+};
+
 Messenger.prototype.popupMessageSendModal = function () {
-    Messenger.prototype.popupMessageSendModal = function () {
-        const users = [];
+    const users = [];
 
-        messenger.ui.organizationPanel.find('.-messenger-folder').filter('.active').removeClass('active').each(function () {
-            $(this).find('.-messenger-user').each(function () {
-                const id = $(this).attr('data-id');
-                if (users.indexOf(id) >= 0)
-                    return;
-                users.push(id);
-            });
-        });
-
-        messenger.ui.organizationPanel.find('.-messenger-user').filter('.active').removeClass('active').each(function () {
+    messenger.ui.organizationPanel.find('.-messenger-folder').filter('.active').removeClass('active').each(function () {
+        $(this).find('.-messenger-user').each(function () {
             const id = $(this).attr('data-id');
             if (users.indexOf(id) >= 0)
                 return;
             users.push(id);
         });
+    });
 
-        if (users.length > 0) {
-            ipcRenderer.send('openMessageSendModal', {'users' : $.addQueryString('', {'members' : users})});
-        } else {
-            ipcRenderer.send('openMessageSendModal', {'users' : ""});
-        }
+    messenger.ui.organizationPanel.find('.-messenger-user').filter('.active').removeClass('active').each(function () {
+        const id = $(this).attr('data-id');
+        if (users.indexOf(id) >= 0)
+            return;
+        users.push(id);
+    });
+
+    if (users.length > 0) {
+        window.open($.addQueryString(contextPath + '/ipcc-messenger/modal-send-memo', {members: users}), "_blank", "width=600, height=400")
+            .messenger = this;
+    } else {
+        window.open(contextPath + "/ipcc-messenger/user-modal-send-memo", "_blank", "width=600, height=700")
+            .messenger = this;
     }
 }
 
@@ -975,15 +1088,13 @@ Messenger.prototype.popupBookmarkModal = function () {
 }
 
 Messenger.prototype.openPopupBookmarkModal = function () {
-    ipcRenderer.send('openBookmarkModal');
+    window.open(contextPath + "/ipcc-messenger/modal-messenger-bookmark", "_blank", "width=600, height=400")
+        .messenger = this;
 }
 
 Messenger.prototype.popupMemoModal = function (seq, withReply) {
-    ipcRenderer.send('openMemoModal', {"seq": seq, "withReply": withReply});
-}
-
-Messenger.prototype.setWindowSize = function (width, height) {
-    ipcRenderer.send('setWindowSize', {"width": width, "height": height});
+    window.open(contextPath + "/ipcc-messenger/modal-memo/" + seq, "_blank", "width=600, height=" + (withReply ? 500 : 325))
+        .messenger = this;
 }
 
 Messenger.prototype.init = function () {
@@ -999,4 +1110,121 @@ Messenger.prototype.init = function () {
     restSelf.get('/api/auth/socket-info').done(function (response) {
         messenger.communicator.connect(response.data.messengerSocketUrl, response.data.companyId, response.data.userId, response.data.userName, response.data.password);
     });
+};
+
+Messenger.prototype.initRoom = function () {
+    const messenger = this;
+
+    messenger.ui.room.find('.-close-room').click(function () {
+        messenger.closeRoom();
+    });
+
+    messenger.ui.room.find('.-leave-room').click(function () {
+        if (!messenger.currentRoom)
+            return;
+
+        messenger.ui.roomWindow.confirm('채팅방을 나가시겠습니까?').done(function () {
+            restSelf.delete('/api/chatt/' + encodeURIComponent(messenger.currentRoom.id), null, null, true).done(function () {
+                messenger.ui.chatContainer.find('.-messenger-chat-item').filter(function () {
+                    return $(this).attr('data-id') === messenger.currentRoom.id;
+                }).remove();
+                messenger.communicator.leave(messenger.currentRoom.id);
+                messenger.closeRoom();
+            });
+        });
+    });
+
+    function setSearchingMessages() {
+        if (!messenger.currentRoom.searchingMessage)
+            return;
+
+        messenger.currentRoom.searchingMessages = [];
+
+        messenger.ui.room.find('.-chat-message:not(.-system-message):contains("' + messenger.currentRoom.searchingMessage.replace(/"/gi, '\\\\"') + '")').each(function () {
+            messenger.currentRoom.searchingMessages.push({messageId: $(this).attr('data-id'), messageTime: $(this).attr('data-time')});
+        });
+
+        messenger.ui.searchingTextCountExpression.attr('data-total', messenger.currentRoom.searchingMessages.length);
+    }
+
+    const searchButton = messenger.ui.room.find('.-search-button');
+    const searchText = messenger.ui.room.find('.-search-text');
+
+    searchButton.click(function () {
+        const keyword = searchText.val().trim();
+        if (!keyword) {
+            messenger.clearSearching();
+            return;
+        }
+        // if (keyword === messenger.currentRoom.searchingMessage)
+        //     return messenger.ui.room.find('.-move-to-next-text').click();
+
+        messenger.currentRoom.searchingMessage = keyword;
+        setSearchingMessages();
+        messenger._moveToText(0);
+    });
+
+    searchText.keyup(function (event) {
+        if (event.keyCode === 13) {
+            searchButton.click();
+        } else if (event.keyCode === 27) {
+            $(this).val('');
+            messenger.clearSearching();
+        }
+    });
+
+    messenger.ui.room.find('.-move-to-prev-text').click(function () {
+        messenger._moveToText(parseInt(messenger.ui.searchingTextCountExpression.attr('data-index')));
+    });
+
+    messenger.ui.room.find('.-move-to-next-text').click(function () {
+        messenger._moveToText(parseInt(messenger.ui.searchingTextCountExpression.attr('data-index')) - 2);
+    });
+
+    messenger.ui.room.find('.-upload-file').click(function () {
+        if (messenger.currentRoom) {
+            window.open($.addQueryString(contextPath + '/messenger-upload-file', {
+                roomId: messenger.currentRoom.id,
+                messengerSocketUrl: messenger.communicator.request.url
+            }), '_blank', 'toolbar=0,location=0,menubar=0,height=100,width=200,left=100,top=100');
+        }
+    });
+
+    messenger.ui.messageInput.keydown(function (key) {
+        if (key.keyCode === 13)
+            if (!key.shiftKey) {
+                messenger.sendMessage();
+                return false;
+            }
+    });
+
+    (function scrollToBottom() {
+        const chatBody = messenger.ui.room.find('.room-content');
+        const scrollHeight = chatBody.prop('scrollHeight');
+        chatBody.scrollTop(scrollHeight);
+
+        if (!scrollHeight)
+            setTimeout(function () {
+                scrollToBottom()
+            }, 100);
+    })();
+
+    // overflow scroll이 생성된 상태까지 기다려서. 생성된 scroll에 scroll event에 대한 액션을 설정한다.
+    (function setScrollEvent() {
+        setTimeout(function () {
+            const scrollContainer = messenger.ui.room.find('.room-content');
+            if (!scrollContainer.length)
+                return setScrollEvent();
+
+            scrollContainer.scroll(function () {
+                if ($(this).scrollTop())
+                    return;
+
+                if (messenger.currentRoom)
+                    messenger.loadMessages({startMessageId: messenger.currentRoom.startMessageId, limit: messenger.READ_LIMIT + 1}).done(function () {
+                        setSearchingMessages();
+                    });
+            });
+        }, 100);
+    })();
 };
