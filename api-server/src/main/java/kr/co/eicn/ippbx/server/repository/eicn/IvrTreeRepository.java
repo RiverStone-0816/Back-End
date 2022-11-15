@@ -326,7 +326,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
                 .where(IVR_TREE.ROOT.eq(entity.getRoot())
                         .and(IVR_TREE.PARENT.eq(entity.getParent()))
                         .and(IVR_TREE.BUTTON.ne(""))
-                        .and(IVR_TREE.TREE_NAME.eq(entity.getTreeName().substring(0, entity.getTreeName().length()-5)))
+                        .and(IVR_TREE.TREE_NAME.eq(entity.getTreeName().length() > 4 ? entity.getTreeName().substring(0, entity.getTreeName().length()-5) : entity.getTreeName()))
                 )
                 .execute();
 
