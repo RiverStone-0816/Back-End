@@ -110,7 +110,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
         List<IvrTreeComposite> collect = subTrees.stream()
                 .filter(e -> countMatches(e.getTreeName(), "_") == minLevel)
                 .peek(e -> {
-                    if (e.getType() == 7 && StringUtils.isNotEmpty(e.getButton()))
+                    if ((e.getType() == 7 || e.getType() == 1) && StringUtils.isNotEmpty(e.getButton()))
                         e.setType((byte) 0);
                 })
                 .collect(Collectors.toList());
