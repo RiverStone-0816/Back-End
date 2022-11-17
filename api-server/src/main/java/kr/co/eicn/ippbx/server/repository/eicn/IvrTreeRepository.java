@@ -181,7 +181,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
 
     public Integer insertMenu(IvrFormRequest form) {
         final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree> duplicatedName =
-                findAll(IVR_TREE.NAME.eq(form.getName()).and(IVR_TREE.TYPE.eq((byte) 1)).and(IVR_TREE.LEVEL.eq(0))).stream().findAny();
+                findAll(IVR_TREE.NAME.eq(form.getName()).and(IVR_TREE.TYPE.eq((byte) 1)).and(IVR_TREE.LEVEL.eq(0)).and(IVR_TREE.BUTTON.eq(""))).stream().findAny();
         if (duplicatedName.isPresent())
             throw new DuplicateKeyException("중복된 IVR명이 있습니다.");
 
