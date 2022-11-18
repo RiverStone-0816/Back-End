@@ -67,7 +67,7 @@
                                     </td>
                                     <td class="-consultant-queue-name" data-peer="${g.htmlQuote(e.person.peer)}"></td>
                                     <td class="-consultant-status" data-sort-value="${g.htmlQuote(e.person.paused)}" data-peer="${g.htmlQuote(e.person.peer)}">${statuses.get(e.person.paused)}</td>
-                                    <td class="-consultant-status-time" data-peer="${g.htmlQuote(e.person.peer)}">00:00</td>
+                                    <td class="-consultant-status-time" data-peer="${g.htmlQuote(e.person.peer)}" data-time="${e.statusTime}">00:00</td>
                                     <td class="-consultant-send-receive-status" data-peer="${g.htmlQuote(e.person.peer)}">${e.inOut == 'I' ? '수신' : e.inOut == 'O' ? '발신' : ''}</td>
                                     <td class="-consultant-calling-custom-number" data-peer="${g.htmlQuote(e.person.peer)}" colspan="2">${g.htmlQuote(e.customNumber)}</td>
                                     <td>${e.inboundSuccess}</td>
