@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.wtalk.info;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
+import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
 import kr.co.eicn.ippbx.front.service.api.WebchatConfigApiInterface;
 import kr.co.eicn.ippbx.model.enums.IntroChannelType;
 import kr.co.eicn.ippbx.model.form.WebchatServiceInfoFormRequest;
@@ -29,12 +30,14 @@ import java.util.stream.Collectors;
 @RequestMapping("admin/wtalk/info/chat-service/")
 public class ChatbotServiceController extends BaseController {
     private final WebchatConfigApiInterface apiInterface;
+    private final SearchApiInterface searchApiInterface;
 
     @SneakyThrows
     @GetMapping("")
     public String page(Model model) {
         val list = apiInterface.list();
         model.addAttribute("list", list);
+        model.addAttribute("server", searchApiInterface.getWtalkServerList().get(0));
 
         return "admin/wtalk/info/chat-service/ground";
     }
