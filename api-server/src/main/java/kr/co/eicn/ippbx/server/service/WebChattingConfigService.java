@@ -14,6 +14,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -106,6 +107,9 @@ public class WebChattingConfigService extends ApiBaseService {
 
     public String uploadImage(MultipartFile image) {
         final Path newPath = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
+        final File file = new File(replace(savePath, "{0}", g.getUser().getCompanyId()));
+        if(!file.exists())
+            file.mkdir();
 
         return imageFileStorageService.uploadImage(newPath, image);
     }
