@@ -253,7 +253,10 @@ public class AuthApiController extends BaseController {
         if (StringUtils.isEmpty(sipBuddies.getMd5secret()))
             return SoftPhoneInformation.builder().result("ERROR").message("Peer Not Found: " + user.getPeer()).peerNum(user.getPeer()).peerSecret(sipBuddies.getMd5secret()).build();
 
-        authApiInterface.update(user.getPeer(), sipBuddies.getMd5secret());
+        /**
+         * todo - 소프트 폰만 쓰는 고객의 경우 해당 주석 삭제
+         * */
+        /*authApiInterface.update(user.getPeer(), sipBuddies.getMd5secret());
         sipBuddies = authApiInterface.getSoftPhoneAuth(user.getPeer());
 
         try (final InputStream in = Runtime.getRuntime().exec("ssh root@"+ pbx.getHost() +" asterisk -rx \\\\\"sip prune realtime peer "+ user.getPeer() +"\\\\\"").getInputStream();
@@ -266,7 +269,7 @@ public class AuthApiController extends BaseController {
         } catch (IOException e) {
             log.error("asterisk script ERROR[error={}]", e.getMessage());
             throw new IllegalArgumentException("실행 할 수 없습니다.");
-        }
+        }*/
 
         return SoftPhoneInformation.builder().result("OK")
                 .message("")
