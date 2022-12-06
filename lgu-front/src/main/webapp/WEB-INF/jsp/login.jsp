@@ -147,12 +147,97 @@
     </div>
 </div>
 
+<div class="ui modal small inverted" id="main-notice-before">
+    <i class="close icon"></i>
+    <div class="header">공지사항</div>
+    <div class="scrolling content rows">
+        <c:set var="noticeMax" value="${0}"/>
+        <c:forEach var="notice" items="${noticeList}" varStatus="status">
+            <c:set var="noticeMax" value="${noticeMax+1}"/>
+            <div class="ui grid main-notice" id="main-notice-list-${noticeMax}" data-status="${noticeMax}" data-id="${notice.id}"
+                 style="display: ${noticeMax == 1 ? 'block' : 'none'}; position: relative; margin-top: -1rem !important;">
+                <div class="row">
+                    <div class="three wide column"><label class="control-label">제목</label></div>
+                    <div class="thirteen wide column"><div class="board-con-inner" style="white-space: pre-wrap;">${g.htmlQuote(notice.title)}</div></div>
+                </div>
+                <div class="row">
+                    <div class="three wide column"><label class="control-label">내용</label></div>
+                    <div class="thirteen wide column">
+                        <c:choose>
+                            <c:when test="${notice.contentType == 'T'}">
+                                <div class="board-con-inner" style="white-space: pre-wrap;">${g.htmlQuote(notice.content)}</div>
+                            </c:when>
+                            <c:when test="${notice.contentType == 'H'}">
+                                ${notice.content}
+                            </c:when>
+                            <c:when test="${notice.contentType == 'L'}">
+                                <a href="${notice.content}" target="_blank">${g.htmlQuote(notice.content)}</a>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="board-con-inner" style="white-space: pre-wrap;">${g.htmlQuote(notice.content)}</div>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </div>
+                <c:if test="${notice.mainBoardFiles != null && notice.mainBoardFiles.size() > 0}">
+                    <div class="row">
+                        <div class="three wide column"><label class="control-label">첨부파일</label></div>
+                        <div class="thirteen wide column">
+                            <div class="ui list filelist">
+                                <c:forEach var="e" items="${notice.mainBoardFiles}">
+                                    <div class="item">
+                                        <i class="file alternate outline icon"></i>
+                                        <div class="content">
+                                            <a href="${apiServerUrl}/api/main-board-notice/before/${e.fileId}/${e.mainBoardId}/specific-file-resource" target="_blank">
+                                                    ${g.htmlQuote(e.originalName)}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                </c:if>
+            </div>
+        </c:forEach>
+    </div>
+
+    <div class="actions">
+        <div class="ui row pull-left">
+            <div class="ui checkbox">
+                <input type="checkbox" name="" tabindex="0" class="hidden" id="main-notice-checkbox">
+                <label>오늘 하루 다시보지 않기</label>
+            </div>
+        </div>
+        <div class="ui row buttons pull-right">
+            <button type="button" class="ui blue button" onclick="noticeMove(-1, 'main-notice-before')"><i class="angle left icon"></i></button>
+            <button type="button" class="ui blue button" onclick="noticeMove(1, 'main-notice-before')"><i class="angle right icon"></i></button>
+        </div>
+        <div class="ui row center" style="text-align: center;">
+            <label> <span class="current-page">1</span> / ${noticeMax}</label>
+        </div>
+    </div>
+</div>
+
 <tags:scripts>
     <script>
         const STORAGE_KEY = 'loginForm';
         const form = $('#login-form');
         const remember = $('#remember');
         const loginModal = $('#modal-login');
+        const mainNoticePrevius = $('#main-notice-before');
+
+        $('#main-notice-checkbox').change(function () {
+            if ($(this).is(":checked"))
+                handleStorage.setStorage("mainNoticeBefore", 1);
+            else
+                handleStorage.removeStorage("mainNoticeBefore");
+        })
+
+        <c:if test="${noticeList != null}">
+        if (handleStorage.getStorage("mainNoticeBefore") && ${noticeMax} > 0 )
+            mainNoticePrevius.dragModalShow();
+        </c:if>
 
         const ipccAdminCommunicator = new IpccAdminCommunicator()
             .on('ARS_AUTH_RES', function (message, kind, peer, data1, data2) {

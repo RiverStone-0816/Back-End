@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.model.enums;
 import kr.co.eicn.ippbx.util.CodeHasable;
 
 public enum MainBoardPopupPoint implements CodeHasable<String> {
-    AFTER("B"), BEFORE("A");
+    AFTER("A"), BEFORE("B");
 
     private final String code;
 

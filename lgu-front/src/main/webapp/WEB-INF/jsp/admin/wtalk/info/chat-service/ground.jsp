@@ -49,7 +49,11 @@
                                     <tr data-id="${e.seq}">
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(e.channelName)}</td>
-                                        <td>${g.htmlQuote(e.senderKey)}</td>
+                                        <td>${g.htmlQuote(e.senderKey)}
+                                            <button type="button" class="ui button mini icon compact" onclick="popupChat('${e.senderKey}')">
+                                                <i class="share icon"></i>
+                                            </button>
+                                        </td>
                                         <td>${e.enableChat ? '활성화' : '비활성화'}</td>
                                         <td>${g.htmlQuote(e.displayCompanyName)}</td>
                                     </tr>
@@ -74,6 +78,9 @@
                 popupReceivedHtml('/admin/wtalk/info/chat-service/' + (seq || 'new') + '/modal', 'modal-chatbot-service');
             }
 
+            function popupChat(senderKey) {
+                window.open('${server.chabotServiceUrl}/vchat/index.html?senderKey='+senderKey);
+            }
             function deleteEntity(seq) {
                 confirm('정말 삭제하시겠습니까?').done(function () {
                     restSelf.delete('/api/chat-service/' + seq).done(function () {

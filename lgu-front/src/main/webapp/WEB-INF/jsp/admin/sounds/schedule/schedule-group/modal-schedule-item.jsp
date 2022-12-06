@@ -95,6 +95,20 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="inline fields">
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <form:radiobutton path="kind" value="CD" class="hidden"/>
+                                    <label>예외처리후번호연결</label>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <form:radiobutton path="kind" value="CI" class="hidden"/>
+                                    <label>예외처리후IVR</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -120,14 +134,17 @@
                     </div>
                 </div>
             </div>
-            <div class="row -kind-data" data-kind="D">
+            <div class="row -kind-data" data-kind="D,CD">
                 <div class="four wide column"><label class="control-label">내부번호</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <select name="kindDataD">
                             <option value="">직접연결번호선택</option>
                             <c:forEach var="e" items="${number070List}">
-                                <option value="${g.htmlQuote(e.number)}" ${entity.kind == 'D' && entity.kindData == e.number ? 'selected' : null}>${g.htmlQuote(e.number)}(${g.messageOf("NumberType", e.type)})</option>
+                                <option value="${g.htmlQuote(e.number)}"
+                                    ${entity.kind == 'D' && entity.kindData == e.number ? 'selected' : null}
+                                    ${entity.kind == 'CD' && entity.kindData.endsWith(e.number) ? 'selected' : null}
+                                >${g.htmlQuote(e.number)}(${g.messageOf("NumberType", e.type)})</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -141,25 +158,32 @@
                     </div>
                 </div>
             </div>
-            <div class="row -kind-data" data-kind="I">
+            <div class="row -kind-data" data-kind="I,CI">
                 <div class="four wide column"><label class="control-label">IVR</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <select name="kindDataI">
                             <c:forEach var="e" items="${ivrTreeList}">
-                                <option value="${g.htmlQuote(e.code)}" ${entity.kind == 'I' && entity.kindData == "".concat(e.code) ? 'selected' : null}>${g.htmlQuote(e.name)}</option>
+                                <option value="${g.htmlQuote(e.code)}"
+                                    ${entity.kind == 'I' && entity.kindData == "".concat(e.code) ? 'selected' : null}
+                                    ${entity.kind == 'CI' && entity.kindData.endsWith(e.code) ? 'selected' : null}
+                                >${g.htmlQuote(e.name)}</option>
                             </c:forEach>
                         </select>
                     </div>
                 </div>
             </div>
-            <div class="row -kind-data" data-kind="C">
+            <div class="row -kind-data" data-kind="C,CD,CI">
                 <div class="four wide column"><label class="control-label">컨텍스트</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <select name="kindDataC">
                             <c:forEach var="e" items="${contextList}">
-                                <option value="${g.htmlQuote(e.context)}" ${entity.kind == 'C' && entity.kindData == e.context ? 'selected' : null}>${g.htmlQuote(e.name)}</option>
+                                <option value="${g.htmlQuote(e.context)}"
+                                    ${entity.kind == 'C' && entity.kindData == e.context ? 'selected' : null}
+                                    ${entity.kind == 'CI' && entity.kindData.startsWith(e.context) ? 'selected' : null}
+                                    ${entity.kind == 'CD' && entity.kindData.startsWith(e.context) ? 'selected' : null}
+                                >${g.htmlQuote(e.name)}</option>
                             </c:forEach>
                         </select>
                     </div>
@@ -230,13 +254,15 @@
         if (data.kind === 'F') data.kindData = data.kindDataF;
         if (data.kind === 'I') data.kindData = data.kindDataI;
         if (data.kind === 'C') data.kindData = data.kindDataC;
+        if (data.kind === 'CI') data.kindData = data.kindDataC.concat("|").concat(data.kindDataI)
+        if (data.kind === 'CD') data.kindData = data.kindDataC.concat("|").concat(data.kindDataD)
 
         delete data.kindDataD;
         delete data.kindDataF;
         delete data.kindDataI;
         delete data.kindDataC;
 
-        if (data.kind === 'I') {
+        if (['I','CI','CD'].includes(data.kind)) {
             delete data.kindSoundData;
             delete data.ttsData;
         }
@@ -260,7 +286,7 @@
             return $(this).attr('data-kind').split(',').indexOf(kind) >= 0;
         }).show();
 
-        if (kind === 'I') {
+        if (['I','CI','CD'].includes(kind)) {
             modal.find('.-tts-data').hide();
             modal.find('[name=kindSoundCode]').val('').prop("selected", true);
             modal.find('[name=ttsData]').val('');

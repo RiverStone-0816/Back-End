@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.monitor.consultant;
 
+import kr.co.eicn.ippbx.model.dto.customdb.PersonLastStatusInfoResponse;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.controller.api.v1.admin.dashboard.DashboardApiController;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
@@ -17,10 +18,7 @@ import kr.co.eicn.ippbx.model.entity.statdb.StatUserInboundEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserOutboundEntity;
 import kr.co.eicn.ippbx.model.enums.PhoneInfoStatus;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
-import kr.co.eicn.ippbx.server.service.StatInboundService;
-import kr.co.eicn.ippbx.server.service.StatOutboundService;
-import kr.co.eicn.ippbx.server.service.StatUserInboundService;
-import kr.co.eicn.ippbx.server.service.StatUserOutboundService;
+import kr.co.eicn.ippbx.server.service.*;
 import kr.co.eicn.ippbx.util.EicnUtils;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
@@ -47,18 +45,22 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RestController
 @RequestMapping(value = "api/v1/admin/monitor/consultant/part", produces = MediaType.APPLICATION_JSON_VALUE)
 public class MonitorPartApiController extends ApiBaseController {
+
     private final StatInboundService statInboundService;
     private final StatOutboundService statOutboundService;
     private final StatUserInboundService statUserInboundService;
     private final StatUserOutboundService statUserOutboundService;
+    private final MemberStatusService memberStatusService;
+
     private final QueueMemberTableRepository queueMemberTableRepository;
     private final QueueNameRepository queueNameRepository;
     private final CmpMemberStatusCodeRepository cmpMemberStatusCodeRepository;
     private final CurrentMemberStatusRepository currentMemberStatusRepository;
-    private final DashboardApiController dashboardApiController;
     private final PhoneInfoRepository phoneInfoRepository;
     private final PersonListRepository personListRepository;
     private final CallbackRepository callbackRepository;
+
+    private final DashboardApiController dashboardApiController;
 
     /**
      * 센터현황별 모니터링
@@ -131,10 +133,10 @@ public class MonitorPartApiController extends ApiBaseController {
                                 isLoginByQueueName.stream().filter(e -> e.getIsLogin().equals("Y") && e.getQueueName().equals(k))
                                         .map(QueueMemberLoginCountResponse::getCount).findFirst().orElse(0)
                         );
-                        huntMonitor.setLogoutCount
-                                (isLoginByQueueName.stream().filter(e -> e.getIsLogin().equals("N") && e.getQueueName().equals(k))
+                        huntMonitor.setLogoutCount(
+                                isLoginByQueueName.stream().filter(e -> e.getIsLogin().equals("N") && e.getQueueName().equals(k))
                                         .map(QueueMemberLoginCountResponse::getCount).findFirst().orElse(0)
-                                );
+                        );
                         huntMonitor.setTotal(huntMonitor.getLoginCount() + huntMonitor.getLogoutCount());
                         rows.add(huntMonitor);
                     }
@@ -287,8 +289,7 @@ public class MonitorPartApiController extends ApiBaseController {
         final Map<String, String> queueNameMap = queueNameRepository.getHuntNameMap();
         final List<PersonList> personList = personListRepository.findAll().stream().filter(e -> StringUtils.isNotEmpty(e.getPeer())).collect(Collectors.toList());
         final Map<String, QueueMemberTable> queueMemberMap = queueMemberTableRepository.findAllQueueMember();
-
-
+        final List<PersonLastStatusInfoResponse> allPersonStatusInfo = memberStatusService.getAllPersonStatusInfo();
 
         for (PersonList personData : personList) {
             final PersonListSummary person = convertDto(personData, PersonListSummary.class);
@@ -304,6 +305,9 @@ public class MonitorPartApiController extends ApiBaseController {
 
                 final StatUserInboundEntity inboundStat = individualInboundStat.get(person.getId());
                 final StatUserOutboundEntity outboundStat = individualOutboundStat.get(person.getId());
+
+                allPersonStatusInfo.stream().filter(statusTime -> statusTime.getPhonename().equals(person.getId()) && person.getPaused().equals(statusTime.getNextStatus()))
+                        .findFirst().ifPresent(statusTime -> row.setStatusTime(statusTime.getEndDate().getTime()));
 
                 row.setInboundSuccess(inboundStat != null ? inboundStat.getInSuccess() : 0);
                 row.setOutboundSuccess(outboundStat != null ? outboundStat.getOutSuccess() : 0);

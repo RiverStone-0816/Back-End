@@ -13,21 +13,28 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="usingServices" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
+<c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
+<c:set var="isStat" value="${user.isStat == 'Y'}"/>
+<c:set var="isTalk" value="${user.isTalk == 'Y'}"/>
 
 <div class="tab-content-container remove-padding full-height consulting-main">
     <div class="ui container fluid tight consulting-container">
         <div class="ui grid" style="margin-top: -1.5rem;">
             <div class="sixteen wide column consulting-bookmark">
                 <div class="ui menu" style="padding-top: 0%;">
+                    <c:if test="${hasExtension && isStat}">
                     <a class="item -counsel-panel-indicator active" onclick="viewCallPanel()" data-tab="call-panel" data-target="#call-panel">전화상담</a>
-                    <c:if test="${user.isTalk.equals('Y')}">
-                        <a class="item -counsel-panel-indicator" onclick="viewTalkPanel(); $(this).removeClass('highlight');$(this).removeClass('newImg') " data-tab="talk-panel"
+                    </c:if>
+                    <c:if test="${isTalk}">
+                        <a class="item -counsel-panel-indicator ${user.isStat.equals('N') ? 'active' : ""}" onclick="viewTalkPanel(); $(this).removeClass('highlight');$(this).removeClass('newImg') " data-tab="talk-panel"
                            data-target="#talk-panel">
                             <text>상담톡</text>
                             <div></div>
                         </a>
                     </c:if>
+                    <c:if test="${hasExtension && isStat}">
                     <a class="item -counsel-panel-indicator" data-tab="preview-tab">프리뷰</a>
+                    </c:if>
                     <a class="item -counsel-panel-indicator -configured-indicator" data-tab="menu1">상담결과이력</a>
                     <a class="item -counsel-panel-indicator -configured-indicator" data-tab="menu2">녹취/통화이력조회</a>
                     <a class="item -counsel-panel-indicator -configured-indicator" data-tab="menu3">콜백이력관리</a>
@@ -56,7 +63,9 @@
         <div class="ui tab active" id="consulting-screen" data-tab="consulting-screen">
             <div class="ui grid consulting-panel">
                 <div class="nine wide column" id="consulting-call">
-                    <jsp:include page="/counsel/call/"/>
+                    <c:if test="${user.isStat.equals('Y')}">
+                        <jsp:include page="/counsel/call/"/>
+                    </c:if>
                     <c:if test="${user.isTalk.equals('Y')}">
                         <jsp:include page="/counsel/wtalk/"/>
                     </c:if>
@@ -412,6 +421,24 @@
             }
         }
 
+        function removeCategory(id) {
+            confirm('정말 삭제하시겠습니까?').done(function () {
+                restSelf.delete('/api/sms-category/' + id).done(function () {
+                    $('#modal-sms-category-add-popup').modalHide()
+                    alert('삭제되었습니다.')
+                });
+            });
+        }
+
+        function removeTemplate(id) {
+            confirm('정말 삭제하시겠습니까?').done(function () {
+                restSelf.delete('/api/sms-message-template/' + id).done(function () {
+                    $('#modal-sms-template-add-popup').modalHide()
+                    alert('삭제되었습니다.')
+                });
+            });
+        }
+
         $('#distributee').change(function () {
             if (typeof talkCommunicator !== 'object') return
             talkCommunicator.changeDistribution($(this).prop("checked"))
@@ -420,6 +447,7 @@
         $(window).on('load', function () {
             loadOuterLink();
             loadCurrentStatus();
+
             setInterval(function () {
                 if ($(parent.document).find('#main').is('.change-mode')) {
                     loadOuterLink();
@@ -462,6 +490,8 @@
         $(window).on('load', function () {
             updateQueues();
             updatePersonStatus();
+            if(!${hasExtension && isStat})
+                viewTalkPanel();
 
             /*TODO: 임시처리*/
             $('.-configured-tab[data-tab=menu1]').empty().append($('<iframe/>', {id: 'menu1', name: 'menu1', class: 'tab-menu', style: 'width: 100%; height: 100%;'}));
@@ -488,6 +518,7 @@
             </c:if>
         });
     </script>
+
     <script>
         window.ipccCommunicator = new IpccCommunicator();
 
@@ -703,9 +734,10 @@
         $(window).on('load', function () {
             restSelf.get('/api/auth/socket-info').done(function (response) {
                 const fromUi = "EICN_IPCC";
+                <c:if test="${isStat}">
                 if (response.data.extension != null)
                     ipccCommunicator.connect(response.data.callControlSocketUrl, response.data.pbxHost, response.data.companyId, response.data.userId, response.data.extension, response.data.password, response.data.idType, fromUi, response.data.isMulti);
-
+                </c:if>
                 <c:if test="${user.isTalk.equals('Y')}">
                 talkCommunicator.connect(response.data.talkSocketUrl, response.data.companyId, response.data.userId, response.data.password, "USER", response.data.idType);
                 </c:if>
@@ -808,22 +840,5 @@
             });
         });
 
-        function removeCategory(id) {
-            confirm('정말 삭제하시겠습니까?').done(function () {
-                restSelf.delete('/api/sms-category/' + id).done(function () {
-                    $('#modal-sms-category-add-popup').modalHide()
-                    alert('삭제되었습니다.')
-                });
-            });
-        }
-
-        function removeTemplate(id) {
-            confirm('정말 삭제하시겠습니까?').done(function () {
-                restSelf.delete('/api/sms-message-template/' + id).done(function () {
-                    $('#modal-sms-template-add-popup').modalHide()
-                    alert('삭제되었습니다.')
-                });
-            });
-        }
     </script>
 </tags:scripts>

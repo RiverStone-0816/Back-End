@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.service.api;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServerInfo;
 import kr.co.eicn.ippbx.model.dto.customdb.ChatbotEventResponse;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.model.dto.eicn.search.*;
@@ -59,5 +60,9 @@ public class SearchApiInterface extends ApiServerInterface {
 
     public List<ChatbotEventResponse> getChatbotEventList(String botId) throws IOException, ResultFailException {
         return getList(subUrl + "chatbot/event", Collections.singletonMap("botId", botId), ChatbotEventResponse.class).getData();
+    }
+
+    public List<WtalkServerInfo> getWtalkServerList() throws IOException, ResultFailException {
+        return getList(subUrl + "wtalk-service/server", null, WtalkServerInfo.class).getData();
     }
 }

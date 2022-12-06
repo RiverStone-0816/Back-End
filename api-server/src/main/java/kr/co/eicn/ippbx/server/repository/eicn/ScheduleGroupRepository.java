@@ -13,6 +13,7 @@ import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ContextInfo.CONTEXT_INFO;
@@ -60,7 +62,7 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
 
         final List<ScheduleGroupEntity> scheduleGroupEntities = new ArrayList<>();
         final Map<String, String> soundListMap = getSoundList().stream().collect(Collectors.toMap(e -> String.valueOf(e.getSeq()), SoundList::getSoundName));
-        final Map<String, String> ivrTreeMap = getIvrRootTree().stream().collect(Collectors.toMap(e -> String.valueOf(e.getCode()), IvrTree::getName));
+        final Map<String, String> ivrTreeMap = getIvrRootTree().stream().filter(e -> StringUtils.isEmpty(e.getButton())).collect(Collectors.toMap(e -> String.valueOf(e.getCode()), IvrTree::getName));
         final Map<String, String> contextInfoMap = getContextInfo().stream().collect(Collectors.toMap(ContextInfo::getContext, ContextInfo::getName));
 
         recordResultMap.forEach((record, records) -> {
@@ -80,6 +82,15 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
                             into.setKindDataName(ivrTreeMap.getOrDefault(into.getKindData(), EMPTY));
                         else if (ScheduleKind.EXCEPTION_CONTEXT.getCode().equals(into.getKind()))
                             into.setKindDataName(contextInfoMap.getOrDefault(into.getKindData(), EMPTY));
+                        else if (ScheduleKind.EXCEPTION_CONTEXT_DIRECT_NUMBER.getCode().equals(into.getKind())){
+                            String[] kindDataArray = into.getKindData().split("\\|");
+                            logger.info("kindDataArray ======> {}", (Object) kindDataArray);
+                            into.setKindDataName(contextInfoMap.getOrDefault(kindDataArray[0], EMPTY).concat("|").concat(StringUtils.isEmpty(kindDataArray[1]) ? "" : kindDataArray[1]));
+                        } else if (ScheduleKind.EXCEPTION_CONTEXT_IVR_CONNECT.getCode().equals(into.getKind())) {
+                            String[] kindDataArray = into.getKindData().split("\\|");
+                            into.setKindDataName(contextInfoMap.getOrDefault(kindDataArray[0], EMPTY).concat("|").concat(ivrTreeMap.getOrDefault(kindDataArray[1], EMPTY)));
+                        }
+
 
                         return into;
                     })

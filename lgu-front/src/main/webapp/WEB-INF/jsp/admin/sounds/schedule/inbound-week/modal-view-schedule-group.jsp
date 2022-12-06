@@ -46,6 +46,8 @@
                                                     : s.kind == 'I' ? 'IVR연결'
                                                     : s.kind == 'C' ? '예외컨텍스트'
                                                     : s.kind == 'V' ? '음성사서함'
+                                                    : s.kind == 'CI' ? '예외컨택스트후IVR'
+                                                    : s.kind == 'CD' ? '예외컨택스트후번호연결'
                                                     : '알수없음: ' + s.kind}
                                     </td>
                                     <td>

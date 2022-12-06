@@ -271,9 +271,13 @@
         setInterval(function () {
             $('.-consultant-status-time').each(function () {
                 const peerStatus = peerStatuses[$(this).attr('data-peer')];
+                const statusTime = $(this).attr('data-time');
                 if (!peerStatus) return;
 
-                if (!peerStatus.callStatusUpdatedTime)
+                if (statusTime) {
+                    peerStatus.callStatusUpdatedTime = statusTime;
+                    $(this).removeAttr('data-time');
+                } else if (!peerStatus.callStatusUpdatedTime)
                     peerStatus.callStatusUpdatedTime = new Date().getTime();
 
                 const callingTime = parseInt(((peerStatus.callStatusUpdatedTime) - new Date().getTime()) / 1000) * -1;

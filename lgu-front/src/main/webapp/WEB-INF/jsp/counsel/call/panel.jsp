@@ -156,12 +156,17 @@
             return submitJsonData($('#call-custom-input')[0]);
         }
 
-        function loadCustomInput(maindbGroupSeq, customId, phoneNumber) {
+        function loadCustomInput(maindbGroupSeq, customId, phoneNumber, uniqueId, inOut) {
             return replaceReceivedHtmlInSilence($.addQueryString('/counsel/call/custom-input', {
                 maindbGroupSeq: maindbGroupSeq || '',
                 customId: customId || '',
                 phoneNumber: phoneNumber || ''
-            }), '#call-custom-input');
+            }), '#call-custom-input').done(() => {
+                if (uniqueId)
+                    audioId = uniqueId;
+                if (inOut)
+                    callType = inOut;
+            });
         }
 
         function loadCounselingInput(maindbGroupSeq, customId, phoneNumber, maindbResultSeq) {

@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.front.model.QueueSummaryAndMemberPeers;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.front.model.form.LoginForm;
 import kr.co.eicn.ippbx.front.model.search.RecordCallSearchForm;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.*;
 import kr.co.eicn.ippbx.front.service.api.acd.QueueApiInterface;
@@ -98,7 +99,7 @@ public class MobileMainController extends MessengerBaseController {
     public String mainPage(Model model) {
         val services = searchApiInterface.services(new SearchServiceRequest());
         if (services.isEmpty()) throw new IllegalStateException("서비스가 존재하지 않습니다.");
-        model.addAttribute("cid", services.get(0).getSvcNumber());
+        model.addAttribute("cids", services);
 
         model.addAttribute("ProtectArs", FormUtils.optionsOfCode(ProtectArs.class));
         model.addAttribute("statusCodes", companyApiInterface.getMemberStatusCodes().stream().filter(e -> e.getStatusNumber() != 9).collect(Collectors.toList()));
@@ -134,7 +135,14 @@ public class MobileMainController extends MessengerBaseController {
             info.setLogin(isLogin);
         });
 
+        model.addAttribute("services", searchApiInterface.services(new SearchServiceRequest()).stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcName)));
+
         return "ipcc-messenger/main";
+    }
+
+    @GetMapping("modal-calling")
+    public String modalCalling(Model model) {
+        return "ipcc-messenger/modal-calling";
     }
 
     private Map<String, Boolean> getPeerToIsLoginMap() {

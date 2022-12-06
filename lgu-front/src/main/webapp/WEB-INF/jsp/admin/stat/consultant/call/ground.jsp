@@ -22,7 +22,7 @@
                         검색
                     </div>
                     <div class="dp-flex align-items-center">
-                        <div class="ui slider checkbox mr15/admin/service/help/task-script/">
+                        <div class="ui slider checkbox mr15">
                             <label>접기/펴기</label>
                             <input type="checkbox" name="newsletter" id="_newsletter">
                         </div>

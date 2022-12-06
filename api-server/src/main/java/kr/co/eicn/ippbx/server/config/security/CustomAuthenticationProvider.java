@@ -7,10 +7,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.WebSecureHistoryRecord;
 import kr.co.eicn.ippbx.model.UserDetails;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
-import kr.co.eicn.ippbx.model.enums.IdType;
-import kr.co.eicn.ippbx.model.enums.ServerType;
-import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
-import kr.co.eicn.ippbx.model.enums.WebSecureActionType;
+import kr.co.eicn.ippbx.model.enums.*;
 import kr.co.eicn.ippbx.server.config.Constants;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
@@ -116,8 +113,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             }
         }
 
-        if (!getSHA512(getSHA512(authenticationRequest.getCredentials().toString())+user.getSoltPw()).equals(user.getPasswd())) {
-            if(!getSHA512(authenticationRequest.getCredentials().toString()).equals(user.getPasswd())) {
+        //아래 조건식에 && 이후 조건을 지우지 마세요. MC버전 IVR 로그인 등에 필요한 코드입니다.
+        if (!getSHA512(getSHA512(authenticationRequest.getCredentials().toString()) + user.getSoltPw()).equals(user.getPasswd()) && !authenticationRequest.getCredentials().toString().equals(user.getPasswd())) {
+            if (!getSHA512(authenticationRequest.getCredentials().toString()).equals(user.getPasswd())) {
                 webSecureHistoryRecord.setActionId(WebSecureActionType.LOGIN.getCode());
                 webSecureHistoryRecord.setActionSubId(WebSecureActionSubType.WRONG_PASSWORD.getCode());
                 webSecureHistoryRecord.setActionData("패스워드오류");
@@ -137,7 +135,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         final PhoneInfo phone = extensionRepository.findOne(PHONE_INFO.EXTENSION.eq(authenticationRequest.getExtension()).and(PHONE_INFO.COMPANY_ID.eq(authenticationRequest.getCompanyId())));
 
         if (IdType.isConsultant(user.getIdType())) {
-            if (StringUtils.isEmpty(authenticationRequest.getExtension()))
+            if (StringUtils.isEmpty(authenticationRequest.getExtension()) && !user.getLicenseList().contains(LicenseListType.TALK.getCode()))
                 throw new IllegalArgumentException("내선번호를 입력해 주세요.");
         }
 

@@ -1064,3 +1064,47 @@ function zeroPad(nr, base) {
     let len = (String(base).length - String(nr).length) + 1;
     return len > 0 ? new Array(len).join('0') + nr : nr;
 }
+
+const handleStorage = {
+    setStorage: function (name, exp) {
+        let date = new Date();
+        date = date.getDate();
+
+        localStorage.setItem(name, date);
+    },
+    getStorage: function (name) {
+        if (localStorage.getItem(name) === null)
+            return true;
+
+        const now = new Date().getDate();
+
+        return parseInt(localStorage.getItem(name)) !== now;
+    },
+    removeStorage: function (name) {
+        localStorage.removeItem(name);
+    }
+};
+
+function noticeMove(add, target) {
+    const max = $('#'+target).find('.main-notice').length;
+
+    const current = $('#'+target).find('.main-notice').filter(function () {
+        return $(this).css('display') === 'block';
+    });
+
+    const currentNumber = current.attr('data-status');
+
+    if ( (currentNumber === '1' && add < 0 ) || (currentNumber === '' + max + '' && add > 0 ))
+        return;
+
+    current.css('display', 'none');
+
+    if ( add > 0 ){
+        current.next().css('display', 'block');
+    }
+    else {
+        current.prev().css('display', 'block');
+    }
+
+    $('#'+target).find('.current-page').text(parseInt(currentNumber) + add );
+}

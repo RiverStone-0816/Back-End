@@ -418,9 +418,10 @@
         if (!phoneNumber)
             return;
 
+        const uniqueId = getEntityId('RecordHistory', 'unique-id');
         // $('#counseling-target').text(phoneNumber);
 
-        loadCustomInput(null, null, phoneNumber);
+        loadCustomInput(null, null, phoneNumber, uniqueId || '');
         $('#search-call-history-form').closest('.modal').modalHide();
     }
 </script>

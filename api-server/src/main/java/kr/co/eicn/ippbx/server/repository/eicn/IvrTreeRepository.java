@@ -109,6 +109,10 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
 
         List<IvrTreeComposite> collect = subTrees.stream()
                 .filter(e -> countMatches(e.getTreeName(), "_") == minLevel)
+                .peek(e -> {
+                    if ((e.getType() == 7 || e.getType() == 1) && StringUtils.isNotEmpty(e.getButton()))
+                        e.setType((byte) 0);
+                })
                 .collect(Collectors.toList());
 
         parentNode.setNodes(collect);
@@ -177,7 +181,7 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
 
     public Integer insertMenu(IvrFormRequest form) {
         final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree> duplicatedName =
-                findAll(IVR_TREE.NAME.eq(form.getName()).and(IVR_TREE.TYPE.eq((byte) 1)).and(IVR_TREE.LEVEL.eq(0))).stream().findAny();
+                findAll(IVR_TREE.NAME.eq(form.getName()).and(IVR_TREE.TYPE.eq((byte) 1)).and(IVR_TREE.LEVEL.eq(0)).and(IVR_TREE.BUTTON.eq(""))).stream().findAny();
         if (duplicatedName.isPresent())
             throw new DuplicateKeyException("중복된 IVR명이 있습니다.");
 
@@ -208,14 +212,16 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
 
             // 하위IVR code 는 parent ivr_tree.type_data에 저장됨
             dsl.update(IVR_TREE)
-                    .set(IVR_TREE.TYPE_DATA, String.valueOf(code))
+                    .set(IVR_TREE.TYPE_DATA, Objects.nonNull(form.getTypeDataStrings()) ? defaultString(join(form.getTypeDataStrings(), "|").replaceAll("\\[","").replaceAll("]","")) + "|" + code : String.valueOf(code))
+                    .set(IVR_TREE.TYPE, Objects.requireNonNull(IvrMenuType.of(form.getType())).isRootable() ? 0 : form.getType())
                     .where(IVR_TREE.SEQ.eq(parentNode.getSeq()))
                     .execute();
 
             cacheService.pbxServerList(getCompanyId()).forEach(e -> {
                 DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
                 pbxDsl.update(IVR_TREE)
-                        .set(IVR_TREE.TYPE_DATA, String.valueOf(code))
+                        .set(IVR_TREE.TYPE_DATA, Objects.nonNull(form.getTypeDataStrings()) ? defaultString(join(form.getTypeDataStrings(), "|").replaceAll("\\[","").replaceAll("]","")) + "|"  + code : String.valueOf(code))
+                        .set(IVR_TREE.TYPE, Objects.requireNonNull(IvrMenuType.of(form.getType())).isRootable() ? 0 : form.getType())
                         .where(IVR_TREE.SEQ.eq(pbxDsl.select(IVR_TREE.SEQ).from(IVR_TREE).where(compareCompanyId()).and(IVR_TREE.TREE_NAME.eq(parentNode.getTreeName()))))
                         .execute();
             });
@@ -313,6 +319,16 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
         final DecimalFormat decimalFormat = new DecimalFormat("0000");
         final Integer code = entity.getCode();
         final IvrMenuType type = Objects.requireNonNull(IvrMenuType.of(form.getType()));
+
+
+        dslContext.update(IVR_TREE)
+                .set(IVR_TREE.TYPE_DATA, Objects.nonNull(form.getTypeDataStrings()) ? defaultString(join(form.getTypeDataStrings()).replaceAll("\\[","").replaceAll("]",""), "|") + "|" + entity.getCode() : String.valueOf(entity.getCode()))
+                .where(IVR_TREE.ROOT.eq(entity.getRoot())
+                        .and(IVR_TREE.PARENT.eq(entity.getParent()))
+                        .and(IVR_TREE.BUTTON.ne(""))
+                        .and(IVR_TREE.TREE_NAME.eq(entity.getTreeName().length() > 4 ? entity.getTreeName().substring(0, entity.getTreeName().length()-5) : entity.getTreeName()))
+                )
+                .execute();
 
         dslContext.update(IVR_TREE)
                 .set(IVR_TREE.NAME, form.getName())

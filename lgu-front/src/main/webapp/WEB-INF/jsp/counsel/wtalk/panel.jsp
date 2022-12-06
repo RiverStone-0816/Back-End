@@ -895,7 +895,7 @@
 
                 <div class="wrap-inp" v-show="!isMessage">
                     <div class="inp-box">
-                        <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteFromClipboard" @keyup.stop="keyup" :disabled="isMessage"></textarea>
+                        <textarea placeholder="전송하실 메시지를 입력하세요." ref="message" @paste.prevent="pasteFromClipboard" @keydown.stop="keyDown" @keyup.stop="keyup" :disabled="isMessage"></textarea>
                     </div>
                     <button type="button" class="send-btn" @click="sendMessage()">전송</button>
                 </div>
@@ -1228,7 +1228,7 @@
                     }
                 },
                 setAutoEnable: function (roomId) {
-                    restSelf.put('/api/counsel/talk-auto-enable/' + roomId, {isAutoEnable: (this.isAutoEnable ? "Y" : "N")})
+                    restSelf.put('/api/counsel/wtalk-auto-enable/' + roomId, {isAutoEnable: (this.isAutoEnable ? "Y" : "N")})
                 },
                 pasteFromClipboard: function (event) {
                     let hasFile = false
@@ -1267,45 +1267,48 @@
                     const _this = this
                     return this.templates.filter(e => e.permissionLevel >= _this.showingTemplateLevel && e.name.includes(_this.showingTemplateFilter))
                 },
-                keyup: function (event) {
-                    if (event.key === '/' && ['///', '//', '/'].includes(this.$refs.message.value)) {
-                        if (this.getTemplates().length > 0) {
-                            this.showingTemplateLevel = this.$refs.message.value === '///' ? 3 : this.$refs.message.value === '//' ? 2 : 1
-                        } else {
-                            this.showingTemplateLevel = 0
-                        }
-                        this.activatingTemplateIndex = null
-                        return
-                    } else
-                        this.showingTemplateLevel = 0
-
+                keyDown: function(event) {
                     if (event.key === 'Escape') {
-                        this.showingTemplateLevel = 0
-                        this.showingTemplateFilter = ''
                         this.replying = null
-                        this.showingTemplateBlocks = false
                         return
                     }
 
                     if (this.showingTemplateLevel) {
                         const templates = this.getTemplates()
                         if (templates.length > 0 && event.key === 'ArrowDown') {
+                            event.preventDefault()
                             if (this.activatingTemplateIndex === null) return this.activatingTemplateIndex = 0
                             return this.activatingTemplateIndex = (this.activatingTemplateIndex + 1) % templates.length
                         }
                         if (templates.length > 0 && event.key === 'ArrowUp') {
+                            event.preventDefault()
                             if (this.activatingTemplateIndex === null) return this.activatingTemplateIndex = templates.length - 1
                             return this.activatingTemplateIndex = (this.activatingTemplateIndex - 1 + templates.length) % templates.length
                         }
                         if (templates[this.activatingTemplateIndex] && event.key === 'Enter') {
+                            event.preventDefault()
                             return this.sendTemplate(templates[this.activatingTemplateIndex])
                         }
-                        this.showingTemplateFilter = this.$refs.message.value.substr(this.showingTemplateLevel).trim()
-                        this.activatingTemplateIndex = 0
+                        if (templates.length > 0 && !['ArrowDown', 'ArrowUp', 'Enter'].includes(event.key))
+                            return this.activatingTemplateIndex = 0
                     }
 
                     if (event.key === 'Enter') {
-                        return this.sendMessage()
+                        if (!event.shiftKey) {
+                            event.preventDefault();
+                            return this.sendMessage()
+                        }
+                    }
+                },
+                keyup: function (event) {
+                    if (this.$refs.message.value.startsWith('/')) {
+                        this.showingTemplateLevel = this.$refs.message.value.startsWith('///') ? 3 : this.$refs.message.value.startsWith('//') ? 2 : 1
+                        this.showingTemplateFilter = this.$refs.message.value.substr(this.showingTemplateLevel).trim()
+                    } else {
+                        this.showingTemplateLevel = 0
+                        this.showingTemplateFilter = ''
+                        this.activatingTemplateIndex = null
+                        this.showingTemplateBlocks = false
                     }
                 },
                 loadTemplates: function () {
