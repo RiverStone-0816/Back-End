@@ -245,6 +245,8 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
                 .set(TABLE.GROUP_KIND, form.getGroupKind().equals("PHONE_TMP") ? "PHONE" : form.getGroupKind())
                 .set(TABLE.UPDATE_DATE, DSL.now())
                 .set(TABLE.CUSTOM_ID, form.getCustomId())
+                .set(TABLE.GROUP_ID, form.getGroupId())
+                .set(TABLE.GROUP_TYPE, form.getMaindbType())
                 .set(TABLE.CLICK_KEY, StringUtils.isEmpty(resultCustomInfoEntity.getClickKey()) ? "nonClickKey" : resultCustomInfoEntity.getClickKey());
 
         if (StringUtils.isNotEmpty(form.getCustomNumber()))
