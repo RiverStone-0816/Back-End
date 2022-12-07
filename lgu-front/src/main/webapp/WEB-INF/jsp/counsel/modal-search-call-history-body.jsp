@@ -245,7 +245,7 @@
                     <c:when test="${pagination.rows.size() > 0}">
                         <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                             <c:set var="isFile" value="${g.htmlQuote(e.callStatusValue.contains('정상통화')) and fn:length(g.htmlQuote(e.recordFile)) > 0}"/>
-                            <tr data-id="${e.seq}" data-phone-number="${e.inOut.contains('I') ? e.src : e.dst}">
+                            <tr data-id="${e.seq}" data-phone-number="${e.inOut.contains('I') ? e.src : e.dst}" data-unique-id="${e.uniqueid}" data-call-type="${e.inOut}">
                                 <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                 <td>${g.htmlQuote(e.service.svcName)}</td>
                                     <%--<td>${e.vipBlack == 'V' ? 'VIP' : e.vipBlack == 'B' ? '블랙리스트' : ''}</td>--%>
@@ -419,9 +419,10 @@
             return;
 
         const uniqueId = getEntityId('RecordHistory', 'unique-id');
+        const callType = getEntityId('RecordHistory', 'call-type');
         // $('#counseling-target').text(phoneNumber);
 
-        loadCustomInput(null, null, phoneNumber, uniqueId || '');
+        loadCustomInput(null, null, phoneNumber, uniqueId || '', callType || '');
         $('#search-call-history-form').closest('.modal').modalHide();
     }
 </script>
