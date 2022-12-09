@@ -33,6 +33,9 @@
             <button class="ui grey button" onclick="removeLastDialNumber()">지우기</button>
             <button class="ui brand button" onclick="tryDialByDialPadInput();">전화걸기</button>
         </div>
+        <div class="call-btn-wrap">
+            <button class="ui brand button" id="btn-mute" onclick="sipCallMute()">음소거</button>
+        </div>
     </div>
 </div>
 <div id="videos" style="display:none;">
@@ -63,7 +66,19 @@
         }
 
         function tryDialByDialPadInput() {
-            ipccCommunicator.clickDial('', dialPadInput.val());
+            ipccCommunicator.clickByCampaign($('#cid').val(), dialPadInput.val(), "SoftPhone", $('#call-custom-input [name=groupSeq]').val(), $('#call-custom-input .-custom-id').text());
+        }
+
+        let muteType = 1;
+        function sipCallMute(){
+            muteType *= -1;
+            if(muteType === 1) {
+                $('#btn-mute').removeClass('green');
+                sipcall.unmuteAudio();
+            } else {
+                $('#btn-mute').addClass('green');
+                sipcall.muteAudio();
+            }
         }
     </script>
 </tags:scripts>
