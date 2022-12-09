@@ -192,7 +192,7 @@ public class ScheduleGroupApiController extends ApiBaseController {
 	 */
 	@GetMapping("add-ivr-list")
 	public ResponseEntity<JsonResult<List<SummaryIvrTreeResponse>>> addIvrTreeList() {
-		return ResponseEntity.ok(data(ivrTreeRepository.findAll(IVR_TREE.TYPE.eq((byte) 1).and(IVR_TREE.LEVEL.eq(0)))
+		return ResponseEntity.ok(data(ivrTreeRepository.findAll(IVR_TREE.TYPE.eq((byte) 1).and(IVR_TREE.LEVEL.eq(0)).and(IVR_TREE.BUTTON.eq("")))
 					.stream()
 					.map( e -> convertDto(e, SummaryIvrTreeResponse.class))
 					.collect(Collectors.toList()))
