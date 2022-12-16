@@ -60,6 +60,9 @@ eicn:
     location: ./files
   apiserver: http://localhost:8080/api-server
   realapiserver: http://localhost:8080/api-server
+  #ROOT 배포시 /ubiz 삭제
+  doub:
+    url: http://localhost:21003/ubiz
   webchat:
     image:
       url: https://dev.eicn.co.kr:8200/webchat_bot_image

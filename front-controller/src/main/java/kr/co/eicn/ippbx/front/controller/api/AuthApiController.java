@@ -92,6 +92,8 @@ public class AuthApiController extends BaseController {
     private String serviceKind;
     @Value("${eicn.service.base-url}")
     private String baseUri;
+    @Value("${eicn.service.base-url}")
+    private String doubUri;
 
     @LoginRequired
     @GetMapping("access-token")
@@ -162,7 +164,7 @@ public class AuthApiController extends BaseController {
         g.setSocketList(daemonInfoInterface.getSocketList());
         if (Objects.nonNull(companyServerEntity))
             g.setDoubUrl(companyServerEntity.getDoubServerInfo().getDoubWebUrl() + "/api/session_link/" + g.getSessionId() + "?ipccUrl=");
-        g.setBaseUrl(baseUri + "/ubiz/api/user/session-check");
+        g.setBaseUrl(doubUri + "/api/user/session-check");
     }
 
     @ApiOperation("로그아웃")
