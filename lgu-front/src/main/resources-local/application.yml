@@ -59,6 +59,8 @@ eicn:
   file:
     location: ./files
   apiserver: http://localhost:8080/api-server
+  #apache 를  web 서버로 사용할 경우 아래 url 을 http://localhost:8080/api-server 로 변경 하세요.
+  #이후 apache 가 접근 할 수 있도록 chown -R root:daemon /usr/local/tomcat/webapps 권한 추가 해주세요.
   realapiserver: http://localhost:8080/api-server
   #ROOT 배포시 /ubiz 삭제
   doub:
