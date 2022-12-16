@@ -83,12 +83,12 @@
                     <div ref="chatBody" @scroll="loadAdditionalMessagesIfTop" class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll; scroll-behavior: smooth;">
                         <div class="os-content" style="padding: 10px 0 0; height: 100%; width: 100%;">
                             <div v-for="(e, i) in messageList" :key="i" :ref="'message-' + e.messageId">
-                                <p v-if="['SE', 'RE'].includes(e.sendReceive)" class="info-msg">[{{ getTimeFormat(e.cur_timestr) }}]</p>
-                                <p v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.cur_timestr) }}] {{ e.contents }}</p>
+                                <p v-if="['SE', 'RE'].includes(e.sendReceive)" class="info-msg">[{{ getTimeFormat(e.time) }}]</p>
+                                <p v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType === 'info'" class="info-msg">[{{ getTimeFormat(e.time) }}] {{ e.contents }}</p>
                                 <div v-else-if="['AF', 'S', 'R'].includes(e.sendReceive) && e.messageType !== 'info'" class="chat-item"
                                      :class="(['AF', 'S'].includes(e.sendReceive) && e.userId === userId && 'chat-me') + ' ' + (activatedSearchingTextMessageId === e.messageId && 'active')">
                                     <div class="wrap-content">
-                                        <div class="txt-time">[{{ e.username }}] {{ getTimeFormat(e.cur_timestr) }}</div>
+                                        <div class="txt-time">[{{ e.username }}] {{ getTimeFormat(e.time) }}</div>
                                         <div class="chat">
                                             <div v-if="e.userId === userId" class="chat-layer" style="visibility: hidden;">
                                                 <div class="buttons">
@@ -378,7 +378,7 @@
                 leave: function () {
                     const _this = this
                     confirm('채팅방을 나가시겠습니까?').done(function () {
-                        restSelf.delete('/api/chatt/' + encodeURIComponent(messenger.currentRoom.id), null, null, true).done(function () {
+                        restSelf.delete('/api/chatt/' + encodeURIComponent(_this.roomId), null, null, true).done(function () {
                             messengerCommunicator.leave(_this.roomId);
                             roomList.removeRoom(_this.roomId)
                             _this.hide()
@@ -477,9 +477,11 @@
                     }
                 },
                 getTimeFormat: function (time) {
+                    console.log(time, moment(time).format('MM-DD HH:mm'));
                     return moment(time).format('MM-DD HH:mm')
                 },
                 appendMessage: function (message, confirm) {
+                    console.log(message);
                     if (this.roomId !== message.roomId)
                         return
 
@@ -593,9 +595,7 @@
                         return
 
                     const _this = this
-                    uploadFile(file).done(function (response) {
-                        restSelf.post('/api/chatt/' + _this.roomId + '/upload-file', {filePath: response.data.filePath, originalName: response.data.originalName})
-                    })
+                    uploadFileChatting(file, _this.roomId)
                 },
                 dropFiles: function (event) {
                     this.showingDropzone = false
@@ -605,9 +605,7 @@
 
                     const _this = this
                     for (let i = 0; i < event.dataTransfer.files.length; i++) {
-                        uploadFile(event.dataTransfer.files[i]).done(function (response) {
-                            restSelf.post('/api/chatt/' + _this.roomId + '/upload-file', {filePath: response.data.filePath, originalName: response.data.originalName})
-                        })
+                        uploadFileChatting(event.dataTransfer.files[i], _this.roomId);
                     }
                 },
                 pasteFromClipboard: function (event) {
@@ -804,12 +802,12 @@
                 data.room_id,
                 data.room_name,
                 data.contents,
-                parseFloat(data.cur_timestr) * 1000
+                data.cur_timestr
             )
             messenger.appendMessage({
                 roomId: data.room_id,
                 messageId: data.message_id,
-                time: parseFloat(data.cur_timestr) * 1000,
+                time: data.cur_timestr,
                 messageType: data.type,
                 sendReceive: data.send_receive,
                 contents: data.contents,
@@ -831,7 +829,6 @@
                 if (userId === data.leave_userid)
                     roomList.removeRoom(data.room_id)
 
-                messenger(data.room_id, data.leave_userid)
             }).on('svc_read_confirm', function (data) {
                 messenger.confirmRead(data.room_id, data.userid, data.last_read_message_id)
             }).on('svc_roomname_change', function (data) {

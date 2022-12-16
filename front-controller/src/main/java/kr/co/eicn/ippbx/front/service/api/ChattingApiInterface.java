@@ -26,7 +26,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.util.*;
 
@@ -98,22 +100,18 @@ public class ChattingApiInterface extends ApiServerInterface {
     }
 
     @SneakyThrows
-    public void uploadFile(FileUploadForm o) {
+    public void uploadFile(FileUploadForm o, MultipartFile f) {
         final MultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
 
         if (o != null) {
             final Map<String, Object> params = objectMapper.convertValue(o, new ObjectMapper().getTypeFactory().constructParametricType(Map.class, String.class, Object.class));
             params.forEach(parts::add);
         }
-        parts.add("up_filename", new FileResource(Objects.requireNonNull(o).getFilePath(), o.getOriginalName(), false));
+        parts.add("up_filename", f.getResource());
 
         final RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
-        final String accessToken = getAccessToken();
-        if (StringUtils.isNotEmpty(accessToken))
-            headers.add("Authorization", "Bearer " + accessToken);
 
         final HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parts, headers);
 

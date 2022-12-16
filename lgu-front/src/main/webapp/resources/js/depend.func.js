@@ -391,6 +391,30 @@ function uploadFileExcel(file, progressBar) {
     });
 }
 
+function uploadFileChatting(file, roomId, progressBar) {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    formData.append('roomId', roomId);
+
+    return $.ajax({
+        url: contextPath + '/api/file/chatting',
+        data: formData,
+        type: 'post',
+        contentType: false,
+        processData: false,
+        xhr: function () {
+            const xhr = $.ajaxSettings.xhr();
+            xhr.upload.onprogress = function (e) {
+                $(progressBar).val(e.loaded * 100 / e.total);
+            };
+            return xhr;
+        },
+        success: function () {
+            $(progressBar).val(100);
+        }
+    });
+}
+
 function drawLineChart(container, data, xAxisField, yAxisFields, options) {
     if (!container)
         return;

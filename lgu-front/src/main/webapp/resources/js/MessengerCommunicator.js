@@ -48,6 +48,9 @@ MessengerCommunicator.prototype.logClear = function () {
     this.status.eventNumber = 0;
 };
 MessengerCommunicator.prototype.connect = function (url, companyId, userid, username, passwd) {
+    const serverCommands = ['svc_login', 'svc_logout', 'svc_msg', 'svc_join_msg', 'svc_invite_room', 'svc_leave_room', 'svc_read_confirm', 'svc_memo_send'];
+    const uncheckedServerCommands = ['connect', 'disconnect', 'error', 'end', 'close'];
+
     this.url = url;
     this.request = {
         companyId: companyId,
@@ -59,6 +62,25 @@ MessengerCommunicator.prototype.connect = function (url, companyId, userid, user
     const _this = this;
     try {
         this.socket = io.connect(url, {'reconnect': true, 'resource': 'socket.io'});
+        const o = this.socket.emit('chatt_login', {
+            company_id: _this.request.companyId,
+            userid: _this.request.userid,
+            username: _this.request.username,
+            passwd: _this.request.passwd
+        }).on('svcmsg_ping', function () {
+            _this.socket.emit('climsg_pong');
+        });
+
+        o.on(command, function (data) {
+        serverCommands.map(function (command) {
+                _this.process(command, data);
+            });
+        });
+        uncheckedServerCommands.map(function (command) {
+            o.on(command, function () {
+                _this.log(false, command, arguments);
+            });
+        });
     } catch (error) {
         console.error(error);
         setTimeout(function () {
@@ -66,28 +88,6 @@ MessengerCommunicator.prototype.connect = function (url, companyId, userid, user
         }, 2000);
     }
 
-    const serverCommands = ['svc_login', 'svc_logout', 'svc_msg', 'svc_join_msg', 'svc_invite_room', 'svc_leave_room', 'svc_read_confirm', 'svc_memo_send'];
-    const uncheckedServerCommands = ['connect', 'disconnect', 'error', 'end', 'close'];
-
-    const o = this.socket.emit('chatt_login', {
-        company_id: _this.request.companyId,
-        userid: _this.request.userid,
-        username: _this.request.username,
-        passwd: _this.request.passwd
-    }).on('svcmsg_ping', function () {
-        _this.socket.emit('climsg_pong');
-    });
-
-    serverCommands.map(function (command) {
-        o.on(command, function (data) {
-            _this.process(command, data);
-        });
-    });
-    uncheckedServerCommands.map(function (command) {
-        o.on(command, function () {
-            _this.log(false, command, arguments);
-        });
-    });
 };
 MessengerCommunicator.prototype.disconnect = function () {
     try {

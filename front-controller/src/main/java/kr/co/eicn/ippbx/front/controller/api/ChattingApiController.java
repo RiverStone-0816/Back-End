@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -109,13 +110,13 @@ public class ChattingApiController extends BaseController {
 
     @SneakyThrows
     @PostMapping("{roomId}/upload-file")
-    public void uploadFile(@PathVariable String roomId, @Valid @RequestBody ChattingApiInterface.FileUploadForm form, BindingResult bindingResult, @Value("${eicn.apiserver}") String apiServer, @Value("${eicn.messenger.socket.id}") String messengerSocketId) {
+    public void uploadFile(@RequestParam MultipartFile file, @PathVariable String roomId, @Valid @RequestBody ChattingApiInterface.FileUploadForm form, BindingResult bindingResult, @Value("${eicn.apiserver}") String apiServer, @Value("${eicn.messenger.socket.id}") String messengerSocketId) {
         form.setMy_userid(g.getUser().getId());
         form.setMy_username(g.getUser().getIdName());
         form.setCompany_id(g.getUser().getCompanyId());
         form.setBasic_url(g.getSocketList().get(messengerSocketId));
         form.setWeb_url(apiServer);
         form.setRoom_id(roomId);
-        apiInterface.uploadFile(form);
+        apiInterface.uploadFile(form, file);
     }
 }
