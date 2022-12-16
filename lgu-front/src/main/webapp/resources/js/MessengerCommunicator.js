@@ -71,8 +71,8 @@ MessengerCommunicator.prototype.connect = function (url, companyId, userid, user
             _this.socket.emit('climsg_pong');
         });
 
-        o.on(command, function (data) {
         serverCommands.map(function (command) {
+            o.on(command, function (data) {
                 _this.process(command, data);
             });
         });

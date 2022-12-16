@@ -477,11 +477,9 @@
                     }
                 },
                 getTimeFormat: function (time) {
-                    console.log(time, moment(time).format('MM-DD HH:mm'));
                     return moment(time).format('MM-DD HH:mm')
                 },
                 appendMessage: function (message, confirm) {
-                    console.log(message);
                     if (this.roomId !== message.roomId)
                         return
 
