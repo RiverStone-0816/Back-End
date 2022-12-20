@@ -9,4 +9,5 @@ import lombok.EqualsAndHashCode;
 public class RouteApplicationEntity extends RouteApplication {
     private String appUserName;
     private String rstUserName;
+    private Integer cdrSeq;
 }

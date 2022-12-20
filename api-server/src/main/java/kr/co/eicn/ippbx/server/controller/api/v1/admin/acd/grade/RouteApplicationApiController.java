@@ -10,6 +10,7 @@ import kr.co.eicn.ippbx.model.form.RouteApplicationFormRequest;
 import kr.co.eicn.ippbx.model.search.RouteApplicationSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.RouteApplicationRepository;
+import kr.co.eicn.ippbx.server.service.EicnCdrService;
 import kr.co.eicn.ippbx.server.service.RouteApplicationService;
 import kr.co.eicn.ippbx.server.service.StorageService;
 import kr.co.eicn.ippbx.util.JsonResult;
@@ -44,6 +45,7 @@ public class RouteApplicationApiController extends ApiBaseController {
     private final StorageService fileSystemStorageService;
     private final RouteApplicationRepository repository;
     private final PersonListRepository personListRepository;
+    private final EicnCdrService eicnCdrService;
 
     @GetMapping("")
     public JsonResult<Pagination<RouteApplicationEntity>> pagination(RouteApplicationSearchRequest search) {

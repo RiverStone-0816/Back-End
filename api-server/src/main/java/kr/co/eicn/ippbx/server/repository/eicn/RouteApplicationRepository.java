@@ -9,6 +9,7 @@ import kr.co.eicn.ippbx.model.form.RAFormUpdateRequest;
 import kr.co.eicn.ippbx.model.form.RouteApplicationFormRequest;
 import kr.co.eicn.ippbx.model.search.RouteApplicationSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
+import kr.co.eicn.ippbx.server.service.EicnCdrService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
@@ -29,6 +30,7 @@ import java.util.Objects;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.RouteApplication.ROUTE_APPLICATION;
 
+
 @Getter
 @Repository
 public class RouteApplicationRepository extends EicnBaseRepository<RouteApplication, RouteApplicationEntity, Integer> {
@@ -40,12 +42,14 @@ public class RouteApplicationRepository extends EicnBaseRepository<RouteApplicat
     private final GradeListRepository gradeListRepository;
     private final CacheService cacheService;
     private final PBXServerInterface pbxServerInterface;
+    private final EicnCdrService eicnCdrService;
 
-    public RouteApplicationRepository(GradeListRepository gradeListRepository, CacheService cacheService, PBXServerInterface pbxServerInterface) {
+    public RouteApplicationRepository(GradeListRepository gradeListRepository, CacheService cacheService, PBXServerInterface pbxServerInterface, EicnCdrService eicnCdrService) {
         super(ROUTE_APPLICATION, ROUTE_APPLICATION.SEQ, RouteApplicationEntity.class);
         this.gradeListRepository = gradeListRepository;
         this.cacheService = cacheService;
         this.pbxServerInterface = pbxServerInterface;
+        this.eicnCdrService = eicnCdrService;
     }
 
     @Override
@@ -62,6 +66,7 @@ public class RouteApplicationRepository extends EicnBaseRepository<RouteApplicat
             final RouteApplicationEntity entity = record.into(ROUTE_APPLICATION).into(RouteApplicationEntity.class);
             entity.setAppUserName(record.into(appUser.ID_NAME).value1());
             entity.setRstUserName(record.into(rstUser.ID_NAME).value1());
+            entity.setCdrSeq(eicnCdrService.getRepository().findAllByUniqueId(record.into(ROUTE_APPLICATION.UNIQUEID).value1()).get(0).getSeq());
             return entity;
         };
     }

@@ -82,9 +82,6 @@ public class GradeListRepository extends EicnBaseRepository<GradeList, GradeList
 
     public void updateByKey(GradeListFormRequest form, Integer seq) {
         final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.GradeList record = findOneIfNullThrow(seq);
-        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.GradeList duplicateGrade = findOne(GRADE_LIST.GRADE_NUMBER.eq(form.getGradeNumber()));
-        if (Objects.nonNull(duplicateGrade))
-            throw new IllegalArgumentException("해당 전화번호가 " + (duplicateGrade.getGrade().equals(RouteApplicationType.VIP.getLiteral()) ? "VIP" : "블랙리스트") + "에 등록되어있습니다.");
 
         record.setGradeNumber(form.getGradeNumber());
         record.setType(form.getType());
