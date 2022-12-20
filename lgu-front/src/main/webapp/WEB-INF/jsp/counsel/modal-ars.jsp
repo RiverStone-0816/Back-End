@@ -57,8 +57,7 @@
 <tags:scripts>
     <script>
         function popupArsModal() {
-            const phoneNumber = $('#counseling-target').text();
-            if (!phoneNumber)
+            if (!audioId)
                 return alert('상담중에만 가능합니다.');
 
             $('#modal-consulting-ars-popup').dragModalShow();
@@ -73,10 +72,10 @@
                     ipccCommunicator.protectArs(data.sound);
 
                 restSelf.post('/api/route-app/', {
-                    type: 'BLACKLIST',
+                    type: 'BLACK',
                     number: data.number,
                     memo: data.memo,
-                    uniqueId: data.uniqueId,
+                    uniqueId: audioId,
                 }).done(function () {
                     alert('처리되었습니다.');
                     $('#modal-consulting-ars-popup').modalHide();

@@ -66,7 +66,7 @@ public class RouteApplicationRepository extends EicnBaseRepository<RouteApplicat
             final RouteApplicationEntity entity = record.into(ROUTE_APPLICATION).into(RouteApplicationEntity.class);
             entity.setAppUserName(record.into(appUser.ID_NAME).value1());
             entity.setRstUserName(record.into(rstUser.ID_NAME).value1());
-            entity.setCdrSeq(eicnCdrService.getRepository().findAllByUniqueId(record.into(ROUTE_APPLICATION.UNIQUEID).value1()).get(0).getSeq());
+            entity.setCdrSeq(StringUtils.isNotEmpty(record.into(ROUTE_APPLICATION.UNIQUEID).value1()) ? eicnCdrService.getRepository().findAllByUniqueId(record.into(ROUTE_APPLICATION.UNIQUEID).value1()).get(0).getSeq() : 0);
             return entity;
         };
     }
