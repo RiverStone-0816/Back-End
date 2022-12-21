@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,8 @@ public class SendMessageHistoryRepository extends EicnBaseRepository<SendMessage
 
     public SendMessageHistoryRepository() {
         super(SEND_MESSAGE, SEND_MESSAGE.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessage.class);
+
+        orderByFields.add(SEND_MESSAGE.SEND_DATE.desc());
     }
 
     public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessage> pagination(SendMessageSearchRequest search) {
@@ -33,10 +36,10 @@ public class SendMessageHistoryRepository extends EicnBaseRepository<SendMessage
         final List<Condition> conditions = new ArrayList<>();
 
         if(search.getStartDate() != null)
-            conditions.add(DSL.timestamp(SEND_MESSAGE.SEND_DATE).ge(search.getStartDate()));
+            conditions.add(SEND_MESSAGE.SEND_DATE.ge(Timestamp.valueOf(search.getStartDate() + " 00:00:00")));
 
         if(search.getEndDate()!= null)
-            conditions.add(DSL.timestamp(SEND_MESSAGE.SEND_DATE).le(search.getEndDate()));
+            conditions.add(SEND_MESSAGE.SEND_DATE.le(Timestamp.valueOf(search.getEndDate() + " 23:59:59")));
 
         if(isNotEmpty(search.getTarget()))
             conditions.add(SEND_MESSAGE.TARGET.like("%" + search.getTarget() + "%"));
