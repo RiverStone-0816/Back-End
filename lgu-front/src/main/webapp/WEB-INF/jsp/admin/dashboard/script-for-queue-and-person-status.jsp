@@ -36,6 +36,10 @@
                 status: ${e.status},
                 login: ${e.login},
                 userId: '${peerToUserId.getOrDefault(e.peer, '')}',
+                queueNumber: '${e.queueNumber}',
+                callStatus: '${not empty e.inOut ? (e.inOut eq 'I' ? 'ID' : 'OD') : ''}',
+                callingNumber: '${e.src}',
+                calledNumber: '${e.dst}'
             },
             </c:forEach>
         };
