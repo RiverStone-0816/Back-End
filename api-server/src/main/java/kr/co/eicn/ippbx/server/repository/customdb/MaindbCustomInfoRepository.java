@@ -529,6 +529,10 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
         }
     }
 
+    public Map<String, String> findAllCustomNameByCustomIdMap() {
+        return dsl.selectFrom(TABLE).fetchMap(TABLE.MAINDB_SYS_CUSTOM_ID, TABLE.MAINDB_STRING_1);
+    }
+
     public void deleteData(String id) {
         //고객데이터삭제
         delete(id);

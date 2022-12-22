@@ -362,10 +362,7 @@ public class MainApiController extends ApiBaseController {
                 });
 
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
-        final Map<String, String> mainDb = maindbCustomInfoService.getRepository().findAll().stream().peek(e -> {
-            if (Objects.isNull(e.getMaindbString_1()))
-                e.setMaindbString_1("");
-        }).collect(Collectors.toMap(MaindbCustomInfoEntity::getMaindbSysCustomId, MaindbCustomInfoEntity::getMaindbString_1));
+        final Map<String, String> mainDb = maindbCustomInfoService.getRepository().findAllCustomNameByCustomIdMap();
         final List<WtalkRoomEntity> talkRoomList = currentWtalkRoomService.findAll(search);
         final Map<String, WtalkMsgEntity> lastMessageByRoomId = wtalkMsgService.getAllLastMessageByRoomId(talkRoomList.stream().map(CommonWtalkRoom::getRoomId).collect(Collectors.toSet()));
         final List<WtalkCurrentListResponse> response = talkRoomList.stream()
