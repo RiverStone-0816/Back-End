@@ -11,6 +11,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.PDSQueuePersonResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.QueueMemberLoginCountResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.CenterMemberStatusCountEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CurrentEICNCdrEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.MemberStatusOfHunt;
 import kr.co.eicn.ippbx.model.enums.PersonPausedStatus;
 import kr.co.eicn.ippbx.model.form.MonitControlChangeRequest;
@@ -19,7 +20,6 @@ import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import kr.co.eicn.ippbx.util.EicnUtils;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
-import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.types.UInteger;
@@ -44,13 +44,15 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
     private final PBXServerInterface pbxServerInterface;
     private final CacheService cacheService;
     private final PersonListRepository personListRepository;
+    private final CurrentEICNCdrRepository currentEICNCdrRepository;
     private Boolean groupBy = false;
 
-    public QueueMemberTableRepository(PBXServerInterface pbxServerInterface, CacheService cacheService, PersonListRepository personListRepository) {
+    public QueueMemberTableRepository(PBXServerInterface pbxServerInterface, CacheService cacheService, PersonListRepository personListRepository, CurrentEICNCdrRepository currentEICNCdrRepository) {
         super(QUEUE_MEMBER_TABLE, QUEUE_MEMBER_TABLE.UNIQUEID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable.class);
         this.pbxServerInterface = pbxServerInterface;
         this.cacheService = cacheService;
         this.personListRepository = personListRepository;
+        this.currentEICNCdrRepository = currentEICNCdrRepository;
     }
 
     @Override
@@ -247,6 +249,8 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
                 .fetchOneInto(Integer.class));
         res.setRateValue(EicnUtils.getRateValue(0, 0));
 
+        final Map<String, CurrentEICNCdrEntity> currentEICNCdrMap = currentEICNCdrRepository.findAllFromBoth();
+
         final List<DashQueueMemberResponse> queueMemberList = dsl.select(QUEUE_MEMBER_TABLE.MEMBERNAME)
                 .select(QUEUE_MEMBER_TABLE.PAUSED)
                 .select(QUEUE_MEMBER_TABLE.IS_LOGIN)
@@ -258,6 +262,15 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
                     member.setPeer(r.getValue(QUEUE_MEMBER_TABLE.MEMBERNAME));
                     member.setStatus(r.getValue(QUEUE_MEMBER_TABLE.PAUSED));
                     member.setLogin(Objects.equals(r.getValue(QUEUE_MEMBER_TABLE.IS_LOGIN), "Y"));
+
+                    if (member.getStatus().equals(1) && currentEICNCdrMap.containsKey(member.getPeer())) {
+                        final CurrentEICNCdrEntity cdrEntity = currentEICNCdrMap.get(member.getPeer());
+                        member.setQueueNumber(cdrEntity.getInOut().equals("I") ? cdrEntity.getSecondNum() : "");
+                        member.setInOut(cdrEntity.getInOut());
+                        member.setDst(cdrEntity.getDst());
+                        member.setSrc(cdrEntity.getSrc());
+                    }
+
                     return member;
                 });
         res.setQueueMemberList(queueMemberList);
