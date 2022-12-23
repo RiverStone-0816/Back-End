@@ -1,13 +1,16 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.help;
 
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
-import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.BoardNoticeInfo;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.NoticeFileEntity;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.NoticeXFile;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.model.dto.eicn.BoardSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.FileNameDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.NoticeDetailResponse;
 import kr.co.eicn.ippbx.model.form.NoticeFormRequest;
 import kr.co.eicn.ippbx.model.search.BoardSearchRequest;
+import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.repository.eicn.NoticeFileEntityRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.NoticeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.NoticeXFileRepository;
@@ -84,7 +87,10 @@ public class NoticeApiController extends ApiBaseController {
         final List<NoticeFileEntity> fileEntityMap = fileEntityRepository.findAll();
 
         final NoticeDetailResponse response = convertDto(notice, NoticeDetailResponse.class);
-        response.setWriter(personListRepository.findOneById(notice.getCreatorId()).getIdName());
+        if (Objects.nonNull(personListRepository.findOneById(notice.getCreatorId())))
+            response.setWriter(personListRepository.findOneById(notice.getCreatorId()).getIdName());
+        else
+            response.setWriter(notice.getCreatorId());
 
         if (Objects.nonNull(fileEntityMap)) {
             List<FileNameDetailResponse> fileList = new ArrayList<>();
@@ -109,7 +115,11 @@ public class NoticeApiController extends ApiBaseController {
         final List<NoticeFileEntity> fileEntityMap = fileEntityRepository.findAll();
 
         final NoticeDetailResponse response = convertDto(notice, NoticeDetailResponse.class);
-        response.setWriter(personListRepository.findOneById(notice.getCreatorId()).getIdName());
+
+        if (Objects.nonNull(personListRepository.findOneById(notice.getCreatorId())))
+            response.setWriter(personListRepository.findOneById(notice.getCreatorId()).getIdName());
+        else
+            response.setWriter(notice.getCreatorId());
 
         if (Objects.nonNull(fileEntityMap)) {
             List<FileNameDetailResponse> fileList = new ArrayList<>();
