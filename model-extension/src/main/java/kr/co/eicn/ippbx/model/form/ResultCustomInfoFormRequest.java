@@ -19,6 +19,7 @@ public class ResultCustomInfoFormRequest extends BaseForm {
     private Integer resultType;
     private String callType;
     private String uniqueId;
+    private Integer callUnique;
     private String customNumber;
     private String clickKey;
     private String fromOrg;

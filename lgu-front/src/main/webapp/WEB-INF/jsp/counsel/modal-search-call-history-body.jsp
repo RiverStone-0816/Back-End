@@ -420,9 +420,10 @@
 
         const uniqueId = getEntityId('RecordHistory', 'unique-id');
         const callType = getEntityId('RecordHistory', 'call-type');
+        const callSeq = getEntityId('RecordHistory', 'id');
         // $('#counseling-target').text(phoneNumber);
 
-        loadCustomInput(null, null, phoneNumber, uniqueId || '', callType || '');
+        loadCustomInput(null, null, phoneNumber, uniqueId || '', callType || '', callSeq);
         $('#search-call-history-form').closest('.modal').modalHide();
     }
 </script>

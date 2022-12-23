@@ -522,7 +522,7 @@
     <script>
         window.ipccCommunicator = new IpccCommunicator();
 
-        let audioId, phoneNumber, customId, callType;
+        let audioId, phoneNumber, customId, callType, callUnique;
         ipccCommunicator
             .on('LOGIN', function (message, kind /*[ LOGIN_OK | LOGIN_ALREADY | LOGOUT | ... ]*/) {
                 if (kind === "LOGOUT")
