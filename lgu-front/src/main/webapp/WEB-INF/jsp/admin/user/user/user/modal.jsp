@@ -357,9 +357,7 @@
     };
 
     window.checkDuplicate = function () {
-        console.log($('#isDuplicate').val());
         $('#isDuplicate').val('N');
-        console.log($('#isDuplicate').val());
     }
 
     window.popupUpdatePasswordModal = function (id) {

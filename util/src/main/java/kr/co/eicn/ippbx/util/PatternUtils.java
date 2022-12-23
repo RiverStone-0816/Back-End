@@ -30,7 +30,7 @@ public class PatternUtils {
 	}
 
 	public static boolean isPatternId(final String password) {
-		return Pattern.matches("^([a-z0-9+]*$)", password);
+		return Pattern.matches("^([A-Za-z0-9+]*$)", password);
 	}
 
 	public static boolean isPasswordValid(final String password) {

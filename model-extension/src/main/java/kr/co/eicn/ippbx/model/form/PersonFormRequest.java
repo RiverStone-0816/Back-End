@@ -26,7 +26,7 @@ public class PersonFormRequest extends PersonFormUpdateRequest {
 				reject(bindingResult, "isDuplicate", "{아이디 중복체크를 진행해 주세요.}");
 		if (isNotEmpty(id)) {
 			if (!PatternUtils.isPatternId(id))
-				reject(bindingResult, "id", "{아이디는 소문자와 숫자만 입력 가능합니다.}");
+				reject(bindingResult, "id", "{아이디는 영어와 숫자만 입력 가능합니다.}");
 		}
 
 		return super.validate(bindingResult);
