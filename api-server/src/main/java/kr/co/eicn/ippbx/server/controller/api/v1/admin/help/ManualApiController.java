@@ -81,7 +81,11 @@ public class ManualApiController extends ApiBaseController {
         final List<Long> fileIds = xFileRepository.findAll().stream().filter(e -> e.getManual().equals(id)).map(ManualXFile::getFile).collect(Collectors.toList());
 
         final ManualDetailResponse response = convertDto(manual, ManualDetailResponse.class);
-        response.setWriter(personListRepository.findOneById(manual.getCreatorId()).getIdName());
+
+        if (Objects.nonNull(personListRepository.findOneById(manual.getCreatorId())))
+            response.setWriter(personListRepository.findOneById(manual.getCreatorId()).getIdName());
+        else
+            response.setWriter(manual.getCreatorId());
 
         if (Objects.nonNull(fileEntityMap)) {
             final List<FileNameDetailResponse> fileList = new ArrayList<>();
