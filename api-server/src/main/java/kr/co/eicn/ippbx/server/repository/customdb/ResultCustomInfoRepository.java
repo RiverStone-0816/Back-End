@@ -303,15 +303,10 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
     }
 
     public void insert(ResultCustomInfoFormRequest form) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        EicnCdrEntity eicnCdrEntity = null;
-        if (StringUtils.isNotEmpty(form.getUniqueId()))
-            eicnCdrEntity = eicnCdrService.getRepository().findOne(new CommonEicnCdr(getCompanyId()).UNIQUEID.eq(form.getUniqueId())
-                    .and(new CommonEicnCdr(getCompanyId()).SEQ.eq(form.getCallUnique())));
-
 
         final InsertSetMoreStep<ResultCustomInfoRecord> query = dsl.insertInto(TABLE)
                 .set(TABLE.RESULT_TYPE, form.getResultType())
-                .set(TABLE.CALL_TYPE, StringUtils.isNotEmpty(form.getUniqueId()) && Objects.nonNull(eicnCdrEntity) ? eicnCdrEntity.getInOut() : form.getCallType())
+                .set(TABLE.CALL_TYPE, form.getCallType())
                 .set(TABLE.UNIQUEID, form.getUniqueId() == null ? "" : form.getUniqueId())
                 .set(TABLE.CUSTOM_NUMBER, form.getCustomNumber() == null ? "" : form.getCustomNumber())
                 .set(TABLE.CLICK_KEY, StringUtils.isEmpty(form.getClickKey()) ? "nonClickKey" : form.getClickKey())
