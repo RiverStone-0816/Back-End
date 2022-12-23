@@ -87,7 +87,10 @@ public class NoticeApiController extends ApiBaseController {
         final List<NoticeFileEntity> fileEntityMap = fileEntityRepository.findAll();
 
         final NoticeDetailResponse response = convertDto(notice, NoticeDetailResponse.class);
-        response.setWriter(personListRepository.findOneById(notice.getCreatorId()).getIdName());
+        if (Objects.nonNull(personListRepository.findOneById(notice.getCreatorId())))
+            response.setWriter(personListRepository.findOneById(notice.getCreatorId()).getIdName());
+        else
+            response.setWriter(notice.getCreatorId());
 
         if (Objects.nonNull(fileEntityMap)) {
             List<FileNameDetailResponse> fileList = new ArrayList<>();
