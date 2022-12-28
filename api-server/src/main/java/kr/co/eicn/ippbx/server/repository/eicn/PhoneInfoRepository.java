@@ -95,7 +95,7 @@ public class PhoneInfoRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
                     .and(PHONE_INFO.PEER.eq(info.getPeer()))
                     .execute();
 
-            dsl.update(QUEUE_MEMBER_TABLE)
+            dslContext.update(QUEUE_MEMBER_TABLE)
                     .set(QUEUE_MEMBER_TABLE.PAUSED, (int) info.getLogoutStatus())
                     .where(QUEUE_MEMBER_TABLE.COMPANY_ID.eq(getCompanyId()))
                     .and(QUEUE_MEMBER_TABLE.MEMBERNAME.eq(info.getPeer()))
