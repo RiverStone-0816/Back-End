@@ -156,6 +156,7 @@ public class MaindbResultController extends BaseController {
         model.addAttribute("fieldNameToValueMap", fieldNameToValueMap);
 
         ReflectionUtils.copy(form, entity);
+        form.setMaindbType(entity.getGroupType());
 
         final Map<String, String> fieldToRelatedField = new HashMap<>();
         for (CommonFieldEntity field : resultType.getFields()) {
