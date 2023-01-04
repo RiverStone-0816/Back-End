@@ -28,6 +28,7 @@
             <form:hidden path="groupId"/>
             <div class="row">고객정보</div>
             <c:forEach var="field" items="${customDbType.fields}">
+                <c:set var="value" value="${customFieldNameToValueMap.get(field.fieldId)}"/>
                 <c:set var="name" value="${field.fieldId.substring(customDbType.kind.length() + '_'.length()).toLowerCase()}"/>
                 <div class="row">
                     <div class="four wide column"><label class="control-label">${g.htmlQuote(field.fieldInfo)}</label></div>
@@ -45,7 +46,14 @@
                             </c:choose>
                         </c:when>
                         <c:otherwise>
-                            <label>${customFieldNameToValueMap.get(field.fieldId)}</label>
+                            <c:choose>
+                                <c:when test="${field.fieldType == 'MULTICODE' || field.fieldType == 'CODE'}">
+                                    <label>${field.codes.stream().filter(e -> e.codeId == value).map(e -> e.codeName).findFirst().orElse('')}</label>
+                                </c:when>
+                                <c:otherwise>
+                                    <label>${customFieldNameToValueMap.get(field.fieldId)}</label>
+                                </c:otherwise>
+                            </c:choose>
                         </c:otherwise>
                     </c:choose>
                     </div>
