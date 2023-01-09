@@ -76,7 +76,7 @@ public class CommonFieldRepository extends EicnBaseRepository<CommonField, kr.co
         final Map<String, List<CommonCode>> commonCodeMap = commonCodeRepository.individualCodeList(new StatQaResultIndividualSearchRequest())
                 .stream().collect(Collectors.groupingBy(CommonCode::getFieldId));
         return findAll(COMMON_FIELD.FIELD_TYPE.eq("CODE")).stream()
-                .filter(e -> Objects.isNull(commonCodeMap.get(e.getFieldId())))
+                .filter(e -> commonCodeMap.get(e.getFieldId()) == null || commonCodeMap.get(e.getFieldId()).stream().noneMatch(c -> c.getType().equals(e.getType())))
                 .collect(Collectors.toList());
     }
 
@@ -87,7 +87,7 @@ public class CommonFieldRepository extends EicnBaseRepository<CommonField, kr.co
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField> individualFieldList() {
         final Map<String, List<CommonCode>> commonCodeMap = commonCodeRepository.individualCodeList(new StatQaResultIndividualSearchRequest())
                 .stream().collect(Collectors.groupingBy(CommonCode::getFieldId));
-        return findAll().stream().filter(e -> Objects.nonNull(commonCodeMap.get(e.getFieldId()))).collect(Collectors.toList());
+        return findAll().stream().filter(e -> Objects.nonNull(commonCodeMap.get(e.getFieldId())) && commonCodeMap.get(e.getFieldId()).stream().anyMatch(c -> c.getType().equals(e.getType()))).collect(Collectors.toList());
     }
 
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField> findAllByTypes(List<Integer> types) {

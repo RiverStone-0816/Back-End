@@ -50,10 +50,10 @@ public class StatQaResultApiController extends ApiBaseController {
         if ((search.getEndDate().getTime() - search.getStartDate().getTime()) / 1000 > 6 * 30 * 24 * 60 * 60)
             throw new IllegalArgumentException(message.getText("messages.validator.enddate.indays", "180일"));
 
-        List<CommonType> typeList = commonTypeRepository.findAllByKind("RS");
-        List<CommonField> fieldList = commonFieldRepository.findAllByFieldId();
-        List<CommonCode> codeList = commonCodeRepository.findAll();
-        final List<CommonResultCustomInfo> resultList = statQaResultService.getRepository().findAll(search);
+        final List<CommonType> typeList = commonTypeRepository.findAllByKind("RS");
+        final List<CommonField> fieldList = commonFieldRepository.findAllByFieldId();
+        final List<CommonCode> codeList = commonCodeRepository.findAll();
+        final List<CommonResultCustomInfo> dataList = statQaResultService.findAll(search);
 
         return ResponseEntity.ok(data(
                 typeList.stream().map(type -> {
@@ -68,7 +68,7 @@ public class StatQaResultApiController extends ApiBaseController {
                                                         .map(code -> {
                                                             final StatQaResultCodeResponse codeResponse = convertDto(code, StatQaResultCodeResponse.class);
 
-                                                            return statQaResultService.convertToStatQaResultField(resultList, codeResponse, code, search);
+                                                            return statQaResultService.convertToStatQaResultField(codeResponse, code, search, dataList);
                                                         })
                                                         .collect(Collectors.toList())
                                         );
