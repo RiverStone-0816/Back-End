@@ -3,10 +3,11 @@ package kr.co.eicn.ippbx.model.entity.statdb;
 import java.sql.Date;
 
 public interface StatByTimeUnit {
-    public Integer getYear();
-    public Integer getMonth();
-    public Integer getWeek();
-    public Integer getDayOfWeek();
-    public Date getStatDate();
-    public Byte getStatHour();
+    Integer getYear();
+    Integer getMonth();
+    Integer getMonthByWeek();
+    Integer getWeek();
+    Integer getDayOfWeek();
+    Date getStatDate();
+    Byte getStatHour();
 }

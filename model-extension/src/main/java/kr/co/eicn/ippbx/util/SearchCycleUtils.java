@@ -63,8 +63,9 @@ public class SearchCycleUtils {
             return hourList;
         } else if (SearchCycle.WEEK.equals(timeUnit)) {
             List<WeekResponse> weekList = new ArrayList<>();
-            int yearDiff = endDate.get(Calendar.YEAR) - startDate.get(Calendar.YEAR);
-            int weekDiff = yearDiff * 52 + (endDate.get(Calendar.WEEK_OF_YEAR) - startDate.get(Calendar.WEEK_OF_YEAR));
+            int weekDiff = (int) ((endDate.getTimeInMillis() - startDate.getTimeInMillis()) / 1000 / (60 * 60 * 24 * 7));
+            if (((endDate.getTimeInMillis() - startDate.getTimeInMillis()) / 1000 / (60 * 60 * 24)) % 7 > 0)
+                weekDiff += 1;
 
             Calendar startOfWeek = new GregorianCalendar();
             startOfWeek.setTime(searchStartDate);
@@ -89,7 +90,7 @@ public class SearchCycleUtils {
 
                 weekResponse.setYear(weekBaseDate.get(Calendar.YEAR));
                 weekResponse.setMonth(weekBaseDate.get(Calendar.MONTH) + 1);
-                if (firstDayOfMonth.get(Calendar.DAY_OF_WEEK) >= Calendar.THURSDAY)
+                if (weekBaseDate.get(Calendar.MONTH) == firstDayOfMonth.get(Calendar.MONTH) && firstDayOfMonth.get(Calendar.DAY_OF_WEEK) > Calendar.WEDNESDAY)
                     weekResponse.setWeekOfMonth(weekBaseDate.get(Calendar.WEEK_OF_MONTH) - 1);
                 else
                     weekResponse.setWeekOfMonth(weekBaseDate.get(Calendar.WEEK_OF_MONTH));
@@ -109,6 +110,7 @@ public class SearchCycleUtils {
                 startOfWeek.add(Calendar.DATE, 7);
                 endOfWeek.add(Calendar.DATE, 7);
                 weekBaseDate.add(Calendar.DATE, 7);
+                firstDayOfMonth.set(Calendar.YEAR, weekBaseDate.get(Calendar.YEAR));
                 firstDayOfMonth.set(Calendar.MONTH, weekBaseDate.get(Calendar.MONTH));
 
                 weekList.add(weekResponse);
@@ -169,7 +171,7 @@ public class SearchCycleUtils {
             stream = stream.filter(data -> data.getStatHour().equals(hour.getHour()));
         } else if (timeUnit.equals(SearchCycle.WEEK)) {
             WeekResponse week = (WeekResponse) timeInformation;
-            stream = stream.filter(data -> data.getYear().equals(week.getYear()) && data.getMonth().equals(week.getMonth()) && data.getWeek().equals(week.getWeekOfMonth()));
+            stream = stream.filter(data -> data.getYear().equals(week.getYear()) && data.getMonthByWeek().equals(week.getMonth()) && data.getWeek().equals(week.getWeekOfMonth()));
         } else if (timeUnit.equals(SearchCycle.MONTH)) {
             MonthResponse month = (MonthResponse) timeInformation;
             stream = stream.filter(data -> data.getYear().equals(month.getYear()) && data.getMonth().equals(month.getMonth()));
