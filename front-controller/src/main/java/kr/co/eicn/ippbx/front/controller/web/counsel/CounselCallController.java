@@ -92,7 +92,7 @@ public class CounselCallController extends BaseController {
 
     @GetMapping("")
     public String callPanel(Model model) throws IOException, ResultFailException {
-        model.addAttribute("services", searchApiInterface.services(new SearchServiceRequest()).stream().collect(Collectors.toMap(ServiceList::getSvcCid, ServiceList::getSvcName)));
+        model.addAttribute("services", searchApiInterface.services(new SearchServiceRequest()).stream().filter(e -> !StringUtils.isEmpty(e.getSvcCid())).collect(Collectors.toMap(ServiceList::getSvcCid, ServiceList::getSvcName)));
         return "counsel/call/panel";
     }
 
