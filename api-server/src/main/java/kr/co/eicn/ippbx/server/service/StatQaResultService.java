@@ -50,11 +50,8 @@ public class StatQaResultService extends ApiBaseService implements ApplicationCo
         this.applicationContext = applicationContext;
     }
 
-    public StatQaResultCodeResponse convertToStatQaResultField(StatQaResultCodeResponse codeResponse, CommonCode code, StatQaResultSearchRequest search) {
-        final List<CommonResultCustomInfo> resultList = this.getRepository().findAll(search);
+    public StatQaResultCodeResponse convertToStatQaResultField(List<CommonResultCustomInfo> resultList, StatQaResultCodeResponse codeResponse, CommonCode code, StatQaResultSearchRequest search) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-
         List<QaResultResponse> statList = new ArrayList<>();
 
         long dateDiff = (search.getEndDate().getTime() - search.getStartDate().getTime()) / (1000 * 60 * 60 * 24);

@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.stat.result;
 
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonCode;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonField;
@@ -52,6 +53,7 @@ public class StatQaResultApiController extends ApiBaseController {
         List<CommonType> typeList = commonTypeRepository.findAllByKind("RS");
         List<CommonField> fieldList = commonFieldRepository.findAllByFieldId();
         List<CommonCode> codeList = commonCodeRepository.findAll();
+        final List<CommonResultCustomInfo> resultList = statQaResultService.getRepository().findAll(search);
 
         return ResponseEntity.ok(data(
                 typeList.stream().map(type -> {
@@ -66,7 +68,7 @@ public class StatQaResultApiController extends ApiBaseController {
                                                         .map(code -> {
                                                             final StatQaResultCodeResponse codeResponse = convertDto(code, StatQaResultCodeResponse.class);
 
-                                                            return statQaResultService.convertToStatQaResultField(codeResponse, code, search);
+                                                            return statQaResultService.convertToStatQaResultField(resultList, codeResponse, code, search);
                                                         })
                                                         .collect(Collectors.toList())
                                         );
