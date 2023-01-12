@@ -15,7 +15,7 @@
         </button>
         <div class="flex-grow">
           <div class="relative w-full text-white text-sm text-center">
-            {{ displayName }}
+            {{ displayName }}<input type="file" id="uploadImage" accept="image/*" @change="sendFile($event.target.files)" style="display: none;">
           </div>
         </div>
         <button class="flex items-center justify-center hover:bg-slate-900/20 rounded-lg h-10 w-10 text-white close-icon" @click.stop="closeAction" >
@@ -548,6 +548,17 @@
         </div>
         <div class="ml-2">
           <button
+              class="flex items-center justify-center hover:bg-gray-300/20 rounded-lg h-10 w-10 text-white flex-shrink-0" @click.stop="fileClick">
+            <span class="ml-1">
+              <svg class="feather feather-save" fill="#929292" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+              </svg>
+            </span>
+          </button>
+        </div>
+        <div class="ml-2">
+          <button
               class="flex items-center justify-center hover:bg-gray-300/20 rounded-lg h-10 w-10 text-white flex-shrink-0" @click.stop="sendText">
               <span class="ml-1">
                 <svg xmlns="http://www.w3.org/2000/svg" width="23" height="20.444" viewBox="0 0 23 20.444">
@@ -595,7 +606,6 @@ function getQueryStringValue(name) {
   return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "))
 }
 
-// ref: http://daplus.net/javascript-%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D%EC%9D%84-%ED%97%88%EC%9A%A9%ED%95%98%EB%8A%94-javascript%EC%9D%98-string-indexof-%EB%B2%84%EC%A0%84%EC%9D%B4-%EC%9E%88%EC%8A%B5%EB%8B%88/
 String.prototype.regexIndexOf = function (regex, startpos) {
   var indexOf = this.substring(startpos || 0).search(regex);
   return (indexOf >= 0) ? (indexOf + (startpos || 0)) : indexOf;
@@ -994,7 +1004,6 @@ export default {
 
                       _this.callback_vchat_unregistered_status();
 
-                      // TODO: 버튼 클릭시 register???
                       _this.register_vchat(_this.myUsername);
                     },
                     error: function(error) {
@@ -1003,10 +1012,6 @@ export default {
                     consentDialog: function(on) {
                       // getUserMedia 호출 전에 trigger된다.
                       Janus.log("Consent dialog should be " + (on ? "on" : "off") + " now");
-                      /*if (on) {
-                      }
-                      else {
-                      }*/
                     },
                     iceState: function(state) {
                       Janus.log("ICE state changed to " + state);
@@ -1030,7 +1035,6 @@ export default {
                         Janus.error(error);
                         return;
                       }
-                      /////////////////////////////////////////////
 
                       var result = msg["result"];
                       if (result) {
@@ -1055,19 +1059,13 @@ export default {
 
                             // Get a list of available peers, just for fun
                             _this.vchat.send({ message: { request: "list" }});
-                            // 등록 성공했으므로, Call 버튼 활성화
-                            // TODO:
                             _this.DIAL_AUDIO_VCHAT_BTN = true
                             _this.DIAL_VIDEO_VCHAT_BTN = true
                           }
                           else if (event === 'calling') { // 발신중...
                             Janus.log("Waiting for the peer to answer...");
 
-                            // 전화끊기(Hangup) 버튼 이벤트 등록
                             _this.HANGUP_VCHAT_BTN = true
-
-                            // Ringtone 플레이
-                            //_this.playTone("ring");
 
                             _this.callback_vchat_outgoing_call();
                           }
@@ -1171,11 +1169,6 @@ export default {
                               _this.vchatSpinner.stop();
                             }
 
-                            // Busytone 플레이
-                            //_this.playTone("busy");
-
-                            // TODO: 통화가 종료될 때 해야 할 일들 ... 버큰 재등록???
-
                             _this.callback_vchat_hangup();
                           }
                           else if (event === 'simulcast') {
@@ -1185,12 +1178,7 @@ export default {
                             if ((substream !== null && substream !== undefined) || (temporal !== null && temporal !== undefined)) {
                               if (!_this.simulcastStarted) {
                                 _this.simulcastStarted = true;
-                                // TODO: simulcast를 지원할지 고려해보자...
-                                //addSimulcastButtons(result["videocodec"] === "vp8" || result["videocodec"] === "h264");
                               }
-                              // We just received notice that there's been a switch, update the buttons
-                              // TODO: simulcast를 지원할지 고려해보자...
-                              //updateSimulcastButtons(substream, temporal);
                             }
                           }
                         }
@@ -1251,9 +1239,7 @@ export default {
               _this.callback_vchat_disconnected_status();
 
               _this.vchatRegistered = false;
-              //callback_disconnected_status();
 
-              //Janus.error(error);
               console.log("error:" + error);
 
               if (_this.vchatReconnectTimerId) {
@@ -1266,10 +1252,8 @@ export default {
               _this.callback_vchat_disconnected_status();
 
               _this.vchatRegistered = false;
-              //callback_disconnected_status();
 
               Janus.log("destroyed");
-              //window.location.reload();
 
               if (_this.vchatReconnectTimerId) {
                 clearInterval(_this.vchatReconnectTimerId);
@@ -1316,8 +1300,6 @@ export default {
 
       if(/[^a-zA-Z0-9\\-]/.test(username)) {
         Janus.error('Input is not alphanumeric');
-        //$('#username').removeAttr('disabled').val("");
-        //$('#register').removeAttr('disabled').click(registerUsername);
         return;
       }
 
@@ -1333,8 +1315,6 @@ export default {
       }
       if(/[^a-zA-Z0-9\\-]/.test(userName)) {
         Janus.error('Input is not alphanumeric');
-        //$('#peer').removeAttr('disabled').val("");
-        //$('#call').removeAttr('disabled').click(doCall);
         return;
       }
       // Call this user
@@ -1365,8 +1345,6 @@ export default {
       var exclude_codecs = [];
       const line = old_sdp.split(/\r\n/);
 
-      console.log(" ======================== SDP =========================\n" + old_sdp);
-
       for (var i = 0; i < line.length; i++) {
         if (new_sdp != "") { new_sdp += "\r\n"; }
 
@@ -1392,8 +1370,6 @@ export default {
           new_sdp += line[i];
         }
       }
-
-      console.log(" ======================== NEW SDP =========================\n" + new_sdp);
 
       return new_sdp;
     },
@@ -1421,12 +1397,9 @@ export default {
       };
     },
     stopTones() {
-      console.log("-------- RINGTONE.pause()");
       this.RINGTONE.pause();
       this.RINGTONE.currentTime = 0;
 
-      // Busytone 중지
-      console.log("-------- BUSYTONE.pause()");
       this.BUSYTONE.pause();
       this.BUSYTONE.currentTime = 0;
     },
@@ -1440,11 +1413,8 @@ export default {
         if (!_this.WEBRTC_INFO.env.ringtone) { return; }
 
         navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
-          console.log("-------- RINGTONE.play()");
           _this.RINGTONE.currentTime = 0;
-          //_this.RINGTONE.play();
 
-          // stop microphone stream acquired by getUserMedia
           stream.getTracks().forEach(function (track) { track.stop(); });
         });
       }
@@ -1452,13 +1422,83 @@ export default {
         if (!_this.WEBRTC_INFO.env.busytone) { return; }
 
         navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
-          console.log("-------- BUSYTONE.play()");
           _this.BUSYTONE.currentTime = 0;
-          //_this.BUSYTONE.play();
 
-          // stop microphone stream acquired by getUserMedia
           stream.getTracks().forEach(function (track) { track.stop(); });
         });
+      }
+    },
+    fileClick() {
+      $('#uploadImage').click();
+    },
+    sendFile(files) {
+      const name = files[0].name;
+      const file = files[0];
+
+      const reader = new FileReader();
+      reader.onload = e => {
+        const image = new Image();
+        image.src = e.target.result;
+        image.onload = function() {
+          resize_image(image);
+        }
+      }
+      reader.readAsDataURL(file);
+      const resize_image = image => {
+        let canvas = document.createElement("canvas"),
+            max_size = 1280,
+            // 최대 기준을 1280으로 잡음.
+            width = image.width,
+            height = image.height;
+
+        if (width > height) {
+          // 가로가 길 경우
+          if (width > max_size) {
+            height *= max_size / width;
+            width = max_size;
+          }
+        } else {
+          // 세로가 길 경우
+          if (height > max_size) {
+            width *= max_size / height;
+            height = max_size;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext("2d").drawImage(image, 0, 0, width, height);
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.5);
+
+        const dataURLToBlob = dataURL => {
+          const BASE64_MARKER = ";base64,";
+
+          // base64로 인코딩 되어있지 않을 경우
+          if (dataURL.indexOf(BASE64_MARKER) === -1) {
+            const parts = dataURL.split(",");
+            const contentType = parts[0].split(":")[1];
+            const raw = parts[1];
+            return new Blob([raw], {
+              type: contentType
+            });
+          }
+          // base64로 인코딩 된 이진데이터일 경우
+          const parts = dataURL.split(BASE64_MARKER);
+          const contentType = parts[0].split(":")[1];
+          const raw = window.atob(parts[1]);
+          // atob()는 Base64를 디코딩하는 메서드
+          const rawLength = raw.length;
+          // 부호 없는 1byte 정수 배열을 생성
+          const uInt8Array = new Uint8Array(rawLength); // 길이만 지정된 배열
+          let i = 0;
+          while (i < rawLength) {
+            uInt8Array[i] = raw.charCodeAt(i);
+            i++;
+          }
+          return new Blob([uInt8Array], {
+            type: contentType
+          });
+        };
+        this.communicator.sendFile(name, dataURLToBlob(dataUrl));
       }
     },
   },
