@@ -316,6 +316,20 @@ TalkCommunicator.prototype.deleteRoom = function (roomId, channelType, senderKey
     });
 };
 
+TalkCommunicator.prototype.uploadAccept = function (roomId, channelType, senderKey, userKey) {
+    this.socket.emit('cli_upload_accept', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        channel_type: channelType,
+        sender_key: senderKey,
+        send_receive: "S",
+        user_key: userKey,
+        etc_data: "",
+        contents: "업로드허용"
+    });
+}
+
 TalkCommunicator.prototype.changeDistribution = function (distributed) {
     this.socket.emit('cli_dist_yn', {
         company_id: this.request.companyId,
