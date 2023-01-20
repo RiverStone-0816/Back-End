@@ -546,7 +546,7 @@
                    class="flex w-full rounded-lg focus:outline-none h-10 py-1 px-2 text-sm touch-y" v-model="input" @keyup.stop.prevent="$event.key==='Enter'&&sendText()">
           </div>
         </div>
-        <div class="ml-2">
+        <div v-if="uploadEnable" class="ml-2">
           <button
               class="flex items-center justify-center hover:bg-gray-300/20 rounded-lg h-10 w-10 text-white flex-shrink-0" @click.stop="fileClick">
             <span class="ml-1">
@@ -629,6 +629,7 @@ export default {
       communicator: new Communicator(),
 
       inputEnable: false,
+      uploadEnable: false,
       backgroundColor: '#f3f3f3',
       displayName: null,
       botId: null,
@@ -1530,6 +1531,7 @@ export default {
           this.lastReceiveMessageType = data.message_type
           if (data?.message_data?.is_custinput_enable) this.inputEnable = data?.message_data?.is_custinput_enable === 'Y'
           if (data?.message_data?.input_enable_yn) this.inputEnable = data?.message_data?.input_enable_yn === 'Y'
+          if (data.message_type === 'member_upload_accept') this.uploadEnable = true;
 
           if (data.message_type === 'intro') {
             this.backgroundColor = data.message_data.bgcolor
