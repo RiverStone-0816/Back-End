@@ -14,7 +14,7 @@
 
 <div class="panel" id="waiting-number-chart">
     <div class="panel-heading">
-        <label class="control-label">시간별대기자수</label>
+        <label class="control-label">시간별연결요청</label>
     </div>
     <div class="panel-body">
         <div class="-chart"></div>
