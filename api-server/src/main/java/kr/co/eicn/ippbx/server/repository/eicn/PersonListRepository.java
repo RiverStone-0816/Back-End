@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Query;
+import org.jooq.SortField;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,25 +45,29 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
     }
 
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> findAll(PersonSort sort) {
+        SortField<String> sortField;
+
         switch (sort) {
             case ID:
-                orderByFields.add(PERSON_LIST.ID.asc());
+                sortField = PERSON_LIST.ID.asc();
                 break;
             case NAME:
-                orderByFields.add(PERSON_LIST.ID_NAME.asc());
+                sortField = PERSON_LIST.ID_NAME.asc();
                 break;
-            case PEER:
-                orderByFields.add(PERSON_LIST.PEER.asc());
+            case EXTENSION:
+                sortField = PERSON_LIST.EXTENSION.asc();
                 break;
             case GROUP:
-                orderByFields.add(PERSON_LIST.GROUP_CODE.asc());
+                sortField = PERSON_LIST.GROUP_CODE.asc();
                 break;
             case LOGIN:
-                orderByFields.add(PERSON_LIST.IS_LOGIN.desc());
+                sortField = PERSON_LIST.IS_LOGIN.desc();
                 break;
+            default:
+                sortField = null;
         }
 
-        return super.findAll();
+        return super.findAll(DSL.trueCondition(), sortField != null ? Collections.singletonList(sortField) : Collections.emptyList());
     }
 
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> findAllByGroup(List<String> group) {
