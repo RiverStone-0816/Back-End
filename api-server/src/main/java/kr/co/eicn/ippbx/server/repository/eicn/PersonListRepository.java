@@ -202,6 +202,7 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
                 .leftJoin(QUEUE_MEMBER_TABLE)
                 .on(QUEUE_MEMBER_TABLE.MEMBERNAME.eq(PERSON_LIST.PEER))
                 .where(QUEUE_MEMBER_TABLE.QUEUE_NUMBER.isNotNull())
+                .orderBy(PERSON_LIST.ID_NAME)
                 .fetchInto(PersonOnHunt.class);
     }
 

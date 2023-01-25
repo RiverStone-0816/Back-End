@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin.monitor.consultant;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserInboundEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserOutboundEntity;
+import kr.co.eicn.ippbx.model.enums.PersonSort;
 import kr.co.eicn.ippbx.model.enums.PhoneInfoStatus;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
@@ -104,7 +105,7 @@ public class MonitorQueueApiController extends ApiBaseController {
                     final MonitorQueueSummaryPerson response = convertDto(e, MonitorQueueSummaryPerson.class);
 
                     response.setPersonList(
-                            personListRepository.findAll().stream()
+                            personListRepository.findAll(PersonSort.NAME).stream()
                                     .filter(p -> p.getPeer().equals(e.getMembername()))
                                     .map(p -> convertDto(p, PersonListSummary.class))
                                     .collect(Collectors.toList())
