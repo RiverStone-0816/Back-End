@@ -20,10 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.QUEUE_MEMBER_TABLE;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
@@ -140,7 +137,6 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
     }
 
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> findAllStatUser(StatUserSearchRequest search) {
-        orderByFields.add(PERSON_LIST.GROUP_CODE.asc());
         List<Condition> conditions = new ArrayList<>();
 
         if (g.getUser().getDataSearchAuthorityType() != null) {
@@ -174,7 +170,7 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
 
         conditions.add(personCondition);
 
-        return findAll(conditions);
+        return findAll(conditions, Collections.singletonList(PERSON_LIST.GROUP_CODE.asc()));
     }
 
     public List<PersonOnHunt> findAllPersonOnHunt() {

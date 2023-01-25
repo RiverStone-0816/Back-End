@@ -175,6 +175,10 @@ public abstract class BaseRepository<TABLE extends TableImpl<? extends Record>, 
         return findAll(dsl(), conditions);
     }
 
+    public List<ENTITY> findAll(List<Condition> conditions, List<SortField<?>> orderByFields) {
+        return findAll(dsl(), conditions, orderByFields);
+    }
+
     public List<ENTITY> findAll(DSLContext dsl, List<Condition> conditions) {
         return findAll(dsl, conditions, orderByFields);
     }
