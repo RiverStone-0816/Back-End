@@ -489,6 +489,23 @@
           </template>
           <!-- text block end -->
 
+          <!-- file block start -->
+          <template v-if="message.sender !== 'SERVER' && message.messageType === 'file'">
+            <div class="pr-1 pt-1">
+              <div class="flex items-end justify-end">
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 order-1 items-end">
+                  <div>
+                    <img :src="message.data" />
+                  </div>
+                  <div class="text-xxs text-gray-600/100">
+                    {{ getTimeFormat(message.time) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- file block end -->
+
           <!-- audio start -->
           <template v-if="message.sender === 'SERVER' && message.messageType === 'audio_start'">
             <div class="pl-3 pt-1">
@@ -640,7 +657,7 @@ export default {
       messages: [],
       botIcon: '',
       form: {
-        url: 'https://cloudtalk.eicn.co.kr:442',
+        url: 'https://cloudtalk.eicn.co.kr:552',
         senderKey: null,
         userKey: sessionUtils.getSessionId(),
         ip: '',
@@ -866,7 +883,7 @@ export default {
       }, this.lastReceiveMessageType)
     },
     getFileUrl(company, fileName) {
-      return `https://cloudtalk.eicn.co.kr:442/webchat_bot_image_fetch?company_id=${encodeURIComponent(company)}&file_name=${encodeURIComponent(fileName)}&channel_type=${encodeURIComponent("eicn")}`
+      return `https://cloudtalk.eicn.co.kr:552/webchat_bot_image_fetch?company_id=${encodeURIComponent(company)}&file_name=${encodeURIComponent(fileName)}&channel_type=${encodeURIComponent("eicn")}`
     },
     isImage(fileName) {
       if (!fileName) return false
@@ -1500,6 +1517,7 @@ export default {
           });
         };
         this.communicator.sendFile(name, dataURLToBlob(dataUrl));
+        this.messages.push({sender: SENDER.USER, time: new Date(), data: dataUrl, messageType: 'file'})
       }
     },
   },
@@ -1531,12 +1549,12 @@ export default {
           this.lastReceiveMessageType = data.message_type
           if (data?.message_data?.is_custinput_enable) this.inputEnable = data?.message_data?.is_custinput_enable === 'Y'
           if (data?.message_data?.input_enable_yn) this.inputEnable = data?.message_data?.input_enable_yn === 'Y'
-          if (data.message_type === 'member_upload_accept') this.uploadEnable = true;
+          if (data.message_type === 'upload_accept') this.uploadEnable = data?.message_data?.accept === 'Y'
 
           if (data.message_type === 'intro') {
             this.backgroundColor = data.message_data.bgcolor
             this.displayName = data.message_data.display_company_name
-            this.botIcon = data.message_data.image === '' ? this.getBotIcon() : `https://cloudtalk.eicn.co.kr:442/webchat_bot_image_fetch?company_id=${encodeURIComponent(data.company_id)}&file_name=${encodeURIComponent(data.message_data.image)}&channel_type=${encodeURIComponent("eicn")}`
+            this.botIcon = data.message_data.image === '' ? this.getBotIcon() : `https://cloudtalk.eicn.co.kr:552/webchat_bot_image_fetch?company_id=${encodeURIComponent(data.company_id)}&file_name=${encodeURIComponent(data.message_data.image)}&channel_type=${encodeURIComponent("eicn")}`
 
             if (data.message_data.schedule_info.schedule_kind === 'B') {
               this.botId = data.message_data.schedule_info.schedule_data
