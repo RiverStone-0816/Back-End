@@ -34,7 +34,7 @@ public class HuntStatExcel extends AbstractExcel {
 
         final int recordCount = list.stream().mapToInt(e -> e.getStatQueueInboundResponses().size()).sum();
         if (recordCount > 0)
-            getSheet().addMergedRegion(new CellRangeAddress(recordCount + 1, recordCount + 1, 0, 1));
+            getSheet().addMergedRegion(new CellRangeAddress(recordCount + 2, recordCount + 2, 0, 1));
 
         final RequestGlobal g = ApplicationBeanAware.requestGlobal();
 
@@ -51,7 +51,7 @@ public class HuntStatExcel extends AbstractExcel {
                         niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(e.getInBillSecSum())),
                         niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(e.getAvgBillSec())),
                         niceFormat(e.getAvgRateValue()),
-                        niceFormat(e.getServiceLevelOk())
+                        niceFormat(e.getSvcLevelAvg())
                 );
             }
         }
@@ -68,7 +68,7 @@ public class HuntStatExcel extends AbstractExcel {
                     niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getInBillSecSum())),
                     niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getAvgBillSec())),
                     niceFormat(String.format("%.1f", total.getAvgRateValue())),
-                    niceFormat(total.getServiceLevelOk())
+                    niceFormat(total.getSvcLevelAvg())
             );
     }
 }
