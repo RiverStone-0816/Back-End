@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.monitor.consultant;
 
 import kr.co.eicn.ippbx.model.dto.customdb.PersonLastStatusInfoResponse;
+import kr.co.eicn.ippbx.model.enums.PersonSort;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.controller.api.v1.admin.dashboard.DashboardApiController;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
@@ -24,7 +25,6 @@ import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.jooq.types.UInteger;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -287,7 +287,7 @@ public class MonitorPartApiController extends ApiBaseController {
         final Map<String, StatUserOutboundEntity> individualOutboundStat = statUserOutboundService.getRepository().findAllUserIndividualStat();
         final Map<String, String> phoneInfoMap = phoneInfoRepository.findAllPhoneStatus();
         final Map<String, String> queueNameMap = queueNameRepository.getHuntNameMap();
-        final List<PersonList> personList = personListRepository.findAll().stream().filter(e -> StringUtils.isNotEmpty(e.getPeer())).collect(Collectors.toList());
+        final List<PersonList> personList = personListRepository.findAll(PersonSort.NAME).stream().filter(e -> StringUtils.isNotEmpty(e.getPeer())).collect(Collectors.toList());
         final Map<String, QueueMemberTable> queueMemberMap = queueMemberTableRepository.findAllQueueMember();
         final List<PersonLastStatusInfoResponse> allPersonStatusInfo = memberStatusService.getAllPersonStatusInfo();
 

@@ -3,9 +3,9 @@ package kr.co.eicn.ippbx.server.repository.eicn;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonChattBookmark;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonOnHunt;
-import kr.co.eicn.ippbx.model.enums.ChattingJoinStatus;
 import kr.co.eicn.ippbx.model.enums.IdStatus;
 import kr.co.eicn.ippbx.model.enums.LicenseListType;
+import kr.co.eicn.ippbx.model.enums.PersonSort;
 import kr.co.eicn.ippbx.model.search.ChattingMemberSearchRequest;
 import kr.co.eicn.ippbx.model.search.StatUserSearchRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
@@ -41,6 +41,28 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
         this.pbxServerInterface = pbxServerInterface;
         this.serviceRepository = serviceRepository;
         this.cacheService = cacheService;
+    }
+
+    public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> findAll(PersonSort sort) {
+        switch (sort) {
+            case ID:
+                orderByFields.add(PERSON_LIST.ID.asc());
+                break;
+            case NAME:
+                orderByFields.add(PERSON_LIST.ID_NAME.asc());
+                break;
+            case PEER:
+                orderByFields.add(PERSON_LIST.PEER.asc());
+                break;
+            case GROUP:
+                orderByFields.add(PERSON_LIST.GROUP_CODE.asc());
+                break;
+            case LOGIN:
+                orderByFields.add(PERSON_LIST.IS_LOGIN.desc());
+                break;
+        }
+
+        return super.findAll();
     }
 
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> findAllByGroup(List<String> group) {
@@ -180,6 +202,7 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
                 .leftJoin(QUEUE_MEMBER_TABLE)
                 .on(QUEUE_MEMBER_TABLE.MEMBERNAME.eq(PERSON_LIST.PEER))
                 .where(QUEUE_MEMBER_TABLE.QUEUE_NUMBER.isNotNull())
+                .orderBy(PERSON_LIST.ID_NAME)
                 .fetchInto(PersonOnHunt.class);
     }
 
