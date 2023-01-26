@@ -140,9 +140,9 @@
                                     <th class="color red">포기호</th>
                                     <th class="color red">콜백</th>
 
-                                    <th class="color red">I/B<br>총통화시간</th>
-                                    <th class="color red">평균통화시간</th>
-                                    <th class="color red">평균대기시간</th>
+                                    <th class="color red">I/B<br>총 통화시간</th>
+                                    <th class="color red">I/B<br>평균통화시간</th>
+                                    <th class="color red">I/B<br>평균대기시간</th>
                                     <th class="color red">호응답률</th>
                                     <th class="color red">서비스레벨<br>호응답률</th>
                                     <th class="color red">단순조회율</th>
