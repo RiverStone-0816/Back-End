@@ -269,6 +269,14 @@
                 controlNav: false,
                 start: function () {
                     $('.flexslider').resize();
+                },
+                after: function () {
+                    setTimeout(function () {
+                        const number = $('.flex-active-slide').attr('data-service');
+                        const name = services[number];
+                        $('#service-number').text(number);
+                        $('#service-name').text(name);
+                    }, 100);
                 }
             });
 
@@ -286,14 +294,6 @@
 
             setInterval(function () {
                 $('.flex-next').click();
-
-                setTimeout(function () {
-                    const number = $('.flex-active-slide').attr('data-service');
-                    const name = services[number];
-                    $('#service-number').text(number);
-                    $('#service-name').text(name);
-                }, 100);
-
             }, 10000);
 
             setInterval(function () {
