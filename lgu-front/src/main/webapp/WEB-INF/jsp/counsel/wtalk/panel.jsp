@@ -1090,7 +1090,11 @@
                         })
                     } else if (['file', 'photo', 'audio', 'video'].includes(message.messageType)) {
                         message.originalFileUrl = message.contents
-                        message.fileUrl = message.sendReceive === 'R'? message.contents : $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {
+                        message.fileUrl = message.sendReceive === 'R'? _this.channelType === 'eicn' ? $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {
+                            company_id: talkCommunicator.request.companyId,
+                            file_name: message.contents,
+                            channel_type: _this.channelType
+                        }) : message.contents : $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {
                             company_id: talkCommunicator.request.companyId,
                             file_name: message.contents,
                             channel_type: _this.channelType
