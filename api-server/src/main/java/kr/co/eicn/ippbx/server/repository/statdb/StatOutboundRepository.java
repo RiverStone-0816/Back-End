@@ -73,7 +73,7 @@ public class StatOutboundRepository extends StatDBBaseRepository<CommonStatOutbo
                         .or(TABLE.STAT_HOUR.eq((byte) ((currentHour - 5))))
                 )
                 .and(TABLE.COMPANY_ID.eq(g.getUser().getCompanyId()))
-//                .and(TABLE.DCONTEXT.eq("hunt_context")/*.or(TABLE.DCONTEXT.eq("inbound"))*/)
+                .and(TABLE.DCONTEXT.eq("outbound"))
                 .groupBy(TABLE.STAT_HOUR)
                 .fetchMap(TABLE.STAT_HOUR, DashServiceStatResponse.class);
 
@@ -85,6 +85,7 @@ public class StatOutboundRepository extends StatDBBaseRepository<CommonStatOutbo
                 ifnull(sum(TABLE.SUCCESS), 0).as("success"))
                 .from(TABLE)
                 .where(TABLE.STAT_DATE.eq(date(now())))
+                .and(TABLE.DCONTEXT.eq("outbound"))
                 .fetchOneInto(StatOutboundEntity.class);
     }
 }

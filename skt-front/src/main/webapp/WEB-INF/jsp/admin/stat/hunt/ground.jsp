@@ -170,7 +170,7 @@
                                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inBillSecSum)}</td>
                                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.avgBillSec)}</td>
                                                         <td>${e.avgRateValue}%</td>
-                                                        <td>${e.serviceLevelOk}</td>
+                                                        <td>${e.getSvcLevelAvg()}%</td>
                                                     </tr>
                                                 </c:forEach>
                                                 </tr>
@@ -188,7 +188,7 @@
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inBillSecSum)}</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.avgBillSec)}</td>
                                             <td>${String.format("%.1f", total.avgRateValue)}%</td>
-                                            <td>${total.serviceLevelOk}</td>
+                                            <td>${total.getSvcLevelAvg()}%</td>
                                         </tr>
                                         </tfoot>
                                     </c:when>
