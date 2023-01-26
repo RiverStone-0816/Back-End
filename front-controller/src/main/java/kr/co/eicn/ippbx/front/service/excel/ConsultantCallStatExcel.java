@@ -80,7 +80,7 @@ public class ConsultantCallStatExcel extends AbstractExcel {
                         niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(userStat.getMemberStatusStat().getPostPrecessAvgTime()))
                 ));
 
-                memberStatuses.forEach((k, v) -> row.add("" + userStat.getMemberStatusStat().getStatusCountMap().getOrDefault(k.toString(), 0L)));
+                memberStatuses.forEach((k, v) -> row.add(niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(userStat.getMemberStatusStat().getStatusCountMap().getOrDefault(k, 0L)))));
                 addRow(defaultStyle, row.toArray());
             }
         }
@@ -110,7 +110,7 @@ public class ConsultantCallStatExcel extends AbstractExcel {
                 niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getMemberStatusStat().getPostProcessTime())),
                 niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getMemberStatusStat().getPostPrecessAvgTime()))
         ));
-        memberStatuses.forEach((k, v) -> row.add("" + total.getMemberStatusStat().getStatusCountMap().getOrDefault(k.toString(), 0L)));
+        memberStatuses.forEach((k, v) -> row.add(niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getMemberStatusStat().getStatusCountMap().getOrDefault(k, 0L)))));
         addRow(defaultStyle, row.toArray());
     }
 }

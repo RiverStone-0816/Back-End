@@ -20,14 +20,14 @@ public class ConsultantStatExcel extends AbstractExcel {
     private void createBody() {
         addRow(sheetHeadStyle, "날짜/시간", "부서", "상담원명",
                 "총 통화", "",
-                "O/B", "", "", "", "",
-                "I/B", "", "", "", "",
+                "O/B", "", "", "", "", "",
+                "I/B", "", "", "", "", "",
                 "후처리 시간분석", "", "");
 
         addRow(sheetHeadStyle, "", "", "",
                 "총 건수", "총 시간",
                 "총 시도콜", "O/B검수 성공호", "비수신", "O/B 총 통화시간", "O/B 평균통화시간", "통화성공률",
-                "O/B 전체콜", "응대호", "I/B 총 통화시간", "I/B 평균통화시간", "포기호", "응대률",
+                "I/B 전체콜", "응대호", "I/B 총 통화시간", "I/B 평균통화시간", "포기호", "응대률",
                 "후처리건수", "총 후처리시간", "후처리 평균시간");
 
         int totalSize = list.stream().mapToInt(e -> e.getUserStatList().size()).reduce(Integer::sum).orElse(0);
