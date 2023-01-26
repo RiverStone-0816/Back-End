@@ -552,6 +552,24 @@
           </template>
           <!-- video end -->
 
+          <!-- file accept start -->
+          <template v-if="message.sender === 'SERVER' && message.messageType === 'upload_accept'">
+            <div class="pl-3 pt-1">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <!--텍스트 출력-->
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
+                  <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
+                    <span>
+                      <p>{{ message.data.text_data }}</p>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- file accept end -->
         </template>
       </div>
 
@@ -1464,7 +1482,7 @@ export default {
       reader.readAsDataURL(file);
       const resize_image = image => {
         let canvas = document.createElement("canvas"),
-            max_size = 1280,
+            max_size = 640,
             // 최대 기준을 1280으로 잡음.
             width = image.width,
             height = image.height;
