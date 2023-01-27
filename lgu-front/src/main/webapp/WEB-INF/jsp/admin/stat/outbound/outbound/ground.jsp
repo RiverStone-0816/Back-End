@@ -100,7 +100,7 @@
                                 </tr>
                                 <tr>
                                     <th class="color blue">총 시도콜</th>
-                                    <th class="color blue">O/B건수(성공호)</th>
+                                    <th class="color blue">O/B건수 (성공호)</th>
                                     <th class="color blue">비수신</th>
 
                                     <th class="color blue">통화성공률</th>
