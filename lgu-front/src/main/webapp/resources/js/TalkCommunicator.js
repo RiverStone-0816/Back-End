@@ -9,7 +9,6 @@ TalkCommunicator.prototype.CONSTANTS = {
 TalkCommunicator.prototype.init = function () {
     this.url = null;
     this.request = null;
-    this.uploadFlag = 'SUAN';
     this.status = {
         eventNumber: 0
     };
@@ -317,15 +316,15 @@ TalkCommunicator.prototype.deleteRoom = function (roomId, channelType, senderKey
     });
 };
 
-TalkCommunicator.prototype.uploadAccept = function (roomId, channelType, senderKey, userKey) {
-    this.uploadFlag === 'SUAN' ? this.uploadFlag = 'SUAY' : this.uploadFlag = 'SUAN';
+TalkCommunicator.prototype.uploadAccept = function (roomId, channelType, senderKey, userKey, uploadFlag) {
+
     this.socket.emit('cli_upload_accept', {
         company_id: this.request.companyId,
         room_id: roomId,
         userid: this.request.userid,
         channel_type: channelType,
         sender_key: senderKey,
-        send_receive: this.uploadFlag,
+        send_receive: uploadFlag,
         user_key: userKey,
         etc_data: "",
         contents: ""

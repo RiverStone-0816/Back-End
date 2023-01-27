@@ -869,9 +869,9 @@
                                     data-tooltip="화상대화" data-variation="tiny" data-position="top center" @click="startWebrtc('SVS')"><i
                                     class="user icon"></i></button>
                             <%--TODO: 자동멘트--%>
-                            <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" data-inverted
+                            <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" :class="uploadAcceptFlag==='SUAN' ? '' : 'active'" data-inverted
                                     data-tooltip="이미지전송허용" data-variation="tiny" data-position="top center" @click.stop="uploadAccept"><i
-                                    class="upload icon"></i></button>
+                                    :class="uploadAcceptFlag==='SUAN' ? 'lock icon' : 'unlock icon'"></i></button>
                             <div class="ui fitted toggle checkbox auto-ment vertical-align-middle">
                                 <input type="checkbox" :value="isAutoEnable" v-model="isAutoEnable"
                                        @change="setAutoEnable(roomId)">
@@ -977,6 +977,7 @@
                     myUserName: null,
                     remoteUserName: null,
                     recordFile: null,
+                    uploadAcceptFlag: 'SUAN',
                 }
             },
             updated: function () {
@@ -1391,7 +1392,8 @@
                     popupDraggableModalFromReceivedHtml('/admin/service/help/task-script/modal-search?title=' + encodeURIComponent(contents), 'modal-search-task-script')
                 },
                 uploadAccept: function () {
-                    talkCommunicator.uploadAccept(this.roomId, this.channelType, this.senderKey, this.userKey)
+                    this.uploadAcceptFlag === 'SUAN' ? this.uploadAcceptFlag = 'SUAY' : this.uploadAcceptFlag = 'SUAN'
+                    talkCommunicator.uploadAccept(this.roomId, this.channelType, this.senderKey, this.userKey, this.uploadAcceptFlag)
                 },
                 deleteRoom: function () {
                     talkCommunicator.deleteRoom(this.roomId, this.channelType, this.senderKey, this.userKey)
