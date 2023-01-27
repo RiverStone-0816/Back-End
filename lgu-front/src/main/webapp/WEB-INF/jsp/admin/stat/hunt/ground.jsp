@@ -155,9 +155,9 @@
                                     <th class="color red">응대호</th>
                                     <th class="color red">포기호</th>
                                     <th class="color red">콜백</th>
-                                    <th class="color red">I/B 총통화시간</th>
-                                    <th class="color red">평균통화시간</th>
-                                    <th class="color red">응답률</th>
+                                    <th class="color red">I/B 총 통화시간</th>
+                                    <th class="color red">I/B 평균통화시간</th>
+                                    <th class="color red">호응답률</th>
                                     <th class="color red">서비스레벨 호응답률</th>
                                 </tr>
                                 </thead>

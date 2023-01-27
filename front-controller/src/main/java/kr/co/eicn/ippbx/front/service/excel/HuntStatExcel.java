@@ -21,12 +21,12 @@ public class HuntStatExcel extends AbstractExcel {
     private void createBody() {
         addRow(sheetHeadStyle,
                 "날짜/시간",
-                "큐",
+                "큐그룹",
                 "I/B", "", "", "", "", "", "", "");
         addRow(sheetHeadStyle,
                 "",
                 "",
-                "I/B 연결요청", "응대호", "포기호", "콜백", "I/B 총통화시간", "평균통화시간", "응답률", "서비스레벨 호응답률");
+                "I/B 연결요청", "응대호", "포기호", "콜백", "I/B 총통화시간", "I/B 평균통화시간", "호응답률", "서비스레벨 호응답률");
 
         getSheet().addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
         getSheet().addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
@@ -38,6 +38,8 @@ public class HuntStatExcel extends AbstractExcel {
 
         final RequestGlobal g = ApplicationBeanAware.requestGlobal();
 
+        int firstRow = 2;
+        int lastRow = 1;
         for (StatHuntResponse<?> element : list) {
             for (StatHuntInboundResponse e : element.getStatQueueInboundResponses()) {
                 addRow(defaultStyle,
@@ -54,6 +56,11 @@ public class HuntStatExcel extends AbstractExcel {
                         niceFormat(e.getSvcLevelAvg())
                 );
             }
+            lastRow += element.getStatQueueInboundResponses().size();
+            if(firstRow != lastRow){
+                getSheet().addMergedRegion(new CellRangeAddress(firstRow, lastRow, 0, 0));
+            }
+            firstRow = lastRow + 1;
         }
 
         if (recordCount > 0)
