@@ -65,6 +65,8 @@ public class InboundCategoryStatController extends BaseController {
     @GetMapping("_excel")
     public void downloadExcel(StatCategorySearchRequest search, HttpServletResponse response) throws IOException, ResultFailException {
         final List<StatCategoryResponse<?>> stat = apiInterface.list(search);
-        new InboundCategoryStatExcel(stat).generator(response, "인입경로별통계");
+        final Integer maxLevel = stat.stream().map(StatCategoryResponse::getMaxLevel).max(Integer::compareTo).orElse(0);
+
+        new InboundCategoryStatExcel(stat, maxLevel).generator(response, "인입경로별통계");
     }
 }
