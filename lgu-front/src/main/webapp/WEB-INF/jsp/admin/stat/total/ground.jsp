@@ -116,18 +116,18 @@
                                 <thead>
                                 <tr>
                                     <th rowspan="2">날짜/시간</th>
-                                    <th colspan="2">총통화</th>
+                                    <th colspan="2">총 통화</th>
                                     <th colspan="6" class="color blue">O/B</th>
                                     <th colspan="11" class="color red">I/B</th>
                                 </tr>
                                 <tr>
-                                    <th>총건수</th>
-                                    <th>총시간</th>
-                                    <th class="color blue">총시도콜</th>
+                                    <th>총 건수</th>
+                                    <th>총 시간</th>
+                                    <th class="color blue">총 시도콜</th>
                                     <th class="color blue">O/B건수<br>(성공호)</th>
                                     <th class="color blue">비수신</th>
                                     <th class="color blue">통화성공률</th>
-                                    <th class="color blue">O/B<br>총통화시간</th>
+                                    <th class="color blue">O/B<br>총 통화시간</th>
                                     <th class="color blue">O/B<br>평균통화시간</th>
                                     <th class="color red">I/B<br>전체콜</th>
                                     <th class="color red">단순조회</th>
@@ -135,9 +135,9 @@
                                     <th class="color red">응대호</th>
                                     <th class="color red">포기호</th>
                                     <th class="color red">콜백</th>
-                                    <th class="color red">I/B<br>총통화시간</th>
-                                    <th class="color red">평균<br>통화시간</th>
-                                    <th class="color red">평균<br>대기시간</th>
+                                    <th class="color red">I/B<br>총 통화시간</th>
+                                    <th class="color red">I/B<br>평균통화시간</th>
+                                    <th class="color red">I/B<br>평균대기시간</th>
                                     <th class="color red">호응답률</th>
                                     <th class="color red">단순조회율</th>
                                 </tr>
