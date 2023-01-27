@@ -18,4 +18,5 @@ public class WtalkCurrentMsgResponse {
 	private String senderKey;
 	private String userId;
 	private String isAutoEnable;
+	private String isCustomUploadEnable;
 }

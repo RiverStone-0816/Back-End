@@ -105,6 +105,11 @@ public class CommonWtalkRoom extends TableImpl<WtalkRoomRecord> {
      */
     public final TableField<WtalkRoomRecord, String> IS_AUTO_ENABLE = createField(DSL.name("is_auto_enable"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(DSL.inline("'Y'", org.jooq.impl.SQLDataType.CHAR)), this, "");
 
+    /**
+     * The column <code>CUSTOMDB.talk_room.is_auto_enable</code>.
+     */
+    public final TableField<WtalkRoomRecord, String> IS_CUSTOM_UPLOAD_ENABLE = createField(DSL.name("is_custom_upload_enable"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(DSL.inline("'N'", org.jooq.impl.SQLDataType.CHAR)), this, "");
+
     private String tableName;
 
     /**

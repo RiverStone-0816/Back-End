@@ -32,7 +32,7 @@ public class WtalkMsgRepository extends CustomDBBaseRepository<CommonWtalkMsg, W
                 .from(
                         dsl.select(table1.ROOM_ID, DSL.max(table1.SEQ).as(table1.SEQ))
                                 .from(table1)
-                                .where(table1.ROOM_ID.ne("NO_SESSID"))
+                                .where(table1.ROOM_ID.ne("NO_SESSID").and(table1.SEND_RECEIVE.notIn("SUAN", "SUAY")))
                                 .groupBy(table1.ROOM_ID).asTable("TABLE1")
                 ).join(table2)
                 .on(table1.SEQ.eq(table2.SEQ)

@@ -25,4 +25,5 @@ public class CommonWtalkRoom implements Serializable {
     private String    scheduleKind;
     private String    scheduleData;
     private String    isAutoEnable;
+    private String    isCustomUploadEnable;
 }

@@ -416,25 +416,24 @@
                             else if (['RE', 'E'].includes(sendReceive))
                                 lastMessage = '챗봇이 존재하지 않습니다.'
                         } else if (['RM', 'SZ', 'SG', 'SD', 'SE', 'SAS', 'SVS', 'RAR', 'RVR', 'RARC', 'RVRC'].includes(sendReceive)) {
-                            if (sendReceive === 'RM') {
+                            if (sendReceive === 'RM')
                                 lastMessage = '상담사연결을 요청하였습니다.'
-                            } else if (sendReceive === 'SZ') {
+                            else if (sendReceive === 'SZ')
                                 lastMessage = userName + '상담사가 상담을 찜했습니다.'
-                            } else if (sendReceive === 'SG') {
+                            else if (sendReceive === 'SG')
                                 lastMessage = userName + '상담사가 상담을 가져왔습니다.'
-                            } else if (sendReceive === 'SD') {
+                            else if (sendReceive === 'SD')
                                 lastMessage = userName + '상담사가 상담을 내렸습니다.'
-                            } else if (sendReceive === 'SE') {
+                            else if (sendReceive === 'SE')
                                 lastMessage = userName + '상담사가 상담을 종료했습니다.'
-                            } else if (['RAR','SAS'].includes(sendReceive)) {
+                            else if (['RAR','SAS'].includes(sendReceive))
                                 lastMessage = '음성통화를 요청합니다.'
-                            } else if (['RVR','SVS'].includes(sendReceive)) {
+                            else if (['RVR','SVS'].includes(sendReceive))
                                 lastMessage = '영상통화를 요청합니다.'
-                            } else if (sendReceive === 'RARC') {
+                            else if (sendReceive === 'RARC')
                                 lastMessage = '음성통화 완료'
-                            } else if (sendReceive === 'RVRC') {
+                            else if (sendReceive === 'RVRC')
                                 lastMessage = '영상통화 완료'
-                            }
                         }
                         else if (fileType === 'photo')
                             lastMessage = '사진을 전송했습니다.'
@@ -869,9 +868,9 @@
                                     data-tooltip="화상대화" data-variation="tiny" data-position="top center" @click="startWebrtc('SVS')"><i
                                     class="user icon"></i></button>
                             <%--TODO: 자동멘트--%>
-                            <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" :class="uploadAcceptFlag==='SUAN' ? '' : 'active'" data-inverted
+                            <button v-if="channelType==='eicn'" class="ui icon compact mini button mr5" :class="isCustomUploadEnable ? '' : 'active'" data-inverted
                                     data-tooltip="이미지전송허용" data-variation="tiny" data-position="top center" @click.stop="uploadAccept"><i
-                                    :class="uploadAcceptFlag==='SUAN' ? 'lock icon' : 'unlock icon'"></i></button>
+                                    :class="isCustomUploadEnable ? 'unlock icon' : 'lock icon'"></i></button>
                             <div class="ui fitted toggle checkbox auto-ment vertical-align-middle">
                                 <input type="checkbox" :value="isAutoEnable" v-model="isAutoEnable"
                                        @change="setAutoEnable(roomId)">
@@ -977,7 +976,7 @@
                     myUserName: null,
                     remoteUserName: null,
                     recordFile: null,
-                    uploadAcceptFlag: 'SUAN',
+                    isCustomUploadEnable: false,
                 }
             },
             updated: function () {
@@ -1008,6 +1007,7 @@
                         _this.userId = response.data.userId
                         _this.customName = response.data.customName
                         _this.isAutoEnable = response.data.isAutoEnable === 'Y'
+                        _this.isCustomUploadEnable = response.data.isCustomUploadEnable === 'Y'
                         _this.isMessage = !(response.data.userId === _this.loginId && response.data.roomStatus === 'G')
                         _this.isVChat = response.data.channelType === 'eicn' && 'true' === '${g.usingServices.contains("VDTLK")}'
                         _this.isAChat = response.data.channelType === 'eicn' && 'true' === '${g.usingServices.contains("ADTLK")}'
@@ -1392,8 +1392,8 @@
                     popupDraggableModalFromReceivedHtml('/admin/service/help/task-script/modal-search?title=' + encodeURIComponent(contents), 'modal-search-task-script')
                 },
                 uploadAccept: function () {
-                    this.uploadAcceptFlag === 'SUAN' ? this.uploadAcceptFlag = 'SUAY' : this.uploadAcceptFlag = 'SUAN'
-                    talkCommunicator.uploadAccept(this.roomId, this.channelType, this.senderKey, this.userKey, this.uploadAcceptFlag)
+                    this.isCustomUploadEnable = !this.isCustomUploadEnable
+                    talkCommunicator.uploadAccept(this.roomId, this.channelType, this.senderKey, this.userKey, this.isCustomUploadEnable ? 'SUAY' : 'SUAN')
                 },
                 deleteRoom: function () {
                     talkCommunicator.deleteRoom(this.roomId, this.channelType, this.senderKey, this.userKey)

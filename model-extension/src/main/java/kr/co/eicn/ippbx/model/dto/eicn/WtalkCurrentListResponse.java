@@ -31,4 +31,6 @@ public class WtalkCurrentListResponse {
     private Integer maindbGroupId;
     private String maindbCustomName;
     private String maindbCustomId;
+    private String isAutoEnable;
+    private String isCustomUploadEnable;
 }

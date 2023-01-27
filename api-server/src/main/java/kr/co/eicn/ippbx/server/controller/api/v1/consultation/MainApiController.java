@@ -420,7 +420,7 @@ public class MainApiController extends ApiBaseController {
 
         CommonWtalkMsg table = wtalkMsgService.getRepository().getTABLE();
         final List<WtalkMsgSummaryResponse> talkMsgResponseList = wtalkMsgService.getRepository().findAll(table.COMPANY_ID.eq(g.getUser().getCompanyId())
-                        .and(table.ROOM_ID.eq(wtalkRoomEntity.getRoomId()))
+                        .and(table.ROOM_ID.eq(wtalkRoomEntity.getRoomId()).and(table.SEND_RECEIVE.notIn("SUAN","SUAY")))
                 )
                 .stream()
                 .map((e) -> {
@@ -460,6 +460,7 @@ public class MainApiController extends ApiBaseController {
         response.setUserId(wtalkRoomEntity.getUserid());
         response.setChannelType(TalkChannelType.of(wtalkRoomEntity.getChannelType()));
         response.setIsAutoEnable(wtalkRoomEntity.getIsAutoEnable());
+        response.setIsCustomUploadEnable(wtalkRoomEntity.getIsCustomUploadEnable());
 
         return ResponseEntity.ok(data(response));
     }
