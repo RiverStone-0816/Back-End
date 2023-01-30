@@ -133,9 +133,13 @@
         }
 
         function clearCustomerAndCounselingInput() {
+            if(ipccCommunicator.status.cMemberStatus === 1)
+                return alert('상담 중에는 초기화할 수 없습니다.');
+
             audioId = null;
             callType = null;
             phoneNumber = null;
+            ipccCommunicator.status.clickKey = null;
             clearTransferredUser();
 
             $('#call-status').empty().val('');
