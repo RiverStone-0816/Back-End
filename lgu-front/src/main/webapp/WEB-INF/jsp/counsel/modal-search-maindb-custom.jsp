@@ -19,6 +19,8 @@
     <div class="header">고객DB검색</div>
 
     <div class="content rows scrolling">
-        <jsp:include page="/counsel/modal-search-maindb-custom-body"/>
+        <div class="sub-content ui container fluid unstackable" id="modal-search-maindb-custom-body">
+            <jsp:include page="/counsel/modal-search-maindb-custom-body"/>
+        </div>
     </div>
 </div>

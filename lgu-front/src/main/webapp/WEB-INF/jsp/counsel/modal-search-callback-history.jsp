@@ -19,6 +19,8 @@
     <div class="header">콜백검색</div>
 
     <div class="content rows scrolling">
-        <jsp:include page="/counsel/modal-search-callback-history-body"/>
+        <div class="sub-content ui container fluid unstackable" id="modal-search-callback-history-body">
+            <jsp:include page="/counsel/modal-search-callback-history-body"/>
+        </div>
     </div>
 </div>

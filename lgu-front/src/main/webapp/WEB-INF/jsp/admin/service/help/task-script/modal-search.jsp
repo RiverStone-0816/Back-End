@@ -17,6 +17,8 @@
     <div class="header">지식관리검색</div>
 
     <div class="content rows scrolling">
-        <jsp:include page="/admin/service/help/task-script/modal-search-body"/>
+        <div class="sub-content ui container fluid unstackable" id="modal-search-task-script-body">
+            <jsp:include page="/admin/service/help/task-script/modal-search-body"/>
+        </div>
     </div>
 </div>
