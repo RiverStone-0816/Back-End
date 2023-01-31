@@ -221,7 +221,7 @@
 
                                         <tfoot>
                                         <tr>
-                                            <td colspan="3">합계(${total.totalCnt > 0 ? 1 : 0 })</td>
+                                            <td colspan="3">합계</td>
 
                                             <td>${total.totalCnt}</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.totalBillSec)}</td>
