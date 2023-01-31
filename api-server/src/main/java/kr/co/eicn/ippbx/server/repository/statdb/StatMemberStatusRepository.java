@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
 import static org.jooq.impl.DSL.*;
 
 @Getter
@@ -49,7 +50,9 @@ public class StatMemberStatusRepository extends StatDBBaseRepository<CommonStatM
 
         setTimeUnit(query);
 
-        return query.where();
+        return query
+                .innerJoin(PERSON_LIST).on(PERSON_LIST.ID.eq(TABLE.USERID).and(PERSON_LIST.COMPANY_ID.eq(TABLE.COMPANY_ID)))
+                .where();
     }
 
     public List<StatMemberStatusEntity> findAll(StatUserSearchRequest search) {
