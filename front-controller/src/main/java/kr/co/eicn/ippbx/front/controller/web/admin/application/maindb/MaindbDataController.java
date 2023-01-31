@@ -23,6 +23,7 @@ import kr.co.eicn.ippbx.model.enums.MultichannelChannelType;
 import kr.co.eicn.ippbx.model.form.MaindbCustomInfoFormRequest;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.jooq.tools.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -88,13 +89,22 @@ public class MaindbDataController extends BaseController {
             if (search.getGroupSeq() == null)
                 search.setGroupSeq(customdbGroups.get(0).getSeq());
 
-            final Pagination<MaindbCustomInfoEntity> pagination = apiInterface.getPagination(search.getGroupSeq(), search.convertToRequest("MAINDB_"));
+            final Pagination<MaindbCustomInfoEntity> pagination = apiInterface.getPagination(search.getGroupSeq(), search.convertToRequest(""));
             model.addAttribute("pagination", pagination);
 
             final MaindbGroupDetailResponse customGroup = maindbGroupApiInterface.get(search.getGroupSeq());
             final CommonTypeEntity customDbType = commonTypeApiInterface.get(customGroup.getMaindbType());
             customDbType.setFields(customDbType.getFields().stream().filter(e -> "Y".equals(e.getIsdisplayList())).collect(Collectors.toList()));
             model.addAttribute("customDbType", customDbType);
+
+            final Map<String, Map<String, String>> codeMap = new HashMap<>();
+            customDbType.getFields().stream()
+                    .filter(e -> e.getCodes() != null && e.getCodes().size() > 0)
+                    .forEach(e -> {
+                        final Map<String, String> codes = e.getCodes().stream().collect(Collectors.toMap(CommonCodeEntity::getCodeId, CommonCodeEntity::getCodeName));
+                        codeMap.put(e.getFieldId(), codes);
+                    });
+            model.addAttribute("codeMap", new JSONObject(codeMap));
 
             model.addAttribute("customIdToFieldNameToValueMap", createCustomIdToFieldNameToValueMap((List<CommonMaindbCustomInfo>) (List<?>) pagination.getRows(), customDbType));
         }

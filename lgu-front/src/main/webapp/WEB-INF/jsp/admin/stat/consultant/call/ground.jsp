@@ -162,7 +162,7 @@
                                     <th class="color red">응대호</th>
                                     <th class="color red">I/B<br>총 통화시간</th>
                                     <th class="color red">I/B<br>평균통화시간</th>
-                                    <th class="color red">평균<br>연결시간</th>
+                                    <th class="color red">I/B<br>평균대기시간</th>
                                     <th class="color red">포기호</th>
                                     <th class="color red">응대율</th>
 

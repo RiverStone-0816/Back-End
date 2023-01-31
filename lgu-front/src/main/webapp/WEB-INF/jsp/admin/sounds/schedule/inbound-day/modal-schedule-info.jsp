@@ -48,7 +48,7 @@
                         <div class="from-panel">
                             <select class="form-control -right-selector" size="8" multiple="multiple">
                                 <c:forEach var="e" items="${number070List}">
-                                    <option value="${g.htmlQuote(e.number)}">[${e.type == 0 ? "헌트번호"
+                                    <option value="${g.htmlQuote(e.number)}">[${e.type == 0 ? "큐번호"
                                             : e.type == 1 && e.hanName == null ? "개인번호"
                                             : e.type == 1 && e.hanName != null ? "내선번호"
                                             : e.type == 2 ? "대표번호"

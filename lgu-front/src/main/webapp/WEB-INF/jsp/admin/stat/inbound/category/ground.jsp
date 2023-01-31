@@ -128,8 +128,15 @@
                                     <th colspan="5" class="color red">응대호 대기시간 분석</th>
                                 </tr>
                                 <tr>
-                                    <c:forEach var="i" begin="1" end="${maxLevel+1}">
-                                        <th class="color red">${i}th</th>
+                                    <c:forEach var="i" begin="1" end="${maxLevel+1}" varStatus="status">
+                                        <th class="color red">
+                                            <c:choose>
+                                                <c:when test="${status.index == 1}">${i}st</c:when>
+                                                <c:when test="${status.index == 2}">${i}nd</c:when>
+                                                <c:when test="${status.index == 3}">${i}rd</c:when>
+                                                <c:otherwise>${i}th</c:otherwise>
+                                            </c:choose>
+                                        </th>
                                     </c:forEach>
 
                                     <th class="color red">인입콜수</th>
@@ -206,7 +213,7 @@
                                                     </c:forEach>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <c:forEach var="i" begin="0" end="${maxLevel+15}">
+                                                    <c:forEach var="i" begin="0" end="${maxLevel+16}">
                                                         <td></td>
                                                     </c:forEach>
                                                     <tr></tr>

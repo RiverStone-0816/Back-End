@@ -14,192 +14,189 @@
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
-<div class="sub-content ui container fluid unstackable" id="modal-search-maindb-custom-body">
-    <form:form id="search-maindb-custom-form" modelAttribute="search" method="get" class="panel panel-search -ajax-loader"
-               action="${pageContext.request.contextPath}/counsel/modal-search-maindb-custom-body?type=${pageContext.request.getParameter('type')}&roomId=${pageContext.request.getParameter('roomId')}&senderKey=${pageContext.request.getParameter('senderKey')}&userKey=${pageContext.request.getParameter('userKey')}"
-               data-target="#modal-search-maindb-custom-body">
-        <input type="hidden" name="type" value="${pageContext.request.getParameter('type')}"/>
-        <div class="panel-heading">
-            <div class="pull-left">
-                검색
-            </div>
-            <div class="pull-right">
-                <div class="btn-wrap">
-                    <button type="submit" class="ui brand basic button">검색</button>
-                </div>
+<form:form id="search-maindb-custom-form" modelAttribute="search" method="get" class="panel panel-search -ajax-loader"
+           action="${pageContext.request.contextPath}/counsel/modal-search-maindb-custom-body?type=${pageContext.request.getParameter('type')}&roomId=${pageContext.request.getParameter('roomId')}&senderKey=${pageContext.request.getParameter('senderKey')}&userKey=${pageContext.request.getParameter('userKey')}"
+           data-target="#modal-search-maindb-custom-body">
+    <input type="hidden" name="type" value="${pageContext.request.getParameter('type')}"/>
+    <div class="panel-heading">
+        <div class="pull-left">
+            검색
+        </div>
+        <div class="pull-right">
+            <div class="btn-wrap">
+                <button type="submit" class="ui brand basic button">검색</button>
             </div>
         </div>
-        <div class="panel-body">
-            <div class="search-area">
-                <div class="ui grid">
-                    <div class="row">
-                        <div class="three wide column"><label class="control-label">고객DB그룹</label></div>
-                        <div class="three wide column">
-                            <div class="ui form">
-                                <form:select path="groupSeq" items="${customdbGroups}"/>
-                            </div>
-                        </div>
-                        <div class="three wide column"><label class="control-label">채널검색</label></div>
-                        <div class="three wide column">
-                            <div class="ui form">
-                                <form:select path="channelType">
-                                    <form:option value="PHONE" label="전화번호"/>
-                                    <form:option value="EMAIL" label="이메일"/>
-                                    <form:option value="TALK" label="상담톡"/>
-                                </form:select>
-                            </div>
-                        </div>
-                        <div class="three wide column">
-                            <div class="ui input fluid">
-                                <form:input path="channelData"/>
-                            </div>
+    </div>
+    <div class="panel-body">
+        <div class="search-area">
+            <div class="ui grid">
+                <div class="row">
+                    <div class="three wide column"><label class="control-label">고객DB그룹</label></div>
+                    <div class="three wide column">
+                        <div class="ui form">
+                            <form:select path="groupSeq" items="${customdbGroups}"/>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="three wide column"><label class="control-label">검색항목</label></div>
-                        <div class="three wide column">
-                            <div class="ui form">
-                                <form:select path="searchType">
-                                    <form:option value="" label="선택안함"/>
-                                    <form:option value="" label="--데이타기본정보--"/>
-                                    <form:option value="${search.SEARCH_TYPE_CREATE_DATE}" label="데이터 생성일" data-type="DATE"/>
-                                    <form:option value="" label="--고객정보필드--"/>
-                                    <c:forEach var="e" items="${customDbType.fields}">
-                                        <c:if test="${e.issearch == 'Y'}">
-                                            <form:option value="${e.fieldId.substring(customDbType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
-                                                         data-type="${g.htmlQuote(e.fieldType)}"/>
-                                        </c:if>
-                                    </c:forEach>
-                                </form:select>
-                            </div>
+                    <div class="three wide column"><label class="control-label">채널검색</label></div>
+                    <div class="three wide column">
+                        <div class="ui form">
+                            <form:select path="channelType">
+                                <form:option value="PHONE" label="전화번호"/>
+                                <form:option value="EMAIL" label="이메일"/>
+                                <form:option value="TALK" label="상담톡"/>
+                            </form:select>
                         </div>
-                        <div class="seven wide column -search-type-sub-input" data-type="DATE">
-                            <div class="date-picker from-to">
-                                <div class="dp-wrap">
-                                    <label for="startDate" style="display:none">From</label>
-                                    <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                </div>
-                                <span class="tilde">~</span>
-                                <div class="dp-wrap">
-                                    <label for="endDate" style="display:none">to</label>
-                                    <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="three wide column -search-type-sub-input">
-                            <div class="ui input fluid">
-                                <form:input path="keyword"/>
-                            </div>
+                    </div>
+                    <div class="three wide column">
+                        <div class="ui input fluid">
+                            <form:input path="channelData"/>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </form:form>
-
-    <div class="panel">
-        <div class="panel-heading">
-            <div class="pull-left">
-                <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
-            </div>
-            <div class="pull-right">
-                <button type="button" class="ui basic green button" onclick="setCustomInfo()">고객정보 내보내기</button>
-            </div>
-        </div>
-        <div class="panel-body" style="width: 100%; overflow-x: auto;">
-            <table class="ui celled table structured compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbData">
-                <thead>
-                <tr>
-                    <th rowspan="2">번호</th>
-                    <th>기본정보</th>
-                    <th colspan="${customDbType.fields.size()}">고객정보필드</th>
-                    <th colspan="3">멀티채널정보(전화번호,상담톡아이디)</th>
-                </tr>
-                <tr>
-                    <th class="one wide" title="데이터생성일">데이터생성일</th>
-
-                    <c:forEach var="field" items="${customDbType.fields}">
-                        <th title="${g.htmlQuote(field.fieldInfo)}">${g.htmlQuote(field.fieldInfo)}</th>
-                    </c:forEach>
-
-                    <th type="전화번호">전화번호</th>
-                    <th type="이메일">이메일</th>
-                    <th type="상담톡아이디">상담톡아이디</th>
-                </tr>
-                </thead>
-                <tbody>
-
-                <c:choose>
-                    <c:when test="${pagination.rows.size() > 0}">
-                        <c:forEach var="e" items="${pagination.rows}" varStatus="status">
-                            <tr data-id="${g.htmlQuote(e.maindbSysCustomId)}" data-custom="${g.htmlQuote(e.maindbString_1)}" data-group="${search.groupSeq}">
-                                <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
-                                <td><fmt:formatDate value="${e.maindbSysUploadDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-
-                                <c:forEach var="field" items="${customDbType.fields}">
-                                    <c:set var="value" value="${customIdToFieldNameToValueMap.get(e.maindbSysCustomId).get(field.fieldId)}"/>
-                                    <td>
-                                        <c:choose>
-                                            <c:when test="${field.fieldType == 'CODE'}">
-                                                ${field.codes.stream().filter(code -> code.codeId == value).map(code -> code.codeName).findFirst().orElse('')}
-                                            </c:when>
-                                            <c:when test="${field.fieldType == 'MULTICODE'}">
-                                                <c:forEach var="v" items="${value.split(',')}">
-                                                    ${field.codes.stream().filter(code -> code.codeId == v).map(code -> code.codeName).findFirst().orElse('')}&ensp;
-                                                </c:forEach>
-                                            </c:when>
-                                            <c:when test="${field.fieldType == 'IMG'}">
-                                                <c:choose>
-                                                    <c:when test="${value.length() > 0}">
-                                                        <img class="profile-picture" src="${apiServerUrl}/api/v1/admin/application/maindb/custominfo/resource?path=${g.urlEncode(value)}&token=${accessToken}"
-                                                             style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden;"/>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <img class="profile-picture" src="<c:url value="/resources/ipcc-messenger/images/person.png"/>" style="border-radius: 50%; width: 21px; overflow: hidden;"/>
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </c:when>
-                                            <c:otherwise>
-                                                ${g.htmlQuote(value)}
-                                            </c:otherwise>
-                                        </c:choose>
-                                    </td>
+                <div class="row">
+                    <div class="three wide column"><label class="control-label">검색항목</label></div>
+                    <div class="three wide column">
+                        <div class="ui form">
+                            <form:select path="searchType">
+                                <form:option value="" label="선택안함"/>
+                                <form:option value="" label="--데이타기본정보--"/>
+                                <form:option value="${search.SEARCH_TYPE_CREATE_DATE}" label="데이터 생성일" data-type="DATE"/>
+                                <form:option value="" label="--고객정보필드--"/>
+                                <c:forEach var="e" items="${customDbType.fields}">
+                                    <c:if test="${e.issearch == 'Y'}">
+                                        <form:option value="${e.fieldId.substring(customDbType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
+                                                     data-type="${g.htmlQuote(e.fieldType)}"/>
+                                    </c:if>
                                 </c:forEach>
-
-                                <td>
-                                    <c:forEach var="field" items="${e.multichannelList}">
-                                        <c:if test="${field.channelType == 'PHONE'}">
-                                            <text class="-phone-channel-data">${g.htmlQuote(field.channelData)}</text>
-                                            &ensp;
-                                        </c:if>
-                                    </c:forEach>
-                                </td>
-                                <td>
-                                    <c:forEach var="field" items="${e.multichannelList}">
-                                        <c:if test="${field.channelType == 'EMAIL'}">
-                                            ${g.htmlQuote(field.channelData)}&ensp;
-                                        </c:if>
-                                    </c:forEach>
-                                </td>
-                                <td>
-                                    <c:forEach var="channel" items="${e.multichannelList}">
-                                        <c:if test="${channel.channelType == 'TALK'}">
-                                            ${g.htmlQuote(channel.channelData.split('_')[1])}&ensp;
-                                        </c:if>
-                                    </c:forEach>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
-                        <tr>
-                            <td colspan="${5 + customDbType.fields.size()}" class="null-data">조회된 데이터가 없습니다.</td>
-                        </tr>
-                    </c:otherwise>
-                </c:choose>
-                </tbody>
-            </table>
+                            </form:select>
+                        </div>
+                    </div>
+                    <div class="seven wide column -search-type-sub-input" data-type="DATE">
+                        <div class="date-picker from-to">
+                            <div class="dp-wrap">
+                                <label for="startDate" style="display:none">From</label>
+                                <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                            </div>
+                            <span class="tilde">~</span>
+                            <div class="dp-wrap">
+                                <label for="endDate" style="display:none">to</label>
+                                <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="three wide column -search-type-sub-input">
+                        <div class="ui input fluid">
+                            <form:input path="keyword"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+</form:form>
+<div class="panel">
+    <div class="panel-heading">
+        <div class="pull-left">
+            <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
+        </div>
+        <div class="pull-right">
+            <button type="button" class="ui basic green button" onclick="setCustomInfo()">고객정보 내보내기</button>
+        </div>
+    </div>
+    <div class="panel-body" style="width: 100%; overflow-x: auto;">
+        <table class="ui celled table structured compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbData">
+            <thead>
+            <tr>
+                <th rowspan="2">번호</th>
+                <th>기본정보</th>
+                <th colspan="${customDbType.fields.size()}">고객정보필드</th>
+                <th colspan="3">멀티채널정보(전화번호,상담톡아이디)</th>
+            </tr>
+            <tr>
+                <th class="one wide" title="데이터생성일">데이터생성일</th>
+
+                <c:forEach var="field" items="${customDbType.fields}">
+                    <th title="${g.htmlQuote(field.fieldInfo)}">${g.htmlQuote(field.fieldInfo)}</th>
+                </c:forEach>
+
+                <th type="전화번호">전화번호</th>
+                <th type="이메일">이메일</th>
+                <th type="상담톡아이디">상담톡아이디</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <c:choose>
+                <c:when test="${pagination.rows.size() > 0}">
+                    <c:forEach var="e" items="${pagination.rows}" varStatus="status">
+                        <tr data-id="${g.htmlQuote(e.maindbSysCustomId)}" data-custom="${g.htmlQuote(e.maindbString_1)}" data-group="${search.groupSeq}">
+                            <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
+                            <td><fmt:formatDate value="${e.maindbSysUploadDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+
+                            <c:forEach var="field" items="${customDbType.fields}">
+                                <c:set var="value" value="${customIdToFieldNameToValueMap.get(e.maindbSysCustomId).get(field.fieldId)}"/>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${field.fieldType == 'CODE'}">
+                                            ${field.codes.stream().filter(code -> code.codeId == value).map(code -> code.codeName).findFirst().orElse('')}
+                                        </c:when>
+                                        <c:when test="${field.fieldType == 'MULTICODE'}">
+                                            <c:forEach var="v" items="${value.split(',')}">
+                                                ${field.codes.stream().filter(code -> code.codeId == v).map(code -> code.codeName).findFirst().orElse('')}&ensp;
+                                            </c:forEach>
+                                        </c:when>
+                                        <c:when test="${field.fieldType == 'IMG'}">
+                                            <c:choose>
+                                                <c:when test="${value.length() > 0}">
+                                                    <img class="profile-picture" src="${apiServerUrl}/api/v1/admin/application/maindb/custominfo/resource?path=${g.urlEncode(value)}&token=${accessToken}"
+                                                         style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden;"/>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <img class="profile-picture" src="<c:url value="/resources/ipcc-messenger/images/person.png"/>" style="border-radius: 50%; width: 21px; overflow: hidden;"/>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${g.htmlQuote(value)}
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
+                            </c:forEach>
+
+                            <td>
+                                <c:forEach var="field" items="${e.multichannelList}">
+                                    <c:if test="${field.channelType == 'PHONE'}">
+                                        <text class="-phone-channel-data">${g.htmlQuote(field.channelData)}</text>
+                                        &ensp;
+                                    </c:if>
+                                </c:forEach>
+                            </td>
+                            <td>
+                                <c:forEach var="field" items="${e.multichannelList}">
+                                    <c:if test="${field.channelType == 'EMAIL'}">
+                                        ${g.htmlQuote(field.channelData)}&ensp;
+                                    </c:if>
+                                </c:forEach>
+                            </td>
+                            <td>
+                                <c:forEach var="channel" items="${e.multichannelList}">
+                                    <c:if test="${channel.channelType == 'TALK'}">
+                                        ${g.htmlQuote(channel.channelData.split('_')[1])}&ensp;
+                                    </c:if>
+                                </c:forEach>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </c:when>
+                <c:otherwise>
+                    <tr>
+                        <td colspan="${5 + customDbType.fields.size()}" class="null-data">조회된 데이터가 없습니다.</td>
+                    </tr>
+                </c:otherwise>
+            </c:choose>
+            </tbody>
+        </table>
     </div>
 </div>
 

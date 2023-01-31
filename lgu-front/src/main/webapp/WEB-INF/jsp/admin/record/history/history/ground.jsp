@@ -212,7 +212,7 @@
                                         <div class="ui input"><form:input path="callEndSeconds" size="2" class="-input-numerical"/></div>
                                         <span>초</span>
                                     </div>
-                                    <div class="two wide column"><label class="control-label">헌트경로</label></div>
+                                    <div class="two wide column"><label class="control-label">큐(그룹)경로</label></div>
                                     <div class="two wide column">
                                         <div class="ui form">
                                             <form:select path="secondNum">

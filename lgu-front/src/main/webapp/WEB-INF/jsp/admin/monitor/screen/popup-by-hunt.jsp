@@ -18,55 +18,6 @@
 
 <link href="<c:url value="/resources/vendors/flexslider/2.7.2/flexslider.css?version=${version}"/>" rel="stylesheet"/>
 <tags:layout-screen>
-    <style>
-        .flex-direction-nav {display: none !important;}
-
-        .marquee {
-            height: 50px;
-            overflow: hidden;
-            position: relative;
-        }
-        .marquee h2 {
-            font-size: 1.1em;
-            color: #000000;
-            position: absolute;
-            width:  100%;
-            height: 100%;
-            margin: 0;
-            line-height: 50px;
-            text-align: left;
-            /* Starting position */
-            -moz-transform:translateX(100%);
-            -webkit-transform:translateX(100%);
-            transform:translateX(100%);
-            /* Apply animation to this element */
-            -moz-animation: marquee 30s linear infinite;
-            -webkit-animation: marquee 30s linear infinite;
-            animation: marquee 30s linear infinite;
-        }
-        /* Move it (define the animation) */
-        @-moz-keyframes marquee {
-            0%   { -moz-transform: translateX(100%); }
-            100% { -moz-transform: translateX(-100%); }
-        }
-        @-webkit-keyframes marquee {
-            0%   { -webkit-transform: translateX(100%); }
-            100% { -webkit-transform: translateX(-100%); }
-        }
-        @keyframes marquee {
-            0%   {
-                -moz-transform: translateX(100%); /* Firefox bug fix */
-                -webkit-transform: translateX(100%); /* Firefox bug fix */
-                transform: translateX(100%);
-            }
-            100% {
-                -moz-transform: translateX(-100%); /* Firefox bug fix */
-                -webkit-transform: translateX(-100%); /* Firefox bug fix */
-                transform: translateX(-100%);
-            }
-        }
-    </style>
-
     <div class="screen-container ${config.lookAndFeel == 1 ? 'basic-theme' : config.lookAndFeel == 2 ? 'black-theme' : 'blue-theme'}">
         <ul class="circles">
             <li></li>
@@ -95,7 +46,7 @@
                                         <table class="blue">
                                             <thead>
                                             <tr style="line-height: 80px">
-                                                <th>헌트명</th>
+                                                <th>큐(그룹)명</th>
                                                 <th>고객대기</th>
                                                 <c:forEach var="e" items="${statusCodes}">
                                                     <th>${e.value}</th>
@@ -157,7 +108,7 @@
                                         <table>
                                             <thead>
                                             <tr style="line-height: 80px">
-                                                <th>헌트명</th>
+                                                <th>큐(그룹)명</th>
                                                 <th>고객대기</th>
                                                 <c:forEach var="e" items="${statusCodes}">
                                                     <th>${e.value}</th>
@@ -219,7 +170,7 @@
                                         <table class="blue">
                                             <thead>
                                             <tr style="line-height: 80px">
-                                                <th>헌트명</th>
+                                                <th>큐(그룹)명</th>
                                                 <th>고객대기</th>
                                                 <c:forEach var="e" items="${statusCodes}">
                                                     <th>${e.value}</th>
@@ -282,7 +233,7 @@
         </div>
 
         <c:if test="${config.showSlidingText}">
-            <div class="marquee notice" style="padding: 2px 20px;">
+            <div class="marquee notice">
                 <h2>${g.htmlQuote(config.slidingText)}</h2>
             </div>
         </c:if>

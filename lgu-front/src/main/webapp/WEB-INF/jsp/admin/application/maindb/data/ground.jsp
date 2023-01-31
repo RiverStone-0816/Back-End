@@ -74,29 +74,34 @@
                                             <form:option value="" label="--고객정보필드--"/>
                                             <c:forEach var="e" items="${customDbType.fields}">
                                                 <c:if test="${e.issearch == 'Y'}">
-                                                    <form:option value="${e.fieldId.substring(customDbType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
+                                                    <form:option value="MAINDB_${e.fieldId.substring(customDbType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
                                                                  data-type="${g.htmlQuote(e.fieldType)}"/>
                                                 </c:if>
                                             </c:forEach>
                                         </form:select>
                                     </div>
                                 </div>
-                                <div class="five wide column -search-type-sub-input" data-type="DATE">
+                                <div class="three wide column -search-type-sub-input" data-type="DATE">
                                     <div class="date-picker from-to">
                                         <div class="dp-wrap">
                                             <label for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                            <form:input path="startDate" cssClass="-datepicker" cssStyle="width: 100%;" placeholder="시작일"/>
                                         </div>
                                         <span class="tilde">~</span>
                                         <div class="dp-wrap">
                                             <label for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                            <form:input path="endDate" cssClass="-datepicker" cssStyle="width: 100%;" placeholder="종료일"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="two wide column -search-type-sub-input">
+                                <div class="three wide column -search-type-sub-input" data-type="TEXT">
                                     <div class="ui input fluid">
                                         <form:input path="keyword"/>
+                                    </div>
+                                </div>
+                                <div class="three wide column -search-type-sub-input" data-type="CODE">
+                                    <div class="ui form">
+                                        <form:select path="code"/>
                                     </div>
                                 </div>
                             </div>
@@ -236,14 +241,35 @@
                 });
             }
 
-            $('#search-form [name=searchType]').change(function () {
+            const searchForm = $('#search-form');
+
+            searchForm.find('[name=searchType]').change(function () {
                 const type = $(this).find(':selected').attr('data-type');
+                const fieldId = $(this).find(':selected').val();
                 const subInput = $('.-search-type-sub-input').hide();
+                const codeSelect = $('#code');
+
+                $('input[name=startDate]').val('');
+                $('input[name=endDate]').val('');
+                codeSelect.empty();
+                $('#keyword').val('');
 
                 if (['DATE', 'DAY', 'DATETIME'].indexOf(type) >= 0) {
                     subInput.filter('[data-type="DATE"]').show();
+                } else if (['CODE', 'MULTICODE'].indexOf(type) >= 0) {
+                    const codeMap = JSON.parse('${codeMap}')[fieldId];
+
+                    codeSelect.append($('<option/>', {value: '', text: '선택안함'}));
+
+                    for (const key in codeMap) {
+                        if (codeMap.hasOwnProperty(key)) {
+                            codeSelect.append($('<option/>', {value: key, text: codeMap[key]}));
+                        }
+                    }
+
+                    subInput.filter('[data-type="CODE"]').show();
                 } else {
-                    subInput.filter(':not([data-type="DATE"])').show();
+                    subInput.filter('[data-type="TEXT"]').show();
                 }
             }).change();
 

@@ -155,9 +155,9 @@
                                     <th class="color red">응대호</th>
                                     <th class="color red">포기호</th>
                                     <th class="color red">콜백</th>
-                                    <th class="color red">I/B 총통화시간</th>
-                                    <th class="color red">평균통화시간</th>
-                                    <th class="color red">응답률</th>
+                                    <th class="color red">I/B 총 통화시간</th>
+                                    <th class="color red">I/B 평균통화시간</th>
+                                    <th class="color red">호응답률</th>
                                     <th class="color red">서비스레벨 호응답률</th>
                                 </tr>
                                 </thead>
@@ -217,10 +217,12 @@
                             </h3>
                         </div>
                         <div class="sixteen wide column">
-                            <div class="-chart" id="total-call-chart" style="height: 300px;"></div>
-                            <div style="text-align: center; padding: 2em 0;">
-                                <text style="display: inline-block;"><i class="circle color-red"></i>응대호</text>
-                                <text style="display: inline-block;"><i class="circle color-blue"></i>포기호</text>
+                            <div class="-chart basic-chart-container" id="total-call-chart"></div>
+                            <div class="chart-label-container">
+                                <div class="ui segment secondary">
+                                    <text class="label-list"><i class="point color-red"></i>응대호</text>
+                                    <text class="label-list"><i class="point color-blue"></i>포기호</text>
+                                </div>
                             </div>
                         </div>
                     </div>

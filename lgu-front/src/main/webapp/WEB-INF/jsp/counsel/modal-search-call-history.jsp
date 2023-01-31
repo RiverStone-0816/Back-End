@@ -19,6 +19,8 @@
     <div class="header">통화이력검색</div>
 
     <div class="content rows scrolling">
-        <jsp:include page="/counsel/modal-search-call-history-body"/>
+        <div class="sub-content ui container fluid unstackable" id="modal-search-call-history-body">
+            <jsp:include page="/counsel/modal-search-call-history-body"/>
+        </div>
     </div>
 </div>

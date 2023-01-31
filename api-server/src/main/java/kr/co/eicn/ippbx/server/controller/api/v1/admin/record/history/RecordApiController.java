@@ -71,7 +71,7 @@ public class RecordApiController extends ApiBaseController {
     private final RecordFileService recordFileService;
     private final RecordDownService recordDownService;
     private final StorageService fileSystemStorageService;
-    private final Period LIMIT_INQUIRY_PERIOD = Period.ofMonths(3);
+    private final Period LIMIT_INQUIRY_PERIOD = Period.ofMonths(6);
 
     /**
      * 녹취통화이력 목록조회

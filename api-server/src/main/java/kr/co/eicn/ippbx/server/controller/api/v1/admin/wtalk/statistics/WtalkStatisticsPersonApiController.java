@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static kr.co.eicn.ippbx.util.JsonResult.data;
@@ -39,8 +40,7 @@ public class WtalkStatisticsPersonApiController extends ApiBaseController {
             if (search.getStartDate().after(search.getEndDate()))
                 throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");
 
-        final List<PersonList> personLists = personListRepository.findAll();
-
+        final Map<String, String> personMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
 
         final List<WtalkStatisticsPersonResponse> rows = new ArrayList<>();
         final List<StatWtalkEntity> list = wtalkStatisticsService.getRepository().personStatList(search);
@@ -48,8 +48,7 @@ public class WtalkStatisticsPersonApiController extends ApiBaseController {
 
         for(String userId : userIds){
             WtalkStatisticsPersonResponse row = new WtalkStatisticsPersonResponse();
-            row.setIdName(personLists.stream().filter(person -> person.getId().equals(userId))
-                    .map(PersonList::getIdName).findFirst().orElse(""));
+            row.setIdName(personMap.getOrDefault(userId, userId));
 
             list.stream().filter(e -> e.getUserid().equals(userId)).forEach(e -> {
                 switch (e.getActionType()){

@@ -172,7 +172,7 @@
                                     <th class="color red">응대호</th>
                                     <th class="color red">I/B<br>총 통화시간</th>
                                     <th class="color red">I/B<br>평균통화시간</th>
-                                    <th class="color red">평균<br>연결시간</th>
+                                    <th class="color red">I/B<br>평균대기시간</th>
                                     <th class="color red">포기호</th>
                                     <th class="color red">응대율</th>
 
@@ -235,15 +235,15 @@
 
                                             <td>${total.inboundStat.total}</td>
                                             <td>${total.inboundStat.success}</td>
-                                            <td>${g.timeFormatFromSeconds(total.inboundStat.billSecSum)}</td>
-                                            <td>${g.timeFormatFromSeconds(total.inboundStat.avgBillSec)}</td>
-                                            <td>${g.timeFormatFromSeconds(total.inboundStat.avgWaitSec)}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecSum)}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.avgBillSec)}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.avgWaitSec)}</td>
                                             <td>${total.inboundStat.cancel}</td>
                                             <td>${String.format("%.1f", total.inboundStat.avgRate)}%</td>
 
                                             <td>${total.memberStatusStat.postProcess}</td>
-                                            <td>${g.timeFormatFromSeconds(total.memberStatusStat.postProcessTime)}</td>
-                                            <td>${g.timeFormatFromSeconds(total.memberStatusStat.postPrecessAvgTime)}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.memberStatusStat.postProcessTime)}</td>
+                                            <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.memberStatusStat.postPrecessAvgTime)}</td>
                                         </tr>
                                         </tfoot>
                                     </c:when>

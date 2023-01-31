@@ -23,7 +23,7 @@ public class OutboundStatExcel extends AbstractExcel {
                 "O/B", "", "",
                 "성과지표", "", "");
         addRow(sheetHeadStyle, "",
-                "총 시도콜", "O/B건수(성공호)", "비수신",
+                "총 시도콜", "O/B건수 (성공호)", "비수신",
                 "통화성공률", "O/B 총 통화시간",  "O/B 평균통화시간");
 
         getSheet().addMergedRegion(new CellRangeAddress(0, 1, 0, 0));

@@ -33,7 +33,7 @@
     </tr>
     </tbody>
 </table>
-<div class="-chart" style="height: 150px; position: absolute; bottom: 20px; left: 0; right: 0;"></div>
+<div class="-chart -dashboard-chart"></div>
 
 <script>
     const data = [<c:forEach var="e" items="${stat.hourToAvgWaitingTime}">{hour: '${e.key}시', value: ${e.value}}, </c:forEach>];

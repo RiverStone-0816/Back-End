@@ -316,7 +316,7 @@
 
                 updateQueues();
             })
-            .on("ADMCALLEVENT", function (message, kind /*[OR|OD|IR|ID|PICKUP]*/, peer, callingNumber, calledNumber, value1 /*발신시 CID, 수신시 인입번호*/, value2 /*발신시 과금번호, 수신시 헌트번호*/, ivrKey, recordFile, startTime, uniqueId, isPds) {
+            .on("ADMCALLEVENT", function (message, kind /*[OR|OD|IR|ID|PICKUP]*/, peer, callingNumber, calledNumber, value1 /*발신시 CID, 수신시 인입번호*/, value2 /*발신시 과금번호, 수신시 큐(그룹)번호*/, ivrKey, recordFile, startTime, uniqueId, isPds) {
                 peerStatuses[peer].callStatus = kind;
                 peerStatuses[peer].callingNumber = callingNumber;
                 peerStatuses[peer].calledNumber = calledNumber;

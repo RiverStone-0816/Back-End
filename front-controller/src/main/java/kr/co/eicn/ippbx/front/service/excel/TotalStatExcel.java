@@ -19,10 +19,10 @@ public class TotalStatExcel extends AbstractExcel {
     }
 
     private void createBody() {
-        addRow(sheetHeadStyle, "날짜/시간", "총통화", "", "O/B", "", "", "", "", "", "I/B", "", "", "", "", "", "", "", "", "", "");
-        addRow(sheetHeadStyle, "", "총건수", "총시간",
-                "총시도콜", "O/B건수 (성공호)", "비수신", "통화성공률", "O/B (총통화시간)", "O/B (평균통화시간)",
-                "I/B (전체콜)", "단순조회", "연결요청", "응대호", "포기호", "콜백", "I/B (총통화시간)", "I/B (통화시간)", "I/B (대기시간)", "호응답률", "단순조회율");
+        addRow(sheetHeadStyle, "날짜/시간", "총 통화", "", "O/B", "", "", "", "", "", "I/B", "", "", "", "", "", "", "", "", "", "");
+        addRow(sheetHeadStyle, "", "총 건수", "총 시간",
+                "총 시도콜", "O/B건수 (성공호)", "비수신", "통화성공률", "O/B 총 통화시간", "O/B 평균통화시간",
+                "I/B 전체콜", "단순조회", "연결요청", "응대호", "포기호", "콜백", "I/B 총 통화시간", "I/B 평균통화시간", "I/B 평균대기시간", "호응답률", "단순조회율");
 
         getSheet().addMergedRegion(new CellRangeAddress(0, 1, 0, 0));
         getSheet().addMergedRegion(new CellRangeAddress(0, 0, 1, 2));

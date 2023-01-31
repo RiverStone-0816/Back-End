@@ -12,7 +12,7 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<div class="ui modal large inverted" style="min-height: 500px; min-width: 700px; height: 80%;">
+<div class="ui modal large inverted overflow-hidden" style="min-height: 500px; min-width: 700px; height: 80%;">
     <i class="close icon"></i>
     <div class="header">일정관리</div>
     <div class="content rows" style="position: absolute; overflow-y: scroll; left: 0; right: 0; top: 58px; bottom: 0;">

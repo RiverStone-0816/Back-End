@@ -131,7 +131,7 @@
                     <div class="box call-transform">
                         <div class="sidebar-label">
                             <div>
-                                대표/헌트번호돌려주기
+                                대표/큐번호돌려주기
                             </div>
                             <div>
                                 <i class="material-icons arrow">keyboard_arrow_right</i>

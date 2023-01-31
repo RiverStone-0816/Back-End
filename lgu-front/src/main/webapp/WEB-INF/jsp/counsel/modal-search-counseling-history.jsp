@@ -19,6 +19,8 @@
     <div class="header">상담결과검색</div>
 
     <div class="content rows scrolling">
-        <jsp:include page="/counsel/modal-search-counseling-history-body"/>
+        <div class="sub-content ui container fluid unstackable" id="modal-search-counseling-history-body">
+            <jsp:include page="/counsel/modal-search-counseling-history-body"/>
+        </div>
     </div>
 </div>

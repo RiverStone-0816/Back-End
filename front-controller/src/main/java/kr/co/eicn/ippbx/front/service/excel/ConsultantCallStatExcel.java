@@ -31,8 +31,8 @@ public class ConsultantCallStatExcel extends AbstractExcel {
 
         final List<String> headers2 = new ArrayList<>(Arrays.asList("", "", "",
                 "총 건수", "총 시간",
-                "총 시도콜", "O/B검수 성공호", "비수신", "O/B 총 통화시간", "O/B 평균통화시간", "통화성공률",
-                "O/B 전체콜", "응대호", "I/B 총 통화시간", "I/B 평균통화시간", "평균연결", "포기호", "응대률",
+                "총 시도콜", "O/B건수 성공호", "비수신", "O/B 총 통화시간", "O/B 평균통화시간", "통화성공률",
+                "I/B 전체콜", "응대호", "I/B 총 통화시간", "I/B 평균통화시간", "I/B 평균대기시간", "포기호", "응대률",
                 "후처리건수", "총 후처리시간", "후처리 평균시간"));
         memberStatuses.forEach((k, v) -> headers2.add(v));
         addRow(sheetHeadStyle, headers2.toArray());
@@ -50,6 +50,8 @@ public class ConsultantCallStatExcel extends AbstractExcel {
 
         final RequestGlobal g = ApplicationBeanAware.requestGlobal();
 
+        int firstRow = 2;
+        int lastRow = 1;
         for (StatUserResponse<?> e : list) {
             for (StatUserResponse.UserStat userStat : e.getUserStatList()) {
                 final List<String> row = new ArrayList<>(Arrays.asList(
@@ -83,6 +85,11 @@ public class ConsultantCallStatExcel extends AbstractExcel {
                 memberStatuses.forEach((k, v) -> row.add(niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(userStat.getMemberStatusStat().getStatusCountMap().getOrDefault(k, 0L)))));
                 addRow(defaultStyle, row.toArray());
             }
+            lastRow += e.getUserStatList().size();
+            if(firstRow != lastRow){
+                getSheet().addMergedRegion(new CellRangeAddress(firstRow, lastRow, 0, 0));
+            }
+            firstRow = lastRow + 1;
         }
 
         final List<String> row = new ArrayList<>(Arrays.asList(
