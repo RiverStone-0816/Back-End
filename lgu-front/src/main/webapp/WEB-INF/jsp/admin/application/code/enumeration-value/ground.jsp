@@ -61,6 +61,7 @@
                                             <td class="two wide">
                                                 <div class="ui form">
                                                     <button class="ui button mini compact" onclick="popupModal(${e.seq}, '${g.htmlQuote(field.fieldId)}')">수정</button>
+                                                    <button class="ui button mini compact" onclick="popupUploadModal(${e.seq}, '${g.htmlQuote(field.fieldId)}')">엑셀업로드</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -84,6 +85,10 @@
         <script>
             function popupModal(type, fieldId) {
                 popupReceivedHtml('/admin/application/code/enumeration-value/modal-field?type=' + type+ '&fieldId=' + encodeURIComponent(fieldId), 'modal-field');
+            }
+
+            function popupUploadModal(type, fieldId) {
+                popupReceivedHtml('/admin/application/code/enumeration-value/' + type + '/' + encodeURIComponent(fieldId) + '/modal-upload', 'modal-upload');
             }
         </script>
     </tags:scripts>
