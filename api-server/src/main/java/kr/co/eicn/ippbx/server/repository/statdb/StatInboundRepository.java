@@ -53,6 +53,7 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
                 ifnull(sum(TABLE.CANCEL_CUSTOM), 0).as(TABLE.CANCEL_CUSTOM),
                 ifnull(sum(TABLE.BILLSEC_SUM), 0).as(TABLE.BILLSEC_SUM),
                 ifnull(sum(when(not(isDirectOrInner.or(TABLE.DCONTEXT.eq(ContextType.CALL_BACK.getCode()))), TABLE.WAIT_SUM)), 0).as(TABLE.WAIT_SUM),
+                ifnull(sum(when(not(isDirectOrInner.or(TABLE.DCONTEXT.eq(ContextType.CALL_BACK.getCode()))), TABLE.WAIT_CANCEL_SUM)), 0).as(TABLE.WAIT_CANCEL_SUM),
                 ifnull(sum(TABLE.WAIT_SUCC_0_10), 0).as(TABLE.WAIT_SUCC_0_10),
                 ifnull(sum(TABLE.WAIT_SUCC_10_20), 0).as(TABLE.WAIT_SUCC_10_20),
                 ifnull(sum(TABLE.WAIT_SUCC_20_30), 0).as(TABLE.WAIT_SUCC_20_30),

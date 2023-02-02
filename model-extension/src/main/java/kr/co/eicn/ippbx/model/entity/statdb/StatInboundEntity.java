@@ -65,7 +65,10 @@ public class StatInboundEntity extends CommonStatInbound implements StatByTimeUn
     }
 
     public Long getWaitAvg() {
-        return getSuccess() == 0 ? 0L : getWaitSum() / getSuccess();
+        if (getSuccess() == 0 || getWaitSum() < getWaitCancelSum())
+            return 0L;
+
+        return (long) ((getWaitSum() - getWaitCancelSum()) / getSuccess());
     }
 
     public Double getCancelAvg() {

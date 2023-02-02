@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.application.code;
 
+import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -53,5 +54,10 @@ public class EnumerationValueController extends BaseController {
         model.addAttribute("type", type);
 
         return "admin/application/code/enumeration-value/modal-field";
+    }
+
+    @GetMapping("{type}/{fieldId}/modal-upload")
+    public String modal(Model model, @ModelAttribute("form") FileForm form, @PathVariable Integer type, @PathVariable String fieldId) throws IOException, ResultFailException {
+        return "admin/application/code/enumeration-value/modal-upload";
     }
 }

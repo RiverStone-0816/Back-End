@@ -3,11 +3,14 @@ package kr.co.eicn.ippbx.front.controller.api.application.code;
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
+import kr.co.eicn.ippbx.front.service.excel.MultiCodeExcelUploadService;
+import kr.co.eicn.ippbx.model.form.CommonCodeFormRequest;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.application.code.EnumerationValueApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.CommonFieldResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.CommonTypeDetailResponse;
 import kr.co.eicn.ippbx.model.form.CommonCodeUpdateFormRequest;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,8 @@ public class EnumerationValueApiController extends BaseController {
 
     @Autowired
     private EnumerationValueApiInterface apiInterface;
+    @Autowired
+    private MultiCodeExcelUploadService multiCodeExcelUploadService;
 
     @GetMapping("")
     public List<CommonTypeDetailResponse> list() throws IOException, ResultFailException {
@@ -47,7 +52,12 @@ public class EnumerationValueApiController extends BaseController {
     }
 
     @PostMapping("{type}/{fieldId}/codes/by-excel")
-    public void postFieldsByExcel(@RequestBody FileForm form, @PathVariable Integer type, @PathVariable String fieldId) throws IOException, ResultFailException {
-        apiInterface.postFieldsByExcel(type, fieldId, form);
+    public void postFieldsByExcel(@RequestBody FileForm file, @PathVariable Integer type, @PathVariable String fieldId) throws IOException, ResultFailException, InvalidFormatException {
+        CommonCodeUpdateFormRequest form = new CommonCodeUpdateFormRequest();
+
+        List<CommonCodeFormRequest> codes = multiCodeExcelUploadService.convertExcelToList(file);
+        form.setCodes(codes);
+
+        apiInterface.put(type, fieldId, form);
     }
 }
