@@ -17,23 +17,23 @@
     <tbody>
     <tr>
         <td>고객대기</td>
-        <td class="-custom-wait-count" data-hunt-number="${g.htmlQuote(huntNumber)}">${stat.customWaitCnt}</td>
+        <td class="-custom-wait-count" data-hunt="${g.htmlQuote(stat.queueName)}">${stat.customWaitCnt}</td>
     </tr>
     <tr>
         <td>상담대기</td>
-        <td class="-consultant-status-count" data-hunt-number="${g.htmlQuote(huntNumber)}" data-value="0" data-login="true">${stat.counselWaitCnt}</td>
+        <td class="-consultant-status-count" data-hunt="${g.htmlQuote(stat.queueName)}" data-value="0" data-login="true">${stat.counselWaitCnt}</td>
     </tr>
     <tr>
         <td>비로그인 대기</td>
-        <td class="-consultant-status-count" data-hunt-number="${g.htmlQuote(huntNumber)}" data-value="0" data-login="false">${stat.counselWaitNoLoginCnt}</td>
+        <td class="-consultant-status-count" data-hunt="${g.htmlQuote(stat.queueName)}" data-value="0" data-login="false">${stat.counselWaitNoLoginCnt}</td>
     </tr>
     <tr>
         <td>통화중</td>
-        <td class="-consultant-status-count" data-hunt-number="${g.htmlQuote(huntNumber)}" data-value="1">${stat.callingCnt}</td>
+        <td class="-consultant-status-count" data-hunt="${g.htmlQuote(stat.queueName)}" data-value="1">${stat.callingCnt}</td>
     </tr>
     <tr>
         <td>후처리 등 기타</td>
-        <td class="-consultant-status-count" data-hunt-number="${g.htmlQuote(huntNumber)}" data-value="2,3,4,5,6,7,8,9">${stat.etcCnt}</td>
+        <td class="-consultant-status-count" data-hunt="${g.htmlQuote(stat.queueName)}" data-value="2,3,4,5,6,7,8,9">${stat.etcCnt}</td>
     </tr>
     <tr>
         <td>응답률</td>
