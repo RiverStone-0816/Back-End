@@ -98,8 +98,8 @@ public class StatUserApiController extends ApiBaseController {
                 row.setGroupCode(person.getGroupCode());
                 row.setGroupTreeName(person.getGroupTreeName());
 
-                Stream<StatUserInboundEntity> userInboundStream = statUserInboundList.stream().filter(inbound -> inbound.getGroupCode().equals(person.getGroupCode()) && inbound.getUserid().equals(person.getId()));
-                Stream<StatUserOutboundEntity> userOutboundStream = statUserOutboundList.stream().filter(outbound -> outbound.getGroupCode().equals(person.getGroupCode()) && outbound.getUserid().equals(person.getId()));
+                Stream<StatUserInboundEntity> userInboundStream = statUserInboundList.stream().filter(inbound -> inbound.getUserid().equals(person.getId()));
+                Stream<StatUserOutboundEntity> userOutboundStream = statUserOutboundList.stream().filter(outbound -> outbound.getUserid().equals(person.getId()));
                 Stream<StatMemberStatusEntity> memberStream = statMemberStatusList.stream().filter(member -> member.getUserid().equals(person.getId()));
 
                 row.setInboundStat(
