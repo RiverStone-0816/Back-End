@@ -182,14 +182,15 @@
                 return;
 
             toastingCalling.sort(function (a, b) {
-                return a.time - b.time;
+                return a.regdate - b.regdate;
             });
 
             const now = new Date().getTime();
 
             for (let i = 0; i < toastingCalling.length; i++) {
                 const e = toastingCalling.shift();
-                if (e.time > now) {
+
+                if (e.regdate > now) {
                     toastingCalling.unshift(e);
                     return;
                 }
@@ -217,9 +218,7 @@
 
         $(document).ready(function () {
             setReservation();
-            if ($(parent.document).find('#main').is('.change-mode')) {
-                setInterval(setReservation, 60000);
-            }
+            setInterval(setReservation, 60000);
             setInterval(toastReservation, 3000);
         });
     </script>
