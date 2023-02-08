@@ -132,8 +132,8 @@
             ipccCommunicator.clickByCampaign(cid, number, type, $('#call-custom-input [name=groupSeq]').val(), $('#call-custom-input .-custom-id').text());
         }
 
-        function clearCustomerAndCounselingInput() {
-            if(ipccCommunicator.status.cMemberStatus === 1)
+        function clearCustomerAndCounselingInput(isResultSave = false) {
+            if(!isResultSave && ipccCommunicator.status.cMemberStatus === 1)
                 return alert('상담 중에는 초기화할 수 없습니다.');
 
             audioId = null;
