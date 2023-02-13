@@ -14,7 +14,7 @@
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 <div class="ui modal xsmall">
-    <i class="close icon"></i>
+    <i class="close icon" onclick="$(this).closest('.modal').find('audio').each(function() {$(this).stop(); this.pause(); this.currentTime=0})"></i>
 
     <div class="content">
         <div class="ui grid">
