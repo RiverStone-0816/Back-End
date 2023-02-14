@@ -202,7 +202,7 @@
         function noticeReservation(phone, time) {
             const preTime = toastedCalling[phone];
             if (preTime) {
-                if (preTime + 1000 * 60 * 5 > time)
+                if (preTime === time)
                     return;
             }
 
