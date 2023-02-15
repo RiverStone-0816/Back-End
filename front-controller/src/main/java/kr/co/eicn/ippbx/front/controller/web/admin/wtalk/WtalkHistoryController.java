@@ -86,7 +86,7 @@ public class WtalkHistoryController extends BaseController {
         final List<WtalkMsgResponse> messageHistory =  apiInterface.messageHistory(roomId).stream().map(e -> {
             if (e.getSendReceive().equals("SB") && e.getType().equals("block")) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent().split(":")[2])));
             if (e.getSendReceive().equals("S") && e.getType().equals("block")) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent())));
-            if ("RARC|RVRC".contains(e.getSendReceive())) {
+            if (e.getSendReceive().equals("RARC") || e.getSendReceive().equals("RVRC")) {
                 String[] records = e.getContent().replaceAll("\"","").split(",");
                 String record = "";
                 for (String r : records) {
@@ -110,7 +110,7 @@ public class WtalkHistoryController extends BaseController {
         final List<WtalkMsgResponse> messageHistory = apiInterface.messageHistory(roomId).stream().map(e -> {
             if (e.getSendReceive().equals("SB") && e.getType().equals("block") ) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent().split(":")[2])));
             if (e.getSendReceive().equals("S") && e.getType().equals("block")) e.setBlockInfo(chatbotApiInterface.getBlock(Integer.parseInt(e.getContent())));
-            if ("RARC|RVRC".contains(e.getSendReceive())) {
+            if (e.getSendReceive().equals("RARC") || e.getSendReceive().equals("RVRC")) {
                 String[] records = e.getContent().replaceAll("\"","").split(",");
                 String record = "";
                 for (String r : records) {
