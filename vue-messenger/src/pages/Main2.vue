@@ -1556,7 +1556,7 @@ export default {
 
   },
   async mounted() {
-    this.form.ip = (await axios.get('https://api.ipify.org')).data
+    this.form.ip = JSON.parse(JSON.stringify(await axios.get('https://jsonip.com/'))).data.ip
     this.communicator
         .on('webchatsvc_close', () => {
           this.communicator.disconnect()
