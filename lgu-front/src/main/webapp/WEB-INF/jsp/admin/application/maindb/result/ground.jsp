@@ -221,6 +221,11 @@
                                                                     <i class="volume up icon"></i>
                                                                 </button>
                                                             </c:if>
+                                                            <c:if test="${user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)}">
+                                                                <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
+                                                                    <i class="volume up icon"></i>
+                                                                </button>
+                                                            </c:if>
                                                             <c:if test="${user.listeningRecordingAuthority.equals('ALL')}">
                                                                 <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
                                                                     <i class="volume up icon"></i>
