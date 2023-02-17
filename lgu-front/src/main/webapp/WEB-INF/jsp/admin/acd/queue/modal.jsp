@@ -353,9 +353,9 @@
 </form:form>
 
 <script>
-    modal.find('.-button-submit').onclick(() => {
+    modal.find('.-button-submit').click(() => {
         modal.submit();
-        this.attr("disabled", "true");
+        modal.find('.-button-submit').attr("disabled", "true");
     })
 
     const persons = {
