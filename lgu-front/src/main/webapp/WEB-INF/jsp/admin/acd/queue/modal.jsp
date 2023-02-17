@@ -348,11 +348,16 @@
 
     <div class="actions">
         <button type="button" class="ui button modal-close">취소</button>
-        <button type="submit" class="ui blue button">확인</button>
+        <button type="button" class="ui blue button -button-submit">확인</button>
     </div>
 </form:form>
 
 <script>
+    modal.find('.-button-submit').onclick(() => {
+        modal.submit();
+        this.attr("disabled", "true");
+    })
+
     const persons = {
         <c:forEach var="e" items="${addOnPersons}">
         "${g.escapeQuote(e.peer)}": {hostName: '${g.escapeQuote(e.hostName)}', extension: '${g.escapeQuote(e.extension)}', idName: '${g.escapeQuote(e.idName)}'},
