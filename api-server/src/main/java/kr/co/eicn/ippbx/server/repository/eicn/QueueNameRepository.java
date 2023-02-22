@@ -35,10 +35,6 @@ public class QueueNameRepository extends EicnBaseRepository<QueueName, kr.co.eic
         orderByFields.add(QUEUE_NAME.HAN_NAME.asc());
     }
 
-    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName findOneByQueueNumber(String queueNumber) {
-        return findOne(QUEUE_NAME.COMPANY_ID.eq(getCompanyId()).and(QUEUE_NAME.NUMBER.eq(queueNumber)));
-    }
-
     public List<SearchQueueNameResponse> search(SearchQueueNameRequest search) {
         return findAll(searchConditions(search)).stream()
                 .map(e -> modelMapper.map(e, SearchQueueNameResponse.class))
@@ -152,6 +148,10 @@ public class QueueNameRepository extends EicnBaseRepository<QueueName, kr.co.eic
     //<영어명, 한글명>
     public Map<String, String> getHuntNameMap() {
         return findAll().stream().collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName::getName, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName::getHanName));
+    }
+
+    public Map<String, String> getHanNameByQueueNumber() {
+        return findAll().stream().collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName::getNumber, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName::getHanName));
     }
 
     @Data

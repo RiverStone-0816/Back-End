@@ -35,11 +35,7 @@
                 peer: '${g.escapeQuote(e.peer)}',
                 status: ${e.status},
                 login: ${e.login},
-                userId: '${peerToUserId.getOrDefault(e.peer, '')}',
-                queueNumber: '${e.queueNumber}',
-                callStatus: '${not empty e.inOut ? (e.inOut eq 'I' ? 'ID' : 'OD') : ''}',
-                callingNumber: '${e.src}',
-                calledNumber: '${e.dst}'
+                userId: '${peerToUserId.getOrDefault(e.peer, '')}'
             },
             </c:forEach>
         };
@@ -200,39 +196,56 @@
 
             $('.-consultant-send-receive-status').each(function () {
                 const peerStatus = peerStatuses[$(this).attr('data-peer')];
+                const defaultValue = $(this).data('default');
                 if (!peerStatus) return;
 
                 if (peerStatus.status !== MEMBER_STATUS_CALLING)
                     return $(this).text('');
 
-                $(this).text(peerStatus.callStatus === 'OR' || peerStatus.callStatus === 'OD' ? '발신'
-                    : peerStatus.callStatus === 'IR' || peerStatus.callStatus === 'ID' ? '수신' : '');
+                if (defaultValue) {
+                    $(this).text(defaultValue)
+                    $(this).removeAttr('data-default');
+                } else {
+                    $(this).text(peerStatus.callStatus === 'OR' || peerStatus.callStatus === 'OD' ? '발신'
+                        : peerStatus.callStatus === 'IR' || peerStatus.callStatus === 'ID' ? '수신' : '');
+                }
             });
 
             $('.-consultant-calling-custom-number').each(function () {
                 const peerStatus = peerStatuses[$(this).attr('data-peer')];
+                const defaultValue = $(this).data('default');
                 if (!peerStatus) return;
 
                 if (peerStatus.status !== MEMBER_STATUS_CALLING)
                     return $(this).text('');
 
-                $(this).text(peerStatus.callStatus === 'OR' || peerStatus.callStatus === 'OD' ? peerStatus.calledNumber
-                    : peerStatus.callStatus === 'IR' || peerStatus.callStatus === 'ID' ? peerStatus.callingNumber : '');
+                if (defaultValue) {
+                    $(this).text(defaultValue)
+                    $(this).removeAttr('data-default');
+                } else {
+                    $(this).text(peerStatus.callStatus === 'OR' || peerStatus.callStatus === 'OD' ? peerStatus.calledNumber
+                        : peerStatus.callStatus === 'IR' || peerStatus.callStatus === 'ID' ? peerStatus.callingNumber : '');
+                }
             });
 
             $('.-consultant-queue-name').each(function () {
                 const peerStatus = peerStatuses[$(this).attr('data-peer')];
+                const defaultValue = $(this).data('default');
                 if (!peerStatus) return;
 
                 if (peerStatus.status !== MEMBER_STATUS_CALLING)
                     return $(this).text('');
 
-                const queue = getQueueFromNumber(peerStatus.queueNumber);
-                if (!queue) return;
 
-                $(this).text(peerStatus.callStatus === 'IR' || peerStatus.callStatus === 'ID' ? queue.hanName
-                    : ''
-                );
+                if (defaultValue) {
+                    $(this).text(defaultValue)
+                    $(this).removeAttr('data-default');
+                } else {
+                    const queue = getQueueFromNumber(peerStatus.queueNumber);
+                    if (!queue) return;
+
+                    $(this).text(peerStatus.callStatus === 'IR' || peerStatus.callStatus === 'ID' ? queue.hanName : '');
+                }
             });
 
             $('.-consultant-login').each(function () {

@@ -1,23 +1,24 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.monitor.consultant;
 
-import kr.co.eicn.ippbx.model.dto.customdb.PersonLastStatusInfoResponse;
-import kr.co.eicn.ippbx.model.enums.PersonSort;
-import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.server.controller.api.v1.admin.dashboard.DashboardApiController;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.pojos.CommonStatInbound;
+import kr.co.eicn.ippbx.model.dto.customdb.PersonLastStatusInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.dto.statdb.*;
 import kr.co.eicn.ippbx.model.entity.eicn.CenterMemberStatusCountEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CmpMemberStatusCodeEntity;
+import kr.co.eicn.ippbx.model.entity.eicn.CurrentEICNCdrEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.MemberStatusOfHunt;
 import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatOutboundEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserInboundEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserOutboundEntity;
+import kr.co.eicn.ippbx.model.enums.PersonSort;
 import kr.co.eicn.ippbx.model.enums.PhoneInfoStatus;
+import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
+import kr.co.eicn.ippbx.server.controller.api.v1.admin.dashboard.DashboardApiController;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.*;
 import kr.co.eicn.ippbx.util.EicnUtils;
@@ -56,6 +57,7 @@ public class MonitorPartApiController extends ApiBaseController {
     private final QueueNameRepository queueNameRepository;
     private final CmpMemberStatusCodeRepository cmpMemberStatusCodeRepository;
     private final CurrentMemberStatusRepository currentMemberStatusRepository;
+    private final CurrentEICNCdrRepository currentEICNCdrRepository;
     private final PhoneInfoRepository phoneInfoRepository;
     private final PersonListRepository personListRepository;
     private final CallbackRepository callbackRepository;
@@ -286,10 +288,11 @@ public class MonitorPartApiController extends ApiBaseController {
         final Map<String, StatUserInboundEntity> individualInboundStat = statUserInboundService.getRepository().findAllUserIndividualStat();
         final Map<String, StatUserOutboundEntity> individualOutboundStat = statUserOutboundService.getRepository().findAllUserIndividualStat();
         final Map<String, String> phoneInfoMap = phoneInfoRepository.findAllPhoneStatus();
-        final Map<String, String> queueNameMap = queueNameRepository.getHuntNameMap();
+        final Map<String, String> queueNameMap = queueNameRepository.getHanNameByQueueNumber();
         final List<PersonList> personList = personListRepository.findAll(PersonSort.NAME).stream().filter(e -> StringUtils.isNotEmpty(e.getPeer())).collect(Collectors.toList());
         final Map<String, QueueMemberTable> queueMemberMap = queueMemberTableRepository.findAllQueueMember();
         final List<PersonLastStatusInfoResponse> allPersonStatusInfo = memberStatusService.getAllPersonStatusInfo();
+        final Map<String, CurrentEICNCdrEntity> currentCdrByPeer = currentEICNCdrRepository.findAllCurrentCdrByPeer();
 
         for (PersonList personData : personList) {
             final PersonListSummary person = convertDto(personData, PersonListSummary.class);
@@ -315,9 +318,15 @@ public class MonitorPartApiController extends ApiBaseController {
                 row.setTotalStat();
                 row.setBillSecondAverage();
 
+                if (currentCdrByPeer.containsKey(person.getPeer())) {
+                    CurrentEICNCdrEntity cdr = currentCdrByPeer.get(person.getPeer());
+
+                    row.setQueueHanName(queueNameMap.get(cdr.getSecondNum()));
+                    row.setInOut(cdr.getInOut());
+                    row.setCustomNumber("O".equals(cdr.getInOut()) ? cdr.getDst() : cdr.getSrc());
+                }
+
                 rows.add(row);
-
-
             }
         }
 
