@@ -21,4 +21,5 @@ public class PhoneInfoSummaryResponse {
 	private String  localPrefix;  // 지역번호
 	private String  originalNumber; // 번호이동원번호
 	private String	phoneKind;	//소프트폰 확인
+	private Integer	firstStatus;
 }

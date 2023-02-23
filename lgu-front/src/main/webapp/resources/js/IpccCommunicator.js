@@ -54,9 +54,9 @@ IpccCommunicator.prototype.log = function (isSend, text) {
 IpccCommunicator.prototype.logClear = function () {
     this.status.eventNumber = 0;
 };
-IpccCommunicator.prototype.connect = function (url, serverIp, companyId, userId, extension, password, userType, fromUi, multi_yn) {
+IpccCommunicator.prototype.connect = function (url, serverIp, companyId, userId, extension, password, userType, fromUi, multi_yn, firstStatus) {
     this.url = url;
-    this.request = {serverIp: serverIp, companyId: companyId, userId: userId, extension: extension, password: password, userType: userType, option: "0", fromUi: fromUi, multi_yn: multi_yn};
+    this.request = {serverIp: serverIp, companyId: companyId, userId: userId, extension: extension, password: password, userType: userType, fromUi: fromUi, multi_yn: multi_yn, first_status: firstStatus};
     this.log(true, "Login: " + JSON.stringify(this.request));
 
     const _this = this;

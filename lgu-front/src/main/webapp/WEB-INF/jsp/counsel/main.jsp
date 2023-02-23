@@ -735,7 +735,7 @@
                 const fromUi = "EICN_IPCC";
                 <c:if test="${isStat}">
                 if (response.data.extension != null)
-                    ipccCommunicator.connect(response.data.callControlSocketUrl, response.data.pbxHost, response.data.companyId, response.data.userId, response.data.extension, response.data.password, response.data.idType, fromUi, response.data.isMulti);
+                    ipccCommunicator.connect(response.data.callControlSocketUrl, response.data.pbxHost, response.data.companyId, response.data.userId, response.data.extension, response.data.password, response.data.idType, fromUi, response.data.isMulti, response.data.firstStatus);
                 </c:if>
                 <c:if test="${user.isTalk.equals('Y')}">
                 talkCommunicator.connect(response.data.talkSocketUrl, response.data.companyId, response.data.userId, response.data.password, "USER", response.data.idType);

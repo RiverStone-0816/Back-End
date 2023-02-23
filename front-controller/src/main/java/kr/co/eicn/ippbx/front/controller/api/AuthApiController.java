@@ -198,6 +198,7 @@ public class AuthApiController extends BaseController {
         final Map<String, String> socketMap = g.getSocketList();
         final ServerInfo serverInfo = companyApiInterface.pbxServerInfo();
         final boolean isMulti = companyApiInterface.checkService("MUL");
+        final PhoneInfoDetailResponse phone = phoneApiInterface.get(user.getPeer());;
 
         return SocketIoInformation.builder()
                 .adminSocketUrl(socketMap.get(adminSocketId))
@@ -218,6 +219,7 @@ public class AuthApiController extends BaseController {
                 .groupTreeName(organization.getGroupTreeName())
                 .groupLevel(organization.getGroupLevel())
                 .isMulti(isMulti ? "Y" : "N")
+                .firstStatus(phone.getFirstStatus())
                 .build();
     }
 
@@ -302,6 +304,7 @@ public class AuthApiController extends BaseController {
         private String groupTreeName;
         private Integer groupLevel;
         private String isMulti;
+        private Integer firstStatus;
     }
 
     @Builder
