@@ -5,11 +5,9 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.model.enums.AdditionalState;
 import kr.co.eicn.ippbx.model.enums.CallStatus;
 import kr.co.eicn.ippbx.model.enums.CallType;
-import kr.co.eicn.ippbx.util.spring.SpringApplicationContextAware;
+import kr.co.eicn.ippbx.model.enums.ContextType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import java.util.Objects;
 
 import static org.apache.commons.lang3.StringUtils.*;
 
@@ -143,8 +141,8 @@ public class EicnCdrEntity extends CommonEicnCdr {
         final StringBuilder result = new StringBuilder();
         final String suffix = "(" + getTurnOverNumber() + ")"; // 기존 etc2
         if (CallType.INBOUND.getCode().equals(getInOut()) && nCallResult == 3 && getBillsec() == 0) {
-            if (startsWith(getDetailCallstatus(), "event_server_reserve")) {
-                if (endsWith(getDetailCallstatus(), "yes"))
+            if (ContextType.CALL_BACK.getCode().equals(getDcontext()) && getDetailCallstatus().contains("event_server_reserve")) {
+                if (getDetailCallstatus().contains("yes"))
                     result.append("상담예약(성공)");
                 else
                     result.append("상담중예약중끊음");
