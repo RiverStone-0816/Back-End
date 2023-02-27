@@ -605,6 +605,14 @@
                 }
                 $('#modal-result').submit();
             }
+
+            $(window).on('load', function () {
+                $('#keyword').val('${search.keyword}').trigger("change");
+                $('#code').val('${search.code}').trigger("change");
+
+                $('input[name=startDate]').val('${search.startDate}');
+                $('input[name=endDate]').val('${search.endDate}');
+            });
         </script>
     </tags:scripts>
 </tags:tabContentLayout>

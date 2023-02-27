@@ -239,4 +239,14 @@
             subInput.filter(':not([data-type="DATE"])').show();
         }
     }).change();
+
+    function setSearch() {
+        $('#search-maindb-custom-form').find('#keyword').val('${search.keyword}').trigger("change");
+        $('#search-maindb-custom-form').find('#code').val('${search.code}').trigger("change");
+
+        $('#search-maindb-custom-form').find('input[name=startDate]').val('${search.startDate}');
+        $('#search-maindb-custom-form').find('input[name=endDate]').val('${search.endDate}');
+    }
+
+    setSearch();
 </script>

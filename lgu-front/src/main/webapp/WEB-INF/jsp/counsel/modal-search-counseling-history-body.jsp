@@ -348,6 +348,7 @@
 
     (function () {
         const modal = $('#search-counseling-history-form').closest('.modal');
+
         modal.find('.-button-set-range').click(function () {
             modal.find('.-button-set-range').removeClass('active');
             $(this).addClass('active');
@@ -362,7 +363,6 @@
 
             startDate.val(moment(endDate.val()).add(parseInt(number) * -1, interval).add(1, 'days').format('YYYY-MM-DD'));
         });
-
 
         modal.find('.-popup-records').click(function (event) {
             event.stopPropagation();
@@ -389,8 +389,6 @@
                 });
             });
         });
-
-
 
         modal.find('[name=searchType]').change(function () {
             const type = $(this).find(':selected').attr('data-type');
@@ -424,4 +422,15 @@
             modal.find('[name=channelData]').val('');
         });
     })();
+
+
+    function setSearch() {
+        $('#search-counseling-history-form').find('#keyword').val('${search.keyword}').trigger("change");
+        $('#search-counseling-history-form').find('#code').val('${search.code}').trigger("change");
+
+        $('#search-counseling-history-form').find('input[name=startDate]').val('${search.startDate}');
+        $('#search-counseling-history-form').find('input[name=endDate]').val('${search.endDate}');
+    }
+
+    setSearch();
 </script>
