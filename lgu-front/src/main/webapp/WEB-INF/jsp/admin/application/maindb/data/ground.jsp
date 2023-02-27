@@ -279,6 +279,14 @@
             <c:if test="${customdbGroups == null}">
             alert("[고객DB그룹] 이 없습니다.");
             </c:if>
+
+            $(window).on('load', function () {
+                $('#keyword').val('${search.keyword}').trigger("change");
+                $('#code').val('${search.code}').trigger("change");
+
+                $('input[name=startDate]').val('${search.startDate}');
+                $('input[name=endDate]').val('${search.endDate}');
+            });
         </script>
     </tags:scripts>
 </tags:tabContentLayout>
