@@ -55,7 +55,9 @@
             $(this).addClass('active');
             $('.-control-entity[data-entity="' + $(this).closest('table').attr('data-entity') + '"]').show();
 
-            $(this).closest('.panel').find('.ui.basic.green.button').trigger("click");
+            $(this).closest('.panel').find('.ui.basic.green.button').filter(function () {
+                return $(this).text().contains("내보내기");
+            }).trigger("click");
         });
         findAndMe('.selectable tr', this).not('.ui').click(function () {
             if (!$(this).attr('data-id')) return;
