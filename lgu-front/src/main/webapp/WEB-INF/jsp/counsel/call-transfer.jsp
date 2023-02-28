@@ -18,7 +18,7 @@
         <td>대표번호</td>
         <td>
             <div class="dp-flex">
-                <select id="service-numbers" class="flex-100">
+                <select id="service-numbers" class="flex-100" style="width: 100%;">
                     <c:forEach var="e" items="${services}">
                         <option value="${g.htmlQuote(e.svcNumber)}">${g.htmlQuote(e.svcName)}</option>
                     </c:forEach>
@@ -33,7 +33,7 @@
         <td>큐번호</td>
         <td>
             <div class="dp-flex">
-                <select id="hunt-numbers" class="flex-100">
+                <select id="hunt-numbers" class="flex-100" style="width: 100%;">
                     <c:forEach var="e" items="${queues}">
                         <option value="${g.htmlQuote(e.number)}">${g.htmlQuote(e.hanName)}</option>
                     </c:forEach>
