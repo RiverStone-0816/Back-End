@@ -513,10 +513,11 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
         final IvrTreeComposite ivr = getIvr(sourceId);
         final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree source = findOne(sourceId);
         target.setIntroSoundCode(source.getIntroSoundCode());
+        target.setSoundCode(source.getSoundCode());
         target.setTtsData(source.getTtsData());
         target.setPosX(source.getPosX());
         target.setPosY(source.getPosY());
-        super.updateByKey(target, targetId);
+        updateByKey(target, targetId);
 
         if (sourceId.equals(targetId))
             throw new IllegalStateException("복사할 IVR과 복사대상 IVR이 같습니다.");
@@ -531,13 +532,13 @@ public class IvrTreeRepository extends EicnBaseRepository<IvrTree, kr.co.eicn.ip
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
             DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+            updateByKey(pbxDsl, target, targetId);
             pbxDsl.deleteFrom(IVR_TREE)
                     .where(compareCompanyId())
                     .and(IVR_TREE.TREE_NAME.like(target.getTreeName() + "%"))
                     .and(IVR_TREE.TREE_NAME.ne(target.getTreeName()))
                     .execute();
         });
-
 
         recursiveCopy(target, ivr.getNodes());
     }
