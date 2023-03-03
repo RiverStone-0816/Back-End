@@ -94,7 +94,7 @@ public class EicnCdrRepository extends CustomDBBaseRepository<CommonEicnCdr, Eic
             conditions.add(TABLE.GROUP_TREE_NAME.like("%" + search.getGroupCode() + "%"));
         if (isNotEmpty(search.getPhone()))
             conditions.add(DSL.and(TABLE.DST.like("%" + search.getPhone() + "%")).or(TABLE.SRC.like("%" + search.getPhone() + "%"))
-                    .or(TABLE.ETC2.like("%" + search.getPhone() + "%"))
+                    .or(TABLE.TURN_OVER_NUMBER.like("%" + search.getPhone() + "%"))
             );
         if (isNotEmpty(search.getUserId()))
             conditions.add(TABLE.USERID.eq(search.getUserId()));
@@ -176,7 +176,7 @@ public class EicnCdrRepository extends CustomDBBaseRepository<CommonEicnCdr, Eic
         }
 
         if (isNotEmpty(search.getExtension()))
-            conditions.add(DSL.and(TABLE.DST.eq(search.getExtension()).or(TABLE.SRC.eq(search.getExtension())).or(TABLE.ETC2.eq(search.getExtension()))));
+            conditions.add(DSL.and(TABLE.DST.eq(search.getExtension()).or(TABLE.SRC.eq(search.getExtension())).or(TABLE.TURN_OVER_NUMBER.eq(search.getExtension()))));
         if (isNotEmpty(search.getIvrCode()))
             conditions.add(TABLE.IVR_KEY.like("%|" + search.getIvrCode() + "_" + search.getIvrKey() + "%"));
         if (isNotEmpty(search.getIniNum()))
