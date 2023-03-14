@@ -140,7 +140,7 @@
                         <div class="sixteen wide column">
                             <h3 class="ui header center aligned">
                                 <text class="content">
-                                    상담원(개인별)실적통계
+                                    상담원별콜실적통계
                                     <div class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</div>
                                 </text>
                             </h3>
