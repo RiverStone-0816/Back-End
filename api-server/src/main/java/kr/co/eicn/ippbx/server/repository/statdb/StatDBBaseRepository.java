@@ -68,8 +68,6 @@ public abstract class StatDBBaseRepository<TABLE extends TableImpl<?>, ENTITY, P
             condition = condition.or(dcontext.eq(ContextType.DIRECT_CALL.getCode()));
         if (search.getInner())
             condition = condition.or(dcontext.eq(type.equals("inbound") ? ContextType.INBOUND_INNER.getCode() : ContextType.OUTBOUND_INNER.getCode()));
-        if (!search.getBusy())
-            condition = condition.or(dcontext.eq(ContextType.CALL_BACK.getCode()));
         if (search.getWorkHour())
             condition = condition.and(workTime.eq("Y"));
         if (Objects.nonNull(search.getStartDate()))

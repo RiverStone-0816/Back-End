@@ -65,8 +65,8 @@
                                 <div class="two wide column"><label class="control-label">추가조건선택</label></div>
                                 <div class="five wide column">
                                     <div class="ui checkbox">
-                                        <form:checkbox path="inner" value="Y"/>
-                                        <label>내선통화</label>
+                                        <form:checkbox path="inner"/>
+                                        <label>내선통화추가</label>
                                     </div>
                                 </div>
                             </div>
