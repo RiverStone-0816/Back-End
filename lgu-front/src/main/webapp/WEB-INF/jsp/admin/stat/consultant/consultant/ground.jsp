@@ -173,7 +173,7 @@
                                     <th class="color red">I/B<br>총 통화시간</th>
                                     <th class="color red">I/B<br>평균통화시간</th>
                                     <th class="color red">I/B<br>평균대기시간</th>
-                                    <th class="color red">포기호</th>
+                                    <th class="color red">개인비수신</th>
                                     <th class="color red">응대율</th>
 
                                     <th>후처리건수</th>
