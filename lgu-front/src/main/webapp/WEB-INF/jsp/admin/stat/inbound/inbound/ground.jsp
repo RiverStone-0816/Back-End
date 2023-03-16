@@ -85,20 +85,16 @@
                                 <div class="two wide column"><label class="control-label">추가조건선택</label></div>
                                 <div class="five wide column">
                                     <div class="ui checkbox">
-                                        <form:checkbox path="person" value="Y"/>
-                                        <label>직통전화</label>
+                                        <form:checkbox path="person"/>
+                                        <label>직통전화추가</label>
                                     </div>
                                     <div class="ui checkbox">
-                                        <form:checkbox path="inner" value="Y"/>
-                                        <label>내선통화</label>
+                                        <form:checkbox path="inner"/>
+                                        <label>내선통화추가</label>
                                     </div>
                                     <div class="ui checkbox">
-                                        <form:checkbox path="busy" value="Y"/>
-                                        <label>콜백</label>
-                                    </div>
-                                    <div class="ui checkbox">
-                                        <form:checkbox path="workHour" value="Y"/>
-                                        <label>업무시간</label>
+                                        <form:checkbox path="workHour"/>
+                                        <label>업무시간기준</label>
                                     </div>
                                 </div>
                             </div>
@@ -129,8 +125,8 @@
                                     <th rowspan="2">날짜/시간</th>
                                     <th colspan="6" class="color red">I/B 콜 현황</th>
                                     <th colspan="6" class="color red">성과지표</th>
-                                    <th colspan="5" class="color red">응대호 대기시간 분석</th>
-                                    <th colspan="5" class="color red">포기호 대기시간 분석</th>
+                                    <th colspan="5" class="color red">응대호 대기시간(초) 분석</th>
+                                    <th colspan="5" class="color red">포기호 대기시간(초) 분석</th>
                                 </tr>
                                 <tr>
                                     <th class="color red">I/B<br>전체콜</th>
@@ -147,16 +143,16 @@
                                     <th class="color red">서비스레벨<br>호응답률</th>
                                     <th class="color red">단순조회율</th>
 
-                                    <th class="color red">~10(초)</th>
-                                    <th class="color red">~20(초)</th>
-                                    <th class="color red">~30(초)</th>
-                                    <th class="color red">~40(초)</th>
-                                    <th class="color red">40~(초)</th>
-                                    <th class="color red">~10(초)</th>
-                                    <th class="color red">~20(초)</th>
-                                    <th class="color red">~30(초)</th>
-                                    <th class="color red">~40(초)</th>
-                                    <th class="color red">40~(초)</th>
+                                    <th class="color red">~10</th>
+                                    <th class="color red">~20</th>
+                                    <th class="color red">~30</th>
+                                    <th class="color red">~40</th>
+                                    <th class="color red">40~</th>
+                                    <th class="color red">~10</th>
+                                    <th class="color red">~20</th>
+                                    <th class="color red">~30</th>
+                                    <th class="color red">~40</th>
+                                    <th class="color red">40~</th>
                                 </tr>
                                 </thead>
                                 <tbody>

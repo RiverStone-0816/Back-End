@@ -32,7 +32,7 @@ public class StatUserResponse<T> {
 
         @JsonIgnore
         public void setTotalCnt() {
-            this.totalCnt = outboundStat.getOutTotal() + inboundStat.getTotal();
+            this.totalCnt = outboundStat.getOutSuccess() + inboundStat.getSuccess();
         }
 
         @JsonIgnore

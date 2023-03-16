@@ -126,10 +126,6 @@ public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbou
             inboundCondition = inboundCondition.or(TABLE.DCONTEXT.eq("inbound_inner"));
         if (!search.getInner())
             inboundCondition = inboundCondition.or(TABLE.DCONTEXT.notEqual("inbound_inner"));
-        if (search.getBusy())
-            inboundCondition = inboundCondition.or(TABLE.DCONTEXT.eq("busy_context"));
-        if (!search.getBusy())
-            inboundCondition = inboundCondition.or(TABLE.DCONTEXT.notEqual("busy_context"));
 
         conditions.add(inboundCondition);
         return conditions;
