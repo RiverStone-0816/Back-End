@@ -80,6 +80,6 @@ public class ConsultantStatController extends BaseController {
         final List<StatUserResponse<?>> list = consultantStatApiInterface.list(search);
         final StatUserResponse.UserStat total = consultantStatApiInterface.getTotal(search);
 
-        new ConsultantStatExcel(list, total).generator(response, "상담원(개인별)실적통계");
+        new ConsultantStatExcel(list, total).generator(response, "상담원별콜실적");
     }
 }
