@@ -14,6 +14,7 @@ import kr.co.eicn.ippbx.model.enums.RoomStatus;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
 import kr.co.eicn.ippbx.model.search.TalkRoomSearchRequest;
 import kr.co.eicn.ippbx.util.FormUtils;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
@@ -68,7 +69,7 @@ public class WtalkHistoryController extends BaseController {
         model.addAttribute("roomStatuses", roomStatuses);
 
         final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
-        model.addAttribute("talkServices", talkServices);
+        model.addAttribute("talkServices", new MapToLinkedHashMap().toLinkedHashMapByValue(talkServices));
 
         model.addAttribute("users", searchApiInterface.persons());
 

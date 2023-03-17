@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.outbound.preview;
 
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -51,7 +52,7 @@ public class PreviewGroupController extends BaseController {
         model.addAttribute("pagination", pagination);
 
         final Map<Integer, String> prvTypes = apiInterface.prvType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("prvTypes", prvTypes);
+        model.addAttribute("prvTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(prvTypes));
 
         return "admin/outbound/preview/group/ground";
     }
@@ -59,23 +60,23 @@ public class PreviewGroupController extends BaseController {
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") PrvGroupFormRequest form) throws IOException, ResultFailException {
         final Map<Integer, String> prvTypes = apiInterface.prvType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("prvTypes", prvTypes);
+        model.addAttribute("prvTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(prvTypes));
 
         final Map<Integer, String> resultTypes = apiInterface.resultType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("resultTypes", resultTypes);
+        model.addAttribute("resultTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(resultTypes));
 
         final Map<String, String> numbers = pdsGroupApiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber));
-        model.addAttribute("numbers", numbers);
+        model.addAttribute("numbers", new MapToLinkedHashMap().toLinkedHashMapByValue(numbers));
 
         final List<PrvGroupResponse> prvGroupList = apiInterface.prvGroup();
         final Map<Integer, String> prvGroups = prvGroupList.stream().collect(Collectors.toMap(PrvGroupResponse::getSeq, PrvGroupResponse::getName));
-        model.addAttribute("prvGroups", prvGroups);
+        model.addAttribute("prvGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(prvGroups));
 
         final Map<String, String> memberKinds = FormUtils.optionsOfCode(PrvMemberKind.class);
-        model.addAttribute("memberKinds", memberKinds);
+        model.addAttribute("memberKinds", new MapToLinkedHashMap().toLinkedHashMapByValue(memberKinds));
 
         final Map<String, String> persons = callbackHistoryApiInterface.addPersons().stream().collect(Collectors.toMap(SummaryCallbackDistPersonResponse::getId, SummaryPersonResponse::getIdName));
-        model.addAttribute("persons", persons);
+        model.addAttribute("persons", new MapToLinkedHashMap().toLinkedHashMapByValue(persons));
 
         return "admin/outbound/preview/group/modal";
     }
@@ -89,26 +90,26 @@ public class PreviewGroupController extends BaseController {
         model.addAttribute("searchOrganizationNames", organizationService.getHierarchicalOrganizationNames(entity.getGroupCode()));
 
         final Map<Integer, String> prvTypes = apiInterface.prvType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("prvTypes", prvTypes);
+        model.addAttribute("prvTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(prvTypes));
 
         final Map<Integer, String> resultTypes = apiInterface.resultType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("resultTypes", resultTypes);
+        model.addAttribute("resultTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(resultTypes));
 
         final Map<String, String> numbers = pdsGroupApiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber));
-        model.addAttribute("numbers", numbers);
+        model.addAttribute("numbers", new MapToLinkedHashMap().toLinkedHashMapByValue(numbers));
 
         final List<PrvGroupResponse> prvGroupList = apiInterface.prvGroup();
         final Map<Integer, String> prvGroups = prvGroupList.stream().collect(Collectors.toMap(PrvGroupResponse::getSeq, PrvGroupResponse::getName));
-        model.addAttribute("prvGroups", prvGroups);
+        model.addAttribute("prvGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(prvGroups));
 
         final Map<String, String> memberKinds = FormUtils.optionsOfCode(PrvMemberKind.class);
-        model.addAttribute("memberKinds", memberKinds);
+        model.addAttribute("memberKinds", new MapToLinkedHashMap().toLinkedHashMapByValue(memberKinds));
 
         final Map<String, String> persons = callbackHistoryApiInterface.addPersons().stream().collect(Collectors.toMap(SummaryCallbackDistPersonResponse::getId, SummaryPersonResponse::getIdName));
-        model.addAttribute("persons", persons);
+        model.addAttribute("persons", new MapToLinkedHashMap().toLinkedHashMapByValue(persons));
 
         final Map<String, String> members = entity.getMemberDataList().stream().collect(Collectors.toMap(CommonMemberResponse::getId, CommonMemberResponse::getIdName));
-        model.addAttribute("members", members);
+        model.addAttribute("members", new MapToLinkedHashMap().toLinkedHashMapByValue(members));
 
         for (String id : members.keySet())
             persons.remove(id);

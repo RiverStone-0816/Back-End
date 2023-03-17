@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.acd.route;
 
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -43,7 +44,7 @@ public class CsRouteController extends BaseController {
         model.addAttribute("pagination", pagination);
 
         final Map<String, String> queues = apiInterface.queue().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName));
-        model.addAttribute("queues", queues);
+        model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(queues));
 
         return "admin/acd/route/cs/ground";
     }
@@ -51,7 +52,7 @@ public class CsRouteController extends BaseController {
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") CsRouteFormRequest form) throws IOException, ResultFailException {
         final Map<String, String> queues = apiInterface.queue().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName));
-        model.addAttribute("queues", queues);
+        model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(queues));
 
         return "admin/acd/route/cs/modal";
     }
@@ -63,7 +64,7 @@ public class CsRouteController extends BaseController {
         model.addAttribute("entity", entity);
 
         final Map<String, String> queues = apiInterface.queue().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName));
-        model.addAttribute("queues", queues);
+        model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(queues));
 
         return "admin/acd/route/cs/modal";
     }

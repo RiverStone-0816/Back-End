@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.stat;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.OrganizationService;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.route.CsRouteApiInterface;
@@ -61,10 +62,10 @@ public class ConsultantStatController extends BaseController {
         model.addAttribute("searchCycles", searchCycles);
 
         final Map<String, String> services = searchApiInterface.services(new SearchServiceRequest()).stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcName));
-        model.addAttribute("services", services);
+        model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValue(services));
 
         final Map<String, String> queues = csRouteApiInterface.queue().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName));
-        model.addAttribute("queues", queues);
+        model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(queues));
 
         model.addAttribute("persons", searchApiInterface.persons());
 

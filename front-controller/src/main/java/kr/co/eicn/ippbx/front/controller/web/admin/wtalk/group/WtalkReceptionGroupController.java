@@ -10,6 +10,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.WtalkMemberGroupSummaryResponse;
 import kr.co.eicn.ippbx.model.enums.TalkMemberDistributionType;
 import kr.co.eicn.ippbx.model.form.TalkMemberGroupFormRequest;
 import kr.co.eicn.ippbx.util.FormUtils;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import org.slf4j.Logger;
@@ -52,9 +53,9 @@ public class WtalkReceptionGroupController extends BaseController {
     public String modal(Model model, @ModelAttribute("form") TalkMemberGroupFormRequest form) throws IOException, ResultFailException {
         final Map<String, String> addOnPersons = new HashMap<>();
         apiInterface.addOnPersons().forEach(e -> addOnPersons.put(e.getId(), e.getIdName()));
-        model.addAttribute("addOnPersons", addOnPersons);
+        model.addAttribute("addOnPersons", new MapToLinkedHashMap().toLinkedHashMapByValue(addOnPersons));
         final Map<String, String> talkServices = apiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
-        model.addAttribute("talkServices", talkServices);
+        model.addAttribute("talkServices", new MapToLinkedHashMap().toLinkedHashMapByValue(talkServices));
         model.addAttribute("distributionType", FormUtils.options(TalkMemberDistributionType.class));
 
         return "admin/wtalk/group/reception-group/modal";
@@ -68,7 +69,7 @@ public class WtalkReceptionGroupController extends BaseController {
 
         final Map<String, String> addOnPersons = new HashMap<>();
         apiInterface.addOnPersons(entity.getGroupId()).forEach(e -> addOnPersons.put(e.getId(), e.getIdName()));
-        model.addAttribute("addOnPersons", addOnPersons);
+        model.addAttribute("addOnPersons", new MapToLinkedHashMap().toLinkedHashMapByValue(addOnPersons));
         model.addAttribute("distributionType", FormUtils.options(TalkMemberDistributionType.class));
 
         for (SummaryWtalkGroupPersonResponse person : entity.getPersons())

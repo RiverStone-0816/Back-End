@@ -27,6 +27,7 @@ import kr.co.eicn.ippbx.model.search.MaindbDataSearchRequest;
 import kr.co.eicn.ippbx.model.search.MaindbGroupSearchRequest;
 import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
 import kr.co.eicn.ippbx.util.FormUtils;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.extern.slf4j.Slf4j;
@@ -160,7 +161,7 @@ public class CounseWTalkController extends BaseController {
         final Map<String, String> chatServiceMap = webchatConfigApiInterface.list().stream().collect(Collectors.toMap(WebchatServiceSummaryInfoResponse::getSenderKey, WebchatServiceSummaryInfoResponse::getChannelName));
         final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
         talkServices.putAll(chatServiceMap);
-        model.addAttribute("talkServices", talkServices);
+        model.addAttribute("talkServices", new MapToLinkedHashMap().toLinkedHashMapByValue(talkServices));
         if (talkServices.isEmpty())
             return "counsel/wtalk/custom-input";
 

@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.sounds.schedule;
 
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -56,7 +57,7 @@ public class InboundDayScheduleController extends BaseController {
         model.addAttribute("numbers", numbers);
 
         final Map<Integer, String> groups = apiInterface.scheduleGroups().stream().collect(Collectors.toMap(SummaryScheduleGroupResponse::getParent, SummaryScheduleGroupResponse::getName));
-        model.addAttribute("groups", groups);
+        model.addAttribute("groups", new MapToLinkedHashMap().toLinkedHashMapByValue(groups));
 
         final Map<String, String> dayOfWeeks = FormUtils.optionsOfCode(DayOfWeek.class);
         model.addAttribute("dayOfWeeks", dayOfWeeks);
@@ -67,7 +68,7 @@ public class InboundDayScheduleController extends BaseController {
     @GetMapping("new/modal-schedule-info")
     public String modal(Model model, @ModelAttribute("form") DayScheduleInfoFormRequest form) throws IOException, ResultFailException {
         final Map<Integer, String> scheduleGroups = apiInterface.scheduleGroups().stream().collect(Collectors.toMap(SummaryScheduleGroupResponse::getParent, SummaryScheduleGroupResponse::getName));
-        model.addAttribute("scheduleGroups", scheduleGroups);
+        model.addAttribute("scheduleGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(scheduleGroups));
 
         final List<SummaryNumber070Response> number070List = apiInterface.addNumber070List();
         model.addAttribute("number070List", number070List);
@@ -83,7 +84,7 @@ public class InboundDayScheduleController extends BaseController {
         form.setFromDate(entity.getScheduleInfo().getFromdate().toString());
 
         final Map<Integer, String> scheduleGroups = apiInterface.scheduleGroups().stream().collect(Collectors.toMap(SummaryScheduleGroupResponse::getParent, SummaryScheduleGroupResponse::getName));
-        model.addAttribute("scheduleGroups", scheduleGroups);
+        model.addAttribute("scheduleGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(scheduleGroups));
 
         model.addAttribute("searchOrganizationNames", organizationService.getHierarchicalOrganizationNames(form.getGroupCode()));
 
@@ -104,7 +105,7 @@ public class InboundDayScheduleController extends BaseController {
         model.addAttribute("holidays", holidays);
 
         final Map<Integer, String> scheduleGroups = apiInterface.scheduleGroups().stream().collect(Collectors.toMap(SummaryScheduleGroupResponse::getParent, SummaryScheduleGroupResponse::getName));
-        model.addAttribute("scheduleGroups", scheduleGroups);
+        model.addAttribute("scheduleGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(scheduleGroups));
 
         model.addAttribute("number070List", apiInterface.addNumber070List());
 

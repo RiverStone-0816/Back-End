@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.front.model.search.RecordCallSearchForm;
 import kr.co.eicn.ippbx.front.service.OrganizationService;
 import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchPersonListResponse;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.grade.GradelistApiInterface;
@@ -86,18 +87,18 @@ public class RecordingHistoryController extends BaseController {
         model.addAttribute("extensions", outboundDayScheduleApiInterface.addExtensions().stream().filter(e -> e.getExtension() != null && e.getInUseIdName() != null)
                 .sorted(Comparator.comparing(SummaryPhoneInfoResponse::getExtension)).collect(Collectors.toList()));
         // model.addAttribute("numbers", pdsGroupApiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber)));
-        model.addAttribute("queues", gradelistApiInterface.queues().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName)));
-        model.addAttribute("callStatuses", FormUtils.optionsOfCode(CallStatus.normal_clear, CallStatus.no_answer, CallStatus.user_busy, CallStatus.fail, CallStatus.local_forward));
-        model.addAttribute("etcStatuses", FormUtils.optionsOfCode(AdditionalState.HANGUP_BEFORE_CONNECT, AdditionalState.CANCEL_CONNECT, AdditionalState.PICKUPEE, AdditionalState.PICKUPER,
+        model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(gradelistApiInterface.queues().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName))));
+        model.addAttribute("callStatuses", new MapToLinkedHashMap().toLinkedHashMapByValue(FormUtils.optionsOfCode(CallStatus.normal_clear, CallStatus.no_answer, CallStatus.user_busy, CallStatus.fail, CallStatus.local_forward)));
+        model.addAttribute("etcStatuses", new MapToLinkedHashMap().toLinkedHashMapByValue(FormUtils.optionsOfCode(AdditionalState.HANGUP_BEFORE_CONNECT, AdditionalState.CANCEL_CONNECT, AdditionalState.PICKUPEE, AdditionalState.PICKUPER,
                 AdditionalState.TRANSFEREE, AdditionalState.TRANSFERER, AdditionalState.FORWARD_TRANSFEREE, AdditionalState.FORWARD_TRANSFERER, AdditionalState.SCD_TRANSFEREE,
-                AdditionalState.SCD_TRANSFERER, AdditionalState.LOCAL_TRANSFEREE, AdditionalState.LOCAL_TRANSFERER, AdditionalState.REDIRECTOUT_TRANSFEREE, AdditionalState.REDIRECTOUT_TRANSFERER));
+                AdditionalState.SCD_TRANSFERER, AdditionalState.LOCAL_TRANSFEREE, AdditionalState.LOCAL_TRANSFERER, AdditionalState.REDIRECTOUT_TRANSFEREE, AdditionalState.REDIRECTOUT_TRANSFERER)));
         final List<IvrTree> ivrTrees = ivrApiInterface.addIvrTreeList();
-        model.addAttribute("ivrCodes", ivrTrees.stream().filter(e -> e.getTreeName().split("[_]").length == 1).collect(Collectors.toMap(IvrTree::getCode, IvrTree::getName)));
+        model.addAttribute("ivrCodes", new MapToLinkedHashMap().toLinkedHashMapByValue(ivrTrees.stream().filter(e -> e.getTreeName().split("[_]").length == 1).collect(Collectors.toMap(IvrTree::getCode, IvrTree::getName))));
         model.addAttribute("ivrKeys", ivrTrees.stream().filter(e -> StringUtils.isNotEmpty(e.getButton())).collect(Collectors.groupingBy(IvrTree::getCode)));
-        model.addAttribute("customerGrades", FormUtils.optionsOfCode(RecordCallSearch.SearchCustomRating.class));
-        model.addAttribute("sortTypes", FormUtils.options(false, RecordCallSearch.Sort.class));
-        model.addAttribute("callTimeTypes", FormUtils.options(false, RecordCallSearch.CallTime.class));
-        model.addAttribute("callTypes", FormUtils.optionsOfCode(RecordCallSearch.SearchCallType.class));
+        model.addAttribute("customerGrades", new MapToLinkedHashMap().toLinkedHashMapByValue(FormUtils.optionsOfCode(RecordCallSearch.SearchCustomRating.class)));
+        model.addAttribute("sortTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(FormUtils.options(false, RecordCallSearch.Sort.class)));
+        model.addAttribute("callTimeTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(FormUtils.options(false, RecordCallSearch.CallTime.class)));
+        model.addAttribute("callTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(FormUtils.optionsOfCode(RecordCallSearch.SearchCallType.class)));
 
         final CompanyEntity company = companyApiInterface.getInfo();
         model.addAttribute("company", company);

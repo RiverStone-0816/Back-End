@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.outbound.research;
 
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -53,7 +54,7 @@ public class ResearchItemController extends BaseController {
         model.addAttribute("soundKinds", soundKinds);
 
         final Map<Integer, String> sounds = apiInterface.addSounds().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName));
-        model.addAttribute("sounds", sounds);
+        model.addAttribute("sounds", new MapToLinkedHashMap().toLinkedHashMapByValue(sounds));
 
         return "admin/outbound/research/item/modal";
     }
@@ -69,7 +70,7 @@ public class ResearchItemController extends BaseController {
         model.addAttribute("soundKinds", soundKinds);
 
         final Map<Integer, String> sounds = apiInterface.addSounds().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName));
-        model.addAttribute("sounds", sounds);
+        model.addAttribute("sounds", new MapToLinkedHashMap().toLinkedHashMapByValue(sounds));
 
         return "admin/outbound/research/item/modal";
     }

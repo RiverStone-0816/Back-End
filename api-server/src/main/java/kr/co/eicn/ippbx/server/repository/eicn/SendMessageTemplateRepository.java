@@ -26,6 +26,8 @@ public class SendMessageTemplateRepository extends EicnBaseRepository<SendMessag
     SendMessageTemplateRepository(SendSmsCategoryRepository sendSmsCategoryRepository) {
         super(SEND_MESSAGE_TEMPLATE, SEND_MESSAGE_TEMPLATE.ID, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessageTemplate.class);
         this.sendSmsCategoryRepository = sendSmsCategoryRepository;
+
+        addOrderingField(SEND_MESSAGE_TEMPLATE.CREATED_AT.desc());
     }
 
     public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessageTemplate> pagination(SendMessageTemplateSearchRequest search) {

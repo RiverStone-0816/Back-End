@@ -47,6 +47,7 @@ import kr.co.eicn.ippbx.model.search.MaindbGroupSearchRequest;
 import kr.co.eicn.ippbx.model.search.TodoListSearchRequest;
 import kr.co.eicn.ippbx.model.search.search.SearchServiceRequest;
 import kr.co.eicn.ippbx.util.FormUtils;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import lombok.AllArgsConstructor;
@@ -92,14 +93,14 @@ public class CounselCallController extends BaseController {
 
     @GetMapping("")
     public String callPanel(Model model) throws IOException, ResultFailException {
-        model.addAttribute("services", searchApiInterface.services(new SearchServiceRequest()).stream().filter(e -> !StringUtils.isEmpty(e.getSvcCid())).collect(Collectors.toMap(ServiceList::getSvcCid, ServiceList::getSvcName)));
+        model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValue(searchApiInterface.services(new SearchServiceRequest()).stream().filter(e -> !StringUtils.isEmpty(e.getSvcCid())).collect(Collectors.toMap(ServiceList::getSvcCid, ServiceList::getSvcName))));
         return "counsel/call/panel";
     }
 
     @SneakyThrows
     @GetMapping("consultant-status")
     public String consultantStatus(Model model) {
-        model.addAttribute("statusCodes", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
+        model.addAttribute("statusCodes", new MapToLinkedHashMap().toLinkedHashMapByValue(companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName))));
         model.addAttribute("integrationData", screenDataApiInterface.integration());
         model.addAttribute("huntData", screenDataApiInterface.byHunt());
         return "counsel/call/consultant-status";
@@ -124,7 +125,7 @@ public class CounselCallController extends BaseController {
             return "counsel/call/custom-input";
 
         final Map<String, String> talkServices = talkReceptionGroupApiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
-        model.addAttribute("talkServices", talkServices);
+        model.addAttribute("talkServices", new MapToLinkedHashMap().toLinkedHashMapByValue(talkServices));
 
         final GradeListSearchRequest gradeListSearchRequest = new GradeListSearchRequest();
         if (StringUtils.isNotEmpty(phoneNumber))

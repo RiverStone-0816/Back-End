@@ -12,8 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
@@ -48,6 +50,6 @@ public class WtalkScheduleService extends ApiBaseService {
                 response.add(row);
         });
 
-        return response;
+        return response.stream().sorted(Comparator.comparing(WtalkServiceInfoResponse::getKakaoServiceName)).collect(Collectors.toList());
     }
 }

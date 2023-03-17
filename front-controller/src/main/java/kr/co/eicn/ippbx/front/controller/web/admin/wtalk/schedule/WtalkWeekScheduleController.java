@@ -12,6 +12,7 @@ import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkScheduleInfoFormUpdateRequest;
 import kr.co.eicn.ippbx.model.search.TalkServiceInfoSearchRequest;
 import kr.co.eicn.ippbx.util.FormUtils;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import lombok.RequiredArgsConstructor;
@@ -48,10 +49,10 @@ public class WtalkWeekScheduleController extends BaseController {
         model.addAttribute("searchOrganizationNames", organizationService.getHierarchicalOrganizationNames(search.getGroupCode()));
 
         final Map<String, String> talkServices = apiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
-        model.addAttribute("talkServices", talkServices);
+        model.addAttribute("talkServices", new MapToLinkedHashMap().toLinkedHashMapByValue(talkServices));
 
         final Map<Integer, String> scheduleInfos = apiInterface.scheduleInfos().stream().collect(Collectors.toMap(SummaryWtalkScheduleInfoResponse::getParent, SummaryWtalkScheduleInfoResponse::getName));
-        model.addAttribute("scheduleInfos", scheduleInfos);
+        model.addAttribute("scheduleInfos", new MapToLinkedHashMap().toLinkedHashMapByValue(scheduleInfos));
 
         final Map<String, String> dayOfWeeks = FormUtils.optionsOfCode(DayOfWeek.class);
         model.addAttribute("dayOfWeeks", dayOfWeeks);
@@ -62,11 +63,11 @@ public class WtalkWeekScheduleController extends BaseController {
     @GetMapping("new/modal-schedule-info")
     public String modal(Model model, @ModelAttribute("form") TalkScheduleInfoFormRequest form) throws IOException, ResultFailException {
         final Map<String, String> talkServices = apiInterface.talkServices().stream().collect(Collectors.toMap(SummaryWtalkServiceResponse::getSenderKey, SummaryWtalkServiceResponse::getKakaoServiceName));
-        model.addAttribute("talkServices", talkServices);
+        model.addAttribute("talkServices", new MapToLinkedHashMap().toLinkedHashMapByValue(talkServices));
 
         final Map<String, String> chatBotServices = webchatConfigApiInterface.list().stream().filter(e -> StringUtils.isNotEmpty(e.getSenderKey()))
                 .collect(Collectors.toMap(WebchatServiceSummaryInfoResponse::getSenderKey, WebchatServiceSummaryInfoResponse::getChannelName));
-        model.addAttribute("chatBotServices", chatBotServices);
+        model.addAttribute("chatBotServices", new MapToLinkedHashMap().toLinkedHashMapByValue(chatBotServices));
 
         final List<SummaryWtalkScheduleInfoResponse> scheduleInfos = apiInterface.scheduleInfos();
         model.addAttribute("scheduleInfos", scheduleInfos);
@@ -81,7 +82,7 @@ public class WtalkWeekScheduleController extends BaseController {
         ReflectionUtils.copy(form, entity);
 
         final Map<Integer, String> scheduleInfos = apiInterface.scheduleInfos().stream().filter(e -> entity.getChannelType().equals(e.getChannelType())).collect(Collectors.toMap(SummaryWtalkScheduleInfoResponse::getParent, SummaryWtalkScheduleInfoResponse::getName));
-        model.addAttribute("scheduleInfos", scheduleInfos);
+        model.addAttribute("scheduleInfos", new MapToLinkedHashMap().toLinkedHashMapByValue(scheduleInfos));
 
         model.addAttribute("searchOrganizationNames", organizationService.getHierarchicalOrganizationNames(form.getGroupCode()));
 

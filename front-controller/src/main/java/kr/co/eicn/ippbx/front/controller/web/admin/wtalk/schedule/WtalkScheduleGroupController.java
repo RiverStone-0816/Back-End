@@ -8,6 +8,7 @@ import kr.co.eicn.ippbx.front.service.api.wtalk.schedule.WtalkScheduleGroupApiIn
 import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.model.form.TalkScheduleGroupListFormRequest;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import org.slf4j.Logger;
@@ -53,11 +54,11 @@ public class WtalkScheduleGroupController extends BaseController {
 
         model.addAttribute("isChatbot", TalkChannelType.EICN.getCode().equals(channelType));
         final Map<String, String> talkMentsOfStringSeq = apiInterface.getTalkMent().stream().collect(Collectors.toMap(e -> e.getSeq().toString(), SummaryWtalkMentResponse::getMentName));
-        model.addAttribute("talkMentsOfStringSeq", talkMentsOfStringSeq);
+        model.addAttribute("talkMentsOfStringSeq", new MapToLinkedHashMap().toLinkedHashMapByValue(talkMentsOfStringSeq));
         final Map<String, String> chatbotList = chatbotApiInterface.list().stream().collect(Collectors.toMap(e-> e.getId().toString(), WebchatBotSummaryInfoResponse::getName));
-        model.addAttribute("chatbotList", chatbotList);
+        model.addAttribute("chatbotList", new MapToLinkedHashMap().toLinkedHashMapByValue(chatbotList));
         final Map<String, String> talkGroupList = wtalkReceptionGroupApiInterface.list().stream().collect(Collectors.toMap(e -> e.getGroupId().toString(), WtalkMemberGroupSummaryResponse::getGroupName));
-        model.addAttribute("talkGroupList", talkGroupList);
+        model.addAttribute("talkGroupList", new MapToLinkedHashMap().toLinkedHashMapByValue(talkGroupList));
 
         return "admin/wtalk/schedule/schedule-group/modal-schedule-item";
     }

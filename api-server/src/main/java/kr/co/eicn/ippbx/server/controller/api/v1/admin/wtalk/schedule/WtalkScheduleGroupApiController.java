@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,7 +46,7 @@ public class WtalkScheduleGroupApiController extends ApiBaseController {
 	 */
 	@GetMapping("")
 	public ResponseEntity<JsonResult<List<WtalkScheduleGroupSummaryResponse>>> list() {
-		return ResponseEntity.ok(data(repository.getTalkScheduleGroupLists().stream().map(e -> convertDto(e, WtalkScheduleGroupSummaryResponse.class)).collect(Collectors.toList())));
+		return ResponseEntity.ok(data(repository.getTalkScheduleGroupLists().stream().map(e -> convertDto(e, WtalkScheduleGroupSummaryResponse.class)) .collect(Collectors.toList())));
 	}
 
 	/**

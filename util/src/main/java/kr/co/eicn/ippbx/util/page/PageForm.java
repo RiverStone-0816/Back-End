@@ -12,7 +12,7 @@ public class PageForm extends PageQueryableForm {
     protected Integer page = 1;
 
     @PageQueryable
-    protected Integer limit = 10;
+    protected Integer limit = 15;
 
     @PageQueryable
     protected SortField sort;
