@@ -193,6 +193,7 @@ project(':jooq-model') {
                             '| maindb_custom_info_.*' +
                             '| maindb_key_info_.*' +
                             '| maindb_multichannel_info_.*' +
+                            '| message_data_.*' +
                             '| result_custom_info_.*' +
                             '| talk_msg_.*' +
                             '| talk_room_.*' +
@@ -211,6 +212,7 @@ project(':jooq-model') {
                             '| stat_user_outbound_.*' +
                             '| stat_voc_.*' +
                             '| stat_queue_wait_.*' +
+                            '| stat_message_.*' +
                             '| chatt_bookmark_.*' +
                             '| chatt_msg_read_.*' +
                             '| chatt_room_member_.*' +
