@@ -60,7 +60,7 @@
                 <div class="twelve wide column ui form">
                     <div class="fields">
                         <div class="sixteen wide field">
-                            <input name="targetNumbers" type="text">
+                            <input name="targetNumbers" type="text" class="-input-numerical">
                         </div>
                     </div>
                 </div>
