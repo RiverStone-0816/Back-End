@@ -10,6 +10,8 @@ import kr.co.eicn.ippbx.front.model.search.RecordCallSearchForm;
 import kr.co.eicn.ippbx.front.service.OrganizationService;
 import kr.co.eicn.ippbx.front.service.api.application.sms.SmsCategoryApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.sms.SmsMessageTemplateApiInterface;
+import kr.co.eicn.ippbx.front.service.api.user.tel.ServiceApiInterface;
+import kr.co.eicn.ippbx.model.form.SendMessageFormRequest;
 import kr.co.eicn.ippbx.model.form.SendMessageTemplateFormRequest;
 import kr.co.eicn.ippbx.model.form.SendSmsCategoryFormRequest;
 import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
@@ -93,6 +95,7 @@ public class CounselController extends BaseController {
     private final CallbackHistoryApiInterface callbackHistoryApiInterface;
     private final ArsApiInterface arsApiInterface;
     private final SmsCategoryApiInterface smsCategoryApiInterface;
+    private final ServiceApiInterface serviceApiInterface;
     private final SmsMessageTemplateApiInterface smsMessageTemplateApiInterface;
 
     @GetMapping("")
@@ -393,6 +396,15 @@ public class CounselController extends BaseController {
         model.addAttribute("ProtectArs", FormUtils.optionsOfCode(ProtectArs.class));
 
         return "counsel/modal-ars";
+    }
+
+    @GetMapping("modal-sms-send")
+    public String modalSmsSend(Model model, @RequestParam String phoneNumber, @ModelAttribute("form") SendMessageFormRequest form) throws IOException, ResultFailException {
+        model.addAttribute("phoneNumber", phoneNumber);
+        model.addAttribute("smsCategories", smsCategoryApiInterface.pagination(new SendCategorySearchRequest()).getRows());
+        model.addAttribute("serviceLists", serviceApiInterface.list(new ServiceListSearchRequest()));
+        model.addAttribute("smsTemplates", smsMessageTemplateApiInterface.list().stream().collect(Collectors.groupingBy(SendMessageTemplateResponse::getCategoryCode)));
+        return "modal-sms-send";
     }
 
     @GetMapping("modal-route-application")

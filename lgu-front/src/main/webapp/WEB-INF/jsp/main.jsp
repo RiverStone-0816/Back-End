@@ -29,91 +29,6 @@
         <jsp:include page="/counsel/"/>
     </c:if>
 
-    <div class="ui modal inverted tiny" id="modal-sms-send-popup">
-        <i class="close icon"></i>
-        <div class="header">
-            SMS 발송
-        </div>
-        <div class="content rows scrolling">
-            <div class="ui grid">
-                <div class="row">
-                    <div class="sixteen wide column">
-                        <div class="ui form fluid">
-                            <div class="field">
-                                <textarea rows="10"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="four wide column"><label class="control-label">카테고리</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <select>
-                                <option>카테고리선택</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="four wide column"><label class="control-label">상용문구</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <select multiple="multiple">
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                                <option>[EICN 전화번호 안내] EICN 전화번호는 000-000-000 입니다.</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="four wide column"><label class="control-label">전화번호</label></div>
-                    <div class="twelve wide column ui form">
-                        <div class="fields">
-                            <div class="sixteen wide field">
-                                <input type="text">
-                            </div>
-                        </div>
-                        <div class="fields">
-                            <div class="sixteen wide field">
-                                <input type="text">
-                            </div>
-                        </div>
-                        <div class="fields">
-                            <div class="sixteen wide field">
-                                <input type="text">
-                            </div>
-                        </div>
-                        <div class="fields">
-                            <div class="sixteen wide field">
-                                <input type="text">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <button class="ui button modal-close">취소</button>
-            <button class="ui blue button">확인</button>
-        </div>
-    </div>
-
     <div class="ui modal inverted tiny" id="modal-fax-mail-send-popup">
         <i class="close icon"></i>
         <div class="header">
@@ -454,10 +369,6 @@
 
             function smsTemplateAdd() {
                 popupDraggableModalFromReceivedHtml('/counsel/modal-sms-template', 'modal-sms-template-add-popup')
-            }
-
-            function smsSend() {
-                $('#modal-sms-send-popup').dragModalShow()
             }
 
             function faxEmailSend() {

@@ -12,7 +12,6 @@ import java.util.List;
 public class SendMessageFormRequest extends BaseForm {
     private String customId;
     private String customNumber;
-    @NotNull("대표번호")
     private String serviceNumber;
     @NotNull("수신번호")
     private List<String> targetNumbers;

@@ -93,3 +93,6 @@ eicn:
       id: webchatcli_connector
     resource:
       location: /tmp/chatbot
+  message:
+    url:
+      id: message_connector
