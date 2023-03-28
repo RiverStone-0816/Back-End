@@ -89,8 +89,10 @@
                                                         data-value="${field.isneed}">
                                                     <option value=""></option>
                                                     <c:forEach var="e" items="${field.codes}">
-                                                        <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}
+                                                        <c:if test="${e.hide == 'N'}">
+                                                            <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}
                                                                 data-related="${e.relatedFieldId != '' ? e.relatedFieldId : ''}">${g.htmlQuote(e.codeName)}</option>
+                                                        </c:if>
                                                     </c:forEach>
                                                 </select>
                                             </div>

@@ -108,7 +108,9 @@
                                 data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}">
                             <option value=""></option>
                             <c:forEach var="e" items="${field.codes}">
-                                <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
+                                <c:if test="${e.hide == 'N'}">
+                                    <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
+                                </c:if>
                             </c:forEach>
                         </select>
                         <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
