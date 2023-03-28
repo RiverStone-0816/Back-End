@@ -47,6 +47,7 @@ public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbou
                 sum(TABLE.CANCEL_CUSTOM).as(TABLE.CANCEL_CUSTOM),
                 sum(TABLE.BILLSEC_SUM).as(TABLE.BILLSEC_SUM),
                 sum(TABLE.WAIT_SUM).as(TABLE.WAIT_SUM),
+                sum(TABLE.WAIT_CANCEL_SUM).as(TABLE.WAIT_CANCEL_SUM),
                 sum(TABLE.WAIT_SUCC_0_10).as(TABLE.WAIT_SUCC_0_10),
                 sum(TABLE.WAIT_SUCC_10_20).as(TABLE.WAIT_SUCC_10_20),
                 sum(TABLE.WAIT_SUCC_20_30).as(TABLE.WAIT_SUCC_20_30),
