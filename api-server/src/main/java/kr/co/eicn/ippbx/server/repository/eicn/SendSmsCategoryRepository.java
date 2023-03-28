@@ -24,6 +24,8 @@ public class SendSmsCategoryRepository extends EicnBaseRepository<SendCategory, 
 
     public SendSmsCategoryRepository() {
         super(SEND_CATEGORY, SEND_CATEGORY.CATEGORY_CODE, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendCategory.class);
+
+        addOrderingField(SEND_CATEGORY.CREATED_AT.desc());
     }
 
     public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendCategory> pagination(SendCategorySearchRequest search) {

@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.sounds.schedule;
 
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -60,10 +61,10 @@ public class OutboundDayScheduleController extends BaseController {
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") DayOutScheduleSeedFormRequest form) throws IOException, ResultFailException {
         final Map<String, String> extensions = apiInterface.addExtensions().stream().collect(Collectors.toMap(SummaryPhoneInfoResponse::getExtension, e -> defaultString(e.getInUseIdName())));
-        model.addAttribute("extensions", extensions);
+        model.addAttribute("extensions", new MapToLinkedHashMap().toLinkedHashMapByValue(extensions));
 
         final Map<Integer, String> sounds = apiInterface.addSounds().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName));
-        model.addAttribute("sounds", sounds);
+        model.addAttribute("sounds", new MapToLinkedHashMap().toLinkedHashMapByValue(sounds));
 
         return "admin/sounds/schedule/outbound-day/modal";
     }
@@ -81,10 +82,10 @@ public class OutboundDayScheduleController extends BaseController {
         final Map<String, String> extensions = apiInterface.addExtensions().stream()
                 .filter(e -> e.getExtension() != null && e.getInUseIdName() != null)
                 .collect(Collectors.toMap(SummaryPhoneInfoResponse::getExtension, SummaryPhoneInfoResponse::getInUseIdName));
-        model.addAttribute("extensions", extensions);
+        model.addAttribute("extensions", new MapToLinkedHashMap().toLinkedHashMapByValue(extensions));
 
         final Map<Integer, String> sounds = apiInterface.addSounds().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName));
-        model.addAttribute("sounds", sounds);
+        model.addAttribute("sounds", new MapToLinkedHashMap().toLinkedHashMapByValue(sounds));
 
         for (SummaryPhoneInfoResponse extension : entity.getExtensions())
             extensions.remove(extension.getExtension());
@@ -98,7 +99,7 @@ public class OutboundDayScheduleController extends BaseController {
         model.addAttribute("holidays", holidays);
 
         final Map<Integer, String> sounds = apiInterface.addSounds().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName));
-        model.addAttribute("sounds", sounds);
+        model.addAttribute("sounds", new MapToLinkedHashMap().toLinkedHashMapByValue(sounds));
 
         final Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());

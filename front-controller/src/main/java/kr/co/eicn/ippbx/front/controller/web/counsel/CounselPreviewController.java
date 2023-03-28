@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbResu
 import kr.co.eicn.ippbx.front.controller.web.admin.outbound.preview.PreviewDataController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.search.PreviewDataSearch;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.application.type.CommonTypeApiInterface;
 import kr.co.eicn.ippbx.front.service.api.outbound.preview.PreviewDataApiInterface;
@@ -67,7 +68,7 @@ public class CounselPreviewController extends BaseController {
             return "counsel/preview/list-body";
 
         final Map<Integer, String> groups = previewGroups.stream().collect(Collectors.toMap(PrvGroup::getSeq, PrvGroup::getName));
-        model.addAttribute("previewGroups", groups);
+        model.addAttribute("previewGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(groups));
 
         if (search.getGroupSeq() == null)
             search.setGroupSeq(previewGroups.get(0).getSeq());
@@ -94,7 +95,7 @@ public class CounselPreviewController extends BaseController {
         model.addAttribute("customIdToFieldNameToValueMap", PreviewDataController.createCustomIdToFieldNameToValueMap((List<CommonPrvCustomInfo>) (List<?>) pagination.getRows(), previewType));
 
         final Map<String, String> persons = callbackHistoryApiInterface.addPersons().stream().collect(Collectors.toMap(SummaryCallbackDistPersonResponse::getId, SummaryPersonResponse::getIdName));
-        model.addAttribute("persons", persons);
+        model.addAttribute("persons", new MapToLinkedHashMap().toLinkedHashMapByValue(persons));
 
         return "counsel/preview/list-body";
     }

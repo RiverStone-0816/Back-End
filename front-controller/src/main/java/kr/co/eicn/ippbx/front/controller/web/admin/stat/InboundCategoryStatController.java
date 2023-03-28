@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.stat;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
 import kr.co.eicn.ippbx.front.service.api.stat.InboundCategoryStatApiInterface;
@@ -54,10 +55,10 @@ public class InboundCategoryStatController extends BaseController {
         model.addAttribute("searchCycles", searchCycles);
 
         final Map<String, String> services = searchApiInterface.services(new SearchServiceRequest()).stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcName));
-        model.addAttribute("services", services);
+        model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByKey(services));
 
         final Map<String, String> ivrNodes = apiInterface.ivrTree().stream().collect(Collectors.toMap(StatCategoryIvrTreeResponse::getTreeName, StatCategoryIvrTreeResponse::getName));
-        model.addAttribute("ivrNodes", ivrNodes);
+        model.addAttribute("ivrNodes", new MapToLinkedHashMap().toLinkedHashMapByKey(ivrNodes));
 
         return "admin/stat/inbound/category/ground";
     }

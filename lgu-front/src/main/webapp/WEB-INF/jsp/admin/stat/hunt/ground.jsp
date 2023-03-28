@@ -65,12 +65,8 @@
                                 <div class="two wide column"><label class="control-label">추가조건선택</label></div>
                                 <div class="five wide column">
                                     <div class="ui checkbox">
-                                        <form:checkbox path="busy" value="Y"/>
-                                        <label>콜백</label>
-                                    </div>
-                                    <div class="ui checkbox">
-                                        <form:checkbox path="workHour" value="Y"/>
-                                        <label>업무시간</label>
+                                        <form:checkbox path="workHour"/>
+                                        <label>업무시간기준</label>
                                     </div>
                                 </div>
                                 <div class="two wide column"><label class="control-label">서비스선택</label></div>

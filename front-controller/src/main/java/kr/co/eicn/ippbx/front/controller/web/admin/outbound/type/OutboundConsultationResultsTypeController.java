@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.outbound.type;
 
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -55,7 +56,7 @@ public class OutboundConsultationResultsTypeController extends BaseController {
         form.setKind(CommonTypeKind.CONSULTATION_RESULTS.getCode());
 
         final Map<String, String> purposes = FormUtils.optionsOfCode(CommonTypePurpose.class);
-        model.addAttribute("purposes", purposes);
+        model.addAttribute("purposes", new MapToLinkedHashMap().toLinkedHashMapByValue(purposes));
 
         return "admin/outbound/type/consultation-results-type/modal-new-type";
     }

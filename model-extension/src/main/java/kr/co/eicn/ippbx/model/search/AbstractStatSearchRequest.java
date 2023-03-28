@@ -25,8 +25,6 @@ public abstract class AbstractStatSearchRequest extends PageQueryableForm {
     @PageQueryable
     private Boolean inner = false; // 내선
     @PageQueryable
-    private Boolean busy = false; // 콜백
-    @PageQueryable
     private Boolean workHour = false; // 업무시간
     @PageQueryable
     private Boolean person = false; // 직통

@@ -18,10 +18,41 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/sounds/sounds/ring-back-tone/"/>
         <div class="sub-content ui container fluid">
+            <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
+                <div class="panel-heading dp-flex align-items-center justify-content-space-between">
+                    <div>
+                        검색
+                    </div>
+                    <div class="dp-flex align-items-center">
+                        <div class="ui slider checkbox mr15">
+                            <label>접기/펴기</label>
+                            <input type="checkbox" name="newsletter" id="_newsletter">
+                        </div>
+                        <div class="btn-wrap">
+                            <button type="submit" class="ui brand basic button">검색</button>
+                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="search-area">
+                        <div class="ui grid">
+                            <div class="row">
+                                <div class="two wide column"><label class="control-label">음원명</label></div>
+                                <div class="two wide column -search-type-sub-input" data-type="TEXT">
+                                    <div class="ui input fluid">
+                                        <form:input path="mohName"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form:form>
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">11</span> 건</h3>
+                        <h3 class="panel-title">전체 <span class="text-primary">${pagination.rows.size()}</span> 건</h3>
                     </div>
                     <div class="pull-right">
                         <button class="ui basic button" onclick="popupModal()">추가</button>

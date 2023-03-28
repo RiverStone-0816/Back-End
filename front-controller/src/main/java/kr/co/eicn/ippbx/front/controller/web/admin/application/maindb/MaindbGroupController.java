@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.application.maindb;
 
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -57,7 +58,7 @@ public class MaindbGroupController extends BaseController {
         model.addAttribute("pagination", pagination);
 
         final Map<Integer, String> maindbTypes = apiInterface.maindbType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("maindbTypes", maindbTypes);
+        model.addAttribute("maindbTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(maindbTypes));
 
         return "admin/application/maindb/group/ground";
     }
@@ -65,13 +66,13 @@ public class MaindbGroupController extends BaseController {
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") MaindbGroupFormRequest form) throws IOException, ResultFailException {
         final Map<Integer, String> maindbTypes = apiInterface.maindbType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("maindbTypes", maindbTypes);
+        model.addAttribute("maindbTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(maindbTypes));
 
         final List<CommonField> maindbFields = apiInterface.maindbField();
         model.addAttribute("maindbFields", maindbFields);
 
         final Map<Integer, String> resultTypes = apiInterface.resultType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("resultTypes", resultTypes);
+        model.addAttribute("resultTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(resultTypes));
 
         final LinkedHashMap<String, String> dupKeyKTypes = FormUtils.optionsOfCode(DupKeyKind.class);
         model.addAttribute("dupKeyKTypes", dupKeyKTypes);
@@ -88,10 +89,10 @@ public class MaindbGroupController extends BaseController {
         model.addAttribute("searchOrganizationNames", organizationService.getHierarchicalOrganizationNames(entity.getGroupCode()));
 
         final Map<Integer, String> maindbTypes = apiInterface.maindbType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("maindbTypes", maindbTypes);
+        model.addAttribute("maindbTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(maindbTypes));
 
         final Map<Integer, String> resultTypes = apiInterface.resultType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("resultTypes", resultTypes);
+        model.addAttribute("resultTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(resultTypes));
 
         if (!maindbTypes.containsKey(entity.getMaindbType()))
             maindbTypes.put(entity.getMaindbType(), entity.getMaindbName());

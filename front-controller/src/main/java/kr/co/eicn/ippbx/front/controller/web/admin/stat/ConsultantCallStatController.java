@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.stat;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.OrganizationService;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
@@ -64,10 +65,10 @@ public class ConsultantCallStatController extends BaseController {
         model.addAttribute("searchCycles", searchCycles);
 
         final Map<String, String> services = searchApiInterface.services(new SearchServiceRequest()).stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcName));
-        model.addAttribute("services", services);
+        model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValue(services));
 
         final Map<String, String> queues = csRouteApiInterface.queue().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName));
-        model.addAttribute("queues", queues);
+        model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(queues));
 
         model.addAttribute("persons", searchApiInterface.persons());
 
@@ -75,7 +76,7 @@ public class ConsultantCallStatController extends BaseController {
             model.addAttribute("searchOrganizationNames", organizationService.getHierarchicalOrganizationNames(search.getGroupCode()));
 
         final Map<Integer, String> memberStatuses = companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName));
-        model.addAttribute("memberStatuses", memberStatuses);
+        model.addAttribute("memberStatuses", new MapToLinkedHashMap().toLinkedHashMapByKey(memberStatuses));
 
         return "admin/stat/consultant/call/ground";
     }
@@ -87,6 +88,6 @@ public class ConsultantCallStatController extends BaseController {
 
         final Map<Integer, String> memberStatuses = companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName));
 
-        new ConsultantCallStatExcel(list, total, memberStatuses).generator(response, "상담원별콜실적");
+        new ConsultantCallStatExcel(list, total, new MapToLinkedHashMap().toLinkedHashMapByKey(memberStatuses)).generator(response, "상담원(개인별)실적통계");
     }
 }

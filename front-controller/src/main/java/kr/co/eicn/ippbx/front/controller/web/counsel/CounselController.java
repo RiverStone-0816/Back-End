@@ -10,8 +10,11 @@ import kr.co.eicn.ippbx.front.model.search.RecordCallSearchForm;
 import kr.co.eicn.ippbx.front.service.OrganizationService;
 import kr.co.eicn.ippbx.front.service.api.application.sms.SmsCategoryApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.sms.SmsMessageTemplateApiInterface;
+import kr.co.eicn.ippbx.front.service.api.user.tel.ServiceApiInterface;
+import kr.co.eicn.ippbx.model.form.SendMessageFormRequest;
 import kr.co.eicn.ippbx.model.form.SendMessageTemplateFormRequest;
 import kr.co.eicn.ippbx.model.form.SendSmsCategoryFormRequest;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.*;
 import kr.co.eicn.ippbx.front.service.api.acd.QueueApiInterface;
@@ -92,11 +95,12 @@ public class CounselController extends BaseController {
     private final CallbackHistoryApiInterface callbackHistoryApiInterface;
     private final ArsApiInterface arsApiInterface;
     private final SmsCategoryApiInterface smsCategoryApiInterface;
+    private final ServiceApiInterface serviceApiInterface;
     private final SmsMessageTemplateApiInterface smsMessageTemplateApiInterface;
 
     @GetMapping("")
     public String page(Model model) throws IOException, ResultFailException {
-        model.addAttribute("services", searchApiInterface.services(new SearchServiceRequest()).stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcName)));
+        model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValue(searchApiInterface.services(new SearchServiceRequest()).stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcName))));
         model.addAttribute("memberStatuses", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
         return "counsel/main";
     }
@@ -219,7 +223,7 @@ public class CounselController extends BaseController {
             throw new IllegalStateException("고객DB그룹이 존재하지 않습니다.");
 
         final Map<Integer, String> groups = customdbGroups.stream().collect(Collectors.toMap(SearchMaindbGroupResponse::getSeq, SearchMaindbGroupResponse::getName));
-        model.addAttribute("customdbGroups", groups);
+        model.addAttribute("customdbGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(groups));
 
         if (search.getGroupSeq() == null)
             search.setGroupSeq(customdbGroups.get(0).getSeq());
@@ -260,7 +264,7 @@ public class CounselController extends BaseController {
             throw new IllegalStateException("고객DB그룹이 존재하지 않습니다.");
 
         final Map<Integer, String> groups = customdbGroups.stream().collect(Collectors.toMap(SearchMaindbGroupResponse::getSeq, SearchMaindbGroupResponse::getName));
-        model.addAttribute("customdbGroups", groups);
+        model.addAttribute("customdbGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(groups));
 
         if (search.getGroupSeq() == null)
             search.setGroupSeq(customdbGroups.get(0).getSeq());
@@ -318,7 +322,7 @@ public class CounselController extends BaseController {
         model.addAttribute("extensions", outboundDayScheduleApiInterface.addExtensions().stream().filter(e -> e.getExtension() != null && e.getInUseIdName() != null)
                 .sorted(Comparator.comparing(SummaryPhoneInfoResponse::getInUseIdName)).collect(Collectors.toList()));
         // model.addAttribute("numbers", pdsGroupApiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber)));
-        model.addAttribute("queues", gradelistApiInterface.queues().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName)));
+        model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(gradelistApiInterface.queues().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName))));
         model.addAttribute("callStatuses", FormUtils.optionsOfCode(CallStatus.normal_clear, CallStatus.no_answer, CallStatus.user_busy, CallStatus.fail, CallStatus.local_forward));
         model.addAttribute("etcStatuses", FormUtils.optionsOfCode(AdditionalState.HANGUP_BEFORE_CONNECT, AdditionalState.CANCEL_CONNECT, AdditionalState.PICKUPEE, AdditionalState.PICKUPER,
                 AdditionalState.TRANSFEREE, AdditionalState.TRANSFERER, AdditionalState.FORWARD_TRANSFEREE, AdditionalState.FORWARD_TRANSFERER, AdditionalState.SCD_TRANSFEREE,
@@ -352,7 +356,7 @@ public class CounselController extends BaseController {
         final Map<String, String> serviceOptions = new HashMap<>();
         serviceOptions.put("", "");
         searchApiInterface.services(new SearchServiceRequest()).forEach(e -> serviceOptions.put(e.getSvcNumber(), e.getSvcName()));
-        model.addAttribute("serviceOptions", serviceOptions);
+        model.addAttribute("serviceOptions", new MapToLinkedHashMap().toLinkedHashMapByValue(serviceOptions));
 
         return "counsel/modal-search-callback-history-body";
     }
@@ -388,10 +392,19 @@ public class CounselController extends BaseController {
         final SoundListSearchRequest search = new SoundListSearchRequest();
         search.setArs(true);
         final Map<Integer, String> sounds = arsApiInterface.list(search).stream().collect(Collectors.toMap(SoundListSummaryResponse::getSeq, SoundListSummaryResponse::getSoundName));
-        model.addAttribute("sounds", sounds);
+        model.addAttribute("sounds", new MapToLinkedHashMap().toLinkedHashMapByValue(sounds));
         model.addAttribute("ProtectArs", FormUtils.optionsOfCode(ProtectArs.class));
 
         return "counsel/modal-ars";
+    }
+
+    @GetMapping("modal-sms-send")
+    public String modalSmsSend(Model model, @RequestParam String phoneNumber, @ModelAttribute("form") SendMessageFormRequest form) throws IOException, ResultFailException {
+        model.addAttribute("phoneNumber", phoneNumber);
+        model.addAttribute("smsCategories", smsCategoryApiInterface.pagination(new SendCategorySearchRequest()).getRows());
+        model.addAttribute("serviceLists", serviceApiInterface.list(new ServiceListSearchRequest()));
+        model.addAttribute("smsTemplates", smsMessageTemplateApiInterface.list().stream().collect(Collectors.groupingBy(SendMessageTemplateResponse::getCategoryCode)));
+        return "modal-sms-send";
     }
 
     @GetMapping("modal-route-application")

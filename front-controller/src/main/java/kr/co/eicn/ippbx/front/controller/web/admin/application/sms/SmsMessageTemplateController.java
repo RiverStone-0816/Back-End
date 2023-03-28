@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.application.sms;
 
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -47,7 +48,7 @@ public class SmsMessageTemplateController extends BaseController {
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") SendMessageTemplateFormRequest form) throws IOException, ResultFailException {
         final Map<String, String> categories = apiInterface.sendCategory().stream().collect(Collectors.toMap(SendSmsCategorySummaryResponse::getCategoryCode, SendSmsCategorySummaryResponse::getCategoryName));
-        model.addAttribute("categories", categories);
+        model.addAttribute("categories", new MapToLinkedHashMap().toLinkedHashMapByValue(categories));
         return "admin/application/sms/message-template/modal";
     }
 
@@ -58,7 +59,7 @@ public class SmsMessageTemplateController extends BaseController {
         model.addAttribute("entity", entity);
 
         final Map<String, String> categories = apiInterface.sendCategory().stream().collect(Collectors.toMap(SendSmsCategorySummaryResponse::getCategoryCode, SendSmsCategorySummaryResponse::getCategoryName));
-        model.addAttribute("categories", categories);
+        model.addAttribute("categories", new MapToLinkedHashMap().toLinkedHashMapByValue(categories));
 
         if (!categories.containsKey(entity.getCategoryCode()))
             categories.put(entity.getCategoryCode(), entity.getCategoryName());

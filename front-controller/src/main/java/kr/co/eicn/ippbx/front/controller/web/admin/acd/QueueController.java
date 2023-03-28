@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.acd;
 
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -58,17 +59,18 @@ public class QueueController extends BaseController {
 
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") QueueFormRequest form) throws IOException, ResultFailException {
-        final List<String> numbers = numberApiInterface.typeNumbers((byte) 0, "").stream().map(SummaryNumber070Response::getNumber).distinct().collect(Collectors.toList());
+        final List<String> numbers = numberApiInterface.typeNumbers((byte) 0, "").stream().map(SummaryNumber070Response::getNumber).distinct().sorted().collect(Collectors.toList());
         model.addAttribute("numbers", numbers);
         final Map<String, String> services = apiInterface.services().stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcName));
-        model.addAttribute("services", services);
+
+        model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValue(services));
         final Map<String, String> subGroups = apiInterface.subGroups().stream().collect(Collectors.toMap(SummaryQueueResponse::getName, SummaryQueueResponse::getHanName));
-        model.addAttribute("subGroups", subGroups);
+        model.addAttribute("subGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(subGroups));
 
         final List<SummaryPersonResponse> addOnPersons = apiInterface.addOnPersons(null);
         model.addAttribute("addOnPersons", addOnPersons);
 
-        LinkedHashMap<String, String> strategyOptions;
+        Map<String, String> strategyOptions;
         if(g.getServiceKind().equals("CC") && g.getUsingServices().contains("TYPE2")) {
             strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.FEWESTCALLS,CallDistributionStrategy.LEASTRECENT,CallDistributionStrategy.RANDOM
             ,CallDistributionStrategy.RINGALL,CallDistributionStrategy.RRMEMORY);
@@ -76,15 +78,15 @@ public class QueueController extends BaseController {
             strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.class);
         }
 
-        model.addAttribute("strategyOptions", strategyOptions);
+        model.addAttribute("strategyOptions", new MapToLinkedHashMap().toLinkedHashMapByValue(strategyOptions));
         final Map<String, String> ringBackTones = apiInterface.ringBackTone().stream().collect(Collectors.toMap(SummaryMohListResponse::getCategory, SummaryMohListResponse::getMohName));
-        model.addAttribute("ringBackTones", ringBackTones);
+        model.addAttribute("ringBackTones", new MapToLinkedHashMap().toLinkedHashMapByValue(ringBackTones));
         final Map<Integer, String> sounds = scheduleGroupApiInterface.addSoundList().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName));
-        model.addAttribute("sounds", sounds);
+        model.addAttribute("sounds", new MapToLinkedHashMap().toLinkedHashMapByValue(sounds));
         final Map<String, String> contexts = apiInterface.context().stream().collect(Collectors.toMap(SummaryContextInfoResponse::getContext, SummaryContextInfoResponse::getName));
-        model.addAttribute("contexts", contexts);
+        model.addAttribute("contexts", new MapToLinkedHashMap().toLinkedHashMapByValue(contexts));
         final Map<String, String> queues = apiInterface.addQueueNames().stream().collect(Collectors.toMap(SummaryQueueResponse::getName, SummaryQueueResponse::getHanName));
-        model.addAttribute("queues", queues);
+        model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(queues));
 
         return "admin/acd/queue/modal";
     }
@@ -99,29 +101,29 @@ public class QueueController extends BaseController {
         final List<String> numbers = numberApiInterface.typeNumbers((byte) 0, entity.getHost()).stream().map(SummaryNumber070Response::getNumber).distinct().collect(Collectors.toList());
         model.addAttribute("numbers", numbers);
         final Map<String, String> services = apiInterface.services(entity.getHost()).stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcName));
-        model.addAttribute("services", services);
+        model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValue(services));
         final Map<String, String> subGroups = apiInterface.subGroups(entity.getName()).stream().collect(Collectors.toMap(SummaryQueueResponse::getName, SummaryQueueResponse::getHanName));
-        model.addAttribute("subGroups", subGroups);
+        model.addAttribute("subGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(subGroups));
         final List<SummaryPersonResponse> addOnPersons = apiInterface.addOnPersons(entity.getName());
         model.addAttribute("addOnPersons", addOnPersons);
 
-        LinkedHashMap<String, String> strategyOptions;
+        Map<String, String> strategyOptions;
         if(g.getServiceKind().equals("CC") && g.getUsingServices().contains("TYPE2")) {
             strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.FEWESTCALLS,CallDistributionStrategy.LEASTRECENT,CallDistributionStrategy.RANDOM
                     ,CallDistributionStrategy.RINGALL,CallDistributionStrategy.RRMEMORY,CallDistributionStrategy.SKILL);
         } else {
             strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.class);
         }
-        model.addAttribute("strategyOptions", strategyOptions);
+        model.addAttribute("strategyOptions", new MapToLinkedHashMap().toLinkedHashMapByValue(strategyOptions));
 
         final Map<String, String> ringBackTones = apiInterface.ringBackTone().stream().collect(Collectors.toMap(SummaryMohListResponse::getCategory, SummaryMohListResponse::getMohName));
-        model.addAttribute("ringBackTones", ringBackTones);
+        model.addAttribute("ringBackTones", new MapToLinkedHashMap().toLinkedHashMapByValue(ringBackTones));
         final Map<Integer, String> sounds = scheduleGroupApiInterface.addSoundList().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName));
-        model.addAttribute("sounds", sounds);
+        model.addAttribute("sounds", new MapToLinkedHashMap().toLinkedHashMapByValue(sounds));
         final Map<String, String> contexts = apiInterface.context().stream().collect(Collectors.toMap(SummaryContextInfoResponse::getContext, SummaryContextInfoResponse::getName));
-        model.addAttribute("contexts", contexts);
+        model.addAttribute("contexts", new MapToLinkedHashMap().toLinkedHashMapByValue(contexts));
         final Map<String, String> queues = apiInterface.addQueueNames().stream().collect(Collectors.toMap(SummaryQueueResponse::getName, SummaryQueueResponse::getHanName));
-        model.addAttribute("queues", queues);
+        model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(queues));
 
         if (StringUtils.isNotEmpty(entity.getNumber()) && !numbers.contains(entity.getNumber()))
             numbers.add(entity.getNumber());
@@ -144,7 +146,7 @@ public class QueueController extends BaseController {
         form.setEndMinute(entity.getBlendingTimeTotime() % 60);
 
         final Map<String, String> blendingModes = FormUtils.optionsOfCode(BlendingMode.class);
-        model.addAttribute("blendingModes", blendingModes);
+        model.addAttribute("blendingModes", new MapToLinkedHashMap().toLinkedHashMapByValue(blendingModes));
         final List<SummaryPersonResponse> addOnPersons = apiInterface.addOnPersons(entity.getName());
         model.addAttribute("addOnPersons", addOnPersons);
 

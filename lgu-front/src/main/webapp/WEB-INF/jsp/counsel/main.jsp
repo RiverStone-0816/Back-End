@@ -412,6 +412,17 @@
             replaceReceivedHtmlInSilence('/counsel/todo-list', '#todo-list');
         }
 
+        function smsSend(phoneNumber) {
+            const form = $('#modal-sms-send-form');
+            const targetNumber1 = form.find('#targetNumber1');
+            const targetNumber2 = form.find('#targetNumber2');
+
+            if (typeof targetNumber1.val() === 'undefined' || targetNumber1.val() === '')
+                popupDraggableModalFromReceivedHtml('/counsel/modal-sms-send?phoneNumber=' + phoneNumber, 'modal-sms-send');
+            else
+                (typeof targetNumber2.val() === 'undefined' || targetNumber2.val() === '') ? targetNumber2.val(phoneNumber) : form.find('#targetNumber3').val(phoneNumber);
+        }
+
         function loadCounselingList(customId) {
             if (customId && customId !== '') {
                 replaceReceivedHtmlInSilence($.addQueryString('/counsel/counsel-list', {customId: customId}), '#counsel-list');

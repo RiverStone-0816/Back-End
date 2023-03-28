@@ -15,7 +15,7 @@
         </button>
         <div class="flex-grow">
           <div class="relative w-full text-white text-sm text-center">
-            {{ displayName }}<input type="file" id="uploadImage" accept="image/*" @change="sendFile($event.target.files)" style="display: none;">
+            {{ displayName }}<input type="file" id="uploadImage" accept="image/*, video/*" @change="sendFile($event.target.files)" style="display: none;">
           </div>
         </div>
         <button class="flex items-center justify-center hover:bg-slate-900/20 rounded-lg h-10 w-10 text-white close-icon" @click.stop="closeAction" >
@@ -646,6 +646,18 @@ String.prototype.regexIndexOf = function (regex, startpos) {
   return (indexOf >= 0) ? (indexOf + (startpos || 0)) : indexOf;
 }
 
+/*
+function fetchFile(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      resolve(reader.result);
+    };
+    reader.readAsArrayBuffer(file);
+  });
+}
+*/
+
 export default {
   mixins: [debounce, modalOpener],
   components: {},
@@ -661,6 +673,7 @@ export default {
   },
   data() {
     return {
+
       communicator: new Communicator(),
 
       inputEnable: false,
@@ -675,7 +688,7 @@ export default {
       messages: [],
       botIcon: '',
       form: {
-        url: 'https://cloudtalk.eicn.co.kr:442',
+        url: 'https://cloudtalk.eicn.co.kr:552',
         senderKey: null,
         userKey: sessionUtils.getSessionId(),
         ip: '',
@@ -901,7 +914,7 @@ export default {
       }, this.lastReceiveMessageType)
     },
     getFileUrl(company, fileName) {
-      return `https://cloudtalk.eicn.co.kr:442/webchat_bot_image_fetch?company_id=${encodeURIComponent(company)}&file_name=${encodeURIComponent(fileName)}&channel_type=${encodeURIComponent("eicn")}`
+      return `https://cloudtalk.eicn.co.kr:552/webchat_bot_image_fetch?company_id=${encodeURIComponent(company)}&file_name=${encodeURIComponent(fileName)}&channel_type=${encodeURIComponent("eicn")}`
     },
     isImage(fileName) {
       if (!fileName) return false
@@ -1470,72 +1483,80 @@ export default {
     sendFile(files) {
       const name = files[0].name;
       const file = files[0];
-
-      const reader = new FileReader();
-      reader.onload = e => {
-        const image = new Image();
-        image.src = e.target.result;
-        image.onload = function() {
-          resize_image(image);
-        }
-      }
-      reader.readAsDataURL(file);
-      const resize_image = image => {
-        let canvas = document.createElement("canvas"),
-            max_size = 640,
-            // 최대 기준을 1280으로 잡음.
-            width = image.width,
-            height = image.height;
-
-        if (width > height) {
-          // 가로가 길 경우
-          if (width > max_size) {
-            height *= max_size / width;
-            width = max_size;
-          }
-        } else {
-          // 세로가 길 경우
-          if (height > max_size) {
-            width *= max_size / height;
-            height = max_size;
+      if (file.type.indexOf('image/') > -1) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const image = new Image();
+          image.src = e.target.result;
+          image.onload = function () {
+            resize_image(image);
           }
         }
-        canvas.width = width;
-        canvas.height = height;
-        canvas.getContext("2d").drawImage(image, 0, 0, width, height);
-        const dataUrl = canvas.toDataURL("image/jpeg", 0.5);
+        reader.readAsDataURL(file);
+        const resize_image = image => {
+          let canvas = document.createElement("canvas"),
+              max_size = 1024,
+              // 최대 기준을 1024으로 잡음.
+              width = image.width,
+              height = image.height;
 
-        const dataURLToBlob = dataURL => {
-          const BASE64_MARKER = ";base64,";
+          if (width > height) {
+            // 가로가 길 경우
+            if (width > max_size) {
+              height *= max_size / width;
+              width = max_size;
+            }
+          } else {
+            // 세로가 길 경우
+            if (height > max_size) {
+              width *= max_size / height;
+              height = max_size;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          canvas.getContext("2d").drawImage(image, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL("image/jpeg", 0.5);
 
-          // base64로 인코딩 되어있지 않을 경우
-          if (dataURL.indexOf(BASE64_MARKER) === -1) {
-            const parts = dataURL.split(",");
+          const dataURLToBlob = dataURL => {
+            const BASE64_MARKER = ";base64,";
+
+            // base64로 인코딩 되어있지 않을 경우
+            if (dataURL.indexOf(BASE64_MARKER) === -1) {
+              const parts = dataURL.split(",");
+              const contentType = parts[0].split(":")[1];
+              const raw = parts[1];
+              return new Blob([raw], {
+                type: contentType
+              });
+            }
+            // base64로 인코딩 된 이진데이터일 경우
+            const parts = dataURL.split(BASE64_MARKER);
             const contentType = parts[0].split(":")[1];
-            const raw = parts[1];
-            return new Blob([raw], {
+            const raw = window.atob(parts[1]);
+            // atob()는 Base64를 디코딩하는 메서드
+            const rawLength = raw.length;
+            // 부호 없는 1byte 정수 배열을 생성
+            const uInt8Array = new Uint8Array(rawLength); // 길이만 지정된 배열
+            let i = 0;
+            while (i < rawLength) {
+              uInt8Array[i] = raw.charCodeAt(i);
+              i++;
+            }
+            return new Blob([uInt8Array], {
               type: contentType
             });
-          }
-          // base64로 인코딩 된 이진데이터일 경우
-          const parts = dataURL.split(BASE64_MARKER);
-          const contentType = parts[0].split(":")[1];
-          const raw = window.atob(parts[1]);
-          // atob()는 Base64를 디코딩하는 메서드
-          const rawLength = raw.length;
-          // 부호 없는 1byte 정수 배열을 생성
-          const uInt8Array = new Uint8Array(rawLength); // 길이만 지정된 배열
-          let i = 0;
-          while (i < rawLength) {
-            uInt8Array[i] = raw.charCodeAt(i);
-            i++;
-          }
-          return new Blob([uInt8Array], {
-            type: contentType
-          });
+          };
+          this.communicator.sendFile(name, dataURLToBlob(dataUrl));
+          this.messages.push({sender: SENDER.USER, time: new Date(), data: dataUrl, messageType: 'file'})
+        }
+      } else if (file.type.indexOf('video/') > -1) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const data = reader.result;
+          this.communicator.sendFile(name, data);
         };
-        this.communicator.sendFile(name, dataURLToBlob(dataUrl));
-        this.messages.push({sender: SENDER.USER, time: new Date(), data: dataUrl, messageType: 'file'})
+        reader.readAsDataURL(file);
       }
     },
   },
@@ -1573,7 +1594,7 @@ export default {
           if (data.message_type === 'intro') {
             this.backgroundColor = data.message_data.bgcolor
             this.displayName = data.message_data.display_company_name
-            this.botIcon = data.message_data.image === '' ? this.getBotIcon() : `https://cloudtalk.eicn.co.kr:442/webchat_bot_image_fetch?company_id=${encodeURIComponent(data.company_id)}&file_name=${encodeURIComponent(data.message_data.image)}&channel_type=${encodeURIComponent("eicn")}`
+            this.botIcon = data.message_data.image === '' ? this.getBotIcon() : `https://cloudtalk.eicn.co.kr:552/webchat_bot_image_fetch?company_id=${encodeURIComponent(data.company_id)}&file_name=${encodeURIComponent(data.message_data.image)}&channel_type=${encodeURIComponent("eicn")}`
 
             if (data.message_data.schedule_info.schedule_kind === 'B') {
               this.botId = data.message_data.schedule_info.schedule_data

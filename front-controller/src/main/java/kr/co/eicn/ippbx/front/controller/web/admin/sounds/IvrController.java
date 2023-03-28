@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import kr.co.eicn.ippbx.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,10 +47,6 @@ import kr.co.eicn.ippbx.model.form.WebVoiceItemsDtmfFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsInputFormRequest;
 import kr.co.eicn.ippbx.model.search.NumberSearchRequest;
-import kr.co.eicn.ippbx.util.ContextUtil;
-import kr.co.eicn.ippbx.util.FormUtils;
-import kr.co.eicn.ippbx.util.ReflectionUtils;
-import kr.co.eicn.ippbx.util.ResultFailException;
 import lombok.AllArgsConstructor;
 
 /**
@@ -82,10 +79,10 @@ public class IvrController extends BaseController {
                     e.getCode().equals(IvrMenuType.CONNECT_HUNT_NUMBER_AFTER_DONE_EXCEPTION.getCode()))).collect(Collectors.toList());
         }
 
-        model.addAttribute("roots", rootMap);
+        model.addAttribute("roots", new MapToLinkedHashMap().toLinkedHashMapByValue(rootMap));
         model.addAttribute("menuTypes", menuTypes);
-        model.addAttribute("level", apiInterface.list().stream().collect(Collectors.toMap(IvrTree::getSeq, IvrTree::getLevel)));
-        model.addAttribute("webVoices", apiInterface.list().stream().collect(Collectors.toMap(IvrTree::getSeq, IvrTree::getIsWebVoice)));
+        model.addAttribute("level", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.list().stream().collect(Collectors.toMap(IvrTree::getSeq, IvrTree::getLevel))));
+        model.addAttribute("webVoices", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.list().stream().collect(Collectors.toMap(IvrTree::getSeq, IvrTree::getIsWebVoice))));
 
         if (seq == null && roots.size() > 0)
             seq = roots.get(0).getSeq();
@@ -111,12 +108,12 @@ public class IvrController extends BaseController {
 
         model.addAttribute("sounds", scheduleGroupApiInterface.addSoundList());
         final Map<String, String> serviceNumbers = numberApiInterface.list(new NumberSearchRequest(NumberType.SERVICE.getCode())).stream().collect(Collectors.toMap(NumberSummaryResponse::getNumber, NumberSummaryResponse::getNumber));
-        model.addAttribute("serviceNumbers", serviceNumbers);
+        model.addAttribute("serviceNumbers", new MapToLinkedHashMap().toLinkedHashMapByValue(serviceNumbers));
         model.addAttribute("queues", gradelistApiInterface.queues());
         final Map<String, String> contexts = queueApiInterface.context().stream().collect(Collectors.toMap(SummaryContextInfoResponse::getContext, SummaryContextInfoResponse::getName));
-        model.addAttribute("contexts", contexts);
+        model.addAttribute("contexts", new MapToLinkedHashMap().toLinkedHashMapByValue(contexts));
         final Map<String, String> extensions = outboundWeekScheduleApiInterface.addExtensions().stream().collect(Collectors.toMap(SummaryPhoneInfoResponse::getExtension, e -> defaultString(e.getInUseIdName())));
-        model.addAttribute("extensions", extensions);
+        model.addAttribute("extensions", new MapToLinkedHashMap().toLinkedHashMapByValue(extensions));
         model.addAttribute("webVoiceYn", FormUtils.optionsOfCode(IsWebVoiceYn.class));
 
         return "admin/sounds/ivr/modal";

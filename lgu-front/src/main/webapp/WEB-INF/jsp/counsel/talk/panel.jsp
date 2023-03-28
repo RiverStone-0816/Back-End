@@ -154,6 +154,37 @@
 
     <tags:scripts>
         <script>
+            function checkFileType(type, content) {
+                if (['file', 'image', 'audio', 'video'].includes(type)) {
+                    const isImage = (fileName) => {
+                        if (!fileName) return false
+                        return fileName.toLowerCase().endsWith('.jpg')
+                            || fileName.toLowerCase().endsWith('.jpeg')
+                            || fileName.toLowerCase().endsWith('.png')
+                            || fileName.toLowerCase().endsWith('.bmp')
+                            || fileName.toLowerCase().endsWith('.gif')
+                    }
+                    const isAudio = (fileName) => {
+                        if (!fileName) return false
+                        return fileName.toLowerCase().endsWith('.mp3')
+                            || fileName.toLowerCase().endsWith('.wav')
+                    }
+                    const isVideo = (fileName) => {
+                        if (!fileName) return false
+                        return fileName.toLowerCase().endsWith('.mp4')
+                            || fileName.toLowerCase().endsWith('.avi')
+                            || fileName.toLowerCase().endsWith('.wmv')
+                            || fileName.toLowerCase().endsWith('.mov')
+                    }
+
+                    if (isImage(content)) return 'photo'
+                    else if(isAudio(content)) return 'audio'
+                    else if(isVideo(content)) return 'video'
+                }
+
+                return type;
+            }
+
             const talkListContainer = Vue.createApp({
                 setup: function () {
                     return {
@@ -1594,38 +1625,6 @@
             .on('svc_webrtc', processTalkMessage)
             .on('svc_webrtc_ready', processTalkMessage)
             .on('svc_webrtc_record', processTalkMessage)
-
-
-        function checkFileType(type, content) {
-            if (['file', 'image', 'audio', 'video'].includes(type)) {
-                const isImage = (fileName) => {
-                    if (!fileName) return false
-                    return fileName.toLowerCase().endsWith('.jpg')
-                        || fileName.toLowerCase().endsWith('.jpeg')
-                        || fileName.toLowerCase().endsWith('.png')
-                        || fileName.toLowerCase().endsWith('.bmp')
-                        || fileName.toLowerCase().endsWith('.gif')
-                }
-                const isAudio = (fileName) => {
-                    if (!fileName) return false
-                    return fileName.toLowerCase().endsWith('.mp3')
-                        || fileName.toLowerCase().endsWith('.wav')
-                }
-                const isVideo = (fileName) => {
-                    if (!fileName) return false
-                    return fileName.toLowerCase().endsWith('.mp4')
-                        || fileName.toLowerCase().endsWith('.avi')
-                        || fileName.toLowerCase().endsWith('.wmv')
-                        || fileName.toLowerCase().endsWith('.mov')
-                }
-
-                if (isImage(content)) return 'photo'
-                else if(isAudio(content)) return 'audio'
-                else if(isVideo(content)) return 'video'
-            }
-
-            return type;
-        }
 
         $(window).on('load', function () {
             loadTalkCustomInput()

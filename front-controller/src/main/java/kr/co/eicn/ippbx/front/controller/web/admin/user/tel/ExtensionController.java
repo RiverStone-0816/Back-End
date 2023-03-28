@@ -91,7 +91,7 @@ public class ExtensionController extends BaseController {
 
         final SearchCidRequest cidRequest = new SearchCidRequest();
         final List<SearchCidResponse> cids = searchApiInterface.cids(cidRequest);
-        model.addAttribute("cids", cids.stream().filter(e -> !e.getCidNumber().equals(form.getCid())).collect(Collectors.toList()));
+        model.addAttribute("cids", cids.stream().filter(e -> !e.getCidNumber().equals(form.getCid())).sorted(Comparator.comparing(SearchCidResponse::getCidNumber)).collect(Collectors.toList()));
 
         final Map<String, String> forwardKinds = FormUtils.optionsOfCode(ForwardKind.INNER, ForwardKind.REPRESENTATIVE, ForwardKind.OUTER);
         model.addAttribute("forwardKinds", forwardKinds);
