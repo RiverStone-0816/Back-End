@@ -506,6 +506,59 @@
           </template>
           <!-- file block end -->
 
+          <!-- fileImage block start -->
+          <template v-if="message.sender !== 'SERVER' && message.messageType === 'fileImage'">
+            <div class="pr-1 pt-1">
+              <div class="flex items-end justify-end">
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 order-1 items-end">
+                  <div>
+                    <img :src="message.data" />
+                  </div>
+                  <div class="text-xxs text-gray-600/100">
+                    {{ getTimeFormat(message.time) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- fileImage block end -->
+
+          <!-- fileVideo block start -->
+          <template v-if="message.sender !== 'SERVER' && message.messageType === 'fileVideo'">
+            <div class="pr-1 pt-1">
+              <div class="flex items-end justify-end">
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 order-1 items-end">
+                  <div>
+                    <video :src="message.data" controls/>
+                  </div>
+                  <div class="text-xxs text-gray-600/100">
+                    {{ getTimeFormat(message.time) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- fileVideo block end -->
+
+          <!-- fileVideo start -->
+          <template v-if="message.sender === 'SERVER' && message.messageType === 'text'">
+            <div class="pl-3 pt-1">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <!--텍스트 출력-->
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
+                  <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
+                    <span>
+                      <p>{{ message.data }}</p>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- fileVideo end -->
+
           <!-- audio start -->
           <template v-if="message.sender === 'SERVER' && message.messageType === 'audio_start'">
             <div class="pl-3 pt-1">
@@ -645,18 +698,6 @@ String.prototype.regexIndexOf = function (regex, startpos) {
   var indexOf = this.substring(startpos || 0).search(regex);
   return (indexOf >= 0) ? (indexOf + (startpos || 0)) : indexOf;
 }
-
-/*
-function fetchFile(file) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      resolve(reader.result);
-    };
-    reader.readAsArrayBuffer(file);
-  });
-}
-*/
 
 export default {
   mixins: [debounce, modalOpener],
@@ -1548,15 +1589,61 @@ export default {
             });
           };
           this.communicator.sendFile(name, dataURLToBlob(dataUrl));
-          this.messages.push({sender: SENDER.USER, time: new Date(), data: dataUrl, messageType: 'file'})
+          this.messages.push({sender: SENDER.USER, time: new Date(), data: dataUrl, messageType: 'fileImage'})
         }
       } else if (file.type.indexOf('video/') > -1) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          const data = reader.result;
-          this.communicator.sendFile(name, data);
-        };
-        reader.readAsDataURL(file);
+        if(file.size > 100*1024*1024) {
+          this.messages.push({
+            sender: SENDER.SERVER,
+            time: new Date(),
+            data: `파일은 100MB를 넘을수 없습니다.`,
+            messageType: 'text'
+          })
+        } else {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const data = reader.result;
+
+            const dataURLToBlob = dataURL => {
+              const BASE64_MARKER = ";base64,";
+
+              // base64로 인코딩 되어있지 않을 경우
+              if (dataURL.indexOf(BASE64_MARKER) === -1) {
+                const parts = dataURL.split(",");
+                const contentType = parts[0].split(":")[1];
+                const raw = parts[1];
+                return new Blob([raw], {
+                  type: contentType
+                });
+              }
+              // base64로 인코딩 된 이진데이터일 경우
+              const parts = dataURL.split(BASE64_MARKER);
+              const contentType = parts[0].split(":")[1];
+              const raw = window.atob(parts[1]);
+              // atob()는 Base64를 디코딩하는 메서드
+              const rawLength = raw.length;
+              // 부호 없는 1byte 정수 배열을 생성
+              const uInt8Array = new Uint8Array(rawLength); // 길이만 지정된 배열
+              let i = 0;
+              while (i < rawLength) {
+                uInt8Array[i] = raw.charCodeAt(i);
+                i++;
+              }
+              return new Blob([uInt8Array], {
+                type: contentType
+              });
+            };
+
+            this.communicator.sendFile(name, dataURLToBlob(data));
+          };
+          reader.readAsDataURL(file);
+          this.messages.push({
+            sender: SENDER.USER,
+            time: new Date(),
+            data: URL.createObjectURL(file),
+            messageType: 'fileVideo'
+          })
+        }
       }
     },
   },
