@@ -50,6 +50,8 @@ public class WtalkHistoryController extends BaseController {
 
     @Value("${eicn.wtalk.socket.id}")
     private String talkSocketId;
+    @Value("${eicn.webchat.image.url}")
+    private String imageUrl;
 
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") TalkRoomSearchRequest search) throws IOException, ResultFailException {
@@ -100,6 +102,11 @@ public class WtalkHistoryController extends BaseController {
         messageHistory.sort(Comparator.comparingInt(WtalkMsgResponse::getSeq));
         model.addAttribute("messageHistory", messageHistory);
 
+        final Map<String, String> socketMap = g.getSocketList();
+        logger.info(talkSocketId);
+        logger.info(socketMap.get(talkSocketId));
+        model.addAttribute("imageUrl", socketMap.get(talkSocketId));
+
         return "admin/wtalk/history/modal";
     }
 
@@ -123,6 +130,11 @@ public class WtalkHistoryController extends BaseController {
         }).collect(Collectors.toList());
         messageHistory.sort(Comparator.comparingInt(WtalkMsgResponse::getSeq));
         model.addAttribute("messageHistory", messageHistory);
+
+        final Map<String, String> socketMap = g.getSocketList();
+        logger.info(talkSocketId);
+        logger.info(socketMap.get(talkSocketId));
+        model.addAttribute("imageUrl", socketMap.get(talkSocketId));
 
         return "admin/wtalk/history/modal";
     }

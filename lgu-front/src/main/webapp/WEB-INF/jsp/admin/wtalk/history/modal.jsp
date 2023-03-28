@@ -220,12 +220,14 @@
                                                 <div class="chat">
                                                     <div class="bubble">
                                                         <p class="txt_chat">
-                                                            <a href="${g.htmlQuote(e.content)}"
+                                                            <a href="${imageUrl.concat("/webchat_bot_image_fetch?company_id=").concat(g.user.companyId).concat("&file_name=")
+                                                            .concat(g.htmlQuote(e.content)).concat("&channel_type=").concat(entity.channelType.getCode())}"
                                                                target="_blank">${g.htmlQuote(e.content)}</a>
                                                         </p>
                                                     </div>
                                                 </div>
-                                                <a href="${g.htmlQuote(e.content)}" target="_blank">저장하기</a>
+                                                <a href="${imageUrl.concat("/webchat_bot_image_fetch?company_id=").concat(g.user.companyId).concat("&file_name=")
+                                                            .concat(g.htmlQuote(e.content)).concat("&channel_type=").concat(entity.channelType.getCode())}" target="_blank">저장하기</a>
                                             </c:when>
                                             <c:otherwise>
                                                 <div class="chat">
@@ -332,3 +334,25 @@
         </div>
     </div>
 </div>
+<script>
+    function isImage(fileName) {
+        if (!fileName) return false
+        return fileName.toLowerCase().endsWith('.jpg')
+            || fileName.toLowerCase().endsWith('.jpeg')
+            || fileName.toLowerCase().endsWith('.png')
+            || fileName.toLowerCase().endsWith('.bmp')
+            || fileName.toLowerCase().endsWith('.gif')
+    }
+    function isAudio(fileName) {
+        if (!fileName) return false
+        return fileName.toLowerCase().endsWith('.mp3')
+            || fileName.toLowerCase().endsWith('.wav')
+    }
+    function isVideo(fileName) {
+        if (!fileName) return false
+        return fileName.toLowerCase().endsWith('.mp4')
+            || fileName.toLowerCase().endsWith('.avi')
+            || fileName.toLowerCase().endsWith('.wmv')
+            || fileName.toLowerCase().endsWith('.mov')
+    }
+</script>

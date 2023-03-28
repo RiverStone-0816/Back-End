@@ -748,7 +748,7 @@
                                                     <div v-else-if="e.messageType === 'audio'" class="maudio" style="width: 330px">
                                                         <audio controls :src="e.fileUrl" initaudio="false"></audio>
                                                     </div>
-                                                    <video v-else-if="e.messageType === 'video'" controls :src="e.fileUrl"></video>
+                                                    <video v-else-if="e.messageType === 'video'" controls :src="e.fileUrl" width="250"></video>
                                                     <a v-else-if="e.messageType === 'file'" target="_blank"
                                                        :href="e.fileUrl">{{ e.contents }}</a>
                                                     <template v-else-if="e.messageType === 'text'">
