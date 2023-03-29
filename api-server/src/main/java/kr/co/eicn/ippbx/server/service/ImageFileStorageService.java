@@ -7,6 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,7 +18,7 @@ import static org.springframework.util.StringUtils.cleanPath;
 @Slf4j
 @Service
 public class ImageFileStorageService extends FileSystemStorageService {
-    public String uploadImage(Path path, MultipartFile image) {
+    public String uploadImage(Path path, MultipartFile image) throws IOException {
         if (image == null || image.isEmpty())
             throw new IllegalArgumentException("파일을 확인할 수 없습니다.");
         if (!StringUtils.endsWithAny(Objects.requireNonNull(image.getOriginalFilename()).toLowerCase(), ".jpg", "jpeg", ".png"))

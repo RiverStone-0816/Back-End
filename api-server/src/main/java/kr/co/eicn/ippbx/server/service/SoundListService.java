@@ -61,7 +61,7 @@ public class SoundListService extends ApiBaseService {
 		webSecureHistoryRepository.insert(WebSecureActionType.SOUND, WebSecureActionSubType.of(type), entity.getSoundName());
 	}
 
-	public Integer insertOnGeneratedKeyAllPbxServersWithFileStore(SoundListRequest form) {
+	public Integer insertOnGeneratedKeyAllPbxServersWithFileStore(SoundListRequest form) throws IOException {
 		final MultipartFile soundFile = form.getFile();
 
 		if (soundFile.getSize() >  5 * 1024 * 1024)

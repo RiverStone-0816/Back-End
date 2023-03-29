@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
@@ -105,7 +106,7 @@ public class WebChattingConfigService extends ApiBaseService {
         webchatServiceInfoRepository.delete(seq);
     }
 
-    public String uploadImage(MultipartFile image) {
+    public String uploadImage(MultipartFile image) throws IOException {
         final Path newPath = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
         final File file = new File(replace(savePath, "{0}", g.getUser().getCompanyId()));
         if(!file.exists())

@@ -22,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
@@ -72,7 +73,7 @@ public class SoundListApiController extends ApiBaseController {
     }
 
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<JsonResult<Integer>> post(@Valid SoundListRequest form, BindingResult bindingResult) {
+    public ResponseEntity<JsonResult<Integer>> post(@Valid SoundListRequest form, BindingResult bindingResult) throws IOException {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 

@@ -61,7 +61,7 @@ public class MohListService extends ApiBaseService {
 		webSecureHistoryRepository.insert(WebSecureActionType.SOUND, WebSecureActionSubType.of(type), entity.getFileName());
 	}
 
-	public String insertOnGeneratedKeyAllPbxServersWithFileStore(MohListRequest form) {
+	public String insertOnGeneratedKeyAllPbxServersWithFileStore(MohListRequest form) throws IOException {
 		final MultipartFile soundFile = form.getFile();
 
 		if (soundFile.getSize() >  5 * 1024 * 1024)

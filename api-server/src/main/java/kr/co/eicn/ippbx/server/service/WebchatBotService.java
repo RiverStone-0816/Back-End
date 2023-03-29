@@ -13,6 +13,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -220,7 +221,7 @@ public class WebchatBotService extends ApiBaseService {
         return createWebchatBotInfo(copyData);
     }
 
-    public String uploadImage(MultipartFile image) {
+    public String uploadImage(MultipartFile image) throws IOException {
         final Path newPath = Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId()));
 
         return imageFileStorageService.uploadImage(newPath, image);

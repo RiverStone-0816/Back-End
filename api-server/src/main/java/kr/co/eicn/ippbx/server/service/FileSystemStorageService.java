@@ -29,6 +29,13 @@ public class FileSystemStorageService implements StorageService {
 	}
 
 	public void store(Path path, String fileName, MultipartFile file) {
+			if (Files.notExists(path)) {
+				try {
+					Files.createDirectories(path);
+				} catch (IOException ignored) {
+				}
+			}
+
 		try {
 			if (path.toString().indexOf("../") > 0)
 				throw new StorageException("파일을 확인하세요.");

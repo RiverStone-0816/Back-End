@@ -25,6 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
@@ -91,7 +92,7 @@ public class SendFileApiController extends ApiBaseController {
     }
 
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<JsonResult<Long>> post(@Valid SendFileFormRequest form, BindingResult bindingResult) {
+    public ResponseEntity<JsonResult<Long>> post(@Valid SendFileFormRequest form, BindingResult bindingResult) throws IOException {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
@@ -101,7 +102,7 @@ public class SendFileApiController extends ApiBaseController {
 
     @PostMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<JsonResult<Void>> put(@Valid SendFileUpdateRequest form, BindingResult bindingResult,
-                                                @PathVariable Long id) {
+                                                @PathVariable Long id) throws IOException {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 

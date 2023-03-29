@@ -39,7 +39,7 @@ public class SendFileService extends ApiBaseService {
         return repository.findOneIfNullThrow(id);
     }
 
-    public Long insertOnGeneratedKeyWithFileStore(SendFileFormRequest formRequest) {
+    public Long insertOnGeneratedKeyWithFileStore(SendFileFormRequest formRequest) throws IOException {
         final MultipartFile file = formRequest.getFile();
         final Path path = Paths.get(savePath, g.getUser().getCompanyId());
 
@@ -73,7 +73,7 @@ public class SendFileService extends ApiBaseService {
         return nextSequence;
     }
 
-    public void updateWithFileStore(SendFileUpdateRequest updateRequest, Long id) {
+    public void updateWithFileStore(SendFileUpdateRequest updateRequest, Long id) throws IOException {
         final MultipartFile file = updateRequest.getFile();
         final SendFile entity = findOneIfNullThrow(id);
         final Path path = Paths.get(savePath, g.getUser().getCompanyId(), entity.getFileName());
