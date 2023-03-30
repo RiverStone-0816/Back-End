@@ -32,6 +32,7 @@
                         <td class="left aligned">전화
                             <c:forEach var="e" items="${files}">
                                 <c:if test="${!user.listeningRecordingAuthority.equals('NO')}">
+                                    <audio controls src="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY&token=${accessToken}" class="audio" preload="none"></audio>
                                     <c:if test="${user.downloadRecordingAuthority.equals('MY') && entity.personList.id.equals(user.id)}">
                                     <div class="ui center aligned segment">
                                         <a target="_blank" href="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN&token=${accessToken}">[ 파일다운로드 ]</a>
