@@ -54,7 +54,11 @@
 <tags:scripts>
     <script>
         function popupTransferModal() {
-            $('#modal-consulting-move-popup').dragModalShow()
+            if (phoneNumber !== undefined && phoneNumber !== "") {
+                $('#modal-consulting-move-popup').dragModalShow();
+            } else {
+                alert("전화번호 정보를 알수 없습니다.\n이관은 고객정보를 먼저 저장해야 합니다.");
+            }
         }
 
         function clearTransferredUser() {
