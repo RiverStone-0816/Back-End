@@ -18,7 +18,7 @@ import static org.springframework.util.StringUtils.cleanPath;
 @Slf4j
 @Service
 public class ImageFileStorageService extends FileSystemStorageService {
-    public String uploadImage(Path path, MultipartFile image) throws IOException {
+    public String uploadImage(Path path, MultipartFile image) {
         if (image == null || image.isEmpty())
             throw new IllegalArgumentException("파일을 확인할 수 없습니다.");
         if (!StringUtils.endsWithAny(Objects.requireNonNull(image.getOriginalFilename()).toLowerCase(), ".jpg", "jpeg", ".png"))
