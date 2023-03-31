@@ -43,6 +43,7 @@ public class MessageSendService extends ApiServerInterface {
             target.setPhoneNumber(number);
             target.setTitle(form.getContent().length() > 10 ? form.getContent().substring(0,10) : form.getContent());
             target.setMessage(form.getContent());
+            target.setCallback(form.getServiceNumber());
 
             targets.add(target);
         }
@@ -72,5 +73,7 @@ public class MessageSendService extends ApiServerInterface {
         private String title;
         @JsonProperty("message")
         private String message;
+        @JsonProperty("callback")
+        private String callback;
     }
 }

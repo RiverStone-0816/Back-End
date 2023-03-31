@@ -56,6 +56,18 @@
                 </div>
             </div>
             <div class="row">
+                <div class="four wide column"><label class="control-label">대표번호</label></div>
+                <div class="twelve wide column">
+                    <div class="ui form">
+                        <form:select path="serviceNumber">
+                            <c:forEach var="e" items="${serviceLists}">
+                                <form:option value="${g.htmlQuote(e.svcCid)}" label="${g.htmlQuote(e.svcName)}(${g.htmlQuote(e.svcCid)})"/>
+                            </c:forEach>
+                        </form:select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="four wide column"><label class="control-label">전화번호</label></div>
                 <div class="twelve wide column ui form">
                     <div class="fields">
