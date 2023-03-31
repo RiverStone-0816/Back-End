@@ -86,15 +86,15 @@
                                 <div class="five wide column">
                                     <div class="ui checkbox">
                                         <form:checkbox path="person"/>
-                                        <label>직통전화추가</label>
+                                        <label>직통전화포함</label>
                                     </div>
                                     <div class="ui checkbox">
                                         <form:checkbox path="inner"/>
-                                        <label>내선통화추가</label>
+                                        <label>내선통화포함</label>
                                     </div>
                                     <div class="ui checkbox">
                                         <form:checkbox path="workHour"/>
-                                        <label>업무시간기준</label>
+                                        <label>업무시간만 보기</label>
                                     </div>
                                 </div>
                             </div>
@@ -122,37 +122,46 @@
                             <table class="ui celled table compact unstackable definition structured">
                                 <thead>
                                 <tr>
-                                    <th rowspan="2">날짜/시간</th>
-                                    <th colspan="6" class="color red">I/B 콜 현황</th>
-                                    <th colspan="6" class="color red">성과지표</th>
-                                    <th colspan="5" class="color red">응대호 대기시간(초) 분석</th>
-                                    <th colspan="5" class="color red">포기호 대기시간(초) 분석</th>
+                                    <th rowspan="3">날짜/시간</th>
+                                    <th colspan="9" class="color red">I/B 콜 현황</th>
+                                    <th colspan="9" class="color red">성과지표</th>
+                                    <th colspan="5" class="color red">응대호 대기시간(SEC) 분석</th>
+                                    <th colspan="5" class="color red">포기호 대기시간(SEC) 분석</th>
                                 </tr>
                                 <tr>
-                                    <th class="color red">I/B<br>전체콜</th>
-                                    <th class="color red">단순조회</th>
-                                    <th class="color red">연결요청</th>
-                                    <th class="color red">응대호</th>
-                                    <th class="color red">포기호</th>
-                                    <th class="color red">콜백</th>
+                                    <th rowspan="2" class="color red">I/B<br>전체콜</th>
+                                    <th rowspan="2" class="color red">단순조회</th>
+                                    <th rowspan="2" class="color red">연결요청</th>
+                                    <th rowspan="2" class="color red">응대호</th>
+                                    <th colspan="4" class="color red">포기호</th>
+                                    <th rowspan="2" class="color red">콜백</th>
 
-                                    <th class="color red">I/B<br>총 통화시간</th>
-                                    <th class="color red">I/B<br>평균통화시간</th>
-                                    <th class="color red">I/B<br>평균대기시간</th>
-                                    <th class="color red">호응답률</th>
-                                    <th class="color red">서비스레벨<br>호응답률</th>
-                                    <th class="color red">단순조회율</th>
+                                    <th rowspan="2" class="color red">I/B<br>총 통화시간</th>
+                                    <th rowspan="2" class="color red">I/B<br>평균통화시간</th>
+                                    <th rowspan="2" class="color red">I/B<br>평균대기시간</th>
+                                    <th rowspan="2" class="color red">호응답률</th>
+                                    <th rowspan="2" class="color red">콜백포함<br>응답률</th>
+                                    <th rowspan="2" class="color red">서비스레벨<br>호응답률</th>
+                                    <th rowspan="2" class="color red">양적개선<br>응답률</th>
+                                    <th rowspan="2" class="color red">질적개선<br>응답률</th>
+                                    <th rowspan="2" class="color red">단순조회율</th>
 
-                                    <th class="color red">~10</th>
-                                    <th class="color red">~20</th>
-                                    <th class="color red">~30</th>
-                                    <th class="color red">~40</th>
-                                    <th class="color red">40~</th>
-                                    <th class="color red">~10</th>
-                                    <th class="color red">~20</th>
-                                    <th class="color red">~30</th>
-                                    <th class="color red">~40</th>
-                                    <th class="color red">40~</th>
+                                    <th rowspan="2" class="color red">~10</th>
+                                    <th rowspan="2" class="color red">~20</th>
+                                    <th rowspan="2" class="color red">~30</th>
+                                    <th rowspan="2" class="color red">~40</th>
+                                    <th rowspan="2" class="color red">40~</th>
+                                    <th rowspan="2" class="color red">~10</th>
+                                    <th rowspan="2" class="color red">~20</th>
+                                    <th rowspan="2" class="color red">~30</th>
+                                    <th rowspan="2" class="color red">~40</th>
+                                    <th rowspan="2" class="color red">40~</th>
+                                </tr>
+                                <tr>
+                                    <th class="color red">전체</th>
+                                    <th class="color red">비수신<br/>포기호</th>
+                                    <th class="color red">타임아웃<br/>포기호</th>
+                                    <th class="color red">고객<br/>포기호</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -164,18 +173,24 @@
                                     <tr>
                                         <td>${g.htmlQuote(element.timeInformation)}</td>
 
-                                        <td><span class="data-detail-trigger">${e.total}</span></td>
-                                        <td><span class="data-detail-trigger">${e.onlyRead}</span></td>
-                                        <td><span class="data-detail-trigger">${e.connReq}</span></td>
-                                        <td><span class="data-detail-trigger">${e.success}</span></td>
-                                        <td><span class="data-detail-trigger">${e.cancel}</span></td>
-                                        <td><span class="data-detail-trigger">${e.callbackSuccess}</span></td>
+                                        <td>${e.total}</td>
+                                        <td>${e.onlyRead}</td>
+                                        <td>${e.connReq}</td>
+                                        <td>${e.success}</td>
+                                        <td>${e.cancel}</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>${e.callbackSuccess}</td>
 
                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecSum)}</td>
                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecAvg)}</td>
                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.waitAvg)}</td>
                                         <td>${e.responseRate}%</td>
+                                        <td>0%</td>
                                         <td>${e.svcLevelAvg}%</td>
+                                        <td>0%</td>
+                                        <td>0%</td>
                                         <td>${e.ivrAvg}%</td>
 
                                         <td>${e.waitSucc_0_10}</td>
@@ -202,13 +217,19 @@
                                     <td>${total.connReq}</td>
                                     <td>${total.success}</td>
                                     <td>${total.cancel}</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>0</td>
                                     <td>${total.callbackSuccess}</td>
 
                                     <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecSum)}</td>
                                     <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecAvg)}</td>
                                     <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.waitAvg)}</td>
                                     <td>${String.format("%.1f", total.responseRate)}%</td>
+                                    <td>0%</td>
                                     <td>${String.format("%.1f", total.svcLevelAvg)}%</td>
+                                    <td>0%</td>
+                                    <td>0%</td>
                                     <td>${String.format("%.1f", total.ivrAvg)}%</td>
 
                                     <td>${total.waitSucc_0_10}</td>
@@ -228,7 +249,7 @@
                                 <c:otherwise>
                                     <tbody>
                                     <tr>
-                                        <td colspan="22" class="null-data">조회된 데이터가 없습니다.</td>
+                                        <td colspan="28" class="null-data">조회된 데이터가 없습니다.</td>
                                     </tr>
                                     </tbody>
                                 </c:otherwise>

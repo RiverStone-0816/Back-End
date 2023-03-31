@@ -56,15 +56,15 @@
                                 <div class="five wide column">
                                     <div class="ui checkbox">
                                         <form:checkbox path="person"/>
-                                        <label>직통전화추가</label>
+                                        <label>직통전화포함</label>
                                     </div>
                                     <div class="ui checkbox">
                                         <form:checkbox path="inner"/>
-                                        <label>내선통화추가</label>
+                                        <label>내선통화포함(돌려주기콜 제외)</label>
                                     </div>
                                     <div class="ui checkbox">
                                         <form:checkbox path="workHour"/>
-                                        <label>업무시간기준</label>
+                                        <label>업무시간만 보기</label>
                                     </div>
                                 </div>
                                 <div class="two wide column"><label class="control-label">서비스선택</label></div>
@@ -148,21 +148,22 @@
                                     <th colspan="${3 + memberStatuses.size()}">후처리 시간분석</th>
                                 </tr>
                                 <tr>
-                                    <th>총 건수</th>
+                                    <th>전체</th>
+                                    <th>통화건수</th>
                                     <th>총 시간</th>
 
                                     <th class="color blue">총 시도콜</th>
-                                    <th class="color blue">O/B건수<br>성공호</th>
+                                    <th class="color blue">성공호</th>
                                     <th class="color blue">비수신</th>
-                                    <th class="color blue">O/B<br>총 통화시간</th>
-                                    <th class="color blue">O/B<br>평균통화시간</th>
+                                    <th class="color blue">총 통화시간</th>
+                                    <th class="color blue">평균통화시간</th>
                                     <th class="color blue">통화<br>성공률</th>
 
-                                    <th class="color red">I/B<br>전체콜</th>
+                                    <th class="color red">전체콜</th>
                                     <th class="color red">응대호</th>
-                                    <th class="color red">I/B<br>총 통화시간</th>
-                                    <th class="color red">I/B<br>평균통화시간</th>
-                                    <th class="color red">I/B<br>평균대기시간</th>
+                                    <th class="color red">총 통화시간</th>
+                                    <th class="color red">평균통화시간</th>
+                                    <th class="color red">평균대기시간</th>
                                     <th class="color red">개인비수신</th>
                                     <th class="color red">응대율</th>
 
@@ -189,6 +190,7 @@
                                                     <td>${g.htmlQuote(f.idName)}</td>
 
                                                     <td>${f.totalCnt}</td>
+                                                    <td>0</td>
                                                     <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(f.totalBillSec)}</td>
 
                                                     <td>${f.outboundStat.outTotal}</td>
@@ -225,6 +227,7 @@
                                         <tr>
                                             <td colspan="3">합계</td>
                                             <td>${total.totalCnt}</td>
+                                            <td>0</td>
                                             <td>${g.timeFormatFromSeconds(total.totalBillSec)}</td>
 
                                             <td>${total.outboundStat.outTotal}</td>
