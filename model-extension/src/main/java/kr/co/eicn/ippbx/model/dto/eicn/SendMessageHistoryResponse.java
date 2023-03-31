@@ -14,5 +14,7 @@ public class SendMessageHistoryResponse {
      * @see kr.co.eicn.ippbx.model.enums.SendSortType
      */
     private String sendSort;     //발송구분(D:직접입력, C:카테고리입력)
+    private String sendType;
+    private String resMessage;
     private Timestamp sendDate;        //발송일
 }

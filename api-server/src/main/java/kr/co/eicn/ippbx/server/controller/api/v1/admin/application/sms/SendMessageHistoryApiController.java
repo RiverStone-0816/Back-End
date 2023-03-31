@@ -1,10 +1,12 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.application.sms;
 
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMessageData;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
 import kr.co.eicn.ippbx.model.dto.eicn.SendMessageHistoryResponse;
 import kr.co.eicn.ippbx.model.search.SendMessageSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
+import kr.co.eicn.ippbx.server.service.MessageDataService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
@@ -29,13 +31,26 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 public class SendMessageHistoryApiController extends ApiBaseController {
 
     private final SendMessageHistoryRepository repository;
+    private final MessageDataService messageDataService;
 
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<SendMessageHistoryResponse>>> pagination(SendMessageSearchRequest search) {
-        final Pagination<SendMessage> pagination = repository.pagination(search);
+        final Pagination<CommonMessageData> pagination = messageDataService.getRepository().pagination(search);
         final List<SendMessageHistoryResponse> rows = pagination.getRows().stream()
-                .map(e -> convertDto(e, SendMessageHistoryResponse.class))
+                .map(e -> {
+                    final SendMessageHistoryResponse response = new SendMessageHistoryResponse();
+                    response.setId(e.getSeq());
+                    response.setSendDate(e.getSendTime());
+                    response.setTarget(e.getPhoneNumber());
+                    response.setResMessage(e.getResMessage());
+                    response.setContent(e.getMessage());
+                    response.setSendType(e.getService());
+
+                    return response;
+                })
                 .collect(Collectors.toList());
         return ResponseEntity.ok(data(new Pagination<>(rows, pagination.getPage(), pagination.getTotalCount(), search.getLimit())));
     }
+
+
 }

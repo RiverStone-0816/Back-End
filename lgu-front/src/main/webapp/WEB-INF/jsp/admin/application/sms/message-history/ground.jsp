@@ -83,10 +83,10 @@
                         <thead>
                         <tr>
                             <th class="one wide">번호</th>
-                            <th>수신인</th>
                             <th>수신번호</th>
                             <th class="eight wide">문구내용</th>
                             <th>발송구분</th>
+                            <th>발송여부</th>
                             <th class="two wide">발송일</th>
                         </tr>
                         </thead>
@@ -96,10 +96,10 @@
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr>
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
-                                        <td>${g.htmlQuote(e.receiver)}</td>
                                         <td>${g.htmlQuote(e.target)}</td>
                                         <td>${g.htmlQuote(e.content)}</td>
-                                        <td>${g.htmlQuote(g.messageOf('SendSortType', e.sendSort))}</td>
+                                        <td>${g.htmlQuote(e.sendType)}</td>
+                                        <td>${g.htmlQuote(e.resMessage)}</td>
                                         <td>${g.htmlQuote(e.sendDate)}</td>
                                     </tr>
                                 </c:forEach>
