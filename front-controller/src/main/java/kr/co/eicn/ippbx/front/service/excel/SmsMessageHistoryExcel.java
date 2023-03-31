@@ -18,15 +18,15 @@ public class SmsMessageHistoryExcel extends AbstractExcel {
     }
 
     private void createBody() {
-        addRow(sheetHeadStyle, "수신인", "수신번호", "문구내용", "발송구분", "발송일");
+        addRow(sheetHeadStyle,"수신번호", "문구내용", "발송구분", "발송여부", "발송일");
 
         final RequestMessage message = SpringApplicationContextAware.requestMessage();
         for (SendMessageHistoryResponse e : list) {
             addRow(defaultStyle,
-                    niceFormat(e.getReceiver()),
                     niceFormat(e.getTarget()),
                     niceFormat(e.getContent()),
-                    niceFormat(e.getSendSort()),
+                    niceFormat(e.getSendType()),
+                    niceFormat(e.getResMessage()),
                     niceFormat(e.getSendDate())
             );
         }
