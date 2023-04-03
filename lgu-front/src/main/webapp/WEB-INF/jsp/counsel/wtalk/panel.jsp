@@ -1280,7 +1280,16 @@
                         }
                     }
 
-                    if (!hasFile) this.$refs.message.value += event.clipboardData.getData('Text')
+                    if (!hasFile) {
+                        const input = this.$refs.message
+                        const start = input.selectionStart
+                        const clipboardData = event.clipboardData.getData('Text')
+                        const value = input.value
+                        const newValue = value.substring(0, start) + clipboardData + value.substring(start)
+                        input.value = newValue
+                        input.selectionStart = start + clipboardData.length
+                        input.selectionEnd = start + clipboardData.length
+                    }
                 },
                 sendTemplate(template) {
                     if (template.isImage) {
