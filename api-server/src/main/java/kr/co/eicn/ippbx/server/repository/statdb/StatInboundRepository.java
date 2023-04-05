@@ -46,11 +46,11 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
                 ifnull(sum(TABLE.SUCCESS), 0).as(TABLE.SUCCESS),
                 ifnull(sum(when(isDirectOrInner, TABLE.TOTAL.minus(TABLE.SUCCESS)).else_(TABLE.CANCEL)), 0).as(TABLE.CANCEL),
                 ifnull(sum(TABLE.CANCEL_TIMEOUT), 0).as(TABLE.CANCEL_TIMEOUT),
+                ifnull(sum(TABLE.CANCEL_NOANSWER), 0).as(TABLE.CANCEL_NOANSWER),
+                ifnull(sum(TABLE.CANCEL_CUSTOM), 0).as(TABLE.CANCEL_CUSTOM),
                 ifnull(sum(TABLE.CALLBACK), 0).as(TABLE.CALLBACK),
-                ifnull(sum(TABLE.CANCEL_CALLBACK), 0).as(TABLE.CANCEL_CALLBACK),
                 ifnull(sum(TABLE.CALLBACK_SUCCESS), 0).as(TABLE.CALLBACK_SUCCESS),
                 ifnull(sum(TABLE.SERVICE_LEVEL_OK), 0).as(TABLE.SERVICE_LEVEL_OK),
-                ifnull(sum(TABLE.CANCEL_CUSTOM), 0).as(TABLE.CANCEL_CUSTOM),
                 ifnull(sum(TABLE.BILLSEC_SUM), 0).as(TABLE.BILLSEC_SUM),
                 ifnull(sum(when(not(isDirectOrInner.or(TABLE.DCONTEXT.eq(ContextType.CALL_BACK.getCode()))), TABLE.WAIT_SUM)), 0).as(TABLE.WAIT_SUM),
                 ifnull(sum(when(not(isDirectOrInner.or(TABLE.DCONTEXT.eq(ContextType.CALL_BACK.getCode()))), TABLE.WAIT_CANCEL_SUM)), 0).as(TABLE.WAIT_CANCEL_SUM),
@@ -388,8 +388,7 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
         return dsl.select(ifnull(sum(TABLE.SUCCESS), 0).as("success"),
                         ifnull(sum(when(TABLE.DCONTEXT.eq(ContextType.DIRECT_CALL.getCode()), TABLE.TOTAL).else_(TABLE.CONNREQ)), 0).as("connreq"),
                         ifnull(sum(TABLE.CALLBACK), 0).as("callback"),
-                        ifnull(sum(TABLE.CALLBACK_SUCCESS), 0).as("callbackSuccess"),
-                        ifnull(sum(TABLE.CANCEL_CALLBACK), 0).as("cancelCallback"))
+                        ifnull(sum(TABLE.CALLBACK_SUCCESS), 0).as("callbackSuccess"))
                 .from(TABLE)
                 .where(compareCompanyId())
 //                .and(TABLE.DCONTEXT.notEqual("pers_context"))

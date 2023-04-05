@@ -178,19 +178,19 @@
                                         <td>${e.connReq}</td>
                                         <td>${e.success}</td>
                                         <td>${e.cancel}</td>
-                                        <td>0</td>
-                                        <td>0</td>
-                                        <td>0</td>
+                                        <td>${e.cancelNoAnswer}</td>
+                                        <td>${e.cancelTimeout}</td>
+                                        <td>${e.cancelCustom}</td>
                                         <td>${e.callbackSuccess}</td>
 
                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecSum)}</td>
                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecAvg)}</td>
                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.waitAvg)}</td>
                                         <td>${e.responseRate}%</td>
-                                        <td>0%</td>
+                                        <td>${e.callbackResponseRate}%</td>
                                         <td>${e.svcLevelAvg}%</td>
-                                        <td>0%</td>
-                                        <td>0%</td>
+                                        <td>${e.quantitativeResponseRate}%</td>
+                                        <td>${e.qualitativeResponseRate}%</td>
                                         <td>${e.ivrAvg}%</td>
 
                                         <td>${e.waitSucc_0_10}</td>
@@ -217,19 +217,19 @@
                                     <td>${total.connReq}</td>
                                     <td>${total.success}</td>
                                     <td>${total.cancel}</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
+                                    <td>${total.cancelNoAnswer}</td>
+                                    <td>${total.cancelTimeout}</td>
+                                    <td>${total.cancelCustom}</td>
                                     <td>${total.callbackSuccess}</td>
 
                                     <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecSum)}</td>
                                     <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecAvg)}</td>
                                     <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.waitAvg)}</td>
                                     <td>${String.format("%.1f", total.responseRate)}%</td>
-                                    <td>0%</td>
+                                    <td>${String.format("%.1f", total.callbackResponseRate)}%</td>
                                     <td>${String.format("%.1f", total.svcLevelAvg)}%</td>
-                                    <td>0%</td>
-                                    <td>0%</td>
+                                    <td>${String.format("%.1f", total.quantitativeResponseRate)}%</td>
+                                    <td>${String.format("%.1f", total.qualitativeResponseRate)}%</td>
                                     <td>${String.format("%.1f", total.ivrAvg)}%</td>
 
                                     <td>${total.waitSucc_0_10}</td>

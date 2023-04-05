@@ -3,7 +3,6 @@ package kr.co.eicn.ippbx.meta.jooq.statdb.tables;
 import kr.co.eicn.ippbx.meta.jooq.statdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.statdb.Statdb;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.CommonStatInboundRecord;
-import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
@@ -126,9 +125,9 @@ public class CommonStatInbound extends TableImpl<CommonStatInboundRecord> {
     public final TableField<CommonStatInboundRecord, Integer> CANCEL_TIMEOUT = createField(DSL.name("cancel_timeout"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "헌트타임아웃으로인한포기호");
 
     /**
-     * The column <code>STATDB.stat_inbound.cancel_callback</code>. 헌트타임아웃으로인한포기후콜백으로넘어감
+     * The column <code>STATDB.stat_inbound.cancel_noanswer</code>. 비수신포기호-상담사인입O
      */
-    public final TableField<CommonStatInboundRecord, Integer> CANCEL_CALLBACK = createField(DSL.name("cancel_callback"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "헌트타임아웃으로인한포기후콜백으로넘어감");
+    public final TableField<CommonStatInboundRecord, Integer> CANCEL_NOANSWER = createField(DSL.name("cancel_noanswer"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "비수신포기호-상담사인입O");
 
     /**
      * The column <code>STATDB.stat_inbound.cancel_custom</code>. 고객포기호

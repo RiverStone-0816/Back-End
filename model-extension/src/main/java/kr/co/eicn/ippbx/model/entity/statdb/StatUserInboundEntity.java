@@ -67,7 +67,7 @@ public class StatUserInboundEntity extends CommonStatUserInbound implements Stat
     }
 
     public Integer getCancel() {
-        return getInTotal() - getInSuccess();
+        return getInHuntNoanswer();
     }
 
     public float getAvgRate() {

@@ -1,7 +1,6 @@
 package kr.co.eicn.ippbx.meta.jooq.statdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.CommonStatUserInboundRecord;
-import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
@@ -86,6 +85,11 @@ public class CommonStatUserInbound extends TableImpl<CommonStatUserInboundRecord
      * The column <code>STATDB.stat_user_inbound.in_success</code>. 응답
      */
     public final TableField<CommonStatUserInboundRecord, Integer> IN_SUCCESS = createField(DSL.name("in_success"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "응답");
+
+    /**
+     * The column <code>STATDB.stat_user_inbound.in_hunt_noanswer</code>. 헌트시비응답
+     */
+    public final TableField<CommonStatUserInboundRecord, Integer> IN_HUNT_NOANSWER = createField(DSL.name("in_hunt_noanswer"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "헌트시비응답");
 
     /**
      * The column <code>STATDB.stat_user_inbound.in_billsec_sum</code>. 통화시간

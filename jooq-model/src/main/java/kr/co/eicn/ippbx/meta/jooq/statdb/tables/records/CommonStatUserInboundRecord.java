@@ -222,6 +222,17 @@ public class CommonStatUserInboundRecord extends UpdatableRecordImpl<CommonStatU
         return (Integer) get(14);
     }
 
+    public void setInHuntNoanswer(Integer value) {
+        set(15, value);
+    }
+
+    /**
+     * Getter for <code>STATDB.stat_user_inbound.in_hunt_noanswer</code>. 헌트시비응답
+     */
+    public Integer getInHuntNoanswer() {
+        return (Integer) get(15);
+    }
+
     /**
      * Setter for <code>STATDB.stat_user_inbound.in_billsec_sum</code>. 통화시간
      */

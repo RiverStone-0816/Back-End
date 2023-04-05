@@ -323,16 +323,16 @@ public class CommonStatInboundRecord  extends UpdatableRecordImpl<CommonStatInbo
     }
 
     /**
-     * Setter for <code>STATDB.stat_inbound.cancel_callback</code>. 헌트타임아웃으로인한포기후콜백으로넘어감
+     * Setter for <code>STATDB.stat_inbound.cancel_noanswer</code>. 비수신포기호-상담사인입O
      */
-    public void setCancelCallback(Integer value) {
+    public void setCancelNoanswer(Integer value) {
         set(22, value);
     }
 
     /**
-     * Getter for <code>STATDB.stat_inbound.cancel_callback</code>. 헌트타임아웃으로인한포기후콜백으로넘어감
+     * Getter for <code>STATDB.stat_inbound.cancel_noanswer</code>. 비수신포기호-상담사인입O
      */
-    public Integer getCancelCallback() {
+    public Integer getCancelNoanswer() {
         return (Integer) get(22);
     }
 

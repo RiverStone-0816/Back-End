@@ -79,6 +79,18 @@ public class StatInboundEntity extends CommonStatInbound implements StatByTimeUn
         return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getSuccess(), getConnreq())));
     }
 
+    public Double getCallbackResponseRate() {
+        return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getSuccess() + getCallback(), getConnreq())));
+    }
+
+    public Double getQuantitativeResponseRate() {
+        return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getSuccess() + getCancelTimeout() + getCancelCustom(), getConnreq())));
+    }
+
+    public Double getQualitativeResponseRate() {
+        return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getSuccess() + getCancelNoanswer(), getConnreq())));
+    }
+
     public Double getIvrAvg() {
         return Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(getOnlyread(), getTotal())));
     }

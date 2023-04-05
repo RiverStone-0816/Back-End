@@ -24,6 +24,7 @@ public class StatUserResponse<T> {
         private String groupCode;
         private String groupTreeName;
         private Integer totalCnt;
+        private Integer totalSuccess;
         private Integer totalBillSec;
 
         private StatUserOutboundResponse outboundStat;
@@ -32,12 +33,16 @@ public class StatUserResponse<T> {
 
         @JsonIgnore
         public void setTotalCnt() {
-            this.totalCnt = outboundStat.getOutSuccess() + inboundStat.getSuccess();
+            this.totalCnt = outboundStat.getOutTotal() + inboundStat.getTotal();
         }
 
         @JsonIgnore
         public void setTotalBillSec() {
             this.totalBillSec = outboundStat.getOutBillSecSum() + inboundStat.getBillSecSum();
+        }
+
+        public Integer getTotalSuccess() {
+            return outboundStat.getOutSuccess() + inboundStat.getSuccess();
         }
     }
 }

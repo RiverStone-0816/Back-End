@@ -44,6 +44,7 @@ public class StatUserInboundRepository extends StatDBBaseRepository<CommonStatUs
                 TABLE.DCONTEXT,
                 ifnull(sum(TABLE.IN_TOTAL), 0).as(TABLE.IN_TOTAL),
                 ifnull(sum(TABLE.IN_SUCCESS), 0).as(TABLE.IN_SUCCESS),
+                ifnull(sum(TABLE.IN_HUNT_NOANSWER), 0).as(TABLE.IN_HUNT_NOANSWER),
                 ifnull(sum(TABLE.IN_BILLSEC_SUM), 0).as(TABLE.IN_BILLSEC_SUM),
                 ifnull(sum(TABLE.CALLBACK_SUCC), 0).as(TABLE.CALLBACK_SUCC),
                 ifnull(sum(TABLE.SERVICE_LEVEL_OK), 0).as(TABLE.SERVICE_LEVEL_OK),

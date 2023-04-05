@@ -8,5 +8,4 @@ public class CenterStatResponse {
     private Integer connreq = 0;
     private Integer callback = 0;
     private Integer callbackSuccess = 0;
-    private Integer cancelCallback = 0;
 }

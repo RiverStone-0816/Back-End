@@ -22,6 +22,7 @@ public class CommonStatUserInbound implements Serializable {
     private Byte    statHour;
     private Integer inTotal;
     private Integer inSuccess;
+    private Integer inHuntNoanswer;
     private Integer inBillsecSum;
     private Integer inWaitsecSum;
     private Integer transferer;

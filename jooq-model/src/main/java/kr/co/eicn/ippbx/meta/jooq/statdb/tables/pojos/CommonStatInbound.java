@@ -29,7 +29,7 @@ public class CommonStatInbound  implements Serializable {
     private Integer transfer;
     private Integer cancel;
     private Integer cancelTimeout;
-    private Integer cancelCallback;
+    private Integer cancelNoanswer;
     private Integer cancelCustom;
     private Integer serviceLevelOk;
     private Integer billsecSum;

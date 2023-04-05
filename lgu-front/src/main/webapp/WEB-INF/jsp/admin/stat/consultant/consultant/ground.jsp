@@ -194,7 +194,7 @@
                                                         <td>${g.htmlQuote(f.idName)}</td>
 
                                                         <td>${f.totalCnt}</td>
-                                                        <td>0</td>
+                                                        <td>${f.totalSuccess}</td>
                                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(f.totalBillSec)}</td>
 
                                                         <td>${f.outboundStat.outTotal}</td>
@@ -226,7 +226,7 @@
                                             <td colspan="3">합계</td>
 
                                             <td>${total.totalCnt}</td>
-                                            <td>0</td>
+                                            <td>${total.totalSuccess}</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.totalBillSec)}</td>
 
                                             <td>${total.outboundStat.outTotal}</td>
