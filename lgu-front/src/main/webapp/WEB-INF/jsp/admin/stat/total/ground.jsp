@@ -157,7 +157,7 @@
                                                 <td><span class="data-detail-trigger">${e.inboundStat.connReq}</span></td>
                                                 <td><span class="data-detail-trigger">${e.inboundStat.success}</span></td>
                                                 <td><span class="data-detail-trigger">${e.inboundStat.cancel}</span></td>
-                                                <td>${e.inboundStat.callbackSuccess}</td>
+                                                <td>${e.inboundStat.callback}</td>
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.billSecSum)}</td>
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.billSecAvg)}</td>
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.waitAvg)}</td>
@@ -182,7 +182,7 @@
                                             <td>${total.inboundStat.connReq}</td>
                                             <td>${total.inboundStat.success}</td>
                                             <td>${total.inboundStat.cancel}</td>
-                                            <td>${total.inboundStat.callbackSuccess}</td>
+                                            <td>${total.inboundStat.callback}</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecSum)}</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecAvg)}</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.waitAvg)}</td>

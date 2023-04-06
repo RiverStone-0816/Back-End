@@ -181,7 +181,7 @@
                                         <td>${e.cancelNoAnswer}</td>
                                         <td>${e.cancelTimeout}</td>
                                         <td>${e.cancelCustom}</td>
-                                        <td>${e.callbackSuccess}</td>
+                                        <td>${e.callback}</td>
 
                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecSum)}</td>
                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecAvg)}</td>
@@ -220,7 +220,7 @@
                                     <td>${total.cancelNoAnswer}</td>
                                     <td>${total.cancelTimeout}</td>
                                     <td>${total.cancelCustom}</td>
-                                    <td>${total.callbackSuccess}</td>
+                                    <td>${total.callback}</td>
 
                                     <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecSum)}</td>
                                     <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecAvg)}</td>

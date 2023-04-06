@@ -12,7 +12,7 @@ public class StatInboundResponse {
     private Integer cancelTimeout = 0; //타임아웃 포기호
     private Integer cancelNoAnswer = 0; //비수신포기호
     private Integer cancelCustom = 0; //고객포기호
-    private Integer callbackSuccess = 0;
+    private Integer callback = 0;
 
     private Integer billSecSum = 0; //총통화시간
     private Long billSecAvg = 0L; //평균 통화시간

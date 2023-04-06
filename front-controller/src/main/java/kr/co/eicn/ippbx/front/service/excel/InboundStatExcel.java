@@ -46,7 +46,7 @@ public class InboundStatExcel extends AbstractExcel {
                     niceFormat(e.getInboundStat().getConnReq()),
                     niceFormat(e.getInboundStat().getSuccess()),
                     niceFormat(e.getInboundStat().getCancel()),
-                    niceFormat(e.getInboundStat().getCallbackSuccess()),
+                    niceFormat(e.getInboundStat().getCallback()),
 
                     niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(e.getInboundStat().getBillSecSum())),
                     niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(e.getInboundStat().getBillSecAvg())),
@@ -76,7 +76,7 @@ public class InboundStatExcel extends AbstractExcel {
                 niceFormat(total.getConnReq()),
                 niceFormat(total.getSuccess()),
                 niceFormat(total.getCancel()),
-                niceFormat(total.getCallbackSuccess()),
+                niceFormat(total.getCallback()),
 
                 niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getBillSecSum())),
                 niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getBillSecAvg())),
