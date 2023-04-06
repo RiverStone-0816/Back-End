@@ -46,7 +46,7 @@ public abstract class StatDBBaseRepository<TABLE extends TableImpl<?>, ENTITY, P
     protected Condition getInboundCondition(AbstractStatSearchRequest search) {
         Field<String> field = table.field("dcontext", String.class);
 
-        Condition inboundContextCondition = field.eq(ContextType.INBOUND.getCode()).or(field.eq(ContextType.HUNT_CALL.getCode()));
+        Condition inboundContextCondition = field.eq(ContextType.INBOUND.getCode()).or(field.eq(ContextType.HUNT_CALL.getCode())).or(field.eq(ContextType.CALL_BACK.getCode()));
 
         return getDefaultCondition("inbound", inboundContextCondition, search);
     }
