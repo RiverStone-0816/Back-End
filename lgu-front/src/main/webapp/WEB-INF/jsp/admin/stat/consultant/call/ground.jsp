@@ -142,7 +142,7 @@
                                     <th rowspan="2">날짜/시간</th>
                                     <th rowspan="2">부서</th>
                                     <th rowspan="2">상담원명</th>
-                                    <th colspan="2">총 통화</th>
+                                    <th colspan="3">총 통화</th>
                                     <th colspan="6" class="color blue">O/B</th>
                                     <th colspan="7" class="color red">I/B</th>
                                     <th colspan="${3 + memberStatuses.size()}">후처리 시간분석</th>

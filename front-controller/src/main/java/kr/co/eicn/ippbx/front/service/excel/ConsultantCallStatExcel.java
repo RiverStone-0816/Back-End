@@ -22,7 +22,7 @@ public class ConsultantCallStatExcel extends AbstractExcel {
     private void createBody() {
 
         final List<String> headers1 = new ArrayList<>(Arrays.asList("날짜/시간", "부서", "상담원명",
-                "총 통화", "",
+                "총 통화", "", "",
                 "O/B", "", "", "", "", "",
                 "I/B", "", "", "", "", "", "",
                 "후처리 시간분석", "", ""));
@@ -30,9 +30,9 @@ public class ConsultantCallStatExcel extends AbstractExcel {
         addRow(sheetHeadStyle, headers1.toArray());
 
         final List<String> headers2 = new ArrayList<>(Arrays.asList("", "", "",
-                "총 건수", "총 시간",
-                "총 시도콜", "O/B건수 성공호", "비수신", "O/B 총 통화시간", "O/B 평균통화시간", "통화성공률",
-                "I/B 전체콜", "응대호", "I/B 총 통화시간", "I/B 평균통화시간", "I/B 평균대기시간", "개인비수신", "응대률",
+                "전체건수", "통화건수", "총 시간",
+                "총 시도콜", "성공호", "비수신", "총 통화시간", "평균통화시간", "통화성공률",
+                "전체콜", "응대호", "총 통화시간", "평균통화시간", "평균대기시간", "개인비수신", "응대률",
                 "후처리건수", "총 후처리시간", "후처리 평균시간"));
         memberStatuses.forEach((k, v) -> headers2.add(v));
         addRow(sheetHeadStyle, headers2.toArray());
@@ -42,10 +42,10 @@ public class ConsultantCallStatExcel extends AbstractExcel {
         getSheet().addMergedRegion(new CellRangeAddress(0, 1, 1, 1));
         getSheet().addMergedRegion(new CellRangeAddress(0, 1, 2, 2));
 
-        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 3, 4));
-        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 5, 10));
-        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 11, 17));
-        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 18, 20 + memberStatuses.size()));
+        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 3, 5));
+        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 6, 11));
+        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 12, 18));
+        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 19, 21 + memberStatuses.size()));
         getSheet().addMergedRegion(new CellRangeAddress(totalSize + 2, totalSize + 2, 0, 2));
 
         final RequestGlobal g = ApplicationBeanAware.requestGlobal();
@@ -60,6 +60,7 @@ public class ConsultantCallStatExcel extends AbstractExcel {
                         niceFormat(userStat.getIdName()),
 
                         niceFormat(userStat.getTotalCnt()),
+                        niceFormat(userStat.getTotalSuccess()),
                         niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(userStat.getTotalBillSec())),
 
                         niceFormat(userStat.getOutboundStat().getOutTotal()),
@@ -96,6 +97,7 @@ public class ConsultantCallStatExcel extends AbstractExcel {
                 "합계", "", "",
 
                 niceFormat(total.getTotalCnt()),
+                niceFormat(total.getTotalSuccess()),
                 niceFormat(g.timeFormatFromSecondsWithoutSimpleDateFormat(total.getTotalBillSec())),
 
                 niceFormat(total.getOutboundStat().getOutTotal()),
