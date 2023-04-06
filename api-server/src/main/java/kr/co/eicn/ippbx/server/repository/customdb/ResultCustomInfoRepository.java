@@ -241,7 +241,6 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
                 //.set(TABLE.MAINDB_SYS_UPLOAD_DATE, DSL.now())
                 .set(TABLE.RESULT_TYPE, form.getResultType())
                 .set(TABLE.USERID, g.getUser().getId())
-                .set(TABLE.USERID_TR, form.getUserIdTr())
                 .set(TABLE.GROUP_KIND, form.getGroupKind().equals("PHONE_TMP") ? "PHONE" : form.getGroupKind())
                 .set(TABLE.UPDATE_DATE, DSL.now())
                 .set(TABLE.CUSTOM_ID, form.getCustomId())
@@ -249,6 +248,9 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
                 .set(TABLE.GROUP_TYPE, form.getMaindbType())
                 .set(TABLE.CLICK_KEY, StringUtils.isEmpty(resultCustomInfoEntity.getClickKey()) ? "nonClickKey" : resultCustomInfoEntity.getClickKey())
                 .set(TABLE.CALL_TYPE, StringUtils.isEmpty(resultCustomInfoEntity.getCallType()) ? form.getCallType() : resultCustomInfoEntity.getCallType());
+
+        if (StringUtils.isNotEmpty(form.getUserIdTr()))
+            query.set(TABLE.USERID_TR, form.getUserIdTr());
 
         if (StringUtils.isNotEmpty(form.getCustomNumber()))
             query.set(TABLE.CUSTOM_NUMBER, form.getCustomNumber());
