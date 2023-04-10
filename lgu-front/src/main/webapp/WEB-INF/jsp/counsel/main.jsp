@@ -532,7 +532,7 @@
     <script>
         window.ipccCommunicator = new IpccCommunicator();
 
-        let audioId, phoneNumber, customId, callType, callUnique;
+        let audioId, phoneNumber, customId, callType, callUnique, callingModalTimeoutId;
         ipccCommunicator
             .on('LOGIN', function (message, kind /*[ LOGIN_OK | LOGIN_ALREADY | LOGOUT | ... ]*/) {
                 if (kind === "LOGOUT")
@@ -573,6 +573,9 @@
                     $('#partial-recoding').show().find('text').text('부분녹취');
 
                 if (kind === 'IR') { // 인바운드 링울림
+                    clearTimeout(callingModalTimeoutId)
+                    $('#modal-calling').modalHide();
+
                     audioId = data8;
                     callType = 'I';
                     phoneNumber = data1;
@@ -669,7 +672,7 @@
                 $('#call-status').text('통화종료');
 
                 // IR 이후, 곧장 HANGUP이 일어나면 modal의 transition때문에 옳바르게 dimmer가 상태변화되지 못한다.
-                setTimeout(function () {
+                callingModalTimeoutId = setTimeout(function () {
                     $('#modal-calling').modalHide();
                 }, 1000);
 
