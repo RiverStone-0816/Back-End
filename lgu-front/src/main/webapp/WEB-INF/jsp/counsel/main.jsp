@@ -573,6 +573,7 @@
                     $('#partial-recoding').show().find('text').text('부분녹취');
 
                 if (kind === 'IR') { // 인바운드 링울림
+                    clearCustomerAndCounselingInput()
                     clearTimeout(callingModalTimeoutId)
                     $('#modal-calling').modalHide();
 
