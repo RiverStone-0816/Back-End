@@ -14,7 +14,7 @@
 <%--@elvariable id="usingServices" type="java.lang.String"--%>
 
 <c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
-<c:set var="isStat" value="${user.isStat == 'Y'}"/>
+<c:set var="isCti" value="${user.isCti == 'Y'}"/>
 <c:set var="isTalk" value="${user.isTalk == 'Y'}"/>
 <tags:layout>
     <div class="tab-label-flow-container">
@@ -25,7 +25,7 @@
 
     <div class="tab-content-container manage-main"></div>
 
-    <c:if test="${(hasExtension && isStat) || isTalk}">
+    <c:if test="${(hasExtension && isCti) || isTalk}">
         <jsp:include page="/counsel/"/>
     </c:if>
 

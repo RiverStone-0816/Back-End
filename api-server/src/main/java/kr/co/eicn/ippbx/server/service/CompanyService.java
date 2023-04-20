@@ -56,6 +56,12 @@ public class CompanyService extends ApiBaseService {
 						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains(LicenseListType.STAT.getCode())).mapToInt(e -> 1).sum())
 						.build()
 		);
+		licence.setCtiLicence(
+				LicenseInfo.builder()
+						.licence(company.getCtiLicense())
+						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains(LicenseListType.CTI.getCode())).mapToInt(e -> 1).sum())
+						.build()
+		);
 		licence.setTalkLicense(
 				LicenseInfo.builder()
 						.licence(company.getTalkLicense())

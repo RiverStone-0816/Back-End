@@ -128,14 +128,19 @@
                             </th>
                             </c:if>
                             <c:if test="${services.contains('APP') || services.contains('API')}">
-                            <th data-sortable-value="STAT">통계,모니터링,상담원연결여부<br>(라이센스:${license.statLicence.currentLicence}/${license.statLicence.licence})
+                            <th data-sortable-value="STAT">통계, 모니터링 여부<br>(라이센스:${license.statLicence.currentLicence}/${license.statLicence.licence})
                                 <c:if test="${search.sort.name() == 'STAT'}">
+                                    <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
+                                </c:if>
+                            </th>
+                            <th data-sortable-value="CTI">상담원연결 여부<br>(라이센스:${license.ctiLicence.currentLicence}/${license.ctiLicence.licence})
+                                <c:if test="${search.sort.name() == 'CTI'}">
                                     <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
                                 </c:if>
                             </th>
                             </c:if>
                             <c:if test="${services.contains('KATLK') || services.contains('ECHBT')}">
-                            <th data-sortable-value="TALK">상담톡여부<br>(라이센스:${license.talkLicense.currentLicence}/${license.talkLicense.licence})
+                            <th data-sortable-value="TALK">상담톡 여부<br>(라이센스:${license.talkLicense.currentLicence}/${license.talkLicense.licence})
                                 <c:if test="${search.sort.name() == 'TALK'}">
                                     <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
                                 </c:if>
@@ -147,7 +152,7 @@
                                 </c:if>
                             </c:if>
                             <c:if test="${services.contains('CHATT') || services.contains('CHATWIN') || services.contains('CHATMEMO')}">
-                            <th data-sortable-value="CHATT">메신저사용여부<br>(라이센스:${license.chattLicense.currentLicence}/${license.chattLicense.licence})
+                            <th data-sortable-value="CHATT">메신저사용 여부<br>(라이센스:${license.chattLicense.currentLicence}/${license.chattLicense.licence})
                                 <c:if test="${search.sort.name() == 'CHATT'}">
                                     <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
                                 </c:if>
@@ -184,6 +189,7 @@
                                         </c:if>
                                         <c:if test="${services.contains('APP') || services.contains('API')}">
                                         <td>${e.isStat == 'Y' ? '허용됨' : '허용되지 않음'}</td>
+                                        <td>${e.isCti == 'Y' ? '허용됨' : '허용되지 않음'}</td>
                                         </c:if>
                                         <c:if test="${services.contains('KATLK') || services.contains('ECHBT')}">
                                         <td>${e.isTalk == 'Y' ? '허용됨' : '허용되지 않음'}</td>

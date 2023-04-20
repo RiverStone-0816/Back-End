@@ -169,6 +169,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
         if("Y".equals(form.getIsTalk())) licenseList += LicenseListType.TALK.getCode() + "|";
         if("Y".equals(form.getIsEmail())) licenseList += LicenseListType.EMAIL.getCode() + "|";
         if("Y".equals(form.getIsStat())) licenseList += LicenseListType.STAT.getCode() + "|";
+        if("Y".equals(form.getIsCti())) licenseList += LicenseListType.CTI.getCode() + "|";
         if("Y".equals(form.getIsChatt())) licenseList += LicenseListType.CHATT.getCode() + "|";
         record.setLicenseList(licenseList);
         record.setSoltPw(solt_pw);
@@ -224,6 +225,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
         if("Y".equals(form.getIsTalk())) licenseList += LicenseListType.TALK.getCode() + "|";
         if("Y".equals(form.getIsEmail())) licenseList += LicenseListType.EMAIL.getCode() + "|";
         if("Y".equals(form.getIsStat())) licenseList += LicenseListType.STAT.getCode() + "|";
+        if("Y".equals(form.getIsCti())) licenseList += LicenseListType.CTI.getCode() + "|";
         if("Y".equals(form.getIsChatt())) licenseList += LicenseListType.CHATT.getCode() + "|";
         record.setLicenseList(licenseList);
 

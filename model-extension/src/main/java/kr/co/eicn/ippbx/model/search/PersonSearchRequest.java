@@ -24,7 +24,7 @@ public class PersonSearchRequest extends PageForm {
     private IdStatus idStatus;      // 근무상태("": 정상근무, S:휴직, X:퇴직)
 
     public enum Sort implements SortField {
-        NAME("id_name"), GROUP("group_name"), PDS("is_pds"), STAT("is_stat"),
+        NAME("id_name"), GROUP("group_name"), PDS("is_pds"), STAT("is_stat"), CTI("is_cti"),
         TALK("is_talk");
 
         private final String field;

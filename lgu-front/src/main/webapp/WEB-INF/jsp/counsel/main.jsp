@@ -14,7 +14,7 @@
 <%--@elvariable id="usingServices" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 <c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
-<c:set var="isStat" value="${user.isStat == 'Y'}"/>
+<c:set var="isCti" value="${user.isCti == 'Y'}"/>
 <c:set var="isTalk" value="${user.isTalk == 'Y'}"/>
 
 <div class="tab-content-container remove-padding full-height consulting-main">
@@ -22,17 +22,17 @@
         <div class="ui grid" style="margin-top: -1.5rem;">
             <div class="sixteen wide column consulting-bookmark">
                 <div class="ui menu" style="padding-top: 0%;">
-                    <c:if test="${hasExtension && isStat}">
+                    <c:if test="${hasExtension && isCti}">
                     <a class="item -counsel-panel-indicator active" onclick="viewCallPanel()" data-tab="call-panel" data-target="#call-panel">전화상담</a>
                     </c:if>
                     <c:if test="${isTalk}">
-                        <a class="item -counsel-panel-indicator ${user.isStat.equals('N') ? 'active' : ""}" onclick="viewTalkPanel(); $(this).removeClass('highlight');$(this).removeClass('newImg') " data-tab="talk-panel"
+                        <a class="item -counsel-panel-indicator ${user.isCti.equals('N') ? 'active' : ""}" onclick="viewTalkPanel(); $(this).removeClass('highlight');$(this).removeClass('newImg') " data-tab="talk-panel"
                            data-target="#talk-panel">
                             <text>상담톡</text>
                             <div></div>
                         </a>
                     </c:if>
-                    <c:if test="${hasExtension && isStat}">
+                    <c:if test="${hasExtension && isCti}">
                     <a class="item -counsel-panel-indicator" data-tab="preview-tab">프리뷰</a>
                     </c:if>
                     <a class="item -counsel-panel-indicator -configured-indicator" data-tab="menu1">상담결과이력</a>
@@ -63,7 +63,7 @@
         <div class="ui tab active" id="consulting-screen" data-tab="consulting-screen">
             <div class="ui grid consulting-panel">
                 <div class="nine wide column" id="consulting-call">
-                    <c:if test="${user.isStat.equals('Y')}">
+                    <c:if test="${user.isCti.equals('Y')}">
                         <jsp:include page="/counsel/call/"/>
                     </c:if>
                     <c:if test="${user.isTalk.equals('Y')}">
@@ -500,7 +500,7 @@
         $(window).on('load', function () {
             updateQueues();
             updatePersonStatus();
-            if(!${hasExtension && isStat})
+            if(!${hasExtension && isCti})
                 viewTalkPanel();
 
             /*TODO: 임시처리*/
@@ -748,7 +748,7 @@
         $(window).on('load', function () {
             restSelf.get('/api/auth/socket-info').done(function (response) {
                 const fromUi = "EICN_IPCC";
-                <c:if test="${isStat}">
+                <c:if test="${isCti}">
                 if (response.data.extension != null)
                     ipccCommunicator.connect(response.data.callControlSocketUrl, response.data.pbxHost, response.data.companyId, response.data.userId, response.data.extension, response.data.password, response.data.idType, fromUi, response.data.isMulti, response.data.firstStatus);
                 </c:if>

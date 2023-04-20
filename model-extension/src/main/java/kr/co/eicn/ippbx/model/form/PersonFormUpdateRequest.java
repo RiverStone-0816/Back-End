@@ -35,7 +35,8 @@ public class PersonFormUpdateRequest extends BaseForm {
 	private String isPds;             // PDS 사용여부
 	private String isTalk;           // 상담톡 여부
 	private String isEmail;         // 이메일상담 여부
-	private String isStat;           // 통계,모니터링,상담원연결여부
+	private String isStat;           // 통계,모니터링
+	private String isCti;           // 상담원연결여부
 	private String isChatt;           // 메신저 사용 여부
 
 	/**

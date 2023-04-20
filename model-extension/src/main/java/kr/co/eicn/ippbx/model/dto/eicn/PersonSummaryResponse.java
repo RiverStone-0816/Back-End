@@ -27,7 +27,8 @@ public class PersonSummaryResponse {
 
 	private String licenseList;	// license 통합
 	private String isPds;       // pds 사용여부
-	private String isStat;      // 통계,모니터링,상담원연결여부
+	private String isStat;      // 통계,모니터링
+	private String isCti;       // 상담원연결여부
 	private String isTalk;      // 상담톡 여부
 	private String isEmail;     // 이메일상담 여부
 	private String isChatt;		// 메신저 사용 여부
@@ -44,6 +45,10 @@ public class PersonSummaryResponse {
 
 	public String getIsStat(){
 		return this.licenseList.contains(LicenseListType.STAT.getCode()) ? "Y" : "N";
+	}
+
+	public String getIsCti(){
+		return this.licenseList.contains(LicenseListType.CTI.getCode()) ? "Y" : "N";
 	}
 
 	public String getIsTalk(){

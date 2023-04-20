@@ -210,7 +210,8 @@ public class UserApiControllerTest extends BaseControllerTest {
 		form.setIsPds("N"); // PDS여부
 		form.setIsTalk("N"); // 상담톡여부
 		form.setIsEmail("N"); // 이메일상담여부
-		form.setIsStat("N"); // 통계, 모니터링, 상담화면 여부
+		form.setIsStat("N"); // 통계, 모니터링 여부
+		form.setIsCti("N"); // 상담원연결 여부
 		form.setListeningRecordingAuthority(RecordingAuthorityType.NONE.getCode()); // 녹취권한 듣기
 		form.setDownloadRecordingAuthority(RecordingAuthorityType.NONE.getCode()); // 녹취권한 다운
 		form.setRemoveRecordingAuthority(RecordingAuthorityType.NONE.getCode()); // 녹취권한 삭제
@@ -275,7 +276,8 @@ public class UserApiControllerTest extends BaseControllerTest {
 		form.setIsPds("N"); // PDS여부
 		form.setIsTalk("N"); // 상담톡여부
 		form.setIsEmail("N"); // 이메일상담여부
-		form.setIsStat("N"); // 통계, 모니터링, 상담화면 여부
+		form.setIsStat("N"); // 통계, 모니터링 여부
+		form.setIsCti("N"); // 상담원연결 여부
 		form.setListeningRecordingAuthority(RecordingAuthorityType.NONE.getCode()); // 녹취권한 듣기
 		form.setDownloadRecordingAuthority(RecordingAuthorityType.NONE.getCode()); // 녹취권한 다운
 		form.setRemoveRecordingAuthority(RecordingAuthorityType.NONE.getCode()); // 녹취권한 삭제

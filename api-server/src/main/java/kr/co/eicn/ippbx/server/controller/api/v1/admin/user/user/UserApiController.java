@@ -157,11 +157,13 @@ public class UserApiController extends ApiBaseController {
 
         Integer pds = StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y") ? licence.getPdsLicense().getCurrentLicence()+1 : licence.getPdsLicense().getCurrentLicence();
         Integer stat = StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y") ? licence.getStatLicence().getCurrentLicence()+1 : licence.getStatLicence().getCurrentLicence();
+        Integer cti = StringUtils.isNotEmpty(form.getIsCti()) && form.getIsCti().equals("Y") ? licence.getCtiLicence().getCurrentLicence()+1 : licence.getCtiLicence().getCurrentLicence();
         Integer talk = StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y") ? licence.getTalkLicense().getCurrentLicence()+1 : licence.getTalkLicense().getCurrentLicence();
         Integer email = StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
 
         if((licence.getPdsLicense().getLicence() < pds && StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y"))
                 || (licence.getStatLicence().getLicence() < stat && StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y"))
+                || (licence.getCtiLicence().getLicence() < cti && StringUtils.isNotEmpty(form.getIsCti()) && form.getIsCti().equals("Y"))
                 || (licence.getTalkLicense().getLicence() < talk && StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y"))
                 || (licence.getEmailLicense().getLicence() < email && StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y")))
             throw new IllegalArgumentException("라이센스를 확인하세요.");
@@ -200,18 +202,21 @@ public class UserApiController extends ApiBaseController {
 
         Integer pds = StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y") ? licence.getPdsLicense().getCurrentLicence()+1 : licence.getPdsLicense().getCurrentLicence();
         Integer stat = StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y") ? licence.getStatLicence().getCurrentLicence()+1 : licence.getStatLicence().getCurrentLicence();
+        Integer cti = StringUtils.isNotEmpty(form.getIsCti()) && form.getIsCti().equals("Y") ? licence.getCtiLicence().getCurrentLicence()+1 : licence.getCtiLicence().getCurrentLicence();
         Integer talk = StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y") ? licence.getTalkLicense().getCurrentLicence()+1 : licence.getTalkLicense().getCurrentLicence();
         Integer email = StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
         Integer chatt = StringUtils.isNotEmpty(form.getIsChatt()) && form.getIsChatt().equals("Y") ? licence.getChattLicense().getCurrentLicence()+1 : licence.getChattLicense().getCurrentLicence();
 
         if(StringUtils.isNotEmpty(form.getIsPds()) && "Y".equals(detail.getIsPds())) pds = pds-1;
         if(StringUtils.isNotEmpty(form.getIsStat()) && "Y".equals(detail.getIsStat())) stat = stat-1;
+        if(StringUtils.isNotEmpty(form.getIsCti()) && "Y".equals(detail.getIsCti())) cti = cti-1;
         if(StringUtils.isNotEmpty(form.getIsTalk()) && "Y".equals(detail.getIsTalk())) talk = talk-1;
         if(StringUtils.isNotEmpty(form.getIsEmail()) && "Y".equals(detail.getIsEmail())) email = email-1;
         if(StringUtils.isNotEmpty(form.getIsChatt()) && "Y".equals(detail.getIsChatt())) chatt = chatt-1;
 
         if((licence.getPdsLicense().getLicence() < pds && StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y"))
                 || (licence.getStatLicence().getLicence() < stat && StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y"))
+                || (licence.getCtiLicence().getLicence() < cti && StringUtils.isNotEmpty(form.getIsCti()) && form.getIsCti().equals("Y"))
                 || (licence.getTalkLicense().getLicence() < talk && StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y"))
                 || (licence.getEmailLicense().getLicence() < email && StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y"))
                 || (licence.getChattLicense().getLicence() < chatt && StringUtils.isNotEmpty(form.getIsChatt()) && form.getIsChatt().equals("Y")))

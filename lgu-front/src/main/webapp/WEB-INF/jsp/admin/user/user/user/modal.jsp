@@ -159,57 +159,34 @@
                 </div>
             </div>
             </c:if>
-            <c:if test="${services.contains('KATLK') || services.contains('ECHBT')}">
-            <div class="row">
-                <div class="four wide column"><label class="control-label">상담톡여부</label></div>
-                <div class="twelve wide column">
-                    <div class="ui form">
-                        <div class="inline fields">
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <form:radiobutton path="isTalk" value="Y"/>
-                                    <label>사용</label>
-                                </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <form:radiobutton path="isTalk" value="N"/>
-                                    <label>사용안함 (라이센스:${license.talkLicense.currentLicence}/${license.talkLicense.licence})</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            </c:if>
             <c:if test="${!serviceKind.equals('CC')}">
                 <c:if test="${services.contains('EMAIL')}">
-            <div class="row">
-                <div class="four wide column"><label class="control-label">이메일상담 여부</label></div>
-                <div class="twelve wide column">
-                    <div class="ui form">
-                        <div class="inline fields">
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <form:radiobutton path="isEmail" value="Y"/>
-                                    <label>사용</label>
+                <div class="row">
+                    <div class="four wide column"><label class="control-label">이메일상담 여부</label></div>
+                    <div class="twelve wide column">
+                        <div class="ui form">
+                            <div class="inline fields">
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <form:radiobutton path="isEmail" value="Y"/>
+                                        <label>사용</label>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="field">
-                                <div class="ui radio checkbox">
-                                    <form:radiobutton path="isEmail" value="N"/>
-                                    <label>사용안함 (라이센스:${license.emailLicense.currentLicence}/${license.emailLicense.licence})</label>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <form:radiobutton path="isEmail" value="N"/>
+                                        <label>사용안함 (라이센스:${license.emailLicense.currentLicence}/${license.emailLicense.licence})</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
                 </c:if>
             </c:if>
             <c:if test="${services.contains('APP') || services.contains('API')}">
             <div class="row">
-                <div class="four wide column"><label class="control-label">통계,모니터링,상담화면 여부</label></div>
+                <div class="four wide column"><label class="control-label">통계, 모니터링 여부</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <div class="inline fields">
@@ -222,13 +199,60 @@
                             <div class="field">
                                 <div class="ui radio checkbox">
                                     <form:radiobutton path="isStat" value="N"/>
-                                    <label>사용안함 (라이센스:${license.statLicence.currentLicence}/${license.statLicence.licence}) 설명:상담원화면 외부 연동일경우 API 연결갯수</label>
+                                    <label>사용안함 (라이센스:${license.statLicence.currentLicence}/${license.statLicence.licence})</label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="four wide column"><label class="control-label">상담원연결 여부</label></div>
+                <div class="twelve wide column">
+                    <div class="ui form">
+                        <div class="inline fields">
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <form:radiobutton path="isCti" value="Y"/>
+                                    <label>사용</label>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <form:radiobutton path="isCti" value="N"/>
+                                    <label>사용안함 (라이센스:${license.ctiLicence.currentLicence}/${license.ctiLicence.licence})</label>
+                                </div>
+                            </div>
+                            <div class="field">
+                                <span style="color: slategrey;">CTI 전화상담 사용. 외부 연동일 경우 API 연결 개수</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </c:if>
+            <c:if test="${services.contains('KATLK') || services.contains('ECHBT')}">
+                <div class="row">
+                    <div class="four wide column"><label class="control-label">상담톡 여부</label></div>
+                    <div class="twelve wide column">
+                        <div class="ui form">
+                            <div class="inline fields">
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <form:radiobutton path="isTalk" value="Y"/>
+                                        <label>사용</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <form:radiobutton path="isTalk" value="N"/>
+                                        <label>사용안함 (라이센스:${license.talkLicense.currentLicence}/${license.talkLicense.licence})</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </c:if>
             <c:if test="${services.contains('CHATT') || services.contains('CHATWIN') || services.contains('CHATMEMO')}">
             <div class="row">
