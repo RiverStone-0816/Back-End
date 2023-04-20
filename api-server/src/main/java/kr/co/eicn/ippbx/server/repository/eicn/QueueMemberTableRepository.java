@@ -12,6 +12,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.QueueMemberLoginCountResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.CenterMemberStatusCountEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.MemberStatusOfHunt;
+import kr.co.eicn.ippbx.model.enums.LicenseListType;
 import kr.co.eicn.ippbx.model.enums.PersonPausedStatus;
 import kr.co.eicn.ippbx.model.form.MonitControlChangeRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
@@ -271,8 +272,11 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
                         QUEUE_MEMBER_TABLE.IS_LOGIN,
                         count(QUEUE_MEMBER_TABLE.IS_LOGIN).as("count"))
                 .from(QUEUE_MEMBER_TABLE)
+                .leftJoin(PERSON_LIST)
+                .on(QUEUE_MEMBER_TABLE.USERID.eq(PERSON_LIST.ID))
                 .where(compareCompanyId())
                 .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.like("QUEUE%"))
+                .and(PERSON_LIST.LICENSE_LIST.like("%" + LicenseListType.STAT.getCode() + "%"))
                 .groupBy(QUEUE_MEMBER_TABLE.QUEUE_NAME, QUEUE_MEMBER_TABLE.IS_LOGIN)
                 .fetchInto(QueueMemberLoginCountResponse.class);
     }

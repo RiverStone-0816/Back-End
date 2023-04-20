@@ -35,7 +35,8 @@
                 peer: '${g.escapeQuote(e.peer)}',
                 status: ${e.status},
                 login: ${e.login},
-                userId: '${peerToUserId.getOrDefault(e.peer, '')}'
+                userId: '${peerToUserId.getOrDefault(e.peer, '')}',
+                isStat: ${peerToIsStat.getOrDefault(e.peer, '') eq 'Y' ? true : false},
             },
             </c:forEach>
         };
@@ -77,7 +78,7 @@
                 if (queueName) {
                     $(this).text(values(peerStatuses).filter(function (peer) {
                         return queues[queueName].peers.indexOf(peer.peer) >= 0
-                            && peer.login;
+                            && peer.login && peer.isStat;
                     }).length);
                 } else if (serviceNumber) {
                     $(this).text(values(peerStatuses).filter(function (person) {
@@ -86,11 +87,12 @@
                             return false;
 
                         for (let i = 0; i < queueNames.length; i++)
-                            return queues[queueNames[i]] && queues[queueNames[i]].peers.indexOf(person.peer) >= 0 && person.login;
+                            return queues[queueNames[i]] && queues[queueNames[i]].peers.indexOf(person.peer) >= 0
+                                && person.login && peer.isStat;
                     }).length);
                 } else {
                     $(this).text(values(peerStatuses).filter(function (peer) {
-                        return peer.login;
+                        return peer.login && peer.isStat;
                     }).length);
                 }
             });
@@ -102,7 +104,7 @@
                 if (queueName) {
                     $(this).text(values(peerStatuses).filter(function (peer) {
                         return queues[queueName].peers.indexOf(peer.peer) >= 0
-                            && !peer.login;
+                            && !peer.login && peer.isStat;
                     }).length);
                 } else if (serviceNumber) {
                     $(this).text(values(peerStatuses).filter(function (person) {
@@ -111,11 +113,36 @@
                             return false;
 
                         for (let i = 0; i < queueNames.length; i++)
-                            return queues[queueNames[i]] && queues[queueNames[i]].peers.indexOf(person.peer) >= 0 && !person.login;
+                            return queues[queueNames[i]] && queues[queueNames[i]].peers.indexOf(person.peer) >= 0
+                                && !person.login && peer.isStat;
                     }).length);
                 } else {
                     $(this).text(values(peerStatuses).filter(function (peer) {
-                        return !peer.login;
+                        return !peer.login && peer.isStat;
+                    }).length);
+                }
+            });
+
+            $('.-total-user-count').each(function () {
+                const queueName = $(this).attr('data-hunt');
+                const serviceNumber = $(this).attr('data-service');
+
+                if (queueName) {
+                    $(this).text(values(peerStatuses).filter(function (peer) {
+                        return queues[queueName].peers.indexOf(peer.peer) >= 0 && peer.isStat;
+                    }).length);
+                } else if (serviceNumber) {
+                    $(this).text(values(peerStatuses).filter(function (person) {
+                        const queueNames = serviceNumberToQueueName[serviceNumber];
+                        if (!queueNames)
+                            return false;
+
+                        for (let i = 0; i < queueNames.length; i++)
+                            return queues[queueNames[i]] && queues[queueNames[i]].peers.indexOf(person.peer) >= 0 && peer.isStat;
+                    }).length);
+                } else {
+                    $(this).text(values(peerStatuses).filter(function (peer) {
+                        return peer.isStat;
                     }).length);
                 }
             });
@@ -128,7 +155,7 @@
                 const callStatuses = $(this).attr('data-call') ? $(this).attr('data-call').split(',') : null;
 
                 let peerStatusesValues = values(peerStatuses).filter(function (person) {
-                    return statuses.indexOf(person.status + '') >= 0;
+                    return statuses.indexOf(person.status + '') >= 0 && person.isStat;
                 });
 
                 if (queueName)

@@ -15,6 +15,7 @@ import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatOutboundEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserInboundEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserOutboundEntity;
+import kr.co.eicn.ippbx.model.enums.LicenseListType;
 import kr.co.eicn.ippbx.model.enums.PersonSort;
 import kr.co.eicn.ippbx.model.enums.PhoneInfoStatus;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
@@ -289,7 +290,7 @@ public class MonitorPartApiController extends ApiBaseController {
         final Map<String, StatUserOutboundEntity> individualOutboundStat = statUserOutboundService.getRepository().findAllUserIndividualStat();
         final Map<String, String> phoneInfoMap = phoneInfoRepository.findAllPhoneStatus();
         final Map<String, String> queueNameMap = queueNameRepository.getHanNameByQueueNumber();
-        final List<PersonList> personList = personListRepository.findAll(PersonSort.NAME).stream().filter(e -> StringUtils.isNotEmpty(e.getPeer())).collect(Collectors.toList());
+        final List<PersonList> personList = personListRepository.findAll(PersonSort.NAME).stream().filter(e -> StringUtils.isNotEmpty(e.getPeer()) && e.getLicenseList().indexOf(LicenseListType.STAT.getCode()) > 0).collect(Collectors.toList());
         final Map<String, QueueMemberTable> queueMemberMap = queueMemberTableRepository.findAllQueueMember();
         final List<PersonLastStatusInfoResponse> allPersonStatusInfo = memberStatusService.getAllPersonStatusInfo();
         final Map<String, CurrentEICNCdrEntity> currentCdrByPeer = currentEICNCdrRepository.findAllCurrentCdrByPeer();

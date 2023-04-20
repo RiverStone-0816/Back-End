@@ -62,11 +62,9 @@
                                                             data-hunt="${g.htmlQuote(e.queue.name)}">${e.statusToUserCount.getOrDefault(status.key, 0)}</td>
                                                     </c:if>
                                                 </c:forEach>
-                                                <td class="-login-user-count"
-                                                    data-hunt="${g.htmlQuote(e.queue.name)}">${e.loginUser}</td>
-                                                <td class="-logout-user-count"
-                                                    data-hunt="${g.htmlQuote(e.queue.name)}">${e.logoutUser}</td>
-                                                <td>${e.totalUser}</td>
+                                                <td class="-login-user-count" data-hunt="${g.htmlQuote(e.queue.name)}">${e.loginUser}</td>
+                                                <td class="-logout-user-count" data-hunt="${g.htmlQuote(e.queue.name)}">${e.logoutUser}</td>
+                                                <td class="-total-user-count" data-hunt="${g.htmlQuote(e.queue.name)}">${e.totalUser}</td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -155,36 +153,41 @@
                     </div>
                 </div>
                 <div class="sixteen wide column">
-                    <div class="panel">
+                    <div class="panel full-height" id="primary-stat">
                         <div class="panel-heading">
                             <label class="control-label">주요현황</label>
                         </div>
-                        <div class="panel-body">
-                            <div class="ui four column grid">
+                        <div class="panel-body overflow-hidden">
+                            <div class="ui four column grid halfdonut-container">
                                 <div class="column">
-                                    <div style="text-align: center;">응답률</div>
-                                    <svg id="pie-response-rate" style="width: 100%; height: 200px;"></svg>
+                                    <h5 class="ui center aligned header">응답률</h5>
+                                    <svg id="pie-response-rate" class="full-width" ></svg>
                                 </div>
                                 <div class="column">
-                                    <div style="text-align: center;">콜백 처리율</div>
-                                    <svg id="pie-process-callback" style="width: 100%; height: 200px;"></svg>
+                                    <h5 class="ui center aligned header">콜백 처리율</h5>
+                                    <svg id="pie-process-callback" class="full-width"></svg>
                                 </div>
                                 <div class="column">
-                                    <div style="text-align: center;">상담 가용률</div>
-                                    <svg id="pie-consultation-availability" style="width: 100%; height: 200px;"></svg>
+                                    <h5 class="ui center aligned header">상담 가용율</h5>
+                                    <svg id="pie-consultation-availability" class="full-width"></svg>
                                 </div>
                                 <div class="column">
-                                    <div style="text-align: center;">상담원 상태</div>
-                                    <svg id="pie-consultant-status" style="width: 100%; height: 200px;"></svg>
+                                    <h5 class="ui center aligned header">상담원 상태</h5>
+                                    <svg id="pie-consultant-status" class="full-width"></svg>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="sixteen wide column">
+                    <h3 class="ui header center aligned">
+                        <text class="content">상담원모니터링</text>
+                    </h3>
+                </div>
+                <div class="sixteen wide column">
                     <div class="panel">
                         <div class="panel-heading">
-                            <label class="control-label">상담사별통계</label>
+                            <label class="control-label">상담원모니터링</label>
                         </div>
                         <div class="panel-body">
                             <table class="ui table celled fixed structured">

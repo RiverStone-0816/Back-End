@@ -3,12 +3,13 @@ package kr.co.eicn.ippbx.front.controller.web.admin.dashboard;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.QueueSummaryAndMemberPeers;
+import kr.co.eicn.ippbx.front.service.api.user.user.UserApiInterface;
+import kr.co.eicn.ippbx.model.search.PersonSearchRequest;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.QueueApiInterface;
 import kr.co.eicn.ippbx.front.service.api.dashboard.DashboardApiInterface;
 import kr.co.eicn.ippbx.front.service.api.monitor.consultant.PartMonitoringApiInterface;
-import kr.co.eicn.ippbx.front.service.api.record.callback.CallbackDistributionApiInterface;
 import kr.co.eicn.ippbx.front.service.api.service.etc.MonitApiInterface;
 import kr.co.eicn.ippbx.front.service.api.stat.InboundStatApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CmpMemberStatusCode;
@@ -48,9 +49,9 @@ public class DashboardController extends BaseController {
     private final DashboardApiInterface dashboardApiInterface;
     private final QueueApiInterface queueApiInterface;
     private final CompanyApiInterface companyApiInterface;
-    private final CallbackDistributionApiInterface callbackDistributionApiInterface;
     private final InboundStatApiInterface inboundStatApiInterface;
     private final PartMonitoringApiInterface partMonitoringApiInterface;
+    private final UserApiInterface userApiInterface;
 
     @GetMapping("")
     public String page(Model model) throws IOException, ResultFailException {
@@ -131,6 +132,7 @@ public class DashboardController extends BaseController {
         val peerToUserId = new HashMap<String, String>();
         monitApiInterface.list(new MonitControlSearchRequest()).forEach(e -> e.getPerson().forEach(e2 -> peerToUserId.put(e2.getPeer(), e2.getId())));
         model.addAttribute("peerToUserId", peerToUserId);
+        model.addAttribute("peerToIsStat", userApiInterface.list(new PersonSearchRequest()).stream().filter(e -> StringUtils.isNotEmpty(e.getPeer())).collect(Collectors.toMap(PersonSummaryResponse::getPeer, PersonSummaryResponse::getIsStat)));
 
         model.addAttribute("statusCodes", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
         model.addAttribute("peerStatuses", dashboardApiInterface.getCustomWaitMonitor().getQueueMemberList());

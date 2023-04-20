@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin.monitor.consultant;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserInboundEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserOutboundEntity;
+import kr.co.eicn.ippbx.model.enums.LicenseListType;
 import kr.co.eicn.ippbx.model.enums.PersonSort;
 import kr.co.eicn.ippbx.model.enums.PhoneInfoStatus;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
@@ -97,7 +98,7 @@ public class MonitorQueueApiController extends ApiBaseController {
     @GetMapping("person-status")
     public ResponseEntity<JsonResult<List<MonitorQueueSummaryPerson>>> MonitorQueueStatus() {
         final List<QueueName> queueNameList = queueNameRepository.findAll();
-        final Map<String, PersonList> personListMap = personListRepository.findAll().stream().filter(e -> !e.getPeer().equals("")).collect(Collectors.toMap(PersonList::getPeer, e -> e));
+        final Map<String, PersonList> personListMap = personListRepository.findAll().stream().filter(e -> !e.getPeer().equals("") && e.getLicenseList().indexOf(LicenseListType.STAT.getCode()) > 0).collect(Collectors.toMap(PersonList::getPeer, e -> e));
 
         List<MonitorQueueSummaryPerson> summaryResponseList = queueMemberRepository.findAllByQueueName(queueNameList, Bool.N.getValue()).stream()
                 .filter(e -> Objects.nonNull(personListMap.get(e.getMembername())))

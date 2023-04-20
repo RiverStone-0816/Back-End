@@ -59,7 +59,7 @@
 
                             <td class="-login-user-count" data-hunt="${g.htmlQuote(e.queueName)}">${e.loginCount}</td>
                             <td class="-logout-user-count" data-hunt="${g.htmlQuote(e.queueName)}">${e.logoutCount}</td>
-                            <td>${e.total}</td>
+                            <td class="-total-user-count" data-hunt="${g.htmlQuote(e.queueName)}">${e.total}</td>
                         </tr>
                     </c:forEach>
                 </c:when>

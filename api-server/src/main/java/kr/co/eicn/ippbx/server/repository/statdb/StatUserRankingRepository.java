@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatUserRanking;
 import kr.co.eicn.ippbx.model.dto.eicn.ExcellentConsultant;
 import kr.co.eicn.ippbx.model.dto.eicn.ExcellentConsultantTopTen;
 import kr.co.eicn.ippbx.model.dto.statdb.StatUserRankingResponse;
+import kr.co.eicn.ippbx.model.enums.LicenseListType;
 import lombok.Getter;
 import org.jooq.Field;
 import org.jooq.impl.DSL;
@@ -41,6 +42,7 @@ public class StatUserRankingRepository extends StatDBBaseRepository<CommonStatUs
                 .where(compareCompanyId())
                 .and(TABLE.STAT_DATE.eq(DSL.date(DSL.now())))
                 .and(TABLE.USERID.notEqual("master"))
+                .and(PERSON_LIST.LICENSE_LIST.like("%" + LicenseListType.STAT.getCode() + "%"))
                 .groupBy(TABLE.USERID)
                 .orderBy(TABLE.field(field.getFieldName()).desc())
                 .limit(1)
