@@ -91,7 +91,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         }
 
         if (form.getStt().equals(SttType.STT.getCode())) {
-            if (!companyLicenceInfo.getStatLicence().isUseLicense())
+            if (!companyLicenceInfo.getSttLicense().isUseLicense())
                 form.setStt(SttType.NONE_STT.getCode());
         }
 
