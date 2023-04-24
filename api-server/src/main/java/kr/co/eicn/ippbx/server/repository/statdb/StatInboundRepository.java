@@ -169,6 +169,7 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
                 .select(DSL.ifnull(DSL.sum(TABLE.CONNREQ), 0).as("connReqCnt"))
                 .select(DSL.ifnull(DSL.sum(TABLE.SUCCESS), 0).as("successCnt"))
                 .select(DSL.ifnull(DSL.sum(TABLE.SERVICE_LEVEL_OK), 0).as("serviceLevelCnt"))
+                .select(DSL.ifnull(DSL.sum(TABLE.CANCEL), 0).as("cancelCnt"))
                 .from(TABLE)
                 .where(TABLE.STAT_DATE.eq(DSL.date(DSL.now())))
                 .and(StringUtils.isEmpty(svcNumber) ? DSL.noCondition() : TABLE.SERVICE_NUMBER.eq(svcNumber))

@@ -14,6 +14,7 @@ public class DashServiceStatResponse {
     private float rateValue; ///응대율
     private Integer serviceLevelCnt; //서비스레벨건수
     private float serviceLevelRateValue; ///서비스레벨응대율
+    private Integer cancelCnt; //취소호수
 
     private TreeMap<Integer, Float> hourToResponseRate = new TreeMap<>(Comparator.comparingInt(e -> e));
 }
