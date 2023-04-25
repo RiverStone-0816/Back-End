@@ -285,11 +285,13 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
         return dsl.select(QUEUE_NAME.NAME, QUEUE_MEMBER_TABLE.PAUSED, count(QUEUE_MEMBER_TABLE.PAUSED).as("count"))
                 .from(QUEUE_MEMBER_TABLE)
                 .innerJoin(QUEUE_NAME).on(QUEUE_NAME.NAME.eq(QUEUE_MEMBER_TABLE.QUEUE_NAME))
+                .innerJoin(PERSON_LIST).on(PERSON_LIST.ID.eq(QUEUE_MEMBER_TABLE.USERID))
                 .where(compareCompanyId())
                 .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(""))
                 .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(QUEUE_MEMBER_TABLE.MEMBERNAME))
-                .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual("QUEUE" + QUEUE_MEMBER_TABLE.MEMBERNAME))
+                .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(DSL.field("'QUEUE'+{0}", String.class, QUEUE_MEMBER_TABLE.MEMBERNAME)))
                 .and(QUEUE_MEMBER_TABLE.PAUSED.notEqual(100))
+                .and(PERSON_LIST.LICENSE_LIST.like("%" + LicenseListType.STAT.getCode() + "%"))
                 .groupBy(QUEUE_MEMBER_TABLE.QUEUE_NAME, QUEUE_MEMBER_TABLE.PAUSED)
                 .fetchInto(MemberStatusOfHunt.class);
     }
