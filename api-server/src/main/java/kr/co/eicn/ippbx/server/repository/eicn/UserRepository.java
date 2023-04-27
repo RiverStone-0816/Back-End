@@ -281,6 +281,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
                 .set(PERSON_LIST.PASSWD, getSHA512(getSHA512(password)+entity.getSoltPw()))
                 .set(PERSON_LIST.PASS_CHANGE_DATE, DSL.now())
                 .where(getCondition(id))
+                .and(compareCompanyId())
                 .execute();
 
         cacheService.pbxServerList(getCompanyId())
@@ -291,6 +292,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
                             .set(PERSON_LIST.PASS_CHANGE_DATE, DSL.now())
                             .set(PERSON_LIST.SOLT_PW, entity.getSoltPw())
                             .where(getCondition(id))
+                            .and(compareCompanyId())
                             .execute();
                 });
     }
@@ -302,6 +304,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
                 .set(PERSON_LIST.PASSWD, getSHA512(getSHA512(password)+entity.getSoltPw()))
                 .set(PERSON_LIST.PASS_CHANGE_DATE, DSL.now())
                 .where(getCondition(id))
+                .and(compareCompanyId())
                 .execute();
 
         cacheService.pbxServerList(company)
@@ -312,6 +315,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
                                 .set(PERSON_LIST.PASS_CHANGE_DATE, DSL.now())
                                 .set(PERSON_LIST.SOLT_PW, entity.getSoltPw())
                                 .where(getCondition(id))
+                                .and(compareCompanyId())
                                 .execute();
                     }
                 });
@@ -323,6 +327,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
             dsl.update(PERSON_LIST)
                     .set(PERSON_LIST.SOLT_PW, left(md5(String.valueOf(Math.random() * 10000000)), 10))
                     .where(getCondition(id))
+                    .and(compareCompanyId())
                     .execute();
         }
         return findOneIfNullThrow(id);
