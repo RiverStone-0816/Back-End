@@ -1270,17 +1270,26 @@
                     restSelf.put('/api/counsel/wtalk-auto-enable/' + roomId, {isAutoEnable: (this.isAutoEnable ? "Y" : "N")})
                 },
                 pasteFromClipboard: function (event) {
-                    let hasFile = false
+                    let hasFile = false, isText = false
+                    let fileArray = []
 
                     for (let i = 0; i < event.clipboardData.items.length; i++) {
                         const item = event.clipboardData.items[i]
                         if (item.kind === 'file') {
                             hasFile = true
-                            this.uploadFile(item.getAsFile())
+                            fileArray.push(item.getAsFile())
+                        } else if (item.kind === 'string' && item.type === 'text/plain') {
+                            isText = true
                         }
                     }
 
-                    if (!hasFile) {
+                    if (hasFile && !isText) {
+                        for (let i = 0; i < fileArray.length; i++) {
+                            this.uploadFile(fileArray[i])
+                        }
+                    }
+
+                    if (isText) {
                         const input = this.$refs.message
                         const start = input.selectionStart
                         const clipboardData = event.clipboardData.getData('Text')
