@@ -42,7 +42,7 @@ public class PersonUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String companyId, String id) throws UsernameNotFoundException {
         UserDetails details;
 
-        final PersonList person = repository.findOneById(id);
+        final PersonList person = repository.findOneByIdAndCompanyId(id, companyId);
         if (person == null)
             throw new UsernameNotFoundException(message.getText("error.access.notexit"));
         if (!Objects.equals(IdType.MASTER, IdType.of(person.getIdType()))) {

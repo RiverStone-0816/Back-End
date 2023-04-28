@@ -119,9 +119,14 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
     }
 
     public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList findOneById(final String id) {
+        return findOneByIdAndCompanyId(id, getCompanyId());
+    }
+
+    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList findOneByIdAndCompanyId(final String id, String checkCompanyId) {
         return dsl.selectFrom(PERSON_LIST)
                 .where(PERSON_LIST.ID.eq(id))
                 .and(PERSON_LIST.ID_STATUS.eq(""))
+                .and(id.equals("master") || StringUtils.isEmpty(checkCompanyId) ? DSL.trueCondition() : PERSON_LIST.COMPANY_ID.eq(checkCompanyId))
                 .fetchOneInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList.class);
     }
 
@@ -207,6 +212,7 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
                 .leftJoin(QUEUE_MEMBER_TABLE)
                 .on(QUEUE_MEMBER_TABLE.MEMBERNAME.eq(PERSON_LIST.PEER))
                 .where(QUEUE_MEMBER_TABLE.QUEUE_NUMBER.isNotNull().and(PERSON_LIST.LICENSE_LIST.like("%" + LicenseListType.STAT.getCode() + "%")))
+                .and(PERSON_LIST.ID_TYPE.notEqual("J"))
                 .orderBy(PERSON_LIST.ID_NAME)
                 .fetchInto(PersonOnHunt.class);
     }

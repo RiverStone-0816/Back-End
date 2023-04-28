@@ -108,6 +108,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
                 .leftJoin(COMPANY_TREE).on(PERSON_LIST.GROUP_CODE.eq(COMPANY_TREE.GROUP_CODE)
                         .and(COMPANY_TREE.COMPANY_ID.eq(getCompanyId())))
                 .where(PERSON_LIST.ID.eq(id))
+                .and(id.equals("master") ? DSL.trueCondition() : PERSON_LIST.COMPANY_ID.eq(getCompanyId()))
                 .fetchOne(record -> {
                     final UserEntity entity = record.into(PERSON_LIST).into(UserEntity.class);
                     entity.setCompany(record.into(COMPANY_INFO).into(CompanyEntity.class));

@@ -67,7 +67,7 @@ public class JwtAuthenticationController extends ApiBaseController {
 		if (StringUtils.isEmpty(data.getId()))
 			throw new IllegalArgumentException();
 
-		final PersonList user = personListRepository.findOneById(data.getId());
+		final PersonList user = personListRepository.findOneByIdAndCompanyId(data.getId(), data.getCompanyId());
 
 		LoginRequest loginRequest = new LoginRequest();
 

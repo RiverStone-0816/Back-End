@@ -71,7 +71,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         UserDetails details;
 
         final CompanyInfo company = companyInfoRepository.findOneByCompanyId(authenticationRequest.getCompanyId());
-        final PersonList user = personListRepository.findOneById(id);
+        final PersonList user = personListRepository.findOneByIdAndCompanyId(id, authenticationRequest.getCompanyId());
         if (company == null)
             throw new IllegalStateException("해당하는 회사 정보가 없습니다.");
         if (!"C".equals(company.getStatus()))
