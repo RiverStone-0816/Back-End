@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.meta.jooq.statdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.CommonStatUserInboundRecord;
+import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.StatUserInboundRecord;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
@@ -40,6 +41,12 @@ public class CommonStatUserInbound extends TableImpl<CommonStatUserInboundRecord
      * The column <code>STATDB.stat_user_inbound.userid</code>. 상담원아이디
      */
     public final TableField<CommonStatUserInboundRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(30).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "상담원아이디");
+
+    /**
+     * The column <code>STATDB.stat_user_inbound.user_stat_yn</code>. 상담원통계라이센스여부
+     */
+    public final TableField<CommonStatUserInboundRecord, String> USER_STAT_YN = createField(DSL.name("user_stat_yn"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("'Y'", org.jooq.impl.SQLDataType.CHAR)), this, "상담원통계라이센스여부");
+
 
     /**
      * The column <code>STATDB.stat_user_inbound.service_number</code>. 대표번호070

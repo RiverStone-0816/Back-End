@@ -103,6 +103,8 @@ public class StatUserInboundRepository extends StatDBBaseRepository<CommonStatUs
     public List<Condition> userConditions(StatUserSearchRequest search) {
         List<Condition> conditions = defaultConditions(search);
 
+        conditions.add(TABLE.USER_STAT_YN.eq("Y"));
+
         if (g.getUser().getDataSearchAuthorityType() != null) {
             switch (g.getUser().getDataSearchAuthorityType()) {
                 case NONE:

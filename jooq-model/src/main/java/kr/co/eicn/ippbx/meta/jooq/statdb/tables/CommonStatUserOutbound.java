@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.meta.jooq.statdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.CommonStatUserOutboundRecord;
+import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.StatUserOutboundRecord;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
@@ -41,6 +42,11 @@ public class CommonStatUserOutbound extends TableImpl<CommonStatUserOutboundReco
      * The column <code>STATDB.stat_user_outbound.userid</code>. 상담원아이디
      */
     public final TableField<CommonStatUserOutboundRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "상담원아이디");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.user_stat_yn</code>. 상담원통계라이센스여부
+     */
+    public final TableField<CommonStatUserOutboundRecord, String> USER_STAT_YN = createField(DSL.name("user_stat_yn"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("'Y'", org.jooq.impl.SQLDataType.CHAR)), this, "상담원통계라이센스여부");
 
     /**
      * The column <code>STATDB.stat_user_outbound.from_org</code>. 일반콜-NOR, 콜백콜-CALLBACK,예약콜-RESERVE, PDS콜-PDS, 고객DB-MAINDB

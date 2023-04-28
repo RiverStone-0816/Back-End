@@ -97,171 +97,185 @@ public class CommonStatUserOutboundRecord extends UpdatableRecordImpl<CommonStat
     }
 
     /**
+     * Setter for <code>STATDB.stat_user_outbound.user_stat_yn</code>. 상담원통계라이센스여부
+     */
+    public void setUserStatYn(String value) {
+        set(6, value);
+    }
+
+    /**
+     * Getter for <code>STATDB.stat_user_outbound.user_stat_yn</code>. 상담원통계라이센스여부
+     */
+    public String getUserStatYn() {
+        return (String) get(6);
+    }
+
+    /**
      * Setter for <code>STATDB.stat_user_outbound.from_org</code>. 일반콜-NOR, 콜백콜-CALLBACK,예약콜-RESERVE, PDS콜-PDS, 고객DB-MAINDB
      */
     public void setFromOrg(String value) {
-        set(6, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_user_outbound.from_org</code>. 일반콜-NOR, 콜백콜-CALLBACK,예약콜-RESERVE, PDS콜-PDS, 고객DB-MAINDB
      */
     public String getFromOrg() {
-        return (String) get(6);
+        return (String) get(7);
     }
 
     /**
      * Setter for <code>STATDB.stat_user_outbound.worktime_yn</code>.
      */
     public void setWorktimeYn(String value) {
-        set(7, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_user_outbound.worktime_yn</code>.
      */
     public String getWorktimeYn() {
-        return (String) get(7);
+        return (String) get(8);
     }
 
     /**
      * Setter for <code>STATDB.stat_user_outbound.dcontext</code>. 다이얼플랜컨택스트
      */
     public void setDcontext(String value) {
-        set(8, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_user_outbound.dcontext</code>. 다이얼플랜컨택스트
      */
     public String getDcontext() {
-        return (String) get(8);
+        return (String) get(9);
     }
 
     /**
      * Setter for <code>STATDB.stat_user_outbound.stat_date</code>. 날짜
      */
     public void setStatDate(Date value) {
-        set(9, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_user_outbound.stat_date</code>. 날짜
      */
     public Date getStatDate() {
-        return (Date) get(9);
+        return (Date) get(10);
     }
 
     /**
      * Setter for <code>STATDB.stat_user_outbound.stat_hour</code>. 시간
      */
     public void setStatHour(Byte value) {
-        set(10, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_user_outbound.stat_hour</code>. 시간
      */
     public Byte getStatHour() {
-        return (Byte) get(10);
+        return (Byte) get(11);
     }
 
     /**
      * Setter for <code>STATDB.stat_user_outbound.out_total</code>. 총계
      */
     public void setOutTotal(Integer value) {
-        set(11, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_user_outbound.out_total</code>. 총계
      */
     public Integer getOutTotal() {
-        return (Integer) get(11);
+        return (Integer) get(12);
     }
 
     /**
      * Setter for <code>STATDB.stat_user_outbound.out_success</code>. 응답
      */
     public void setOutSuccess(Integer value) {
-        set(12, value);
+        set(13, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_user_outbound.out_success</code>. 응답
      */
     public Integer getOutSuccess() {
-        return (Integer) get(12);
+        return (Integer) get(13);
     }
 
     /**
      * Setter for <code>STATDB.stat_user_outbound.out_billsec_sum</code>. 통화시간
      */
     public void setOutBillsecSum(Integer value) {
-        set(13, value);
+        set(14, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_user_outbound.out_billsec_sum</code>. 통화시간
      */
     public Integer getOutBillsecSum() {
-        return (Integer) get(13);
+        return (Integer) get(14);
     }
 
     /**
      * Setter for <code>STATDB.stat_user_outbound.callback_call_cnt</code>. 콜백처리를위한 콜건수
      */
     public void setCallbackCallCnt(Integer value) {
-        set(14, value);
+        set(15, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_user_outbound.callback_call_cnt</code>. 콜백처리를위한 콜건수
      */
     public Integer getCallbackCallCnt() {
-        return (Integer) get(14);
+        return (Integer) get(15);
     }
 
     /**
      * Setter for <code>STATDB.stat_user_outbound.callback_call_succ</code>. 콜백처리를위한 콜이후 완료건수
      */
     public void setCallbackCallSucc(Integer value) {
-        set(15, value);
+        set(16, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_user_outbound.callback_call_succ</code>. 콜백처리를위한 콜이후 완료건수
      */
     public Integer getCallbackCallSucc() {
-        return (Integer) get(15);
+        return (Integer) get(16);
     }
 
     /**
      * Setter for <code>STATDB.stat_user_outbound.reserve_call_cnt</code>. 예약콜처리를 위한 콜건수
      */
     public void setReserveCallCnt(Integer value) {
-        set(16, value);
+        set(17, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_user_outbound.reserve_call_cnt</code>. 예약콜처리를 위한 콜건수
      */
     public Integer getReserveCallCnt() {
-        return (Integer) get(16);
+        return (Integer) get(17);
     }
 
     /**
      * Setter for <code>STATDB.stat_user_outbound.reserve_call_succ</code>. 예약콜처리를 콜이후 완료건수
      */
     public void setReserveCallSucc(Integer value) {
-        set(17, value);
+        set(18, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_user_outbound.reserve_call_succ</code>. 예약콜처리를 콜이후 완료건수
      */
     public Integer getReserveCallSucc() {
-        return (Integer) get(17);
+        return (Integer) get(18);
     }
 
     @Override
