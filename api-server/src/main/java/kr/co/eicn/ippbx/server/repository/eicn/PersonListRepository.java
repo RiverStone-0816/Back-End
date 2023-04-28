@@ -122,11 +122,11 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
         return findOneByIdAndCompanyId(id, getCompanyId());
     }
 
-    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList findOneByIdAndCompanyId(final String id, String checkCompanyId) {
+    public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList findOneByIdAndCompanyId(final String id, String companyId) {
         return dsl.selectFrom(PERSON_LIST)
                 .where(PERSON_LIST.ID.eq(id))
                 .and(PERSON_LIST.ID_STATUS.eq(""))
-                .and(id.equals("master") || StringUtils.isEmpty(checkCompanyId) ? DSL.trueCondition() : PERSON_LIST.COMPANY_ID.eq(checkCompanyId))
+                .and(id.equals("master") || StringUtils.isEmpty(companyId) ? DSL.trueCondition() : PERSON_LIST.COMPANY_ID.eq(companyId))
                 .fetchOneInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList.class);
     }
 
