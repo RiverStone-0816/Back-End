@@ -354,8 +354,8 @@
 
 <script>
     modal.find('.-button-submit').click(() => {
-        modal.submit();
         modal.find('.-button-submit').attr("disabled", "true");
+        modal.submit();
     })
 
     const persons = {

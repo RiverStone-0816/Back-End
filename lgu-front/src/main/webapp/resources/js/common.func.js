@@ -66,6 +66,7 @@ function execute(_this, $form) {
                 const data = JSON.parse(e.responseText);
                 if (!disableLog) console.log(data);
                 submitDone(_this, data);
+                $('.modal .-button-submit').prop("disabled", false);
             } catch (exception) {
                 if (e.status === 404)
                     return alert("Failed to request processing. Please retry it.");
