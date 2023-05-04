@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkService">
+                    <table class="ui celled table compact unstackable structured ${list.size() > 0 ? "selectable-only" : null}" data-entity="TalkService">
                         <thead>
                         <tr>
                             <th rowspan="2" class="onew wide">번호</th>

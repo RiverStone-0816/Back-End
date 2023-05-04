@@ -74,11 +74,9 @@
                         </c:choose>
                         </tbody>
                     </table>
-                    <div class="panel-footer">
-                        <div class="pull-right">
-                            <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/wtalk/template/" pageForm="${search}"/>
-                        </div>
-                    </div>
+                </div>
+                <div class="panel-footer">
+                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/wtalk/template/" pageForm="${search}"/>
                 </div>
             </div>
         </div>
