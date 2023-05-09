@@ -16,7 +16,8 @@
 <div class="item">
     <i class="folder <%--open--%> icon"></i>
     <div class="content">
-        <div class="header <%--select--%>"
+        <div class="header group-selectable<%--select--%>"
+             data-group-level="${g.htmlQuote(e.groupLevel)}"
              data-group-code="${g.htmlQuote(e.groupCode)}"
              data-group-name="${g.htmlQuote(e.groupName)}"
              data-group-names="${parentNames != null ? g.htmlQuote(parentNames.concat('&#0001;')) : null}${g.htmlQuote(e.groupName)}">

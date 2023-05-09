@@ -71,6 +71,11 @@ public class OrganizationController extends BaseController {
 
     @GetMapping("modal-select-organization")
     public String pan(Model model) throws IOException, ResultFailException {
+        final List<CompanyTreeLevelNameResponse> metaTypes = apiInterface.listMetaType();
+        if (metaTypes.size() == 0)
+            throw new IllegalStateException("메타데이터가 존재하지 않습니다.");
+        model.addAttribute("maxLevel", apiInterface.listMetaType().get(metaTypes.size() - 1).getGroupLevel());
+
         final List<Organization> list = apiInterface.getAllOrganizationPersons();
         final OrganizationTree root = getOrganizationTree(list, null);
 

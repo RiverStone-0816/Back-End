@@ -14,7 +14,7 @@
 
 <%--@elvariable id="root" type="kr.co.eicn.ippbx.front.model.OrganizationTree"--%>
 
-<div class="ui modal">
+<div class="ui modal" data-max-level="${maxLevel}">
 
     <i class="close icon"></i>
     <div class="header">부서선택</div>

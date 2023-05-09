@@ -17,7 +17,7 @@
 <%--@elvariable id="maxLevel" type="java.lang.Integer"--%>
 <%--@elvariable id="root" type="kr.co.eicn.ippbx.front.model.OrganizationTree"--%>
 
-<div class="ui list" id="organization-pan">
+<div class="ui list" id="organization-pan" data-max-level="${maxLevel}">
     <input type="hidden" name="keyword" value="${g.htmlQuote(condition.keyword)}"/>
 
     <div class="ui steps mini fluid">

@@ -25,8 +25,8 @@
                         <div class="panel-heading">
                             <div class="ui action input fluid">
                                 <button onclick="addChild($('#organization-pan'))" class="ui compact button mr15">대분류추가</button>
-                                <input type="text" placeholder="검색">
-                                <button type="button" class="ui icon button" onclick="search($(this).prev().val())">
+                                <input type="text" placeholder="검색" id="org-search-keyword">
+                                <button type="button" class="ui icon button"id="org-search-button" onclick="search($(this).prev().val())">
                                     <i class="search icon"></i>
                                 </button>
                             </div>
@@ -94,6 +94,12 @@
             const registerForm = $('#organization-register-form');
             const updateForm = $('#organization-update-form');
 
+            $('#org-search-keyword').keydown(function (key) {
+                if (key.keyCode === 13) {
+                    $('#org-search-button').click();
+                }
+            });
+
             function popupMetaTypeSet() {
                 popupReceivedHtml('/admin/user/organization/meta-type/modal', 'modal-meta-type', 'tiny')
             }
@@ -107,7 +113,45 @@
 
             function refreshPan() {
                 $('#organization-pan').asJsonData().done(function (data) {
-                    replaceReceivedHtml($.addQueryString('/admin/user/organization/editable-pan', data), '#organization-pan');
+                    replaceReceivedHtml($.addQueryString('/admin/user/organization/editable-pan', data), '#organization-pan').done(function () {
+                        const headers = $('#organization-pan').find('.header');
+                        const keyword = $('#org-search-keyword').val();
+                        const maxLevel = parseInt($('#organization-pan').attr('data-max-level'));
+
+                        const notSearch = headers.filter(function () {
+                            if (!$(this).hasClass("group-selectable"))
+                                return false;
+
+                            const name = $(this).attr('data-group-name');
+                            return !(name && (name.toLowerCase().search(keyword) >= 0 || name.toUpperCase().search(keyword) >= 0));
+                        });
+
+                        const partMax = notSearch.filter(function () {
+                            const level = $(this).attr('data-group-level');
+                            return level === maxLevel.toString();
+                        });
+
+                        partMax.hide();
+                        partMax.closest('.item').hide();
+                        partMax.closest('.item').addClass('not-search');
+
+                        for (let i = maxLevel - 1; i > 1; i--) {
+                            const branch = notSearch.filter(function () {
+                                const level = $(this).attr('data-group-level');
+                                return level === i.toString();
+                            });
+
+                            branch.each(function () {
+                                const part = $(this).siblings('.list').children();
+                                const notSearchPart = $(this).siblings('.list').children('.not-search');
+
+                                if (part.length === notSearchPart.length) {
+                                    $(this).hide();
+                                    $(this).closest('.item').hide();
+                                }
+                            })
+                        }
+                    });
                 });
             }
 

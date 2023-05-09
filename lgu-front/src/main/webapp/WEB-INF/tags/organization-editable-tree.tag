@@ -17,7 +17,10 @@
 <div class="item">
     <i class="folder <%--open--%> icon"></i>
     <div class="content" style="font-size: 18px">
-        <div class="header <%--select--%> ${keyword != null && keyword.length() > 0 && e.groupName.contains(keyword) ? 'highlight' : null}" onclick="showOrganizationSummary(this, ${e.seq})">
+        <div class="header group-selectable <%--select--%> ${keyword != null && keyword.length() > 0 && e.groupName.contains(keyword) ? 'highlight' : null}"
+             data-group-level="${g.htmlQuote(e.groupLevel)}"
+             data-group-name="${g.htmlQuote(e.groupName)}"
+             onclick="showOrganizationSummary(this, ${e.seq})">
             ${g.htmlQuote(e.groupName)}
             <button onclick="event.stopPropagation(); showInput($(this).closest('.header'), ${e.seq}); return false" class="circular basic ui icon mini very compact button" title="수정">
                 <i class="icon pencil alternate"></i>
@@ -39,13 +42,15 @@
             </button>--%>
         </div>
         <div class="list">
-            <c:forEach var="person" items="${e.persons}">
-                <div class="item">
-                    <div class="header ${keyword != null && keyword.length() > 0 && e.groupName.contains(keyword) ? 'highlight' : null}">
-                        <i class="user outline icon"></i> ${g.htmlQuote(person.idName)} (${g.htmlQuote(person.id)})
+            <c:if test="${empty keyword || (not empty keyword && e.groupName.contains(keyword))}">
+                <c:forEach var="person" items="${e.persons}">
+                    <div class="item">
+                        <div class="header ${keyword != null && keyword.length() > 0 && e.groupName.contains(keyword) ? 'highlight' : null}">
+                            <i class="user outline icon"></i> ${g.htmlQuote(person.idName)} (${g.htmlQuote(person.id)})
+                        </div>
                     </div>
-                </div>
-            </c:forEach>
+                </c:forEach>
+            </c:if>
             <c:forEach var="child" items="${e.children}">
                 <tags:organization-editable-tree e="${child}" maxLevel="${maxLevel}" keyword="${keyword}"/>
             </c:forEach>

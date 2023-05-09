@@ -222,6 +222,8 @@ function popupSelectOrganizationModal(func) {
     popupReceivedHtml('/admin/user/organization/modal-select-organization', id, 'tiny').done(function () {
         const modal = $('#' + id);
         const headers = modal.find('.header');
+        const maxLevel = parseInt(modal.attr('data-max-level'));
+
         headers.click(function (e) {
             e.stopPropagation();
             headers.removeClass('select');
@@ -242,14 +244,63 @@ function popupSelectOrganizationModal(func) {
         });
         modal.find('.-button-search').click(function () {
             const keyword = modal.find('.-input-keyword').val();
-            if (!keyword)
+            headers.show();
+            headers.closest('.item').show();
+
+            if (!keyword) {
+                headers.removeClass('highlight');
+                headers.closest('.item').removeClass('not-search');
                 return;
+            }
 
             headers.removeClass('highlight');
+            headers.closest('.item').removeClass('not-search');
+            const notSearch = headers.filter(function () {
+                if (!$(this).hasClass("group-selectable"))
+                    return false;
+
+                const name = $(this).attr('data-group-name');
+                return !(name && (name.toLowerCase().search(keyword) >= 0 || name.toUpperCase().search(keyword) >= 0));
+            });
+
+            const partMax = notSearch.filter(function () {
+                const level = $(this).attr('data-group-level');
+                return level === maxLevel.toString();
+            });
+
+            partMax.hide();
+            partMax.closest('.item').hide();
+            partMax.closest('.item').addClass('not-search');
+
+            for (let i = maxLevel - 1; i > 1; i--) {
+                const branch = notSearch.filter(function () {
+                    const level = $(this).attr('data-group-level');
+                    return level === i.toString();
+                });
+
+                branch.each(function () {
+                    const part = $(this).siblings('.list').children();
+                    const notSearchPart = $(this).siblings('.list').children('.not-search');
+
+                    if (part.length === notSearchPart.length) {
+                        $(this).hide();
+                        $(this).closest('.item').hide();
+                    }
+                })
+            }
+
             headers.filter(function () {
                 const name = $(this).attr('data-group-name');
-                return name && name.indexOf(keyword) >= 0;
+                return name && (name.toLowerCase().search(keyword) >= 0 || name.toUpperCase().search(keyword) >= 0);
             }).addClass('highlight');
+        });
+        modal.find('.-input-keyword').keydown(function (key) {
+            if (key.keyCode === 13) {
+                modal.find('.-button-search').click();
+            }
+        });
+        modal.find('.group-selectable').dblclick(function () {
+            modal.find('.-button-submit').trigger('click');
         });
     });
 }
