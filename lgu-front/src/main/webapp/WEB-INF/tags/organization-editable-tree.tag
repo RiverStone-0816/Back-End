@@ -17,7 +17,7 @@
 <div class="item">
     <i class="folder <%--open--%> icon"></i>
     <div class="content" style="font-size: 18px">
-        <div class="header group-selectable <%--select--%> ${keyword != null && keyword.length() > 0 && e.groupName.contains(keyword) ? 'highlight' : null}"
+        <div class="header group-selectable <%--select--%> ${keyword != null && keyword.length() > 0 && fn:toLowerCase(e.groupName).contains(fn:toLowerCase(keyword)) ? 'highlight' : null}"
              data-group-level="${g.htmlQuote(e.groupLevel)}"
              data-group-name="${g.htmlQuote(e.groupName)}"
              onclick="showOrganizationSummary(this, ${e.seq})">
@@ -42,10 +42,10 @@
             </button>--%>
         </div>
         <div class="list">
-            <c:if test="${empty keyword || (not empty keyword && e.groupName.contains(keyword))}">
+            <c:if test="${empty keyword || (not empty keyword && fn:toLowerCase(e.groupName).contains(fn:toLowerCase(keyword)))}">
                 <c:forEach var="person" items="${e.persons}">
                     <div class="item">
-                        <div class="header ${keyword != null && keyword.length() > 0 && e.groupName.contains(keyword) ? 'highlight' : null}">
+                        <div class="header ${keyword != null && keyword.length() > 0 && fn:toLowerCase(e.groupName).contains(fn:toLowerCase(keyword)) ? 'highlight' : null}">
                             <i class="user outline icon"></i> ${g.htmlQuote(person.idName)} (${g.htmlQuote(person.id)})
                         </div>
                     </div>
