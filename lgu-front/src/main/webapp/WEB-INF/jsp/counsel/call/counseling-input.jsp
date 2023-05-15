@@ -412,7 +412,6 @@
         alert('상담정보가 저장되었습니다.');
         clearCustomerAndCounselingInput(true);
         loadTodoList();
-        loadCounselingList("");
     };
 
     $(document).ready(function () {
