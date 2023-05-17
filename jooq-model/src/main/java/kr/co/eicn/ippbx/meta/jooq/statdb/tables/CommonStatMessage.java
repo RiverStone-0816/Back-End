@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.meta.jooq.statdb.Keys;
 import kr.co.eicn.ippbx.meta.jooq.statdb.Statdb;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.StatMessageRecord;
 import org.jooq.*;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
 

@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.ChattBookmarkRecord;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.ChattMsgRecord;
 import org.jooq.Record;
 import org.jooq.*;
@@ -104,7 +105,7 @@ public class CommonChattMsg extends TableImpl<ChattMsgRecord> {
 
     @Override
     public Identity<ChattMsgRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_CHATT_MSG;
+        return (Identity<ChattMsgRecord, Integer>) super.getIdentity();
     }
 
     @Override

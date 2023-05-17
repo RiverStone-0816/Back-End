@@ -197,7 +197,7 @@ public class CommonPDSResearchResult extends TableImpl<PdsResearchResultRecord> 
 
     @Override
     public Identity<PdsResearchResultRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_PDS_RESEARCH_RESULT;
+        return (Identity<PdsResearchResultRecord, Integer>) super.getIdentity();
     }
 
     @Override

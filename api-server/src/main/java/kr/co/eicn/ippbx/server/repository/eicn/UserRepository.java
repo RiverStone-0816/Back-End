@@ -310,7 +310,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
 
         cacheService.pbxServerList(company)
                 .forEach(e -> {
-                    try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
+                    try (CloseableDSLContext pbxDsl = (CloseableDSLContext) pbxServerInterface.using(e.getHost())) {
                         pbxDsl.update(PERSON_LIST)
                                 .set(PERSON_LIST.PASSWD, getSHA512(getSHA512(password)+ entity.getSoltPw()))
                                 .set(PERSON_LIST.PASS_CHANGE_DATE, DSL.now())

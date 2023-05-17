@@ -3,8 +3,10 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.MemoMsgRecord;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.WtalkRoomRecord;
 import org.jooq.*;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.TableImpl;
@@ -153,7 +155,7 @@ public class CommonWtalkRoom extends TableImpl<WtalkRoomRecord> {
 
     @Override
     public Identity<WtalkRoomRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_WTALK_ROOM;
+        return (Identity<WtalkRoomRecord, Integer>) super.getIdentity();
     }
 
     /**

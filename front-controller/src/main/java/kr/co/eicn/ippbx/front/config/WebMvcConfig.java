@@ -33,27 +33,14 @@ import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
-@EnableWebSecurity
 @Configuration
-public class WebMvcConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
+public class WebMvcConfig implements WebMvcConfigurer {
 
     private final LoginRequireInterceptor loginRequireInterceptor;
     private final CookieInterceptorAdapter cookieInterceptorAdapter;
 
     @Value("${eicn.debugging}")
     private Boolean debugging;
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .anyRequest()
-                .permitAll();
-
-        http.headers().frameOptions().sameOrigin();
-
-        http.sessionManagement().enableSessionUrlRewriting(true);
-    }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

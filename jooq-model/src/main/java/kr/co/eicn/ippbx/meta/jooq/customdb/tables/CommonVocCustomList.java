@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.ResultCustomInfoRecord;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.VocCustomListRecord;
 import org.jooq.Record;
 import org.jooq.*;
@@ -93,7 +94,7 @@ public class CommonVocCustomList extends TableImpl<VocCustomListRecord> {
 
     @Override
     public Identity<VocCustomListRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_VOC_CUSTOM_LIST;
+        return (Identity<VocCustomListRecord, Integer>) super.getIdentity();
     }
 
     @Override

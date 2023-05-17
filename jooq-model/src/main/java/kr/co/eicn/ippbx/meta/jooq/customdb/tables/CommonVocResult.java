@@ -7,6 +7,7 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.VocResearchResultRecord;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.VocResultRecord;
 import org.jooq.Record;
 import org.jooq.*;
@@ -114,7 +115,7 @@ public class CommonVocResult extends TableImpl<VocResultRecord> {
 
     @Override
     public Identity<VocResultRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_VOC_RESULT;
+        return (Identity<VocResultRecord, Integer>) super.getIdentity();
     }
 
     @Override

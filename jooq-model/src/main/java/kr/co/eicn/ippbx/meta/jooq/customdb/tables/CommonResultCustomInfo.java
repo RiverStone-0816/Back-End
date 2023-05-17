@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.MemoMsgRecord;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.ResultCustomInfoRecord;
 import org.jooq.Record;
 import org.jooq.*;
@@ -390,7 +391,7 @@ public class CommonResultCustomInfo extends TableImpl<ResultCustomInfoRecord> {
 
     @Override
     public Identity<ResultCustomInfoRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_RESULT_CUSTOM_INFO;
+        return (Identity<ResultCustomInfoRecord, Integer>) super.getIdentity();
     }
 
     @Override

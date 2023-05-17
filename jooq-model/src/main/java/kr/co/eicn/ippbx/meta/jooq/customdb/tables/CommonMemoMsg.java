@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.KakaoProfileRecord;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.MemoMsgRecord;
 import org.jooq.Record;
 import org.jooq.*;
@@ -107,7 +108,7 @@ public class CommonMemoMsg extends TableImpl<MemoMsgRecord> {
 
     @Override
     public Identity<MemoMsgRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_MEMO_MSG;
+        return (Identity<MemoMsgRecord, Integer>) super.getIdentity();
     }
 
     @Override

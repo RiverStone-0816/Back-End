@@ -12,6 +12,7 @@ import kr.co.eicn.ippbx.model.search.MainBoardRequest;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.*;
+import org.jooq.Record;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;

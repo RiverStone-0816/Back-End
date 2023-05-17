@@ -32,9 +32,4 @@ public class ServletErrorHandlerController extends AbstractErrorController {
         errorAttributes.forEach((key, value) -> log.error("ServletErrorHandlerController.error ERROR[key={}, error={}]", key, value));
         return ResponseEntity.status(status).body(create(failure, status.getReasonPhrase()));
     }
-
-    @Override
-    public String getErrorPath() {
-        return null;
-    }
 }

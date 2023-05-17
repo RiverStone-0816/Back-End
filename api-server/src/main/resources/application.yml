@@ -17,7 +17,7 @@ jdbc:
   dialect: mysql
   username: eicn
   password: eicnrw
-  driver-class-name: com.mysql.cj.jdbc.Driver
+  driver-class-name: com.mysql.jdbc.Driver
   options: useUnicode=yes&characterEncoding=utf8&autoReconnect=true&autoReconnectForPools=true&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Seoul
 
 # hikaricp config
@@ -100,7 +100,6 @@ file:
 ---
 # local
 spring:
-  profiles: local
   datasource:
     hikari:
       eicn:
@@ -138,8 +137,13 @@ spring:
         password: ${jdbc.password}
         max-lifetime: ${hikari.max-lifetime}
         connection-timeout: ${hikari.connection-timeout}
-    initialization-mode: always
-    platform: mysql
+  config:
+    activate:
+      on-profile: local
+  sql:
+    init:
+      mode: always
+      platform: mysql
 logging:
   config: classpath:logback-spring.xml
 
@@ -168,7 +172,6 @@ file:
 ---
 # 개발환경
 spring:
-  profiles: dev
   datasource:
     hikari:
       eicn:
@@ -196,8 +199,13 @@ spring:
         jdbc-url: jdbc:${jdbc.dialect}://${jdbc.host}:${jdbc.port}/PDS?${jdbc.options}
         username: ${jdbc.username}
         password: ${jdbc.password}
-    initialization-mode: always
-    platform: mysql
+  config:
+    activate:
+      on-profile: dev
+  sql:
+    init:
+      mode: always
+      platform: mysql
 logging:
   config: classpath:logback-spring.xml
 ---
@@ -209,7 +217,6 @@ jdbc:
   host: 122.49.74.102
 
 spring:
-  profiles: stage
   datasource:
     hikari:
       eicn:
@@ -252,64 +259,13 @@ spring:
         maximum-pool-size: ${hikari.pds.maximum-pool-size}
         max-lifetime: ${hikari.max-lifetime}
         connection-timeout: ${hikari.connection-timeout}
-    initialization-mode: always
-    platform: mysql
-logging:
-  config: classpath:logback-spring.xml
----
-#Cloud Contact
-server:
-  host: 211.43.218.10
-
-jdbc:
-  host: 211.43.218.13
-
-spring:
-  profiles: cc
-  datasource:
-    hikari:
-      eicn:
-        driver-class-name: ${jdbc.driver-class-name}
-        jdbc-url: jdbc:${jdbc.dialect}://MAIN_DB_VIP:${jdbc.port}/eicn?${jdbc.options}
-        username: ${jdbc.username}
-        password: ${jdbc.password}
-        maximum-pool-size: ${hikari.eicn.maximum-pool-size}
-        max-lifetime: ${hikari.max-lifetime}
-        connection-timeout: ${hikari.connection-timeout}
-      customdb:
-        driver-class-name: ${jdbc.driver-class-name}
-        jdbc-url: jdbc:${jdbc.dialect}://MAIN_DB_VIP:${jdbc.port}/CUSTOMDB?${jdbc.options}
-        username: ${jdbc.username}
-        password: ${jdbc.password}
-        maximum-pool-size: ${hikari.customdb.maximum-pool-size}
-        max-lifetime: ${hikari.max-lifetime}
-        connection-timeout: ${hikari.connection-timeout}
-      configdb:
-        driver-class-name: ${jdbc.driver-class-name}
-        jdbc-url: jdbc:${jdbc.dialect}://MAIN_DB_VIP:${jdbc.port}/CONFIGDB?${jdbc.options}
-        username: ${jdbc.username}
-        password: ${jdbc.password}
-        maximum-pool-size: ${hikari.configdb.maximum-pool-size}
-        max-lifetime: ${hikari.max-lifetime}
-        connection-timeout: ${hikari.connection-timeout}
-      statdb:
-        driver-class-name: ${jdbc.driver-class-name}
-        jdbc-url: jdbc:${jdbc.dialect}://MAIN_DB_VIP:${jdbc.port}/STATDB?${jdbc.options}
-        username: ${jdbc.username}
-        password: ${jdbc.password}
-        maximum-pool-size: ${hikari.statdb.maximum-pool-size}
-        max-lifetime: ${hikari.max-lifetime}
-        connection-timeout: ${hikari.connection-timeout}
-      pds:
-        driver-class-name: ${jdbc.driver-class-name}
-        jdbc-url: jdbc:${jdbc.dialect}://MAIN_DB_VIP:${jdbc.port}/PDS?${jdbc.options}
-        username: ${jdbc.username}
-        password: ${jdbc.password}
-        maximum-pool-size: ${hikari.pds.maximum-pool-size}
-        max-lifetime: ${hikari.max-lifetime}
-        connection-timeout: ${hikari.connection-timeout}
-    initialization-mode: always
-    platform: mysql
+  config:
+    activate:
+      on-profile: stage
+  sql:
+    init:
+      mode: always
+      platform: mysql
 logging:
   config: classpath:logback-spring.xml
 ---

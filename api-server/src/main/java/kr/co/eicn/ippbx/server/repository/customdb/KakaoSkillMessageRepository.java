@@ -9,6 +9,7 @@ import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

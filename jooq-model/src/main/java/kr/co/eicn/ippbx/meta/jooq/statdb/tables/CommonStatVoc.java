@@ -105,7 +105,7 @@ public class CommonStatVoc extends TableImpl<StatVocRecord> {
 
     @Override
     public Identity<StatVocRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_STAT_VOC;
+        return (Identity<StatVocRecord, Integer>) super.getIdentity();
     }
 
     @Override

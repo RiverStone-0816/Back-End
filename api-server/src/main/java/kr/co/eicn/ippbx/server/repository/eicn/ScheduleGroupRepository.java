@@ -14,6 +14,7 @@ import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
+import org.jooq.CloseableDSLContext;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -171,7 +172,7 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
                 final ScheduleGroupList list = record.into(ScheduleGroupList.class);
                 cacheService.pbxServerList(getCompanyId())
                         .forEach(e -> {
-                            try (DSLContext pbxDsl = pbxServerInterface.using(e.getHost())) {
+                            try (CloseableDSLContext pbxDsl = (CloseableDSLContext) pbxServerInterface.using(e.getHost())) {
                                 insertItem(pbxDsl, list, targetParent, false);
                             }
                         });

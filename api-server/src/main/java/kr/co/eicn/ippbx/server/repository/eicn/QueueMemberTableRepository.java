@@ -21,6 +21,7 @@ import kr.co.eicn.ippbx.util.EicnUtils;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.*;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.jooq.types.UInteger;
 import org.slf4j.Logger;

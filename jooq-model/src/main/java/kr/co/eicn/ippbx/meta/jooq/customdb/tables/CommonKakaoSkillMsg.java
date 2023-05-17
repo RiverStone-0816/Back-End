@@ -4,7 +4,9 @@ import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.KakaoSkillMsgRecord;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.MemoMsgRecord;
 import org.jooq.*;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.jooq.impl.TableImpl;
 
@@ -190,7 +192,7 @@ public class CommonKakaoSkillMsg  extends TableImpl<KakaoSkillMsgRecord> {
 
     @Override
     public Identity<KakaoSkillMsgRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_KAKAO_SKILL_MSG;
+        return (Identity<KakaoSkillMsgRecord, Integer>) super.getIdentity();
     }
 
     @Override

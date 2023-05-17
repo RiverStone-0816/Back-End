@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonChattMsg;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.MemoMsg;
+import kr.co.eicn.ippbx.meta.jooq.pds.tables.records.PdsResearchResultRecord;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
@@ -109,7 +110,7 @@ public class CommonMemoMsg extends TableImpl<MemoMsgRecord> {
 
     @Override
     public Identity<MemoMsgRecord, Integer> getIdentity() {
-        return Keys.IDENTITY_MEMO_MSG;
+        return (Identity<MemoMsgRecord, Integer>) super.getIdentity();
     }
 
     @Override

@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.meta.jooq.statdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.statdb.Statdb;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.CommonStatInboundRecord;
 import org.jooq.*;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.TableImpl;

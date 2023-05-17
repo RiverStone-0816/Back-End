@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.meta.jooq.statdb.tables;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.CommonStatUserInboundRecord;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.StatUserInboundRecord;
 import org.jooq.*;
+import org.jooq.Record;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.TableImpl;

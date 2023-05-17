@@ -12,11 +12,11 @@ buildscript {
     ext.profile = (!project.hasProperty('profile') || !profile) ? 'local' : profile
 
     ext {
-        springBootVersion = '2.3.0.RELEASE'
+        springBootVersion = '2.7.11'
         springCloudVersion = 'Hoxton.SR4'
         vavrVersion = '0.10.2'
         mysqlVersion = '5.1.47'
-        jooqVersion = '3.13.2'
+        jooqVersion = '3.14.16'
         poiVersion = '4.1.0'
         okhttpVersion = '4.2.2'
         //okhttpVersion = '3.12.0'
@@ -34,7 +34,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20"
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath "io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE"
-        classpath "io.freefair.gradle:lombok-plugin:5.0.1"
+        classpath "io.freefair.gradle:lombok-plugin:6.6.3"
         classpath "nu.studer:gradle-jooq-plugin:4.2"
         classpath "gradle.plugin.org.flywaydb:gradle-plugin-publishing:6.4.2"
 //        classpath files("gradle/lib/gradle-css-plugin-6.0.0-tinywind-custom.jar")
@@ -59,8 +59,8 @@ subprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 17
+    targetCompatibility = 17
 
     compileJava.options.encoding = "UTF-8"
     compileTestJava.options.encoding = "UTF-8"
@@ -135,8 +135,8 @@ project(':util') {
         compileOnly 'org.springframework:spring-context'
         compileOnly 'org.springframework:spring-jdbc'
         compileOnly 'org.jooq:jooq'
-        compileOnly 'javax.servlet:javax.servlet-api'
-        compileOnly 'javax.validation:validation-api'
+        compileOnly 'jakarta.servlet:jakarta.servlet-api'
+        compileOnly 'jakarta.validation:jakarta.validation-api'
 
         api 'org.apache.commons:commons-lang3:3.8.1'
         api 'org.apache.httpcomponents:httpcore:4.4.12'
@@ -252,7 +252,7 @@ project(':jooq-model') {
         jooqRuntime "mysql:mysql-connector-java:${mysqlVersion}"
         api "mysql:mysql-connector-java:${mysqlVersion}"
         api 'org.jooq:jooq'
-        api 'javax.persistence:javax.persistence-api:2.2'
+        api 'jakarta.persistence:jakarta.persistence-api'
     }
 }
 
@@ -264,7 +264,7 @@ project(':model-extension') {
         compile project(':util')
         compile project(':jooq-model')
 
-        compileOnly 'javax.validation:validation-api'
+        compileOnly 'jakarta.validation:jakarta.validation-api'
         compileOnly 'org.springframework:spring-web'
         compileOnly 'org.springframework.security:spring-security-core'
 
@@ -279,6 +279,12 @@ project(':api-server') {
     configurations {
         optional
         compile.extendsFrom optional
+    }
+
+    tasks {
+        processResources {
+            duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        }
     }
 
     dependencies {
@@ -300,7 +306,7 @@ project(':api-server') {
 
         implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
         implementation 'taglibs:standard:1.1.2'
-        implementation 'javax.servlet:jstl'
+        implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
 
         implementation "org.springframework.restdocs:spring-restdocs-mockmvc"
         implementation "org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.1"
@@ -323,6 +329,12 @@ project(':front-controller') {
     bootJar.enabled = false
     jar.enabled = true
 
+    tasks {
+        processResources {
+            duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        }
+    }
+
     dependencies {
         compile project(':model-extension')
 
@@ -339,7 +351,7 @@ project(':front-controller') {
         api 'org.springframework.security:spring-security-core'
         api 'org.apache.tomcat.embed:tomcat-embed-jasper'
         api 'taglibs:standard:1.1.2'
-        api 'javax.servlet:jstl'
+        api 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
 
         api 'com.ibm.icu:icu4j:67.1'
 
