@@ -12,9 +12,11 @@ public class CommonMessageData implements Serializable {
     private String    title;
     private String    status;
     private String    resultStatus;
+    private String    confirmStatus;
     private Timestamp insertTime;
     private Timestamp sendTime;
     private Timestamp resultTime;
+    private Timestamp confirmTime;
     private String    service;
     private String    callback;
     private String    phoneNumber;
@@ -29,5 +31,8 @@ public class CommonMessageData implements Serializable {
     private String    resMessage;
     private String    resDataCode;
     private String    resDataMessage;
+    private String    confirmCode;
+    private String    confirmMessage;
+    private String    telco;
     private Integer   retryCnt;
 }
