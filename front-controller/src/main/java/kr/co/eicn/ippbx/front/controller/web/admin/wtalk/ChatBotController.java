@@ -101,8 +101,8 @@ public class ChatBotController extends BaseController {
 
     @LoginRequired(type = LoginRequired.Type.PASS)
     @GetMapping("mc/editor")
-    public String mcEditor(Model model, @RequestParam String jSessionId, @RequestParam(required = false) String ip, HttpSession session, HttpServletRequest request) throws IOException, ResultFailException {
-        multichannelService.mcLogin(jSessionId);
+    public String mcEditor(Model model, @RequestParam("company_id") String companyId, @RequestParam("admin_id") String userId) throws IOException, ResultFailException {
+        multichannelService.mcLogin(companyId, userId);
 
         return editor(model, null);
     }

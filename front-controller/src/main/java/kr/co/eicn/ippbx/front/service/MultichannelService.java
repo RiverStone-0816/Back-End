@@ -11,8 +11,6 @@ import kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.PersonListSummary;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import lombok.RequiredArgsConstructor;
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -20,22 +18,17 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Service
 public class MultichannelService extends ApiServerInterface {
-    @Value("${eicn.service.base-url}")
-    private String serverUrl;
-    private final String subUrl = "/ipcc/multichannel/remote/session_check.jsp;jsessionid=";
 
     private final RequestGlobal g;
     private final UserApiInterface userApiInterface;
     private final AuthApiInterface authApiInterface;
     private final CompanyApiInterface companyApiInterface;
 
-    public MultichannelLoginResponse checkSession(String jSessionId) throws IOException {
-        return get(serverUrl.concat(subUrl).concat(jSessionId), null, MultichannelLoginResponse.class);
-    }
+    public void mcLogin(String companyId, String userId) throws IOException, ResultFailException {
+        if (!g.isLogin() || !g.checkLogin() || !companyId.equals(g.getUser().getCompanyId()) || !userId.equals(g.getUser().getId())) {
+            g.invalidateSession();
 
-    public void mcLogin(String jSessionId) throws IOException, ResultFailException {
-        if (!g.isLogin() || !g.checkLogin()) {
-            MultichannelLoginResponse response = checkSession(jSessionId);
+            MultichannelLoginResponse response = new MultichannelLoginResponse(companyId, userId);
             logger.info(response.toString());
 
             PersonListSummary data = new PersonListSummary();
