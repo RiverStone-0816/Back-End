@@ -97,8 +97,8 @@ public class IvrController extends BaseController {
 
     @LoginRequired(type = LoginRequired.Type.PASS)
     @GetMapping("mc")
-    public String mcIvr(Model model, @RequestParam String jSessionId) throws IOException, ResultFailException {
-        multichannelService.mcLogin(jSessionId);
+    public String mcIvr(Model model, @RequestParam("company_id") String companyId, @RequestParam("admin_id") String userId) throws IOException, ResultFailException {
+        multichannelService.mcLogin(companyId, userId);
         return page(model, null);
     }
 
