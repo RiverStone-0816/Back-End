@@ -68,6 +68,8 @@ public class SendMessageTemplateApiController extends ApiBaseController {
             if(Objects.nonNull(categoryMap.get(e.getCategoryCode())))
                 response.setCategoryName(categoryMap.get(e.getCategoryCode()));
 
+            response.setContent(e.getContent().replaceAll("[\\r\\n]", "\\\\n"));
+
             return response;
         }).collect(Collectors.toList())));
     }

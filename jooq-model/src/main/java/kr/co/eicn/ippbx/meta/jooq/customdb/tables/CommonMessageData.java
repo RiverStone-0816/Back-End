@@ -2,7 +2,6 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.CommonMessageDataRecord;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.MessageDataRecord;
 import org.jooq.*;
 import org.jooq.impl.DSL;
@@ -49,6 +48,11 @@ public class CommonMessageData extends TableImpl<MessageDataRecord> {
     public final TableField<MessageDataRecord, String> RESULT_STATUS = createField(DSL.name("result_status"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.CHAR)), this, "상태S,R");
 
     /**
+     * The column <code>CUSTOMDB.message_data.confirm_status</code>. 상태S,R
+     */
+    public final TableField<MessageDataRecord, String> CONFIRM_STATUS = createField(DSL.name("confirm_status"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.CHAR)), this, "상태S,R");
+
+    /**
      * The column <code>CUSTOMDB.message_data.insert_time</code>.
      */
     public final TableField<MessageDataRecord, Timestamp> INSERT_TIME = createField(DSL.name("insert_time"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("'2009-07-01 00:00:00'", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
@@ -62,6 +66,11 @@ public class CommonMessageData extends TableImpl<MessageDataRecord> {
      * The column <code>CUSTOMDB.message_data.result_time</code>.
      */
     public final TableField<MessageDataRecord, Timestamp> RESULT_TIME = createField(DSL.name("result_time"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("'2009-07-01 00:00:00'", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+
+    /**
+     * The column <code>CUSTOMDB.message_data.confirm_time</code>.
+     */
+    public final TableField<MessageDataRecord, Timestamp> CONFIRM_TIME = createField(DSL.name("confirm_time"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("'2009-07-01 00:00:00'", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
 
     /**
      * The column <code>CUSTOMDB.message_data.service</code>. SMS,MMS,LMS,KAKAO,RCS
@@ -132,6 +141,21 @@ public class CommonMessageData extends TableImpl<MessageDataRecord> {
      * The column <code>CUSTOMDB.message_data.res_data_message</code>. 메세지발송메세지
      */
     public final TableField<MessageDataRecord, String> RES_DATA_MESSAGE = createField(DSL.name("res_data_message"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "메세지발송메세지");
+
+    /**
+     * The column <code>CUSTOMDB.message_data.confirm_code</code>. 결과코드
+     */
+    public final TableField<MessageDataRecord, String> CONFIRM_CODE = createField(DSL.name("confirm_code"), org.jooq.impl.SQLDataType.VARCHAR(10).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "결과코드");
+
+    /**
+     * The column <code>CUSTOMDB.message_data.confirm_message</code>. 결과메세지
+     */
+    public final TableField<MessageDataRecord, String> CONFIRM_MESSAGE = createField(DSL.name("confirm_message"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "결과메세지");
+
+    /**
+     * The column <code>CUSTOMDB.message_data.telco</code>. 통신사
+     */
+    public final TableField<MessageDataRecord, String> TELCO = createField(DSL.name("telco"), org.jooq.impl.SQLDataType.VARCHAR(20).defaultValue(org.jooq.impl.DSL.inline("''", org.jooq.impl.SQLDataType.VARCHAR)), this, "통신사");
 
     /**
      * The column <code>CUSTOMDB.message_data.retry_cnt</code>. 재전송횟수

@@ -29,28 +29,10 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RestController
 @RequestMapping(value = "api/v1/admin/application/sms/message-history", produces = MediaType.APPLICATION_JSON_VALUE)
 public class SendMessageHistoryApiController extends ApiBaseController {
-
-    private final SendMessageHistoryRepository repository;
     private final MessageDataService messageDataService;
 
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<SendMessageHistoryResponse>>> pagination(SendMessageSearchRequest search) {
-        final Pagination<CommonMessageData> pagination = messageDataService.getRepository().pagination(search);
-        final List<SendMessageHistoryResponse> rows = pagination.getRows().stream()
-                .map(e -> {
-                    final SendMessageHistoryResponse response = new SendMessageHistoryResponse();
-                    response.setId(e.getSeq());
-                    response.setSendDate(e.getSendTime());
-                    response.setTarget(e.getPhoneNumber());
-                    response.setResMessage(e.getResMessage());
-                    response.setContent(e.getMessage());
-                    response.setSendType(e.getService());
-
-                    return response;
-                })
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(data(new Pagination<>(rows, pagination.getPage(), pagination.getTotalCount(), search.getLimit())));
+        return ResponseEntity.ok(data(messageDataService.pagination(search)));
     }
-
-
 }
