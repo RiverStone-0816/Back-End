@@ -37,7 +37,7 @@
                             <div class="field">
                                 <div class="ui radio checkbox">
                                     <form:radiobutton path="routeType" class="hidden" value="A"/>
-                                    <label>${entity.type.equals('VIP') ? '우선순위 부여' : '차단'}</label>
+                                    <label>${entity.type.literal.equals("VIP") ? '우선순위 부여' : '차단'}</label>
                                 </div>
                             </div>
                             <div class="field">
