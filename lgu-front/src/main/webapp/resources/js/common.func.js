@@ -7,7 +7,7 @@ const restUtils = (function ($) {
             url: $.addQueryString(urlParam ? $.addQueryString(url, data) : url, {____t: new Date().getTime()}),
             data: urlParam ? null : typeof data === "object" ? JSON.stringify(data) : data,
             contentType: "application/json; charset=utf-8",
-            dataType: "json"
+            dataType: "text json"
         }).always(function () {
             if (!noneBlockUi) $.unblockUI();
         });
