@@ -29,7 +29,7 @@ public class MaindbResultExcel extends AbstractExcel {
 
     @SuppressWarnings("unchecked")
     private void createBody() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        final List<String> firstHeader = new ArrayList<>(Arrays.asList("상담기본정보", "", "", "", ""));
+        final List<String> firstHeader = new ArrayList<>(Arrays.asList("상담기본정보", "", "", "", "", "", ""));
         firstHeader.add("상담결과필드");
         for (int i = 1; i < resultType.getFields().size(); i++) firstHeader.add("");
         firstHeader.add("고객정보필드");
@@ -37,14 +37,14 @@ public class MaindbResultExcel extends AbstractExcel {
         firstHeader.addAll(Arrays.asList("채널정보", "", ""));
         addRow(sheetHeadStyle, firstHeader.toArray());
 
-        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 0, 4));
+        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 0, 6));
         if (resultType.getFields().size() > 1)
-            getSheet().addMergedRegion(new CellRangeAddress(0, 0, 5, 5 + resultType.getFields().size() - 1));
+            getSheet().addMergedRegion(new CellRangeAddress(0, 0, 7, 7 + resultType.getFields().size() - 1));
         if (customDbType.getFields().size() > 1)
-            getSheet().addMergedRegion(new CellRangeAddress(0, 0, 5 + resultType.getFields().size(), 5 + resultType.getFields().size() + customDbType.getFields().size() - 1));
-        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 5 + resultType.getFields().size() + customDbType.getFields().size(), 5 + resultType.getFields().size() + customDbType.getFields().size() + 2));
+            getSheet().addMergedRegion(new CellRangeAddress(0, 0, 7 + resultType.getFields().size(), 7 + resultType.getFields().size() + customDbType.getFields().size() - 1));
+        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 7 + resultType.getFields().size() + customDbType.getFields().size(), 7 + resultType.getFields().size() + customDbType.getFields().size() + 2));
 
-        final List<String> secondHeader = new ArrayList<>(Arrays.asList("채널", "수/발신", "상담등록시간", "상담원", "고객채널정보"));
+        final List<String> secondHeader = new ArrayList<>(Arrays.asList("번호", "채널", "수/발신", "상담등록시간", "상담원", "이관상담원", "고객채널정보"));
         resultType.getFields().forEach(field -> secondHeader.add(field.getFieldInfo()));
         customDbType.getFields().forEach(field -> secondHeader.add(field.getFieldInfo()));
         secondHeader.addAll(Arrays.asList("전화번호", "이메일", "상담톡아이디"));
@@ -52,9 +52,12 @@ public class MaindbResultExcel extends AbstractExcel {
 
         final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = MaindbDataController.createCustomIdToFieldNameToValueMap(list.stream().map(ResultCustomInfoEntity::getCustomInfo).collect(Collectors.toList()), customDbType);
         final Map<Integer, Map<String, Object>> seqToFieldNameToValueMap = MaindbResultController.createSeqToFieldNameToValueMap((List<CommonResultCustomInfo>) (List<?>) list, resultType);
+        int i = 0;
         for (ResultCustomInfoEntity e : list) {
-            final List<String> row = new ArrayList<>(Arrays.asList(e.getGroupKind(), StringUtils.isNotEmpty(e.getCallType()) ? (e.getCallType().equals("I") ? "수신" : "발신") : "",
-                    niceFormat(e.getResultDate()), e.getUserName(), e.getCustomNumber()));
+            i++;
+            final List<String> row = new ArrayList<>(Arrays.asList(String.valueOf(i) ,e.getGroupKind(), StringUtils.isNotEmpty(e.getCallType()) ? (e.getCallType().equals("I") ? "수신" : "발신") : "",
+                    niceFormat(e.getResultDate()), e.getUserName(),
+                    StringUtils.isEmpty(e.getUserTrName()) ? "" : e.getUserTrName(), e.getCustomNumber()));
             resultType.getFields().forEach(field -> {
                 final Object value = seqToFieldNameToValueMap.get(e.getSeq()).get(field.getFieldId());
 
