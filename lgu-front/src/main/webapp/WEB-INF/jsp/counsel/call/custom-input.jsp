@@ -431,9 +431,9 @@
         const talkServiceName = ui.find('[name=channelDataTalkService] :selected').text();
 
         ui.find('[name=channels]').append($('<option/>', {
-            value: (channelType === 'TALK' ? talkServiceSenderKey + '_' + channelData : channelData),
+            value: (channelType === 'TALK' ? talkServiceSenderKey + '_' + channelData : channelData.replaceAll(/[^0-9]/g, '')),
             'data-type': channelType,
-            text: '[' + (channelType === 'TALK' ? talkServiceName : channelTypeName) + '] ' + channelData
+            text: '[' + (channelType === 'TALK' ? talkServiceName : channelTypeName) + '] ' + (channelType === 'TALK' ? talkServiceSenderKey + '_' + channelData : channelData.replaceAll(/[^0-9]/g, ''))
         }));
     });
 
