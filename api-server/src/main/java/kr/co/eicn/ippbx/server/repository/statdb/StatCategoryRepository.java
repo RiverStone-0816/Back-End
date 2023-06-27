@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.server.repository.statdb;
 
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatInbound;
 import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
+import kr.co.eicn.ippbx.model.enums.ContextType;
 import kr.co.eicn.ippbx.model.enums.SearchCycle;
 import kr.co.eicn.ippbx.model.search.StatCategorySearchRequest;
 import lombok.Getter;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static org.jooq.impl.DSL.sum;
+import static org.jooq.impl.DSL.*;
 
 @Getter
 public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbound, StatInboundEntity, Integer> {
@@ -28,6 +29,8 @@ public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbou
         super(new CommonStatInbound(companyId), new CommonStatInbound(companyId).SEQ, StatInboundEntity.class);
         this.TABLE = new CommonStatInbound(companyId);
 
+        final Condition isDirectOrInner = TABLE.DCONTEXT.eq(ContextType.DIRECT_CALL.getCode()).or(TABLE.DCONTEXT.eq(ContextType.INBOUND_INNER.getCode()));
+
         addField(
                 TABLE.SEQ,
                 TABLE.STAT_DATE,
@@ -35,28 +38,30 @@ public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbou
                 TABLE.SERVICE_NUMBER,
                 TABLE.CATEGORY,
                 TABLE.IVR_TREE_NAME,
-                sum(TABLE.TOTAL).as(TABLE.TOTAL),
-                sum(TABLE.ONLYREAD).as(TABLE.ONLYREAD),
-                sum(TABLE.CONNREQ).as(TABLE.CONNREQ),
-                sum(TABLE.SUCCESS).as(TABLE.SUCCESS),
-                sum(TABLE.CANCEL).as(TABLE.CANCEL),
-                sum(TABLE.CALLBACK).as(TABLE.CALLBACK),
-                sum(TABLE.CALLBACK_SUCCESS).as(TABLE.CALLBACK_SUCCESS),
-                sum(TABLE.SERVICE_LEVEL_OK).as(TABLE.SERVICE_LEVEL_OK),
-                sum(TABLE.CANCEL_CUSTOM).as(TABLE.CANCEL_CUSTOM),
-                sum(TABLE.BILLSEC_SUM).as(TABLE.BILLSEC_SUM),
-                sum(TABLE.WAIT_SUM).as(TABLE.WAIT_SUM),
-                sum(TABLE.WAIT_CANCEL_SUM).as(TABLE.WAIT_CANCEL_SUM),
-                sum(TABLE.WAIT_SUCC_0_10).as(TABLE.WAIT_SUCC_0_10),
-                sum(TABLE.WAIT_SUCC_10_20).as(TABLE.WAIT_SUCC_10_20),
-                sum(TABLE.WAIT_SUCC_20_30).as(TABLE.WAIT_SUCC_20_30),
-                sum(TABLE.WAIT_SUCC_30_40).as(TABLE.WAIT_SUCC_30_40),
-                sum(TABLE.WAIT_SUCC_40).as(TABLE.WAIT_SUCC_40),
-                sum(TABLE.WAIT_CANCEL_0_10).as(TABLE.WAIT_CANCEL_0_10),
-                sum(TABLE.WAIT_CANCEL_10_20).as(TABLE.WAIT_CANCEL_10_20),
-                sum(TABLE.WAIT_CANCEL_20_30).as(TABLE.WAIT_CANCEL_20_30),
-                sum(TABLE.WAIT_CANCEL_30_40).as(TABLE.WAIT_CANCEL_30_40),
-                sum(TABLE.WAIT_CANCEL_40).as(TABLE.WAIT_CANCEL_40));
+                ifnull(sum(TABLE.TOTAL), 0).as(TABLE.TOTAL),
+                ifnull(sum(TABLE.ONLYREAD), 0).as(TABLE.ONLYREAD),
+                ifnull(sum(when(isDirectOrInner, TABLE.TOTAL).else_(TABLE.CONNREQ)), 0).as(TABLE.CONNREQ),
+                ifnull(sum(TABLE.SUCCESS), 0).as(TABLE.SUCCESS),
+                ifnull(sum(when(isDirectOrInner, TABLE.TOTAL.minus(TABLE.SUCCESS)).else_(TABLE.CANCEL)), 0).as(TABLE.CANCEL),
+                ifnull(sum(TABLE.CANCEL_TIMEOUT), 0).as(TABLE.CANCEL_TIMEOUT),
+                ifnull(sum(TABLE.CANCEL_NOANSWER), 0).as(TABLE.CANCEL_NOANSWER),
+                ifnull(sum(TABLE.CANCEL_CUSTOM), 0).as(TABLE.CANCEL_CUSTOM),
+                ifnull(sum(TABLE.CALLBACK), 0).as(TABLE.CALLBACK),
+                ifnull(sum(TABLE.CALLBACK_SUCCESS), 0).as(TABLE.CALLBACK_SUCCESS),
+                ifnull(sum(TABLE.SERVICE_LEVEL_OK), 0).as(TABLE.SERVICE_LEVEL_OK),
+                ifnull(sum(TABLE.BILLSEC_SUM), 0).as(TABLE.BILLSEC_SUM),
+                ifnull(sum(when(not(isDirectOrInner.or(TABLE.DCONTEXT.eq(ContextType.CALL_BACK.getCode()))), TABLE.WAIT_SUM)), 0).as(TABLE.WAIT_SUM),
+                ifnull(sum(when(not(isDirectOrInner.or(TABLE.DCONTEXT.eq(ContextType.CALL_BACK.getCode()))), TABLE.WAIT_CANCEL_SUM)), 0).as(TABLE.WAIT_CANCEL_SUM),
+                ifnull(sum(TABLE.WAIT_SUCC_0_10), 0).as(TABLE.WAIT_SUCC_0_10),
+                ifnull(sum(TABLE.WAIT_SUCC_10_20), 0).as(TABLE.WAIT_SUCC_10_20),
+                ifnull(sum(TABLE.WAIT_SUCC_20_30), 0).as(TABLE.WAIT_SUCC_20_30),
+                ifnull(sum(TABLE.WAIT_SUCC_30_40), 0).as(TABLE.WAIT_SUCC_30_40),
+                ifnull(sum(TABLE.WAIT_SUCC_40), 0).as(TABLE.WAIT_SUCC_40),
+                ifnull(sum(TABLE.WAIT_CANCEL_0_10), 0).as(TABLE.WAIT_CANCEL_0_10),
+                ifnull(sum(TABLE.WAIT_CANCEL_10_20), 0).as(TABLE.WAIT_CANCEL_10_20),
+                ifnull(sum(TABLE.WAIT_CANCEL_20_30), 0).as(TABLE.WAIT_CANCEL_20_30),
+                ifnull(sum(TABLE.WAIT_CANCEL_30_40), 0).as(TABLE.WAIT_CANCEL_30_40),
+                ifnull(sum(TABLE.WAIT_CANCEL_40), 0).as(TABLE.WAIT_CANCEL_40));
     }
 
     @Override
