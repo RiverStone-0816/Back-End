@@ -64,6 +64,7 @@ public class CompanyServerRepository extends EicnBaseRepository<CompanyServer, C
 				.leftJoin(DOUB_SERVER_INFO).on(DOUB_SERVER_INFO.DOUB_HOST.eq(COMPANY_SERVER.HOST))
 				.where(DSL.trueCondition())
 				.and(COMPANY_SERVER.COMPANY_ID.eq(companyId))
+				.groupBy(COMPANY_SERVER.HOST, COMPANY_SERVER.TYPE)
 				.fetch(record -> {
 					final CompanyServerEntity entity = record.into(COMPANY_SERVER).into(CompanyServerEntity.class);
 					entity.setServer(record.into(SERVER_INFO).into(ServerInfoEntity.class));
