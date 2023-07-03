@@ -85,6 +85,15 @@
                                         </form:select>
                                     </div>
                                 </div>
+                                <div class="two wide column"><label class="control-label">상세실행명</label></div>
+                                <div class="four wide column">
+                                    <div class="ui form">
+                                        <form:select path="actionSubId">
+                                            <form:option value="" label="선택안함"/>
+                                            <form:options items="${actionSubTypes}"/>
+                                        </form:select>
+                                    </div>
+                                </div>
                                 <div class="two wide column"><label class="control-label">실행자명</label></div>
                                 <div class="two wide column">
                                     <div class="ui form"><form:input path="userName"/></div>

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebSecureHistory.WEB_SECURE_HISTORY;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
@@ -67,17 +68,24 @@ public class WebSecureHistoryRepository extends EicnBaseRepository<WebSecureHist
     private List<Condition> conditions(WebSecureHistorySearchRequest search) {
         final List<Condition> conditions = new ArrayList<>();
 
-        if (search.getStartTimestamp() != null)
-            conditions.add(WEB_SECURE_HISTORY.INSERT_DATE.ge(search.getStartTimestamp()));
+        if (Objects.nonNull(search.getStartDate()) && Objects.nonNull(search.getStartHour()))
+            conditions.add(WEB_SECURE_HISTORY.INSERT_DATE.ge(DSL.timestamp(search.getStartDate() + " " + search.getStartHour() + ":00:00")));
+        else if (search.getStartDate() != null)
+            conditions.add(DSL.date(WEB_SECURE_HISTORY.INSERT_DATE).ge(search.getStartDate()));
 
-        if (search.getEndTimestamp() != null)
-            conditions.add(WEB_SECURE_HISTORY.INSERT_DATE.le(search.getEndTimestamp()));
+        if (Objects.nonNull(search.getEndDate()) && Objects.nonNull(search.getEndHour()))
+            conditions.add(WEB_SECURE_HISTORY.INSERT_DATE.le(DSL.timestamp(search.getEndDate() + " " + search.getEndHour() + ":59:59")));
+        else if (search.getEndDate() != null)
+            conditions.add(DSL.date(WEB_SECURE_HISTORY.INSERT_DATE).le(search.getEndDate()));
 
         if (isNotEmpty(search.getUserName()))
             conditions.add(WEB_SECURE_HISTORY.USER_NAME.like("%" + search.getUserName() + "%"));
 
         if (isNotEmpty(search.getActionId()))
-            conditions.add(WEB_SECURE_HISTORY.ACTION_ID.like(search.getActionId() + "%"));
+            conditions.add(WEB_SECURE_HISTORY.ACTION_ID.eq(search.getActionId()));
+
+        if (isNotEmpty(search.getActionSubId()))
+            conditions.add(WEB_SECURE_HISTORY.ACTION_SUB_ID.eq(search.getActionSubId()));
 
         return conditions;
     }

@@ -1,9 +1,8 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.service.log;
 
-import kr.co.eicn.ippbx.util.ReflectionUtils;
+import kr.co.eicn.ippbx.model.enums.WebSecureActionSubType;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
-import kr.co.eicn.ippbx.front.model.search.WebSecureHistorySearch;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.service.log.WebLogApiInterface;
 import kr.co.eicn.ippbx.front.service.excel.WebLogExcel;
@@ -23,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Calendar;
 
 /**
  * @author tinywind
@@ -39,44 +36,23 @@ public class WebLogController extends BaseController {
     private WebLogApiInterface apiInterface;
 
     @GetMapping("")
-    public String page(Model model, @ModelAttribute("search") WebSecureHistorySearch search) throws IOException, ResultFailException {
+    public String page(Model model, @ModelAttribute("search") WebSecureHistorySearchRequest search) throws IOException, ResultFailException {
         final int limit = 10000;
-        final WebSecureHistorySearchRequest searchRequest = getWebSecureHistorySearchRequest(search);
-        final Pagination<WebSecureHistoryResponse> pagination = apiInterface.pagination(searchRequest);
+
+        final Pagination<WebSecureHistoryResponse> pagination = apiInterface.pagination(search);
         model.addAttribute("pagination", pagination);
         model.addAttribute("limit", limit);
         model.addAttribute("actionTypes", FormUtils.optionsOfCode(WebSecureActionType.class));
+        model.addAttribute("actionSubTypes", FormUtils.optionsOfCode(WebSecureActionSubType.class));
 
         return "admin/service/log/web-log/ground";
     }
 
     @GetMapping("_excel")
-    public void downloadExcel(WebSecureHistorySearch search, HttpServletResponse response) throws IOException, ResultFailException {
+    public void downloadExcel(WebSecureHistorySearchRequest search, HttpServletResponse response) throws IOException, ResultFailException {
         search.setPage(1);
         search.setLimit(100000);
 
-        final WebSecureHistorySearchRequest searchRequest = getWebSecureHistorySearchRequest(search);
-        new WebLogExcel(searchRequest, apiInterface.pagination(searchRequest).getRows()).generator(response, "웹로그");
-    }
-
-    private WebSecureHistorySearchRequest getWebSecureHistorySearchRequest(WebSecureHistorySearch search) {
-        final WebSecureHistorySearchRequest searchRequest = new WebSecureHistorySearchRequest();
-        ReflectionUtils.copy(searchRequest, search);
-
-        if (search.getStartDate() != null && search.getStartHour() != null) {
-            final Calendar calendar = Calendar.getInstance();
-            calendar.setTime(search.getStartDate());
-            calendar.set(Calendar.HOUR_OF_DAY, search.getStartHour());
-            searchRequest.setStartTimestamp(new Timestamp(calendar.getTimeInMillis()));
-        }
-
-        if (search.getEndDate() != null && search.getEndHour() != null) {
-            final Calendar calendar = Calendar.getInstance();
-            calendar.setTime(search.getEndDate());
-            calendar.set(Calendar.HOUR_OF_DAY, search.getEndHour());
-            searchRequest.setEndTimestamp(new Timestamp(calendar.getTimeInMillis()));
-        }
-
-        return searchRequest;
+        new WebLogExcel(search, apiInterface.pagination(search).getRows()).generator(response, "웹로그");
     }
 }

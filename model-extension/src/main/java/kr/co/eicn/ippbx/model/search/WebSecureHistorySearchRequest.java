@@ -1,21 +1,31 @@
 package kr.co.eicn.ippbx.model.search;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import kr.co.eicn.ippbx.model.Constants;
 import kr.co.eicn.ippbx.util.page.PageForm;
 import kr.co.eicn.ippbx.util.page.PageQueryable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class WebSecureHistorySearchRequest extends PageForm {
     @PageQueryable
-    private Timestamp startTimestamp;   //시작시간
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = Constants.DEFAULT_TIMEZONE)
+    private Date startDate = new Date(System.currentTimeMillis() - 6 * 24 * 60 * 60 * 1000);
     @PageQueryable
-    private Timestamp endTimestamp;     //종료시간
+    private Integer startHour = 0;
     @PageQueryable
-    private String userName;       //상담자
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = Constants.DEFAULT_TIMEZONE)
+    private Date endDate = new Date(System.currentTimeMillis());
+    @PageQueryable
+    private Integer endHour = 23;
+    @PageQueryable
+    private String userName;       //실행자명
     @PageQueryable
     private String actionId;       //실행명
+    @PageQueryable
+    private String actionSubId;    //상세실행명
 }
