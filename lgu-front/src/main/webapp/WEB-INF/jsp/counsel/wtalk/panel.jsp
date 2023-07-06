@@ -502,7 +502,7 @@
                  @dragenter.stop="showingDropzone=true">
                 <div class="inner">
                     <img src="<c:url value="/resources/images/circle-plus.svg"/>">
-                    <p class="attach-text">파일을 채팅창에 바로 업로드하려면<br>여기에 드롭하세요.</p>
+                    <p class="attach-text">파일을 채팅창에 바로 업로드하려면<br>여기에 드롭하세요.<br><a @click.stop="showingDropzone=false"><u>닫기</u></a></p>
                 </div>
             </div>
             <div class="room" @drop.prevent="dropFiles" @dragover.prevent @dragenter.stop="showingDropzone=true">
@@ -1325,6 +1325,7 @@
                     return this.templates.filter(e => e.permissionLevel >= _this.showingTemplateLevel && e.name.includes(_this.showingTemplateFilter))
                 },
                 keyDown: function(event) {
+                    console.log(event)
                     if (event.key === 'Escape') {
                         this.replying = null
                         return
@@ -1483,7 +1484,6 @@
             mounted: function () {
                 this.loadTemplates()
                 this.loadTemplateBlocks()
-
             },
         }
         const talkRoom = Vue.createApp(Object.assign({}, talkRoomProperties)).mount('#talk-room')
