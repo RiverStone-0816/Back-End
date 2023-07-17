@@ -178,7 +178,7 @@ public class NoticeApiController extends ApiBaseController {
     /**
      * 특정 파일 다운로드
      */
-    @GetMapping(value = "{fileId}/specific-file-resource", params = {"token"})
+    @GetMapping(value = "{fileId}/specific-file-resource")
     public ResponseEntity<Resource> specificFileResource(@PathVariable Long fileId, HttpServletRequest request) {
         final NoticeFileEntity entity = service.findOneIfNullThrow(fileId);
 

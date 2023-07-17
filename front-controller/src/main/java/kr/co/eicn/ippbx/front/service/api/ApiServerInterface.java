@@ -348,6 +348,35 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
         }
     }
 
+    protected <BODY> Resource getResourceResponseAll(String url) {
+        url = (url.startsWith("http") ? "" : apiServerUrl) + url;
+
+        final RestTemplate template = new RestTemplate(getFactory());
+        template.getMessageConverters().add(0, new ResourceHttpMessageConverter());
+
+        final HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        final String accessToken = getAccessToken();
+        if (StringUtils.isNotEmpty(accessToken))
+            headers.add("Authorization", "Bearer " + accessToken);
+
+        headers.add("HTTP_CLIENT_IP", getClientIp());
+
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
+
+        try {
+            final ResponseEntity<Resource> response = template.exchange(uriBuilder.build().encode().toUri(), HttpMethod.GET, new HttpEntity<>(headers), Resource.class);
+
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            logger.warn(e.getStatusCode() + " : " + e.getResponseBodyAsString());
+            if (Objects.equals(e.getStatusCode(), HttpStatus.UNAUTHORIZED))
+                throw new UnauthorizedException(e.getStatusText(), e.getResponseHeaders(), e.getResponseBodyAsByteArray(), Charset.defaultCharset());
+            throw e;
+        }
+    }
+
     protected String getAccessToken() {
         return (String) session.getAttribute(SESSION_ACCESS_TOKEN);
     }

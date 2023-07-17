@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.DiskResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.FileSummaryResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -28,5 +29,9 @@ public class RecordRemoteFileApiInterface extends ApiServerInterface {
 
     public DiskResponse disk() throws IOException, ResultFailException {
         return getData(subUrl, null, DiskResponse.class).getData();
+    }
+
+    public Resource getResource(String fileName) throws IOException, ResultFailException {
+        return getResourceResponseAll(subUrl+"resource?fileName="+fileName);
     }
 }

@@ -11,6 +11,7 @@ import kr.co.eicn.ippbx.model.form.TaskScriptCategoryFormRequest;
 import kr.co.eicn.ippbx.model.search.TaskScriptSearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
@@ -83,5 +84,9 @@ public class TaskScriptApiInterface extends ApiServerInterface {
 
     public List<TaskScriptCategoryResponse> taskScriptCategoryList() throws IOException, ResultFailException {
         return getList(subUrl + "category-list", null, TaskScriptCategoryResponse.class).getData();
+    }
+
+    public Resource getResource(Integer id) throws IOException, ResultFailException {
+        return getResourceResponseAll(subUrl + id+"/specific-file-resource");
     }
 }

@@ -34,4 +34,8 @@ public class RecordFileApiInterface extends ApiServerInterface {
     public Resource getResource(String path, String mode) throws IOException, ResultFailException {
         return getResource("/api/v1/admin/record/history/resource?path=" + path + "&mode=" + mode);
     }
+
+    public Resource getResourceInDisk(String fileName) throws IOException, ResultFailException {
+        return getResource("/api/v1/admin/record/file/resource?fileName=" + fileName);
+    }
 }

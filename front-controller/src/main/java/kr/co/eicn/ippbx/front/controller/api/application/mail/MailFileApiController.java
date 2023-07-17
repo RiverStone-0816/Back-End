@@ -10,16 +10,20 @@ import kr.co.eicn.ippbx.util.page.Pagination;
 import kr.co.eicn.ippbx.model.dto.eicn.SendFileResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.SendSmsCategorySummaryResponse;
 import kr.co.eicn.ippbx.model.search.SendCategorySearchRequest;
+import org.apache.commons.compress.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author tinywind
@@ -79,6 +83,26 @@ public class MailFileApiController extends BaseController {
     @GetMapping("category")
     public List<SendSmsCategorySummaryResponse> sendFaxEmailCategory() throws IOException, ResultFailException {
         return apiInterface.sendCategory();
+    }
+
+    @ResponseBody
+    @GetMapping("id/{id}/resource")
+    public ResponseEntity<byte[]> getResoucreInFax(@PathVariable Long id) throws IOException, ResultFailException {
+        Resource resource = apiInterface.getResource(id);
+        byte[] bytes = IOUtils.toByteArray(resource.getInputStream());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION,
+                ContentDisposition.builder("attachment")
+                        .filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8)
+                        .build().toString());
+        headers.setPragma("no-cache");
+        headers.setCacheControl(CacheControl.noCache());
+        headers.set(HttpHeaders.ACCEPT_RANGES, "bytes");
+        headers.setContentLength(bytes.length);
+
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
 
 }

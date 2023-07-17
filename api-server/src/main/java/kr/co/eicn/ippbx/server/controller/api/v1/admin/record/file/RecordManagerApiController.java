@@ -84,7 +84,7 @@ public class RecordManagerApiController extends ApiBaseController {
 	/**
 	 * 녹취파일관리 파일 다운로드
 	 */
-	@GetMapping(value = "resource", params = {"token"})
+	@GetMapping(value = "resource")
 	public ResponseEntity<Resource> resource(@RequestParam String fileName) {
 		if (isEmpty(fileName))
 			throw new IllegalArgumentException();

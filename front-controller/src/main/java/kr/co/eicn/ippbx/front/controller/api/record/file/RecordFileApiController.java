@@ -56,4 +56,23 @@ public class RecordFileApiController extends BaseController {
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
 
+    @ResponseBody
+    @GetMapping("resource-disk")
+    public ResponseEntity<byte[]> get(@RequestParam String fileName) throws IOException, ResultFailException {
+        Resource resource = apiInterface.getResourceInDisk(fileName);
+        byte[] bytes = IOUtils.toByteArray(resource.getInputStream());
+
+        HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION,
+                ContentDisposition.builder("attachment")
+                        .filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8)
+                        .build().toString());
+        headers.setPragma("no-cache");
+        headers.setCacheControl(CacheControl.noCache());
+        headers.set(HttpHeaders.ACCEPT_RANGES, "bytes");
+        headers.setContentLength(bytes.length);
+
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+    }
 }

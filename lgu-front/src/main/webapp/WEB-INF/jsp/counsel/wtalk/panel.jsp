@@ -692,7 +692,7 @@
                                             <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
                                                 <div class="txt_chat">
                                                     <div style="width: 320px">
-                                                        <audio controls :src="'${apiServerUrl}/api/v1/admin/record/file/resource?fileName='+jsonDataParse(e.contents).record_file+'&token=${accessToken}'" initaudio="false"></audio>
+                                                        <audio controls :src="'/api/record-file/resource-disk?fileName='+jsonDataParse(e.contents).record_file'"initaudio="false"></audio>
                                                     </div>
                                                 </div>
                                             </div>
@@ -705,7 +705,7 @@
                                         <div class="chat">
                                             <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
                                                 <div class="txt_chat">
-                                                    <video controls :src="'${apiServerUrl}/api/v1/admin/record/file/resource?fileName='+jsonDataParse(e.contents).record_file+'&token=${accessToken}'"></video>
+                                                    <video controls :src="'/api/record-file/resource-disk?fileName='+jsonDataParse(e.contents).record_file'"></video>
                                                 </div>
                                             </div>
                                         </div>

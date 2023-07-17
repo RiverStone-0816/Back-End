@@ -303,7 +303,7 @@
                                                  style="background-color: rgba(224, 57, 151, 0.28)">
                                                 <div class="txt_chat">
                                                     <div style="width: 320px">
-                                                        <audio controls src="${apiServerUrl}/api/v1/admin/record/file/resource?fileName=${e.content}&token=${accessToken}" initaudio="false"></audio>
+                                                        <audio controls src="/api/record-file/resource-disk?fileName=${e.content}" initaudio="false"></audio>
                                                     </div>
                                                 </div>
                                             </div>
@@ -320,7 +320,7 @@
                                             <div class="bubble"
                                                  style="background-color: rgba(224, 57, 151, 0.28)">
                                                 <div class="txt_chat">
-                                                    <video controls src="${apiServerUrl}/api/v1/admin/record/file/resource?fileName=${e.content}&token=${accessToken}"></video>
+                                                    <video controls src="/api/record-file/resource-disk?fileName=${e.content}"></video>
                                                 </div>
                                             </div>
                                         </div>

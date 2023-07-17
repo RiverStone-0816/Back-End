@@ -56,7 +56,7 @@
                                 <div class="item">
                                     <i class="file alternate outline icon"></i>
                                     <div class="content">
-                                        <a href="${apiServerUrl}/api/v1/admin/help/script/${e.id}/specific-file-resource?token=${accessToken}" target="_blank">
+                                        <a href="/api/task-script/id/${e.id}/resource" target="_blank">
                                                 ${g.htmlQuote(e.originalName)}
                                         </a>
                                     </div>

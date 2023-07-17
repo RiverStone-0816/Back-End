@@ -50,7 +50,7 @@
                             <c:forEach var="file" items="${entity.mainBoardFiles}">
                                 <div class="item">
                                     <button type="button" class="ui icon button mini basic white compact -deleting-file" data-id="${file.fileId}"><i class="close icon"></i></button>
-                                    <a target="_blank" href="${apiServerUrl}/api/v1/admin/help/notice/${file.fileId}/specific-file-resource?token=${accessToken}">${g.htmlQuote(file.originalName)}</a>
+                                    <a target="_blank" href="/api/notice/id/${file.fileId}/resource">${g.htmlQuote(file.originalName)}</a>
                                 </div>
                             </c:forEach>
                         </div>

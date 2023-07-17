@@ -125,7 +125,7 @@ public class SendFileApiController extends ApiBaseController {
     /**
      *   파일 업로드
      */
-    @GetMapping(value = "{id}/resource", params = {"token"})
+    @GetMapping(value = "{id}/resource")
     public ResponseEntity<Resource> resource(@PathVariable Long id){
         final SendFile entity = service.findOneIfNullThrow(id);
 
