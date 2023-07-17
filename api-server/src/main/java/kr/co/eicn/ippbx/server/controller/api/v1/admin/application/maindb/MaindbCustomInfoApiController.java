@@ -136,7 +136,7 @@ public class MaindbCustomInfoApiController extends ApiBaseController {
     /**
      * 파일 다운로드
      */
-    @GetMapping(value = "resource", params = {"token"})
+    @GetMapping(value = "resource")
     public ResponseEntity<Resource> specificFileResource(@RequestParam("path") String path) {
 
         final Resource resource = this.fileSystemStorageService.loadAsResource(Paths.get(replace(savePath, "{0}", g.getUser().getCompanyId())), getName(path));

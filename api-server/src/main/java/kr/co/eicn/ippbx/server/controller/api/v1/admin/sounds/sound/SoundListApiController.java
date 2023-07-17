@@ -93,7 +93,7 @@ public class SoundListApiController extends ApiBaseController {
         return ResponseEntity.ok(create());
     }
 
-    @GetMapping(value = "{seq}/resource", params = {"token"})
+    @GetMapping(value = "{seq}/resource")
     public ResponseEntity<Resource> resource(@PathVariable Integer seq) {
         final SoundList entity = service.findOneIfNullThrow(seq);
 

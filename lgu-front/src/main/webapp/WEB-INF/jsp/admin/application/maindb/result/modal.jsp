@@ -37,7 +37,7 @@
                         <c:when test="${field.fieldType == 'IMG'}">
                             <c:choose>
                                 <c:when test="${customFieldNameToValueMap.get(field.fieldId)}">
-                                    <img class="profile-picture" src="${apiServerUrl}/api/v1/admin/application/maindb/custominfo/resource?path=${g.urlEncode(customFieldNameToValueMap.get(field.fieldId))}&token=${accessToken}"
+                                    <img class="profile-picture" src="/api/maindb-data/resource?path=${g.urlEncode(customFieldNameToValueMap.get(field.fieldId))}"
                                          style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden; padding-top: 5px;"/>
                                 </c:when>
                                 <c:otherwise>

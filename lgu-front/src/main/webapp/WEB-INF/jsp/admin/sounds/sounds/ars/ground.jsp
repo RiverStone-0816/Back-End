@@ -86,10 +86,10 @@
                                                 </button>
                                                 <div class="ui popup top right">
                                                     <div class="maudio">
-                                                        <audio controls src="${apiServerUrl}/api/v1/admin/sounds/ars/${e.seq}/resource?token=${accessToken}"></audio>
+                                                        <audio controls src="/api/ars/id/${g.htmlQuote(e.category)}/resource"></audio>
                                                     </div>
                                                 </div>
-                                                <a class="ui icon button mini compact" href="${apiServerUrl}/api/v1/admin/sounds/ars/${e.seq}/resource?token=${accessToken}">
+                                                <a class="ui icon button mini compact" href="/api/ars/id/${g.htmlQuote(e.category)}/resource">
                                                     <i class="arrow down icon" data-value="${e.seq}"></i>
                                                 </a>
                                             </div>

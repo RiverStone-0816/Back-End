@@ -156,7 +156,7 @@
                                                     <c:forEach var="file" items="${e.imageFileInfos}">
                                                         <li class="thumbnail-item"
                                                             onclick="imgViewPopup()"> <%--TODO: 디자인 모달로 변경해야 함.--%>
-                                                            <img src="${apiServerUrl}/api/v1/admin/help/script/${file.id}/specific-file-resource?token=${accessToken}">
+                                                            <img src="/api/task-script/id/${file.id}/resource">
                                                         </li>
                                                     </c:forEach>
                                                 </ul>
@@ -175,7 +175,7 @@
                                                             <div class="item">
                                                                 <i class="file alternate outline icon"></i>
                                                                 <div class="content">
-                                                                    <a href="${apiServerUrl}/api/v1/admin/help/script/${file.id}/specific-file-resource?token=${accessToken}"
+                                                                    <a href="/api/task-script/id/${file.id}/resource"
                                                                        target="_blank">${g.htmlQuote(file.originalName)}</a>
                                                                 </div>
                                                             </div>

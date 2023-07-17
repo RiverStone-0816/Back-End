@@ -51,7 +51,7 @@
                                         <td><fmt:formatDate value="${e.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>
                                             <div class="popup-element-wrap">
-                                                <a class="item" href="${apiServerUrl}/api/v1/admin/application/fax-email/file/${g.htmlQuote(e.id)}/resource?token=${accessToken}">
+                                                <a class="item" href="/api/mail-file/id/${g.htmlQuote(e.id)}/resource">
                                                         ${g.htmlQuote(e.fileName)}
                                                 </a>
                                             </div>

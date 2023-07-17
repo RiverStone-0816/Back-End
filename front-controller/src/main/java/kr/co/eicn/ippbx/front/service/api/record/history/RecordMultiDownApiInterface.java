@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.RecordDownSummaryResponse;
 import kr.co.eicn.ippbx.model.search.RecordDownSearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -23,5 +24,9 @@ public class RecordMultiDownApiInterface extends ApiServerInterface {
 
     public void delete(Integer seq) throws IOException, ResultFailException {
         delete(subUrl + seq);
+    }
+
+    public Resource getResource(Integer id) throws IOException, ResultFailException {
+        return getResourceResponseAll(subUrl + id+"/resource");
     }
 }

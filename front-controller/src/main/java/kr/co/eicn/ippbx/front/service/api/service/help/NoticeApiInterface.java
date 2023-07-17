@@ -9,6 +9,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.NoticeDetailResponse;
 import kr.co.eicn.ippbx.model.search.BoardSearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
@@ -68,4 +69,7 @@ public class NoticeApiInterface extends ApiServerInterface {
         delete(subUrl + id);
     }
 
+    public Resource getResource(Integer id) throws IOException, ResultFailException {
+        return getResourceResponseAll(subUrl + id+"/specific-file-resource");
+    }
 }

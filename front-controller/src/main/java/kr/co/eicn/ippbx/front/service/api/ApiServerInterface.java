@@ -18,7 +18,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.*;
+import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -37,6 +39,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.*;
+
 
 public abstract class ApiServerInterface extends AbstractRestInterface {
     public static final String SESSION_ACCESS_TOKEN = "SESSION_ACCESS_TOKEN";
@@ -161,6 +164,14 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
         return result;
     }
 
+    protected <BODY> Resource getResource(String url) throws IOException, ResultFailException {
+        return getResourceResponse(url);
+    }
+
+    protected <BODY> Resource getResourceImage(String url) throws IOException, ResultFailException {
+        return getResourceResponseImage(url);
+    }
+
     protected <BODY, RESPONSE> JsonResult<?> getResult(String url, BODY o) throws IOException, ResultFailException {
         final JsonResult<?> result = call(url, o, JsonResult.class, HttpMethod.GET, true);
         if (result.isFailure())
@@ -269,6 +280,93 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
             final ResponseEntity<String> response = method.equals(HttpMethod.GET) || urlParam
                     ? template.exchange(uriBuilder.build().encode().toUri(), method, new HttpEntity<>(headers), String.class)
                     : template.exchange(url, method, new HttpEntity<>(paramString, headers), String.class);
+
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            logger.warn(e.getStatusCode() + " : " + e.getResponseBodyAsString());
+            if (Objects.equals(e.getStatusCode(), HttpStatus.UNAUTHORIZED))
+                throw new UnauthorizedException(e.getStatusText(), e.getResponseHeaders(), e.getResponseBodyAsByteArray(), Charset.defaultCharset());
+            throw e;
+        }
+    }
+
+    protected <BODY> Resource getResourceResponse(String url) {
+        url = (url.startsWith("http") ? "" : apiServerUrl) + url;
+
+        final RestTemplate template = new RestTemplate(getFactory());
+        template.getMessageConverters().add(0, new ResourceHttpMessageConverter());
+
+        final HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(new MediaType("audio", "mpeg"));
+        final String accessToken = getAccessToken();
+        if (StringUtils.isNotEmpty(accessToken))
+            headers.add("Authorization", "Bearer " + accessToken);
+
+        headers.add("HTTP_CLIENT_IP", getClientIp());
+
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
+
+        try {
+            final ResponseEntity<Resource> response = template.exchange(uriBuilder.build().encode().toUri(), HttpMethod.GET, new HttpEntity<>(headers), Resource.class);
+
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            logger.warn(e.getStatusCode() + " : " + e.getResponseBodyAsString());
+            if (Objects.equals(e.getStatusCode(), HttpStatus.UNAUTHORIZED))
+                throw new UnauthorizedException(e.getStatusText(), e.getResponseHeaders(), e.getResponseBodyAsByteArray(), Charset.defaultCharset());
+            throw e;
+        }
+    }
+
+    protected <BODY> Resource getResourceResponseImage(String url) {
+        url = (url.startsWith("http") ? "" : apiServerUrl) + url;
+
+        final RestTemplate template = new RestTemplate(getFactory());
+        template.getMessageConverters().add(0, new ResourceHttpMessageConverter());
+
+        final HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(new MediaType("img", "jpg"));
+        final String accessToken = getAccessToken();
+        if (StringUtils.isNotEmpty(accessToken))
+            headers.add("Authorization", "Bearer " + accessToken);
+
+        headers.add("HTTP_CLIENT_IP", getClientIp());
+
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
+
+        try {
+            final ResponseEntity<Resource> response = template.exchange(uriBuilder.build().encode().toUri(), HttpMethod.GET, new HttpEntity<>(headers), Resource.class);
+
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            logger.warn(e.getStatusCode() + " : " + e.getResponseBodyAsString());
+            if (Objects.equals(e.getStatusCode(), HttpStatus.UNAUTHORIZED))
+                throw new UnauthorizedException(e.getStatusText(), e.getResponseHeaders(), e.getResponseBodyAsByteArray(), Charset.defaultCharset());
+            throw e;
+        }
+    }
+
+    protected <BODY> Resource getResourceResponseAll(String url) {
+        url = (url.startsWith("http") ? "" : apiServerUrl) + url;
+
+        final RestTemplate template = new RestTemplate(getFactory());
+        template.getMessageConverters().add(0, new ResourceHttpMessageConverter());
+
+        final HttpHeaders headers = new HttpHeaders();
+
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        final String accessToken = getAccessToken();
+        if (StringUtils.isNotEmpty(accessToken))
+            headers.add("Authorization", "Bearer " + accessToken);
+
+        headers.add("HTTP_CLIENT_IP", getClientIp());
+
+        final UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(url);
+
+        try {
+            final ResponseEntity<Resource> response = template.exchange(uriBuilder.build().encode().toUri(), HttpMethod.GET, new HttpEntity<>(headers), Resource.class);
 
             return response.getBody();
         } catch (HttpStatusCodeException e) {

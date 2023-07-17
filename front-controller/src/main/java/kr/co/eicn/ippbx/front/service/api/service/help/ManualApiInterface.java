@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.service.api.service.help;
 
+import io.swagger.models.auth.In;
 import kr.co.eicn.ippbx.front.model.form.ManualForm;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
@@ -9,6 +10,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.ManualDetailResponse;
 import kr.co.eicn.ippbx.model.search.BoardSearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
@@ -66,5 +68,9 @@ public class ManualApiInterface extends ApiServerInterface {
 
     public void delete(Long id) throws IOException, ResultFailException {
         delete(subUrl + id);
+    }
+
+    public Resource getResource(Integer id) throws IOException, ResultFailException {
+        return getResourceResponseAll(subUrl + id+"/specific-file-resource");
     }
 }

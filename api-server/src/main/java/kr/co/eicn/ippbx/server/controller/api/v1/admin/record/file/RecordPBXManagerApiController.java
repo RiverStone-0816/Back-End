@@ -108,7 +108,7 @@ public class RecordPBXManagerApiController extends ApiBaseController {
 	/**
 	 * 녹취파일관리(PBX/WEB 서버 분리형일때) 파일 다운로드
 	 */
-	@GetMapping(value = "resource", params = {"token"})
+	@GetMapping(value = "resource")
 	public ResponseEntity<Resource> resource(@RequestParam String fileName) {
 		if (isEmpty(fileName))
 			throw new IllegalArgumentException();

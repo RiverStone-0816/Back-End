@@ -12,6 +12,7 @@ import kr.co.eicn.ippbx.model.form.MohListRequest;
 import kr.co.eicn.ippbx.model.search.MohListSearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +47,8 @@ public class RingBackToneApiInterface extends ApiServerInterface {
         final JsonResult<?> result = call(subUrl + category + "/web-log", Collections.singletonMap("type", type), JsonResult.class, HttpMethod.PUT, true);
         if (result.isFailure())
             throw new ResultFailException(result);
+    }
+    public Resource getResource(Integer categoryId) throws IOException, ResultFailException {
+        return getResource(subUrl + categoryId + "/resource");
     }
 }

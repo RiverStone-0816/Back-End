@@ -61,7 +61,7 @@
                                         <td><fmt:formatNumber value="${e.size}" pattern="#,###"/></td>
                                         <td>
                                             <a class="ui icon button mini compact"
-                                               href="${apiServerUrl}/api/v1/admin/record/remote-file/resource?fileName=${g.htmlQuote(e.fileName)}&token=${accessToken}">
+                                               href="/api/record-remote-file/resource?fileName=${g.htmlQuote(e.fileName)}">
                                                 <i class="arrow down icon"></i>
                                             </a>
                                         </td>

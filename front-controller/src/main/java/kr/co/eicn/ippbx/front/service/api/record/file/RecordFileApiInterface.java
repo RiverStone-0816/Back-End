@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.DiskResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.FileSummaryResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -28,5 +29,13 @@ public class RecordFileApiInterface extends ApiServerInterface {
 
     public DiskResponse disk() throws IOException, ResultFailException {
         return getData(subUrl + "disk", null, DiskResponse.class).getData();
+    }
+
+    public Resource getResource(String path, String mode) throws IOException, ResultFailException {
+        return getResource("/api/v1/admin/record/history/resource?path=" + path + "&mode=" + mode);
+    }
+
+    public Resource getResourceInDisk(String fileName) throws IOException, ResultFailException {
+        return getResource("/api/v1/admin/record/file/resource?fileName=" + fileName);
     }
 }

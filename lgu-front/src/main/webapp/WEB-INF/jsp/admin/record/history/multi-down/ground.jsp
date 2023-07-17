@@ -101,7 +101,7 @@
                                         <td>
                                             <c:if test="${g.user.downloadRecordingAuthority.equals('ALL')}">
                                                 <c:if test="${e.status == 'C'}">
-                                                    <a class="ui icon button mini compact" href="${apiServerUrl}/api/v1/admin/record/history/record-multi-down/${e.seq}/resource?token=${accessToken}">
+                                                    <a class="ui icon button mini compact" href="api/record-multi-down/id/${e.seq}/resource">
                                                         <i class="arrow down icon"></i>
                                                     </a>
                                                 </c:if>

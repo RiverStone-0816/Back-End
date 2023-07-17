@@ -10,6 +10,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.SendSmsCategorySummaryResponse;
 import kr.co.eicn.ippbx.model.search.SendCategorySearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
@@ -44,5 +45,9 @@ public class MailFileApiInterface extends ApiServerInterface {
 
     public List<SendSmsCategorySummaryResponse> sendCategory() throws IOException, ResultFailException {
         return getList(subUrl + "category", null, SendSmsCategorySummaryResponse.class).getData();
+    }
+
+    public Resource getResource(Long id) throws IOException, ResultFailException {
+        return getResourceResponseAll(subUrl + id+"/resource");
     }
 }

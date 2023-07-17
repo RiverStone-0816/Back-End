@@ -97,7 +97,7 @@ public class RecordDownApiController extends ApiBaseController {
 		return ResponseEntity.ok(create());
 	}
 
-	@GetMapping(value = "{seq}/resource", params = {"token"})
+	@GetMapping(value = "{seq}/resource")
 	public ResponseEntity<Resource> resource(@PathVariable Integer seq) {
 		final RecordDown entity = service.findOneIfNullThrow(seq);
 		if (!RecordDownStatusKind.COMPLETE.getCode().equals(entity.getStatus()))
