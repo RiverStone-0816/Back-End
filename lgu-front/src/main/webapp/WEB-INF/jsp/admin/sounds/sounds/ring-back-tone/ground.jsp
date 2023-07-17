@@ -84,11 +84,11 @@
                                                 </button>
                                                 <div class="ui popup top right">
                                                     <div class="maudio">
-                                                        <audio controls src="${apiServerUrl}/api/v1/admin/sounds/ring-back-tone/${g.htmlQuote(e.category)}/resource?type=PLAY&token=${accessToken}"></audio>
+                                                        <audio controls src="/api/ring-back-tone/id/${g.htmlQuote(e.category)}/resource"></audio>
                                                     </div>
                                                 </div>
                                                 <a class="ui icon button mini compact"
-                                                   href="${apiServerUrl}/api/v1/admin/sounds/ring-back-tone/${g.htmlQuote(e.category)}/resource?type=DOWN&token=${accessToken}">
+                                                   href="/api/ring-back-tone/id/${g.htmlQuote(e.category)}/resource">
                                                     <i class="arrow down icon" data-value="${e.category}"></i>
                                                 </a>
                                             </div>

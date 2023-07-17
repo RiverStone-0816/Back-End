@@ -91,7 +91,7 @@
                                                     <button type="button" class="ui button mini compact -play-trigger">음원듣기</button>
                                                     <div class="ui popup top right">
                                                         <div class="maudio">
-                                                            <audio controls src="${apiServerUrl}/api/v1/admin/sounds/ars/${e.soundCode}/resource?token=${accessToken}"></audio>
+                                                            <audio controls src="/api/ars/id/${e.seq}/resource"></audio>
                                                         </div>
                                                     </div>
                                                 </c:if>

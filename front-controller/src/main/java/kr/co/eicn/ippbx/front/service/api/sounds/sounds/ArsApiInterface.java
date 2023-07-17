@@ -10,6 +10,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.SoundListSummaryResponse;
 import kr.co.eicn.ippbx.model.search.SoundListSearchRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +47,9 @@ public class ArsApiInterface extends ApiServerInterface {
         final JsonResult<?> result = call(subUrl + seq + "/web-log", Collections.singletonMap("type", type), JsonResult.class, HttpMethod.PUT, true);
         if (result.isFailure())
             throw new ResultFailException(result);
+    }
+
+    public Resource getResource(Integer arsId) throws IOException, ResultFailException {
+        return getResource(subUrl + arsId + "/resource");
     }
 }

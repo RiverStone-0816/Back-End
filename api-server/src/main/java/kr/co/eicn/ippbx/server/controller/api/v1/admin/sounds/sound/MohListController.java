@@ -83,7 +83,7 @@ public class MohListController extends ApiBaseController {
 		return ResponseEntity.ok(create());
 	}
 
-	@GetMapping(value = "{category}/resource", params = {"token"})
+	@GetMapping(value = "{category}/resource")
 	public ResponseEntity<Resource> resource(@PathVariable String category, @RequestParam("type") String type) {
 		final MohList entity = service.findOneIfNullThrow(category);
 

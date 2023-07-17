@@ -188,7 +188,7 @@ public class RecordApiController extends ApiBaseController {
         return ResponseEntity.ok().body(data(recordFileService.fetchAll(Collections.singletonList(eicnCdrService.getRepository().findOneIfNullThrow(seq)))));
     }
 
-    @GetMapping(value = "resource", params = {"token"})
+    @GetMapping(value = "resource")
     public ResponseEntity<Resource> resource(@RequestParam("path") String recordFile/*파일명을 포함한 파일경로*/, @RequestParam("mode") String mode) {
         final RecordFileService.Result actualExistingFile = recordFileService.getActualExistingFile(recordFile, mode);
 

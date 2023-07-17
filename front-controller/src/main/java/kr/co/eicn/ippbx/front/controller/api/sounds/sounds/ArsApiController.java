@@ -9,10 +9,12 @@ import kr.co.eicn.ippbx.util.page.Pagination;
 import kr.co.eicn.ippbx.model.dto.eicn.SoundDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.SoundListSummaryResponse;
 import kr.co.eicn.ippbx.model.search.SoundListSearchRequest;
+import org.apache.commons.compress.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,5 +56,21 @@ public class ArsApiController extends BaseController {
     @PutMapping("{seq}/web-log")
     public void updateWebLog(@PathVariable Integer seq, @RequestParam String type) throws IOException, ResultFailException {
         apiInterface.updateWebLog(seq, type);
+    }
+
+    @ResponseBody
+    @GetMapping("id/{id}/resource")
+    public ResponseEntity<byte[]> getResource(@PathVariable Integer id) throws IOException, ResultFailException {
+        Resource resource = apiInterface.getResource(id);
+        byte[] bytes = IOUtils.toByteArray(resource.getInputStream());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("audio", "mpeg"));
+        headers.setPragma("no-cache");
+        headers.setCacheControl(CacheControl.noCache());
+        headers.set(HttpHeaders.ACCEPT_RANGES, "bytes");
+        headers.setContentLength(bytes.length);
+
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
 }
