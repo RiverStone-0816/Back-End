@@ -298,7 +298,7 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
 
         final HttpHeaders headers = new HttpHeaders();
 
-        headers.setContentType(new MediaType("multipart", "form-data"));
+        headers.setContentType(new MediaType("audio", "mpeg"));
         final String accessToken = getAccessToken();
         if (StringUtils.isNotEmpty(accessToken))
             headers.add("Authorization", "Bearer " + accessToken);
