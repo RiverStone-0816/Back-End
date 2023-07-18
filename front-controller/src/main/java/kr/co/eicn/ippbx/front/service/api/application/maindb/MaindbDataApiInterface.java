@@ -11,8 +11,10 @@ import kr.co.eicn.ippbx.model.search.MaindbDataSearchRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.util.List;
@@ -87,5 +89,9 @@ public class MaindbDataApiInterface extends ApiServerInterface {
 
     public String getCustomName(String phoneNumber) throws IOException, ResultFailException {
         return getData(subUrl + phoneNumber + "/name", null, String.class).getData();
+    }
+
+    public Resource getResource(String path) throws IOException, ResultFailException {
+        return getResourceImage(subUrl + "/resource?path="+path);
     }
 }

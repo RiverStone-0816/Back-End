@@ -8,16 +8,20 @@ import kr.co.eicn.ippbx.model.dto.eicn.ConCodeFieldResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchMaindbGroupResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
 import kr.co.eicn.ippbx.model.form.MaindbCustomInfoFormRequest;
+import org.apache.commons.compress.utils.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author tinywind
@@ -69,4 +73,25 @@ public class MaindbDataApiController extends BaseController {
     public void deleteData(@PathVariable String id) throws IOException, ResultFailException {
         apiInterface.deleteData(id);
     }
+
+    @ResponseBody
+    @GetMapping("resource")
+    public ResponseEntity<byte[]> getResoucreInMaindb(@RequestParam String path) throws IOException, ResultFailException {
+        Resource resource = apiInterface.getResource(path);
+        byte[] bytes = IOUtils.toByteArray(resource.getInputStream());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(new MediaType("multipart","form-data"));
+        headers.add(HttpHeaders.CONTENT_DISPOSITION,
+                ContentDisposition.builder("attachment")
+                        .filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8)
+                        .build().toString());
+        headers.setPragma("no-cache");
+        headers.setCacheControl(CacheControl.noCache());
+        headers.set(HttpHeaders.ACCEPT_RANGES, "bytes");
+        headers.setContentLength(bytes.length);
+
+        return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+    }
+
 }
