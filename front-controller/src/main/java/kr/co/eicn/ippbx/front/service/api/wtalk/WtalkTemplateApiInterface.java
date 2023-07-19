@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.model.form.TalkTemplateFormRequest;
 import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,9 +14,11 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -71,6 +74,10 @@ public class WtalkTemplateApiInterface extends ApiServerInterface {
     @SneakyThrows
     public void delete(Integer seq) {
         delete(subUrl + seq);
+    }
+
+    public Resource getResource(String filePath) throws IOException, ResultFailException {
+        return getResourceResponseAll(subUrl +"/image?filePath="+filePath);
     }
 
     @SneakyThrows

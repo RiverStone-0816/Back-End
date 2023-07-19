@@ -685,8 +685,9 @@
                                 isImage: e.typeMent === 'P',
                                 fileName: e.originalFileName,
                                 filePath: e.filePath,
-                                url: e.typeMent === 'P' ? $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/wtalk/template/image', {filePath: e.filePath, token: '${g.escapeQuote(accessToken)}'})
-                                        : null
+                                url: e.typeMent === 'P' ? $.addQueryString('/api/wtalk-template/resource', {
+                                    filePath: e.filePath
+                                }) : null
                             })
                         })
                     })

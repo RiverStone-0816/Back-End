@@ -693,7 +693,7 @@
                                             <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
                                                 <div class="txt_chat">
                                                     <div style="width: 320px">
-                                                        <audio controls :src="'/api/record-file/resource-disk?fileName='+jsonDataParse(e.contents).record_file'" initaudio="false"></audio>
+                                                        <audio controls :src="'/api/record-file/resource-disk?fileName='+jsonDataParse(e.contents).record_file" initaudio="false"></audio>
                                                     </div>
                                                 </div>
                                             </div>
@@ -706,7 +706,7 @@
                                         <div class="chat">
                                             <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
                                                 <div class="txt_chat">
-                                                    <video controls  :src="'/api/record-file/resource-disk?fileName='+jsonDataParse(e.contents).record_file'" ></video>
+                                                    <video controls  :src="'/api/record-file/resource-disk?fileName='+jsonDataParse(e.contents).record_file"></video>
                                                 </div>
                                             </div>
                                         </div>
@@ -1358,9 +1358,8 @@
                                 isImage: e.typeMent === 'P',
                                 fileName: e.originalFileName,
                                 filePath: e.filePath,
-                                url: e.typeMent === 'P' ? $.addQueryString('${g.escapeQuote(apiServerUrl)}/api/v1/admin/wtalk/template/image', {
-                                    filePath: e.filePath,
-                                    token: '${g.escapeQuote(accessToken)}'
+                                url: e.typeMent === 'P' ? $.addQueryString('/api/wtalk-template/resource', {
+                                    filePath: e.filePath
                                 }) : null
                             })
                         })
