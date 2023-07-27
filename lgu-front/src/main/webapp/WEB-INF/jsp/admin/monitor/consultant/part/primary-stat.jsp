@@ -40,7 +40,7 @@
 
 <script>
     drawPieChart('#pie-response-rate', ${(stat.rateValue == null ? 0 : stat.rateValue).doubleValue() / 100}, {startAngle: -90, endAngle: 90, colorClasses: ['bcolor-bar1', 'bcolor-bar2']});
-    drawPieChart('#pie-process-callback', ${(stat.processedCallback == null ? 0 : stat.processedCallback).doubleValue() / (stat.totalCallback == null ? 0 : stat.totalCallback)}, {startAngle: -90, endAngle: 90, colorClasses: ['bcolor-bar1', 'bcolor-bar2']});
-    drawPieChart('#pie-consultation-availability', ${(stat.loginCount == null ? 0 : stat.loginCount).doubleValue() / (stat.workingPerson == null ? 0 : stat.workingPerson)}, {startAngle: -90, endAngle: 90, colorClasses: ['bcolor-bar1', 'bcolor-bar2']});
-    drawPieChart('#pie-consultant-status', ${(stat.waitPersonCount == null ? 0 : stat.waitPersonCount).doubleValue() / (stat.workingPerson == null ? 0 : stat.workingPerson)}, {startAngle: -90, endAngle: 90, colorClasses: ['bcolor-bar1', 'bcolor-bar2']});
+    drawPieChart('#pie-process-callback', ${not empty stat.totalCallback && stat.totalCallback > 0 ? (empty stat.processedCallback ? 0 : stat.processedCallback).doubleValue() / stat.totalCallback.doubleValue() : 0}, {startAngle: -90, endAngle: 90, colorClasses: ['bcolor-bar1', 'bcolor-bar2']});
+    drawPieChart('#pie-consultation-availability', ${not empty stat.workingPerson && stat.workingPerson > 0 ? (empty stat.loginCount ? 0 : stat.loginCount).doubleValue() / stat.workingPerson.doubleValue() : 0}, {startAngle: -90, endAngle: 90, colorClasses: ['bcolor-bar1', 'bcolor-bar2']});
+    drawPieChart('#pie-consultant-status', ${not empty stat.workingPerson && stat.workingPerson > 0 ? (empty stat.waitPersonCount ? 0 : stat.waitPersonCount).doubleValue() / stat.workingPerson.doubleValue() : 0}, {startAngle: -90, endAngle: 90, colorClasses: ['bcolor-bar1', 'bcolor-bar2']});
 </script>
