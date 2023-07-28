@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
+import io.jsonwebtoken.lang.Collections;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.DashboardInfoDashboardType;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
@@ -27,10 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toMap;
@@ -367,40 +366,99 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
             });
         }
 
-        queueMemberTableRepository.delete(dsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(modQueueEntity.getName()));
+        // Todo - CallDistributionStrategy.FEWESTCALLS.getCode() 아닐경우 update 방식 변경
+        if (form.getStrategy().equals(CallDistributionStrategy.FEWESTCALLS.getCode())) {
+            queueMemberTableRepository.delete(dsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(modQueueEntity.getName()));
 
-        optionalPbxServer.ifPresent(server -> {
-            DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
-            queueMemberTableRepository.delete(pbxDsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(modQueueEntity.getName()));
-        });
+            optionalPbxServer.ifPresent(server -> {
+                DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
+                queueMemberTableRepository.delete(pbxDsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(modQueueEntity.getName()));
+            });
 
-        if (form.getAddPersons() != null) {
-            for (QueuePersonFormRequest addPerson : form.getAddPersons()) {
-                final String peer = addPerson.getPeer();
-                final String userId = personListRepository.findIdByPeer(peer);
-                Optional<QueueMemberTable> optionalPrivateQueueNameQueueMemberTableRecord;
-                if (!optionalPbxServer.isPresent()) {
-                    optionalPrivateQueueNameQueueMemberTableRecord = queueMemberTableRepository.findByOneQueueMemberTableQueueNameAndMemberName(dsl, peer);
-                } else {
-                    DSLContext pbx = pbxServerInterface.using(number.getHost());
-                    optionalPrivateQueueNameQueueMemberTableRecord = queueMemberTableRepository.findByOneQueueMemberTableQueueNameAndMemberName(pbx, peer);
+            if (form.getAddPersons() != null) {
+                for (QueuePersonFormRequest addPerson : form.getAddPersons()) {
+                    final String peer = addPerson.getPeer();
+                    final String userId = personListRepository.findIdByPeer(peer);
+                    Optional<QueueMemberTable> optionalPrivateQueueNameQueueMemberTableRecord;
+                    if (!optionalPbxServer.isPresent()) {
+                        optionalPrivateQueueNameQueueMemberTableRecord = queueMemberTableRepository.findByOneQueueMemberTableQueueNameAndMemberName(dsl, peer);
+                    } else {
+                        DSLContext pbx = pbxServerInterface.using(number.getHost());
+                        optionalPrivateQueueNameQueueMemberTableRecord = queueMemberTableRepository.findByOneQueueMemberTableQueueNameAndMemberName(pbx, peer);
+                    }
+                    if (optionalPrivateQueueNameQueueMemberTableRecord.isPresent()) {
+                        final QueueMemberTable insertRecord = optionalPrivateQueueNameQueueMemberTableRecord.get();
+                        insertRecord.setPenalty(CallDistributionStrategy.SKILL.getCode().equals(form.getStrategy()) ? addPerson.getPenalty() : 0);
+                        insertRecord.setCallRate(CallDistributionStrategy.CALLRATE.getCode().equals(form.getStrategy()) ? addPerson.getCallRate() : 0);
+                        insertRecord.setQueueName(modQueueEntity.getName());
+                        insertRecord.setQueueNumber(number.getNumber());
+                        insertRecord.setUserid(userId);
+                        insertRecord.setBlendingMode("N");
+                        insertRecord.setUniqueid(null);
+
+                        queueMemberTableRepository.insert(dsl, insertRecord);
+
+                        optionalPbxServer.ifPresent(server -> {
+                            DSLContext pbx = pbxServerInterface.using(server.getHost());
+                            queueMemberTableRepository.insert(pbx, insertRecord);
+                        });
+                    }
                 }
-                if (optionalPrivateQueueNameQueueMemberTableRecord.isPresent()) {
-                    final QueueMemberTable insertRecord = optionalPrivateQueueNameQueueMemberTableRecord.get();
-                    insertRecord.setPenalty(CallDistributionStrategy.SKILL.getCode().equals(form.getStrategy()) ? addPerson.getPenalty() : 0);
-                    insertRecord.setCallRate(CallDistributionStrategy.CALLRATE.getCode().equals(form.getStrategy()) ? addPerson.getCallRate() : 0);
-                    insertRecord.setQueueName(modQueueEntity.getName());
-                    insertRecord.setQueueNumber(number.getNumber());
-                    insertRecord.setUserid(userId);
-                    insertRecord.setBlendingMode("N");
-                    insertRecord.setUniqueid(null);
+            }
+        } else {
+            queueMemberTableRepository.delete(dsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(modQueueEntity.getName())
+                    .and(QUEUE_MEMBER_TABLE.USERID.notIn(form.getAddPersons().stream().map(QueuePersonFormRequest::getPeer).collect(Collectors.toSet()))));
 
-                    queueMemberTableRepository.insert(dsl, insertRecord);
+            optionalPbxServer.ifPresent(server -> {
+                DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
+                queueMemberTableRepository.delete(pbxDsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(modQueueEntity.getName())
+                        .and(QUEUE_MEMBER_TABLE.USERID.notIn(form.getAddPersons().stream().map(QueuePersonFormRequest::getPeer).collect(Collectors.toSet()))));
+            });
 
-                    optionalPbxServer.ifPresent(server -> {
-                        DSLContext pbx = pbxServerInterface.using(server.getHost());
-                        queueMemberTableRepository.insert(pbx, insertRecord);
-                    });
+            final List<QueueMemberTable> members = queueMemberTableRepository.findAll(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(modQueueEntity.getName())
+                    .and(QUEUE_MEMBER_TABLE.USERID.in(form.getAddPersons().stream().map(QueuePersonFormRequest::getPeer).collect(Collectors.toSet()))));
+            final Set<String> peers = members.stream().map(QueueMemberTable::getMembername).collect(Collectors.toSet());
+
+            if (form.getAddPersons() != null) {
+                for (QueuePersonFormRequest addPerson : form.getAddPersons()) {
+                    final String peer = addPerson.getPeer();
+                    final String userId = personListRepository.findIdByPeer(peer);
+                    if (peers.contains(addPerson.getPeer())) {
+                        final QueueMemberTable updateMember = members.stream().filter(m -> m.getMembername().equals(peer)).findFirst().get();
+                        updateMember.setPenalty(CallDistributionStrategy.SKILL.getCode().equals(form.getStrategy()) ? addPerson.getPenalty() : 0);
+                        updateMember.setCallRate(CallDistributionStrategy.CALLRATE.getCode().equals(form.getStrategy()) ? addPerson.getCallRate() : 0);
+                        queueMemberTableRepository.updateByKey(dsl, updateMember, updateMember.getUniqueid());
+                        optionalPbxServer.ifPresent(server -> {
+                            DSLContext pbx = pbxServerInterface.using(server.getHost());
+                            queueMemberTableRepository.updateByKey(pbx, updateMember, updateMember.getUniqueid());
+                        });
+
+                    } else {
+                        Optional<QueueMemberTable> optionalPrivateQueueNameQueueMemberTableRecord;
+                        if (!optionalPbxServer.isPresent()) {
+                            optionalPrivateQueueNameQueueMemberTableRecord = queueMemberTableRepository.findByOneQueueMemberTableQueueNameAndMemberName(dsl, peer);
+                        } else {
+                            DSLContext pbx = pbxServerInterface.using(number.getHost());
+                            optionalPrivateQueueNameQueueMemberTableRecord = queueMemberTableRepository.findByOneQueueMemberTableQueueNameAndMemberName(pbx, peer);
+                        }
+                        if (optionalPrivateQueueNameQueueMemberTableRecord.isPresent()) {
+                            final QueueMemberTable insertRecord = optionalPrivateQueueNameQueueMemberTableRecord.get();
+                            insertRecord.setPenalty(CallDistributionStrategy.SKILL.getCode().equals(form.getStrategy()) ? addPerson.getPenalty() : 0);
+                            insertRecord.setCallRate(CallDistributionStrategy.CALLRATE.getCode().equals(form.getStrategy()) ? addPerson.getCallRate() : 0);
+                            insertRecord.setQueueName(modQueueEntity.getName());
+                            insertRecord.setQueueNumber(number.getNumber());
+                            insertRecord.setUserid(userId);
+                            insertRecord.setBlendingMode("N");
+                            insertRecord.setUniqueid(null);
+
+                            queueMemberTableRepository.insert(dsl, insertRecord);
+
+                            optionalPbxServer.ifPresent(server -> {
+                                DSLContext pbx = pbxServerInterface.using(server.getHost());
+                                queueMemberTableRepository.insert(pbx, insertRecord);
+                            });
+                        }
+                    }
                 }
             }
         }
