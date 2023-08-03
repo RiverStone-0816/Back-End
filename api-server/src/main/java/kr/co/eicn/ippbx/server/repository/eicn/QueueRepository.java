@@ -407,16 +407,16 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
             }
         } else {
             queueMemberTableRepository.delete(dsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(modQueueEntity.getName())
-                    .and(QUEUE_MEMBER_TABLE.USERID.notIn(form.getAddPersons().stream().map(QueuePersonFormRequest::getPeer).collect(Collectors.toSet()))));
+                    .and(QUEUE_MEMBER_TABLE.MEMBERNAME.notIn(form.getAddPersons().stream().map(QueuePersonFormRequest::getPeer).collect(Collectors.toSet()))));
 
             optionalPbxServer.ifPresent(server -> {
                 DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
                 queueMemberTableRepository.delete(pbxDsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(modQueueEntity.getName())
-                        .and(QUEUE_MEMBER_TABLE.USERID.notIn(form.getAddPersons().stream().map(QueuePersonFormRequest::getPeer).collect(Collectors.toSet()))));
+                        .and(QUEUE_MEMBER_TABLE.MEMBERNAME.notIn(form.getAddPersons().stream().map(QueuePersonFormRequest::getPeer).collect(Collectors.toSet()))));
             });
 
             final List<QueueMemberTable> members = queueMemberTableRepository.findAll(QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(modQueueEntity.getName())
-                    .and(QUEUE_MEMBER_TABLE.USERID.in(form.getAddPersons().stream().map(QueuePersonFormRequest::getPeer).collect(Collectors.toSet()))));
+                    .and(QUEUE_MEMBER_TABLE.MEMBERNAME.in(form.getAddPersons().stream().map(QueuePersonFormRequest::getPeer).collect(Collectors.toSet()))));
             final Set<String> peers = members.stream().map(QueueMemberTable::getMembername).collect(Collectors.toSet());
 
             if (form.getAddPersons() != null) {
