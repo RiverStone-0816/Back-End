@@ -145,8 +145,10 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
         queueTableRecord.setMaxlen(form.getMaxlen());
         queueTableRecord.setStrategy(CallDistributionStrategy.RINGALL.getCode().equals(form.getStrategy())
                 ? CallDistributionStrategy.RINGALL.getCode()
-                : CallDistributionStrategy.SKILL.getCode().equals(form.getStrategy()) || CallDistributionStrategy.CALLRATE.getCode().equals(form.getStrategy())
+                : CallDistributionStrategy.CALLRATE.getCode().equals(form.getStrategy())
                 ? CallDistributionStrategy.RRMEMORY.getCode()
+                : CallDistributionStrategy.SKILL.getCode().equals(form.getStrategy()) || CallDistributionStrategy.RRMEMORY.getCode().equals(form.getStrategy())
+                ? "rrordered"
                 : form.getStrategy());
         queueTableRecord.setJoinempty("yes");
         queueTableRecord.setLeavewhenempty(form.getMaxlen() > 0 ? "no" : "inuse,ringing,paused,invalid,unavailable");   // 대기자가 있어도 기다림
@@ -324,8 +326,10 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
 
             modQueueTable.setStrategy(CallDistributionStrategy.RINGALL.getCode().equals(form.getStrategy())
                     ? CallDistributionStrategy.RINGALL.getCode()
-                    : CallDistributionStrategy.SKILL.getCode().equals(form.getStrategy()) || CallDistributionStrategy.CALLRATE.getCode().equals(form.getStrategy())
+                    : CallDistributionStrategy.CALLRATE.getCode().equals(form.getStrategy())
                     ? CallDistributionStrategy.RRMEMORY.getCode()
+                    : CallDistributionStrategy.SKILL.getCode().equals(form.getStrategy()) || CallDistributionStrategy.RRMEMORY.getCode().equals(form.getStrategy())
+                    ? "rrordered"
                     : form.getStrategy());
             modQueueTable.setMaxlen(form.getMaxlen());
             modQueueTable.setMusiconhold(defaultString(form.getMusiconhold()));
