@@ -423,6 +423,13 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
                     .and(QUEUE_MEMBER_TABLE.MEMBERNAME.in(form.getAddPersons().stream().map(QueuePersonFormRequest::getPeer).collect(Collectors.toSet()))));
             final Set<String> peers = members.stream().map(QueueMemberTable::getMembername).collect(Collectors.toSet());
 
+            final List<QueueMemberTable> pbxMembers = new ArrayList<>();
+            optionalPbxServer.ifPresent(server -> {
+                DSLContext pbx = pbxServerInterface.using(server.getHost());
+                pbxMembers.addAll(queueMemberTableRepository.findAll(pbx, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(modQueueEntity.getName())
+                        .and(QUEUE_MEMBER_TABLE.MEMBERNAME.in(form.getAddPersons().stream().map(QueuePersonFormRequest::getPeer).collect(Collectors.toSet())))));
+            });
+
             if (form.getAddPersons() != null) {
                 for (QueuePersonFormRequest addPerson : form.getAddPersons()) {
                     final String peer = addPerson.getPeer();
@@ -433,8 +440,12 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
                         updateMember.setCallRate(CallDistributionStrategy.CALLRATE.getCode().equals(form.getStrategy()) ? addPerson.getCallRate() : 0);
                         queueMemberTableRepository.updateByKey(dsl, updateMember, updateMember.getUniqueid());
                         optionalPbxServer.ifPresent(server -> {
+                            final QueueMemberTable pbxUpdateMember = pbxMembers.stream().filter(m -> m.getMembername().equals(peer)).findFirst().get();
+                            pbxUpdateMember.setPenalty(CallDistributionStrategy.SKILL.getCode().equals(form.getStrategy()) ? addPerson.getPenalty() : 0);
+                            pbxUpdateMember.setCallRate(CallDistributionStrategy.CALLRATE.getCode().equals(form.getStrategy()) ? addPerson.getCallRate() : 0);
+
                             DSLContext pbx = pbxServerInterface.using(server.getHost());
-                            queueMemberTableRepository.updateByKey(pbx, updateMember, updateMember.getUniqueid());
+                            queueMemberTableRepository.updateByKey(pbx, pbxUpdateMember, pbxUpdateMember.getUniqueid());
                         });
 
                     } else {
