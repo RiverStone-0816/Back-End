@@ -52,7 +52,7 @@ eicn:
   service:
     base-url: http://localhost:21003
     servicekind: SC
-  version: 20210525
+  version: 20230811
   debugging: true
   swagger:
     api-package: kr.co.eicn.ippbx.front.controller.api
