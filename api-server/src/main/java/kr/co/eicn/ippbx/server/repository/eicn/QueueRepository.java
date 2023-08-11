@@ -102,7 +102,7 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
         final Number_070 number = numberRepository.findOneIfNullThrow(form.getNumber());
         final CompanyTree companyTree = companyTreeRepository.findOneGroupCodeIfNullThrow(form.getGroupCode());
 
-        queueTableRepository.existsKeyIfNonNullThrow(form.getHanName(), "헌트명");
+        queueNameRepository.existsHanNameIfNonNullThrow(form.getHanName());
 
         final QueueName sequenceSeed = QUEUE_NAME.as("SEQUENCE_SEED");
         final Integer nextSequence = dsl.select(DSL.ifnull(DSL.max(sequenceSeed.SEQ), 0).add(1)).from(sequenceSeed).fetchOneInto(Integer.class);

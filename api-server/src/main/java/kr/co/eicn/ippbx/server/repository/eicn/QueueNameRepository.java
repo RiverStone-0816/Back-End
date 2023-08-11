@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
+import kr.co.eicn.ippbx.exception.DuplicateKeyException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchQueueNameResponse;
 import kr.co.eicn.ippbx.model.search.StatHuntSearchRequest;
@@ -152,6 +153,14 @@ public class QueueNameRepository extends EicnBaseRepository<QueueName, kr.co.eic
 
     public Map<String, String> getHanNameByQueueNumber() {
         return findAll().stream().collect(Collectors.toMap(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName::getNumber, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName::getHanName));
+    }
+
+    public void existsHanNameIfNonNullThrow(String hanName) {
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueName entity = findOne(QUEUE_NAME.HAN_NAME.eq(hanName));
+        if (entity != null) {
+            getLogger().info("중복된 키가 존재합니다. : {} [{}]", table.getName(), hanName);
+            throw new DuplicateKeyException("큐(그룹)명에 중복된 키가 존재합니다.");
+        }
     }
 
     @Data
