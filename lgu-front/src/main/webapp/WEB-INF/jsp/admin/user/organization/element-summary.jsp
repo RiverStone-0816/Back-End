@@ -23,10 +23,10 @@
             <c:forEach var="type" items="${metaTypes}" varStatus="status">
                 <c:choose>
                     <c:when test="${type.groupLevel <= element.groupLevel}">
-                        <th class="three wide">${g.htmlQuote(type.groupTreeName)}</th>
+                        <th class="three wide">${g.htmlQuote(type.groupTreeName)}명</th>
                     </c:when>
                     <c:otherwise>
-                        <th>${g.htmlQuote(type.groupTreeName)} 소속부서수</th>
+                        <th>${g.htmlQuote(type.groupTreeName)}수</th>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>

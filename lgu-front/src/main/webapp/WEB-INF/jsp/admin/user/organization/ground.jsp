@@ -18,7 +18,7 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/user/organization/"/>
 
-        <div class="sub-content ui container fluid" style="overflow: hidden;">
+        <div class="sub-content ui container fluid">
             <div class="ui grid complex">
                 <div class="eight wide column">
                     <div class="panel">
@@ -31,8 +31,9 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="panel-body" style="padding-bottom: 0;">
+                        <div class="panel-body">
                             <jsp:include page="/admin/user/organization/editable-pan"/>
+
                             <form id="organization-register-form" class="item -json-submit" style="display: none;"
                                   action="${pageContext.request.contextPath}/api/organization/" data-method="post"
                                   data-done="doneRegisterElement">
@@ -52,6 +53,7 @@
                                     </div>
                                 </div>
                             </form>
+
                             <form id="organization-update-form" class="item -json-submit" style="display: none;"
                                   action="${pageContext.request.contextPath}/api/organization/" data-method="put"
                                   data-done="doneUpdateElement">
