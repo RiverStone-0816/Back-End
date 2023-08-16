@@ -88,7 +88,7 @@
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
-                                ${g.htmlQuote(value)}
+                                <pre style="white-space: pre-wrap">${g.htmlQuote(value)}</pre>
                             </c:otherwise>
                         </c:choose>
                     </td>
