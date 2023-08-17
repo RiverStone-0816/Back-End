@@ -151,6 +151,28 @@ public abstract class BaseRepository<TABLE extends TableImpl<? extends Record>, 
         return entity;
     }
 
+    public ENTITY findOneIfNullThrow(DSLContext dsl, PK key) {
+        return findOneIfNullThrow(dsl, getCondition(key));
+    }
+
+    public ENTITY findOneIfNullThrow(DSLContext dsl, Condition condition) {
+        return findOneIfNullThrow(dsl, getCompanyId(), condition);
+    }
+
+
+    public ENTITY findOneIfNullThrow(DSLContext dsl, String companyId, PK key) {
+        return findOneIfNullThrow(dsl, companyId, getCondition(key));
+    }
+
+    public ENTITY findOneIfNullThrow(DSLContext dsl, String companyId, Condition condition) {
+        final ENTITY entity = findOne(dsl, companyId, condition);
+        if (entity == null) {
+            getLogger().info("존재하지 않는 정보입니다: {} [{}]", table.getName(), condition.toString());
+            throw new EntityNotFoundException(String.format("존재하지 않는 정보입니다.(%s)", table.getComment()));
+        }
+        return entity;
+    }
+
     public List<ENTITY> findAll() {
         return findAll(dsl(), DSL.trueCondition());
     }
@@ -292,7 +314,7 @@ public abstract class BaseRepository<TABLE extends TableImpl<? extends Record>, 
     }
 
     public void updateByKey(DSLContext dslContext, Object record, PK key) {
-        findOneIfNullThrow(key);
+        findOneIfNullThrow(dslContext, key);
         update(dslContext, record, getCondition(key));
     }
 
