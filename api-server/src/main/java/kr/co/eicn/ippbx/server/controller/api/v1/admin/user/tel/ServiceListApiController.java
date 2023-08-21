@@ -78,6 +78,33 @@ public class ServiceListApiController extends ApiBaseController {
         return ResponseEntity.ok(data((rows)));
     }
 
+    @GetMapping("counsel")
+    public ResponseEntity<JsonResult<List<ServiceListSummaryResponse>>> listCounsel(ServiceListSearchRequest search) {
+        final List<ServiceList> serviceLists = repository.findAll(search);
+        final List<ServerInfo> serverInfos = serverInfoRepository.findAll();
+        final Map<String, Number_070> number070Map = numberRepository.findByAllListCovertToMap(NUMBER_070.TYPE.eq((byte) 2));
+        final List<CompanyTree> companyTrees = organizationService.getAllCompanyTrees();
+        final List<ServiceListSummaryResponse> rows = serviceLists.stream()
+                .map((e) -> {
+                    final ServiceListSummaryResponse entity = convertDto(e, ServiceListSummaryResponse.class);
+                    final Number_070 number = number070Map.get(entity.getSvcNumber());
+                    if (number != null)
+                        serverInfos.stream().filter(server -> isNotEmpty(server.getHost()) && server.getHost().equals(number.getHost())).findFirst()
+                                .ifPresent(server -> entity.setHostName(server.getName()));
+
+                    if (isNotEmpty(entity.getGroupCode()))
+                        entity.setOrganizationSummary(organizationService.getCompanyTrees(companyTrees, entity.getGroupCode())
+                                .stream()
+                                .map(group -> convertDto(group, OrganizationSummaryResponse.class))
+                                .collect(Collectors.toList()));
+
+                    return entity;
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(data((rows)));
+    }
+
     @GetMapping("{seq}")
     public ResponseEntity<JsonResult<ServiceListDetailResponse>> get(@PathVariable Integer seq) {
         final ServiceListDetailResponse detail = convertDto(repository.findOneIfNullThrow(seq), ServiceListDetailResponse.class);

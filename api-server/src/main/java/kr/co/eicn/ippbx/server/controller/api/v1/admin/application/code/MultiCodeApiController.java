@@ -14,6 +14,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.CommonFieldRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.CommonTypeRepository;
 import kr.co.eicn.ippbx.server.service.CommonFieldPoster;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +49,7 @@ public class MultiCodeApiController extends ApiBaseController {
     /**
      * 멀티코드 조회
      **/
+    @IsAdmin
     @GetMapping("")
     public ResponseEntity<JsonResult<List<CommonTypeDetailResponse>>> list() {
         List<CommonType> commonTypeList = commonTypeRepository.findAllType();

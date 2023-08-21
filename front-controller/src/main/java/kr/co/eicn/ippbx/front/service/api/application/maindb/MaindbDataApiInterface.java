@@ -63,6 +63,25 @@ public class MaindbDataApiInterface extends ApiServerInterface {
         return getPagination(subUrl + groupSeq + "/data", param, MaindbCustomInfoEntity.class).getData();
     }
 
+    public Pagination<MaindbCustomInfoEntity> getPaginationCounsel(Integer groupSeq, MaindbDataSearchRequest search) throws IOException, ResultFailException {
+        final Map<String, Object> param = objectMapper.convertValue(search, typeFactory.constructParametricType(Map.class, String.class, Object.class));
+
+        // FIXME: extract
+        param.remove("dbTypeFields");
+        search.getDbTypeFields().forEach((key, condition) -> {
+            if (StringUtils.isNotEmpty(condition.getKeyword()))
+                param.put("dbTypeFields[" + key + "].keyword", condition.getKeyword());
+            if (StringUtils.isNotEmpty(condition.getCode()))
+                param.put("dbTypeFields[" + key + "].code", condition.getCode());
+            if (condition.getStartDate() != null)
+                param.put("dbTypeFields[" + key + "].startDate", condition.getStartDate().toString());
+            if (condition.getEndDate() != null)
+                param.put("dbTypeFields[" + key + "].endDate", condition.getEndDate().toString());
+        });
+
+        return getPagination(subUrl + groupSeq + "/data/counsel", param, MaindbCustomInfoEntity.class).getData();
+    }
+
     public List<SearchMaindbGroupResponse> customdbGroup() throws IOException, ResultFailException {
         return getList(subUrl + "customdb_group", null, SearchMaindbGroupResponse.class).getData();
     }

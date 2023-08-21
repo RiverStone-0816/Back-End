@@ -515,7 +515,7 @@
             <c:if test="${serviceKind.equals('SC')}">
             $('.-configured-tab[data-tab=menu7]').empty().append($('<iframe/>', {id: 'menu7', name: 'menu7', class: 'tab-menu', style: 'width: 100%; height: 100%;'}));
             </c:if>
-            window.menu1 = window.open(contextPath + '/admin/application/maindb/result/', 'menu1', "width=0 height=0 menubar=no status=no");
+            window.menu1 = window.open(contextPath + '/admin/application/maindb/result/counsel', 'menu1', "width=0 height=0 menubar=no status=no");
             window.menu2 = window.open(contextPath + '/admin/record/history/history/', 'menu2', "width=0 height=0 menubar=no status=no");
             window.menu3 = window.open(contextPath + '/admin/record/callback/history/', 'menu3', "width=0 height=0 menubar=no status=no");
             <c:if test="${usingServices.contains('NOT')}">

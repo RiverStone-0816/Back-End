@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.HolyInfoResponse;
 import kr.co.eicn.ippbx.model.form.HolyInfoFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.HolyInfoRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -32,6 +33,7 @@ public class HolyInfoApiController extends ApiBaseController {
 
 	private final HolyInfoRepository repository;
 
+	@IsAdmin
 	@GetMapping("")
 	public ResponseEntity<JsonResult<List<HolyInfoResponse>>> list() {
 		return ResponseEntity.ok(data(repository.findAll().stream().map(e -> convertDto(e, HolyInfoResponse.class)).collect(Collectors.toList())));

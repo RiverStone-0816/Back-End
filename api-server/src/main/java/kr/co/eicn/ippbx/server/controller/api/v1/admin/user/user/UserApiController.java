@@ -21,6 +21,7 @@ import kr.co.eicn.ippbx.server.service.UserService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.PatternUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -93,6 +94,7 @@ public class UserApiController extends ApiBaseController {
     /**
      * 사용자 목록조회
      */
+    @IsAdmin
     @GetMapping("search")
     public ResponseEntity<JsonResult<Pagination<PersonSummaryResponse>>> pagination(@Valid PersonSearchRequest search, BindingResult bindingResult) {
         if (bindingResult.hasErrors())

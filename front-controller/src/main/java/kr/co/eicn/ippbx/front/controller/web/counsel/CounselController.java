@@ -107,7 +107,7 @@ public class CounselController extends BaseController {
 
     @GetMapping("coworker-navigation")
     public String coworkerNavigation(Model model) throws IOException, ResultFailException {
-        final List<MonitControlResponse> list = monitApiInterface.list(new MonitControlSearchRequest());
+        final List<MonitControlResponse> list = monitApiInterface.listDashboard(new MonitControlSearchRequest());
         model.addAttribute("list", list);
         model.addAttribute("statusCodes", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
         model.addAttribute("memberStatuses", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));
@@ -228,7 +228,7 @@ public class CounselController extends BaseController {
         if (search.getGroupSeq() == null)
             search.setGroupSeq(customdbGroups.get(0).getSeq());
 
-        final Pagination<MaindbCustomInfoEntity> pagination = maindbDataApiInterface.getPagination(search.getGroupSeq(), search.convertToRequest(""));
+        final Pagination<MaindbCustomInfoEntity> pagination = maindbDataApiInterface.getPaginationCounsel(search.getGroupSeq(), search.convertToRequest(""));
         model.addAttribute("pagination", pagination);
 
         final MaindbGroupDetailResponse customGroup = maindbGroupApiInterface.get(search.getGroupSeq());
@@ -272,7 +272,7 @@ public class CounselController extends BaseController {
 //        if (g.getUser().getIdType().equals(IdType.USER.getCode()))
 //            search.setUserId(g.getUser().getId());
 
-        final Pagination<ResultCustomInfoEntity> pagination = maindbResultApiInterface.getPagination(search.getGroupSeq(), search.convertToRequest(""));
+        final Pagination<ResultCustomInfoEntity> pagination = maindbResultApiInterface.getPaginationCounsel(search.getGroupSeq(), search.convertToRequest(""));
         model.addAttribute("pagination", pagination);
 
         final MaindbGroupDetailResponse customGroup = maindbGroupApiInterface.get(search.getGroupSeq());
@@ -402,7 +402,7 @@ public class CounselController extends BaseController {
     public String modalSmsSend(Model model, @RequestParam String phoneNumber, @ModelAttribute("form") SendMessageFormRequest form) throws IOException, ResultFailException {
         model.addAttribute("phoneNumber", phoneNumber);
         model.addAttribute("smsCategories", smsCategoryApiInterface.pagination(new SendCategorySearchRequest()).getRows());
-        model.addAttribute("serviceLists", serviceApiInterface.list(new ServiceListSearchRequest()));
+        model.addAttribute("serviceLists", serviceApiInterface.listCounsel(new ServiceListSearchRequest()));
         model.addAttribute("smsTemplates", smsMessageTemplateApiInterface.list().stream().collect(Collectors.groupingBy(SendMessageTemplateResponse::getCategoryCode)));
         return "modal-sms-send";
     }

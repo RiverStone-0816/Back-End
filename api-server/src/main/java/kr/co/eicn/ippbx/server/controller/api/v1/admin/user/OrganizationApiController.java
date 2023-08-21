@@ -11,6 +11,7 @@ import kr.co.eicn.ippbx.model.form.OrganizationFormRequest;
 import kr.co.eicn.ippbx.model.form.OrganizationFormUpdateRequest;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -102,8 +103,17 @@ public class OrganizationApiController extends ApiBaseController {
 		return ResponseEntity.ok(create());
 	}
 
+	@IsAdmin
 	@GetMapping(value = "/meta-type")
 	public ResponseEntity<JsonResult<List<CompanyTreeLevelNameResponse>>> listMetaType() {
+		final List<CompanyTreeLevelNameResponse> rows = organizationService.listMetaType().stream()
+				.map(e -> convertDto(e, CompanyTreeLevelNameResponse.class))
+				.collect(Collectors.toList());
+		return ResponseEntity.ok(data(rows));
+	}
+
+	@GetMapping(value = "/meta-type/counsel")
+	public ResponseEntity<JsonResult<List<CompanyTreeLevelNameResponse>>> listMetaTypeCounsel() {
 		final List<CompanyTreeLevelNameResponse> rows = organizationService.listMetaType().stream()
 				.map(e -> convertDto(e, CompanyTreeLevelNameResponse.class))
 				.collect(Collectors.toList());

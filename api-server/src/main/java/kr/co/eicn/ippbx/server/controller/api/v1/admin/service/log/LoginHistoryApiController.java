@@ -13,6 +13,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.PersonListRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -41,6 +42,7 @@ public class LoginHistoryApiController extends ApiBaseController {
     private final PersonListRepository personListRepository;
     private final OrganizationService organizationService;
 
+    @IsAdmin
     @GetMapping
     public ResponseEntity<JsonResult<Pagination<LoginHistoryResponse>>> pagination(LoginHistorySearchRequest search) {
         final Pagination<LoginHistory> pagination = repository.pagination(search);

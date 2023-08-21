@@ -27,6 +27,9 @@ public class GradelistApiInterface extends ApiServerInterface {
         return getPagination(subUrl, search, GradeListEntity.class).getData();
     }
 
+    public Pagination<GradeListEntity> paginationCounsel(GradeListSearchRequest search) throws IOException, ResultFailException {
+        return getPagination(subUrl + "counsel", search, GradeListEntity.class).getData();
+    }
     public GradeListEntity get(Integer seq) throws IOException, ResultFailException {
         return getData(subUrl + seq, null, GradeListEntity.class).getData();
     }

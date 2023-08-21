@@ -9,6 +9,7 @@ import kr.co.eicn.ippbx.model.search.MonitControlSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.CompanyTreeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.QueueMemberTableRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -34,8 +35,28 @@ public class MonitControlApiController extends ApiBaseController {
     private final QueueMemberTableRepository queueMemberTableRepository;
     private final CompanyTreeRepository companyTreeRepository;
 
+    @IsAdmin
     @GetMapping("")
     public ResponseEntity<JsonResult<List<MonitControlResponse>>> list(MonitControlSearchRequest search) {
+        final List<MonitControlResponse> list = companyTreeRepository.getAllOrganizationByBranch(search).stream()
+                .map(e -> {
+                    MonitControlResponse entity = convertDto(e, MonitControlResponse.class);
+                    if (e.getPerson() != null) {
+                        entity.setPerson(
+                                e.getPerson().stream()
+                                        .map(f -> convertDto(f, PersonListSummary.class))
+                                        .collect(Collectors.toList())
+                        );
+                    }
+
+                    return entity;
+                })
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(data(list));
+    }
+
+    @GetMapping("dashboard")
+    public ResponseEntity<JsonResult<List<MonitControlResponse>>> listDashboard(MonitControlSearchRequest search) {
         final List<MonitControlResponse> list = companyTreeRepository.getAllOrganizationByBranch(search).stream()
                 .map(e -> {
                     MonitControlResponse entity = convertDto(e, MonitControlResponse.class);

@@ -14,6 +14,7 @@ import kr.co.eicn.ippbx.model.form.IvrPositionFormRequest;
 import kr.co.eicn.ippbx.model.form.WebVoiceItemsFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.impl.DSL;
@@ -58,6 +59,7 @@ public class IvrApiController extends ApiBaseController {
 		return ResponseEntity.ok(data(repository.getIvrTreeLists().stream().map(e -> convertDto(e, IvrResponse.class)).collect(Collectors.toList())));
 	}
 
+	@IsAdmin
 	@GetMapping("root-ivr-trees")
 	public ResponseEntity<JsonResult<List<IvrResponse>>> rootIvrTrees() {
 		return ResponseEntity.ok(data(repository.getRootIvrTrees().stream().map(e -> convertDto(e, IvrResponse.class)).collect(Collectors.toList())));

@@ -14,6 +14,7 @@ import kr.co.eicn.ippbx.model.form.NumberTypeChangeRequest;
 import kr.co.eicn.ippbx.model.search.NumberSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jooq.impl.DSL;
@@ -54,6 +55,7 @@ public class NumberApiController extends ApiBaseController {
     /**
      * 번호타입에 따른 전체 번호조회
      */
+    @IsAdmin
     @GetMapping("")
     public ResponseEntity<JsonResult<List<NumberSummaryResponse>>> list(NumberSearchRequest search) {
         final List<NumberSummaryResponse> summaryResponses = new ArrayList<>();

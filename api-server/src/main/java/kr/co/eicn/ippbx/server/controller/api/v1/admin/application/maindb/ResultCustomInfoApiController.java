@@ -104,6 +104,28 @@ public class ResultCustomInfoApiController extends ApiBaseController {
         return ResponseEntity.ok(data(new Pagination<>(rows, pagination.getPage(), pagination.getTotalCount(), search.getLimit())));
     }
 
+    @GetMapping("{groupSeq}/data/counsel")
+    public ResponseEntity<JsonResult<Pagination<ResultCustomInfoEntity>>> getPaginationCounsel(@PathVariable Integer groupSeq, ResultCustomInfoSearchRequest search) {
+        search.setSeq(groupSeq);
+
+        final Map<String, PersonList> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, e -> e));
+        final Pagination<ResultCustomInfoEntity> pagination = service.getRepository().pagination(search);
+        final List<ResultCustomInfoEntity> rows = pagination.getRows().stream()
+                .map((e) -> {
+                    final ResultCustomInfoEntity response = convertDto(e, ResultCustomInfoEntity.class);
+
+                    if (Objects.nonNull(personListMap.get(response.getUserid())))
+                        response.setPersonList(personListMap.get(response.getUserid()));
+                    response.setCallType(StringUtils.isNotEmpty(response.getCallType()) ? response.getCallType() : StringUtils.isNotEmpty(response.getUniqueid()) ? "I" : "");
+
+                    return response;
+                })
+                .collect(toList());
+
+
+        return ResponseEntity.ok(data(new Pagination<>(rows, pagination.getPage(), pagination.getTotalCount(), search.getLimit())));
+    }
+
     //수정정보SEQ
     @GetMapping("{seq}")
     public ResponseEntity<JsonResult<ResultCustomInfoEntity>> get(@PathVariable Integer seq) {

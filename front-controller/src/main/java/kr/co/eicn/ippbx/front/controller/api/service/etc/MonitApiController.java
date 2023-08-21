@@ -34,7 +34,7 @@ public class MonitApiController extends BaseController {
 
     @GetMapping("")
     public List<MonitControlResponse> list(MonitControlSearchRequest search) throws IOException, ResultFailException {
-        return apiInterface.list(search);
+        return apiInterface.listDashboard(search);
     }
 
     @PutMapping("")

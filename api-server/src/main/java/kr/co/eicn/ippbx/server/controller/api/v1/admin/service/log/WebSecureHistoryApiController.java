@@ -12,6 +12,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.WebSecureHistoryRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -39,6 +40,7 @@ public class WebSecureHistoryApiController extends ApiBaseController {
     private final WebSecureHistoryRepository repository;
     private final PersonListRepository personListRepository;
 
+    @IsAdmin
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<WebSecureHistoryResponse>>> pagination(WebSecureHistorySearchRequest search) {
         final Pagination<WebSecureHistory> pagination = repository.pagination(search);

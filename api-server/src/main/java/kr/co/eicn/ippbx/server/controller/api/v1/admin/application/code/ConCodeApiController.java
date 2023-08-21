@@ -14,6 +14,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.CommonTypeRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ConCsCodeInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ConGroupRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -45,6 +46,7 @@ public class ConCodeApiController extends ApiBaseController {
     /**
      *  연동코드 목록 조회
      * */
+    @IsAdmin
     @GetMapping("")
     public ResponseEntity<JsonResult<List<ConCodeResponse>>> list() {
         List<CommonType> commonTypeList = commonTypeRepository.findAllType();

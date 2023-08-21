@@ -63,6 +63,12 @@ public class MaindbCustomInfoApiController extends ApiBaseController {
         return ResponseEntity.ok(data(service.getRepository().pagination(search, false)));
     }
 
+    @GetMapping("{groupSeq}/data/counsel")
+    public ResponseEntity<JsonResult<Pagination<MaindbCustomInfoEntity>>> getPaginationCounsel(@PathVariable Integer groupSeq, MaindbDataSearchRequest search) {
+        search.setGroupSeq(groupSeq);
+        return ResponseEntity.ok(data(service.getRepository().pagination(search, false)));
+    }
+
     //고객DB조회.
     @GetMapping("customdb_group")
     public ResponseEntity<JsonResult<List<SearchMaindbGroupResponse>>> customdbGroup() {

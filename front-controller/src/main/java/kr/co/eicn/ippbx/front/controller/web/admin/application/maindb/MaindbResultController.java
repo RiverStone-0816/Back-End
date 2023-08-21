@@ -131,6 +131,51 @@ public class MaindbResultController extends BaseController {
         return "admin/application/maindb/result/ground";
     }
 
+    @GetMapping("counsel")
+    public String pageCounsel(Model model, @ModelAttribute("search") MaindbResultSearch search) throws IOException, ResultFailException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        final List<SearchMaindbGroupResponse> customdbGroups = apiInterface.customdbGroup();
+        if (customdbGroups.size() != 0) {
+
+            final Map<Integer, String> groups = customdbGroups.stream().collect(Collectors.toMap(SearchMaindbGroupResponse::getSeq, SearchMaindbGroupResponse::getName));
+            model.addAttribute("customdbGroups", groups);
+
+            if (search.getGroupSeq() == null)
+                search.setGroupSeq(customdbGroups.get(0).getSeq());
+
+            final Pagination<ResultCustomInfoEntity> pagination = apiInterface.getPaginationCounsel(search.getGroupSeq(), search.convertToRequest(""));
+            model.addAttribute("pagination", pagination);
+
+            final MaindbGroupDetailResponse customGroup = maindbGroupApiInterface.get(search.getGroupSeq());
+            final CommonTypeEntity customDbType = commonTypeApiInterface.get(customGroup.getMaindbType());
+            customDbType.setFields(customDbType.getFields().stream().filter(e -> "Y".equals(e.getIsdisplayList())).collect(Collectors.toList()));
+            model.addAttribute("customDbType", customDbType);
+            final CommonTypeEntity resultType = commonTypeApiInterface.get(customGroup.getResultType());
+            resultType.setFields(resultType.getFields().stream().filter(e -> "Y".equals(e.getIsdisplayList())).collect(Collectors.toList()));
+            model.addAttribute("resultType", resultType);
+
+            final Map<String, Map<String, String>> codeMap = new HashMap<>();
+            customDbType.getFields().stream()
+                    .filter(e -> e.getCodes() != null && e.getCodes().size() > 0)
+                    .forEach(e -> {
+                        final Map<String, String> codes = e.getCodes().stream().collect(Collectors.toMap(CommonCodeEntity::getCodeId, CommonCodeEntity::getCodeName));
+                        codeMap.put(e.getFieldId(), codes);
+                    });
+            resultType.getFields().stream()
+                    .filter(e -> e.getCodes() != null && e.getCodes().size() > 0)
+                    .forEach(e -> {
+                        final Map<String, String> codes = e.getCodes().stream().collect(Collectors.toMap(CommonCodeEntity::getCodeId, CommonCodeEntity::getCodeName));
+                        codeMap.put(e.getFieldId(), codes);
+                    });
+            model.addAttribute("codeMap", new JSONObject(codeMap));
+
+            model.addAttribute("seqToFieldNameToValueMap", createSeqToFieldNameToValueMap((List<CommonResultCustomInfo>) (List<?>) pagination.getRows(), resultType));
+            model.addAttribute("customIdToFieldNameToValueMap", MaindbDataController.createCustomIdToFieldNameToValueMap(pagination.getRows().stream().map(ResultCustomInfoEntity::getCustomInfo).collect(Collectors.toList()), customDbType));
+
+            model.addAttribute("users", searchApiInterface.persons());
+        }
+        return "admin/application/maindb/result/ground";
+    }
+
     @GetMapping("{seq}/modal")
     public String modal(Model model, @PathVariable Integer seq, @ModelAttribute("form") ResultCustomInfoFormRequest form) throws IOException, ResultFailException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         final ResultCustomInfoEntity entity = apiInterface.get(seq);

@@ -22,6 +22,7 @@ import kr.co.eicn.ippbx.server.service.CommonFieldPoster;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -82,6 +83,7 @@ public class MaindbGroupApiController extends ApiBaseController {
         return ResponseEntity.ok(data(rows));
     }
 
+    @IsAdmin
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<MaindbGroupSummaryResponse>>> pagination(MaindbGroupSearchRequest search) {
         final Pagination<MaindbGroup> pagination = repository.pagination(search);

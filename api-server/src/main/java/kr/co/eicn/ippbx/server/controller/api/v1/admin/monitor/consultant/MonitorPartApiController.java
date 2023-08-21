@@ -24,6 +24,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.*;
 import kr.co.eicn.ippbx.util.EicnUtils;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -68,6 +69,7 @@ public class MonitorPartApiController extends ApiBaseController {
     /**
      * 센터현황별 모니터링
      */
+    @IsAdmin
     @GetMapping("center")
     public ResponseEntity<JsonResult<CenterStatusResponse>> getCenterStat() {
         final CenterStatResponse centerMonitoring = statInboundService.getRepository().getCenterMonitoring();

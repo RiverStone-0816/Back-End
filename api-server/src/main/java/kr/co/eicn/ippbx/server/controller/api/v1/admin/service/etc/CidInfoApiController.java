@@ -17,6 +17,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.Number070Repository;
 import kr.co.eicn.ippbx.server.repository.eicn.PhoneInfoRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -46,6 +47,7 @@ public class CidInfoApiController extends ApiBaseController {
     /**
      * 내선목록
      **/
+    @IsAdmin
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<PhoneInfoResponse>>> pagination(CidInfoSearchRequest search) {
         final Pagination<PhoneInfo> pagination = phoneInfoRepository.pagination(search);

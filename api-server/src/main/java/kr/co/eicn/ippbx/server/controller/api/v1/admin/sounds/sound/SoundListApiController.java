@@ -13,6 +13,7 @@ import kr.co.eicn.ippbx.server.service.SoundListService;
 import kr.co.eicn.ippbx.server.service.StorageService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,6 +57,7 @@ public class SoundListApiController extends ApiBaseController {
         return ResponseEntity.ok(data(rows));
     }
 
+    @IsAdmin
     @GetMapping("search")
     public ResponseEntity<JsonResult<Pagination<SoundListSummaryResponse>>> pagination(SoundListSearchRequest search) {
         final Pagination<SoundList> pagination = service.pagination(search);

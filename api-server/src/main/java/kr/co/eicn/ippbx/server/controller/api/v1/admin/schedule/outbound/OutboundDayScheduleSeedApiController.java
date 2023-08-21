@@ -15,6 +15,7 @@ import kr.co.eicn.ippbx.model.form.HolyOutScheduleFormRequest;
 import kr.co.eicn.ippbx.model.search.OutScheduleSeedSearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -53,6 +54,7 @@ public class OutboundDayScheduleSeedApiController extends ApiBaseController {
 	/**
 	 * 스케쥴러 목록조회
 	 */
+	@IsAdmin
 	@GetMapping("")
 	public ResponseEntity<JsonResult<List<OutScheduleSeedEntity>>> list(OutScheduleSeedSearchRequest search) {
 		search.setType(ScheduleType.DAY);

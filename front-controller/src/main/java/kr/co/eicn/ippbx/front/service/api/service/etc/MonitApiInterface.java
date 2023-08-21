@@ -22,6 +22,10 @@ public class MonitApiInterface extends ApiServerInterface {
         return getList(subUrl, search, MonitControlResponse.class).getData();
     }
 
+    public List<MonitControlResponse> listDashboard(MonitControlSearchRequest search) throws IOException, ResultFailException {
+        return getList(subUrl + "dashboard", search, MonitControlResponse.class).getData();
+    }
+
     public void put(MonitControlChangeRequest form) throws IOException, ResultFailException {
         put(subUrl, form);
     }

@@ -13,6 +13,7 @@ import kr.co.eicn.ippbx.model.form.ScheduleGroupListFormRequest;
 import kr.co.eicn.ippbx.model.form.ScheduleGroupListTimeUpdateFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -55,6 +56,7 @@ public class ScheduleGroupApiController extends ApiBaseController {
 	/**
 	 * 스케쥴유형 목록조회
 	 */
+	@IsAdmin
 	@GetMapping("")
 	public ResponseEntity<JsonResult<List<ScheduleGroupSummaryResponse>>> list() {
 		return ResponseEntity.ok(data(repository.getScheduleGroupLists().stream().map(e -> convertDto(e, ScheduleGroupSummaryResponse.class)).collect(Collectors.toList())));

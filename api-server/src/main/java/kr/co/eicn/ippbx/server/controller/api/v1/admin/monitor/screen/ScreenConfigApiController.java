@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.model.entity.eicn.ScreenConfigEntity;
 import kr.co.eicn.ippbx.model.form.ScreenConfigFormRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.ScreenConfigRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -26,6 +27,7 @@ public class ScreenConfigApiController extends ApiBaseController {
 
     private final ScreenConfigRepository repository;
 
+    @IsAdmin
     @GetMapping("")
     public JsonResult<List<ScreenConfigEntity>> list() {
         return JsonResult.data(repository.findAll());

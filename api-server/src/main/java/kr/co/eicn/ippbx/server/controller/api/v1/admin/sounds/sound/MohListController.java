@@ -13,6 +13,7 @@ import kr.co.eicn.ippbx.server.service.MohListService;
 import kr.co.eicn.ippbx.server.service.StorageService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,6 +47,7 @@ public class MohListController extends ApiBaseController {
 	@Value("${file.path.moh}")
 	private String savePath;
 
+	@IsAdmin
 	@GetMapping("")
 	public ResponseEntity<JsonResult<Pagination<MohListSummaryResponse>>> pagination(MohListSearchRequest search) {
 		final Pagination<MohList> pagination = repository.pagination(search);

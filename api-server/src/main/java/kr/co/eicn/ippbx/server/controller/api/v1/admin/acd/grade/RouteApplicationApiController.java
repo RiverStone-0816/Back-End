@@ -15,6 +15,7 @@ import kr.co.eicn.ippbx.server.service.RouteApplicationService;
 import kr.co.eicn.ippbx.server.service.StorageService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -47,6 +48,7 @@ public class RouteApplicationApiController extends ApiBaseController {
     private final PersonListRepository personListRepository;
     private final EicnCdrService eicnCdrService;
 
+    @IsAdmin
     @GetMapping("")
     public JsonResult<Pagination<RouteApplicationEntity>> pagination(RouteApplicationSearchRequest search) {
         return data(repository.pagination(search));

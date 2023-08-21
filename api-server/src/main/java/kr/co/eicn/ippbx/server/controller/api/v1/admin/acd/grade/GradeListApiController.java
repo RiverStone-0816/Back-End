@@ -11,6 +11,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.QueueNameRepository;
 import kr.co.eicn.ippbx.server.service.CommonFieldPoster;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -44,8 +45,14 @@ public class GradeListApiController extends ApiBaseController {
     private final QueueNameRepository queueNameRepository;
     private final CommonFieldPoster commonFieldPoster;
 
+    @IsAdmin
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<GradeListEntity>>> pagination(GradeListSearchRequest search) {
+        return ResponseEntity.ok(data(repository.pagination(search)));
+    }
+
+    @GetMapping("counsel")
+    public ResponseEntity<JsonResult<Pagination<GradeListEntity>>> paginationCounsel(GradeListSearchRequest search) {
         return ResponseEntity.ok(data(repository.pagination(search)));
     }
 

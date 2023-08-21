@@ -56,6 +56,10 @@ public class OrganizationApiInterface extends ApiServerInterface {
         return getList(HttpMethod.GET, subUrl + "meta-type", null, CompanyTreeLevelNameResponse.class).getData();
     }
 
+    public List<CompanyTreeLevelNameResponse> listMetaTypeCounsel() throws IOException, ResultFailException {
+        return getList(HttpMethod.GET, subUrl + "meta-type/counsel", null, CompanyTreeLevelNameResponse.class).getData();
+    }
+
     public void updateMetaType(List<CompanyTreeNameUpdateFormRequest> form) throws IOException, ResultFailException {
         put(subUrl + "meta-type", form);
     }

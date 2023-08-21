@@ -44,7 +44,7 @@ public class MaindbResultApiController extends BaseController {
     //리스트
     @GetMapping("{groupSeq}/data")
     public Pagination<ResultCustomInfoEntity> getPagination(@PathVariable Integer groupSeq, ResultCustomInfoSearchRequest search) throws IOException, ResultFailException {
-        return apiInterface.getPagination(groupSeq, search);
+        return apiInterface.getPaginationCounsel(groupSeq, search);
     }
 
     //수정정보SEQ

@@ -243,7 +243,7 @@ public class CounseWTalkController extends BaseController {
         }
 
         if (!gradeListSearchRequest.getGradeNumbers().isEmpty()) {
-            final List<GradeListEntity> gradeListEntities = gradelistApiInterface.pagination(gradeListSearchRequest).getRows();
+            final List<GradeListEntity> gradeListEntities = gradelistApiInterface.paginationCounsel(gradeListSearchRequest).getRows();
             if (gradeListEntities.stream().anyMatch(e -> e.getGrade() != null && e.getGrade().startsWith("VIP")))
                 model.addAttribute("vip", Boolean.TRUE);
             if (gradeListEntities.stream().anyMatch(e -> e.getGrade() != null && e.getGrade().startsWith("BLACK")))

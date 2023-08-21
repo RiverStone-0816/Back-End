@@ -130,7 +130,7 @@ public class DashboardController extends BaseController {
     @GetMapping("script-for-queue-and-person-status")
     public String scriptForQueueAndPersonStatus(Model model) throws IOException, ResultFailException {
         val peerToUserId = new HashMap<String, String>();
-        monitApiInterface.list(new MonitControlSearchRequest()).forEach(e -> e.getPerson().forEach(e2 -> peerToUserId.put(e2.getPeer(), e2.getId())));
+        monitApiInterface.listDashboard(new MonitControlSearchRequest()).forEach(e -> e.getPerson().forEach(e2 -> peerToUserId.put(e2.getPeer(), e2.getId())));
         model.addAttribute("peerToUserId", peerToUserId);
         model.addAttribute("peerToIsStat", userApiInterface.list(new PersonSearchRequest()).stream().filter(e -> StringUtils.isNotEmpty(e.getPeer())).collect(Collectors.toMap(PersonSummaryResponse::getPeer, PersonSummaryResponse::getIsStat)));
 

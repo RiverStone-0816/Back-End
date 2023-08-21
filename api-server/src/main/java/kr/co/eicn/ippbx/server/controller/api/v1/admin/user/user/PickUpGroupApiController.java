@@ -59,6 +59,7 @@ public class PickUpGroupApiController extends ApiBaseController {
     private final ServerInfoRepository serverInfoRepository;
     private final PersonListRepository personListRepository;
 
+    @IsAdmin
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<PickUpGroupSummaryResponse>>> pagination(PickUpGroupSearchRequest search) {
         final Pagination<PickupGroup> pagination = repository.pagination(search);

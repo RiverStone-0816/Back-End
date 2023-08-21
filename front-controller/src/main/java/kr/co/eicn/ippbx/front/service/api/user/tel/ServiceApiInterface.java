@@ -26,6 +26,10 @@ public class ServiceApiInterface extends ApiServerInterface {
         return getList(subUrl, search, ServiceListSummaryResponse.class).getData();
     }
 
+    public List<ServiceListSummaryResponse> listCounsel(ServiceListSearchRequest search) throws IOException, ResultFailException {
+        return getList(subUrl + "counsel", search, ServiceListSummaryResponse.class).getData();
+    }
+
     public ServiceListDetailResponse get(Integer seq) throws IOException, ResultFailException {
         return getData(subUrl + seq, null, ServiceListDetailResponse.class).getData();
     }

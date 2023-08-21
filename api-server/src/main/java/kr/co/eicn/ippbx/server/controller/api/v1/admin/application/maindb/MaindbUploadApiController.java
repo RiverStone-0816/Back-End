@@ -11,6 +11,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.MaindbGroupRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.MaindbUploadRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -43,6 +44,7 @@ public class MaindbUploadApiController extends ApiBaseController {
     private final MaindbUploadRepository repository;
     private final MaindbGroupRepository maindbGroupRepository;
 
+    @IsAdmin
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<MaindbUploadResponse>>> pagination(MaindbUploadSearchRequest search) {
         final Pagination<HistoryUploadInfo> pagination = repository.pagination(search);
