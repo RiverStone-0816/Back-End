@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.monitor.consultant;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.CompanyApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.QueueApiInterface;
@@ -172,7 +173,7 @@ public class PartMonitoringController extends BaseController {
     @GetMapping("hunt-hour-chart")
     public String huntHourChart(Model model) throws IOException, ResultFailException {
         final List<SummaryQueueResponse> queues = queueApiInterface.subGroups();
-        model.addAttribute("queues", queues.stream().collect(Collectors.toMap(SummaryQueueResponse::getName, SummaryQueueResponse::getHanName)));
+        model.addAttribute("queues",  new MapToLinkedHashMap().toLinkedHashMapByValue(queues.stream().collect(Collectors.toMap(SummaryQueueResponse::getName, SummaryQueueResponse::getHanName))));
 
         final Map<String, Map<Byte, Integer>> queueNameToDataMap = apiInterface.getHuntTotalCallCountByTime().stream().collect(Collectors.toMap(StatHourGraphData::getQueueName, StatHourGraphData::getDataMap));
         final Map<Byte, Map<String, Integer>> hourToQueueNameToCountMap = new TreeMap<>(Comparator.comparingInt(e -> e));
