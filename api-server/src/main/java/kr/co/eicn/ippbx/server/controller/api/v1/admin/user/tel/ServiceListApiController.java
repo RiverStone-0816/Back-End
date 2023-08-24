@@ -18,6 +18,7 @@ import kr.co.eicn.ippbx.server.repository.eicn.ServerInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ServiceRepository;
 import kr.co.eicn.ippbx.server.service.OrganizationService;
 import kr.co.eicn.ippbx.util.JsonResult;
+import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -51,6 +52,7 @@ public class ServiceListApiController extends ApiBaseController {
     private final ServerInfoRepository serverInfoRepository;
     private final OrganizationService organizationService;
 
+    @IsAdmin
     @GetMapping("")
     public ResponseEntity<JsonResult<List<ServiceListSummaryResponse>>> list(ServiceListSearchRequest search) {
         final List<ServiceList> serviceLists = repository.findAll(search);
