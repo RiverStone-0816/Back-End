@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
+import kr.co.eicn.ippbx.front.service.api.user.user.UserMeApiInterface;
+import kr.co.eicn.ippbx.model.form.PersonMePasswordUpdateRequest;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.user.user.UserApiInterface;
 import kr.co.eicn.ippbx.util.page.Pagination;
@@ -40,6 +42,8 @@ public class UserApiController extends BaseController {
 
     @Autowired
     private UserApiInterface apiInterface;
+    @Autowired
+    private UserMeApiInterface userMeApiInterface;
 
     @LoginRequired
     @GetMapping("")
@@ -81,6 +85,12 @@ public class UserApiController extends BaseController {
     @PatchMapping("{id}/password")
     public void updatePassword(@PathVariable String id, @RequestBody @Valid PersonPasswordUpdateRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
         apiInterface.updatePassword(id, form);
+    }
+
+    @LoginRequired
+    @PatchMapping("me/password")
+    public void updateMePassword(@RequestBody @Valid PersonMePasswordUpdateRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
+        userMeApiInterface.updatePassword(form);
     }
 
     @LoginRequired

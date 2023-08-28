@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.exception.DuplicateKeyException;
+import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo;
@@ -35,8 +36,7 @@ import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
 import static org.apache.commons.lang3.StringUtils.*;
-import static org.jooq.impl.DSL.left;
-import static org.jooq.impl.DSL.md5;
+import static org.jooq.impl.DSL.*;
 
 @Getter
 @Repository
@@ -273,6 +273,18 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
         webSecureHistoryRepository.insert(WebSecureActionType.PERSON, WebSecureActionSubType.DEL, id);
 
         return r;
+    }
+
+
+    public Integer checkOldPassword(String id, String oldPassword) {
+        final UserEntity entity = solt(id);
+
+        return dsl.selectCount()
+                .from(PERSON_LIST)
+                .where(getCondition(id))
+                .and(PERSON_LIST.PASSWD.eq(getSHA512(getSHA512(oldPassword)+entity.getSoltPw())))
+                .and(compareCompanyId())
+                .fetchOneInto(Integer.class);
     }
 
     public void updatePassword(String id, String password) {
