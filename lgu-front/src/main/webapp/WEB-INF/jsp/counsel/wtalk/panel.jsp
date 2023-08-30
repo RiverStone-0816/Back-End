@@ -1248,7 +1248,6 @@
                 },
                 sendFile: function (event) {
                     const _this = this
-                    event.target.value = null
 
                     for (let i = event.target.files.length - 1; i >= 0; i--) {
                         const file = event.target.files[i]
@@ -1258,6 +1257,8 @@
 
                         _this.uploadFile(file)
                     }
+
+                    event.target.value = null
                 },
                 dropFiles: function (event) {
                     this.showingDropzone = false
