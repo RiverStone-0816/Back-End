@@ -30,7 +30,7 @@ public class MemberStatusRepository extends CustomDBBaseRepository<CommonMemberS
 
     public List<PersonLastStatusInfoResponse> findAllMemberStatusTime() {
         Table<Record2<Timestamp, String>> TIME_TABLE = dsl.select(max(TABLE.END_DATE).as(TABLE.END_DATE), TABLE.PHONENAME)
-                .from(TABLE).where(TABLE.END_DATE.gt(DSL.cast(dateSub(Date.valueOf(LocalDate.now()), 7),Timestamp.class))).groupBy(TABLE.PHONENAME).asTable("B");
+                .from(TABLE).where(TABLE.END_DATE.gt(DSL.cast(dateSub(Date.valueOf(LocalDate.now()), 30),Timestamp.class))).groupBy(TABLE.PHONENAME).asTable("B");
 
         return dsl.select(
                 TABLE.END_DATE,
