@@ -11,8 +11,10 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
+import static org.jooq.impl.DSL.dateSub;
 import static org.jooq.impl.DSL.max;
 
 @Getter
@@ -28,9 +30,7 @@ public class MemberStatusRepository extends CustomDBBaseRepository<CommonMemberS
 
     public List<PersonLastStatusInfoResponse> findAllMemberStatusTime() {
         Table<Record2<Timestamp, String>> TIME_TABLE = dsl.select(max(TABLE.END_DATE).as(TABLE.END_DATE), TABLE.PHONENAME)
-                .from(TABLE)
-                .where(TABLE.END_DATE.gt(new Timestamp(System.currentTimeMillis() - 30*24*1000L*60*60)))
-                .groupBy(TABLE.PHONENAME).asTable("B");
+                .from(TABLE).where(TABLE.END_DATE.gt(DSL.cast(dateSub(Date.valueOf(LocalDate.now()), 7),Timestamp.class))).groupBy(TABLE.PHONENAME).asTable("B");
 
         return dsl.select(
                 TABLE.END_DATE,
