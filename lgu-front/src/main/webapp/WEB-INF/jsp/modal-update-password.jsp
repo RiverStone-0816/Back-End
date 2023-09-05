@@ -12,12 +12,18 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<form id="modal-update-my-password" class="ui modal -json-submit tiny" data-method="patch" data-done="doneUpdateMyPassword" action="<c:url value="/api/user/${g.htmlQuote(user.id)}/password"/>">
+<form id="modal-update-my-password" class="ui modal -json-submit tiny" data-method="patch" data-done="doneUpdateMyPassword" action="<c:url value="/api/user/me/password"/>">
     <i class="close icon"></i>
     <div class="header">패스워드변경</div>
 
     <div class="content rows">
         <div class="ui grid">
+            <div class="row">
+                <div class="four wide column"><label class="control-label">현재 비밀번호</label></div>
+                <div class="twelve wide column">
+                    <div class="ui input fluid"><input id="oldPassword" name="oldPassword" placeholder="문자/숫자/특수문자 8~20자" type="password" value=""></div>
+                </div>
+            </div>
             <div class="row">
                 <div class="four wide column"><label class="control-label">새로운 비밀번호</label></div>
                 <div class="twelve wide column">
@@ -43,6 +49,9 @@
     <script>
         function doneUpdateMyPassword() {
             alert('적용되었습니다.');
+            $('#oldPassword').val('');
+            $('#password').val('');
+            $('#passwordConfirm').val('');
             $('#modal-update-my-password').modalHide();
         }
 

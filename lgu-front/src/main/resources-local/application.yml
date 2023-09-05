@@ -3,6 +3,10 @@ server:
   servlet:
     session:
       timeout: 43200
+  error:
+    include-exception: false
+    include-stacktrace: never
+    whitelabel.enabled: false
 spring:
   profiles:
     active: local

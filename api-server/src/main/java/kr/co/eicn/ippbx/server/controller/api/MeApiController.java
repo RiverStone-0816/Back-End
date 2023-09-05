@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api;
 
 import kr.co.eicn.ippbx.exception.ValidationException;
+import kr.co.eicn.ippbx.model.form.PersonMePasswordUpdateRequest;
 import kr.co.eicn.ippbx.model.form.PersonPasswordUpdateRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.UserRepository;
 import kr.co.eicn.ippbx.util.JsonResult;
@@ -33,9 +34,12 @@ public class MeApiController extends ApiBaseController {
 	 * 사용자 비밀번호 갱신
 	 */
 	@PatchMapping("password")
-	public ResponseEntity<JsonResult<Void>> updatePassword(@Valid @RequestBody PersonPasswordUpdateRequest form, BindingResult bindingResult) {
+	public ResponseEntity<JsonResult<Void>> updatePassword(@Valid @RequestBody PersonMePasswordUpdateRequest form, BindingResult bindingResult) {
 		if (!form.validate(bindingResult))
 			throw new ValidationException(bindingResult);
+
+		if(userRepository.checkOldPassword(g.getUser().getId(), form.getOldPassword()) == 0)
+			throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
 
 		userRepository.updatePassword(g.getUser().getId(), form.getPassword());
 		return ResponseEntity.ok(create());

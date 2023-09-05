@@ -886,7 +886,7 @@
                             <button v-if="channelType==='kakao'" class="mini ui button compact mr5"
                                     @click.stop="getTemplateAll">템플릿
                             </button>
-                            <input style="display: none" type="file" @change="sendFile">
+                            <input style="display: none" type="file"  multiple="multiple" @change="sendFile">
                             <button type="button" class="mini ui button icon compact mr5" data-inverted
                                     data-variation="tiny" data-position="top center"
                                     onclick="this.previousSibling.click()"><i class="paperclip icon"></i></button>
@@ -1248,13 +1248,17 @@
                 },
                 sendFile: function (event) {
                     const _this = this
-                    const file = event.target.files[0]
+
+                    for (let i = event.target.files.length - 1; i >= 0; i--) {
+                        const file = event.target.files[i]
+
+                        if (!file || !file.name)
+                            continue;
+
+                        _this.uploadFile(file)
+                    }
+
                     event.target.value = null
-
-                    if (!file || !file.name)
-                        return
-
-                    _this.uploadFile(file)
                 },
                 dropFiles: function (event) {
                     this.showingDropzone = false
