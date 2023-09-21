@@ -213,6 +213,9 @@ IpccCommunicator.prototype.parse = function (message) {
         message = variables[1];
     }
 
+    if (o.PEER && this.peer.phonePeer !== o.PEER)
+        return;
+
     const args = [message, o.KIND, o.DATA1, o.DATA2, o.DATA3, o.DATA4, o.DATA5, o.DATA6, o.DATA7, o.DATA8, o.DATA9, o.DATA10, o.DATA11, o.DATA12, o.DATA13, o.DATA14, o.DATA15, o.DATA16];
 
     const processor = this.processor[event];
