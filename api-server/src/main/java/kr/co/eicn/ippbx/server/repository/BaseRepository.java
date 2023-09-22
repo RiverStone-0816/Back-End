@@ -125,7 +125,10 @@ public abstract class BaseRepository<TABLE extends TableImpl<? extends Record>, 
             query.orderBy(orderByFields);
 
         final ENTITY entity = query.fetchOne(getMapper());
-        postProcedure(Collections.singletonList(entity));
+
+        if (entity != null)
+            postProcedure(Collections.singletonList(entity));
+
         return entity;
     }
 

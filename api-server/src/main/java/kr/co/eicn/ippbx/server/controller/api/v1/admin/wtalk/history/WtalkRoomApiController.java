@@ -18,6 +18,7 @@ import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -99,13 +100,16 @@ public class WtalkRoomApiController extends ApiBaseController {
                 || RoomStatus.PROCESS_OR_STOP.getCode().equals(roomStatus)
                 || RoomStatus.BOT_PLAY.getCode().equals(roomStatus)
                 || RoomStatus.SERVICE_BY_GROUP_CONNECT.getCode().equals(roomStatus))
-            roomEntity = currentWtalkRoomRepository.findOneIfNullThrow(seq);
+            roomEntity = currentWtalkRoomRepository.findOne(seq);
         else if (RoomStatus.DOWN.getCode().equals(roomStatus))
             roomEntity = wtalkRoomService.getRepository().findOneIfNullThrow(seq);
         else
             throw new IllegalArgumentException(message.getText("\"messages.validator.invalid", "방상태"));
 
-        WtalkRoomResponse talkRoomResponse = convertDto(roomEntity, WtalkRoomResponse.class);
+        if (ObjectUtils.isEmpty(roomEntity) && !RoomStatus.DOWN.getCode().equals(roomStatus))
+            roomEntity = wtalkRoomService.getRepository().findOneIfNullThrow(seq);
+
+        final WtalkRoomResponse talkRoomResponse = convertDto(roomEntity, WtalkRoomResponse.class);
         if (roomEntity.getUserid() != null && !roomEntity.getUserid().equals(""))
             talkRoomResponse.setIdName(personListRepository.findOne(roomEntity.getUserid()).getIdName());
         talkRoomResponse.setChannelType(TalkChannelType.of(roomEntity.getChannelType()));
