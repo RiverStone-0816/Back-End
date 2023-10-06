@@ -93,6 +93,7 @@
                                                     : s.kind == 'V' ? '음성사서함'
                                                     : s.kind == 'CI' ? '예외컨택스트후IVR'
                                                     : s.kind == 'CD' ? '예외컨택스트후번호연결'
+                                                    : s.kind == 'SMS' ? 'SMS'
                                                     : '알수없음: ' + s.kind}
                                     </td>
                                     <td>${g.htmlQuote(s.kindDataName)}</td>

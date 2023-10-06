@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import kr.co.eicn.ippbx.front.service.api.application.sms.SmsCategoryApiInterface;
+import kr.co.eicn.ippbx.front.service.api.application.sms.SmsMessageTemplateApiInterface;
+import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -32,12 +35,6 @@ import kr.co.eicn.ippbx.front.service.api.sounds.schedule.OutboundWeekScheduleAp
 import kr.co.eicn.ippbx.front.service.api.sounds.schedule.ScheduleGroupApiInterface;
 import kr.co.eicn.ippbx.front.service.api.user.tel.NumberApiInterface;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree;
-import kr.co.eicn.ippbx.model.dto.eicn.IvrResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.NumberSummaryResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.SummaryContextInfoResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.SummaryPhoneInfoResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.WebVoiceItemsResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.WebVoiceResponse;
 import kr.co.eicn.ippbx.model.enums.IsWebVoiceYn;
 import kr.co.eicn.ippbx.model.enums.IvrMenuType;
 import kr.co.eicn.ippbx.model.enums.NumberType;
@@ -66,6 +63,7 @@ public class IvrController extends BaseController {
     private final OutboundWeekScheduleApiInterface outboundWeekScheduleApiInterface;
     private final NumberApiInterface numberApiInterface;
     private final MultichannelService multichannelService;
+    private final SmsMessageTemplateApiInterface smsMessageTemplateApiInterface;
 
     @GetMapping({"", "view"})
     public String page(Model model, @RequestParam(required = false) Integer seq) throws IOException, ResultFailException {
@@ -115,6 +113,8 @@ public class IvrController extends BaseController {
         final Map<String, String> extensions = outboundWeekScheduleApiInterface.addExtensions().stream().collect(Collectors.toMap(SummaryPhoneInfoResponse::getExtension, e -> defaultString(e.getInUseIdName())));
         model.addAttribute("extensions", new MapToLinkedHashMap().toLinkedHashMapByValue(extensions));
         model.addAttribute("webVoiceYn", FormUtils.optionsOfCode(IsWebVoiceYn.class));
+        final Map<Integer, String> smsTemplate = smsMessageTemplateApiInterface.list().stream().collect(Collectors.toMap(SendMessageTemplateResponse::getId, SendMessageTemplateResponse::getContent));
+        model.addAttribute("smsTemplate", new MapToLinkedHashMap().toLinkedHashMapByValue(smsTemplate));
 
         return "admin/sounds/ivr/modal";
     }

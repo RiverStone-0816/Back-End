@@ -109,10 +109,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="inline fields">
+                            <div class="field">
+                                <div class="ui radio checkbox">
+                                    <form:radiobutton path="kind" value="SMS" class="hidden"/>
+                                    <label>SMS</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="row -kind-data" data-kind="S,D,F,C,V">
+            <div class="row -kind-data" data-kind="S,D,F,C,V,SMS">
                 <div class="four wide column"><label class="control-label">음원선택</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
@@ -189,6 +197,20 @@
                     </div>
                 </div>
             </div>
+            <div class="row -kind-data" data-kind="SMS">
+                <div class="four wide column"><label class="control-label">SMS 템플릿(*)</label></div>
+                <div class="twelve wide column">
+                    <div class="ui form">
+                        <select name="kindDataSMS">
+                            <c:forEach var="e" items="${smsMessageTemplateList}">
+                                <option value="${g.htmlQuote(e.id)}"
+                                    ${entity.kindData == e.id ? 'selected' : null}
+                                >${g.htmlQuote(e.content)}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="four wide column"><label class="control-label">통계적용여부</label></div>
                 <div class="twelve wide column">
@@ -256,11 +278,13 @@
         if (data.kind === 'C') data.kindData = data.kindDataC;
         if (data.kind === 'CI') data.kindData = data.kindDataC.concat("|").concat(data.kindDataI)
         if (data.kind === 'CD') data.kindData = data.kindDataC.concat("|").concat(data.kindDataD)
+        if (data.kind === 'SMS') data.kindData = data.kindDataSMS;
 
         delete data.kindDataD;
         delete data.kindDataF;
         delete data.kindDataI;
         delete data.kindDataC;
+        delete data.kindDataSMS;
 
         if (['I','CI','CD'].includes(data.kind)) {
             delete data.kindSoundData;

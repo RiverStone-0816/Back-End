@@ -14,6 +14,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
  * 8:예외처리후대표번호연결,
  * 9:예외처리후헌트번호연결
  * 10:내선직접연결
+ * 13:SMS 발송
  *
  * 20:메뉴다시듣기
  * 21:음원연결후종료
@@ -31,6 +32,7 @@ public enum IvrMenuType implements CodeHasable<Byte> {
     CONNECT_REPRESENTABLE_NUMBER_AFTER_DONE_EXCEPTION((byte) 8, false, false, ImageType.EXCEPTION),
     CONNECT_HUNT_NUMBER_AFTER_DONE_EXCEPTION((byte) 9, false, false, ImageType.EXCEPTION),
     CONNECT_INNER_NUMBER_DIRECTLY((byte) 10, false, false, ImageType.CONNECT),
+    SEND_SMS((byte) 13, false, false, ImageType.FINISH),
     RETRY_MENU((byte) 20, false, false, ImageType.SOUND),
     FINISH_AFTER_CONNECT_SOUND((byte) 21, false, false, ImageType.SOUND),
     TO_PREVIOUS_MENU((byte) 22, false, false, ImageType.MOVE),

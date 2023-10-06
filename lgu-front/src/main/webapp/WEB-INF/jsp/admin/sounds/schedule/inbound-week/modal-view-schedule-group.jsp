@@ -48,11 +48,13 @@
                                                     : s.kind == 'V' ? '음성사서함'
                                                     : s.kind == 'CI' ? '예외컨택스트후IVR'
                                                     : s.kind == 'CD' ? '예외컨택스트후번호연결'
+                                                    : s.kind == 'SMS' ? 'SMS'
                                                     : '알수없음: ' + s.kind}
                                     </td>
                                     <td>
                                         <c:if test="${s.kind == 'I' || s.kind == 'C'}">${g.htmlQuote(s.kindDataName)}</c:if>
-                                        <c:if test="${s.kind != 'I' && s.kind != 'C'}">${g.htmlQuote(s.kindData)}</c:if>
+                                        <c:if test="${s.kind == 'SMS'}">문자발송</c:if>
+                                        <c:if test="${s.kind != 'I' && s.kind != 'C' && s.kind != 'SMS'}">${g.htmlQuote(s.kindData)}</c:if>
                                     </td>
                                     <td>${g.htmlQuote(s.kindSoundName)}</td>
                                 </tr>

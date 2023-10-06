@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.sounds.schedule;
 
+import kr.co.eicn.ippbx.front.service.api.application.sms.SmsMessageTemplateApiInterface;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -31,6 +32,8 @@ public class ScheduleGroupController extends BaseController {
 
     @Autowired
     private ScheduleGroupApiInterface apiInterface;
+    @Autowired
+    private SmsMessageTemplateApiInterface smsMessageTemplateApiInterface;
 
     @GetMapping("")
     public String page(Model model) throws IOException, ResultFailException {
@@ -50,6 +53,8 @@ public class ScheduleGroupController extends BaseController {
         model.addAttribute("number070List", number070List);
         final List<SummarySoundListResponse> soundList = apiInterface.addSoundList();
         model.addAttribute("soundList", soundList);
+        final List<SendMessageTemplateResponse> smsMessageTemplateList = smsMessageTemplateApiInterface.list();
+        model.addAttribute("smsMessageTemplateList", smsMessageTemplateList);
 
         form.setParent(parent);
         return "admin/sounds/schedule/schedule-group/modal-schedule-item";

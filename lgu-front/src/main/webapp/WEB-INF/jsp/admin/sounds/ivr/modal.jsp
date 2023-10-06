@@ -32,6 +32,7 @@
 <c:set var="FINISH_AFTER_CONNECT_SOUND" value="${IvrMenuType.FINISH_AFTER_CONNECT_SOUND.code}"/>
 <c:set var="TO_PREVIOUS_MENU" value="${IvrMenuType.TO_PREVIOUS_MENU.code}"/>
 <c:set var="TO_FIRST_MENU" value="${IvrMenuType.TO_FIRST_MENU.code}"/>
+<c:set var="SEND_SMS" value="${IvrMenuType.SEND_SMS.code}"/>
 
 <form:form modelAttribute="form" cssClass="ui modal small -json-submit" data-method="${entity == null ? 'post' : 'put'}"
            action="${pageContext.request.contextPath}/api/ivr/${entity == null ? null : entity.seq}"
@@ -196,6 +197,20 @@
                         <div class="ui input fluid">
                             <input type="text" name="typeDataStrings" data-multiple="multiple"
                                    value="${entity != null && entity.typeData != null ? g.htmlQuote(entity.typeData.split('[|]')[0]) : ''}"/>
+                        </div>
+                    </div>
+                </div>
+            </c:if>
+            <c:if test="${[SEND_SMS].contains(form.type)}">
+                <div class="row">
+                    <div class="four wide column"><label class="control-label">SMS 템플릿(*)</label></div>
+                    <div class="twelve wide column">
+                        <div class="ui form">
+                            <select name="typeDataStrings" data-multiple="multiple">
+                                <c:forEach var="e" items="${smsTemplate}">
+                                    <option value="${e.key}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[0] == e.key ? 'selected' : ''}>${g.htmlQuote(e.value)}</option>
+                                </c:forEach>
+                            </select>
                         </div>
                     </div>
                 </div>
