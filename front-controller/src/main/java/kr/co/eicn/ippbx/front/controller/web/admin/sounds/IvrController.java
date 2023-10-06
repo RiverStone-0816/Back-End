@@ -76,6 +76,8 @@ public class IvrController extends BaseController {
                     e.getCode().equals(IvrMenuType.CONNECT_REPRESENTABLE_NUMBER_AFTER_DONE_EXCEPTION.getCode()) ||
                     e.getCode().equals(IvrMenuType.CONNECT_HUNT_NUMBER_AFTER_DONE_EXCEPTION.getCode()))).collect(Collectors.toList());
         }
+        if (!g.getUsingServices().contains("SMS"))
+            menuTypes = menuTypes.stream().filter(e -> !e.getCode().equals(IvrMenuType.SEND_SMS.getCode())).collect(Collectors.toList());
 
         model.addAttribute("roots", new MapToLinkedHashMap().toLinkedHashMapByValue(rootMap));
         model.addAttribute("menuTypes", menuTypes);

@@ -109,6 +109,7 @@
                                 </div>
                             </div>
                         </div>
+                        <c:if test="${g.usingServices.contains('SMS')}">
                         <div class="inline fields">
                             <div class="field">
                                 <div class="ui radio checkbox">
@@ -117,6 +118,7 @@
                                 </div>
                             </div>
                         </div>
+                        </c:if>
                     </div>
                 </div>
             </div>
