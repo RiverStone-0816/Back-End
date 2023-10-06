@@ -86,7 +86,7 @@ public class MohListController extends ApiBaseController {
 	}
 
 	@GetMapping(value = "{category}/resource")
-	public ResponseEntity<Resource> resource(@PathVariable String category, @RequestParam("type") String type) {
+	public ResponseEntity<Resource> resource(@PathVariable String category) {
 		final MohList entity = service.findOneIfNullThrow(category);
 
 		final Resource resource = this.fileSystemStorageService.loadAsResource(Paths.get(savePath, entity.getDirectory()), entity.getFileName());

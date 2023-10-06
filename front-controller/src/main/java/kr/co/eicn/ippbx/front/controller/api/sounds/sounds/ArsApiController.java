@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * @author tinywind
@@ -60,12 +62,19 @@ public class ArsApiController extends BaseController {
 
     @ResponseBody
     @GetMapping("id/{id}/resource")
-    public ResponseEntity<byte[]> getResource(@PathVariable Integer id) throws IOException, ResultFailException {
+    public ResponseEntity<byte[]> getResource(@PathVariable Integer id,@RequestParam String mode) throws IOException, ResultFailException {
         Resource resource = apiInterface.getResource(id);
         byte[] bytes = IOUtils.toByteArray(resource.getInputStream());
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(new MediaType("audio", "mpeg"));
+        if ("PLAY".equals(mode))
+            headers.setContentType(new MediaType("audio", "mpeg"));
+        else if ("DOWN".equals(mode))
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.add(HttpHeaders.CONTENT_DISPOSITION,
+                ContentDisposition.builder("attachment")
+                        .filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8)
+                        .build().toString());
         headers.setPragma("no-cache");
         headers.setCacheControl(CacheControl.noCache());
         headers.set(HttpHeaders.ACCEPT_RANGES, "bytes");
