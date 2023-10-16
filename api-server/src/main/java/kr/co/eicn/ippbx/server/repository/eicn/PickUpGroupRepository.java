@@ -17,6 +17,7 @@ import kr.co.eicn.ippbx.server.service.ProcessService;
 import kr.co.eicn.ippbx.util.StringUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -150,7 +151,7 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
                             .execute();
                 });
 
-        final String groupname = pickupGroup.getGroupname();
+        final String groupname = pickupGroup.getGroupnamecode();
 
         // 고객사 아이디 + 당겨받기 그룹코드 데이터가 없다면 새로 만들어줌?..
         List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SipBuddies> resetPickUpSipBuddies;
@@ -169,7 +170,7 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
                     });
         }
         // 전화기 정보(asterisk 사용테이블) 당겨받기그룹 초기화
-        if (resetPickUpSipBuddies != null && resetPickUpSipBuddies.size() > 0) {
+        if (CollectionUtils.isNotEmpty(resetPickUpSipBuddies)) {
             for (kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SipBuddies resetPickUpSipBuddy : resetPickUpSipBuddies) {
                 resetPickUpSipBuddy.setPickupgroup(EMPTY);
                 resetPickUpSipBuddy.setCallgroup(EMPTY);
