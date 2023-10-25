@@ -81,6 +81,10 @@ public class CommonStatOutbound extends TableImpl<CommonStatOutboundRecord> {
      * The column <code>STATDB.stat_outbound.worktime_yn</code>.
      */
     public final TableField<CommonStatOutboundRecord, String> WORKTIME_YN = createField(DSL.name("worktime_yn"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("Y", org.jooq.impl.SQLDataType.CHAR)), this, "");
+    /**
+     * The column <code>STATDB.stat_outbound.cid_number</code>. 발신번호
+     */
+    public final TableField<CommonStatOutboundRecord, String> CID_NUMBER = createField(DSL.name("cid_number"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "발신번호");
 
     private final String tableName;
 

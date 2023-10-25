@@ -108,6 +108,11 @@ public class CommonStatUserOutbound extends TableImpl<CommonStatUserOutboundReco
      */
     public final TableField<CommonStatUserOutboundRecord, Integer> RESERVE_CALL_SUCC = createField(DSL.name("reserve_call_succ"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "예약콜처리를 콜이후 완료건수");
 
+    /**
+     * The column <code>STATDB.stat_user_outbound.cid_number</code>. 발신번호
+     */
+    public final TableField<CommonStatUserOutboundRecord, String> CID_NUMBER = createField(DSL.name("cid_number"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "발신번호");
+
     private final String tableName;
 
     /**

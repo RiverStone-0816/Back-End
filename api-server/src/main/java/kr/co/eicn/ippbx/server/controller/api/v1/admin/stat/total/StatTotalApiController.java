@@ -47,7 +47,7 @@ public class StatTotalApiController extends ApiBaseController {
 
         final List<StatTotalRow<?>> rows = new ArrayList<>();
 
-        final List<StatOutboundEntity> outboundList = outboundService.getRepository().findAll(search);
+        final List<StatOutboundEntity> outboundList = outboundService.getRepository().findAllTotal(search);
         final List<StatInboundEntity> inboundList = inboundService.getRepository().findAllTotal(search);
 
         List<?> dateByTypeList = SearchCycleUtils.getDateByType(search.getStartDate(), search.getEndDate(), search.getTimeUnit());
@@ -91,7 +91,7 @@ public class StatTotalApiController extends ApiBaseController {
         StatTotalRow<DateResponse> result = new StatTotalRow<>();
         result.setTimeInformation(null);
 
-        outboundService.getRepository().findAll(search).stream().findFirst()
+        outboundService.getRepository().findAllTotal(search).stream().findFirst()
                 .ifPresent(outbound -> result.setOutboundStat(convertDto(outbound, StatOutboundResponse.class)));
         inboundService.getRepository().findAllTotal(search).stream().findFirst()
                 .ifPresent(inbound -> result.setInboundStat(convertDto(inbound, StatInboundResponse.class)));

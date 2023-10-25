@@ -45,6 +45,10 @@ public class SearchApiInterface extends ApiServerInterface {
         return getList(subUrl + "service", search, SearchServiceResponse.class).getData();
     }
 
+    public List<SearchServiceResponse> outboundServices(SearchServiceRequest search) throws IOException, ResultFailException {
+        return getList(subUrl + "service/outbound", search, SearchServiceResponse.class).getData();
+    }
+
     public List<SearchPDSGroupResponse> pdsGroup() throws IOException, ResultFailException {
         return getList(subUrl + "pds-group", null, SearchPDSGroupResponse.class).getData();
     }

@@ -278,6 +278,20 @@ public class CommonStatUserOutboundRecord extends UpdatableRecordImpl<CommonStat
         return (Integer) get(18);
     }
 
+    /**
+     * Setter for <code>STATDB.stat_user_outbound.cid_number</code>. 발신번호
+     */
+    public void setCidNumber(String value) {
+        set(19, value);
+    }
+
+    /**
+     * Getter for <code>STATDB.stat_user_outbound.cid_number</code>. 발신번호
+     */
+    public String getCidNumber() {
+        return (String) get(19);
+    }
+
     @Override
     public Record1<Integer> key() {
         return (Record1) super.key();

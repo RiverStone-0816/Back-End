@@ -205,6 +205,20 @@ public class CommonStatOutboundRecord extends UpdatableRecordImpl<CommonStatOutb
         return (String) get(13);
     }
 
+    /**
+     * Setter for <code>STATDB.stat_outbound.cid_number</code>. 발신번호
+     */
+    public void setCidNumber(String value) {
+        set(5, value);
+    }
+
+    /**
+     * Getter for <code>STATDB.stat_outbound.cid_number</code>. 발신번호
+     */
+    public String getCidNumber() {
+        return (String) get(5);
+    }
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------

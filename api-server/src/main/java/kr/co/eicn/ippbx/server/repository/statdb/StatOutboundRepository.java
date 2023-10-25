@@ -4,11 +4,15 @@ import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatOutbound;
 import kr.co.eicn.ippbx.model.dto.eicn.DashServiceStatResponse;
 import kr.co.eicn.ippbx.model.entity.statdb.StatOutboundEntity;
 import kr.co.eicn.ippbx.model.search.AbstractStatSearchRequest;
+import kr.co.eicn.ippbx.model.search.StatOutboundSearchRequest;
+import kr.co.eicn.ippbx.model.search.StatTotalSearchRequest;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectJoinStep;
+import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,11 +49,55 @@ public class StatOutboundRepository extends StatDBBaseRepository<CommonStatOutbo
         return query.where();
     }
 
-    public List<StatOutboundEntity> findAll(AbstractStatSearchRequest search) {
+    public List<StatOutboundEntity> findAll(StatOutboundSearchRequest search) {
         return findAll(conditions(search));
     }
 
-    private List<Condition> conditions(AbstractStatSearchRequest search) {
+    private List<Condition> conditions(StatOutboundSearchRequest search) {
+        List<Condition> conditions = defaultConditions(search);
+
+        if (search.getServiceNumbers().size() > 0) {
+            Condition serviceCondition = DSL.noCondition();
+            for (int i = 0; i < search.getServiceNumbers().size(); i++) {
+                if (StringUtils.isNotEmpty(search.getServiceNumbers().get(i))) {
+                    if (i == 0)
+                        serviceCondition = TABLE.CID_NUMBER.eq(search.getServiceNumbers().get(i));
+                    else
+                        serviceCondition = serviceCondition.or(TABLE.CID_NUMBER.eq(search.getServiceNumbers().get(i)));
+                } else
+                    break;
+            }
+            conditions.add(serviceCondition);
+        }
+
+        return conditions;
+    }
+
+    public List<StatOutboundEntity> findAllTotal(StatTotalSearchRequest search) {
+        return findAll(conditions(search));
+    }
+
+    private List<Condition> conditions(StatTotalSearchRequest search) {
+        List<Condition> conditions = defaultConditions(search);
+
+        if (search.getServiceNumbers().size() > 0) {
+            Condition serviceCondition = DSL.noCondition();
+            for (int i = 0; i < search.getServiceNumbers().size(); i++) {
+                if (StringUtils.isNotEmpty(search.getServiceNumbers().get(i))) {
+                    if (i == 0)
+                        serviceCondition = TABLE.CID_NUMBER.eq(search.getServiceNumbers().get(i));
+                    else
+                        serviceCondition = serviceCondition.or(TABLE.CID_NUMBER.eq(search.getServiceNumbers().get(i)));
+                } else
+                    break;
+            }
+            conditions.add(serviceCondition);
+        }
+
+        return conditions;
+    }
+
+    public List<Condition> defaultConditions(AbstractStatSearchRequest search) {
         List<Condition> conditions = new ArrayList<>();
 
         standardTime = search.getTimeUnit();

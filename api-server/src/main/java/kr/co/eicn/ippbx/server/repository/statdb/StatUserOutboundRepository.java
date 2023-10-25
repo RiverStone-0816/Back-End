@@ -103,6 +103,20 @@ public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatU
             conditions.add(personCondition);
         }
 
+        if (search.getServiceNumbers().size() > 0) {
+            Condition serviceCondition = DSL.noCondition();
+            for (int i = 0; i < search.getServiceNumbers().size(); i++) {
+                if (StringUtils.isNotEmpty(search.getServiceNumbers().get(i))) {
+                    if (i == 0)
+                        serviceCondition = TABLE.CID_NUMBER.eq(search.getServiceNumbers().get(i));
+                    else
+                        serviceCondition = serviceCondition.or(TABLE.CID_NUMBER.eq(search.getServiceNumbers().get(i)));
+                } else
+                    break;
+            }
+            conditions.add(serviceCondition);
+        }
+
         conditions.add(getOutboundCondition(search));
 
         return conditions;

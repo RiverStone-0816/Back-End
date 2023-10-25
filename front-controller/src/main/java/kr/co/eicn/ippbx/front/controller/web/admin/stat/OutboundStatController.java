@@ -56,8 +56,8 @@ public class OutboundStatController extends BaseController {
         final Map<String, String> searchCycles = FormUtils.options(false, SearchCycle.class);
         model.addAttribute("searchCycles", searchCycles);
 
-        final Map<String, String> services = searchApiInterface.services(new SearchServiceRequest()).stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcName));
-        model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValue(services));
+        final Map<String, String> services = searchApiInterface.outboundServices(new SearchServiceRequest()).stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcCid));
+        model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValueReverse(services));
 
         final Map<String, String> queues = csRouteApiInterface.queue().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName));
         model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(queues));

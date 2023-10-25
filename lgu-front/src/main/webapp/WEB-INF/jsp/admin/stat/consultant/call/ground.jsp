@@ -67,11 +67,11 @@
                                         <label>업무시간만 보기</label>
                                     </div>
                                 </div>
-                                <div class="two wide column"><label class="control-label">서비스선택</label></div>
+                                <div class="two wide column"><label class="control-label">번호선택</label></div>
                                 <div class="five wide column overflow-unset">
                                     <div class="ui form">
                                         <form:select path="serviceNumbers" multiple="multiple" class="ui fluid dropdown">
-                                            <form:option value="" label="서비스선택"/>
+                                            <form:option value="" label="번호선택"/>
                                             <form:options items="${services}"/>
                                         </form:select>
                                     </div>
