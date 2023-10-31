@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.enums.DashboardInfoDashboardType;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ServiceList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.Number_070;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.ServiceListRecord;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchServiceResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.ServiceListEntity;
 import kr.co.eicn.ippbx.model.form.ServiceListFormRequest;
@@ -13,6 +14,7 @@ import kr.co.eicn.ippbx.model.search.search.SearchServiceRequest;
 import kr.co.eicn.ippbx.server.service.CacheService;
 import kr.co.eicn.ippbx.server.service.PBXServerInterface;
 import lombok.Getter;
+import org.apache.commons.lang3.ObjectUtils;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -104,6 +106,14 @@ public class ServiceRepository extends EicnBaseRepository<ServiceList, kr.co.eic
     }
 
     public Record insertOnGeneratedKey(ServiceListFormRequest form) {
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList entity = super.findOne(SERVICE_LIST.SVC_NUMBER.eq(form.getSvcNumber()));
+
+        if (ObjectUtils.isNotEmpty(entity)) {
+            final ServiceListRecord record = new ServiceListRecord();
+            record.setSeq(0);
+            return record;
+        }
+
         if (isNotEmpty(form.getSvcCid()))
             form.setSvcCid(form.getSvcCid().replace("-", ""));
         if (isNotEmpty(form.getGroupCode())) {
@@ -148,7 +158,7 @@ public class ServiceRepository extends EicnBaseRepository<ServiceList, kr.co.eic
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
                     DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
-                    this.updateByKey(pbxDsl, form, key);
+                    this.update(pbxDsl, form, SERVICE_LIST.SVC_NUMBER.eq(form.getSvcNumber()));
                 });
 
         dashboardInfoRepository.updateByValue(form.getSvcName().concat(" 통계"), form.getSvcNumber(), oldServiceInfo.getSvcNumber());
@@ -162,7 +172,7 @@ public class ServiceRepository extends EicnBaseRepository<ServiceList, kr.co.eic
         cacheService.pbxServerList(getCompanyId())
                 .forEach(e -> {
                     DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
-                    super.delete(pbxDsl, key);
+                    super.delete(pbxDsl, SERVICE_LIST.SVC_NUMBER.eq(entity.getSvcNumber()));
                 });
 
         dashboardInfoRepository.deleteByValue(entity.getSvcNumber());
