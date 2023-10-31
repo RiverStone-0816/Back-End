@@ -91,16 +91,18 @@ public class GradeListRepository extends EicnBaseRepository<GradeList, GradeList
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
             DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
-            super.updateByKey(pbxDsl, record, seq);
+            super.update(pbxDsl, record, GRADE_LIST.GRADE.eq(record.getGrade()).and(GRADE_LIST.GRADE_NUMBER.eq(form.getGradeNumber())));
         });
     }
 
     public int deleteOnIfNullThrow(Integer seq) {
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.GradeList entity = findOneIfNullThrow(seq);
+
         int delete = super.deleteOnIfNullThrow(seq);
 
         cacheService.pbxServerList(getCompanyId()).forEach(e -> {
             DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
-            super.delete(pbxDsl, seq);
+            super.delete(pbxDsl, GRADE_LIST.GRADE.eq(entity.getGrade()).and(GRADE_LIST.GRADE_NUMBER.eq(entity.getGradeNumber())));
         });
 
         return delete;
