@@ -134,3 +134,4 @@ logs/**
 .DS_Store
 lombok.config
 build
+/lgu-front/src/main/webapp/resources/compiled/app.css
