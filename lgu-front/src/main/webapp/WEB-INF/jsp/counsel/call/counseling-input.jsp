@@ -377,7 +377,7 @@
         data.uniqueId = audioId;
         data.callType = callType;
         data.callUnique = callUnique;
-        data.customNumber = phoneNumber !== '' ? phoneNumber : $('#call-custom-input').find('[name=channels] option:first').val();
+        data.customNumber = phoneNumber ? phoneNumber : $('#call-custom-input').find('[name=channels] option[data-type="PHONE"]:first').val() || $('#calling-number').val();
 
         const transferredUser = getTransferredUser();
         if (transferredUser) data.userIdTr = transferredUser;
