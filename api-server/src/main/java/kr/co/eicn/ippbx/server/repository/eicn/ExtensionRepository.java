@@ -494,15 +494,19 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
 
         queueTableRepository.insertAllPbxServers(queueTableRecord);
 
-        cacheService.pbxServerList(getCompanyId())
-                .forEach(e -> {
-                    if (!"localhost".equals(e.getHost())) {
-                        IpccUrlConnection.execute("http://" + e.getServer().getIp() + "/ipcc/multichannel/remote/pickup_update.jsp",
-                                form.getPeer());
-                    } else {
+        if (cacheService.pbxServerList(getCompanyId()).size() > 0) {
+            cacheService.pbxServerList(getCompanyId())
+                    .forEach(e -> {
+                        if (!"localhost".equals(e.getHost())) {
+                            IpccUrlConnection.execute("http://" + e.getServer().getIp() + "/ipcc/multichannel/remote/pickup_update.jsp",
+                                    form.getPeer());
+                        } else {
                             processService.execute(ShellCommand.PICKUP_UPDATE, form.getPeer(), " &");
-                    }
-                });
+                        }
+                    });
+        } else {
+            processService.execute(ShellCommand.PICKUP_UPDATE, form.getPeer(), " &");
+        }
 
           webSecureHistoryRepository.insert(form.getExtension(), WebSecureActionType.PHONE, WebSecureActionSubType.MOD, form.getExtension());
     }

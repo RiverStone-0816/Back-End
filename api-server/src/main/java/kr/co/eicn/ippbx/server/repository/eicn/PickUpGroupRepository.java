@@ -243,17 +243,23 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
 
 
         if (resetSipNames.size() > 0) {
-            cacheService.pbxServerList(getCompanyId())
-                    .forEach(e -> {
-                        if (!"localhost".equals(e.getHost())) {
-                            IpccUrlConnection.execute("http://" + e.getServer().getIp() + "/ipcc/multichannel/remote/pickup_update.jsp",
-                                    String.join("|", resetSipNames));
-                        } else {
-                            for (String peer : resetSipNames) {
-                                processService.execute(ShellCommand.PICKUP_UPDATE, peer, " &");
+            if (cacheService.pbxServerList(getCompanyId()).size() > 0) {
+                cacheService.pbxServerList(getCompanyId())
+                        .forEach(e -> {
+                            if (!"localhost".equals(e.getHost())) {
+                                IpccUrlConnection.execute("http://" + e.getServer().getIp() + "/ipcc/multichannel/remote/pickup_update.jsp",
+                                        String.join("|", resetSipNames));
+                            } else {
+                                for (String peer : resetSipNames) {
+                                    processService.execute(ShellCommand.PICKUP_UPDATE, peer, " &");
+                                }
                             }
-                        }
-                    });
+                        });
+            } else {
+                for (String peer : resetSipNames) {
+                    processService.execute(ShellCommand.PICKUP_UPDATE, peer, " &");
+                }
+            }
         }
 
         webSecureHistoryRepository.insert(WebSecureActionType.PICKUP, WebSecureActionSubType.MOD, StringUtils.subStringBytes(form.getGroupname(), 400));
