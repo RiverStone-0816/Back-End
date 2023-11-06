@@ -114,7 +114,7 @@
                                 <td>${inboundData.connReq}</td>
                                 <td>${inboundData.success}</td>
                                 <td>${inboundData.cancel}</td>
-                                <td>${inboundData.callbackSuccess}</td>
+                                <td>${inboundData.cancelNoAnswer}</td>
 
                                 <td>${String.format("%.1f", inboundData.responseRate)}%</td>
                                 <td>${String.format("%.1f", inboundData.svcLevelAvg)}%</td>

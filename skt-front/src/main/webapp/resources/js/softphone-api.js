@@ -9,22 +9,22 @@
     {
         "result": "OK",
         "message": "",
-        "peer_num": "43779188",
-        "peer_secret": "3c82a78b878b7f2fa4126611530c626a"
+        "peerNum": "43779188",
+        "peerSecret": "3c82a78b878b7f2fa4126611530c626a"
     }
 
  --- get_webrtc_server_info.jsp 의 응답값 형식
     {
         "result": "OK",
         "message": "",
-        "pbx_server_ip": "122.49.74.121",
-        "pbx_server_port": "5060",
-        "webrtc_server_ip": "122.49.74.231",
-        "webrtc_server_port": "8200",
-        "turn_server_ip": "122.49.74.231",
-        "turn_server_port": "3478",
-        "turn_user": "turn",
-        "turn_secret": "turnrw"
+        "pbxServerIp": "122.49.74.121",
+        "pbxServerPort": "5060",
+        "webrtcServerIp": "122.49.74.231",
+        "webrtcServerPort": "8200",
+        "turnServerIp": "122.49.74.231",
+        "turnServerPort": "3478",
+        "turnUser": "turn",
+        "turnSecret": "turnrw"
     }
  */
 
@@ -49,17 +49,17 @@ const SIP_RECONNECT_INTERVAL = 5000;
 
 
 function register_sip_softphone() {
-    if (WEBRTC_INFO.phone.peer_num && WEBRTC_INFO.phone.peer_num != "" && WEBRTC_INFO.phone.peer_secret && WEBRTC_INFO.phone.peer_secret != "") {
+    if (WEBRTC_INFO.phone.peerNum && WEBRTC_INFO.phone.peerNum != "" && WEBRTC_INFO.phone.peerSecret && WEBRTC_INFO.phone.peerSecret != "") {
         // Registration
-        Janus.log("sip-server: " + WEBRTC_INFO.server.pbx_server_ip + ":" + WEBRTC_INFO.server.pbx_server_port);
-        var pbx_server = SIP_PROTO_PREFIX + WEBRTC_INFO.server.pbx_server_ip + ":" + WEBRTC_INFO.server.pbx_server_port;
-        var username = SIP_PROTO_PREFIX + WEBRTC_INFO.phone.peer_num + "@" + SIP_DOMAIN;
+        Janus.log("sip-server: " + WEBRTC_INFO.server.pbxServerIp + ":" + WEBRTC_INFO.server.pbxServerPort);
+        var pbx_server = SIP_PROTO_PREFIX + WEBRTC_INFO.server.pbxServerIp + ":" + WEBRTC_INFO.server.pbxServerPort;
+        var username = SIP_PROTO_PREFIX + WEBRTC_INFO.phone.peerNum + "@" + SIP_DOMAIN;
         
         var register = {
             request: "register",
             username: username,
-            //ha1_secret: md5(WEBRTC_INFO.phone.peer_num + ":" + SIP_REALM + ":" + WEBRTC_INFO.phone.peer_secret),
-            ha1_secret: WEBRTC_INFO.phone.peer_secret,
+            //ha1_secret: md5(WEBRTC_INFO.phone.peerNum + ":" + SIP_REALM + ":" + WEBRTC_INFO.phone.peerSecret),
+            ha1_secret: WEBRTC_INFO.phone.peerSecret,
             sips: false,
             force_udp: true,
             proxy: pbx_server
@@ -69,22 +69,22 @@ function register_sip_softphone() {
         sipcall.send({ message: register });
     }
     else {
-        Janus.log("WEBRTC_INFO.phone.peer_num: " + WEBRTC_INFO.phone.peer_num + ", WEBRTC_INFO.phone.peer_secret:" + WEBRTC_INFO.phone.peer_secret);
+        Janus.log("WEBRTC_INFO.phone.peerNum: " + WEBRTC_INFO.phone.peerNum + ", WEBRTC_INFO.phone.peerSecret:" + WEBRTC_INFO.phone.peerSecret);
     }
 }
 
 
 function create_sipcall_session() {
-    var webrtc_server = "wss://" + WEBRTC_INFO.server.webrtc_server_ip + ":" + WEBRTC_INFO.server.webrtc_server_port;
-    var turn_server = "turn:" + WEBRTC_INFO.server.turn_server_ip + ":" + WEBRTC_INFO.server.turn_server_port;
-    var turn_user = WEBRTC_INFO.server.turn_user;
-    var turn_secret = WEBRTC_INFO.server.turn_secret;
+    var webrtc_server = "wss://" + WEBRTC_INFO.server.webrtcServerIp + ":" + WEBRTC_INFO.server.webrtcServerPort;
+    var turn_server = "turn:" + WEBRTC_INFO.server.turnServerIp + ":" + WEBRTC_INFO.server.turnServerPort;
+    var turnUser = WEBRTC_INFO.server.turnUser;
+    var turnSecret = WEBRTC_INFO.server.turnSecret;
 
     // 세션 생성
     janusSip = new Janus(
         {
             server: webrtc_server,
-            iceServers: [ {urls: turn_server, username: turn_user, credential: turn_secret} ],
+            iceServers: [ {urls: turn_server, username: turnUser, credential: turnSecret} ],
             success: function() {
                 // SIP 플러그인 Attach
                 janusSip.attach(
@@ -98,7 +98,20 @@ function create_sipcall_session() {
                             var result = "";
                             var message = "";
                             var peer = "";
-                            $.ajax({
+                            restSelf.get("/api/auth/softPhone-info").done(function(response){
+                                console.log(response.data);
+                                WEBRTC_INFO.phone = response.data
+                                if (WEBRTC_INFO.phone.result == "OK" && WEBRTC_INFO.phone.peerNum != "" && WEBRTC_INFO.phone.peerSecret != "") {
+                                    // 소프트폰을 등록한다.
+                                    register_sip_softphone();
+                                    // 등록실패시 SIP_REGISTER_INTERVAL 시간마다 등록을 재시도한다.
+                                    sipRegisterTimerId = setInterval(register_sip_softphone, SIP_REGISTER_INTERVAL);
+                                }
+                                else {
+                                    alert("result:"+result+"\nmessage:"+message);
+                                }
+                            })
+                            /*$.ajax({
                                 type: "POST",
                                 cache: false,
                                 async: false,
@@ -112,7 +125,7 @@ function create_sipcall_session() {
                                 success: function(data, status, error) {
                                     WEBRTC_INFO.phone = data;
 
-                                    if (WEBRTC_INFO.phone.result == "OK" && WEBRTC_INFO.phone.peer_num != "" && WEBRTC_INFO.phone.peer_secret != "") {
+                                    if (WEBRTC_INFO.phone.result == "OK" && WEBRTC_INFO.phone.peerNum != "" && WEBRTC_INFO.phone.peerSecret != "") {
                                         // 소프트폰을 등록한다.
                                         register_sip_softphone();
                                         // 등록실패시 SIP_REGISTER_INTERVAL 시간마다 등록을 재시도한다.
@@ -122,7 +135,7 @@ function create_sipcall_session() {
                                         alert("result:"+result+"\nmessage:"+message);
                                     }
                                 }
-                            });
+                            });*/
                         },
                         error: function(error) {
                             Janus.error("  -- Error attaching plugin...", error);

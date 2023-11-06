@@ -39,6 +39,12 @@
   animation: @arguments;
 }
 
+.no-drag {
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
 
 .linear-gradient( @dir: top, @start-color: #eee, @end-color: #aaa ) {
   background: -webkit-linear-gradient(@dir, @start-color 0%, @end-color 100%);

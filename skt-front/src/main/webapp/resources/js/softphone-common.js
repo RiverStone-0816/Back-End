@@ -7,11 +7,6 @@ WEBRTC_INFO.server = {};
 WEBRTC_INFO.phone = {};
 WEBRTC_INFO.env = { "ringtone": true, "busytone": true };
 
-var RINGTONE = new Audio('../sounds/SimpleTone.mp3');
-var BUSYTONE = new Audio('../sounds/BusySignal.mp3');
-RINGTONE.loop = true;
-
-
 function playTone(tone) {
     if (!WEBRTC_INFO.env.ringtone) { return; }
 
@@ -92,17 +87,15 @@ function set_busytone_volume(vol) {
     }
 }
 
-function is_support_softphone() {
+function is_support_softphone(phoneKind) {
     // 소프트폰인지 검사
-    var phone_kind = $('#g_phone_kind').val();
-    if (!phone_kind || phone_kind != "S") {
+    if (!phoneKind || phoneKind != "S") {
         console.log("No Softphone... ");
         return false;
     }
 
     // https인지 확인
     if (location.protocol !== "https:") {
-        alert("You must use HTTPS protocol in order to support WebRTC!!!");
         console.log("location.protocol: " + location.protocol);
         return false;
     }
@@ -116,13 +109,16 @@ function is_support_softphone() {
     return true;
 }
 
-function is_support_vchat() {
+function is_support_vchat(chatKind) {
     // 보이스챗인지 검사
     // TODO:
+    if (!chatKind || chatKind != "Y") {
+        console.log("No Chat... ");
+        return false;
+    }
 
     // https인지 확인
     if (location.protocol !== "https:") {
-        alert("You must use HTTPS protocol in order to support WebRTC!!!");
         console.log("location.protocol: " + location.protocol);
         return false;
     }
@@ -139,34 +135,9 @@ function is_support_vchat() {
 function set_webrtc_server_info(server_info) {
     if (server_info) {
         WEBRTC_INFO.server = server_info;
-    }
-    else {
-        // PBX, WebRTC 서버 정보 수집
-        var result = "";
-        var message = "";
-        $.ajax({
-            type: "POST",
-            cache: false,
-            async: false,
-            headers: {"cache-control": "no-cache", "pragma": "no-cache"},
-            url: "/ipcc/multichannel/main/get_webrtc_server_info.jsp",
-            dataType: "json",
-            error: function (request, status, error) {
-                alert("code:" + request.status + "\nmessages:" + request.responseText);
-                return false;
-            },
-            success: function (data, status, error) {
-                WEBRTC_INFO.server = data;
-
-                if (WEBRTC_INFO.server.result == "OK") {
-                    return true;
-                } else {
-                    alert("result:" + result + "\nmessage:" + message);
-                    return false;
-                }
-            }
-        });
+        return true;
+    }else {
+        return false;
     }
 
-    return true;
 }

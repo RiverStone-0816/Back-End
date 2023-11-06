@@ -10,6 +10,7 @@
 <%--@elvariable id="g" type="kr.co.eicn.ippbx.front.config.RequestGlobal"--%>
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
+<%--@elvariable id="usingServices" type="java.lang.String"--%>
 
 <%--@elvariable id="devel" type="java.lang.Boolean"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
@@ -36,6 +37,8 @@
 <script src="<c:url value="/resources/vendors/flexslider/2.7.2/jquery.flexslider.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/tablesort/0.0.11/tablesort.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/multifile-master/jquery.MultiFile.js?version=${version}"/>" data-type="library"></script>
+<script src="<c:url value="/resources/vendors/spectrum/spectrum.min.js"/>" data-type="library"></script>
+
 <script src="<c:url value="/resources/vendors/maudio.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/Amsify-Suggestags/jquery.amsify.suggestags.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/tagify/1.3.1/tagify.min.js?version=${version}"/>" data-type="library"></script>
@@ -56,15 +59,16 @@
         <script src="<c:url value="/resources/js/IpccCommunicator.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/TalkCommunicator.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/MessengerCommunicator.js?version=${version}"/>"></script>
-        <script src="<c:url value="/resources/js/softphone-common.js?version=${version}"/>"></script>
-        <script src="<c:url value="/resources/js/softphone-api.js?version=${version}"/>"></script>
-
-        <%-- functions --%>
         <script src="<c:url value="/resources/js/common.func.js?version=${version}"/>" data-type="library"></script>
         <script src="<c:url value="/resources/js/depend.func.js?version=${version}"/>" data-type="library"></script>
-        <script src="<c:url value="/resources/js/adapter.js?version=${version}"/>" data-type="library"></script>
-        <script src="<c:url value="/resources/js/janus.js?version=${version}"/>" data-type="library"></script>
 
+        <c:if test="${usingServices.contains('SPHONE')}">
+            <script src="<c:url value="/resources/js/adapter.js?version=${version}"/>" data-type="library"></script>
+            <script src="<c:url value="/resources/js/janus.js?version=${version}"/>" data-type="library"></script>
+            <script src="<c:url value="/resources/js/softphone-common.js?version=${version}"/>"></script>
+            <script src="<c:url value="/resources/js/softphone-api.js?version=${version}"/>"></script>
+            <script src="<c:url value="/resources/js/voicechat-api.js?version=${version}"/>"></script>
+        </c:if>
         <%-- use strict --%>
         <script src="<c:url value="/resources/js/depend.use.strict.js?version=${version}"/>" data-type="library"></script>
 
@@ -81,6 +85,10 @@
     window.disableLog = ${devel};
     window.contextPath = '${pageContext.request.contextPath}';
     window.loadingImageSource = contextPath + '/resources/images/loading.svg';
+    window.RINGTONE = new Audio(contextPath ? contextPath + '/resources/sounds/SimpleTone.mp3' : '/resources/sounds/SimpleTone.mp3');
+    window.BUSYTONE = new Audio(contextPath ? contextPath + '/resources/sounds/BusySignal.mp3' : '/resources/sounds/BusySignal.mp3');
+    RINGTONE.loop = true;
+
     <c:if test="${g.login}">
     window.userId = '${g.escapeQuote(user.id)}';
     </c:if>

@@ -3,6 +3,10 @@ server:
   servlet:
     session:
       timeout: 43200
+  error:
+    include-exception: false
+    include-stacktrace: never
+    whitelabel.enabled: false
 spring:
   profiles:
     active: local
@@ -59,10 +63,15 @@ eicn:
   file:
     location: ./files
   apiserver: http://localhost:8080/api-server
+  #apache 를  web 서버로 사용할 경우 아래 url 을 http://localhost:8080/api-server 로 변경 하세요.
+  #이후 apache 가 접근 할 수 있도록 chown -R root:daemon /usr/local/tomcat/webapps 권한 추가 해주세요.
   realapiserver: http://localhost:8080/api-server
+  #ROOT 배포시 /ubiz 삭제
+  doub:
+    url: http://localhost:21003/ubiz
   webchat:
     image:
-      url: http://localhost:8100/webchat_bot_image
+      url: https://dev.eicn.co.kr:8200/webchat_bot_image
   admin:
     socket:
       id: monitor_connector
@@ -90,3 +99,6 @@ eicn:
       id: webchatcli_connector
     resource:
       location: /tmp/chatbot
+  message:
+    url:
+      id: message_connector
