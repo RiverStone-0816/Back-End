@@ -234,7 +234,7 @@
                     $(this).removeAttr('data-default');
                 } else {
                     $(this).text(peerStatus.callStatus === 'OR' || peerStatus.callStatus === 'OD' ? '발신'
-                        : peerStatus.callStatus === 'IR' || peerStatus.callStatus === 'ID' ? '수신' : '');
+                        : peerStatus.callStatus === 'IR' || peerStatus.callStatus === 'ID' || peerStatus.callStatus === 'PICKUP' ? '수신' : '');
                 }
             });
 
@@ -251,7 +251,7 @@
                     $(this).removeAttr('data-default');
                 } else {
                     $(this).text(peerStatus.callStatus === 'OR' || peerStatus.callStatus === 'OD' ? peerStatus.calledNumber
-                        : peerStatus.callStatus === 'IR' || peerStatus.callStatus === 'ID' ? peerStatus.callingNumber : '');
+                        : peerStatus.callStatus === 'IR' || peerStatus.callStatus === 'ID' || peerStatus.callStatus === 'PICKUP' ? peerStatus.callingNumber : '');
                 }
             });
 
