@@ -253,13 +253,10 @@ public class QueueApiController extends ApiBaseController {
     public ResponseEntity<JsonResult<List<SummaryQueueResponse>>> subGroups(@RequestParam(required = false) String name/*queue_name.name*/) {
         return ResponseEntity.ok(
                 data(repository.findAll().stream()
-                    .filter(queue -> {
-                        if (isNotEmpty(name))
-                        	return !queue.getName().equals(name);
-                        return true;
-                    })
-                    .map(subQueue -> convertDto(subQueue, SummaryQueueResponse.class))
-                    .collect(Collectors.toList())
+                        .filter(queue -> !name.equals(queue.getName()) && !name.equals(queue.getNoConnectData()))
+                        .filter(queue -> name.isEmpty() || !queue.getNoConnectKind().equals(NoConnectKind.HUNT.getCode()))
+                        .map(subQueue -> convertDto(subQueue, SummaryQueueResponse.class))
+                        .collect(Collectors.toList())
                 )
         );
     }

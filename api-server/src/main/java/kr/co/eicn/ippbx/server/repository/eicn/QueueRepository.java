@@ -36,8 +36,8 @@ import static java.util.stream.Collectors.toMap;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueName.QUEUE_NAME;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueTable.QUEUE_TABLE;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
-import static org.apache.commons.lang3.StringUtils.defaultString;
+import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 @Getter
 @Repository
@@ -89,7 +89,10 @@ public class QueueRepository extends EicnBaseRepository<QueueName, QueueEntity, 
         return record -> {
             final QueueEntity entity = record.into(QUEUE_NAME).into(QueueEntity.class);
             entity.setQueueTable(record.into(QUEUE_TABLE).into(QueueTable.class));
-            entity.setSubGroupQueueName(findOne(record.get(QUEUE_NAME.NO_CONNECT_DATA)));
+
+            if (isNotBlank(record.get(QUEUE_NAME.NO_CONNECT_KIND)) && record.get(QUEUE_NAME.NO_CONNECT_KIND).equals(NoConnectKind.HUNT.getCode()) && isNotBlank(record.get(QUEUE_NAME.NO_CONNECT_DATA)))
+                entity.setSubGroupQueueName(findOne(record.get(QUEUE_NAME.NO_CONNECT_DATA)));
+
             return entity;
         };
     }
