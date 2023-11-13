@@ -123,14 +123,10 @@
     <jsp:include page="/admin/dashboard/script-for-queue-and-person-status"/>
     <tags:scripts>
         <script>
-            const statusCodes = {
-                <c:forEach var="s" items="${statusCodes}">
-                '${s.key}': '${g.escapeQuote(s.value)}',
-                </c:forEach>
-            };
+            updatePersonStatus();
 
             const ipccAdminCommunicator = createIpccAdminCommunicator()
-                .on("MEMBERSTATUS", function (message, kind, nothing, nothing_, peer, currentStatus, previousStatus) {
+                .on("MEMBERSTATUS", function (message, kind, nothing, peer, currentStatus, previousStatus) {
                     $('.-status-label').filter(function () {
                         return $(this).attr('data-peer') === peer;
                     }).each(function () {
