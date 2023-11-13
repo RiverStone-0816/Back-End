@@ -35,7 +35,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -333,6 +333,11 @@ public class UserApiController extends ApiBaseController {
                     return response;
                 })
                 .collect(Collectors.toList())));
+    }
+
+    @GetMapping("peer-to-id")
+    public ResponseEntity<JsonResult<Map<String, String>>> getPeerToUserIdMap() {
+        return ResponseEntity.ok(data(personListRepository.getPeerToUserIdMap()));
     }
 
     private void doubAdminFoUpdate() {

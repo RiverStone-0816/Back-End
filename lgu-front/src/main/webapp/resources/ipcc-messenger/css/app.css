@@ -94,18 +94,18 @@ html {
 
 body {
     height: 100%;
-    font-family: 'LG Smart UI', 'Malgun Gothic', dotum, sans-serif !important;
+    font-family: 'Noto Sans Korean', 'Malgun Gothic', dotum, sans-serif; !important;
     overflow-x: hidden;
 }
 
 button {
     white-space: nowrap;
-    font-family: 'LG Smart UI', 'Malgun Gothic', dotum, sans-serif !important;
+    font-family: 'Noto Sans Korean', 'Malgun Gothic', dotum, sans-serif; !important;
 }
 
 input,
 textarea {
-    font-family: 'LG Smart UI', 'Malgun Gothic', dotum, sans-serif !important;
+    font-family: 'Noto Sans Korean', 'Malgun Gothic', dotum, sans-serif; !important;
 }
 
 select[multiple] {
@@ -114,7 +114,7 @@ select[multiple] {
     border-radius: 3px;
     height: 250px;
     outline: 0;
-    font-family: 'LG Smart UI', 'Malgun Gothic', dotum, sans-serif !important;
+    font-family: 'Noto Sans Korean', 'Malgun Gothic', dotum, sans-serif; !important;
 }
 
 select[multiple] option {
@@ -258,7 +258,7 @@ ol li {
 }
 
 ::placeholder {
-    font-family: 'LG Smart UI', 'Malgun Gothic', dotum, sans-serif !important;
+    font-family: 'Noto Sans Korean', 'Malgun Gothic', dotum, sans-serif; !important;
 }
 
 .container {
@@ -434,7 +434,7 @@ ol li {
 .ui.modal .header,
 .ui.modal .content,
 .ui.modal .actions {
-    font-family: 'LG Smart UI', 'Malgun Gothic', dotum, sans-serif !important;
+    font-family: 'Noto Sans Korean', 'Malgun Gothic', dotum, sans-serif; !important;
 }
 
 .ui.modal > .header:not(.ui) {
@@ -722,7 +722,7 @@ ol li {
 }
 
 .sub-title {
-    font-family: 'LG Smart UI', 'Malgun Gothic', dotum, sans-serif !important;
+    font-family: 'Noto Sans Korean', 'Malgun Gothic', dotum, sans-serif; !important;
     font-size: 13px;
     color: #333;
     font-weight: 700;
@@ -1325,7 +1325,7 @@ ol li {
 }
 
 .ui.list.organization-container .item .header {
-    font-family: 'LG Smart UI', 'Malgun Gothic', dotum, sans-serif !important;
+    font-family: 'Noto Sans Korean', 'Malgun Gothic', dotum, sans-serif; !important;
     font-size: 13px;
     font-weight: bold;
     color: #444444;
@@ -1564,7 +1564,7 @@ ol li {
 
 .ui.button {
     background: #eee;
-    font-family: 'LG Smart UI', 'Malgun Gothic', dotum, sans-serif !important;
+    font-family: 'Noto Sans Korean', 'Malgun Gothic', dotum, sans-serif; !important;
 }
 
 .ui.button.darkblue {
@@ -1734,5 +1734,5 @@ ol li {
     text-align-last: center;
     padding: 4px;
     background-position: right 10px bottom 7px;
-    font-family: 'LG Smart UI', 'Malgun Gothic', dotum, sans-serif !important;
+    font-family: 'Noto Sans Korean', 'Malgun Gothic', dotum, sans-serif; !important;
 }

@@ -11,7 +11,6 @@ import kr.co.eicn.ippbx.front.service.api.*;
 import kr.co.eicn.ippbx.front.service.api.acd.QueueApiInterface;
 import kr.co.eicn.ippbx.front.service.api.dashboard.DashboardApiInterface;
 import kr.co.eicn.ippbx.front.service.api.record.history.RecordingHistoryApiInterface;
-import kr.co.eicn.ippbx.front.service.api.service.etc.MonitApiInterface;
 import kr.co.eicn.ippbx.front.service.api.user.user.UserApiInterface;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.model.dto.eicn.DashHuntMonitorResponse;
@@ -25,7 +24,6 @@ import kr.co.eicn.ippbx.model.form.ChattingMemberFormRequest;
 import kr.co.eicn.ippbx.model.form.MemoMsgFormRequest;
 import kr.co.eicn.ippbx.model.search.ChattingMemberSearchRequest;
 import kr.co.eicn.ippbx.model.search.MemoMsgSearchRequest;
-import kr.co.eicn.ippbx.model.search.MonitControlSearchRequest;
 import kr.co.eicn.ippbx.model.search.RecordCallSearch;
 import kr.co.eicn.ippbx.model.search.search.SearchServiceRequest;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +60,6 @@ public class MobileMainController extends MessengerBaseController {
     private final RecordingHistoryApiInterface recordingHistoryApiInterface;
     private final CompanyApiInterface companyApiInterface;
     private final DashboardApiInterface dashboardApiInterface;
-    private final MonitApiInterface monitApiInterface;
     private final SearchApiInterface searchApiInterface;
     private final QueueApiInterface queueApiInterface;
     private final MemoApiInterface memoApiInterface;
@@ -108,8 +105,7 @@ public class MobileMainController extends MessengerBaseController {
 
         val peerInfos = peerStatuses.stream().collect(Collectors.toMap(DashQueueMemberResponse::getPeer, e -> e));
 
-        val peerToUserId = new HashMap<String, String>();
-        monitApiInterface.list(new MonitControlSearchRequest()).forEach(e -> e.getPerson().forEach(e2 -> peerToUserId.put(e2.getPeer(), e2.getId())));
+        val peerToUserId = userApiInterface.getPeerToUserIdMap();
         model.addAttribute("peerToUserId", peerToUserId);
 
         final List<SummaryQueueResponse> queues = queueApiInterface.addQueueNames();

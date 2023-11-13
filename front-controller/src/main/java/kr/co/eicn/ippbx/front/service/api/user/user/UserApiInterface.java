@@ -1,5 +1,7 @@
 package kr.co.eicn.ippbx.front.service.api.user.user;
 
+import com.fasterxml.jackson.databind.JavaType;
+import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.util.page.Pagination;
@@ -68,5 +70,11 @@ public class UserApiInterface extends ApiServerInterface {
     public List<SummaryPhoneInfoResponse> extensions(String extension) throws IOException, ResultFailException {
         final Map<String, String> param = Collections.singletonMap("extension", extension);
         return getList(subUrl + "extensions", param, SummaryPhoneInfoResponse.class).getData();
+    }
+
+    @SuppressWarnings("unchecked")
+    public Map<String, String> getPeerToUserIdMap() throws IOException, ResultFailException {
+        final JavaType type = typeFactory.constructParametricType(Map.class, String.class, String.class);
+        return (Map<String, String>) getData(subUrl + "peer-to-id", null, typeFactory.constructParametricType(JsonResult.class, type)).getData();
     }
 }

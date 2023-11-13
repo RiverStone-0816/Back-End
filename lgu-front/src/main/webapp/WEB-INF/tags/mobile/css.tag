@@ -26,10 +26,10 @@
         url(<c:url value="/resources/vendors/material-design-icons/flUhRq6tzZclQEJ-Vdg-IuiaDsNc/MaterialIcons-Regular.ttf"/>) format('truetype');
     }
     .material-icons {
-        font-family: 'Material Icons', monospace;
+        font-family: 'Material Icons';
         font-weight: normal;
         font-style: normal;
-        font-size: 24px; /* Preferred icon size */
+        font-size: 24px;  /* Preferred icon size */
         display: inline-block;
         line-height: 1;
         text-transform: none;
@@ -37,6 +37,7 @@
         word-wrap: normal;
         white-space: nowrap;
         direction: ltr;
+        /* Support for all WebKit browsers. */
         -webkit-font-smoothing: antialiased;
         /* Support for Safari and Chrome. */
         text-rendering: optimizeLegibility;
@@ -45,6 +46,7 @@
         /* Support for IE. */
         font-feature-settings: 'liga';
     }
+
     /*@import url('https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin');*/
 </style>
 
