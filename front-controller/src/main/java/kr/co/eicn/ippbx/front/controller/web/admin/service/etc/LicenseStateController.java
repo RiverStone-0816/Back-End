@@ -28,7 +28,7 @@ public class LicenseStateController extends BaseController {
 
     @GetMapping("")
     public String page(Model model) throws Exception {
-        adminCheckApiInterface.check();
+        /*adminCheckApiInterface.check();*/
         return "admin/service/etc/license-state/ground";
     }
 
