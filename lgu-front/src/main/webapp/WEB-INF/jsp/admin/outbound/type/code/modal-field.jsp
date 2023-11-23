@@ -129,17 +129,28 @@
 
     const select = modal.find('[name=codes]');
 
+    select.on('click','option',function () {
+        modal.find('[name=codeId]').val($(this).val());
+        modal.find('[name=codeName]').val($(this).attr('data-name'));
+        modal.find('[name=script]').val($(this).attr('data-script') || '');
+    });
+
     modal.find('.-add-code').click(function () {
         const codeId = modal.find('[name=codeId]').val();
         const codeName = modal.find('[name=codeName]').val();
         const script = modal.find('[name=script]').val();
 
-        if (select.find('option').filter(function () {
+        const existOption = select.find('option').filter(function () {
             return $(this).val() === codeId;
-        }).length > 0)
-            return alert('동일 코드가 존재합니다.');
+        });
 
-        select.append($('<option/>', {value: codeId, text: '[' + codeId + '] ' + codeName, 'data-name': codeName, 'data-script': script}));
+        if (existOption.length > 0) {
+            existOption.text('[' + codeId + '] ' + codeName)
+            existOption.attr('data-name', codeName);
+            existOption.attr('data-script', script);
+        } else {
+            select.append($('<option/>', {value: codeId, text: '[' + codeId + '] ' + codeName, 'data-name': codeName, 'data-script': script}));
+        }
     });
 
     modal.find('.-to-first').click(function () {
