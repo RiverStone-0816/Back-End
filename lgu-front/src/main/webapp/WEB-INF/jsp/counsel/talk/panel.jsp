@@ -1534,8 +1534,8 @@
                 talkListContainer.updateRoomStatus(data.room_id, 'END', data.send_receive, data.type, data.content, messageTime)
             } else if (['SD'].includes(data.send_receive)) {
                 talkListContainer.load()
-                talkRoom.clearRoom()
-
+                if (talkRoom.roomId === data.room_id)
+                    talkRoom.clearRoom()
             } else if (['SAS','SVS'].includes(data.send_receive) && data.userid === userId) {
                 talkRoom.myUserName = data.content.my_username
                 talkRoom.remoteUserName = data.content.remote_username
