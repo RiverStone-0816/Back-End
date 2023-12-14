@@ -1,0 +1,61 @@
+{
+  "name": "vue3-messenger",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@headlessui/vue": "^1.4.0",
+    "@ocrv/vue-tailwind-pagination": "^0.0.4",
+    "@tailwindcss/forms": "^0.3.3",
+    "@zhuowenli/vue-feather-icons": "^5.0.2",
+    "axios": "^0.21.1",
+    "core-js": "^3.6.5",
+    "janus": "^0.5.3",
+    "janus-gateway": "^0.2.3",
+    "jquery": "^3.6.0",
+    "moment": "^2.29.1",
+    "socket.io-client": "4.2.0",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.13",
+    "vuex": "^4.0.2",
+    "webrtc-adapter": "^8.1.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0",
+    "autoprefixer": "^9.8.6",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^7.0.0",
+    "exports-loader": "^3.1.0",
+    "postcss": "^7.0.36",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.8"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "main": "index.js",
+  "license": "MIT"
+}
