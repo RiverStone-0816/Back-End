@@ -401,7 +401,7 @@ public class CounselController extends BaseController {
     @GetMapping("modal-sms-send")
     public String modalSmsSend(Model model, @RequestParam String phoneNumber, @ModelAttribute("form") SendMessageFormRequest form) throws IOException, ResultFailException {
         model.addAttribute("phoneNumber", phoneNumber);
-        model.addAttribute("smsCategories", smsCategoryApiInterface.pagination(new SendCategorySearchRequest()).getRows());
+        model.addAttribute("smsCategories", smsCategoryApiInterface.list());
         model.addAttribute("serviceLists", serviceApiInterface.listCounsel(new ServiceListSearchRequest()));
         model.addAttribute("smsTemplates", smsMessageTemplateApiInterface.list().stream().collect(Collectors.groupingBy(SendMessageTemplateResponse::getCategoryCode)));
         return "modal-sms-send";
