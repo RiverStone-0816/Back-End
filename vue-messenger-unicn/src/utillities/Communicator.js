@@ -159,5 +159,12 @@ Communicator.prototype.sendWebrtcReady = function (type, data) {
         message_data: data,
     }))
 }
+Communicator.prototype.sendFile = function (fileName,file) {
+    this.socket.emit('webchatcli_upload', Object.assign(this.request,{
+        message_id: this.getMessageId(),
+        message_type: 'custom_file',
+        message_data: {last_receive_message_type: 'upload_accept', file_name: fileName, file_data: file},
+    }))
+}
 
 export default Communicator
