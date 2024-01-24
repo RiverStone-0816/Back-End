@@ -121,7 +121,7 @@
                       </div>
                       <div class="pt-4">
                         <span>
-                          <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.msg }}</p>
+                          <p v-html="linkify(message.data.msg)" style="white-space: pre-wrap; line-break: anywhere;"></p>
                         </span>
                       </div>
                     </div>
@@ -158,7 +158,7 @@
                 <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
                   <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
                   <span>
-                    <p style="white-space: pre">{{ message.data.schedule_info.schedule_ment }}</p>
+                    <p style="white-space: pre" v-html="linkify(message.data.schedule_info.schedule_ment)"></p>
                   </span>
                   </div>
                 </div>
@@ -177,7 +177,7 @@
                 <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
                   <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
                     <span>
-                      <p>{{ message.data.fallback_ment }}</p>
+                      <p v-html="linkify(message.data.fallback_ment)"></p>
                     </span>
                   </div>
                   <div class="space-y-2" v-show="getLastOrder(iMessage)">
@@ -203,7 +203,7 @@
                   <div class="bg-white shadow rounded-lg">
                     <div class="p-3 pt-2 text-main">
                       <span>
-                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.result_content }}</p>
+                        <p style="white-space: pre-wrap; line-break: anywhere;" v-html="linkify(message.data.result_content)"></p>
                       </span>
                     </div>
                   </div>
@@ -233,7 +233,7 @@
                 <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
                   <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
                   <span>
-                    <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.ment }}</p>
+                    <p style="white-space: pre-wrap; line-break: anywhere;" v-html="linkify(message.data.ment)"></p>
                   </span>
                   </div>
                   <div class="text-xxs text-gray-600/100">
@@ -261,7 +261,7 @@
                       <img :src="message.data.replyingTarget">
                     </div>
                     <span>
-                      <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.text_data }}</p>
+                      <p style="white-space: pre-wrap; line-break: anywhere;" v-html="linkify(message.data.text_data)"></p>
                     </span>
                   </div>
                   <div class="text-xxs text-gray-600/100">
@@ -284,7 +284,7 @@
                 <div v-if="e.type === 'text'" class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
                   <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
                   <span>
-                    <p style="white-space: pre-wrap; line-break: anywhere;">{{ e.element[0]?.content }}</p>
+                    <p style="white-space: pre-wrap; line-break: anywhere;" v-html="linkify(e.element[0]?.content)"></p>
                   </span>
                   </div>
                 </div>
@@ -311,7 +311,7 @@
                     </div>
                     <div class="p-3 pt-2 text-main">
                     <span>
-                      <p style="white-space: pre-wrap; line-break: anywhere;">{{ e.element[0]?.content }}</p>
+                      <p style="white-space: pre-wrap; line-break: anywhere;" v-html="linkify(e.element[0]?.content)"></p>
                     </span>
                     </div>
                   </div>
@@ -342,7 +342,7 @@
                             </div>
                             <div class="pl-2 pt-0 text-gray-700">
                           <span>
-                            <p style="white-space: pre-wrap; line-break: anywhere;">{{ e2.content }}</p>
+                            <p style="white-space: pre-wrap; line-break: anywhere;" v-html="linkify(e2.content)"></p>
                           </span>
                             </div>
                           </div>
@@ -477,7 +477,7 @@
                 <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 order-1 items-end">
                   <div class="px-3 py-2 rounded-lg inline-block bg-indigo-900 text-white shadow">
                   <span>
-                    <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data }}</p>
+                    <p style="white-space: pre-wrap; line-break: anywhere;" v-html="linkify(message.data)"></p>
                   </span>
                   </div>
                   <div class="text-xxs text-gray-600/100">
@@ -854,6 +854,12 @@ export default {
       } else {
         return data.api_result_error_ment
       }
+    },
+    linkify(text) {
+      const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gi;
+      return text.replace(urlRegex, function(url) {
+        return '<a href="' + url + '" target="_blank">' + url + '</a>';
+      });
     },
     sendText() {
       if (!this.input) return
