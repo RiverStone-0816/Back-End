@@ -1803,11 +1803,11 @@ export default {
 }
 
 .text-main {
-  font-size: 1.0rem;
+  font-size: 1.1rem;
 }
 
 .text-xs-custom {
-  font-size: 0.9rem;
+  font-size: 1.1rem;
 }
 
 .w-button {
