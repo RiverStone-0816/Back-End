@@ -671,8 +671,8 @@ import kakaoIcon from '../assets/kakao-icon.png'
 import naverIcon from '../assets/naver-icon.png'
 import lineIcon from '../assets/line-icon.png'
 import debounce from '../utillities/mixins/debounce'
-import SimpleTone from "../assets/sounds/SimpleTone.mp3"
-import BusySignal from "../assets/sounds/BusySignal.mp3"
+//import SimpleTone from "../assets/sounds/SimpleTone.mp3"
+//import BusySignal from "../assets/sounds/BusySignal.mp3"
 import store from '../store/index'
 import Communicator from "../utillities/Communicator"
 import maudio from "../utillities/maudio"
@@ -749,8 +749,8 @@ export default {
         },
         env: { "ringtone": true, "busytone": true },
       },
-      RINGTONE: new Audio(SimpleTone),
-      BUSYTONE: new Audio(BusySignal),
+      RINGTONE: null,
+      BUSYTONE: null,
       opened: true,
       janusVChat: null,
       vchat: null,
