@@ -316,10 +316,12 @@
     const fields = {
         <c:forEach var="field" items="${resultType.fields}">
         <c:if test="${field.codes != null && field.codes.size() > 0}">
-        '${g.escapeQuote(field.fieldId)}': [<c:forEach var="code" items="${field.codes}">{
+        '${g.escapeQuote(field.fieldId)}': [<c:forEach var="code" items="${field.codes}">
+            <c:if test="${code.hide == 'N'}">{
             value: '${g.escapeQuote(code.codeId)}',
             text: '${g.escapeQuote(code.codeName)}'
-        }, </c:forEach>],
+            },</c:if>
+            </c:forEach>],
         </c:if>
         </c:forEach>
     };
