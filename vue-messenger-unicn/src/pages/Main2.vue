@@ -15,7 +15,7 @@
         </button>
         <div class="flex-grow">
           <div class="relative w-full text-white text-sm text-center">
-            {{ displayName }}
+            {{ displayName }}<input type="file" id="uploadImage" accept="image/*, video/*" @change="sendFile($event.target.files)" style="display: none;">
           </div>
         </div>
         <button class="flex items-center justify-center hover:bg-slate-900/20 rounded-lg h-10 w-10 text-white close-icon" @click.stop="closeAction" >
@@ -121,7 +121,7 @@
                       </div>
                       <div class="pt-4">
                         <span>
-                          <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.msg }}</p>
+                          <p v-html="linkify(message.data.msg)" style="white-space: pre-wrap; line-break: anywhere;"></p>
                         </span>
                       </div>
                     </div>
@@ -158,7 +158,7 @@
                 <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
                   <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
                   <span>
-                    <p style="white-space: pre">{{ message.data.schedule_info.schedule_ment }}</p>
+                    <p style="white-space: pre" v-html="linkify(message.data.schedule_info.schedule_ment)"></p>
                   </span>
                   </div>
                 </div>
@@ -177,11 +177,11 @@
                 <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
                   <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
                     <span>
-                      <p>{{ message.data.fallback_ment }}</p>
+                      <p v-html="linkify(message.data.fallback_ment)"></p>
                     </span>
                   </div>
                   <div class="space-y-2" v-show="getLastOrder(iMessage)">
-                    <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actFallback(message)">
+                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actFallback(message)">
                       {{ getFallbackButtonName(message.data.fallback_action) }}
                     </button>
                   </div>
@@ -203,13 +203,13 @@
                   <div class="bg-white shadow rounded-lg">
                     <div class="p-3 pt-2 text-main">
                       <span>
-                        <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.result_content }}</p>
+                        <p style="white-space: pre-wrap; line-break: anywhere;" v-html="linkify(message.data.result_content)"></p>
                       </span>
                     </div>
                   </div>
                   <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="space-y-2" v-show="getLastOrder(iMessage)">
                     <span v-if="e instanceof Array">
-                      <button v-for="(e2, j) in e" :key="j"  class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actButton(message, e2)">
+                      <button v-for="(e2, j) in e" :key="j"  class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actButton(message, e2)">
                         {{ e2.btn_name }}
                       </button>
                     </span>
@@ -233,7 +233,7 @@
                 <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
                   <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
                   <span>
-                    <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.ment }}</p>
+                    <p style="white-space: pre-wrap; line-break: anywhere;" v-html="linkify(message.data.ment)"></p>
                   </span>
                   </div>
                   <div class="text-xxs text-gray-600/100">
@@ -261,7 +261,7 @@
                       <img :src="message.data.replyingTarget">
                     </div>
                     <span>
-                      <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data.text_data }}</p>
+                      <p style="white-space: pre-wrap; line-break: anywhere;" v-html="linkify(message.data.text_data)"></p>
                     </span>
                   </div>
                   <div class="text-xxs text-gray-600/100">
@@ -284,7 +284,7 @@
                 <div v-if="e.type === 'text'" class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
                   <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
                   <span>
-                    <p style="white-space: pre-wrap; line-break: anywhere;">{{ e.element[0]?.content }}</p>
+                    <p style="white-space: pre-wrap; line-break: anywhere;" v-html="linkify(e.element[0]?.content)"></p>
                   </span>
                   </div>
                 </div>
@@ -311,7 +311,7 @@
                     </div>
                     <div class="p-3 pt-2 text-main">
                     <span>
-                      <p style="white-space: pre-wrap; line-break: anywhere;">{{ e.element[0]?.content }}</p>
+                      <p style="white-space: pre-wrap; line-break: anywhere;" v-html="linkify(e.element[0]?.content)"></p>
                     </span>
                     </div>
                   </div>
@@ -342,7 +342,7 @@
                             </div>
                             <div class="pl-2 pt-0 text-gray-700">
                           <span>
-                            <p style="white-space: pre-wrap; line-break: anywhere;">{{ e2.content }}</p>
+                            <p style="white-space: pre-wrap; line-break: anywhere;" v-html="linkify(e2.content)"></p>
                           </span>
                             </div>
                           </div>
@@ -396,12 +396,12 @@
                 <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4">
                   <div class="space-y-2" v-show="getLastOrder(iMessage)">
                     <span v-if="e instanceof Array">
-                      <button v-for="(e2, j) in e" :key="j" class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actButton(message, e2)">
+                      <button v-for="(e2, j) in e" :key="j" class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actButton(message, e2)">
                         {{ e2.btn_name }}
                       </button>
                     </span>
                     <span v-else>
-                      <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actApi(message, e, $event)">
+                      <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actApi(message, e, $event)">
                         {{ e.btn_name }}
                       </button>
                     </span>
@@ -443,7 +443,7 @@
                     <img :src="message.data.fileUrl" alt="chat_image" class="w-full rounded-lg">
                   </div>
                   <div v-else-if="isAudio(message.data.file_name)" class="maudio">
-                    <audio :src="message.data.fileUrl" initaudio="false"></audio>
+                    <audio :src="message.data" initaudio="false"></audio>
                     <div class="audio-control">
                       <a href="javascript:" class="fast-reverse"></a>
                       <a href="javascript:" class="play"></a>
@@ -457,7 +457,7 @@
                     </div>
                   </div>
                   <div v-else-if="isVideo(message.data.file_name)">
-                    <video controls :src="message.data.fileUrl"></video>
+                    <video controls :src="message.data"></video>
                   </div>
                   <div v-else>
                     <a class="w-full rounded-lg" :href="message.data.fileUrl">{{ message.data.file_name }}
@@ -477,7 +477,7 @@
                 <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 order-1 items-end">
                   <div class="px-3 py-2 rounded-lg inline-block bg-indigo-900 text-white shadow">
                   <span>
-                    <p style="white-space: pre-wrap; line-break: anywhere;">{{ message.data }}</p>
+                    <p style="white-space: pre-wrap; line-break: anywhere;" v-html="linkify(message.data)"></p>
                   </span>
                   </div>
                   <div class="text-xxs text-gray-600/100">
@@ -488,6 +488,76 @@
             </div>
           </template>
           <!-- text block end -->
+
+          <!-- file block start -->
+          <template v-if="message.sender !== 'SERVER' && message.messageType === 'file'">
+            <div class="pr-1 pt-1">
+              <div class="flex items-end justify-end">
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 order-1 items-end">
+                  <div>
+                    <img :src="message.data" />
+                  </div>
+                  <div class="text-xxs text-gray-600/100">
+                    {{ getTimeFormat(message.time) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- file block end -->
+
+          <!-- fileImage block start -->
+          <template v-if="message.sender !== 'SERVER' && message.messageType === 'fileImage'">
+            <div class="pr-1 pt-1">
+              <div class="flex items-end justify-end">
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 order-1 items-end">
+                  <div>
+                    <img :src="message.data" />
+                  </div>
+                  <div class="text-xxs text-gray-600/100">
+                    {{ getTimeFormat(message.time) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- fileImage block end -->
+
+          <!-- fileVideo block start -->
+          <template v-if="message.sender !== 'SERVER' && message.messageType === 'fileVideo'">
+            <div class="pr-1 pt-1">
+              <div class="flex items-end justify-end">
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 order-1 items-end">
+                  <div>
+                    <video :src="message.data" controls/>
+                  </div>
+                  <div class="text-xxs text-gray-600/100">
+                    {{ getTimeFormat(message.time) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- fileVideo block end -->
+
+          <!-- fileVideo start -->
+          <template v-if="message.sender === 'SERVER' && message.messageType === 'text'">
+            <div class="pl-3 pt-1">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <!--텍스트 출력-->
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
+                  <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
+                    <span>
+                      <p>{{ message.data }}</p>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- fileVideo end -->
 
           <!-- audio start -->
           <template v-if="message.sender === 'SERVER' && message.messageType === 'audio_start'">
@@ -503,8 +573,8 @@
                     </span>
                   </div>
                   <div class="space-y-2" v-show="getLastOrder(iMessage) && vChatButton">
-                    <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="audioStart(true)">수락</button>
-                    <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="audioStart(false)">거절</button>
+                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="audioStart(true)">수락</button>
+                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="audioStart(false)">거절</button>
                   </div>
                 </div>
               </div>
@@ -526,8 +596,8 @@
                     </span>
                   </div>
                   <div class="space-y-2" v-show="getLastOrder(iMessage) && vChatButton">
-                    <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="videoStart(true)">수락</button>
-                    <button class="py-1 px-3 text-white rounded-lg text-xs hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="videoStart(false)">거절</button>
+                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="videoStart(true)">수락</button>
+                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="videoStart(false)">거절</button>
                   </div>
                 </div>
               </div>
@@ -535,6 +605,24 @@
           </template>
           <!-- video end -->
 
+          <!-- file accept start -->
+          <template v-if="message.sender === 'SERVER' && message.messageType === 'upload_accept'">
+            <div class="pl-3 pt-1">
+              <div class="flex items-start">
+                <!--채널봇 아이콘-->
+                <img :src="botIcon === '' ? getBotIcon : botIcon" class="rounded-full" style="width: 32px;height: 32px;">
+                <!--텍스트 출력-->
+                <div class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4 items-start">
+                  <div class="px-3 py-2 rounded-lg inline-block bg-white text-gray-800 shadow">
+                    <span>
+                      <p>{{ message.data.text_data }}</p>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- file accept end -->
         </template>
       </div>
 
@@ -545,6 +633,17 @@
             <input type="text" placeholder="질문을 입력해 주세요."
                    class="flex w-full rounded-lg focus:outline-none h-10 py-1 px-2 text-sm touch-y" v-model="input" @keyup.stop.prevent="$event.key==='Enter'&&sendText()">
           </div>
+        </div>
+        <div v-if="uploadEnable" class="ml-2">
+          <button
+              class="flex items-center justify-center hover:bg-gray-300/20 rounded-lg h-10 w-10 text-white flex-shrink-0" @click.stop="fileClick">
+            <span class="ml-1">
+              <svg class="feather feather-save" fill="#929292" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+              </svg>
+            </span>
+          </button>
         </div>
         <div class="ml-2">
           <button
@@ -572,8 +671,8 @@ import kakaoIcon from '../assets/kakao-icon.png'
 import naverIcon from '../assets/naver-icon.png'
 import lineIcon from '../assets/line-icon.png'
 import debounce from '../utillities/mixins/debounce'
-import SimpleTone from "../assets/sounds/SimpleTone.mp3"
-import BusySignal from "../assets/sounds/BusySignal.mp3"
+//import SimpleTone from "../assets/sounds/SimpleTone.mp3"
+//import BusySignal from "../assets/sounds/BusySignal.mp3"
 import store from '../store/index'
 import Communicator from "../utillities/Communicator"
 import maudio from "../utillities/maudio"
@@ -595,7 +694,6 @@ function getQueryStringValue(name) {
   return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "))
 }
 
-// ref: http://daplus.net/javascript-%EC%A0%95%EA%B7%9C-%ED%91%9C%ED%98%84%EC%8B%9D%EC%9D%84-%ED%97%88%EC%9A%A9%ED%95%98%EB%8A%94-javascript%EC%9D%98-string-indexof-%EB%B2%84%EC%A0%84%EC%9D%B4-%EC%9E%88%EC%8A%B5%EB%8B%88/
 String.prototype.regexIndexOf = function (regex, startpos) {
   var indexOf = this.substring(startpos || 0).search(regex);
   return (indexOf >= 0) ? (indexOf + (startpos || 0)) : indexOf;
@@ -616,9 +714,11 @@ export default {
   },
   data() {
     return {
+
       communicator: new Communicator(),
 
       inputEnable: false,
+      uploadEnable: false,
       backgroundColor: '#f3f3f3',
       displayName: null,
       botId: null,
@@ -649,8 +749,8 @@ export default {
         },
         env: { "ringtone": true, "busytone": true },
       },
-      RINGTONE: new Audio(SimpleTone),
-      BUSYTONE: new Audio(BusySignal),
+      RINGTONE: null,
+      BUSYTONE: null,
       opened: true,
       janusVChat: null,
       vchat: null,
@@ -754,6 +854,12 @@ export default {
       } else {
         return data.api_result_error_ment
       }
+    },
+    linkify(text) {
+      const urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#/%=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gi;
+      return text.replace(urlRegex, function(url) {
+        return '<a href="' + url + '" target="_blank">' + url + '</a>';
+      });
     },
     sendText() {
       if (!this.input) return
@@ -994,7 +1100,6 @@ export default {
 
                       _this.callback_vchat_unregistered_status();
 
-                      // TODO: 버튼 클릭시 register???
                       _this.register_vchat(_this.myUsername);
                     },
                     error: function(error) {
@@ -1003,10 +1108,6 @@ export default {
                     consentDialog: function(on) {
                       // getUserMedia 호출 전에 trigger된다.
                       Janus.log("Consent dialog should be " + (on ? "on" : "off") + " now");
-                      /*if (on) {
-                      }
-                      else {
-                      }*/
                     },
                     iceState: function(state) {
                       Janus.log("ICE state changed to " + state);
@@ -1030,7 +1131,6 @@ export default {
                         Janus.error(error);
                         return;
                       }
-                      /////////////////////////////////////////////
 
                       var result = msg["result"];
                       if (result) {
@@ -1055,19 +1155,13 @@ export default {
 
                             // Get a list of available peers, just for fun
                             _this.vchat.send({ message: { request: "list" }});
-                            // 등록 성공했으므로, Call 버튼 활성화
-                            // TODO:
                             _this.DIAL_AUDIO_VCHAT_BTN = true
                             _this.DIAL_VIDEO_VCHAT_BTN = true
                           }
                           else if (event === 'calling') { // 발신중...
                             Janus.log("Waiting for the peer to answer...");
 
-                            // 전화끊기(Hangup) 버튼 이벤트 등록
                             _this.HANGUP_VCHAT_BTN = true
-
-                            // Ringtone 플레이
-                            //_this.playTone("ring");
 
                             _this.callback_vchat_outgoing_call();
                           }
@@ -1171,11 +1265,6 @@ export default {
                               _this.vchatSpinner.stop();
                             }
 
-                            // Busytone 플레이
-                            //_this.playTone("busy");
-
-                            // TODO: 통화가 종료될 때 해야 할 일들 ... 버큰 재등록???
-
                             _this.callback_vchat_hangup();
                           }
                           else if (event === 'simulcast') {
@@ -1185,12 +1274,7 @@ export default {
                             if ((substream !== null && substream !== undefined) || (temporal !== null && temporal !== undefined)) {
                               if (!_this.simulcastStarted) {
                                 _this.simulcastStarted = true;
-                                // TODO: simulcast를 지원할지 고려해보자...
-                                //addSimulcastButtons(result["videocodec"] === "vp8" || result["videocodec"] === "h264");
                               }
-                              // We just received notice that there's been a switch, update the buttons
-                              // TODO: simulcast를 지원할지 고려해보자...
-                              //updateSimulcastButtons(substream, temporal);
                             }
                           }
                         }
@@ -1251,9 +1335,7 @@ export default {
               _this.callback_vchat_disconnected_status();
 
               _this.vchatRegistered = false;
-              //callback_disconnected_status();
 
-              //Janus.error(error);
               console.log("error:" + error);
 
               if (_this.vchatReconnectTimerId) {
@@ -1266,10 +1348,8 @@ export default {
               _this.callback_vchat_disconnected_status();
 
               _this.vchatRegistered = false;
-              //callback_disconnected_status();
 
               Janus.log("destroyed");
-              //window.location.reload();
 
               if (_this.vchatReconnectTimerId) {
                 clearInterval(_this.vchatReconnectTimerId);
@@ -1316,8 +1396,6 @@ export default {
 
       if(/[^a-zA-Z0-9\\-]/.test(username)) {
         Janus.error('Input is not alphanumeric');
-        //$('#username').removeAttr('disabled').val("");
-        //$('#register').removeAttr('disabled').click(registerUsername);
         return;
       }
 
@@ -1333,8 +1411,6 @@ export default {
       }
       if(/[^a-zA-Z0-9\\-]/.test(userName)) {
         Janus.error('Input is not alphanumeric');
-        //$('#peer').removeAttr('disabled').val("");
-        //$('#call').removeAttr('disabled').click(doCall);
         return;
       }
       // Call this user
@@ -1365,8 +1441,6 @@ export default {
       var exclude_codecs = [];
       const line = old_sdp.split(/\r\n/);
 
-      console.log(" ======================== SDP =========================\n" + old_sdp);
-
       for (var i = 0; i < line.length; i++) {
         if (new_sdp != "") { new_sdp += "\r\n"; }
 
@@ -1392,8 +1466,6 @@ export default {
           new_sdp += line[i];
         }
       }
-
-      console.log(" ======================== NEW SDP =========================\n" + new_sdp);
 
       return new_sdp;
     },
@@ -1421,12 +1493,9 @@ export default {
       };
     },
     stopTones() {
-      console.log("-------- RINGTONE.pause()");
       this.RINGTONE.pause();
       this.RINGTONE.currentTime = 0;
 
-      // Busytone 중지
-      console.log("-------- BUSYTONE.pause()");
       this.BUSYTONE.pause();
       this.BUSYTONE.currentTime = 0;
     },
@@ -1440,11 +1509,8 @@ export default {
         if (!_this.WEBRTC_INFO.env.ringtone) { return; }
 
         navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
-          console.log("-------- RINGTONE.play()");
           _this.RINGTONE.currentTime = 0;
-          //_this.RINGTONE.play();
 
-          // stop microphone stream acquired by getUserMedia
           stream.getTracks().forEach(function (track) { track.stop(); });
         });
       }
@@ -1452,13 +1518,138 @@ export default {
         if (!_this.WEBRTC_INFO.env.busytone) { return; }
 
         navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
-          console.log("-------- BUSYTONE.play()");
           _this.BUSYTONE.currentTime = 0;
-          //_this.BUSYTONE.play();
 
-          // stop microphone stream acquired by getUserMedia
           stream.getTracks().forEach(function (track) { track.stop(); });
         });
+      }
+    },
+    fileClick() {
+      $('#uploadImage').click();
+    },
+    sendFile(files) {
+      const name = files[0].name;
+      const file = files[0];
+      if (file.type.indexOf('image/') > -1) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const image = new Image();
+          image.src = e.target.result;
+          image.onload = function () {
+            resize_image(image);
+          }
+        }
+        reader.readAsDataURL(file);
+        const resize_image = image => {
+          let canvas = document.createElement("canvas"),
+              max_size = 1024,
+              // 최대 기준을 1024으로 잡음.
+              width = image.width,
+              height = image.height;
+
+          if (width > height) {
+            // 가로가 길 경우
+            if (width > max_size) {
+              height *= max_size / width;
+              width = max_size;
+            }
+          } else {
+            // 세로가 길 경우
+            if (height > max_size) {
+              width *= max_size / height;
+              height = max_size;
+            }
+          }
+          canvas.width = width;
+          canvas.height = height;
+          canvas.getContext("2d").drawImage(image, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL("image/jpeg", 0.5);
+
+          const dataURLToBlob = dataURL => {
+            const BASE64_MARKER = ";base64,";
+
+            // base64로 인코딩 되어있지 않을 경우
+            if (dataURL.indexOf(BASE64_MARKER) === -1) {
+              const parts = dataURL.split(",");
+              const contentType = parts[0].split(":")[1];
+              const raw = parts[1];
+              return new Blob([raw], {
+                type: contentType
+              });
+            }
+            // base64로 인코딩 된 이진데이터일 경우
+            const parts = dataURL.split(BASE64_MARKER);
+            const contentType = parts[0].split(":")[1];
+            const raw = window.atob(parts[1]);
+            // atob()는 Base64를 디코딩하는 메서드
+            const rawLength = raw.length;
+            // 부호 없는 1byte 정수 배열을 생성
+            const uInt8Array = new Uint8Array(rawLength); // 길이만 지정된 배열
+            let i = 0;
+            while (i < rawLength) {
+              uInt8Array[i] = raw.charCodeAt(i);
+              i++;
+            }
+            return new Blob([uInt8Array], {
+              type: contentType
+            });
+          };
+          this.communicator.sendFile(name, dataURLToBlob(dataUrl));
+          this.messages.push({sender: SENDER.USER, time: new Date(), data: dataUrl, messageType: 'fileImage'})
+        }
+      } else if (file.type.indexOf('video/') > -1) {
+        if(file.size > 100*1024*1024) {
+          this.messages.push({
+            sender: SENDER.SERVER,
+            time: new Date(),
+            data: `파일은 100MB를 넘을수 없습니다.`,
+            messageType: 'text'
+          })
+        } else {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const data = reader.result;
+
+            const dataURLToBlob = dataURL => {
+              const BASE64_MARKER = ";base64,";
+
+              // base64로 인코딩 되어있지 않을 경우
+              if (dataURL.indexOf(BASE64_MARKER) === -1) {
+                const parts = dataURL.split(",");
+                const contentType = parts[0].split(":")[1];
+                const raw = parts[1];
+                return new Blob([raw], {
+                  type: contentType
+                });
+              }
+              // base64로 인코딩 된 이진데이터일 경우
+              const parts = dataURL.split(BASE64_MARKER);
+              const contentType = parts[0].split(":")[1];
+              const raw = window.atob(parts[1]);
+              // atob()는 Base64를 디코딩하는 메서드
+              const rawLength = raw.length;
+              // 부호 없는 1byte 정수 배열을 생성
+              const uInt8Array = new Uint8Array(rawLength); // 길이만 지정된 배열
+              let i = 0;
+              while (i < rawLength) {
+                uInt8Array[i] = raw.charCodeAt(i);
+                i++;
+              }
+              return new Blob([uInt8Array], {
+                type: contentType
+              });
+            };
+
+            this.communicator.sendFile(name, dataURLToBlob(data));
+          };
+          reader.readAsDataURL(file);
+          this.messages.push({
+            sender: SENDER.USER,
+            time: new Date(),
+            data: URL.createObjectURL(file),
+            messageType: 'fileVideo'
+          })
+        }
       }
     },
   },
@@ -1479,7 +1670,7 @@ export default {
 
   },
   async mounted() {
-    this.form.ip = JSON.parse(JSON.stringify(await axios.get('https://jsonip.com/'))).data.ip
+    this.form.ip = JSON.parse(JSON.stringify(await axios.get('https://httpbin.org/ip'))).data.origin
     this.communicator
         .on('webchatsvc_close', () => {
           this.communicator.disconnect()
@@ -1489,7 +1680,9 @@ export default {
         .on('webchatsvc_message', data => {
           this.lastReceiveMessageType = data.message_type
           if (data?.message_data?.is_custinput_enable) this.inputEnable = data?.message_data?.is_custinput_enable === 'Y'
+          if (data?.message_data?.is_custom_upload_enable) this.uploadEnable = data?.message_data?.is_custom_upload_enable === 'Y'
           if (data?.message_data?.input_enable_yn) this.inputEnable = data?.message_data?.input_enable_yn === 'Y'
+          if (data.message_type === 'upload_accept') this.uploadEnable = data?.message_data?.accept === 'Y'
 
           if (data.message_type === 'intro') {
             this.backgroundColor = data.message_data.bgcolor
@@ -1610,7 +1803,11 @@ export default {
 }
 
 .text-main {
-  font-size: 0.8rem;
+  font-size: 1.1rem;
+}
+
+.text-xs-custom {
+  font-size: 1.1rem;
 }
 
 .w-button {
@@ -1748,8 +1945,19 @@ export default {
   padding-left: 1.75rem;
   padding-right: 1.75rem;
 }
- input[type="text"],select:focus,textarea .touch-y{
+input[type="text"],select:focus,textarea .touch-y{
   touch-action: pan-y;
   font-size:  max(0.8rem, 16px) !important;
 }
+.replying {
+  color: #998D1F;
+  border-bottom: 1px solid #998D1F;
+  padding: 0 0 4px 0;
+  margin: 0 0 4px 0;
+  img {
+    width: auto;
+    height: 50px;
+  }
+}
+
 </style>

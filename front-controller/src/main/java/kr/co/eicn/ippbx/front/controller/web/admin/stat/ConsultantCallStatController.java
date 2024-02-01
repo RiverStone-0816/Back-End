@@ -88,6 +88,6 @@ public class ConsultantCallStatController extends BaseController {
 
         final Map<Integer, String> memberStatuses = companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName));
 
-        new ConsultantCallStatExcel(list, total, new MapToLinkedHashMap().toLinkedHashMapByKey(memberStatuses)).generator(response, "상담원(개인별)실적통계");
+        new ConsultantCallStatExcel(list, total, new MapToLinkedHashMap().toLinkedHashMapByKey(memberStatuses)).generator(response, "상담원별콜실적통계");
     }
 }

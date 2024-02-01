@@ -140,7 +140,7 @@
                         <div class="sixteen wide column">
                             <h3 class="ui header center aligned">
                                 <text class="content">
-                                    상담원별콜실적통계
+                                    상담원(개인별)실적통계
                                     <div class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</div>
                                 </text>
                             </h3>
@@ -173,7 +173,7 @@
                                     <th class="color red">응대호</th>
                                     <th class="color red">총 통화시간</th>
                                     <th class="color red">평균통화시간</th>
-                                    <th class="color red">평균연결시간</th>
+                                    <th class="color red">평균대기시간</th>
                                     <th class="color red">개인비수신</th>
                                     <th class="color red">응대율</th>
 

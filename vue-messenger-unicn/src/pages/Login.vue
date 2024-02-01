@@ -28,7 +28,7 @@ export default {
       communicator: new Communicator(),
       opened: true,
       form: {
-        url: 'https://www.talk.eicn.co.kr:442',
+        url: 'https://cloudtalk.eicn.co.kr:442',
         senderKey: null,
         userKey: sessionUtils.getSessionId(),
         ip: '',
