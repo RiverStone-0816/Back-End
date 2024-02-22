@@ -6,15 +6,18 @@ import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import kr.co.eicn.ippbx.exception.UnauthorizedException;
+import kr.co.eicn.ippbx.front.config.RequestGlobal;
 import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.util.AbstractRestInterface;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.util.UrlUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -39,6 +42,8 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 
 
 public abstract class ApiServerInterface extends AbstractRestInterface {
@@ -85,6 +90,8 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
     protected HttpSession session;
     @Value("${eicn.webchat.image.url}")
     private String webchatUrl;
+    @Autowired
+    protected RequestGlobal g;
 
     @PostConstruct
     public void setup() {
@@ -270,8 +277,14 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
                     }
                 });
 
-            if (logger.isInfoEnabled())
+            if (logger.isInfoEnabled()) {
+                String userInfo = "";
+                if (ObjectUtils.isNotEmpty(g) && ObjectUtils.isNotEmpty(g.getUser()))
+                    userInfo = defaultIfEmpty(g.getUser().getCompanyId(), "") + "|" + defaultIfEmpty(g.getUser().getId(), "");
+                MDC.put("userInfo", userInfo);
+
                 logger.info("[" + method + "] " + (method.equals(HttpMethod.GET) || urlParam ? uriBuilder.build().encode().toUri() : url));
+            }
         } catch (Exception ignored) {
             paramString = objectMapper.writeValueAsString(o);
         }
@@ -283,6 +296,11 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
 
             return response.getBody();
         } catch (HttpStatusCodeException e) {
+            String userInfo = "";
+            if (ObjectUtils.isNotEmpty(g) && ObjectUtils.isNotEmpty(g.getUser()))
+                userInfo = defaultIfEmpty(g.getUser().getCompanyId(), "") + "|" + defaultIfEmpty(g.getUser().getId(), "") + " : ";
+            MDC.put("userInfo", userInfo);
+
             logger.warn(e.getStatusCode() + " : " + e.getResponseBodyAsString());
             if (Objects.equals(e.getStatusCode(), HttpStatus.UNAUTHORIZED))
                 throw new UnauthorizedException(e.getStatusText(), e.getResponseHeaders(), e.getResponseBodyAsByteArray(), Charset.defaultCharset());

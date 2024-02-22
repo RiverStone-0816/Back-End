@@ -4,6 +4,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import kr.co.eicn.ippbx.model.UserDetails;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
@@ -19,6 +20,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
+import static org.apache.commons.lang3.StringUtils.defaultIfEmpty;
 
 @Slf4j
 @Component
@@ -48,6 +51,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
 		String username = null;
 		String jwtToken = null;
+		String companyId = null;
 		if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
 			jwtToken = requestTokenHeader.substring(7);
 
@@ -68,8 +72,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails;
 
-			final String companyId = jwtTokenProvider.getTokenValue("companyId", jwtToken);
-
+			companyId = jwtTokenProvider.getTokenValue("companyId", jwtToken);
 			userDetails = personUserDetailsService.loadUserByUsername(companyId, username);
 
 			// if token is valid configure Spring Security to manually set authentication
@@ -80,6 +83,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 				SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 			}
 		}
+
+		MDC.put("userInfo", defaultIfEmpty(companyId, "") + "|" + defaultIfEmpty(username, ""));
 		chain.doFilter(request, response);
 	}
 }

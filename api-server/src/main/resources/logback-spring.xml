@@ -30,7 +30,7 @@
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <charset>UTF-8</charset>
             <pattern>
-                %d{HH:mm:ss.SSS} %-5level %logger[%method:%line] - %msg%n
+                %d{HH:mm:ss.SSS} %-5level %logger[%method:%line] - %X{userInfo} : %msg%n
             </pattern>
         </encoder>
     </appender>
