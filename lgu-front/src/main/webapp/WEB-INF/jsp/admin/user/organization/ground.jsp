@@ -17,10 +17,9 @@
 <tags:tabContentLayout>
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/user/organization/"/>
-
-        <div class="sub-content ui container fluid">
-            <div class="ui grid complex">
-                <div class="eight wide column">
+        <div class="sub-content ui container fluid unstackable">
+            <div class="ui grid full-height remove-mb">
+                <div class="eight wide column remove-pb">
                     <div class="panel">
                         <div class="panel-heading">
                             <div class="ui action input fluid">
@@ -31,7 +30,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body overflow-auto remove-pb" style="height: calc(100vh - 120px);">
                             <jsp:include page="/admin/user/organization/editable-pan"/>
 
                             <form id="organization-register-form" class="item -json-submit" style="display: none;"
@@ -72,7 +71,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="eight wide column">
+                <div class="eight wide column remove-pb">
                     <div class="panel">
                         <div class="panel-heading">
                             <div class="pull-left">
@@ -82,7 +81,11 @@
                                 <button class="ui basic button" onclick="popupMetaTypeSet()">META유형 수정</button>
                             </div>
                         </div>
-                        <div class="panel-body" id="organization-element-summary"></div>
+                        <div class="panel-body">
+                            <div class="ui grid">
+                                <div id="organization-element-summary" class="sixteen wide column overflow-auto" style="height: calc(100vh - 125px);"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -174,6 +177,10 @@
                 registerForm.find('[name=groupLevel]').val(groupLevel || 1);
                 registerForm.find('[name=groupName]').val('');
                 registerForm.show();
+
+                $('.panel-body').animate({
+                    scrollTop: $('.panel-body')[0].scrollHeight
+                }, 300);
             }
 
             function doneRegisterElement() {

@@ -16,7 +16,7 @@
 <%--@elvariable id="summary" type="kr.co.eicn.ippbx.model.dto.eicn.OrganizationPersonSummaryResponse"--%>
 <%--@elvariable id="element" type="kr.co.eicn.ippbx.model.entity.eicn.Organization"--%>
 
-<div class="panel-body" id="organization-element-summary">
+<div id="organization-element-summary" class="sixteen wide column overflow-auto" style="height: calc(100vh - 125px);">
     <table class="ui celled table structured definition unstackable">
         <tbody>
         <tr>

@@ -14,7 +14,7 @@ import java.util.TreeSet;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class OrganizationTree extends Organization {
-    private TreeSet<OrganizationTree> children = new TreeSet<>(Comparator.comparing(CompanyTree::getGroupName));
+    private TreeSet<OrganizationTree> children = new TreeSet<>(Comparator.comparing(CompanyTree::getGroupName).thenComparing(CompanyTree::getGroupCode));
 
     public OrganizationTree(Organization o) {
         ReflectionUtils.copy(this, o);
