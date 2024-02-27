@@ -33,7 +33,8 @@
                                 ${entity.categoryCode}
                             </c:when>
                             <c:otherwise>
-                                <form:input path="categoryCode"/>
+                                <form:input path="categoryCode" maxlength="4" placeholder='S로 시작하는 최대 4자리 (숫자나 영어만 입력가능)'
+                                            oninput="this.value=this.value.replace(/[^0-9a-zA-Z]/g,'');"/>
                             </c:otherwise>
                         </c:choose>
                     </div>
@@ -43,7 +44,7 @@
                 <div class="four wide column"><label class="control-label">카테고리명</label></div>
                 <div class="twelve wide column">
                     <div class="ui input fluid">
-                        <form:input path="categoryName"/>
+                        <form:input path="categoryName" maxlength="32" placeholder="최대 32자리"/>
                     </div>
                 </div>
             </div>
