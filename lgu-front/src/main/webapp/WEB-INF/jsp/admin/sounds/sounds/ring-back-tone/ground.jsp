@@ -119,11 +119,11 @@
             }
 
             $('.volume').click(function () {
-                restSelf.put('/api/ars/' + $(this).attr('data-value') + '/web-log?type=' + encodeURIComponent('PLAY'));
+                restSelf.put('/api/ring-back-tone/' + $(this).attr('data-value') + '/web-log?type=' + encodeURIComponent('PLAY'));
             });
 
             $('.down').click(function () {
-                restSelf.put('/api/ars/' + $(this).attr('data-value') + '/web-log?type=' + encodeURIComponent('DOWN'));
+                restSelf.put('/api/ring-back-tone/' + $(this).attr('data-value') + '/web-log?type=' + encodeURIComponent('DOWN'));
             })
 
             function deleteEntity(category) {
