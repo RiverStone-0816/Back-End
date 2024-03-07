@@ -267,6 +267,10 @@ project(':model-extension') {
     bootJar.enabled = false
     jar.enabled = true
 
+    jar {
+        duplicatesStrategy(DuplicatesStrategy.INCLUDE)
+    }
+
     dependencies {
         compile project(':util')
         compile project(':jooq-model')
@@ -335,6 +339,10 @@ project(':api-server') {
 project(':front-controller') {
     bootJar.enabled = false
     jar.enabled = true
+
+    jar {
+        duplicatesStrategy(DuplicatesStrategy.INCLUDE)
+    }
 
     tasks {
         processResources {
