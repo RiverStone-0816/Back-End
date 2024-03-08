@@ -109,10 +109,10 @@ public class PDSResultCustomInfoRepository extends PDSDbBaseRepository<CommonPDS
         conditions.add(TABLE.EXECUTE_ID.eq(search.getExecuteId()));
 
         if (search.getCreatedStartDate() != null)
-            conditions.add(DSL.date(TABLE.RESULT_DATE).greaterOrEqual(search.getCreatedStartDate()));
+            conditions.add(TABLE.RESULT_DATE.ge(DSL.timestamp(search.getCreatedStartDate() + " 00:00:00")));
 
         if (search.getCreatedEndDate() != null)
-            conditions.add(DSL.date(TABLE.RESULT_DATE).lessOrEqual(search.getCreatedEndDate()));
+            conditions.add(TABLE.RESULT_DATE.le(DSL.timestamp(search.getCreatedEndDate() + " 23:59:59")));
 
         if (search.getUserId() != null)
             conditions.add(TABLE.USERID.eq(search.getUserId()));

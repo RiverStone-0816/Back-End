@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebSecureHistory.WEB_SECURE_HISTORY;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -71,12 +72,12 @@ public class WebSecureHistoryRepository extends EicnBaseRepository<WebSecureHist
         if (Objects.nonNull(search.getStartDate()) && Objects.nonNull(search.getStartHour()))
             conditions.add(WEB_SECURE_HISTORY.INSERT_DATE.ge(DSL.timestamp(search.getStartDate() + " " + search.getStartHour() + ":00:00")));
         else if (search.getStartDate() != null)
-            conditions.add(DSL.date(WEB_SECURE_HISTORY.INSERT_DATE).ge(search.getStartDate()));
+            conditions.add(WEB_SECURE_HISTORY.INSERT_DATE.ge(DSL.timestamp(search.getStartDate() + " 00:00:00")));
 
         if (Objects.nonNull(search.getEndDate()) && Objects.nonNull(search.getEndHour()))
             conditions.add(WEB_SECURE_HISTORY.INSERT_DATE.le(DSL.timestamp(search.getEndDate() + " " + search.getEndHour() + ":59:59")));
         else if (search.getEndDate() != null)
-            conditions.add(DSL.date(WEB_SECURE_HISTORY.INSERT_DATE).le(search.getEndDate()));
+            conditions.add(WEB_SECURE_HISTORY.INSERT_DATE.le(DSL.timestamp(search.getEndDate() + " 23:59:59")));
 
         if (isNotEmpty(search.getUserName()))
             conditions.add(WEB_SECURE_HISTORY.USER_NAME.like("%" + search.getUserName() + "%"));

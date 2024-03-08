@@ -36,9 +36,13 @@ public class TalkRoomRepository extends CustomDBBaseRepository<CommonWtalkRoom, 
         List<Condition> conditions = new ArrayList<>();
 
         if (Objects.nonNull(search.getStartDate()))
-            conditions.add(DSL.date(TABLE.ROOM_START_TIME).ge(search.getStartDate()).or(DSL.date(TABLE.ROOM_LAST_TIME).le(search.getStartDate())));
+            conditions.add(TABLE.ROOM_START_TIME.ge(DSL.timestamp(search.getStartDate() + " 00:00:00"))
+                    .or(TABLE.ROOM_LAST_TIME.le(DSL.timestamp(search.getStartDate() + " 23:59:59"))));
+
         if (Objects.nonNull(search.getEndDate()))
-            conditions.add(DSL.date(TABLE.ROOM_START_TIME).ge(search.getEndDate()).or(DSL.date(TABLE.ROOM_LAST_TIME).le(search.getEndDate())));
+            conditions.add(TABLE.ROOM_START_TIME.ge(DSL.timestamp(search.getEndDate() + " 00:00:00"))
+                    .or(TABLE.ROOM_START_TIME.le(DSL.timestamp(search.getEndDate() + " 00:00:00"))));
+
         if (StringUtils.isNotEmpty(search.getId()))
             conditions.add(TABLE.USERID.eq(search.getId()));
         if (StringUtils.isNotEmpty(search.getRoomName()))

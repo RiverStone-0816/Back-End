@@ -31,6 +31,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.*;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ExecutePdsGroup.EXECUTE_PDS_GROUP;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PdsGroup.PDS_GROUP;
 import static org.apache.commons.lang3.StringUtils.*;
@@ -391,9 +392,9 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
         final List<Condition> conditions = new ArrayList<>();
 
         if (search.getStartDate() != null)
-        	conditions.add(DSL.date(PDS_GROUP.MAKE_DATE).ge(search.getStartDate()));
+        	conditions.add(PDS_GROUP.MAKE_DATE.ge(DSL.timestamp(search.getStartDate() + " 00:00:00")));
         if (search.getEndDate() != null)
-        	conditions.add(DSL.date(PDS_GROUP.MAKE_DATE).le(search.getEndDate()));
+        	conditions.add(PDS_GROUP.MAKE_DATE.le(DSL.timestamp(search.getEndDate() + " 23:59:59")));
         if (search.getPdsType() != null)
             conditions.add(PDS_GROUP.PDS_TYPE.eq(search.getPdsType()));
         if (isNotEmpty(search.getName()))
@@ -414,9 +415,9 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
         final List<Condition> conditions = new ArrayList<>();
 
         if (search.getStartDate() != null)
-            conditions.add(DSL.date(PDS_GROUP.LAST_EXECUTE_DATE).ge(search.getStartDate()));
+            conditions.add(PDS_GROUP.LAST_EXECUTE_DATE.ge(DSL.timestamp(search.getStartDate() + " 00:00:00")));
         if (search.getEndDate() != null)
-            conditions.add(DSL.date(PDS_GROUP.LAST_EXECUTE_DATE).le(search.getEndDate()));
+            conditions.add(PDS_GROUP.LAST_EXECUTE_DATE.le(DSL.timestamp(search.getEndDate() + " 23:59:59")));
         if (isNotEmpty(search.getLastExecuteId()))
             conditions.add(PDS_GROUP.LAST_EXECUTE_ID.eq(search.getLastExecuteId()));
 

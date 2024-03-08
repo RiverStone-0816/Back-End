@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.RouteApplication.ROUTE_APPLICATION;
 
@@ -79,9 +80,9 @@ public class RouteApplicationRepository extends EicnBaseRepository<RouteApplicat
         final List<Condition> conditions = new ArrayList<>();
 
         if (Objects.nonNull(search.getStartDate()))
-            conditions.add(DSL.date(ROUTE_APPLICATION.INPUT_DATE).greaterOrEqual(search.getStartDate()));
+            conditions.add(ROUTE_APPLICATION.INPUT_DATE.ge(DSL.timestamp(search.getStartDate() + " 00:00:00")));
         if (Objects.nonNull(search.getEndDate()))
-            conditions.add(DSL.date(ROUTE_APPLICATION.INPUT_DATE).lessOrEqual(search.getEndDate()));
+            conditions.add(ROUTE_APPLICATION.INPUT_DATE.le(DSL.timestamp(search.getEndDate() + " 23:59:59")));
         if (StringUtils.isNotEmpty(search.getNumber()))
             conditions.add(ROUTE_APPLICATION.NUMBER.like("%" + search.getNumber() + "%"));
         if (Objects.nonNull(search.getType()))

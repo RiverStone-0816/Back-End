@@ -68,9 +68,9 @@ public class CurrentWtalkRoomRepository extends EicnBaseRepository<CurrentWtalkR
         List<Condition> conditions = new ArrayList<>();
 
         if (Objects.nonNull(search.getStartDate()))
-            conditions.add(DSL.date(CURRENT_WTALK_ROOM.ROOM_START_TIME).ge(search.getStartDate()));
+            conditions.add(CURRENT_WTALK_ROOM.ROOM_START_TIME.ge(DSL.timestamp(search.getStartDate() + " 00:00:00")));
         if (Objects.nonNull(search.getEndDate()))
-            conditions.add(DSL.date(CURRENT_WTALK_ROOM.ROOM_LAST_TIME).le(search.getEndDate()));
+            conditions.add(CURRENT_WTALK_ROOM.ROOM_START_TIME.le(DSL.timestamp(search.getEndDate() + " 23:59:59")));
         if (StringUtils.isNotEmpty(search.getId()))
             conditions.add(CURRENT_WTALK_ROOM.USERID.eq(search.getId()));
         if (StringUtils.isNotEmpty(search.getSenderKey()))

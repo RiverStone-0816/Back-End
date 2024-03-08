@@ -66,9 +66,9 @@ public class StatVOCRepository extends StatDBBaseRepository<CommonStatVoc, StatV
         final List<Condition> conditions = new ArrayList<>();
 
         if (search.getStartDate() != null)
-            conditions.add(DSL.date(TABLE.STAT_DATE).ge(search.getStartDate()));
+            conditions.add(TABLE.STAT_DATE.ge(search.getStartDate()));
         if (search.getEndDate() != null)
-            conditions.add(DSL.date(TABLE.STAT_DATE).le(search.getEndDate()));
+            conditions.add(TABLE.STAT_DATE.le(search.getEndDate()));
         if (search.getVocGroupSeq() != null)
             conditions.add(VOC_GROUP.SEQ.eq(search.getVocGroupSeq()));
 

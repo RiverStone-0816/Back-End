@@ -32,6 +32,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationForm.EVALUATION_FORM;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationItemScore.EVALUATION_ITEM_SCORE;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationResult.EVALUATION_RESULT;
@@ -108,14 +109,14 @@ public class EvaluationResultRepository extends EicnBaseRepository<EvaluationRes
         final List<org.jooq.Condition> conditions = new ArrayList<>();
 
         if (search.getStartEvaluationDate() != null)
-            conditions.add(DSL.date(EVALUATION_RESULT.EVALUATION_DATE).ge(search.getStartEvaluationDate()));
+            conditions.add(EVALUATION_RESULT.EVALUATION_DATE.ge(DSL.timestamp(search.getStartEvaluationDate() + " 00:00:00")));
         if (search.getEndEvaluationDate() != null)
-            conditions.add(DSL.date(EVALUATION_RESULT.EVALUATION_DATE).le(search.getEndEvaluationDate()));
+            conditions.add(EVALUATION_RESULT.EVALUATION_DATE.le(DSL.timestamp(search.getEndEvaluationDate() + " 23:59:59")));
 
         if (search.getStartRingDate() != null)
-            conditions.add(DSL.date(cdrTable.RING_DATE).ge(search.getStartRingDate()));
+            conditions.add(cdrTable.RING_DATE.ge(DSL.timestamp(search.getStartRingDate() + " 00:00:00")));
         if (search.getEndRingDate() != null)
-            conditions.add(DSL.date(cdrTable.RING_DATE).le(search.getEndRingDate()));
+            conditions.add(cdrTable.RING_DATE.le(DSL.timestamp(search.getEndRingDate() + " 23:59:59")));
 
         if (search.getEvaluationId() != null)
             conditions.add(EVALUATION_RESULT.EVALUATION_ID.eq(search.getEvaluationId()));

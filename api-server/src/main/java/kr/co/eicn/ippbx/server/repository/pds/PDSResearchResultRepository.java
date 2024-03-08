@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
 import static kr.co.eicn.ippbx.meta.jooq.pds.Tables.PDS_RESEARCH_RESULT;
 
 @Getter
@@ -81,9 +82,9 @@ public class PDSResearchResultRepository extends PDSDbBaseRepository<CommonPDSRe
         final List<Condition> conditions = new ArrayList<>();
 
         if (search.getStartDate() != null)
-            conditions.add(DSL.date(TABLE.RESULT_DATE).ge(search.getStartDate()));
+            conditions.add(TABLE.RESULT_DATE.ge(DSL.timestamp(search.getStartDate() + " 00:00:00")));
         if (search.getEndDate() != null)
-            conditions.add(DSL.date(TABLE.RESULT_DATE).le(search.getEndDate()));
+            conditions.add(TABLE.RESULT_DATE.le(DSL.timestamp(search.getEndDate() + " 23:59:59")));
         if (StringUtils.isNotEmpty(search.getExecuteId()))
             conditions.add(TABLE.EXECUTE_ID.eq(search.getExecuteId()));
 

@@ -54,8 +54,8 @@ public class CustomDBVOCResultRepository extends CustomDBBaseRepository<CommonVo
         final List<Condition> conditions = new ArrayList<>();
 
         if (Objects.nonNull(search.getStartDate()) && Objects.nonNull(search.getEndDate())) {
-            conditions.add(DSL.date(TABLE.RESULT_DATE).ge(search.getStartDate()));
-            conditions.add(DSL.date(TABLE.RESULT_DATE).le(search.getEndDate()));
+            conditions.add(TABLE.RESULT_DATE.ge(DSL.timestamp(search.getStartDate() + " 00:00:00")));
+            conditions.add(TABLE.RESULT_DATE.le(DSL.timestamp(search.getEndDate() + " 23:59:59")));
 
             if (search.getStartDate().after(search.getEndDate()))
                 throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");

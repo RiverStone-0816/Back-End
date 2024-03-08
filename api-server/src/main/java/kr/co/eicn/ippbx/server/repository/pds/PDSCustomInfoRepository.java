@@ -72,9 +72,9 @@ public class PDSCustomInfoRepository extends PDSDbBaseRepository<CommonPDSCustom
 		if (Objects.nonNull(search.getGroupSeq()))
 			conditions.add(TABLE.PDS_SYS_GROUP_ID.eq(search.getGroupSeq()));
 		if (search.getCreatedStartDate() != null)
-			conditions.add(DSL.date(TABLE.PDS_SYS_UPLOAD_DATE).greaterOrEqual(search.getCreatedStartDate()));
+			conditions.add(TABLE.PDS_SYS_UPLOAD_DATE.ge(DSL.timestamp(search.getCreatedStartDate() + " 00:00:00")));
 		if (search.getCreatedEndDate() != null)
-			conditions.add(DSL.date(TABLE.PDS_SYS_UPLOAD_DATE).lessOrEqual(search.getCreatedEndDate()));
+			conditions.add(TABLE.PDS_SYS_UPLOAD_DATE.le(DSL.timestamp(search.getCreatedEndDate() + " 23:59:59")));
 
 		search.getDbTypeFields().forEach((k, v) -> {
 			final Field<?> field = TABLE.field(k);

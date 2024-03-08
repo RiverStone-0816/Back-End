@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.HISTORY_PDS_GROUP;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
 
 @Getter
 @Repository
@@ -68,10 +69,10 @@ public class HistoryPDSGroupRepository extends EicnBaseRepository<HistoryPdsGrou
         final List<Condition> conditions = new ArrayList<>();
 
         if (search.getStartDate() != null)
-            conditions.add(DSL.date(HISTORY_PDS_GROUP.START_DATE).ge(search.getStartDate()));
+            conditions.add(HISTORY_PDS_GROUP.START_DATE.ge(DSL.timestamp(search.getStartDate() + " 00:00:00")));
 
         if (search.getEndDate() != null)
-            conditions.add(DSL.date(HISTORY_PDS_GROUP.START_DATE).le(search.getEndDate()));
+            conditions.add(HISTORY_PDS_GROUP.START_DATE.le(DSL.timestamp(search.getEndDate() + " 23:59:59")));
 
         if (StringUtils.isNotEmpty(search.getExecuteId()))
             conditions.add(HISTORY_PDS_GROUP.EXECUTE_ID.eq(search.getExecuteId()));

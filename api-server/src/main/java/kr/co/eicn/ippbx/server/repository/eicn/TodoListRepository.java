@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TodoList.TODO_LIST;
 import static org.jooq.impl.DSL.now;
 
@@ -145,10 +146,10 @@ public class TodoListRepository extends EicnBaseRepository<TodoList, kr.co.eicn.
             conditions.add(TODO_LIST.TODO_INFO.in(search.getPhoneNumbers()));
 
         if (search.getStartDate() != null)
-            conditions.add(DSL.date(TODO_LIST.REGDATE).ge(search.getStartDate()));
+            conditions.add(TODO_LIST.REGDATE.ge(DSL.timestamp(search.getStartDate() + " 00:00:00")));
 
         if (search.getEndDate() != null)
-            conditions.add(DSL.date(TODO_LIST.REGDATE).le(search.getEndDate()));
+            conditions.add(TODO_LIST.REGDATE.le(DSL.timestamp(search.getEndDate() + " 23:59:59")));
 
         return conditions;
     }

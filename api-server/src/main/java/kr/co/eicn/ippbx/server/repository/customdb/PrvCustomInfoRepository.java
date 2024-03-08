@@ -121,16 +121,16 @@ public class PrvCustomInfoRepository extends CustomDBBaseRepository<CommonPrvCus
             conditions.add(TABLE.PRV_SYS_GROUP_ID.eq(search.getGroupSeq()));
 
         if (search.getCreatedStartDate() != null)
-            conditions.add(DSL.date(TABLE.PRV_SYS_UPLOAD_DATE).ge(search.getCreatedStartDate()));
+            conditions.add(TABLE.PRV_SYS_UPLOAD_DATE.ge(DSL.timestamp(search.getCreatedStartDate() + " 00:00:00")));
 
         if (search.getCreatedEndDate() != null)
-            conditions.add(DSL.date(TABLE.PRV_SYS_UPLOAD_DATE).le(search.getCreatedEndDate()));
+            conditions.add(TABLE.PRV_SYS_UPLOAD_DATE.le(DSL.timestamp(search.getCreatedEndDate() + " 23:59:59")));
 
         if (search.getLastResultStartDate() != null)
-            conditions.add(DSL.date(TABLE.PRV_SYS_LAST_RESULT_DATE).ge(search.getLastResultStartDate()));
+            conditions.add(TABLE.PRV_SYS_LAST_RESULT_DATE.ge(DSL.timestamp(search.getLastResultStartDate() + " 00:00:00")));
 
         if (search.getLastResultEndDate() != null)
-            conditions.add(DSL.date(TABLE.PRV_SYS_LAST_RESULT_DATE).le(search.getLastResultEndDate()));
+            conditions.add(TABLE.PRV_SYS_LAST_RESULT_DATE.le(DSL.timestamp(search.getLastResultEndDate() + " 23:59:59")));
 
         if (StringUtils.isNotEmpty(search.getPersonIdInCharge()))
             conditions.add(TABLE.PRV_SYS_DAMDANG_ID.eq(search.getPersonIdInCharge()));
