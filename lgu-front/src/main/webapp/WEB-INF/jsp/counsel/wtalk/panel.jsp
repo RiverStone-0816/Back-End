@@ -216,6 +216,7 @@
                         roomMap: {},
                         activatedRoomIds: [],
                         persons: [],
+                        serviceNames: [],
                         isSearch: false,
                     }
                 },
@@ -226,55 +227,55 @@
                     load: function () {
                         const _this = this
                         return restSelf.get('/api/counsel/current-talk-list', null, null, true).done(function (response) {
-                            _this.roomMap = {}
-                            _this.STATUSES.forEach(e => _this.statuses[e.status].rooms = [])
-                            response.data.forEach(function (e) {
-                                if (!e.talkRoomMode)
-                                    return
-
-                                const status = e.talkRoomMode
-
-                                e.lastMessage = _this.getLastMessage(e.send_receive, e.type, e.content, e.userName)
-
-                                talkRoomList.forEach(room => {
-                                    if (room.roomId === e.roomId){
-                                        room.roomStatus = e.roomStatus
-                                        room.userId = e.userId
-                                    }
-                                })
-
-                                const appendNewRoom = () => {
-                                    e.container = _this.statuses[status]
-                                    e.container.rooms.push(e)
-                                    if (_this.isReallocationStatus(status)) _this.statuses.REALLOCATION.rooms.push(e)
-                                    _this.roomMap[e.roomId] = e
-                                }
-
-                                if (_this.roomMap[e.roomId]) {
-                                    for (let i = 0; i < _this.roomMap[e.roomId].container.rooms.length; i++) {
-                                        if (_this.roomMap[e.roomId].container.rooms[i].roomId === e.roomId) {
-                                            if (status === _this.roomMap[e.roomId].container.status) {
-                                                Object.assign(_this.roomMap[e.roomId].container.rooms[i], e)
-                                            } else {
-                                                _this.roomMap[e.roomId].container.rooms.splice(i, 1)
-                                                for (let j = 0; j < _this.statuses.REALLOCATION.rooms.length; j++) {
-                                                    if (_this.statuses.REALLOCATION.rooms[j].roomId === e.roomId) {
-                                                        _this.statuses.REALLOCATION.rooms.splice(j, 1)
-                                                        break
-                                                    }
-                                                }
-                                                delete _this.roomMap[e.roomId]
-                                                appendNewRoom()
-                                            }
-                                            break
-                                        }
-                                    }
-                                } else {
-                                    appendNewRoom()
-                                }
-                            })
-                            _this.STATUSES.forEach(e => _this.filter(e.status))
+                            response.data.forEach(e => _this.roomLoad(e))
                         })
+                    },
+                    roomLoad: function (e) {
+                        const _this = this
+                        if (!e.talkRoomMode)
+                            return
+
+                        const status = e.talkRoomMode
+
+                        e.lastMessage = _this.getLastMessage(e.send_receive, e.type, e.content, e.userName)
+
+                        talkRoomList.forEach(room => {
+                            if (room.roomId === e.roomId){
+                                room.roomStatus = e.roomStatus
+                                room.userId = e.userId
+                            }
+                        })
+
+                        const appendNewRoom = () => {
+                            e.container = _this.statuses[status]
+                            e.container.rooms.push(e)
+                            if (_this.isReallocationStatus(status)) _this.statuses.REALLOCATION.rooms.push(e)
+                            _this.roomMap[e.roomId] = e
+                        }
+
+                        if (_this.roomMap[e.roomId]) {
+                            for (let i = 0; i < _this.roomMap[e.roomId].container.rooms.length; i++) {
+                                if (_this.roomMap[e.roomId].container.rooms[i].roomId === e.roomId) {
+                                    if (status === _this.roomMap[e.roomId].container.status) {
+                                        Object.assign(_this.roomMap[e.roomId].container.rooms[i], e)
+                                    } else {
+                                        _this.roomMap[e.roomId].container.rooms.splice(i, 1)
+                                        for (let j = 0; j < _this.statuses.REALLOCATION.rooms.length; j++) {
+                                            if (_this.statuses.REALLOCATION.rooms[j].roomId === e.roomId) {
+                                                _this.statuses.REALLOCATION.rooms.splice(j, 1)
+                                                break
+                                            }
+                                        }
+                                        delete _this.roomMap[e.roomId]
+                                        appendNewRoom()
+                                    }
+                                    break
+                                }
+                            }
+                        } else {
+                            appendNewRoom()
+                        }
+                        _this.STATUSES.forEach(e => _this.filter(e.status))
                     },
                     removeRoom: function (roomId) {
                         if (!this.roomMap[roomId])
@@ -311,9 +312,9 @@
                             return b["roomLastTime"].localeCompare(a["roomLastTime"])
                         })
                     },
-                    updateRoom: function (roomId, messageType, content, messageTime, sendReceive, customName) {
+                    updateRoom: function (roomData, roomId, messageType, content, messageTime, sendReceive, customName) {
                         if (!this.roomMap[roomId])
-                            return this.load()
+                            return this.roomLoad(roomData)
 
                         this.roomMap[roomId].content = content
                         this.roomMap[roomId].roomLastTime = messageTime
@@ -324,8 +325,6 @@
                         if (this.isReallocationStatus(this.roomMap[roomId].container.status)) this.changeOrdering(this.statuses.REALLOCATION.status)
                     },
                     updateRoomUser: function (roomId, status, userKey, userId) {
-                        if (!this.roomMap[roomId])
-                            return this.load()
 
                         for (let i = 0; i < this.roomMap[roomId].container.rooms.length; i++) {
                             if (this.roomMap[roomId].container.rooms[i].roomId === roomId) {
@@ -344,9 +343,9 @@
                         this.changeOrdering(status)
                         if (this.isReallocationStatus(status)) this.changeOrdering(this.statuses.REALLOCATION.status)
                     },
-                    updateRoomStatus: function (roomId, status, sendReceive, messageType, content, messageTime) {
+                    updateRoomStatus: function (roomData, roomId, status, sendReceive, messageType, content, messageTime, userId, userName) {
                         if (!this.roomMap[roomId])
-                            return this.load()
+                            return this.roomLoad(roomData)
 
                         for (let i = 0; i < this.roomMap[roomId].container.rooms.length; i++) {
                             if (this.roomMap[roomId].container.rooms[i].roomId === roomId) {
@@ -359,7 +358,9 @@
                             this.roomMap[roomId].content = content
                             this.roomMap[roomId].roomLastTime = messageTime
                             this.roomMap[roomId].type = messageType
-                            this.roomMap[roomId].lastMessage = this.getLastMessage(sendReceive, messageType, content, this.roomMap[roomId].userName)
+                            this.roomMap[roomId].lastMessage = this.getLastMessage(sendReceive, messageType, content, userName)
+                            this.roomMap[roomId].userId = userId
+                            this.roomMap[roomId].userName = userName
                         }
 
                         this.roomMap[roomId].status = status
@@ -368,7 +369,6 @@
 
                         this.changeOrdering(status)
                         if (this.isReallocationStatus(status)) this.changeOrdering(this.statuses.REALLOCATION.status)
-                        this.load()
                     },
                     getImage: function (userName) {
                         return profileImageSources[Math.abs(userName.hashCode()) % profileImageSources.length]
@@ -434,6 +434,10 @@
                         const _this = this
                         restSelf.get('/api/monit/').done(response => _this.persons = response.data.map(team => team.person).flatMap(persons => persons))
                     },
+                    loadServiceName() {
+                        const _this = this
+                        restSelf.get('/api/wtalk-service/').done(response => _this.serviceNames = response.data)
+                    },
                     getLastMessage(sendReceive, type, content, userName) {
                         let lastMessage = ""
 
@@ -490,6 +494,7 @@
                 mounted: function () {
                     this.load()
                     this.loadPersons()
+                    this.loadServiceName()
                 },
             }).mount('#talk-list-container')
         </script>
@@ -1329,7 +1334,6 @@
                     return this.templates.filter(e => e.permissionLevel >= _this.showingTemplateLevel && e.name.includes(_this.showingTemplateFilter))
                 },
                 keyDown: function(event) {
-                    console.log(event)
                     if (event.key === 'Escape') {
                         this.replying = null
                         return
@@ -1546,7 +1550,7 @@
 
         function processTalkMessage(data) {
             if (!data.send_receive)
-                return talkListContainer.updateRoomStatus(data.room_id, data.userid === userId ? 'MY' : 'OTH')
+                return talkListContainer.updateRoomStatus(dataMigration(data.room_data), data.room_id, data.userid === userId ? 'MY' : 'OTH')
 
             const messageTime = moment().format('YYYY-MM-DD') + ' ' + data.cur_timestr.substring(data.cur_timestr.length - 8, data.cur_timestr.length)
 
@@ -1554,14 +1558,14 @@
                 if (data.userid === userId)
                     talkListContainer.activeTab('MY')
                 talkRoom.talkStatus = talkListContainer.statuses[data.userid === userId ? 'MY' : 'OTH'].text
-                talkListContainer.updateRoomStatus(data.room_id, data.userid === userId ? 'MY' : 'OTH', data.send_receive, data.type, data.content, messageTime)
+                talkListContainer.updateRoomStatus(dataMigration(data.room_data), data.room_id, data.userid === userId ? 'MY' : 'OTH', data.send_receive, data.type, data.content, messageTime, data.userid, data.username)
             } else if (['SE', 'RE', 'AE'].includes(data.send_receive)) {
                 if (data.userid === userId) {
                     talkRoom.talkStatus = talkListContainer.statuses['END'].text
                     talkListContainer.activeTab('END')
                     talkRoom.isMessage = true
                 }
-                talkListContainer.updateRoomStatus(data.room_id, 'END', data.send_receive, data.type, data.content, messageTime)
+                talkListContainer.updateRoomStatus(dataMigration(data.room_data), data.room_id, 'END', data.send_receive, data.type, data.content, messageTime, data.userid, data.username)
             } else if (['SD'].includes(data.send_receive)) {
                 talkListContainer.load()
                 if (talkRoom.roomId === data.room_id)
@@ -1618,7 +1622,7 @@
             } else if (['RARC','RVRC'].includes(data.send_receive) && data.userid === userId) {
                 console.log(data.content);
             } else {
-                talkListContainer.updateRoom(data.room_id, data.type, data.content, messageTime, data.send_receive, data.customname)
+                talkListContainer.updateRoom(dataMigration(data.room_data), data.room_id, data.type, data.content, messageTime, data.send_receive, data.customname)
                 if (data.send_receive === 'R' && data.userid === userId && talkRoom.roomId !== data.room_id) {
                     talkListContainer.statuses['MY'].newMessages++
                 }
@@ -1641,6 +1645,31 @@
                 userId: data.send_receive === 'AF' || data.send_receive.startsWith('S') ? data.userid : null,
                 username: data.send_receive === 'AF' || data.send_receive.startsWith('S') ? data.username : data.customname,
             }))
+        }
+
+        function dataMigration(data) {
+            return {
+                seq : data.seq,
+                channelType: data.channel_type,
+                roomId: data.room_id,
+                roomName: data.room_name,
+                roomStatus: data.room_status,
+                talkRoomMode: data.room_status === 'G' ? data.userid === '${g.user.id}' ? 'MY' : data.userid === '' ? 'TOT' : data.userid !== '${g.user.id}' ? 'OTH' : '' : data.room_status === 'E' ? 'END' : '',
+                roomStartTime: data.room_start_time,
+                roomEndTime: data.room_end_time,
+                userId: data.userid,
+                userName: talkListContainer.persons.filter(person => person.id === data.userid)[0]?.idName,
+                userKey: data.user_key,
+                senderKey: data.sender_key,
+                svcName: talkListContainer.serviceNames.filter(serviceName => serviceName.senderKey === data.sender_key)[0]?.kakaoServiceName,
+                content: data.last_content,
+                type: data.last_type,
+                maindbGroupId: data.maindb_group_id,
+                maindbCustomName: data.maindb_custom_name,
+                maindbCustomId: data.maindb_custom_id,
+                isAutoEnable: data.is_auto_enable,
+                isCustomUploadEnable: data.is_custom_upload_enable
+            }
         }
 
         window.talkCommunicator = new TalkCommunicator()
