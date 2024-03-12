@@ -1656,7 +1656,7 @@
                 roomStatus: data.room_status,
                 talkRoomMode: data.room_status === 'G' ? data.userid === '${g.user.id}' ? 'MY' : data.userid === '' ? 'TOT' : data.userid !== '${g.user.id}' ? 'OTH' : '' : data.room_status === 'E' ? 'END' : '',
                 roomStartTime: data.room_start_time,
-                roomEndTime: data.room_end_time,
+                roomLastTime: data.room_last_time,
                 userId: data.userid,
                 userName: talkListContainer.persons.filter(person => person.id === data.userid)[0]?.idName,
                 userKey: data.user_key,
