@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.HISTORY_PDS_GROUP;
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
 
 @Getter
 @Repository

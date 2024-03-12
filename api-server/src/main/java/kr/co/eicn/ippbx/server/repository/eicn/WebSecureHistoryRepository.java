@@ -21,7 +21,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.WebSecureHistory.WEB_SECURE_HISTORY;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;

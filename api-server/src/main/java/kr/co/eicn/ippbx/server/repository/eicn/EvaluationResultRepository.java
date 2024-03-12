@@ -32,7 +32,6 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationForm.EVALUATION_FORM;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationItemScore.EVALUATION_ITEM_SCORE;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.EvaluationResult.EVALUATION_RESULT;

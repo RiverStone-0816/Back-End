@@ -22,7 +22,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.TodoList.TODO_LIST;
 import static org.jooq.impl.DSL.now;
 

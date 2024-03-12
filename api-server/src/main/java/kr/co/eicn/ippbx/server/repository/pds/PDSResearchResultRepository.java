@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
 import static kr.co.eicn.ippbx.meta.jooq.pds.Tables.PDS_RESEARCH_RESULT;
 
 @Getter

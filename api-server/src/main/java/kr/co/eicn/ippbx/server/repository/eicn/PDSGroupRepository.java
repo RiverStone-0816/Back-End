@@ -31,7 +31,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.*;
-import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentWtalkRoom.CURRENT_WTALK_ROOM;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ExecutePdsGroup.EXECUTE_PDS_GROUP;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PdsGroup.PDS_GROUP;
 import static org.apache.commons.lang3.StringUtils.*;
