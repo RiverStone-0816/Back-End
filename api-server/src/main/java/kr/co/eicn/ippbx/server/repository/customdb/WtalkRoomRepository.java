@@ -40,7 +40,7 @@ public class WtalkRoomRepository extends CustomDBBaseRepository<CommonWtalkRoom,
                     .or(TABLE.ROOM_LAST_TIME.le(DSL.timestamp(search.getStartDate() + " 23:59:59"))));
         if (Objects.nonNull(search.getEndDate()))
             conditions.add(TABLE.ROOM_START_TIME.ge(DSL.timestamp(search.getEndDate() + " 00:00:00"))
-                    .or(TABLE.ROOM_START_TIME.le(DSL.timestamp(search.getEndDate() + " 23:59:59"))));
+                    .or(TABLE.ROOM_LAST_TIME.le(DSL.timestamp(search.getEndDate() + " 23:59:59"))));
 
         if (StringUtils.isNotEmpty(search.getId()))
             conditions.add(TABLE.USERID.eq(search.getId()));
