@@ -15,10 +15,10 @@ import java.sql.Date;
 public class TalkRoomSearchRequest extends PageForm {
     @PageQueryable
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = Constants.DEFAULT_TIMEZONE)
-    private Date startDate;
+    private Date startDate = new Date(System.currentTimeMillis() - 6 * 24 * 60 * 60 * 1000);
     @PageQueryable
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = Constants.DEFAULT_TIMEZONE)
-    private Date endDate;
+    private Date endDate = new Date(System.currentTimeMillis());
     @PageQueryable
     private String id;          //상담원 id
     /**
