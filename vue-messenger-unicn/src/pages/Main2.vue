@@ -1,10 +1,10 @@
 <template>
-  <body class="font-sans-kr text-gray-800 bg-blue-100" @contextmenu.prevent>
+  <body class="font-pretendard text-gray-800 bg-blue-100" @contextmenu.prevent>
   <div class="h-screen m-auto">
     <div class="flex flex-col flex-auto h-full rounded-3xl shadow-body">
       <!--상단 홈 영역-->
       <!--bg-[#~~~~~~]이 버튼색상, 텍스트색상등과 같이 움직여야 하는 배경색, text-[#~~], border-[#~~]로 사용-->
-      <div class="flex flex-row items-center h-14 bg-white w-full px-3" style="background-color: #0C4DA2">
+      <div class="flex flex-row items-center h-14 bg-white w-full px-3" style="background-color: #0C65E5">
         <!--홈버튼-->
         <button class="flex items-center justify-center rounded-lg hover:bg-slate-900/20 h-10 w-10 text-white" @click.stop="homeAction">
             <span>
@@ -107,7 +107,7 @@
         <template v-for="(message, iMessage) in messages" :key="iMessage">
 
           <!-- intro start -->
-          <template v-if="message.sender === 'SERVER' && message.messageType === 'intro'">
+          <template v-if="message.sender === 'SERVER' && message.messageType === 'intro' && message.data.msg !== ''">
             <div class="pl-3 pt-3">
               <div class="flex items-start">
                 <!--채널봇 아이콘-->
@@ -181,7 +181,7 @@
                     </span>
                   </div>
                   <div class="space-y-2" v-show="getLastOrder(iMessage)">
-                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actFallback(message)">
+                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C65E5" @click.stop="actFallback(message)">
                       {{ getFallbackButtonName(message.data.fallback_action) }}
                     </button>
                   </div>
@@ -209,7 +209,7 @@
                   </div>
                   <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="space-y-2" v-show="getLastOrder(iMessage)">
                     <span v-if="e instanceof Array">
-                      <button v-for="(e2, j) in e" :key="j"  class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actButton(message, e2)">
+                      <button v-for="(e2, j) in e" :key="j"  class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C65E5" @click.stop="actButton(message, e2)">
                         {{ e2.btn_name }}
                       </button>
                     </span>
@@ -396,12 +396,12 @@
                 <div v-for="(e, i) in getButtonGroups(message)" :key="i" class="flex flex-col space-y-2 max-w-xxs text-main m-2 mt-0 mr-4">
                   <div class="space-y-2" v-show="getLastOrder(iMessage)">
                     <span v-if="e instanceof Array">
-                      <button v-for="(e2, j) in e" :key="j" class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actButton(message, e2)">
+                      <button v-for="(e2, j) in e" :key="j" class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C65E5" @click.stop="actButton(message, e2)">
                         {{ e2.btn_name }}
                       </button>
                     </span>
                     <span v-else>
-                      <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2" @click.stop="actApi(message, e, $event)">
+                      <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C65E5" @click.stop="actApi(message, e, $event)">
                         {{ e.btn_name }}
                       </button>
                     </span>
@@ -573,8 +573,8 @@
                     </span>
                   </div>
                   <div class="space-y-2" v-show="getLastOrder(iMessage) && vChatButton">
-                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="audioStart(true)">수락</button>
-                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="audioStart(false)">거절</button>
+                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C65E5"  @click.stop="audioStart(true)">수락</button>
+                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C65E5"  @click.stop="audioStart(false)">거절</button>
                   </div>
                 </div>
               </div>
@@ -596,8 +596,8 @@
                     </span>
                   </div>
                   <div class="space-y-2" v-show="getLastOrder(iMessage) && vChatButton">
-                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="videoStart(true)">수락</button>
-                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C4DA2"  @click.stop="videoStart(false)">거절</button>
+                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C65E5"  @click.stop="videoStart(true)">수락</button>
+                    <button class="py-1 px-3 text-white rounded-lg text-xs-custom hover:shadow-lg m-1" style="background-color: #0C65E5"  @click.stop="videoStart(false)">거절</button>
                   </div>
                 </div>
               </div>

@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: 'Pretendard';
+    src: url('./fonts/Pretendard-Bold.otf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* can be configured in tailwind.config.js */
 .group:hover .group-hover\:block {
     display: block;
