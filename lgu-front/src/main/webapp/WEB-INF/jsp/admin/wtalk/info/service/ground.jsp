@@ -52,9 +52,11 @@
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(e.kakaoServiceName)}</td>
                                         <td>${g.htmlQuote(e.kakaoServiceId)}
+                                            <button type="button" class="ui button mini icon compact">
                                                 <a href="https://pf.kakao.com/${e.kakaoServiceId}" target="_blank">
                                                     <i class="home icon"></i>
                                                 </a>
+                                            </button>
                                         </td>
                                         <td>${g.htmlQuote(e.senderKey)}</td>
                                         <td>${e.isChattEnable == 'Y' ? '활성화' : '비활성화'}</td>
