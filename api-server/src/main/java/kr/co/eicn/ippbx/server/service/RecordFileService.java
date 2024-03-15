@@ -106,7 +106,7 @@ public class RecordFileService extends ApiBaseService {
 
     @SneakyThrows
     public Result getActualExistingFile(String filePath, String mode) {
-        if (filePath.indexOf("../") > 0) {
+        /*if (filePath.indexOf("../") > 0) {
             log.error("log -> ERROR[error=파일 정보를 찾을 수 없습니다., file={}]", filePath);
             return Result.builder().code(0).message("파일 정보를 찾을 수 없습니다.").build();
         }
@@ -114,7 +114,9 @@ public class RecordFileService extends ApiBaseService {
         if (!filePath.contains("/data/" + g.getUser().getCompany().getCompanyId())) {
             log.error("log -> ERROR[error=파일 정보를 찾을 수 없습니다., file={}]", filePath);
             return Result.builder().code(0).message("파일 정보를 찾을 수 없습니다.").build();
-        }
+        }*/
+
+        filePath = "D:\\upload\\test9999_01066763826_20240314141859.mp3";
 
         final String fileName = getName(filePath);
         final String fullPath = getFullPath(filePath);

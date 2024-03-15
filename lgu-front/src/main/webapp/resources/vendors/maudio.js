@@ -22,6 +22,12 @@ function maudio(_opt){
           <div class="volume-bar">\
               <div class="volume-pass"></div>\
           </div>\
+          <select href="javascript:" class="speed-control">\
+            <option selected="selected" name="speed-control">재생속도</option>\
+            <option value="1.5">1.5x</option>\
+            <option value="2.0">2x</option>\
+            <option value="3.0">3x</option>\
+          </select>\
       </div>\
     </div>';
   // var currentAudio,currentAudioBox
@@ -103,6 +109,11 @@ function maudio(_opt){
       var p = e.offsetX / audioBox.find('.volume-bar').width();
       audioBox.find('.volume-pass').css({"width":p * 100 + '%'});
       audio.volume = p > 1 ? 1 : p
+    });
+    // 재생속도
+    $(thisWindow).find('.audio-control .speed-control').change(function(){
+      var selectBox = $(this).find('option:selected').val();
+      currentAudio.playbackRate = selectBox;
     });
     // 静音
     $(thisWindow).find('.audio-control .mute').off('click');
