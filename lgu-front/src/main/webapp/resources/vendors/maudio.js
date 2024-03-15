@@ -23,7 +23,7 @@ function maudio(_opt){
               <div class="volume-pass"></div>\
           </div>\
           <select href="javascript:" class="speed-control">\
-            <option selected="selected" name="speed-control">재생속도</option>\
+            <option value="1.0" selected="selected" name="speed-control">재생속도</option>\
             <option value="1.5">1.5x</option>\
             <option value="2.0">2x</option>\
             <option value="3.0">3x</option>\
@@ -85,6 +85,11 @@ function maudio(_opt){
         audioBox.addClass('playing');
         currentAudio = audio;
         currentAudioBox = audioBox;
+
+        var speedControl = $(thisWindow).find('.audio-control .speed-control');
+        var selectBox = speedControl.find('option:selected').val();
+        currentAudio.playbackRate = selectBox;
+
         // 进度条
         window.t = window.setInterval(function(){
           progressBar()
