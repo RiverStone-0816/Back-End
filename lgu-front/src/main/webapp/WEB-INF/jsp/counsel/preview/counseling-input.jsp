@@ -211,7 +211,9 @@
     window.donePostPreviewCounselingInfo = function (form) {
         alert('상담정보가 저장되었습니다.');
         audioId = null;
+        callType = null;
         phoneNumber = null;
+        ipccCommunicator.status.clickKey = null;
 
         $('#search-preview-form').submit();
         loadPreviewCounselingInput($(form).find('[name=groupId]').val());
