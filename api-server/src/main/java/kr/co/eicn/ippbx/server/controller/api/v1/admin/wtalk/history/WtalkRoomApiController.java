@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -51,14 +52,13 @@ public class WtalkRoomApiController extends ApiBaseController {
     @Value("${file.path.talk}")
     private String location;
 
-
     /**
      * 목록 조회
      */
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<WtalkRoomResponse>>> pagination(TalkRoomSearchRequest search) {
         Pagination<WtalkRoomEntity> pagination;
-        List<PersonList> personList = personListRepository.findAll();
+        final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
 
         if (search.getStartDate() != null && search.getEndDate() != null)
             if (search.getStartDate().after(search.getEndDate()))
@@ -75,11 +75,10 @@ public class WtalkRoomApiController extends ApiBaseController {
         } else
             throw new IllegalArgumentException(message.getText("messages.validator.invalid", "방상태 (진행.중지/내려짐)"));
 
-        List<WtalkRoomResponse> rows = pagination.getRows().stream()
+        final List<WtalkRoomResponse> rows = pagination.getRows().stream()
                 .map(e -> {
-                    WtalkRoomResponse talkRoomResponse = convertDto(e, WtalkRoomResponse.class);
-
-                    talkRoomResponse.setIdName(personList.stream().filter(person -> person.getId().equals(e.getUserid())).map(PersonList::getIdName).findFirst().orElse(""));
+                    final WtalkRoomResponse talkRoomResponse = convertDto(e, WtalkRoomResponse.class);
+                    talkRoomResponse.setIdName(personListMap.getOrDefault(e.getUserid(), ""));
                     talkRoomResponse.setChannelType(TalkChannelType.of(e.getChannelType()));
 
                     return talkRoomResponse;
@@ -125,7 +124,7 @@ public class WtalkRoomApiController extends ApiBaseController {
         if(Objects.isNull(roomEntity))
             roomEntity = wtalkRoomService.getRepository().findOne(new CommonWtalkRoom(g.getUser().getCompanyId()).ROOM_ID.eq(roomId));
 
-        WtalkRoomResponse talkRoomResponse = convertDto(roomEntity, WtalkRoomResponse.class);
+        final WtalkRoomResponse talkRoomResponse = convertDto(roomEntity, WtalkRoomResponse.class);
         talkRoomResponse.setIdName(personListRepository.findOne(roomEntity.getUserid()).getIdName());
         talkRoomResponse.setChannelType(TalkChannelType.of(roomEntity.getChannelType()));
         return ResponseEntity.ok(data(talkRoomResponse));
@@ -136,14 +135,13 @@ public class WtalkRoomApiController extends ApiBaseController {
      */
     @GetMapping("{roomId}/message")
     public ResponseEntity<JsonResult<List<WtalkMsgResponse>>> messageHistory(@PathVariable String roomId) {
-        List<PersonList> personList = personListRepository.findAll();
+        final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
 
         return ResponseEntity.ok(data(
                 wtalkMsgService.getRepository().findAll(roomId).stream()
                         .map(msg -> {
-                            WtalkMsgResponse response = convertDto(msg, WtalkMsgResponse.class);
-
-                            response.setIdName(personList.stream().filter(person -> person.getId().equals(msg.getUserid())).map(PersonList::getIdName).findFirst().orElse(""));
+                            final WtalkMsgResponse response = convertDto(msg, WtalkMsgResponse.class);
+                            response.setIdName(personListMap.getOrDefault(msg.getUserid(), ""));
 
                             return response;
                         }).collect(Collectors.toList())
