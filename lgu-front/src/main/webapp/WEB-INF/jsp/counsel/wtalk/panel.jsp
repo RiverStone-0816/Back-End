@@ -237,7 +237,7 @@
 
                         const status = e.talkRoomMode
 
-                        e.lastMessage = _this.getLastMessage(e.send_receive, e.type, e.content, e.userName)
+                        e.lastMessage = _this.getLastMessage(e.lastSendReceive, e.lastType, e.lastContent, e.userName)
 
                         talkRoomList.forEach(room => {
                             if (room.roomId === e.roomId){
@@ -454,13 +454,13 @@
                             if (sendReceive === 'RM')
                                 lastMessage = '상담사연결을 요청하였습니다.'
                             else if (sendReceive === 'SZ')
-                                lastMessage = userName + '상담사가 상담을 찜했습니다.'
+                                lastMessage = userName + ' 상담사가 상담을 찜했습니다.'
                             else if (sendReceive === 'SG')
-                                lastMessage = userName + '상담사가 상담을 가져왔습니다.'
+                                lastMessage = userName + ' 상담사가 상담을 가져왔습니다.'
                             else if (sendReceive === 'SD')
-                                lastMessage = userName + '상담사가 상담을 내렸습니다.'
+                                lastMessage = userName + ' 상담사가 상담을 내렸습니다.'
                             else if (sendReceive === 'SE')
-                                lastMessage = userName + '상담사가 상담을 종료했습니다.'
+                                lastMessage = userName + ' 상담사가 상담을 종료했습니다.'
                             else if (['RAR','SAS'].includes(sendReceive))
                                 lastMessage = '음성통화를 요청합니다.'
                             else if (['RVR','SVS'].includes(sendReceive))
