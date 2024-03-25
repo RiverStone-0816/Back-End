@@ -193,43 +193,75 @@ project(':jooq-model') {
                         }
                     }
 
-                    excludes = 'schema_version' +
-                            '| menu_company_.*' +
-                            '| cst_custom_info_.*' +
-                            '| maindb_custom_info_.*' +
-                            '| maindb_key_info_.*' +
-                            '| maindb_multichannel_info_.*' +
-                            '| message_data_.*' +
-                            '| result_custom_info_.*' +
-                            '| talk_msg_.*' +
-                            '| talk_room_.*' +
-                            '| wtalk_msg_.*' +
-                            '| wtalk_room_.*' +
-                            '| voc_result_.*' +
-                            '| execute_pds_custom_info_.*' +
-                            '| pds_custom_info_.*' +
-                            '| result_custom_info_.*' +
-                            '| stat_inbound_.*' +
-                            '| stat_member_.*' +
-                            '| stat_outbound_.*' +
-                            '| stat_talk_.*' +
-                            '| stat_wtalk_.*' +
-                            '| stat_user_inbound_.*' +
-                            '| stat_user_outbound_.*' +
-                            '| stat_voc_.*' +
-                            '| stat_queue_wait_.*' +
-                            '| stat_message_.*' +
-                            '| chatt_bookmark_.*' +
-                            '| chatt_msg_read_.*' +
-                            '| chatt_room_member_.*' +
-                            '| eicn_cdr_.*' +
-                            '| history_queue_wait_.*' +
-                            '| CUSTOMDB.member_status_.*' +
-                            '| prv_custom_info_.*' +
-                            '| voc_custom_list_.*' +
-                            '| voc_research_result_.*' +
-                            '| pds_research_result_.*' +
-                            '| stat_user_ranking_.*'
+                    excludes = """
+                                schema_version
+                                | CONFIGDB.menu_company_.*
+                                | CUSTOMDB.assist_token_.*
+                                | CUSTOMDB.chatt_bookmark_.*
+                                | CUSTOMDB.chatt_msg(?!_read)_.*
+                                | CUSTOMDB.chatt_msg_read_.*
+                                | CUSTOMDB.chatt_room(?!_member)_.*
+                                | CUSTOMDB.chatt_room_member_.*
+                                | CUSTOMDB.cst_custom_info_.*
+                                | CUSTOMDB.con_custom_info_.*
+                                | CUSTOMDB.cs_mail(?!_attach|_process_history|_reply|_reply_attach)_.*
+                                | CUSTOMDB.cs_mail_attach_.*
+                                | CUSTOMDB.cs_mail_process_history_.*
+                                | CUSTOMDB.cs_mail_reply(?!_attach)_.*
+                                | CUSTOMDB.cs_mail_reply_attach_.*
+                                | CUSTOMDB.doub_stt_upload_.*
+                                | CUSTOMDB.eicn_cdr_.*
+                                | CUSTOMDB.history_queue_wait_.*
+                                | CUSTOMDB.hunt_member_sequence_.*
+                                | CUSTOMDB.kakao_chatbot_block_.*
+                                | CUSTOMDB.kakao_event_.*
+                                | CUSTOMDB.kakao_profile_.*
+                                | CUSTOMDB.kakao_skill_msg_.*
+                                | CUSTOMDB.maindb_custom_info_.*
+                                | CUSTOMDB.maindb_key_info_.*
+                                | CUSTOMDB.maindb_multichannel_info_.*
+                                | CUSTOMDB.member_status_.*
+                                | CUSTOMDB.memo(?!_msg)_.*
+                                | CUSTOMDB.memo_msg_.*
+                                | CUSTOMDB.message_data_.*
+                                | CUSTOMDB.prohibited_keyword_.*
+                                | CUSTOMDB.prv_custom_info_.*
+                                | CUSTOMDB.result_custom_info_.*
+                                | CUSTOMDB.stt_cdr_.*
+                                | CUSTOMDB.stt_message_.*
+                                | CUSTOMDB.stt_text_.*
+                                | CUSTOMDB.talk_msg_.*
+                                | CUSTOMDB.talk_record_.*
+                                | CUSTOMDB.talk_room_.*
+                                | CUSTOMDB.transcribe_data_.*
+                                | CUSTOMDB.transcribe_group_.*
+                                | CUSTOMDB.transcribe_learn_.*
+                                | CUSTOMDB.voc_custom_list_.*
+                                | CUSTOMDB.voc_research_result_.*
+                                | CUSTOMDB.voc_result_.*
+                                | CUSTOMDB.webchat_av_record_.*
+                                | CUSTOMDB.wtalk_auth_number_.*
+                                | CUSTOMDB.wtalk_msg_.*
+                                | CUSTOMDB.wtalk_record_.*
+                                | CUSTOMDB.wtalk_room_.*
+                                | PDS.execute_pds_custom_info_.*
+                                | PDS.pds_custom_info_.*
+                                | PDS.pds_research_result_.*
+                                | PDS.result_custom_info_.*
+                                | STATDB.stat_cancel_.*
+                                | STATDB.stat_inbound_.*
+                                | STATDB.stat_kakao_chatbot_.*
+                                | STATDB.stat_member_status_.*
+                                | STATDB.stat_message_.*
+                                | STATDB.stat_outbound_.*
+                                | STATDB.stat_queue_wait_.*
+                                | STATDB.stat_talk_.*
+                                | STATDB.stat_user_inbound_.*
+                                | STATDB.stat_user_outbound_.*
+                                | STATDB.stat_user_ranking_.*
+                                | STATDB.stat_voc_.*
+                                | STATDB.stat_wtalk_.*
+                            """
 
                     forcedTypes {
                         forcedType {
