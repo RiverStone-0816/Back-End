@@ -8,6 +8,7 @@ import java.sql.Timestamp;
 @Data
 public class CommonWtalkMsg implements Serializable {
     private Integer   seq;
+    private String    roomId;
     private String    channelType;
     private Timestamp insertTime;
     private String    sendReceive;
@@ -21,5 +22,5 @@ public class CommonWtalkMsg implements Serializable {
     private String    content;
     private String    attachment;
     private String    extra;
-    private String    roomId;
+    private String    deleteRequest;
 }

@@ -12,212 +12,226 @@ public class CommonWtalkMsgRecord extends TableRecordImpl<CommonWtalkMsgRecord> 
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.seq</code>.
+     * Setter for <code>CUSTOMDB.wtalk_msg.seq</code>.
      */
     public void setSeq(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.seq</code>.
+     * Getter for <code>CUSTOMDB.wtalk_msg.seq</code>.
      */
     public Integer getSeq() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.channel_type</code>. 상담톡 서비스 유형, eicn/kakao/navertt/naverline
+     * Setter for <code>CUSTOMDB.wtalk_msg.room_id</code>.
      */
-    public void setChannelType(String value) {
+    public void setRoomId(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.channel_type</code>. 상담톡 서비스 유형, eicn/kakao/navertt/naverline
+     * Getter for <code>CUSTOMDB.wtalk_msg.room_id</code>.
      */
-    public String getChannelType() {
+    public String getRoomId() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.insert_time</code>.
+     * Setter for <code>CUSTOMDB.wtalk_msg.channel_type</code>.
      */
-    public void setInsertTime(Timestamp value) {
+    public void setChannelType(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.insert_time</code>.
+     * Getter for <code>CUSTOMDB.wtalk_msg.channel_type</code>.
      */
-    public Timestamp getInsertTime() {
-        return (Timestamp) get(2);
+    public String getChannelType() {
+        return (String) get(2);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.send_receive</code>.
+     * Setter for <code>CUSTOMDB.wtalk_msg.insert_time</code>.
      */
-    public void setSendReceive(String value) {
+    public void setInsertTime(Timestamp value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.send_receive</code>.
+     * Getter for <code>CUSTOMDB.wtalk_msg.insert_time</code>.
      */
-    public String getSendReceive() {
-        return (String) get(3);
+    public Timestamp getInsertTime() {
+        return (Timestamp) get(3);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.company_id</code>.
+     * Setter for <code>CUSTOMDB.wtalk_msg.send_receive</code>.
      */
-    public void setCompanyId(String value) {
+    public void setSendReceive(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.company_id</code>.
+     * Getter for <code>CUSTOMDB.wtalk_msg.send_receive</code>.
      */
-    public String getCompanyId() {
+    public String getSendReceive() {
         return (String) get(4);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.userid</code>.
+     * Setter for <code>CUSTOMDB.wtalk_msg.company_id</code>.
      */
-    public void setUserid(String value) {
+    public void setCompanyId(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.userid</code>.
+     * Getter for <code>CUSTOMDB.wtalk_msg.company_id</code>.
      */
-    public String getUserid() {
+    public String getCompanyId() {
         return (String) get(5);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.user_key</code>.
+     * Setter for <code>CUSTOMDB.wtalk_msg.userid</code>.
      */
-    public void setUserKey(String value) {
+    public void setUserid(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.user_key</code>.
+     * Getter for <code>CUSTOMDB.wtalk_msg.userid</code>.
      */
-    public String getUserKey() {
+    public String getUserid() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.sender_key</code>.
+     * Setter for <code>CUSTOMDB.wtalk_msg.user_key</code>.
      */
-    public void setSenderKey(String value) {
+    public void setUserKey(String value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.sender_key</code>.
+     * Getter for <code>CUSTOMDB.wtalk_msg.user_key</code>.
      */
-    public String getSenderKey() {
+    public String getUserKey() {
         return (String) get(7);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.message_id</code>.
+     * Setter for <code>CUSTOMDB.wtalk_msg.sender_key</code>.
      */
-    public void setMessageId(String value) {
+    public void setSenderKey(String value) {
         set(8, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.message_id</code>.
+     * Getter for <code>CUSTOMDB.wtalk_msg.sender_key</code>.
      */
-    public String getMessageId() {
+    public String getSenderKey() {
         return (String) get(8);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.time</code>.
+     * Setter for <code>CUSTOMDB.wtalk_msg.message_id</code>.
      */
-    public void setTime(String value) {
+    public void setMessageId(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.time</code>.
+     * Getter for <code>CUSTOMDB.wtalk_msg.message_id</code>.
      */
-    public String getTime() {
+    public String getMessageId() {
         return (String) get(9);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.type</code>.
+     * Setter for <code>CUSTOMDB.wtalk_msg.time</code>.
      */
-    public void setType(String value) {
+    public void setTime(String value) {
         set(10, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.type</code>.
+     * Getter for <code>CUSTOMDB.wtalk_msg.time</code>.
      */
-    public String getType() {
+    public String getTime() {
         return (String) get(10);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.content</code>.
+     * Setter for <code>CUSTOMDB.wtalk_msg.type</code>.
      */
-    public void setContent(String value) {
+    public void setType(String value) {
         set(11, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.content</code>.
+     * Getter for <code>CUSTOMDB.wtalk_msg.type</code>.
      */
-    public String getContent() {
+    public String getType() {
         return (String) get(11);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.attachment</code>.
+     * Setter for <code>CUSTOMDB.wtalk_msg.content</code>.
      */
-    public void setAttachment(String value) {
+    public void setContent(String value) {
         set(12, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.attachment</code>.
+     * Getter for <code>CUSTOMDB.wtalk_msg.content</code>.
      */
-    public String getAttachment() {
+    public String getContent() {
         return (String) get(12);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.extra</code>.
+     * Setter for <code>CUSTOMDB.wtalk_msg.attachment</code>.
      */
-    public void setExtra(String value) {
+    public void setAttachment(String value) {
         set(13, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.extra</code>.
+     * Getter for <code>CUSTOMDB.wtalk_msg.attachment</code>.
      */
-    public String getExtra() {
+    public String getAttachment() {
         return (String) get(13);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.talk_msg.room_id</code>.
+     * Setter for <code>CUSTOMDB.wtalk_msg.extra</code>.
      */
-    public void setRoomId(String value) {
+    public void setExtra(String value) {
         set(14, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.talk_msg.room_id</code>.
+     * Getter for <code>CUSTOMDB.wtalk_msg.extra</code>.
      */
-    public String getRoomId() {
+    public String getExtra() {
         return (String) get(14);
+    }
+
+    /**
+     * Setter for <code>CUSTOMDB.wtalk_msg.delete_request</code>.
+     */
+    public void setDeleteRequest(String value) {
+        set(15, value);
+    }
+
+    /**
+     * Getter for <code>CUSTOMDB.wtalk_msg.delete_request</code>.
+     */
+    public String getDeleteRequest() {
+        return (String) get(15);
     }
 }
