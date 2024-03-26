@@ -150,15 +150,15 @@
                                         <td>${g.htmlQuote(talkServices.get(e.senderKey))}</td>
                                         <td>${g.htmlQuote(g.messageOf('RoomStatus', e.roomStatus))}</td>
                                         <td>${g.htmlQuote(e.idName)}</td>
-                                        <td>${g.htmlQuote(e.roomStartTime)}</td>
-                                        <td>${g.htmlQuote(e.roomLastTime)}</td>
+                                        <td><fmt:formatDate value="${e.roomStartTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                        <td><fmt:formatDate value="${e.roomLastTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>${g.htmlQuote(e.maindbCustomName == null || e.maindbCustomName == "" ? "미등록고객" : e.maindbCustomName)}</td>
                                     </tr>
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="8" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <td colspan="9" class="null-data">조회된 데이터가 없습니다.</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>

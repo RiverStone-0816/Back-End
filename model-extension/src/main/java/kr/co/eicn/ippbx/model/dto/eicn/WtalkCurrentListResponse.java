@@ -9,28 +9,31 @@ import java.sql.Timestamp;
 
 @Data
 public class WtalkCurrentListResponse {
-    private Integer seq;    //talk room 시퀀스
+    private Integer         seq;
+    private String          roomId;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Timestamp       roomStartTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
+    private Timestamp       roomLastTime;
+    private String          roomStatus;
+    private TalkRoomMode    talkRoomMode;
+    private Integer         maindbGroupId;
+    private String          maindbCustomId;
+    private String          maindbCustomName;
+    private String          userId;
+    private String          userKey;
     private TalkChannelType channelType;
-    private String roomId;
-    private String roomName;
-    private String roomStatus;
-    private TalkRoomMode talkRoomMode;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private Timestamp roomStartTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private Timestamp roomLastTime;
-    private Integer lastMessageSeq;
-    private String userId;
-    private String userName;
-    private String userKey;
-    private String senderKey;
-    private String svcName = ""; //sender_key로 TalkServiceInfoDB해서 getKakaoServiceName()
-    private String content;    //TalkMsg.getMessage
-    private String type;    //TalkMsg.getType
-    private String send_receive; //TalkMsg.getSnedReceive
-    private Integer maindbGroupId;
-    private String maindbCustomName;
-    private String maindbCustomId;
-    private String isAutoEnable;
-    private String isCustomUploadEnable;
+    private String          senderKey;
+    private String          roomName;
+    private String          isAutoEnable;
+    private String          isCustomUploadEnable;
+    private String          userName;
+    private String          svcName = ""; //sender_key로 TalkServiceInfoDB해서 getKakaoServiceName()
+    private Integer         audioUseCnt;
+    private Integer         videoUseCnt;
+    private Integer         keyId;
+    private String          lastUserYn;
+    private String          lastType;
+    private String          lastContent;
+    private String          lastSendReceive;
 }

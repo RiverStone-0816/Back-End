@@ -81,15 +81,15 @@ public class WtalkTemplateApiController extends ApiBaseController {
                             ? personListMap.get(e.getWriteUserid()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
 
                     if (Objects.equals(TalkTemplate.GROUP.getCode(), e.getType()))
-                        talkTemplateSummaryResponse.setTypeGroup(companyTreeMap.get(e.getTypeData()).getGroupTreeName());
-                    if (Objects.equals(TalkTemplate.PERSON.getCode(), e.getType()))
+                        talkTemplateSummaryResponse.setTypeGroup(companyTreeMap.containsKey(e.getTypeData()) ? companyTreeMap.get(e.getTypeData()).getGroupTreeName() : "");
+                    else if (Objects.equals(TalkTemplate.PERSON.getCode(), e.getType()))
 
                         talkTemplateSummaryResponse.setTypeDataName(Objects.nonNull(personListMap.get(e.getTypeData())) ?
                                 personListMap.get(e.getTypeData()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
                     else if (Objects.equals(TalkTemplate.COMPANY.getCode(), e.getType()))
                         talkTemplateSummaryResponse.setTypeDataName(companyInfoMap.get(e.getTypeData()));
                     else {
-                        if (Objects.nonNull(companyTreeMap.get(e.getTypeData()))) {
+                        if (companyTreeMap.containsKey(e.getTypeData())) {
                             final CompanyTree companyTree = companyTreeMap.get(e.getTypeData());
                             talkTemplateSummaryResponse.setTypeDataName(companyTree.getGroupName());
                             talkTemplateSummaryResponse.setCompanyTreeLevel(companyTree.getGroupLevel());
@@ -118,14 +118,14 @@ public class WtalkTemplateApiController extends ApiBaseController {
                             ? personListMap.get(e.getWriteUserid()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
 
                     if (Objects.equals(TalkTemplate.GROUP.getCode(), e.getType()))
-                        talkTemplateSummaryResponse.setTypeGroup(companyTreeMap.get(e.getTypeData()).getGroupTreeName());
-                    if (Objects.equals(TalkTemplate.PERSON.getCode(), e.getType()))
+                        talkTemplateSummaryResponse.setTypeGroup(companyTreeMap.containsKey(e.getTypeData()) ? companyTreeMap.get(e.getTypeData()).getGroupTreeName() : "");
+                    else if (Objects.equals(TalkTemplate.PERSON.getCode(), e.getType()))
                         talkTemplateSummaryResponse.setTypeDataName(Objects.nonNull(personListMap.get(e.getTypeData())) ?
                                 personListMap.get(e.getTypeData()) : personListRepository.findOneById(e.getWriteUserid()).getIdName());
                     else if (Objects.equals(TalkTemplate.COMPANY.getCode(), e.getType()))
                         talkTemplateSummaryResponse.setTypeDataName(companyInfoMap.get(e.getTypeData()));
                     else {
-                        if (Objects.nonNull(companyTreeMap.get(e.getTypeData()))) {
+                        if (companyTreeMap.containsKey(e.getTypeData())) {
                             final CompanyTree companyTree = companyTreeMap.get(e.getTypeData());
                             talkTemplateSummaryResponse.setTypeDataName(companyTree.getGroupName());
                             talkTemplateSummaryResponse.setCompanyTreeLevel(companyTree.getGroupLevel());

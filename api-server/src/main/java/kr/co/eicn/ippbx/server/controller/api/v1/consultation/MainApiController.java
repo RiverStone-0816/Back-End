@@ -13,9 +13,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.model.dto.customdb.*;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
-import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
-import kr.co.eicn.ippbx.model.entity.customdb.WtalkMsgEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.WtalkRoomEntity;
 import kr.co.eicn.ippbx.model.enums.*;
 import kr.co.eicn.ippbx.model.form.*;
@@ -364,7 +362,6 @@ public class MainApiController extends ApiBaseController {
         final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
         final Map<String, String> mainDb = maindbCustomInfoService.getRepository().findAllCustomNameByCustomIdMap();
         final List<WtalkRoomEntity> talkRoomList = currentWtalkRoomService.findAll(search);
-        final Map<String, WtalkMsgEntity> lastMessageByRoomId = wtalkMsgService.getAllLastMessageByRoomId(talkRoomList.stream().map(CommonWtalkRoom::getRoomId).collect(Collectors.toSet()));
         final List<WtalkCurrentListResponse> response = talkRoomList.stream()
                 .map((e) -> {
                     final WtalkCurrentListResponse data = convertDto(e, WtalkCurrentListResponse.class);
@@ -388,14 +385,6 @@ public class MainApiController extends ApiBaseController {
                         }
                     }
 
-                    final WtalkMsgEntity lastTalkMessage = lastMessageByRoomId.get(e.getRoomId());
-
-                    if (lastTalkMessage != null) {
-                        data.setContent(lastTalkMessage.getContent());
-                        data.setType(lastTalkMessage.getType());
-                        data.setSend_receive(lastTalkMessage.getSendReceive());
-                        data.setLastMessageSeq(lastTalkMessage.getSeq());
-                    }
                     data.setChannelType(TalkChannelType.of(e.getChannelType()));
 
                     return data;
@@ -416,7 +405,6 @@ public class MainApiController extends ApiBaseController {
         final WtalkRoomEntity wtalkRoomEntity = currentWtalkRoomRepository.findOne(CurrentWtalkRoom.CURRENT_WTALK_ROOM.ROOM_ID.eq(roomId));
 
         final WtalkCurrentMsgResponse response = new WtalkCurrentMsgResponse();
-
 
         CommonWtalkMsg table = wtalkMsgService.getRepository().getTABLE();
         final List<WtalkMsgSummaryResponse> talkMsgResponseList = wtalkMsgService.getRepository().findAll(table.COMPANY_ID.eq(g.getUser().getCompanyId())
