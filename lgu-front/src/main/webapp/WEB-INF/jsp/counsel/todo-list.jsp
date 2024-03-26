@@ -29,10 +29,24 @@
             <td><fmt:formatDate value="${e.regdate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
             <td>
                 <div class="ui action input fluid" style="text-align: center;">
-                    <c:if test="${e.todoInfo != null && e.todoInfo != ''}">
-                        <input type="text" readonly value="${g.htmlQuote(e.todoInfo)}"/>
-                        <button type="button" class="ui icon button" onclick="$('#calling-number').val('${g.htmlQuote(e.todoInfo)}')"><i class="phone icon"></i></button>
-                    </c:if>
+                    <c:choose>
+                        <c:when test="${e.todoKind == 'TALK'}">
+                            <input type="text" readonly value="${g.htmlQuote(e.todoInfo)}"/>
+                            <a class = "item -counsel-panel-indicator active" data-tab="talk-panel">
+                                <button type="button" class="ui icon button" onclick="viewTalkRoom('${g.htmlQuote(e.todoInfo)}')">
+                                        <i class="comments outline icon"></i>
+                                </button>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <c:if test="${e.todoInfo != null && e.todoInfo != ''}">
+                                <input type="text" readonly value="${g.htmlQuote(e.todoInfo)}"/>
+                                <button type="button" class="ui icon button" onclick="$('#calling-number').val('${g.htmlQuote(e.todoInfo)}')">
+                                    <i class="phone icon"></i>
+                                </button>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </td>
             <td>${g.htmlQuote(message.getEnumText(e.todoStatus))}</td>
@@ -52,7 +66,6 @@
                 loadTodoList();
             });
         });
-
     }
 
     function changeToDoDelete(seq) {
@@ -62,4 +75,35 @@
             });
         });
     }
+
+    function viewTalkRoom(roomId) {
+        viewTalkPanel();
+
+        $('.-counsel-panel-indicator[data-tab="talk-panel"]').trigger("click");
+        $('.-counsel-panel-indicator[data-tab="talk-panel"]').addClass('active');
+
+        talkListContainer.openRoom(roomId);
+
+        const userIdName = '${user.idName}';
+        const room = talkListContainer.roomMap[roomId];
+        const userName = room.userName;
+        const container = room.container;
+        const statuses = talkListContainer.statuses;
+
+        if (userName === userIdName) {
+            talkListContainer.activeTab(container === statuses['MY'] ? 'MY' : 'END');
+        } else if (userName === "지정안됨" || container !== statuses['MY']) {
+
+            if (!talkListContainer.isSearch) {
+                value = ''
+                talkListContainer.isSearch = true
+            }
+            talkListContainer.activeTab('END');
+            talkListContainer.statuses['END'].filter.value = '';
+            talkListContainer.filter('END');
+        } else {
+            talkListContainer.activeTab('TOT');
+        }
+    }
+
 </script>

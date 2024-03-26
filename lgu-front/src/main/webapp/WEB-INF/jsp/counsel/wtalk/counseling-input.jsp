@@ -27,6 +27,7 @@
         <c:if test="${roomId != null && roomId != ''}">
             <button type="button" class="ui button mini right floated compact blue -submit-form">상담저장</button>
         </c:if>
+        <button type="button" class="ui button mini right floated compact" onclick="popupReservationModal('talk')">상담예약</button>
     </div>
     <div class="panel-body consulting-info-panel">
         <table class="ui table celled definition">

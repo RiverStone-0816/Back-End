@@ -71,7 +71,7 @@ public class TodoListRepository extends EicnBaseRepository<TodoList, kr.co.eicn.
                 .set(TODO_LIST.REGDATE, form.getReservationTime())
                 .set(TODO_LIST.UPDATEDATE, now())
                 .set(TODO_LIST.USERID, g.getUser().getId())
-                .set(TODO_LIST.TODO_KIND, TodoListTodoKind.RESERVE)
+                .set(TODO_LIST.TODO_KIND, form.getKind())
                 .set(TODO_LIST.TODO_STATUS, TodoListTodoStatus.ING)
                 .set(TODO_LIST.TODO_INFO, form.getCustomNumber())
                 .set(TODO_LIST.DETAIL_CONNECT_INFO, "" + form.getReservationTime().getTime())

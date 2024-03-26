@@ -85,9 +85,11 @@
 <tags:scripts>
     <script>
         const ReservationModal = $('#modal-consulting-reservation-popup');
+        let reservationMode;
 
-        function popupReservationModal() {
+        function popupReservationModal(mode = 'call') {
             ReservationModal.dragModalShow();
+            reservationMode = mode;
 
             const m = moment();
 
@@ -96,6 +98,7 @@
             ReservationModal.find('[name=hour]').val(m.format('H'));
             ReservationModal.find('[name=minute]').val(m.format('m'));
         }
+
 
         ReservationModal.find('.-set-time-from-now').change(function () {
             const m = moment().add(parseInt($(this).val()), 'minutes');
@@ -113,10 +116,26 @@
             if (!date || !hour || !minute)
                 return alert('시간정보를 모두 입력하세요.');
 
-            if (!phoneNumber)
-                return alert('상담 중인 고객을 대상으로 예약이 가능합니다.');
+            let customNumber;
 
-            restSelf.post('/api/counsel/consultation-reservation', {customNumber: phoneNumber, reservationTime: moment(date).hour(hour).minute(minute).toDate()}).done(function () {
+            if(reservationMode === 'call') {
+                if (!phoneNumber)
+                    return alert('상담 중인 고객을 대상으로 예약이 가능합니다.');
+
+                customNumber = phoneNumber;
+            }else if(reservationMode === 'talk'){
+
+                if (!talkRoom.roomId)
+                    return alert('상담 중인 고객을 대상으로 예약이 가능합니다.');
+
+                customNumber = talkRoom.roomId;
+            }
+
+            restSelf.post('/api/counsel/consultation-reservation', {
+                kind: reservationMode === 'call' ? 'RESERVE' : 'TALK',
+                customNumber: customNumber,
+                reservationTime: moment(date).hour(hour).minute(minute).toDate()
+            }).done(function () {
                 alert('상담 예약되었습니다.');
                 ReservationModal.modalHide();
 
