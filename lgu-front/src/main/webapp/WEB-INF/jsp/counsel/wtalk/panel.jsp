@@ -471,11 +471,11 @@
                                 lastMessage = '영상통화 완료'
                         }
                         else if (fileType === 'photo')
-                            lastMessage = '사진을 전송했습니다.'
+                            lastMessage = '사진을 전송' + (sendReceive === 'R' ? '받았습니다.' : '했습니다.')
                         else if (fileType === 'video')
-                            lastMessage = '비디오를 전송했습니다.'
+                            lastMessage = '비디오를 전송' + (sendReceive === 'R' ? '받았습니다.' : '했습니다.')
                         else if (fileType === 'audio')
-                            lastMessage = '음원을 전송했습니다.'
+                            lastMessage = '음원을 전송' + (sendReceive === 'R' ? '받았습니다.' : '했습니다.')
                         else
                             lastMessage = content
 
@@ -1650,25 +1650,30 @@
         function dataMigration(data) {
             return {
                 seq : data.seq,
-                channelType: data.channel_type,
                 roomId: data.room_id,
-                roomName: data.room_name,
-                roomStatus: data.room_status,
-                talkRoomMode: data.room_status === 'G' ? data.userid === '${g.user.id}' ? 'MY' : data.userid === '' ? 'TOT' : data.userid !== '${g.user.id}' ? 'OTH' : '' : data.room_status === 'E' ? 'END' : '',
                 roomStartTime: data.room_start_time,
                 roomLastTime: data.room_last_time,
-                userId: data.userid,
-                userName: talkListContainer.persons.filter(person => person.id === data.userid)[0]?.idName,
-                userKey: data.user_key,
-                senderKey: data.sender_key,
-                svcName: talkListContainer.serviceNames.filter(serviceName => serviceName.senderKey === data.sender_key)[0]?.kakaoServiceName,
-                content: data.last_content,
-                type: data.last_type,
+                roomStatus: data.room_status,
+                talkRoomMode: data.room_status === 'G' ? data.userid === '${g.user.id}' ? 'MY' : data.userid === '' ? 'TOT' : data.userid !== '${g.user.id}' ? 'OTH' : '' : data.room_status === 'E' ? 'END' : '',
                 maindbGroupId: data.maindb_group_id,
-                maindbCustomName: data.maindb_custom_name,
                 maindbCustomId: data.maindb_custom_id,
+                maindbCustomName: data.maindb_custom_name,
+                userId: data.userid,
+                userKey: data.user_key,
+                channelType: data.channel_type,
+                senderKey: data.sender_key,
+                roomName: data.room_name,
                 isAutoEnable: data.is_auto_enable,
-                isCustomUploadEnable: data.is_custom_upload_enable
+                isCustomUploadEnable: data.is_custom_upload_enable,
+                userName: talkListContainer.persons.filter(person => person.id === data.userid)[0]?.idName,
+                svcName: talkListContainer.serviceNames.filter(serviceName => serviceName.senderKey === data.sender_key)[0]?.kakaoServiceName,
+                audioUseCnt: data.audio_use_cnt,
+                videoUseCnt: data.video_use_cnt,
+                keyId: data.key_id,
+                lastUserYn: data.last_user_yn,
+                lastType: data.last_type,
+                lastContent: data.last_content,
+                lastSendReceive: data.last_send_receive
             }
         }
 
