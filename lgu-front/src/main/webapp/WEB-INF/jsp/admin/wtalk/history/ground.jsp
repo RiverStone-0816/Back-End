@@ -150,8 +150,8 @@
                                         <td>${g.htmlQuote(talkServices.get(e.senderKey))}</td>
                                         <td>${g.htmlQuote(g.messageOf('RoomStatus', e.roomStatus))}</td>
                                         <td>${g.htmlQuote(e.idName)}</td>
-                                        <td>${g.htmlQuote(e.roomStartTime)}</td>
-                                        <td>${g.htmlQuote(e.roomLastTime)}</td>
+                                        <td><fmt:formatDate value="${e.roomStartTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                        <td><fmt:formatDate value="${e.roomLastTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>${g.htmlQuote(e.maindbCustomName == null || e.maindbCustomName == "" ? "미등록고객" : e.maindbCustomName)}</td>
                                     </tr>
                                 </c:forEach>

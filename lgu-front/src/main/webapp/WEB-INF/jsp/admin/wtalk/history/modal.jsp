@@ -26,31 +26,32 @@
                 </div>
                 <div class="chat-body" style="height: 605px; max-height: none;">
                     <c:forEach var="e" items="${messageHistory}">
+                        <fmt:formatDate var="insertTime" value="${e.insertTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
                         <c:choose>
 
                             <c:when test="${e.sendReceive == 'RI' || e.sendReceive == 'SI' || e.sendReceive == 'RB' || e.sendReceive == 'SB' || e.sendReceive == 'RT' || e.sendReceive == 'RR'}">
                             </c:when>
 
                             <c:when test="${e.sendReceive == 'SE' || e.sendReceive == 'RE' || e.sendReceive == 'AE' || e.sendReceive == 'E' }">
-                                <p class="info-msg">[${g.htmlQuote(e.insertTime)}] ${g.htmlQuote(e.content)}</p>
+                                <p class="info-msg">[${insertTime}] ${g.htmlQuote(e.content)}</p>
                             </c:when>
 
                             <c:when test="${e.sendReceive == 'RM'}">
-                                <p class="info-msg">[${g.htmlQuote(e.insertTime)}] 상담사연결을 요청하였습니다.</p>
+                                <p class="info-msg">[${insertTime}] 상담사연결을 요청하였습니다.</p>
                             </c:when>
 
                             <c:when test="${e.sendReceive == 'SZ'}">
-                                <p class="info-msg">[${g.htmlQuote(e.insertTime)}] [${g.htmlQuote(e.idName)}] 상담사가 상담을
+                                <p class="info-msg">[${insertTime}] [${g.htmlQuote(e.idName)}] 상담사가 상담을
                                     찜했습니다.</p>
                             </c:when>
 
                             <c:when test="${e.sendReceive == 'SG'}">
-                                <p class="info-msg">[${g.htmlQuote(e.insertTime)}] [${g.htmlQuote(e.idName)}] 상담사가 상담을
+                                <p class="info-msg">[${insertTime}] [${g.htmlQuote(e.idName)}] 상담사가 상담을
                                     가져왔습니다.</p>
                             </c:when>
 
                             <c:when test="${e.sendReceive == 'SE' || e.sendReceive == 'RE'}">
-                                <p class="info-msg">[${g.htmlQuote(e.insertTime)}] ${g.htmlQuote(e.content)}</p>
+                                <p class="info-msg">[${insertTime}] ${g.htmlQuote(e.content)}</p>
                             </c:when>
 
                             <c:when test="${e.sendReceive == 'AF' || e.sendReceive == 'S' || e.sendReceive == 'R'}">
@@ -59,7 +60,7 @@
                                     <div class="wrap-content">
                                         <c:set var="name"
                                                value="${e.sendReceive == 'AF' || e.sendReceive == 'S' ? (e.idName == '' || e.idName == null ? '자동발신' : e.idName) : (entity.maindbCustomName == '' || entity.maindbCustomName == null ? '' : entity.maindbCustomName)}"/>
-                                        <div class="txt-time">[${g.htmlQuote(name)}] ${e.insertTime}</div>
+                                        <div class="txt-time">[${g.htmlQuote(name)}] ${insertTime}</div>
                                         <c:choose>
 
                                             <c:when test="${ e.type == 'block' && e.blockInfo.displayList.get(0).type=='INPUT'}">
@@ -247,7 +248,7 @@
                                 <div class="chat-item ${e.sendReceive == 'SA' || e.sendReceive == 'AM' || e.sendReceive == 'AW' || e.sendReceive == 'SAV' || e.sendReceive == 'AE'  ? 'chat-me' : ''}">
                                     <div class="wrap-content">
                                         <c:set var="name" value='오토멘트'/>
-                                        <div class="txt-time">[${g.htmlQuote(name)}] ${e.insertTime}</div>
+                                        <div class="txt-time">[${g.htmlQuote(name)}] ${insertTime}</div>
                                         <c:choose>
                                             <c:when test="${e.type == 'photo'}">
                                                 <div class="chat">
@@ -297,7 +298,7 @@
                                 <div class="chat-item ${e.sendReceive == 'RARC' ? 'chat-me' : ''}">
                                     <div class="wrap-content">
                                         <c:set var="name" value='오토멘트'/>
-                                        <div class="txt-time">[${g.htmlQuote(name)}] ${e.insertTime}</div>
+                                        <div class="txt-time">[${g.htmlQuote(name)}] ${insertTime}</div>
                                         <div class="chat">
                                             <div class="bubble"
                                                  style="background-color: rgba(224, 57, 151, 0.28)">
@@ -315,7 +316,7 @@
                                 <div class="chat-item ${e.sendReceive == 'RVRC' ? 'chat-me' : ''}">
                                     <div class="wrap-content">
                                         <c:set var="name" value='오토멘트'/>
-                                        <div class="txt-time">[${g.htmlQuote(name)}] ${e.insertTime}</div>
+                                        <div class="txt-time">[${g.htmlQuote(name)}] ${insertTime}</div>
                                         <div class="chat">
                                             <div class="bubble"
                                                  style="background-color: rgba(224, 57, 151, 0.28)">
