@@ -366,6 +366,9 @@ project(':api-server') {
         testImplementation 'org.springframework.security:spring-security-test'
     }
 
+    bootWar {
+        archiveName 'api-server.war'
+    }
 }
 
 project(':front-controller') {
@@ -423,6 +426,7 @@ project(':lgu-front') {
     }
     bootWar {
         dependsOn 'lesscss'
+        archiveName 'ubiz.war'
     }
 
     dependencies {
