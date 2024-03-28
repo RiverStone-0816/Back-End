@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -108,8 +109,9 @@ public class StatOutboundRepository extends StatDBBaseRepository<CommonStatOutbo
     }
 
     public Map<Byte, DashServiceStatResponse> getHourOutInbound() {
-        int currentHour = new java.util.Date().getHours();
-        Map<Byte, DashServiceStatResponse> graphData = dsl.select(TABLE.STAT_HOUR)
+        int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+
+        return dsl.select(TABLE.STAT_HOUR)
                 .select(sum(TABLE.SUCCESS).as("successCnt"))
                 .from(TABLE)
                 .where(TABLE.STAT_DATE.eq(date(now())))
@@ -124,8 +126,6 @@ public class StatOutboundRepository extends StatDBBaseRepository<CommonStatOutbo
                 .and(TABLE.DCONTEXT.eq("outbound"))
                 .groupBy(TABLE.STAT_HOUR)
                 .fetchMap(TABLE.STAT_HOUR, DashServiceStatResponse.class);
-
-        return graphData;
     }
 
     public StatOutboundEntity getTodayStat() {

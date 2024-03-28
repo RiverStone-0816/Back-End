@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Calendar;
 import java.util.Map;
 
 import static org.jooq.impl.DSL.*;
@@ -23,8 +24,9 @@ public class StatQueueWaitRepository extends StatDBBaseRepository<CommonStatQueu
     }
 
     public Map<Byte, DashResultChartResponse> getHourToMaxWaitCnt() {
-        int currentHour = new java.util.Date().getHours();
-        Map<Byte, DashResultChartResponse> graphData = dsl.select(TABLE.STAT_HOUR)
+        int currentHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+
+        return dsl.select(TABLE.STAT_HOUR)
                 .select(max(TABLE.MAX_WAIT).as("maxWaitCnt"))
                 .from(TABLE)
                 .where(TABLE.STAT_DATE.eq(date(now())))
@@ -39,8 +41,6 @@ public class StatQueueWaitRepository extends StatDBBaseRepository<CommonStatQueu
 //                .and(TABLE.DCONTEXT.eq("hunt_context")/*.or(TABLE.DCONTEXT.eq("inbound"))*/)
                 .groupBy(TABLE.STAT_HOUR)
                 .fetchMap(TABLE.STAT_HOUR, DashResultChartResponse.class);
-
-        return graphData;
     }
 
 }
