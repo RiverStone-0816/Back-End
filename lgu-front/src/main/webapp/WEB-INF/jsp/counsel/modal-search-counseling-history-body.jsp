@@ -200,7 +200,7 @@
                             <td>${g.htmlQuote(e.customNumber)}</td>
                             <td class="popup-td">
                                 <c:choose>
-                                    <c:when test="${e.groupKind == 'PHONE'}">
+                                    <c:when test="${e.groupKind == 'PHONE' && not empty e.uniqueid}">
                                         <div class="popup-element-wrap">
                                             <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)}">
                                                 <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
@@ -219,7 +219,7 @@
                                             </c:if>
                                         </div>
                                     </c:when>
-                                    <c:when test="${e.groupKind == 'TALK'}">
+                                    <c:when test="${e.groupKind == 'TALK' && not empty e.hangupMsg}">
                                         <button type="button" class="ui icon button mini compact" onclick="talkHistoryView('${e.hangupMsg}')"><i class="comment alternate icon"></i></button>
                                     </c:when>
                                 </c:choose>
