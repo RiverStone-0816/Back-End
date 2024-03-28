@@ -31,6 +31,7 @@ import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -152,7 +153,8 @@ public class CounseWTalkController extends BaseController {
                               @RequestParam(required = false) String roomId,
                               @RequestParam(required = false) String senderKey,
                               @RequestParam(required = false) String userKey,
-                              @RequestParam(required = false) String channel) throws IOException, ResultFailException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+                              @RequestParam(required = false) String channel,
+                              @RequestParam(required = false) Integer maindbResultSeq) throws IOException, ResultFailException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         final List<MaindbGroupSummaryResponse> groups = maindbGroupApiInterface.list(new MaindbGroupSearchRequest());
         model.addAttribute("maindbGroups", groups);
         if (groups.isEmpty())
@@ -252,6 +254,9 @@ public class CounseWTalkController extends BaseController {
 
         model.addAttribute("channel", channel);
 
+        if (ObjectUtils.isNotEmpty(maindbResultSeq))
+            model.addAttribute("maindbResultSeq", maindbResultSeq);
+
         return "counsel/wtalk/custom-input";
     }
 
@@ -264,7 +269,8 @@ public class CounseWTalkController extends BaseController {
                                   @RequestParam(required = false) String customId,
                                   @RequestParam(required = false) String roomId,
                                   @RequestParam(required = false) String senderKey,
-                                  @RequestParam(required = false) String userKey) throws IOException, ResultFailException {
+                                  @RequestParam(required = false) String userKey,
+                                  @RequestParam(required = false) Integer maindbResultSeq) throws IOException, ResultFailException {
         if (maindbGroupSeq == null) {
             final List<MaindbGroupSummaryResponse> groups = maindbGroupApiInterface.list(new MaindbGroupSearchRequest());
             if (groups.isEmpty())

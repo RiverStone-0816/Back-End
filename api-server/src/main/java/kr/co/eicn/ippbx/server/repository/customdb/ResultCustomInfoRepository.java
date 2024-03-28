@@ -18,6 +18,7 @@ import kr.co.eicn.ippbx.server.service.MaindbCustomInfoService;
 import kr.co.eicn.ippbx.server.service.MaindbMultichannelInfoService;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jooq.Record;
 import org.jooq.*;
@@ -289,8 +290,11 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
 
         form.setSeq(resultCustomInfoEntity.getSeq());
         if (StringUtils.isEmpty(form.getCustomNumber())) {
-            final Optional<MaindbMultichannelInfoEntity> optionalChannelInfo = Optional.ofNullable(maindbMultichannelInfoService.getRepository().findAll(MAINDB_MULTICHANNEL_INFO_TABLE.MAINDB_CUSTOM_ID.eq(form.getCustomId()).and(MAINDB_MULTICHANNEL_INFO_TABLE.CHANNEL_TYPE.eq("PHONE"))).get(0));
-            optionalChannelInfo.ifPresent(e -> form.setCustomNumber(e.getChannelData()));
+            final List<MaindbMultichannelInfoEntity> multichannelInfoList = maindbMultichannelInfoService.getRepository()
+                    .findAll(MAINDB_MULTICHANNEL_INFO_TABLE.MAINDB_CUSTOM_ID.eq(form.getCustomId()).and(MAINDB_MULTICHANNEL_INFO_TABLE.CHANNEL_TYPE.eq("PHONE")));
+
+            if (CollectionUtils.isNotEmpty(multichannelInfoList))
+                form.setCustomNumber(multichannelInfoList.get(0).getChannelData());
         }
 
         if (form.getGroupKind() != null && form.getGroupKind().equals("TALK")) {

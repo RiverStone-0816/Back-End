@@ -440,7 +440,7 @@
     <c:if test="${entity != null}">
         loadCounselingList('${g.escapeQuote(entity.maindbSysCustomId)}');
     </c:if>
-    loadCounselingInput('${form.groupSeq}', '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(phoneNumber)}', '');
+    loadCounselingInput('${form.groupSeq}', '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(phoneNumber)}', '${not empty maindbResultSeq ? maindbResultSeq : ''}');
 
     function prepareMaindbCodeSelect() {
         <c:forEach var="e" items="${fieldNameToValueMap}">

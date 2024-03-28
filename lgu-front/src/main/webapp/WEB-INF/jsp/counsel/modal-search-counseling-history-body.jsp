@@ -337,11 +337,7 @@
 
         const phoneNumber = $('.selectable-only[data-entity="MaindbResult"] tr[data-id="' + seq + '"] .-phone-channel-data:first').text();
 
-        loadCustomInput(${search.groupSeq}, customId, phoneNumber);
-
-        setTimeout(function(){
-            loadCounselingInput('${search.groupSeq}', customId, phoneNumber, seq);
-        },800);
+        loadCustomInput(${search.groupSeq}, customId, phoneNumber, '', '', '', seq);
 
         $('#search-counseling-history-form').closest('.modal').modalHide();
     }

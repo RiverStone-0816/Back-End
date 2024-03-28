@@ -371,5 +371,5 @@
     });
 
     loadCounselingList('${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ""}');
-    loadTalkCounselingInput('${form.groupSeq}', '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', '${g.escapeQuote(roomId)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}');
+    loadTalkCounselingInput('${form.groupSeq}', '${entity != null ? g.escapeQuote(entity.maindbSysCustomId) : ''}', '${g.escapeQuote(roomId)}', '${g.escapeQuote(senderKey)}', '${g.escapeQuote(userKey)}', '${not empty maindbResultSeq ? maindbResultSeq : ''}');
 </script>

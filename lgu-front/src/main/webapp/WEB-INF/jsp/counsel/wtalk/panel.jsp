@@ -1527,24 +1527,26 @@
             popupDraggableModalFromReceivedHtml('/counsel/wtalk/modal-webrtc', 'modal-webrtc')
         }
 
-        function loadTalkCustomInput(maindbGroupSeq, customId, roomId, senderKey, userKey, channel) {
+        function loadTalkCustomInput(maindbGroupSeq, customId, roomId, senderKey, userKey, channel, maindbResultSeq) {
             return replaceReceivedHtmlInSilence($.addQueryString('/counsel/wtalk/custom-input', {
                 maindbGroupSeq: maindbGroupSeq || '',
                 customId: customId || '',
                 roomId: roomId || '',
                 senderKey: senderKey || '',
                 userKey: userKey || '',
-                channel: channel || ''
+                channel: channel || '',
+                maindbResultSeq: maindbResultSeq || ''
             }), '#talk-custom-input');
         }
 
-        function loadTalkCounselingInput(maindbGroupSeq, customId, roomId, senderKey, userKey) {
+        function loadTalkCounselingInput(maindbGroupSeq, customId, roomId, senderKey, userKey, maindbResultSeq) {
             replaceReceivedHtmlInSilence($.addQueryString('/counsel/wtalk/counseling-input', {
                 maindbGroupSeq: maindbGroupSeq || '',
                 customId: customId || '',
                 roomId: roomId || '',
                 senderKey: senderKey || '',
                 userKey: userKey || '',
+                maindbResultSeq: maindbResultSeq || ''
             }), '#talk-counseling-input');
         }
 

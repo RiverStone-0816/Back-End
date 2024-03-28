@@ -52,6 +52,7 @@ import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -117,7 +118,8 @@ public class CounselCallController extends BaseController {
     public String customInput(Model model, @ModelAttribute("form") MaindbCustomInfoFormRequest form,
                               @RequestParam(required = false) Integer maindbGroupSeq,
                               @RequestParam(required = false) String customId,
-                              @RequestParam(required = false) String phoneNumber) throws IOException, ResultFailException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+                              @RequestParam(required = false) String phoneNumber,
+                              @RequestParam(required = false) Integer maindbResultSeq) throws IOException, ResultFailException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         final List<MaindbGroupSummaryResponse> groups = maindbGroupApiInterface.list(new MaindbGroupSearchRequest());
         model.addAttribute("maindbGroups", groups);
 
@@ -133,6 +135,9 @@ public class CounselCallController extends BaseController {
 
         model.addAttribute("phoneNumber", phoneNumber);
         form.setGroupSeq(maindbGroupSeq);
+
+        if (ObjectUtils.isNotEmpty(maindbResultSeq))
+            model.addAttribute("maindbResultSeq", maindbResultSeq);
 
         final Map<String, String> channelTypes = FormUtils.options(MultichannelChannelType.class);
         model.addAttribute("channelTypes", channelTypes);
@@ -326,7 +331,6 @@ public class CounselCallController extends BaseController {
 
             final Map<String, Object> fieldNameToValueMap = MaindbResultController.createFieldNameToValueMap(entity, resultType);
             model.addAttribute("fieldNameToValueMap", fieldNameToValueMap);
-
         }
 
         return "counsel/call/counseling-input";
