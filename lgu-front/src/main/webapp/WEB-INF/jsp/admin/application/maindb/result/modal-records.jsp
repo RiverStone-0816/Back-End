@@ -11,43 +11,36 @@
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
-<%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
-<%--@elvariable id="accessToken" type="java.lang.String"--%>
 
 <div class="ui modal xsmall">
-    <i class="close icon" onclick="$(this).closest('.modal').find('audio').each(function() {$(this).stop(); this.pause(); this.currentTime=0})"></i>
+    <i class="close icon"
+       onclick="$(this).closest('.modal').find('audio').each(function() {$(this).stop(); this.pause(); this.currentTime=0})"></i>
+    <div class="header">녹취파일확인</div>
 
-    <div class="content">
+    <div class="scrolling content rows">
         <div class="ui grid">
             <c:choose>
                 <c:when test="${files != null && files.size() > 0}">
+                    <c:set var="listeningAuthority"
+                           value="${user.listeningRecordingAuthority.equals('MY') && entity.personList.id.equals(user.id)
+                                 or user.listeningRecordingAuthority.equals('GROUP') && entity.personList.groupTreeName.contains(user.groupCode)
+                                 or user.listeningRecordingAuthority.equals('ALL')}"/>
+                    <c:set var="downloadAuthority"
+                           value="${user.downloadRecordingAuthority.equals('MY') && entity.personList.id.equals(user.id)
+                                 or user.downloadRecordingAuthority.equals('GROUP') && entity.personList.groupTreeName.contains(user.groupCode)
+                                 or user.downloadRecordingAuthority.equals('ALL')}"/>
                     <c:forEach var="e" items="${files}">
-                        <c:if test="${user.listeningRecordingAuthority.equals('MY') && entity.personList.id.equals(user.id)}">
-                            <audio controls src="/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY" class="audio" preload="none"></audio>
-                            <c:if test="${!user.downloadRecordingAuthority.equals('NO')}">
-                                <div class="center"><a target="_blank" href="/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN">[ 파일다운로드 ]</a></div>
-                            </c:if>
+                        <c:if test="${listeningAuthority}">
+                            <audio controls src="/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY"
+                                   class="audio" preload="none"></audio>
                         </c:if>
-                        <c:if test="${user.listeningRecordingAuthority.equals('GROUP') && entity.personList.groupTreeName.contains(user.groupCode)}">
-                            <audio controls src="/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY" class="audio" preload="none"></audio>
-                            <c:if test="${user.downloadRecordingAuthority.equals('MY') && entity.personList.id.equals(user.id)}">
-                                <div class="center"><a target="_blank" href="/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN">[ 파일다운로드 ]</a></div>
-                            </c:if>
-                            <c:if test="${user.downloadRecordingAuthority.equals('GROUP') && entity.personList.groupTreeName.contains(user.groupCode)}">
-                                <div class="center"><a target="_blank" href="/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN">[ 파일다운로드 ]</a></div>
-                            </c:if>
-                        </c:if>
-                        <c:if test="${user.listeningRecordingAuthority.equals('ALL')}">
-                            <audio controls src="/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY" class="audio" preload="none"></audio>
-                            <c:if test="${user.downloadRecordingAuthority.equals('MY') && entity.personList.id.equals(user.id)}">
-                                <div class="center"><a target="_blank" href="/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN">[ 파일다운로드 ]</a></div>
-                            </c:if>
-                            <c:if test="${user.downloadRecordingAuthority.equals('GROUP') && entity.personList.groupTreeName.contains(user.groupCode)}">
-                                <div class="center"><a target="_blank" href="/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN">[ 파일다운로드 ]</a></div>
-                            </c:if>
-                            <c:if test="${user.downloadRecordingAuthority.equals('ALL')}">
-                                <div class="center"><a target="_blank" href="/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN">[ 파일다운로드 ]</a></div>
-                            </c:if>
+                        <c:if test="${downloadAuthority}">
+                            <div class="center">
+                                <a target="_blank"
+                                   href="/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN">
+                                    [ 파일다운로드 ]
+                                </a>
+                            </div>
                         </c:if>
                     </c:forEach>
                 </c:when>
