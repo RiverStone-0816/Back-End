@@ -199,30 +199,27 @@
                             <td>${g.htmlQuote(e.userTrName)}</td>
                             <td>${g.htmlQuote(e.customNumber)}</td>
                             <td class="popup-td">
-                                <c:choose>
-                                    <c:when test="${e.groupKind == 'PHONE' && not empty e.uniqueid}">
-                                        <div class="popup-element-wrap">
-                                            <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)}">
-                                                <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
+                                <div class="popup-element-wrap">
+                                    <c:choose>
+                                        <c:when test="${e.groupKind == 'PHONE' && not empty e.uniqueid}">
+                                            <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)
+                                                       or user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)
+                                                       or user.listeningRecordingAuthority.equals('ALL')}">
+                                                <button type="button"
+                                                        class="ui icon button mini compact -popup-records"
+                                                        data-id="${e.seq}">
                                                     <i class="volume up icon"></i>
                                                 </button>
                                             </c:if>
-                                            <c:if test="${user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)}">
-                                                <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                    <i class="volume up icon"></i>
-                                                </button>
-                                            </c:if>
-                                            <c:if test="${user.listeningRecordingAuthority.equals('ALL')}">
-                                                <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                    <i class="volume up icon"></i>
-                                                </button>
-                                            </c:if>
-                                        </div>
-                                    </c:when>
-                                    <c:when test="${e.groupKind == 'TALK' && not empty e.hangupMsg}">
-                                        <button type="button" class="ui icon button mini compact" onclick="talkHistoryView('${e.hangupMsg}')"><i class="comment alternate icon"></i></button>
-                                    </c:when>
-                                </c:choose>
+                                        </c:when>
+                                        <c:when test="${e.groupKind == 'TALK' && not empty e.hangupMsg}">
+                                            <button type="button" class="ui icon button mini compact"
+                                                    onclick="talkHistoryView('${e.hangupMsg}')">
+                                                <i class="comment alternate icon"></i>
+                                            </button>
+                                        </c:when>
+                                    </c:choose>
+                                </div>
                             </td>
 
                             <c:forEach var="field" items="${resultType.fields}">

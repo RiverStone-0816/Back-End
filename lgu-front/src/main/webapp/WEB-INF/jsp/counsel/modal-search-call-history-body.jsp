@@ -256,34 +256,14 @@
                             <td>
                                 <c:if test="${isFile}">
                                     <div class="popup-element-wrap">
-                                        <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)}">
+                                        <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)
+                                                   or user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)
+                                                   or user.listeningRecordingAuthority.equals('ALL')}">
                                             <button type="button" class="ui icon button mini compact -popup-records"
                                                     data-id="${e.seq}">
                                                 <i class="volume up icon"></i>
                                             </button>
                                         </c:if>
-                                        <c:if test="${user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)}">
-                                            <button type="button" class="ui icon button mini compact -popup-records"
-                                                    data-id="${e.seq}">
-                                                <i class="volume up icon"></i>
-                                            </button>
-                                        </c:if>
-                                        <c:if test="${user.listeningRecordingAuthority.equals('ALL')}">
-                                            <button type="button" class="ui icon button mini compact -popup-records"
-                                                    data-id="${e.seq}">
-                                                <i class="volume up icon"></i>
-                                            </button>
-                                        </c:if>
-                                            <%-- FIXME: 기획삭제
-                                            <button class="ui icon button mini compact" onclick="popupSttModal(${e.seq});">
-                                                <i class="search icon"></i>
-                                            </button>
-                                            --%>
-                                            <%-- FIXME: 5월 작업분
-                                            <button class="ui icon button mini compact translucent" title="상담원평가" onclick="consultantRatingPopup()">
-                                                <i class="pencil alternate icon"></i>
-                                            </button>
-                                            --%>
                                     </div>
                                 </c:if>
                             </td>

@@ -298,35 +298,29 @@
                                         <td>
                                             <div class="popup-element-wrap">
                                                 <c:if test="${isFile}">
-                                                    <c:if test="${!user.listeningRecordingAuthority.equals('NO')}">
-                                                        <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)}">
-                                                        <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
+                                                    <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)
+                                                               or user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)
+                                                               or user.listeningRecordingAuthority.equals('ALL')}">
+                                                        <button type="button"
+                                                                class="ui icon button mini compact -popup-records"
+                                                                data-id="${e.seq}">
                                                             <i class="volume up icon"></i>
                                                         </button>
-                                                        </c:if>
-                                                        <c:if test="${user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)}">
-                                                            <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                                <i class="volume up icon"></i>
-                                                            </button>
-                                                        </c:if>
-                                                        <c:if test="${user.listeningRecordingAuthority.equals('ALL')}">
-                                                            <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                                <i class="volume up icon"></i>
-                                                            </button>
-                                                        </c:if>
                                                     </c:if>
-                                                </c:if>
-                                                <c:if test="${!user.removeRecordingAuthority.equals('NO') and isFile}">
-                                                    <c:if test="${user.removeRecordingAuthority.equals('ALL') or user.removeRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode) or user.removeRecordingAuthority.equals('MY') && e.personList.id.equals(user.id)}">
-                                                        <button class="ui icon button mini compact translucent" title="녹취 삭제" onclick="deleteRecord(${e.seq})">
+                                                    <c:if test="${user.removeRecordingAuthority.equals('MY') && e.personList.id.equals(user.id)
+                                                               or user.removeRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)
+                                                               or user.removeRecordingAuthority.equals('ALL')}">
+                                                        <button class="ui icon button mini compact translucent"
+                                                                title="녹취 삭제" onclick="deleteRecord(${e.seq})">
                                                             <i class="cancel alternate icon"></i>
                                                         </button>
                                                     </c:if>
-                                                </c:if>
-                                                <c:if test="${company.isServiceAvailable('QA') and isFile}">
-                                                    <button class="ui icon button mini compact translucent" title="상담원평가" onclick="popupEvaluationModal(${e.seq})">
-                                                        <i class="pencil alternate icon"></i>
-                                                    </button>
+                                                    <c:if test="${company.isServiceAvailable('QA')}">
+                                                        <button class="ui icon button mini compact translucent"
+                                                                title="상담원평가" onclick="popupEvaluationModal(${e.seq})">
+                                                            <i class="pencil alternate icon"></i>
+                                                        </button>
+                                                    </c:if>
                                                 </c:if>
                                             </div>
                                         </td>
