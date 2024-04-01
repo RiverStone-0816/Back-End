@@ -12,8 +12,9 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<form:form id="talk-counseling-input" modelAttribute="form" cssClass="panel -json-submit" data-method="post"
-           action="${pageContext.request.contextPath}/api/maindb-result/"
+<form:form id="talk-counseling-input" modelAttribute="form" cssClass="panel -json-submit"
+           data-method="${entity != null ? 'put' : 'post'}"
+           action="${pageContext.request.contextPath}/api/maindb-result/${entity != null ? entity.seq : null}"
            data-before="prepareTalkCounselingInfoFormData" data-done="donePostTalkCounselingInfo">
 
     <div class="panel-heading">
@@ -28,21 +29,34 @@
             <button type="button" class="ui button mini right floated compact blue -submit-form">상담저장</button>
         </c:if>
         <button type="button" class="ui button mini right floated compact" onclick="popupReservationModal('talk')">상담예약</button>
+        <button type="button" class="ui button mini right floated compact" onclick="popupSearchCounselingHistoryModal('talk')">상담이력</button>
     </div>
     <div class="panel-body consulting-info-panel">
         <table class="ui table celled definition">
             <tbody>
-            <c:if test="${talk != null}">
-                <tr>
-                    <td class="three wide">진행정보</td>
-                    <td>
-                        <div class="ui form flex">
-                            [${g.htmlQuote(g.messageOf('RoomStatus', talk.roomStatus))}]
-                                ${g.timestampFormat(talk.roomStartTime)} ~ ${talk.roomStatus == 'E' ? g.timestampFormat(talk.roomLastTime) : ''}
-                        </div>
-                    </td>
-                </tr>
-            </c:if>
+            <c:choose>
+                <c:when test="${entity != null && !talk && entity.groupKind == 'TALK'}">
+                    <tr>
+                        <td class="three wide">진행정보</td>
+                        <td>
+                            <div class="ui form flex">
+                                [${g.htmlQuote(g.messageOf('RoomStatus', "X"))}]
+                            </div>
+                        </td>
+                    </tr>
+                </c:when>
+                <c:when test="${talk != null}">
+                    <tr>
+                        <td class="three wide">진행정보</td>
+                        <td>
+                            <div class="ui form flex" id="room-time">
+                                [${g.htmlQuote(g.messageOf('RoomStatus', talk.roomStatus))}]
+                                    ${g.timestampFormat(talk.roomStartTime)} ~ ${talk.roomStatus == 'E' ? g.timestampFormat(talk.roomLastTime) : ''}
+                            </div>
+                        </td>
+                    </tr>
+                </c:when>
+            </c:choose>
             <tr>
                 <td class="three wide">대화방명</td>
                 <td>
@@ -60,8 +74,9 @@
             <form:hidden path="resultType"/>
             <form:hidden path="groupId"/>
             <c:forEach var="field" items="${resultType.fields}">
-                <c:set var="name" value="${field.fieldId.substring(resultType.kind.length() + '_'.length()).toLowerCase()}"/>
-                <c:set var="value" value=""/>
+                <c:set var="name"
+                       value="${field.fieldId.substring(resultType.kind.length() + '_'.length()).toLowerCase()}"/>
+                <c:set var="value" value="${fieldNameToValueMap.get(field.fieldId)}"/>
                 <tr>
                     <td class="three wide">${g.htmlQuote(field.fieldInfo)}</td>
                     <td>
@@ -114,10 +129,28 @@
                                 <c:when test="${field.fieldType == 'DATETIME'}">
                                     <div class="sixteen wide column">
                                         <div class="ui form fluid" style="text-align: left">
-                                            <input type="text" name="${name}" id="${name}" data-type="text" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" multiple="multiple" value="${value != null ? g.dateFormat(value) : null}" class="-datepicker" style="width: 130px"/>&ensp;
-                                            <input type="text" name="${name}" id="${name}" data-type="text" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" multiple="multiple" value="${value != '' ? value.hours : null}" class="-input-numeric" style="width: 50px"/><text style="line-height: 30px">시</text>
-                                            <input type="text" name="${name}" id="${name}" data-type="text" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" multiple="multiple" value="${value != '' ? value.minutes : null}" class="-input-numeric" style="width: 50px"/><text style="line-height: 30px">분</text>
-                                            <input type="hidden" name="${name}" id="${name}" data-type="text" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" multiple="multiple" value="00" class="-input-numeric"/>
+                                            <input type="text" name="${name}" id="${name}" data-type="text"
+                                                   data-text="${g.htmlQuote(field.fieldInfo)}"
+                                                   data-value="${field.isneed}"
+                                                   multiple="multiple"
+                                                   value="${value != null ? g.dateFormat(value) : null}"
+                                                   class="-datepicker" style="width: 130px"/>&ensp;
+                                            <input type="text" name="${name}" id="${name}" data-type="text"
+                                                   data-text="${g.htmlQuote(field.fieldInfo)}"
+                                                   data-value="${field.isneed}" multiple="multiple"
+                                                   value="${value != '' ? value.hours : null}"
+                                                   class="-input-numeric" style="width: 50px"/>
+                                            <text style="line-height: 30px">시</text>
+                                            <input type="text" name="${name}" id="${name}" data-type="text"
+                                                   data-text="${g.htmlQuote(field.fieldInfo)}"
+                                                   data-value="${field.isneed}" multiple="multiple"
+                                                   value="${value != '' ? value.minutes : null}"
+                                                   class="-input-numeric" style="width: 50px"/>
+                                            <text style="line-height: 30px">분</text>
+                                            <input type="hidden" name="${name}" id="${name}" data-type="text"
+                                                   data-text="${g.htmlQuote(field.fieldInfo)}"
+                                                   data-value="${field.isneed}" multiple="multiple"
+                                                   value="00" class="-input-numeric"/>
                                         </div>
                                     </div>
                                 </c:when>
@@ -125,7 +158,7 @@
                                     <div class="sixteen wide column">
                                         <div class="ui form fluid">
                                             <div class="field">
-                                                <input type="text" name="${name}" id="${name}" data-type="text" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" id="${name}" data-type="text" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" value="${value}" class="-datepicker"/>
+                                                <input type="text" name="${name}" id="${name}" data-type="text" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" value="${value}" class="-datepicker"/>
                                             </div>
                                         </div>
                                     </div>
@@ -135,6 +168,21 @@
                                         <div class="ui form fluid">
                                             <div class="field">
                                                 <textarea name="${name}" id="${name}" data-type="text" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" rows="3" maxlength="${field.fieldSize}">${g.htmlQuote(value)}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:when>
+                                <c:when test="${field.fieldType == 'IMG'}">
+                                    <div class="sixteen wide column">
+                                        <div class="thirteen wide column">
+                                            <input name="${name}" type="hidden" value="">
+                                            <div class="file-upload-header">
+                                                <label for="file" class="ui button blue mini compact">파일찾기</label>
+                                                <input type="file" id="file" data-value="${name}">
+                                                <span class="file-name">No file selected</span>
+                                            </div>
+                                            <div>
+                                                <progress value="0" max="100" style="width:100%"></progress>
                                             </div>
                                         </div>
                                     </div>
@@ -156,12 +204,37 @@
                     </td>
                 </tr>
             </c:forEach>
+            <c:if test="${todoList != null && todoList.size() > 0}">
+                <tr>
+                    <td class="three wide">TODO 처리</td>
+                    <td>
+                        <c:forEach var="e" items="${todoList}">
+                            <input type="hidden" name="todoSequences" data-multiple="true" value="${e.seq}"/>
+                        </c:forEach>
+                        <div class="ui form flex">
+                            <select name="todoStatus">
+                                <c:forEach var="todoStatus" items="${todoStatuses}">
+                                    <option value="${g.htmlQuote(todoStatus.key)}">${g.htmlQuote(todoStatus.value)}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            </c:if>
             </tbody>
         </table>
     </div>
 </form:form>
 
 <script>
+    ui.find('[type="file"]').change(function () {
+        uploadFile(this.files[0], ui.find('progress')).done(function (response) {
+            const name = ui.find('[type="file"]').attr('data-value');
+            ui.find('.file-name').text(response.data.originalName);
+            ui.find('[name=' + name + ']').val(response.data.fileName);
+        });
+    });
+
     const DBTYPE_FIELD_PREFIX = 'RS_';
 
     const fields = {
@@ -230,6 +303,8 @@
                 }
             }
         }
+        if (!data.todoStatus)
+            delete data.todoStatus;
     };
 
     window.donePostTalkCounselingInfo = function () {

@@ -2,17 +2,23 @@ package kr.co.eicn.ippbx.front.controller.web.counsel;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbDataController;
+import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbResultController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.api.CounselApiInterface;
 import kr.co.eicn.ippbx.front.service.api.WebchatConfigApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.grade.GradelistApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbDataApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbGroupApiInterface;
+import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbResultApiInterface;
 import kr.co.eicn.ippbx.front.service.api.application.type.CommonTypeApiInterface;
 import kr.co.eicn.ippbx.front.service.api.wtalk.WtalkTemplateApiInterface;
 import kr.co.eicn.ippbx.front.service.api.wtalk.group.WtalkReceptionGroupApiInterface;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoKind;
+import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.ResultCustomInfoEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CommonCodeEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CommonFieldEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CommonTypeEntity;
@@ -22,12 +28,10 @@ import kr.co.eicn.ippbx.model.enums.TalkTemplate;
 import kr.co.eicn.ippbx.model.form.MaindbCustomInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.ResultCustomInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.TalkCurrentListSearchRequest;
-import kr.co.eicn.ippbx.model.search.GradeListSearchRequest;
-import kr.co.eicn.ippbx.model.search.MaindbDataSearchRequest;
-import kr.co.eicn.ippbx.model.search.MaindbGroupSearchRequest;
-import kr.co.eicn.ippbx.model.search.TemplateSearchRequest;
+import kr.co.eicn.ippbx.model.search.*;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
+import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +43,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Null;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -66,6 +71,8 @@ public class CounseWTalkController extends BaseController {
     private CommonTypeApiInterface commonTypeApiInterface;
     @Autowired
     private WtalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
+    @Autowired
+    private MaindbResultApiInterface maindbResultApiInterface;
     @Autowired
     private WebchatConfigApiInterface webchatConfigApiInterface;
 
@@ -270,7 +277,7 @@ public class CounseWTalkController extends BaseController {
                                   @RequestParam(required = false) String roomId,
                                   @RequestParam(required = false) String senderKey,
                                   @RequestParam(required = false) String userKey,
-                                  @RequestParam(required = false) Integer maindbResultSeq) throws IOException, ResultFailException {
+                                  @RequestParam(required = false) Integer maindbResultSeq) throws IOException, ResultFailException, InvocationTargetException, IllegalAccessException, NoSuchMethodException {
         if (maindbGroupSeq == null) {
             final List<MaindbGroupSummaryResponse> groups = maindbGroupApiInterface.list(new MaindbGroupSearchRequest());
             if (groups.isEmpty())
@@ -287,6 +294,7 @@ public class CounseWTalkController extends BaseController {
         model.addAttribute("group", group);
         final CommonTypeEntity resultType = commonTypeApiInterface.get(group.getResultType());
         model.addAttribute("resultType", resultType);
+        model.addAttribute("maindbResultSeq", maindbResultSeq);
 
         form.setMaindbType(group.getMaindbType());
         form.setResultType(group.getResultType());
@@ -296,18 +304,6 @@ public class CounseWTalkController extends BaseController {
         form.setClickKey(senderKey); // TODO: channelType 어쩔?
         form.setCustomNumber(userKey);
         form.setHangupMsg(roomId);
-
-        if (StringUtils.isNotEmpty(roomId)) {
-            final TalkCurrentListSearchRequest talkCurrentListSearchRequest = new TalkCurrentListSearchRequest();
-            talkCurrentListSearchRequest.setRoomId(roomId);
-            final List<WtalkCurrentListResponse> talkCurrentListResponses = counselApiInterface.currentTalkList(talkCurrentListSearchRequest);
-
-            if (talkCurrentListResponses.size() > 0) {
-                final WtalkCurrentListResponse talk = talkCurrentListResponses.get(0);
-                model.addAttribute("talk", talk);
-                form.setRoomName(talk.getRoomName());
-            }
-        }
 
         final Map<String, String> fieldToRelatedField = new HashMap<>();
         for (CommonFieldEntity field : resultType.getFields()) {
@@ -320,6 +316,77 @@ public class CounseWTalkController extends BaseController {
             }
         }
         model.addAttribute("fieldToRelatedField", fieldToRelatedField);
+
+        final List<String> roomIds = new ArrayList<>();
+        if (StringUtils.isNotEmpty(roomId))
+            roomIds.add(roomId);
+
+        if (StringUtils.isNotEmpty(customId)) {
+            try {
+                final MaindbCustomInfoEntity custom = maindbDataApiInterface.get(customId);
+                if (custom != null && custom.getMultichannelList() != null)
+                    custom.getMultichannelList().stream().filter(e -> Objects.equals(e.getChannelType(), MultichannelChannelType.TALK.getCode())).forEach(e -> roomIds.add(e.getChannelData()));
+            } catch (Exception ignored) {
+            }
+        }
+        final TodoListSearchRequest search = new TodoListSearchRequest();
+        search.setStartDate(null);
+        search.setEndDate(null);
+        search.setRoomIds(roomIds);
+        search.setUserId(g.getUser().getId());
+        search.setStatuses(Arrays.asList(TodoListTodoStatus.ING, TodoListTodoStatus.DELETE, TodoListTodoStatus.HOLD));
+
+        List<TodoList> todoChk = new ArrayList<>();
+        if (!roomIds.isEmpty()) {
+            todoChk = counselApiInterface.getTodoList(search);
+            model.addAttribute("todoList", todoChk);
+        }
+
+        if (todoChk != null) {
+            for (TodoList todoList : todoChk) {
+                if (todoList.getTodoKind().equals(TodoListTodoKind.TRANSFER) && todoList.getTodoStatus().equals(TodoListTodoStatus.ING)) {
+                    final List<ResultCustomInfoEntity> entity = maindbResultApiInterface.getTodo(todoList.getUserid(), todoList.getTodoInfo());
+                    if (entity.size() > 0) {
+                        model.addAttribute("entity", entity.get(0));
+                        ReflectionUtils.copy(form, entity.get(0));
+                        final LinkedHashMap<String, Object> fieldNameToValueMap = MaindbResultController.createFieldNameToValueMap(entity.get(0), resultType);
+                        model.addAttribute("fieldNameToValueMap", fieldNameToValueMap);
+                    }
+                    break;
+                }
+            }
+        }
+        model.addAttribute("todoStatuses", FormUtils.options(TodoListTodoStatus.class));
+
+        //[상담톡] 상담이력정보 가져오기
+        if (maindbResultSeq != null) {
+            final ResultCustomInfoEntity entity = maindbResultApiInterface.get(maindbResultSeq);
+            model.addAttribute("entity", entity);
+            // entity에 있는 필드를 form으로 복사합니다. (이름과 타입이 같을때)..
+            // 만약 ReflectionUtils.copy로 복사가 다 되지 않았다면 하나씩 form에 넣어줘야함.
+            ReflectionUtils.copy(form, entity);
+
+            final Map<String, Object> fieldNameToValueMap = MaindbResultController.createFieldNameToValueMap(entity, resultType);
+            model.addAttribute("fieldNameToValueMap", fieldNameToValueMap);
+
+            if(entity.getGroupKind().equals("TALK")) {
+                roomId = entity.getHangupMsg();
+            }
+        }
+
+        if (StringUtils.isNotEmpty(roomId)) {
+            final TalkCurrentListSearchRequest talkCurrentListSearchRequest = new TalkCurrentListSearchRequest();
+            talkCurrentListSearchRequest.setRoomId(roomId);
+            final List<WtalkCurrentListResponse> talkCurrentListResponses = counselApiInterface.currentTalkList(talkCurrentListSearchRequest);
+
+            if (talkCurrentListResponses.size() > 0) {
+                final WtalkCurrentListResponse talk = talkCurrentListResponses.get(0);
+                model.addAttribute("talk", talk);
+                form.setRoomName(talk.getRoomName());
+            }
+
+        }
+
 
         return "counsel/wtalk/counseling-input";
     }

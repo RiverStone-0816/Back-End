@@ -256,7 +256,10 @@ public class CounselController extends BaseController {
 
     @SuppressWarnings("unchecked")
     @GetMapping("modal-search-counseling-history-body")
-    public String modalSearchCounselingHistoryBody(Model model, @ModelAttribute("search") MaindbResultSearch search) throws IOException, ResultFailException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    public String modalSearchCounselingHistoryBody(Model model, @ModelAttribute("search") MaindbResultSearch search, @RequestParam(required = false) String mode) throws IOException, ResultFailException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        if (StringUtils.isNotEmpty(mode))
+            model.addAttribute("mode", mode);
+
         search.setLimit(100);
 
         final List<SearchMaindbGroupResponse> customdbGroups = maindbResultApiInterface.customdbGroup();

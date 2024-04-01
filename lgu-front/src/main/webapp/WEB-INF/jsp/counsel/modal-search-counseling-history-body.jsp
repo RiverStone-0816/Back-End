@@ -15,7 +15,7 @@
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
 <form:form id="search-counseling-history-form" modelAttribute="search" method="get" class="panel panel-search -ajax-loader"
-           action="${pageContext.request.contextPath}/counsel/modal-search-counseling-history-body"
+           action="${pageContext.request.contextPath}/counsel/modal-search-counseling-history-body?mode=${mode}"
            data-target="#modal-search-counseling-history-body">
     <div class="panel-heading">
         <div class="pull-left">
@@ -184,7 +184,7 @@
             <c:choose>
                 <c:when test="${pagination.rows.size() > 0}">
                     <c:forEach var="e" items="${pagination.rows}" varStatus="status">
-                        <tr data-id="${g.htmlQuote(e.seq)}" data-group="${e.groupId}" data-custom-id="${e.customId}">
+                        <tr data-id="${g.htmlQuote(e.seq)}" data-group="${e.groupId}" data-custom-id="${e.customId}" data-room-id="${e.hangupMsg}" data-group-kind="${e.groupKind}">
                             <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                             <td>
                                 <c:choose>
@@ -333,11 +333,22 @@
     function setCustomInfo() {
         const seq = getEntityId('MaindbResult');
         const customId = getEntityId('MaindbResult', 'custom-id');
+        const roomId = getEntityId('MaindbResult', 'room-id');
+        const channel = getEntityId('MaindbResult', 'group-kind');
+        const panelMode = '${mode}';
+
         if (!seq) return;
 
         const phoneNumber = $('.selectable-only[data-entity="MaindbResult"] tr[data-id="' + seq + '"] .-phone-channel-data:first').text();
 
-        loadCustomInput(${search.groupSeq}, customId, phoneNumber, '', '', '', seq);
+        if (panelMode === 'call') {
+            loadCustomInput(${search.groupSeq}, customId, phoneNumber, '', '', '', seq);
+        }else if(panelMode === 'talk') {
+            loadTalkCustomInput(${search.groupSeq}, customId, roomId, '', '', '',  seq);
+            if (channel === 'TALK') {
+                viewTalkRoom(roomId);
+            }
+        }
 
         $('#search-counseling-history-form').closest('.modal').modalHide();
     }

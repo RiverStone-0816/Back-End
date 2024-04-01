@@ -26,5 +26,7 @@ public class TodoListSearchRequest extends PageQueryableForm {
     @PageQueryable
     private List<String> phoneNumbers = new ArrayList<>();
     @PageQueryable
+    private List<String> roomIds = new ArrayList<>();
+    @PageQueryable
     private String userId;
 }

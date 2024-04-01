@@ -77,6 +77,10 @@
     function viewTalkRoom(roomId) {
         viewTalkPanel();
 
+        if(!talkListContainer.roomMap[roomId]){
+            return;
+        }
+
         $('.-counsel-panel-indicator[data-tab="talk-panel"]').trigger("click");
         $('.-counsel-panel-indicator[data-tab="talk-panel"]').addClass('active');
 
@@ -90,17 +94,16 @@
 
         if (userName === userIdName) {
             talkListContainer.activeTab(container === statuses['MY'] ? 'MY' : 'END');
-        } else if (userName === "지정안됨" || container !== statuses['MY']) {
-
+        } else if (userName === "지정안됨") {
             if (!talkListContainer.isSearch) {
                 value = ''
                 talkListContainer.isSearch = true
             }
-            talkListContainer.activeTab('END');
+            talkListContainer.activeTab(container === statuses['TOT'] ? 'TOT' : 'END');
             talkListContainer.statuses['END'].filter.value = '';
             talkListContainer.filter('END');
-        } else {
-            talkListContainer.activeTab('TOT');
+        } else if (userName !== userIdName && userName !== "지정안됨") {
+            talkListContainer.activeTab(container === statuses['OTH'] ? 'OTH' : 'END');
         }
     }
 

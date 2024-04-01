@@ -314,8 +314,8 @@
             }), 'modal-search-maindb-custom');
         }
 
-        function popupSearchCounselingHistoryModal() {
-            popupDraggableModalFromReceivedHtml('/counsel/modal-search-counseling-history', 'modal-search-counseling-history');
+        function popupSearchCounselingHistoryModal(mode = 'call') {
+            popupDraggableModalFromReceivedHtml('/counsel/modal-search-counseling-history?mode=' + mode, 'modal-search-counseling-history');
         }
 
         function popupSearchCallHistoryModal() {
