@@ -177,14 +177,13 @@ public class CounseWTalkController extends BaseController {
                 senderKey = talk.getSenderKey();
                 userKey = talk.getUserKey();
 
-                if (StringUtils.isNotEmpty(talk.getMaindbCustomId())) {
+                if (ObjectUtils.isEmpty(maindbGroupSeq) && StringUtils.isNotEmpty(talk.getMaindbCustomId())) {
                     maindbGroupSeq = talk.getMaindbGroupId();
-                    //customId = talk.getMaindbCustomId();
                 }
             }
         }
 
-        if (maindbGroupSeq == null)
+        if (ObjectUtils.isEmpty(maindbGroupSeq))
             maindbGroupSeq = groups.get(0).getSeq();
 
         model.addAttribute("roomId", roomId);
@@ -286,6 +285,7 @@ public class CounseWTalkController extends BaseController {
         final MaindbGroupDetailResponse group = maindbGroupApiInterface.get(maindbGroupSeq);
         model.addAttribute("group", group);
         final CommonTypeEntity resultType = commonTypeApiInterface.get(group.getResultType());
+        resultType.setFields(resultType.getFields().stream().filter(e -> "Y".equals(e.getIsdisplay())).collect(Collectors.toList()));
         model.addAttribute("resultType", resultType);
 
         form.setMaindbType(group.getMaindbType());
