@@ -321,7 +321,7 @@
             return;
 
         if (sound !== 'TTS') {
-            const src = "/api/ars/id/"+sound+"/resource";
+            const src = contextPath + "/api/ars/id/"+sound+"/resource";
             $('<a/>', {href: src, target: '_blank', style: 'display: none;'}).appendTo('body').click();
         } else if (tts) {
             restSelf.post('/api/sounds-editor/pre-listen', {playSpeed: 100, comment: tts}).done(function (response) {
@@ -345,7 +345,7 @@
             return;
 
         if (sound !== 'TTS') {
-            const src = "/api/ars/id/"+sound+"/resource";
+            const src = contextPath + "/api/ars/id/"+sound+"/resource";
             const audio = $('<audio controls/>').attr('src', src);
             player.append(audio);
             maudio({obj: audio[0], fastStep: 10});

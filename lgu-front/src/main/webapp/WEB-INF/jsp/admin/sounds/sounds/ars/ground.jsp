@@ -86,10 +86,10 @@
                                                 </button>
                                                 <div class="ui popup top right">
                                                     <div class="maudio">
-                                                        <audio controls src="/api/ars/id/${g.htmlQuote(e.seq)}/resource?mode=PLAY"></audio>
+                                                        <audio controls src="${pageContext.request.contextPath}/api/ars/id/${g.htmlQuote(e.seq)}/resource?mode=PLAY"></audio>
                                                     </div>
                                                 </div>
-                                                <a class="ui icon button mini compact" href="/api/ars/id/${g.htmlQuote(e.seq)}/resource?mode=DOWN">
+                                                <a class="ui icon button mini compact" href="${pageContext.request.contextPath}/api/ars/id/${g.htmlQuote(e.seq)}/resource?mode=DOWN">
                                                     <i class="arrow down icon" data-value="${e.seq}"></i>
                                                 </a>
                                             </div>

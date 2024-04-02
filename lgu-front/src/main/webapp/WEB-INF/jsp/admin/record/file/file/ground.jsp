@@ -60,7 +60,7 @@
                                         <td>${g.htmlQuote(e.fileName)}</td>
                                         <td><fmt:formatNumber value="${e.size}" pattern="#,###"/></td>
                                         <td>
-                                            <a class="ui icon button mini compact" href="/api/record-file/resource-disk?fileName=${g.htmlQuote(e.fileName)}">
+                                            <a class="ui icon button mini compact" href="${pageContext.request.contextPath}/api/record-file/resource-disk?fileName=${g.htmlQuote(e.fileName)}">
                                                 <i class="arrow down icon"></i>
                                             </a>
                                         </td>

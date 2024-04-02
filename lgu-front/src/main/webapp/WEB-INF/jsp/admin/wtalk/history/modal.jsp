@@ -304,7 +304,7 @@
                                                  style="background-color: rgba(224, 57, 151, 0.28)">
                                                 <div class="txt_chat">
                                                     <div style="width: 320px">
-                                                        <audio controls src="/api/record-file/resource-disk?fileName=${e.content}" initaudio="false"></audio>
+                                                        <audio controls src="${pageContext.request.contextPath}/api/record-file/resource-disk?fileName=${e.content}" initaudio="false"></audio>
                                                     </div>
                                                 </div>
                                             </div>
@@ -321,7 +321,7 @@
                                             <div class="bubble"
                                                  style="background-color: rgba(224, 57, 151, 0.28)">
                                                 <div class="txt_chat">
-                                                    <video controls src="/api/record-file/resource-disk?fileName=${e.content}"></video>
+                                                    <video controls src="${pageContext.request.contextPath}/api/record-file/resource-disk?fileName=${e.content}"></video>
                                                 </div>
                                             </div>
                                         </div>
