@@ -31,13 +31,13 @@
                                  or user.downloadRecordingAuthority.equals('ALL')}"/>
                     <c:forEach var="e" items="${files}">
                         <c:if test="${listeningAuthority}">
-                            <audio controls src="/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY"
+                            <audio controls src="${pageContext.request.contextPath}/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY"
                                    class="audio" preload="none"></audio>
                         </c:if>
                         <c:if test="${downloadAuthority}">
                             <div class="center">
                                 <a target="_blank"
-                                   href="/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN">
+                                   href="${pageContext.request.contextPath}/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN">
                                     [ 파일다운로드 ]
                                 </a>
                             </div>

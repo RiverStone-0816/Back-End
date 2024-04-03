@@ -1390,7 +1390,7 @@
                                 isImage: e.typeMent === 'P',
                                 fileName: e.originalFileName,
                                 filePath: e.filePath,
-                                url: e.typeMent === 'P' ? $.addQueryString('/api/wtalk-template/resource', {
+                                url: e.typeMent === 'P' ? $.addQueryString(contextPath + '/api/wtalk-template/resource', {
                                     filePath: e.filePath
                                 }) : null
                             })

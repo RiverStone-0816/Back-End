@@ -42,7 +42,7 @@
                                 <div class="item">
                                     <i class="file alternate outline icon"></i>
                                     <div class="content">
-                                        <a href="/api/manual/id/${e.id}/resource" target="_blank">
+                                        <a href="${pageContext.request.contextPath}/api/manual/id/${e.id}/resource" target="_blank">
                                                 ${g.htmlQuote(e.originalName)}
                                         </a>
                                     </div>

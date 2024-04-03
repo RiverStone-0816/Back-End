@@ -51,7 +51,7 @@
                                         <td><fmt:formatDate value="${e.createdAt}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>
                                             <div class="popup-element-wrap">
-                                                <a class="item" href="/api/mail-file/id/${g.htmlQuote(e.id)}/resource">
+                                                <a class="item" href="${pageContext.request.contextPath}/api/mail-file/id/${g.htmlQuote(e.id)}/resource">
                                                         ${g.htmlQuote(e.fileName)}
                                                 </a>
                                             </div>

@@ -50,7 +50,7 @@
                                 <div class="item">
                                     <i class="file alternate outline icon"></i>
                                     <div class="content">
-                                        <a href="/api/notice/id/${e.id}/resource" target="_blank">
+                                        <a href="${pageContext.request.contextPath}/api/notice/id/${e.id}/resource" target="_blank">
                                                 ${g.htmlQuote(e.originalName)}
                                         </a>
                                     </div>
