@@ -34,29 +34,29 @@
     <div class="panel-body consulting-info-panel">
         <table class="ui table celled definition">
             <tbody>
-            <c:choose>
-                <c:when test="${entity != null && !talk && entity.groupKind == 'TALK'}">
-                    <tr>
-                        <td class="three wide">진행정보</td>
-                        <td>
-                            <div class="ui form flex">
-                                [${g.htmlQuote(g.messageOf('RoomStatus', "X"))}]
-                            </div>
-                        </td>
-                    </tr>
-                </c:when>
-                <c:when test="${talk != null}">
-                    <tr>
-                        <td class="three wide">진행정보</td>
-                        <td>
-                            <div class="ui form flex" id="room-time">
-                                [${g.htmlQuote(g.messageOf('RoomStatus', talk.roomStatus))}]
-                                    ${g.timestampFormat(talk.roomStartTime)} ~ ${talk.roomStatus == 'E' ? g.timestampFormat(talk.roomLastTime) : ''}
-                            </div>
-                        </td>
-                    </tr>
-                </c:when>
-            </c:choose>
+                <c:choose>
+                    <c:when test="${talk == null && entity.groupKind == 'TALK'}">
+                        <tr>
+                            <td class="three wide">진행정보</td>
+                            <td>
+                                <div class="ui form flex">
+                                    [${g.htmlQuote(g.messageOf('RoomStatus', "X"))}]
+                                </div>
+                            </td>
+                        </tr>
+                    </c:when>
+                    <c:when test="${talk != null && talk != ''}">
+                        <tr>
+                            <td class="three wide">진행정보</td>
+                            <td>
+                                <div class="ui form flex" id="room-time">
+                                    [${g.htmlQuote(g.messageOf('RoomStatus', talk.roomStatus))}]
+                                        ${g.timestampFormat(talk.roomStartTime)} ~ ${talk.roomStatus == 'E' ? g.timestampFormat(talk.roomLastTime) : ''}
+                                </div>
+                            </td>
+                        </tr>
+                    </c:when>
+                </c:choose>
             <tr>
                 <td class="three wide">대화방명</td>
                 <td>

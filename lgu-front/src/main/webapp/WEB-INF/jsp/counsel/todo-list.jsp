@@ -74,7 +74,7 @@
         });
     }
 
-    function viewTalkRoom(roomId) {
+    function viewTalkRoom(roomId, test = true) {
         viewTalkPanel();
 
         if(!talkListContainer.roomMap[roomId]){
@@ -84,13 +84,13 @@
         $('.-counsel-panel-indicator[data-tab="talk-panel"]').trigger("click");
         $('.-counsel-panel-indicator[data-tab="talk-panel"]').addClass('active');
 
-        talkListContainer.openRoom(roomId);
-
         const userIdName = '${user.idName}';
         const room = talkListContainer.roomMap[roomId];
-        const userName = room.userName;
+        const userName =  room.userName
         const container = room.container;
         const statuses = talkListContainer.statuses;
+
+        talkListContainer.openRoom(roomId, userName, test);
 
         if (userName === userIdName) {
             talkListContainer.activeTab(container === statuses['MY'] ? 'MY' : 'END');

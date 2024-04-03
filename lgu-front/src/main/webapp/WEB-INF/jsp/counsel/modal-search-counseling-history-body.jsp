@@ -342,8 +342,8 @@
             loadCustomInput(${search.groupSeq}, customId, phoneNumber, '', '', '', seq);
         }else if(panelMode === 'talk') {
             loadTalkCustomInput(${search.groupSeq}, customId, roomId, '', '', '',  seq);
-            if (channel === 'TALK') {
-                viewTalkRoom(roomId);
+            if (channel === 'TALK'){
+                viewTalkRoom(roomId, false);
             }
         }
 

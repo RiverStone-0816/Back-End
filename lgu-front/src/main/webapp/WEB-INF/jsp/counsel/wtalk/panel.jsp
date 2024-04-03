@@ -402,10 +402,11 @@
                     timestampFormat: function (e) {
                         return moment(e).format('MM-DD HH:mm')
                     },
-                    openRoom: function (roomId, userName) {
+                    openRoom: function (roomId, userName, test = true) {
                         talkRoom.loadRoom(roomId, userName).done(() => {
-                            loadTalkCustomInput(this.roomMap[roomId].maindbGroupId, this.roomMap[roomId].maindbCustomId, roomId, this.roomMap[roomId].senderKey, this.roomMap[roomId].userKey, this.roomMap[roomId].channelType);
-                            this.loadActivatedRoomIds();
+                            if (test) {
+                                loadTalkCustomInput(this.roomMap[roomId].maindbGroupId, this.roomMap[roomId].maindbCustomId, roomId, this.roomMap[roomId].senderKey, this.roomMap[roomId].userKey, this.roomMap[roomId].channelType);
+                            }this.loadActivatedRoomIds();
                         })
                     },
                     reallocate() {
