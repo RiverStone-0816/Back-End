@@ -677,7 +677,6 @@ import store from '../store/index'
 import Communicator from "../utillities/Communicator"
 import maudio from "../utillities/maudio"
 import sessionUtils from "@/utillities/sessionUtils"
-import axios from "axios"
 import modalOpener from "@/utillities/mixins/modalOpener"
 import Janus from "../utillities/janus"
 
@@ -1670,7 +1669,6 @@ export default {
 
   },
   async mounted() {
-    this.form.ip = JSON.parse(JSON.stringify(await axios.get('https://httpbin.org/ip'))).data.origin
     this.communicator
         .on('webchatsvc_close', () => {
           this.communicator.disconnect()
@@ -1771,7 +1769,7 @@ export default {
           if (data.result !== 'OK') return store.commit('alert/show', {body: `로그인실패 : ${data.result}; ${data.result_data}` ,isClose: true})
           this.communicator.requestIntro()
         })
-        .connect(this.form.url, this.form.senderKey, this.form.userKey, this.form.ip, this.form.mode,)
+        .connect(this.form.url, this.form.senderKey, this.form.userKey, this.form.mode,)
 
     window.addEventListener("beforeunload", () => this.communicator.disconnect(), false)
 

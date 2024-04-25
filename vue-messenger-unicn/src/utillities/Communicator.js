@@ -49,7 +49,7 @@ Communicator.prototype.logClear = function () {
 };
 Communicator.prototype.connect = function (url, senderKey, userKey, ip, mode) {
     this.url = url;
-    this.request = {sender_key: senderKey, user_key: userKey, room_id: null, company_id: null, my_ip: ip, mode: mode,};
+    this.request = {sender_key: senderKey, user_key: userKey, room_id: null, company_id: null, mode: mode,};
 
     const _this = this;
     try {
@@ -99,7 +99,6 @@ Communicator.prototype.recovery = function () {
         this.url,
         this.request.sender_key,
         this.request.user_key,
-        this.request.my_ip,
         this.request.mode,
     ])
 };
