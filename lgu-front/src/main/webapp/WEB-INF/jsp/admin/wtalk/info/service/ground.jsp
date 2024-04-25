@@ -52,8 +52,10 @@
                                         <td>${status.index + 1}</td>
                                         <td>${g.htmlQuote(e.kakaoServiceName)}</td>
                                         <td>${g.htmlQuote(e.kakaoServiceId)}
-                                            <button type="button" class="ui button mini icon compact" onClick="location.href='https://pf.kakao.com/${e.kakaoServiceId}'">
-                                                <i class="home icon"></i>
+                                            <button type="button" class="ui button mini icon compact">
+                                                <a href="https://pf.kakao.com/${e.kakaoServiceId}" target="_blank">
+                                                    <i class="home icon"></i>
+                                                </a>
                                             </button>
                                         </td>
                                         <td>${g.htmlQuote(e.senderKey)}</td>
