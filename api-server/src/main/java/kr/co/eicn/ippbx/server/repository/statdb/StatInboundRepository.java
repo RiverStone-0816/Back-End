@@ -41,7 +41,7 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
                 TABLE.STAT_DATE,
                 TABLE.STAT_HOUR,
                 ifnull(sum(TABLE.TOTAL), 0).as(TABLE.TOTAL),
-                ifnull(sum(TABLE.ONLYREAD), 0).as(TABLE.ONLYREAD),
+                ifnull(sum(when(isDirectOrInner, 0).else_(TABLE.ONLYREAD)), 0).as(TABLE.ONLYREAD),
                 ifnull(sum(when(isDirectOrInner, TABLE.TOTAL).else_(TABLE.CONNREQ)), 0).as(TABLE.CONNREQ),
                 ifnull(sum(TABLE.SUCCESS), 0).as(TABLE.SUCCESS),
                 ifnull(sum(when(isDirectOrInner, TABLE.TOTAL.minus(TABLE.SUCCESS)).else_(TABLE.CANCEL)), 0).as(TABLE.CANCEL),
