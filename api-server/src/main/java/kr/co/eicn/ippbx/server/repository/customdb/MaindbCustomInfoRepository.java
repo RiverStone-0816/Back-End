@@ -12,6 +12,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbCustomInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.MaindbGroup;
 import kr.co.eicn.ippbx.model.dto.eicn.MaindbCustomFieldResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.MaindbKeyInfoEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.UserEntity;
 import kr.co.eicn.ippbx.model.enums.MultichannelChannelType;
@@ -330,7 +331,7 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
                 if (form.getChannels() != null) {
                     for (MaindbCustomInfoFormRequest.ChannelForm channel : form.getChannels()) {
                         keyValue = keyValue + "$$" + channel.getValue();
-                        List<MaindbKeyInfo> list = maindbKeyInfoService.getRepository().selectOne(keyValue, form.getGroupSeq());
+                        List<MaindbKeyInfoEntity> list = maindbKeyInfoService.getRepository().selectOne(keyValue, form.getGroupSeq());
                         if (list.size() == 0)
                             maindbKeyInfoService.getRepository().insert(id, keyValue, form.getGroupSeq());
                     }
@@ -342,14 +343,14 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
 
                 if (maindbGroup.getDupKeyKind().equals("FLD")) {
                     keyValue = keyValue + "$$" + invoked;
-                    List<MaindbKeyInfo> list = maindbKeyInfoService.getRepository().selectOne(keyValue, form.getGroupSeq());
+                    List<MaindbKeyInfoEntity> list = maindbKeyInfoService.getRepository().selectOne(keyValue, form.getGroupSeq());
                     if (list.size() == 0)
                         maindbKeyInfoService.getRepository().insert(id, keyValue, form.getGroupSeq());
                 } else if (maindbGroup.getDupKeyKind().equals("FLD_NUM")) {
                     if (form.getChannels() != null) {
                         for (MaindbCustomInfoFormRequest.ChannelForm channel : form.getChannels()) {
                             keyValue = keyValue + "$$" + invoked + "$$" + channel.getValue();
-                            List<MaindbKeyInfo> list = maindbKeyInfoService.getRepository().selectOne(keyValue, form.getGroupSeq());
+                            List<MaindbKeyInfoEntity> list = maindbKeyInfoService.getRepository().selectOne(keyValue, form.getGroupSeq());
                             if (list.size() == 0)
                                 maindbKeyInfoService.getRepository().insert(id, keyValue, form.getGroupSeq());
                         }
@@ -501,7 +502,7 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
                 if (form.getChannels() != null) {
                     for (MaindbCustomInfoFormRequest.ChannelForm channel : form.getChannels()) {
                         keyValue = keyValue + "$$" + channel.getValue();
-                        List<MaindbKeyInfo> list = maindbKeyInfoService.getRepository().selectOne(keyValue, form.getGroupSeq());
+                        List<MaindbKeyInfoEntity> list = maindbKeyInfoService.getRepository().selectOne(keyValue, form.getGroupSeq());
                         if (list.size() == 0)
                             maindbKeyInfoService.getRepository().insert(id, keyValue, form.getGroupSeq());
                     }
@@ -513,14 +514,14 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
 
                 if (maindbGroup.getDupKeyKind().equals("FLD")) {
                     keyValue = keyValue + "$$" + invoked;
-                    List<MaindbKeyInfo> list = maindbKeyInfoService.getRepository().selectOne(keyValue, form.getGroupSeq());
+                    List<MaindbKeyInfoEntity> list = maindbKeyInfoService.getRepository().selectOne(keyValue, form.getGroupSeq());
                     if (list.size() == 0)
                         maindbKeyInfoService.getRepository().insert(id, keyValue, form.getGroupSeq());
                 } else if (maindbGroup.getDupKeyKind().equals("FLD_NUM")) {
                     if (form.getChannels() != null) {
                         for (MaindbCustomInfoFormRequest.ChannelForm channel : form.getChannels()) {
                             keyValue = keyValue + "$$" + invoked + "$$" + channel.getValue();
-                            List<MaindbKeyInfo> list = maindbKeyInfoService.getRepository().selectOne(keyValue, form.getGroupSeq());
+                            List<MaindbKeyInfoEntity> list = maindbKeyInfoService.getRepository().selectOne(keyValue, form.getGroupSeq());
                             if (list.size() == 0)
                                 maindbKeyInfoService.getRepository().insert(id, keyValue, form.getGroupSeq());
                         }

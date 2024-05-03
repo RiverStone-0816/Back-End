@@ -27,12 +27,12 @@ public class MaindbKeyInfoRepository extends CustomDBBaseRepository<CommonMaindb
 
     }
 
-    public List<MaindbKeyInfo> selectOne(String keyValue, Integer groupId){
+    public List<MaindbKeyInfoEntity> selectOne(String keyValue, Integer groupId){
         return dsl.select()
                 .from(TABLE)
                 .where(TABLE.KEY_VALUE.eq(md5(keyValue)))
                 .and(TABLE.GROUP_ID.eq(groupId))
-                .fetchInto(MaindbKeyInfo.class);
+                .fetchInto(MaindbKeyInfoEntity.class);
     }
 
     public void insert(String customId, String keyValue, Integer groupId){
