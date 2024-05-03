@@ -86,7 +86,7 @@
                                                 </button>
                                                 <div class="ui popup top right">
                                                     <div class="maudio">
-                                                        <audio controls src="${pageContext.request.contextPath}/api/ars/id/${g.htmlQuote(e.seq)}/resource?mode=PLAY"></audio>
+                                                        <audio data-src="${pageContext.request.contextPath}/api/ars/id/${g.htmlQuote(e.seq)}/resource?mode=PLAY"></audio>
                                                     </div>
                                                 </div>
                                                 <a class="ui icon button mini compact" href="${pageContext.request.contextPath}/api/ars/id/${g.htmlQuote(e.seq)}/resource?mode=DOWN">

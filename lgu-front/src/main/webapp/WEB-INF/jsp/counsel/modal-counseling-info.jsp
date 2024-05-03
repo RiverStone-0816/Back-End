@@ -42,9 +42,8 @@
                                              or user.downloadRecordingAuthority.equals('ALL')}"/>
                                 <c:forEach var="e" items="${files}">
                                     <c:if test="${listeningAuthority}">
-                                        <audio controls
-                                               src="${pageContext.request.contextPath}/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY"
-                                               class="audio" preload="none"></audio>
+                                        <audio data-src="${pageContext.request.contextPath}/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY"
+                                               controls class="audio" preload="none"></audio>
                                     </c:if>
                                     <c:if test="${downloadAuthority}">
                                         <div class="center">

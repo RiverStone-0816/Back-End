@@ -211,7 +211,7 @@
                                                 <div class="chat">
                                                     <div class="bubble">
                                                         <p class="txt_chat">
-                                                            <audio controls src="${g.htmlQuote(e.content)}"></audio>
+                                                            <audio data-src="${g.htmlQuote(e.content)}"></audio>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -265,7 +265,7 @@
                                                 <div class="chat">
                                                     <div class="bubble">
                                                         <p class="txt_chat">
-                                                            <audio controls src="${g.htmlQuote(e.content)}"></audio>
+                                                            <audio data-src="${g.htmlQuote(e.content)}"></audio>
                                                         </p>
                                                     </div>
                                                 </div>
@@ -304,7 +304,7 @@
                                                  style="background-color: rgba(224, 57, 151, 0.28)">
                                                 <div class="txt_chat">
                                                     <div style="width: 320px">
-                                                        <audio controls src="${pageContext.request.contextPath}/api/record-file/resource-disk?fileName=${e.content}" initaudio="false"></audio>
+                                                        <audio data-src="${pageContext.request.contextPath}/api/record-file/resource-disk?fileName=${e.content}" initaudio="false"></audio>
                                                     </div>
                                                 </div>
                                             </div>

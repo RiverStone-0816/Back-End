@@ -84,7 +84,7 @@
                                                 </button>
                                                 <div class="ui popup top right">
                                                     <div class="maudio">
-                                                        <audio controls src="${pageContext.request.contextPath}/api/ring-back-tone/id/${g.htmlQuote(e.category)}/resource?mode=PLAY"></audio>
+                                                        <audio data-src="${pageContext.request.contextPath}/api/ring-back-tone/id/${g.htmlQuote(e.category)}/resource?mode=PLAY"></audio>
                                                     </div>
                                                 </div>
                                                 <a class="ui icon button mini compact"

@@ -693,7 +693,7 @@
                                             <div class="bubble" style="background-color: rgba(224,57,151,0.28);">
                                                 <div class="txt_chat">
                                                     <div style="width: 320px">
-                                                        <audio controls :src="'/api/record-file/resource-disk?fileName='+jsonDataParse(e.contents).record_file" initaudio="false"></audio>
+                                                        <audio controls :data-src="'/api/record-file/resource-disk?fileName='+jsonDataParse(e.contents).record_file" initaudio="false"></audio>
                                                     </div>
                                                 </div>
                                             </div>
@@ -747,7 +747,7 @@
                                                     <img v-else-if="e.messageType === 'image_temp'" :src="e.fileUrl"
                                                          class="cursor-pointer" @click="popupImageView(e.fileUrl)">
                                                     <div v-else-if="e.messageType === 'audio'" class="maudio" style="width: 330px">
-                                                        <audio controls :src="e.fileUrl" initaudio="false"></audio>
+                                                        <audio controls :data-src="e.fileUrl" initaudio="false"></audio>
                                                     </div>
                                                     <video v-else-if="e.messageType === 'video'" controls :src="e.fileUrl"></video>
                                                     <a v-else-if="e.messageType === 'file'" target="_blank"
