@@ -15,10 +15,12 @@ import org.jooq.impl.TableImpl;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Data
+@Repository
 public abstract class BaseRepository<TABLE extends TableImpl<? extends Record>, ENTITY, PK> {
     protected final Set<Field<?>> selectingFields = new HashSet<>();
     protected final List<SortField<?>> orderByFields = new ArrayList<>();
