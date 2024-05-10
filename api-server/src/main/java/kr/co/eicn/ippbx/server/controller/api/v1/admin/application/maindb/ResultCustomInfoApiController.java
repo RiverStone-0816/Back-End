@@ -183,11 +183,12 @@ public class ResultCustomInfoApiController extends ApiBaseController {
     public ResponseEntity<JsonResult<List<RecordFile>>> getFiles(@PathVariable String uniqueId) {
         return ResponseEntity.ok().body(data(recordFileService.fetchAll(eicnCdrService.getRepository().findAllByUniqueId(uniqueId))));
     }
-
+    /*
     @GetMapping(value = "resource", params = {"token"})
-    public ResponseEntity<Resource> resource(@RequestParam("path") String recordFile/*파일명을 포함한 파일경로*/, @RequestParam("mode") String mode) {
+    public ResponseEntity<Resource> resource(@RequestParam("path") String recordFile, @RequestParam("mode") String mode) {
         return recordApiController.resource(recordFile, mode);
     }
+    */
 
     //추가
     @PostMapping("")

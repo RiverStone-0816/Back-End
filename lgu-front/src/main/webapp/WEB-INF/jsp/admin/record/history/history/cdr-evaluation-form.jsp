@@ -57,7 +57,7 @@
                     <c:choose>
                         <c:when test="${files.size() > 0}">
                             <c:forEach var="e" items="${files}">
-                                <audio data-src="${pageContext.request.contextPath}/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY" controls class="audio"></audio>
+                                <audio data-src="${pageContext.request.contextPath}/api/record-file/resource-front-play/${list.seq}/${g.urlEncode(list.uniqueid)}/?partial=${status.index}" controls class="audio"></audio>
                             </c:forEach>
                         </c:when>
                         <c:otherwise>

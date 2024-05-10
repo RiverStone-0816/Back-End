@@ -7,6 +7,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.FileSummaryResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -37,5 +38,13 @@ public class RecordFileApiInterface extends ApiServerInterface {
 
     public Resource getResourceInDisk(String fileName) throws IOException, ResultFailException {
         return getResource("/api/v1/admin/record/file/resource?fileName=" + fileName);
+    }
+
+    public ResponseEntity<Resource> getResourceFrontPlay(Integer seq, String uniqueid, Integer partial) {
+        return super.getResourceResponseFrontDirect("/api/v1/admin/record/history/resource-front-play/" + seq + "/" + uniqueid + "/?partial=" + partial);
+    }
+
+    public ResponseEntity<Resource> getResourceFrontDown(Integer seq, String uniqueid, String dstUniqueid, Integer partial) {
+        return super.getResourceResponseFrontDirect("/api/v1/admin/record/history/resource-front-down/" + seq + "/" + uniqueid + "/" + dstUniqueid + "/?partial=" + partial);
     }
 }

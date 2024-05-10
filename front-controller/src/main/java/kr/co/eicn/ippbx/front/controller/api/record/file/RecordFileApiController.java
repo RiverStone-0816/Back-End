@@ -32,7 +32,7 @@ public class RecordFileApiController extends BaseController {
     public void delete(@PathVariable String fileName) throws IOException, ResultFailException {
         apiInterface.delete(fileName);
     }
-
+/*
     @ResponseBody
     @GetMapping("resource")
     public ResponseEntity<byte[]> get(@RequestParam String path, @RequestParam String mode) throws IOException, ResultFailException {
@@ -55,7 +55,7 @@ public class RecordFileApiController extends BaseController {
 
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
     }
-
+*/
     @ResponseBody
     @GetMapping("resource-disk")
     public ResponseEntity<byte[]> get(@RequestParam String fileName) throws IOException, ResultFailException {
@@ -74,5 +74,17 @@ public class RecordFileApiController extends BaseController {
         headers.setContentLength(bytes.length);
 
         return new ResponseEntity<>(bytes, headers, HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @GetMapping("resource-front-play/{seq}/{uniqueid}")
+    public ResponseEntity<Resource> getResourceFrontPlay(@PathVariable Integer seq, @PathVariable String uniqueid, @RequestParam(value = "partial", required = false, defaultValue = "0") Integer partial) throws IOException, ResultFailException {
+        return apiInterface.getResourceFrontPlay(seq, uniqueid, partial);
+    }
+
+    @ResponseBody
+    @GetMapping("resource-front-down/{seq}/{uniqueid}/{dstUniqueid}")
+    public ResponseEntity<Resource> getResourceFrontDown(@PathVariable Integer seq, @PathVariable String uniqueid, @PathVariable String dstUniqueid, @RequestParam(value = "partial", required = false, defaultValue = "0") Integer partial) throws IOException, ResultFailException {
+        return apiInterface.getResourceFrontDown(seq, uniqueid, dstUniqueid, partial);
     }
 }
