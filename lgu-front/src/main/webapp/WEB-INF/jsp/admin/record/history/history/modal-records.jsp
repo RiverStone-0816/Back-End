@@ -29,7 +29,7 @@
                            value="${user.downloadRecordingAuthority.equals('MY') && list.personList.id.equals(user.id)
                                  or user.downloadRecordingAuthority.equals('GROUP') && list.personList.groupTreeName.contains(user.groupCode)
                                  or user.downloadRecordingAuthority.equals('ALL')}"/>
-                    <c:forEach var="e" items="${files}">
+                    <c:forEach var="e" items="${files}" varStatus="status">
                         <c:if test="${listeningAuthority}">
                             <audio data-src="${pageContext.request.contextPath}/api/record-file/resource-front-play/${list.seq}/${g.urlEncode(list.uniqueid)}/?partial=${status.index}"
                                    controls class="audio" preload="none"></audio>
