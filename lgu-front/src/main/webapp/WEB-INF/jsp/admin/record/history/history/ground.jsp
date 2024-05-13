@@ -432,23 +432,7 @@
                 if ($this.attr('data-has-records'))
                     return;
 
-                popupReceivedHtml('/admin/record/history/history/' + $this.attr('data-id') + '/modal-records', 'modal-records').done(function (html) {
-                    const mixedNodes = $.parseHTML(html, null, true);
-
-                    const modal = (function () {
-                        for (let i = 0; i < mixedNodes.length; i++) {
-                            const node = $(mixedNodes[i]);
-                            if (node.is('#modal-records'))
-                                return node;
-                        }
-                        throw 'cannot find modal element';
-                    })();
-
-                    $this.after(modal);
-                    modal.find('audio').each(function () {
-                        maudio({obj: this});
-                    });
-                });
+                popupReceivedHtml('/admin/record/history/history/' + $this.attr('data-id') + '/modal-records', 'modal-records');
             });
 
             function deleteRecord(seq) {
