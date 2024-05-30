@@ -31,7 +31,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.20"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.21"
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
         classpath "io.spring.gradle:dependency-management-plugin:1.0.9.RELEASE"
         classpath "io.freefair.gradle:lombok-plugin:6.6.3"
@@ -108,15 +108,14 @@ subprojects {
         }
 
         implementation 'org.jetbrains.kotlin:kotlin-reflect'
-        implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+        implementation 'org.jetbrains.kotlin:kotlin-stdlib'
         implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core'
-        implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-jdk8'
 
         implementation 'io.springfox:springfox-swagger2:2.8.0'
         implementation 'io.springfox:springfox-swagger-ui:2.8.0'
-        compile "org.slf4j:slf4j-api:1.7.32"
-        compile "org.slf4j:jcl-over-slf4j:1.7.32"
-        compile "ch.qos.logback:logback-classic:1.2.8"
+        implementation "org.slf4j:slf4j-api:1.7.32"
+        implementation "org.slf4j:jcl-over-slf4j:1.7.32"
+        implementation "ch.qos.logback:logback-classic:1.2.8"
     }
 
     dependencyManagement {
@@ -304,8 +303,8 @@ project(':model-extension') {
     }
 
     dependencies {
-        compile project(':util')
-        compile project(':jooq-model')
+        implementation project(':util')
+        implementation project(':jooq-model')
 
         compileOnly 'jakarta.validation:jakarta.validation-api'
         compileOnly 'org.springframework:spring-web'
@@ -331,7 +330,9 @@ project(':api-server') {
     }
 
     dependencies {
-        compile project(':model-extension')
+        compileOnly project(':util')
+        compileOnly project(':jooq-model')
+        implementation project(':model-extension')
 
         compileOnly 'org.springframework.boot:spring-boot-starter-tomcat'
         implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -383,7 +384,9 @@ project(':front-controller') {
     }
 
     dependencies {
-        compile project(':model-extension')
+        compileOnly project(':util')
+        compileOnly project(':jooq-model')
+        implementation project(':model-extension')
 
         api 'org.springframework.boot:spring-boot-starter-web'
         api 'org.springframework.boot:spring-boot-starter-aop'
@@ -426,7 +429,7 @@ project(':lgu-front') {
     }
 
     dependencies {
-        compile project(':front-controller')
+        implementation project(':front-controller')
         compileOnly 'org.springframework.boot:spring-boot-starter-tomcat'
 
         implementation 'org.webjars:jquery:3.4.1'
@@ -469,7 +472,7 @@ project(':skt-front') {
     }
 
     dependencies {
-        compile project(':front-controller')
+        implementation project(':front-controller')
         compileOnly 'org.springframework.boot:spring-boot-starter-tomcat'
 
         implementation 'org.webjars:jquery:3.4.1'
