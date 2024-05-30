@@ -100,7 +100,6 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
         addField(MAINDB_GROUP);
         addField(COMMON_TYPE);
 
-        addField(CommonRoutines.fnDecStringText(TABLE.MAINDB_STRING_16.getName(), "eicn_" + getCompanyId()).as("MAINDB_STRING_16"));
         addOrderingField(TABLE.MAINDB_SYS_UPLOAD_DATE.desc());
     }
 
@@ -116,8 +115,6 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
 
     @Override
     protected SelectConditionStep<Record> query(SelectJoinStep<Record> query) {
-        query.groupBy(getSelectingFields());
-
         return query
                 .join(MAINDB_GROUP).on(MAINDB_GROUP.SEQ.eq(TABLE.MAINDB_SYS_GROUP_ID))
                 .join(COMMON_TYPE).on(COMMON_TYPE.SEQ.eq(MAINDB_GROUP.MAINDB_TYPE))
@@ -198,30 +195,21 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
         if (search.getCreatedEndDate() != null)
             conditions.add(TABLE.MAINDB_SYS_UPLOAD_DATE.le(DSL.timestamp(search.getCreatedEndDate() + " 23:59:59")));
 
-        Condition multichannelCondition = noCondition();
-
         if (search.getChannelType() != null && StringUtils.isNotEmpty(search.getChannelData())) {
-            multichannelCondition = multichannelInfoTable.CHANNEL_TYPE.eq(search.getChannelType().getCode());
-
             if (isCounselling) {
                 if (search.getChannelType() != null && search.getChannelType().equals(MultichannelChannelType.PHONE)) {
-                    multichannelCondition = multichannelCondition.and(multichannelInfoTable.CHANNEL_DATA.replace("-", "").eq(search.getChannelData().replace("-", "")));
+                    conditions.add(TABLE.MAINDB_SYS_CUSTOM_ID.in(getMultiChannelInfoEq(MultichannelChannelType.PHONE.getCode(), search.getChannelData().replace("-", ""))));
                 } else {
-                    multichannelCondition = multichannelCondition.and(multichannelInfoTable.CHANNEL_DATA.eq(search.getChannelData()));
+                    conditions.add(TABLE.MAINDB_SYS_CUSTOM_ID.in(getMultiChannelInfoEq(search.getChannelType().getCode(), search.getChannelData())));
                 }
             } else {
                 if (search.getChannelType() != null && search.getChannelType().equals(MultichannelChannelType.PHONE)) {
-                    multichannelCondition = multichannelCondition.and(multichannelInfoTable.CHANNEL_DATA.replace("-", "").like("%" + search.getChannelData().replace("-", "") + "%"));
+                    conditions.add(TABLE.MAINDB_SYS_CUSTOM_ID.in(getMultiChannelInfo(MultichannelChannelType.PHONE.getCode(), search.getChannelData().replace("-", ""))));
                 } else {
-                    multichannelCondition = multichannelCondition.and(multichannelInfoTable.CHANNEL_DATA.like("%" + search.getChannelData() + "%"));
+                    conditions.add(TABLE.MAINDB_SYS_CUSTOM_ID.in(getMultiChannelInfo(search.getChannelType().getCode(), search.getChannelData())));
                 }
             }
         }
-
-        if (!multichannelCondition.equals(noCondition()))
-            conditions.add(TABLE.MAINDB_SYS_CUSTOM_ID.in(dsl.select(multichannelInfoTable.field(multichannelInfoTable.MAINDB_CUSTOM_ID))
-                    .from(multichannelInfoTable)
-                    .where(multichannelCondition)));
 
         search.getDbTypeFields().forEach((k, v) -> {
             final Field<?> field = TABLE.field(k);
@@ -230,22 +218,25 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
                 logger.warn("invalid type: " + k);
             } else if (field.getType().equals(Date.class) || field.getType().equals(Timestamp.class)) {
                 if (v.getStartDate() != null)
-                    conditions.add(DSL.cast(field, Date.class).greaterOrEqual(v.getStartDate()));
+                    conditions.add(TABLE.field(k, Date.class).greaterOrEqual(v.getStartDate()));
                 if (v.getEndDate() != null)
-                    conditions.add(DSL.cast(field, Date.class).lessOrEqual(v.getEndDate()));
+                    conditions.add(TABLE.field(k, Date.class).lessOrEqual(v.getEndDate()));
             } else if (k.contains("_INT_") || k.contains("_CONCODE_") || k.contains("_CSCODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
                 if (StringUtils.isNotEmpty(v.getKeyword()))
-                    conditions.add(DSL.cast(field, String.class).eq(v.getKeyword()));
+                    conditions.add(TABLE.field(k, String.class).eq(v.getKeyword()));
             } else if (k.contains("_STRING_") || k.contains("_NUMBER_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
-                if (StringUtils.isNotEmpty(v.getKeyword()))
-                    conditions.add(DSL.cast(field, String.class).like("%" + v.getKeyword() + "%"));
+                if (StringUtils.isNotEmpty(v.getKeyword()) && (k.contains("_STRING_16") || k.contains("_STRING_17") || k.contains("_STRING_18") || k.contains("_STRING_19") || k.contains("_STRING_20"))) {
+                    conditions.add(TABLE.field(k, String.class).eq(getEncString(v.getKeyword())));
+                } else if (StringUtils.isNotEmpty(v.getKeyword())) {
+                    conditions.add(TABLE.field(k, String.class).like("%" + v.getKeyword() + "%"));
+                }
             } else if (k.contains("_MULTICODE_") || k.contains("_CODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
                 if (StringUtils.isNotEmpty(v.getCode()))
                     conditions.add(
-                            DSL.cast(field, String.class).likeRegex("^" + v.getCode() + ",")
-                                    .or(DSL.cast(field, String.class).likeRegex("^" + v.getCode() + "$"))
-                                    .or(DSL.cast(field, String.class).likeRegex("," + v.getCode() + "$"))
-                                    .or(DSL.cast(field, String.class).likeRegex("," + v.getCode() + ","))
+                            TABLE.field(k, String.class).likeRegex("^" + v.getCode() + ",")
+                                    .or(TABLE.field(k, String.class).likeRegex("^" + v.getCode() + "$"))
+                                    .or(TABLE.field(k, String.class).likeRegex("," + v.getCode() + "$"))
+                                    .or(TABLE.field(k, String.class).likeRegex("," + v.getCode() + ","))
                     );
             } else {
                 if (StringUtils.isNotEmpty(v.getKeyword()))
@@ -559,4 +550,26 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
                 .where(multichannelInfoTable.CHANNEL_TYPE.eq(MultichannelChannelType.PHONE.getCode()).and(multichannelInfoTable.CHANNEL_DATA.eq(phoneNumber)))
                 .fetchInto(MaindbCustomInfo.class);
     }
+
+    public Set<String> getMultiChannelInfo(String type,String data) {
+        return dsl.select(multichannelInfoTable.MAINDB_CUSTOM_ID)
+                .from(multichannelInfoTable)
+                .where(multichannelInfoTable.CHANNEL_TYPE.eq(type))
+                .and(multichannelInfoTable.CHANNEL_DATA.like("%"+data+"%"))
+                .fetchSet(multichannelInfoTable.MAINDB_CUSTOM_ID);
+    }
+
+    public Set<String> getMultiChannelInfoEq(String type,String data) {
+        return dsl.select(multichannelInfoTable.MAINDB_CUSTOM_ID)
+                .from(multichannelInfoTable)
+                .where(multichannelInfoTable.CHANNEL_TYPE.eq(type))
+                .and(multichannelInfoTable.CHANNEL_DATA.eq(data))
+                .fetchSet(multichannelInfoTable.MAINDB_CUSTOM_ID);
+    }
+
+    public String getEncString(String text) {
+        return dsl.select(CommonRoutines.fnEncStringText(text, "eicn_" + getCompanyId()))
+                .fetchOneInto(String.class);
+    }
+
 }

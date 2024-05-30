@@ -38,6 +38,11 @@ public class JooqPaginationFactory {
         return new Pagination<>(rows, page.getPage(), count, page.getLimit());
     }
 
+    public static <T> Pagination<T> create(DSLContext create, SelectLimitStep<Record> query, RecordMapper<Record, T> mapper, PageForm page, Integer count) {
+        final List<T> rows = create.fetchStream(query.offset(page.getOffset()).limit(page.getLimit())).map(mapper::map).collect(Collectors.toList());
+        return new Pagination<>(rows, page.getPage(), count, page.getLimit());
+    }
+
     public static void setDslBeanName(String dslBeanName) {
         JooqPaginationFactory.dslBeanName = dslBeanName;
     }

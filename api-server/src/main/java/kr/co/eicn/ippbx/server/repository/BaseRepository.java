@@ -273,8 +273,8 @@ public abstract class BaseRepository<TABLE extends TableImpl<? extends Record>, 
 
         final Pagination<ENTITY> pagination = JooqPaginationFactory.create(dsl,
                 query,
-                fetchCount(dsl.select(Collections.singletonList(table.field(0))).from(table), conditions),
-                getMapper(), search);
+                getMapper(), search,
+                fetchCount(dsl.select(Collections.singletonList(table.field(0))).from(table), conditions).fetch().size());
         postProcedure(pagination.getRows());
         return pagination;
     }
