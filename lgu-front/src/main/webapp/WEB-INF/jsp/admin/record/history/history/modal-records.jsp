@@ -29,15 +29,15 @@
                            value="${user.downloadRecordingAuthority.equals('MY') && list.personList.id.equals(user.id)
                                  or user.downloadRecordingAuthority.equals('GROUP') && list.personList.groupTreeName.contains(user.groupCode)
                                  or user.downloadRecordingAuthority.equals('ALL')}"/>
-                    <c:forEach var="e" items="${files}">
+                    <c:forEach var="e" items="${files}" varStatus="status">
                         <c:if test="${listeningAuthority}">
-                            <audio data-src="${pageContext.request.contextPath}/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY"
+                            <audio data-src="${pageContext.request.contextPath}/api/record-file/resource-front-play/${list.seq}/${g.urlEncode(list.uniqueid)}/?partial=${status.index}"
                                    controls class="audio" preload="none"></audio>
                         </c:if>
                         <c:if test="${downloadAuthority}">
                             <div class="center">
                                 <a target="_blank"
-                                   href="${pageContext.request.contextPath}/api/record-file/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN">
+                                   href="${pageContext.request.contextPath}/api/record-file/resource-front-down/${list.seq}/${g.urlEncode(list.uniqueid)}/${g.urlEncode(list.dstUniqueid)}/?partial=${status.index}">
                                     [ 파일다운로드 ]
                                 </a>
                             </div>

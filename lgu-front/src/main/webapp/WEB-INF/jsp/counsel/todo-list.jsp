@@ -77,12 +77,12 @@
     function viewTalkRoom(roomId, test = true) {
         viewTalkPanel();
 
+        $('.-counsel-panel-indicator[data-tab="talk-panel"]').trigger("click");
+        $('.-counsel-panel-indicator[data-tab="talk-panel"]').addClass('active');
+
         if(!talkListContainer.roomMap[roomId]){
             return;
         }
-
-        $('.-counsel-panel-indicator[data-tab="talk-panel"]').trigger("click");
-        $('.-counsel-panel-indicator[data-tab="talk-panel"]').addClass('active');
 
         const userIdName = '${user.idName}';
         const room = talkListContainer.roomMap[roomId];
