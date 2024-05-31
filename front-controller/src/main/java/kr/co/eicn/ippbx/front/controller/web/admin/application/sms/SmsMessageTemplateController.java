@@ -47,8 +47,9 @@ public class SmsMessageTemplateController extends BaseController {
 
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") SendMessageTemplateFormRequest form) throws IOException, ResultFailException {
-        final Map<String, String> categories = apiInterface.sendCategory().stream().collect(Collectors.toMap(SendSmsCategorySummaryResponse::getCategoryCode, SendSmsCategorySummaryResponse::getCategoryName));
-        model.addAttribute("categories", new MapToLinkedHashMap().toLinkedHashMapByValue(categories));
+        if(model.getAttribute("categories") == null)
+            model.addAttribute("categories", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.sendCategory().stream().collect(Collectors.toMap(SendSmsCategorySummaryResponse::getCategoryCode, SendSmsCategorySummaryResponse::getCategoryName))));
+
         return "admin/application/sms/message-template/modal";
     }
 
@@ -64,6 +65,6 @@ public class SmsMessageTemplateController extends BaseController {
         if (!categories.containsKey(entity.getCategoryCode()))
             categories.put(entity.getCategoryCode(), entity.getCategoryName());
 
-        return "admin/application/sms/message-template/modal";
+        return modal(model, form);
     }
 }
