@@ -48,11 +48,14 @@ public class EmailReceptionGroupController extends BaseController {
 
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") EmailReceiveGroupFormRequest form) throws IOException, ResultFailException {
-        final Map<String, String> addOnPersons = new HashMap<>();
-        apiInterface.availableMembers().forEach(e -> addOnPersons.put(e.getId(), e.getIdName()));
-        model.addAttribute("addOnPersons", addOnPersons);
-        final Map<Integer, String> services = apiInterface.services().stream().collect(Collectors.toMap(EmailMngSummaryResponse::getSeq, EmailMngSummaryResponse::getServiceName));
-        model.addAttribute("services", services);
+        if (model.getAttribute("addOnPersons") == null) {
+            final Map<String, String> addOnPersons = new HashMap<>();
+            apiInterface.availableMembers().forEach(e -> addOnPersons.put(e.getId(), e.getIdName()));
+            model.addAttribute("addOnPersons", addOnPersons);
+        }
+
+        if (model.getAttribute("services") == null)
+            model.addAttribute("services", apiInterface.services().stream().collect(Collectors.toMap(EmailMngSummaryResponse::getSeq, EmailMngSummaryResponse::getServiceName)));
 
         return "admin/email/reception-group/modal";
     }
@@ -62,6 +65,7 @@ public class EmailReceptionGroupController extends BaseController {
         final EmailReceiveGroupDetailResponse entity = apiInterface.get(seq);
         ReflectionUtils.copy(form, entity);
         model.addAttribute("entity", entity);
+        form.setEmailId(entity.getServiceId());
 
         final Map<String, String> addOnPersons = new HashMap<>();
         apiInterface.availableMembers(entity.getGroupId()).forEach(e -> addOnPersons.put(e.getId(), e.getIdName()));
@@ -75,6 +79,6 @@ public class EmailReceptionGroupController extends BaseController {
         for (EmailMemberListSummaryResponse person : entity.getEmailMemberLists())
             addOnPersons.remove(person.getId());
 
-        return "admin/email/reception-group/modal";
+        return modal(model, form);
     }
 }
