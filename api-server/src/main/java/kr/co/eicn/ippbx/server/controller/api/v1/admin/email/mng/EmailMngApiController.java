@@ -60,6 +60,7 @@ public class EmailMngApiController extends ApiBaseController {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
+        form.setCompanyId(g.getUser().getCompanyId());
         repository.insert(form);
         return ResponseEntity.created(URI.create("api/v1/admin/email/mng")).body(create());
     }
@@ -70,6 +71,7 @@ public class EmailMngApiController extends ApiBaseController {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
+        form.setCompanyId(g.getUser().getCompanyId());
         repository.updateByKey(form, seq);
         return ResponseEntity.ok(create());
     }

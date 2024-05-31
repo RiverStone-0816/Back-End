@@ -50,6 +50,8 @@ public class EmailMngFormRequest extends BaseForm {
     @NotNull("암호화된연결방식(TLS, SSL)")
     private SendAuthConnType sendAuthConnType;
 
+    private String companyId;
+
     @Override
     public boolean validate(BindingResult bindingResult) {
         if (isNotEmpty(mailHost) && isNotEmpty(sendHost)) {
