@@ -53,6 +53,6 @@ public class WebLogController extends BaseController {
         search.setPage(1);
         search.setLimit(100000);
 
-        new WebLogExcel(search, apiInterface.pagination(search).getRows()).generator(response, "웹로그");
+        new WebLogExcel(apiInterface.pagination(search).getRows()).generator(response, "웹로그");
     }
 }
