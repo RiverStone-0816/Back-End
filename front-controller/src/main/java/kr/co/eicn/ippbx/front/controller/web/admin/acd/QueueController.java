@@ -59,34 +59,26 @@ public class QueueController extends BaseController {
 
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") QueueFormRequest form) throws IOException, ResultFailException {
-        final List<String> numbers = numberApiInterface.typeNumbers((byte) 0, "").stream().map(SummaryNumber070Response::getNumber).distinct().sorted().collect(Collectors.toList());
-        model.addAttribute("numbers", numbers);
-        final Map<String, String> services = apiInterface.services().stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcName));
+        if (model.getAttribute("numbers") == null)
+            model.addAttribute("numbers", numberApiInterface.typeNumbers((byte) 0, "").stream().map(SummaryNumber070Response::getNumber).distinct().sorted().collect(Collectors.toList()));
+        model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.services().stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcName))));
 
-        model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValue(services));
-        final Map<String, String> subGroups = apiInterface.subGroups().stream().collect(Collectors.toMap(SummaryQueueResponse::getName, SummaryQueueResponse::getHanName));
-        model.addAttribute("subGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(subGroups));
-
-        final List<SummaryPersonResponse> addOnPersons = apiInterface.addOnPersons(null);
-        model.addAttribute("addOnPersons", addOnPersons);
-
-        Map<String, String> strategyOptions;
-        if(g.getServiceKind().equals("CC") && g.getUsingServices().contains("TYPE2")) {
-            strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.FEWESTCALLS,CallDistributionStrategy.LEASTRECENT,CallDistributionStrategy.RANDOM
-            ,CallDistributionStrategy.RINGALL,CallDistributionStrategy.RRMEMORY);
-        } else {
+        final Map<String, String> strategyOptions;
+        if (g.getServiceKind().equals("CC") && g.getUsingServices().contains("TYPE2"))
+            strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.FEWESTCALLS, CallDistributionStrategy.LEASTRECENT,
+                                                      CallDistributionStrategy.RANDOM, CallDistributionStrategy.RINGALL, CallDistributionStrategy.RRMEMORY);
+        else
             strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.class);
-        }
-
         model.addAttribute("strategyOptions", new MapToLinkedHashMap().toLinkedHashMapByValue(strategyOptions));
-        final Map<String, String> ringBackTones = apiInterface.ringBackTone().stream().collect(Collectors.toMap(SummaryMohListResponse::getCategory, SummaryMohListResponse::getMohName));
-        model.addAttribute("ringBackTones", new MapToLinkedHashMap().toLinkedHashMapByValue(ringBackTones));
-        final Map<Integer, String> sounds = scheduleGroupApiInterface.addSoundList().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName));
-        model.addAttribute("sounds", new MapToLinkedHashMap().toLinkedHashMapByValue(sounds));
-        final Map<String, String> contexts = apiInterface.context().stream().collect(Collectors.toMap(SummaryContextInfoResponse::getContext, SummaryContextInfoResponse::getName));
-        model.addAttribute("contexts", new MapToLinkedHashMap().toLinkedHashMapByValue(contexts));
-        final Map<String, String> queues = apiInterface.addQueueNames().stream().collect(Collectors.toMap(SummaryQueueResponse::getName, SummaryQueueResponse::getHanName));
-        model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(queues));
+
+        if (model.getAttribute("ringBackTones") == null)
+            model.addAttribute("ringBackTones", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.ringBackTone().stream().collect(Collectors.toMap(SummaryMohListResponse::getCategory, SummaryMohListResponse::getMohName))));
+
+        model.addAttribute("sounds", new MapToLinkedHashMap().toLinkedHashMapByValue(scheduleGroupApiInterface.addSoundList().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName))));
+        model.addAttribute("contexts", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.context().stream().collect(Collectors.toMap(SummaryContextInfoResponse::getContext, SummaryContextInfoResponse::getName))));
+        model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.addQueueNames().stream().collect(Collectors.toMap(SummaryQueueResponse::getName, SummaryQueueResponse::getHanName))));
+        model.addAttribute("addOnPersons", apiInterface.addOnPersons(null));
+        model.addAttribute("subGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.subGroups().stream().collect(Collectors.toMap(SummaryQueueResponse::getName, SummaryQueueResponse::getHanName))));
 
         return "admin/acd/queue/modal";
     }
@@ -100,37 +92,17 @@ public class QueueController extends BaseController {
 
         final List<String> numbers = numberApiInterface.typeNumbers((byte) 0, entity.getHost()).stream().map(SummaryNumber070Response::getNumber).distinct().collect(Collectors.toList());
         model.addAttribute("numbers", numbers);
-        final Map<String, String> services = apiInterface.services(entity.getHost()).stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcName));
-        model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValue(services));
-        final Map<String, String> subGroups = apiInterface.subGroups(entity.getName()).stream().collect(Collectors.toMap(SummaryQueueResponse::getName, SummaryQueueResponse::getHanName));
-        model.addAttribute("subGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(subGroups));
-        final List<SummaryPersonResponse> addOnPersons = apiInterface.addOnPersons(entity.getName());
-        model.addAttribute("addOnPersons", addOnPersons);
-
-        Map<String, String> strategyOptions;
-        if(g.getServiceKind().equals("CC") && g.getUsingServices().contains("TYPE2")) {
-            strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.FEWESTCALLS,CallDistributionStrategy.LEASTRECENT,CallDistributionStrategy.RANDOM
-                    ,CallDistributionStrategy.RINGALL,CallDistributionStrategy.RRMEMORY,CallDistributionStrategy.SKILL);
-        } else {
-            strategyOptions = FormUtils.optionsOfCode(CallDistributionStrategy.class);
-        }
-        model.addAttribute("strategyOptions", new MapToLinkedHashMap().toLinkedHashMapByValue(strategyOptions));
-
-        final Map<String, String> ringBackTones = apiInterface.ringBackTone().stream().collect(Collectors.toMap(SummaryMohListResponse::getCategory, SummaryMohListResponse::getMohName));
-        model.addAttribute("ringBackTones", new MapToLinkedHashMap().toLinkedHashMapByValue(ringBackTones));
-        final Map<Integer, String> sounds = scheduleGroupApiInterface.addSoundList().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName));
-        model.addAttribute("sounds", new MapToLinkedHashMap().toLinkedHashMapByValue(sounds));
-        final Map<String, String> contexts = apiInterface.context().stream().collect(Collectors.toMap(SummaryContextInfoResponse::getContext, SummaryContextInfoResponse::getName));
-        model.addAttribute("contexts", new MapToLinkedHashMap().toLinkedHashMapByValue(contexts));
-        final Map<String, String> queues = apiInterface.addQueueNames().stream().collect(Collectors.toMap(SummaryQueueResponse::getName, SummaryQueueResponse::getHanName));
-        model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(queues));
 
         if (StringUtils.isNotEmpty(entity.getNumber()) && !numbers.contains(entity.getNumber()))
             numbers.add(entity.getNumber());
+
+        final Map<String, String> ringBackTones = apiInterface.ringBackTone().stream().collect(Collectors.toMap(SummaryMohListResponse::getCategory, SummaryMohListResponse::getMohName));
+        model.addAttribute("ringBackTones", new MapToLinkedHashMap().toLinkedHashMapByValue(ringBackTones));
+
         if (StringUtils.isNotEmpty(entity.getMusiconhold()) && !ringBackTones.containsKey(entity.getMusiconhold()))
             ringBackTones.put(entity.getMusiconhold(), entity.getMusiconholdName());
 
-        return "admin/acd/queue/modal";
+        return modal(model, form);
     }
 
     @GetMapping("{name}/modal-blending")
