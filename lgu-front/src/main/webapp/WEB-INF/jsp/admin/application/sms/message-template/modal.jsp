@@ -40,8 +40,7 @@
                 </div>
                 <div class="twelve wide column">
                     <div class="ui form">
-                        <div class="align-right"><label>500자 이하</label></div>
-                        <form:textarea path="content" row="10" maxLength="500"/>
+                        <form:textarea path="content" row="10" maxLength="500" placeholder="500자 제한"/>
                     </div>
                 </div>
             </div>
