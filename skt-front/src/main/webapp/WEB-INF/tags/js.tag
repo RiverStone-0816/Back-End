@@ -19,7 +19,7 @@
 <script src="<c:url value="/webjars/jquery/3.4.1/jquery.min.js"/>"></script>
 <script src="<c:url value="/webjars/Semantic-UI/2.4.1/semantic.js"/>"></script>
 <script src="<c:url value="/webjars/jquery-blockui/2.65/jquery.blockUI.js"/>"></script>
-<script src="<c:url value="/webjars/momentjs/2.21.0/min/moment.min.js"/>"></script>
+<script src="<c:url value="/webjars/momentjs/2.29.4/min/moment.min.js"/>"></script>
 <script src="<c:url value="/webjars/d3js/5.9.1/d3.min.js"/>"></script>
 <script src="<c:url value="/webjars/vue/3.2.10/dist/vue.global.prod.js"/>"></script>
 
@@ -106,7 +106,7 @@
             yearSuffix: '년'
         });
 
-        moment.locale('kr', {
+        moment.updateLocale('kr', {
             months: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
             monthsShort: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
             weekdays: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"],
@@ -118,7 +118,7 @@
                 return '일';
             }
         });
-        moment.locale('kr');
+        moment.updateLocale('kr');
     }());
 
     window.profileImageSources = [...Array(24).keys()].map(i => contextPath + '/resources/images/profile/profile' + zeroPad(i + 1, '00') + '.png')

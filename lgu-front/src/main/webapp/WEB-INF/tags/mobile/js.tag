@@ -21,7 +21,7 @@
 <script src="<c:url value="/webjars/jquery/3.4.1/jquery.min.js"/>"></script>
 <script src="<c:url value="/webjars/Semantic-UI/2.4.1/semantic.js"/>"></script>
 <script src="<c:url value="/webjars/jquery-blockui/2.65/jquery.blockUI.js"/>"></script>
-<script src="<c:url value="/webjars/momentjs/2.21.0/min/moment.min.js"/>"></script>
+<script src="<c:url value="/webjars/momentjs/2.29.4/min/moment.min.js"/>"></script>
 <%--<script src="<c:url value="/webjars/d3js/5.9.1/d3.min.js"/>"></script>--%>
 
 <!-- external library depend -->
