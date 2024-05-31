@@ -56,13 +56,10 @@
                                         </form:select>
                                     </div>
                                 </div>
-                                <div class="two wide column"><label class="control-label">요일</label></div>
+                                <div class="two wide column"><label class="control-label">날짜</label></div>
                                 <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:select path="searchDate">
-                                            <form:option value="" label="선택안함"/>
-                                            <form:options items="${dayOfWeeks}"/>
-                                        </form:select>
+                                    <div class="ui input fluid">
+                                        <form:input path="searchDate" cssClass="-datepicker" placeholder="날짜"/>
                                     </div>
                                 </div>
                             </div>
