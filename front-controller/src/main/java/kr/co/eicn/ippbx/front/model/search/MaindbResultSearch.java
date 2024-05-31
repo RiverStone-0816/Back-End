@@ -20,10 +20,10 @@ public class MaindbResultSearch extends PageForm {
     private Integer groupSeq;
     @PageQueryable
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = Constants.DEFAULT_TIMEZONE)
-    private Date createdStartDate;
+    private Date createdStartDate = new Date(System.currentTimeMillis() - 6 * 24 * 60 * 60 * 1000);
     @PageQueryable
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = Constants.DEFAULT_TIMEZONE)
-    private Date createdEndDate;
+    private Date createdEndDate = new Date(System.currentTimeMillis());
     @PageQueryable
     private String userId;
 
