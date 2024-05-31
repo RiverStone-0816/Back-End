@@ -198,7 +198,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
 
         search.getDbTypeFields().forEach((k, v) -> {
             final Table<?> table = k.startsWith("MAINDB") ? MAINDB_CUSTOM_INFO_TABLE : TABLE;
-            final Field<?> field = table.field(k) != null ? TABLE.field(k) : MAINDB_CUSTOM_INFO_TABLE.field(k);
+            final Field<?> field = table.field(k);
 
             if (k.equals("CUSTOM_ID")) {
                 conditions.add(MAINDB_CUSTOM_INFO_TABLE.MAINDB_SYS_CUSTOM_ID.eq(v.getKeyword()));
