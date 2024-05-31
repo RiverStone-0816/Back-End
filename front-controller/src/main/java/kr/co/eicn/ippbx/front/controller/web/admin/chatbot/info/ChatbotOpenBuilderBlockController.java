@@ -51,13 +51,10 @@ public class ChatbotOpenBuilderBlockController extends BaseController {
 
     @GetMapping("{seq}/modal")
     public String modal(Model model, @PathVariable Integer seq, @ModelAttribute("form") ChatbotOpenBuilderBlockFormRequest form ) throws IOException, ResultFailException {
-        model.addAttribute("talkServiceList", searchApiInterface.getChatbotServiceInfoList().stream().collect(Collectors.toMap(WtalkServiceInfo::getBotId, WtalkServiceInfo::getBotName)));
-        model.addAttribute("openBuilderType", FormUtils.optionsOfCode(ChatbotOpenBuilderType.class));
-
         final ChatbotOpenBuilderInfoResponse entity = chatbotOpenBuilderBlockApiInterface.get(seq);
         model.addAttribute("entity", entity);
         ReflectionUtils.copy(form, entity);
 
-        return "admin/chatbot/info/block/modal";
+        return modal(model, form);
     }
 }
