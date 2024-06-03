@@ -48,8 +48,10 @@
                                                 <tr>
                                                     <c:if test="${scheduleStatus.first}">
                                                         <td rowspan="${e.scheduleGroupLists.size() * 2 + 1}">
-                                                                ${g.htmlQuote(e.name)}&nbsp;
+                                                                ${g.htmlQuote(e.name)}
+                                                            <br>
                                                             <button class="ui icon button mini compact"
+                                                                    style="padding: 3px;"
                                                                     title="유형명 수정"
                                                                     onclick="popupScheduleGroupModal(${e.parent})">
                                                                 <i class="pencil alternate icon"></i>
