@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.schedule;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroup;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ConfRoom;
@@ -75,6 +76,18 @@ public class ScheduleGroupApiController extends ApiBaseController {
 	}
 
 	/**
+	 * 스케쥴유형 수정
+	 */
+	@PutMapping("{parent}")
+	public ResponseEntity<JsonResult<Void>> put(@Valid @RequestBody ScheduleGroupFormRequest form, @PathVariable Integer parent, BindingResult bindingResult) {
+		if (!form.validate(bindingResult))
+			throw new ValidationException(bindingResult);
+
+		repository.update(form, parent);
+		return ResponseEntity.ok(create());
+	}
+
+	/**
 	 * 스케쥴유형 삭제
 	 */
 	@DeleteMapping("{parent}")
@@ -82,6 +95,14 @@ public class ScheduleGroupApiController extends ApiBaseController {
 		repository.deleteAllPBXServer(parent);
 		scheduleGroupListRepository.deleteByParent(parent);
 		return ResponseEntity.ok(create());
+	}
+
+	/**
+	 * 스케쥴유형 조회
+	 */
+	@GetMapping("{parent}")
+	public ResponseEntity<JsonResult<ScheduleGroup>> getParent(@PathVariable Integer parent) {
+		return ResponseEntity.ok(data(repository.findOneIfNullThrow(parent)));
 	}
 
 	/**

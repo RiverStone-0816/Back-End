@@ -46,6 +46,14 @@ public class ScheduleGroupApiController extends BaseController {
     }
 
     /**
+     * 스케쥴유형 수정
+     */
+    @PutMapping("{parent}")
+    public void put(@Valid @RequestBody ScheduleGroupFormRequest form, BindingResult bindingResult, @PathVariable Integer parent) throws IOException, ResultFailException {
+        apiInterface.put(form, parent);
+    }
+
+    /**
      * 스케쥴유형 삭제
      */
     @DeleteMapping("{parent}")

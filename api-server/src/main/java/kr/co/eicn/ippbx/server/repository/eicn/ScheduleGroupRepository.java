@@ -126,6 +126,20 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
                 });
     }
 
+    public void update(ScheduleGroupFormRequest form, Integer parent) {
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroup();
+        ReflectionUtils.copy(record, form);
+        record.setCompanyId(getCompanyId());
+
+        super.updateByKey(record, parent);
+
+        cacheService.pbxServerList(getCompanyId())
+                .forEach(e -> {
+                    DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+                    this.updateByKey(pbxDsl, record, parent);
+                });
+    }
+
     public Record insertItem(DSLContext dslContext, ScheduleGroupList scheduleGroupList, Integer targetParent, boolean chk) {
         if (chk)
             return dslContext.insertInto(SCHEDULE_GROUP_LIST)

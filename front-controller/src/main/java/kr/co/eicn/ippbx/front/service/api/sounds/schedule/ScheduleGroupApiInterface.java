@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.service.api.sounds.schedule;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroup;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
@@ -26,8 +27,16 @@ public class ScheduleGroupApiInterface extends ApiServerInterface {
         post(subUrl, form);
     }
 
+    public void put(ScheduleGroupFormRequest form, Integer parent) throws IOException, ResultFailException {
+        put(subUrl + parent, form);
+    }
+
     public void delete(Integer parent) throws IOException, ResultFailException {
         delete(subUrl + parent);
+    }
+
+    public ScheduleGroup getParent(Integer parent) throws IOException, ResultFailException {
+        return getData(subUrl + parent, null, ScheduleGroup.class).getData();
     }
 
     public ScheduleGroupListDetailResponse getItem(Integer child) throws IOException, ResultFailException {

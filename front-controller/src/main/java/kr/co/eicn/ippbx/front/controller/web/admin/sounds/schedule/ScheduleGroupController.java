@@ -1,6 +1,8 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.sounds.schedule;
 
 import kr.co.eicn.ippbx.front.service.api.application.sms.SmsMessageTemplateApiInterface;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroup;
+import kr.co.eicn.ippbx.model.form.ScheduleGroupFormRequest;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -67,5 +69,19 @@ public class ScheduleGroupController extends BaseController {
         ReflectionUtils.copy(form, entity);
 
         return modalScheduleItem(model, form, parent);
+    }
+
+    @GetMapping("schedule-type/new/modal")
+    public String modalScheduleType(Model model, @ModelAttribute("form") ScheduleGroupFormRequest form) {
+        return "admin/sounds/schedule/schedule-group/modal-schedule-type";
+    }
+
+    @GetMapping("schedule-type/{parent}/modal")
+    public String modalScheduleType(Model model, @ModelAttribute("form") ScheduleGroupFormRequest form, @PathVariable Integer parent) throws IOException, ResultFailException {
+        final ScheduleGroup entity = apiInterface.getParent(parent);
+        model.addAttribute("entity", entity);
+        ReflectionUtils.copy(form, entity);
+
+        return modalScheduleType(model, form);
     }
 }

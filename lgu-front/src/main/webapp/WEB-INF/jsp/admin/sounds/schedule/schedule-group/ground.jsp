@@ -47,7 +47,14 @@
                                             <c:forEach var="s" items="${e.scheduleGroupLists}" varStatus="scheduleStatus">
                                                 <tr>
                                                     <c:if test="${scheduleStatus.first}">
-                                                        <td rowspan="${e.scheduleGroupLists.size() * 2 + 1}">${g.htmlQuote(e.name)}</td>
+                                                        <td rowspan="${e.scheduleGroupLists.size() * 2 + 1}">
+                                                                ${g.htmlQuote(e.name)}&nbsp;
+                                                            <button class="ui icon button mini compact"
+                                                                    title="유형명 수정"
+                                                                    onclick="popupScheduleGroupModal(${e.parent})">
+                                                                <i class="pencil alternate icon"></i>
+                                                            </button>
+                                                        </td>
                                                     </c:if>
                                                     <td style="width: 50px;">${scheduleStatus.index + 1}</td>
                                                     <td>
@@ -125,6 +132,7 @@
                                                 <td>
                                                     <div class="ui vertical buttons">
                                                         <button class="ui button mini compact" onclick="popupScheduleItemModal(${e.parent})">항목추가</button>
+                                                        <button class="ui button mini compact" onclick="popupScheduleGroupModal(${e.parent})">유형명수정</button>
                                                         <button class="ui button mini compact" onclick="deleteScheduleGroup(${e.parent})">유형삭제</button>
                                                         <button class="ui button mini compact -paste-group" style="display: none;" onclick="pasteScheduleGroup(${e.parent})">붙여넣기</button>
                                                     </div>
@@ -147,35 +155,10 @@
         </div>
     </div>
 
-    <form id="modal-schedule-type-add" class="ui modal tiny -json-submit" data-method="post" action="<c:url value="/api/schedule-group/"/>" data-done="reload">
-        <i class="close icon"></i>
-        <div class="header">스케쥴유형[추가]</div>
-
-        <div class="scrolling content rows">
-            <div class="ui grid">
-                <div class="row">
-                    <div class="four wide column"><label class="control-label">유형명</label></div>
-                    <div class="twelve wide column">
-                        <div class="ui form">
-                            <input name="name"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="actions">
-            <button type="button" class="ui button modal-close">취소</button>
-            <button type="submit" class="ui blue button">확인</button>
-        </div>
-    </form>
-
     <tags:scripts>
         <script>
-            function popupScheduleGroupModal() {
-                const modal = $('#modal-schedule-type-add');
-                modal.find('[name]').val('');
-                modal.modalShow();
+            function popupScheduleGroupModal(parentId) {
+                popupReceivedHtml('/admin/sounds/schedule/schedule-group/schedule-type/' + (parentId || 'new') + '/modal', 'modal-schedule-type');
             }
 
             function deleteScheduleGroup(parentId) {
