@@ -24,7 +24,7 @@ import java.util.Optional;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleInfo.SCHEDULE_INFO;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
-import static org.jooq.impl.DSL.*;
+import static org.jooq.impl.DSL.currentDate;
 
 @Getter
 @Repository
@@ -77,6 +77,9 @@ public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.
 
 		for (String week : weeks) {
 			record.setWeek(week);
+
+			if (form.getIsEach())
+				record.setGroupId(form.getWeeks().get(week));
 
 			for (String number: form.getNumbers()) {
 				record.setNumber(number);

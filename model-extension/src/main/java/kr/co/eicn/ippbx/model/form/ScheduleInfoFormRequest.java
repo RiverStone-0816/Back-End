@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.util.valid.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Map;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -15,4 +16,7 @@ public class ScheduleInfoFormRequest extends BaseForm {
 	private Set<String> numbers; //서비스키
 	@NotNull("스케쥴유형")
 	private Integer groupId; // 스케쥴유형
+
+	private Boolean isEach = Boolean.FALSE;
+	private Map<String, Integer> weeks;
 }
