@@ -141,7 +141,7 @@
     <tags:scripts>
         <script>
             function popupModal(parent) {
-                popupReceivedHtml('/admin/sounds/schedule/outbound-week/' + (parent || 'new') + '/modal', 'modal-schedule');
+                popupReceivedHtml('/admin/sounds/schedule/outbound-week/' + (parent || 'new') + '/modal', 'modal-schedule-info');
             }
 
             function deleteEntity(parent) {

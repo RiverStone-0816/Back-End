@@ -76,6 +76,8 @@
             const container = $(this);
             const rightSelector = container.find('.-right-selector');
             const leftSelector = container.find('.-left-selector');
+            const rightSearchInput = container.find('.-right-selector-search');
+            const leftSearchInput = container.find('.-left-selector-search');
 
             function toLeft() {
                 const rightValues = rightSelector.val();
@@ -106,11 +108,45 @@
             container.find('.-to-left').click(toLeft);
             container.find('.-to-right').click(toRight);
 
+            function leftSearch() {
+                const leftValue = leftSearchInput.val();
+                if (!leftValue) return;
+
+                leftSelector.find('option').prop('selected', false);
+                leftSelector.find('option:contains("' + leftValue + '")').prop('selected', true);
+            }
+
+            function rightSearch() {
+                const rightValue = rightSearchInput.val();
+                if (!rightValue) return;
+
+                rightSelector.find('option').prop('selected', false);
+                rightSelector.find('option:contains("' + rightValue + '")').prop('selected', true);
+            }
+
+            leftSearchInput.keydown(function (event) {
+                event.stopPropagation();
+
+                if (event.keyCode && event.keyCode === 13) {
+                    leftSearch();
+                }
+            });
+            container.find('.-left-selector-search-button').click(leftSearch);
+
+
+            rightSearchInput.keydown(function (event) {
+                event.stopPropagation();
+
+                if (event.keyCode && event.keyCode === 13) {
+                    rightSearch();
+                }
+            });
+            container.find('.-right-selector-search-button').click(rightSearch);
+
             container.on('dblclick','.-right-selector option, .-left-selector option', function () {
                 const toLeft = $(this).parent().hasClass('-right-selector');
                 $(this).detach().appendTo(toLeft ? leftSelector : rightSelector);
             });
-
         });
         findAndMe('.-sortable-table', this).each(function () {
             const table = $(this);

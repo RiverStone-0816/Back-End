@@ -146,7 +146,7 @@
             }
 
             function popupModal(parent) {
-                popupReceivedHtml('/admin/sounds/schedule/outbound-day/' + (parent || 'new') + '/modal', 'modal-schedule');
+                popupReceivedHtml('/admin/sounds/schedule/outbound-day/' + (parent || 'new') + '/modal', 'modal-schedule-info');
             }
 
             function deleteEntity(parent) {
