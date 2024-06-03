@@ -208,6 +208,14 @@ public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.
 				});
 	}
 
+	public void deleteByDay(ScheduleType type, DayScheduleInfoFormDeleteRequest form) {
+		delete(SCHEDULE_INFO.TODATE.le(Date.valueOf(form.getDeleteDate())).and(SCHEDULE_INFO.TYPE.eq(type.getCode())));
+		cacheService.pbxServerList(getCompanyId()).forEach(e -> {
+			DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
+			delete(pbxDsl, SCHEDULE_INFO.TODATE.le(Date.valueOf(form.getDeleteDate())).and(SCHEDULE_INFO.TYPE.eq(type.getCode())));
+		});
+	}
+
 	public kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleInfo getScheduleByService(String serviceNumber) {
 		final Optional<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleInfo> scheduleInfo = findAll(SCHEDULE_INFO.TYPE.eq(ScheduleType.DAY.getCode()).and(SCHEDULE_INFO.NUMBER.eq(serviceNumber)).and(SCHEDULE_INFO.FROMDATE.eq(currentDate()))).stream().findFirst();
 

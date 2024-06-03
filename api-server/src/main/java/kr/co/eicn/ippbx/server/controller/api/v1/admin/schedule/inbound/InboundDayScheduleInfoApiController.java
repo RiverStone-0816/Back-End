@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.schedule.inbound;
 
+import kr.co.eicn.ippbx.model.form.DayScheduleInfoFormDeleteRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.exception.EntityNotFoundException;
 import kr.co.eicn.ippbx.exception.ValidationException;
@@ -176,6 +177,18 @@ public class InboundDayScheduleInfoApiController extends ApiBaseController {
 
 		repository.insertOnDayHolySchedule(form);
 		return ResponseEntity.created(URI.create("api/v1/admin/schedule/inbound/day/holy")).body(create());
+	}
+
+	/**
+	 * 일별스케쥴러 일괄삭제
+	 */
+	@PostMapping("delete-batch")
+	public ResponseEntity<JsonResult<Void>> deleteBatch(@Valid @RequestBody DayScheduleInfoFormDeleteRequest form, BindingResult bindingResult) {
+		if (!form.validate(bindingResult))
+			throw new ValidationException(bindingResult);
+
+		repository.deleteByDay(ScheduleType.DAY, form);
+		return ResponseEntity.ok(create());
 	}
 
 	/**

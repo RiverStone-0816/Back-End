@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.front.controller.api.sounds.schedule;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
+import kr.co.eicn.ippbx.model.form.DayScheduleInfoFormDeleteRequest;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.sounds.schedule.InboundDayScheduleApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.Number070ScheduleInfoDetailResponse;
@@ -120,5 +121,13 @@ public class InboundDayScheduleApiController extends BaseController {
     @GetMapping("add-number-list")
     public List<SummaryNumber070Response> addNumber070List() throws IOException, ResultFailException {
         return apiInterface.addNumber070List();
+    }
+
+    /**
+     * 일별스케쥴러 일괄 삭제
+     */
+    @PostMapping("batch-delete")
+    public void delete(@Valid @RequestBody DayScheduleInfoFormDeleteRequest form, BindingResult bindingResult) throws IOException, ResultFailException {
+        apiInterface.deleteBatch(form);
     }
 }

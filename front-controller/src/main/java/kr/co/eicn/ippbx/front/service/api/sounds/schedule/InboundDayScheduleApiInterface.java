@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.service.api.sounds.schedule;
 
+import kr.co.eicn.ippbx.model.form.DayScheduleInfoFormDeleteRequest;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.Number070ScheduleInfoDetailResponse;
@@ -47,6 +48,10 @@ public class InboundDayScheduleApiInterface extends ApiServerInterface {
 
     public void deleteType(Integer seq) throws IOException, ResultFailException {
         super.delete(subUrl + "service/type/" + seq);
+    }
+
+    public void deleteBatch(DayScheduleInfoFormDeleteRequest form) throws IOException, ResultFailException {
+        post(subUrl + "delete-batch/", form);
     }
 
     public void holyPost(HolyScheduleInfoFormRequest form) throws IOException, ResultFailException {

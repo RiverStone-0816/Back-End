@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.sounds.schedule;
 
+import kr.co.eicn.ippbx.model.form.DayScheduleInfoFormDeleteRequest;
 import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
@@ -114,5 +115,10 @@ public class InboundDayScheduleController extends BaseController {
         model.addAttribute("thisYear", calendar.get(Calendar.YEAR));
 
         return "admin/sounds/schedule/inbound-day/modal-holiday-batch";
+    }
+
+    @GetMapping("modal-schedule-batch-delete")
+    public String modalScheduleBatchDelete(Model model, @ModelAttribute("form") DayScheduleInfoFormDeleteRequest form) {
+        return "admin/sounds/schedule/inbound-day/modal-schedule-batch-delete";
     }
 }

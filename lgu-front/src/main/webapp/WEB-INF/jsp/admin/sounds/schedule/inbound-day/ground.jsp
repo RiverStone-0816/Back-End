@@ -103,6 +103,7 @@
                         <h3 class="panel-title">전체 <span class="text-primary">${list.size()}</span> 건</h3>
                     </div>
                     <div class="pull-right">
+                        <button class="ui basic button" onclick="popupScheduleBatchDelete()">일괄삭제</button>
                         <button class="ui basic button" onclick="popupHolidayBatchModal()">공휴일 일괄등록</button>
                         <button class="ui basic button" onclick="popupScheduleInfoModal()">추가</button>
                     </div>
@@ -194,6 +195,10 @@
 
     <tags:scripts>
         <script>
+            function popupScheduleBatchDelete() {
+                popupReceivedHtml('/admin/sounds/schedule/inbound-day/modal-schedule-batch-delete', 'modal-schedule-batch-delete');
+            }
+
             function popupHolidayBatchModal() {
                 popupReceivedHtml('/admin/sounds/schedule/inbound-day/modal-holiday-batch', 'modal-holiday-batch');
             }
