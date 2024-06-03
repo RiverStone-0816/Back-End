@@ -209,7 +209,7 @@
                         </div>
                         <div class="sixteen wide column">
                             <h3 class="ui header center aligned">
-                                <text class="content">총통화그래프</text>
+                                <text class="content">큐(그룹) 총통화그래프</text>
                             </h3>
                         </div>
                         <div class="sixteen wide column">
@@ -238,8 +238,10 @@
                     cancel: ${element.statQueueInboundResponses.stream().map(e -> e.cancel).sum()},
                 }, </c:forEach>
             ];
-            drawLineChart($('#total-call-chart')[0], data, 'time', ['success', 'cancel'], {
-                ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue']
+            chartjs.drawLineChart($('#total-call-chart')[0], data, 'time', ['success', 'cancel'], {
+                colors: ['#C60452', '#0E6EB8'],
+                labels: ['응대호', '포기호'],
+                top: 30,
             });
             </c:if>
 

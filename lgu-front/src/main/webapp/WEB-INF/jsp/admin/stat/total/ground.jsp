@@ -222,22 +222,20 @@
                                     <text class="content">아웃바운드 통계 그래프</text>
                                 </h3>
                             </div>
-                            <div class="four wide column" >
+                            <div class="four wide column">
                                 <div class="label-container"><label class="control-label">평균통계</label></div>
                                 <div class="pie-chart-container">
-                                    <svg id="outbound-outer-pie-chart" class="full-width full-height"></svg>
+                                    <div id="outbound-outer-pie-chart" class="full-width full-height"></div>
                                     <div class="inner-label">
                                         <span class="ui label">TOTAL</span> ${total.outboundStat.success + total.outboundStat.cancel}
                                     </div>
                                 </div>
-
-                                    <div class="chart-label-container">
-                                        <div class="ui segment secondary">
-                                            <text class="label-list">성공호 <span class="color-bar1">${total.outboundStat.success}</span></text>
-                                            <text class="label-list">비수신 <span class="color-bar2">${total.outboundStat.cancel}</span></text>
-                                        </div>
+                                <div class="chart-label-container">
+                                    <div class="ui segment secondary">
+                                        <text class="label-list">성공호 <span class="color-bar1">${total.outboundStat.success}</span></text>
+                                        <text class="label-list">비수신 <span class="color-bar2">${total.outboundStat.cancel}</span></text>
                                     </div>
-
+                                </div>
                             </div>
                             <div class="twelve wide column">
                                 <div class="label-container">
@@ -259,7 +257,7 @@
                             <div class="four wide column">
                                 <div class="label-container"><label class="control-label">평균통계</label></div>
                                 <div class="pie-chart-container">
-                                    <svg id="inbound-outer-pie-chart" class="full-width full-height"></svg>
+                                    <div id="inbound-outer-pie-chart" class="full-width full-height"></div>
 
                                     <div class="inner-label">
                                         <span class="ui label">TOTAL</span> ${total.inboundStat.success + total.inboundStat.cancel}
@@ -361,41 +359,37 @@
                     outboundCancel: ${e.outboundStat.cancel},
                 }, </c:forEach>
             ];
-            drawLineChart($('#total-call-chart')[0], data, 'time', ['inboundTotal', 'outboundTotal'], {
-                ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue']
+            chartjs.drawLineChart($('#total-call-chart')[0], data, 'time', ['inboundTotal', 'outboundTotal'], {
+                colors: ['#C60452', '#0E6EB8'],
+                labels: ['인바운드', '아웃바운드'],
+                top: 30,
             });
 
-            drawBarChart($('#outbound-chart')[0], data, 'time', ['outboundSuccess', 'outboundCancel'], {
-                ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue']
+            chartjs.drawBarChart($('#outbound-chart')[0], data, 'time', ['outboundSuccess', 'outboundCancel'], {
+                colors: ['#C60452', '#0E6EB8'],
+                labels: ['성공호', '비수신']
             });
 
-            drawBarChart($('#inbound-chart')[0], data, 'time', ['inboundSuccess', 'inboundCancel'], {
-                ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue']
+            chartjs.drawBarChart($('#inbound-chart')[0], data, 'time', ['inboundSuccess', 'inboundCancel'], {
+                colors: ['#C60452', '#0E6EB8'],
+                labels: ['응대호', '포기호']
             });
 
-            drawPieChart(
+            chartjs.drawDonutChart(
                 '#outbound-outer-pie-chart',
-                ${total.outboundStat.cancel.doubleValue() / (total.outboundStat.success + total.outboundStat.cancel)},
+                [${total.outboundStat.cancel}, ${total.outboundStat.success}],
                 {
-                    startAngle: 0,
-                    endAngle: 360,
-                    innerRadius: 100,
-                    outerRadius: 120,
-                    innerLabel: ' ',
-                    colorClasses: ['bcolor-bar2', 'bcolor-bar1']
+                    colors: ['#0E6EB8', '#C60452'],
+                    labels: ['비수신', '성공호']
                 }
             );
 
-            drawPieChart(
+            chartjs.drawDonutChart(
                 '#inbound-outer-pie-chart',
-                ${total.inboundStat.cancel.doubleValue() / (total.inboundStat.success + total.inboundStat.cancel)},
+                [${total.inboundStat.cancel}, ${total.inboundStat.success}],
                 {
-                    startAngle: 0,
-                    endAngle: 360,
-                    innerRadius: 100,
-                    outerRadius: 120,
-                    innerLabel: ' ',
-                    colorClasses: ['bcolor-bar2', 'bcolor-bar1']
+                    colors: ['#0E6EB8', '#C60452'],
+                    labels: ['포기호', '응대호']
                 }
             );
             </c:if>

@@ -36,8 +36,12 @@
 <div class="-chart -dashboard-chart"></div>
 
 <script>
-    const data = [<c:forEach var="e" items="${stat.hourToAvgWaitingTime}">{hour: '${e.key}시', value: ${e.value}}, </c:forEach>];
-    drawLineChart(component.find('.-chart')[0], data, 'hour', ['value'], { ticks: 4, yLabel: '', unitWidth: 30, colorClasses: ['bcolor-bar1'], valueText: function (value) {
-            return pad(parseInt(value / 60), 2) + ":" + pad(parseInt(value % 60), 2);}
+    const data = [<c:forEach var="e" items="${stat.hourToAvgWaitingTime}">{hour: '${e.key}시', value: parseInt(${e.value})}, </c:forEach>];
+    chartjs.drawLineTimeChart(component.find('.-chart')[0], data, 'hour', ['value'], {
+        colors: ['#C60452'],
+        labels: ['평균대기시간'],
+        top: 30,
+        bottom: -5,
+        right: 25,
     });
 </script>

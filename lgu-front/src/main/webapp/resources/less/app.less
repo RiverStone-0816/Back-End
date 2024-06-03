@@ -1455,7 +1455,7 @@ label.control-label {
   height: 100% !important;
 }
 .full-width {
-  width: 100%
+  width: 100% !important;
 }
 .flex-flow-column {
   flex-flow: column!important;
@@ -3170,8 +3170,16 @@ g {
 
 .halfdonut-container {
   .column {
-    height: 135px;
-    margin-top: 30px;
+    height: 181px;
+    margin-top: 10px;
+    overflow: hidden;
+    canvas {
+      max-height: 181px;
+      position: absolute;
+      transform: translate(-50%, -50%);
+      top: 50%;
+      left: 50%;
+    }
   }
 }
 
@@ -3185,7 +3193,13 @@ g {
 .pie-chart-container {
   position: relative;
   height: 300px;
-  width: 400px;
+  width: initial;
+  canvas {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+  }
   .inner-label {
     position: absolute;
     transform: translate(-50%, -50%);

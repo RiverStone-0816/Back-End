@@ -40,7 +40,13 @@
 <div class="-chart -dashboard-chart"></div>
 
 <script>
-    const data = [<c:forEach var="e" items="${stat.hourToResponseRate}">{hour: '${e.key}시', value: ${e.value}}, </c:forEach>];
+    const data = [<c:forEach var="e" items="${stat.hourToResponseRate}">{hour: '${e.key}시', value: parseInt(${e.value})}, </c:forEach>];
 
-    drawLineChart(component.find('.-chart')[0], data, 'hour', ['value'], {ticks: 4, maxY: 100, yLabel: '', unitWidth: 30, colorClasses: ['bcolor-bar1']});
+    chartjs.drawLineChart(component.find('.-chart')[0], data, 'hour', ['value'], {
+        colors: ['#C60452'],
+        labels: ['응대율'],
+        suffix: '%',
+        bottom: -5,
+        right: 20
+    });
 </script>

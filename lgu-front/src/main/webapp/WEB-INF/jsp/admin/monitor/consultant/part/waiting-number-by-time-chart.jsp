@@ -14,7 +14,7 @@
 
 <div class="panel" id="waiting-number-chart">
     <div class="panel-heading">
-        <label class="control-label">시간별연결요청</label>
+        <label class="control-label">시간별 연결요청</label>
     </div>
     <div class="panel-body">
         <div class="-chart"></div>
@@ -24,12 +24,12 @@
 <script>
     const data = [
         <c:forEach var="e" items="${stat}">
-        {hour: ${e.key}, waitCount: ${e.value}},
+        {hour: ${e.key} + '시', waitCount: ${e.value}},
         </c:forEach>
     ];
 
-    drawBarChart(ui.find('.-chart')[0], data, 'hour', ['waitCount'], {
-        unitWidth: 20,
-        colorClasses: ['bcolor-bar1', 'bcolor-bar2', 'bcolor-bar3', 'bcolor-bar4', 'bcolor-bar5', 'bcolor-bar6', 'bcolor-bar7', 'bcolor-bar8', 'bcolor-bar9', 'bcolor-bar10']
+    chartjs.drawBarChart(ui.find('.-chart')[0], data, 'hour', ['waitCount'], {
+        colors: ['#C60452'],
+        labels: ['연결요청'],
     });
 </script>

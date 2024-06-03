@@ -19,28 +19,36 @@
     <div class="panel-body overflow-hidden">
         <div class="ui four column grid halfdonut-container">
             <div class="column">
-                <h5 class="ui center aligned header">응답률</h5>
-                <svg id="pie-response-rate" class="full-width" ></svg>
+                <div id="pie-response-rate" class="full-width"></div>
             </div>
             <div class="column">
-                <h5 class="ui center aligned header">콜백 처리율</h5>
-                <svg id="pie-process-callback" class="full-width"></svg>
+                <div id="pie-process-callback" class="full-width"></div>
             </div>
             <div class="column">
-                <h5 class="ui center aligned header">상담 가용율</h5>
-                <svg id="pie-consultation-availability" class="full-width"></svg>
+                <div id="pie-consultation-availability" class="full-width"></div>
             </div>
             <div class="column">
-                <h5 class="ui center aligned header">상담원 상태</h5>
-                <svg id="pie-consultant-status" class="full-width"></svg>
+                <div id="pie-consultant-status" class="full-width"></div>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    drawPieChart('#pie-response-rate', ${(stat.rateValue == null ? 0 : stat.rateValue).doubleValue() / 100}, {startAngle: -90, endAngle: 90, colorClasses: ['bcolor-bar1', 'bcolor-bar2']});
-    drawPieChart('#pie-process-callback', ${not empty stat.totalCallback && stat.totalCallback > 0 ? (empty stat.processedCallback ? 0 : stat.processedCallback).doubleValue() / stat.totalCallback.doubleValue() : 0}, {startAngle: -90, endAngle: 90, colorClasses: ['bcolor-bar1', 'bcolor-bar2']});
-    drawPieChart('#pie-consultation-availability', ${not empty stat.workingPerson && stat.workingPerson > 0 ? (empty stat.loginCount ? 0 : stat.loginCount).doubleValue() / stat.workingPerson.doubleValue() : 0}, {startAngle: -90, endAngle: 90, colorClasses: ['bcolor-bar1', 'bcolor-bar2']});
-    drawPieChart('#pie-consultant-status', ${not empty stat.workingPerson && stat.workingPerson > 0 ? (empty stat.waitPersonCount ? 0 : stat.waitPersonCount).doubleValue() / stat.workingPerson.doubleValue() : 0}, {startAngle: -90, endAngle: 90, colorClasses: ['bcolor-bar1', 'bcolor-bar2']});
+    chartjs.drawHalfDonutChart('#pie-response-rate', ${(stat.rateValue == null ? 0 : stat.rateValue).doubleValue() / 100}, {
+        colors: ['#C60452', '#0E6EB8'],
+        title: '응답률'
+    });
+    chartjs.drawHalfDonutChart('#pie-process-callback', ${not empty stat.totalCallback && stat.totalCallback > 0 ? (empty stat.processedCallback ? 0 : stat.processedCallback).doubleValue() / stat.totalCallback.doubleValue() : 0}, {
+        colors: ['#C60452', '#0E6EB8'],
+        title: '콜백 처리율'
+    });
+    chartjs.drawHalfDonutChart('#pie-consultation-availability', ${not empty stat.workingPerson && stat.workingPerson > 0 ? (empty stat.loginCount ? 0 : stat.loginCount).doubleValue() / stat.workingPerson.doubleValue() : 0}, {
+        colors: ['#C60452', '#0E6EB8'],
+        title: '상담 가용율'
+    });
+    chartjs.drawHalfDonutChart('#pie-consultant-status', ${not empty stat.workingPerson && stat.workingPerson > 0 ? (empty stat.waitPersonCount ? 0 : stat.waitPersonCount).doubleValue() / stat.workingPerson.doubleValue() : 0}, {
+        colors: ['#C60452', '#0E6EB8'],
+        title: '상담원 상태'
+    });
 </script>

@@ -16,7 +16,7 @@
     <div class="panel-heading">
         <label class="control-label">통계 비교 모니터링</label>
         <div class="pull-right">
-            <div class="ui action input" style="width: 300px">
+            <div class="ui action input" style="width: 500px">
                 <select name="queues" multiple="multiple" class="ui fluid dropdown" data-dropdown-max-selections="2">
                     <option value="">비교 큐그룹 선택</option>
                     <c:forEach var="e" items="${queues}">
@@ -48,8 +48,9 @@
 </div>
 
 <script>
-    const colorClasses = ['bcolor-bar1', 'bcolor-bar2', 'bcolor-bar3', 'bcolor-bar4', 'bcolor-bar5', 'bcolor-bar6', 'bcolor-bar7', 'bcolor-bar8', 'bcolor-bar9', 'bcolor-bar10'];
+    const colorClasses = ['#c60452', '#0E6EB8', 'silver', 'gold', '#0abde3', '#2e353e', '#8f94fb', '#c60452', '#AFE4B8', '#ff9f43'];
     const huntToColorClass = {<c:forEach var="e" items="${queues}" varStatus="status"> '${g.escapeQuote(e.key)}': colorClasses[parseInt(${status.index}) % colorClasses.length], </c:forEach>};
+    const huntToName = {<c:forEach var="e" items="${queues}" varStatus="status"> '${g.escapeQuote(e.key)}': '${g.htmlQuote(e.value)}', </c:forEach>};
 
     const dataOfDay = [
         <c:forEach var="hourEntry" items="${hourToQueueNameToCountOfDayMap}"> {
@@ -82,13 +83,13 @@
     });
 
     <c:if test="${queueAName != null && queueAName.length() > 0 && queueBName != null && queueBName.length() > 0}">
-    drawBarChart(ui.find('.-day-chart')[0], dataOfDay, 'hour', ['${g.escapeQuote(queueAName)}', '${g.escapeQuote(queueBName)}'], {
-        unitWidth: 30,
-        colorClasses: [huntToColorClass['${g.escapeQuote(queueAName)}'], huntToColorClass['${g.escapeQuote(queueBName)}']]
+    chartjs.drawBarChart(ui.find('.-day-chart')[0], dataOfDay, 'hour', ['${g.escapeQuote(queueAName)}', '${g.escapeQuote(queueBName)}'], {
+        colors: [huntToColorClass['${g.escapeQuote(queueAName)}'], huntToColorClass['${g.escapeQuote(queueBName)}']],
+        labels: [huntToName['${g.escapeQuote(queueAName)}'], huntToName['${g.escapeQuote(queueBName)}']],
     });
-    drawBarChart(ui.find('.-week-chart')[0], dataOfWeek, 'hour', ['${g.escapeQuote(queueAName)}', '${g.escapeQuote(queueBName)}'], {
-        unitWidth: 30,
-        colorClasses: [huntToColorClass['${g.escapeQuote(queueAName)}'], huntToColorClass['${g.escapeQuote(queueBName)}']]
+    chartjs.drawBarChart(ui.find('.-week-chart')[0], dataOfWeek, 'hour', ['${g.escapeQuote(queueAName)}', '${g.escapeQuote(queueBName)}'], {
+        colors: [huntToColorClass['${g.escapeQuote(queueAName)}'], huntToColorClass['${g.escapeQuote(queueBName)}']],
+        labels: [huntToName['${g.escapeQuote(queueAName)}'], huntToName['${g.escapeQuote(queueBName)}']],
     });
     </c:if>
 </script>

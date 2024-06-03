@@ -38,8 +38,9 @@
         }, </c:forEach>
     ];
 
-    drawStackedBarChart(ui.find('.-chart')[0], data, 'hour', [<c:forEach var="e" items="${queues}">'${g.escapeQuote(e.key)}', </c:forEach>], {
-        unitWidth: 50,
-        colorClasses: ['bcolor-bar1', 'bcolor-bar2', 'bcolor-bar3', 'bcolor-bar4', 'bcolor-bar5', 'bcolor-bar6', 'bcolor-bar7', 'bcolor-bar8', 'bcolor-bar9', 'bcolor-bar10']
+    chartjs.drawBarChart(ui.find('.-chart')[0], data, 'hour', [<c:forEach var="e" items="${queues}">'${g.escapeQuote(e.key)}', </c:forEach>], {
+        colors: ['#c60452', '#0E6EB8', 'silver', 'gold', '#0abde3', '#2e353e', '#8f94fb', '#c60452', '#AFE4B8', '#ff9f43'],
+        labels: [<c:forEach var="e" items="${queues}">'${g.escapeQuote(e.value)}', </c:forEach>],
+        stacked: true
     });
 </script>

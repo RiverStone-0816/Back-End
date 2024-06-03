@@ -42,6 +42,8 @@
 <script src="<c:url value="/resources/vendors/Amsify-Suggestags/jquery.amsify.suggestags.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/tagify/1.3.1/tagify.min.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/tagify/1.3.1/jQuery.tagify.min.js?version=${version}"/>" data-type="library"></script>
+<script src="<c:url value="/resources/vendors/chart.js/4.3.3/chart.min.js?version=${version}"/>" data-type="library"></script>
+<script src="<c:url value="/resources/vendors/chart.js/chartjs-plugin-datalabels/2.2.0/datalabels.min.js?version=${version}"/>" data-type="library"></script>
 
 <c:choose>
     <c:when test="${devel}">

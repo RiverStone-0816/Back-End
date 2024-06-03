@@ -57,5 +57,9 @@
 
 <script>
     const data = [<c:forEach var="e" items="${stat.hourToCurrentCnt}">{hour: '${e.key}시', maxWaitCnt: ${e.value.maxWaitCnt}}, </c:forEach>];
-    drawLineChart(component.find('.-chart')[0], data, 'hour', ['maxWaitCnt'], {ticks: 4, yLabel: '', unitWidth: 30, colorClasses: ['bcolor-bar1']});
+    chartjs.drawLineChart(component.find('.-chart')[0], data, 'hour', ['maxWaitCnt'], {
+        colors: ['#C60452'],
+        labels: ['수신대기'],
+        bottom: -5
+    });
 </script>

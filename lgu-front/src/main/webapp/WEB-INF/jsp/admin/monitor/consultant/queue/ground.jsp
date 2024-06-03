@@ -160,20 +160,16 @@
                         <div class="panel-body overflow-hidden">
                             <div class="ui four column grid halfdonut-container">
                                 <div class="column">
-                                    <h5 class="ui center aligned header">응답률</h5>
-                                    <svg id="pie-response-rate" class="full-width" ></svg>
+                                    <div id="pie-response-rate" style="width: 100%; height: 200px;"></div>
                                 </div>
                                 <div class="column">
-                                    <h5 class="ui center aligned header">콜백 처리율</h5>
-                                    <svg id="pie-process-callback" class="full-width"></svg>
+                                    <div id="pie-process-callback" style="width: 100%; height: 200px;"></div>
                                 </div>
                                 <div class="column">
-                                    <h5 class="ui center aligned header">상담 가용율</h5>
-                                    <svg id="pie-consultation-availability" class="full-width"></svg>
+                                    <div id="pie-consultation-availability" style="width: 100%; height: 200px;"></div>
                                 </div>
                                 <div class="column">
-                                    <h5 class="ui center aligned header">상담원 상태</h5>
-                                    <svg id="pie-consultant-status" class="full-width"></svg>
+                                    <div id="pie-consultant-status" style="width: 100%; height: 200px;"></div>
                                 </div>
                             </div>
                         </div>
@@ -340,25 +336,21 @@
                 });
             }
 
-            drawPieChart('#pie-response-rate', ${queueStats.responseRate / 100}, {
-                startAngle: -90,
-                endAngle: 90,
-                colorClasses: ['bcolor-bar1', 'bcolor-bar2']
+            chartjs.drawHalfDonutChart('#pie-response-rate', ${queueStats.responseRate / 100}, {
+                colors: ['#C60452', '#0E6EB8'],
+                title: '응답률'
             });
-            drawPieChart('#pie-process-callback', ${queueStats.callbackProcessingRate}, {
-                startAngle: -90,
-                endAngle: 90,
-                colorClasses: ['bcolor-bar1', 'bcolor-bar2']
+            chartjs.drawHalfDonutChart('#pie-process-callback', ${queueStats.callbackProcessingRate}, {
+                colors: ['#C60452', '#0E6EB8'],
+                title: '콜백 처리율'
             });
-            drawPieChart('#pie-consultation-availability', ${queueStats.callCounselRate}, {
-                startAngle: -90,
-                endAngle: 90,
-                colorClasses: ['bcolor-bar1', 'bcolor-bar2']
+            chartjs.drawHalfDonutChart('#pie-consultation-availability', ${queueStats.callCounselRate}, {
+                colors: ['#C60452', '#0E6EB8'],
+                title: '상담 가용율'
             });
-            drawPieChart('#pie-consultant-status', ${queueStats.counselorStatus}, {
-                startAngle: -90,
-                endAngle: 90,
-                colorClasses: ['bcolor-bar1', 'bcolor-bar2']
+            chartjs.drawHalfDonutChart('#pie-consultant-status', ${queueStats.counselorStatus}, {
+                colors: ['#C60452', '#0E6EB8'],
+                title: '상담원 상태'
             });
 
             updateQueues();

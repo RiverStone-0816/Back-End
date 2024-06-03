@@ -260,7 +260,7 @@
                             <div class="four wide column" >
                                 <div class="label-container"><label class="control-label">평균통계</label></div>
                                 <div class="pie-chart-container">
-                                    <svg id="inbound-outer-pie-chart" class="full-width full-height"></svg>
+                                    <div id="inbound-outer-pie-chart" class="full-width full-height"></div>
 
                                     <div class="inner-label">
                                         <span class="ui label">TOTAL</span> ${total.success + total.cancel}
@@ -304,20 +304,17 @@
                 }, </c:forEach>
             ];
 
-            drawBarChart($('#inbound-chart')[0], data, 'time', ['inboundSuccess', 'inboundCancel'], {
-                ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue']
+            chartjs.drawBarChart($('#inbound-chart')[0], data, 'time', ['inboundSuccess', 'inboundCancel'], {
+                colors: ['#C60452', '#0E6EB8'],
+                labels: ['응대호', '포기호']
             });
 
-            drawPieChart(
+            chartjs.drawDonutChart(
                 '#inbound-outer-pie-chart',
-                ${total.cancel.doubleValue() / (total.success + total.cancel)},
+                [${total.cancel}, ${total.success}],
                 {
-                    startAngle: 0,
-                    endAngle: 360,
-                    innerRadius: 100,
-                    outerRadius: 120,
-                    innerLabel: ' ',
-                    colorClasses: ['bcolor-bar2', 'bcolor-bar1']
+                    colors: ['#0E6EB8', '#C60452'],
+                    labels: ['포기호', '응대호']
                 }
             );
             </c:if>

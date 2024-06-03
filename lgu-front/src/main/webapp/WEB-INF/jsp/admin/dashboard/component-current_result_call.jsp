@@ -29,6 +29,9 @@
 
 <script>
     const data = [<c:forEach var="e" items="${stat.hourToResultCall}">{hour: '${e.key}시', inboundCnt: ${e.value.inboundCnt}, outboundCnt: ${e.value.outboundCnt}}, </c:forEach>];
-
-    drawLineChart(component.find('.-chart')[0], data, 'hour', ['inboundCnt', 'outboundCnt'], { ticks: 4, yLabel: '', unitWidth: 30, colorClasses: ['bcolor-bar1', 'bcolor-bar2']});
+    chartjs.drawLineChart(component.find('.-chart')[0], data, 'hour', ['inboundCnt', 'outboundCnt'], {
+        colors: ['#C60452', '#0E6EB8'],
+        labels: ['I/B', 'O/B'],
+        bottom: -5
+    });
 </script>

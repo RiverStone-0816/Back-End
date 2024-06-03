@@ -938,6 +938,426 @@ function drawPieChart(svgSelector, rate, options) {
     }, 50);
 }
 
+/**
+ * chart js 필수
+ **/
+const chartjs = {
+    drawBarChart: function (container, data, xAxisField, yAxisFields, options) {
+        function draw() {
+            const colors = (options && options.colors) || ['#AAAAAA'];
+
+            const labels = [];
+            const datasets = [];
+
+            for (let i = 0; i < yAxisFields.length; i++)
+                datasets.push({data: [], label: options.labels && options.labels[i]});
+
+            data.map(function (d) {
+                labels.push(d[xAxisField]);
+
+                for (let i = 0; i < yAxisFields.length; i++) {
+                    datasets[i].data.push(d[yAxisFields[i]]);
+                    datasets[i].backgroundColor = colors[i % colors.length];
+                    datasets[i].borderColor = colors[i % colors.length];
+                }
+            });
+
+            return new Chart(
+                $('<canvas/>').appendTo($(container).empty())[0],
+                {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        maintainAspectRatio: false,
+                        layout: {
+                            padding: {
+                                top: (options && options.top) || 20,
+                                bottom: (options && options.bottom) || 5,
+                                right: (options && options.right) || 5,
+                                left: (options && options.left) || 5,
+                            }
+                        },
+                        scales: {
+                            x: {
+                                stacked: (options && options.stacked) || false,
+                            },
+                            y: {
+                                stacked: (options && options.stacked) || false,
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                        }
+                    }
+                }
+            );
+        }
+
+        if (!container)
+            return;
+
+        let containerWidth;
+        let containerHeight;
+        let chart;
+
+        const jobId = setInterval(function () {
+            let newContainerWidth = parseFloat(window.getComputedStyle(container, null).getPropertyValue("width"));
+            let newContainerHeight = parseFloat(window.getComputedStyle(container, null).getPropertyValue("height"));
+
+            if (containerWidth !== newContainerWidth || containerHeight !== newContainerHeight) {
+                containerWidth = newContainerWidth;
+                containerHeight = newContainerHeight;
+
+                if (!containerWidth || !containerHeight) {
+                    clearInterval(jobId);
+                    return;
+                }
+
+                chart = draw();
+                chart.resize(containerWidth, containerHeight);
+            }
+        }, 1000);
+    },
+    drawLineChart: function (container, data, xAxisField, yAxisFields, options) {
+        function draw() {
+            const colors = (options && options.colors) || ['#AAAAAA'];
+
+            const labels = [];
+            const datasets = [];
+
+            for (let i = 0; i < yAxisFields.length; i++)
+                datasets.push({data: [], label: options.labels && options.labels[i]});
+
+            data.map(function (d) {
+                labels.push(d[xAxisField]);
+
+                for (let i = 0; i < yAxisFields.length; i++) {
+                    datasets[i].data.push(d[yAxisFields[i]]);
+                    datasets[i].backgroundColor = colors[i % colors.length];
+                    datasets[i].borderColor = colors[i % colors.length];
+                    datasets[i].tension = 0.4;
+                    datasets[i].datalabels = {align: 'end', anchor: 'end'};
+                }
+            });
+
+            return new Chart(
+                $('<canvas/>').appendTo($(container).empty())[0],
+                {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    plugins: [ChartDataLabels],
+                    options: {
+                        mode: "hide",
+                        responsive: true,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        maintainAspectRatio: false,
+                        elements : {
+                            line : {
+                                cubicInterpolationMode: 'monotone'
+                            }
+                        },
+                        layout: {
+                            padding: {
+                                top: (options && options.top) || 30,
+                                bottom: (options && options.bottom) || 5,
+                                right: (options && options.right) || 5,
+                                left: (options && options.left) || -5,
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: {
+                                    padding: 10,
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            datalabels: {
+                                color: 'black',
+                                font: {
+                                    size: '14px',
+                                    weight: 'bold'
+                                },
+                            },
+                        },
+                    }
+                }
+            );
+        }
+
+        if (!container)
+            return;
+
+        let containerWidth;
+        let containerHeight;
+        let chart;
+
+        const jobId = setInterval(function () {
+            let newContainerWidth = parseFloat(window.getComputedStyle(container, null).getPropertyValue("width"));
+            let newContainerHeight = parseFloat(window.getComputedStyle(container, null).getPropertyValue("height"));
+
+            if (containerWidth !== newContainerWidth || containerHeight !== newContainerHeight) {
+                containerWidth = newContainerWidth;
+                containerHeight = newContainerHeight;
+
+                if (!containerWidth || !containerHeight) {
+                    clearInterval(jobId);
+                    return;
+                }
+
+                chart = draw();
+                chart.resize(containerWidth, containerHeight);
+            }
+        }, 1000);
+    },
+    drawLineTimeChart: function (container, data, xAxisField, yAxisFields, options) {
+        function draw() {
+            const colors = (options && options.colors) || ['#AAAAAA'];
+
+            const labels = [];
+            const datasets = [];
+
+            for (let i = 0; i < yAxisFields.length; i++)
+                datasets.push({data: [], label: options.labels && options.labels[i]});
+
+            data.map(function (d) {
+                labels.push(d[xAxisField]);
+
+                for (let i = 0; i < yAxisFields.length; i++) {
+                    datasets[i].data.push(d[yAxisFields[i]]);
+                    datasets[i].backgroundColor = colors[i % colors.length];
+                    datasets[i].borderColor = colors[i % colors.length];
+                    datasets[i].yAxisID = "y";
+                    datasets[i].tension = 0.4;
+                    datasets[i].datalabels = {align: 'end', anchor: 'end'};
+                }
+            });
+
+            return new Chart(
+                $('<canvas/>').appendTo($(container).empty())[0],
+                {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    plugins: [ChartDataLabels],
+                    options: {
+                        mode: "hide",
+                        responsive: true,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        maintainAspectRatio: false,
+                        elements : {
+                            line : {
+                                cubicInterpolationMode: 'monotone'
+                            }
+                        },
+                        layout: {
+                            padding: {
+                                top: (options && options.top) || 20,
+                                bottom: (options && options.bottom) || 5,
+                                right: (options && options.right) || 5,
+                                left: (options && options.left) || -5,
+                            }
+                        },
+                        scales: {
+                            y: {
+                                ticks: {
+                                    padding: 15,
+                                }
+                            },
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label +=  context.parsed.y + ((options && options.suffix) || "");
+                                        }
+                                        return label;
+                                    }
+                                }
+                            },
+                            datalabels: {
+                                color: 'black',
+                                font: {
+                                    size: '14px',
+                                    weight: 'bold'
+                                },
+                                formatter: function(value) {
+                                    return value + ((options && options.suffix) || "");
+                                }
+                            },
+                        },
+                    }
+                }
+            );
+        }
+
+        if (!container)
+            return;
+
+        let containerWidth;
+        let containerHeight;
+        let chart;
+
+        const jobId = setInterval(function () {
+            let newContainerWidth = parseFloat(window.getComputedStyle(container, null).getPropertyValue("width"));
+            let newContainerHeight = parseFloat(window.getComputedStyle(container, null).getPropertyValue("height"));
+
+            if (containerWidth !== newContainerWidth || containerHeight !== newContainerHeight) {
+                containerWidth = newContainerWidth;
+                containerHeight = newContainerHeight;
+
+                if (!containerWidth || !containerHeight) {
+                    clearInterval(jobId);
+                    return;
+                }
+
+                chart = draw();
+                chart.resize(containerWidth, containerHeight);
+            }
+        }, 1000);
+    },
+    drawDonutChart: function (container, rates, options) {
+        function draw() {
+            return new Chart(
+                $('<canvas/>', {style: 'margin: 0 auto; '}).appendTo($(container).empty())[0],
+                {
+                    type: 'doughnut',
+                    data: {
+                        labels: options.labels,
+                        datasets: [{
+                            data: rates,
+                            backgroundColor: (options && options.colors) || ['#AAAAAA'],
+                            cutout: '80%',
+                            radius: '70%'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                        }
+                    }
+                }
+            );
+        }
+
+        return draw();
+    },
+    drawHalfDonutChart: function (container, rate, options) {
+        if (rate > 1)
+            rate = 1;
+
+        rate = rate.toFixed(3);
+
+        function draw() {
+            return new Chart(
+                $('<canvas/>', {style: 'margin: 0 auto; '}).appendTo($(container).empty())[0],
+                {
+                    type: 'doughnut',
+                    data: {
+                        labels: options.labels,
+                        datasets: [{
+                            data: [rate, 1-rate],
+                            backgroundColor: (options && options.colors) || ['#AAAAAA'],
+                            cutout: '60%',
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        interaction: {
+                            mode: 'index',
+                            intersect: false,
+                        },
+                        rotation: -90,
+                        circumference: 180,
+                        layout: {
+                            padding: 0
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            title: {
+                                display: true,
+                                text: (options && options.title) ||  '',
+                                color: 'black',
+                                font: {
+                                    family: 'Noto Sans Korean',
+                                    size: 15,
+                                    weight: 'bold'
+                                },
+                            },
+                            subtitle: {
+                                display: true,
+                                text: (rate * 100).toFixed(1) + '%',
+                                position: 'bottom',
+                                font: {
+                                    family: 'Noto Sans Korean',
+                                    size: 15,
+                                    weight: 'normal'
+                                },
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || ' ';
+
+                                        if (context.formattedValue !== null) {
+                                            label += (context.formattedValue * 100).toFixed(1) + '%';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            },
+                        }
+                    }
+                }
+            );
+        }
+
+        return draw();
+    },
+};
+
 function createIpccAdminCommunicator() {
     const ipccAdminCommunicator = new IpccAdminCommunicator();
     ipccAdminCommunicator.log = function () {
