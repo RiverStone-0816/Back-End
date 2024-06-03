@@ -165,9 +165,17 @@
             maudio({obj: this});
         });
         findAndMe(".-slider-time", this).each(function () {
-            $(this).slider({range: true, min: 0, max: 24 * 60 - 1, disabled: $(this).attr('data-key') == null, step: 1, values: [$(this).attr('data-start'), $(this).attr('data-end')], slide: function (e, ui) {
+            $(this).slider({
+                range: true,
+                min: 0,
+                max: 24 * 60 - 1,
+                disabled: $(this).attr('data-key') == null,
+                step: 1,
+                values: [$(this).attr('data-start'), $(this).attr('data-end')],
+                slide: function (e, ui) {
                     ui.handle.innerHTML = pad(parseInt(ui.values[ui.handleIndex] / 60), 2) + ':' + pad(ui.values[ui.handleIndex] % 60, 2);
-                }, change: function (e, ui) {
+                },
+                /*change: function (e, ui) {
                     if ($(this).attr('data-key') != null && $(this).attr('data-key') !== '') {
                         restSelf.put("/api/schedule-group/item/time/" + $(this).attr('data-key'), {
                             parent: $(this).attr('data-parent'),
@@ -179,9 +187,12 @@
                             });
                         });
                     }
-                }, stop: function (e, ui) {
+                },
+                stop: function (e, ui) {
                     ui.handle.innerHTML = '';
-                }});
+                }*/
+            });
+            $(this).slider('disable');
         });
         findAndMe('.-play-trigger', this).each(function () {
             $(this).popup({
