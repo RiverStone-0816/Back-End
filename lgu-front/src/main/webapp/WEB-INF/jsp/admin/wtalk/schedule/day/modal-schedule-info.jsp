@@ -67,7 +67,7 @@
                 <div class="sixteen wide column">
                     <div class="jp-multiselect -moving-container">
                         <div class="from-panel">
-                            <select class="form-control -right-selector" size="8" multiple="multiple">
+                            <select class="form-control -left-selector" size="8" multiple="multiple">
                                 <c:forEach var="e" items="${talkServices}">
                                     <option value="${g.htmlQuote(e.key)}" class="kakao-service">${g.htmlQuote(e.value)}</option>
                                 </c:forEach>
@@ -75,13 +75,21 @@
                                     <option value="${g.htmlQuote(e.key)}" class="eicn-service" style="display: none">${g.htmlQuote(e.value)}</option>
                                 </c:forEach>
                             </select>
+                            <div class="ui action input pt5">
+                                <input type="text" class="-left-selector-search"/>
+                                <button type="button" class="ui button mini -left-selector-search-button">검색</button>
+                            </div>
                         </div>
                         <div class="move-panel">
-                            <button type="button" class="btn-move-selected-right -to-left">›</button>
-                            <button type="button" class="btn-move-selected-left -to-right">‹</button>
+                            <button type="button" class="btn-move-selected-right -to-right">›</button>
+                            <button type="button" class="btn-move-selected-left -to-left">‹</button>
                         </div>
                         <div class="to-panel">
-                            <select name="senderKeys" class="form-control -left-selector" size="8" multiple="multiple"></select>
+                            <select name="senderKeys" class="form-control -right-selector" size="8" multiple="multiple"></select>
+                            <div class="ui action input pt5">
+                                <input type="text" class="-right-selector-search"/>
+                                <button type="button" class="ui button mini -right-selector-search-button">검색</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -124,7 +132,7 @@
 
     <div class="actions">
         <button type="button" class="ui button modal-close">취소</button>
-        <button type="submit" class="ui blue button">확인</button>
+        <button type="button" class="ui blue button -submit-form">확인</button>
     </div>
 </form:form>
 
@@ -135,6 +143,10 @@
             data.senderKeys.push($(this).val());
         });
     };
+
+    modal.find('.-submit-form').click(function () {
+        $('#modal-schedule-info').submit();
+    });
 
     modal.find('[name=groupId]').change(function () {
         modal.find('#schedule-info').empty();
