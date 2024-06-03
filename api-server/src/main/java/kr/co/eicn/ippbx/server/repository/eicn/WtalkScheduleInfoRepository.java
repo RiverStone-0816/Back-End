@@ -78,8 +78,20 @@ public class WtalkScheduleInfoRepository extends EicnBaseRepository<WtalkSchedul
 		record.setIsStat(EMPTY);
 		record.setChannelType(form.getChannelType().getCode());
 
+		final List<String> existSenderKeys = dsl.selectDistinct(WTALK_SCHEDULE_INFO.SENDER_KEY)
+				.from(WTALK_SCHEDULE_INFO)
+				.where(compareCompanyId())
+				.and(WTALK_SCHEDULE_INFO.TYPE.eq(ScheduleType.WEEK.getCode()))
+				.fetchInto(String.class);
+
+		form.getSenderKeys().removeIf(e -> existSenderKeys.stream().anyMatch(e::equals));
+
 		for (String week : weeks) {
 			record.setWeek(week);
+
+			if (form.getIsEach())
+				record.setGroupId(form.getWeeks().get(week));
+
 			for (String senderKey : form.getSenderKeys()) {
 				record.setSenderKey(senderKey);
 				super.insert(record);

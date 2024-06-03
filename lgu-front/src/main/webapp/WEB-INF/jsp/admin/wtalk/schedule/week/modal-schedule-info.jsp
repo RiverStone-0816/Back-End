@@ -106,8 +106,107 @@
                         </form:select>
                     </div>
                 </div>
-                <div class="eight wide column">
-                    (월~일요일까지 일괄적용 후 개별 요일로 변경 가능함)
+                <div class="three wide column"><label class="control-label">요일 설정</label></div>
+                <div class="five wide column">
+                    <div class="ui toggle checkbox isEach">
+                        <form:hidden path="isEach"/>
+                        <input type="checkbox" id="isEach" name="isEach" value="true" tabindex="0" class="hidden" style="display: none;">
+                        <label>월~일요일까지 일괄적용</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="each-week-schedule" style="display: none;">
+                <div class="four wide column"><label class="control-label">개별 스케쥴 설정</label></div>
+                <div class="twelve wide column">
+                    <div class="ui grid remove-margin">
+                        <div class="eight wide column remove-padding">
+                            <div class=" ui form flex" style="margin-bottom: 5px;">
+                                <label style="min-width: 50px">월요일 : </label>
+                                <div style="margin: 0 10px;width: 100%;">
+                                    <select id="mon1" name="mon1">
+                                        <option value="">선택안함</option>
+                                        <c:forEach var="e" items="${scheduleInfos}">
+                                            <option value="${e.parent}" class="-channel-type" data-type="${e.channelType}"  style="${e.channelType == 'eicn' ? 'display: none' : ''}">${g.htmlQuote(e.name)}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class=" ui form flex" style="margin-bottom: 5px;">
+                                <label style="min-width: 50px">화요일 : </label>
+                                <div style="margin: 0 10px;width: 100%;">
+                                    <select id="tue2" name="tue2">
+                                        <option value="">선택안함</option>
+                                        <c:forEach var="e" items="${scheduleInfos}">
+                                            <option value="${e.parent}" class="-channel-type" data-type="${e.channelType}"  style="${e.channelType == 'eicn' ? 'display: none' : ''}">${g.htmlQuote(e.name)}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class=" ui form flex" style="margin-bottom: 5px;">
+                                <label style="min-width: 50px">수요일 : </label>
+                                <div style="margin: 0 10px;width: 100%;">
+                                    <select id="wed3" name="wed3">
+                                        <option value="">선택안함</option>
+                                        <c:forEach var="e" items="${scheduleInfos}">
+                                            <option value="${e.parent}" class="-channel-type" data-type="${e.channelType}"  style="${e.channelType == 'eicn' ? 'display: none' : ''}">${g.htmlQuote(e.name)}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class=" ui form flex" style="margin-bottom: 5px;">
+                                <label style="min-width: 50px">목요일 : </label>
+                                <div style="margin: 0 10px;width: 100%;">
+                                    <select id="thu4" name="thu4">
+                                        <option value="">선택안함</option>
+                                        <c:forEach var="e" items="${scheduleInfos}">
+                                            <option value="${e.parent}" class="-channel-type" data-type="${e.channelType}"  style="${e.channelType == 'eicn' ? 'display: none' : ''}">${g.htmlQuote(e.name)}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="eight wide column  remove-padding">
+                            <div class=" ui form flex" style="margin-bottom: 5px;">
+                                <label style="min-width: 50px">금요일 : </label>
+                                <div style="margin: 0 10px;width: 100%;">
+                                    <select id="fri5" name="fri5">
+                                        <option value="">선택안함</option>
+                                        <c:forEach var="e" items="${scheduleInfos}">
+                                            <option value="${e.parent}" class="-channel-type" data-type="${e.channelType}"  style="${e.channelType == 'eicn' ? 'display: none' : ''}">${g.htmlQuote(e.name)}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class=" ui form flex" style="margin-bottom: 5px;">
+                                <label style="min-width: 50px">토요일 : </label>
+                                <div style="margin: 0 10px;width: 100%;">
+                                    <select id="sat6" name="sat6">
+                                        <option value="">선택안함</option>
+                                        <c:forEach var="e" items="${scheduleInfos}">
+                                            <option value="${e.parent}" class="-channel-type" data-type="${e.channelType}"  style="${e.channelType == 'eicn' ? 'display: none' : ''}">${g.htmlQuote(e.name)}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class=" ui form flex">
+                                <label style="min-width: 50px">일요일 : </label>
+                                <div style="margin: 0 10px;width: 100%;">
+                                    <select id="sun7" name="sun7">
+                                        <option value="">선택안함</option>
+                                        <c:forEach var="e" items="${scheduleInfos}">
+                                            <option value="${e.parent}" class="-channel-type" data-type="${e.channelType}"  style="${e.channelType == 'eicn' ? 'display: none' : ''}">${g.htmlQuote(e.name)}</option>
+                                        </c:forEach>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sixteen wide column remove-padding">
+                            <label class="text-primary">
+                                미선택 시 위에서 선택한 스케줄 유형으로 자동 적용됩니다.
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row" id="schedule-info"></div>
@@ -126,6 +225,19 @@
         modal.find('[name="senderKeys"] option').each(function () {
             data.senderKeys.push($(this).val());
         });
+
+        if (data.isEach) {
+            const groupId = data.groupId;
+            data.weeks = {};
+
+            data.weeks["1Mon"] = data.mon1 ? data.mon1 : groupId;
+            data.weeks["2Tue"] = data.tue2 ? data.tue2 : groupId;
+            data.weeks["3Wed"] = data.wed3 ? data.wed3 : groupId;
+            data.weeks["4Thu"] = data.thu4 ? data.thu4 : groupId;
+            data.weeks["5Fri"] = data.fri5 ? data.fri5 : groupId;
+            data.weeks["6Sat"] = data.sat6 ? data.sat6 : groupId;
+            data.weeks["7Sun"] = data.sun7 ? data.sun7 : groupId;
+        }
     };
 
     modal.find('.-submit-form').click(function () {
@@ -171,5 +283,25 @@
             modal.find('.-right-selector').find('.eicn-service').show();
             modal.find('#groupId').find('[data-type=eicn]').show();
         }
+    });
+
+    modal.find('[name=isEach]').change(function () {
+        const isEach = $(this).parent('.ui.checkbox').find('input').is(':checked');
+
+        if (isEach)
+            modal.find('#each-week-schedule').css('display', 'flex');
+        else
+            modal.find('#each-week-schedule').css('display', 'none');
+    });
+
+    modal.find('.ui.checkbox.isEach').checkbox({
+        onChecked: function () {
+            $(this).siblings('label').text('개별 요일 설정');
+            $(this).closest('td').find('input').val(0);
+        },
+        onUnchecked: function () {
+            $(this).siblings('label').text('월~일요일까지 일괄적용');
+            $(this).closest('td').find('input').val(1);
+        },
     });
 </script>

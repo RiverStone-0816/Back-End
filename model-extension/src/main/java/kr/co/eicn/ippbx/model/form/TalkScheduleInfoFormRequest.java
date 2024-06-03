@@ -6,6 +6,7 @@ import kr.co.eicn.ippbx.util.valid.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.Map;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -18,4 +19,7 @@ public class TalkScheduleInfoFormRequest extends BaseForm {
 	private Integer groupId; // 스케쥴유형
 	@NotNull("채널 타입")
 	private TalkChannelType channelType;
+
+	private Boolean              isEach = Boolean.FALSE;
+	private Map<String, Integer> weeks;
 }
