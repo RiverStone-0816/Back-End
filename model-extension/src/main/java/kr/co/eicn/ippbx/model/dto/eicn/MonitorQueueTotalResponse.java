@@ -22,22 +22,16 @@ public class MonitorQueueTotalResponse {
 
     @JsonIgnore
     public void setCallbackProcessingRate(Integer callbackSuccess, Integer calllback) {
-        if (callbackSuccess == 0 || calllback == 0)
-            this.callbackProcessingRate = 0d;
-        this.callbackProcessingRate = callbackSuccess.doubleValue() / calllback;
+        this.callbackProcessingRate = Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(callbackSuccess, calllback)));
     }
 
     @JsonIgnore
     public void setCallCounselRate(Integer loginUserCnt, Integer workingUserCnt) {
-        if (loginUserCnt == 0 || workingUserCnt == 0)
-            this.callCounselRate =  0d;
-        this.callCounselRate = loginUserCnt.doubleValue() / workingUserCnt;
+        this.callCounselRate = Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(loginUserCnt, workingUserCnt)));
     }
 
     @JsonIgnore
     public void setCounselorStatus(Integer waitUser, Integer workingUser) {
-        if (waitUser == 0 || workingUser == 0)
-            this.counselorStatus = 0d;
-        this.counselorStatus = waitUser.doubleValue() / workingUser;
+        this.counselorStatus = Double.parseDouble(String.format("%.2f", EicnUtils.getRateValue(waitUser, workingUser)));
     }
 }

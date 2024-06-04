@@ -340,15 +340,15 @@
                 colors: ['#C60452', '#0E6EB8'],
                 title: '응답률'
             });
-            chartjs.drawHalfDonutChart('#pie-process-callback', ${queueStats.callbackProcessingRate}, {
+            chartjs.drawHalfDonutChart('#pie-process-callback', ${queueStats.callbackProcessingRate / 100}, {
                 colors: ['#C60452', '#0E6EB8'],
                 title: '콜백 처리율'
             });
-            chartjs.drawHalfDonutChart('#pie-consultation-availability', ${queueStats.callCounselRate}, {
+            chartjs.drawHalfDonutChart('#pie-consultation-availability', ${queueStats.callCounselRate / 100}, {
                 colors: ['#C60452', '#0E6EB8'],
                 title: '상담 가용율'
             });
-            chartjs.drawHalfDonutChart('#pie-consultant-status', ${queueStats.counselorStatus}, {
+            chartjs.drawHalfDonutChart('#pie-consultant-status', ${queueStats.counselorStatus / 100}, {
                 colors: ['#C60452', '#0E6EB8'],
                 title: '상담원 상태'
             });

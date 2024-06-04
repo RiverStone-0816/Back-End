@@ -46,6 +46,6 @@
         labels: ['응대율'],
         suffix: '%',
         bottom: -5,
-        right: 20
+        right: 15
     });
 </script>

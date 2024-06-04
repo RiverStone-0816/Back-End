@@ -981,8 +981,8 @@ const chartjs = {
                             padding: {
                                 top: (options && options.top) || 20,
                                 bottom: (options && options.bottom) || 5,
-                                right: (options && options.right) || 5,
-                                left: (options && options.left) || 5,
+                                right: (options && options.right) || 20,
+                                left: (options && options.left) || 20,
                             }
                         },
                         scales: {
@@ -1076,7 +1076,7 @@ const chartjs = {
                             padding: {
                                 top: (options && options.top) || 30,
                                 bottom: (options && options.bottom) || 5,
-                                right: (options && options.right) || 5,
+                                right: (options && options.right) || 10,
                                 left: (options && options.left) || -5,
                             }
                         },
@@ -1091,12 +1091,29 @@ const chartjs = {
                             legend: {
                                 display: false
                             },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label +=  context.parsed.y + ((options && options.suffix) || "");
+                                        }
+                                        return label;
+                                    }
+                                }
+                            },
                             datalabels: {
                                 color: 'black',
                                 font: {
                                     size: '14px',
                                     weight: 'bold'
                                 },
+                                formatter: function(value) {
+                                    return value + ((options && options.suffix) || "");
+                                }
                             },
                         },
                     }
@@ -1201,7 +1218,7 @@ const chartjs = {
                                             label += ': ';
                                         }
                                         if (context.parsed.y !== null) {
-                                            label +=  context.parsed.y + ((options && options.suffix) || "");
+                                            label +=  pad(parseInt(context.parsed.y / 60), 2) + ":" + pad(parseInt(context.parsed.y % 60), 2);
                                         }
                                         return label;
                                     }
@@ -1214,7 +1231,7 @@ const chartjs = {
                                     weight: 'bold'
                                 },
                                 formatter: function(value) {
-                                    return value + ((options && options.suffix) || "");
+                                    return pad(parseInt(value / 60), 2) + ":" + pad(parseInt(value % 60), 2);
                                 }
                             },
                         },
