@@ -32,7 +32,7 @@
                             <div></div>
                         </a>
                     </c:if>
-                    <c:if test="${hasExtension && isCti}">
+                    <c:if test="${hasExtension && isCti and usingServices.contains('PRV')}">
                     <a class="item -counsel-panel-indicator" data-tab="preview-tab">프리뷰</a>
                     </c:if>
                     <a class="item -counsel-panel-indicator -configured-indicator" data-tab="menu1">상담결과이력</a>
