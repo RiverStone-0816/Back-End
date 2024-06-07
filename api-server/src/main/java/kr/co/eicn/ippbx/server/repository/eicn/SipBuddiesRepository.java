@@ -51,4 +51,8 @@ public class SipBuddiesRepository extends EicnBaseRepository<SipBuddies, kr.co.e
 			processService.execute(ShellCommand.PICKUP_UPDATE, peer, " &");
 		}
 	}
+
+	public void updateByName(DSLContext dslContext, Object record, String name) {
+		super.update(dslContext, record, SIP_BUDDIES.NAME.eq(name));
+	}
 }

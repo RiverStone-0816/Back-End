@@ -177,12 +177,12 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
                 resetPickUpSipBuddy.setNamedpickupgroup(EMPTY);
                 resetPickUpSipBuddy.setNamedcallgroup(EMPTY);
 
-                sipBuddiesRepository.updateByKey(resetPickUpSipBuddy, resetPickUpSipBuddy.getId());
+                sipBuddiesRepository.updateByName(dsl, resetPickUpSipBuddy, resetPickUpSipBuddy.getName());
 
                 cacheService.pbxServerList(getCompanyId())
                         .forEach(e -> {
                             DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
-                            sipBuddiesRepository.updateByKey(pbxDsl, resetPickUpSipBuddy, resetPickUpSipBuddy.getId());
+                            sipBuddiesRepository.updateByName(pbxDsl, resetPickUpSipBuddy, resetPickUpSipBuddy.getName());
                         });
             }
         }
@@ -294,11 +294,11 @@ public class PickUpGroupRepository extends EicnBaseRepository<PickupGroup, kr.co
         for (kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SipBuddies pickUpSipBuddy : pickUpSipBuddies) {
             pickUpSipBuddy.setPickupgroup(EMPTY);
             pickUpSipBuddy.setCallgroup(EMPTY);
-            sipBuddiesRepository.updateByKey(pickUpSipBuddy, pickUpSipBuddy.getId());
+            sipBuddiesRepository.updateByName(dsl, pickUpSipBuddy, pickUpSipBuddy.getName());
 
             optionalPbxServer.ifPresent(e -> {
                 DSLContext pbxDsl = pbxServerInterface.using(e.getHost());
-                sipBuddiesRepository.updateByKey(pbxDsl, pickUpSipBuddy, pickUpSipBuddy.getId());
+                sipBuddiesRepository.updateByName(pbxDsl, pickUpSipBuddy, pickUpSipBuddy.getName());
             });
         }
 
