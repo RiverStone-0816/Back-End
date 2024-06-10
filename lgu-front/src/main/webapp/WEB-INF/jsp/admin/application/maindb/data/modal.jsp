@@ -257,10 +257,21 @@
         const talkServiceSenderKey = modal.find('[name=channelDataTalkService] :selected').val();
         const talkServiceName = modal.find('[name=channelDataTalkService] :selected').text();
 
+        let transChannelData = channelData;
+        if (channelType === 'PHONE') {
+            transChannelData = channelData.replaceAll(/[^0-9]/g, '');
+            if (!transChannelData || !transChannelData) return;
+        }
+        else if (channelType === 'EMAIL' && !transChannelData.includes("@"))
+            return;
+        else if (channelType === 'TALK')
+            transChannelData = talkServiceSenderKey + '_' + channelData;
+
+
         modal.find('[name=channels]').append($('<option/>', {
-            value: (channelType === 'TALK' ? talkServiceSenderKey + '_' + channelData : channelData.replaceAll(/[^0-9]/g, '')),
             'data-type': channelType,
-            text: '[' + (channelType === 'TALK' ? talkServiceName : channelTypeName) + '] ' + (channelType === 'TALK' ? talkServiceSenderKey + '_' + channelData : channelData.replaceAll(/[^0-9]/g, ''))
+            value: transChannelData,
+            text: '[' + (channelType === 'TALK' ? talkServiceName : channelTypeName) + '] ' + transChannelData
         }));
     });
 

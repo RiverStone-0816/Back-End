@@ -363,10 +363,21 @@
         const talkServiceSenderKey = ui.find('[name=channelDataTalkService] :selected').val();
         const talkServiceName = ui.find('[name=channelDataTalkService] :selected').text();
 
+        let transChannelData = channelData;
+        if (channelType === 'PHONE') {
+            transChannelData = channelData.replaceAll(/[^0-9]/g, '');
+            if (!transChannelData || !transChannelData) return;
+        }
+        else if (channelType === 'EMAIL' && !transChannelData.includes("@"))
+            return;
+        else if (channelType === 'TALK')
+            transChannelData = talkServiceSenderKey + '_' + channelData;
+
+
         ui.find('[name=channels]').append($('<option/>', {
-            value: (channelType === 'PHONE' ? channelData : talkServiceSenderKey + '_' + channelData),
             'data-type': channelType,
-            text: '[' + (channelType === 'PHONE' ? channelTypeName : talkServiceName) + '] ' + channelData
+            value: transChannelData,
+            text: '[' + (channelType === 'TALK' ? talkServiceName : channelTypeName) + '] ' + transChannelData
         }));
     });
 
