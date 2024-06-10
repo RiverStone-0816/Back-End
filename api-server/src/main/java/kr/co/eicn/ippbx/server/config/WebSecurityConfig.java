@@ -11,19 +11,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 	protected final Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
 
 	private final ResponseUtils responseUtils;
@@ -38,8 +37,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		this.authenticationProvider = authenticationProvider;
 	}
 
-	@Override
-	protected void configure(HttpSecurity httpSecurity) throws Exception {
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.authorizeRequests().mvcMatchers("api/v1/chat/config/image").permitAll();
 
 		httpSecurity.httpBasic().disable()
@@ -57,16 +56,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		httpSecurity.addFilterBefore(exceptionHandlerFilter(), JwtRequestFilter.class);
+		httpSecurity.authenticationProvider(authenticationProvider);
+
+		return httpSecurity.build();
 	}
 
-	@Override
-	public void configure(WebSecurity web) {
-		web.ignoring().antMatchers( "/docs/index.html", "/favicon.ico");
-	}
-
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) {
-		auth.authenticationProvider(authenticationProvider);
+	@Bean
+	public WebSecurityCustomizer webSecurityCustomizer() {
+		return (web) -> web.ignoring().antMatchers( "/docs/index.html", "/favicon.ico");
 	}
 
 	@Bean
