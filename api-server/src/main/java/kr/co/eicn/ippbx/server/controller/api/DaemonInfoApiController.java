@@ -28,6 +28,6 @@ public class DaemonInfoApiController extends ApiBaseController{
         final HttpServletRequest request = ContextUtil.getRequest();
         final String ip = request.getHeader("HTTP_CLIENT_IP");
 
-        return ResponseEntity.ok(data(daemonRepository.findAllNodeJSDaemon(ip.startsWith("192.") || ip.startsWith("10."))));
+        return ResponseEntity.ok(data(daemonRepository.findAllNodeJSDaemon(ip.startsWith("192.") || ip.startsWith("172.") || ip.startsWith("10."))));
     }
 }
