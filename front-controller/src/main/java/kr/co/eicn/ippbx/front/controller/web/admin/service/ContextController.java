@@ -55,23 +55,23 @@ public class ContextController extends BaseController {
         return "admin/service/context/modal";
     }
 
-    @GetMapping("{context}/modal")
-    public String modal(Model model, @PathVariable String context, @ModelAttribute("form") ContextInfoFormRequest form) throws IOException, ResultFailException {
-        final ContextInfoResponse entity = apiInterface.get(context);
+    @GetMapping("{seq}/modal")
+    public String modal(Model model, @PathVariable Integer seq, @ModelAttribute("form") ContextInfoFormRequest form) throws IOException, ResultFailException {
+        final ContextInfoResponse entity = apiInterface.get(seq);
         ReflectionUtils.copy(form, entity);
         model.addAttribute("entity", entity);
 
         return "admin/service/context/modal";
     }
 
-    @GetMapping("{context}/modal-visual-ars")
-    public String modalVisualArs(Model model, @PathVariable String context, @ModelAttribute("form") WebVoiceItemsFormRequest form) throws IOException, ResultFailException {
-        final ContextInfoResponse entity = apiInterface.get(context);
+    @GetMapping("{seq}/modal-visual-ars")
+    public String modalVisualArs(Model model, @PathVariable Integer seq, @ModelAttribute("form") WebVoiceItemsFormRequest form) throws IOException, ResultFailException {
+        final ContextInfoResponse entity = apiInterface.get(seq);
         model.addAttribute("entity", entity);
-        form.setContext(context);
+        form.setContext(entity.getContext());
 
         try {
-            final WebVoiceResponse voice = apiInterface.getWebVoice(context);
+            final WebVoiceResponse voice = apiInterface.getWebVoice(seq);
             ReflectionUtils.copy(form, voice);
             voice.getItems().sort(Comparator.comparingInt(WebVoiceItemsResponse::getSequence));
 

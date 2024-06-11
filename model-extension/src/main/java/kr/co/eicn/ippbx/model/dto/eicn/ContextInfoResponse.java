@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class ContextInfoResponse {
-    private String context;
-    private String name;
-    private String isWebVoice;
+    private Integer seq;
+    private String  context;
+    private String  name;
+    private String  isWebVoice;
 }

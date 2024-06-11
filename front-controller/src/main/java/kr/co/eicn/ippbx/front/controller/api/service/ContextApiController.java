@@ -39,24 +39,24 @@ public class ContextApiController extends BaseController {
     /**
      * 컨텍스트수정
      **/
-    @PutMapping(value = "{context}")
-    public void put(@Valid @RequestBody ContextInfoFormRequest form, BindingResult bindingResult, @PathVariable String context) throws IOException, ResultFailException {
-        apiInterface.put(context, form);
+    @PutMapping(value = "{seq}")
+    public void put(@Valid @RequestBody ContextInfoFormRequest form, BindingResult bindingResult, @PathVariable Integer seq) throws IOException, ResultFailException {
+        apiInterface.put(seq, form);
     }
 
     /**
      * 컨텍스트삭제
      **/
-    @DeleteMapping(value = "{context}")
-    public void delete(@PathVariable String context) throws IOException, ResultFailException {
-        apiInterface.delete(context);
+    @DeleteMapping(value = "{seq}")
+    public void delete(@PathVariable Integer seq) throws IOException, ResultFailException {
+        apiInterface.delete(seq);
     }
 
     /**
      * 보이는 ARS 적용
      **/
-    @PostMapping(value = "{context}/apply")
-    public void apply(@Valid @RequestBody WebVoiceItemsFormRequest form, BindingResult bindingResult, @PathVariable String context) throws IOException, ResultFailException {
-        apiInterface.apply(context, form);
+    @PostMapping(value = "{seq}/apply")
+    public void apply(@Valid @RequestBody WebVoiceItemsFormRequest form, BindingResult bindingResult, @PathVariable Integer seq) throws IOException, ResultFailException {
+        apiInterface.apply(seq, form);
     }
 }

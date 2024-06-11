@@ -49,16 +49,12 @@ public class ContextInfoApiController extends ApiBaseController {
     @IsAdmin
     @GetMapping("")
     public ResponseEntity<JsonResult<List<ContextInfoResponse>>> list() {
-        final List<ContextInfoResponse> list = repository.findAll().stream()
-                .map(e -> modelMapper.map(e, ContextInfoResponse.class))
-                .collect(Collectors.toList());
-
-        return ResponseEntity.ok(data(list));
+        return ResponseEntity.ok(data(repository.findAll().stream().map(e -> modelMapper.map(e, ContextInfoResponse.class)).collect(Collectors.toList())));
     }
 
-    @GetMapping("{context}")
-    public JsonResult<ContextInfoResponse> get(@PathVariable String context) {
-        return data(modelMapper.map(repository.findOneByContext(context), ContextInfoResponse.class));
+    @GetMapping("{seq}")
+    public JsonResult<ContextInfoResponse> get(@PathVariable Integer seq) {
+        return data(modelMapper.map(repository.findOneIfNullThrow(seq), ContextInfoResponse.class));
     }
 
     /**
@@ -77,14 +73,15 @@ public class ContextInfoApiController extends ApiBaseController {
     /**
      * 컨텍스트수정
      **/
-    @PutMapping("{context}")
+    @PutMapping("{seq}")
     public ResponseEntity<JsonResult<Void>> put(@Valid @RequestBody ContextInfoFormRequest form, BindingResult bindingResult,
-                                                @PathVariable String context) {
+                                                @PathVariable Integer seq) {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
-        repository.updateByContext(form, context);
-        webVoiceInfoRepository.updateContextName(context, form.getContext());
+        final ContextInfo entity = repository.findOneIfNullThrow(seq);
+        repository.updateByKey(form, seq);
+        webVoiceInfoRepository.updateContextName(entity.getContext(), form.getContext());
 
         return ResponseEntity.ok(create());
     }
@@ -92,38 +89,42 @@ public class ContextInfoApiController extends ApiBaseController {
     /**
      * 컨텍스트삭제
      **/
-    @DeleteMapping("{context}")
-    public ResponseEntity<JsonResult<Void>> delete(@PathVariable String context) {
-        repository.deleteByContext(context);
-        webVoiceInfoRepository.deleteContext(context);
+    @DeleteMapping("{seq}")
+    public ResponseEntity<JsonResult<Void>> delete(@PathVariable Integer seq) {
+        final ContextInfo entity = repository.findOneIfNullThrow(seq);
+        repository.deleteOnIfNullThrow(seq);
+        webVoiceInfoRepository.deleteContext(entity.getContext());
         return ResponseEntity.ok(create());
     }
 
     /**
      * 보이는 ARS
      **/
-    @GetMapping("{context}/web-voice")
-    public JsonResult<WebVoiceResponse> getWebVoice(@PathVariable String context) {
-        final WebVoiceResponse entity = convertDto(webVoiceInfoRepository.findOneByContext(context), WebVoiceResponse.class);
-        entity.setItems(
-                webVoiceItemsRepository.findAllByContext(entity.getContext()).stream()
+    @GetMapping("{seq}/web-voice")
+    public JsonResult<WebVoiceResponse> getWebVoice(@PathVariable Integer seq) {
+        final ContextInfo contextEntity = repository.findOneIfNullThrow(seq);
+
+        final WebVoiceResponse webVoiceEntity = convertDto(webVoiceInfoRepository.findOneByContext(contextEntity.getContext()), WebVoiceResponse.class);
+        webVoiceEntity.setItems(
+                webVoiceItemsRepository.findAllByContext(webVoiceEntity.getContext()).stream()
                         .map(f -> convertDto(f, WebVoiceItemsResponse.class))
                         .collect(Collectors.toList())
         );
 
-        return data(entity);
+        return data(webVoiceEntity);
     }
 
     /**
      * 보이는 ARS 적용
      **/
-    @PostMapping("{context}/apply")
+    @PostMapping("{seq}/apply")
     public ResponseEntity<JsonResult<Void>> apply(@Valid @RequestBody WebVoiceItemsFormRequest form, BindingResult bindingResult,
-                                                  @PathVariable String context) {
+                                                  @PathVariable Integer seq) {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
 
-        webVoiceInfoRepository.updateContext(context, form);
+        final ContextInfo entity = repository.findOneIfNullThrow(seq);
+        webVoiceInfoRepository.updateContext(entity.getContext(), form);
 
         // TODO: 이슈! WEB_VOICE 서버 필요
 //        final WebvoiceInfo info = webVoiceInfoRepository.findOneByContext(context);

@@ -13,7 +13,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 
 <form:form modelAttribute="form" cssClass="ui modal tiny -json-submit" data-method="${entity == null ? 'post' : 'put'}"
-           action="${pageContext.request.contextPath}/api/context/${entity == null ? null : g.htmlQuote(entity.context)}"
+           action="${pageContext.request.contextPath}/api/context/${entity == null ? null : g.htmlQuote(entity.seq)}"
            data-before="prepareWriteFormData" data-done="reload">
 
     <i class="close icon"></i>
@@ -33,7 +33,8 @@
                 <div class="four wide column"><label class="control-label">컨텍스트</label></div>
                 <div class="twelve wide column">
                     <div class="ui input fluid">
-                        <form:input path="context"/>
+                        <form:input path="context" pattern="[0-9a-zA-Z_]+" placeholder="숫자/영문자/특수문자_"
+                                    oninput="this.value=this.value.replace(/[^0-9a-zA-Z_]/g,'');"/>
                     </div>
                 </div>
             </div>

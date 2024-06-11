@@ -33,6 +33,14 @@ public class ContextInfoRepository extends EicnBaseRepository<ContextInfo, kr.co
                 .execute();
     }
 
+    public void updateByKey(ContextInfoFormRequest form, Integer seq) {
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ContextInfo entity = findOne(CONTEXT_INFO.CONTEXT.eq(form.getContext()).and(CONTEXT_INFO.SEQ.ne(seq)));
+        if (Objects.nonNull(entity))
+            throw new IllegalArgumentException("이미 등록된 컨텍스트입니다.");
+
+        super.updateByKey(form, seq);
+    }
+
     public void updateByContext(ContextInfoFormRequest form, String context) {
         final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ContextInfo entity = findOne(CONTEXT_INFO.CONTEXT.eq(form.getContext()));
         if (Objects.nonNull(entity) && !entity.getContext().equals(context))

@@ -13,7 +13,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 
 <form:form modelAttribute="form" cssClass="ui modal -json-submit" data-method="post"
-           action="${pageContext.request.contextPath}/api/context/${g.htmlQuote(entity.context)}/apply"
+           action="${pageContext.request.contextPath}/api/context/${g.htmlQuote(entity.seq)}/apply"
            data-before="prepareWriteFormData" data-done="reload">
 
     <i class="close icon"></i>

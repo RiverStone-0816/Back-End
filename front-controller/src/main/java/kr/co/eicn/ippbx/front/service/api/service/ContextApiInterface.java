@@ -22,27 +22,27 @@ public class ContextApiInterface extends ApiServerInterface {
         return getList(subUrl, null, ContextInfoResponse.class).getData();
     }
 
-    public ContextInfoResponse get(String context) throws IOException, ResultFailException {
-        return getData(subUrl + context, null, ContextInfoResponse.class).getData();
+    public ContextInfoResponse get(Integer seq) throws IOException, ResultFailException {
+        return getData(subUrl + seq, null, ContextInfoResponse.class).getData();
     }
 
-    public WebVoiceResponse getWebVoice(String context) throws IOException, ResultFailException {
-        return getData(subUrl + context + "/web-voice", null, WebVoiceResponse.class).getData();
+    public WebVoiceResponse getWebVoice(Integer seq) throws IOException, ResultFailException {
+        return getData(subUrl + seq + "/web-voice", null, WebVoiceResponse.class).getData();
     }
 
     public void post(ContextInfoFormRequest form) throws IOException, ResultFailException {
         post(subUrl, form);
     }
 
-    public void put(String context, ContextInfoFormRequest form) throws IOException, ResultFailException {
-        super.put(subUrl + context, form);
+    public void put(Integer seq, ContextInfoFormRequest form) throws IOException, ResultFailException {
+        super.put(subUrl + seq, form);
     }
 
-    public void delete(String context) throws IOException, ResultFailException {
-        super.delete(subUrl + context);
+    public void delete(Integer seq) throws IOException, ResultFailException {
+        super.delete(subUrl + seq);
     }
 
-    public void apply(String context, WebVoiceItemsFormRequest form) throws IOException, ResultFailException {
-        post(subUrl + context + "/apply", form);
+    public void apply(Integer seq, WebVoiceItemsFormRequest form) throws IOException, ResultFailException {
+        post(subUrl + seq + "/apply", form);
     }
 }
