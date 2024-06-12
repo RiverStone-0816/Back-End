@@ -1,10 +1,8 @@
 package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
-import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.KakaoSkillMsgRecord;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.MemoMsgRecord;
 import org.jooq.*;
 import org.jooq.Record;
 import org.jooq.impl.DSL;

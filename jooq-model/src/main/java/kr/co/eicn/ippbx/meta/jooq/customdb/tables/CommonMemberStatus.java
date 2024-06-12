@@ -2,7 +2,6 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.CommonMemberStatusRecord;
-import kr.co.eicn.ippbx.meta.jooq.eicn.Indexes;
 import org.jooq.*;
 import org.jooq.Record;
 import org.jooq.impl.DSL;
@@ -10,7 +9,6 @@ import org.jooq.impl.Internal;
 import org.jooq.impl.TableImpl;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 

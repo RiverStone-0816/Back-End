@@ -3,7 +3,6 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.ChattBookmarkRecord;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.WtalkRoomRecord;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
