@@ -470,7 +470,6 @@
 
             setInterval(function () {
                 if ($(parent.document).find('#main').is('.change-mode')) {
-                    loadOuterLink();
                     loadCurrentStatus();
                     loadTodoList();
                 }
