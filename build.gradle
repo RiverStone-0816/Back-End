@@ -434,7 +434,7 @@ project(':lgu-front') {
 
         implementation 'org.webjars:jquery:3.4.1'
         implementation 'org.webjars:jquery-blockui:2.65'
-        implementation 'org.webjars:momentjs:2.29.4'
+        implementation 'org.webjars:momentjs:2.21.0'
         implementation 'org.webjars.bower:less.js:2.7.3'
         implementation 'org.webjars:font-awesome:5.13.0'
 
@@ -477,7 +477,7 @@ project(':skt-front') {
 
         implementation 'org.webjars:jquery:3.4.1'
         implementation 'org.webjars:jquery-blockui:2.65'
-        implementation 'org.webjars:momentjs:2.29.4'
+        implementation 'org.webjars:momentjs:2.21.0'
         implementation 'org.webjars.bower:less.js:2.7.3'
         implementation 'org.webjars:font-awesome:5.13.0'
 
