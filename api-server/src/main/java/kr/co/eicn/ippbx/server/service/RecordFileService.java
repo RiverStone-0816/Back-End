@@ -81,7 +81,12 @@ public class RecordFileService extends ApiBaseService {
             if (!orgFile.exists() && !zipFile.exists() && !encFile.exists())
                 processService.execute(ShellCommand.SCP_GET_SINGLE_FILE, targetHost, fileName, filePath, "&");
 
-            recordFiles.add(RecordFile.builder().filePath(recordFile).kind(RecordFileKind.A).index(0).build());
+            recordFiles.add(RecordFile.builder()
+                                    .filePath(recordFile).kind(RecordFileKind.A).index(0)
+                                    .cdr(entity.getSeq())
+                                    .uniqueid(entity.getUniqueid())
+                                    .dstUniqueid(entity.getDstUniqueid())
+                                    .build());
 
             if (entity.getRecordInfo().startsWith("M_")) {
                 final int partialRecordingCount = NumberUtils.toInt(replace(entity.getRecordInfo(), "M_", EMPTY), 0);
@@ -94,7 +99,12 @@ public class RecordFileService extends ApiBaseService {
                     if (!partialRecordingFile.exists())
                         processService.execute(ShellCommand.SCP_GET_SINGLE_FILE, targetHost, partialFileName, filePath, "&");
 
-                    recordFiles.add(RecordFile.builder().filePath(replaceFilePath).kind(RecordFileKind.P).index(i + 1).build());
+                    recordFiles.add(RecordFile.builder()
+                                            .filePath(replaceFilePath).kind(RecordFileKind.P).index(i + 1)
+                                            .cdr(entity.getSeq())
+                                            .uniqueid(entity.getUniqueid())
+                                            .dstUniqueid(entity.getDstUniqueid())
+                                            .build());
                 }
             }
 
