@@ -55,16 +55,19 @@
                 <th>발신번호</th>
                 <td>${g.htmlQuote(cdr.src)}</td>
                 <td class="two wide" colspan="2">
+                    <c:if test="${!user.listeningRecordingAuthority.equals('MY')}">
                     <c:choose>
                         <c:when test="${files.size() > 0}">
-                            <c:forEach var="e" items="${files}">
-                                <audio data-src="${pageContext.request.contextPath}/api/record-file/resource-front-play/${list.seq}/${g.urlEncode(list.uniqueid)}/?partial=${status.index}" controls class="audio"></audio>
+                            <c:forEach var="e" items="${files}" varStatus="status">
+                                <audio data-src="${pageContext.request.contextPath}/api/record-file/resource-front-play/${e.cdr}/${g.urlEncode(e.uniqueid)}/?partial=${status.index}"
+                                       controls class="audio" preload="none"></audio>
                             </c:forEach>
                         </c:when>
                         <c:otherwise>
                             녹취파일이 존재하지 않습니다.
                         </c:otherwise>
                     </c:choose>
+                    </c:if>
                 </td>
             </tr>
             </tbody>
