@@ -230,7 +230,10 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
                 } else if (StringUtils.isNotEmpty(v.getKeyword())) {
                     conditions.add(TABLE.field(k, String.class).like("%" + v.getKeyword() + "%"));
                 }
-            } else if (k.contains("_MULTICODE_") || k.contains("_CODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
+            } else if (k.contains("_CODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
+                if (StringUtils.isNotEmpty(v.getCode()))
+                    conditions.add(TABLE.field(k, String.class).eq(v.getCode()));
+            } else if (k.contains("_MULTICODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
                 if (StringUtils.isNotEmpty(v.getCode()))
                     conditions.add(
                             TABLE.field(k, String.class).likeRegex("^" + v.getCode() + ",")
@@ -240,7 +243,7 @@ public class MaindbCustomInfoRepository extends CustomDBBaseRepository<CommonMai
                     );
             } else {
                 if (StringUtils.isNotEmpty(v.getKeyword()))
-                    conditions.add(DSL.cast(field, String.class).eq(v.getKeyword()));
+                    conditions.add(TABLE.field(k, String.class).eq(v.getKeyword()));
             }
         });
 
