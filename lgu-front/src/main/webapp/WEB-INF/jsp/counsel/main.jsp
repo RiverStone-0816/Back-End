@@ -119,9 +119,11 @@
                 </div>
             </div>
         </div>
-        <div class="ui tab" data-tab="preview-tab">
-            <jsp:include page="/counsel/preview/"/>
-        </div>
+        <c:if test="${hasExtension && isCti and usingServices.contains('PRV')}">
+            <div class="ui tab" data-tab="preview-tab">
+                <jsp:include page="/counsel/preview/"/>
+            </div>
+        </c:if>
         <div class="ui tab -configured-tab" data-tab="menu1">상담결과이력</div>
         <div class="ui tab -configured-tab" data-tab="menu2">녹취/통화이력조회</div>
         <div class="ui tab -configured-tab" data-tab="menu3">콜백이력관리</div>
