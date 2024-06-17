@@ -154,14 +154,11 @@ public class UserApiController extends ApiBaseController {
             throw new IllegalArgumentException(message.getText("messages.validator.blank", "패스워드"));
 
         final CompanyLicenceEntity licence = companyService.getCompanyLicenceInfo();
-
-        System.out.println("form.getIsEmail() : "+form.getIsEmail());
-
-        Integer pds = StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y") ? licence.getPdsLicense().getCurrentLicence()+1 : licence.getPdsLicense().getCurrentLicence();
-        Integer stat = StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y") ? licence.getStatLicence().getCurrentLicence()+1 : licence.getStatLicence().getCurrentLicence();
-        Integer cti = StringUtils.isNotEmpty(form.getIsCti()) && form.getIsCti().equals("Y") ? licence.getCtiLicence().getCurrentLicence()+1 : licence.getCtiLicence().getCurrentLicence();
-        Integer talk = StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y") ? licence.getTalkLicense().getCurrentLicence()+1 : licence.getTalkLicense().getCurrentLicence();
-        Integer email = StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
+        final Integer pds = StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y") ? licence.getPdsLicense().getCurrentLicence()+1 : licence.getPdsLicense().getCurrentLicence();
+        final Integer stat = StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y") ? licence.getStatLicence().getCurrentLicence()+1 : licence.getStatLicence().getCurrentLicence();
+        final Integer cti = StringUtils.isNotEmpty(form.getIsCti()) && form.getIsCti().equals("Y") ? licence.getCtiLicence().getCurrentLicence()+1 : licence.getCtiLicence().getCurrentLicence();
+        final Integer talk = StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y") ? licence.getTalkLicense().getCurrentLicence()+1 : licence.getTalkLicense().getCurrentLicence();
+        final Integer email = StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
 
         if((licence.getPdsLicense().getLicence() < pds && StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y"))
                 || (licence.getStatLicence().getLicence() < stat && StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y"))

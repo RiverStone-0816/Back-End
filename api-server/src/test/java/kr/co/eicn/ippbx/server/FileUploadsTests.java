@@ -141,7 +141,7 @@ public class FileUploadsTests {
 				}
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("Exception!", e);
 		}
 	}
 

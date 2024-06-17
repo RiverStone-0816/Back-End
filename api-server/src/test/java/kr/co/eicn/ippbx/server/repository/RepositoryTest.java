@@ -45,263 +45,263 @@ import static kr.co.eicn.ippbx.meta.jooq.pds.tables.ExecutePdsCustomInfo.EXECUTE
 
 @Slf4j
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
-@ComponentScan(basePackages = { Constants.REPOSITORY_PACKAGE })
+@ComponentScan(basePackages = {Constants.REPOSITORY_PACKAGE})
 public class RepositoryTest extends BaseControllerTest {
-	@Autowired
-	@Qualifier(Constants.BEAN_DSL_EICN)
-	private DSLContext eicnDsl;
-	@Autowired
-	@Qualifier(Constants.BEAN_DSL_CONFIGDB)
-	private DSLContext configdbDsl;
-	@Autowired
-	@Qualifier(Constants.BEAN_DSL_CUSTOMDB)
-	private DSLContext customdbDsl;
-	@Autowired
-	@Qualifier(Constants.BEAN_DSL_PDS)
-	private DSLContext pdsDsl;
-	@Autowired
-	@Qualifier(Constants.BEAN_DSL_STATDB)
-	private DSLContext statdbDsl;
+    @Autowired
+    @Qualifier(Constants.BEAN_DSL_EICN)
+    private DSLContext eicnDsl;
+    @Autowired
+    @Qualifier(Constants.BEAN_DSL_CONFIGDB)
+    private DSLContext configdbDsl;
+    @Autowired
+    @Qualifier(Constants.BEAN_DSL_CUSTOMDB)
+    private DSLContext customdbDsl;
+    @Autowired
+    @Qualifier(Constants.BEAN_DSL_PDS)
+    private DSLContext pdsDsl;
+    @Autowired
+    @Qualifier(Constants.BEAN_DSL_STATDB)
+    private DSLContext statdbDsl;
 
-	@Autowired
-	private PhoneInfoRepository phoneInfoRepository;
-	@Autowired
-	private CompanyServerRepository companyServerRepository;
-	@Autowired
-	private RecordDownRepository recordDownRepository;
-	@Autowired
-	private RecordEncKeyRepository recordEncKeyRepository;
-	@Autowired
-	private PersonListRepository personListRepository;
-	@Autowired
-	private UserRepository userRepository;
-	@Autowired
-	private CompanyTreeRepository companyTreeRepository;
-	@Autowired
-	private CallbackDistRepository callbackDistRepository;
-	@Autowired
-	private OutScheduleSeedRepository outScheduleSeedRepository;
-	@Autowired
-	private IvrTreeRepository ivrTreeRepository;
-	@Autowired
-	private PDSIvrRepository pdsIvrRepository;
-	@Autowired
-	private PDSUploadRepository pdsUploadRepository;
-	@Autowired
-	private ResearchItemRepository researchItemRepository;
-	@Autowired
-	private ResearchTreeRepository researchTreeRepository;
-	@Autowired
-	private HolyInfoRepository holyInfoRepository;
-	@Autowired
-	private MohListRepository mohListRepository;
-	@Autowired
-	private NoticeRepository noticeRepository;
-	@Autowired
-	private NoticeFileEntityRepository noticeFileEntityRepository;
-	@Autowired
-	private RecordEncFileRepository recordEncFileRepository;
-	@Autowired
-	private HistoryPDSGroupRepository historyPDSGroupRepository;
-	@Autowired
-	private Number070Repository number070Repository;
-	@Autowired
-	private ScheduleGroupRepository scheduleGroupRepository;
-	@Autowired
-	private StatInboundService statInboundService;
-	@Autowired
-	private StatQueueWaitService statQueueWaitService;
-	@Autowired
-	private ArsAuthRepository arsAuthRepository;
-	@Autowired
-	private MainBoardRepository mainBoardRepository;
+    @Autowired
+    private PhoneInfoRepository        phoneInfoRepository;
+    @Autowired
+    private CompanyServerRepository    companyServerRepository;
+    @Autowired
+    private RecordDownRepository       recordDownRepository;
+    @Autowired
+    private RecordEncKeyRepository     recordEncKeyRepository;
+    @Autowired
+    private PersonListRepository       personListRepository;
+    @Autowired
+    private UserRepository             userRepository;
+    @Autowired
+    private CompanyTreeRepository      companyTreeRepository;
+    @Autowired
+    private CallbackDistRepository     callbackDistRepository;
+    @Autowired
+    private OutScheduleSeedRepository  outScheduleSeedRepository;
+    @Autowired
+    private IvrTreeRepository          ivrTreeRepository;
+    @Autowired
+    private PDSIvrRepository           pdsIvrRepository;
+    @Autowired
+    private PDSUploadRepository        pdsUploadRepository;
+    @Autowired
+    private ResearchItemRepository     researchItemRepository;
+    @Autowired
+    private ResearchTreeRepository     researchTreeRepository;
+    @Autowired
+    private HolyInfoRepository         holyInfoRepository;
+    @Autowired
+    private MohListRepository          mohListRepository;
+    @Autowired
+    private NoticeRepository           noticeRepository;
+    @Autowired
+    private NoticeFileEntityRepository noticeFileEntityRepository;
+    @Autowired
+    private RecordEncFileRepository    recordEncFileRepository;
+    @Autowired
+    private HistoryPDSGroupRepository  historyPDSGroupRepository;
+    @Autowired
+    private Number070Repository        number070Repository;
+    @Autowired
+    private ScheduleGroupRepository    scheduleGroupRepository;
+    @Autowired
+    private StatInboundService         statInboundService;
+    @Autowired
+    private StatQueueWaitService       statQueueWaitService;
+    @Autowired
+    private ArsAuthRepository          arsAuthRepository;
+    @Autowired
+    private MainBoardRepository        mainBoardRepository;
 
-//	@Test
-	public void mainBoardTest(){
-		final MainBoardRequest request = new MainBoardRequest();
-		log.info("Main Board Before TEST -> {}",mainBoardRepository.findAllLoginBefore());
+    //	@Test
+    public void mainBoardTest() {
+        final MainBoardRequest request = new MainBoardRequest();
+        log.info("Main Board Before TEST -> {}", mainBoardRepository.findAllLoginBefore());
 //		log.info("Main Board After TEST -> {}",mainBoardRepository.findAllLoginAfter());
-		log.info("Main Board topFixList TEST -> {}",mainBoardRepository.topFixList());
-		log.info("Main Board pagination TEST -> {}",mainBoardRepository.pagination(request).getRows());
-	}
+        log.info("Main Board topFixList TEST -> {}", mainBoardRepository.topFixList());
+        log.info("Main Board pagination TEST -> {}", mainBoardRepository.pagination(request).getRows());
+    }
 
-//	@Test
-	public void get_talk_serviceinfo_lists() {
-		final TalkServiceInfoSearchRequest search = new TalkServiceInfoSearchRequest();
-		search.setType(ScheduleType.WEEK);
-	}
+    //	@Test
+    public void get_talk_serviceinfo_lists() {
+        final TalkServiceInfoSearchRequest search = new TalkServiceInfoSearchRequest();
+        search.setType(ScheduleType.WEEK);
+    }
 
-//	@Test
-	public void getIvrTreeNodes() {
-		List<IvrTreeComposite> nodes = ivrTreeRepository.getIvrTreeLists();
+    //	@Test
+    public void getIvrTreeNodes() {
+        List<IvrTreeComposite> nodes = ivrTreeRepository.getIvrTreeLists();
 
-		ivrTreePrintTree(nodes);
-	}
+        ivrTreePrintTree(nodes);
+    }
 
-	@Test
-	public void getPdsTreeNodes() {
-		List<PDSIvrComposite> nodes = pdsIvrRepository.getIvrLists();
+    @Test
+    public void getPdsTreeNodes() {
+        List<PDSIvrComposite> nodes = pdsIvrRepository.getIvrLists();
 
-		printTree(nodes);
-	}
+        printTree(nodes);
+    }
 
-	private void ivrTreePrintTree(List<IvrTreeComposite> nodes) {
-		for (IvrTreeComposite node : nodes) {
-			log.info(prefix(StringUtils.countMatches(node.getTreeName(), '_')) + "({}){}, code: {}, root: {}, tree_name: {}"
-					, StringUtils.countMatches(node.getTreeName(), '_')
-					, node.getName()
-					, node.getCode()
-					, node.getRoot()
-					, node.getTreeName());
-			if (!node.isLeaf())
-				ivrTreePrintTree(node.getNodes());
-		}
-	}
+    private void ivrTreePrintTree(List<IvrTreeComposite> nodes) {
+        for (IvrTreeComposite node : nodes) {
+            log.info(prefix(StringUtils.countMatches(node.getTreeName(), '_')) + "({}){}, code: {}, root: {}, tree_name: {}"
+                    , StringUtils.countMatches(node.getTreeName(), '_')
+                    , node.getName()
+                    , node.getCode()
+                    , node.getRoot()
+                    , node.getTreeName());
+            if (!node.isLeaf())
+                ivrTreePrintTree(node.getNodes());
+        }
+    }
 
-	private void printTree(List<PDSIvrComposite> nodes) {
-		for (PDSIvrComposite node : nodes) {
-			log.info(prefix(StringUtils.countMatches(node.getTreeName(), '_')) + "({}){}, code: {}, root: {}, tree_name: {}"
-					, StringUtils.countMatches(node.getTreeName(), '_')
-					, node.getName()
-					, node.getCode()
-					, node.getRoot()
-					, node.getTreeName());
-			if (!node.isLeaf())
-				printTree(node.getNodes());
-		}
-	}
+    private void printTree(List<PDSIvrComposite> nodes) {
+        for (PDSIvrComposite node : nodes) {
+            log.info(prefix(StringUtils.countMatches(node.getTreeName(), '_')) + "({}){}, code: {}, root: {}, tree_name: {}"
+                    , StringUtils.countMatches(node.getTreeName(), '_')
+                    , node.getName()
+                    , node.getCode()
+                    , node.getRoot()
+                    , node.getTreeName());
+            if (!node.isLeaf())
+                printTree(node.getNodes());
+        }
+    }
 
-//	@Test
-	public void researchTree() {
+    //	@Test
+    public void researchTree() {
 //		final List<ResearchTreeEntity> researchScenarioLists = researchTreeRepository.getResearchScenarioLists(1);
 //		for (ResearchTreeEntity tree : researchScenarioLists) {
 //			printResearchTree(tree);
 //		}
-	}
+    }
 
-	private String prefix(Integer level) {
-		StringBuilder prefix = new StringBuilder("-");
-		for (int i = 0; i < level ; i++) {
-			prefix.append("--");
-		}
-		return prefix.toString();
-	}
+    private String prefix(Integer level) {
+        StringBuilder prefix = new StringBuilder("-");
+        for (int i = 0; i < level; i++) {
+            prefix.append("--");
+        }
+        return prefix.toString();
+    }
 
-//	@Test
-	public void dslTest(){
-		final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HolyInfo> holyInfos = eicnDsl.select().from(HOLY_INFO).fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HolyInfo.class);
-		for (kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HolyInfo holyInfo : holyInfos) {
-			log.info("holy -> {}", holyInfo.toString());
-		}
-	}
+    //	@Test
+    public void dslTest() {
+        final List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HolyInfo> holyInfos = eicnDsl.select().from(HOLY_INFO).fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HolyInfo.class);
+        for (kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HolyInfo holyInfo : holyInfos) {
+            log.info("holy -> {}", holyInfo.toString());
+        }
+    }
 
-//	@Test
-	public void get_research_scenario() {
-		final ResearchListEntity researchScenarioLists = researchTreeRepository.getResearchScenarioLists(23);
+    //	@Test
+    public void get_research_scenario() {
+        final ResearchListEntity researchScenarioLists = researchTreeRepository.getResearchScenarioLists(23);
 
-		ResearchQuestionItemComposite root = researchScenarioLists.getScenario();
+        ResearchQuestionItemComposite root = researchScenarioLists.getScenario();
 
-		printQLog(root);
-	}
+        printQLog(root);
+    }
 
-	public void printQLog(ResearchQuestionItemComposite question) {
-		log.info("{}{}.질문 :{}, path: {}", prefix(question.getLevel()), question.getLevel(), kr.co.eicn.ippbx.util.StringUtils.subStringBytes(question.getWord(), 30), question.getPath());
-		if (question.getAnswerItems() != null)
-			printALog(question.getAnswerItems());
-		if (!question.isLeaf())
-			question.getChildNode().forEach(this::printQLog);
-	}
+    public void printQLog(ResearchQuestionItemComposite question) {
+        log.info("{}{}.질문 :{}, path: {}", prefix(question.getLevel()), question.getLevel(), kr.co.eicn.ippbx.util.StringUtils.subStringBytes(question.getWord(), 30), question.getPath());
+        if (question.getAnswerItems() != null)
+            printALog(question.getAnswerItems());
+        if (!question.isLeaf())
+            question.getChildNode().forEach(this::printQLog);
+    }
 
-	public void printALog(List<ResearchAnswerItemComposite> answers) {
-		for (ResearchAnswerItemComposite answerItem : answers) {
-			log.info("{}{}.답변 :{}, parent:{}, path: {}", prefix(answerItem.getLevel()), answerItem.getLevel(), answerItem.getWord(), answerItem.getParent(), answerItem.getPath());
-			if (!answerItem.isLeaf())
-				printQLog(answerItem.getChild());
-		}
-	}
+    public void printALog(List<ResearchAnswerItemComposite> answers) {
+        for (ResearchAnswerItemComposite answerItem : answers) {
+            log.info("{}{}.답변 :{}, parent:{}, path: {}", prefix(answerItem.getLevel()), answerItem.getLevel(), answerItem.getWord(), answerItem.getParent(), answerItem.getPath());
+            if (!answerItem.isLeaf())
+                printQLog(answerItem.getChild());
+        }
+    }
 
-//	@Test
-	public void dynamic_companyId() {
+    //	@Test
+    public void dynamic_companyId() {
 
-		Table<Record> table = DSL.table(DSL.name("view_result_cst_by_result_ssss"));
+        Table<Record> table = DSL.table(DSL.name("view_result_cst_by_result_ssss"));
 
-		log.info("table {}", table);
+        log.info("table {}", table);
 
-		log.info("table null ? {}", table);
-		//		List<ResultCustomInfoEntity> resultCustomInfoEntities = customdbDsl.select()
+        log.info("table null ? {}", table);
+        //		List<ResultCustomInfoEntity> resultCustomInfoEntities = customdbDsl.select()
 //				.from(table)
 //				.fetchInto(ResultCustomInfoEntity.class);
 //
 //		for (ResultCustomInfoEntity resultCustomInfoEntity : resultCustomInfoEntities) {
 //			log.info("data {}", resultCustomInfoEntity.toString());
 //		}
-	}
+    }
 
-	/**
-	 *	fieldWithPath("seq").type(JsonFieldType.NUMBER).description("SEQUENCE KEY");
-	 */
+    /**
+     * fieldWithPath("seq").type(JsonFieldType.NUMBER).description("SEQUENCE KEY");
+     */
 //	@Test
-	public void 테이블정보를_읽어와서_API명세필드를_만들어줌() {
-		Stream<Field<?>> fieldStream = eicnDsl.selectFrom(IVR_TREE).fieldStream();
+    public void 테이블정보를_읽어와서_API명세필드를_만들어줌() {
+        Stream<Field<?>> fieldStream = eicnDsl.selectFrom(IVR_TREE).fieldStream();
 
-		fieldStream.forEach(e -> {
-			System.out.println(String.format("fieldWithPath(\"%s\").type(JsonFieldType.%s).description(\"%s\")%s,", convert2CamelCase(e.getName()), type(e.getType()), e.getComment(), nullable(e.getDataType())));
-		});
-	}
+        fieldStream.forEach(e -> {
+            log.error(String.format("fieldWithPath(\"%s\").type(JsonFieldType.%s).description(\"%s\")%s,", convert2CamelCase(e.getName()), type(e.getType()), e.getComment(), nullable(e.getDataType())));
+        });
+    }
 
-	private String type(Class<?> type) {
-		if (Objects.equals(type, String.class) || Objects.equals(type, Timestamp.class))
-			return "STRING";
-		else if (Objects.equals(type, Integer.class) || Objects.equals(type, Byte.class))
-			return "NUMBER";
+    private String type(Class<?> type) {
+        if (Objects.equals(type, String.class) || Objects.equals(type, Timestamp.class))
+            return "STRING";
+        else if (Objects.equals(type, Integer.class) || Objects.equals(type, Byte.class))
+            return "NUMBER";
 
-		return "타입없음(" + type.getName() + ")";
-	}
+        return "타입없음(" + type.getName() + ")";
+    }
 
-	private String nullable(DataType<?> dataType) {
-		return (dataType.nullable()) ? ".optional()" : "";
-	}
+    private String nullable(DataType<?> dataType) {
+        return (dataType.nullable()) ? ".optional()" : "";
+    }
 
-	private String convert2CamelCase(String underScore) {
-		if (underScore.indexOf('_') < 0
-				&& Character.isLowerCase(underScore.charAt(0))) {
-			return underScore;
-		}
+    private String convert2CamelCase(String underScore) {
+        if (underScore.indexOf('_') < 0
+                    && Character.isLowerCase(underScore.charAt(0))) {
+            return underScore;
+        }
 
-		StringBuilder result = new StringBuilder();
-		boolean nextUpper = false;
-		int len = underScore.length();
+        StringBuilder result = new StringBuilder();
+        boolean nextUpper = false;
+        int len = underScore.length();
 
-		for (int i = 0; i < len; i++) {
-			char currentChar = underScore.charAt(i);
-			if (currentChar == '_') {
-				nextUpper = true;
-			} else {
-				if (nextUpper) {
-					result.append(Character.toUpperCase(currentChar));
-					nextUpper = false;
-				} else {
-					result.append(Character.toLowerCase(currentChar));
-				}
-			}
-		}
-		return result.toString();
-	}
+        for (int i = 0; i < len; i++) {
+            char currentChar = underScore.charAt(i);
+            if (currentChar == '_') {
+                nextUpper = true;
+            } else {
+                if (nextUpper) {
+                    result.append(Character.toUpperCase(currentChar));
+                    nextUpper = false;
+                } else {
+                    result.append(Character.toLowerCase(currentChar));
+                }
+            }
+        }
+        return result.toString();
+    }
 
-//	@Test
-	public void todo_list_query() {
+    //	@Test
+    public void todo_list_query() {
 //		select todo_kind, count(todo_kind) as total, count(case when todo_status='DONE' then 1 end) as success
 //		from todo_list where userid='user0677' and regdate>='2020-04-24 00:00:00' and regdate<='2020-04-24 23:59:59' group by todo_kind;
-		eicnDsl.select(TODO_LIST.TODO_KIND)
-				.select(DSL.count(TODO_LIST.TODO_KIND).as("total"))
-				.select(DSL.count(DSL.when(TODO_LIST.TODO_STATUS.eq(TodoListTodoStatus.DONE), 1)).as("success"))
-				.from(TODO_LIST)
-				.where(TODO_LIST.USERID.eq("user0677"))
-				.and(TODO_LIST.REGDATE.ge(Timestamp.valueOf("2020-04-24 00:00:00")))
-				.and(TODO_LIST.REGDATE.le(Timestamp.valueOf("2020-04-24 23:59:59")))
-				.groupBy(TODO_LIST.TODO_KIND)
-		.fetch(); // 이 부분은 수정해야됩니다.
-	}
+        eicnDsl.select(TODO_LIST.TODO_KIND)
+                .select(DSL.count(TODO_LIST.TODO_KIND).as("total"))
+                .select(DSL.count(DSL.when(TODO_LIST.TODO_STATUS.eq(TodoListTodoStatus.DONE), 1)).as("success"))
+                .from(TODO_LIST)
+                .where(TODO_LIST.USERID.eq("user0677"))
+                .and(TODO_LIST.REGDATE.ge(Timestamp.valueOf("2020-04-24 00:00:00")))
+                .and(TODO_LIST.REGDATE.le(Timestamp.valueOf("2020-04-24 23:59:59")))
+                .groupBy(TODO_LIST.TODO_KIND)
+                .fetch(); // 이 부분은 수정해야됩니다.
+    }
 
 //	@Test
 //	public void 설문시나리오등록테스트() {
@@ -391,54 +391,54 @@ public class RepositoryTest extends BaseControllerTest {
 //		 */
 //	}
 
-//	@Test
-	public void 일정목록조회() {
-		final List<Integer> groupIds = eicnDsl.selectDistinct(SCHEDULE_INFO.GROUP_ID)
-				.from(NUMBER_070)
-				.leftOuterJoin(SCHEDULE_INFO)
-				.on(NUMBER_070.NUMBER.eq(SCHEDULE_INFO.NUMBER).and(SCHEDULE_INFO.COMPANY_ID.eq("primium")))
-				.innerJoin(SCHEDULE_GROUP)
-				.on(SCHEDULE_INFO.GROUP_ID.eq(SCHEDULE_GROUP.PARENT)
-						.and(SCHEDULE_GROUP.COMPANY_ID.eq("primium")))
-				.where(NUMBER_070.COMPANY_ID.eq("primium"))
-				.fetchInto(Integer.class);
+    //	@Test
+    public void 일정목록조회() {
+        final List<Integer> groupIds = eicnDsl.selectDistinct(SCHEDULE_INFO.GROUP_ID)
+                                               .from(NUMBER_070)
+                                               .leftOuterJoin(SCHEDULE_INFO)
+                                               .on(NUMBER_070.NUMBER.eq(SCHEDULE_INFO.NUMBER).and(SCHEDULE_INFO.COMPANY_ID.eq("primium")))
+                                               .innerJoin(SCHEDULE_GROUP)
+                                               .on(SCHEDULE_INFO.GROUP_ID.eq(SCHEDULE_GROUP.PARENT)
+                                                           .and(SCHEDULE_GROUP.COMPANY_ID.eq("primium")))
+                                               .where(NUMBER_070.COMPANY_ID.eq("primium"))
+                                               .fetchInto(Integer.class);
 
-		final List<ScheduleGroupEntity> scheduleGroupLists = scheduleGroupRepository.getScheduleGroupLists();
+        final List<ScheduleGroupEntity> scheduleGroupLists = scheduleGroupRepository.getScheduleGroupLists();
 
-		List<ScheduleGroupListEntity> r = scheduleGroupLists.stream()
-				.filter(e -> groupIds.stream().anyMatch(groupId -> groupId.equals(e.getParent())))
-				.flatMap(e -> e.getScheduleGroupLists().stream())
-				.collect(Collectors.toList());
+        List<ScheduleGroupListEntity> r = scheduleGroupLists.stream()
+                                                  .filter(e -> groupIds.stream().anyMatch(groupId -> groupId.equals(e.getParent())))
+                                                  .flatMap(e -> e.getScheduleGroupLists().stream())
+                                                  .collect(Collectors.toList());
 
-		r.stream().forEach(e -> {
-			log.info("{}", e.toString());
-		});
-	}
+        r.stream().forEach(e -> {
+            log.info("{}", e.toString());
+        });
+    }
 
-//	@Test
-	public void byServices() {
-		List<StatInboundEntity> statInboundEntities = statInboundService.getRepository().groupingByServices();
+    //	@Test
+    public void byServices() {
+        List<StatInboundEntity> statInboundEntities = statInboundService.getRepository().groupingByServices();
 
-		for (StatInboundEntity statInboundEntity : statInboundEntities) {
-			log.info("data -> {}", statInboundEntity.toString());
-		}
-	}
+        for (StatInboundEntity statInboundEntity : statInboundEntities) {
+            log.info("data -> {}", statInboundEntity.toString());
+        }
+    }
 
-//	@Test
-	public void query_test() {
-		statQueueWaitService.getRepository().findAll();
-	}
+    //	@Test
+    public void query_test() {
+        statQueueWaitService.getRepository().findAll();
+    }
 
-//	@Test
-	public void createTable() {
-		final CommonExecutePDSCustomInfo test = new CommonExecutePDSCustomInfo("test888");
-		pdsDsl.createTableIfNotExists(test).columns(EXECUTE_PDS_CUSTOM_INFO.fields())
-				.constraint( DSL.constraint(test.SEQ.getName()).primaryKey(test.SEQ.getName()))
-				.storage("ENGINE=MyISAM")
-					.execute();
+    //	@Test
+    public void createTable() {
+        final CommonExecutePDSCustomInfo test = new CommonExecutePDSCustomInfo("test888");
+        pdsDsl.createTableIfNotExists(test).columns(EXECUTE_PDS_CUSTOM_INFO.fields())
+                .constraint(DSL.constraint(test.SEQ.getName()).primaryKey(test.SEQ.getName()))
+                .storage("ENGINE=MyISAM")
+                .execute();
 
-		final List<Index> indexes = EXECUTE_PDS_CUSTOM_INFO.getIndexes();
-		indexes.stream().filter(index -> !"PRIMARY".equals(index.getName())).forEach(index -> pdsDsl.createIndex(index.getName()).on(test.getName(), index.getName()).execute());
-	}
+        final List<Index> indexes = EXECUTE_PDS_CUSTOM_INFO.getIndexes();
+        indexes.stream().filter(index -> !"PRIMARY".equals(index.getName())).forEach(index -> pdsDsl.createIndex(index.getName()).on(test.getName(), index.getName()).execute());
+    }
 }
 

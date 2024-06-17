@@ -209,7 +209,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             }
             rtnSHA = sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            log.error("Exception!", e);
             rtnSHA = null;
         }
         return rtnSHA;

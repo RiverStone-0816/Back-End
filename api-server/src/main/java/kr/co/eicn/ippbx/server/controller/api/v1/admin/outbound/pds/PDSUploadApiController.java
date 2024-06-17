@@ -93,7 +93,7 @@ public class PDSUploadApiController extends ApiBaseController {
                 throw new IllegalArgumentException("파일 정보를 읽어올 수 없습니다.");
             }
         } else {
-            System.out.println("FILE ERROR[파일이 존재하지 않습니다]");
+            log.error("FILE ERROR[파일이 존재하지 않습니다]");
         }
 
         response.setMentText(buffer.toString());

@@ -80,7 +80,7 @@ public class StatQaResultService extends ApiBaseService implements ApplicationCo
                                     && result.getResultDate().after(resultDate.getTime())
                                     && result.getResultDate().before(Timestamp.valueOf(dateFormat.format(resultDate.getTime()) + " 23:59:59"));
                         } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
-                            e.printStackTrace();
+                            logger.error("Exception!", e);
                         }
                         return false;
                     }).count()
@@ -117,7 +117,7 @@ public class StatQaResultService extends ApiBaseService implements ApplicationCo
                                     return code.getCodeId().equals(e.getClass().getMethod("getRsCode_" + splitCode[splitCode.length - 1]).invoke(e)) && e.getResultDate().after(startDate.getTime())
                                             && e.getResultDate().before(Timestamp.valueOf(dateFormat.format(startDate.getTime()) + " 23:59:59"));
                                 } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
-                                    ex.printStackTrace();
+                                    logger.error("Exception!", ex);
                                 }
                                 return false;
                             }).count();

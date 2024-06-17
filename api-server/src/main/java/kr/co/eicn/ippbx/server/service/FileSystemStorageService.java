@@ -44,7 +44,7 @@ public class FileSystemStorageService implements StorageService {
 			}
 			Files.copy(file.getInputStream(), path.resolve(fileName));
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("Exception!", e);
 			log.error("FileSystemStorageService.store ERROR[error={}]", e.getMessage());
 			throw new StorageException("[" + fileName + "] 파일 업로드에 실패하였습니다. 다시 시도하십시오.", e);
 		}

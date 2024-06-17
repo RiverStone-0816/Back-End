@@ -61,7 +61,7 @@ public class WebchatBotService extends ApiBaseService {
             } catch (Exception e) {
                 // FIXME: 발생할 수 있는 Exception 정의하여 특정 Exception에 대응하도록 수정
                 log.error(e.getMessage());
-                e.printStackTrace();
+                log.error("Exception!", e);
 
                 deleteAllBlockInfoById(botId);
                 WebchatBotFormRequest copyData = convertDto(oldData, WebchatBotFormRequest.class);

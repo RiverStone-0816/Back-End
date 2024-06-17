@@ -395,7 +395,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
             }
             rtnSHA = sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            logger.error("Exception!", e);
             rtnSHA = null;
         }
         return rtnSHA;
@@ -414,7 +414,7 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
             MD5 = sb.toString();
 
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            logger.error("Exception!", e);
             MD5 = null;
         }
         return MD5;

@@ -1,5 +1,8 @@
 package kr.co.eicn.ippbx.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,6 +17,7 @@ import java.io.InputStream;
  * @since 2009-06-16
  */
 public final class NetworkInfo {
+    private static final Logger logger = LoggerFactory.getLogger(NetworkInfo.class);
     /**
      * 현재 컴퓨터의 맥 주소를 리턴한다.(맥 주소 중에 '-'를 제거한다.)
      */
@@ -23,7 +27,7 @@ public final class NetworkInfo {
         try {
             value = getMacAddress();
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("Exception!", e);
         }
         value = value.replaceAll("-", "");
 

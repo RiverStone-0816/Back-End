@@ -146,7 +146,7 @@ public class ApiResponseExceptionHandler {
 
 	private void printException(Exception e) {
 		logger.info(e.getMessage());
-		e.printStackTrace();
+		log.error("Exception!", e);
 		Arrays.stream(e.getStackTrace())
 				.filter(exception -> exception.getClassName().startsWith(Constants.BASE_PACKAGE)
 						&& StringUtils.isNotEmpty(exception.getFileName())

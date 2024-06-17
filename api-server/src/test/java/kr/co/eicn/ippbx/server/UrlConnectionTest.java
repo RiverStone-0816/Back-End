@@ -107,11 +107,11 @@ public class UrlConnectionTest {
 //				IOUtils.copy(bufferedInputStream, outputStream);
 
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.error("Exception!", e);
 			}
 
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			log.error("Exception!", e);
 		}
 	}
 

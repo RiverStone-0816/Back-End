@@ -128,7 +128,7 @@ public class WebchatBotInfoApiController extends ApiBaseController {
         try {
             webchatBotService.updateWebchatBotInfo(id, form, true);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Exception!", e);
             throw new RuntimeException("수정중 오류가 발생하여 이전 데이터로 복구합니다.");
         }
 

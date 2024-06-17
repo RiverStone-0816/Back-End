@@ -442,8 +442,8 @@ public class ConfInfoApiController extends ApiBaseController {
 
 		PrintWriter pw = null;
 		try {
+			log.info(form.getConfMinute());
 			pw = new PrintWriter(new FileWriter(mf, true), true);
-			System.out.println(form.getConfMinute());
 			pw.println(form.getConfMinute());
 			pw.close();
 		}catch (Exception fe) {

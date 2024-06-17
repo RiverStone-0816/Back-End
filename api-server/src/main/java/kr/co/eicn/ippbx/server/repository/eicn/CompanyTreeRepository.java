@@ -105,7 +105,7 @@ public class CompanyTreeRepository extends EicnBaseRepository<CompanyTree, kr.co
 			key.append(new DecimalFormat("0000").format(sequenceKey));
 			return key.toString();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Exception!", e);
 		}
 		return null;
 	}

@@ -649,7 +649,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
             }
             rtnSHA = sb.toString();
         }catch(NoSuchAlgorithmException e){
-            e.printStackTrace();
+            logger.error("Exception!", e);
             rtnSHA = null;
         }
         return rtnSHA;

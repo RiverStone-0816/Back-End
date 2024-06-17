@@ -67,7 +67,7 @@ public class SpringSecurityTest {
 				log.info(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonResult));
 			return jsonResult;
 		} catch (JsonProcessingException | UnsupportedEncodingException e) {
-			e.printStackTrace();
+			log.error("Exception!", e);
 		}
 		return null;
 	}

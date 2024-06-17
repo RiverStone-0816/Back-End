@@ -343,7 +343,7 @@ public class AuthApiController extends BaseController {
             }
             rtnSHA = sb.toString();
         }catch(NoSuchAlgorithmException e){
-            e.printStackTrace();
+            log.error("Exception!", e);
             rtnSHA = null;
         }
         return rtnSHA;

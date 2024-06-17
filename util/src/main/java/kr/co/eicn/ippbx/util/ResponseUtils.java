@@ -25,7 +25,7 @@ public class ResponseUtils {
             log.warn(ex.getMessage());
             response.getWriter().println(objectMapper.writeValueAsString(create(ex.getMessage())));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Exception!", e);
         }
     }
 
@@ -36,7 +36,7 @@ public class ResponseUtils {
             log.warn(message);
             response.getWriter().println(objectMapper.writeValueAsString(create(message)));
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Exception!", e);
         }
     }
 }

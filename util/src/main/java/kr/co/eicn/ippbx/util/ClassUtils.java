@@ -1,5 +1,8 @@
 package kr.co.eicn.ippbx.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
  * @since 2017-05-14
  */
 public class ClassUtils {
+    private static final Logger logger = LoggerFactory.getLogger(ClassUtils.class);
 
     @SuppressWarnings("unchecked")
     public static <E> List<Class<E>> getClasses(String packageName, Class<E> type) throws IOException, ClassNotFoundException, URISyntaxException {
@@ -103,7 +107,7 @@ public class ClassUtils {
         dirs = dirs.stream().distinct().collect(Collectors.toList());
         ArrayList<Class<?>> classes = new ArrayList<>();
         for (File directory : dirs) {
-            System.out.println(directory.getAbsolutePath());
+            logger.error(directory.getAbsolutePath());
             classes.addAll(findClasses(directory, packageName));
         }
         return classes;
@@ -151,12 +155,13 @@ public class ClassUtils {
         for (Path path : paths) {
             final String className = path.toString().substring(1).replaceAll("[\\\\/]", ".");
             if (className.endsWith(".class") && className.startsWith(packageName + ".")) {
+                final String substring = className.substring(0, className.length() - 6);
                 try {
-                    classes.add(Class.forName(className.substring(0, className.length() - 6)));
+                    classes.add(Class.forName(substring));
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    System.err.println(packageName);
-                    System.err.println(className.substring(0, className.length() - 6));
+                    logger.error(packageName);
+                    logger.error(substring);
+                    logger.error("Exception!", e);
                 }
             }
         }
@@ -174,16 +179,18 @@ public class ClassUtils {
             return classes;
 
         for (File file : files) {
+            final String targetPackageName = !packageName.isEmpty() ? packageName + '.' : "";
             if (file.isDirectory()) {
                 assert !file.getName().contains(".");
-                classes.addAll(findClassesFromDirectory(file, (packageName.length() > 0 ? packageName + '.' : "") + file.getName()));
+                classes.addAll(findClassesFromDirectory(file, targetPackageName + file.getName()));
             } else if (file.getName().endsWith(".class")) {
+                final String fileTarget = targetPackageName + file.getName().substring(0, file.getName().length() - 6);
                 try {
-                    classes.add(Class.forName((packageName.length() > 0 ? packageName + '.' : "") + file.getName().substring(0, file.getName().length() - 6)));
+                    classes.add(Class.forName(fileTarget));
                 } catch (Exception e) {
-                    e.printStackTrace();
-                    System.err.println(packageName);
-                    System.err.println((packageName.length() > 0 ? packageName + '.' : "") + file.getName().substring(0, file.getName().length() - 6));
+                    logger.error(packageName);
+                    logger.error(fileTarget);
+                    logger.error("Exception!", e);
                 }
             }
         }

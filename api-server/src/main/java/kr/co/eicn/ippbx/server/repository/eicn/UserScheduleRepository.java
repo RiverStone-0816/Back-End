@@ -70,12 +70,10 @@ public class UserScheduleRepository extends EicnBaseRepository<UserSchedule, Use
         calendar.set(Calendar.MONTH, search.getMonth() - 1);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         final Timestamp checkingStartTime = new Timestamp(calendar.getTimeInMillis());
-        System.out.println("search : " + checkingStartTime);
 
         calendar.add(Calendar.MONTH, 1);
         calendar.add(Calendar.MILLISECOND, -1);
         final Timestamp checkingEndTime = new Timestamp(calendar.getTimeInMillis());
-        System.out.println("search : " + checkingEndTime);
 
         // 날짜가 겹치는지 확인하는 로직: !((interval A's end < interval B's start) || (interval B's end < interval A's start))
         conditions.add((USER_SCHEDULE.END.lessThan(checkingStartTime).or(USER_SCHEDULE.START.greaterThan(checkingEndTime))).not());

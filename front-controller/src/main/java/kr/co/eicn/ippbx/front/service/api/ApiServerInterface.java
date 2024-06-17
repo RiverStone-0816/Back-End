@@ -77,7 +77,7 @@ public abstract class ApiServerInterface extends AbstractRestInterface {
             // Install the all-trusting host verifier
             HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            e.printStackTrace();
+            logger.error("Exception!", e);
         }
     }
 

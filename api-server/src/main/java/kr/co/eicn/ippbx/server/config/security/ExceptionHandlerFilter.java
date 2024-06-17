@@ -28,7 +28,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 		} catch (AuthenticationException e) {
 			responseUtils.setErrorResponse(HttpStatus.UNAUTHORIZED, response, e);
 		} catch (RuntimeException e) {
-			e.printStackTrace();
+			log.error("Exception!", e);
 			responseUtils.setErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, response, e);
 		}
 	}
