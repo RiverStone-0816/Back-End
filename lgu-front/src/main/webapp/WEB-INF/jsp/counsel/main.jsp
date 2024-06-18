@@ -217,9 +217,10 @@
                     .append($('<b/>', {text: todoInfo}))
             );
 
-            const divTalk = $('<divTalk/>')
+            const divTalk = $('<divTalk/>').append($('<divTalk/>', {onclick: "$(this).closest('.toast').find('.toast-close-button').click();", style: 'cursor: pointer;'})
                 .append($('<text/>', {text: '[' + moment(time).format('HH:mm') + '] '}))
-                .append($('<b/>', {text: todoInfo}));
+                .append($('<b/>', {text: todoInfo}))
+            );
 
             if (kind == 'RESERVE'){
                 toastr.warning(divCall.html(), '통화약속');
