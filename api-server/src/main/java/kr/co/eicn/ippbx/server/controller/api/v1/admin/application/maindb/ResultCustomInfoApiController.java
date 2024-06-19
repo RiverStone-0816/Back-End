@@ -24,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -198,15 +199,16 @@ public class ResultCustomInfoApiController extends ApiBaseController {
 
         final ResultCustomInfoRepository repository = service.getRepository();
 
-        final ResultCustomInfoSearchRequest search = new ResultCustomInfoSearchRequest();
-
-        if(form.getClickKey() != null && !form.getGroupKind().equals("TALK"))
+        if (StringUtils.isNotEmpty(form.getClickKey()) && !form.getClickKey().equals("nonClickKey") && !form.getGroupKind().equals("TALK")) {
+            final ResultCustomInfoSearchRequest search = new ResultCustomInfoSearchRequest();
             search.setClickKey(form.getClickKey());
+            final List<ResultCustomInfoEntity> seqCheck = repository.getOne(search);
 
-        final List<ResultCustomInfoEntity> seqCheck = repository.getOne(search);
-
-        if (seqCheck.size() > 0) {
-            repository.update(form, seqCheck.get(0));
+            if (!CollectionUtils.isEmpty(seqCheck)) {
+                repository.update(form, seqCheck.get(0));
+            } else {
+                repository.insert(form);
+            }
         } else {
             repository.insert(form);
         }
