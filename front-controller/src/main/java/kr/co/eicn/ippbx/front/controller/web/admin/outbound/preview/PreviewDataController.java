@@ -51,7 +51,7 @@ public class PreviewDataController extends BaseController {
     private final CommonTypeApiInterface commonTypeApiInterface;
     private final CallbackHistoryApiInterface callbackHistoryApiInterface;
 
-    public static Map<String, Map<String, Object>> createCustomIdToFieldNameToValueMap(List<CommonPrvCustomInfo> list, CommonTypeEntity previewType) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public static <T extends CommonPrvCustomInfo> Map<String, Map<String, Object>> createCustomIdToFieldNameToValueMap(List<T> list, CommonTypeEntity previewType) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = new HashMap<>();
 
         for (CommonPrvCustomInfo row : list) {
@@ -99,7 +99,7 @@ public class PreviewDataController extends BaseController {
                 model.addAttribute("resultType", resultType);
 
                 model.addAttribute("seqToFieldNameToValueMap", MaindbResultController.createSeqToFieldNameToValueMap(pagination.getRows().stream().map(PrvCustomInfoEntity::getResult).filter(Objects::nonNull).collect(Collectors.toList()), resultType));
-                model.addAttribute("customIdToFieldNameToValueMap", createCustomIdToFieldNameToValueMap((List<CommonPrvCustomInfo>) (List<?>) pagination.getRows(), previewType));
+                model.addAttribute("customIdToFieldNameToValueMap", createCustomIdToFieldNameToValueMap(pagination.getRows(), previewType));
             }
 
             final Map<String, String> persons = callbackHistoryApiInterface.addPersons().stream().collect(Collectors.toMap(SummaryCallbackDistPersonResponse::getId, SummaryPersonResponse::getIdName));

@@ -53,7 +53,7 @@ public class MaindbDataController extends BaseController {
     private final CommonTypeApiInterface commonTypeApiInterface;
     private final WtalkReceptionGroupApiInterface talkReceptionGroupApiInterface;
 
-    public static Map<String, Map<String, Object>> createCustomIdToFieldNameToValueMap(List<CommonMaindbCustomInfo> list, CommonTypeEntity customDbType) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public static <T extends CommonMaindbCustomInfo> Map<String, Map<String, Object>> createCustomIdToFieldNameToValueMap(List<T> list, CommonTypeEntity customDbType) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = new HashMap<>();
 
         for (CommonMaindbCustomInfo row : list) {
@@ -106,7 +106,7 @@ public class MaindbDataController extends BaseController {
                     });
             model.addAttribute("codeMap", new JSONObject(codeMap));
 
-            model.addAttribute("customIdToFieldNameToValueMap", createCustomIdToFieldNameToValueMap((List<CommonMaindbCustomInfo>) (List<?>) pagination.getRows(), customDbType));
+            model.addAttribute("customIdToFieldNameToValueMap", createCustomIdToFieldNameToValueMap(pagination.getRows(), customDbType));
         }
         return "admin/application/maindb/data/ground";
     }

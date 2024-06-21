@@ -46,7 +46,7 @@ public class PdsResultExcel extends AbstractExcel {
         addRow(sheetHeadStyle, secondHeader.toArray());
 
         val customIdToFieldNameToValueMap = PdsCustominfoController.createCustomIdToFieldNameToValueMap(list.stream().map(PDSResultCustomInfoEntity::getPdsCustomInfoEntity).collect(Collectors.toList()), pdsType);
-        val seqToFieldNameToValueMap = PdsResultController.createSeqToFieldNameToValueMap((List<ResultCustomInfo>) (List<?>)list, resultType);
+        val seqToFieldNameToValueMap = PdsResultController.createSeqToFieldNameToValueMap(list, resultType);
         for (val e : list) {
             final List<String> row = new ArrayList<>(Arrays.asList(e.getGroupKind(), niceFormat(e.getResultDate()), e.getUserid(), e.getCustomNumber()));
             pdsType.getFields().forEach(field -> {

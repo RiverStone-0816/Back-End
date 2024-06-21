@@ -27,7 +27,7 @@ public class PdsCustominfoExcel extends AbstractExcel {
         customDbType.getFields().forEach(field -> headers.add(field.getFieldInfo()));
         addRow(sheetHeadStyle, headers.toArray());
 
-        final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = PdsCustominfoController.createCustomIdToFieldNameToValueMap((List<PdsCustomInfo>) (List<?>) list, customDbType);
+        final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = PdsCustominfoController.createCustomIdToFieldNameToValueMap(list, customDbType);
         for (PDSCustomInfoEntity e : list) {
             final List<String> row = new ArrayList<>(Collections.singletonList(niceFormat(e.getPdsSysUploadDate())));
             customDbType.getFields().forEach(field -> row.add(niceFormat(customIdToFieldNameToValueMap.get(e.getPdsSysCustomId()).get(field.getFieldId()))));

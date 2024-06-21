@@ -244,7 +244,7 @@ public class CounselController extends BaseController {
                 });
         model.addAttribute("codeMap", new JSONObject(codeMap));
 
-        model.addAttribute("customIdToFieldNameToValueMap", MaindbDataController.createCustomIdToFieldNameToValueMap((List<CommonMaindbCustomInfo>) (List<?>) pagination.getRows(), customDbType));
+        model.addAttribute("customIdToFieldNameToValueMap", MaindbDataController.createCustomIdToFieldNameToValueMap(pagination.getRows(), customDbType));
 
         return "counsel/modal-search-maindb-custom-body";
     }
@@ -299,7 +299,7 @@ public class CounselController extends BaseController {
                 });
         model.addAttribute("codeMap", new JSONObject(codeMap));
 
-        model.addAttribute("seqToFieldNameToValueMap", MaindbResultController.createSeqToFieldNameToValueMap((List<CommonResultCustomInfo>) (List<?>) pagination.getRows(), resultType));
+        model.addAttribute("seqToFieldNameToValueMap", MaindbResultController.createSeqToFieldNameToValueMap(pagination.getRows(), resultType));
         model.addAttribute("customIdToFieldNameToValueMap", MaindbDataController.createCustomIdToFieldNameToValueMap(pagination.getRows().stream().map(ResultCustomInfoEntity::getCustomInfo).collect(Collectors.toList()), customDbType));
 
         model.addAttribute("users", searchApiInterface.persons());

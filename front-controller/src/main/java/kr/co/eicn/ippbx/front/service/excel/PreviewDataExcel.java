@@ -42,7 +42,7 @@ public class PreviewDataExcel extends AbstractExcel {
         resultType.getFields().forEach(field -> secondHeader.add(field.getFieldInfo()));
         addRow(sheetHeadStyle, secondHeader.toArray());
 
-        final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = PreviewDataController.createCustomIdToFieldNameToValueMap((List<CommonPrvCustomInfo>) (List<?>) list, previewType);
+        final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = PreviewDataController.createCustomIdToFieldNameToValueMap(list, previewType);
         final Map<Integer, Map<String, Object>> seqToFieldNameToValueMap = MaindbResultController.createSeqToFieldNameToValueMap(list.stream().map(PrvCustomInfoEntity::getResult).filter(Objects::nonNull).collect(Collectors.toList()), resultType);
         for (PrvCustomInfoEntity e : list) {
             final List<String> row = new ArrayList<>(Arrays.asList(niceFormat(e.getPrvSysUploadDate()), niceFormat(e.getPrvSysDamdangName()), niceFormat(e.getPrvSysLastResultDate())));

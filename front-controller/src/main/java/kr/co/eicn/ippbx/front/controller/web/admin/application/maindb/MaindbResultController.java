@@ -62,7 +62,7 @@ public class MaindbResultController extends BaseController {
     private final CommonTypeApiInterface commonTypeApiInterface;
     private final SearchApiInterface searchApiInterface;
 
-    public static Map<Integer, Map<String, Object>> createSeqToFieldNameToValueMap(List<CommonResultCustomInfo> list, CommonTypeEntity resultType) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public static <T extends CommonResultCustomInfo> Map<Integer, Map<String, Object>> createSeqToFieldNameToValueMap(List<T> list, CommonTypeEntity resultType) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         final Map<Integer, Map<String, Object>> seqToFieldNameToValueMap = new HashMap<>();
 
         for (CommonResultCustomInfo row : list) {
@@ -123,7 +123,7 @@ public class MaindbResultController extends BaseController {
                     });
             model.addAttribute("codeMap", new JSONObject(codeMap));
 
-            model.addAttribute("seqToFieldNameToValueMap", createSeqToFieldNameToValueMap((List<CommonResultCustomInfo>) (List<?>) pagination.getRows(), resultType));
+            model.addAttribute("seqToFieldNameToValueMap", createSeqToFieldNameToValueMap(pagination.getRows(), resultType));
             model.addAttribute("customIdToFieldNameToValueMap", MaindbDataController.createCustomIdToFieldNameToValueMap(pagination.getRows().stream().map(ResultCustomInfoEntity::getCustomInfo).collect(Collectors.toList()), customDbType));
 
             model.addAttribute("users", searchApiInterface.persons());
@@ -168,7 +168,7 @@ public class MaindbResultController extends BaseController {
                     });
             model.addAttribute("codeMap", new JSONObject(codeMap));
 
-            model.addAttribute("seqToFieldNameToValueMap", createSeqToFieldNameToValueMap((List<CommonResultCustomInfo>) (List<?>) pagination.getRows(), resultType));
+            model.addAttribute("seqToFieldNameToValueMap", createSeqToFieldNameToValueMap(pagination.getRows(), resultType));
             model.addAttribute("customIdToFieldNameToValueMap", MaindbDataController.createCustomIdToFieldNameToValueMap(pagination.getRows().stream().map(ResultCustomInfoEntity::getCustomInfo).collect(Collectors.toList()), customDbType));
 
             model.addAttribute("users", searchApiInterface.persons());

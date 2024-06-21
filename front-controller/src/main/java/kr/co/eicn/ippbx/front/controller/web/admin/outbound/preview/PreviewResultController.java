@@ -95,7 +95,7 @@ public class PreviewResultController extends BaseController {
                     });
             model.addAttribute("codeMap", new JSONObject(codeMap));
 
-            model.addAttribute("seqToFieldNameToValueMap", MaindbResultController.createSeqToFieldNameToValueMap((List<CommonResultCustomInfo>) (List<?>) pagination.getRows(), resultType));
+            model.addAttribute("seqToFieldNameToValueMap", MaindbResultController.createSeqToFieldNameToValueMap(pagination.getRows(), resultType));
             model.addAttribute("customIdToFieldNameToValueMap", PreviewDataController.createCustomIdToFieldNameToValueMap(pagination.getRows().stream().map(PrvResultCustomInfoEntity::getCustomInfo).collect(Collectors.toList()), previewType));
 
             final Map<String, String> persons = callbackHistoryApiInterface.addPersons().stream().collect(Collectors.toMap(SummaryCallbackDistPersonResponse::getId, SummaryPersonResponse::getIdName));

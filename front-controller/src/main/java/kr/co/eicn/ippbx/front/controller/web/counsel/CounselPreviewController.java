@@ -92,7 +92,7 @@ public class CounselPreviewController extends BaseController {
         model.addAttribute("resultType", resultType);
 
         model.addAttribute("seqToFieldNameToValueMap", MaindbResultController.createSeqToFieldNameToValueMap(pagination.getRows().stream().map(PrvCustomInfoEntity::getResult).filter(Objects::nonNull).collect(Collectors.toList()), resultType));
-        model.addAttribute("customIdToFieldNameToValueMap", PreviewDataController.createCustomIdToFieldNameToValueMap((List<CommonPrvCustomInfo>) (List<?>) pagination.getRows(), previewType));
+        model.addAttribute("customIdToFieldNameToValueMap", PreviewDataController.createCustomIdToFieldNameToValueMap(pagination.getRows(), previewType));
 
         final Map<String, String> persons = callbackHistoryApiInterface.addPersons().stream().collect(Collectors.toMap(SummaryCallbackDistPersonResponse::getId, SummaryPersonResponse::getIdName));
         model.addAttribute("persons", new MapToLinkedHashMap().toLinkedHashMapByValue(persons));

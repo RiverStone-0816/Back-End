@@ -27,7 +27,7 @@ public class MaindbDataExcel extends AbstractExcel {
         headers.addAll(Arrays.asList("전화번호", "이메일", "상담톡아이디"));
         addRow(sheetHeadStyle, headers.toArray());
 
-        final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = MaindbDataController.createCustomIdToFieldNameToValueMap((List<CommonMaindbCustomInfo>) (List<?>) list, customDbType);
+        final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = MaindbDataController.createCustomIdToFieldNameToValueMap(list, customDbType);
         for (MaindbCustomInfoEntity e : list) {
             final List<String> row = new ArrayList<>(Collections.singletonList(niceFormat(e.getMaindbSysUploadDate())));
             customDbType.getFields().forEach(field -> {

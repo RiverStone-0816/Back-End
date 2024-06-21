@@ -46,7 +46,7 @@ public class PreviewResultExcel extends AbstractExcel {
 
         final RequestGlobal g = ApplicationBeanAware.requestGlobal();
         final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = PreviewDataController.createCustomIdToFieldNameToValueMap(list.stream().map(PrvResultCustomInfoEntity::getCustomInfo).collect(Collectors.toList()), previewType);
-        final Map<Integer, Map<String, Object>> seqToFieldNameToValueMap = MaindbResultController.createSeqToFieldNameToValueMap((List<CommonResultCustomInfo>) (List<?>) list, resultType);
+        final Map<Integer, Map<String, Object>> seqToFieldNameToValueMap = MaindbResultController.createSeqToFieldNameToValueMap(list, resultType);
         for (PrvResultCustomInfoEntity e : list) {
             final List<String> row = new ArrayList<>(Arrays.asList(niceFormat(e.getResultDate()), niceFormat(e.getUpdateDate()), niceFormat(e.getUserName()), g.messageOf("ResultHangupCause", e.getHangupCause())));
 

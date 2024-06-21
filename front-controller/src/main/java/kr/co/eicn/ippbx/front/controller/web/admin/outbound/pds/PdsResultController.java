@@ -54,7 +54,7 @@ public class PdsResultController extends BaseController {
     private final PdsGroupApiInterface pdsGroupApiInterface;
     private final CommonTypeApiInterface commonTypeApiInterface;
 
-    public static Map<Integer, Map<String, Object>> createSeqToFieldNameToValueMap(List<ResultCustomInfo> list, CommonTypeEntity resultType) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public static <T extends ResultCustomInfo> Map<Integer, Map<String, Object>> createSeqToFieldNameToValueMap(List<T> list, CommonTypeEntity resultType) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         final Map<Integer, Map<String, Object>> seqToFieldNameToValueMap = new HashMap<>();
 
         for (val row : list) {
@@ -126,8 +126,8 @@ public class PdsResultController extends BaseController {
                     });
             model.addAttribute("codeMap", new JSONObject(codeMap));
 
-            model.addAttribute("customIdToFieldNameToValueMap", PdsCustominfoController.createCustomIdToFieldNameToValueMap((List<PdsCustomInfo>) (List<?>) pagination.getRows().stream().map(PDSResultCustomInfoEntity::getPdsCustomInfoEntity).collect(Collectors.toList()), pdsType));
-            model.addAttribute("seqToFieldNameToValueMap", createSeqToFieldNameToValueMap((List<ResultCustomInfo>) (List<?>) pagination.getRows(), resultType));
+            model.addAttribute("customIdToFieldNameToValueMap", PdsCustominfoController.createCustomIdToFieldNameToValueMap(pagination.getRows().stream().map(PDSResultCustomInfoEntity::getPdsCustomInfoEntity).collect(Collectors.toList()), pdsType));
+            model.addAttribute("seqToFieldNameToValueMap", createSeqToFieldNameToValueMap(pagination.getRows(), resultType));
         }
         // FIXME: 상담원 어덯게 추출??
 

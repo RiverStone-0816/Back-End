@@ -55,7 +55,7 @@ public class PdsCustominfoController extends BaseController {
     private final PdsGroupApiInterface pdsGroupApiInterface;
     private final CommonTypeApiInterface commonTypeApiInterface;
 
-    public static Map<String, Map<String, Object>> createCustomIdToFieldNameToValueMap(List<PdsCustomInfo> list, CommonTypeEntity pdsType) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+    public static <T extends PdsCustomInfo> Map<String, Map<String, Object>> createCustomIdToFieldNameToValueMap(List<T> list, CommonTypeEntity pdsType) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = new HashMap<>();
 
         for (PdsCustomInfo row : list) {
@@ -99,7 +99,7 @@ public class PdsCustominfoController extends BaseController {
             pdsType.setFields(pdsType.getFields().stream().filter(e -> "Y".equals(e.getIsdisplayList())).collect(Collectors.toList()));
             model.addAttribute("pdsType", pdsType);
 
-            model.addAttribute("customIdToFieldNameToValueMap", createCustomIdToFieldNameToValueMap((List<PdsCustomInfo>) (List<?>) pagination.getRows(), pdsType));
+            model.addAttribute("customIdToFieldNameToValueMap", createCustomIdToFieldNameToValueMap(pagination.getRows(), pdsType));
         }
 
         return "admin/outbound/pds/custominfo/ground";
