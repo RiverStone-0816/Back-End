@@ -208,7 +208,7 @@
 
             function deleteScheduleInfo(seq) {
                 confirm('정말 삭제하시겠습니까?').done(function () {
-                    restSelf.delete('/api/talk-schedule-day/one/' + encodeURIComponent(seq)).done(function () {
+                    restSelf.delete('/api/wtalk-schedule-day/one/' + encodeURIComponent(seq)).done(function () {
                         reload();
                     });
                 });
