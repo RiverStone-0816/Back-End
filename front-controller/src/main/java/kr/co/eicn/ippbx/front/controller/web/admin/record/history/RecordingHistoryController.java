@@ -15,7 +15,6 @@ import kr.co.eicn.ippbx.front.service.api.record.history.RecordingHistoryApiInte
 import kr.co.eicn.ippbx.front.service.api.sounds.IvrApiInterface;
 import kr.co.eicn.ippbx.front.service.api.sounds.schedule.OutboundDayScheduleApiInterface;
 import kr.co.eicn.ippbx.front.service.api.user.tel.ServiceApiInterface;
-import kr.co.eicn.ippbx.front.service.api.user.user.UserApiInterface;
 import kr.co.eicn.ippbx.front.service.excel.RecordingHistoryStatExcel;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;
@@ -24,7 +23,6 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.EvaluationForm;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree;
 import kr.co.eicn.ippbx.model.RecordFile;
 import kr.co.eicn.ippbx.model.dto.customdb.CommonEicnCdrResponse;
-import kr.co.eicn.ippbx.model.dto.eicn.PersonSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryPhoneInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchQueueResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyEntity;
@@ -34,7 +32,6 @@ import kr.co.eicn.ippbx.model.enums.IdType;
 import kr.co.eicn.ippbx.model.form.EvaluationResultFormRequest;
 import kr.co.eicn.ippbx.model.form.RecordDownFormRequest;
 import kr.co.eicn.ippbx.model.search.EvaluationFormSearchRequest;
-import kr.co.eicn.ippbx.model.search.PersonSearchRequest;
 import kr.co.eicn.ippbx.model.search.RecordCallSearch;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -93,7 +90,7 @@ public class RecordingHistoryController extends BaseController {
                 AdditionalState.TRANSFEREE, AdditionalState.TRANSFERER, AdditionalState.FORWARD_TRANSFEREE, AdditionalState.FORWARD_TRANSFERER, AdditionalState.SCD_TRANSFEREE,
                 AdditionalState.SCD_TRANSFERER, AdditionalState.LOCAL_TRANSFEREE, AdditionalState.LOCAL_TRANSFERER, AdditionalState.REDIRECTOUT_TRANSFEREE, AdditionalState.REDIRECTOUT_TRANSFERER)));
         final List<IvrTree> ivrTrees = ivrApiInterface.addIvrTreeList();
-        model.addAttribute("ivrCodes", new MapToLinkedHashMap().toLinkedHashMapByValue(ivrTrees.stream().filter(e -> e.getTreeName().split("[_]").length == 1).collect(Collectors.toMap(IvrTree::getCode, IvrTree::getName))));
+        model.addAttribute("ivrCodes", new MapToLinkedHashMap().toLinkedHashMapByValue(ivrTrees.stream().filter(e -> e.getTreeName().split("_").length == 1).collect(Collectors.toMap(IvrTree::getCode, IvrTree::getName))));
         model.addAttribute("ivrKeys", ivrTrees.stream().filter(e -> StringUtils.isNotEmpty(e.getButton())).collect(Collectors.groupingBy(IvrTree::getCode)));
         model.addAttribute("customerGrades", new MapToLinkedHashMap().toLinkedHashMapByValue(FormUtils.optionsOfCode(RecordCallSearch.SearchCustomRating.class)));
         model.addAttribute("sortTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(FormUtils.options(false, RecordCallSearch.Sort.class)));
@@ -108,13 +105,13 @@ public class RecordingHistoryController extends BaseController {
 
     // FIXME: 기획삭제
     @GetMapping("{seq}/modal-stt")
-    public String modalStt(Model model, @PathVariable Integer seq) throws IOException, ResultFailException {
+    public String modalStt(Model model, @PathVariable Integer seq) {
         model.addAttribute("seq", seq);
         return "admin/record/history/history/modal-stt";
     }
 
     @GetMapping("modal-batch-download")
-    public String modalBatchDownload(Model model, @ModelAttribute("form") RecordDownFormRequest form) throws IOException, ResultFailException {
+    public String modalBatchDownload(@ModelAttribute("form") RecordDownFormRequest form) {
         if (form.getSequences() == null || form.getSequences().isEmpty())
             throw new IllegalArgumentException("녹취정보가 존재하지 않습니다.");
 
