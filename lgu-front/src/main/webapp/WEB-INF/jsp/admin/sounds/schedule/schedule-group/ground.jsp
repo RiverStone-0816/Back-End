@@ -124,7 +124,16 @@
                                         </c:when>
                                         <c:otherwise>
                                             <tr>
-                                                <td>${g.htmlQuote(e.name)}</td>
+                                                <td>
+                                                        ${g.htmlQuote(e.name)}
+                                                    <br>
+                                                    <button class="ui icon button mini compact"
+                                                            style="padding: 3px;"
+                                                            title="유형명 수정"
+                                                            onclick="popupScheduleGroupModal(${e.parent})">
+                                                        <i class="pencil alternate icon"></i>
+                                                    </button>
+                                                </td>
                                                 <td style="width: 50px;"></td>
                                                 <td></td>
                                                 <td></td>
