@@ -1,6 +1,5 @@
 package kr.co.eicn.ippbx.model.entity.customdb;
 
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonEicnCdr;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbCustomInfo;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;

@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.model.form;
 
-import kr.co.eicn.ippbx.util.spring.BaseForm;
 import kr.co.eicn.ippbx.model.enums.IdType;
+import kr.co.eicn.ippbx.util.spring.BaseForm;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

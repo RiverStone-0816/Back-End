@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.model.search;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import kr.co.eicn.ippbx.model.Constants;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.EvaluationFormUseType;
+import kr.co.eicn.ippbx.model.Constants;
 import lombok.Data;
 
 import java.sql.Date;

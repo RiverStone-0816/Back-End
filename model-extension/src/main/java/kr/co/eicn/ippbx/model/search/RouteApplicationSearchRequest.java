@@ -1,9 +1,9 @@
 package kr.co.eicn.ippbx.model.search;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import kr.co.eicn.ippbx.model.Constants;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.RouteApplicationResult;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.RouteApplicationType;
+import kr.co.eicn.ippbx.model.Constants;
 import kr.co.eicn.ippbx.util.page.PageForm;
 import kr.co.eicn.ippbx.util.page.PageQueryable;
 import lombok.Data;

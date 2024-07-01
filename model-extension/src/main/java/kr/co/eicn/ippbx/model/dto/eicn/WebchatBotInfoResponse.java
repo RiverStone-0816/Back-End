@@ -1,10 +1,12 @@
 package kr.co.eicn.ippbx.model.dto.eicn;
 
-import kr.co.eicn.ippbx.model.enums.*;
+import kr.co.eicn.ippbx.model.enums.BlockType;
+import kr.co.eicn.ippbx.model.enums.ButtonAction;
+import kr.co.eicn.ippbx.model.enums.DisplayElementInputType;
+import kr.co.eicn.ippbx.model.enums.DisplayType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)

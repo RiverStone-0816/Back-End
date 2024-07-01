@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.model.form;
 
-import kr.co.eicn.ippbx.util.spring.BaseForm;
 import kr.co.eicn.ippbx.model.enums.PDSGroupBillingKind;
 import kr.co.eicn.ippbx.model.enums.PDSGroupSpeedKind;
 import kr.co.eicn.ippbx.model.enums.PDSGroupSpeedMultiple;
 import kr.co.eicn.ippbx.util.EnumUtils;
+import kr.co.eicn.ippbx.util.spring.BaseForm;
 import kr.co.eicn.ippbx.util.valid.Length;
 import kr.co.eicn.ippbx.util.valid.NotNull;
 import lombok.Data;

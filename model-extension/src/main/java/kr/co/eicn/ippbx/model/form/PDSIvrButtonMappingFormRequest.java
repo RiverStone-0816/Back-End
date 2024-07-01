@@ -1,11 +1,11 @@
 package kr.co.eicn.ippbx.model.form;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import kr.co.eicn.ippbx.util.spring.BaseForm;
 import kr.co.eicn.ippbx.model.enums.Button;
 import kr.co.eicn.ippbx.model.enums.IvrTreeType;
 import kr.co.eicn.ippbx.model.enums.IvrTreeTypeGroup;
 import kr.co.eicn.ippbx.util.EnumUtils;
+import kr.co.eicn.ippbx.util.spring.BaseForm;
 import kr.co.eicn.ippbx.util.valid.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

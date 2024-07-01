@@ -1,8 +1,8 @@
 package kr.co.eicn.ippbx.model.search;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import kr.co.eicn.ippbx.model.Constants;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
+import kr.co.eicn.ippbx.model.Constants;
 import kr.co.eicn.ippbx.util.page.PageQueryable;
 import kr.co.eicn.ippbx.util.page.PageQueryableForm;
 import lombok.Data;

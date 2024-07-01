@@ -1,7 +1,6 @@
 package kr.co.eicn.ippbx.model.dto.customdb;
 
 import kr.co.eicn.ippbx.model.dto.eicn.WebchatBotInfoResponse;
-import kr.co.eicn.ippbx.model.form.WebchatBotFormRequest;
 import lombok.Data;
 
 import java.sql.Timestamp;

@@ -2,8 +2,8 @@ package kr.co.eicn.ippbx.model.form;
 
 import io.jsonwebtoken.lang.Collections;
 import kr.co.eicn.ippbx.model.enums.IsWebVoiceYn;
-import kr.co.eicn.ippbx.util.spring.BaseForm;
 import kr.co.eicn.ippbx.model.enums.IvrMenuType;
+import kr.co.eicn.ippbx.util.spring.BaseForm;
 import kr.co.eicn.ippbx.util.valid.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

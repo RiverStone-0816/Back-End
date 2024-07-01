@@ -1,7 +1,6 @@
 package kr.co.eicn.ippbx.model.form;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import kr.co.eicn.ippbx.util.spring.BaseForm;
 import lombok.AllArgsConstructor;
 import lombok.Data;
