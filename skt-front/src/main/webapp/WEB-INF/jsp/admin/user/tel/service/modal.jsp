@@ -37,7 +37,8 @@
                     <div class="ui form">
 						<c:choose>
                             <c:when test="${entity != null}">
-                                <form:input path="svcNumber" readonly="true"/>
+                                <form:hidden path="svcNumber"/>
+                                ${entity.svcNumber}
                             </c:when>
                             <c:otherwise>
                                 <form:select path="svcNumber">

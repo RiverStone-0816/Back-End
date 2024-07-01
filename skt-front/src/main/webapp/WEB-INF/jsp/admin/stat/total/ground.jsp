@@ -75,10 +75,6 @@
                                         <label>내선통화</label>
                                     </div>
                                     <div class="ui checkbox">
-                                        <form:checkbox path="busy" value="Y"/>
-                                        <label>콜백</label>
-                                    </div>
-                                    <div class="ui checkbox">
                                         <form:checkbox path="workHour" value="Y"/>
                                         <label>업무시간</label>
                                     </div>
@@ -99,7 +95,7 @@
                     <div class="panel-section">
                         <div class="panel-section-title">
                             <div class="title-txt">
-                                총 통화통계 <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
+                                전체통계 <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
                             </div>
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
@@ -108,16 +104,16 @@
                                 <thead>
                                 <tr>
                                     <th rowspan="2">날짜/시간</th>
-                                    <th colspan="4">O/B 건수 통계</th>
-                                    <th colspan="8">I/B 건수 통계</th>
-                                    <th rowspan="2">총 통화<br>성공 건수</th>
-                                    <th colspan="3">O/B 시간통계</th>
-                                    <th colspan="3">I/B 시간통계</th>
-                                    <th rowspan="2">총시간</th>
+                                    <th colspan="4">O/B 콜 통계</th>
+                                    <th colspan="8">I/B 콜 통계</th>
+                                    <th rowspan="2">총 통화<br>성공 응대<br>건수</th>
+                                    <th colspan="2">O/B 시간 통계</th>
+                                    <th colspan="3">I/B 시간 통계</th>
+                                    <th rowspan="2">총 시간</th>
                                 </tr>
                                 <tr>
-                                    <th>총시도콜</th>
-                                    <th>O/B건수</th>
+                                    <th>O/B 총 시도콜</th>
+                                    <th>성공호</th>
                                     <th>비수신</th>
                                     <th>통화성공률</th>
                                     <th>I/B 전체콜</th>
@@ -128,11 +124,10 @@
                                     <th>콜백</th>
                                     <th>호응답률</th>
                                     <th>무효콜비율</th>
-                                    <th>O/B 총통화시간</th>
-                                    <th>O/B 평균통화시간</th>
-                                    <th>평균 대기시간</th>
-                                    <th>I/B 총통화시간</th>
-                                    <th>평균 통화 시간</th>
+                                    <th>총 통화시간</th>
+                                    <th>평균 통화시간</th>
+                                    <th>총 통화시간</th>
+                                    <th>평균 통화시간</th>
                                     <th>평균 대기시간</th>
                                 </tr>
                                 </thead>
@@ -153,7 +148,7 @@
                                                 <td>${e.inboundStat.connReq}</td>
                                                 <td>${e.inboundStat.success}</td>
                                                 <td>${e.inboundStat.cancel}</td>
-                                                <td>${e.inboundStat.callbackSuccess}</td>
+                                                <td>${e.inboundStat.callback}</td>
                                                 <td>${e.inboundStat.responseRate}%</td>
                                                 <td>${e.inboundStat.ivrAvg}%</td>
 
@@ -161,7 +156,6 @@
 
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.outboundStat.billSecSum)}</td>
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.outboundStat.billSecAvg)}</td>
-                                                <td></td>
 
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.billSecSum)}</td>
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inboundStat.billSecAvg)}</td>
@@ -185,7 +179,7 @@
                                             <td>${total.inboundStat.connReq}</td>
                                             <td>${total.inboundStat.success}</td>
                                             <td>${total.inboundStat.cancel}</td>
-                                            <td>${total.inboundStat.callbackSuccess}</td>
+                                            <td>${total.inboundStat.callback}</td>
                                             <td>${String.format("%.1f", total.inboundStat.responseRate)}%</td>
                                             <td>${String.format("%.1f", total.inboundStat.ivrAvg)}%</td>
 
@@ -193,7 +187,6 @@
 
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.outboundStat.billSecSum)}</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.outboundStat.billSecAvg)}</td>
-                                            <td></td>
 
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecSum)}</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inboundStat.billSecAvg)}</td>
@@ -217,13 +210,13 @@
                     <c:if test="${list.size() > 0}">
                         <div class="panel-section">
                             <div class="panel">
-                                <div class="panel-heading">아웃바운드 통계 그래프</div>
+                                <div class="panel-heading">발신통계 그래프</div>
                                 <div class="panel-body pd-1em">
                                     <div class="ui middle aligned grid">
                                         <div class="four wide column">
                                             <div class="ui segments pie-chart">
                                                 <div class="ui segment pie-chart-bg">
-                                                    <div class="label-container">O/B 통계</div>
+                                                    <div class="label-container">발신통계 합계</div>
                                                     <div class="pie-chart-container">
                                                         <div id="outbound-outer-pie-chart" class="full-width full-height" style="padding: 0 50px"></div>
                                                     </div>
@@ -231,8 +224,8 @@
                                                 <div class="ui secondary segment">
                                                     <div class="chart-label-container">
                                                         <div>
-                                                            <text class="label-list"><span class="symbol-square symbol-blue"></span>O/B 건수</text>
-                                                            <text class="label-list"><span class="symbol-square symbol-orange"></span>비수신</text>
+                                                            <text class="label-list"><span class="symbol-square symbol-orange"></span>성공호</text>
+                                                            <text class="label-list"><span class="symbol-square symbol-blue"></span>비수신</text>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -240,13 +233,13 @@
                                         </div>
                                         <div class="twelve wide column">
                                             <div class="label-container">
-                                                <label class="control-label">O/B 통계</label>
+                                                <label class="control-label">발신통계 주기별</label>
                                             </div>
                                             <div class="-chart basic-chart-container" id="outbound-chart"></div>
                                             <div class="chart-label-container">
                                                 <div>
-                                                    <text class="label-list"><span class="symbol-square symbol-blue"></span>O/B 건수</text>
-                                                    <text class="label-list"><span class="symbol-square symbol-orange"></span>비수신</text>
+                                                    <text class="label-list"><span class="symbol-square symbol-orange"></span>성공호</text>
+                                                    <text class="label-list"><span class="symbol-square symbol-blue"></span>비수신</text>
                                                 </div>
                                             </div>
                                         </div>
@@ -256,13 +249,13 @@
                         </div>
                         <div class="panel-section">
                             <div class="panel">
-                                <div class="panel-heading">인바운드 통계 그래프</div>
+                                <div class="panel-heading">대표번호수신통계 그래프</div>
                                 <div class="panel-body pd-1em">
                                     <div class="ui middle aligned grid">
                                         <div class="four wide column">
                                             <div class="ui segments pie-chart">
                                                 <div class="ui segment pie-chart-bg">
-                                                    <div class="label-container">I/B 통계</div>
+                                                    <div class="label-container">대표번호수신통계 합계</div>
                                                     <div class="pie-chart-container">
                                                         <div id="inbound-outer-pie-chart" class="full-width full-height" style="padding: 0 50px"></div>
                                                     </div>
@@ -270,8 +263,8 @@
                                                 <div class="ui secondary segment">
                                                     <div class="chart-label-container">
                                                         <div>
-                                                            <text class="label-list"><span class="symbol-square symbol-blue"></span>응대호</text>
-                                                            <text class="label-list"><span class="symbol-square symbol-orange"></span>포기호</text>
+                                                            <text class="label-list"><span class="symbol-square symbol-orange"></span>응대호</text>
+                                                            <text class="label-list"><span class="symbol-square symbol-blue"></span>포기호</text>
                                                             <text class="label-list"><span class="symbol-square symbol-grey"></span>콜백</text>
                                                         </div>
                                                     </div>
@@ -280,13 +273,13 @@
                                         </div>
                                         <div class="twelve wide column">
                                             <div class="label-container">
-                                                <label class="control-label">I/B 통계</label>
+                                                <label class="control-label">대표번호수신통계 주기별</label>
                                             </div>
                                             <div class="-chart basic-chart-container" id="inbound-chart"></div>
                                             <div class="chart-label-container">
                                                 <div>
-                                                    <text class="label-list"><span class="symbol-square symbol-blue"></span>응대호</text>
-                                                    <text class="label-list"><span class="symbol-square symbol-orange"></span>포기호</text>
+                                                    <text class="label-list"><span class="symbol-square symbol-orange"></span>응대호</text>
+                                                    <text class="label-list"><span class="symbol-square symbol-blue"></span>포기호</text>
                                                     <text class="label-list"><span class="symbol-square symbol-grey"></span>콜백</text>
                                                 </div>
                                             </div>
@@ -296,7 +289,6 @@
                             </div>
                         </div>
                     </c:if>
-
                 </div>
             </div>
         </div>
@@ -314,31 +306,32 @@
                     outboundSuccess: ${e.outboundStat.success},
                     inboundCancel: ${e.inboundStat.cancel},
                     outboundCancel: ${e.outboundStat.cancel},
+                    callback: ${e.inboundStat.callback},
                 }, </c:forEach>
             ];
             chartjs.drawLineChart($('#total-call-chart')[0], data, 'time', ['inboundTotal', 'outboundTotal'], {
                 ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue'],
                 colors: ['#F37402', '#4472C4'],
-                labels: ['I/B', 'O/B']
+                labels: ['수신 전체콜', '발신 총 시도콜']
             });
 
             chartjs.drawBarChart($('#outbound-chart')[0], data, 'time', ['outboundSuccess', 'outboundCancel'], {
-                ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue'],
-                colors: ['#F37402', '#4472C4'],
-                labels: ['응대호', '포기호'],
-                stacked: true
-            });
-
-            chartjs.drawBarChart($('#inbound-chart')[0], data, 'time', ['inboundSuccess', 'inboundCancel'], {
                 ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue'],
                 colors: ['#F37402', '#4472C4'],
                 labels: ['성공호', '비수신'],
                 stacked: true
             });
 
+            chartjs.drawBarChart($('#inbound-chart')[0], data, 'time', ['inboundSuccess', 'inboundCancel', 'callback'], {
+                ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue', 'color-gray'],
+                colors: ['#F37402', '#4472C4', '#A5A5A5'],
+                labels: ['응대호', '포기호', '콜백'],
+                stacked: true
+            });
+
             chartjs.drawDonutChart(
                 '#outbound-outer-pie-chart',
-                [${total.outboundStat.success}, ${total.outboundStat.cancel}],
+                [${total.outboundStat.cancel}, ${total.outboundStat.success}],
                 {
                     startAngle: 0,
                     endAngle: 360,
@@ -346,23 +339,23 @@
                     outerRadius: 120,
                     innerLabel: ' ',
                     colorClasses: ['bcolor-bar1', 'bcolor-bar2'],
-                    colors: ['#F37402', '#4472C4'],
-                    labels: ['응대호', '포기호']
+                    colors: ['#4472C4', '#F37402'],
+                    labels: ['비수신', '성공호']
                 }
             );
 
             chartjs.drawDonutChart(
                 '#inbound-outer-pie-chart',
-                [${total.inboundStat.success}, ${total.inboundStat.cancel}],
+                [${total.inboundStat.callback}, ${total.inboundStat.cancel}, ${total.inboundStat.success}],
                 {
                     startAngle: 0,
                     endAngle: 360,
                     innerRadius: 100,
                     outerRadius: 120,
                     innerLabel: ' ',
-                    colorClasses: ['bcolor-bar1', 'bcolor-bar2'],
-                    colors: ['#F37402', '#4472C4'],
-                    labels: ['성공호', '비수신']
+                    colorClasses: ['bcolor-bar1', 'bcolor-bar2','bcolor-bar3'],
+                    colors: ['#A5A5A5', '#4472C4', '#F37402'],
+                    labels: ['콜백', '포기호', '응대호',]
                 }
             );
             </c:if>

@@ -24,6 +24,7 @@
                 <div class="four wide column"><label class="control-label">등급</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
+                        <input type="hidden" name="uniqueId"/>
                         <input type="hidden" name="number"/>
                         <select name="type">
                             <option value="VIP">VIP</option>
@@ -60,6 +61,7 @@
             $('#modal-customer-grade-manage-popup').dragModalShow();
             $('#modal-customer-grade-manage-popup [name]').val('');
             $('#modal-customer-grade-manage-popup [name=number]').val(phoneNumber);
+            $('#modal-customer-grade-manage-popup [name=uniqueId]').val(audioId);
         }
 
         function submitRouteApplication() {

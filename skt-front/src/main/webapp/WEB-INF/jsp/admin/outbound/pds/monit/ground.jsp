@@ -250,7 +250,7 @@
 
             const ipccPdsCommunicator = new IpccPdsCommunicator();
             restSelf.get('/api/auth/socket-info').done(function (response) {
-                ipccPdsCommunicator.connect(response.data.pdsSocketUrl, response.data.companyId, response.data.userId, response.data.password);
+                ipccPdsCommunicator.connect(response.data.pdsSocketUrl, response.data.companyId, response.data.userId, hex_sha512(response.data.password));
             });
             ipccPdsCommunicator
                 .on('PDS_START', function (kind, result, pdsGroupId, executeId) {

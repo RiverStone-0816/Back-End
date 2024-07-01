@@ -52,14 +52,14 @@ eicn:
   service:
     base-url: http://211.43.218.10
     servicekind: CC
-  version: 20210525
+  version: 20240621
   debugging: true
   swagger:
     api-package: kr.co.eicn.ippbx.front.controller.api
   file:
     location: /tmp
   apiserver: http://211.43.218.10/api-server
-  realapiserver: http://localhost:8080/api-server
+  realapiserver: http://211.43.218.10/api-server
   webchat:
     image:
       url: http://localhost:8100/webchat_bot_image

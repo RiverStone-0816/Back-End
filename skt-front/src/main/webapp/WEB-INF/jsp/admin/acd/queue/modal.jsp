@@ -94,7 +94,7 @@
             <div class="row">
                 <div class="four wide column"><label class="control-label label-required">최대대기자</label></div>
                 <div class="four wide column">
-                    <div class="ui input fluid"><form:input path="maxlen" cssClass="-input-numerical" value="${addOnPersons.size()+entity.addPersons.size()}" readonly="true"/><span>명</span></div>
+                    <div class="ui input fluid"><form:input path="maxlen" cssClass="-input-numerical"/><span>명</span></div>
                 </div>
                 <div class="eight wide column"></div>
                 <div class="four wide column"></div>

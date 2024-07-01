@@ -59,7 +59,7 @@ TalkCommunicator.prototype.connect = function (url, companyId, userid, passwd, a
 
     const _this = this;
     try {
-        this.socket = io.connect(url, {'reconnection': true, 'resource': 'socket.io'});
+        this.socket = io.connect(url, {'reconnect': true, 'resource': 'socket.io'});
         this.socket.on('connect', function () {
             _this.socket.emit('cli_join', {
                 company_id: _this.request.companyId,
@@ -67,7 +67,7 @@ TalkCommunicator.prototype.connect = function (url, companyId, userid, passwd, a
                 passwd: _this.request.passwd,
                 usertype: _this.request.usertype,
                 authtype: _this.request.authtype,
-                from_ui: 'IPCC',
+                from_ui: 'API',
             });
             _this.log(false, 'connect', arguments);
         }).on('svc_login', function (data) {

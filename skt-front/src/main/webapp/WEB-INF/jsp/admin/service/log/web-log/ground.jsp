@@ -134,7 +134,7 @@
                                         </td>
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.userName)}(${g.htmlQuote(e.userId)})</td>
-                                        <td>${g.htmlQuote(e.insertDate)}</td>
+                                        <td><fmt:formatDate value="${e.insertDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>${g.htmlQuote(e.extension)}</td>
                                         <td>${e.idType != null ? g.htmlQuote(message.getEnumText(e.idType)) : null}</td>
                                         <td>${g.htmlQuote(e.secureIp)}</td>
@@ -146,7 +146,7 @@
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="9" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <td colspan="10" class="null-data">조회된 데이터가 없습니다.</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>

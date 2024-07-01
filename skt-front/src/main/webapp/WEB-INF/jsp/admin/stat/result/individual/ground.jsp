@@ -81,14 +81,14 @@
                     <div class="panel-section">
                         <div class="panel-section-title">
                             <div class="title-txt">
-                                상담결과통계(개별) <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
+                                상담코드통계[개별형] <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
                             </div>
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
                         <table class="ui celled table compact unstackable">
                             <thead>
                             <tr>
-                                <th colspan="2">문의유형</th>
+                                <th colspan="1">문의유형</th>
                                 <c:forEach var="date" items="${dates}">
                                     <th>${g.htmlQuote(date)}</th>
                                 </c:forEach>
@@ -100,7 +100,7 @@
                                     <c:forEach var="e" items="${list}">
                                         <tr>
                                             <td>${g.htmlQuote(e.codeName)}</td>
-                                            <td class="-code-sum" data-code="${g.escapeQuote(e.codeId)}"></td>
+                                            <%--<td class="-code-sum" data-code="${g.escapeQuote(e.codeId)}"></td>--%>
                                             <c:forEach var="date" items="${dates}">
                                                 <td>${codeToDateToCountMap.get(e).getOrDefault(date, 0)}</td>
                                             </c:forEach>

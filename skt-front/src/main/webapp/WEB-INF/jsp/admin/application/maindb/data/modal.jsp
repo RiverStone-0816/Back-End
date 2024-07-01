@@ -26,7 +26,7 @@
             <c:forEach var="field" items="${customDbType.fields}">
                 <c:set var="name" value="${field.fieldId.substring(customDbType.kind.length() + '_'.length()).toLowerCase()}"/>
                 <c:set var="value" value="${fieldNameToValueMap.get(field.fieldId)}"/>
-                <div class="row">
+                <div class="row" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
                     <div class="four wide column"><label class="control-label">${g.htmlQuote(field.fieldInfo)}</label></div>
                     <c:choose>
                         <c:when test="${field.fieldType == 'MULTICODE'}">

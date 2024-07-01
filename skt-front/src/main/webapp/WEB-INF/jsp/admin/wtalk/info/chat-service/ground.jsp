@@ -19,9 +19,7 @@
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-left">
-                        <h3 class="panel-title">전체 <span class="text-primary">${list.size()}</span> 건</h3>
-                    </div>
-                    <div class="pull-right">
+                        <h3 class="panel-total-count">전체 <span>${list.size()}</span> 건</h3>
                         <button type="button" class="ui basic button" onclick="popupModal()">추가</button>
                         <button type="button" class="ui basic button -control-entity" data-entity="ChatbotService" style="display: none;" onclick="popupModal(getEntityId('ChatbotService'))">
                             수정

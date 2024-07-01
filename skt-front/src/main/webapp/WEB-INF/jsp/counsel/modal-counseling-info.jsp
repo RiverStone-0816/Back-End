@@ -13,7 +13,6 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
-<%--@elvariable id="accessToken" type="java.lang.String"--%>
 
 <div class="ui modal inverted small">
     <i class="close icon" onclick="$(this).parents('div').find('audio')[0].pause();"></i>
@@ -26,54 +25,46 @@
                 <td class="three wide">상담원</td>
                 <td class="left aligned">${entity.userName}</td>
             </tr>
-            <c:choose>
-                <c:when test="${entity.groupKind == 'PHONE'}">
-                    <tr>
-                        <td class="three wide">채널</td>
-                        <td class="left aligned">전화
-                            <c:forEach var="e" items="${files}">
-                                <c:if test="${!user.listeningRecordingAuthority.equals('NO')}">
-                                    <c:if test="${user.downloadRecordingAuthority.equals('MY') && entity.personList.id.equals(user.id)}">
-                                    <div class="ui center aligned segment">
-                                        <a target="_blank" href="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN&token=${accessToken}">[ 파일다운로드 ]</a>
-                                    </div>
-
-                                        <div class="maudio">
-                                            <audio controls src="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY&token=${accessToken}"></audio>
+            <tr>
+                <td class="three wide">채널</td>
+                <td class="left aligned">
+                    ${entity.groupKind == 'PHONE' ? '전화': entity.groupKind == 'TALK' ? '상담톡' : ''}
+                    <c:choose>
+                        <c:when test="${entity.groupKind == 'PHONE' && not empty entity.uniqueid}">
+                            <div class="center aligned">
+                                <c:set var="listeningAuthority"
+                                       value="${user.listeningRecordingAuthority.equals('MY') && entity.personList.id.equals(user.id)
+                                             or user.listeningRecordingAuthority.equals('GROUP') && entity.personList.groupTreeName.contains(user.groupCode)
+                                             or user.listeningRecordingAuthority.equals('ALL')}"/>
+                                <c:set var="downloadAuthority"
+                                       value="${user.downloadRecordingAuthority.equals('MY') && entity.personList.id.equals(user.id)
+                                             or user.downloadRecordingAuthority.equals('GROUP') && entity.personList.groupTreeName.contains(user.groupCode)
+                                             or user.downloadRecordingAuthority.equals('ALL')}"/>
+                                <c:forEach var="e" items="${files}" varStatus="status">
+                                    <c:if test="${listeningAuthority}">
+                                        <audio data-src="${pageContext.request.contextPath}/api/record-file/resource-front-play/${e.cdr}/${g.urlEncode(e.uniqueid)}/?partial=${status.index}"
+                                               controls class="audio" preload="none"></audio>
+                                    </c:if>
+                                    <c:if test="${downloadAuthority}">
+                                        <div class="align-center">
+                                            <a target="_blank"
+                                               href="${pageContext.request.contextPath}/api/record-file/resource-front-down/${e.cdr}/${g.urlEncode(e.uniqueid)}/${g.urlEncode(e.dstUniqueid)}/?partial=${status.index}">
+                                                [ 파일다운로드 ]
+                                            </a>
                                         </div>
                                     </c:if>
-                                    <c:if test="${user.downloadRecordingAuthority.equals('GROUP') && entity.personList.groupCode.equals(user.groupCode)}">
-                                        <div class="ui center aligned segment">
-                                            <a target="_blank" href="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN&token=${accessToken}">[ 파일다운로드 ]</a>
-                                        </div>
-
-                                        <div class="maudio">
-                                            <audio controls src="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY&token=${accessToken}"></audio>
-                                        </div>
-                                    </c:if>
-                                    <c:if test="${user.downloadRecordingAuthority.equals('ALL')}">
-                                        <div class="ui center aligned segment">
-                                            <a target="_blank" href="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=DOWN&token=${accessToken}">[ 파일다운로드 ]</a>
-                                        </div>
-
-                                        <div class="maudio">
-                                            <audio controls src="${apiServerUrl}/api/v1/admin/record/history/resource?path=${g.urlEncode(e.filePath)}&mode=PLAY&token=${accessToken}"></audio>
-                                        </div>
-                                    </c:if>
-                                </c:if>
-                            </c:forEach>
-                        </td>
-                    </tr>
-                </c:when>
-                <c:when test="${entity.groupKind == 'TALK'}">
-                    <tr>
-                        <td class="three wide">채널</td>
-                        <td class="left aligned">채팅상담
-                            <button class="ui button mini compact right floated" onclick="talkHistoryView('${entity.hangupMsg}')">상담이력확인</button>
-                        </td>
-                    </tr>
-                </c:when>
-            </c:choose>
+                                </c:forEach>
+                            </div>
+                        </c:when>
+                        <c:when test="${entity.groupKind == 'TALK' && not empty entity.hangupMsg}">
+                            <button class="ui button mini compact right floated"
+                                    onclick="talkHistoryView('${entity.hangupMsg}')">
+                                상담이력확인
+                            </button>
+                        </c:when>
+                    </c:choose>
+                </td>
+            </tr>
             <tr>
                 <td class="three wide">상담등록시간</td>
                 <td class="left aligned"><fmt:formatDate value="${entity.resultDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
@@ -100,7 +91,7 @@
                                 </c:forEach>
                             </c:when>
                             <c:otherwise>
-                                ${g.htmlQuote(value)}
+                                <pre style="white-space: pre-wrap">${g.htmlQuote(value)}</pre>
                             </c:otherwise>
                         </c:choose>
                     </td>

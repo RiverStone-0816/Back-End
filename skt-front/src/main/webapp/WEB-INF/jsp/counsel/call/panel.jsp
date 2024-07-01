@@ -21,6 +21,7 @@
             <div class="pull-left"><label class="panel-label">수발신정보</label></div>
             <div class="pull-right">
                 <button class="ui button right floated sharp" onclick="clearCustomerAndCounselingInput()">초기화</button>
+
             </div>
         </div>
         <div class="panel-body overflow-hidden">
@@ -83,22 +84,41 @@
                 </tr>
             </table>
             <div class="call-bottom-area">
-                <div class="ui top attached tabular menu light flex">
-                    <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
-                    <button class="item" data-tab="monitoring">모니터링</button>
-                    </c:if>
-                    <button class="item active" data-tab="statistics">통계</button>
+                <div class="flex-100 bottom-area">
+                <div class="ui top attached tabular menu line light flex remove-margin">
+                    <button class="item active" data-tab="consult-history">상담이력</button>
+                    <button class="item" data-tab="todo">To-Do</button>
+                    <%--FIXME:필요시 다음과 같이 추가--%>
+                    <%--<button class="item" data-tab="etc-lookup">기타조회</button>--%>
                 </div>
-                <div class="ui bottom attached tab segment remove-margin overflow-auto" data-tab="monitoring">
-                    <div>
-                        <jsp:include page="/counsel/call/consultant-status"/>
-                    </div>
+                <div class="ui bottom attached tab segment remove-margin overflow-overlay active" data-tab="consult-history">
+                    <table class="ui celled table unstackable">
+                        <thead>
+                        <tr>
+                            <c:if test="${serviceKind.equals('SC')}">
+                                <th>채널</th>
+                            </c:if>
+                            <th>수/발신</th>
+                            <th>상담등록시간</th>
+                            <th>전화번호</th>
+                            <c:if test="${usingServices.contains('ECHBT') || usingServices.contains('KATLK')}">
+                                <th>상담톡아이디</th>
+                            </c:if>
+                            <th>상담원</th>
+                            <th>자세히</th>
+                        </tr>
+                        </thead>
+                        <tbody id="counsel-list"></tbody>
+                    </table>
                 </div>
-                <div class="ui bottom attached tab segment active remove-padding remove-margin overflow-auto" data-tab="statistics">
-                    <div class="statistics-inner" id="my-call-time"></div>
+                <div class="ui bottom attached tab segment remove-margin overflow-overlay" data-tab="todo">
+                    <jsp:include page="/counsel/todo-list"/>
                 </div>
+                <%--<div class="ui bottom attached tab segment remove-margin" data-tab="etc-lookup">기타조회</div>--%>
+            </div>
             </div>
         </div>
+
     </div>
 </div>
 
@@ -110,6 +130,8 @@
         function tryDial(type) {
             const cid = $('#cid').val()
             const number = $('#calling-number').val();
+            console.log("calling-number:"+number);
+
 
             if (ipccCommunicator.status.cMemberStatus === 1) {
                 alert("상담중 상태에서는 전화 걸기가 불가능합니다.");
@@ -118,8 +140,10 @@
 
             if (!number) return;
             ipccCommunicator.clickByCampaign(cid, number, type, $('#call-custom-input [name=groupSeq]').val(), $('#call-custom-input .-custom-id').text());
+
         }
 
+        //초기화
         function clearCustomerAndCounselingInput() {
             audioId = null;
             phoneNumber = null;
@@ -137,17 +161,51 @@
             loadUserCustomInfo();
             loadUserCallHistory();
         }
-
+        //고객정보 제출
         function submitCallCustomInput() {
             return submitJsonData($('#call-custom-input')[0]);
         }
 
-        function loadCustomInput(maindbGroupSeq, customId, phoneNumber) {
+        function loadCustomInput(maindbGroupSeq, customId, phoneNumber, resultSeq, uniqueId, inOut) {
             return replaceReceivedHtmlInSilence($.addQueryString('/counsel/call/custom-input', {
                 maindbGroupSeq: maindbGroupSeq || '',
                 customId: customId || '',
-                phoneNumber: phoneNumber || ''
-            }), '#call-custom-input');
+                phoneNumber: phoneNumber || '',
+                resultSeq: resultSeq || '',
+            }), '#call-custom-input').done(() => {
+                if (uniqueId)
+                    audioId = uniqueId;
+                if (inOut)
+                    callType = inOut;
+            });
+        }
+
+        function loadCallingInfo(userPhone = '', userName = '', regDate = '', birthYear = '', gender = '', userSi = '', userGu = '', address = '',
+                                 email = '', userIdx = '', blackYn = '' , targetForm = 'calling-info') {
+            if (targetForm === '')
+                targetForm = 'calling-info'
+            const target = $('#' + targetForm + '');
+
+            if( target.find('.-username').val()!==''){
+                target.find('.-userphone').attr('readonly',true);
+                target.find('.-username').attr('readonly',true);
+                target.find('.-useridx').attr('readonly',true);
+            }
+
+
+            target.find('.-userphone').text(userPhone).val(userPhone);
+            target.find('.-username').text(userName).val(userName);
+            target.find('.-regdate').text(regDate.split(' ')[0]).val(regDate.split(' ')[0]);
+            target.find('.-birthyear').text(birthYear).val(birthYear);
+            target.find('.-customer-name').text(userName).val(userName);
+            target.find('.-gender').text(gender).val(gender);
+            target.find('.-usersi').text(userSi).val(userSi);
+            target.find('.-usergu').text(userGu).val(userGu);
+            target.find('.-address').text(address).val(address);
+            target.find('.-email').text(email).val(email);
+            target.find('.-useridx').text(userIdx).val(userIdx);
+            target.find('.-blackYn').text(blackYn).val(blackYn);
+
         }
 
         function loadCounselingInput(maindbGroupSeq, customId, phoneNumber, maindbResultSeq) {
@@ -181,10 +239,12 @@
             replaceReceivedHtmlInSilence('/counsel/call/stat', '#my-call-time');
         }
 
+
         $(window).on('load', function () {
             loadCustomInput();
             loadMyCallStat();
             loadMyCallTime();
+            updatePersonStatus();
 
             setInterval(loadMyCallStat, 5 * 60 * 1000);
             setInterval(loadMyCallTime, 5 * 60 * 1000);

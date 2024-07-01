@@ -69,13 +69,11 @@
                                                     <i class="volume up icon" data-value="${e.category}"></i>
                                                 </button>
                                                 <div class="ui popup top right">
-                                                    <div class="maudio">
-                                                        <audio controls src="${apiServerUrl}/api/v1/admin/sounds/ring-back-tone/${g.htmlQuote(e.category)}/resource?type=PLAY&token=${accessToken}"></audio>
-                                                    </div>
+                                                    <audio data-src="${pageContext.request.contextPath}/api/ring-back-tone/id/${g.htmlQuote(e.category)}/resource?mode=PLAY"></audio>
                                                 </div>
                                                 <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                                                     <a class="ui icon button mini compact"
-                                                       href="${apiServerUrl}/api/v1/admin/sounds/ring-back-tone/${g.htmlQuote(e.category)}/resource?type=DOWN&token=${accessToken}">
+                                                       href="${pageContext.request.contextPath}/api/ring-back-tone/id/${g.htmlQuote(e.category)}/resource?mode=DOWN">
                                                         <i class="arrow down icon" data-value="${e.category}"></i>
                                                     </a>
                                                 </c:if>
@@ -86,7 +84,7 @@
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="4" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <td colspan="5" class="null-data">조회된 데이터가 없습니다.</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>
@@ -104,11 +102,11 @@
             }
 
             $('.volume').click(function () {
-                restSelf.put('/api/ars/' + $(this).attr('data-value') + '/web-log?type=' + encodeURIComponent('PLAY'));
+                restSelf.put('/api/ring-back-tone/' + $(this).attr('data-value') + '/web-log?type=' + encodeURIComponent('PLAY'));
             });
 
             $('.down').click(function () {
-                restSelf.put('/api/ars/' + $(this).attr('data-value') + '/web-log?type=' + encodeURIComponent('DOWN'));
+                restSelf.put('/api/ring-back-tone/' + $(this).attr('data-value') + '/web-log?type=' + encodeURIComponent('DOWN'));
             })
 
             function deleteEntity(category) {

@@ -81,9 +81,7 @@
                                                 </div>
                                                 <c:if test="${e.soundCode != null && e.soundCode != ''}">
                                                     <div class="ui popup top right" id="ivr-sound-${e.seq}">
-                                                        <div class="maudio">
-                                                            <audio controls src="${apiServerUrl}/api/v1/admin/sounds/ars/${e.soundCode}/resource?token=${accessToken}"></audio>
-                                                        </div>
+                                                        <audio data-src="${pageContext.request.contextPath}/api/ars/id/${g.htmlQuote(e.soundCode)}/resource?mode=PLAY"></audio>
                                                     </div>
                                                 </c:if>
                                             </div>

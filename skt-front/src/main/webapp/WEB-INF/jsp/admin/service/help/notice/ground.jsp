@@ -78,7 +78,7 @@
                             <button class="ui basic button -control-entity" data-entity="Notice" style="display: none;" onclick="popupShowModal(getEntityId('Notice'))">보기</button>
                             <button class="ui basic button" onclick="popupModal()">추가</button>
                             <button class="ui basic button -control-entity" data-entity="Notice" style="display: none;" onclick="changepopupModal(getEntityId('Notice'), getEntityId('Notice', 'userid'))">수정</button>
-                            <button class="ui basic button -control-entity" data-entity="Notice" style="display: none;" onclick="deleteEntity(getEntityId('Notice'))">삭제</button>
+                            <button class="ui basic button -control-entity" data-entity="Notice" style="display: none;" onclick="deleteEntity(getEntityId('Notice'), getEntityId('Notice', 'userid'))">삭제</button>
                         </div>
                     </div>
                     <div class="pull-right">
@@ -117,7 +117,7 @@
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="5" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <td colspan="6" class="null-data">조회된 데이터가 없습니다.</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>
@@ -133,7 +133,6 @@
             function popupShowModal(id) {
                 console.log(id);
                 popupReceivedHtml('/admin/service/help/notice/' + (id || 'new') + '/modal-show', 'modal-show-notice');
-
             }
 
             function popupModal(id) {
@@ -141,12 +140,12 @@
             }
 
             function changepopupModal(id, userid) {
-                if('${g.user.id}' === userid)
+                if('${g.user.id}' === userid || ${'A'.contains(g.user.idType)})
                     popupReceivedHtml('/admin/service/help/notice/' + (id || 'new') + '/modal', 'modal-notice');
             }
 
-            function deleteEntity(id) {
-                if('${g.user.id}' === userid){
+            function deleteEntity(id,userid) {
+                if('${g.user.id}' === userid || ${'A'.contains(g.user.idType)} ){
                     confirm('정말 삭제하시겠습니까?').done(function () {
                         restSelf.delete('/api/notice/' + id).done(function () {
                             reload();

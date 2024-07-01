@@ -987,7 +987,7 @@ function confirm(text) {
         class: 'alert-modal',
         style: 'display: none;'
     }).appendTo($('body'));
-    modal.find('.content').text(text.replace('\\n', '\n'));
+    modal.find('.content').text(text);
     modal.click(function (event) {
         event.stopPropagation();
     });
@@ -1268,4 +1268,20 @@ function getSelectedTextContentOfSingleElement() {
         parent: range.startContainer.parentElement,
         text: range.cloneContents().textContent
     }
+}
+
+function zeroPad(nr, base) {
+    let len = (String(base).length - String(nr).length) + 1;
+    return len > 0 ? new Array(len).join('0') + nr : nr;
+}
+
+function setFixedModalPosition(e) {
+    const modal = $(e).closest('.modal');
+    const searchForm = modal.find('.panel-search');
+    const resultPart = modal.find('.result-part');
+    const resultBody = resultPart.find('.panel-body');
+
+    resultPart.css('top', searchForm.height() + 54);
+    if (resultBody)
+        resultBody.css('height', modal.height() - (searchForm.height() + 54) - 85);
 }

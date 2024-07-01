@@ -18,9 +18,19 @@
 
 <tags:layout>
 
+    <c:choose>
+    <c:when test="${g.user.idType eq 'M'}">
     <div class="content-wrapper -admin-panel">
-        <iframe class="content-inner" id="main-content" src="<c:url value="/admin/dashboard/total"/>"></iframe>
+        <iframe class="content-inner " id="main-content-m" src="<c:url value="/admin/application/maindb/result"/>"></iframe>
     </div>
+    </c:when>
+
+    <c:when test="${'A|J|B'.contains(g.user.idType)}">
+        <div class="content-wrapper -admin-panel">
+            <iframe class="content-inner " id="main-content-a" src="<c:url value="/admin/dashboard/total"/>"></iframe>
+        </div>
+    </c:when>
+    </c:choose>
 
     <c:if test="${hasExtension && isStat}">
         <jsp:include page="/counsel/"/>
@@ -36,9 +46,11 @@
                 $('.-menu-page').parent().removeClass('active');
                 $this.parent().addClass('active');
 
-                $('#main-content').attr('src', $this.attr('href'));
+                /*$('.-main-content').attr('src', $this.attr('href'));*/
+                $('#main-content-m').attr('src', $this.attr('href'));
+                $('#main-content-a').attr('src', $this.attr('href'));
 
-                if ($('#main').is('.change-mode')) {
+                if ($('.main').is('.change-mode')) {
                     changeMode();
                 }
 

@@ -779,9 +779,9 @@
                 messenger.changeRoomName(data.room_id, data.change_room_name)
             })
 
-        restSelf.get('/api/auth/socket-info').done(function (response) {
+        /*restSelf.get('/api/auth/socket-info').done(function (response) {
             messengerCommunicator.connect(response.data.messengerSocketUrl, response.data.companyId, response.data.userId, response.data.userName, response.data.password)
-        })
+        })*/
     </script>
 </tags:scripts>
 

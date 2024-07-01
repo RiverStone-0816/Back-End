@@ -33,9 +33,7 @@
                             </div>
                             <c:if test="${node.soundCode != null && node.soundCode != ''}">
                                 <div class="ui popup top right" id="ivr-sound-${node.seq}">
-                                    <div class="maudio">
-                                        <audio controls src="${apiServerUrl}/api/v1/admin/sounds/ars/${node.soundCode}/resource?token=${accessToken}"></audio>
-                                    </div>
+                                    <audio data-src="${pageContext.request.contextPath}/api/ars/${g.htmlQuote(node.soundCode)}/resource"></audio>
                                 </div>
                             </c:if>
                         </div>

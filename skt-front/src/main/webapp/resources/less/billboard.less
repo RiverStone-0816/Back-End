@@ -143,11 +143,11 @@
       background:rgba(0,0,0,.5);
       padding: .5em;
       font-weight: 500;
-      font-size: 2.5rem;
+      font-size: 2vw;
     }
     td {
       font-weight: 300;
-      font-size: 2rem;
+      font-size: 1.5vw;
       padding: 0.64em .25em;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -181,7 +181,7 @@
   .flex();
   flex-flow:column;
   .header {
-    font-size: 3rem;
+    font-size: 2.5vw;
     padding: 4rem 4rem 1.5rem 4rem;
     color: @color-white;
     .flex();
@@ -216,7 +216,7 @@
   }
   .content {
     flex:1;
-    padding: 1.5rem 3rem 1.5rem 3rem;
+    padding: 0 3rem 1.5rem 3rem;
   }
   .footer {
     font-size: 2.5rem;
@@ -226,8 +226,6 @@
     background: rgba(0,0,0,.5);
   }
 }
-
-
 
 .board-box {
   background: rgba(0, 0, 0, 0.5);
@@ -242,12 +240,15 @@
     .flex();
     justify-content: center;
     align-items: center;
-    font-size: 5rem;
+    font-size: 3vw;
+  }
+  .board-title.big {
+    font-size: 3.5vw;
   }
   .board-number {
     width:100%;
     color:@color-white;
-    font-size: 7.5rem;
+    font-size: 4vw;
     .flex();
     justify-content: center;
     align-items: center;
@@ -256,7 +257,7 @@
     margin: -6rem 0 0 0;
   }
   .board-number.large {
-    font-size:13rem;
+    font-size:10vw;
   }
 }
 
@@ -264,7 +265,7 @@
 .board-label {
   height:100%;
   color:@color-white;
-  font-size: 3.5rem;
+  font-size: 2.5vw;
   .flex();
   .left {
     .flex();
@@ -296,7 +297,7 @@
   .flex();
   flex-flow:column;
   .top {
-    font-size:3rem;
+    font-size: 2vw;
     .flex();
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -307,7 +308,7 @@
 
   }
   .bottom {
-    font-size:4.5rem;
+    font-size: 2.5vw;
     .flex();
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -378,11 +379,11 @@
   .left.etc {
     background-image:url("../images/b_etc.svg");
   }
-  .left.meal {
+  .left.other {
     background-image:url("../images/b_meal.svg");
   }
-  .left.move {
-     background-image:url("../images/b_move.svg");
+  .left.logout {
+     background-image:url("../images/b_logout.svg");
    }
   .left.rest {
     background-image:url("../images/b_rest.svg");
@@ -390,6 +391,7 @@
   .left.stay {
     background-image:url("../images/b_stay.svg");
   }
+
   .right {
     .flex();
     flex-flow:column;
@@ -398,14 +400,14 @@
     color:@color-white;
     padding:1.5rem;
     .time {
-      font-size: 1.7rem;
+      font-size: 1.3vw;
       margin: 0 0 .7rem 0;
       flex:1;
       .flex();
       align-items: flex-end;
     }
     .name {
-      font-size: 2rem;
+      font-size: 2vw;
       flex:1;
     }
   }

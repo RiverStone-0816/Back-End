@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div class="panel-body">
+        <div class="panel-body result-body">
             <div class="search-area">
                 <div class="ui grid">
                     <div class="row">
@@ -78,18 +78,23 @@
                             <div class="date-picker from-to">
                                 <div class="dp-wrap">
                                     <label for="startDate" style="display:none">From</label>
-                                    <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                    <form:input path="startDate" cssClass="-datepicker" cssStyle="width: 100%;" placeholder="시작일"/>
                                 </div>
                                 <span class="tilde">~</span>
                                 <div class="dp-wrap">
                                     <label for="endDate" style="display:none">to</label>
-                                    <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                    <form:input path="endDate" cssClass="-datepicker" cssStyle="width: 100%;" placeholder="종료일"/>
                                 </div>
                             </div>
                         </div>
-                        <div class="three wide column -search-type-sub-input">
+                        <div class="three wide column -search-type-sub-input" data-type="TEXT">
                             <div class="ui input fluid">
                                 <form:input path="keyword"/>
+                            </div>
+                        </div>
+                        <div class="three wide column -search-type-sub-input" data-type="CODE">
+                            <div class="ui form">
+                                <form:select path="code"/>
                             </div>
                         </div>
                     </div>
@@ -98,7 +103,7 @@
         </div>
     </form:form>
 
-    <div class="panel">
+    <div class="panel result-part">
         <div class="panel-heading">
             <div class="pull-left">
                 <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
@@ -107,9 +112,9 @@
                 <button type="button" class="ui basic green button" onclick="setCustomInfo()">고객정보 내보내기</button>
             </div>
         </div>
-        <div class="panel-body" style="width: 100%; overflow-x: auto;">
+        <div class="panel-body">
             <table class="ui celled table structured compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbData">
-                <thead>
+                <thead class="result-thead">
                 <tr>
                     <th rowspan="2">번호</th>
                     <th>기본정보</th>
@@ -229,12 +234,56 @@
 
     $('#search-maindb-custom-form [name=searchType]').change(function () {
         const type = $(this).find(':selected').attr('data-type');
+        const fieldId = $(this).find(':selected').val();
         const subInput = $(this).closest('form').find('.-search-type-sub-input').hide();
+        const codeSelect = $(this).closest('form').find('#code');
+
+        $('input[name=startDate]').val('');
+        $('input[name=endDate]').val('');
+        codeSelect.empty();
+        $('#keyword').val('');
 
         if (['DATE', 'DAY', 'DATETIME'].indexOf(type) >= 0) {
             subInput.filter('[data-type="DATE"]').show();
+        } else if (['CODE', 'MULTICODE'].indexOf(type) >= 0) {
+            const codeMap = JSON.parse('${codeMap}')[fieldId];
+
+            codeSelect.append($('<option/>', {value: '', text: '선택안함'}));
+
+            for (const key in codeMap) {
+                if (codeMap.hasOwnProperty(key)) {
+                    codeSelect.append($('<option/>', {value: key, text: codeMap[key]}));
+                }
+            }
+
+            subInput.filter('[data-type="CODE"]').show();
         } else {
-            subInput.filter(':not([data-type="DATE"])').show();
+            subInput.filter('[data-type="TEXT"]').show();
         }
     }).change();
+
+    (function () {
+        const modal = $('#search-maindb-custom-form').closest('.modal');
+
+        modal.find('#keyword').val('${search.keyword}').trigger("change");
+        modal.find('#code').val('${search.code}').trigger("change");
+
+        modal.find('input[name=startDate]').val('${search.startDate}');
+        modal.find('input[name=endDate]').val('${search.endDate}');
+
+        resizeHeight();
+        setTimeout(function () {
+            setFixedModalPosition(modal);
+        }, 100);
+    })();
+
+    $(window).resize(function () {
+        resizeHeight();
+    });
+
+    function resizeHeight() {
+        const bodyHeight = $('#modal-search-maindb-custom').height();
+        const formHeight = $('#modal-search-maindb-custom-body').height() > 20 ? $('#search-maindb-custom-form').height() : 250;
+        $('#modal-search-maindb-custom-body').find('.result-part .panel-body').css('height', bodyHeight - formHeight - 85);
+    }
 </script>

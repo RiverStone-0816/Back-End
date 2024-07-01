@@ -31,8 +31,11 @@
                     <div class="jp-multiselect -moving-container">
                         <div class="from-panel">
                             <select class="form-control -right-selector" size="8" multiple="multiple">
-                                <c:forEach var="e" items="${addPersons}">
+                               <%-- <c:forEach var="e" items="${addPersons}">
                                     <option value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.key)}[${g.htmlQuote(e.value)}]</option>
+                                </c:forEach>--%>
+                                <c:forEach var="e" items="${addPersons}">
+                                    <option value="${g.htmlQuote(e.userid)}">${g.htmlQuote(e.idName)}[${g.htmlQuote(e.groupName)}]</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -42,8 +45,11 @@
                         </div>
                         <div class="to-panel">
                             <select name="users" class="form-control -left-selector" size="8" multiple="multiple">
-                                <c:forEach var="e" items="${addedPersonList}">
+                                <%--<c:forEach var="e" items="${addedPersonList}">
                                     <option value="${g.htmlQuote(e.userid)}">${g.htmlQuote(e.userid)}[${g.htmlQuote(e.idName)}]</option>
+                                </c:forEach>--%>
+                                <c:forEach var="e" items="${addedPersonList}">
+                                    <option value="${g.htmlQuote(e.userid)}">${g.htmlQuote(e.idName)}[${g.htmlQuote(e.groupName)}]</option>
                                 </c:forEach>
                             </select>
                         </div>

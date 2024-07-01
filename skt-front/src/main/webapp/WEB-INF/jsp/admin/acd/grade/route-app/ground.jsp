@@ -144,19 +144,9 @@
                                         <td>${g.htmlQuote(e.memo)}</td>
                                         <td>${g.htmlQuote(message.getEnumText(e.result))}</td>
                                         <td>
-                                            <div class="popup-element-wrap">
-                                                <button class="ui icon button mini compact -play-trigger" type="button">
-                                                    <i class="volume up icon"></i>
-                                                </button>
-                                                <div class="ui popup top right">
-                                                    <div class="maudio">
-                                                        <audio controls src="${apiServerUrl}/api/v1/admin/sounds/ars/${e.seq}/resource?token=${accessToken}"></audio>
-                                                    </div>
-                                                </div>
-                                                <a class="ui icon button mini compact" href="${apiServerUrl}/api/v1/admin/acd/grade/routeapp/${e.seq}/resource?token=${accessToken}">
-                                                    <i class="arrow down icon"></i>
-                                                </a>
-                                            </div>
+                                            <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.cdrSeq}">
+                                                <i class="volume up icon"></i>
+                                            </button>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -188,6 +178,16 @@
                     location.reload();
                 });
             }
+
+            $('.-popup-records').click(function (event) {
+                event.stopPropagation();
+
+                const $this = $(this);
+                if ($this.attr('data-has-records'))
+                    return;
+
+                popupReceivedHtml('/admin/record/history/history/' + $this.attr('data-id') + '/modal-records', 'modal-records');
+            });
         </script>
     </tags:scripts>
 </tags:tabContentLayout>

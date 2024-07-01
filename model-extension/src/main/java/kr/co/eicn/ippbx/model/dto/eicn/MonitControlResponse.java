@@ -8,5 +8,6 @@ import java.util.List;
 public class MonitControlResponse {
     private String groupCode;
     private String groupName;
+    private String groupTreeName;
     private List<PersonListSummary> person;
 }

@@ -14,6 +14,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
+<%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
 <div class="sub-content ui container fluid unstackable" id="modal-search-call-history-body">
 <form:form id="search-call-history-form" modelAttribute="search" method="get" class="panel panel-search -ajax-loader"
@@ -128,15 +129,26 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="three wide column"><label class="control-label">헌트경로</label></div>
+                        <div class="three wide column"><label class="control-label">서비스</label></div>
                         <div class="three wide column">
                             <div class="ui form">
                                 <form:select path="iniNum">
                                     <form:option value="" label="선택안함"/>
-                                    <form:options items="${queues}"/>
+                                    <form:options items="${services}" itemValue="svcNumber" itemLabel="svcName"/>
                                 </form:select>
                             </div>
                         </div>
+                        <c:if test="${serviceKind.contains('SC')}">
+                            <div class="three wide column"><label class="control-label">수신그룹</label></div>
+                            <div class="three wide column">
+                                <div class="ui form">
+                                    <form:select path="secondNum">
+                                        <form:option value="" label="선택안함"/>
+                                        <form:options items="${queues}"/>
+                                    </form:select>
+                                </div>
+                            </div>
+                        </c:if>
                         <div class="three wide column">
                             <div class="ui form">
                                 <form:select path="sort" items="${sortTypes}"/>
@@ -188,28 +200,30 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="three wide column"><label class="control-label">통화시간별</label></div>
-                        <div class="three wide column">
-                            <div class="ui form">
-                                <form:select path="byCallTime">
-                                    <form:option value="" label="시간대선택"/>
-                                    <form:options items="${callTimeTypes}"/>
-                                </form:select>
+                    <c:if test="${serviceKind.contains('SC')}">
+                        <div class="row">
+                            <div class="three wide column"><label class="control-label">통화시간별</label></div>
+                            <div class="three wide column">
+                                <div class="ui form">
+                                    <form:select path="byCallTime">
+                                        <form:option value="" label="시간대선택"/>
+                                        <form:options items="${callTimeTypes}"/>
+                                    </form:select>
+                                </div>
+                            </div>
+                            <div class="seven wide column">
+                                <div class="ui input"><form:input path="callStartMinutes" size="2" class="-input-numerical"/></div>
+                                <span>분</span>
+                                <div class="ui input"><form:input path="callStartSeconds" size="2" class="-input-numerical"/></div>
+                                <span>초</span>
+                                <span class="tilde">~</span>
+                                <div class="ui input"><form:input path="callEndMinutes" size="2" class="-input-numerical"/></div>
+                                <span>분</span>
+                                <div class="ui input"><form:input path="callEndSeconds" size="2" class="-input-numerical"/></div>
+                                <span>초</span>
                             </div>
                         </div>
-                        <div class="seven wide column">
-                            <div class="ui input"><form:input path="callStartMinutes" size="2" class="-input-numerical"/></div>
-                            <span>분</span>
-                            <div class="ui input"><form:input path="callStartSeconds" size="2" class="-input-numerical"/></div>
-                            <span>초</span>
-                            <span class="tilde">~</span>
-                            <div class="ui input"><form:input path="callEndMinutes" size="2" class="-input-numerical"/></div>
-                            <span>분</span>
-                            <div class="ui input"><form:input path="callEndSeconds" size="2" class="-input-numerical"/></div>
-                            <span>초</span>
-                        </div>
-                    </div>
+                    </c:if>
                 </div>
             </div>
         </div>
@@ -227,13 +241,16 @@
                 <thead>
                 <tr>
                     <th>번호</th>
-                    <th>대표서비스</th>
+                    <th>서비스</th>
                     <%--<th>고객등급</th>--%>
                     <th>녹취</th>
                     <th>발신번호</th>
                     <th>수신번호</th>
                     <th>시간</th>
                     <th>수/발신</th>
+                    <c:if test="${serviceKind.equals('SC')}">
+                        <th>수신그룹</th>
+                    </c:if>
                     <th>상담원</th>
                     <th>호상태(초)</th>
                     <th>부가상태</th>
@@ -246,25 +263,19 @@
                     <c:when test="${pagination.rows.size() > 0}">
                         <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                             <c:set var="isFile" value="${g.htmlQuote(e.callStatusValue.contains('정상통화')) and fn:length(g.htmlQuote(e.recordFile)) > 0}"/>
-                            <tr data-id="${e.seq}" data-phone-number="${e.inOut.contains('I') ? e.src : e.dst}">
+                            <tr data-id="${e.seq}" data-phone-number="${e.inOut.contains('I') ? e.src : e.dst}"
+                                data-unique-id="${e.uniqueid}" data-call-type="${e.inOut}">
                                 <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                 <td>${g.htmlQuote(e.service.svcName)}</td>
                                     <%--<td>${e.vipBlack == 'V' ? 'VIP' : e.vipBlack == 'B' ? '블랙리스트' : ''}</td>--%>
                                 <td>
                                     <c:if test="${isFile}">
                                         <div class="popup-element-wrap">
-                                            <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)}">
-                                                <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                    <i class="volume up icon"></i>
-                                                </button>
-                                            </c:if>
-                                            <c:if test="${user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)}">
-                                                <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                    <i class="volume up icon"></i>
-                                                </button>
-                                            </c:if>
-                                            <c:if test="${user.listeningRecordingAuthority.equals('ALL')}">
-                                                <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
+                                            <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)
+                                                   or user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)
+                                                   or user.listeningRecordingAuthority.equals('ALL')}">
+                                                <button type="button" class="ui icon button mini compact -popup-records"
+                                                        data-id="${e.seq}">
                                                     <i class="volume up icon"></i>
                                                 </button>
                                             </c:if>
@@ -275,6 +286,9 @@
                                 <td>${g.htmlQuote(e.dst)}</td>
                                 <td><fmt:formatDate value="${e.ringDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                 <td >${g.htmlQuote(e.callKindValue)}</td>
+                                <c:if test="${serviceKind.equals('SC')}">
+                                    <td>${g.htmlQuote(e.secondNum)}</td>
+                                </c:if>
                                 <td>
                                     <c:set var="userName" value="${e.personList != null && e.personList.idName != null && e.personList.idName.length() > 0 ? e.personList.idName : null}"/>
                                     <c:choose>
@@ -384,23 +398,7 @@
             if ($this.attr('data-has-records'))
                 return;
 
-            popupReceivedHtml('/admin/record/history/history/' + $this.attr('data-id') + '/modal-records', 'modal-records').done(function (html) {
-                const mixedNodes = $.parseHTML(html, null, true);
-
-                const modal = (function () {
-                    for (let i = 0; i < mixedNodes.length; i++) {
-                        const node = $(mixedNodes[i]);
-                        if (node.is('.ui.modal'))
-                            return node;
-                    }
-                    throw 'cannot find modal element';
-                })();
-
-                $this.after(modal);
-                modal.find('audio').each(function () {
-                    maudio({obj: this});
-                });
-            });
+            popupReceivedHtml(contextPath + '/admin/record/history/history/' + $this.attr('data-id') + '/modal-records', 'modal-records');
         });
     })();
 
@@ -409,9 +407,10 @@
         if (!phoneNumber)
             return;
 
-        // $('#counseling-target').text(phoneNumber);
+        const uniqueId = getEntityId('RecordHistory', 'unique-id');
+        const callType = getEntityId('RecordHistory', 'call-type');
 
-        loadCustomInput(null, null, phoneNumber);
+        loadCustomInput(null, null, phoneNumber, '', uniqueId || '', callType || '');
         $('#search-call-history-form').closest('.modal').modalHide();
     }
 </script>

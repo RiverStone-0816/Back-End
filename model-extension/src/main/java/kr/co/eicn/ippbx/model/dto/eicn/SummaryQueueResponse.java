@@ -8,4 +8,6 @@ public class SummaryQueueResponse {
     private String hanName;
     private String number;
     private String svcNumber;
+    private String groupCode;
+    private String groupTreeName;
 }

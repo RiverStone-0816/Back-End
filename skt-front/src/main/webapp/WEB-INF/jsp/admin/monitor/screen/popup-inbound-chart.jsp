@@ -30,7 +30,7 @@
                 <div class="equal width row" style="height:42%">
                     <div class="column">
                         <div class="board-box incoming-call full-height">
-                            <div class="board-title flex-100">인입콜</div>
+                            <div class="board-title big flex-100">인입콜</div>
                             <div class="board-number flex-160">
                                 <text class="-data-inbound-call">${data.inboundCall}</text>
                             </div>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="column">
                         <div class="board-box connection-request full-height">
-                            <div class="board-title flex-100">연결요청</div>
+                            <div class="board-title big flex-100">연결요청</div>
                             <div class="board-number flex-160">
                                 <text class="-data-connection-request">${data.connectionRequest}</text>
                             </div>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="column">
                         <div class="board-box reception full-height">
-                            <div class="board-title flex-100">수신</div>
+                            <div class="board-title big flex-100">수신</div>
                             <div class="board-number flex-160">
                                 <text class="-data-success-call">${data.successCall}</text>
                             </div>
@@ -54,7 +54,7 @@
                     </div>
                     <div class="column">
                         <div class="board-box non-reception full-height">
-                            <div class="board-title flex-100">비수신</div>
+                            <div class="board-title big flex-100">비수신</div>
                             <div class="board-number flex-160">
                                 <text class="-data-cancel-call">${data.cancelCall}</text>
                             </div>
@@ -62,7 +62,7 @@
                     </div>
                     <div class="column">
                         <div class="board-box response-rate full-height">
-                            <div class="board-title flex-100">응대율</div>
+                            <div class="board-title big flex-100">응대율</div>
                             <div class="board-number flex-160">
                                 <text class="-data-response-rate"><fmt:formatNumber value="${data.responseRate}" pattern="#.#"/></text>
                                 %

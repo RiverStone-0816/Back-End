@@ -132,6 +132,11 @@ public class DashboardController extends BaseController {
         val peerToUserId = new HashMap<String, String>();
         monitApiInterface.listDashboard(new MonitControlSearchRequest()).forEach(e -> e.getPerson().forEach(e2 -> peerToUserId.put(e2.getPeer(), e2.getId())));
         model.addAttribute("peerToUserId", peerToUserId);
+
+        val peerToGroupTreeName = new HashMap<String, String>();
+        monitApiInterface.listDashboard(new MonitControlSearchRequest()).forEach(e -> e.getPerson().forEach(e2 -> peerToGroupTreeName.put(e2.getPeer(), e.getGroupTreeName())));
+        model.addAttribute("peerToGroupTreeName", peerToGroupTreeName);
+
         model.addAttribute("peerToIsStat", userApiInterface.list(new PersonSearchRequest()).stream().filter(e -> StringUtils.isNotEmpty(e.getPeer())).collect(Collectors.toMap(PersonSummaryResponse::getPeer, PersonSummaryResponse::getIsStat)));
 
         model.addAttribute("statusCodes", companyApiInterface.getMemberStatusCodes().stream().collect(Collectors.toMap(CmpMemberStatusCode::getStatusNumber, CmpMemberStatusCode::getStatusName)));

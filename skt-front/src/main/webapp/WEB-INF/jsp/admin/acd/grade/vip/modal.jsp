@@ -26,7 +26,17 @@
                 <div class="four wide column"><label class="control-label">번호</label></div>
                 <div class="twelve wide column">
                     <form:hidden path="grade"/>
-                    <div class="ui input fluid"><form:input path="gradeNumber"/></div>
+                    <div class="ui input fluid">
+                        <c:choose>
+                            <c:when test="${entity != null}">
+                                <form:hidden path="gradeNumber"/>
+                                ${entity.gradeNumber}
+                            </c:when>
+                            <c:otherwise>
+                                <form:input path="gradeNumber" cssClass="-input-numerical"/>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
                 </div>
             </div>
             <div class="row">

@@ -50,7 +50,7 @@
                         <c:choose>
                             <c:when test="${list.size() > 0}">
                                 <c:forEach var="e" items="${list}" varStatus="status">
-                                    <tr data-id="${g.htmlQuote(e.context)}">
+                                    <tr data-id="${g.htmlQuote(e.seq)}">
                                         <td>
                                             <div class="ui radio checkbox">
                                                 <input type="radio" name="radio">
@@ -62,7 +62,7 @@
                                         <td>
                                             <c:if test="${e.isWebVoice == 'Y'}">
                                                 <div class="ui form">
-                                                    <button class="ui button mini compact" onclick="popupVisualArsModal('${g.htmlQuote(e.context)}')">보이는 ARS</button>
+                                                    <button class="ui button mini compact" onclick="popupVisualArsModal('${g.htmlQuote(e.seq)}')">보이는 ARS</button>
                                                 </div>
                                             </c:if>
                                         </td>
@@ -71,7 +71,7 @@
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="4" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <td colspan="5" class="null-data">조회된 데이터가 없습니다.</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>
@@ -96,17 +96,17 @@
 
     <tags:scripts>
         <script>
-            function popupModal(context) {
-                popupReceivedHtml('/admin/service/context/' + encodeURIComponent(context || 'new') + '/modal', 'modal-context');
+            function popupModal(seq) {
+                popupReceivedHtml('/admin/service/context/' + encodeURIComponent(seq || 'new') + '/modal', 'modal-context');
             }
 
-            function popupVisualArsModal(context) {
-                popupReceivedHtml('/admin/service/context/' + encodeURIComponent(context) + '/modal-visual-ars', 'modal-visual-ars');
+            function popupVisualArsModal(seq) {
+                popupReceivedHtml('/admin/service/context/' + encodeURIComponent(seq) + '/modal-visual-ars', 'modal-visual-ars');
             }
 
-            function deleteEntity(context) {
+            function deleteEntity(seq) {
                 confirm('정말 삭제하시겠습니까?').done(function () {
-                    restSelf.delete('/api/context/' + encodeURIComponent(context)).done(function () {
+                    restSelf.delete('/api/context/' + encodeURIComponent(seq)).done(function () {
                         reload();
                     });
                 });

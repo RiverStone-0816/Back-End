@@ -43,7 +43,7 @@
                     <div class="column">
                         <div class="board-label-vertical">
                             <div class="top flex-160">대기</div>
-                            <div class="bottom -consultant-status-count" data-value="0"></div>
+                            <div class="bottom -consultant-status-count" data-value="0" data-login="true"></div>
                         </div>
                     </div>
                     <div class="column">
@@ -97,7 +97,7 @@
                     <c:forEach var="e" items="${personStatuses}" varStatus="status">
 
                         <c:if test="${status.index % 20 == 0}">
-                            <div id="billboard-tab${(status.index / 20).intValue()}" class="sixteen wide column remove-pb billboard-tab-content current" style="position: absolute; opacity: 0; transition: 1s opacity;">
+                            <div id="billboard-tab${(status.index / 20).intValue()}" class="sixteen wide column remove-pb billboard-tab-content ${(status.index / 20).intValue()==0 ? 'current' : ''}" style="position: absolute; opacity: 0; transition: 1s opacity;">
                             <div class="ui five column grid">
                         </c:if>
 
@@ -208,11 +208,14 @@
                 _updatePersonStatus();
 
                 const _peerStatuses = values(peerStatuses);
-                $('#login-user-rate').text((_peerStatuses.filter(function (peer) {
-                    return peer.chatbot;
-                }).length / _peerStatuses.length).toFixed(1) + '%');
+                const user_rate = _peerStatuses.length === 0
+                    ? 0
+                    : (_peerStatuses.filter(function (peer) {
+                        return peer.login;
+                    }).length / _peerStatuses.length)
+                $('#login-user-rate').text(user_rate.toFixed(1) + '%');
 
-                const statusClasses = ['stay', 'call', 'after', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest', 'rest'];
+                const statusClasses = ['stay', 'call', 'after', 'rest', 'other', 'rest', 'rest', 'rest', 'rest', 'logout'];
                 $('.-consultant-screen-status-class').each(function () {
                     const p = peerStatuses[$(this).attr('data-peer')];
                     if (!p)
@@ -220,9 +223,7 @@
 
                     $(this).attr('data-value', p.status);
 
-                    statusClasses.map(function (c) {
-                        $(this).removeClass(c);
-                    });
+                    $(this).removeClass(statusClasses);
                     $(this).addClass(statusClasses[p.status]);
                 });
             };
@@ -268,11 +269,20 @@
                 }
             }, 5 * 1000);
 
+            const links = $('.tab-link');
+            const currentIndex = parseInt(links.filter('.current').removeClass('current').attr('data-tab').substr('billboard-tab'.length));
+            links.filter('[data-tab="billboard-tab' + ((currentIndex + 1) % links.length) + '"]').addClass('current').click();
+
             setInterval(function () {
                 const links = $('.tab-link');
                 const currentIndex = parseInt(links.filter('.current').removeClass('current').attr('data-tab').substr('billboard-tab'.length));
                 links.filter('[data-tab="billboard-tab' + ((currentIndex + 1) % links.length) + '"]').addClass('current').click();
             }, 10 * 1000);
+            setInterval(function () {
+                updatePersonStatus();
+            }, 500);
+
+
         </script>
     </tags:scripts>
 </tags:layout-screen>

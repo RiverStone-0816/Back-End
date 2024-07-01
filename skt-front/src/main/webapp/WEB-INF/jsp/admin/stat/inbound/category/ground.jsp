@@ -58,10 +58,6 @@
                                 <th>추가조건선택</th>
                                 <td colspan="3">
                                     <div class="ui checkbox">
-                                        <form:checkbox path="busy"/>
-                                        <label>콜백</label>
-                                    </div>
-                                    <div class="ui checkbox">
                                         <form:checkbox path="workHour"/>
                                         <label>업무시간</label>
                                     </div>
@@ -102,7 +98,7 @@
                     <div class="panel-section">
                         <div class="panel-section-title">
                             <div class="title-txt">
-                                인입경로별통계 <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
+                                대표번호인입경로통계 <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
                             </div>
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
@@ -114,15 +110,20 @@
                                     <th rowspan="2">서비스</th>
                                     <th rowspan="2">IVR</th>
                                     <th colspan="${maxLevel+1}">인입경로</th>
-                                    <th colspan="5">I/B 콜 현황</th>
-                                    <th colspan="7">응답호 분석</th>
-                                    <th colspan="3">통화시간 분석</th>
+                                    <th colspan="5">I/B 콜 통계</th>
+                                    <th colspan="7">응대호 분석</th>
+                                    <th colspan="3">I/B 시간 통계</th>
                                 </tr>
                                 <tr>
-                                    <c:forEach var="i" begin="1" end="${maxLevel+1}">
-                                        <th>${i}th</th>
+                                    <c:forEach var="i" begin="1" end="${maxLevel+1}" varStatus="status">
+                                        <c:choose>
+                                            <c:when test="${status.index == 1}"><th>${i}st</th></c:when>
+                                            <c:when test="${status.index == 2}"><th>${i}nd</th></c:when>
+                                            <c:when test="${status.index == 3}"><th>${i}rd</th></c:when>
+                                            <c:otherwise><th>${i}th</th></c:otherwise>
+                                        </c:choose>
                                     </c:forEach>
-                                    <th>인입콜수</th>
+                                    <th>I/B 전체콜</th>
                                     <th>무효콜</th>
                                     <th>연결요청</th>
                                     <th>응대호</th>
@@ -137,7 +138,7 @@
                                     <th>~40(초)</th>
                                     <th>40~(초)</th>
 
-                                    <th>I/B 총통화시간</th>
+                                    <th>총 통화시간</th>
                                     <th>평균 통화시간</th>
                                     <th>평균 대기시간</th>
                                 </tr>
@@ -216,7 +217,7 @@
                                     <c:otherwise>
                                         <tbody>
                                         <tr>
-                                            <td colspan="${15 + maxLevel + 1}" class="null-data">조회된 데이터가 없습니다.</td>
+                                            <td colspan="${18+ maxLevel + 1}" class="null-data">조회된 데이터가 없습니다.</td>
                                         </tr>
                                         </tbody>
                                     </c:otherwise>
@@ -240,114 +241,6 @@
             function downloadExcel() {
                 window.open(contextPath + '/admin/stat/inbound/category/_excel?${g.escapeQuote(search.query)}', '_blank');
             }
-
-            (function () {
-                const rootPathStats = {
-                    <c:forEach var="stat" items="${stat}">
-                    '${g.escapeQuote(stat.timeInformation)}|${g.escapeQuote(stat.svcName)}': {
-                        <c:forEach var="record" items="${stat.recordList}">
-                        '${g.escapeQuote(record.ivrName)}': {
-
-                            <c:forEach var="recordName" items="${record.recordNameList}" varStatus="recordNameStatus">
-
-                            <c:if test="${recordName.level == 0}">
-
-                            ${!recordNameStatus.first ? '],' : ''}
-
-                            '${g.escapeQuote(recordName.name)}': [
-                                </c:if>
-                                {
-                                    total: ${recordName.record.total},
-                                    onlyRead: ${recordName.record.onlyRead},
-                                    connReq: ${recordName.record.connReq},
-                                    success: ${recordName.record.success},
-                                    cancel: ${recordName.record.cancel},
-                                    responseRate:${recordName.record.responseRate},
-                                    svcLevelAvg: ${recordName.record.svcLevelAvg},
-                                    waitSucc_0_10: ${recordName.record.waitSucc_0_10},
-                                    waitSucc_10_20: ${recordName.record.waitSucc_10_20},
-                                    waitSucc_20_30: ${recordName.record.waitSucc_20_30},
-                                    waitSucc_30_40: ${recordName.record.waitSucc_30_40},
-                                    waitSucc_40: ${recordName.record.waitSucc_40},
-                                    billSecSum: ${recordName.record.billSecSum},
-                                    billSecAvg: ${recordName.record.billSecAvg},
-                                    waitAvg: ${recordName.record.waitAvg},
-                                },
-
-                                <c:if test="${recordNameStatus.last}">
-                            ],
-                            </c:if>
-                            </c:forEach>
-                        },
-                        </c:forEach>
-                    },
-                    </c:forEach>
-                };
-
-                console.log(rootPathStats);
-
-                keys(rootPathStats).map(function (service) {
-                    const serviceStats = rootPathStats[service];
-                    keys(serviceStats).map(function (ivr) {
-                        const ivrStats = serviceStats[ivr];
-                        keys(ivrStats).map(function (rootRecord) {
-                            const rootRecordStats = ivrStats[rootRecord];
-                            const summary = {};
-                            rootRecordStats.map(function (recordValue) {
-                                keys(recordValue).map(function (key) {
-                                    summary[key] = (summary[key] === undefined ? 0 : summary[key]) + recordValue[key];
-                                });
-                            });
-
-                            const recordsLength = rootRecordStats.length;
-                            ['responseRate', 'svcLevelAvg', 'billSecAvg', 'waitAvg'].map(function (key) {
-                                summary[key] /= recordsLength;
-                            });
-
-                            function timeFormatFromSecondsWithoutSimpleDateFormat(sec) {
-                                return zeroPad((sec / (60 * 60)).toFixed(0), 2) + ":" + zeroPad((sec / 60 % 60).toFixed(0), 2) + ":" + zeroPad((sec % 60).toFixed(0), 2);
-                            }
-
-                            const element = $('<tr/>')
-                                .append($('<td/>', {colspan: ${maxLevel + 1}, text: rootRecord}))
-                                .append($('<td/>', {text: summary.total}))
-                                .append($('<td/>', {text: summary.onlyRead}))
-                                .append($('<td/>', {text: summary.connReq}))
-                                .append($('<td/>', {text: summary.success}))
-                                .append($('<td/>', {text: summary.cancel}))
-                                .append($('<td/>', {text: (summary.responseRate / recordsLength) + '%'}))
-                                .append($('<td/>', {text: (summary.svcLevelAvg / recordsLength) + '%'}))
-                                .append($('<td/>', {text: summary.waitSucc_0_10}))
-                                .append($('<td/>', {text: summary.waitSucc_10_20}))
-                                .append($('<td/>', {text: summary.waitSucc_20_30}))
-                                .append($('<td/>', {text: summary.waitSucc_30_40}))
-                                .append($('<td/>', {text: summary.waitSucc_40}))
-                                .append($('<td/>', {text: timeFormatFromSecondsWithoutSimpleDateFormat(summary.billSecSum)}))
-                                .append($('<td/>', {text: timeFormatFromSecondsWithoutSimpleDateFormat(summary.billSecAvg / recordsLength)}))
-                                .append($('<td/>', {text: timeFormatFromSecondsWithoutSimpleDateFormat(summary.waitAvg / recordsLength)}));
-
-                            const rootElement = $('.-tr-record-name[data-record-level="0"]').filter(function () {
-                                return $(this).attr('data-service') === service;
-                            }).filter(function () {
-                                return $(this).attr('data-ivr') === ivr;
-                            }).filter(function () {
-                                return $(this).attr('data-record') === rootRecord;
-                            });
-                            let beforeElement = rootElement;
-                            for (let i = 1; i < recordsLength; i++)
-                                beforeElement = beforeElement.next();
-                            beforeElement.after(element);
-
-                            rootElement.prevAll('.-lead-tr-service').first().children('[rowspan]').each(function () {
-                                $(this).attr('rowspan', parseInt($(this).attr('rowspan')) + 1);
-                            });
-                            rootElement.prevAll('.-lead-tr-ivr').first().children('[rowspan]').each(function () {
-                                $(this).attr('rowspan', parseInt($(this).attr('rowspan')) + 1);
-                            });
-                        });
-                    });
-                });
-            })();
         </script>
     </tags:scripts>
 </tags:tabContentLayout>

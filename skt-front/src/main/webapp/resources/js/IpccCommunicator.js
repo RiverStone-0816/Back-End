@@ -61,7 +61,7 @@ IpccCommunicator.prototype.connect = function (url, serverIp, companyId, userId,
 
     const _this = this;
     try {
-        this.socket = io.connect(url, {'reconnection': true, 'resource': 'socket.io'});
+        this.socket = io.connect(url, {'reconnect': true, 'resource': 'socket.io'});
         this.socket.on('connect', function () {
             _this.socket.emit('climsg_login', {
                 company_id: _this.request.companyId,
@@ -329,6 +329,9 @@ IpccCommunicator.prototype.arsConnect = function (dtmfType, memberNo) {
         this.send("CMD|ARS_CONNECT|" + typeCode + this.peer.phonePeer + memberNo);
     }
 };
+IpccCommunicator.prototype.arsCert = function(userPhone,userIdx,mainId){
+    this.send("CMD|ARS_CERT|"+ userPhone +","+ userIdx +","+ mainId)
+}
 IpccCommunicator.prototype.clickByCampaign = function (cid, number, type, typeId, customId) {
     this.send("CMD|CLICKBYCAMPAIGN|" + cid + "," + number + "," + (type || 'TAB') + "," + typeId + "," + (this.request.userId + '_' + moment().format('YYYYMMDDHHmmss') + "," + (customId || '')));
 };

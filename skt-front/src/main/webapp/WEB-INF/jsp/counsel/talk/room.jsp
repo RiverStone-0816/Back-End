@@ -51,7 +51,7 @@
                                     <div class="chat">
                                         <div class="bubble">
                                             <p class="txt-chat">
-                                                <audio controls src="${url}"></audio>
+                                                <audio data-src="${url}" controls></audio>
                                             </p>
                                         </div>
                                     </div>

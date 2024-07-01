@@ -29,8 +29,6 @@
                 <div class="panel-heading">
                     <div class="pull-left">
                         <h3 class="panel-total-count">전체 <span>${list.size()}</span> 건</h3>
-                    </div>
-                    <div class="pull-right">
                         <button class="ui basic button" onclick="popupModal()">추가</button>
                     </div>
                 </div>

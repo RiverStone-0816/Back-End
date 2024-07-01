@@ -13,7 +13,7 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<select id="user-custom-info" onchange="loadCustomInput(this.selectedOptions[0].getAttribute('data-group-id'), this.selectedOptions[0].getAttribute('data-custom-id'), this.value);">
+<select id="user-custom-info" onchange="loadCallingInfo(this.selectedOptions[0].getAttribute('data-group-id'), this.selectedOptions[0].getAttribute('data-custom-id'), this.value);">
     <option value="" label="">고객정보 선택</option>
     <c:forEach var="e" items="${list}">
         <option value="${e.channel_data}" data-group-id="${e.maindb_group_id}" data-custom-id="${e.maindb_custom_id}">[${e.groupName}]${e.maindb_custom_name}</option>

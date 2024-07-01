@@ -50,7 +50,7 @@
             <c:if test="${(entity == null && form.parentSeq == null) || (entity != null && entity.treeName.split('[_]')[1] == null)}">
                 <c:if test="${form.introSoundCode != null && form.introSoundCode != 'TTS'}">
                     <div class="row">
-                        <div class="four wide column">
+                        <div class="four wide column remove-pr">
                             <label class="control-label">인트로음원</label>
                             <button type="button" class="ui icon button mini compact -sound-download -play-trigger" data-sound-input=".-input[data-name=introSoundCode]"
                                     data-tts-input=".-input[data-name=introTtsData]">
@@ -65,8 +65,8 @@
                         <div class="twelve wide column">
                             <div class="ui form">
                                 <c:forEach var="e" items="${sounds}">
-                                    <c:if test="${e.key == form.introSoundCode}">
-                                        <text class="-input" data-name="introSoundCode" data-value="${g.escapeQuote(e.key)}">${g.htmlQuote(e.value)}</text>
+                                    <c:if test="${e.seq == form.introSoundCode}">
+                                        <text class="-input" data-name="introSoundCode" data-value="${g.escapeQuote(e.seq)}">${g.htmlQuote(e.soundName)}</text>
                                     </c:if>
                                 </c:forEach>
                             </div>
@@ -75,7 +75,7 @@
                 </c:if>
                 <c:if test="${form.introSoundCode == 'TTS'}">
                     <div class="row -intro-tts-data">
-                        <div class="four wide column">
+                        <div class="four wide column remove-pr">
                             <label class="control-label">인트로음원(TTS)</label>
                             <button type="button" class="ui icon button mini compact -sound-download -play-trigger" data-sound-input=".-input[data-name=introSoundCode]"
                                     data-tts-input=".-input[data-name=introTtsData]">
@@ -133,8 +133,8 @@
                     <div class="twelve wide column">
                         <div class="ui form">
                             <c:forEach var="e" items="${sounds}">
-                                <c:if test="${e.key == form.soundCode}">
-                                    <text class="-input" data-name="soundCode" data-value="${g.escapeQuote(e.key)}">${g.htmlQuote(e.value)}</text>
+                                <c:if test="${e.seq == form.soundCode}">
+                                    <text class="-input" data-name="soundCode" data-value="${g.escapeQuote(e.seq)}">${g.htmlQuote(e.soundName)}</text>
                                 </c:if>
                             </c:forEach>
                         </div>
@@ -186,8 +186,8 @@
                     <div class="twelve wide column">
                         <div class="ui form">
                             <c:forEach var="e" items="${queues}">
-                                <c:if test="${entity != null && entity.typeData != null && entity.typeData.split('[|]')[form.type == CONNECT_HUNT_NUMBER ? 0 : 1] == e.key}">
-                                    ${g.htmlQuote(e.value)}
+                                <c:if test="${entity != null && entity.typeData != null && entity.typeData.split('[|]')[form.type == CONNECT_HUNT_NUMBER ? 0 : 1] == e.number}">
+                                    ${g.htmlQuote(e.hanName)} (${g.htmlQuote(e.number)})
                                 </c:if>
                             </c:forEach>
                         </div>
@@ -313,12 +313,18 @@
             return;
 
         if (sound !== 'TTS') {
-            const src = "${g.escapeQuote(apiServerUrl)}/api/v1/admin/sounds/ars/" + sound + "/resource?token=${g.escapeQuote(accessToken)}";
-            $('<a/>', {href: src, target: '_blank', style: 'display: none;'}).appendTo('body').click();
+            const src = "${pageContext.request.contextPath}/api/ars/id/" + sound + "/resource?mode=DOWN";
+            const link = document.createElement("a");
+            link.href = src;
+            link.click();
+            link.remove();
         } else if (tts) {
             restSelf.post('/api/sounds-editor/pre-listen', {playSpeed: 100, comment: tts}).done(function (response) {
                 const src = $.addQueryString('${g.escapeQuote(apiServerUrl)}' + response.data, {token: '${g.escapeQuote(accessToken)}', ___t: new Date().getTime()});
-                $('<a/>', {href: src, target: '_blank', style: 'display: none;'}).appendTo('body').click();
+                const link = document.createElement("a");
+                link.href = src;
+                link.click();
+                link.remove();
             });
         }
     });
@@ -337,14 +343,14 @@
             return;
 
         if (sound !== 'TTS') {
-            const src = "${g.escapeQuote(apiServerUrl)}/api/v1/admin/sounds/ars/" + sound + "/resource?token=${g.escapeQuote(accessToken)}";
-            const audio = $('<audio controls/>').attr('src', src);
+            const src = "${pageContext.request.contextPath}/api/ars/id/" + sound + "/resource?mode=PLAY";
+            const audio = $('<audio controls/>').attr('data-src', src);
             player.append(audio);
             maudio({obj: audio[0], fastStep: 10});
         } else if (tts) {
             restSelf.post('/api/sounds-editor/pre-listen', {playSpeed: 100, comment: tts}).done(function (response) {
                 const src = $.addQueryString('${g.escapeQuote(apiServerUrl)}' + response.data, {token: '${g.escapeQuote(accessToken)}', ___t: new Date().getTime()});
-                const audio = $('<audio controls/>').attr('src', src);
+                const audio = $('<audio controls/>').attr('data-src', src);
                 player.append(audio);
                 maudio({obj: 'audio', fastStep: 10});
             });

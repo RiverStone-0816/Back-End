@@ -113,7 +113,7 @@
                 </tr>
                 <tr>
                     <th>최종로그인 시간</th>
-                    <td><label id="last-login-time"></td>
+                    <td><label id="last-login-time"></label></td>
                 </tr>
                 <tr>
                     <th>최종로그인 IP</th>

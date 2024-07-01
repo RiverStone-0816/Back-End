@@ -22,7 +22,7 @@
         <div class="start">
             <div class="logo">
                 <h1>
-                    <a href="<c:url value="/"/>"><img src="<c:url value="/resources/images/logo.png"/>" alt="logo"><%--<img src="<c:url value="/resources/images/logo_eicn.png"/>" alt="logo">--%></a>
+                    <a href="<c:url value="/"/>"><img src="<c:url value="/resources/images/logo.png"/>" alt="logo"></a>
                 </h1>
             </div>
             <div class="side-box">
@@ -58,7 +58,7 @@
                     <button class="ui button phone-forwarded" data-inverted="" data-tooltip="호전환" data-position="bottom center"></button>
                 </div>
 
-                <div class="call-forwarded">
+                <div class="call-forwarded" style="height: 800px;">
                     <div class="header">
                         호전환
                         <button class="call-forwarded-close"><img src="<c:url value="/resources/images/close.svg"/>" alt="close"></button>
@@ -94,6 +94,7 @@
                         </c:choose>
                     </c:if>
                 </c:forEach>
+                <li><a href="javascript:popupBookmark()" class="bookmark-btn">즐겨찾기</a></li>
             </ul>
             <c:if test="${hasExtension && isStat}">
                 <ul class="gnb-ul2 -counsel-panel">
@@ -116,7 +117,7 @@
             <c:if test="${g.usingServices.contains('DSHB')}">
             <a class="ui button basic small -menu-page" href="<c:url value="/admin/dashboard/total"/>">대쉬보드</a>
             </c:if>
-            <c:if test="${g.usingServices.contains('DSP')}">
+            <c:if test="${g.usingServices.contains('DSP') && 'B|A|J'.contains(g.user.idType) }">
                 <a class="ui button basic small -menu-page" href="<c:url value="/admin/monitor/screen/config"/>">전광판</a>
             </c:if>
             <c:if test="${hasExtension && isStat}">
@@ -169,6 +170,12 @@
             }
         }
 
+        $('#calendar').click(function (){
+            $('#main-content-a').attr('src','/user-schedule/')
+        });
+
+
+
         $('#button-bell-toggle').click(function () {
             if ($(this).hasClass('bell')) {
                 $(this).removeClass('bell').addClass('bell-off');
@@ -203,6 +210,10 @@
             popupDraggableModalFromReceivedHtml('/counsel/modal-bookmark', 'modal-bookmark');
         }
 
+        function popupUserSchedule() {
+            $('#main-content-a').attr('src',contextPath + '/user-schedule/');
+        }
+
         $('.accordion .team-title').click(function () {
             $(this).siblings('.team-list').toggle();
         })
@@ -232,7 +243,17 @@
                         menuCode: '${g.escapeQuote(e2.menuCode)}',
                         menuName: '${g.escapeQuote(e2.menuName)}',
                         menuActionExeId: '${g.escapeQuote(e2.menuActionExeId)}',
-                        service: '${g.escapeQuote(e2.service)}'
+                        service: '${g.escapeQuote(e2.service)}',
+                        actionType: '${g.escapeQuote(e2.actionType)}'
+                    },
+                    </c:if>
+                    <c:if test="${e2.viewYn == 'Y' && e2.actionType == 'MENU' && (e2.menuName=='공지사항' || e2.menuName=='지식관리' || e2.menuName=='일정관리')}">
+                    {
+                        menuCode: '${g.escapeQuote(e2.menuCode)}',
+                        menuName: '${g.escapeQuote(e2.menuName)}',
+                        menuActionExeId: '${g.escapeQuote(e2.menuActionExeId)}',
+                        service: '${g.escapeQuote(e2.service)}',
+                        actionType: '${g.escapeQuote(e2.actionType)}'
                     },
                     </c:if>
                     </c:forEach>

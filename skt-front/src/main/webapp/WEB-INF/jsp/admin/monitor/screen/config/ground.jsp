@@ -30,8 +30,10 @@
                         <h3 class="panel-total-count">전체 <span>${list.size()}</span> 건</h3>
                         <div class="ui basic buttons">
                             <button class="ui basic button" onclick="popupModal()">추가</button>
+                            <c:if test="${'B|A|J'.contains(g.user.idType)}">
                             <button class="ui basic button -control-entity" data-entity="ScreenConfig" style="display: none;" onclick="popupModal(getEntityId('ScreenConfig'))">수정</button>
                             <button class="ui basic button -control-entity" data-entity="ScreenConfig" style="display: none;" onclick="deleteEntity(getEntityId('ScreenConfig'))">삭제</button>
+                            </c:if>
                         </div>
                     </div>
                 </div>

@@ -38,7 +38,7 @@
 
     <div class="-counsel-content-panel consult-right-panel" data-type="COUNSEL" style="display: none;">
         <div id="custom-input-panel" class="top-area">
-            <div class="panel top remove-mb panel-resizable -vertical-resizable">
+            <div class="panel top remove-mb panel-resizable -vertical-resizable" data-resizable-max-height="400">
                 <div id="call-custom-input-container">
                     <div id="call-custom-input"></div>
                 </div>
@@ -51,7 +51,7 @@
         </div>
 
         <div id="counseling-input-panel" class="middle-area">
-            <div class="panel remove-mb panel-resizable -vertical-resizable">
+            <div class="panel remove-mb panel-resizable -vertical-resizable" data-resizable-max-height="550">
                 <div id="call-counseling-input-container">
                     <div id="call-counseling-input"></div>
                 </div>
@@ -61,37 +61,6 @@
                     </div>
                 </c:if>
             </div>
-        </div>
-
-        <div class="flex-100 bottom-area">
-            <div class="ui top attached tabular menu line light flex remove-margin">
-                <button class="item active" data-tab="todo">To-Do</button>
-                <button class="item" data-tab="consult-history">상담이력</button>
-                <%--FIXME:필요시 다음과 같이 추가--%>
-<%--                <button class="item" data-tab="etc-lookup">기타조회</button>--%>
-            </div>
-            <div class="ui bottom attached tab segment remove-margin overflow-overlay active" data-tab="todo">
-                <jsp:include page="/counsel/todo-list"/>
-            </div>
-            <div class="ui bottom attached tab segment remove-margin overflow-overlay" data-tab="consult-history">
-                <table class="ui celled table unstackable">
-                    <thead>
-                    <tr>
-                        <c:if test="${serviceKind.equals('SC')}">
-                            <th>채널</th>
-                        </c:if>
-                        <th>수/발신</th>
-                        <th>상담등록시간</th>
-                        <th>전화번호</th>
-                        <th>상담톡아이디</th>
-                        <th>상담원</th>
-                        <th>자세히</th>
-                    </tr>
-                    </thead>
-                    <tbody id="counsel-list"></tbody>
-                </table>
-            </div>
-            <div class="ui bottom attached tab segment remove-margin" data-tab="etc-lookup">기타조회</div>
         </div>
     </div>
 
@@ -487,9 +456,8 @@
                     if (counselDisplayConfiguration.useCallNoticePopup)
                         viewCallReception();
 
-                    loadCustomInput(null, null, phoneNumber).done(function () {
-                        $('.item[data-tab="counsel-list"]').click();
-                    });
+                    loadCustomInput(null, null, phoneNumber);
+                    $('.item[data-tab="counsel-list"]').click();
                 } else if (kind === 'PICKUP') { //픽업
                     audioId = data8;
                     phoneNumber = data1;
@@ -512,9 +480,8 @@
                     /*if (counselDisplayConfiguration.useCallNoticePopup)
                         viewCallReception();
 */
-                    loadCustomInput(null, null, phoneNumber).done(function () {
-                        $('.item[data-tab="counsel-list"]').click();
-                    });
+                    loadCustomInput(null, null, phoneNumber);
+                    $('.item[data-tab="counsel-list"]').click();
                 } else if (kind === 'ID') { // 인바운드 통화시작
                     audioId = data8;
                     phoneNumber = data1;
@@ -538,9 +505,8 @@
                         $('#call-status').text('[발신] 전화벨 울림 [' + moment().format('HH시 mm분') + ']');
                         $('#user-call-history').empty().append('<option>통화진행중</option>');
 
-                        loadCustomInput(null, null, phoneNumber).done(function () {
-                            $('.item[data-tab="counsel-list"]').click();
-                        });
+                        loadCustomInput(null, null, phoneNumber);
+                        $('.item[data-tab="counsel-list"]').click();
                     }
                 } else if (kind === 'OD') { // 아웃바운드 통화시작
                     audioId = data8;
@@ -558,7 +524,7 @@
                 // IR 이후, 곧장 HANGUP이 일어나면 modal의 transition때문에 옳바르게 dimmer가 상태변화되지 못한다.
                 setTimeout(function () {
                     $('#modal-calling').modalHide();
-                }, 1000);
+                }, 400);
 
                 //HANGUP이 일어나고 DB에 데이터가 쌓이는 시간 감안
                 setTimeout(function () {
@@ -572,6 +538,14 @@
             .on('DTMFREADEVENT', function (message, kind) {
             })
             .on('PDSMEMBERSTATUS', function (message, kind) {
+            })
+            .on('HOLD_START', function (message, kind, data1) {
+                if(kind === "OK")
+                    $(".-call-hold").addClass("active");
+            })
+            .on('HOLD_STOP', function (message, kind, data1) {
+                if(kind === "OK")
+                    $(".-call-hold").removeClass("active");
             })
             .on('MSG', function (message, kind, data1, data2) {
                 if (!data1 || !data2)
@@ -624,10 +598,10 @@
             restSelf.get('/api/auth/socket-info').done(function (response) {
                 const fromUi = "EICN_IPCC";
                 if (response.data.extension != null)
-                    ipccCommunicator.connect(response.data.callControlSocketUrl, response.data.pbxHost, response.data.companyId, response.data.userId, response.data.extension, response.data.password, response.data.idType, fromUi, response.data.isMulti);
+                    ipccCommunicator.connect(response.data.callControlSocketUrl, response.data.pbxHost, response.data.companyId, response.data.userId, response.data.extension, hex_sha512(response.data.password), response.data.idType, fromUi, response.data.isMulti);
 
                 <c:if test="${user.isTalk.equals('Y')}">
-                talkCommunicator.connect(response.data.talkSocketUrl, response.data.companyId, response.data.userId, response.data.password, "USER", response.data.idType);
+                talkCommunicator.connect(response.data.talkSocketUrl, response.data.companyId, response.data.userId, hex_sha512(response.data.password), "USER", response.data.idType);
                 </c:if>
             });
 
@@ -658,10 +632,10 @@
 
                 if ($(this).hasClass("active")) {
                     ipccCommunicator.stopHolding();
-                    $(this).removeClass("active");
+                    //$(this).removeClass("active");
                 } else {
                     ipccCommunicator.startHolding();
-                    $(this).addClass("active");
+                    //$(this).addClass("active");
                 }
             });
 

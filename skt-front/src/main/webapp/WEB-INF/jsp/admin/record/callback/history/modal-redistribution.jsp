@@ -36,7 +36,7 @@
                         <div class="from-panel">
                             <select class="form-control -right-selector" size="8" multiple="multiple">
                                 <c:forEach var="e" items="${addOnPersons}">
-                                    <option value="${g.htmlQuote(e.id)}">${g.htmlQuote(e.id)} ${g.htmlQuote(e.idName)}</option>
+                                    <option value="${g.htmlQuote(e.id)}">${g.htmlQuote(e.idName)} - ${g.htmlQuote(e.companyTree.groupName)}</option>
                                 </c:forEach>
                             </select>
                         </div>

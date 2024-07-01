@@ -31,7 +31,7 @@
                 </div>
                 <div class="panel-body overflow-unset">
                     <div class="search-area">
-                        <table class="ui celled table compact unstackable">
+                        <table class="ui celled table compact structured unstackable">
                             <tr>
                                 <th>주기설정</th>
                                 <td colspan="3">
@@ -58,10 +58,6 @@
                                 <th>추가조건선택</th>
                                 <td colspan="3">
                                     <div class="ui checkbox">
-                                        <form:checkbox path="busy" value="Y"/>
-                                        <label>콜백</label>
-                                    </div>
-                                    <div class="ui checkbox">
                                         <form:checkbox path="workHour" value="Y"/>
                                         <label>업무시간</label>
                                     </div>
@@ -78,7 +74,7 @@
                             </tr>
                             <tr>
                                 <th>부서조회</th>
-                                <td colspan="3">
+                                <td colspan="5">
                                     <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group"
                                          data-clear=".-clear-group">
                                         <button type="button" class="ui icon button mini brand compact -select-group">
@@ -105,15 +101,15 @@
                                         </button>
                                     </div>
                                 </td>
-                                <th>상담원선택</th>
+                             <%--   <th>상담원선택</th>
                                 <td colspan="3">
                                     <div class="ui form">
                                         <form:select path="personIds" multiple="multiple" class="ui fluid dropdown">
                                             <form:option value="" label="상담원선택"/>
-                                            <form:options items="${persons}" itemValue="id" itemLabel="idName"/>
+                                             <form:options items="${persons}" itemValue="id" itemLabel="idName"/>
                                         </form:select>
                                     </div>
-                                </td>
+                                </td>--%>
                             </tr>
                         </table>
                         <div class="button-area remove-mb">
@@ -139,17 +135,17 @@
                                 <tr>
                                     <th rowspan="2">날짜/시간</th>
                                     <th rowspan="2">수신그룹</th>
-                                    <th colspan="8">I/B</th>
+                                    <th colspan="8">I/B 통계</th>
                                 </tr>
                                 <tr>
-                                    <th>I/B 연결요청</th>
+                                    <th>연결요청</th>
                                     <th>응대호</th>
                                     <th>포기호</th>
                                     <th>콜백</th>
-                                    <th>I/B 총통화시간</th>
-                                    <th>평균통화시간</th>
-                                    <th>응답률</th>
+                                    <th>호응답률</th>
                                     <th>서비스레벨 호응답률</th>
+                                    <th>총 통화시간</th>
+                                    <th>평균 통화시간</th>
                                 </tr>
                                 </thead>
                                 <c:choose>
@@ -167,10 +163,10 @@
                                                         <td>${e.inSuccess}</td>
                                                         <td>${e.cancel}</td>
                                                         <td>${e.callbackCount}</td>
+                                                        <td>${e.avgRateValue}%</td>
+                                                        <td>${e.serviceLevelOk}%</td>
                                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.inBillSecSum)}</td>
                                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.avgBillSec)}</td>
-                                                        <td>${e.avgRateValue}%</td>
-                                                        <td>${e.getSvcLevelAvg()}%</td>
                                                     </tr>
                                                 </c:forEach>
                                                 </tr>
@@ -185,10 +181,10 @@
                                             <td>${total.inSuccess}</td>
                                             <td>${total.cancel}</td>
                                             <td>${total.callbackCount}</td>
+                                            <td>${String.format("%.1f", total.avgRateValue)}%</td>
+                                            <td>${total.serviceLevelOk}%</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.inBillSecSum)}</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.avgBillSec)}</td>
-                                            <td>${String.format("%.1f", total.avgRateValue)}%</td>
-                                            <td>${total.getSvcLevelAvg()}%</td>
                                         </tr>
                                         </tfoot>
                                     </c:when>
@@ -205,7 +201,7 @@
                     <div class="panel-section">
                         <div class="panel">
                             <div class="panel-heading">
-                                <text class="content">총통화그래프</text>
+                                <text class="content">상담그룹별통계 그래프</text>
                             </div>
                             <div class="panel-body pd-1em">
                                 <div class="-chart" id="total-call-chart" style="height: 300px;"></div>

@@ -57,9 +57,9 @@
             </div>
             <c:if test="${(entity == null && form.parentSeq == null) || (entity != null && entity.treeName.split('[_]')[1] == null)}">
                 <div class="row">
-                    <div class="four wide column">
+                    <div class="four wide column remove-pr">
                         <label class="control-label">인트로음원선택</label>
-                        <button type="button" class="ui icon button mini compact -sound-download -play-trigger" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
+                        <button type="button" class="ui icon button mini compact -sound-download" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
                             <i class="arrow down icon"></i>
                         </button>
                         <button type="button" class="ui icon button mini compact -sound-play -play-trigger" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
@@ -113,7 +113,7 @@
                                                             CONNECT_INNER_NUMBER_DIRECTLY]}"/>
                 <div class="four wide column">
                     <label class="control-label">음원선택${requireSoundMenus.contains(form.type) ? '(*)' : ''}</label>
-                    <button type="button" class="ui icon button mini compact -sound-download -play-trigger" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
+                    <button type="button" class="ui icon button mini compact -sound-download" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
                         <i class="arrow down icon"></i>
                     </button>
                     <button type="button" class="ui icon button mini compact -sound-play -play-trigger" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
@@ -168,7 +168,7 @@
                             <select name="typeDataStrings" data-multiple="multiple">
                                 <option value="" label="선택안함"></option>
                                 <c:forEach var="e" items="${queues}">
-                                    <option value="${e.number}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[form.type == CONNECT_HUNT_NUMBER ? 0 : 1] == e.number ? 'selected' : ''}>${g.htmlQuote(e.hanName)}</option>
+                                    <option value="${e.number}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[form.type == CONNECT_HUNT_NUMBER ? 0 : 1] == e.number ? 'selected' : ''}>${g.htmlQuote(e.hanName)} (${g.htmlQuote(e.number)})</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -307,12 +307,18 @@
             return;
 
         if (sound !== 'TTS') {
-            const src = "${g.escapeQuote(apiServerUrl)}/api/v1/admin/sounds/ars/" + sound + "/resource?token=${g.escapeQuote(accessToken)}";
-            $('<a/>', {href: src, target: '_blank', style: 'display: none;'}).appendTo('body').click();
+            const src = "${pageContext.request.contextPath}/api/ars/id/" + sound + "/resource?mode=DOWN";
+            const link = document.createElement("a");
+            link.href = src;
+            link.click();
+            link.remove();
         } else if (tts) {
             restSelf.post('/api/sounds-editor/pre-listen', {playSpeed: 100, comment: tts}).done(function (response) {
                 const src = $.addQueryString('${g.escapeQuote(apiServerUrl)}' + response.data, {token: '${g.escapeQuote(accessToken)}', ___t: new Date().getTime()});
-                $('<a/>', {href: src, target: '_blank', style: 'display: none;'}).appendTo('body').click();
+                const link = document.createElement("a");
+                link.href = src;
+                link.click();
+                link.remove();
             });
         }
     });
@@ -331,14 +337,14 @@
             return;
 
         if (sound !== 'TTS') {
-            const src = "${g.escapeQuote(apiServerUrl)}/api/v1/admin/sounds/ars/" + sound + "/resource?token=${g.escapeQuote(accessToken)}";
-            const audio = $('<audio controls/>').attr('src', src);
+            const src = "${pageContext.request.contextPath}/api/ars/id/" + sound + "/resource?mode=PLAY";
+            const audio = $('<audio controls/>').attr('data-src', src);
             player.append(audio);
             maudio({obj: audio[0], fastStep: 10});
         } else if (tts) {
             restSelf.post('/api/sounds-editor/pre-listen', {playSpeed: 100, comment: tts}).done(function (response) {
                 const src = $.addQueryString('${g.escapeQuote(apiServerUrl)}' + response.data, {token: '${g.escapeQuote(accessToken)}', ___t: new Date().getTime()});
-                const audio = $('<audio controls/>').attr('src', src);
+                const audio = $('<audio controls/>').attr('data-src', src);
                 player.append(audio);
                 maudio({obj: 'audio', fastStep: 10});
             });

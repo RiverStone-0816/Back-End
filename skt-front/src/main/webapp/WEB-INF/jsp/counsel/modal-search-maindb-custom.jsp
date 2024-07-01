@@ -15,11 +15,11 @@
 <%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 <%--@elvariable id="accessToken" type="java.lang.String"--%>
 
-<div class="ui modal inverted large">
+<div class="ui modal inverted large" style="height: calc(80vh); overflow-x: hidden">
     <i class="close icon"></i>
     <div class="header">고객DB검색</div>
 
-    <div class="content rows scrolling">
+    <div class="content rows scrolling frame-fixed-modal">
         <jsp:include page="/counsel/modal-search-maindb-custom-body"/>
     </div>
 </div>

@@ -266,17 +266,17 @@
         let objText = ui.find('[data-value="Y"]');
         for (let i = 0; i < objText.length; i++) {
             if (objText[i].getAttribute('data-type') == 'text') {
-                if (objText[i].value.trim() == "") {
+                if (objText[i].value.trim() === "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
                     return;
                 }
             } else if (objText[i].getAttribute('data-type') == 'select') {
-                if (objText[i].options[objText[i].selectedIndex].value == "") {
+                if (objText[i].value.trim() === "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 선택 해 주세요.");
                     return;
                 }
             } else {
-                if (objText[i].value.trim() == "") {
+                if (objText[i].value.trim() === "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
                     return;
                 }

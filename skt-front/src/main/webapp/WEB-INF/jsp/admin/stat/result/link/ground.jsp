@@ -70,7 +70,7 @@
                     <div class="panel-section">
                         <div class="panel-section-title">
                             <div class="title-txt">
-                                상담결과통계(연계) <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
+                                상담코드통계[단계형] <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
                             </div>
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
@@ -121,7 +121,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <tr>
-                                            <td colspan="${3 + dates.size()}" class="null-data">조회된 데이터가 없습니다.</td>
+                                            <td colspan="${6 + dates.size()}" class="null-data">조회된 데이터가 없습니다.</td>
                                         </tr>
                                     </c:otherwise>
                                 </c:choose>

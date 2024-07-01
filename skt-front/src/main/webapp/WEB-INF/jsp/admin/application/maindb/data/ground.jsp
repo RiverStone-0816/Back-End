@@ -81,8 +81,13 @@
                                                 <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                                             </div>
                                         </div>
-                                        <div class="ip-wrap -search-type-sub-input">
+                                        <div class="ip-wrap -search-type-sub-input" data-type="TEXT">
                                             <form:input path="keyword"/>
+                                        </div>
+                                        <div class="ip-wrap -search-type-sub-input" data-type="CODE">
+                                            <div class="ui form">
+                                                <form:select path="code"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
@@ -107,7 +112,9 @@
                             <button class="ui button -control-entity" data-entity="MaindbData" style="display: none;"
                                     onclick="popupModal(getEntityId('MaindbData'), getEntityId('MaindbData', 'group'))">수정
                             </button>
+                            <c:if test="${'A|J'.contains(g.user.idType)}">
                             <button class="ui button -control-entity" data-entity="MaindbData" style="display: none;" onclick="deleteEntity(getEntityId('MaindbData'))">삭제</button>
+                            </c:if>
                         </div>
                     </div>
                     <div class="pull-right">
@@ -115,105 +122,107 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured border-top num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbData">
-                        <thead>
-                        <tr>
-                            <th rowspan="2">선택</th>
-                            <th rowspan="2">번호</th>
-                            <th colspan="2">기본정보</th>
-                            <th colspan="${customDbType.fields.size()}">고객정보</th>
-                            <th colspan="3">채널정보</th>
-                        </tr>
-                        <tr>
-                            <th class="one wide">데이터생성일</th>
-                            <th>담당자</th>
+                    <div class="overflow-auto">
+                        <table class="ui celled table structured border-top num-tbl unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbData">
+                            <thead>
+                            <tr>
+                                <th rowspan="2">선택</th>
+                                <th rowspan="2">번호</th>
+                                <th colspan="2">기본정보</th>
+                                <th colspan="${customDbType.fields.size()}">고객정보</th>
+                                <th colspan="3">채널정보</th>
+                            </tr>
+                            <tr>
+                                <th class="one wide">데이터생성일</th>
+                                <th>담당자</th>
 
-                            <c:forEach var="field" items="${customDbType.fields}">
-                                <th>${g.htmlQuote(field.fieldInfo)}</th>
-                            </c:forEach>
-
-                            <th>전화번호</th>
-                            <th>이메일</th>
-                            <th>채팅상담아이디</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <c:choose>
-                            <c:when test="${pagination.rows.size() > 0}">
-                                <c:forEach var="e" items="${pagination.rows}" varStatus="status">
-                                    <tr data-id="${g.htmlQuote(e.maindbSysCustomId)}" data-group="${search.groupSeq}">
-                                        <td>
-                                            <div class="ui radio checkbox">
-                                                <input type="radio" name="radio">
-                                            </div>
-                                        </td>
-                                        <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
-                                        <td><fmt:formatDate value="${e.maindbSysUploadDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                        <td>${g.htmlQuote(e.maindbSysDamdangName)}</td>
-
-                                        <c:forEach var="field" items="${customDbType.fields}">
-                                            <c:set var="value" value="${customIdToFieldNameToValueMap.get(e.maindbSysCustomId).get(field.fieldId)}"/>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${field.fieldType == 'CODE'}">
-                                                        ${field.codes.stream().filter(code -> code.codeId == value).map(code -> code.codeName).findFirst().orElse('')}
-                                                    </c:when>
-                                                    <c:when test="${field.fieldType == 'MULTICODE'}">
-                                                        <c:forEach var="v" items="${value.split(',')}">
-                                                            ${field.codes.stream().filter(code -> code.codeId == v).map(code -> code.codeName).findFirst().orElse('')}&ensp;
-                                                        </c:forEach>
-                                                    </c:when>
-                                                    <c:when test="${field.fieldType == 'IMG'}">
-                                                        <c:choose>
-                                                            <c:when test="${value.length() > 0}">
-                                                                <img class="profile-picture" src="${apiServerUrl}/api/v1/admin/application/maindb/custominfo/resource?path=${g.urlEncode(value)}&token=${accessToken}"
-                                                                     style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden;"/>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <img class="profile-picture" src="<c:url value="/resources/images/person.png"/>" style="border-radius: 50%; width: 21px; overflow: hidden;"/>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        ${g.htmlQuote(value)}
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
-                                        </c:forEach>
-
-                                        <td>
-                                            <c:forEach var="channel" items="${e.multichannelList}">
-                                                <c:if test="${channel.channelType == 'PHONE'}">
-                                                    ${g.htmlQuote(channel.channelData)}&ensp;
-                                                </c:if>
-                                            </c:forEach>
-                                        </td>
-                                        <td>
-                                            <c:forEach var="channel" items="${e.multichannelList}">
-                                                <c:if test="${channel.channelType == 'EMAIL'}">
-                                                    ${g.htmlQuote(channel.channelData)}&ensp;
-                                                </c:if>
-                                            </c:forEach>
-                                        </td>
-                                        <td>
-                                            <c:forEach var="channel" items="${e.multichannelList}">
-                                                <c:if test="${channel.channelType == 'TALK'}">
-                                                    ${g.htmlQuote(channel.channelData)}&ensp;
-                                                </c:if>
-                                            </c:forEach>
-                                        </td>
-                                    </tr>
+                                <c:forEach var="field" items="${customDbType.fields}">
+                                    <th>${g.htmlQuote(field.fieldInfo)}</th>
                                 </c:forEach>
-                            </c:when>
-                            <c:otherwise>
-                                <tr>
-                                    <td colspan="${6 + customDbType.fields.size()}" class="null-data">조회된 데이터가 없습니다.</td>
-                                </tr>
-                            </c:otherwise>
-                        </c:choose>
-                        </tbody>
-                    </table>
+
+                                <th>전화번호</th>
+                                <th>이메일</th>
+                                <th>채팅상담아이디</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <c:choose>
+                                <c:when test="${pagination.rows.size() > 0}">
+                                    <c:forEach var="e" items="${pagination.rows}" varStatus="status">
+                                        <tr data-id="${g.htmlQuote(e.maindbSysCustomId)}" data-group="${search.groupSeq}">
+                                            <td>
+                                                <div class="ui radio checkbox">
+                                                    <input type="radio" name="radio">
+                                                </div>
+                                            </td>
+                                            <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
+                                            <td><fmt:formatDate value="${e.maindbSysUploadDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                            <td>${g.htmlQuote(e.maindbSysDamdangName)}</td>
+
+                                            <c:forEach var="field" items="${customDbType.fields}">
+                                                <c:set var="value" value="${customIdToFieldNameToValueMap.get(e.maindbSysCustomId).get(field.fieldId)}"/>
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${field.fieldType == 'CODE'}">
+                                                            ${field.codes.stream().filter(code -> code.codeId == value).map(code -> code.codeName).findFirst().orElse('')}
+                                                        </c:when>
+                                                        <c:when test="${field.fieldType == 'MULTICODE'}">
+                                                            <c:forEach var="v" items="${value.split(',')}">
+                                                                ${field.codes.stream().filter(code -> code.codeId == v).map(code -> code.codeName).findFirst().orElse('')}&ensp;
+                                                            </c:forEach>
+                                                        </c:when>
+                                                        <c:when test="${field.fieldType == 'IMG'}">
+                                                            <c:choose>
+                                                                <c:when test="${value.length() > 0}">
+                                                                    <img class="profile-picture" src="${apiServerUrl}/api/v1/admin/application/maindb/custominfo/resource?path=${g.urlEncode(value)}&token=${accessToken}"
+                                                                         style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden;"/>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <img class="profile-picture" src="<c:url value="/resources/images/person.png"/>" style="border-radius: 50%; width: 21px; overflow: hidden;"/>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            ${g.htmlQuote(value)}
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
+                                            </c:forEach>
+
+                                            <td>
+                                                <c:forEach var="channel" items="${e.multichannelList}">
+                                                    <c:if test="${channel.channelType == 'PHONE'}">
+                                                        ${g.htmlQuote(channel.channelData)}&ensp;
+                                                    </c:if>
+                                                </c:forEach>
+                                            </td>
+                                            <td>
+                                                <c:forEach var="channel" items="${e.multichannelList}">
+                                                    <c:if test="${channel.channelType == 'EMAIL'}">
+                                                        ${g.htmlQuote(channel.channelData)}&ensp;
+                                                    </c:if>
+                                                </c:forEach>
+                                            </td>
+                                            <td>
+                                                <c:forEach var="channel" items="${e.multichannelList}">
+                                                    <c:if test="${channel.channelType == 'TALK'}">
+                                                        ${g.htmlQuote(channel.channelData)}&ensp;
+                                                    </c:if>
+                                                </c:forEach>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                </c:when>
+                                <c:otherwise>
+                                    <tr>
+                                        <td colspan="${7 + customDbType.fields.size()}" class="null-data">조회된 데이터가 없습니다.</td>
+                                    </tr>
+                                </c:otherwise>
+                            </c:choose>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -221,6 +230,38 @@
 
     <tags:scripts>
         <script>
+            const searchForm = $('#search-form');
+
+            searchForm.find('[name=searchType]').change(function () {
+                const type = $(this).find(':selected').attr('data-type');
+                const fieldId = $(this).find(':selected').val();
+                const subInput = $('.-search-type-sub-input').hide();
+                const codeSelect = $('#code');
+
+                $('input[name=startDate]').val('');
+                $('input[name=endDate]').val('');
+                codeSelect.empty();
+                $('#keyword').val('');
+
+                if (['DATE', 'DAY', 'DATETIME'].indexOf(type) >= 0) {
+                    subInput.filter('[data-type="DATE"]').show();
+                } else if (['CODE', 'MULTICODE'].indexOf(type) >= 0) {
+                    const codeMap = JSON.parse('${codeMap}')[fieldId];
+
+                    codeSelect.append($('<option/>', {value: '', text: '선택안함'}));
+
+                    for (const key in codeMap) {
+                        if (codeMap.hasOwnProperty(key)) {
+                            codeSelect.append($('<option/>', {value: key, text: codeMap[key]}));
+                        }
+                    }
+
+                    subInput.filter('[data-type="CODE"]').show();
+                } else {
+                    subInput.filter('[data-type="TEXT"]').show();
+                }
+            }).change();
+
             function popupModal(id, groupSeq) {
                 popupReceivedHtml('/admin/application/maindb/data/' + encodeURIComponent(id || 'new') + '/modal?groupSeq=' + groupSeq, 'modal-data');
             }
@@ -233,23 +274,20 @@
                 });
             }
 
-            $('#search-form [name=searchType]').change(function () {
-                const type = $(this).find(':selected').attr('data-type');
-                const subInput = $('.-search-type-sub-input').hide();
-
-                if (['DATE', 'DAY', 'DATETIME'].indexOf(type) >= 0) {
-                    subInput.filter('[data-type="DATE"]').show();
-                } else {
-                    subInput.filter(':not([data-type="DATE"])').show();
-                }
-            }).change();
-
             function downloadExcel() {
                 window.open(contextPath + '/admin/application/maindb/data/_excel?${g.escapeQuote(search.query)}', '_blank');
             }
             <c:if test="${customdbGroups == null}">
             alert("[고객DB그룹] 이 없습니다.");
             </c:if>
+
+            $(window).on('load', function () {
+                $('#keyword').val('${search.keyword}').trigger("change");
+                $('#code').val('${search.code}').trigger("change");
+
+                $('input[name=startDate]').val('${search.startDate}');
+                $('input[name=endDate]').val('${search.endDate}');
+            });
         </script>
     </tags:scripts>
 </tags:tabContentLayout>

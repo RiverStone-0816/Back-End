@@ -24,6 +24,8 @@
                 hanName: '${g.htmlQuote(e.hanName)}',
                 number: '${g.htmlQuote(e.number)}',
                 waitingCustomerCount: ${e.waitingCustomerCount},
+                groupCode: '${g.htmlQuote(e.groupCode)}',
+                groupTreeName: '${g.htmlQuote(e.groupTreeName)}',
                 peers: [<c:forEach var="peer" items="${e.peers}">'${g.escapeQuote(peer)}', </c:forEach>],
             },
             </c:forEach>
@@ -35,6 +37,7 @@
                 status: ${e.status},
                 login: ${e.login},
                 userId: '${peerToUserId.getOrDefault(e.peer, '')}',
+                groupTreeName: '${peerToGroupTreeName.getOrDefault(e.peer, '')}',
             },
             </c:forEach>
         };
@@ -123,10 +126,12 @@
                         for (let i = 0; i < queueNames.length; i++)
                             return queues[queueNames[i]] && queues[queueNames[i]].peers.indexOf(person.peer) >= 0 && !person.login;
                     }).length);
+
                 } else {
                     $(this).text(values(peerStatuses).filter(function (peer) {
-                        return !peer.login;
+                        return !peer.login ;
                     }).length);
+
                 }
             });
 
@@ -136,10 +141,16 @@
                 const loginFilter = $(this).attr('data-login');
                 const serviceNumber = $(this).attr('data-service');
                 const callStatuses = $(this).attr('data-call') ? $(this).attr('data-call').split(',') : null;
+                const groupCode = $(this).attr('data-groupCode')
 
                 let peerStatusesValues = values(peerStatuses).filter(function (person) {
                     return statuses.indexOf(person.status + '') >= 0;
                 });
+
+                if (groupCode)
+                    peerStatusesValues = peerStatusesValues.filter(function (person) {
+                        return person.groupTreeName.contains(groupCode) && person.groupTreeName !== '';
+                    })
 
                 if (queueName)
                     peerStatusesValues = peerStatusesValues.filter(function (person) {

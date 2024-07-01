@@ -36,17 +36,6 @@ function submitJsonData(form) {
     const _this = form;
     const $form = $(form);
 
-    const confirmMessage = $form.data('confirm-message');
-
-    if (confirmMessage)
-        confirm(confirmMessage).done(() => {
-            return execute(_this, $form)
-        })
-    else
-        return execute(_this, $form)
-}
-
-function execute(_this, $form) {
     const deferred = $.Deferred();
 
     $form.asJsonData().done(function (data) {

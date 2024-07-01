@@ -71,15 +71,14 @@
                                                     <i class="volume up icon" data-value="${e.seq}"></i>
                                                 </button>
                                                 <div class="ui popup top right">
-                                                    <div class="maudio">
-                                                        <audio controls src="${apiServerUrl}/api/v1/admin/sounds/ars/${e.seq}/resource?token=${accessToken}"></audio>
-                                                    </div>
+                                                    <audio data-src="${pageContext.request.contextPath}/api/ars/id/${g.htmlQuote(e.seq)}/resource?mode=PLAY"></audio>
                                                 </div>
                                                 <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
-                                                    <a class="ui icon button mini compact" href="${apiServerUrl}/api/v1/admin/sounds/ars/${e.seq}/resource?token=${accessToken}">
+                                                    <a class="ui icon button mini compact" href="${pageContext.request.contextPath}/api/ars/id/${g.htmlQuote(e.seq)}/resource?mode=DOWN">
                                                         <i class="arrow down icon" data-value="${e.seq}"></i>
                                                     </a>
                                                 </c:if>
+                                                <br>
                                             </div>
                                         </td>
                                     </tr>
@@ -87,7 +86,7 @@
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="5" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <td colspan="6" class="null-data">조회된 데이터가 없습니다.</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>

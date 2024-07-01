@@ -12,6 +12,7 @@
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
+<%--@elvariable id="usingServices" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
 <form:form id="call-counseling-input" modelAttribute="form" cssClass="-json-submit"
@@ -34,8 +35,8 @@
         <div class="pull-right">
             <button type="button" class="ui basic button" onclick="popupSearchCounselingHistoryModal()">상담이력</button>
             <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
-                    <button type="button" class="ui basic button" onclick="popupReservationModal()">상담예약</button>
-                    <button type="button" class="ui basic button" onclick="popupTransferModal()">상담이관</button>
+                <button type="button" class="ui basic button" onclick="popupReservationModal()">상담예약</button>
+                <button type="button" class="ui basic button" onclick="popupTransferModal()">상담이관</button>
             </c:if>
             <button type="button" class="ui button sharp light -submit-form" data-method="post"><img
                     src="<c:url value="/resources/images/save.svg"/>" alt="save">상담저장
@@ -58,203 +59,201 @@
     <div class="float-field-wrap">
         <c:set var="chargedColCount" value="${0}"/>
         <c:forEach var="field" items="${resultType.fields}" varStatus="status">
-        <c:set var="name" value="${field.fieldId.substring(resultType.kind.length() + '_'.length()).toLowerCase()}"/>
-        <c:set var="value" value="${fieldNameToValueMap.get(field.fieldId)}"/>
-
-        <c:choose>
-        <c:when test="${field.fieldType == 'MULTICODE'}">
-
-
-            <div class="float-field fluid">
-                <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label>
-                </div>
-                <div class="content">
-                    <div class="ui form flex">
-                        <select name="${name}" id="call-counseling-input-${name}" data-type="select"
-                                data-text="${g.htmlQuote(field.fieldInfo)}"
-                                data-value="${field.isneed}" multiple="multiple"
-                                class="ui fluid dropdown">
-                            <option value=""></option>
-                            <c:forEach var="e" items="${field.codes}">
-                                <c:set var="contains" value="${false}"/>
-                                <c:if test="${value != null}">
-                                    <c:forEach var="e2" items="${value.split(',')}">
-                                        <c:if test="${!contains}">
-                                            <c:set var="contains"
-                                                   value="${e2 == e.codeId}"/>
+            <c:set var="name" value="${field.fieldId.substring(resultType.kind.length() + '_'.length()).toLowerCase()}"/>
+            <c:set var="value" value="${fieldNameToValueMap.get(field.fieldId)}"/>
+            <c:choose>
+                <c:when test="${field.fieldType == 'MULTICODE'}">
+                    <div class="float-field fluid" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label>
+                        </div>
+                        <div class="content">
+                            <div class="ui form flex">
+                                <select name="${name}" id="call-counseling-input-${name}" data-type="select"
+                                        data-text="${g.htmlQuote(field.fieldInfo)}"
+                                        data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
+                                        class="ui fluid dropdown">
+                                    <option value=""></option>
+                                    <c:forEach var="e" items="${field.codes}">
+                                        <c:set var="contains" value="${false}"/>
+                                        <c:if test="${value != null}">
+                                            <c:forEach var="e2" items="${value.split(',')}">
+                                                <c:if test="${!contains}">
+                                                    <c:set var="contains"
+                                                           value="${e2 == e.codeId}"/>
+                                                </c:if>
+                                            </c:forEach>
                                         </c:if>
+                                        <option value="${g.htmlQuote(e.codeId)}" ${contains ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
                                     </c:forEach>
+                                </select>
+                                <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
+                                    <button type="button" class="ui button sharp navy ml5"
+                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-counseling-input').find('[name=${name}]').val()) ">
+                                        TIP
+                                    </button>
                                 </c:if>
-                                <option value="${g.htmlQuote(e.codeId)}" ${contains ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
-                            </c:forEach>
-                        </select>
-                        <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
-                        <button type="button" class="ui button sharp navy ml5"
-                                onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-counseling-input').find('[name=${name}]').val()) ">
-                            TIP
-                        </button>
-                        </c:if>
-                    </div>
-                </div>
-            </div>
-        </c:when>
-        <c:when test="${field.fieldType == 'CODE'}">
-            <div class="float-field inline">
-                <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label>
-                </div>
-                <div class="content">
-                    <div class="ui form flex">
-                        <select name="${name}" id="call-counseling-input-${name}" data-type="select"
-                                data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}">
-                            <option value=""></option>
-                            <c:forEach var="e" items="${field.codes}">
-                                <c:if test="${e.hide == 'N'}">
-                                    <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
-                                </c:if>
-                            </c:forEach>
-                        </select>
-                        <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
-                        <button type="button" class="ui button sharp navy ml5"
-                                onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-counseling-input').find('[name=${name}]').val())">
-                            TIP
-                        </button>
-                        </c:if>
-                    </div>
-                </div>
-            </div>
-        </c:when>
-        <c:when test="${field.fieldType == 'INT' || field.fieldType == 'NUMBER'}">
-            <div class="float-field inline">
-                <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label>
-                </div>
-                <div class="content">
-                    <div class="ui form">
-                        <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
-                               data-text="${g.htmlQuote(field.fieldInfo)}"
-                               data-value="${field.isneed}" class="-input-numerical"
-                               value="${g.htmlQuote(value)}"/>
-                    </div>
-                </div>
-            </div>
-        </c:when>
-        <c:when test="${field.fieldType == 'DATETIME'}">
-        <div class="float-field inline">
-            <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
-            <div class="content">
-                <div class="ui form flex">
-                    <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
-                           data-text="${g.htmlQuote(field.fieldInfo)}"
-                           data-value="${field.isneed}" multiple="multiple"
-                           value="${value != null ? g.dateFormat(value) : null}"
-                           class="-datepicker" style="width: 130px"/>&ensp;
-                    <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
-                           data-text="${g.htmlQuote(field.fieldInfo)}"
-                           data-value="${field.isneed}" multiple="multiple"
-                           value="${value != null ? value.hours : null}"
-                           class="-input-numeric" style="width: 50px"/>
-                    <text style="line-height: 30px">시</text>
-                    <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
-                           data-text="${g.htmlQuote(field.fieldInfo)}"
-                           data-value="${field.isneed}" multiple="multiple"
-                           value="${value != null ? value.minutes : null}"
-                           class="-input-numeric" style="width: 50px"/>
-                    <text style="line-height: 30px">분</text>
-                    <input type="hidden" name="${name}" id="call-counseling-input-${name}" data-type="text"
-                           data-text="${g.htmlQuote(field.fieldInfo)}"
-                           data-value="${field.isneed}" multiple="multiple"
-                           value="00" class="-input-numeric"/>
-                </div>
-                </td>
-            </div>
-            </c:when>
-            <c:when test="${field.fieldType == 'DATE' || field.fieldType == 'DAY'}">
-                <div class="float-field inline">
-                    <div class="label"><label
-                            for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
-                    <div class="content">
-                        <div class="ui form">
-                            <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
-                                   data-text="${g.htmlQuote(field.fieldInfo)}"
-                                   data-value="${field.isneed}" value="${value}"
-                                   class="-datepicker"/>
-                        </div>
-                    </div>
-                </div>
-            </c:when>
-            <c:when test="${field.fieldType == 'STRING' && field.fieldSize > 50}">
-                <div class="float-field fluid">
-                    <div class="label"><label
-                            for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
-                    <div class="content">
-                        <div class="ui form">
-                            <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
-                                   data-text="${g.htmlQuote(field.fieldInfo)}"
-                                   data-value="${field.isneed}"
-                                   maxlength="${field.fieldSize}" value="${g.escapeQuote(value)}"/>
-                        </div>
-                    </div>
-                </div>
-            </c:when>
-            <c:when test="${field.fieldType == 'IMG'}">
-                <div class="float-field inline">
-                    <div class="label"><label
-                            for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
-                    <div class="content">
-                        <div class="ui form flex">
-                            <input name="${name}" type="hidden" value="">
-                            <div class="file-upload-header">
-                                <label for="file" class="ui button brand mini compact">파일찾기</label>
-                                <input type="file" id="file" data-value="${name}">
-                                <span class="file-name">No file selected</span>
                             </div>
-                                <%--<div>
-                                    <progress value="0" max="100" style="width:100%"></progress>
-                                </div>--%>
                         </div>
                     </div>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div class="float-field inline">
-                    <div class="label"><label
-                            for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
-                    <div class="content">
-                        <div class="ui input fluid">
-                            <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
-                                   data-text="${g.htmlQuote(field.fieldInfo)}"
-                                   data-value="${field.isneed}" maxlength="${field.fieldSize}"
-                                   value="${g.htmlQuote(value)}"
-                                   placeholder="${field.fieldSize > 0 ? '최대길이:'.concat(field.fieldSize).concat(' Bytes') : ''}"/>
+                </c:when>
+                <c:when test="${field.fieldType == 'CODE'}">
+                    <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
+                            <div class="ui form flex">
+                                <select name="${name}" id="call-counseling-input-${name}" data-type="select"
+                                        data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}">
+                                    <option value=""></option>
+                                    <c:forEach var="e" items="${field.codes}">
+                                        <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
+                                    </c:forEach>
+                                </select>
+                                <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
+                                    <button type="button" class="ui button sharp navy ml5"
+                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-counseling-input').find('[name=${name}]').val())">
+                                        TIP
+                                    </button>
+                                </c:if>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </c:otherwise>
+                </c:when>
+                <c:when test="${field.fieldType == 'INT' || field.fieldType == 'NUMBER'}">
+                    <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
+                            <div class="ui form">
+                                <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" class="-input-numerical"
+                                       value="${g.htmlQuote(value)}"/>
+                            </div>
+                        </div>
+                    </div>
+                </c:when>
+                <c:when test="${field.fieldType == 'DATETIME'}">
+                    <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
+                            <div class="ui form flex">
+                                <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
+                                       value="${value != null ? g.dateFormat(value) : null}"
+                                       class="-datepicker" style="width: 130px"/>&ensp;
+                                <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
+                                       value="${value != null ? value.hours : null}"
+                                       class="-input-numeric" style="width: 50px"/>
+                                <text style="line-height: 30px">시</text>
+                                <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
+                                       value="${value != null ? value.minutes : null}"
+                                       class="-input-numeric" style="width: 50px"/>
+                                <text style="line-height: 30px">분</text>
+                                <input type="hidden" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
+                                       value="00" class="-input-numeric"/>
+                            </div>
+                        </div>
+                    </div>
+                </c:when>
+                <c:when test="${field.fieldType == 'DATE' || field.fieldType == 'DAY'}">
+                    <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                        <div class="label"><label
+                                for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
+                            <div class="ui form">
+                                <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" value="${value}"
+                                       class="-datepicker"/>
+                            </div>
+                        </div>
+                    </div>
+                </c:when>
+                <c:when test="${field.fieldType == 'STRING' && field.fieldSize >= 300}">
+                    <div class="float-field fluid" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content field">
+                            <div class="ui form">
+                                    <textarea type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                              data-text="${g.htmlQuote(field.fieldInfo)}"
+                                              data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" rows="4"
+                                              maxlength="${field.fieldSize}">${g.escapeQuote(value)}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </c:when>
+                <c:when test="${field.fieldType == 'STRING' && field.fieldSize > 50}">
+                    <div class="float-field fluid" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
+                            <div class="ui form">
+                                <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}"
+                                       maxlength="${field.fieldSize}" value="${g.escapeQuote(value)}"/>
+                            </div>
+                        </div>
+                    </div>
+                </c:when>
+                <c:when test="${field.fieldType == 'IMG'}">
+                    <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
+                            <div class="ui form flex">
+                                <input name="${name}" type="hidden" value="">
+                                <div class="file-upload-header">
+                                    <label for="file" class="ui button brand mini compact">파일찾기</label>
+                                    <input type="file" id="file" data-value="${name}">
+                                    <span class="file-name">No file selected</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="content">
+                            <div class="ui input fluid">
+                                <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                       data-text="${g.htmlQuote(field.fieldInfo)}"
+                                       data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" maxlength="${field.fieldSize}"
+                                       value="${g.htmlQuote(value)}"
+                                       placeholder="${field.fieldSize > 0 ? '최대길이:'.concat(field.fieldSize).concat(' Bytes') : ''}"/>
+                            </div>
+                        </div>
+                    </div>
+                </c:otherwise>
             </c:choose>
-
             <c:if test="${chargedColCount >= 8 || status.last}">
-
                 ${!status.last ? '<tr>' : ''}
                 <c:set var="chargedColCount" value="${0}"/>
             </c:if>
-            </c:forEach>
-            <c:if test="${todoList != null && todoList.size() > 0}">
-                <div class="float-field fluid">
-                    <div class="label">TODO 처리</div>
-                    <div class="content">
-                        <c:forEach var="e" items="${todoList}">
-                            <input type="hidden" name="todoSequences" data-multiple="true" value="${e.seq}"/>
-                        </c:forEach>
-                        <div class="ui form flex">
-                            <select name="todoStatus">
-                                <c:forEach var="todoStatus" items="${todoStatuses}">
-                                    <option value="${g.htmlQuote(todoStatus.key)}">${g.htmlQuote(todoStatus.value)}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
+        </c:forEach>
+        <c:if test="${todoList != null && todoList.size() > 0}">
+            <div class="float-field fluid">
+                <div class="label">TODO 처리</div>
+                <div class="content">
+                    <c:forEach var="e" items="${todoList}">
+                        <input type="hidden" name="todoSequences" data-multiple="true" value="${e.seq}"/>
+                    </c:forEach>
+                    <div class="ui form flex">
+                        <select name="todoStatus">
+                            <c:forEach var="todoStatus" items="${todoStatuses}">
+                                <option value="${g.htmlQuote(todoStatus.key)}">${g.htmlQuote(todoStatus.value)}</option>
+                            </c:forEach>
+                        </select>
                     </div>
                 </div>
-            </c:if>
-            <c:if test="${serviceKind.equals('SC')}">
+            </div>
+        </c:if>
+        <c:if test="${serviceKind.equals('SC')}">
                 <c:if test="${smsVocGroups != null && smsVocGroups.size() > 0}">
                     <div class="float-field fluid">
                         <div class="label">VOC/해피콜</div>
@@ -409,7 +408,7 @@
         delete data.saveWaitStatusAfterPostCounselingInfo;
 
         data.uniqueId = audioId;
-        data.customNumber = phoneNumber !== '' ? phoneNumber : $('#call-custom-input').find('[name=channels] option:first').val();
+        data.customNumber = phoneNumber ? phoneNumber : $('#call-custom-input').find('[name=channels] option[data-type="PHONE"]:first').val() || $('#calling-number').val();
 
         const transferredUser = getTransferredUser();
         if (transferredUser) data.userIdTr = transferredUser;
@@ -482,8 +481,7 @@
     }).change();
 
     ui.find('.-submit-form').click(function () {
-        ui.find('#clickKey').val(ipccCommunicator.status.clickKey);
-        ipccCommunicator.status.clickKey = null;
+        ui.find('#call-counseling-input-clickKey').val(ipccCommunicator.status.clickKey);
 
         function submit(customId) {
             const customIdInput = ui.find('[name=customId]');
@@ -512,7 +510,7 @@
                     return false;
                 }
             } else if (objText[i].getAttribute('data-type') === 'select') {
-                if (objText[i].options[objText[i].selectedIndex].value === "") {
+                if (objText[i].value.trim() === "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 선택 해 주세요.");
                     return false;
                 }
@@ -536,7 +534,7 @@
                         return false;
                     }
                 } else if (customObjText[i].getAttribute('data-type') === 'select') {
-                    if (customObjText[i].options[customObjText[i].selectedIndex].value === "") {
+                    if (customObjText[i].value.trim() === "") {
                         alert("고객정보에서 [" + customObjText[i].getAttribute('data-text') + "] 을(를) 선택 해 주세요.");
                         return false;
                     }
@@ -555,6 +553,7 @@
         } else {
             submit();
         }
+        ipccCommunicator.status.clickKey = null;
     });
 
     $('.options').change(function () {

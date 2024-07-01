@@ -145,7 +145,7 @@
                                 </td>
                             </tr>
                             <tr class="-detail-search-input" style="display: none;">
-                                <th>대표번호</th>
+                                <th>서비스</th>
                                 <td>
                                     <div class="ui form">
                                         <form:select path="iniNum">
@@ -154,6 +154,7 @@
                                         </form:select>
                                     </div>
                                 </td>
+                                <c:if test="${serviceKind.contains('SC')}">
                                 <th>수신그룹</th>
                                 <td>
                                     <div class="ui form">
@@ -163,29 +164,28 @@
                                         </form:select>
                                     </div>
                                 </td>
-                                <c:if test="${serviceKind.contains('SC')}">
-                                    <th>통화시간별</th>
-                                    <td colspan="3">
-                                        <div class="ui form flex">
-                                            <div class="ip-wrap">
-                                                <form:select path="byCallTime">
-                                                    <form:option value="" label="선택안함"/>
-                                                    <form:options items="${callTimeTypes}"/>
-                                                </form:select>
-                                            </div>
-                                            <div class="ip-wrap">
-                                                <div class="ui input"><form:input path="callStartMinutes" size="2" class="-input-numerical"/></div>
-                                                <span>분</span>
-                                                <div class="ui input"><form:input path="callStartSeconds" size="2" class="-input-numerical"/></div>
-                                                <span>초</span>
-                                                <span class="tilde">~</span>
-                                                <div class="ui input"><form:input path="callEndMinutes" size="2" class="-input-numerical"/></div>
-                                                <span>분</span>
-                                                <div class="ui input"><form:input path="callEndSeconds" size="2" class="-input-numerical"/></div>
-                                                <span>초</span>
-                                            </div>
+                                <th>통화시간별</th>
+                                <td colspan="3">
+                                    <div class="ui form flex">
+                                        <div class="ip-wrap">
+                                            <form:select path="byCallTime">
+                                                <form:option value="" label="선택안함"/>
+                                                <form:options items="${callTimeTypes}"/>
+                                            </form:select>
                                         </div>
-                                    </td>
+                                        <div class="ip-wrap">
+                                            <div class="ui input"><form:input path="callStartMinutes" size="2" class="-input-numerical"/></div>
+                                            <span>분</span>
+                                            <div class="ui input"><form:input path="callStartSeconds" size="2" class="-input-numerical"/></div>
+                                            <span>초</span>
+                                            <span class="tilde">~</span>
+                                            <div class="ui input"><form:input path="callEndMinutes" size="2" class="-input-numerical"/></div>
+                                            <span>분</span>
+                                            <div class="ui input"><form:input path="callEndSeconds" size="2" class="-input-numerical"/></div>
+                                            <span>초</span>
+                                        </div>
+                                    </div>
+                                </td>
                                 </c:if>
                             </tr>
                         </table>
@@ -240,13 +240,13 @@
                         <thead>
                         <tr>
                             <th>번호</th>
-                            <th>서비스명</th>
+                            <th>서비스</th>
                             <th>발신번호</th>
                             <th>수신번호</th>
                             <th>시간</th>
                             <th>수/발신</th>
                             <c:if test="${serviceKind.equals('SC')}">
-                                <th>고객등급</th>
+                                <th>수신그룹</th>
                             </c:if>
                             <th>상담원</th>
                             <th>호상태(초)</th>
@@ -261,7 +261,7 @@
                         <c:choose>
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
-                                    <c:set var="isFile" value="${g.htmlQuote(e.callStatusValue.contains('정상통화')) and fn:length(g.htmlQuote(e.recordFile)) > 0}"/>
+                                    <c:set var="isFile" value="${g.htmlQuote(e.callStatusValue.contains('정상통화')) && fn:length(g.htmlQuote(e.recordFile)) > 0 && e.recordInfo != 'S'}"/>
                                     <tr data-id="${e.seq}" data-file="${isFile}">
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.service.svcName)}</td>
@@ -270,14 +270,15 @@
                                         <td><fmt:formatDate value="${e.ringDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>${g.htmlQuote(e.callKindValue)}</td>
                                         <c:if test="${serviceKind.equals('SC')}">
-                                            <td>
+                                <%--            <td>
                                                 <c:if test="${e.grade != null}">
                                                     <c:set var="colorInfo" value="${e.grade.contains('V') ? 'blue' : 'red'}"/>
                                                     <span class="ui ${colorInfo} basic label mini compact sparkle-${colorInfo}" style="line-height: 15px; width: 47px;">
                                                             ${e.grade.contains('V') ? 'VIP' : 'BLACK'}
                                                     </span>
                                                 </c:if>
-                                            </td>
+                                            </td>--%>
+                                            <td>${g.htmlQuote(e.secondNum)}</td>
                                         </c:if>
                                         <td>
                                             <c:set var="userName" value="${e.personList != null && e.personList.idName != null && e.personList.idName.length() > 0 ? e.personList.idName : null}"/>
@@ -293,35 +294,29 @@
                                         <td>
                                             <div class="popup-element-wrap">
                                                 <c:if test="${isFile}">
-                                                    <c:if test="${!user.listeningRecordingAuthority.equals('NO')}">
-                                                        <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)}">
-                                                            <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                                <i class="volume up icon"></i>
-                                                            </button>
-                                                        </c:if>
-                                                        <c:if test="${user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)}">
-                                                            <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                                <i class="volume up icon"></i>
-                                                            </button>
-                                                        </c:if>
-                                                        <c:if test="${user.listeningRecordingAuthority.equals('ALL')}">
-                                                            <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                                <i class="volume up icon"></i>
-                                                            </button>
-                                                        </c:if>
+                                                    <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)
+                                                               or user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)
+                                                               or user.listeningRecordingAuthority.equals('ALL')}">
+                                                        <button type="button"
+                                                                class="ui icon button mini compact -popup-records"
+                                                                data-id="${e.seq}">
+                                                            <i class="volume up icon"></i>
+                                                        </button>
                                                     </c:if>
-                                                </c:if>
-                                                <c:if test="${!user.removeRecordingAuthority.equals('NO') and isFile}">
-                                                    <c:if test="${user.removeRecordingAuthority.equals('ALL') or user.removeRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode) or user.removeRecordingAuthority.equals('MY') && e.personList.id.equals(user.id)}">
-                                                        <button class="ui icon button mini compact translucent" title="녹취 삭제" onclick="deleteRecord(${e.seq})">
+                                                    <c:if test="${user.removeRecordingAuthority.equals('MY') && e.personList.id.equals(user.id)
+                                                               or user.removeRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)
+                                                               or user.removeRecordingAuthority.equals('ALL')}">
+                                                        <button class="ui icon button mini compact translucent"
+                                                                title="녹취 삭제" onclick="deleteRecord(${e.seq})">
                                                             <i class="cancel alternate icon"></i>
                                                         </button>
                                                     </c:if>
-                                                </c:if>
-                                                <c:if test="${company.isServiceAvailable('QA') and isFile}">
-                                                    <button class="ui icon button mini compact translucent" title="상담원평가" onclick="popupEvaluationModal(${e.seq})">
-                                                        <i class="pencil alternate icon"></i>
-                                                    </button>
+                                                    <c:if test="${company.isServiceAvailable('QA')}">
+                                                        <button class="ui icon button mini compact translucent"
+                                                                title="상담원평가" onclick="popupEvaluationModal(${e.seq})">
+                                                            <i class="pencil alternate icon"></i>
+                                                        </button>
+                                                    </c:if>
                                                 </c:if>
                                             </div>
                                         </td>
@@ -337,7 +332,7 @@
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="13" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <td colspan="14" class="null-data">조회된 데이터가 없습니다.</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>
@@ -438,23 +433,7 @@
                 if ($this.attr('data-has-records'))
                     return;
 
-                popupReceivedHtml('/admin/record/history/history/' + $this.attr('data-id') + '/modal-records', 'modal-records').done(function (html) {
-                    const mixedNodes = $.parseHTML(html, null, true);
-
-                    const modal = (function () {
-                        for (let i = 0; i < mixedNodes.length; i++) {
-                            const node = $(mixedNodes[i]);
-                            if (node.is('#modal-records'))
-                                return node;
-                        }
-                        throw 'cannot find modal element';
-                    })();
-
-                    $this.after(modal);
-                    modal.find('audio').each(function () {
-                        maudio({obj: this});
-                    });
-                });
+                popupReceivedHtml(contextPath + '/admin/record/history/history/' + $this.attr('data-id') + '/modal-records', 'modal-records');
             });
 
             function deleteRecord(seq) {

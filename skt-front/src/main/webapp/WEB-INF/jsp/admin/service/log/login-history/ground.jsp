@@ -108,7 +108,14 @@
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
                                         <td>${g.htmlQuote(e.userName)}(${g.htmlQuote(e.userId)})</td>
                                         <td><fmt:formatDate value="${e.loginDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-                                        <td><fmt:formatDate value="${e.logoutDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                                        <c:choose>
+                                            <c:when test="${!e.loginDate.equals(e.logoutDate)}">
+                                                <td><fmt:formatDate value="${e.logoutDate}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <td>-</td>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <td>${g.htmlQuote(e.extension)}</td>
                                         <td class="five wide">
                                             <div class="ui breadcrumb">

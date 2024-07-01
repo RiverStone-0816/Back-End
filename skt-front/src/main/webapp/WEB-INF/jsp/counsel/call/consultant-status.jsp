@@ -30,9 +30,9 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>${integrationData.constantStatusCounts.values().stream().sum()}</td>
+                        <td class="-consultant-status-count" data-value="0,1,2,3,4,5,6,7,8,9" data-groupCode="${g.user.groupCode}">0</td>
                         <c:forEach var="e" items="${statusCodes}">
-                            <td class="-consultant-status-count" data-value="${e.key}">${integrationData.constantStatusCounts.getOrDefault(e.key, 0)}</td>
+                            <td class="-consultant-status-count" data-value="${e.key}" data-groupCode="${g.user.groupTreeName}">${integrationData.constantStatusCounts.getOrDefault(e.key, 0)}</td>
                         </c:forEach>
                     </tr>
                 </tbody>
@@ -91,9 +91,9 @@
                     <tr>
                         <td>${g.htmlQuote(e.queueKoreanName)}</td>
                         <td class="-custom-wait-count" data-hunt="${g.htmlQuote(e.queueName)}">${e.customerWaiting}</td>
-                        <td>${e.constantStatusCounts.getOrDefault(0, 0)}</td>
-                        <td>${e.constantStatusCounts.getOrDefault(1, 0)
-                                + e.constantStatusCounts.getOrDefault(1, 0)
+                        <td class="-consultant-status-count" data-value="0" data-hunt="${g.escapeQuote(e.queueName)}">${e.constantStatusCounts.getOrDefault(0, 0)}</td>
+                        <td class="-consultant-status-count" data-value="1,2,3,4,5,6,7,8,9" data-hunt="${g.escapeQuote(e.queueName)}">
+                                ${e.constantStatusCounts.getOrDefault(1, 0)
                                 + e.constantStatusCounts.getOrDefault(2, 0)
                                 + e.constantStatusCounts.getOrDefault(3, 0)
                                 + e.constantStatusCounts.getOrDefault(4, 0)
@@ -109,7 +109,6 @@
         </div>
     </div>
 </div>
-
 <script>
 
     function updateQueues() {
@@ -128,7 +127,5 @@
     }
 
     updateQueues();
-</script>
 
-<%--
-일단 로그--%>
+</script>

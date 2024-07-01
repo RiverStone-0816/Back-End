@@ -27,7 +27,7 @@
                                 <div class="ui grid">
                                     <div class="sixteen wide column remove-pb">
                                         <div class="visual-panel">
-                                            <div class="panel-heading">실시간 응답율</div>
+                                            <div class="panel-heading">실시간 응대율</div>
                                             <div class="panel-body">
                                                 <span class="num -data-response-rate">%</span>
                                             </div>
@@ -73,11 +73,11 @@
                         <table class="ui celled table compact unstackable structured">
                             <thead>
                             <tr>
-                                <th rowspan="2">날짜/시간</th>
-                                <th colspan="6">I/B 콜 현황</th>
-                                <th colspan="7">응답호 분석</th>
+                                <th colspan="6">I/B 콜 통계</th>
+                                <th colspan="7">응대호 분석</th>
                                 <th colspan="6">포기호 분석</th>
-                                <th colspan="4">기타 분석</th>
+                                <th rowspan="2">무효콜비율</th>
+                                <th colspan="3">I/B 시간 통계</th>
                             </tr>
                             <tr>
                                 <th>I/B 전체콜</th>
@@ -99,22 +99,19 @@
                                 <th>~30(초)</th>
                                 <th>~40(초)</th>
                                 <th>40~(초)</th>
-                                <th>무효콜비율</th>
-                                <th>I/B 총통화시간</th>
-                                <th>평균통화시간</th>
-                                <th>평균대기시간</th>
+                                <th>총 통화시간</th>
+                                <th>평균 통화시간</th>
+                                <th>평균 대기시간</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td>합계</td>
-
                                 <td>${inboundData.total}</td>
                                 <td>${inboundData.onlyRead}</td>
                                 <td>${inboundData.connReq}</td>
                                 <td>${inboundData.success}</td>
                                 <td>${inboundData.cancel}</td>
-                                <td>${inboundData.cancelNoAnswer}</td>
+                                <td>${inboundData.callback}</td>
 
                                 <td>${String.format("%.1f", inboundData.responseRate)}%</td>
                                 <td>${String.format("%.1f", inboundData.svcLevelAvg)}%</td>

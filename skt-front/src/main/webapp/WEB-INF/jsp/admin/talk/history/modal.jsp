@@ -54,7 +54,7 @@
                                                     <div class="chat">
                                                         <div class="bubble">
                                                             <p class="txt-chat">
-                                                                <audio controls src="${g.htmlQuote(e.content)}"></audio>
+                                                                <audio data-src="${g.htmlQuote(e.content)}" controls></audio>
                                                             </p>
                                                         </div>
                                                     </div>

@@ -67,186 +67,192 @@
 
                 <c:set var="chargedColCount" value="${4}"/>
                 <c:forEach var="field" items="${customDbType.fields}" varStatus="status">
-                <c:set var="name" value="${field.fieldId.substring(customDbType.kind.length() + '_'.length()).toLowerCase()}"/>
-                <c:set var="value" value="${fieldNameToValueMap.get(field.fieldId)}"/>
-
-                <c:choose>
-                    <c:when test="${field.fieldType == 'MULTICODE'}">
-                        <div class="float-field inline">
-                            <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
-                            <div class="content">
-                                <div class="ui form flex">
-                                    <select name="${name}" id="talk-custom-input-${name}" data-type="select"
-                                            data-text="${g.htmlQuote(field.fieldInfo)}"
-                                            data-value="${field.isneed}" multiple="multiple"
-                                            class="ui fluid dropdown">
-                                        <option value=""></option>
-                                        <c:forEach var="e" items="${field.codes}">
-                                            <c:set var="contains" value="${false}"/>
-                                            <c:if test="${value != null}">
-                                                <c:forEach var="e2" items="${value.split(',')}">
-                                                    <c:if test="${!contains}">
-                                                        <c:set var="contains"
-                                                               value="${e2 == e.codeId}"/>
-                                                    </c:if>
-                                                </c:forEach>
-                                            </c:if>
-                                            <option value="${g.htmlQuote(e.codeId)}" ${contains ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
-                                        </c:forEach>
-                                    </select>
-                                    <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
-                                    <button type="button" class="ui button sharp navy ml5"
-                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#talk-custom-input').find('[name=${name}]').val())">TIP
-                                    </button>
-                                    </c:if>
-                                </div>
-                            </div>
-                        </div>
-
-                    </c:when>
-                    <c:when test="${field.fieldType == 'CODE'}">
-                        <div class="float-field inline">
-                            <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
-                            <div class="content">
-                                <div class="ui form flex">
-                                    <select name="${name}" id="talk-custom-input-${name}" data-type="select" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}">
-                                        <option value=""></option>
-                                        <c:forEach var="e" items="${field.codes}">
-                                            <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
-                                        </c:forEach>
-                                    </select>
-                                    <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
-                                    <button type="button" class="ui button sharp navy ml5"
-                                            onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#talk-custom-input').find('[name=${name}]').val())">TIP
-                                    </button>
-                                    </c:if>
-                                </div>
-                            </div>
-                        </div>
-                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
-                    </c:when>
-                    <c:when test="${field.fieldType == 'INT' || field.fieldType == 'NUMBER'}">
-                        <div class="float-field inline">
-                            <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
-                            <div class="content">
-                                <div class="ui form">
-                                    <input type="text" name="${name}" id="talk-custom-input-${name}" data-type="text"
-                                           data-text="${g.htmlQuote(field.fieldInfo)}"
-                                           data-value="${field.isneed}" class="-input-numerical"
-                                           value="${g.htmlQuote(value)}"/>
-                                </div>
-                            </div>
-                        </div>
-                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
-                    </c:when>
-                    <c:when test="${field.fieldType == 'DATETIME'}">
-                        <div class="float-field inline">
-                            <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
-                            <div class="content">
-                                <div class="ui form flex">
-                                    <input type="text" name="${name}" id="talk-custom-input-${name}" data-type="text"
-                                           data-text="${g.htmlQuote(field.fieldInfo)}"
-                                           data-value="${field.isneed}" multiple="multiple"
-                                           value="${value != null ? g.dateFormat(value) : null}"
-                                           class="-datepicker" style="width: 130px"/>&ensp;
-                                    <input type="text" name="${name}" id="talk-custom-input-${name}" data-type="text"
-                                           data-text="${g.htmlQuote(field.fieldInfo)}"
-                                           data-value="${field.isneed}" multiple="multiple"
-                                           value="${value != null ? value.hours : null}"
-                                           class="-input-numeric" style="width: 50px"/>
-                                    <text style="line-height: 30px">시</text>
-                                    <input type="text" name="${name}" id="talk-custom-input-${name}" data-type="text"
-                                           data-text="${g.htmlQuote(field.fieldInfo)}"
-                                           data-value="${field.isneed}" multiple="multiple"
-                                           value="${value != null ? value.minutes : null}"
-                                           class="-input-numeric" style="width: 50px"/>
-                                    <text style="line-height: 30px">분</text>
-                                    <input type="hidden" name="${name}" id="talk-custom-input-${name}" data-type="text"
-                                           data-text="${g.htmlQuote(field.fieldInfo)}"
-                                           data-value="${field.isneed}" multiple="multiple"
-                                           value="00" class="-input-numeric"/>
-                                </div>
-                            </div>
-                        </div>
-                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
-                    </c:when>
-                    <c:when test="${field.fieldType == 'DATE' || field.fieldType == 'DAY'}">
-                        <div class="float-field inline">
-                            <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
-                            <div class="content">
-                                <div class="ui form">
-                                    <input type="text" name="${name}" id="talk-custom-input-${name}" data-type="text"
-                                           data-text="${g.htmlQuote(field.fieldInfo)}"
-                                           data-value="${field.isneed}" value="${value}"
-                                           class="-datepicker"/>
-                                </div>
-                            </div>
-                        </div>
-                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
-                    </c:when>
-                    <c:when test="${field.fieldType == 'STRING' && field.fieldSize > 50}">
-
-                        <div class="float-field fluid">
-                            <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
-                            <div class="content">
-                                <div class="ui form">
-                                    <input type="text" name="${name}" id="talk-custom-input-${name}" data-type="text"
-                                           data-text="${g.htmlQuote(field.fieldInfo)}"
-                                           data-value="${field.isneed}"
-                                           maxlength="${field.fieldSize}" value="${g.escapeQuote(value)}"/>
-                                </div>
-                            </div>
-                        </div>
-                        <c:set var="chargedColCount" value="${8}"/>
-                    </c:when>
-                    <c:when test="${field.fieldType == 'IMG'}">
-                        <div class="float-field inline">
-                            <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
-                            <div class="content">
-                                <div class="ui form flex">
-                                    <input name="${name}" type="hidden" value="">
-                                    <div class="file-upload-header">
-                                        <label for="file" class="ui button brand mini compact">파일찾기</label>
-                                        <input type="file" id="file" data-value="${name}">
-                                        <span class="file-name">No file selected</span>
+                    <c:set var="name" value="${field.fieldId.substring(customDbType.kind.length() + '_'.length()).toLowerCase()}"/>
+                    <c:set var="value" value="${fieldNameToValueMap.get(field.fieldId)}"/>
+                    <c:choose>
+                        <c:when test="${field.fieldType == 'MULTICODE'}">
+                            <div class="float-field fluid" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                                <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                                <div class="content">
+                                    <div class="ui form flex">
+                                        <select name="${name}" id="talk-custom-input-${name}" data-type="select"
+                                                data-text="${g.htmlQuote(field.fieldInfo)}"
+                                                data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
+                                                class="ui fluid dropdown">
+                                            <option value=""></option>
+                                            <c:forEach var="e" items="${field.codes}">
+                                                <c:set var="contains" value="${false}"/>
+                                                <c:if test="${value != null}">
+                                                    <c:forEach var="e2" items="${value.split(',')}">
+                                                        <c:if test="${!contains}">
+                                                            <c:set var="contains"
+                                                                   value="${e2 == e.codeId}"/>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </c:if>
+                                                <option value="${g.htmlQuote(e.codeId)}" ${contains ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
+                                            </c:forEach>
+                                        </select>
+                                        <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
+                                            <button type="button" class="ui button sharp navy ml5"
+                                                    onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-custom-input').find('[name=${name}]').val())">TIP
+                                            </button>
+                                        </c:if>
                                     </div>
-                                        <%--<div>
-                                            <progress value="0" max="100" style="width:100%"></progress>
-                                        </div>--%>
                                 </div>
                             </div>
-                        </div>
-                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="float-field inline">
-                            <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
-                            <div class="content">
-                                <div class="ui input fluid">
-                                    <input type="text" name="${name}" id="talk-custom-input-${name}" data-type="text"
-                                           data-text="${g.htmlQuote(field.fieldInfo)}"
-                                           data-value="${field.isneed}" maxlength="${field.fieldSize}"
-                                           value="${g.htmlQuote(value)}" placeholder="${field.fieldSize > 0 ? '최대길이:'.concat(field.fieldSize).concat(' Bytes') : ''}"/>
+                            <c:set var="chargedColCount" value="${8}"/>
+                        </c:when>
+                        <c:when test="${field.fieldType == 'CODE'}">
+                            <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                                <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                                <div class="content">
+                                    <div class="ui form flex">
+                                        <select name="${name}" id="talk-custom-input-${name}" data-type="select" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}">
+                                            <option value=""></option>
+                                            <c:forEach var="e" items="${field.codes}">
+                                                <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
+                                            </c:forEach>
+                                        </select>
+                                        <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
+                                            <button type="button" class="ui button sharp navy ml5"
+                                                    onclick="popupFieldInfo(${field.type}, '${g.htmlQuote(field.fieldId)}', $('#call-custom-input').find('[name=${name}]').val())">TIP
+                                            </button>
+                                        </c:if>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
-                    </c:otherwise>
-                </c:choose>
-
-                <c:if test="${chargedColCount >= 8 || status.last}">
-
-
-                <c:set var="chargedColCount" value="${0}"/>
-                </c:if>
+                            <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
+                        </c:when>
+                        <c:when test="${field.fieldType == 'INT' || field.fieldType == 'NUMBER'}">
+                            <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                                <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                                <div class="content">
+                                    <div class="ui form">
+                                        <input type="text" name="${name}" id="talk-custom-input-${name}" data-type="text"
+                                               data-text="${g.htmlQuote(field.fieldInfo)}"
+                                               data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" class="-input-numerical"
+                                               value="${g.htmlQuote(value)}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
+                        </c:when>
+                        <c:when test="${field.fieldType == 'DATETIME'}">
+                            <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                                <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                                <div class="content">
+                                    <div class="ui form flex">
+                                        <input type="text" name="${name}" id="talk-custom-input-${name}" data-type="text"
+                                               data-text="${g.htmlQuote(field.fieldInfo)}"
+                                               data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
+                                               value="${value != null ? g.dateFormat(value) : null}"
+                                               class="-datepicker" style="width: 130px"/>&ensp;
+                                        <input type="text" name="${name}" id="talk-custom-input-${name}" data-type="text"
+                                               data-text="${g.htmlQuote(field.fieldInfo)}"
+                                               data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
+                                               value="${value != null ? value.hours : null}"
+                                               class="-input-numeric" style="width: 50px"/>
+                                        <text style="line-height: 30px">시</text>
+                                        <input type="text" name="${name}" id="talk-custom-input-${name}" data-type="text"
+                                               data-text="${g.htmlQuote(field.fieldInfo)}"
+                                               data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
+                                               value="${value != null ? value.minutes : null}"
+                                               class="-input-numeric" style="width: 50px"/>
+                                        <text style="line-height: 30px">분</text>
+                                        <input type="hidden" name="${name}" id="talk-custom-input-${name}" data-type="text"
+                                               data-text="${g.htmlQuote(field.fieldInfo)}"
+                                               data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
+                                               value="00" class="-input-numeric"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
+                        </c:when>
+                        <c:when test="${field.fieldType == 'DATE' || field.fieldType == 'DAY'}">
+                            <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                                <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                                <div class="content">
+                                    <div class="ui form">
+                                        <input type="text" name="${name}" id="talk-custom-input-${name}" data-type="text"
+                                               data-text="${g.htmlQuote(field.fieldInfo)}"
+                                               data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" value="${value}"
+                                               class="-datepicker"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
+                        </c:when>
+                        <c:when test="${field.fieldType == 'STRING' && field.fieldSize >= 300}">
+                            <div class="float-field fluid" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                                <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                                <div class="content field">
+                                    <div class="ui form">
+                                        <textarea type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                                  data-text="${g.htmlQuote(field.fieldInfo)}"
+                                                  data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" rows="4"
+                                                  maxlength="${field.fieldSize}">${g.escapeQuote(value)}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:when test="${field.fieldType == 'STRING' && field.fieldSize > 50}">
+                            <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                                <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                                <div class="content">
+                                    <div class="ui form">
+                                        <input type="text" name="${name}" id="talk-custom-input-${name}" data-type="text"
+                                               data-text="${g.htmlQuote(field.fieldInfo)}"
+                                               data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}"
+                                               maxlength="${field.fieldSize}" value="${g.escapeQuote(value)}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <c:set var="chargedColCount" value="${8}"/>
+                        </c:when>
+                        <c:when test="${field.fieldType == 'IMG'}">
+                            <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                                <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                                <div class="content">
+                                    <div class="ui form flex">
+                                        <input name="${name}" type="hidden" value="">
+                                        <div class="file-upload-header">
+                                            <label for="file" class="ui button brand mini compact">파일찾기</label>
+                                            <input type="file" id="file" data-value="${name}">
+                                            <span class="file-name">No file selected</span>
+                                        </div>
+                                            <%--<div>
+                                                <progress value="0" max="100" style="width:100%"></progress>
+                                            </div>--%>
+                                    </div>
+                                </div>
+                            </div>
+                            <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
+                                <div class="label"><label for="talk-custom-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                                <div class="content">
+                                    <div class="ui input fluid">
+                                        <input type="text" name="${name}" id="talk-custom-input-${name}" data-type="text"
+                                               data-text="${g.htmlQuote(field.fieldInfo)}"
+                                               data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" maxlength="${field.fieldSize}"
+                                               value="${g.htmlQuote(value)}" placeholder="${field.fieldSize > 0 ? '최대길이:'.concat(field.fieldSize).concat(' Bytes') : ''}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <c:set var="chargedColCount" value="${chargedColCount + 4}"/>
+                        </c:otherwise>
+                    </c:choose>
+                    <c:if test="${chargedColCount >= 8 || status.last}">
+                        <c:set var="chargedColCount" value="${0}"/>
+                    </c:if>
                 </c:forEach>
 
                 <c:if test="${customDbType.fields == null}">
-                <c:if test="${chargedColCount < 8}">
-                    <td colspan="${8 - chargedColCount}" class="border-left-none"></td>
-                </c:if>
-
-
+                    <c:if test="${chargedColCount < 8}">
+                        <td colspan="${8 - chargedColCount}" class="border-left-none"></td>
+                    </c:if>
                 </c:if>
 
                 <div class="float-field fluid">
@@ -352,18 +358,18 @@
     $('#talk-submitButton').click(function () {
         let objText = $('#talk-custom-input [data-value="Y"]');
         for (let i = 0; i < objText.length; i++) {
-            if (objText[i].getAttribute('data-type') == 'text') {
-                if (objText[i].value.trim() == "") {
+            if (objText[i].getAttribute('data-type') === 'text') {
+                if (objText[i].value.trim() === "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
                     return false;
                 }
-            } else if (objText[i].getAttribute('data-type') == 'select') {
-                if (objText[i].options[objText[i].selectedIndex].value == "") {
+            } else if (objText[i].getAttribute('data-type') === 'select') {
+                if (objText[i].value.trim() === "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 선택 해 주세요.");
                     return false;
                 }
             } else {
-                if (objText[i].value.trim() == "") {
+                if (objText[i].value.trim() === "") {
                     alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 입력 해 주세요.");
                     return false;
                 }

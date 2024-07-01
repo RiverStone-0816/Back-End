@@ -18,7 +18,6 @@
 <form:form modelAttribute="form" cssClass="ui modal tiny -json-submit" data-method="put"
            action="${pageContext.request.contextPath}/api/enumeration-value/type/${type}/field/${entity.fieldId}/code"
            data-before="prepareUpdateSequenceFieldForm" data-done="reload">
- <%--   onsubmit="return chkChar();"--%>
     <i class="close icon"></i>
     <div class="header">코드수정</div>
 
@@ -94,14 +93,14 @@
             </div>
             <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
                 <div class="row">
-                  <div class="three wide column"><label class="control-label">스크립트</label></div>
-                      <div class="thirteen wide column">
-                          <div class="ui form">
-                              <div class="field">
-                                 <textarea name="script" row="7"></textarea>
-                              </div>
-                          </div>
-                      </div>
+                    <div class="three wide column"><label class="control-label">스크립트</label></div>
+                    <div class="thirteen wide column">
+                        <div class="ui form">
+                            <div class="field">
+                                <textarea name="script" row="7"></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </c:if>
         </div>
@@ -134,26 +133,9 @@
         delete data.script;
     };
 
-/*    window.chkChar = function (){
-            var pattern = /^[a-zA-Zㄱ-힣0-9]*$/;
-            const str=$('[name="codeId"]').val();
-            console.log(str)
-
-            if (str.match(pattern)) {
-                if (str.match(pattern).length > 0) {
-                    alert("일치");
-                    return true;
-                }
-            }else {
-                    alert("그거아님");
-
-                }
-
-    };*/
-
     const select = modal.find('[name=codes]');
 
-    select.on('click','option',function () {
+    select.on('click', 'option', function () {
         modal.find('[name=codeId]').val($(this).val());
         modal.find('[name=codeName]').val($(this).attr('data-name'));
         modal.find('[name=script]').val($(this).attr('data-script') || '');
@@ -173,16 +155,21 @@
             existOption.attr('data-name', codeName);
             existOption.attr('data-script', script);
         } else {
-            var pattern = /^[a-zA-Zㄱ-힣0-9]{1,50}$/;
-            const str=$('[name="codeId"]').val();
-            const strname=$('[name="codeName"]').val();
+            let pattern = /^[\s|a-z|A-Z|가-힣|0-9|$@!%*#?&_+().-]{1,30}$/;
+            const str = $('[name="codeId"]').val().trim();
+            const strname = $('[name="codeName"]').val().trim();
 
             if (str.match(pattern) && strname.match(pattern)) {
                 if (str.match(pattern).length > 0) {
-                    select.append($('<option/>', {value: codeId, text: '[' + codeId + '] ' + codeName, 'data-name': codeName, 'data-script': script}));
+                    select.append($('<option/>', {
+                        value: codeId,
+                        text: '[' + codeId + '] ' + codeName,
+                        'data-name': codeName,
+                        'data-script': script
+                    }));
                 }
-            }else {
-                alert("코드는 영어,숫자만 허용하며 최대 50자로 제한합니다.");
+            } else {
+                alert("코드는 영어,숫자만 허용하며 최대 30자로 제한합니다.");
 
             }
         }
@@ -219,5 +206,4 @@
             $(this).toggleClass('hide');
         });
     });
-
 </script>

@@ -141,7 +141,7 @@
         </div>
     </form:form>
 
-    <div class="panel">
+    <div class="panel result-part">
         <div class="panel-heading">
             <div class="pull-left">
                 <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
@@ -150,9 +150,9 @@
                 <button type="button" class="ui basic green button" onclick="setCustomInfo()">고객/상담결과 내보내기</button>
             </div>
         </div>
-        <div class="panel-body" style="width: 100%; overflow-x: auto;">
+        <div class="panel-body result-body">
             <table class="ui celled table structured compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbResult">
-                <thead>
+                <thead class="result-thead">
                 <tr>
                     <th rowspan="2">번호</th>
                     <th colspan="7">상담기본정보</th>
@@ -196,36 +196,33 @@
                                         <c:when test="${e.groupKind == 'TALK'}">채팅상담</c:when>
                                     </c:choose>
                                 </td>
-                                <td>${e.eicnCdr.inOut.equals("O") ? "발신" : e.eicnCdr.inOut.equals("I") ? "수신" : ""}</td>
+                                <td>${g.htmlQuote(e.inOutValue)}</td>
                                 <td><fmt:formatDate value="${e.resultDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                 <td>${g.htmlQuote(e.userName)}</td>
                                 <td>${g.htmlQuote(e.userTrName)}</td>
                                 <td>${g.htmlQuote(e.customNumber)}</td>
                                 <td class="popup-td">
-                                    <c:choose>
-                                        <c:when test="${e.groupKind == 'PHONE'}">
-                                            <div class="popup-element-wrap">
-                                                <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)}">
-                                                    <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
+                                    <div class="popup-element-wrap">
+                                        <c:choose>
+                                            <c:when test="${e.groupKind == 'PHONE' && not empty e.uniqueid}">
+                                                <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)
+                                                       or user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)
+                                                       or user.listeningRecordingAuthority.equals('ALL')}">
+                                                    <button type="button"
+                                                            class="ui icon button mini compact -popup-records"
+                                                            data-id="${e.seq}">
                                                         <i class="volume up icon"></i>
                                                     </button>
                                                 </c:if>
-                                                <c:if test="${user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)}">
-                                                    <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                        <i class="volume up icon"></i>
-                                                    </button>
-                                                </c:if>
-                                                <c:if test="${user.listeningRecordingAuthority.equals('ALL')}">
-                                                    <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                        <i class="volume up icon"></i>
-                                                    </button>
-                                                </c:if>
-                                            </div>
-                                        </c:when>
-                                        <c:when test="${e.groupKind == 'TALK'}">
-                                            <button type="button" class="ui icon button mini compact" onclick="talkHistoryView('${e.hangupMsg}')"><i class="comment alternate icon"></i></button>
-                                        </c:when>
-                                    </c:choose>
+                                            </c:when>
+                                            <c:when test="${e.groupKind == 'TALK' && not empty e.hangupMsg}">
+                                                <button type="button" class="ui icon button mini compact"
+                                                        onclick="talkHistoryView('${e.hangupMsg}')">
+                                                    <i class="comment alternate icon"></i>
+                                                </button>
+                                            </c:when>
+                                        </c:choose>
+                                    </div>
                                 </td>
 
                                 <c:forEach var="field" items="${resultType.fields}">
@@ -317,7 +314,7 @@
                     </c:when>
                     <c:otherwise>
                         <tr>
-                            <td colspan="${9 + customDbType.fields.size() + resultType.fields.size()}" class="null-data">조회된 데이터가 없습니다.</td>
+                            <td colspan="${11 + customDbType.fields.size() + resultType.fields.size()}" class="null-data">조회된 데이터가 없습니다.</td>
                         </tr>
                     </c:otherwise>
                 </c:choose>
@@ -341,11 +338,7 @@
 
         const phoneNumber = $('.selectable-only[data-entity="MaindbResult"] tr[data-id="' + seq + '"] .-phone-channel-data:first').text();
 
-        loadCustomInput(${search.groupSeq}, customId, phoneNumber);
-
-        setTimeout(function(){
-            loadCounselingInput('${search.groupSeq}', customId, phoneNumber, seq);
-        },800);
+        loadCustomInput(${search.groupSeq}, customId, phoneNumber, seq);
 
         $('#search-counseling-history-form').closest('.modal').modalHide();
     }
@@ -375,23 +368,7 @@
             if ($this.attr('data-has-records'))
                 return;
 
-            popupReceivedHtml('/admin/application/maindb/result/' + $this.attr('data-id') + '/modal-records', 'modal-records').done(function (html) {
-                const mixedNodes = $.parseHTML(html, null, true);
-
-                const modal = (function () {
-                    for (let i = 0; i < mixedNodes.length; i++) {
-                        const node = $(mixedNodes[i]);
-                        if (node.is('.ui.modal'))
-                            return node;
-                    }
-                    throw 'cannot find modal element';
-                })();
-
-                $this.after(modal);
-                modal.find('audio').each(function () {
-                    maudio({obj: this});
-                });
-            });
+            popupReceivedHtml(contextPath + '/admin/application/maindb/result/' + $this.attr('data-id') + '/modal-records', 'modal-records');
         });
 
 
@@ -427,5 +404,26 @@
         modal.find('[name=channelType]').change(function () {
             modal.find('[name=channelData]').val('');
         });
+
+        modal.find('#keyword').val('${search.keyword}').trigger("change");
+        modal.find('#code').val('${search.code}').trigger("change");
+
+        modal.find('input[name=startDate]').val('${search.startDate}');
+        modal.find('input[name=endDate]').val('${search.endDate}');
+
+        resizeHeight();
+        setTimeout(function () {
+            setFixedModalPosition(modal);
+        }, 100);
     })();
+
+    $(window).resize(function () {
+        resizeHeight();
+    });
+
+    function resizeHeight() {
+        const bodyHeight = $('#modal-search-counseling-history').height();
+        const formHeight = $('#search-counseling-history-form').height() > 20 ? $('#search-counseling-history-form').height() : 250;
+        $('#modal-search-counseling-history-body').find('.result-part .panel-body').css('height', bodyHeight - formHeight - 85);
+    }
 </script>

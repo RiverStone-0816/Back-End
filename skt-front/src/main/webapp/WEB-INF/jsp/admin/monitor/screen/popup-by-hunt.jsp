@@ -110,7 +110,7 @@
                                             <c:forEach var="e" items="${data.hunts}">
                                                 <tr style="line-height: 50px">
                                                     <td>${g.htmlQuote(e.queueKoreanName)}</td>
-                                                    <td class="-custom-wait-count" data-hunt="${e.queueName}">${e.customerWaiting}</td>
+                                                    <td class="-custom-wait-count">${e.customerWaiting}</td>
                                                     <c:forEach var="status" items="${statusCodes}">
                                                         <td class="-consultant-status-count" data-value="${status.key}" data-hunt="${g.htmlQuote(e.queueName)}" ${status.key == 0 ? 'data-login="true"' : ''}></td>
                                                         <c:if test="${status.key == 0}">
@@ -172,7 +172,7 @@
                                             <c:forEach var="e" items="${data.hunts}">
                                                 <tr style="line-height: 50px">
                                                     <td>${g.htmlQuote(e.queueKoreanName)}</td>
-                                                    <td class="-custom-wait-count" data-hunt="${e.queueName}">${e.customerWaiting}</td>
+                                                    <td class="-custom-wait-count">${e.customerWaiting}</td>
                                                     <c:forEach var="status" items="${statusCodes}">
                                                         <td class="-consultant-status-count" data-value="${status.key}" data-hunt="${g.htmlQuote(e.queueName)}" ${status.key == 0 ? 'data-login="true"' : ''}></td>
                                                         <c:if test="${status.key == 0}">
@@ -234,7 +234,7 @@
                                             <c:forEach var="e" items="${data.hunts}">
                                                 <tr>
                                                     <td>${g.htmlQuote(e.queueKoreanName)}</td>
-                                                    <td class="-custom-wait-count" data-hunt="${e.queueName}">${e.customerWaiting}</td>
+                                                    <td class="-custom-wait-count">${e.customerWaiting}</td>
                                                     <c:forEach var="status" items="${statusCodes}">
                                                         <td class="-consultant-status-count" data-value="${status.key}" data-hunt="${g.htmlQuote(e.queueName)}" ${status.key == 0 ? 'data-login="true"' : ''}></td>
                                                         <c:if test="${status.key == 0}">

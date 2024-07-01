@@ -13,13 +13,22 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
+<%--@elvariable id="usingServices" type="java.lang.String"--%>
 
 <tbody id="counsel-list">
 <c:forEach var="e" items="${list}">
     <tr>
-        <c:if test="${serviceKind.equals('SC')}"><td>${g.htmlQuote(e.groupKind)}</td></c:if>
+        <c:if test="${serviceKind.equals('SC')}">
+            <td>
+                <c:choose>
+                    <c:when test="${e.groupKind == 'PHONE'}">통화</c:when>
+                    <c:when test="${e.groupKind == 'EMAIL'}">이메일</c:when>
+                    <c:when test="${e.groupKind == 'TALK'}">채팅상담</c:when>
+                </c:choose>
+            </td>
+        </c:if>
 
-        <td>${e.eicnCdr.inOut.equals("O") ? "발신" : e.eicnCdr.inOut.equals("I") ? "수신" : ""}</td>
+        <td>${g.htmlQuote(e.inOutValue)}</td>
 
         <td><fmt:formatDate value="${e.resultDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 
@@ -31,13 +40,16 @@
         </c:forEach>
         <td title="${g.htmlQuote(value)}">${g.htmlQuote(value)}</td>
 
-        <c:set var="value" value="${''}"/>
-        <c:forEach var="field" items="${e.multichannelList}">
-            <c:if test="${field.channelType == 'TALK'}">
-                <c:set var="value" value="${value.concat(field.channelData).concat(' ').split('_')[1]}"/>
-            </c:if>
-        </c:forEach>
-        <td title="${g.htmlQuote(value)}">${g.htmlQuote(value)}</td>
+        <c:if test="${usingServices.contains('ECHBT') || usingServices.contains('KATLK')}">
+            <c:set var="value" value="${''}"/>
+            <c:forEach var="field" items="${e.multichannelList}">
+                <c:if test="${field.channelType == 'TALK'}">
+                    <c:set var="value" value="${value.concat(field.channelData).concat(' ').split('_')[1]}"/>
+                </c:if>
+            </c:forEach>
+            <td title="${g.htmlQuote(value)}">${g.htmlQuote(value)}</td>
+        </c:if>
+
         <td title="${g.htmlQuote(e.userName)}">${g.htmlQuote(e.userName)}</td>
         <td>
             <button type="button" class="ui button mini compact" onclick="popupCounselingInfo(${e.seq})">열람</button>

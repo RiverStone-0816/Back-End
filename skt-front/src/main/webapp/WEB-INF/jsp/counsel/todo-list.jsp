@@ -16,10 +16,11 @@
 <table class="ui celled table unstackable" id="todo-list">
     <thead>
     <tr>
-        <th>채널</th>
-        <th>요청시간</th>
-        <th>고객정보</th>
-        <th>처리상태</th>
+        <th style="min-width: 60px;">채널</th>
+        <th style="min-width: 130px;">요청시간</th>
+        <th style="min-width: 145px;">고객정보</th>
+        <th style="min-width: 70px;">처리상태</th>
+        <th style="min-width: 70px;">완료</th>
     </tr>
     </thead>
     <tbody>
@@ -31,12 +32,23 @@
                 <div class="ui action input fluid" style="text-align: center;">
                     <c:if test="${e.todoInfo != null && e.todoInfo != ''}">
                         <input type="text" readonly value="${g.htmlQuote(e.todoInfo)}"/>
-                        <button type="button" class="ui icon button" onclick="$('#calling-number').val('${g.htmlQuote(e.todoInfo)}')"><i class="phone icon"></i></button>
+                       <button type="button" class="ui icon button" onclick="$('#calling-number').val('${g.htmlQuote(e.todoInfo)}')"><i class="phone icon"></i></button>
                     </c:if>
                 </div>
             </td>
             <td>${g.htmlQuote(message.getEnumText(e.todoStatus))}</td>
+            <td>
+                <button type="button" class="ui button mini compact" data-method="put" style="width:36px;" onclick="changeToDoDone(${e.seq})"><i class="check icon" ></i></button>
+            </td>
         </tr>
     </c:forEach>
     </tbody>
 </table>
+<script>
+    function changeToDoDone(seq) {
+        restSelf.put("api/counsel/to-do/done/"+ seq).done(function(){
+            loadTodoList();
+        });
+    }
+
+</script>

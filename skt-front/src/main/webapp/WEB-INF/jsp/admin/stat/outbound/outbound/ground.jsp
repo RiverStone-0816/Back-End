@@ -76,52 +76,9 @@
             <div class="panel panel-statstics">
                 <div class="panel-body">
                     <div class="panel-section">
-                        <c:if test="${list.size() > 0}">
-                            <div class="panel">
-                                <div class="panel-heading">
-                                    <text class="content">아웃바운드 통계 그래프</text>
-                                </div>
-                                <div class="panel-body pd-1em">
-                                    <div class="ui middle aligned grid">
-                                        <div class="four wide column">
-                                            <div class="ui segments pie-chart">
-                                                <div class="ui segment pie-chart-bg">
-                                                    <div class="label-container">O/B 통계</div>
-                                                    <div class="pie-chart-container">
-                                                        <div id="outer-pie-chart" class="full-width full-height" style="padding: 0 50px"></div>
-                                                    </div>
-                                                </div>
-                                                <div class="ui secondary segment">
-                                                    <div class="chart-label-container">
-                                                        <div>
-                                                            <text class="label-list"><span class="symbol-square symbol-blue"></span>O/B 건수</text>
-                                                            <text class="label-list"><span class="symbol-square symbol-orange"></span>비수신</text>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="twelve wide column">
-                                            <div class="label-container">
-                                                <label class="control-label">O/B 통계</label>
-                                            </div>
-                                            <div class="-chart basic-chart-container" id="chart"></div>
-                                            <div class="chart-label-container">
-                                                <div>
-                                                    <text class="label-list"><span class="symbol-square symbol-blue"></span>O/B 건수</text>
-                                                    <text class="label-list"><span class="symbol-square symbol-orange"></span>비수신</text>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </c:if>
-                    </div>
-                    <div class="panel-section">
                         <div class="panel-section-title">
                             <div class="title-txt">
-                                아웃바운드통계 <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
+                                발신통계 <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
                             </div>
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
@@ -129,17 +86,17 @@
                             <thead>
                             <tr>
                                 <th rowspan="2">날짜/시간</th>
-                                <th colspan="4">O/B 콜 현황</th>
-                                <th colspan="2">통화시간 분석</th>
+                                <th colspan="4">O/B 콜 통계</th>
+                                <th colspan="2">O/B 시간 통계</th>
                             </tr>
                             <tr>
-                                <th>총 시도콜</th>
-                                <th>O/B건수(성공호)</th>
+                                <th>O/B 총 시도콜</th>
+                                <th>성공호</th>
                                 <th>비수신</th>
 
                                 <th>통화성공률</th>
-                                <th>O/B 총 통화시간</th>
-                                <th>O/B 평균통화시간</th>
+                                <th>총 통화시간</th>
+                                <th>평균 통화시간</th>
                             </tr>
                             </thead>
                             <c:choose>
@@ -152,6 +109,7 @@
                                             <td>${e.statOutboundResponse.success}</td>
                                             <td>${e.statOutboundResponse.cancel}</td>
                                             <td>${e.statOutboundResponse.successAvg}%</td>
+
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.statOutboundResponse.billSecSum)}</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.statOutboundResponse.billSecAvg)}</td>
                                         </tr>
@@ -165,6 +123,7 @@
                                         <td>${total.success}</td>
                                         <td>${total.cancel}</td>
                                         <td>${String.format("%.1f", total.successAvg)}%</td>
+
                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecSum)}</td>
                                         <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecAvg)}</td>
                                     </tr>
@@ -180,6 +139,45 @@
                             </c:choose>
                         </table>
                     </div>
+                    <div class="panel-section">
+                        <div class="panel">
+                            <div class="panel-heading">발신통계 그래프</div>
+                            <div class="panel-body pd-1em">
+                                <div class="ui middle aligned grid">
+                                    <div class="four wide column">
+                                        <div class="ui segments pie-chart">
+                                            <div class="ui segment pie-chart-bg">
+                                                <div class="label-container">발신통계 합계</div>
+                                                <div class="pie-chart-container">
+                                                    <div id="outbound-outer-pie-chart" class="full-width full-height" style="padding: 0 50px"></div>
+                                                </div>
+                                            </div>
+                                            <div class="ui secondary segment">
+                                                <div class="chart-label-container">
+                                                    <div>
+                                                        <text class="label-list"><span class="symbol-square symbol-orange"></span>성공호</text>
+                                                        <text class="label-list"><span class="symbol-square symbol-blue"></span>비수신</text>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="twelve wide column">
+                                        <div class="label-container">
+                                            <label class="control-label">발신통계 주기별</label>
+                                        </div>
+                                        <div class="-chart basic-chart-container" id="outbound-chart"></div>
+                                        <div class="chart-label-container">
+                                            <div>
+                                                <text class="label-list"><span class="symbol-square symbol-orange"></span>성공호</text>
+                                                <text class="label-list"><span class="symbol-square symbol-blue"></span>비수신</text>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -191,37 +189,30 @@
             const data = [
                     <c:forEach var="e" items="${list}">{
                     time: '${g.escapeQuote(e.timeInformation)}',
-                    success: ${e.statOutboundResponse.success},
-                    cancel: ${e.statOutboundResponse.cancel},
+                    outboundSuccess: ${e.statOutboundResponse.success},
+                    outboundCancel: ${e.statOutboundResponse.cancel},
                 }, </c:forEach>
             ];
 
-            chartjs.drawBarChart($('#chart')[0], data, 'time', ['success', 'cancel'], {
+            chartjs.drawBarChart($('#outbound-chart')[0], data, 'time', ['outboundSuccess', 'outboundCancel'], {
                 ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue'],
-                colors: ['#F37402', '#4472C4', ],
-                labels: ['응대호', '포기호'],
-                stacked: true,
+                colors: ['#F37402', '#4472C4'],
+                labels: ['성공호', '비수신'],
+                stacked: true
             });
 
             chartjs.drawDonutChart(
-                '#outer-pie-chart',
-                <c:choose>
-                <c:when test="${total.success + total.cancel == 0}">
-                [0, 0],
-                </c:when>
-                <c:otherwise>
-                [${total.cancel}, ${total.success},],
-                </c:otherwise>
-                </c:choose>
+                '#outbound-outer-pie-chart',
+                [${total.cancel}, ${total.success}],
                 {
                     startAngle: 0,
                     endAngle: 360,
                     innerRadius: 100,
                     outerRadius: 120,
                     innerLabel: ' ',
-                    colorClasses: ['bcolor-bar2', 'bcolor-bar1'],
+                    colorClasses: ['bcolor-bar1', 'bcolor-bar2'],
                     colors: ['#4472C4', '#F37402'],
-                    labels: ['포기호', '응대호']
+                    labels: ['비수신', '성공호']
                 }
             );
             </c:if>

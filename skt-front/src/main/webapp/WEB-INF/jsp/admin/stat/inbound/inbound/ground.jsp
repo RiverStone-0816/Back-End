@@ -85,10 +85,6 @@
                                         <label>내선통화</label>
                                     </div>
                                     <div class="ui checkbox">
-                                        <form:checkbox path="busy" value="Y"/>
-                                        <label>콜백</label>
-                                    </div>
-                                    <div class="ui checkbox">
                                         <form:checkbox path="workHour" value="Y"/>
                                         <label>업무시간</label>
                                     </div>
@@ -104,14 +100,12 @@
                     </div>
                 </div>
             </form:form>
-
-
             <div class="panel panel-statstics">
                 <div class="panel-body">
                     <div class="panel-section">
                         <div class="panel-section-title">
                             <div class="title-txt">
-                                인바운드 통계 <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
+                                대표번호수신통계 <span class="sub header">${g.dateFormat(search.startDate)} ~ ${g.dateFormat(search.endDate)}</span>
                             </div>
                             <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         </div>
@@ -120,10 +114,11 @@
                                 <thead>
                                 <tr>
                                     <th rowspan="2">날짜/시간</th>
-                                    <th colspan="6">I/B 콜 현황</th>
-                                    <th colspan="7">응답호 분석</th>
+                                    <th colspan="6">I/B 콜 통계</th>
+                                    <th colspan="7">응대호 분석</th>
                                     <th colspan="6">포기호 분석</th>
-                                    <th colspan="4">기타 분석</th>
+                                    <th rowspan="2">무효콜비율</th>
+                                    <th colspan="3">I/B 시간 통계</th>
                                 </tr>
                                 <tr>
                                     <th>I/B 전체콜</th>
@@ -145,10 +140,9 @@
                                     <th>~30(초)</th>
                                     <th>~40(초)</th>
                                     <th>40~(초)</th>
-                                    <th>무효콜비율</th>
-                                    <th>I/B 총통화시간</th>
-                                    <th>평균통화시간</th>
-                                    <th>평균대기시간</th>
+                                    <th>총 통화시간</th>
+                                    <th>평균 통화시간</th>
+                                    <th>평균 대기시간</th>
                                 </tr>
                                 </thead>
                                 <c:choose>
@@ -164,7 +158,7 @@
                                                 <td>${e.connReq}</td>
                                                 <td>${e.success}</td>
                                                 <td>${e.cancel}</td>
-                                                <td>${e.callbackSuccess}</td>
+                                                <td>${e.callback}</td>
 
                                                 <td>${e.responseRate}%</td>
                                                 <td>${e.svcLevelAvg}%</td>
@@ -182,6 +176,7 @@
                                                 <td>${e.waitCancel_40}</td>
 
                                                 <td>${e.ivrAvg}%</td>
+
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecSum)}</td>
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.billSecAvg)}</td>
                                                 <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.waitAvg)}</td>
@@ -198,7 +193,7 @@
                                             <td>${total.connReq}</td>
                                             <td>${total.success}</td>
                                             <td>${total.cancel}</td>
-                                            <td>${total.callbackSuccess}</td>
+                                            <td>${total.callback}</td>
 
                                             <td>${String.format("%.1f", total.responseRate)}%</td>
                                             <td>${String.format("%.1f", total.svcLevelAvg)}%</td>
@@ -216,6 +211,7 @@
                                             <td>${total.waitCancel_40}</td>
 
                                             <td>${String.format("%.1f", total.ivrAvg)}%</td>
+
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecSum)}</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.billSecAvg)}</td>
                                             <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(total.waitAvg)}</td>
@@ -225,7 +221,7 @@
                                     <c:otherwise>
                                         <tbody>
                                         <tr>
-                                            <td colspan="23" class="null-data">조회된 데이터가 없습니다.</td>
+                                            <td colspan="24" class="null-data">조회된 데이터가 없습니다.</td>
                                         </tr>
                                         </tbody>
                                     </c:otherwise>
@@ -235,14 +231,14 @@
                     </div>
                     <div class="panel-section">
                         <div class="panel">
-                            <div class="panel-heading">통계그래프</div>
+                            <div class="panel-heading">대표번호수신통계 그래프</div>
                             <div class="panel-body pd-1em">
                                 <div class="ui middle aligned grid">
                                     <c:if test="${list.size() > 0}">
                                         <div class="four wide column">
                                             <div class="ui segments pie-chart">
                                                 <div class="ui segment pie-chart-bg">
-                                                    <div class="label-container"><label class="control-label">IB 통계</label></div>
+                                                    <div class="label-container"><label class="control-label">대표번호수신통계 합계</label></div>
                                                     <div class="pie-chart-container">
                                                         <div id="inbound-outer-pie-chart" class="full-width full-height" style="padding: 0 50px;"></div>
                                                     </div>
@@ -250,8 +246,8 @@
                                                 <div class="ui secondary segment">
                                                     <div class="chart-label-container">
                                                         <div>
-                                                            <text class="label-list"><span class="symbol-square symbol-blue"></span>응대호</text>
-                                                            <text class="label-list"><span class="symbol-square symbol-orange"></span>포기호</text>
+                                                            <text class="label-list"><span class="symbol-square symbol-orange"></span>응대호</text>
+                                                            <text class="label-list"><span class="symbol-square symbol-blue"></span>포기호</text>
                                                             <text class="label-list"><span class="symbol-square symbol-grey"></span>콜백</text>
                                                         </div>
                                                     </div>
@@ -260,13 +256,13 @@
                                         </div>
                                         <div class="twelve wide column">
                                             <div class="label-container">
-                                                <label class="control-label">I/B 통계</label>
+                                                <label class="control-label">대표번호수신통계 주기별</label>
                                             </div>
                                             <div class="-chart basic-chart-container" id="inbound-chart"></div>
                                             <div class="chart-label-container">
                                                 <div>
-                                                    <text class="label-list"><span class="symbol-square symbol-blue"></span>응대호</text>
-                                                    <text class="label-list"><span class="symbol-square symbol-orange"></span>포기호</text>
+                                                    <text class="label-list"><span class="symbol-square symbol-orange"></span>응대호</text>
+                                                    <text class="label-list"><span class="symbol-square symbol-blue"></span>포기호</text>
                                                     <text class="label-list"><span class="symbol-square symbol-grey"></span>콜백</text>
                                                 </div>
                                             </div>
@@ -292,35 +288,29 @@
                     time: '${g.escapeQuote(element.timeInformation)}',
                     inboundSuccess: ${element.inboundStat.success},
                     inboundCancel: ${element.inboundStat.cancel},
+                    callback: ${element.inboundStat.callback},
                 }, </c:forEach>
             ];
 
-            chartjs.drawBarChart($('#inbound-chart')[0], data, 'time', ['inboundSuccess', 'inboundCancel'], {
-                ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue'],
-                colors: ['#F37402', '#4472C4',],
-                labels: ['응대호', '포기호'],
+            chartjs.drawBarChart($('#inbound-chart')[0], data, 'time', ['inboundSuccess', 'inboundCancel', 'callback'], {
+                ticks: 5, yLabel: '', unitWidth: 30, colorClasses: ['color-red', 'color-blue', 'color-gray'],
+                colors: ['#F37402', '#4472C4', '#A5A5A5'],
+                labels: ['응대호', '포기호', '콜백'],
                 stacked: true
             });
 
             chartjs.drawDonutChart(
                 '#inbound-outer-pie-chart',
-                <c:choose>
-                <c:when test="${total.success + total.cancel == 0}">
-                [0, 0],
-                </c:when>
-                <c:otherwise>
-                [${total.cancel}, ${total.success},],
-                </c:otherwise>
-                </c:choose>
+                [${total.callback}, ${total.cancel}, ${total.success}],
                 {
                     startAngle: 0,
                     endAngle: 360,
                     innerRadius: 100,
                     outerRadius: 120,
                     innerLabel: ' ',
-                    colorClasses: ['bcolor-bar2', 'bcolor-bar1'],
-                    colors: ['#4472C4', '#F37402'],
-                    labels: ['포기호', '응대호']
+                    colorClasses: ['bcolor-bar1', 'bcolor-bar2','bcolor-bar3'],
+                    colors: ['#A5A5A5', '#4472C4', '#F37402'],
+                    labels: ['콜백', '포기호', '응대호',]
                 }
             );
             </c:if>

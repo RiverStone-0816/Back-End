@@ -36,7 +36,7 @@ function maudio(_opt){
       $(this).before(opt.tpl);
       var thisBox = $(this).prev('div.maudio');
       var thisAudio = thisBox.children('audio')[0];
-      thisAudio.src = $(this).attr('src') || $(this).children('source').attr('src');
+      thisAudio.src = $(this).attr('src') || $(this).attr('data-src') || $(this).children('source').attr('src');
       window.tDuration[opt.obj + thisAudio.src + '_' + i] = setInterval(function(){
         if(thisAudio.duration){
           thisBox.find('.time-keep .duration').text(timeFormat(thisAudio.duration));

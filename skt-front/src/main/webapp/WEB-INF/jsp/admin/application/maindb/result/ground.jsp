@@ -138,7 +138,9 @@
                         <button class="ui button sharp light large excel action-button excel-down-button" type="button" id="excel-down" onclick="downloadExcel()">엑셀 다운로드</button>
                         <div class="ui basic buttons">
                             <button class="ui button -control-entity" data-entity="MaindbResult" style="display: none;" onclick="popupModal(getEntityId('MaindbResult'))">수정</button>
+                            <c:if test="${'A|J'.contains(g.user.idType)}">
                             <button class="ui button -control-entity" data-entity="MaindbResult" style="display: none;" onclick="deleteEntity(getEntityId('MaindbResult'))">삭제</button>
+                            </c:if>
                         </div>
                     </div>
                     <div class="pull-right">
@@ -197,34 +199,33 @@
                                                     <c:when test="${e.groupKind == 'TALK'}">채팅상담</c:when>
                                                 </c:choose>
                                             </td>
-                                            <td>${g.htmlQuote(e.eicnCdr.inOut == 'I' ? '수신' : e.eicnCdr.inOut == 'O' ? '발신' : '')}</td>
+                                            <td>${g.htmlQuote(e.inOutValue)}</td>
                                             <td><fmt:formatDate value="${e.resultDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                             <td>${g.htmlQuote(e.userName)}</td>
                                             <td>${g.htmlQuote(e.userTrName)}</td>
                                             <td>${g.htmlQuote(e.customNumber)}</td>
                                             <td class="popup-td">
-                                                <c:choose>
-                                                    <c:when test="${e.groupKind == 'PHONE'}">
-                                                        <div class="popup-element-wrap">
-                                                            <c:if test="${!user.listeningRecordingAuthority.equals('NO')}">
-                                                                <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)}">
-                                                                    <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                                        <i class="volume up icon"></i>
-                                                                    </button>
-                                                                </c:if>
-                                                                <c:if test="${user.listeningRecordingAuthority.equals('ALL')}">
-                                                                    <button type="button" class="ui icon button mini compact -popup-records" data-id="${e.seq}">
-                                                                        <i class="volume up icon"></i>
-                                                                    </button>
-                                                                </c:if>
+                                                <div class="popup-element-wrap">
+                                                    <c:choose>
+                                                        <c:when test="${e.groupKind == 'PHONE' && not empty e.uniqueid}">
+                                                            <c:if test="${user.listeningRecordingAuthority.equals('MY') && e.userid.equals(user.id)
+                                                                   or user.listeningRecordingAuthority.equals('GROUP') && e.personList.groupCode.equals(user.groupCode)
+                                                                   or user.listeningRecordingAuthority.equals('ALL')}">
+                                                                <button type="button"
+                                                                        class="ui icon button mini compact -popup-records"
+                                                                        data-id="${e.seq}">
+                                                                    <i class="volume up icon"></i>
+                                                                </button>
                                                             </c:if>
-                                                        </div>
-                                                    </c:when>
-                                                    <c:when test="${e.groupKind == 'TALK'}">
-                                                        <button type="button" class="ui icon button mini compact" onclick="consultingHistoryTalkView('${e.hangupMsg}')"><i
-                                                                class="comment alternate icon"></i></button>
-                                                    </c:when>
-                                                </c:choose>
+                                                        </c:when>
+                                                        <c:when test="${e.groupKind == 'TALK' && not empty e.hangupMsg}">
+                                                            <button type="button" class="ui icon button mini compact"
+                                                                    onclick="consultingHistoryTalkView('${e.hangupMsg}')">
+                                                                <i class="comment alternate icon"></i>
+                                                            </button>
+                                                        </c:when>
+                                                    </c:choose>
+                                                </div>
                                             </td>
 
                                             <c:forEach var="field" items="${resultType.fields}">
@@ -319,7 +320,7 @@
                                 </c:when>
                                 <c:otherwise>
                                     <tr>
-                                        <td colspan="${11 + customDbType.fields.size() + resultType.fields.size()}" class="null-data">조회된 데이터가 없습니다.</td>
+                                        <td colspan="${12 + customDbType.fields.size() + resultType.fields.size()}" class="null-data">조회된 데이터가 없습니다.</td>
                                     </tr>
                                 </c:otherwise>
                             </c:choose>
@@ -544,23 +545,7 @@
                 if ($this.attr('data-has-records'))
                     return;
 
-                popupReceivedHtml('/admin/application/maindb/result/' + $this.attr('data-id') + '/modal-records', 'modal-records').done(function (html) {
-                    const mixedNodes = $.parseHTML(html, null, true);
-
-                    const modal = (function () {
-                        for (let i = 0; i < mixedNodes.length; i++) {
-                            const node = $(mixedNodes[i]);
-                            if (node.is('.ui.modal'))
-                                return node;
-                        }
-                        throw 'cannot find modal element';
-                    })();
-
-                    $this.after(modal);
-                    modal.find('audio').each(function () {
-                        maudio({obj: this});
-                    });
-                });
+                popupReceivedHtml(contextPath + '/admin/application/maindb/result/' + $this.attr('data-id') + '/modal-records', 'modal-records');
             });
 
             function popupModal(id) {
@@ -597,7 +582,7 @@
                             return;
                         }
                     } else if (objText[i].getAttribute('data-type') === 'select') {
-                        if (objText[i].options[objText[i].selectedIndex].value === "") {
+                        if (objText[i].value.trim() === "") {
                             alert("[" + objText[i].getAttribute('data-text') + "] 을(를) 선택 해 주세요.");
                             return;
                         }
@@ -610,6 +595,14 @@
                 }
                 $('#modal-result').submit();
             }
+
+            $(window).on('load', function () {
+                $('#keyword').val('${search.keyword}').trigger("change");
+                $('#code').val('${search.code}').trigger("change");
+
+                $('input[name=startDate]').val('${search.startDate}');
+                $('input[name=endDate]').val('${search.endDate}');
+            });
         </script>
     </tags:scripts>
 </tags:tabContentLayout>

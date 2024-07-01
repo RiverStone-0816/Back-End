@@ -15,7 +15,7 @@
 <%--@elvariable id="usingservices" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
-<div class="content" id="counsel-nav">
+<div class="content" id="counsel-nav" style="height: 760px; overflow: auto;">
     <c:if test="${serviceKind.equals('SC')}">
         <div class="counsel-trans-wrap">
             <button type="button" class="ui brand fluid button" onclick="popupArsModal()">ARS로 돌려주기</button>

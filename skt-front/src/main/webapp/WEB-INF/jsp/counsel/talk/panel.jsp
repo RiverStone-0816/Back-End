@@ -788,10 +788,10 @@
                         block && restSelf.get('/api/chatbot/blocks/' + block.blockId, null, null, true).done(setBlockInfo)
                     } else if (message.messageType === 'image_temp') {
                         message.originalFileUrl = message.contents
-                        message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: message.contents, channel_type: _this.channelType})
+                        message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: message.contents})
                     } else if (['file', 'photo', 'audio'].includes(message.messageType)) {
                         message.originalFileUrl = message.contents
-                        message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: message.contents, channel_type: _this.channelType})
+                        message.fileUrl = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {company_id: talkCommunicator.request.companyId, file_name: message.contents})
                     } else if (this.REPLYING_INDICATOR === message.contents.charAt(0)) {
                         [message.contents.indexOf(this.REPLYING_TEXT), message.contents.indexOf(this.REPLYING_IMAGE), message.contents.indexOf(this.REPLYING_FILE), message.contents.indexOf(this.REPLYING_IMAGE_TEMP)].forEach((indicator, i) => {
                             if (indicator < 0) return
@@ -803,14 +803,12 @@
                             } else if (message.replyingType === 'image_temp') {
                                 message.replyingTarget = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {
                                     company_id: talkCommunicator.request.companyId,
-                                    file_name: replyingTarget,
-                                    channel_type: _this.channelType
+                                    file_name: replyingTarget
                                 })
                             } else {
                                 message.replyingTarget = $.addQueryString(talkCommunicator.url + '/webchat_bot_image_fetch', {
                                     company_id: talkCommunicator.request.companyId,
-                                    file_name: replyingTarget,
-                                    channel_type: _this.channelType
+                                    file_name: replyingTarget
                                 })
                             }
 

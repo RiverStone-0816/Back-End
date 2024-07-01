@@ -12,6 +12,7 @@
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
+<%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
 
 <form:form modelAttribute="form" cssClass="ui modal small -json-submit" data-method="${entity != null ? 'put' : 'post'}"
            action="${pageContext.request.contextPath}/api/maindb-result/${entity.seq}"
@@ -30,7 +31,7 @@
             <div class="row">고객정보</div>
             <c:forEach var="field" items="${customDbType.fields}">
                 <c:set var="name" value="${field.fieldId.substring(customDbType.kind.length() + '_'.length()).toLowerCase()}"/>
-                <div class="row">
+                <div class="row" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
                     <div class="four wide column"><label class="control-label">${g.htmlQuote(field.fieldInfo)}</label></div>
                     <div class="twelve wide column">
                     <c:choose>
@@ -56,7 +57,7 @@
             <c:forEach var="field" items="${resultType.fields}">
                 <c:set var="name" value="${field.fieldId.substring(resultType.kind.length() + '_'.length()).toLowerCase()}"/>
                 <c:set var="value" value="${fieldNameToValueMap.get(field.fieldId)}"/>
-                <div class="row">
+                <div class="row" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
                     <div class="four wide column"><label class="control-label">${g.htmlQuote(field.fieldInfo)}</label></div>
                     <c:choose>
                         <c:when test="${field.fieldType == 'MULTICODE'}">
@@ -65,7 +66,7 @@
                                     <div class="field">
                                         <select name="${name}" id="${name}" data-type="select"
                                                 data-text="${g.htmlQuote(field.fieldInfo)}"
-                                                data-value="${field.isneed}" multiple="multiple" class="ui fluid dropdown">
+                                                data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple" class="ui fluid dropdown">
                                             <c:forEach var="e" items="${field.codes}">
                                                 <c:set var="contains" value="${false}"/>
                                                 <c:if test="${value != null}">
@@ -88,7 +89,7 @@
                                     <div class="field">
                                         <select name="${name}" id="${name}" data-type="select"
                                                 data-text="${g.htmlQuote(field.fieldInfo)}"
-                                                data-value="${field.isneed}">
+                                                data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}">
                                             <option value=""></option>
                                             <c:forEach var="e" items="${field.codes}">
                                                 <option value="${g.htmlQuote(e.codeId)}" ${value == e.codeId ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
@@ -104,7 +105,7 @@
                                     <div class="field">
                                         <input type="text" name="${name}" id="${name}" data-type="text"
                                                data-text="${g.htmlQuote(field.fieldInfo)}"
-                                               data-value="${field.isneed}" class="-input-numerical" value="${g.htmlQuote(value)}"/>
+                                               data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" class="-input-numerical" value="${g.htmlQuote(value)}"/>
                                     </div>
                                 </div>
                             </div>
@@ -114,16 +115,16 @@
                                 <div class="ui form fluid">
                                     <input type="text" name="${name}" id="${name}" data-type="text"
                                            data-text="${g.htmlQuote(field.fieldInfo)}"
-                                           data-value="${field.isneed}" multiple="multiple" value="${value != null ? g.dateFormat(value) : null}" class="-datepicker" style="width: 100px"/>&ensp;
+                                           data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple" value="${value != null ? g.dateFormat(value) : null}" class="-datepicker" style="width: 100px"/>&ensp;
                                     <input type="text" name="${name}" id="${name}" data-type="text"
                                            data-text="${g.htmlQuote(field.fieldInfo)}"
-                                           data-value="${field.isneed}" multiple="multiple" value="${value != null ? value.hours : null}" class="-input-numeric" style="width: 50px"/>시
+                                           data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple" value="${value != null ? value.hours : null}" class="-input-numeric" style="width: 50px"/>시
                                     <input type="text" name="${name}" id="${name}" data-type="text"
                                            data-text="${g.htmlQuote(field.fieldInfo)}"
-                                           data-value="${field.isneed}" multiple="multiple" value="${value != null ? value.minutes : null}" class="-input-numeric" style="width: 50px"/>분
+                                           data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple" value="${value != null ? value.minutes : null}" class="-input-numeric" style="width: 50px"/>분
                                     <input type="text" name="${name}" id="${name}" data-type="text"
                                            data-text="${g.htmlQuote(field.fieldInfo)}"
-                                           data-value="${field.isneed}" multiple="multiple" value="${value != null ? value.seconds : null}" class="-input-numeric" style="width: 50px"/>초
+                                           data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple" value="${value != null ? value.seconds : null}" class="-input-numeric" style="width: 50px"/>초
                                 </div>
                             </div>
                         </c:when>
@@ -133,7 +134,7 @@
                                     <div class="field">
                                         <input type="text" name="${name}" id="${name}" data-type="text"
                                                data-text="${g.htmlQuote(field.fieldInfo)}"
-                                               data-value="${field.isneed}" class="-datepicker" value="${value}"/>
+                                               data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" class="-datepicker" value="${value}"/>
                                     </div>
                                 </div>
                             </div>
@@ -144,7 +145,7 @@
                                     <div class="field">
                                         <textarea name="${name}" id="${name}" data-type="text"
                                                   data-text="${g.htmlQuote(field.fieldInfo)}"
-                                                  data-value="${field.isneed}" rows="3" maxlength="${field.fieldSize}">${g.htmlQuote(value)}</textarea>
+                                                  data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" rows="3" maxlength="${field.fieldSize}">${g.htmlQuote(value)}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -169,7 +170,7 @@
                                 <div class="ui input fluid">
                                     <input type="text" name="${name}" id="${name}" data-type="text"
                                            data-text="${g.htmlQuote(field.fieldInfo)}"
-                                           data-value="${field.isneed}" maxlength="${field.fieldSize}" value="${g.htmlQuote(value)}"/>
+                                           data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" maxlength="${field.fieldSize}" value="${g.htmlQuote(value)}"/>
                                 </div>
                             </div>
                             <c:if test="${field.fieldSize > 0}">

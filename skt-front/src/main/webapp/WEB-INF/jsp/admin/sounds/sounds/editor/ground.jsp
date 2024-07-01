@@ -54,7 +54,7 @@
                             <td colspan="3">
                                 <div class="ui form"><form:input path="soundName"/></div>
                             </td>
-                            <th>파일명(영어)</th>
+                            <th>파일명(한글)</th>
                             <td colspan="3">
                                 <div class="ui form"><form:input path="fileName"/></div>
                             </td>
@@ -120,7 +120,7 @@
 
                     restSelf.post('/api/sounds-editor/pre-listen', {playSpeed: data.playSpeed, comment: data.comment}).done(function (response) {
                         const src = $.addQueryString('${g.escapeQuote(apiServerUrl)}' + response.data, {token: '${g.escapeQuote(accessToken)}', ___t: new Date().getTime()});
-                        const audio = $('<audio controls/>').attr('src', src);
+                        const audio = $('<audio controls/>').attr('data-src', src);
                         player.append(audio);
                         maudio({obj: 'audio', fastStep: 10});
 

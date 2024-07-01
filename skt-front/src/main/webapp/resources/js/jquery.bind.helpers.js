@@ -83,6 +83,11 @@
                 $('.-control-entity[data-entity="' + entityName + '"]').hide();
             }
         });
+        findAndMe('.frame-fixed-modal', this).each(function () {
+            setTimeout(function () {
+                setFixedModalPosition(this);
+            }, 100);
+        });
         findAndMe('.-moving-container', this).each(function () {
             const container = $(this);
             const rightSelector = container.find('.-right-selector');
