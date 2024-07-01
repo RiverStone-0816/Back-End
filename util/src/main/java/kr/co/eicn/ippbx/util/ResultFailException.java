@@ -1,6 +1,5 @@
 package kr.co.eicn.ippbx.util;
 
-import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
