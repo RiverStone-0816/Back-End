@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.search;
 
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServerInfo;
+import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchTalkServiceInfoResponse;
 import kr.co.eicn.ippbx.server.repository.eicn.WtalkServerInfoRepository;
@@ -11,11 +12,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static kr.co.eicn.ippbx.util.JsonResult.data;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.WtalkServerInfo.WTALK_SERVER_INFO;
@@ -36,9 +40,9 @@ public class WtalkServiceInfoSearchApiController extends ApiBaseController {
 
     @GetMapping("server")
     public ResponseEntity<JsonResult<List<WtalkServerInfo>>> serverList() {
-
-        return ResponseEntity.ok(data(wtalkServerInfoRepository.findAll(WTALK_SERVER_INFO.TALK_HOST.eq(
-                cacheService.getCompanyServerList(g.getUser().getCompanyId()).stream().filter(e -> e.getType().equals("K")).findFirst().get().getHost()
-        ))));
+        final List<CompanyServerEntity> wtalkServer = cacheService.getCompanyServerList(g.getUser().getCompanyId()).stream().filter(e -> e.getType().equals("K")).toList();
+        return ResponseEntity.ok(data(!CollectionUtils.isEmpty(wtalkServer)
+                                              ? wtalkServerInfoRepository.findAll(WTALK_SERVER_INFO.TALK_HOST.eq(wtalkServer.get(0).getHost()))
+                                              : new ArrayList<>()));
     }
 }
