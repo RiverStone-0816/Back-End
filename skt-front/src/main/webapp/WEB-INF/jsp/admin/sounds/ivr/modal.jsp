@@ -149,7 +149,7 @@
                     <div class="four wide column"><label class="control-label">대표번호선택(*)</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
-                            <select name="typeDataStrings" data-multiple="multiple" class="wantsort">
+                            <select name="typeDataStrings" data-multiple="multiple">
                                 <option value="">선택안함</option>
                                 <c:forEach var="e" items="${serviceNumbers}">
                                     <option value="${e.key}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[form.type == CONNECT_REPRESENTABLE_NUMBER ? 0 : 1] == e.key ? 'selected' : ''}>${g.htmlQuote(e.value)}</option>
@@ -180,7 +180,7 @@
                     <div class="four wide column"><label class="control-label">내선번호선택(*)</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
-                            <select name="typeDataStrings" data-multiple="multiple" class="wantsort">
+                            <select name="typeDataStrings" data-multiple="multiple">
                                 <option value="" label="선택안함"></option>
                                 <c:forEach var="e" items="${extensions}">
                                     <option value="${e.key}" ${entity != null && entity.typeData != null && entity.typeData.split('[|]')[0] == e.key ? 'selected' : ''}>${g.htmlQuote(e.value)}[${e.key}]</option>
