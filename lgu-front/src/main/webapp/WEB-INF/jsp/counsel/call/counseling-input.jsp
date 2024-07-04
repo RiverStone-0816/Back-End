@@ -297,7 +297,6 @@
             <form:hidden path="resultType"/>
             <form:hidden path="groupId"/>
             <form:hidden path="clickKey"/>
-            <div id="is-result-save" style="display: none;"></div>
             </tbody>
         </table>
     </div>
@@ -516,13 +515,11 @@
                 }
             }
 
-            ui.find('#is-result-save').text("true");
             submitCallCustomInput().done(function (response) {
                 submit(response.data);
             });
 
         } else {
-            ui.find('#is-result-save').text("true");
             submit();
         }
     });

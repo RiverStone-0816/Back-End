@@ -119,14 +119,9 @@ public class CounselCallController extends BaseController {
                               @RequestParam(required = false) Integer maindbGroupSeq,
                               @RequestParam(required = false) String customId,
                               @RequestParam(required = false) String phoneNumber,
-                              @RequestParam(required = false) Integer maindbResultSeq,
-                              @RequestParam(required = false) String isResultSave) throws IOException, ResultFailException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+                              @RequestParam(required = false) Integer maindbResultSeq) throws IOException, ResultFailException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         final List<MaindbGroupSummaryResponse> groups = maindbGroupApiInterface.list(new MaindbGroupSearchRequest());
         model.addAttribute("maindbGroups", groups);
-
-        if (StringUtils.isNotEmpty(isResultSave)) {
-            model.addAttribute("isResultSave", isResultSave);
-        }
 
         if (groups.isEmpty())
             return "counsel/call/custom-input";
