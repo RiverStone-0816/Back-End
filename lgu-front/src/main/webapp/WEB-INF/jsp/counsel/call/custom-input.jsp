@@ -294,7 +294,7 @@
         });
     });
 
-    <c:if test="${phoneNumberData != ''}">
+    <c:if test="${phoneNumberData != '' && empty isResultSave}">
         phoneNumber = '${phoneNumberData}';
         $('#calling-number').val('${phoneNumberData}');
     </c:if>
@@ -405,7 +405,8 @@
 
     window.donePostCustomInfo = function (form, response) {
         alert('고객정보가 저장되었습니다.');
-        loadCustomInput('${form.groupSeq}', response.data || '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(phoneNumber)}');
+        if ($('#call-counseling-input').find('#customId').val() !== response.data && !$('#call-counseling-input').find('#is-result-save').text())
+            loadCustomInput('${form.groupSeq}', (response.data || '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}'), '${g.htmlQuote(phoneNumber)}', '', '', '', '', $('#call-counseling-input').find('#is-result-save').text());
     };
 
     ui.find('[name="channelType"]').change(function () {
@@ -449,7 +450,7 @@
     });
 
     <c:if test="${entity != null}">
-        loadCounselingList('${g.escapeQuote(entity.maindbSysCustomId)}');
+    loadCounselingList('${g.escapeQuote(entity.maindbSysCustomId)}', ${not empty isResultSave ? isResultSave : ""});
     </c:if>
     loadCounselingInput('${form.groupSeq}', '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(phoneNumber)}', '${not empty maindbResultSeq ? maindbResultSeq : ''}');
 

@@ -436,12 +436,12 @@
                 (typeof targetNumber2.val() === 'undefined' || targetNumber2.val() === '') ? targetNumber2.val(phoneNumber) : form.find('#targetNumber3').val(phoneNumber);
         }
 
-        function loadCounselingList(customId) {
-            if (customId && customId !== '') {
+        function loadCounselingList(customId, isResultSave = false) {
+            if (customId && customId !== '' && !isResultSave)
                 replaceReceivedHtmlInSilence($.addQueryString('/counsel/counsel-list', {customId: customId}), '#counsel-list');
-            } else {
+            else
                 $('#counsel-list').empty();
-            }
+
         }
 
         function removeCategory(id) {
