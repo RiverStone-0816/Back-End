@@ -72,7 +72,8 @@ IpccCommunicator.prototype.connect = function (url, serverIp, companyId, userId,
                 usertype: _this.request.userType,
                 option: _this.request.option,
                 fromUi: _this.request.fromUi,
-                multi_yn: _this.request.multi_yn
+                multi_yn: _this.request.multi_yn,
+                first_status: _this.status.memberStatus ? _this.status.memberStatus : _this.request.first_status
             })
             _this.parse("NODEJS|KIND:CONNECT_OK");
         }).on('svcmsg', function (data) {
