@@ -219,8 +219,8 @@ public class MainApiController extends ApiBaseController {
             throw new ValidationException(bindingResult);
 
         //!!@@## 코드정리 나중에...
-        TodoList list = todoListRepository.findOne(form.getSeq());
-        if (list.getTodoKind().getLiteral().equals("CALLBACK")) {
+        TodoList entity = todoListRepository.findOne(form.getSeq());
+        if (entity.getTodoKind().getLiteral().equals("CALLBACK")) {
             CallbackListUpdateFormRequest callbackForm = new CallbackListUpdateFormRequest();
             if (form.getTodoStatus().getLiteral().equals(TodoListTodoStatus.DONE.getLiteral())) {
                 callbackForm.setStatus(CallbackStatus.COMPLETE);
@@ -230,14 +230,14 @@ public class MainApiController extends ApiBaseController {
                 callbackForm.setStatus(CallbackStatus.NONE);
             }
             List<Integer> seqList = new ArrayList<>();
-            seqList.add(Integer.parseInt(list.getDetailConnectInfo()));
+            seqList.add(Integer.parseInt(entity.getDetailConnectInfo()));
             callbackForm.setServiceSequences(seqList);
 
             callbackRepository.update(callbackForm);
         }
 
-        todoListRepository.updateStatusBySeq(form);
-
+        if (!List.of("DONE", "DELETE").contains(entity.getTodoStatus().getLiteral()))
+            todoListRepository.updateStatusBySeq(form);
 
         return ResponseEntity.ok(create());
     }
