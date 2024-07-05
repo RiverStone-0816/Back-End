@@ -85,7 +85,7 @@ public class WtalkStatisticsRepository extends StatDBBaseRepository<CommonStatWt
     }
 
     public List<Condition> condition(TalkStatisticsSearchRequest search) {
-        List<Condition> conditions = new ArrayList<>();
+        final List<Condition> conditions = new ArrayList<>();
 
         if (search.getStartDate() != null)
             conditions.add(TABLE.STAT_DATE.ge(search.getStartDate()));

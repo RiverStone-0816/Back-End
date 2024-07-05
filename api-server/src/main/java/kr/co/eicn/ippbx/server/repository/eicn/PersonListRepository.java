@@ -187,20 +187,11 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
 
         conditions.add(PERSON_LIST.ID_TYPE.notEqual("J"));
 
-        if (StringUtils.isNotEmpty(search.getGroupCode())) {
+        if (StringUtils.isNotEmpty(search.getGroupCode()))
             conditions.add(PERSON_LIST.GROUP_TREE_NAME.like("%" + search.getGroupCode() + "%"));
-        }
 
-        Condition personCondition = noCondition();
-
-        for (int i = 0; i < search.getPersonIds().size(); i++) {
-            if (i == 0)
-                personCondition = personCondition.and(PERSON_LIST.ID.eq(search.getPersonIds().get(i)));
-            else
-                personCondition = personCondition.or(PERSON_LIST.ID.eq(search.getPersonIds().get(i)));
-        }
-
-        conditions.add(personCondition);
+        if (!search.getPersonIds().isEmpty())
+            conditions.add(PERSON_LIST.ID.in(search.getPersonIds()));
 
         return findAll(conditions, Collections.singletonList(PERSON_LIST.GROUP_CODE.asc()));
     }

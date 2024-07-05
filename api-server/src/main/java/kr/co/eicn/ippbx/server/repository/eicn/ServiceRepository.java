@@ -94,14 +94,9 @@ public class ServiceRepository extends EicnBaseRepository<ServiceList, kr.co.eic
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList> findAllBySvcNumber(List<String> svcNumbers) {
         Condition condition = DSL.noCondition();
 
-        if (svcNumbers.size() > 0) {
-            for (int i = 0; i < svcNumbers.size(); i++) {
-                if (i == 0)
-                    condition = condition.and(SERVICE_LIST.SVC_NUMBER.eq(svcNumbers.get(i)));
-                else
-                    condition = condition.or(SERVICE_LIST.SVC_NUMBER.eq(svcNumbers.get(i)));
-            }
-        }
+        if (!svcNumbers.isEmpty())
+            condition.and(SERVICE_LIST.SVC_NUMBER.in(svcNumbers));
+
         return findAll(condition);
     }
 
