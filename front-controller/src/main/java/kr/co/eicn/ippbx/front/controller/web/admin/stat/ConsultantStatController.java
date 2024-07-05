@@ -8,15 +8,11 @@ import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
 import kr.co.eicn.ippbx.front.service.api.acd.route.CsRouteApiInterface;
 import kr.co.eicn.ippbx.front.service.api.stat.ConsultantStatApiInterface;
-import kr.co.eicn.ippbx.front.service.api.user.user.UserApiInterface;
 import kr.co.eicn.ippbx.front.service.excel.ConsultantStatExcel;
 import kr.co.eicn.ippbx.util.FormUtils;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
-import kr.co.eicn.ippbx.model.dto.eicn.PersonSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchQueueResponse;
 import kr.co.eicn.ippbx.model.dto.statdb.StatUserResponse;
 import kr.co.eicn.ippbx.model.enums.SearchCycle;
-import kr.co.eicn.ippbx.model.search.PersonSearchRequest;
 import kr.co.eicn.ippbx.model.search.StatUserSearchRequest;
 import kr.co.eicn.ippbx.model.search.search.SearchServiceRequest;
 import lombok.AllArgsConstructor;
@@ -61,8 +57,7 @@ public class ConsultantStatController extends BaseController {
         final Map<String, String> searchCycles = FormUtils.options(false, SearchCycle.class);
         model.addAttribute("searchCycles", searchCycles);
 
-        final Map<String, String> services = searchApiInterface.outboundServices(new SearchServiceRequest()).stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcCid));
-        model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValueReverse(services));
+        model.addAttribute("services", searchApiInterface.outboundServices(new SearchServiceRequest()));
 
         final Map<String, String> queues = csRouteApiInterface.queue().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName));
         model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(queues));

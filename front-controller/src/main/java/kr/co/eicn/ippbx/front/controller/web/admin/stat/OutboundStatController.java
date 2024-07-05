@@ -9,7 +9,6 @@ import kr.co.eicn.ippbx.front.service.api.acd.route.CsRouteApiInterface;
 import kr.co.eicn.ippbx.front.service.api.stat.OutboundStatApiInterface;
 import kr.co.eicn.ippbx.front.service.excel.OutboundStatExcel;
 import kr.co.eicn.ippbx.util.FormUtils;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ServiceList;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchQueueResponse;
 import kr.co.eicn.ippbx.model.dto.statdb.StatOutboundResponse;
 import kr.co.eicn.ippbx.model.dto.statdb.StatOutboundTimeResponse;
@@ -56,8 +55,7 @@ public class OutboundStatController extends BaseController {
         final Map<String, String> searchCycles = FormUtils.options(false, SearchCycle.class);
         model.addAttribute("searchCycles", searchCycles);
 
-        final Map<String, String> services = searchApiInterface.outboundServices(new SearchServiceRequest()).stream().collect(Collectors.toMap(ServiceList::getSvcNumber, ServiceList::getSvcCid));
-        model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValueReverse(services));
+        model.addAttribute("services", searchApiInterface.outboundServices(new SearchServiceRequest()));
 
         final Map<String, String> queues = csRouteApiInterface.queue().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName));
         model.addAttribute("queues", new MapToLinkedHashMap().toLinkedHashMapByValue(queues));

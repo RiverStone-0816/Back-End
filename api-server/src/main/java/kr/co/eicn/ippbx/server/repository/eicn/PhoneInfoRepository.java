@@ -39,6 +39,8 @@ public class PhoneInfoRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         super(PHONE_INFO, PHONE_INFO.PEER, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo.class);
         this.pbxServerInterface = pbxServerInterface;
         this.cacheService = cacheService;
+
+        addOrderingField(PHONE_INFO.PEER.asc());
     }
 
     public List<SearchPhoneInfoResponse> search(SearchPhoneInfoRequest search) {

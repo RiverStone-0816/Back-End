@@ -82,7 +82,7 @@
                                     <div class="ui form">
                                         <form:select path="serviceNumbers" multiple="multiple" class="ui fluid dropdown">
                                             <form:option value="" label="번호선택"/>
-                                            <form:options items="${services}"/>
+                                            <form:options items="${services}" itemValue="number" itemLabel="name"/>
                                         </form:select>
                                     </div>
                                 </div>
