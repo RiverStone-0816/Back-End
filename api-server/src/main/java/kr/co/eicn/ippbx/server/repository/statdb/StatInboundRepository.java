@@ -83,55 +83,22 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
     }
 
     private List<Condition> conditions(StatTotalSearchRequest search) {
-        List<Condition> conditions = defaultConditions(search);
+        final List<Condition> conditions = defaultConditions(search);
 
-        if (search.getServiceNumbers().size() > 0) {
-            Condition serviceCondition = DSL.noCondition();
-            for (int i = 0; i < search.getServiceNumbers().size(); i++) {
-                if (StringUtils.isNotEmpty(search.getServiceNumbers().get(i))) {
-                    if (i == 0)
-                        serviceCondition = TABLE.SERVICE_NUMBER.eq(search.getServiceNumbers().get(i));
-                    else
-                        serviceCondition = serviceCondition.or(TABLE.SERVICE_NUMBER.eq(search.getServiceNumbers().get(i)));
-                } else
-                    break;
-            }
-            conditions.add(serviceCondition);
-        }
+        if (!search.getServiceNumbers().isEmpty())
+            conditions.add(TABLE.SERVICE_NUMBER.in(search.getServiceNumbers()));
 
         return conditions;
     }
 
     public List<Condition> conditions(StatInboundSearchRequest search) {
-        List<Condition> conditions = defaultConditions(search);
+        final List<Condition> conditions = defaultConditions(search);
 
-        if (search.getServiceNumbers().size() > 0) {
-            Condition serviceCondition = DSL.noCondition();
-            for (int i = 0; i < search.getServiceNumbers().size(); i++) {
-                if (StringUtils.isNotEmpty(search.getServiceNumbers().get(i))) {
-                    if (i == 0)
-                        serviceCondition = TABLE.SERVICE_NUMBER.eq(search.getServiceNumbers().get(i));
-                    else
-                        serviceCondition = serviceCondition.or(TABLE.SERVICE_NUMBER.eq(search.getServiceNumbers().get(i)));
-                } else
-                    break;
-            }
-            conditions.add(serviceCondition);
-        }
+        if (!search.getServiceNumbers().isEmpty())
+            conditions.add(TABLE.SERVICE_NUMBER.in(search.getServiceNumbers()));
 
-        if (search.getQueueNumbers() != null) {
-            Condition huntCondition = DSL.noCondition();
-            for (int i = 0; i < search.getQueueNumbers().size(); i++) {
-                if (StringUtils.isNotEmpty(search.getQueueNumbers().get(i))) {
-                    if (i == 0)
-                        huntCondition = TABLE.HUNT_NUMBER.eq(search.getQueueNumbers().get(i));
-                    else
-                        huntCondition = huntCondition.or(TABLE.HUNT_NUMBER.eq(search.getQueueNumbers().get(i)));
-                } else
-                    break;
-            }
-            conditions.add(huntCondition);
-        }
+        if (!search.getQueueNumbers().isEmpty())
+            conditions.add(TABLE.HUNT_NUMBER.in(search.getQueueNumbers()));
 
         return conditions;
     }
@@ -477,6 +444,4 @@ public class StatInboundRepository extends StatDBBaseRepository<CommonStatInboun
                 .where(QUEUE_NAME.COMPANY_ID.eq(g.getUser().getCompanyId()))
                 .fetchMap(QUEUE_NAME.NUMBER, (Field<BigDecimal>) A.field("per"));
     }
-
-
 }

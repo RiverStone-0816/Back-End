@@ -44,25 +44,23 @@ public abstract class StatDBBaseRepository<TABLE extends TableImpl<?>, ENTITY, P
     }
 
     protected Condition getInboundCondition(AbstractStatSearchRequest search) {
-        Field<String> field = table.field("dcontext", String.class);
-
-        Condition inboundContextCondition = field.eq(ContextType.INBOUND.getCode()).or(field.eq(ContextType.HUNT_CALL.getCode())).or(field.eq(ContextType.CALL_BACK.getCode()));
+        final Field<String> field = table.field("dcontext", String.class);
+        final Condition inboundContextCondition = field.in(ContextType.INBOUND.getCode(), ContextType.HUNT_CALL.getCode(), ContextType.CALL_BACK.getCode());
 
         return getDefaultCondition("inbound", inboundContextCondition, search);
     }
 
     protected Condition getOutboundCondition(AbstractStatSearchRequest search) {
-        Field<String> field = table.field("dcontext", String.class);
-
-        Condition outboundContextCondition = field.eq(ContextType.OUTBOUND.getCode()).or(field.eq(ContextType.HUNT_CALL.getCode()));
+        final Field<String> field = table.field("dcontext", String.class);
+        final Condition outboundContextCondition = field.in(ContextType.OUTBOUND.getCode(), ContextType.HUNT_CALL.getCode());
 
         return getDefaultCondition("outbound", outboundContextCondition, search);
     }
 
     protected Condition getDefaultCondition(String type, Condition condition, AbstractStatSearchRequest search) {
-        Field<String> dcontext = table.field("dcontext", String.class);
-        Field<String> workTime = table.field("worktime_yn", String.class);
-        Field<Date> statDate = table.field("stat_date", Date.class);
+        final Field<String> dcontext = table.field("dcontext", String.class);
+        final Field<String> workTime = table.field("worktime_yn", String.class);
+        final Field<Date> statDate = table.field("stat_date", Date.class);
 
         if (search.getPerson())
             condition = condition.or(dcontext.eq(ContextType.DIRECT_CALL.getCode()));
@@ -79,8 +77,8 @@ public abstract class StatDBBaseRepository<TABLE extends TableImpl<?>, ENTITY, P
     }
 
     protected void setTimeUnit(SelectJoinStep<Record> query) {
-        Field<Date> statDate = table.field("stat_date", Date.class);
-        Field<Integer> statHour = table.field("stat_hour", Integer.class);
+        final Field<Date> statDate = table.field("stat_date", Date.class);
+        final Field<Integer> statHour = table.field("stat_hour", Integer.class);
 
         if (SearchCycle.DATE.equals(standardTime)) {
             query.groupBy(statDate);

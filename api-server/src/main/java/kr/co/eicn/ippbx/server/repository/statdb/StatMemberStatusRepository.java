@@ -67,21 +67,15 @@ public class StatMemberStatusRepository extends StatDBBaseRepository<CommonStatM
 
     public List<Condition> conditions(StatUserSearchRequest search) {
         standardTime = search.getTimeUnit();
-        List<Condition> conditions = new ArrayList<>();
+        final List<Condition> conditions = new ArrayList<>();
 
         if (Objects.nonNull(search.getStartDate()))
             conditions.add(TABLE.STAT_DATE.ge(search.getStartDate()));
         if (Objects.nonNull(search.getEndDate()))
             conditions.add(TABLE.STAT_DATE.le(search.getEndDate()));
 
-        if (search.getPersonIds().size() > 0) {
-            Condition personCondition = noCondition();
-            for (String personId : search.getPersonIds()) {
-                personCondition = personCondition.or(TABLE.USERID.eq(personId));
-            }
-
-            conditions.add(personCondition);
-        }
+        if (!search.getPersonIds().isEmpty())
+            conditions.add(TABLE.USERID.in(search.getPersonIds()));
 
         return conditions;
     }

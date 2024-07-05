@@ -71,8 +71,7 @@ public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatU
     }
 
     public List<Condition> conditions(StatUserSearchRequest search) {
-        List<Condition> conditions = new ArrayList<>();
-
+        final List<Condition> conditions = new ArrayList<>();
         conditions.add(TABLE.USER_STAT_YN.eq("Y"));
 
         if (g.getUser().getDataSearchAuthorityType() != null) {
@@ -94,28 +93,11 @@ public class StatUserOutboundRepository extends StatDBBaseRepository<CommonStatU
         if (StringUtils.isNotEmpty(search.getGroupCode()))
             conditions.add(TABLE.GROUP_TREE_NAME.like("%" + search.getGroupCode() + "%"));
 
-        if (search.getPersonIds().size() > 0) {
-            Condition personCondition = noCondition();
-            for (String personId : search.getPersonIds()) {
-                personCondition = personCondition.or(TABLE.USERID.eq(personId));
-            }
+        if (!search.getPersonIds().isEmpty())
+            conditions.add(TABLE.USERID.in(search.getPersonIds()));
 
-            conditions.add(personCondition);
-        }
-
-        if (search.getServiceNumbers().size() > 0) {
-            Condition serviceCondition = DSL.noCondition();
-            for (int i = 0; i < search.getServiceNumbers().size(); i++) {
-                if (StringUtils.isNotEmpty(search.getServiceNumbers().get(i))) {
-                    if (i == 0)
-                        serviceCondition = TABLE.CID_NUMBER.eq(search.getServiceNumbers().get(i));
-                    else
-                        serviceCondition = serviceCondition.or(TABLE.CID_NUMBER.eq(search.getServiceNumbers().get(i)));
-                } else
-                    break;
-            }
-            conditions.add(serviceCondition);
-        }
+        if (!search.getServiceNumbers().isEmpty())
+            conditions.add(TABLE.CID_NUMBER.in(search.getServiceNumbers()));
 
         conditions.add(getOutboundCondition(search));
 

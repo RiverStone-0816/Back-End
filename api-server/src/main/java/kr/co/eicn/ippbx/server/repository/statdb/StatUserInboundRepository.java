@@ -91,8 +91,7 @@ public class StatUserInboundRepository extends StatDBBaseRepository<CommonStatUs
     }
 
     public List<Condition> defaultConditions(AbstractStatSearchRequest search) {
-        List<Condition> conditions = new ArrayList<>();
-
+        final List<Condition> conditions = new ArrayList<>();
         standardTime = search.getTimeUnit();
 
         conditions.add(getInboundCondition(search));
@@ -101,8 +100,7 @@ public class StatUserInboundRepository extends StatDBBaseRepository<CommonStatUs
     }
 
     public List<Condition> userConditions(StatUserSearchRequest search) {
-        List<Condition> conditions = defaultConditions(search);
-
+        final List<Condition> conditions = defaultConditions(search);
         conditions.add(TABLE.USER_STAT_YN.eq("Y"));
 
         if (g.getUser().getDataSearchAuthorityType() != null) {
@@ -119,40 +117,21 @@ public class StatUserInboundRepository extends StatDBBaseRepository<CommonStatUs
             }
         }
 
-        if (search.getServiceNumbers().size() > 0) {
-            Condition serviceCondition = null;
-            for (int i = 0; i < search.getServiceNumbers().size(); i++) {
-                if (StringUtils.isNotEmpty(search.getServiceNumbers().get(i))) {
-                    if (i == 0)
-                        serviceCondition = TABLE.SERVICE_NUMBER.eq(search.getServiceNumbers().get(i));
-                    else
-                        serviceCondition = serviceCondition.or(TABLE.SERVICE_NUMBER.eq(search.getServiceNumbers().get(i)));
-                } else
-                    break;
-            }
-
-            if (serviceCondition != null)
-                conditions.add(serviceCondition);
-        }
+        if (!search.getServiceNumbers().isEmpty())
+            conditions.add(TABLE.SERVICE_NUMBER.in(search.getServiceNumbers()));
 
         if (StringUtils.isNotEmpty(search.getGroupCode()))
             conditions.add(TABLE.GROUP_TREE_NAME.like("%" + search.getGroupCode() + "%"));
 
-        if (search.getPersonIds().size() > 0) {
-            Condition personCondition = noCondition();
-            for (String personId : search.getPersonIds()) {
-                personCondition = personCondition.or(TABLE.USERID.eq(personId));
-            }
-
-            conditions.add(personCondition);
-        }
+        if (!search.getPersonIds().isEmpty())
+            conditions.add(TABLE.USERID.in(search.getPersonIds()));
 
         return conditions;
     }
 
 
     public List<Condition> huntConditions(StatHuntSearchRequest search, List<QueueName> queueNameList, String searchGroupTreeName) {
-        List<Condition> conditions = new ArrayList<>();
+        final List<Condition> conditions = new ArrayList<>();
         standardTime = search.getTimeUnit();
 
         if (g.getUser().getDataSearchAuthorityType() != null) {
@@ -171,50 +150,17 @@ public class StatUserInboundRepository extends StatDBBaseRepository<CommonStatUs
 
         conditions.add(getDefaultCondition("inbound", TABLE.DCONTEXT.eq(ContextType.HUNT_CALL.getCode()), search));
 
-        if (search.getServiceNumbers().size() > 0) {
-            Condition serviceCondition = null;
-            for (int i = 0; i < search.getServiceNumbers().size(); i++) {
-                if (StringUtils.isNotEmpty(search.getServiceNumbers().get(i))) {
-                    if (i == 0)
-                        serviceCondition = TABLE.SERVICE_NUMBER.eq(search.getServiceNumbers().get(i));
-                    else
-                        serviceCondition = serviceCondition.or(TABLE.SERVICE_NUMBER.eq(search.getServiceNumbers().get(i)));
-                } else
-                    break;
-            }
+        if (!search.getServiceNumbers().isEmpty())
+            conditions.add(TABLE.SERVICE_NUMBER.in(search.getServiceNumbers()));
 
-            if (serviceCondition != null)
-                conditions.add(serviceCondition);
-        }
-
-        if (queueNameList.size() > 0) {
-            Condition queueCondition = noCondition();
-
-            for (QueueName queueName : queueNameList) {
-                queueCondition = queueCondition.or(TABLE.HUNT_NUMBER.eq(queueName.getNumber()));
-            }
-
-            conditions.add(queueCondition);
-        }
+        if (!queueNameList.isEmpty())
+            conditions.add(TABLE.HUNT_NUMBER.in(queueNameList.stream().map(QueueName::getNumber).toList()));
 
         if (StringUtils.isNotEmpty(searchGroupTreeName))
             conditions.add(TABLE.GROUP_TREE_NAME.like(searchGroupTreeName + "%"));
 
-        if (search.getPersonIds().size() > 0) {
-            Condition personCondition = null;
-            for (int i = 0; i < search.getPersonIds().size(); i++) {
-                if (StringUtils.isNotEmpty(search.getPersonIds().get(i))) {
-                    if (i == 0)
-                        personCondition = TABLE.USERID.eq(search.getPersonIds().get(i));
-                    else
-                        personCondition = personCondition.or(TABLE.USERID.eq(search.getPersonIds().get(i)));
-                } else
-                    break;
-            }
-
-            if (personCondition != null)
-                conditions.add(personCondition);
-        }
+        if (!search.getPersonIds().isEmpty())
+            conditions.add(TABLE.USERID.in(search.getPersonIds()));
 
         return conditions;
     }

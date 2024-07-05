@@ -81,18 +81,16 @@ public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbou
     }
 
     public List<StatInboundEntity> findAllCategoryStat(StatCategorySearchRequest search) {
-        List<Condition> conditions = conditions(search);
-
+        final List<Condition> conditions = conditions(search);
         conditions.add(TABLE.SERVICE_NUMBER.isNotNull().and(TABLE.IVR_TREE_NAME.isNotNull()));
 
         return findAll(conditions(search));
     }
 
     public List<Condition> conditions(StatCategorySearchRequest search) {
-        List<Condition> conditions = new ArrayList<>();
-        Condition serviceCondition = null;
+        final List<Condition> conditions = new ArrayList<>();
         Condition categoryCondition = null;
-        Condition inboundCondition = TABLE.DCONTEXT.eq("inbound").or(TABLE.DCONTEXT.eq("hunt_context"));
+        Condition inboundCondition = TABLE.DCONTEXT.in("inbound", "hunt_context");
 
         if (Objects.nonNull(search.getStartDate()))
             conditions.add(TABLE.STAT_DATE.ge(search.getStartDate()));
@@ -102,22 +100,15 @@ public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbou
         if (search.getTimeUnit() != null)
             standardTime = search.getTimeUnit();
 
-        if (search.getServiceNumbers().size() > 0) {
-            for (int i = 0; i < search.getServiceNumbers().size(); i++) {
-                if (i == 0)
-                    serviceCondition = TABLE.SERVICE_NUMBER.eq(search.getServiceNumbers().get(i));
-                else
-                    serviceCondition = serviceCondition.or(TABLE.SERVICE_NUMBER.eq(search.getServiceNumbers().get(i)));
+        if (!search.getServiceNumbers().isEmpty())
+            conditions.add(TABLE.SERVICE_NUMBER.in(search.getServiceNumbers()));
 
-                conditions.add(serviceCondition);
-            }
-        }
-        if (search.getIvrMulti().size() > 0 ) {
-           for (int i = 0; i < search.getIvrMulti().size(); i++) {
-                   if (i == 0)
-                    categoryCondition = TABLE.IVR_TREE_NAME.like(search.getIvrMulti().get(i)+"%");
+        if (!search.getIvrMulti().isEmpty()) {
+            for (int i = 0; i < search.getIvrMulti().size(); i++) {
+                if (i == 0)
+                    categoryCondition = TABLE.IVR_TREE_NAME.like(search.getIvrMulti().get(i) + "%");
                 else
-                    categoryCondition = categoryCondition.or(TABLE.IVR_TREE_NAME.like(search.getIvrMulti().get(i)+"%"));
+                    categoryCondition = categoryCondition.or(TABLE.IVR_TREE_NAME.like(search.getIvrMulti().get(i) + "%"));
 
                 conditions.add(categoryCondition);
             }

@@ -55,21 +55,10 @@ public class StatOutboundRepository extends StatDBBaseRepository<CommonStatOutbo
     }
 
     private List<Condition> conditions(StatOutboundSearchRequest search) {
-        List<Condition> conditions = defaultConditions(search);
+        final List<Condition> conditions = defaultConditions(search);
 
-        if (search.getServiceNumbers().size() > 0) {
-            Condition serviceCondition = DSL.noCondition();
-            for (int i = 0; i < search.getServiceNumbers().size(); i++) {
-                if (StringUtils.isNotEmpty(search.getServiceNumbers().get(i))) {
-                    if (i == 0)
-                        serviceCondition = TABLE.CID_NUMBER.eq(search.getServiceNumbers().get(i));
-                    else
-                        serviceCondition = serviceCondition.or(TABLE.CID_NUMBER.eq(search.getServiceNumbers().get(i)));
-                } else
-                    break;
-            }
-            conditions.add(serviceCondition);
-        }
+        if (!search.getServiceNumbers().isEmpty())
+            conditions.add(TABLE.CID_NUMBER.in(search.getServiceNumbers()));
 
         return conditions;
     }
@@ -79,28 +68,16 @@ public class StatOutboundRepository extends StatDBBaseRepository<CommonStatOutbo
     }
 
     private List<Condition> conditions(StatTotalSearchRequest search) {
-        List<Condition> conditions = defaultConditions(search);
+        final List<Condition> conditions = defaultConditions(search);
 
-        if (search.getServiceNumbers().size() > 0) {
-            Condition serviceCondition = DSL.noCondition();
-            for (int i = 0; i < search.getServiceNumbers().size(); i++) {
-                if (StringUtils.isNotEmpty(search.getServiceNumbers().get(i))) {
-                    if (i == 0)
-                        serviceCondition = TABLE.CID_NUMBER.eq(search.getServiceNumbers().get(i));
-                    else
-                        serviceCondition = serviceCondition.or(TABLE.CID_NUMBER.eq(search.getServiceNumbers().get(i)));
-                } else
-                    break;
-            }
-            conditions.add(serviceCondition);
-        }
+        if (!search.getServiceNumbers().isEmpty())
+            conditions.add(TABLE.CID_NUMBER.in(search.getServiceNumbers()));
 
         return conditions;
     }
 
     public List<Condition> defaultConditions(AbstractStatSearchRequest search) {
-        List<Condition> conditions = new ArrayList<>();
-
+        final List<Condition> conditions = new ArrayList<>();
         standardTime = search.getTimeUnit();
 
         conditions.add(getOutboundCondition(search));
