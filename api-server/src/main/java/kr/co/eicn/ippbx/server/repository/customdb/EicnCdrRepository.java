@@ -51,6 +51,29 @@ public class EicnCdrRepository extends CustomDBBaseRepository<CommonEicnCdr, Eic
         super(new CommonEicnCdr(companyId), new CommonEicnCdr(companyId).SEQ, EicnCdrEntity.class);
         TABLE = new CommonEicnCdr(companyId);
 
+        addField(TABLE.SEQ);
+        addField(TABLE.RING_DATE);
+        addField(TABLE.DURATION);
+        addField(TABLE.BILLSEC);
+        addField(TABLE.IN_OUT);
+        addField(TABLE.DCONTEXT);
+        addField(TABLE.SRC);
+        addField(TABLE.DST);
+        addField(TABLE.DETAIL_CALLSTATUS);
+        addField(TABLE.RECORD_INFO);
+        addField(TABLE.RECORD_FILE);
+        addField(TABLE.UNIQUEID);
+        addField(TABLE.DST_UNIQUEID);
+        addField(TABLE.INI_NUM);
+        addField(TABLE.SECOND_NUM);
+        addField(TABLE.IVR_KEY);
+        addField(TABLE.CALLEE_HANGUP);
+        addField(TABLE.USERID);
+        addField(TABLE.HOST);
+        addField(TABLE.HANGUP_CAUSE);
+        addField(TABLE.TURN_OVER_KIND);
+        addField(TABLE.TURN_OVER_NUMBER);
+
         orderByFields.add(TABLE.RING_DATE.desc());
     }
 
