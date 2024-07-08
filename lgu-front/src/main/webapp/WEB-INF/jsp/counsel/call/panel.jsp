@@ -186,7 +186,8 @@
         }
 
         function loadUserCustomInfo(channelData) {
-            replaceReceivedHtmlInSilence('/counsel/call/user-custom-info?channelData=' + channelData, '#user-custom-info');
+            if (channelData)
+                replaceReceivedHtmlInSilence('/counsel/call/user-custom-info?channelData=' + channelData, '#user-custom-info');
         }
 
         function loadUserCallHistory() {

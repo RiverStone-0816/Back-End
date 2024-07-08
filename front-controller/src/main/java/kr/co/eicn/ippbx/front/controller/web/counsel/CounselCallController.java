@@ -360,8 +360,7 @@ public class CounselCallController extends BaseController {
 
     @GetMapping("user-custom-info")
     public String userCustomInfo(Model model, @RequestParam(required = false) String channelData) throws IOException, ResultFailException {
-
-        final List<CustomMultichannelInfoResponse> list = counselApiInterface.customInfoList(channelData);
+        final List<CustomMultichannelInfoResponse> list = StringUtils.isNotEmpty(channelData) ? counselApiInterface.customInfoList(channelData) : new ArrayList<>();
         model.addAttribute("list", list);
 
         return "counsel/call/user-custom-info";
