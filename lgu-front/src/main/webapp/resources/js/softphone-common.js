@@ -19,7 +19,7 @@ function playTone(tone) {
             console.log("-------- RINGTONE.play()");
             RINGTONE.currentTime = 0;
             RINGTONE.play();
-        
+
             // stop microphone stream acquired by getUserMedia
             stream.getTracks().forEach(function (track) { track.stop(); });
         });
@@ -28,10 +28,10 @@ function playTone(tone) {
         if (!WEBRTC_INFO.env.busytone) { return; }
 
         navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
-            console.log("-------- BUSYTONE.play()");   
+            console.log("-------- BUSYTONE.play()");
             BUSYTONE.currentTime = 0;
             BUSYTONE.play();
-        
+
             // stop microphone stream acquired by getUserMedia
             stream.getTracks().forEach(function (track) { track.stop(); });
         });

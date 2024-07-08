@@ -400,13 +400,14 @@
                 set_callback_sipcall_unregistered_status(() => {
                     $('div.dial-pad .header').css('background-color','red');
                 });
-                set_callback_sipcall_disconnected_status(() => {
-                    $('div.dial-pad .header').css('background-color','grey');
+                set_callback_sipcall_disconnected_status((error) => {
+                    $('div.dial-pad .header').css('background-color','darkorange');
+                    if (error)
+                        alert(error);
                 });
 
-
                 restSelf.get('/api/auth/softPhone-info').done(function (response) {
-                    if(set_webrtc_server_info(response.data.serverInformation)){
+                    if (set_webrtc_server_info(response.data.serverInformation)) {
                         start_sipcall();
                     }
                 });
