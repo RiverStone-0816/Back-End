@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.server.repository.statdb;
 
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.CommonStatInbound;
+import kr.co.eicn.ippbx.model.entity.eicn.ServiceNumberIvrRootEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
 import kr.co.eicn.ippbx.model.enums.ContextType;
 import kr.co.eicn.ippbx.model.enums.SearchCycle;
@@ -10,6 +11,7 @@ import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.SelectConditionStep;
 import org.jooq.SelectJoinStep;
+import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +20,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.jooq.impl.DSL.*;
+import static org.jooq.tools.StringUtils.EMPTY;
 
 @Getter
 public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbound, StatInboundEntity, Integer> {
@@ -125,5 +128,14 @@ public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbou
 
         conditions.add(inboundCondition);
         return conditions;
+    }
+
+    public List<ServiceNumberIvrRootEntity> getStatNumberIvrRoot(StatCategorySearchRequest search) {
+        return dsl.selectDistinct(TABLE.SERVICE_NUMBER.as("number"), DSL.substring(TABLE.IVR_TREE_NAME, 1, 4).as("ivr_root"))
+                .from(TABLE)
+                .where(conditions(search))
+                .and(TABLE.SERVICE_NUMBER.isNotNull().and(TABLE.SERVICE_NUMBER.ne(EMPTY)).and(TABLE.IVR_TREE_NAME.isNotNull()).and(TABLE.IVR_TREE_NAME.ne(EMPTY)))
+                .orderBy(DSL.field("null"))
+                .fetchInto(ServiceNumberIvrRootEntity.class);
     }
 }

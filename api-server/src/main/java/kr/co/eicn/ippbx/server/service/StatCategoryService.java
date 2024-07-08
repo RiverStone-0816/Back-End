@@ -41,7 +41,7 @@ public class StatCategoryService extends ApiBaseService implements ApplicationCo
     }
 
     public List<StatCategoryIvrPathResponse> convertIvrPath(List<IvrTree> ivrTrees, List<StatInboundEntity> statInboundList) {
-        final List<IvrTree> firstTrees = ivrTrees.stream().filter(e -> !e.getButton().equals("") && e.getButton() != null).collect(Collectors.toList());
+        final List<IvrTree> firstTrees = ivrTrees.stream().filter(e -> !e.getButton().isEmpty() && e.getButton() != null).toList();
 
         return firstTrees.stream()
                 .map(e -> {

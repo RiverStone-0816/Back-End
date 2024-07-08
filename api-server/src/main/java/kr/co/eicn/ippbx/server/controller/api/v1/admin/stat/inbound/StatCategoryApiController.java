@@ -7,9 +7,11 @@ import kr.co.eicn.ippbx.meta.jooq.statdb.tables.pojos.CommonStatInbound;
 import kr.co.eicn.ippbx.model.dto.statdb.StatCategoryIvrResponse;
 import kr.co.eicn.ippbx.model.dto.statdb.StatCategoryIvrTreeResponse;
 import kr.co.eicn.ippbx.model.dto.statdb.StatCategoryResponse;
+import kr.co.eicn.ippbx.model.entity.eicn.ServiceNumberIvrRootEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
 import kr.co.eicn.ippbx.model.search.StatCategorySearchRequest;
 import kr.co.eicn.ippbx.server.repository.eicn.IvrTreeRepository;
+import kr.co.eicn.ippbx.server.repository.eicn.ScheduleInfoRepository;
 import kr.co.eicn.ippbx.server.repository.eicn.ServiceRepository;
 import kr.co.eicn.ippbx.server.service.StatCategoryService;
 import kr.co.eicn.ippbx.util.JsonResult;
@@ -22,9 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static kr.co.eicn.ippbx.util.JsonResult.data;
@@ -38,9 +38,10 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @RestController
 @RequestMapping(value = "api/v1/admin/stat/inbound/category", produces = MediaType.APPLICATION_JSON_VALUE)
 public class StatCategoryApiController extends ApiBaseController {
-    private final StatCategoryService inboundService;
-    private final IvrTreeRepository ivrTreeRepository;
-    private final ServiceRepository serviceRepository;
+    private final StatCategoryService    statCategoryService;
+    private final IvrTreeRepository      ivrTreeRepository;
+    private final ServiceRepository      serviceRepository;
+    private final ScheduleInfoRepository scheduleInfoRepository;
 
     @GetMapping("")
     public ResponseEntity<JsonResult<List<StatCategoryResponse<?>>>> list(StatCategorySearchRequest search) {
@@ -53,29 +54,45 @@ public class StatCategoryApiController extends ApiBaseController {
         if ((search.getEndDate().getTime() - search.getStartDate().getTime()) / 1000 > 6 * 30 * 24 * 60 * 60)
             throw new IllegalArgumentException(message.getText("messages.validator.enddate.indays", "180일"));
 
-        List<StatInboundEntity> inboundList = inboundService.getRepository().findAllCategoryStat(search);
-        List<?> dateByTypeList = SearchCycleUtils.getDateByType(search.getStartDate(), search.getEndDate(), search.getTimeUnit());
+        final List<StatInboundEntity> inboundList = statCategoryService.getRepository().findAllCategoryStat(search);
+        final Map<String, Set<String>> svcNumberIvrSchedule = scheduleInfoRepository.getServiceNumberIvrSchedule(search.getServiceNumbers()).stream()
+                .collect(Collectors.groupingBy(ServiceNumberIvrRootEntity::getNumber, Collectors.mapping(ServiceNumberIvrRootEntity::getIvrRoot, Collectors.toSet())));
+        statCategoryService.getRepository().getStatNumberIvrRoot(search)
+                .forEach(e -> {
+                    if (svcNumberIvrSchedule.containsKey(e.getNumber()))
+                        svcNumberIvrSchedule.get(e.getNumber()).add(Integer.valueOf(e.getIvrRoot()).toString());
+                });
 
+        final Set<Integer> targetRootIvrSet = new HashSet<>();
+        svcNumberIvrSchedule.values().forEach(e -> {
+            final List<Integer> target = e.stream().map(Integer::valueOf).toList();
+            targetRootIvrSet.addAll(target);
+        });
+
+        final Map<Integer, List<IvrTree>> iverTreeByRootMap = new HashMap<>();
+        targetRootIvrSet.forEach(root -> iverTreeByRootMap.putIfAbsent(root, ivrTreeRepository.findAllByParentCode(root, root)));
+
+        final List<?> dateByTypeList = SearchCycleUtils.getDateByType(search.getStartDate(), search.getEndDate(), search.getTimeUnit());
         for (Object timeInformation : dateByTypeList) {
             final Map<String, List<StatInboundEntity>> statInboundByService = SearchCycleUtils.streamFiltering(inboundList, search.getTimeUnit(), timeInformation).stream().collect(Collectors.groupingBy(CommonStatInbound::getServiceNumber));
-            serviceList.forEach(s -> {
+            serviceList.forEach(service -> {
                 final StatCategoryResponse<Object> response = new StatCategoryResponse<>();
-                List<StatInboundEntity> statInboundList = statInboundByService.containsKey(s.getSvcNumber()) ? statInboundByService.get(s.getSvcNumber()) : new ArrayList<>();
+                final List<StatInboundEntity> statInboundList = statInboundByService.containsKey(service.getSvcNumber()) ? statInboundByService.get(service.getSvcNumber()) : new ArrayList<>();
                 response.setTimeInformation(timeInformation);
-                response.setSvcName(s.getSvcName());
+                response.setSvcName(service.getSvcName());
 
                 response.setRecordList(
-                        ivrMultiList.stream()
+                        svcNumberIvrSchedule.containsKey(service.getSvcNumber())
+                                ? ivrMultiList.stream().filter(e -> svcNumberIvrSchedule.get(service.getSvcNumber()).contains(e.getRoot().toString()))
                                 .map(i -> {
                                     final StatCategoryIvrResponse ivrResponse = new StatCategoryIvrResponse();
-                                    final List<IvrTree> ivrTrees = ivrTreeRepository.findAllByParentCode(i.getRoot(), i.getSeq());
-
                                     ivrResponse.setIvrName(i.getName());
-                                    ivrResponse.setRecordNameList(inboundService.convertIvrPath(ivrTrees, statInboundList));
+                                    ivrResponse.setRecordNameList(statCategoryService.convertIvrPath(iverTreeByRootMap.get(i.getRoot()), statInboundList));
 
                                     return ivrResponse;
                                 })
                                 .collect(Collectors.toList())
+                                : new ArrayList<>()
                 );
                 response.setMaxLevel(
                         response.getRecordList().stream()
@@ -95,9 +112,10 @@ public class StatCategoryApiController extends ApiBaseController {
      */
     @GetMapping("ivr-tree")
     public ResponseEntity<JsonResult<List<StatCategoryIvrTreeResponse>>> ivrTree() {
-        return ResponseEntity.ok(data(ivrTreeRepository.findAll().stream()
-                .filter(e -> e.getLevel().equals(0) && e.getButton().equals(""))
-                .map(e -> convertDto(e, StatCategoryIvrTreeResponse.class))
-                .collect(Collectors.toList())));
+        return ResponseEntity.ok(data(
+                ivrTreeRepository.findAll().stream()
+                        .filter(e -> e.getLevel().equals(0) && e.getButton().isEmpty())
+                        .map(e -> convertDto(e, StatCategoryIvrTreeResponse.class))
+                        .collect(Collectors.toList())));
     }
 }

@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.server.repository.eicn;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.records.ScheduleInfoRecord;
+import kr.co.eicn.ippbx.model.entity.eicn.ServiceNumberIvrRootEntity;
 import kr.co.eicn.ippbx.model.enums.ScheduleType;
 import kr.co.eicn.ippbx.model.form.*;
 import kr.co.eicn.ippbx.server.service.CacheService;
@@ -11,9 +12,11 @@ import kr.co.eicn.ippbx.util.EicnUtils;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import lombok.Getter;
 import org.jooq.DSLContext;
+import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.CollectionUtils;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -22,6 +25,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleGroupList.SCHEDULE_GROUP_LIST;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleInfo.SCHEDULE_INFO;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 import static org.jooq.impl.DSL.currentDate;
@@ -229,5 +233,17 @@ public class ScheduleInfoRepository extends EicnBaseRepository<ScheduleInfo, kr.
 			calendar.get(Calendar.DAY_OF_WEEK);
 			return findAll(SCHEDULE_INFO.TYPE.eq(ScheduleType.WEEK.getCode()).and(SCHEDULE_INFO.NUMBER.eq(serviceNumber).and(SCHEDULE_INFO.WEEK.like("%" + (calendar.get(Calendar.DAY_OF_WEEK)-1) + "%")))).stream().findFirst().orElse(null);
 		}
+	}
+
+	public List<ServiceNumberIvrRootEntity> getServiceNumberIvrSchedule(List<String> svcNumbers) {
+		return dsl.select(SCHEDULE_INFO.NUMBER, SCHEDULE_GROUP_LIST.KIND_DATA.as("ivr_root"))
+				.from(SCHEDULE_INFO)
+				.innerJoin(SCHEDULE_GROUP_LIST)
+				.on(SCHEDULE_GROUP_LIST.PARENT.eq(SCHEDULE_INFO.GROUP_ID).and(SCHEDULE_GROUP_LIST.KIND.eq("I")))
+				.where(compareCompanyId())
+				.and(SCHEDULE_INFO.TYPE.eq("W"))
+				.and(CollectionUtils.isEmpty(svcNumbers) ? DSL.noCondition() : SCHEDULE_INFO.NUMBER.in(svcNumbers))
+				.groupBy(SCHEDULE_INFO.NUMBER, SCHEDULE_GROUP_LIST.KIND_DATA)
+				.fetchInto(ServiceNumberIvrRootEntity.class);
 	}
 }
