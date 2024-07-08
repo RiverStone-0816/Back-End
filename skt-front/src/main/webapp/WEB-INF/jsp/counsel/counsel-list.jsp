@@ -19,13 +19,7 @@
 <c:forEach var="e" items="${list}">
     <tr>
         <c:if test="${serviceKind.equals('SC')}">
-            <td>
-                <c:choose>
-                    <c:when test="${e.groupKind == 'PHONE'}">통화</c:when>
-                    <c:when test="${e.groupKind == 'EMAIL'}">이메일</c:when>
-                    <c:when test="${e.groupKind == 'TALK'}">채팅상담</c:when>
-                </c:choose>
-            </td>
+            <td>${g.htmlQuote(e.groupKindValue)}</td>
         </c:if>
 
         <td>${g.htmlQuote(e.inOutValue)}</td>

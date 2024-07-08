@@ -55,7 +55,7 @@ public class MaindbResultExcel extends AbstractExcel {
         int i = 0;
         for (ResultCustomInfoEntity e : list) {
             i++;
-            final List<String> row = new ArrayList<>(Arrays.asList(String.valueOf(i), e.getGroupKind(), e.getInOutValue(),
+            final List<String> row = new ArrayList<>(Arrays.asList(String.valueOf(i), e.getGroupKindValue(), e.getInOutValue(),
                     niceFormat(e.getResultDate()), e.getUserName(),
                     StringUtils.isEmpty(e.getUserTrName()) ? "" : e.getUserTrName(), e.getCustomNumber()));
             resultType.getFields().forEach(field -> {

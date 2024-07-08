@@ -28,7 +28,7 @@
             <tr>
                 <td class="three wide">채널</td>
                 <td class="left aligned">
-                    ${entity.groupKind == 'PHONE' ? '전화': entity.groupKind == 'TALK' ? '상담톡' : ''}
+                    ${entity.groupKindValue}
                     <c:choose>
                         <c:when test="${entity.groupKind == 'PHONE' && not empty entity.uniqueid}">
                             <div class="center aligned">

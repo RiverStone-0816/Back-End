@@ -189,13 +189,7 @@
                         <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                             <tr data-id="${g.htmlQuote(e.seq)}" data-group="${e.groupId}" data-custom-id="${e.customId}">
                                 <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
-                                <td>
-                                    <c:choose>
-                                        <c:when test="${e.groupKind == 'PHONE'}">통화</c:when>
-                                        <c:when test="${e.groupKind == 'EMAIL'}">이메일</c:when>
-                                        <c:when test="${e.groupKind == 'TALK'}">채팅상담</c:when>
-                                    </c:choose>
-                                </td>
+                                <td>${g.htmlQuote(e.groupKindValue)}</td>
                                 <td>${g.htmlQuote(e.inOutValue)}</td>
                                 <td><fmt:formatDate value="${e.resultDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                 <td>${g.htmlQuote(e.userName)}</td>

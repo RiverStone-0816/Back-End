@@ -21,8 +21,27 @@ public class ResultCustomInfoEntity extends CommonResultCustomInfo {
     private String userOrgName;
     private String userTrName;
     private PersonList personList; // 상담원 정보
+
+    private String groupKindValue;
     private String inOutValue;
 
+    public String getGroupKindValue() {
+        if (StringUtils.isNotEmpty(getGroupKind())) {
+            switch (getGroupKind()) {
+                case "PHONE" -> {
+                    return "통화";
+                }
+                case "EMAIL" -> {
+                    return "이메일";
+                }
+                case "TALK" -> {
+                    return "상담톡";
+                }
+            }
+        }
+
+        return "";
+    }
     public String getInOutValue() {
         if (StringUtils.isNotEmpty(getCallType())) {
             if (getCallType().equals("O"))
