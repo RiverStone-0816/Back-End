@@ -83,20 +83,17 @@
                     if (!data[inputName] || !(data[inputName] instanceof Array))
                         data[inputName] = [];
 
-                        data[inputName].push($this.val());
-
+                    data[inputName].push($this.val());
                 } else if ($this.attr('type') && $this.attr('type').toLowerCase() === "radio") {
                     if ($this.is(':checked')) {
                         data[inputName] = $this.val();
                     }
                 } else {
-                    if(inputName!=="password")
                     data[inputName] = $this.val();
                 }
             }
         });
 
-        console.log("데어타:"+JSON.stringify(data));
         return data;
     };
 

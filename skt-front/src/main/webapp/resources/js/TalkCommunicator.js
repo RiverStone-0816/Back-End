@@ -59,7 +59,7 @@ TalkCommunicator.prototype.connect = function (url, companyId, userid, passwd, a
 
     const _this = this;
     try {
-        this.socket = io.connect(url, {'reconnect': true, 'resource': 'socket.io'});
+        this.socket = io.connect(url, {'reconnection': true, 'resource': 'socket.io'});
         this.socket.on('connect', function () {
             _this.socket.emit('cli_join', {
                 company_id: _this.request.companyId,
@@ -67,12 +67,18 @@ TalkCommunicator.prototype.connect = function (url, companyId, userid, passwd, a
                 passwd: _this.request.passwd,
                 usertype: _this.request.usertype,
                 authtype: _this.request.authtype,
-                from_ui: 'API',
-            });
+                from_ui: 'IPCC',
+            })
             _this.log(false, 'connect', arguments);
         }).on('svc_login', function (data) {
             _this.log(false, 'svc_login', data);
             _this.process('svc_login', data);
+        }).on('svc_webrtc', function (data) {
+            _this.log(false, 'svc_webrtc', data);
+            _this.process('svc_webrtc', data);
+        }).on('svc_webrtc_ready', function (data) {
+            _this.log(false, 'svc_webrtc_ready', data);
+            _this.process('svc_webrtc_ready', data);
         }).on('svc_logout', function (data) {
             _this.log(false, 'svc_logout', data);
             _this.process('svc_logout', data);
@@ -91,6 +97,15 @@ TalkCommunicator.prototype.connect = function (url, companyId, userid, passwd, a
         }).on('svc_end', function (data) {
             _this.log(false, 'svc_end', data);
             _this.process('svc_end', data);
+        }).on('svc_delete', function (data) {
+            _this.log(false, 'svc_delete', data);
+            _this.process('svc_delete', data);
+        }).on('svc_custom_match', function (data) {
+            _this.log(false, 'svc_custom_match', data);
+            _this.process('svc_custom_match', data);
+        }).on('svc_webrtc_record', function (data) {
+            _this.log(false, 'svc_webrtc_record', data);
+            _this.process('svc_webrtc_record', data);
         }).on('svcmsg_ping', function () {
             _this.socket.emit('climsg_pong');
         }).on('disconnect', function () {
@@ -161,6 +176,51 @@ TalkCommunicator.prototype.sendMessage = function (roomId, channelType, senderKe
         contents: contents,
     });
 };
+TalkCommunicator.prototype.sendWebrtc = function (roomId, channelType, senderKey, userKey, sendReceive) {
+    this.socket.emit('cli_webrtc', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        channel_type: channelType,
+        sender_key: senderKey,
+        send_receive: sendReceive,
+        user_key: userKey,
+        etc_data: "",
+        contents: "",
+    });
+};
+TalkCommunicator.prototype.sendWebrtcEnd = function (roomId, channelType, senderKey, userKey, sendReceive, serverIp, myName, remoteName, recordFile) {
+    this.socket.emit('cli_webrtc', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        channel_type: channelType,
+        sender_key: senderKey,
+        send_receive: sendReceive,
+        user_key: userKey,
+        etc_data: '',
+        type: 'json',
+        contents: {
+            webrtc_server_ip: serverIp,
+            my_username: myName,
+            remote_username: remoteName,
+            record_file: recordFile,
+        },
+    });
+};
+TalkCommunicator.prototype.sendCustomMatch = function (roomId, senderKey, userKey, groupId, customId, customName, channelType) {
+    this.socket.emit('cli_custom_match', {
+        company_id : this.request.companyId,
+        sender_key : senderKey,
+        user_key : userKey,
+        room_id : roomId,
+        channel_type: channelType,
+        userid : this.request.userid,
+        maindb_group_id : groupId,
+        maindb_custom_id : customId,
+        maindb_custom_name : customName,
+    });
+};
 TalkCommunicator.prototype.sendImageTemplate = function (roomId, channelType, senderKey, userKey, filePath) {
     this.socket.emit('cli_msg', {
         company_id: this.request.companyId,
@@ -171,7 +231,7 @@ TalkCommunicator.prototype.sendImageTemplate = function (roomId, channelType, se
         send_receive: "S",
         user_key: userKey,
         etc_data: "",
-        type: 'image_temp',
+        type: 'image',
         contents: filePath,
     });
 };
@@ -185,7 +245,7 @@ TalkCommunicator.prototype.sendTemplateBlock = function (roomId, channelType, se
         send_receive: "S",
         user_key: userKey,
         etc_data: "",
-        type: 'block_temp',
+        type: 'block',
         contents: '' + blockId,
     });
 };
@@ -229,7 +289,7 @@ TalkCommunicator.prototype.assignAssignedRoomToMe = function (roomId, channelTyp
         contents: contents || "",
     });
 };
-TalkCommunicator.prototype.deleteRoom = function (roomId, channelType, senderKey, userKey) {
+TalkCommunicator.prototype.endRoom = function (roomId, channelType, senderKey, userKey) {
     this.socket.emit('cli_end', {
         company_id: this.request.companyId,
         room_id: roomId,
@@ -242,17 +302,40 @@ TalkCommunicator.prototype.deleteRoom = function (roomId, channelType, senderKey
         contents: ""
     });
 };
+TalkCommunicator.prototype.deleteRoom = function (roomId, channelType, senderKey, userKey) {
+    this.socket.emit('cli_delete', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        channel_type: channelType,
+        sender_key: senderKey,
+        send_receive: "SE",
+        user_key: userKey,
+        etc_data: "",
+        contents: ""
+    });
+};
+
+TalkCommunicator.prototype.uploadAccept = function (roomId, channelType, senderKey, userKey, uploadFlag) {
+
+    this.socket.emit('cli_upload_accept', {
+        company_id: this.request.companyId,
+        room_id: roomId,
+        userid: this.request.userid,
+        channel_type: channelType,
+        sender_key: senderKey,
+        send_receive: uploadFlag,
+        user_key: userKey,
+        etc_data: "",
+        contents: ""
+    });
+}
+
 TalkCommunicator.prototype.changeDistribution = function (distributed) {
     this.socket.emit('cli_dist_yn', {
         company_id: this.request.companyId,
-        room_id: null,
         userid: this.request.userid,
-        channel_type: null,
-        sender_key: null,
-        send_receive: "S",
-        user_key: null,
-        etc_data: "",
-        contents: distributed ? 'Y' : 'N'
+        dist_yn: distributed ? 'Y' : 'N'
     });
 };
 /**

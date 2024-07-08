@@ -61,7 +61,7 @@ IpccCommunicator.prototype.connect = function (url, serverIp, companyId, userId,
 
     const _this = this;
     try {
-        this.socket = io.connect(url, {'reconnect': true, 'resource': 'socket.io'});
+        this.socket = io.connect(url, {'reconnection': true, 'resource': 'socket.io'});
         this.socket.on('connect', function () {
             _this.socket.emit('climsg_login', {
                 company_id: _this.request.companyId,
@@ -159,8 +159,9 @@ IpccCommunicator.prototype.processor = {
         this.status.cMemberStatus = parseInt(kind);
         this.status.memberStatus = parseInt(kind);
     },
-    CALLEVENT: function (message, kind, data1, data2, data3, data4, data5, data6, data7, data8, date9, date10){
-        this.status.clickKey = date10.toLowerCase();
+    CALLEVENT: function (message, kind, data1, data2, data3, data4, data5, data6, data7, data8, data9, data10) {
+        if (data10)
+            this.status.clickKey = data10.toLowerCase();
     },
     HANGUPEVENT: function (message, kind, data1, data2, data3, data4, data5, data6, data7, data8) {
         this.send("CMD|HANGUP_ACK|" + data5 + ","
@@ -212,6 +213,9 @@ IpccCommunicator.prototype.parse = function (message) {
     if (event === "USERINPUT") {
         message = variables[1];
     }
+
+    if (o.PEER && this.peer.phonePeer !== o.PEER)
+        return;
 
     const args = [message, o.KIND, o.DATA1, o.DATA2, o.DATA3, o.DATA4, o.DATA5, o.DATA6, o.DATA7, o.DATA8, o.DATA9, o.DATA10, o.DATA11, o.DATA12, o.DATA13, o.DATA14, o.DATA15, o.DATA16];
 

@@ -1,142 +1,141 @@
+//
+// JavaScript API for EICN Softphone
+//
+
+/*
+ *  참고 사항 
+ *  
+ --- get_softphone_info.jsp 의 응답값 형식
+    {
+        "result": "OK",
+        "message": "",
+        "peerNum": "43779188",
+        "peerSecret": "3c82a78b878b7f2fa4126611530c626a"
+    }
+
+ --- get_webrtc_server_info.jsp 의 응답값 형식
+    {
+        "result": "OK",
+        "message": "",
+        "pbxServerIp": "122.49.74.121",
+        "pbxServerPort": "5060",
+        "webrtcServerIp": "122.49.74.231",
+        "webrtcServerPort": "8200",
+        "turnServerIp": "122.49.74.231",
+        "turnServerPort": "3478",
+        "turnUser": "turn",
+        "turnSecret": "turnrw"
+    }
+ */
+
 const SIP_PROTO_PREFIX = "sip:";
 const SIP_DOMAIN = "ippbx.eicn.co.kr";
 const SIP_REALM = "eicn";
-const REGISTER_INTERVAL = 5000;
-const RECONNECT_INTERVAL = 5000;
-const RINGTONE = new Audio('/resources/sounds/SimpleTone.mp3');
-const BUSYTONE = new Audio('/resources/sounds/BusySignal.mp3');
-let callback_registered_status = function(){};
-let callback_unregistered_status = function(){};
-let callback_disconnected_status = function(){};
 
-function SoftPhoneApi(){
-    this.init();
-}
+var janusSip = null;
+var sipcall = null;
+var sipOpaqueId = "softphone-" + Janus.randomString(12);
 
-SoftPhoneApi.prototype.init = function() {
-    this.WEBRTC_INFO = {};
-    this.WEBRTC_INFO.server = {};
-    this.WEBRTC_INFO.phone = {};
-    this.WEBRTC_INFO.env = { "ringtone": true, "busytone": true };
+var sipRegistered = false;
+var masterId = null, helpers = {}, helpersCount = 0;
 
-    this.janus = null;
-    this.sipcall = null;
-    this.opaqueId = "webrtc-" + Janus.randomString(12);
+var sipRegisterTimerId = null;
+const SIP_REGISTER_INTERVAL = 5000;
 
-    this.bitrateTimer = null;
-    this.spinner = null;
+// 연결이 끊어졌을 때 재연결
+janusSip = null;
+var sipReconnectTimerId = null;
+const SIP_RECONNECT_INTERVAL = 5000;
 
-    this.audioDeviceId = null;
-    this.videoDeviceId = null;
 
-    this.audioenabled = false;
-    this.videoenabled = false;
-
-    this.registered = false;
-    this.masterId = null
-    this.helpers = {}
-    this.helpersCount = 0;
-
-    this.registerId = null;
-    this.januSessionId = null;
-
-    RINGTONE.loop = true;
-
-    return this;
-}
-
-SoftPhoneApi.prototype.playTone = function(tone) {
-    if (!this.WEBRTC_INFO.env.ringtone) { return; }
-
-    this.stopTones();
-
-    if (tone === "ring") {
-        if (!this.WEBRTC_INFO.env.ringtone) { return; }
-
-        navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
-            console.log("-------- RINGTONE.play()");
-            RINGTONE.currentTime = 0;
-            RINGTONE.play();
-
-            // stop microphone stream acquired by getUserMedia
-            stream.getTracks().forEach(function (track) { track.stop(); });
-        });
-    }
-    else if (tone === "busy") {
-        if (!this.WEBRTC_INFO.env.busytone) { return; }
-
-        navigator.mediaDevices.getUserMedia({ audio: true }).then(function (stream) {
-            console.log("-------- BUSYTONE.play()");
-            BUSYTONE.currentTime = 0;
-            BUSYTONE.play();
-
-            // stop microphone stream acquired by getUserMedia
-            stream.getTracks().forEach(function (track) { track.stop(); });
-        });
-    }
-}
-
-SoftPhoneApi.prototype.stopTones = function() {
-    // Ringtone 중지
-    console.log("-------- RINGTONE.pause()");
-    RINGTONE.pause();
-    RINGTONE.currentTime = 0;
-
-    // Busytone 중지
-    console.log("-------- BUSYTONE.pause()");
-    BUSYTONE.pause();
-    BUSYTONE.currentTime = 0;
-}
-
-SoftPhoneApi.prototype.registerSoftphone = function() {
-    if (this.WEBRTC_INFO.phone.peer_num && this.WEBRTC_INFO.phone.peer_num !== "" && this.WEBRTC_INFO.phone.peer_secret && this.WEBRTC_INFO.phone.peer_secret !== "") {
+function register_sip_softphone() {
+    if (WEBRTC_INFO.phone.peerNum && WEBRTC_INFO.phone.peerNum != "" && WEBRTC_INFO.phone.peerSecret && WEBRTC_INFO.phone.peerSecret != "") {
         // Registration
-        Janus.log("sip-server: " +this. WEBRTC_INFO.server.pbx_server_ip + ":" + this.WEBRTC_INFO.server.pbx_server_port);
-        const pbx_server = SIP_PROTO_PREFIX + this.WEBRTC_INFO.server.pbx_server_ip + ":" + this.WEBRTC_INFO.server.pbx_server_port;
-        const username = SIP_PROTO_PREFIX + this.WEBRTC_INFO.phone.peer_num + "@" + SIP_DOMAIN;
-
-        const register = {
+        Janus.log("sip-server: " + WEBRTC_INFO.server.pbxServerIp + ":" + WEBRTC_INFO.server.pbxServerPort);
+        var pbx_server = SIP_PROTO_PREFIX + WEBRTC_INFO.server.pbxServerIp + ":" + WEBRTC_INFO.server.pbxServerPort;
+        var username = SIP_PROTO_PREFIX + WEBRTC_INFO.phone.peerNum + "@" + SIP_DOMAIN;
+        
+        var register = {
             request: "register",
             username: username,
-            ha1_secret: this.WEBRTC_INFO.phone.peer_secret,
+            //ha1_secret: md5(WEBRTC_INFO.phone.peerNum + ":" + SIP_REALM + ":" + WEBRTC_INFO.phone.peerSecret),
+            ha1_secret: WEBRTC_INFO.phone.peerSecret,
             sips: false,
             force_udp: true,
             proxy: pbx_server
         };
-        this.sipcall.send({ message: register });
+        //Janus.debug("h1_secret:", register.ha1_secret);
+
+        sipcall.send({ message: register });
     }
     else {
-        Janus.log("WEBRTC_INFO.phone.peer_num: " + this.WEBRTC_INFO.phone.peer_num + ", WEBRTC_INFO.phone.peer_secret:" + this.WEBRTC_INFO.phone.peer_secret);
+        Janus.log("WEBRTC_INFO.phone.peerNum: " + WEBRTC_INFO.phone.peerNum + ", WEBRTC_INFO.phone.peerSecret:" + WEBRTC_INFO.phone.peerSecret);
     }
 }
 
-SoftPhoneApi.prototype.create_webrtc_session = function() {
 
-    const webrtc_server = "wss://" + this.WEBRTC_INFO.server.webrtc_server_ip + ":" + this.WEBRTC_INFO.server.webrtc_server_port;
-    const turn_server = "turn:" + this.WEBRTC_INFO.server.turn_server_ip + ":" + this.WEBRTC_INFO.server.turn_server_port;
-    const _this = this;
+function create_sipcall_session() {
+    var webrtc_server = "wss://" + WEBRTC_INFO.server.webrtcServerIp + ":" + WEBRTC_INFO.server.webrtcServerPort;
+    var turn_server = "turn:" + WEBRTC_INFO.server.turnServerIp + ":" + WEBRTC_INFO.server.turnServerPort;
+    var turnUser = WEBRTC_INFO.server.turnUser;
+    var turnSecret = WEBRTC_INFO.server.turnSecret;
 
     // 세션 생성
-    this.janus = new Janus(
+    janusSip = new Janus(
         {
             server: webrtc_server,
-            iceServers: [ {urls: turn_server, username: _this.WEBRTC_INFO.server.turn_user, credential: _this.WEBRTC_INFO.server.turn_secret} ],
+            iceServers: [ {urls: turn_server, username: turnUser, credential: turnSecret} ],
             success: function() {
                 // SIP 플러그인 Attach
-                _this.janus.attach(
+                janusSip.attach(
                     {
                         plugin: "janus.plugin.sip",
-                        opaqueId: _this.opaqueId,
+                        opaqueId: sipOpaqueId,
                         success: function(pluginHandle) {
-                            _this.sipcall = pluginHandle;
-                            Janus.log("Plugin attached! (" + _this.sipcall.getPlugin() + ", id=" + _this.sipcall.getId() + ")");
+                            sipcall = pluginHandle;
+                            Janus.log("Plugin attached! (" + sipcall.getPlugin() + ", id=" + sipcall.getId() + ")");
 
-                            if (_this.WEBRTC_INFO.phone.peer_num !== "" && _this.WEBRTC_INFO.phone.peer_secret !== "") {
-                                // 소프트폰을 등록한다.
-                                this.registerSoftphone();
-                                // 등록실패시 REGISTER_INTERVAL 시간마다 등록을 재시도한다.
-                                _this.registerId = setInterval(_this.registerSoftphone, REGISTER_INTERVAL);
-                            }
+                            var result = "";
+                            var message = "";
+                            var peer = "";
+                            restSelf.get("/api/auth/softPhone-info").done(function(response){
+                                console.log(response.data);
+                                WEBRTC_INFO.phone = response.data
+                                if (WEBRTC_INFO.phone.result == "OK" && WEBRTC_INFO.phone.peerNum != "" && WEBRTC_INFO.phone.peerSecret != "") {
+                                    // 소프트폰을 등록한다.
+                                    register_sip_softphone();
+                                    // 등록실패시 SIP_REGISTER_INTERVAL 시간마다 등록을 재시도한다.
+                                    sipRegisterTimerId = setInterval(register_sip_softphone, SIP_REGISTER_INTERVAL);
+                                }
+                                else {
+                                    alert("result:"+result+"\nmessage:"+message);
+                                }
+                            })
+                            /*$.ajax({
+                                type: "POST",
+                                cache: false,
+                                async: false,
+                                headers: { "cache-control": "no-cache","pragma": "no-cache" },
+                                url: "/ipcc/multichannel/main/get_softphone_info.jsp",
+                                //data: $('#passchg_frm').serialize(),
+                                dataType: "json",
+                                error: function(request, status, error) {
+                                    alert("code:"+request.status+"\nmessages:"+request.responseText);
+                                },
+                                success: function(data, status, error) {
+                                    WEBRTC_INFO.phone = data;
+
+                                    if (WEBRTC_INFO.phone.result == "OK" && WEBRTC_INFO.phone.peerNum != "" && WEBRTC_INFO.phone.peerSecret != "") {
+                                        // 소프트폰을 등록한다.
+                                        register_sip_softphone();
+                                        // 등록실패시 SIP_REGISTER_INTERVAL 시간마다 등록을 재시도한다.
+                                        sipRegisterTimerId = setInterval(register_sip_softphone, SIP_REGISTER_INTERVAL);
+                                    }
+                                    else {
+                                        alert("result:"+result+"\nmessage:"+message);
+                                    }
+                                }
+                            });*/
                         },
                         error: function(error) {
                             Janus.error("  -- Error attaching plugin...", error);
@@ -161,47 +160,48 @@ SoftPhoneApi.prototype.create_webrtc_session = function() {
                         onmessage: function(msg, jsep) {
                             Janus.debug(" ::: Got a message :::", msg);
 
-                            let error = msg["error"];
+                            var error = msg["error"];
                             if (error) {
-                                if (!_this.registered) {
+                                if (!sipRegistered) {
+                                    ;
                                 }
                                 else {
                                     // Reset status
-                                    _this.sipcall.hangup();
+                                    sipcall.hangup();
                                 }
                                 Janus.error(error);
                                 return;
                             }
 
-                            let callId = msg["call_id"];
-                            let result = msg["result"];
+                            var callId = msg["call_id"];
+                            var result = msg["result"];
 
                             if (result && result["event"]) {
-                                let event = result["event"];
+                                var event = result["event"];
                                 if (event === 'registration_failed') {
                                     Janus.warn("Registration failed: " + result["code"] + " " + result["reason"]);
-                                    callback_unregistered_status();
+                                    callback_sipcall_unregistered_status();
 
-                                    if (_this.registerId) {
-                                        clearInterval(_this.registerId);
-                                        _this.registerId = null;
+                                    if (sipRegisterTimerId) {
+                                        clearInterval(sipRegisterTimerId);
+                                        sipRegisterTimerId = null;
                                     }
-                                    _this.registerId = setInterval(_this.registerSoftphone, REGISTER_INTERVAL);
+                                    sipRegisterTimerId = setInterval(register_sip_softphone, SIP_REGISTER_INTERVAL);
                                     return;
                                 }
                                 else if (event === 'registered') {   // 등록 성공
                                     Janus.log("Successfully registered as " + result["username"] + "!");
-                                    callback_registered_status();
+                                    callback_sipcall_registered_status();
 
-                                    if (!_this.registered) {
-                                        _this.registered = true;
-                                        _this.masterId = result["master_id"];
+                                    if (!sipRegistered) {
+                                        sipRegistered = true;
+                                        masterId = result["master_id"];
                                         // FIXME : addhelper
                                     }
                                     // 등록 성공했으므로, 재등록 스케쥴링을 제거한다.
-                                    if (_this.registerId) {
-                                        clearInterval(_this.registerId);
-                                        _this.registerId = null;
+                                    if (sipRegisterTimerId) {
+                                        clearInterval(sipRegisterTimerId);
+                                        sipRegisterTimerId = null;
                                     }
                                 }
                                 else if (event === 'calling') { // 전화 발신중
@@ -211,11 +211,11 @@ SoftPhoneApi.prototype.create_webrtc_session = function() {
                                 }
                                 else if (event === 'incomingcall') {    // 전화 수신중 (호인입)
                                     //Janus.log("Incoming call from " + result["username"] + "!");
+                                    
+                                    sipcall.callId = callId;
 
-                                    _this.sipcall.callId = callId;
-
-                                    let doAudio = true, doVideo = true;
-                                    let offerLessInvite = false;
+                                    var doAudio = true, doVideo = true;
+                                    var offerlessInvite = false;
 
                                     if (jsep) {
                                         // What has been negotiated?
@@ -226,14 +226,14 @@ SoftPhoneApi.prototype.create_webrtc_session = function() {
                                     }
                                     else {
                                         Janus.log("This call doesn't contain an offer... we'll need to provide on ourselves");
-                                        offerLessInvite = true;
+                                        offerlessInvite = true;
                                         // In case you want to offer video when reacting to an offerless call, set this to true
                                         doVideo = false;
                                     }
 
                                     // Is this the result of a transfer?
-                                    let transfer = "";
-                                    let referredBy = result["referred_by"];
+                                    var transfer = "";
+                                    var referredBy = result["referred_by"];
                                     if (referredBy) {
                                         transfer = " (referred by " + referredBy + ")";
                                         transfer = transfer.replace(new RegExp('<', 'g'), '&lt');
@@ -241,8 +241,8 @@ SoftPhoneApi.prototype.create_webrtc_session = function() {
                                     }
 
                                     // Any security offered? A missing "srtp" attribute means plain RTP
-                                    let rtpType = "";
-                                    let srtp = result["srtp"];
+                                    var rtpType = "";
+                                    var srtp = result["srtp"];
                                     if (srtp === "sdes_optional") {
                                         rtpType = " (SDES-SRTP offered)";
                                     }
@@ -251,72 +251,94 @@ SoftPhoneApi.prototype.create_webrtc_session = function() {
                                     }
 
                                     // Notify user
-                                    let extra = "";
-                                    if (offerLessInvite) {
+                                    var extra = "";
+                                    if (offerlessInvite) {
                                         extra = " (no SDP offer provided)";
                                     }
 
-                                    // CallerID Number 가 0000으로 표시되는 경우, 발신콜로 인식한다.
+
+                                    // CallerID Number가 0000으로 표시되는 경우, 발신콜로 인식한다.
                                     // 이 때, 자동받기 처리해야 정상적으로 콜이 발신된다.
                                     if (result["username"] && result["username"].indexOf("sip:0000@") > -1) {
                                         Janus.log("Outbound call to " + result["displayname"] + "!" + transfer + rtpType + extra);
 
-                                        // Notice that we can only answer if we got an offer:
+                                        // Notice that we can only answer if we got an offer: 
                                         // if this was an offerless call, we'll need to create an offer ourselves
-                                        let sipCallAction = (offerLessInvite ? _this.sipcall.createOffer : _this.sipcall.createAnswer);
-                                        sipCallAction(
+                                        var sipcallAction = (offerlessInvite ? sipcall.createOffer : sipcall.createAnswer);
+                                        sipcallAction(
                                             {
                                                 jsep: jsep,
                                                 media: { audio: doAudio, video: doVideo },
                                                 success: function(jsep) {
                                                     Janus.debug("Got SDP " + jsep.type + "! audio=" + doAudio + ", video=" + doVideo + ":", jsep);
-                                                    let body = { request: "accept" };
-                                                    _this.sipcall.send({ message: body, jsep: jsep });
+                                                    var body = { request: "accept" };
+                                                    sipcall.send({ message: body, jsep: jsep });
                                                 },
                                                 error: function() {
                                                     Janus.error("WebRTC error:", error);
                                                     // Don't keep the caller waiting any longer, but use a 480 instead of the default 486 to clarify the cause
-                                                    let body = { request: "decline", code: 480 };
-                                                    _this.sipcall.send({ message: body });
+                                                    var body = { request: "decline", code: 480 };
+                                                    sipcall.send({ message: body });
                                                 }
                                             }
                                         );
                                     }
                                     else {
-                                        // CallerID Number 가 0000이 아닌 경우는 수신콜이므로
+                                        // CallerID Number가 0000이 아닌 경우는 수신콜이므로
                                         // 받기버튼의 클릭 이벤트를 등록해야 한다.
-                                        Janus.log("Incoming call from " + result["username"] + "!" + transfer + rtpType + extra);
 
-                                        let SoftPhoneAcceptCall = function() {
-                                            let sipCallAction = (offerLessInvite ? _this.sipcall.createOffer : _this.sipcall.createAnswer);
-                                            sipCallAction(
+                                        Janus.log("Incoming call from " + result["username"] + "!" + transfer + rtpType + extra);
+                                        
+                                        var SoftphoneAcceptCall = function() {
+                                            var sipcallAction = (offerlessInvite ? sipcall.createOffer : sipcall.createAnswer);
+                                            sipcallAction(
                                                 {
                                                     jsep: jsep,
                                                     media: { audio: doAudio, video: doVideo },
                                                     success: function(jsep) {
                                                         Janus.debug("Got SDP " + jsep.type + "! audio=" + doAudio + ", video=" + doVideo + ":", jsep);
-                                                        let body = { request: "accept" };
+                                                        var body = { request: "accept" };
 
-                                                        _this.sipcall.send({ message: body, jsep: jsep });
+                                                        // Note: as with "call", you can add a "srtp" attribute to
+                                                        // negotiate/mandate SDES support for this incoming call.
+                                                        // The default behaviour is to automatically use it if
+                                                        // the caller negoticated it, but you may choose to require
+                                                        // SDES support by setting "srtp" to "sdes_mandatory", e.g.:
+                                                        //      var body = { request: "accept", srtp: "sdes_mandatory" };
+                                                        // This may you'll tell the plugin to accept the call, but ONLY
+                                                        // if SDES is available, and you don't want plain RTP. If it 
+                                                        // is not available, you'll get an error (452) back. You can
+                                                        // also specify the SRTP profile to negotiate by setting the
+                                                        // "srtp_profile" property accordingly (the default if not
+                                                        // set in the request is "AES_CM_128_HMAC_SHA1_80")
+                                                        // Note 2: by default, the SIP plugin auto-answers incoming
+                                                        // re-INVITEs, without involving the browser/client: this is 
+                                                        // for backwards compatibility with older Janus clients that
+                                                        // may not be able to handle them. If you want to receive
+                                                        // re-INVITES to handle them yourself, specify it here, e.g.:
+                                                        //      body["autoaccept_reinvites"] = false;
+                                                        sipcall.send({ message: body, jsep: jsep });
                                                         // Ringtone 중지
-                                                        _this.stopTones();
+                                                        stopTones();
                                                     },
                                                     error: function(error) {
                                                         Janus.error("WebRTC error:", error);
                                                         // Don't keep the caller waiting any longer, but use a 480 instead of the default 486 to clarify the cause
-                                                        let body = { request: "decline", code: 480 };
-                                                        _this.sipcall.send({ message: body });
+                                                        var body = { request: "decline", code: 480 };
+                                                        sipcall.send({ message: body });
                                                     }
                                                 }
                                             );
                                         }
 
-                                        $ACCEPT_CALL_BTN.one('click', function() {
-                                            SoftPhoneAcceptCall();
-                                        });
+                                        if ($ACCEPT_SIPCALL_BTN) {
+                                            $ACCEPT_SIPCALL_BTN.one('click', function () {
+                                                SoftphoneAcceptCall();
+                                            });
+                                        }
 
                                         // Ringtone 플레이
-                                        _this.playTone("ring");
+                                        playTone("ring");
                                     }
                                 }
                                 else if (event === 'accepting') {
@@ -326,33 +348,33 @@ SoftPhoneApi.prototype.create_webrtc_session = function() {
                                     Janus.log("There's early media from " + result["username"] + ", waiting for the call!", jsep);
                                     // Call can start already: handle the remote answer
                                     if (jsep) {
-                                        _this.sipcall.handleRemoteJsep({ jsep: jsep, error: doHangup });
+                                        sipcall.handleRemoteJsep({ jsep: jsep, error: doHangup });
                                     }
                                 }
                                 else if (event === 'accepted') {
                                     Janus.log(result["username"] + " accepted tha call!", jsep);
                                     // Call can start, now: handle the remote answer
                                     if (jsep) {
-                                        _this.sipcall.handleRemoteJsep({ jsep: jsep, error: doHangup });
+                                        sipcall.handleRemoteJsep({ jsep: jsep, error: doHangup });
                                     }
-                                    _this.sipcall.callId = callId;
+                                    sipcall.callId = callId;
                                 }
                                 else if (event === 'updatingcall') {
                                     // We got a re-INVITE: while we may prompt the user (e.g.,
                                     // to notify about media changes), to keep things simple
                                     // we just accept the update and send an answer right way
                                     Janus.log("Got re-INVITE");
-                                    let doAudio = (jsep.sdp.indexOf("m=audio ") > -1),
+                                    var doAudio = (jsep.sdp.indexOf("m=audio ") > -1),
                                         doVideo = (jsep.sdp.indexOf("m=video ") > -1);
-
-                                    _this.sipcall.createAnswer(
+                                    
+                                    sipcall.createAnswer(
                                         {
                                             jsep: jsep,
                                             media: { audio: doAudio, video: doVideo },
                                             success: function(jsep) {
                                                 Janus.debug("Got SDP " + jsep.type + "! audio=" + doAudio + ", video=" + doVideo + ":", jsep);
-                                                let body = { request: "update" };
-                                                _this.sipcall.send({ message: body, jsep: jsep });
+                                                var body = { request: "update" };
+                                                sipcall.send({ message: body, jsep: jsep });
                                             },
                                             error: function(error) {
                                                 Janus.error("WebRTC error:", error);
@@ -362,45 +384,45 @@ SoftPhoneApi.prototype.create_webrtc_session = function() {
                                 }
                                 else if (event === 'message') {
                                     // We got a MESSAGE
-                                    let sender = result["displayname"] ? result["displayname"] : result["sender"];
-                                    let content = result["content"];
+                                    var sender = result["displayname"] ? result["displayname"] : result["sender"];
+                                    var content = result["content"];
                                     content = content.replace(new RegExp('<', 'g'), '&lt');
                                     content = content.replace(new RegExp('>', 'g'), '&gt');
                                     Janus.log("Message from " + sender);
                                 }
                                 else if (event === 'info') {
                                     // We got an INFO
-                                    let sender = result["displayname"] ? result["displayname"] : result["sender"];
-                                    let content = result["content"];
+                                    var sender = result["displayname"] ? result["displayname"] : result["sender"];
+                                    var content = result["content"];
                                     content = content.replace(new RegExp('<', 'g'), '&lt');
                                     content = content.replace(new RegExp('>', 'g'), '&gt');
                                     Janus.log("Info from " + sender);
                                 }
                                 else if (event === 'notify') {
                                     // We got an NOTIFY
-                                    let notify = result["notify"];
-                                    let content = result["content"];
+                                    var notify = result["notify"];
+                                    var content = result["content"];
                                     Janus.log(content, "Notify (" + notify + ")");
                                 }
                                 else if (event === 'transfer') {
                                     // We're being asked to transfer the call, ask the user what to do
-                                    let referTo = result["refer_to"];
-                                    let referredBy = result["referred_by"] ? result["referred_by"] : "an unknown party";
-                                    let referId = result["refer_id"];
-                                    let replaces = result["replaces"];
-                                    let extra = ("referred by " + referredBy);
+                                    var referTo = result["refer_to"];
+                                    var referredBy = result["referred_by"] ? result["referred_by"] : "an unknown party";
+                                    var referId = result["refer_id"];
+                                    var replaces = result["replaces"];
+                                    var extra = ("referred by " + referredBy);
                                     if (replaces) {
                                         extra += (", replaces call-ID " + referredBy);
                                     }
                                     extra = extra.replace(new RegExp('<', 'g'), '&lt');
                                     extra = extra.replace(new RegExp('>', 'g'), '&gt');
 
-                                    let transfer_confirm = confirm("Transfer the call to " + referTo + "? (" + extra + ")");
+                                    var transfer_confirm = confirm("Transfer the call to " + referTo + "? (" + extra + ")");
                                     if (transfer_confirm) {
                                         // Call the person we're being transferred to
-                                        if (!_this.sipcall.webrtcStuff.pc) {
+                                        if (!sipcall.webrtcStuff.pc) {
                                             // Do it here
-                                            // FIXME : Transfer 기능 테스트하면 수정할 것!!!
+                                            // FIXME : Transfer 기능 테스트하면 수정할 것!!!                                               
                                         }
                                         else {
                                         }
@@ -412,177 +434,113 @@ SoftPhoneApi.prototype.create_webrtc_session = function() {
                                 else if (event === 'hangup') {
                                     Janus.log("Call hung up (" + result["code"] + " " + result["reason"] + ")!");
                                     // Reset status
-                                    _this.sipcall.hangup();
+                                    sipcall.hangup();
 
                                     if (result["code"] && result["code"] === 200) {
                                         // Busytone 플레이
-                                        _this.playTone("busy");
+                                        playTone("busy");
                                     }
                                     else {
-                                        _this.stopTones();
+                                        stopTones();
                                     }
 
-                                    $ACCEPT_CALL_BTN.off('click');
+                                    $ACCEPT_SIPCALL_BTN.off('click');
                                 }
                             }
                         },
                         onlocalstream: function(stream) {
                             Janus.debug(" ::: Got a local stream :::", stream);
                             // 내 음성/영상스트림을 VIDEO 객체에 연결
-                            Janus.attachMediaStream($LOCAL_STREAM_OBJECT.get(0), stream);
-                            $LOCAL_STREAM_OBJECT.get(0).muted = "muted";
+                            Janus.attachMediaStream($LOCAL_SIPCALL_STREAM_OBJECT.get(0), stream);
+                            $LOCAL_SIPCALL_STREAM_OBJECT.get(0).muted = "muted";
                             // FIXME : 영상통화용 코드 작성
                         },
                         onremotestream: function(stream) {
                             Janus.debug(" ::: Got a Remote stream :::", stream);
                             // 상대방의 음성/영상스트림을 VIDEO 객체에 연결
-                            Janus.attachMediaStream($REMOTE_STREAM_OBJECT.get(0), stream);
+                            Janus.attachMediaStream($REMOTE_SIPCALL_STREAM_OBJECT.get(0), stream);
                             // FIXME : 영상통화용 코드 작성
                         },
                         oncleanup: function() {
                             // FIXME : Element 초기화
-                            if (_this.sipcall) {
-                                _this.sipcall.callId = null;
+                            if (sipcall) {
+                                sipcall.callId = null;
                             }
                         }
                     }
                 );
             },
             error: function(error) {
-                callback_disconnected_status();
+                callback_sipcall_disconnected_status();
 
-                Janus.error(error);
+                //Janus.error(error);
                 Janus.log("error:" + error);
+                //window.location.reload();
 
-                if (_this.januSessionId) {
-                    clearInterval(_this.januSessionId);
-                    _this.januSessionId = null;
+                if (sipReconnectTimerId) {
+                    clearInterval(sipReconnectTimerId);
+                    sipReconnectTimerId = null;
                 }
-                _this.januSessionId = setInterval(_this.start_webrtc, RECONNECT_INTERVAL);
+                sipReconnectTimerId = setInterval(start_sipcall, SIP_RECONNECT_INTERVAL);
             },
             destroyed: function() {
-                callback_disconnected_status();
+                callback_sipcall_disconnected_status();
 
                 Janus.log("destroyed");
+                //window.location.reload();
 
-                if (_this.januSessionId) {
-                    clearInterval(_this.januSessionId);
-                    _this.januSessionId = null;
+                if (sipReconnectTimerId) {
+                    clearInterval(sipReconnectTimerId);
+                    sipReconnectTimerId = null;
                 }
-                _this.januSessionId = setInterval(_this.start_webrtc, RECONNECT_INTERVAL);
+                sipReconnectTimerId = setInterval(start_sipcall, SIP_RECONNECT_INTERVAL);
             }
         }
     );
 }
 
-SoftPhoneApi.prototype.start_webrtc = function (peer_num, peer_secret, pbx_server_ip, pbx_server_port, webrtc_server_ip, webrtc_server_port, turn_server_ip, turn_server_port, turn_user, turn_secret) {
-    this.WEBRTC_INFO.server = {
-        pbx_server_ip: pbx_server_ip
-        ,pbx_server_port: pbx_server_port
-        ,webrtc_server_ip: webrtc_server_ip
-        ,webrtc_server_port: webrtc_server_port
-        ,turn_server_ip: turn_server_ip
-        ,turn_server_port: turn_server_port
-        ,turn_user: turn_user
-        ,turn_secret: turn_secret
-    };
-    this.WEBRTC_INFO.phone = {peer_num: peer_num, peer_secret: peer_secret};
-
-    if (this.januSessionId) {
-        clearInterval(this.januSessionId);
-        this.januSessionId = null;
+function start_sipcall() {
+    if (sipReconnectTimerId) {
+        clearInterval(sipReconnectTimerId);
+        sipReconnectTimerId = null;
     }
-    if (this.janus) {
-        delete this.janus;
-        this.janus = null;
+    if (janusSip) {
+        delete janusSip;
+        janusSip = null;
     }
 
-    Janus.init({debug: "all", callback: this.create_webrtc_session});
+    Janus.init({debug: "all", callback: create_sipcall_session});
 }
 
-SoftPhoneApi.prototype.is_support_webrtc = function (kind) {
-    // 소프트폰인지 검사
-    if (!kind || kind !== "S") {
-        console.log("No Softphone... ");
-        return false;
-    }
-
-    // https인지 확인
-    if (location.protocol !== "https:") {
-        alert("You must use HTTPS protocol in order to support WebRTC!!!");
-        console.log("location.protocol: " + location.protocol);
-        return false;
-    }
-
-    // 브라우저가 WebRTC를 지원하는지 검사
-    if (!Janus.isWebrtcSupported()) {
-        console.log("No WebRTC support... ");
-        return false;
-    }
-
-    return true;
-}
 
 // 전화기 등록 상태가 변경될 때 호출되는 Callback 함수
-SoftPhoneApi.prototype.set_callback_registered_status = function (callback) {
-    callback_registered_status = callback;
+var callback_sipcall_registered_status = function(){};
+var callback_sipcall_unregistered_status = function(){};
+var callback_sipcall_disconnected_status = function(){};
+
+function set_callback_sipcall_registered_status(callback) {
+    callback_sipcall_registered_status = callback;
 }
 
-SoftPhoneApi.prototype.set_callback_unregistered_status = function (callback) {
-    callback_unregistered_status = callback;
+function set_callback_sipcall_unregistered_status(callback) {
+    callback_sipcall_unregistered_status = callback;
 }
 
-SoftPhoneApi.prototype.set_callback_disconnected_status = function (callback) {
-    callback_disconnected_status = callback;
+function set_callback_sipcall_disconnected_status(callback) {
+    callback_sipcall_disconnected_status = callback;
 }
 
-let $ACCEPT_CALL_BTN = null;
-SoftPhoneApi.prototype.set_accept_call_btn_object = function ($btn_obj) {
-    $ACCEPT_CALL_BTN = $btn_obj;
+var $ACCEPT_SIPCALL_BTN = null;
+function set_accept_sipcall_btn_object($btn_obj) {
+    $ACCEPT_SIPCALL_BTN = $btn_obj;
 }
 
-let $LOCAL_STREAM_OBJECT = null;
-SoftPhoneApi.prototype.set_local_stream_object = function ($my_obj) {
-    $LOCAL_STREAM_OBJECT = $my_obj;
+var $LOCAL_SIPCALL_STREAM_OBJECT = null;
+function set_local_sipcall_stream_object($my_obj) {
+    $LOCAL_SIPCALL_STREAM_OBJECT = $my_obj;
 }
 
-let $REMOTE_STREAM_OBJECT = null;
-SoftPhoneApi.prototype.set_remote_stream_object = function ($remote_obj) {
-    $REMOTE_STREAM_OBJECT = $remote_obj;
+var $REMOTE_SIPCALL_STREAM_OBJECT = null;
+function set_remote_sipcall_stream_object($remote_obj) {
+    $REMOTE_SIPCALL_STREAM_OBJECT = $remote_obj;
 }
-
-// RINGTONE 플레이 기능을 ON
-SoftPhoneApi.prototype.set_ringtone_on = function () {
-    this.WEBRTC_INFO.env.ringtone = true;
-}
-// RINGTONE 플레이 기능을 OFF
-SoftPhoneApi.prototype.set_ringtone_off = function () {
-    this.WEBRTC_INFO.env.ringtone = false;
-}
-// RINGTONE 볼륨 크기 조정
-SoftPhoneApi.prototype.set_ringtone_volume = function (vol) {
-    if (vol >= 0.0 && vol <= 1.0) {
-        RINGTONE.volume = vol;
-    }
-    else {
-        console.error("Invalid volume level!!!")
-    }
-}
-// BUSYTONE 플레이 기능을 ON
-SoftPhoneApi.prototype.set_busytone_on = function () {
-    this.WEBRTC_INFO.env.busytone = true;
-}
-// BUSYTONE 플레이 기능을 OFF
-SoftPhoneApi.prototype.set_busytone_off = function () {
-    this.WEBRTC_INFO.env.busytone = false;
-}
-// BUSYTONE 볼륨 크기 조정
-SoftPhoneApi.prototype.set_busytone_volume = function (vol) {
-    if (vol >= 0.0 && vol <= 1.0) {
-        BUSYTONE.volume = vol;
-    }
-    else {
-        console.error("Invalid volume level!!!")
-    }
-}
-
