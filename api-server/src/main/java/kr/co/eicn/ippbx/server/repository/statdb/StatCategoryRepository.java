@@ -7,6 +7,7 @@ import kr.co.eicn.ippbx.model.enums.ContextType;
 import kr.co.eicn.ippbx.model.enums.SearchCycle;
 import kr.co.eicn.ippbx.model.search.StatCategorySearchRequest;
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 import org.jooq.Condition;
 import org.jooq.Record;
 import org.jooq.SelectConditionStep;
@@ -85,7 +86,7 @@ public class StatCategoryRepository extends StatDBBaseRepository<CommonStatInbou
 
     public List<StatInboundEntity> findAllCategoryStat(StatCategorySearchRequest search) {
         final List<Condition> conditions = conditions(search);
-        conditions.add(TABLE.SERVICE_NUMBER.isNotNull().and(TABLE.IVR_TREE_NAME.isNotNull()));
+        conditions.add(TABLE.SERVICE_NUMBER.isNotNull().and(TABLE.SERVICE_NUMBER.ne(StringUtils.EMPTY)).and(TABLE.IVR_TREE_NAME.isNotNull()).and(TABLE.IVR_TREE_NAME.ne(StringUtils.EMPTY)));
 
         return findAll(conditions(search));
     }
