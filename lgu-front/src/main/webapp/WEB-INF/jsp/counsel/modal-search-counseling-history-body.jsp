@@ -193,7 +193,7 @@
                                     <c:when test="${e.groupKind == 'TALK'}">상담톡</c:when>
                                 </c:choose>
                             </td>
-                            <td>${e.callType.equals("O") ? "발신" : e.callType.equals("I") ? "수신" : ""}</td>
+                            <td>${g.htmlQuote(e.inOutValue)}</td>
                             <td><fmt:formatDate value="${e.resultDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                             <td>${g.htmlQuote(e.userName)}</td>
                             <td>${g.htmlQuote(e.userTrName)}</td>
