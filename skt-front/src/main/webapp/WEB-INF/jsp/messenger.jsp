@@ -76,7 +76,6 @@
                             <div class="user-wrap">
                                 <div class="ui checkbox">
                                     <input type="checkbox" @change="calcCountSelected"/>
-                                    <label>{{ hierarchicalOrganizationString(team) }}</label>
                                 </div>
                             </div>
                         </li>
@@ -202,7 +201,6 @@
                     },
                     getTeamLoginCount: (team) => team.person.filter(e => e.isLoginChatt === 'L').length,
                     getTeamLogoutCount: (team) => team.person.filter(e => e.isLoginChatt !== 'L').length,
-                    hierarchicalOrganizationString: (team) => team.groupNames.join('>'),
                 },
                 updated: function () {
                     updatePersonStatus()
@@ -354,7 +352,6 @@
                                 <div class="title">
                                     <span class="team-name">{{ team.groupName }}
                                         <c:if test="${!activeMessenger}">
-                                            <label style="color: darkgray; font-size: 0.9rem;"> {{ hierarchicalOrganizationString(team) }}</label>
                                         </c:if>
                                     </span>
                                     <div class="dot-label-wrap">
@@ -367,7 +364,6 @@
                                     <div class="user-wrap">
                                         <div class="ui checkbox">
                                             <input type="checkbox"/>
-                                            <label>{{ hierarchicalOrganizationString(team) }}</label>
                                         </div>
                                     </div>
                                 </li>
@@ -526,15 +522,21 @@
                             loadInvitationPersons: function () {
                                 const _this = this
                                 restSelf.get('/api/monit/', null, null, true).done(function (response) {
+                                    _this.teams = []
                                     response.data.forEach(function (team) {
-                                        if (!team.person || (team.person.length === 1 && team.person[0].id === userId))
-                                            _this.teams.person.push(team.person)
+                                        if (!team.person || !team.person.length || (team.person.length === 1 && team.person[0].id === userId)) return
+                                        _this.teams.push(team)
+
+                                        console.log(" _this.teams:",  _this.teams)
+
+                                        for (let i in team.person)
+                                            if (team.person[i].id === userId)
+                                                return team.person.splice(i, 1)
                                     })
                                 })
                             },
                             getTeamLoginCount: (team) => team.person.filter(e => e.isLoginChatt === 'L').length,
                             getTeamLogoutCount: (team) => team.person.filter(e => e.isLoginChatt !== 'L').length,
-                            hierarchicalOrganizationString: (team) => team.groupNames.join('>'),
                         },
                         updated: function () {
                             updatePersonStatus()

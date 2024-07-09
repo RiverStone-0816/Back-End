@@ -72,6 +72,9 @@ eicn:
   talk:
     socket:
       id: talk_connector
+  wtalk:
+    socket:
+      id: wtlk_connector
   pds:
     socket:
       id: pds_connector
@@ -87,3 +90,6 @@ eicn:
       id: webchatcli_connector
     resource:
       location: /tmp/chatbot
+  message:
+    url:
+      id: message_connector

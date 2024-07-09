@@ -32,30 +32,30 @@ const SIP_PROTO_PREFIX = "sip:";
 const SIP_DOMAIN = "ippbx.eicn.co.kr";
 const SIP_REALM = "eicn";
 
-var janusSip = null;
-var sipcall = null;
-var sipOpaqueId = "softphone-" + Janus.randomString(12);
+let janusSip = null;
+let sipcall = null;
+let sipOpaqueId = "softphone-" + Janus.randomString(12);
 
-var sipRegistered = false;
-var masterId = null, helpers = {}, helpersCount = 0;
+let sipRegistered = false;
+let masterId = null, helpers = {}, helpersCount = 0;
 
-var sipRegisterTimerId = null;
+let sipRegisterTimerId = null;
 const SIP_REGISTER_INTERVAL = 5000;
 
 // 연결이 끊어졌을 때 재연결
 janusSip = null;
-var sipReconnectTimerId = null;
+let sipReconnectTimerId = null;
 const SIP_RECONNECT_INTERVAL = 5000;
 
 
 function register_sip_softphone() {
-    if (WEBRTC_INFO.phone.peerNum && WEBRTC_INFO.phone.peerNum != "" && WEBRTC_INFO.phone.peerSecret && WEBRTC_INFO.phone.peerSecret != "") {
+    if (WEBRTC_INFO.phone.peerNum && WEBRTC_INFO.phone.peerNum !== "" && WEBRTC_INFO.phone.peerSecret && WEBRTC_INFO.phone.peerSecret !== "") {
         // Registration
         Janus.log("sip-server: " + WEBRTC_INFO.server.pbxServerIp + ":" + WEBRTC_INFO.server.pbxServerPort);
-        var pbx_server = SIP_PROTO_PREFIX + WEBRTC_INFO.server.pbxServerIp + ":" + WEBRTC_INFO.server.pbxServerPort;
-        var username = SIP_PROTO_PREFIX + WEBRTC_INFO.phone.peerNum + "@" + SIP_DOMAIN;
-        
-        var register = {
+        let pbx_server = SIP_PROTO_PREFIX + WEBRTC_INFO.server.pbxServerIp + ":" + WEBRTC_INFO.server.pbxServerPort;
+        let username = SIP_PROTO_PREFIX + WEBRTC_INFO.phone.peerNum + "@" + SIP_DOMAIN;
+
+        let register = {
             request: "register",
             username: username,
             //ha1_secret: md5(WEBRTC_INFO.phone.peerNum + ":" + SIP_REALM + ":" + WEBRTC_INFO.phone.peerSecret),
@@ -75,10 +75,10 @@ function register_sip_softphone() {
 
 
 function create_sipcall_session() {
-    var webrtc_server = "wss://" + WEBRTC_INFO.server.webrtcServerIp + ":" + WEBRTC_INFO.server.webrtcServerPort;
-    var turn_server = "turn:" + WEBRTC_INFO.server.turnServerIp + ":" + WEBRTC_INFO.server.turnServerPort;
-    var turnUser = WEBRTC_INFO.server.turnUser;
-    var turnSecret = WEBRTC_INFO.server.turnSecret;
+    let webrtc_server = "wss://" + WEBRTC_INFO.server.webrtcServerIp + ":" + WEBRTC_INFO.server.webrtcServerPort;
+    let turn_server = "turn:" + WEBRTC_INFO.server.turnServerIp + ":" + WEBRTC_INFO.server.turnServerPort;
+    let turnUser = WEBRTC_INFO.server.turnUser;
+    let turnSecret = WEBRTC_INFO.server.turnSecret;
 
     // 세션 생성
     janusSip = new Janus(
@@ -95,13 +95,13 @@ function create_sipcall_session() {
                             sipcall = pluginHandle;
                             Janus.log("Plugin attached! (" + sipcall.getPlugin() + ", id=" + sipcall.getId() + ")");
 
-                            var result = "";
-                            var message = "";
-                            var peer = "";
+                            let result = "";
+                            let message = "";
+                            let peer = "";
                             restSelf.get("/api/auth/softPhone-info").done(function(response){
                                 console.log(response.data);
                                 WEBRTC_INFO.phone = response.data
-                                if (WEBRTC_INFO.phone.result == "OK" && WEBRTC_INFO.phone.peerNum != "" && WEBRTC_INFO.phone.peerSecret != "") {
+                                if (WEBRTC_INFO.phone.result === "OK" && WEBRTC_INFO.phone.peerNum !== "" && WEBRTC_INFO.phone.peerSecret !== "") {
                                     // 소프트폰을 등록한다.
                                     register_sip_softphone();
                                     // 등록실패시 SIP_REGISTER_INTERVAL 시간마다 등록을 재시도한다.
@@ -111,33 +111,9 @@ function create_sipcall_session() {
                                     alert("result:"+result+"\nmessage:"+message);
                                 }
                             })
-                            /*$.ajax({
-                                type: "POST",
-                                cache: false,
-                                async: false,
-                                headers: { "cache-control": "no-cache","pragma": "no-cache" },
-                                url: "/ipcc/multichannel/main/get_softphone_info.jsp",
-                                //data: $('#passchg_frm').serialize(),
-                                dataType: "json",
-                                error: function(request, status, error) {
-                                    alert("code:"+request.status+"\nmessages:"+request.responseText);
-                                },
-                                success: function(data, status, error) {
-                                    WEBRTC_INFO.phone = data;
-
-                                    if (WEBRTC_INFO.phone.result == "OK" && WEBRTC_INFO.phone.peerNum != "" && WEBRTC_INFO.phone.peerSecret != "") {
-                                        // 소프트폰을 등록한다.
-                                        register_sip_softphone();
-                                        // 등록실패시 SIP_REGISTER_INTERVAL 시간마다 등록을 재시도한다.
-                                        sipRegisterTimerId = setInterval(register_sip_softphone, SIP_REGISTER_INTERVAL);
-                                    }
-                                    else {
-                                        alert("result:"+result+"\nmessage:"+message);
-                                    }
-                                }
-                            });*/
                         },
                         error: function(error) {
+                            callback_sipcall_disconnected_status(error);
                             Janus.error("  -- Error attaching plugin...", error);
                         },
                         consentDialog: function(on) {
@@ -160,10 +136,10 @@ function create_sipcall_session() {
                         onmessage: function(msg, jsep) {
                             Janus.debug(" ::: Got a message :::", msg);
 
-                            var error = msg["error"];
+                            let error = msg["error"];
                             if (error) {
                                 if (!sipRegistered) {
-                                    ;
+                                    return;
                                 }
                                 else {
                                     // Reset status
@@ -173,11 +149,11 @@ function create_sipcall_session() {
                                 return;
                             }
 
-                            var callId = msg["call_id"];
-                            var result = msg["result"];
+                            let callId = msg["call_id"];
+                            let result = msg["result"];
 
                             if (result && result["event"]) {
-                                var event = result["event"];
+                                let event = result["event"];
                                 if (event === 'registration_failed') {
                                     Janus.warn("Registration failed: " + result["code"] + " " + result["reason"]);
                                     callback_sipcall_unregistered_status();
@@ -187,7 +163,6 @@ function create_sipcall_session() {
                                         sipRegisterTimerId = null;
                                     }
                                     sipRegisterTimerId = setInterval(register_sip_softphone, SIP_REGISTER_INTERVAL);
-                                    return;
                                 }
                                 else if (event === 'registered') {   // 등록 성공
                                     Janus.log("Successfully registered as " + result["username"] + "!");
@@ -209,13 +184,14 @@ function create_sipcall_session() {
                                     // TODO: Any ringtone?
                                     // FIXME : 전화끊기 버튼 활성화
                                 }
-                                else if (event === 'incomingcall') {    // 전화 수신중 (호인입)
+                                else if (event === 'incomingcall') {
+                                    // 전화 수신중 (호인입)
                                     //Janus.log("Incoming call from " + result["username"] + "!");
-                                    
+
                                     sipcall.callId = callId;
 
-                                    var doAudio = true, doVideo = true;
-                                    var offerlessInvite = false;
+                                    let doAudio = true, doVideo = true;
+                                    let offerlessInvite = false;
 
                                     if (jsep) {
                                         // What has been negotiated?
@@ -232,8 +208,8 @@ function create_sipcall_session() {
                                     }
 
                                     // Is this the result of a transfer?
-                                    var transfer = "";
-                                    var referredBy = result["referred_by"];
+                                    let transfer = "";
+                                    let referredBy = result["referred_by"];
                                     if (referredBy) {
                                         transfer = " (referred by " + referredBy + ")";
                                         transfer = transfer.replace(new RegExp('<', 'g'), '&lt');
@@ -241,8 +217,8 @@ function create_sipcall_session() {
                                     }
 
                                     // Any security offered? A missing "srtp" attribute means plain RTP
-                                    var rtpType = "";
-                                    var srtp = result["srtp"];
+                                    let rtpType = "";
+                                    let srtp = result["srtp"];
                                     if (srtp === "sdes_optional") {
                                         rtpType = " (SDES-SRTP offered)";
                                     }
@@ -251,7 +227,7 @@ function create_sipcall_session() {
                                     }
 
                                     // Notify user
-                                    var extra = "";
+                                    let extra = "";
                                     if (offerlessInvite) {
                                         extra = " (no SDP offer provided)";
                                     }
@@ -262,22 +238,24 @@ function create_sipcall_session() {
                                     if (result["username"] && result["username"].indexOf("sip:0000@") > -1) {
                                         Janus.log("Outbound call to " + result["displayname"] + "!" + transfer + rtpType + extra);
 
-                                        // Notice that we can only answer if we got an offer: 
+                                        // Notice that we can only answer if we got an offer:
                                         // if this was an offerless call, we'll need to create an offer ourselves
-                                        var sipcallAction = (offerlessInvite ? sipcall.createOffer : sipcall.createAnswer);
+                                        let sipcallAction = (offerlessInvite ? sipcall.createOffer : sipcall.createAnswer);
                                         sipcallAction(
                                             {
                                                 jsep: jsep,
                                                 media: { audio: doAudio, video: doVideo },
                                                 success: function(jsep) {
                                                     Janus.debug("Got SDP " + jsep.type + "! audio=" + doAudio + ", video=" + doVideo + ":", jsep);
-                                                    var body = { request: "accept" };
+                                                    let body = { request: "accept" };
                                                     sipcall.send({ message: body, jsep: jsep });
+                                                    callback_sipcall_registered_status();
                                                 },
-                                                error: function() {
+                                                error: function(error) {
+                                                    callback_sipcall_disconnected_status(error);
                                                     Janus.error("WebRTC error:", error);
                                                     // Don't keep the caller waiting any longer, but use a 480 instead of the default 486 to clarify the cause
-                                                    var body = { request: "decline", code: 480 };
+                                                    let body = { request: "decline", code: 480 };
                                                     sipcall.send({ message: body });
                                                 }
                                             }
@@ -288,31 +266,31 @@ function create_sipcall_session() {
                                         // 받기버튼의 클릭 이벤트를 등록해야 한다.
 
                                         Janus.log("Incoming call from " + result["username"] + "!" + transfer + rtpType + extra);
-                                        
-                                        var SoftphoneAcceptCall = function() {
-                                            var sipcallAction = (offerlessInvite ? sipcall.createOffer : sipcall.createAnswer);
+
+                                        let SoftphoneAcceptCall = function() {
+                                            let sipcallAction = (offerlessInvite ? sipcall.createOffer : sipcall.createAnswer);
                                             sipcallAction(
                                                 {
                                                     jsep: jsep,
                                                     media: { audio: doAudio, video: doVideo },
                                                     success: function(jsep) {
                                                         Janus.debug("Got SDP " + jsep.type + "! audio=" + doAudio + ", video=" + doVideo + ":", jsep);
-                                                        var body = { request: "accept" };
+                                                        let body = { request: "accept" };
 
                                                         // Note: as with "call", you can add a "srtp" attribute to
                                                         // negotiate/mandate SDES support for this incoming call.
                                                         // The default behaviour is to automatically use it if
                                                         // the caller negoticated it, but you may choose to require
                                                         // SDES support by setting "srtp" to "sdes_mandatory", e.g.:
-                                                        //      var body = { request: "accept", srtp: "sdes_mandatory" };
+                                                        //      let body = { request: "accept", srtp: "sdes_mandatory" };
                                                         // This may you'll tell the plugin to accept the call, but ONLY
-                                                        // if SDES is available, and you don't want plain RTP. If it 
+                                                        // if SDES is available, and you don't want plain RTP. If it
                                                         // is not available, you'll get an error (452) back. You can
                                                         // also specify the SRTP profile to negotiate by setting the
                                                         // "srtp_profile" property accordingly (the default if not
                                                         // set in the request is "AES_CM_128_HMAC_SHA1_80")
                                                         // Note 2: by default, the SIP plugin auto-answers incoming
-                                                        // re-INVITEs, without involving the browser/client: this is 
+                                                        // re-INVITEs, without involving the browser/client: this is
                                                         // for backwards compatibility with older Janus clients that
                                                         // may not be able to handle them. If you want to receive
                                                         // re-INVITES to handle them yourself, specify it here, e.g.:
@@ -320,11 +298,13 @@ function create_sipcall_session() {
                                                         sipcall.send({ message: body, jsep: jsep });
                                                         // Ringtone 중지
                                                         stopTones();
+                                                        callback_sipcall_registered_status();
                                                     },
                                                     error: function(error) {
+                                                        callback_sipcall_disconnected_status(error);
                                                         Janus.error("WebRTC error:", error);
                                                         // Don't keep the caller waiting any longer, but use a 480 instead of the default 486 to clarify the cause
-                                                        var body = { request: "decline", code: 480 };
+                                                        let body = { request: "decline", code: 480 };
                                                         sipcall.send({ message: body });
                                                     }
                                                 }
@@ -364,19 +344,21 @@ function create_sipcall_session() {
                                     // to notify about media changes), to keep things simple
                                     // we just accept the update and send an answer right way
                                     Janus.log("Got re-INVITE");
-                                    var doAudio = (jsep.sdp.indexOf("m=audio ") > -1),
+                                    let doAudio = (jsep.sdp.indexOf("m=audio ") > -1),
                                         doVideo = (jsep.sdp.indexOf("m=video ") > -1);
-                                    
+
                                     sipcall.createAnswer(
                                         {
                                             jsep: jsep,
                                             media: { audio: doAudio, video: doVideo },
                                             success: function(jsep) {
                                                 Janus.debug("Got SDP " + jsep.type + "! audio=" + doAudio + ", video=" + doVideo + ":", jsep);
-                                                var body = { request: "update" };
+                                                let body = { request: "update" };
                                                 sipcall.send({ message: body, jsep: jsep });
+                                                callback_sipcall_registered_status();
                                             },
                                             error: function(error) {
+                                                callback_sipcall_disconnected_status(error);
                                                 Janus.error("WebRTC error:", error);
                                             }
                                         }
@@ -384,45 +366,45 @@ function create_sipcall_session() {
                                 }
                                 else if (event === 'message') {
                                     // We got a MESSAGE
-                                    var sender = result["displayname"] ? result["displayname"] : result["sender"];
-                                    var content = result["content"];
+                                    let sender = result["displayname"] ? result["displayname"] : result["sender"];
+                                    let content = result["content"];
                                     content = content.replace(new RegExp('<', 'g'), '&lt');
                                     content = content.replace(new RegExp('>', 'g'), '&gt');
                                     Janus.log("Message from " + sender);
                                 }
                                 else if (event === 'info') {
                                     // We got an INFO
-                                    var sender = result["displayname"] ? result["displayname"] : result["sender"];
-                                    var content = result["content"];
+                                    let sender = result["displayname"] ? result["displayname"] : result["sender"];
+                                    let content = result["content"];
                                     content = content.replace(new RegExp('<', 'g'), '&lt');
                                     content = content.replace(new RegExp('>', 'g'), '&gt');
                                     Janus.log("Info from " + sender);
                                 }
                                 else if (event === 'notify') {
                                     // We got an NOTIFY
-                                    var notify = result["notify"];
-                                    var content = result["content"];
+                                    let notify = result["notify"];
+                                    let content = result["content"];
                                     Janus.log(content, "Notify (" + notify + ")");
                                 }
                                 else if (event === 'transfer') {
                                     // We're being asked to transfer the call, ask the user what to do
-                                    var referTo = result["refer_to"];
-                                    var referredBy = result["referred_by"] ? result["referred_by"] : "an unknown party";
-                                    var referId = result["refer_id"];
-                                    var replaces = result["replaces"];
-                                    var extra = ("referred by " + referredBy);
+                                    let referTo = result["refer_to"];
+                                    let referredBy = result["referred_by"] ? result["referred_by"] : "an unknown party";
+                                    let referId = result["refer_id"];
+                                    let replaces = result["replaces"];
+                                    let extra = ("referred by " + referredBy);
                                     if (replaces) {
                                         extra += (", replaces call-ID " + referredBy);
                                     }
                                     extra = extra.replace(new RegExp('<', 'g'), '&lt');
                                     extra = extra.replace(new RegExp('>', 'g'), '&gt');
 
-                                    var transfer_confirm = confirm("Transfer the call to " + referTo + "? (" + extra + ")");
+                                    let transfer_confirm = confirm("Transfer the call to " + referTo + "? (" + extra + ")");
                                     if (transfer_confirm) {
                                         // Call the person we're being transferred to
                                         if (!sipcall.webrtcStuff.pc) {
                                             // Do it here
-                                            // FIXME : Transfer 기능 테스트하면 수정할 것!!!                                               
+                                            // FIXME : Transfer 기능 테스트하면 수정할 것!!!
                                         }
                                         else {
                                         }
@@ -436,13 +418,14 @@ function create_sipcall_session() {
                                     // Reset status
                                     sipcall.hangup();
 
-                                    if (result["code"] && result["code"] === 200) {
-                                        // Busytone 플레이
-                                        playTone("busy");
-                                    }
-                                    else {
-                                        stopTones();
-                                    }
+                                    // if (result["code"] && result["code"] === 200) {
+                                    //     // Busytone 플레이
+                                    //     // playTone("busy");
+                                    // }
+                                    // else {
+                                    //     stopTones();
+                                    // }
+                                    stopTones();
 
                                     $ACCEPT_SIPCALL_BTN.off('click');
                                 }
@@ -471,7 +454,7 @@ function create_sipcall_session() {
                 );
             },
             error: function(error) {
-                callback_sipcall_disconnected_status();
+                callback_sipcall_disconnected_status(error);
 
                 //Janus.error(error);
                 Janus.log("error:" + error);
@@ -514,9 +497,9 @@ function start_sipcall() {
 
 
 // 전화기 등록 상태가 변경될 때 호출되는 Callback 함수
-var callback_sipcall_registered_status = function(){};
-var callback_sipcall_unregistered_status = function(){};
-var callback_sipcall_disconnected_status = function(){};
+let callback_sipcall_registered_status = function(){};
+let callback_sipcall_unregistered_status = function(){};
+let callback_sipcall_disconnected_status = function(){};
 
 function set_callback_sipcall_registered_status(callback) {
     callback_sipcall_registered_status = callback;
@@ -530,17 +513,17 @@ function set_callback_sipcall_disconnected_status(callback) {
     callback_sipcall_disconnected_status = callback;
 }
 
-var $ACCEPT_SIPCALL_BTN = null;
+let $ACCEPT_SIPCALL_BTN = null;
 function set_accept_sipcall_btn_object($btn_obj) {
     $ACCEPT_SIPCALL_BTN = $btn_obj;
 }
 
-var $LOCAL_SIPCALL_STREAM_OBJECT = null;
+let $LOCAL_SIPCALL_STREAM_OBJECT = null;
 function set_local_sipcall_stream_object($my_obj) {
     $LOCAL_SIPCALL_STREAM_OBJECT = $my_obj;
 }
 
-var $REMOTE_SIPCALL_STREAM_OBJECT = null;
+let $REMOTE_SIPCALL_STREAM_OBJECT = null;
 function set_remote_sipcall_stream_object($remote_obj) {
     $REMOTE_SIPCALL_STREAM_OBJECT = $remote_obj;
 }

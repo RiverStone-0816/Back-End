@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
 import kr.co.eicn.ippbx.front.service.api.WebchatConfigApiInterface;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.WtalkServerInfo;
 import kr.co.eicn.ippbx.model.enums.IntroChannelType;
 import kr.co.eicn.ippbx.model.form.WebchatServiceInfoFormRequest;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
@@ -13,11 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.val;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +40,8 @@ public class ChatbotServiceController extends BaseController {
     public String page(Model model) {
         val list = apiInterface.list();
         model.addAttribute("list", list);
-        model.addAttribute("server", searchApiInterface.getWtalkServerList().get(0));
+        final List<WtalkServerInfo> serverInfos = searchApiInterface.getWtalkServerList();
+        model.addAttribute("server", CollectionUtils.isEmpty(serverInfos) ? null : serverInfos.get(0));
 
         return "admin/wtalk/info/chat-service/ground";
     }

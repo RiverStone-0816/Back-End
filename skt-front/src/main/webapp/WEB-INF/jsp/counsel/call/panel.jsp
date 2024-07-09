@@ -166,12 +166,12 @@
             return submitJsonData($('#call-custom-input')[0]);
         }
 
-        function loadCustomInput(maindbGroupSeq, customId, phoneNumber, resultSeq, uniqueId, inOut) {
+        function loadCustomInput(maindbGroupSeq, customId, phoneNumber, maindbResultSeq, uniqueId, inOut) {
             return replaceReceivedHtmlInSilence($.addQueryString('/counsel/call/custom-input', {
                 maindbGroupSeq: maindbGroupSeq || '',
                 customId: customId || '',
                 phoneNumber: phoneNumber || '',
-                resultSeq: resultSeq || '',
+                maindbResultSeq: maindbResultSeq || '',
             }), '#call-custom-input').done(() => {
                 if (uniqueId)
                     audioId = uniqueId;

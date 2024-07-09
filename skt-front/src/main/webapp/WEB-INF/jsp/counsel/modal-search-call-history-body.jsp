@@ -305,7 +305,7 @@
                     </c:when>
                     <c:otherwise>
                         <tr>
-                            <td colspan="12" class="null-data">조회된 데이터가 없습니다.</td>
+                            <td colspan="13" class="null-data">조회된 데이터가 없습니다.</td>
                         </tr>
                     </c:otherwise>
                 </c:choose>

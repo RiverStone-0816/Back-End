@@ -77,7 +77,9 @@
             }
 
             function popupChat(senderKey) {
-                window.open('${server.chabotServiceUrl}/vchat/index.html?senderKey='+senderKey);
+                <c:if test="${not empty server}">
+                window.open('${server.chabotServiceUrl}/vchat/index.html?senderKey=' + senderKey);
+                </c:if>
             }
             function deleteEntity(seq) {
                 confirm('정말 삭제하시겠습니까?').done(function () {

@@ -56,6 +56,41 @@
 
                 return false;
             });
+
+            <c:if test="${usingServices.contains('SPHONE') && g.user.softphone.equals('Y')}">
+            $(document).ready(() => {
+                // WebRTC 소프트폰 사용 가능 여부 확인
+                if (is_support_softphone('${g.user.phoneKind}') === false) {
+                    return false;
+                }
+
+                set_ringtone_volume(1.0);
+                set_busytone_volume(1.0);
+
+                set_local_sipcall_stream_object($('#myVideo'));
+                set_remote_sipcall_stream_object($('#remoteVideo'));
+
+                set_accept_sipcall_btn_object($(".-call-receive"));
+
+                set_callback_sipcall_registered_status(() => {
+                    $('div.dial-pad .header').css('background-color','lime');
+                });
+                set_callback_sipcall_unregistered_status(() => {
+                    $('div.dial-pad .header').css('background-color','red');
+                });
+                set_callback_sipcall_disconnected_status((error) => {
+                    $('div.dial-pad .header').css('background-color','darkorange');
+                    if (error)
+                        alert(error);
+                });
+
+                restSelf.get('/api/auth/softPhone-info').done(function (response) {
+                    if (set_webrtc_server_info(response.data.serverInformation)) {
+                        start_sipcall();
+                    }
+                });
+            })
+            </c:if>
         </script>
     </tags:scripts>
 </tags:layout>

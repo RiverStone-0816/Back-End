@@ -50,12 +50,12 @@
     </div>
 
     <div class="panel-body overflow-overlay">
-    <form:hidden path="groupKind" id="call-counseling-input-groupKind"/>
-    <form:hidden path="customId" id="call-counseling-input-customId"/>
-    <form:hidden path="maindbType" id="call-counseling-input-maindbType"/>
-    <form:hidden path="resultType" id="call-counseling-input-resultType"/>
-    <form:hidden path="groupId" id="call-counseling-input-groupId"/>
-    <form:hidden path="clickKey" id="call-counseling-input-clickKey"/>
+    <form:hidden path="groupKind" id="groupKind"/>
+    <form:hidden path="customId" id="customId"/>
+    <form:hidden path="maindbType" id="maindbType"/>
+    <form:hidden path="resultType" id="resultType"/>
+    <form:hidden path="groupId" id="groupId"/>
+    <form:hidden path="clickKey" id="clickKey"/>
     <div class="float-field-wrap">
         <c:set var="chargedColCount" value="${0}"/>
         <c:forEach var="field" items="${resultType.fields}" varStatus="status">
@@ -64,11 +64,11 @@
             <c:choose>
                 <c:when test="${field.fieldType == 'MULTICODE'}">
                     <div class="float-field fluid" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
-                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label>
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label>
                         </div>
                         <div class="content">
                             <div class="ui form flex">
-                                <select name="${name}" id="call-counseling-input-${name}" data-type="select"
+                                <select name="${name}" id="${name}" data-type="select"
                                         data-text="${g.htmlQuote(field.fieldInfo)}"
                                         data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
                                         class="ui fluid dropdown">
@@ -98,10 +98,10 @@
                 </c:when>
                 <c:when test="${field.fieldType == 'CODE'}">
                     <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
-                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
                         <div class="content">
                             <div class="ui form flex">
-                                <select name="${name}" id="call-counseling-input-${name}" data-type="select"
+                                <select name="${name}" id="${name}" data-type="select"
                                         data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}">
                                     <option value=""></option>
                                     <c:forEach var="e" items="${field.codes}">
@@ -120,10 +120,10 @@
                 </c:when>
                 <c:when test="${field.fieldType == 'INT' || field.fieldType == 'NUMBER'}">
                     <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
-                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
                         <div class="content">
                             <div class="ui form">
-                                <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                <input type="text" name="${name}" id="${name}" data-type="text"
                                        data-text="${g.htmlQuote(field.fieldInfo)}"
                                        data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" class="-input-numerical"
                                        value="${g.htmlQuote(value)}"/>
@@ -133,27 +133,27 @@
                 </c:when>
                 <c:when test="${field.fieldType == 'DATETIME'}">
                     <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
-                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
                         <div class="content">
                             <div class="ui form flex">
-                                <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                <input type="text" name="${name}" id="${name}" data-type="text"
                                        data-text="${g.htmlQuote(field.fieldInfo)}"
                                        data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
                                        value="${value != null ? g.dateFormat(value) : null}"
                                        class="-datepicker" style="width: 130px"/>&ensp;
-                                <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                <input type="text" name="${name}" id="${name}" data-type="text"
                                        data-text="${g.htmlQuote(field.fieldInfo)}"
                                        data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
                                        value="${value != null ? value.hours : null}"
                                        class="-input-numeric" style="width: 50px"/>
                                 <text style="line-height: 30px">시</text>
-                                <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                <input type="text" name="${name}" id="${name}" data-type="text"
                                        data-text="${g.htmlQuote(field.fieldInfo)}"
                                        data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
                                        value="${value != null ? value.minutes : null}"
                                        class="-input-numeric" style="width: 50px"/>
                                 <text style="line-height: 30px">분</text>
-                                <input type="hidden" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                <input type="hidden" name="${name}" id="${name}" data-type="text"
                                        data-text="${g.htmlQuote(field.fieldInfo)}"
                                        data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" multiple="multiple"
                                        value="00" class="-input-numeric"/>
@@ -164,10 +164,10 @@
                 <c:when test="${field.fieldType == 'DATE' || field.fieldType == 'DAY'}">
                     <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
                         <div class="label"><label
-                                for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                                for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
                         <div class="content">
                             <div class="ui form">
-                                <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                <input type="text" name="${name}" id="${name}" data-type="text"
                                        data-text="${g.htmlQuote(field.fieldInfo)}"
                                        data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" value="${value}"
                                        class="-datepicker"/>
@@ -177,10 +177,10 @@
                 </c:when>
                 <c:when test="${field.fieldType == 'STRING' && field.fieldSize >= 300}">
                     <div class="float-field fluid" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
-                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
                         <div class="content field">
                             <div class="ui form">
-                                    <textarea type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                    <textarea type="text" name="${name}" id="${name}" data-type="text"
                                               data-text="${g.htmlQuote(field.fieldInfo)}"
                                               data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" rows="4"
                                               maxlength="${field.fieldSize}">${g.escapeQuote(value)}</textarea>
@@ -190,10 +190,10 @@
                 </c:when>
                 <c:when test="${field.fieldType == 'STRING' && field.fieldSize > 50}">
                     <div class="float-field fluid" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
-                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
                         <div class="content">
                             <div class="ui form">
-                                <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                <input type="text" name="${name}" id="${name}" data-type="text"
                                        data-text="${g.htmlQuote(field.fieldInfo)}"
                                        data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}"
                                        maxlength="${field.fieldSize}" value="${g.escapeQuote(value)}"/>
@@ -203,7 +203,7 @@
                 </c:when>
                 <c:when test="${field.fieldType == 'IMG'}">
                     <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
-                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
                         <div class="content">
                             <div class="ui form flex">
                                 <input name="${name}" type="hidden" value="">
@@ -218,10 +218,10 @@
                 </c:when>
                 <c:otherwise>
                     <div class="float-field inline" style="display: ${field.isdisplay eq 'N' ? 'none':'flex'};">
-                        <div class="label"><label for="call-counseling-input-${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
+                        <div class="label"><label for="${name}">${g.htmlQuote(field.fieldInfo)}</label></div>
                         <div class="content">
                             <div class="ui input fluid">
-                                <input type="text" name="${name}" id="call-counseling-input-${name}" data-type="text"
+                                <input type="text" name="${name}" id="${name}" data-type="text"
                                        data-text="${g.htmlQuote(field.fieldInfo)}"
                                        data-value="${field.isdisplay eq 'N' ? field.isdisplay : field.isneed}" maxlength="${field.fieldSize}"
                                        value="${g.htmlQuote(value)}"
@@ -523,7 +523,6 @@
         }
 
         if (ui.find('[name="saveCustomInfo"]').is(':checked')) {
-
             let customInfo = $("#call-custom-input");
             let customObjText = customInfo.find('[data-value="Y"]');
 
