@@ -52,7 +52,7 @@ eicn:
   service:
     base-url: http://122.49.74.103
     servicekind: SC
-  version: 20240621
+  version: 20240709
   debugging: true
   swagger:
     api-package: kr.co.eicn.ippbx.front.controller.api
