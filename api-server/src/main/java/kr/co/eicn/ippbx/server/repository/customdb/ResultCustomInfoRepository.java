@@ -150,10 +150,12 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
                 .fetchInto(ResultCustomInfoEntity.class);
     }
 
-    public List<ResultCustomInfoEntity> getTodo(String userId, String phohe) {
+    public List<ResultCustomInfoEntity> getTodo(String userIdTr, String phone) {
         return dsl.select()
                 .from(TABLE)
-                .where(TABLE.USERID_TR.eq(userId).and(TABLE.CUSTOM_NUMBER.eq(phohe).and(TABLE.COMPANY_ID.eq(getCompanyId()))))
+                .where(TABLE.USERID_TR.eq(userIdTr).and(TABLE.CUSTOM_NUMBER.eq(phone)))
+                .orderBy(TABLE.RESULT_DATE.desc())
+                .limit(1)
                 .fetchInto(ResultCustomInfoEntity.class);
     }
 

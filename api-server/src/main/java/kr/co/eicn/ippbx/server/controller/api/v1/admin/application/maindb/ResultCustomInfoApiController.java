@@ -141,10 +141,10 @@ public class ResultCustomInfoApiController extends ApiBaseController {
     }
 
     //수정정보SEQ
-    @GetMapping("{userId}/{phone}")
-    public ResponseEntity<JsonResult<List<ResultCustomInfoEntity>>> getTodo(@PathVariable String userId, @PathVariable String phone) {
-        List<ResultCustomInfoEntity> response = service.getRepository().getTodo(userId, phone);
-        if (response.size() > 0 && StringUtils.isNotEmpty(response.get(0).getUserid())) {
+    @GetMapping("{userIdTr}/{phone}")
+    public ResponseEntity<JsonResult<List<ResultCustomInfoEntity>>> getTodo(@PathVariable String userIdTr, @PathVariable String phone) {
+        final List<ResultCustomInfoEntity> response = service.getRepository().getTodo(userIdTr, phone);
+        if (!CollectionUtils.isEmpty(response) && StringUtils.isNotEmpty(response.get(0).getUserid())) {
             ResultCustomInfoEntity row = response.get(0);
 
             row.setPersonList(personListRepository.findOneById(response.get(0).getUserid()));
