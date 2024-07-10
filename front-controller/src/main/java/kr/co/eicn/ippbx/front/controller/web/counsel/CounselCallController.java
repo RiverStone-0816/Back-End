@@ -58,6 +58,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -300,11 +301,11 @@ public class CounselCallController extends BaseController {
             todoChk = counselApiInterface.getTodoList(search);
             model.addAttribute("todoList", todoChk);
         }
-        if (todoChk != null) {
+        if (!CollectionUtils.isEmpty(todoChk) && ObjectUtils.isEmpty(maindbResultSeq)) {
             for (TodoList todoList : todoChk) {
                 if (todoList.getTodoKind().equals(TodoListTodoKind.TRANSFER) && todoList.getTodoStatus().equals(TodoListTodoStatus.ING)) {
                     final List<ResultCustomInfoEntity> entity = maindbResultApiInterface.getTodo(todoList.getUserid(), todoList.getTodoInfo());
-                    if (entity.size() > 0) {
+                    if (!CollectionUtils.isEmpty(entity)) {
                         model.addAttribute("entity", entity.get(0));
                         ReflectionUtils.copy(form, entity.get(0));
                         final LinkedHashMap<String, Object> fieldNameToValueMap = MaindbResultController.createFieldNameToValueMap(entity.get(0), resultType);
@@ -322,7 +323,7 @@ public class CounselCallController extends BaseController {
         final List<VocGroup> smsVocGroups = vocGroupApiInterface.getArsSmsList("SMS");
         model.addAttribute("smsVocGroups", smsVocGroups);
 
-        if (maindbResultSeq != null) {
+        if (ObjectUtils.isNotEmpty(maindbResultSeq)) {
             final ResultCustomInfoEntity entity = maindbResultApiInterface.get(maindbResultSeq);
             model.addAttribute("entity", entity);
             // entity에 있는 필드를 form으로 복사합니다. (이름과 타입이 같을때)..
