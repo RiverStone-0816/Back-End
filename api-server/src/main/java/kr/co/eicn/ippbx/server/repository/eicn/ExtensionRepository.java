@@ -276,6 +276,7 @@ public class ExtensionRepository extends EicnBaseRepository<PhoneInfo, kr.co.eic
         insertRecord.setGroupCode(old.getGroupCode());
         insertRecord.setGroupLevel(old.getGroupLevel());
         insertRecord.setGroupTreeName(old.getGroupTreeName());
+        insertRecord.setFirstStatus(old.getFirstStatus());
         insertRecord.setLogoutStatus(old.getLogoutStatus());
         insertRecord.setDialStatus(old.getDialStatus());
         insertRecord.setPhoneStatus("registered");
