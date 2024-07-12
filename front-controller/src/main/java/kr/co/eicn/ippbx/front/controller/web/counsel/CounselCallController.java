@@ -294,11 +294,11 @@ public class CounselCallController extends BaseController {
         search.setEndDate(null);
         search.setPhoneNumbers(phoneNumbers);
         search.setUserId(g.getUser().getId());
-        search.setStatuses(Arrays.asList(TodoListTodoStatus.ING, TodoListTodoStatus.DELETE, TodoListTodoStatus.HOLD));
+        search.setStatuses(Arrays.asList(TodoListTodoStatus.ING, TodoListTodoStatus.HOLD));
 
-        List<TodoList> todoChk = new ArrayList<>();
+        final List<TodoList> todoChk = new ArrayList<>();
         if (!phoneNumbers.isEmpty()) {
-            todoChk = counselApiInterface.getTodoList(search);
+            todoChk.addAll(counselApiInterface.getTodoList(search));
             model.addAttribute("todoList", todoChk);
         }
         if (!CollectionUtils.isEmpty(todoChk) && ObjectUtils.isEmpty(maindbResultSeq)) {
