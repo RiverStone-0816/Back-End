@@ -62,6 +62,7 @@
         confirm('정말 완료하시겠습니까?').done(function () {
             restSelf.put("/api/counsel/to-do/done/" + seq).done(function () {
                 loadTodoList();
+                removeCounselTodo(seq);
             });
         });
     }
@@ -70,8 +71,19 @@
         confirm('정말 삭제하시겠습니까?').done(function () {
             restSelf.delete("/api/counsel/to-do/delete/" + seq).done(function () {
                 loadTodoList();
+                removeCounselTodo(seq);
             });
         });
+    }
+
+    function removeCounselTodo(seq) {
+        $('#call-counseling-input').find('input[name="todoSequences"]').filter(function () {
+            return $(this).val() === seq.toString();
+        }).remove();
+
+        if ($('#call-counseling-input').find('input[name="todoSequences"]').length === 0) {
+            $('#call-counseling-input').find('[name="todoStatus"]').closest('tr').remove();
+        }
     }
 
     function viewTalkRoom(roomId, test = true) {
