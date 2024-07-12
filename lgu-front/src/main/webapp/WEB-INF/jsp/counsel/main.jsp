@@ -585,7 +585,7 @@
                     $('#partial-recoding').show().find('text').text('부분녹취');
 
                 if (kind === 'IR') { // 인바운드 링울림
-                    clearCustomerAndCounselingInput()
+                    clearTransferredUser();
                     clearTimeout(callingModalTimeoutId)
                     $('#modal-calling').modalHide();
 
@@ -642,8 +642,8 @@
                         $('.item[data-tab="counsel-list"]').click();
                     });
                 } else if (kind === 'ID') { // 인바운드 통화시작
-                    if (audioId !== data8)
-                        loadCustomInput(null, null, phoneNumber, data8)
+                    if (!audioId || audioId !== data8 || $('#call-custom-input').find('[name=channels]').find('option[value=' + data1 + ']').length === 0)
+                        loadCustomInput(null, null, data1, data8)
 
                     audioId = data8;
                     callType = 'I';
@@ -674,6 +674,9 @@
                         });
                     }
                 } else if (kind === 'OD') { // 아웃바운드 통화시작
+                    if (!audioId || audioId !== data8 || $('#call-custom-input').find('[name=channels]').find('option[value=' + data2 + ']').length === 0)
+                        loadCustomInput(null, null, data2, data8);
+
                     audioId = data8;
                     callType = 'O';
                     phoneNumber = data2;
