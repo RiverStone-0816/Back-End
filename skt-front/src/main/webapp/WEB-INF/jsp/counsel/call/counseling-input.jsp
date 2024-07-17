@@ -489,7 +489,7 @@
 
             submitJsonData(ui[0]).done(function () {
                 if (ui.find('[name="saveWaitStatusAfterPostCounselingInfo"]').is(':checked')) {
-                    ipccCommunicator.setMemberStatus(0);
+                    setTimeout(() => ipccCommunicator.setMemberStatus(0), 1000);
                 }
             });
         }

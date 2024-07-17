@@ -483,6 +483,9 @@
                     loadCustomInput(null, null, phoneNumber);
                     $('.item[data-tab="counsel-list"]').click();
                 } else if (kind === 'ID') { // 인바운드 통화시작
+                    if (!audioId || audioId !== data8)
+                        loadCustomInput(null, null, data1)
+
                     audioId = data8;
                     phoneNumber = data1;
 
@@ -509,6 +512,9 @@
                         $('.item[data-tab="counsel-list"]').click();
                     }
                 } else if (kind === 'OD') { // 아웃바운드 통화시작
+                    if (!audioId || audioId !== data8 || $('#call-custom-input').find('[name=channels]').find('option[value=' + data2 + ']').length === 0)
+                        loadCustomInput(null, null, data2);
+
                     audioId = data8;
                     phoneNumber = data2;
 
