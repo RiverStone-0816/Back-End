@@ -48,7 +48,17 @@
     function changeToDoDone(seq) {
         restSelf.put("api/counsel/to-do/done/"+ seq).done(function(){
             loadTodoList();
+            removeCounselTodo(seq);
         });
     }
 
+    function removeCounselTodo(seq) {
+        $('#call-counseling-input').find('input[name="todoSequences"]').filter(function () {
+            return $(this).val() === seq.toString();
+        }).remove();
+
+        if ($('#call-counseling-input').find('input[name="todoSequences"]').length === 0) {
+            $('#call-counseling-input').find('[name="todoStatus"]').closest('.float-field.fluid').remove();
+        }
+    }
 </script>
