@@ -429,7 +429,8 @@
                                                 else return a.idName.localeCompare(b.idName);
                                             }) || []
                                         }
-                                        _this.teams.push(team)
+                                        if (e.personList.length > 0)
+                                            _this.teams.push(team)
                                         e.organizationMetaChatt?.map(childOrg => addTeam(childOrg, team.groupNames));
                                     }
                                     response.data.forEach(e => {
