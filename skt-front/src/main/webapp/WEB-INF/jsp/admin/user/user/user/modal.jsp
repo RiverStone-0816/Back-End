@@ -145,13 +145,13 @@
                             <div class="inline fields">
                                 <div class="field">
                                     <div class="ui radio checkbox">
-                                        <form:radiobutton path="isStat" value="Y"/>
+                                        <form:radiobutton path="isCti" value="Y"/>
                                         <label>사용</label>
                                     </div>
                                 </div>
                                 <div class="field">
                                     <div class="ui radio checkbox">
-                                        <form:radiobutton path="isStat" value="N"/>
+                                        <form:radiobutton path="isCti" value="N"/>
                                         <label>사용안함 (라이센스:${license.statLicence.currentLicence}/${license.statLicence.licence})</label>
                                     </div>
                                 </div>

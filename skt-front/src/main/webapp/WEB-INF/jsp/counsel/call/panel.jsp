@@ -242,12 +242,6 @@
 
         $(window).on('load', function () {
             loadCustomInput();
-            loadMyCallStat();
-            loadMyCallTime();
-            updatePersonStatus();
-
-            setInterval(loadMyCallStat, 5 * 60 * 1000);
-            setInterval(loadMyCallTime, 5 * 60 * 1000);
         });
     </script>
 </tags:scripts>

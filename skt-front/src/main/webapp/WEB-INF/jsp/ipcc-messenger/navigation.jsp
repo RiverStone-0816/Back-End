@@ -71,7 +71,7 @@
     </ul>
 </div>
 
-<c:if test="${hasExtension && user.isStat == 'Y'}">
+<c:if test="${hasExtension && user.isCti == 'Y'}">
     <div class="inner-box bb-unset">
         <ul class="sidebar-menu">
             <li><a href="<c:url value="/"/>" class="tab-indicator" title="상담화면"><i class="material-icons menu-icon"> computer </i><span>상담화면</span></a></li>

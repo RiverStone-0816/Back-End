@@ -108,7 +108,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled structured table num-tbl border-top unstackable -sortable-table ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PersonList"
+                    <table class="ui celled structured table num-tbl border-top unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PersonList"
                            data-search-form="#search-form" data-order-field="order">
                         <thead>
                         <tr>
@@ -138,8 +138,8 @@
                         </tr>
                         <tr>
                             <c:if test="${services.contains('APP') || services.contains('API')}">
-                            <th data-sortable-value="STAT">CTI<br>(라이센스:${license.statLicence.currentLicence}/${license.statLicence.licence})
-                                <c:if test="${search.sort.name() == 'STAT'}">
+                            <th data-sortable-value="CTI">CTI<br>(라이센스:${license.ctiLicence.currentLicence}/${license.ctiLicence.licence})
+                                <c:if test="${search.sort.name() == 'CTI'}">
                                     <button class="sort-btn"><i class="material-icons"> arrow_drop_down </i></button>
                                 </c:if>
                             </th>
@@ -202,7 +202,7 @@
                                             <span>${g.htmlQuote(g.messageOf('RecordingAuthorityType', e.removeRecordingAuthority))}</span>
                                         </td>
                                         <c:if test="${services.contains('APP') || services.contains('API')}">
-                                        <td>${e.isStat == 'Y' ? '허용됨' : '허용되지 않음'}</td>
+                                        <td>${e.isCti == 'Y' ? '허용됨' : '허용되지 않음'}</td>
                                         </c:if>
                                         <c:if test="${services.contains('TALK')}">
                                         <td>${e.isTalk == 'Y' ? '허용됨' : '허용되지 않음'}</td>

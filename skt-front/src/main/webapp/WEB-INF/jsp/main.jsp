@@ -14,7 +14,7 @@
 <%--@elvariable id="version" type="java.lang.String"--%>
 
 <c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
-<c:set var="isStat" value="${user.isStat == 'Y'}"/>
+<c:set var="isCti" value="${user.isCti == 'Y'}"/>
 
 <tags:layout>
 
@@ -32,7 +32,7 @@
     </c:when>
     </c:choose>
 
-    <c:if test="${hasExtension && isStat}">
+    <c:if test="${hasExtension && isCti}">
         <jsp:include page="/counsel/"/>
     </c:if>
 

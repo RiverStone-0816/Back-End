@@ -15,7 +15,7 @@
 <%--@elvariable id="menu" type="kr.co.eicn.ippbx.front.model.CurrentUserMenu"--%>
 
 <c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
-<c:set var="isStat" value="${user.isStat == 'Y'}"/>
+<c:set var="isCti" value="${user.isCti == 'Y'}"/>
 
 <header id="header">
     <div class="header-main">
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <c:if test="${hasExtension && isStat}">
+        <c:if test="${hasExtension && isCti}">
             <div class="end">
                 <div class="ui buttons small top-ivr-groups">
                     <button class="ui button call-time" id="status-keeping-time">00:00</button>
@@ -96,7 +96,7 @@
                 </c:forEach>
                 <li><a href="javascript:popupBookmark()" class="bookmark-btn">즐겨찾기</a></li>
             </ul>
-            <c:if test="${hasExtension && isStat}">
+            <c:if test="${hasExtension && isCti}">
                 <ul class="gnb-ul2 -counsel-panel">
                     <li><a href="#" data-type="COUNSEL" class="-counsel-menu">상담화면</a></li>
                     <c:if test="${!(g.serviceKind.equals('CC') && usingServices.contains('TYPE2'))}">
@@ -120,11 +120,11 @@
             <c:if test="${g.usingServices.contains('DSP') && 'B|A|J'.contains(g.user.idType) }">
                 <a class="ui button basic small -menu-page" href="<c:url value="/admin/monitor/screen/config"/>">전광판</a>
             </c:if>
-            <c:if test="${hasExtension && isStat}">
+            <c:if test="${hasExtension && isCti}">
                 <button class="ui button basic small" onclick="changeMode()" id="mode">관리모드</button>
             </c:if>
         </div>
-        <c:if test="${hasExtension && isStat}">
+        <c:if test="${hasExtension && isCti}">
             <div class="end" id="user-state"></div>
         </c:if>
     </div>
@@ -135,7 +135,7 @@
 
 <tags:scripts>
     <script>
-        <c:if test="${hasExtension && isStat}">
+        <c:if test="${hasExtension && isCti}">
         const menus = $('.-counsel-menu');
 
         menus.click(function () {
