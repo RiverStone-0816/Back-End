@@ -7,6 +7,7 @@ import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.ArsAuthInfo;
 import kr.co.eicn.ippbx.front.model.CurrentUserMenu;
 import kr.co.eicn.ippbx.front.model.form.LoginForm;
+import kr.co.eicn.ippbx.front.service.api.application.kms.KmsGraphQLInterface;
 import kr.co.eicn.ippbx.model.entity.eicn.CompanyServerEntity;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.AuthApiInterface;
@@ -38,6 +39,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.security.auth.login.LoginException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.BufferedReader;
@@ -73,6 +75,8 @@ public class AuthApiController extends BaseController {
     private CompanyApiInterface companyApiInterface;
     @Autowired
     private PhoneApiInterface phoneApiInterface;
+    @Autowired
+    private KmsGraphQLInterface kmsGraphQLInterface;
 
     @Value("${eicn.admin.socket.id}")
     private String adminSocketId;
@@ -102,13 +106,13 @@ public class AuthApiController extends BaseController {
     }
 
     @PostMapping("check-login-condition")
-    public ArsAuthInfo checkLoginCondition(HttpServletResponse response, @RequestBody @Valid LoginForm form, BindingResult bindingResult) throws IOException, ResultFailException {
+    public ArsAuthInfo checkLoginCondition(HttpServletRequest request, HttpServletResponse response, @RequestBody @Valid LoginForm form, BindingResult bindingResult) throws IOException, ResultFailException {
         authApiInterface.login(form);
         final ArsAuthInfo arsAuth = authApiInterface.getArsAuth(form.getId());
         final boolean isArs = companyApiInterface.checkService("LGN");
 
         if (!isArs || arsAuth == null || StringUtils.isEmpty(arsAuth.getAuthNum())) {
-            login(form, bindingResult);
+            login(form, bindingResult, request, response);
 
             return arsAuth;
         }
@@ -126,7 +130,7 @@ public class AuthApiController extends BaseController {
 
     @ApiOperation("로그인")
     @PostMapping("login")
-    public void login(@RequestBody @Valid LoginForm form, BindingResult bindingResult) throws IOException, ResultFailException {
+    public void login(@RequestBody @Valid LoginForm form, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) throws IOException, ResultFailException {
         g.invalidateSession();
 
         form.setActionType(WebSecureActionType.LOGIN.getCode());
@@ -162,9 +166,37 @@ public class AuthApiController extends BaseController {
         g.setUsingServices(companyInfo.getService());
         g.setServiceKind(serviceKind);
         g.setSocketList(daemonInfoInterface.getSocketList());
+        g.setPassword(form.getPassword());
         if (Objects.nonNull(companyServerEntity))
             g.setDoubUrl(companyServerEntity.getDoubServerInfo().getDoubWebUrl() + "/api/session_link/" + g.getSessionId() + "?ipccUrl=");
         g.setBaseUrl(doubUri + "/api/user/session-check");
+        g.setSSORequestSiteUrl();
+        g.setSTTSocketUrl();
+
+
+        // 전체관리자 이상의 권한이 있으면서 회사가 서비스도 가지고 있음. (A조건)
+        if (
+                ("J|A".contains(g.getUser().getIdType())) &&
+                        (
+                                g.getUsingServices().contains("ASTIN") ||
+                                        g.getUsingServices().contains("ASTOUT") ||
+                                        g.getUsingServices().contains("BSTT")
+                        )
+        ) {
+            log.info("A조건 충족, recordLoginUserSessionId 실행@");
+            authApiInterface.recordLoginUserSessionId();
+        }else if( // 상담사 이면서 ASTOUT 라이센스 가지고 있음. (B조건)
+                "M".contains(g.getUser().getIdType()) &&
+                        g.getUsingServices().contains("ASTOUT") &&
+                        g.getUser().getIsAstOut().equals("Y")
+        ) {
+            log.info("B조건 충족, recordLoginUserSessionId 실행@");
+            authApiInterface.recordLoginUserSessionId();
+        }else{
+            log.info("충족하는 조건이 없어 record session 실행하지 않음.");
+        }
+        // KMS토큰 발급 및 쿠키 저장
+        // kmsGraphQLInterface.getAuthenticateWithCookie(request, response);
     }
 
     @ApiOperation("로그아웃")

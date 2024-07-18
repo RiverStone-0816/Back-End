@@ -106,12 +106,12 @@ public class CommonMemberStatus extends TableImpl<CommonMemberStatusRecord> {
 
     @Override
     public UniqueKey<CommonMemberStatusRecord> getPrimaryKey() {
-        return Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ);
+        return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
     @Override
     public List<UniqueKey<CommonMemberStatusRecord>> getKeys() {
-        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ));
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
     @Override

@@ -131,7 +131,7 @@ public class CommonWtalkMsg extends TableImpl<CommonWtalkMsgRecord> {
      */
     @Override
     public UniqueKey<CommonWtalkMsgRecord> getPrimaryKey() {
-        return Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ);
+        return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
     /**
@@ -139,7 +139,7 @@ public class CommonWtalkMsg extends TableImpl<CommonWtalkMsgRecord> {
      */
     @Override
     public List<UniqueKey<CommonWtalkMsgRecord>> getKeys() {
-        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ));
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
     @Override

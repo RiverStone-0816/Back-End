@@ -279,7 +279,7 @@
 
                     function tryDial(type) {
                         const cid = $('#outbound-number').val(); // 비워두면 기본 cid로 시도함
-                        const number = $('#calling-number').val();
+                        const number = $('#calling-number${(g.usingServices.contains('AST') && g.user.isAstIn eq 'Y') || (g.usingServices.contains('BSTT') && g.user.isAstStt eq 'Y') ? "-stt" : ""}').val();
 
                         if (!number) {
                             alert("존재하지 않는 번호입니다.");

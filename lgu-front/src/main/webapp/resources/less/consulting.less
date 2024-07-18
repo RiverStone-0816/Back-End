@@ -664,7 +664,7 @@
                 background: #5B9BD5;
                 border: 0;
                 outline: 0;
-               /* width: 100%;*/
+                /* width: 100%;*/
                 border-radius: 5px;
                 height: 40px;
                 cursor: pointer;
@@ -1127,7 +1127,20 @@
     background: #fff !important;
   }
 }
-#call-panel {display: none;}
+//#call-panel {display: none;}
+
+#call-panel {
+  display: flex;
+  height: 65%;
+  .call-info {
+    height: 49%;
+    margin-bottom: 18px;
+  }
+  .call-setting {
+    margin-bottom: 0px;
+  }
+}
+
 #call-panel.active {
   display: block;
   height: 58%;
@@ -1139,6 +1152,44 @@
     height: 41%;
   }
 }
+
+#call-panel.active-stt {
+  display: flex;
+  height: 65%;
+  .call-info {
+    height: 56%;
+  }
+  .call-setting {
+    margin-bottom: 0px;
+  }
+}
+
+#call-panel.active-stt.reduce-panel {
+  display: flex;
+  height: 65% !important;
+  .call-info {
+    height: 56%;
+  }
+  .call-setting {
+    margin-bottom: 0px;
+  }
+  #stt-panel {
+  }
+}
+
+#call-panel.active-stt.expand-panel {
+  display: flex;
+  height: 92%;
+  .call-info {
+    height: 56%;
+    flex: 0;
+  }
+  .call-setting {
+  }
+  #stt-panel{
+  }
+}
+
 #talk-panel {display: none;}
 #talk-panel.active {
   .flex;

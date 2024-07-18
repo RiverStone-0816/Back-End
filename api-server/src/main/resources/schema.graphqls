@@ -1,0 +1,326 @@
+scalar Long
+scalar Date
+
+enum KnowledgeSearchType {
+    TITLE
+    TITLE_CONTENT
+    TITLE_CONTENT_TAG
+    TAG
+    CREATOR_NAME
+}
+
+enum KnowledgeUpdateRequestSearchType {
+    REQUEST_CONTENT
+    REQUESTER_NAME
+}
+
+enum NoticeSearchType {
+    TITLE
+    CONTENT
+    CREATOR_NAME
+}
+
+enum SearchMemoType {
+    TITLE
+    MEMO
+}
+
+enum SortDirection {
+    DESC
+    ASC
+}
+
+enum SortType {
+    CREATED_AT
+    UPDATED_AT
+    HITS
+    LIKES
+}
+
+type KnowledgeVersion {
+    id: Long!
+    title: String!
+    content: String
+    version: String!
+    updateType: String!
+    updateReason: String
+    creator: Long!
+    createdAt: Long!
+    visible: Boolean!
+    reference: String
+}
+
+type Knowledge {
+    id: Long!
+    category: Int!
+    title: String!
+    content: String!
+    version: String!
+    hits: Int!
+    likes: Int!
+    creator: Long!
+    createdAt: Long!
+    updatedAt: Long
+    deletedAt: Long
+    visible: Boolean!
+    reference: String
+    creatorName: String!
+    versions: [KnowledgeVersion!]
+    tags: [String!]!
+    files: [File]!
+    updateRequests: [KnowledgeUpdateRequest]!
+    memo: String
+    bookmarked: Boolean!
+    liked: Boolean!
+    bookmarkedCount: Int!
+}
+
+type KnowledgeUpdateRequest {
+    id: Long!
+    requestContent: String!
+    replyContent: String
+    requester: Long!
+    replier: Long
+    createdAt: Long!
+    repliedAt: Long
+    requesterName: String!
+    replierName: String
+    knowledge: Knowledge!
+}
+
+type File {
+    id: Long!
+    size: Long!
+    originalName: String!
+    path: String!
+    creator: Long!
+    createdAt: Long!
+}
+
+type PageNavigation {
+    first: Int!
+    items: [Int]!
+    last: Int!
+    next: Int
+    previous: Int
+    page: Int!
+    rowsPerPage: Int!
+}
+
+interface Pagination {
+    page: Int!
+    totalCount: Int!
+    numberOfRowsPerPage: Int!
+    navigation: PageNavigation!
+}
+
+type KnowledgePagination implements Pagination {
+    rows: [Knowledge!]!
+    page: Int!
+    totalCount: Int!
+    numberOfRowsPerPage: Int!
+    navigation: PageNavigation!
+}
+
+type KnowledgeUpdateRequestPagination implements Pagination {
+    rows: [KnowledgeUpdateRequest!]!
+    page: Int!
+    totalCount: Int!
+    numberOfRowsPerPage: Int!
+    navigation: PageNavigation!
+}
+
+type NoticePagination implements Pagination {
+    rows: [Notice!]!
+    page: Int!
+    totalCount: Int!
+    numberOfRowsPerPage: Int!
+    navigation: PageNavigation!
+}
+
+type UserPagination implements Pagination {
+    rows: [User!]!
+    page: Int!
+    totalCount: Int!
+    numberOfRowsPerPage: Int!
+    navigation: PageNavigation!
+}
+
+enum UserGrade {
+    ADMIN
+    USER
+}
+
+type User {
+    id: Long!
+    grade: UserGrade!
+    name: String!
+    email: String!
+    phone: String!
+    createdAt: Long!
+    connectedAssist: Boolean!
+    loginId: String
+}
+
+type Notice {
+    id: Long!
+    important: Boolean!
+    title: String!
+    content: String!
+    hits: Int!
+    visible: Boolean!
+    creator: Long!
+    createdAt: Long!
+    deletedAt: Long
+    creatorName: String!
+    files: [File]!
+}
+
+type KnowledgeCategory {
+    id: Long!
+    level: Int!
+    parent: Long
+    name: String!
+    knowledgeCount: Int
+    displaySequence: Long!
+}
+
+type TopHitKnowledge {
+    knowledge: Knowledge!
+    hits: Int!
+}
+
+type TopHitKnowledgeTag {
+    tag: String!
+    hits: Int!
+}
+
+type DailyHitsPerKnowledgeCategory {
+    category: Long!
+    hits: [Int!]!
+}
+
+type Query {
+    # me
+    me: User!
+
+    # user
+    searchUser(
+        name: String
+        loginId: String
+        grade: UserGrade
+        connectedAssist: Boolean
+        phone: String
+        email: String
+        page: Int
+        limit: Int
+    ): UserPagination!
+    getUser(id: Long!): User!
+
+    # notice
+    searchNotice(
+        createdStartDate: Date,
+        createdEndDate: Date,
+        important: Boolean
+        keyword: String
+        searchType: NoticeSearchType
+        visible: Boolean
+        page: Int
+        limit: Int
+    ): NoticePagination!
+    getNotice(id: Long!): Notice!
+
+    # knowledge category
+    getKnowledgeCategories: [KnowledgeCategory!]!
+
+    # knowledge
+    searchKnowledge(
+        keyword: String
+        searchType: KnowledgeSearchType
+        category: Int
+        createdStartDate: Date
+        createdEndDate: Date
+        updatedStartDate: Date
+        updatedEndDate: Date
+        likeStartDate: Date
+        likeEndDate: Date
+        visible: Boolean
+        fixed: Boolean
+        ids: [Int!]
+        sort: SortType
+        sortDirection: SortDirection
+        page: Int
+        limit: Int
+    ): KnowledgePagination!
+    getKnowledge(id: Long!): Knowledge!
+    getRecentReadKnowledge: [Knowledge!]!
+    getBookmarkedKnowledge: [Knowledge!]!
+    getTopHitKnowledge(startDate: Date!, endDate: Date!, limit: Int): [TopHitKnowledge!]!
+
+    # Knowledge version
+    getKnowledgeVersion(id: Long!): KnowledgeVersion!
+
+    # knowledge update request
+    searchKnowledgeUpdateRequest(
+        keyword: String
+        searchType: KnowledgeUpdateRequestSearchType
+        category: Long
+        replied: Boolean
+        requestedStartDate: Date
+        requestedEndDate: Date
+        repliedStartDate: Date
+        repliedEndDate: Date
+        page: Int
+        limit: Int
+    ): KnowledgeUpdateRequestPagination!
+
+    # knowledge tag
+    getTopHitKnowledgeTags(startDate: Date!, endDate: Date!, limit: Int): [TopHitKnowledgeTag]!
+
+    getDailyHitsPerKnowledgeCategory(startDate: Date, endDate: Date, category: Int): [DailyHitsPerKnowledgeCategory]!
+}
+
+type Mutation {
+    # auth
+    authenticate(companyLoginId: String!, loginId: String!, password: String!): String!
+    getAccessToken(companyLoginId: String!, assistId: String!, grade: UserGrade!, name: String!, email: String, phone: String): String!
+
+    # me
+    changePasswordOfMine(password: String!): Boolean
+    unlinkAssistOfMine: Boolean
+
+    # user
+    unlinkAssistUser(id: Long!): Boolean
+    changePasswordUser(id: Long!, password: String!): Boolean
+    checkDuplicatedLoginId(loginId: String!): Boolean!
+    createUser(name: String!, email: String!, phone: String!, grade: UserGrade!, loginId: String!, password: String!): User!
+    updateUser(id: Long!, name: String!, email: String!, phone: String!, grade: UserGrade!): Boolean
+    removeUser(id: Long!): Boolean
+
+    # notice
+    createNotice(title: String!, content: String!, visible: Boolean!, important: Boolean!, files: [Long!]!): Notice!
+    updateNotice(id: Long!, title: String!, content: String!, visible: Boolean!, important: Boolean!, files: [Long!]!): Boolean
+    removeNotice(id: Long!): Boolean
+
+    # knowledge category
+    createKnowledgeCategory(name: String!, parent: Long, displaySequence: Long): KnowledgeCategory!
+    updateKnowledgeCategory(id: Long!, name: String!, parent: Long, displaySequence: Long): Boolean
+    updateKnowledgeCategoryDisplaySequence(id: Long!, displaySequence: Long!): Boolean
+    removeKnowledgeCategory(id: Long!): Boolean
+
+    # knowledge
+    createKnowledge(category: Long!, title: String!, content: String!, visible: Boolean!, reference: String, tags: [String!], files: [Long!]): Knowledge!
+    updateKnowledge(id: Long!, category: Long!, title: String!, content: String!, visible: Boolean!, reference: String, tags: [String!], files: [Long!], updateReason: String!): Boolean
+    removeKnowledge(id: Long!): Boolean
+    likeKnowledge(id: Long!): Boolean
+    unlikeKnowledge(id: Long!): Boolean
+    bookmarkKnowledge(id: Long!): Boolean
+    unbookmarkKnowledge(id: Long!): Boolean
+    attachKnowledgeMemo(id: Long!, memo: String!): Boolean
+
+    # knowledge update request
+    createKnowledgeUpdateRequest(knowledge: Long!, content: String!): KnowledgeUpdateRequest!
+    replyKnowledgeUpdateRequest(id: Long!, content: String!): Boolean
+}
+
+# TODO: 스키마 파일 분리 =>  generate-graphql-files.js 분리된 스키마파일 지원하도록 수정

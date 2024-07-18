@@ -18,7 +18,13 @@
 <c:forEach var="e" items="${list}">
     <tr>
         <c:if test="${serviceKind.equals('SC')}">
-            <td>${g.htmlQuote(e.groupKindValue)}</td>
+            <td>
+                <c:choose>
+                    <c:when test="${e.groupKind == 'PHONE'}">통화</c:when>
+                    <c:when test="${e.groupKind == 'EMAIL'}">이메일</c:when>
+                    <c:when test="${e.groupKind == 'TALK'}">채팅상담</c:when>
+                </c:choose>
+            </td>
         </c:if>
 
         <td>${g.htmlQuote(e.inOutValue)}</td>
@@ -36,6 +42,9 @@
         <td title="${g.htmlQuote(e.userName)}">${g.htmlQuote(e.userName)}</td>
         <td>
             <button type="button" class="ui button mini compact" onclick="popupCounselingInfo(${e.seq})">열람</button>
+            <c:if test="${e.callType != '' && e.uniqueid != ''}">
+                <button type="button" class="ui button mini compact blue" onclick="popupSttInfo(${e.seq})">STT</button>
+            </c:if>
         </td>
     </tr>
 </c:forEach>

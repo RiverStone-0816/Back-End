@@ -113,11 +113,18 @@
                     if (!$(parent.document).find('#main').is('.change-mode') && $(parent.document).find('.tab-label-container').find('.active').data('href') === '/admin/monitor/consultant/part/')
                         load();
                 }, ONE_MINUTE);
+
+                $('#admin-view-modal').dragModalShow().hide()
             });
 
             function interceptionView() {
                 $('#modal-interception-view').modalShow();
             }
+
+            function popupSttMonit(userId) {
+                popupDraggableModalFromReceivedHtml('/counsel/modal-stt-monit/'+userId, 'modal-stt-monit-'+userId);
+            }
+
         </script>
     </tags:scripts>
 </tags:tabContentLayout>

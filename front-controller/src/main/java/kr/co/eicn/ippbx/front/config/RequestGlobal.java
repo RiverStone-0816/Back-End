@@ -38,12 +38,22 @@ public class RequestGlobal {
     private static final String REQUEST_GLOBAL_SERVICE_KIND = "REQUEST_GLOBAL_SERVICE_KIND";
     private static final String REQUEST_GLOBAL_DOUB_URL = "REQUEST_GLOBAL_DOUB_URL";
     private static final String REQUEST_GLOBAL_BASE_URL = "REQUEST_GLOBAL_BASE_URL";
+    private static final String REQUEST_GLOBAL_KMS_TOKEN = "REQUEST_GLOBAL_KMS_TOKEN";
+    private static final String REQUEST_GLOBAL_KMS_PASSWORD = "REQUEST_GLOBAL_KMS_PASSWORD";
+    private static final String SSO_REQUEST_URL = "SSO_REQUEST_URL";
+    private static final String STT_SOCKET_URL = "STT_SOCKET_URL";
 
     private final HttpSession session;
     private final FileService fileService;
 
     @Value("${server.servlet.session.timeout}")
     private int sessionTimeout;
+
+    @Value("${assist.sso.request.site.url}")
+    private String ssoRequestSiteUrl;
+
+    @Value("${assist.stt.socket.url}")
+    private String sttSocketUrl;
 
     public CurrentUserMenu getMenus() {
         return (CurrentUserMenu) session.getAttribute(REQUEST_GLOBAL_CURRENT_USER_MENUS);
@@ -99,6 +109,39 @@ public class RequestGlobal {
 
     public String getBaseUrl() {
         return (String) session.getAttribute(REQUEST_GLOBAL_BASE_URL);
+    }
+
+    public String getKmsToken() {
+        return (String) session.getAttribute(REQUEST_GLOBAL_KMS_TOKEN);
+    }
+
+    public void setKmsToken(String token) {
+        session.setAttribute(REQUEST_GLOBAL_KMS_TOKEN, token);
+    }
+
+    public String getPassword() {
+        return (String) session.getAttribute(REQUEST_GLOBAL_KMS_PASSWORD);
+    }
+
+    public void setPassword(String pass) {
+        session.setAttribute(REQUEST_GLOBAL_KMS_PASSWORD, pass);
+    }
+
+    public String getSSORequestSiteUrl(){
+        return (String) session.getAttribute(SSO_REQUEST_URL);
+    }
+
+    public void setSSORequestSiteUrl(){
+        log.info("ssoRequestSiteUrl = {}", ssoRequestSiteUrl);
+        session.setAttribute(SSO_REQUEST_URL, ssoRequestSiteUrl);
+    }
+
+    public String getSTTSocketUrl(){
+        return (String) session.getAttribute(STT_SOCKET_URL);
+    }
+
+    public void setSTTSocketUrl(){
+        session.setAttribute(STT_SOCKET_URL, sttSocketUrl);
     }
 
     public boolean checkLogin() {
@@ -218,6 +261,10 @@ public class RequestGlobal {
 
     public String htmlQuote(final String text) {
         return htmlQuote(text, "");
+    }
+
+    public String htmlDelete(final String text) {
+        return text.replaceAll("<[^>]*>", "");
     }
 
     public String addQueryString(String url, String query) {

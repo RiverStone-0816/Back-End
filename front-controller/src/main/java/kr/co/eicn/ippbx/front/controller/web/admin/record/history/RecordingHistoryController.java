@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.search.RecordCallSearchForm;
 import kr.co.eicn.ippbx.front.service.OrganizationService;
 import kr.co.eicn.ippbx.front.service.api.SearchApiInterface;
+import kr.co.eicn.ippbx.front.service.api.application.maindb.MaindbResultApiInterface;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchPersonListResponse;
 import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
@@ -69,6 +70,7 @@ public class RecordingHistoryController extends BaseController {
     private final EvaluationFormApiInterface evaluationFormApiInterface;
     private final CompanyApiInterface companyApiInterface;
     private final SearchApiInterface searchApiInterface;
+    private final MaindbResultApiInterface maindbResultApiInterface;
 
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") RecordCallSearchForm search) throws IOException, ResultFailException {
@@ -104,10 +106,14 @@ public class RecordingHistoryController extends BaseController {
     }
 
     // FIXME: 기획삭제
-    @GetMapping("{seq}/modal-stt")
-    public String modalStt(Model model, @PathVariable Integer seq) {
-        model.addAttribute("seq", seq);
-        return "admin/record/history/history/modal-stt";
+    @GetMapping("{uniqueId}/{phoneNumber}/modal-stt")
+    public String modalStt(Model model, @PathVariable String uniqueId, @PathVariable String phoneNumber) throws IOException, ResultFailException {
+        model.addAttribute("uniqueId", uniqueId);
+        model.addAttribute("phoneNumber", phoneNumber);
+
+        final List<RecordFile> files = maindbResultApiInterface.getFiles(uniqueId);
+        model.addAttribute("files", files);
+        return "admin/record/history/history/modal-record-stt";
     }
 
     @GetMapping("modal-batch-download")

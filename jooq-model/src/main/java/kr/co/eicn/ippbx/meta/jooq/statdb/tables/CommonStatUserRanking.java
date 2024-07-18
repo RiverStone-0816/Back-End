@@ -115,12 +115,12 @@ public class CommonStatUserRanking extends TableImpl<CommonStatUserRankingRecord
 
     @Override
     public UniqueKey<CommonStatUserRankingRecord> getPrimaryKey() {
-        return org.jooq.impl.Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ);
+        return org.jooq.impl.Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
     @Override
     public List<UniqueKey<CommonStatUserRankingRecord>> getKeys() {
-        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ));
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
     @Override

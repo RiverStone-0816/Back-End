@@ -44,6 +44,10 @@
 <script src="<c:url value="/resources/vendors/tagify/1.3.1/jQuery.tagify.min.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/chart.js/4.3.3/chart.min.js?version=${version}"/>" data-type="library"></script>
 <script src="<c:url value="/resources/vendors/chart.js/chartjs-plugin-datalabels/2.2.0/datalabels.min.js?version=${version}"/>" data-type="library"></script>
+<script src="<c:url value="/resources/js/slick.min.js"/>" data-type="library"></script>
+<script src="<c:url value="/resources/js/dayjs.min.js"/>" data-type="library"></script>
+<script src="<c:url value="/resources/js/echarts.min.js"/>" data-type="library"></script>
+<script src="<c:url value="/resources/js/assist.js"/>"></script>
 
 <c:choose>
     <c:when test="${devel}">
@@ -58,6 +62,7 @@
         <script src="<c:url value="/resources/js/IvrEditor.js?version=${version}"/>" data-type="library"></script>
         <script src="<c:url value="/resources/js/IpccAdminCommunicator.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/IpccPdsCommunicator.js?version=${version}"/>"></script>
+        <script src="<c:url value="/resources/js/IpccAssistCommunicator.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/IpccCommunicator.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/TalkCommunicator.js?version=${version}"/>"></script>
         <script src="<c:url value="/resources/js/MessengerCommunicator.js?version=${version}"/>"></script>

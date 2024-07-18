@@ -92,6 +92,24 @@ public class CompanyService extends ApiBaseService {
 						.currentLicence(phoneInfoRepository.fetchCount(PHONE_INFO.SOFTPHONE.notEqual(SoftPhoneType.NONE_SOFTPHONE.getCode())))
 						.build()
 		);
+		licence.setAstinLicense(
+				LicenseInfo.builder()
+						.licence(company.getSttLicense())
+						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains(LicenseListType.ASTIN.getCode())).mapToInt(e -> 1).sum())
+						.build()
+		);
+		licence.setAstoutLicense(
+				LicenseInfo.builder()
+						.licence(company.getSttLicense())
+						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains(LicenseListType.ASTOUT.getCode())).mapToInt(e -> 1).sum())
+						.build()
+		);
+		licence.setAststtLicense(
+				LicenseInfo.builder()
+						.licence(company.getSttLicense())
+						.currentLicence(personLists.stream().filter(e -> e.getLicenseList().contains(LicenseListType.ASTSTT.getCode())).mapToInt(e -> 1).sum())
+						.build()
+		);
 		return licence;
 	}
 

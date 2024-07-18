@@ -1,7 +1,6 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
 import kr.co.eicn.ippbx.exception.DuplicateKeyException;
-import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CompanyTree;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PhoneInfo;
@@ -36,7 +35,8 @@ import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PersonList.PERSON_LIST;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PhoneInfo.PHONE_INFO;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.QueueMemberTable.QUEUE_MEMBER_TABLE;
 import static org.apache.commons.lang3.StringUtils.*;
-import static org.jooq.impl.DSL.*;
+import static org.jooq.impl.DSL.left;
+import static org.jooq.impl.DSL.md5;
 
 @Getter
 @Repository
@@ -172,6 +172,9 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
         if("Y".equals(form.getIsStat())) licenseList += LicenseListType.STAT.getCode() + "|";
         if("Y".equals(form.getIsCti())) licenseList += LicenseListType.CTI.getCode() + "|";
         if("Y".equals(form.getIsChatt())) licenseList += LicenseListType.CHATT.getCode() + "|";
+        if("Y".equals(form.getIsAstIn())) licenseList += LicenseListType.ASTIN.getCode() + "|";
+        if("Y".equals(form.getIsAstOut())) licenseList += LicenseListType.ASTOUT.getCode() + "|";
+        if("Y".equals(form.getIsAstStt())) licenseList += LicenseListType.ASTSTT.getCode() + "|";
         record.setLicenseList(licenseList);
         record.setSoltPw(solt_pw);
         if (phone != null)
@@ -228,6 +231,9 @@ public class UserRepository extends EicnBaseRepository<PersonList, UserEntity, S
         if("Y".equals(form.getIsStat())) licenseList += LicenseListType.STAT.getCode() + "|";
         if("Y".equals(form.getIsCti())) licenseList += LicenseListType.CTI.getCode() + "|";
         if("Y".equals(form.getIsChatt())) licenseList += LicenseListType.CHATT.getCode() + "|";
+        if("Y".equals(form.getIsAstIn())) licenseList += LicenseListType.ASTIN.getCode() + "|";
+        if("Y".equals(form.getIsAstOut())) licenseList += LicenseListType.ASTOUT.getCode() + "|";
+        if("Y".equals(form.getIsAstStt())) licenseList += LicenseListType.ASTSTT.getCode() + "|";
         record.setLicenseList(licenseList);
 
         personListRepository.updateByKey(record, id);

@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.server.service;
 
+import kr.co.eicn.ippbx.server.repository.statdb.StatInboundForHuntStatRepository;
 import kr.co.eicn.ippbx.server.repository.statdb.StatInboundRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import java.util.Map;
 public class StatInboundService extends ApiBaseService implements ApplicationContextAware {
     protected final Logger logger = LoggerFactory.getLogger(StatInboundService.class);
     private final Map<String, StatInboundRepository> repositories = new HashMap<>();
+    private final Map<String, StatInboundForHuntStatRepository> huntRepositories = new HashMap<>();
     private ApplicationContext applicationContext;
 
     public StatInboundRepository getRepository() {
@@ -26,6 +28,18 @@ public class StatInboundService extends ApiBaseService implements ApplicationCon
             final StatInboundRepository repository = new StatInboundRepository(companyId);
             applicationContext.getAutowireCapableBeanFactory().autowireBean(repository);
             return repository;
+        });
+    }
+
+    public StatInboundForHuntStatRepository getRepositoryForHuntStat() {
+        if (g.getUser() == null || StringUtils.isEmpty(g.getUser().getCompanyId()))
+            throw new IllegalStateException(message.getText("messages.company.notfound"));
+
+        return huntRepositories.computeIfAbsent(g.getUser().getCompanyId(), companyId -> {
+//            final StatInboundRepository repository = new StatInboundRepository(companyId, true);
+            final StatInboundForHuntStatRepository huntRepositories = new StatInboundForHuntStatRepository(companyId);
+            applicationContext.getAutowireCapableBeanFactory().autowireBean(huntRepositories);
+            return huntRepositories;
         });
     }
 

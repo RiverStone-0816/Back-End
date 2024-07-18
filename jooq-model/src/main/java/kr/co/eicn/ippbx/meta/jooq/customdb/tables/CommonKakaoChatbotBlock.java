@@ -103,7 +103,7 @@ public class CommonKakaoChatbotBlock extends TableImpl<CommonKakaoChatbotBlockRe
 
     @Override
     public List<UniqueKey<CommonKakaoChatbotBlockRecord>> getKeys() {
-        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ));
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
     @Override

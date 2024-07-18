@@ -54,6 +54,13 @@ public class JsonResult<T> implements Serializable {
         return result;
     }
 
+    public static <T> JsonResult<T> data(T data, T data2) {
+        final JsonResult<T> result = new JsonResult<>();
+        result.setData(data);
+        result.setData(data2);
+        return result;
+    }
+
     public static <T> JsonResult<T> create() {
         return new JsonResult<>();
     }

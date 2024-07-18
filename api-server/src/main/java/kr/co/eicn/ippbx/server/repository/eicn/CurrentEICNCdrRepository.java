@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.CurrentEicnCdr.CURRENT_EICN_CDR;
@@ -53,5 +54,9 @@ public class CurrentEICNCdrRepository extends EicnBaseRepository<CurrentEicnCdr,
 					if (StringUtils.isNotEmpty(e.getPeer()))
 						resultMap.putIfAbsent(e.getPeer(), e);
 				});
+	}
+
+	public List<CurrentEICNCdrEntity> findAllByUniqueId(final String uniqueId) {
+		return findAll(CURRENT_EICN_CDR.UNIQUEID.eq(uniqueId));
 	}
 }

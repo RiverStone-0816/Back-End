@@ -104,6 +104,12 @@ public class GlobalBinder {
         return request;
     }
 
+    @ModelAttribute("ssoRequestSiteUrl")
+    public String ssoRequestSiteUrl(){return g.getSSORequestSiteUrl();}
+
+    @ModelAttribute("sttSocketUrl")
+    public String sttSocketUrl(){return g.getSTTSocketUrl();}
+
     @InitBinder
     public void registerCustomEditors(WebDataBinder binder) {
         binder.registerCustomEditor(java.sql.Time.class, new DateTypePropertyEditor<>(java.sql.Time.class));

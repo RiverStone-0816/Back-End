@@ -75,6 +75,12 @@ IpccAdminCommunicator.prototype.connect = function (url, companyId, userId, pbxN
             _this.processor.NODESVC_STATUS("END");
         }).on('close', function () {
             _this.processor.NODESVC_STATUS("CLOSE");
+        }).on('admmonit_stt', function (data) {
+            console.log(data)
+            _this.parse('ADMMONIT_STT|KIND:ADMMINITSTTMESSAGE|DATA1:'+JSON.stringify(data));
+        }).on('admmonit_keyword', function (data) {
+            console.log(data)
+            _this.parse('ADMMONIT_KEYWORD|KIND:ADMMINITSTTKEYWORD|DATA1:'+JSON.stringify(data));
         });
     } catch (error) {
         console.error(error);
@@ -125,6 +131,10 @@ IpccAdminCommunicator.prototype.processor = {
     LOGIN_CNT: null,
     STATUS_CNT: null,
     PEERSTATUS: null,
+    ADMMINITSTTMESSAGE: function (message, kind, data1){
+    },
+    ADMMONIT_KEYWORD: function (message, kind, data1){
+    },
     NODESVC_STATUS: function (message, kind, peer, data1, data2, data3, data4, data5, data6, data7, data8) {
     },
     BYE: null

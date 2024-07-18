@@ -17,6 +17,7 @@ public class MonitorQueuePersonStatResponse {
     private Integer statTotal = 0;  //합계
     private Integer billSecSum = 0; //총통화시간
     private Long billSecAvg = 0L; //평균 통화시간
+    private String gradeName; //등급명
 
     public Integer getBillSecTotalSum(Integer inbound, Integer outbound) {
         return (inbound == null ? 0 : inbound) + (outbound == null ? 0 : outbound);

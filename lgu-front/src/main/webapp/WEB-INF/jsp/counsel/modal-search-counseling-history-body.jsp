@@ -333,11 +333,13 @@
 
         const phoneNumber = $('.selectable-only[data-entity="MaindbResult"] tr[data-id="' + seq + '"] .-phone-channel-data:first').text();
 
-        if (panelMode === 'call') {
+        if (channel === 'PHONE') {
             loadCustomInput(${search.groupSeq}, customId, phoneNumber, '', '', '', seq);
-        }else if(panelMode === 'talk') {
+        } else if (panelMode === 'call') {
+            loadCustomInput(${search.groupSeq}, customId, phoneNumber, '', '', '', seq);
+        } else if (panelMode === 'talk') {
             loadTalkCustomInput(${search.groupSeq}, customId, roomId, '', '', '',  seq);
-            if (channel === 'TALK'){
+            if (channel === 'TALK') {
                 viewTalkRoom(roomId, false);
             }
         }

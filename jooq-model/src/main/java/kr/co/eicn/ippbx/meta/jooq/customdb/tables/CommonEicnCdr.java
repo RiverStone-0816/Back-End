@@ -331,7 +331,7 @@ public class CommonEicnCdr extends TableImpl<EicnCdrRecord> {
      */
     @Override
     public UniqueKey<EicnCdrRecord> getPrimaryKey() {
-        return Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ);
+        return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
     /**
@@ -339,7 +339,7 @@ public class CommonEicnCdr extends TableImpl<EicnCdrRecord> {
      */
     @Override
     public List<UniqueKey<EicnCdrRecord>> getKeys() {
-        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ));
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
     @Override

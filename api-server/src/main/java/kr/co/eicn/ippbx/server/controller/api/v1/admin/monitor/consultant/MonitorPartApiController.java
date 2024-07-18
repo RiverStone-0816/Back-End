@@ -7,10 +7,7 @@ import kr.co.eicn.ippbx.meta.jooq.statdb.tables.pojos.CommonStatInbound;
 import kr.co.eicn.ippbx.model.dto.customdb.PersonLastStatusInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.dto.statdb.*;
-import kr.co.eicn.ippbx.model.entity.eicn.CenterMemberStatusCountEntity;
-import kr.co.eicn.ippbx.model.entity.eicn.CmpMemberStatusCodeEntity;
-import kr.co.eicn.ippbx.model.entity.eicn.CurrentEICNCdrEntity;
-import kr.co.eicn.ippbx.model.entity.eicn.MemberStatusOfHunt;
+import kr.co.eicn.ippbx.model.entity.eicn.*;
 import kr.co.eicn.ippbx.model.entity.statdb.StatInboundEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatOutboundEntity;
 import kr.co.eicn.ippbx.model.entity.statdb.StatUserInboundEntity;
@@ -18,13 +15,14 @@ import kr.co.eicn.ippbx.model.entity.statdb.StatUserOutboundEntity;
 import kr.co.eicn.ippbx.model.enums.LicenseListType;
 import kr.co.eicn.ippbx.model.enums.PersonSort;
 import kr.co.eicn.ippbx.model.enums.PhoneInfoStatus;
+import kr.co.eicn.ippbx.model.search.GradeListSearchRequest;
+import kr.co.eicn.ippbx.model.search.RouteApplicationSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.controller.api.v1.admin.dashboard.DashboardApiController;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.*;
 import kr.co.eicn.ippbx.util.EicnUtils;
 import kr.co.eicn.ippbx.util.JsonResult;
-import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -63,13 +61,13 @@ public class MonitorPartApiController extends ApiBaseController {
     private final PhoneInfoRepository phoneInfoRepository;
     private final PersonListRepository personListRepository;
     private final CallbackRepository callbackRepository;
+    private final GradeListRepository gradeListRepository;
 
     private final DashboardApiController dashboardApiController;
 
     /**
      * 센터현황별 모니터링
      */
-    @IsAdmin
     @GetMapping("center")
     public ResponseEntity<JsonResult<CenterStatusResponse>> getCenterStat() {
         final CenterStatResponse centerMonitoring = statInboundService.getRepository().getCenterMonitoring();
@@ -327,6 +325,14 @@ public class MonitorPartApiController extends ApiBaseController {
                     row.setQueueHanName(queueNameMap.get(cdr.getSecondNum()));
                     row.setInOut(cdr.getInOut());
                     row.setCustomNumber("O".equals(cdr.getInOut()) ? cdr.getDst() : cdr.getSrc());
+
+                    final GradeListSearchRequest gradeListSearchRequest = new GradeListSearchRequest();
+                    gradeListSearchRequest.getGradeNumbers().add(row.getCustomNumber());
+                    final List<GradeListEntity> gradeListEntities = gradeListRepository.pagination(gradeListSearchRequest).getRows();
+                    if (gradeListEntities.stream().anyMatch(e -> e.getGrade() != null && e.getGrade().startsWith("VIP")))
+                        row.setGradeName("VIP");
+                    if (gradeListEntities.stream().anyMatch(e -> e.getGrade() != null && e.getGrade().startsWith("BLACK")))
+                        row.setGradeName("BLACK");
                 }
 
                 rows.add(row);

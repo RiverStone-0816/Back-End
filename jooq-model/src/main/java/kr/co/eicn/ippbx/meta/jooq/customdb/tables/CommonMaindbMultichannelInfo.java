@@ -115,12 +115,12 @@ public class CommonMaindbMultichannelInfo extends TableImpl<CommonMaindbMulticha
 
     @Override
     public UniqueKey<CommonMaindbMultichannelInfoRecord> getPrimaryKey() {
-        return Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ);
+        return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
     @Override
     public List<UniqueKey<CommonMaindbMultichannelInfoRecord>> getKeys() {
-        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ));
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
     @Override

@@ -90,12 +90,12 @@ public class CommonMaindbKeyInfo extends TableImpl<MaindbKeyInfoRecord> {
 
     @Override
     public UniqueKey<MaindbKeyInfoRecord> getPrimaryKey() {
-        return org.jooq.impl.Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.KEY_VALUE);
+        return org.jooq.impl.Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.KEY_VALUE);
     }
 
     @Override
     public List<UniqueKey<MaindbKeyInfoRecord>> getKeys() {
-        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.KEY_VALUE));
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.KEY_VALUE));
     }
 
     @Override

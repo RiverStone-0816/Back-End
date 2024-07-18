@@ -139,7 +139,7 @@ public class CommonExecutePDSCustomInfo extends TableImpl<ExecutePdsCustomInfoRe
      */
     @Override
     public UniqueKey<ExecutePdsCustomInfoRecord> getPrimaryKey() {
-        return Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ);
+        return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
     /**
@@ -147,7 +147,7 @@ public class CommonExecutePDSCustomInfo extends TableImpl<ExecutePdsCustomInfoRe
      */
     @Override
     public List<UniqueKey<ExecutePdsCustomInfoRecord>> getKeys() {
-        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ));
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
     @Override

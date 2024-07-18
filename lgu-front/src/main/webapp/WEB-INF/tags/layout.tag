@@ -29,7 +29,7 @@
 <div id="wrap">
     <tags:header/>
 
-    <main id="main">
+    <main id="main" calss="main-wrap">
         <div class="content-wrapper">
             <jsp:doBody/>
         </div>
@@ -37,6 +37,10 @@
         <c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
         <c:if test="${(hasExtension && user.isStat == 'Y') || user.isTalk == 'Y'}">
             <tags:nav-counsel/>
+        </c:if>
+
+        <c:if test="${g.getUsingServices().contains('ASTIN') && g.getUser().getIsAstIn().equals('Y')}">
+            <tags:side-bar-custom/>
         </c:if>
     </main>
 </div>

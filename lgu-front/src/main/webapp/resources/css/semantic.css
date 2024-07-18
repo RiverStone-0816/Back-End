@@ -25140,7 +25140,7 @@ Floated Menu / Item
 /*--------------
     Inverted
 ---------------*/
-
+/*slide-bar-custom bg color*/
 .ui.inverted.menu {
     border: 0px solid transparent;
     background: #1B1C1D;
@@ -25149,7 +25149,7 @@ Floated Menu / Item
 }
 
 /* Menu Item */
-
+/*slide-bar-custom text color*/
 .ui.inverted.menu .item,
 .ui.inverted.menu .item > a:not(.ui) {
     background: transparent;
@@ -25166,6 +25166,7 @@ Floated Menu / Item
     background: rgba(255, 255, 255, 0.08);
 }
 
+/*slide-bar-custom border color*/
 .ui.vertical.inverted.menu .item:before {
     background: rgba(255, 255, 255, 0.08);
 }
@@ -37404,7 +37405,9 @@ body.pushable > .pusher {
 
 .ui[class*="very wide"].left.sidebar,
 .ui[class*="very wide"].right.sidebar {
-    width: 475px;
+    /*slide-bar-custom width*/
+    /*width: 900px;*/
+    width: 50%;
 }
 
 /* Left Visible */

@@ -174,7 +174,7 @@ public class CommonStatUserInbound extends TableImpl<CommonStatUserInboundRecord
      */
     @Override
     public UniqueKey<CommonStatUserInboundRecord> getPrimaryKey() {
-        return org.jooq.impl.Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ);
+        return org.jooq.impl.Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
     /**
@@ -182,7 +182,7 @@ public class CommonStatUserInbound extends TableImpl<CommonStatUserInboundRecord
      */
     @Override
     public List<UniqueKey<CommonStatUserInboundRecord>> getKeys() {
-        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ));
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
     @Override

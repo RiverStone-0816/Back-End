@@ -98,6 +98,10 @@ public class RecordCallSearch extends PageForm {
     @PageQueryable
     private Boolean batchEvaluationMode = false;
 
+    @PageQueryable
+    private String keyword;
+
+
     /**
      * 정렬순서
      * 시간내림차순, 시간오름차순, 통화시간내림차순, 통화시간오름차순, 발신번호내림차순, 발신번호오름차순,

@@ -2,6 +2,9 @@ package kr.co.eicn.ippbx.front.controller.api.monitor.consultant;
 
 import io.swagger.annotations.Api;
 import kr.co.eicn.ippbx.front.controller.BaseController;
+import kr.co.eicn.ippbx.front.service.api.acd.grade.GradelistApiInterface;
+import kr.co.eicn.ippbx.model.entity.eicn.GradeListEntity;
+import kr.co.eicn.ippbx.model.search.GradeListSearchRequest;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.monitor.consultant.PartMonitoringApiInterface;
 import kr.co.eicn.ippbx.model.dto.statdb.*;
@@ -11,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,6 +33,7 @@ public class PartMonitoringApiController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(PartMonitoringApiController.class);
 
     private final PartMonitoringApiInterface apiInterface;
+    private final GradelistApiInterface gradelistApiInterface;
 
     /**
      * 센터현황별 모니터링
@@ -68,5 +73,18 @@ public class PartMonitoringApiController extends BaseController {
     @GetMapping("hunt-stat")
     public List<HuntStatMonitorResponse> getHuntStat() throws IOException, ResultFailException {
         return apiInterface.getHuntStat();
+    }
+
+    @GetMapping("grade/{phoneNumber}")
+    public String getGrade(@PathVariable String phoneNumber) throws IOException, ResultFailException {
+        final GradeListSearchRequest gradeListSearchRequest = new GradeListSearchRequest();
+        gradeListSearchRequest.getGradeNumbers().add(phoneNumber);
+        final List<GradeListEntity> gradeListEntities = gradelistApiInterface.pagination(gradeListSearchRequest).getRows();
+        String router = "";
+        if (gradeListEntities.stream().anyMatch(e -> e.getGrade() != null && e.getGrade().startsWith("VIP")))
+            router = "VIP";
+        if (gradeListEntities.stream().anyMatch(e -> e.getGrade() != null && e.getGrade().startsWith("BLACK")))
+            router = "BLACK";
+        return router;
     }
 }

@@ -66,6 +66,7 @@ $(document).on('click', '.-extension', function (event) {
 $(document).on('click', '.-hp-number', function (event) {
     confirm('전화 연결 하시겠습니까?').done(function () {
         $('#calling-number').val($(event.target).attr('data-value'));
+        $('#calling-number-stt').val($(event.target).attr('data-value'));
         tryDial('MAINDB');
         $(document).click();
     });
@@ -168,6 +169,7 @@ const ipccCommunicator = new IpccCommunicator()
     .on('CALLEVENT', function (message, kind /*[ IR | ID | OR | OD | ... ]*/, data1, data2, data3, data4, data5, data6, data7, data8, data9, data10, data11, data12) {
         if (kind === "PICKUP" || kind === "ID" || kind === "OD")
             $('#partial-recoding').show().find('text').text('부분녹취');
+        $('#partial-recoding-stt').show().find('text').text('부분녹취');
 
         if (kind === 'IR') { // 인바운드 링울림
             audioId = data8;
@@ -249,6 +251,7 @@ const ipccCommunicator = new IpccCommunicator()
     })
     .on('HANGUPEVENT', function (message, kind, comp, peer, data1, data2, data3, data4, data5) {
         $('#partial-recoding').hide();
+        $('#partial-recoding-stt').hide();
         console.log('통화종료' + peer);
 
         if (kind === 'I' && data3 === '0') {

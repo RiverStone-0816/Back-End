@@ -295,8 +295,8 @@
     });
 
     <c:if test="${phoneNumberData != ''}">
-        phoneNumber = '${phoneNumberData}';
-        $('#calling-number').val('${phoneNumberData}');
+    phoneNumber = '${phoneNumberData}';
+    $('#calling-number${(g.usingServices.contains("AST") && g.user.isAstIn eq "Y") || (g.usingServices.contains('BSTT') && g.user.isAstStt eq "Y") ? "-stt" : ""}').val('${phoneNumberData}');
     </c:if>
 
     const DBTYPE_FIELD_PREFIX = 'MAINDB_';
@@ -405,8 +405,7 @@
 
     window.donePostCustomInfo = function (form, response) {
         alert('고객정보가 저장되었습니다.');
-        if ($('#call-counseling-input').find('#customId').val() !== response.data && !$('#call-counseling-input').find('#is-result-save').text())
-            loadCustomInput('${form.groupSeq}', response.data || '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(phoneNumber)}');
+        loadCustomInput('${form.groupSeq}', response.data || '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(phoneNumber)}');
     };
 
     ui.find('[name="channelType"]').change(function () {
@@ -443,14 +442,14 @@
 
 
         ui.find('[name=channels]').append($('<option/>', {
+            value: (channelType === 'TALK' ? talkServiceSenderKey + '_' + channelData : channelData).trim(),
             'data-type': channelType,
-            value: transChannelData,
-            text: '[' + (channelType === 'TALK' ? talkServiceName : channelTypeName) + '] ' + transChannelData
+            text: '[' + (channelType === 'TALK' ? talkServiceName : channelTypeName) + '] ' + channelData.trim()
         }));
     });
 
     <c:if test="${entity != null}">
-        loadCounselingList('${g.escapeQuote(entity.maindbSysCustomId)}');
+    loadCounselingList('${g.escapeQuote(entity.maindbSysCustomId)}');
     </c:if>
     loadCounselingInput('${form.groupSeq}', '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(phoneNumber)}', '${not empty maindbResultSeq ? maindbResultSeq : ''}');
 

@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbKeyInfo;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.MaindbKeyInfo;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.MaindbKeyInfo;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbKeyInfoEntity;
 import lombok.Getter;
 import org.slf4j.Logger;

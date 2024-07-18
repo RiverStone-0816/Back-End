@@ -407,12 +407,12 @@ public class CommonMaindbCustomInfo extends TableImpl<MaindbCustomInfoRecord> {
 
     @Override
     public UniqueKey<MaindbCustomInfoRecord> getPrimaryKey() {
-        return Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.MAINDB_SYS_CUSTOM_ID);
+        return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.MAINDB_SYS_CUSTOM_ID);
     }
 
     @Override
     public List<UniqueKey<MaindbCustomInfoRecord>> getKeys() {
-        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.MAINDB_SYS_CUSTOM_ID));
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.MAINDB_SYS_CUSTOM_ID));
     }
 
     @Override

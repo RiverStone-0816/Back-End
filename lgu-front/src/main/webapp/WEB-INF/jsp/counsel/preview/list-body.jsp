@@ -262,7 +262,7 @@
                 return alert("상담중 상태에서는 전화 걸기가 불가능합니다.");
 
             if (customNumber) {
-                const cid = $('#cid').val()
+                const cid = $('#cid${(g.usingServices.contains('AST') && g.user.isAstIn eq 'Y') || (g.usingServices.contains('BSTT') && g.user.isAstStt eq 'Y') ? "-stt" : ""}').val()
                 ipccCommunicator.clickByCampaign(cid, customNumber, 'PRV', previewGroupId, previewCustomId);
             }
         }

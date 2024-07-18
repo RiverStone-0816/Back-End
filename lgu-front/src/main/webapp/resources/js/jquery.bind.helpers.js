@@ -283,13 +283,14 @@
         });
         findAndMe('.nav-bar', this).each(function () { // side-bar toggle
             $(this).click(function () {
-                $('.content-wrapper').toggleClass('remove-padding');
+                //$('.content-wrapper').toggleClass('remove-padding');
                 $('.tab-label-container').toggleClass('hide-navbar');
                 if($(this).parent().hasClass('manage-side') || $(this).parent().hasClass('consulting-side')){
+                    $('.content-wrapper').toggleClass('remove-padding');
                     $('.side-bar.manage-side').toggleClass('nav-bar-hide');
                     $('.side-bar.consulting-side').toggleClass('nav-bar-hide');
                 } else {
-                    $(this).parent().toggleClass('nav-bar-hide');
+                    $(this).parent().toggleClass('nav-bar-hide-test');
                 }
             });
         });
@@ -325,4 +326,9 @@
 
         return this;
     };
+
+    // assist-custom-sidebar
+    $("#assist-custom-sidebar .tab a").click(() => {
+        $("#assist-custom-sidebar").toggleClass('active')
+    })
 })($ || jQuery);

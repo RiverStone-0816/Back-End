@@ -53,7 +53,7 @@
 <tags:scripts>
     <script>
         function popupGradeAppModal() {
-            const phoneNumber = $('#counseling-target').text();
+            const phoneNumber = $('#counseling-target${(g.usingServices.contains('AST') && g.user.isAstIn eq 'Y') || (g.usingServices.contains('BSTT') && g.user.isAstStt eq 'Y') ? "-stt" : ""}').text();
             if (!phoneNumber)
                 return alert('상담중에만 가능합니다.');
 

@@ -97,7 +97,7 @@ public class CommonStatQueueWait extends TableImpl<StatQueueWaitRecord> {
      */
     @Override
     public UniqueKey<StatQueueWaitRecord> getPrimaryKey() {
-        return org.jooq.impl.Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ);
+        return org.jooq.impl.Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
     /**
@@ -105,7 +105,7 @@ public class CommonStatQueueWait extends TableImpl<StatQueueWaitRecord> {
      */
     @Override
     public List<UniqueKey<StatQueueWaitRecord>> getKeys() {
-        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ));
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
     @Override

@@ -16,6 +16,7 @@
 <c:set var="hasExtension" value="${user.extension != null && user.extension != ''}"/>
 <c:set var="isCti" value="${user.isCti == 'Y'}"/>
 <c:set var="isTalk" value="${user.isTalk == 'Y'}"/>
+<c:set var="activeStt" value="${(g.usingServices.contains('AST') && g.user.isAstIn eq 'Y')}"/>
 
 <div class="tab-content-container remove-padding full-height consulting-main">
     <div class="ui container fluid tight consulting-container">
@@ -23,7 +24,7 @@
             <div class="sixteen wide column consulting-bookmark">
                 <div class="ui menu" style="padding-top: 0%;">
                     <c:if test="${hasExtension && isCti}">
-                    <a class="item -counsel-panel-indicator active" onclick="viewCallPanel()" data-tab="call-panel" data-target="#call-panel">전화상담</a>
+                        <a class="item -counsel-panel-indicator active" onclick="viewCallPanel()" data-tab="call-panel" data-target="#call-panel">전화상담</a>
                     </c:if>
                     <c:if test="${isTalk}">
                         <a class="item -counsel-panel-indicator ${user.isCti.equals('N') ? 'active' : ""}" onclick="viewTalkPanel(); $(this).removeClass('highlight');$(this).removeClass('newImg') " data-tab="talk-panel"
@@ -33,7 +34,7 @@
                         </a>
                     </c:if>
                     <c:if test="${hasExtension && isCti and usingServices.contains('PRV')}">
-                    <a class="item -counsel-panel-indicator" data-tab="preview-tab">프리뷰</a>
+                        <a class="item -counsel-panel-indicator" data-tab="preview-tab">프리뷰</a>
                     </c:if>
                     <a class="item -counsel-panel-indicator -configured-indicator" data-tab="menu1">상담결과이력</a>
                     <a class="item -counsel-panel-indicator -configured-indicator" data-tab="menu2">녹취/통화이력조회</a>
@@ -49,10 +50,10 @@
                     <a class="item" onclick="popupScheduleModal()">일정관리</a>
                     <div class="right menu" style="padding: 0">
                         <c:if test="${user.isTalk.equals('Y')}">
-                        <div class="ui fitted toggle checkbox distributee vertical-align-middle" id="isDistributee">
-                            <%--TODO: 초기값 세팅 필요 --%>
-                            <input type="checkbox" id="distributee" tabindex="0" class="hidden"/><label></label>
-                        </div>
+                            <div class="ui fitted toggle checkbox distributee vertical-align-middle" id="isDistributee">
+                                    <%--TODO: 초기값 세팅 필요 --%>
+                                <input type="checkbox" id="distributee" tabindex="0" class="hidden"/><label></label>
+                            </div>
                         </c:if>
                         <a class="item" onclick="popupCounselDisplayConfiguration()"><i class="cog icon"></i>메뉴관리</a>
                         <a class="item" onclick="popupBookmarkConfiguration()"><i class="cog icon"></i>즐겨찾기설정</a>
@@ -70,11 +71,12 @@
                         <jsp:include page="/counsel/wtalk/"/>
                     </c:if>
 
-                    <div id="etc-panel" class="mt10">
+                    <div id="etc-panel" class="mt10${activeStt ? 'reduce-panel expand-panel':''}">
                         <div style="height: 100%;">
                             <div class="ui top attached tabular menu">
-                                <a class="item active" data-tab="todo-list" style="border-top-width: 1px; border-color: #D4D4D5; border-radius: 0.28571429rem 0.28571429rem 0px 0px; max-width: 11%;">To-do</a>
-                                <a class="item" data-tab="counsel-list" style="border-top-width: 1px; border-color: #D4D4D5; border-radius: 0.28571429rem 0.28571429rem 0px 0px; max-width: 11%;">상담이력</a>
+                                <a class="item active" data-tab="todo-list" style="border-top-width: 1px; border-color: #d4d4d5; border-radius: 0.28571429rem 0.28571429rem 0px 0px; max-width: 11%;">To-do</a>
+                                <a class="item" data-tab="counsel-list" style="border-top-width: 1px; border-color: #d4d4d5; border-radius: 0.28571429rem 0.28571429rem 0px 0px; max-width: 11%;">상담이력</a>
+                                <%--<a class="item" data-tab="kms" style="border-top-width: 1px; border-color: #d4d4d5; border-radius: 0.28571429rem 0.28571429rem 0px 0px; max-width: 11%;">KMS</a>--%>
                             </div>
                             <div class="ui bottom attached tab segment active" data-tab="todo-list">
                                 <jsp:include page="/counsel/todo-list"/>
@@ -98,8 +100,8 @@
                                 </table>
                             </div>
                         </div>
-                        <button id="etc-panel-resizer" type="button" style="display: none; border-radius: 0.28571429rem; border: solid 1px #D4D4D5;">
-                            <i class="material-icons arrow">keyboard_arrow_up</i>
+                        <button id="etc-panel-resizer" type="button" class="${activeStt ? 'stt':''}">
+                            <i class="material-icons arrow">keyboard_arrow_down</i>
                         </button>
                     </div>
                 </div>
@@ -197,36 +199,25 @@
                     return;
                 }
 
-                noticeReservation(e.todoInfo, parseInt(e.detailConnectInfo), e.todoKind);
+                noticeReservation(e.todoInfo, parseInt(e.detailConnectInfo));
             }
         }
 
-        function noticeReservation(todoInfo, time, kind) {
-            const preTime = toastedCalling[todoInfo];
-
+        function noticeReservation(phone, time) {
+            const preTime = toastedCalling[phone];
             if (preTime) {
                 if (preTime === time)
                     return;
             }
 
-            toastedCalling[todoInfo] = time;
+            toastedCalling[phone] = time;
 
-
-            const divCall = $('<divCall/>').append($('<divCall/>', {onclick: "$(this).closest('.toast').find('.toast-close-button').click(); $('#calling-number').val('" + todoInfo + "');", style: 'cursor: pointer;'})
+            const div = $('<div/>').append(
+                $('<div/>', {onclick: "$(this).closest('.toast').find('.toast-close-button').click(); $('#calling-number${activeStt ? "-stt" : ""}').val('" + phone + "');", style: 'cursor: pointer;'})
                     .append($('<text/>', {text: '[' + moment(time).format('HH:mm') + '] '}))
-                    .append($('<b/>', {text: todoInfo}))
+                    .append($('<b/>', {text: phone}))
             );
-
-            const divTalk = $('<divTalk/>').append($('<divTalk/>', {onclick: "$(this).closest('.toast').find('.toast-close-button').click();", style: 'cursor: pointer;'})
-                .append($('<text/>', {text: '[' + moment(time).format('HH:mm') + '] '}))
-                .append($('<b/>', {text: todoInfo}))
-            );
-
-            if (kind == 'RESERVE'){
-                toastr.warning(divCall.html(), '통화약속');
-            }else if (kind == 'TALK') {
-                toastr.warning(divTalk.html(), '상담톡약속');
-            }
+            toastr.warning(div.html(), '통화약속');
         }
 
         $(document).ready(function () {
@@ -236,10 +227,19 @@
         });
     </script>
     <script>
+
+        $(document).ready(function (){
+            $("#etc-panel .os-content").css("display","flex");
+            $("#etc-panel .os-content").css("flex-direction","column");
+        });
+
         const ITEM_KEY_CONFIG = "counselDisplayConfiguration";
         let counselDisplayConfiguration = {useCallNoticePopup: true};
+        let kmsKeyword="";
 
         function viewCallPanel() {
+            $('#call-panel').show();
+            $('#talk-panel').hide();
             $('#talk-panel').removeClass('active');
             $('#call-panel').addClass('active');
             $('#call-custom-input-panel,#call-counseling-input-panel').show();
@@ -247,11 +247,20 @@
             $('#etc-panel').parent().removeClass("ten wide column").addClass("nine wide column");
             $('#talk-custom-input-panel').parent().removeClass("six wide column").addClass("seven wide column");
 
-            $('#etc-panel-resizer').hide();
-            callExpandEtcPanel();
+            $('#etc-panel-resizer').show();
+
+            if(!${activeStt}){
+                $('#etc-panel-resizer').css("display","none");
+                callExpandEtcPanel();
+            }else{
+                expandEtcPanel();
+            }
+
         }
 
         function viewTalkPanel() {
+            $('#call-panel').hide();
+            $('#talk-panel').show();
             $('#call-panel').removeClass('active');
             $('#talk-panel').addClass('active');
             $('#call-custom-input-panel,#call-counseling-input-panel').hide();
@@ -260,14 +269,17 @@
             $('#talk-custom-input-panel').parent().removeClass("seven wide column").addClass("six wide column");
 
             $('#etc-panel-resizer').show();
+            $('#talk-panel').css("display","flex");
             reduceEtcPanel();
         }
 
         function expandEtcPanel() {
             $('#etc-panel-resizer').find('i').text('keyboard_arrow_down');
             $('#talk-panel').removeClass('reduce-panel');
+            $('#call-panel').removeClass('reduce-panel');
             $('#etc-panel').removeClass('expand-panel');
             $('#talk-panel').addClass('reduce-panel');
+            $('#call-panel').addClass('reduce-panel');
             $('#etc-panel').addClass('expand-panel');
             $("#etc-panel .os-content").show();
         }
@@ -275,8 +287,10 @@
         function callExpandEtcPanel() {
             $('#etc-panel-resizer').find('i').text('keyboard_arrow_up');
             $('#talk-panel').removeClass('expand-panel');
+            $('#call-panel').addClass('expand-panel');
             $('#etc-panel').removeClass('reduce-panel');
             $('#talk-panel').removeClass('reduce-panel');
+            $('#call-panel').removeClass('reduce-panel');
             $('#etc-panel').removeClass('expand-panel');
             $("#etc-panel .os-content").show();
         }
@@ -285,7 +299,9 @@
             $('#etc-panel-resizer').find('i').text('keyboard_arrow_up');
             $('#talk-panel').removeClass('reduce-panel');
             $('#etc-panel').removeClass('expand-panel');
+            $('#call-panel').removeClass('reduce-panel');
             $('#talk-panel').addClass('expand-panel');
+            $('#call-panel').addClass('expand-panel');
             $('#etc-panel').addClass('reduce-panel');
             $("#etc-panel .os-content").hide();
         }
@@ -327,8 +343,8 @@
             }), 'modal-search-maindb-custom');
         }
 
-        function popupSearchCounselingHistoryModal(mode = 'call') {
-            popupDraggableModalFromReceivedHtml('/counsel/modal-search-counseling-history?mode=' + mode, 'modal-search-counseling-history');
+        function popupSearchCounselingHistoryModal() {
+            popupDraggableModalFromReceivedHtml('/counsel/modal-search-counseling-history', 'modal-search-counseling-history');
         }
 
         function popupSearchCallHistoryModal() {
@@ -349,6 +365,18 @@
 
         function popupCounselingInfo(seq) {
             popupDraggableModalFromReceivedHtml('/counsel/modal-counseling-info?seq=' + seq, 'modal-counseling-info');
+        }
+
+        function popupSttInfo(seq) {
+            popupDraggableModalFromReceivedHtml('/counsel/modal-stt-info?seq=' + seq, 'modal-stt-info');
+        }
+
+        function popupSttUniInfo(uniqueId, phone, dialupDate, hangupDate) {
+            popupDraggableModalFromReceivedHtml('/counsel/modal-stt-unique-info?uniqueId=' + uniqueId + '&phoneNumber=' + phone + '&dialupDate=' + dialupDate + '&hangupDate=' + hangupDate, 'modal-stt-info');
+        }
+
+        function popupLoadKmsView(id) {
+            popupDraggableModalFromReceivedHtml('/counsel/kms/'+id, 'modal-kms-view');
         }
 
         function popupScheduleModal() {
@@ -425,6 +453,10 @@
             replaceReceivedHtmlInSilence('/counsel/todo-list', '#todo-list');
         }
 
+        function loadKmsList(id) {
+            replaceReceivedHtmlInSilence('/counsel/kms?keyword='+ kmsKeyword +'&id='+ id, '#kms');
+        }
+
         function smsSend(phoneNumber) {
             const form = $('#modal-sms-send-form');
             const targetNumber1 = form.find('#targetNumber1');
@@ -475,6 +507,7 @@
                 if ($(parent.document).find('#main').is('.change-mode')) {
                     loadCurrentStatus();
                     loadTodoList();
+                    // loadKmsList();
                 }
             }, 30 * 1000);
 
@@ -527,7 +560,7 @@
             <c:if test="${serviceKind.equals('SC')}">
             $('.-configured-tab[data-tab=menu7]').empty().append($('<iframe/>', {id: 'menu7', name: 'menu7', class: 'tab-menu', style: 'width: 100%; height: 100%;'}));
             </c:if>
-            window.menu1 = window.open(contextPath + '/admin/application/maindb/result/counsel', 'menu1', "width=0 height=0 menubar=no status=no");
+            window.menu1 = window.open(contextPath + '/admin/application/maindb/result/', 'menu1', "width=0 height=0 menubar=no status=no");
             window.menu2 = window.open(contextPath + '/admin/record/history/history/', 'menu2', "width=0 height=0 menubar=no status=no");
             window.menu3 = window.open(contextPath + '/admin/record/callback/history/', 'menu3', "width=0 height=0 menubar=no status=no");
             <c:if test="${usingServices.contains('NOT')}">
@@ -544,7 +577,7 @@
     <script>
         window.ipccCommunicator = new IpccCommunicator();
 
-        let audioId, phoneNumber, customId, callType, callUnique, callingModalTimeoutId;
+        let audioId, phoneNumber, customId, callType, callUnique, callingModalTimeoutId, countChk = 0;
         ipccCommunicator
             .on('LOGIN', function (message, kind /*[ LOGIN_OK | LOGIN_ALREADY | LOGOUT | ... ]*/) {
                 if (kind === "LOGOUT")
@@ -582,7 +615,7 @@
             })
             .on('CALLEVENT', function (message, kind /*[ IR | ID | OR | OD | ... ]*/, data1, data2, data3, data4, data5, data6, data7, data8, data9, data10, data11, data12, data13) {
                 if (kind === "PICKUP" || kind === "ID" || kind === "OD")
-                    $('#partial-recoding').show().find('text').text('부분녹취');
+                    $('#partial-recoding${activeStt ? "-stt" : ""}').show().find('text').text('부분녹취');
 
                 if (kind === 'IR') { // 인바운드 링울림
                     clearTransferredUser();
@@ -615,6 +648,9 @@
                     loadCustomInput(null, null, phoneNumber).done(function () {
                         $('.item[data-tab="counsel-list"]').click();
                     });
+
+                    // 키워드 차트 초기화
+                    if(window.keywordChart != null) window.keywordChart.initialize()
                 } else if (kind === 'PICKUP') { //픽업
                     audioId = data8;
                     callType = 'I';
@@ -635,12 +671,16 @@
                     $('#call-status').text('[수신] 당겨받음 [' + moment().format('HH시 mm분') + ']');
                     $('#user-call-history').empty().append('<option>통화진행중</option>');
 
-                    /*if (counselDisplayConfiguration.useCallNoticePopup)
-                        viewCallReception();
-*/
+                    <c:if test="${g.usingServices.contains('ASTIN') && g.user.isAstIn eq 'Y'}">
+                        sttLoad(data8, data1, callType);
+                    </c:if>
+
                     loadCustomInput(null, null, phoneNumber, data8).done(function () {
                         $('.item[data-tab="counsel-list"]').click();
                     });
+
+                    // 키워드 차트 초기화
+                    if(window.keywordChart != null) window.keywordChart.initialize()
                 } else if (kind === 'ID') { // 인바운드 통화시작
                     if (!audioId || audioId !== data8 || $('#call-custom-input').find('[name=channels]').find('option[value=' + data1 + ']').length === 0)
                         loadCustomInput(null, null, data1, data8)
@@ -649,10 +689,16 @@
                     callType = 'I';
                     phoneNumber = data1;
 
+                    <c:if test="${g.usingServices.contains('ASTIN') && g.user.isAstIn eq 'Y'}">
+                        sttLoad(data8, data1, callType);
+                    </c:if>
+
                     $('.-calling-number').val(phoneNumber).text(phoneNumber);
                     $('#modal-calling').modalHide();
                     $('#call-status').text('[수신] 전화받음 [' + moment().format('HH시 mm분') + ']');
                     $('#user-call-history').empty().append('<option>통화진행중</option>');
+
+                    loadUserCallHistory(phoneNumber)
                 } else if (kind === 'OR') { // 아웃바운드 링울림
                     audioId = data8;
                     callType = 'O';
@@ -673,6 +719,9 @@
                             $('.item[data-tab="counsel-list"]').click();
                         });
                     }
+
+                    // 키워드 차트 초기화
+                    if(window.keywordChart != null) window.keywordChart.initialize()
                 } else if (kind === 'OD') { // 아웃바운드 통화시작
                     if (!audioId || audioId !== data8 || $('#call-custom-input').find('[name=channels]').find('option[value=' + data2 + ']').length === 0)
                         loadCustomInput(null, null, data2, data8);
@@ -681,13 +730,18 @@
                     callType = 'O';
                     phoneNumber = data2;
 
+                    <c:if test="${g.usingServices.contains('ASTIN') && g.user.isAstIn eq 'Y'}">
+                        sttLoad(data8, data2, callType);
+                    </c:if>
                     $('.-calling-number').val(phoneNumber).text(phoneNumber);
                     $('#call-status').text('[발신] 전화받음 [' + moment().format('HH시 mm분') + ']');
                     $('#user-call-history').empty().append('<option>통화진행중</option>');
+
+                    loadUserCallHistory(phoneNumber)
                 }
             })
             .on('HANGUPEVENT', function () {
-                $('#partial-recoding').hide();
+                $('#partial-recoding${activeStt ? "-stt" : ""}').hide();
                 $('#call-status').text('통화종료');
 
                 // IR 이후, 곧장 HANGUP이 일어나면 modal의 transition때문에 옳바르게 dimmer가 상태변화되지 못한다.
@@ -697,6 +751,7 @@
 
                 //HANGUP이 일어나고 DB에 데이터가 쌓이는 시간 감안
                 setTimeout(function () {
+                    console.log('행업 이후 loadUserCallHistory 실행@')
                     loadUserCallHistory();
                 }, 5000);
             })
@@ -732,7 +787,7 @@
                 }
             })
             .on('REC_START'/*부분녹취 시작*/, function (message, kind/*[ NOK | STARTOK ]*/, data1, partialRecordCnt) {
-                const partialRecord = $('#partial-recoding');
+                const partialRecord = $('#partial-recoding${activeStt ? "-stt" : ""}');
                 if (kind === 'NOK') {
                     console.error("부분녹취실패 : {}", message);
                     return;
@@ -741,7 +796,7 @@
                     $(partialRecord).find('text').text('부분녹취(' + partialRecordCnt + ")");
             })
             .on('REC_STOP'/*부분녹취 중지*/, function (message, kind/*[ NOK | STOPOK ]*/, data1, partialRecordCnt) {
-                const partialRecord = $('#partial-recoding');
+                const partialRecord = $('#partial-recoding${activeStt ? "-stt" : ""}');
                 if (kind === 'NOK') {
                     console.error("부분녹취실패 : {}", message);
                     return;
@@ -759,7 +814,6 @@
                         return alert("[" + kind + "]" + data3 + "(" + data1 + ")");
                 }
             });
-
 
         let pdsStatus;
 
@@ -860,7 +914,7 @@
                 }
             });
 
-            $('#partial-recoding').click(function () {
+            $('#partial-recoding${activeStt ? "-stt" : ""}').click(function () {
                 if ($(this).find('i').hasClass('fa-play')) {
                     ipccCommunicator.startRecording();
                     const recordIcon = $(this).find('i');

@@ -1,6 +1,8 @@
 package kr.co.eicn.ippbx.front.service.api;
 
 import kr.co.eicn.ippbx.front.model.form.FileForm;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.SttMessage;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.SttText;
 import kr.co.eicn.ippbx.model.enums.TalkChannelType;
 import kr.co.eicn.ippbx.model.form.TalkAutoEnableFormRequest;
 import kr.co.eicn.ippbx.util.ResultFailException;
@@ -73,6 +75,14 @@ public class CounselApiInterface extends ApiServerInterface {
 
     public List<CustomMultichannelInfoResponse> customInfoList(String channelData) throws IOException, ResultFailException {
         return getList(subUrl + "custom-info", Collections.singletonMap("channelData", channelData), CustomMultichannelInfoResponse.class).getData();
+    }
+
+    public List<SttText> sttText(String uniqueId) throws IOException, ResultFailException {
+        return getList(subUrl + "stt-text/" + uniqueId, null, SttText.class).getData();
+    }
+
+    public List<SttMessage> sttChat(String uniqueId) throws IOException, ResultFailException {
+        return getList(subUrl + "stt-chat/call-unique-id/" + uniqueId, null, SttMessage.class).getData();
     }
 
     @SneakyThrows

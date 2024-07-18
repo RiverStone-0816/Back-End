@@ -33,6 +33,9 @@ public class PersonSummaryResponse {
 	private String isEmail;     // 이메일상담 여부
 	private String isChatt;		// 메신저 사용 여부
 	private String isLoginChatt; //채팅 로그인 상태
+	private String isAstIn;
+	private String isAstOut;
+	private String isAstStt;
 
 	public boolean admin() {
 		val ADMIN_TYPES = Arrays.asList(IdType.MASTER, IdType.SUPER_ADMIN, IdType.ADMIN);
@@ -61,5 +64,17 @@ public class PersonSummaryResponse {
 
 	public String getIsChatt(){
 		return this.licenseList.contains(LicenseListType.CHATT.getCode()) ? "Y" : "N";
+	}
+
+	public String getIsAstIn(){
+		return this.licenseList.contains(LicenseListType.ASTIN.getCode()) ? "Y" : "N";
+	}
+
+	public String getIsAstOut(){
+		return this.licenseList.contains(LicenseListType.ASTOUT.getCode()) ? "Y" : "N";
+	}
+
+	public String getIsAstStt(){
+		return this.licenseList.contains(LicenseListType.ASTSTT.getCode()) ? "Y" : "N";
 	}
 }

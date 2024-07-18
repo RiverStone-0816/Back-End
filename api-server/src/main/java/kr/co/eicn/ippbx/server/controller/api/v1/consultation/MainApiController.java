@@ -4,6 +4,10 @@ import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonWtalkMsg;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.WtalkRoom;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonWtalkRoom;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.Memo;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.SttCdr;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.SttMessage;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.SttText;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.CommonWtalkMsgRecord;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoKind;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
@@ -15,6 +19,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.model.dto.customdb.*;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.entity.customdb.EicnCdrEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbMultichannelInfoEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.WtalkRoomEntity;
 import kr.co.eicn.ippbx.model.enums.*;
@@ -78,6 +83,10 @@ public class MainApiController extends ApiBaseController {
     private final CallbackRepository callbackRepository;
     private final MaindbCustomInfoService maindbCustomInfoService;
     private final FileSystemStorageService fileSystemStorageService;
+    private final MemoService memoService;
+    private final SttTextService sttTextService;
+    private final CurrentEICNCdrRepository currentEICNCdrRepository;
+    private final SttMessageService sttMessageService;
     @Value("${file.path.chatbot}")
     private String savePath;
 
@@ -499,6 +508,71 @@ public class MainApiController extends ApiBaseController {
     public ResponseEntity<JsonResult<Void>> updateTalkAutoEnable(@PathVariable String roomId, @Valid @RequestBody TalkAutoEnableFormRequest form) {
         currentWtalkRoomRepository.updateAutoEnableByRoomId(roomId, form);
 
+        return ResponseEntity.ok(create());
+    }
+
+    @GetMapping("stt-text/{uniqueId}")
+    public ResponseEntity<JsonResult<List<SttText>>> sttText(@PathVariable String uniqueId) {
+        return ResponseEntity.ok(data(sttTextService.getRepository().findAll(uniqueId)));
+    }
+
+    @GetMapping("stt/admin-monit/{userId}")
+    public ResponseEntity<JsonResult<String>> sttAdminMonit(@PathVariable String userId) {
+        return ResponseEntity.ok(data(sttTextService.getRepository().adminMonit(userId)));
+    }
+
+    @GetMapping("stt/call-unique-id/{callUniqueId}")
+    public ResponseEntity<JsonResult<SttCdr>> sttCallUniqueId(@PathVariable String callUniqueId) {
+        List<EicnCdrEntity> entity = eicnCdrService.getRepository().findAllByUniqueId(callUniqueId);
+        if (Objects.isNull(entity)) {
+            entity = currentEICNCdrRepository.findAllByUniqueId(callUniqueId).stream().map(cdr -> {
+                final EicnCdrEntity tmp = convertDto(cdr, EicnCdrEntity.class);
+                return tmp;
+            }).collect(Collectors.toList());
+        }
+        SttCdr sttCdr = convertDto(entity.get(0), SttCdr.class);
+        return ResponseEntity.ok(data(sttCdr));
+    }
+
+    @GetMapping("stt-chat/call-unique-id/{callUniqueId}")
+    public ResponseEntity<JsonResult<List<SttMessage>>> sttChatCallUniqueId(@PathVariable String callUniqueId) {
+        List<SttMessage> sttMessageList = sttMessageService.getRepository().findAll(callUniqueId);
+        return ResponseEntity.ok(data(sttMessageList));
+    }
+
+    @PutMapping("stt-text/remind/{messageId}")
+    public ResponseEntity<JsonResult<Void>> sttTextRemind(@PathVariable String messageId) {
+        sttTextService.getRepository().updateRemind(messageId);
+
+        return ResponseEntity.ok(create());
+    }
+
+    @GetMapping("kms/memo")
+    public ResponseEntity<JsonResult<List<Memo>>> kmsMemo(@RequestParam(required = false) String keyword) {
+        return ResponseEntity.ok(data(memoService.getRepository().findAllToUserId(keyword)));
+    }
+
+    @PostMapping("kms/memo")
+    public ResponseEntity<JsonResult<Void>> kmsMemo(@Valid @RequestBody MemoFormRequest form) {
+        memoService.getRepository().insertMemo(form);
+        return ResponseEntity.ok(create());
+    }
+
+    @PutMapping("kms/memo/{id}")
+    public ResponseEntity<JsonResult<Void>> kmsMemo(@PathVariable Long id, @Valid @RequestBody MemoFormRequest form) {
+        memoService.getRepository().updateMemo(id, form);
+        return ResponseEntity.ok(create());
+    }
+
+    @PutMapping("kms/memo/{id}/bookmarked/{bookmarked}")
+    public ResponseEntity<JsonResult<Void>> kmsMemo(@PathVariable Long id,@PathVariable boolean bookmarked) {
+        memoService.getRepository().bookmarkedMemo(id, bookmarked);
+        return ResponseEntity.ok(create());
+    }
+
+    @DeleteMapping("kms/memo/{id}")
+    public ResponseEntity<JsonResult<Void>> kmsMemo(@PathVariable Long id) {
+        memoService.getRepository().deleteMemo(id);
         return ResponseEntity.ok(create());
     }
 

@@ -29,22 +29,10 @@
             <td><fmt:formatDate value="${e.regdate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
             <td>
                 <div class="ui action input fluid" style="text-align: center;">
-                    <c:choose>
-                        <c:when test="${e.todoKind == 'TALK'}">
-                            <input type="text" readonly value="${g.htmlQuote(e.todoInfo)}"/>
-                                <button type="button" class="ui icon button" onclick="viewTalkRoom('${g.htmlQuote(e.todoInfo)}')">
-                                    <i class="comments outline icon"></i>
-                                </button>
-                        </c:when>
-                        <c:otherwise>
-                            <c:if test="${e.todoInfo != null && e.todoInfo != ''}">
-                                <input type="text" readonly value="${g.htmlQuote(e.todoInfo)}"/>
-                                <button type="button" class="ui icon button" onclick="$('#calling-number').val('${g.htmlQuote(e.todoInfo)}')">
-                                    <i class="phone icon"></i>
-                                </button>
-                            </c:if>
-                        </c:otherwise>
-                    </c:choose>
+                    <c:if test="${e.todoInfo != null && e.todoInfo != ''}">
+                        <input type="text" readonly value="${g.htmlQuote(e.todoInfo)}"/>
+                        <button type="button" class="ui icon button" onclick="$('#calling-number${(g.usingServices.contains('AST') && g.user.isAstIn eq 'Y') || (g.usingServices.contains('BSTT') && g.user.isAstStt eq 'Y') ? "-stt" : ""}').val('${g.htmlQuote(e.todoInfo)}')"><i class="phone icon"></i></button>
+                    </c:if>
                 </div>
             </td>
             <td>${g.htmlQuote(message.getEnumText(e.todoStatus))}</td>

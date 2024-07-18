@@ -4,6 +4,8 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.form.FileForm;
 import kr.co.eicn.ippbx.front.service.api.CounselApiInterface;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.SttMessage;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.SttText;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.TodoList;
 import kr.co.eicn.ippbx.model.dto.eicn.WtalkCurrentListResponse;
@@ -101,5 +103,15 @@ public class CounselApiController extends BaseController {
     @PutMapping("wtalk-auto-enable/{roomId}")
     public void updateTalkAutoEnable(@Valid @RequestBody TalkAutoEnableFormRequest form, BindingResult bindingResult, @PathVariable String roomId) throws IOException, ResultFailException {
         apiInterface.updateTalkAutoEnable(roomId, form);
+    }
+
+    @GetMapping("stt-text/{uniqueId}")
+    public List<SttText> sttText(@PathVariable String uniqueId) throws IOException, ResultFailException {
+        return apiInterface.sttText(uniqueId);
+    }
+
+    @GetMapping("stt-chat/{uniqueId}")
+    public List<SttMessage> sttChat(@PathVariable String uniqueId) throws IOException, ResultFailException {
+        return apiInterface.sttChat(uniqueId);
     }
 }

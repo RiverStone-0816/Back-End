@@ -103,6 +103,13 @@ public class StatInboundEntity extends CommonStatInbound implements StatByTimeUn
         return getTotal() + getCallback();
     }
 
+    public float getAvgRate() {
+        if (getSuccess() == null || getTotal() == null)
+            return 0;
+
+        return EicnUtils.getRateValue(getSuccess(), getTotal());
+    }
+
     @Override
     public String toString() {
         return "StatInboundEntity{" +

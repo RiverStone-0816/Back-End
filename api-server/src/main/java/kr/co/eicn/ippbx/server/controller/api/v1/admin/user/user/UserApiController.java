@@ -21,7 +21,6 @@ import kr.co.eicn.ippbx.server.service.UserService;
 import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.PatternUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;
-import kr.co.eicn.ippbx.util.spring.IsAdmin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -94,7 +93,6 @@ public class UserApiController extends ApiBaseController {
     /**
      * 사용자 목록조회
      */
-    @IsAdmin
     @GetMapping("search")
     public ResponseEntity<JsonResult<Pagination<PersonSummaryResponse>>> pagination(@Valid PersonSearchRequest search, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
@@ -159,12 +157,21 @@ public class UserApiController extends ApiBaseController {
         final Integer cti = StringUtils.isNotEmpty(form.getIsCti()) && form.getIsCti().equals("Y") ? licence.getCtiLicence().getCurrentLicence()+1 : licence.getCtiLicence().getCurrentLicence();
         final Integer talk = StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y") ? licence.getTalkLicense().getCurrentLicence()+1 : licence.getTalkLicense().getCurrentLicence();
         final Integer email = StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
+        final Integer chatt = StringUtils.isNotEmpty(form.getIsChatt()) && form.getIsChatt().equals("Y") ? licence.getChattLicense().getCurrentLicence()+1 : licence.getChattLicense().getCurrentLicence();
+        final Integer astIn = StringUtils.isNotEmpty(form.getIsAstIn()) && form.getIsAstIn().equals("Y") ? licence.getAstinLicense().getCurrentLicence()+1 : licence.getAstinLicense().getCurrentLicence();
+        final Integer astOut = StringUtils.isNotEmpty(form.getIsAstOut()) && form.getIsAstOut().equals("Y") ? licence.getAstoutLicense().getCurrentLicence()+1 : licence.getAstoutLicense().getCurrentLicence();
+        final Integer astStt = StringUtils.isNotEmpty(form.getIsAstStt()) && form.getIsAstStt().equals("Y") ? licence.getAststtLicense().getCurrentLicence()+1 : licence.getAststtLicense().getCurrentLicence();
 
         if((licence.getPdsLicense().getLicence() < pds && StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y"))
                 || (licence.getStatLicence().getLicence() < stat && StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y"))
                 || (licence.getCtiLicence().getLicence() < cti && StringUtils.isNotEmpty(form.getIsCti()) && form.getIsCti().equals("Y"))
                 || (licence.getTalkLicense().getLicence() < talk && StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y"))
-                || (licence.getEmailLicense().getLicence() < email && StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y")))
+                || (licence.getEmailLicense().getLicence() < email && StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y"))
+                || (licence.getChattLicense().getLicence() < chatt && StringUtils.isNotEmpty(form.getIsChatt()) && form.getIsChatt().equals("Y"))
+                || (licence.getAstinLicense().getLicence() < astIn && StringUtils.isNotEmpty(form.getIsAstIn()) && form.getIsAstIn().equals("Y"))
+                || (licence.getAstoutLicense().getLicence() < astOut && StringUtils.isNotEmpty(form.getIsAstOut()) && form.getIsAstOut().equals("Y"))
+                || (licence.getAststtLicense().getLicence() < astStt && StringUtils.isNotEmpty(form.getIsAstStt()) && form.getIsAstStt().equals("Y"))
+        )
             throw new IllegalArgumentException("라이센스를 확인하세요.");
 
         repository.insert(form);
@@ -205,6 +212,10 @@ public class UserApiController extends ApiBaseController {
         Integer talk = StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y") ? licence.getTalkLicense().getCurrentLicence()+1 : licence.getTalkLicense().getCurrentLicence();
         Integer email = StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y") ? licence.getEmailLicense().getCurrentLicence()+1 : licence.getEmailLicense().getCurrentLicence();
         Integer chatt = StringUtils.isNotEmpty(form.getIsChatt()) && form.getIsChatt().equals("Y") ? licence.getChattLicense().getCurrentLicence()+1 : licence.getChattLicense().getCurrentLicence();
+        Integer astIn = StringUtils.isNotEmpty(form.getIsAstIn()) && form.getIsAstIn().equals("Y") ? licence.getAstinLicense().getCurrentLicence()+1 : licence.getAstinLicense().getCurrentLicence();
+        Integer astOut = StringUtils.isNotEmpty(form.getIsAstOut()) && form.getIsAstOut().equals("Y") ? licence.getAstoutLicense().getCurrentLicence()+1 : licence.getAstoutLicense().getCurrentLicence();
+        Integer astStt = StringUtils.isNotEmpty(form.getIsAstStt()) && form.getIsAstStt().equals("Y") ? licence.getAststtLicense().getCurrentLicence()+1 : licence.getAststtLicense().getCurrentLicence();
+
 
         if(StringUtils.isNotEmpty(form.getIsPds()) && "Y".equals(detail.getIsPds())) pds = pds-1;
         if(StringUtils.isNotEmpty(form.getIsStat()) && "Y".equals(detail.getIsStat())) stat = stat-1;
@@ -212,13 +223,51 @@ public class UserApiController extends ApiBaseController {
         if(StringUtils.isNotEmpty(form.getIsTalk()) && "Y".equals(detail.getIsTalk())) talk = talk-1;
         if(StringUtils.isNotEmpty(form.getIsEmail()) && "Y".equals(detail.getIsEmail())) email = email-1;
         if(StringUtils.isNotEmpty(form.getIsChatt()) && "Y".equals(detail.getIsChatt())) chatt = chatt-1;
+        if(StringUtils.isNotEmpty(form.getIsAstIn()) && "Y".equals(detail.getIsAstIn())) astIn = astIn-1;
+        if(StringUtils.isNotEmpty(form.getIsAstOut()) && "Y".equals(detail.getIsAstOut())) astOut = astOut-1;
+        if(StringUtils.isNotEmpty(form.getIsAstStt()) && "Y".equals(detail.getIsAstStt())) astStt = astStt-1;
+
+        // 구체적인 예외 메세지 보여주기
+        if(licence.getPdsLicense().getLicence() < pds && StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y")){
+            throw new IllegalArgumentException("PDS 라이센스, 확인이 필요 합니다.");
+        }
+        if(licence.getStatLicence().getLicence() < stat && StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y")){
+            throw new IllegalArgumentException("통계/모니터링 라이센스, 확인이 필요 합니다.");
+        }
+
+        if(licence.getCtiLicence().getLicence() < cti && StringUtils.isNotEmpty(form.getIsCti()) && form.getIsCti().equals("Y")){
+            throw new IllegalArgumentException("상담원연결 라이센스, 확인이 필요 합니다.");
+        }
+        if(licence.getTalkLicense().getLicence() < talk && StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y")){
+            throw new IllegalArgumentException("상담톡 라이센스, 확인이 필요 합니다.");
+        }
+        if(licence.getEmailLicense().getLicence() < email && StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y")){
+            throw new IllegalArgumentException("이메일 라이센스, 확인이 필요 합니다.");
+        }
+        if(licence.getChattLicense().getLicence() < chatt && StringUtils.isNotEmpty(form.getIsChatt()) && form.getIsChatt().equals("Y")){
+            throw new IllegalArgumentException("채팅 라이센스, 확인이 필요 합니다.");
+        }
+        if(licence.getAstinLicense().getLicence() < astIn && StringUtils.isNotEmpty(form.getIsAstIn()) && form.getIsAstIn().equals("Y")){
+            throw new IllegalArgumentException("astIn 라이센스, 확인이 필요 합니다.");
+        }
+        if(licence.getAstoutLicense().getLicence() < astOut && StringUtils.isNotEmpty(form.getIsAstOut()) && form.getIsAstOut().equals("Y")){
+            throw new IllegalArgumentException("astOut 라이센스, 확인이 필요 합니다.");
+        }
+        if(licence.getAststtLicense().getLicence() < astStt && StringUtils.isNotEmpty(form.getIsAstStt()) && form.getIsAstStt().equals("Y")){
+            throw new IllegalArgumentException("astSTT 라이센스, 확인이 필요 합니다.");
+        }
+
 
         if((licence.getPdsLicense().getLicence() < pds && StringUtils.isNotEmpty(form.getIsPds()) && form.getIsPds().equals("Y"))
                 || (licence.getStatLicence().getLicence() < stat && StringUtils.isNotEmpty(form.getIsStat()) && form.getIsStat().equals("Y"))
                 || (licence.getCtiLicence().getLicence() < cti && StringUtils.isNotEmpty(form.getIsCti()) && form.getIsCti().equals("Y"))
                 || (licence.getTalkLicense().getLicence() < talk && StringUtils.isNotEmpty(form.getIsTalk()) && form.getIsTalk().equals("Y"))
                 || (licence.getEmailLicense().getLicence() < email && StringUtils.isNotEmpty(form.getIsEmail()) && form.getIsEmail().equals("Y"))
-                || (licence.getChattLicense().getLicence() < chatt && StringUtils.isNotEmpty(form.getIsChatt()) && form.getIsChatt().equals("Y")))
+                || (licence.getChattLicense().getLicence() < chatt && StringUtils.isNotEmpty(form.getIsChatt()) && form.getIsChatt().equals("Y"))
+                || (licence.getAstinLicense().getLicence() < astIn && StringUtils.isNotEmpty(form.getIsAstIn()) && form.getIsAstIn().equals("Y"))
+                || (licence.getAstoutLicense().getLicence() < astOut && StringUtils.isNotEmpty(form.getIsAstOut()) && form.getIsAstOut().equals("Y"))
+                || (licence.getAststtLicense().getLicence() < astStt && StringUtils.isNotEmpty(form.getIsAstStt()) && form.getIsAstStt().equals("Y"))
+        )
             throw new IllegalArgumentException("라이센스를 확인하세요.");
 
         repository.updateByKey(form, id);

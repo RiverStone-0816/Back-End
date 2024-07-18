@@ -269,9 +269,9 @@
 
 
         modal.find('[name=channels]').append($('<option/>', {
+            value: (channelType === 'TALK' ? talkServiceSenderKey + '_' + channelData : channelData).trim(),
             'data-type': channelType,
-            value: transChannelData,
-            text: '[' + (channelType === 'TALK' ? talkServiceName : channelTypeName) + '] ' + transChannelData
+            text: '[' + (channelType === 'TALK' ? talkServiceName : channelTypeName) + '] ' + channelData.trim()
         }));
     });
 

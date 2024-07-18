@@ -52,8 +52,8 @@
                     <div class="search-area">
                         <div class="ui grid">
                             <div class="row">
-                                   <div class="two wide column"><label class="control-label">검색기간</label></div>
-                                    <div class="ten wide column -buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
+                                <div class="two wide column"><label class="control-label">검색기간</label></div>
+                                <div class="ten wide column -buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
                                     <div class="date-picker from-to">
                                         <div class="dp-wrap">
                                             <label for="startDate" style="display:none">From</label>
@@ -136,6 +136,12 @@
                                 <div class="two wide column">
                                     <div class="ui form">
                                         <form:select path="sort" items="${sortTypes}"/>
+                                    </div>
+                                </div>
+                                <div class="two wide column"><label class="control-label">키워드</label></div>
+                                <div class="two wide column">
+                                    <div class="ui form">
+                                        <form:input path="keyword"/>
                                     </div>
                                 </div>
                             </div>
@@ -257,6 +263,9 @@
                             <th>통화자</th>
                             <th>호상태(초)</th>
                             <th>부가상태</th>
+                            <c:if test="${(g.usingServices.contains('AST') && g.user.isAstIn eq 'Y') || (g.usingServices.contains('BSTT') && g.user.isAstStt eq 'Y')}">
+                                <th>주요키워드</th>
+                            </c:if>
                             <th>IVR</th>
                             <th>종료</th>
                             <th>녹취</th>
@@ -293,6 +302,9 @@
                                         </td>
                                         <td>${g.htmlQuote(e.callStatusValue)}</td>
                                         <td>${g.htmlQuote(e.etcCallResultValue)}</td>
+                                        <c:if test="${(g.usingServices.contains('AST') && g.user.isAstIn eq 'Y') || (g.usingServices.contains('BSTT') && g.user.isAstStt eq 'Y')}">
+                                            <td>키워드, 키워드, 키워드</td>
+                                        </c:if>
                                         <td>${g.htmlQuote(e.ivrPathValue)}</td>
                                         <td>${g.htmlQuote(e.callingHangupValue)}</td>
                                         <td>
@@ -432,7 +444,23 @@
                 if ($this.attr('data-has-records'))
                     return;
 
-                popupReceivedHtml('/admin/record/history/history/' + $this.attr('data-id') + '/modal-records', 'modal-records');
+                popupReceivedHtml('/admin/record/history/history/' + $this.attr('data-id') + '/modal-records', 'modal-records').done(function (html) {
+                    const mixedNodes = $.parseHTML(html, null, true);
+
+                    const modal = (function () {
+                        for (let i = 0; i < mixedNodes.length; i++) {
+                            const node = $(mixedNodes[i]);
+                            if (node.is('#modal-records'))
+                                return node;
+                        }
+                        throw 'cannot find modal element';
+                    })();
+
+                    $this.after(modal);
+                    modal.find('audio').each(function () {
+                        maudio({obj: this});
+                    });
+                });
             });
 
             function deleteRecord(seq) {
@@ -447,8 +475,8 @@
                 popupReceivedHtml('/admin/record/history/history/' + seq + '/modal-evaluation', 'modal-evaluation');
             }
 
-            function popupSttModal(seq) {
-                popupReceivedHtml('/admin/record/history/history/' + seq + '/modal-stt', 'modal-stt');
+            function popupSttModal(uniqueId, phoneNumber) {
+                popupReceivedHtml('/admin/record/history/history/' + uniqueId + '/'+ phoneNumber +'/modal-stt', 'modal-stt');
             }
 
             function downloadExcel() {

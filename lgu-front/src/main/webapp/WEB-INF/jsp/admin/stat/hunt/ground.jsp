@@ -108,7 +108,7 @@
                                         </button>
                                     </div>
                                 </div>
-                                <div class="two wide column"><label class="control-label">상담원선택</label></div>
+<%--                                <div class="two wide column"><label class="control-label">상담원선택</label></div>
                                 <div class="five wide column overflow-unset">
                                     <div class="ui form">
                                         <form:select path="personIds" multiple="multiple" class="ui fluid dropdown">
@@ -116,7 +116,7 @@
                                             <form:options items="${persons}" itemValue="id" itemLabel="idName"/>
                                         </form:select>
                                     </div>
-                                </div>
+                                </div>--%>
                             </div>
                         </div>
                     </div>

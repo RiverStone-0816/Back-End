@@ -66,7 +66,7 @@
         }
 
         function tryDialByDialPadInput() {
-            ipccCommunicator.clickByCampaign($('#cid').val(), dialPadInput.val(), "SoftPhone", $('#call-custom-input [name=groupSeq]').val(), $('#call-custom-input .-custom-id').text());
+            ipccCommunicator.clickByCampaign($('#cid${(g.usingServices.contains("AST") && g.user.isAstIn eq "Y") || (g.usingServices.contains('BSTT') && g.user.isAstStt eq "Y") ? "-stt" : ""}').val(), dialPadInput.val(), "SoftPhone", $('#call-custom-input [name=groupSeq]').val(), $('#call-custom-input .-custom-id').text());
         }
 
         let muteType = 1;

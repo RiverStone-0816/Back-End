@@ -193,6 +193,28 @@ public class RecordApiController extends ApiBaseController {
     /**
      * 녹취파일 모달 절대경로 리소스 반환 형식 제거
      */
+    @GetMapping(value = "resource", params = {"token"})
+    public ResponseEntity<Resource> resource(@RequestParam("path") String recordFile, @RequestParam("mode") String mode) {
+        final RecordFileService.Result actualExistingFile = recordFileService.getActualExistingFile(recordFile, mode);
+
+        if (actualExistingFile.getCode() != 1)
+            throw new IllegalArgumentException(actualExistingFile.getMessage());
+
+        final Resource resource = fileSystemStorageService.loadAsResource(actualExistingFile.getPath(), actualExistingFile.getFileName());
+
+        return ResponseEntity.ok()
+                .contentType(MediaTypeFactory.getMediaType(resource).isPresent() ? MediaTypeFactory.getMediaType(resource).get() : MediaType.APPLICATION_OCTET_STREAM)
+                .headers(header -> {
+                    header.add(HttpHeaders.CONTENT_DISPOSITION,
+                            ContentDisposition.builder("attachment")
+                                    .filename(Objects.requireNonNull(resource.getFilename()), StandardCharsets.UTF_8)
+                                    .build().toString());
+                    header.setPragma("no-cache");
+                    header.setCacheControl(CacheControl.noCache());
+                })
+                .body(resource);
+    }
+
     /*@GetMapping(value = "resource")
     public ResponseEntity<Resource> resource(@RequestParam("path") String recordFile, @RequestParam("mode") String mode){
         final RecordFileService.Result actualExistingFile = recordFileService.getActualExistingFile(recordFile, mode);

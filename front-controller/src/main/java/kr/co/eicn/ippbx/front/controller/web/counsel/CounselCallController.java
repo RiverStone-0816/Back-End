@@ -29,6 +29,7 @@ import kr.co.eicn.ippbx.model.dto.customdb.CommonEicnCdrResponse;
 import kr.co.eicn.ippbx.model.dto.customdb.CustomMultichannelInfoResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.MaindbGroupDetailResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.MaindbGroupSummaryResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.PersonSummaryResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.SummaryWtalkServiceResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchPersonListResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
@@ -44,6 +45,7 @@ import kr.co.eicn.ippbx.model.form.ResultCustomInfoFormRequest;
 import kr.co.eicn.ippbx.model.search.GradeListSearchRequest;
 import kr.co.eicn.ippbx.model.search.MaindbDataSearchRequest;
 import kr.co.eicn.ippbx.model.search.MaindbGroupSearchRequest;
+import kr.co.eicn.ippbx.model.search.PersonSearchRequest;
 import kr.co.eicn.ippbx.model.search.TodoListSearchRequest;
 import kr.co.eicn.ippbx.model.search.search.SearchServiceRequest;
 import kr.co.eicn.ippbx.util.FormUtils;
@@ -51,11 +53,13 @@ import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -66,13 +70,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * @author tinywind
  */
-@AllArgsConstructor
+//@AllArgsConstructor
+@RequiredArgsConstructor
 @LoginRequired
 @Controller
 @RequestMapping("counsel/call")
@@ -92,10 +99,15 @@ public class CounselCallController extends BaseController {
     private final ScreenDataApiInterface screenDataApiInterface;
     private final CompanyApiInterface companyApiInterface;
     private final ConsultantStatApiInterface consultantStatApiInterface;
+    private final UserApiInterface userApiInterface;
+
+    @Value("${assist.stt.request.url}")
+    private String sttRequestUrl;
 
     @GetMapping("")
     public String callPanel(Model model) throws IOException, ResultFailException {
         model.addAttribute("services", new MapToLinkedHashMap().toLinkedHashMapByValue(searchApiInterface.services(new SearchServiceRequest()).stream().filter(e -> !StringUtils.isEmpty(e.getSvcCid())).collect(Collectors.toMap(ServiceList::getSvcCid, ServiceList::getSvcName))));
+        model.addAttribute("sttRequestUrl", sttRequestUrl);
         return "counsel/call/panel";
     }
 
@@ -359,11 +371,44 @@ public class CounselCallController extends BaseController {
         return "counsel/call/user-call-history";
     }
 
+    @GetMapping("user-call-stt-history")
+    public String userCallSttHistory(@RequestParam(required = false) String phoneNumber, Model model) throws IOException, ResultFailException {
+        final RecordCallSearchForm search = new RecordCallSearchForm();
+        search.setLimit(1000);
+        search.setUserId(g.getUser().getId());
+
+        if(!StringUtils.isEmpty(phoneNumber)) {
+            // 현재 날짜
+            LocalDate today = LocalDate.now();
+
+            // 30일 전 날짜 계산
+            LocalDate thirtyDaysAgo = today.minusDays(30);
+
+            // java.sql.Date로 변환
+            java.sql.Date startDate = Date.valueOf(thirtyDaysAgo);
+
+            System.out.println("30일 전 날짜: " + startDate);
+
+            search.setStartDate(startDate);
+        }
+
+        final List<CommonEicnCdrResponse> list = recordingHistoryApiInterface.pagination(search).getRows();
+        model.addAttribute("list", list);
+
+        return "counsel/call/user-call-stt-history";
+    }
+
     @GetMapping("user-custom-info")
     public String userCustomInfo(Model model, @RequestParam(required = false) String channelData) throws IOException, ResultFailException {
         final List<CustomMultichannelInfoResponse> list = StringUtils.isNotEmpty(channelData) ? counselApiInterface.customInfoList(channelData) : new ArrayList<>();
         model.addAttribute("list", list);
 
         return "counsel/call/user-custom-info";
+    }
+
+    @GetMapping("stt-panel")
+    public String sttPanel(Model model, @RequestParam(required = false) String channelData) throws IOException, ResultFailException {
+        model.addAttribute("personListMap", userApiInterface.list(new PersonSearchRequest()).stream().collect(Collectors.toMap(PersonSummaryResponse::getId, PersonSummaryResponse::getIdName)));
+        return "counsel/call/stt";
     }
 }

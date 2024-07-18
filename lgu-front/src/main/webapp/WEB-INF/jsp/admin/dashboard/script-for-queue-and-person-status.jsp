@@ -255,6 +255,31 @@
                 }
             });
 
+            $('.-consultant-calling-custom-number-grade').each(function () {
+                const peerStatus = peerStatuses[$(this).attr('data-peer')];
+                const defaultValue = $(this).data('default');
+                if (!peerStatus) return;
+
+                if (peerStatus.status !== MEMBER_STATUS_CALLING)
+                    return $(this).text('');
+
+                if (defaultValue) {
+                    $(this).text(defaultValue)
+                    $(this).removeAttr('data-default');
+                } else {
+                    $(this).text(peerStatus.grade);
+                }
+            })
+
+            $('.-consultant-calling-custom-number-stt').each(function (){
+                const peerStatus = peerStatuses[$(this).attr('data-peer')];
+                if (!peerStatus) $(this).hide();
+                if (peerStatus.status !== MEMBER_STATUS_CALLING)
+                    return $(this).hide();
+                else
+                    return $(this).show();
+            });
+
             $('.-consultant-queue-name').each(function () {
                 const peerStatus = peerStatuses[$(this).attr('data-peer')];
                 const defaultValue = $(this).data('default');
@@ -364,7 +389,17 @@
                 if (kind === 'IR' || kind === 'ID')
                     peerStatuses[peer].queueNumber = value2;
 
-                updatePersonStatus();
+                restSelf.get('/api/part-monitoring/grade/'+ (['OR','OD'].includes(kind) ? calledNumber : callingNumber)).done(function (response) {
+                    console.log(response.data);
+                    peerStatuses[peer].grade = response.data
+                    updatePersonStatus();
+                });
+            })
+            .on("ADMMINITSTTMESSAGE", function (message, kind, data1) {
+                console.log(data1);
+            })
+            .on("ADMMONIT_KEYWORD", function (message, kind, data1) {
+                console.log(data1);
             });
     </script>
 </tags:scripts>

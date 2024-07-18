@@ -1,35 +1,39 @@
 const restSelf = {
     get: function (url, data, failFunc, noneBlockUi) {
-        return restUtils.get((contextPath ? contextPath : '') + url, data, noneBlockUi).done(function (response) {
+        return restUtils.get(getUrl(url), data, noneBlockUi).done(function (response) {
             if (response.result !== 'success')
                 return alert(getDefaultReason(response));
         }).fail(failFunc ? typeof failFunc === "string" ? failFunction(failFunc) : failFunc : failFunction());
     },
     post: function (url, data, failFunc, noneBlockUi) {
-        return restUtils.post((contextPath ? contextPath : '') + url, data, noneBlockUi).done(function (response) {
+        return restUtils.post(getUrl(url), data, noneBlockUi).done(function (response) {
             if (response.result !== 'success')
                 return alert(getDefaultReason(response));
         }).fail(failFunc ? typeof failFunc === "string" ? failFunction(failFunc) : failFunc : failFunction());
     },
     put: function (url, data, failFunc, noneBlockUi) {
-        return restUtils.put((contextPath ? contextPath : '') + url, data, noneBlockUi).done(function (response) {
+        return restUtils.put(getUrl(url), data, noneBlockUi).done(function (response) {
             if (response.result !== 'success')
                 return alert(getDefaultReason(response));
         }).fail(failFunc ? typeof failFunc === "string" ? failFunction(failFunc) : failFunc : failFunction());
     },
     patch: function (url, data, failFunc, noneBlockUi) {
-        return restUtils.patch((contextPath ? contextPath : '') + url, data, noneBlockUi).done(function (response) {
+        return restUtils.patch(getUrl(url), data, noneBlockUi).done(function (response) {
             if (response.result !== 'success')
                 return alert(getDefaultReason(response));
         }).fail(failFunc ? typeof failFunc === "string" ? failFunction(failFunc) : failFunc : failFunction());
     },
     delete: function (url, data, failFunc, noneBlockUi) {
-        return restUtils.delete((contextPath ? contextPath : '') + url, data, noneBlockUi).done(function (response) {
+        return restUtils.delete(getUrl(url), data, noneBlockUi).done(function (response) {
             if (response.result !== 'success')
                 return alert(getDefaultReason(response));
         }).fail(failFunc ? typeof failFunc === "string" ? failFunction(failFunc) : failFunc : failFunction());
     }
 };
+
+function getUrl(url) {
+    return (contextPath && !url.startsWith('http') ? contextPath : '') + url
+}
 
 function receiveHtml(url, data, failFunc, noneBlockUi) {
     function failFunction(defaultMessage) {
@@ -349,24 +353,46 @@ $.fn.dragModalShow = function (container) {
     const $this = $(this).show();
     moveModalToTop();
 
-    setTimeout(function () {
-        $this.css({
-            'overflow-y': 'auto',
-            position: "absolute",
-            left: ($(window).width() / 2) + $(document).scrollLeft() - ($this.outerWidth() / 2),
-            top: ($(window).height() / 2) + $(document).scrollTop() - ($this.outerHeight() / 2),
-            maxHeight: "80%"
-        }).draggable({
-            iframeFix: true,
-            containment: 'body',
-            handle: '[class="header"],[class="header ui-draggable-handle"],[data-act=draggable]',
-            drag: function (e, ui) {
-                if (ui.position.top < 70) {
-                    ui.position.top = 70;
+    if($this.attr("data-name") === "stt-monit"){
+        setTimeout(function () {
+
+            $this.css({
+                'overflow-y': 'auto',
+                position: "absolute",
+                left: ($(window).width() / 2) + $(document).scrollLeft() - ($this.outerWidth() / 2),
+                top: ($(window).height() / 2) + $(document).scrollTop() - ($this.outerHeight() / 2),
+            }).draggable({
+                iframeFix: true,
+                containment: 'body',
+                handle: '[class="header"],[class="header ui-draggable-handle"],[data-act=draggable]',
+                drag: function (e, ui) {
+                    if (ui.position.top < 70) {
+                        ui.position.top = 70;
+                    }
                 }
-            }
-        });
-    }, 100);
+            });
+        }, 100);
+    }else{
+        setTimeout(function () {
+
+            $this.css({
+                'overflow-y': 'auto',
+                position: "absolute",
+                left: ($(window).width() / 2) + $(document).scrollLeft() - ($this.outerWidth() / 2),
+                top: ($(window).height() / 2) + $(document).scrollTop() - ($this.outerHeight() / 2),
+                maxHeight: "80%"
+            }).draggable({
+                iframeFix: true,
+                containment: 'body',
+                handle: '[class="header"],[class="header ui-draggable-handle"],[data-act=draggable]',
+                drag: function (e, ui) {
+                    if (ui.position.top < 70) {
+                        ui.position.top = 70;
+                    }
+                }
+            });
+        }, 100);
+    }
 
     $this.find('[class="header"]')
         .off('click', moveModalToTop)

@@ -77,22 +77,6 @@
                     </div>
                 </div>
             </div>
-            <%--<div class="row">
-                <div class="three wide column"><label class="control-label">파일선택</label></div>
-                <div class="thirteen wide column">
-                    <form:hidden path="fileName"/>
-                    <form:hidden path="filePath"/>
-                    <form:hidden path="originalName"/>
-                    <div class="file-upload-header">
-                        <label for="smsFile" class="ui button brand mini compact">파일찾기</label>
-                        <input type="file" id="smsFile" onchange="uploadFile(this.files[0])">
-                        <span class="smsFile-name">No file selected</span>
-                    </div>
-                    <div>
-                        <progress value="0" max="100" style="width:100%"></progress>
-                    </div>
-                </div>
-            </div>--%>
         </div>
     </div>
     <div class="actions form-actions">
@@ -206,7 +190,7 @@
     }
     defaultSmsTemplates();
 
-    let cid = $('#cid option:selected').val();
+    let cid = $('#cid${(g.usingServices.contains('AST') && g.user.isAstIn eq 'Y') || (g.usingServices.contains('BSTT') && g.user.isAstStt eq 'Y') ? "-stt" : ""} option:selected').val();
     if (cid != null) {
         $('#serviceNumber').val(cid);
     }

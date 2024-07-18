@@ -38,6 +38,9 @@ public class PersonFormUpdateRequest extends BaseForm {
 	private String isStat;           // 통계,모니터링
 	private String isCti;           // 상담원연결여부
 	private String isChatt;           // 메신저 사용 여부
+	private String isAstIn;		   // 통합상담어시스트
+	private String isAstOut;		   // 독립상담어시스트
+	private String isAstStt;		   // 상담어시스트STT
 
 	/**
 	 * @see kr.co.eicn.ippbx.model.enums.RecordingAuthorityType

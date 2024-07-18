@@ -88,7 +88,7 @@ public class CommonStatMemberStatus extends TableImpl<CommonStatMemberStatusReco
      */
     @Override
     public UniqueKey<CommonStatMemberStatusRecord> getPrimaryKey() {
-        return org.jooq.impl.Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ);
+        return org.jooq.impl.Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
     /**
@@ -96,7 +96,7 @@ public class CommonStatMemberStatus extends TableImpl<CommonStatMemberStatusReco
      */
     @Override
     public List<UniqueKey<CommonStatMemberStatusRecord>> getKeys() {
-        return Collections.singletonList(Internal.createUniqueKey(this, "KEY_" + getName() + "_PRIMARY", this.SEQ));
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
     @Override
