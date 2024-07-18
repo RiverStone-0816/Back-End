@@ -56,7 +56,7 @@ eicn:
   service:
     base-url: http://localhost:21003
     servicekind: SC
-  version: 20240709
+  version: 20240718
   debugging: true
   swagger:
     api-package: kr.co.eicn.ippbx.front.controller.api
@@ -100,3 +100,35 @@ eicn:
   message:
     url:
       id: message_connector
+stt:
+  transcribe:
+    dbHost: 122.49.74.102
+
+assist:
+  kms:
+    auth:
+      # KMS 로그인 (인증)
+      url: https://assist.eicn.co.kr:3006/api/assist/graphql
+    api:
+      # KMS 게시글
+      url: https://assist.eicn.co.kr/kms/graphql
+  stt:
+    socket:
+      # stt 소켓 연결
+      url: https://assist.eicn.co.kr:8087
+    request:
+      # stt 가져오기 url
+      url: https://assist.eicn.co.kr:8087
+  sso:
+    token:
+      get:
+        # 상담지원 버튼 클릭시, 상무님 서버로 부터 토큰을 발급 받음 (1)
+        url: https://dev.eicn.co.kr:8400/get_assist_token
+    request:
+      site:
+        # 상담지원 버튼 클릭시, 독립형 어시스트 사이트를 오픈 (2)
+        url: https://assist.eicn.co.kr:3006/login
+  login:
+    record:
+      # 유저 로그인시 session 기록용 url
+      user: https://dev.eicn.co.kr:8400/login_info
