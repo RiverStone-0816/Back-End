@@ -126,7 +126,7 @@
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbData">
+                    <table class="ui celled table structured compact unstackable line-break-table ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="MaindbData">
                         <thead>
                         <tr>
                             <th rowspan="2">번호</th>
@@ -159,32 +159,41 @@
 
                                         <c:forEach var="field" items="${customDbType.fields}">
                                             <c:set var="value" value="${customIdToFieldNameToValueMap.get(e.maindbSysCustomId).get(field.fieldId)}"/>
-                                            <td>
-                                                <c:choose>
-                                                    <c:when test="${field.fieldType == 'CODE'}">
-                                                        ${field.codes.stream().filter(code -> code.codeId == value).map(code -> code.codeName).findFirst().orElse('')}
-                                                    </c:when>
-                                                    <c:when test="${field.fieldType == 'MULTICODE'}">
+                                            <c:choose>
+                                                <c:when test="${field.fieldType == 'CODE'}">
+                                                    <td>
+                                                            ${field.codes.stream().filter(code -> code.codeId == value).map(code -> code.codeName).findFirst().orElse('')}
+                                                    </td>
+                                                </c:when>
+                                                <c:when test="${field.fieldType == 'MULTICODE'}">
+                                                    <td>
                                                         <c:forEach var="v" items="${value.split(',')}">
                                                             ${field.codes.stream().filter(code -> code.codeId == v).map(code -> code.codeName).findFirst().orElse('')}&ensp;
                                                         </c:forEach>
-                                                    </c:when>
-                                                    <c:when test="${field.fieldType == 'IMG'}">
+                                                    </td>
+                                                </c:when>
+                                                <c:when test="${field.fieldType == 'IMG'}">
+                                                    <td>
                                                         <c:choose>
                                                             <c:when test="${value.length() > 0}">
-                                                                <img class="profile-picture" src="${pageContext.request.contextPath}/api/maindb-data/resource?path=${g.urlEncode(value)}"
+                                                                <img class="profile-picture"
+                                                                     src="${pageContext.request.contextPath}/api/maindb-data/resource?path=${g.urlEncode(value)}"
                                                                      style="border-radius: 50%; width: 21px; height: 22px; overflow: hidden;"/>
                                                             </c:when>
                                                             <c:otherwise>
-                                                                <img class="profile-picture" src="<c:url value="/resources/ipcc-messenger/images/person.png"/>" style="border-radius: 50%; width: 21px; overflow: hidden;"/>
+                                                                <img class="profile-picture"
+                                                                     src="<c:url value="/resources/ipcc-messenger/images/person.png"/>"
+                                                                     style="border-radius: 50%; width: 21px; overflow: hidden;"/>
                                                             </c:otherwise>
                                                         </c:choose>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        ${g.htmlQuote(value)}
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </td>
+                                                    </td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <td class="${not empty value and fn:length(g.htmlQuote(value)) > 30 ? 'break-td mw300' : ''}">
+                                                            ${g.htmlQuote(value)}
+                                                    </td>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:forEach>
 
                                         <td>

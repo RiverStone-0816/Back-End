@@ -4556,3 +4556,14 @@ g {
   height: 6px;
   width: 6px;
 }
+
+.line-break-table {
+  .break-td {
+    word-break: break-all !important;
+    white-space: normal !important;
+
+    &.mw300 {
+      min-width: 300px !important;
+    }
+  }
+}

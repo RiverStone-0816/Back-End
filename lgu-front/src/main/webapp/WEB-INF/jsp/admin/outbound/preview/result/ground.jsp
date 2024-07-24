@@ -135,7 +135,7 @@
                     </div>
                 </div>
                 <div class="panel-body" style="overflow-x: auto;">
-                    <table class="ui celled table structured compact unstackable ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PreviewResult">
+                    <table class="ui celled table structured compact unstackable line-break-table ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PreviewResult">
                         <thead>
                         <tr>
                             <th rowspan="2">번호</th>
@@ -180,41 +180,49 @@
                                         <c:if test="${previewType != null}">
                                             <c:forEach var="field" items="${previewType.fields}">
                                                 <c:set var="value" value="${customIdToFieldNameToValueMap.get(e.customInfo.prvSysCustomId).get(field.fieldId)}"/>
-                                                <td>
-                                                    <c:choose>
-                                                        <c:when test="${field.fieldType == 'CODE'}">
-                                                            ${field.codes.stream().filter(e -> e.codeId == value).map(e -> e.codeName).findFirst().orElse('')}
-                                                        </c:when>
-                                                        <c:when test="${field.fieldType == 'MULTICODE'}">
+                                                <c:choose>
+                                                    <c:when test="${field.fieldType == 'CODE'}">
+                                                        <td>
+                                                                ${field.codes.stream().filter(e -> e.codeId == value).map(e -> e.codeName).findFirst().orElse('')}
+                                                        </td>
+                                                    </c:when>
+                                                    <c:when test="${field.fieldType == 'MULTICODE'}">
+                                                        <td>
                                                             <c:forEach var="v" items="${value.split(',')}">
                                                                 ${field.codes.stream().filter(e -> e.codeId == v).map(e -> e.codeName).findFirst().orElse('')}&ensp;
                                                             </c:forEach>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            ${g.htmlQuote(value)}
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
+                                                        </td>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <td class="${not empty value and fn:length(g.htmlQuote(value)) > 30 ? 'break-td mw300' : ''}">
+                                                                ${g.htmlQuote(value)}
+                                                        </td>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </c:forEach>
                                         </c:if>
                                         <c:if test="${resultType != null}">
                                             <c:forEach var="field" items="${resultType.fields}">
-                                                <td>
-                                                    <c:set var="value" value="${seqToFieldNameToValueMap.get(e.seq).get(field.fieldId)}"/>
-                                                    <c:choose>
-                                                        <c:when test="${field.fieldType == 'CODE'}">
-                                                            ${field.codes.stream().filter(e -> e.codeId == value).map(e -> e.codeName).findFirst().orElse('')}
-                                                        </c:when>
-                                                        <c:when test="${field.fieldType == 'MULTICODE'}">
+                                                <c:set var="value" value="${seqToFieldNameToValueMap.get(e.seq).get(field.fieldId)}"/>
+                                                <c:choose>
+                                                    <c:when test="${field.fieldType == 'CODE'}">
+                                                        <td>
+                                                                ${field.codes.stream().filter(e -> e.codeId == value).map(e -> e.codeName).findFirst().orElse('')}
+                                                        </td>
+                                                    </c:when>
+                                                    <c:when test="${field.fieldType == 'MULTICODE'}">
+                                                        <td>
                                                             <c:forEach var="v" items="${value.split(',')}">
                                                                 ${field.codes.stream().filter(e -> e.codeId == v).map(e -> e.codeName).findFirst().orElse('')}&ensp;
                                                             </c:forEach>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            ${g.htmlQuote(value)}
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </td>
+                                                        </td>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <td class="${not empty value and fn:length(g.htmlQuote(value)) > 30 ? 'break-td mw300' : ''}">
+                                                                ${g.htmlQuote(value)}
+                                                        </td>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </c:forEach>
                                         </c:if>
                                     </tr>
