@@ -46,21 +46,16 @@
     </c:if>
 
     <c:forEach items="${navigation.items}" var="i">
-        <c:if test="${navigation.page == i}">
-            <a href="javascript:" class="item active">${i}</a>
-        </c:if>
-        <c:if test="${navigation.page != i}">
-            <a href="${url}?${pageForm.getQuery(i)}"
-               class="item ${(not empty ajaxLoaderTarget) && ajaxLoaderEnable != false ? '-ajax-loader' : ''}"
-                    <c:if test="${not empty ajaxLoaderTarget}">
-                        data-ajaxify="false" data-target="<c:out value="${ajaxLoaderTarget}"/>"
-                    </c:if>
-                    <c:if test="${empty ajaxLoaderTarget}">
-                        onclick="$.blockUIFixed()"
-                    </c:if>>
-                    ${i}
-            </a>
-        </c:if>
+        <a href="${url}?${pageForm.getQuery(i)}"
+           class="item ${navigation.page != i ? '' : 'active'} ${(not empty ajaxLoaderTarget) && ajaxLoaderEnable != false ? '-ajax-loader' : ''}"
+                <c:if test="${not empty ajaxLoaderTarget}">
+                    data-ajaxify="false" data-target="<c:out value="${ajaxLoaderTarget}"/>"
+                </c:if>
+                <c:if test="${empty ajaxLoaderTarget}">
+                    onclick="$.blockUIFixed()"
+                </c:if>>
+                ${i}
+        </a>
     </c:forEach>
 
     <c:if test="${navigation.page < navigation.last}">
