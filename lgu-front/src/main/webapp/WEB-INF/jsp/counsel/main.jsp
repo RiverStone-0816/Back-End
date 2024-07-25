@@ -244,6 +244,8 @@
             $('#call-panel').addClass('active');
             $('#call-custom-input-panel,#call-counseling-input-panel').show();
             $('#talk-custom-input-panel,#talk-counseling-input-panel').hide();
+            $('.-counsel-panel-indicator[data-tab="call-panel"]').addClass('active');
+            $('.-counsel-panel-indicator[data-tab="talk-panel"]').removeClass('active');
             $('#etc-panel').parent().removeClass("ten wide column").addClass("nine wide column");
             $('#talk-custom-input-panel').parent().removeClass("six wide column").addClass("seven wide column");
 
