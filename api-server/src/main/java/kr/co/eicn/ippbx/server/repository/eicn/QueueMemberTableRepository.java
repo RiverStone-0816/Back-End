@@ -193,8 +193,8 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
         dslContext.update(QUEUE_MEMBER_TABLE)
                 .set(QUEUE_MEMBER_TABLE.USERID, (String) null)
                 .where(compareCompanyId())
-                .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.startsWith("QUEUE"))
-                .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.ne("QUEUE" + QUEUE_MEMBER_TABLE.MEMBERNAME))
+                .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.like("QUEUE%"))
+                .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.ne(DSL.concat("QUEUE", QUEUE_MEMBER_TABLE.MEMBERNAME)))
                 .and(QUEUE_MEMBER_TABLE.USERID.eq(userId))
                 .execute();
 
@@ -202,8 +202,8 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
             dslContext.update(QUEUE_MEMBER_TABLE)
                     .set(QUEUE_MEMBER_TABLE.USERID, userId)
                     .where(compareCompanyId())
-                    .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.startsWith("QUEUE"))
-                    .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.ne("QUEUE" + QUEUE_MEMBER_TABLE.MEMBERNAME))
+                    .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.like("QUEUE%"))
+                    .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.ne(DSL.concat("QUEUE", QUEUE_MEMBER_TABLE.MEMBERNAME)))
                     .and(QUEUE_MEMBER_TABLE.MEMBERNAME.eq(peer))
                     .execute();
         }
@@ -290,7 +290,7 @@ public class QueueMemberTableRepository extends EicnBaseRepository<QueueMemberTa
                 .where(compareCompanyId())
                 .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(""))
                 .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(QUEUE_MEMBER_TABLE.MEMBERNAME))
-                .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(DSL.field("'QUEUE'+{0}", String.class, QUEUE_MEMBER_TABLE.MEMBERNAME)))
+                .and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(DSL.concat("QUEUE", QUEUE_MEMBER_TABLE.MEMBERNAME)))
                 .and(QUEUE_MEMBER_TABLE.PAUSED.notEqual(100))
                 .and(PERSON_LIST.LICENSE_LIST.like("%" + LicenseListType.STAT.getCode() + "%"))
                 .groupBy(QUEUE_MEMBER_TABLE.QUEUE_NAME, QUEUE_MEMBER_TABLE.PAUSED)
