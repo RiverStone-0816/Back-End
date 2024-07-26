@@ -199,25 +199,34 @@
                     return;
                 }
 
-                noticeReservation(e.todoInfo, parseInt(e.detailConnectInfo));
+                noticeReservation(e.todoInfo, parseInt(e.detailConnectInfo), e.todoKind);
             }
         }
 
-        function noticeReservation(phone, time) {
-            const preTime = toastedCalling[phone];
+        function noticeReservation(todoInfo, time, kind) {
+            const preTime = toastedCalling[todoInfo];
+
             if (preTime) {
                 if (preTime === time)
                     return;
             }
 
-            toastedCalling[phone] = time;
+            toastedCalling[todoInfo] = time;
 
-            const div = $('<div/>').append(
-                $('<div/>', {onclick: "$(this).closest('.toast').find('.toast-close-button').click(); $('#calling-number${activeStt ? "-stt" : ""}').val('" + phone + "');", style: 'cursor: pointer;'})
-                    .append($('<text/>', {text: '[' + moment(time).format('HH:mm') + '] '}))
-                    .append($('<b/>', {text: phone}))
+            const divCall = $('<divCall/>').append($('<divCall/>', {onclick: "$(this).closest('.toast').find('.toast-close-button').click(); $('#calling-number').val('" + todoInfo + "');", style: 'cursor: pointer;'})
+                .append($('<text/>', {text: '[' + moment(time).format('HH:mm') + '] '}))
+                .append($('<b/>', {text: todoInfo}))
             );
-            toastr.warning(div.html(), '통화약속');
+            const divTalk = $('<divTalk/>').append($('<divTalk/>', {onclick: "$(this).closest('.toast').find('.toast-close-button').click();", style: 'cursor: pointer;'})
+                .append($('<text/>', {text: '[' + moment(time).format('HH:mm') + '] '}))
+                .append($('<b/>', {text: todoInfo}))
+            );
+
+            if (kind == 'RESERVE'){
+                toastr.warning(divCall.html(), '통화약속');
+            }else if (kind == 'TALK') {
+                toastr.warning(divTalk.html(), '상담톡약속');
+            }
         }
 
         $(document).ready(function () {
@@ -244,6 +253,8 @@
             $('#call-panel').addClass('active');
             $('#call-custom-input-panel,#call-counseling-input-panel').show();
             $('#talk-custom-input-panel,#talk-counseling-input-panel').hide();
+            $('.-counsel-panel-indicator[data-tab="call-panel"]').addClass('active');
+            $('.-counsel-panel-indicator[data-tab="talk-panel"]').removeClass('active');
             $('#etc-panel').parent().removeClass("ten wide column").addClass("nine wide column");
             $('#talk-custom-input-panel').parent().removeClass("six wide column").addClass("seven wide column");
 
@@ -343,8 +354,8 @@
             }), 'modal-search-maindb-custom');
         }
 
-        function popupSearchCounselingHistoryModal() {
-            popupDraggableModalFromReceivedHtml('/counsel/modal-search-counseling-history', 'modal-search-counseling-history');
+        function popupSearchCounselingHistoryModal(mode = 'call') {
+            popupDraggableModalFromReceivedHtml('/counsel/modal-search-counseling-history?mode=' + mode, 'modal-search-counseling-history');
         }
 
         function popupSearchCallHistoryModal() {

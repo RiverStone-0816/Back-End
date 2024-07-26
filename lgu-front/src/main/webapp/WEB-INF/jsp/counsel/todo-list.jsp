@@ -29,10 +29,26 @@
             <td><fmt:formatDate value="${e.regdate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
             <td>
                 <div class="ui action input fluid" style="text-align: center;">
-                    <c:if test="${e.todoInfo != null && e.todoInfo != ''}">
-                        <input type="text" readonly value="${g.htmlQuote(e.todoInfo)}"/>
-                        <button type="button" class="ui icon button" onclick="$('#calling-number${(g.usingServices.contains('AST') && g.user.isAstIn eq 'Y') || (g.usingServices.contains('BSTT') && g.user.isAstStt eq 'Y') ? "-stt" : ""}').val('${g.htmlQuote(e.todoInfo)}')"><i class="phone icon"></i></button>
-                    </c:if>
+                    <c:choose>
+                        <c:when test="${e.todoKind == 'TALK'}">
+                            <input type="text" readonly value="${g.htmlQuote(e.todoInfo)}"/>
+                            <a class = "item -counsel-panel-indicator active" data-tab="talk-panel">
+                                <button type="button" class="ui icon button" onclick="viewTalkRoom('${g.htmlQuote(e.todoInfo)}')">
+                                    <i class="comments outline icon"></i>
+                                </button>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <c:if test="${e.todoInfo != null && e.todoInfo != ''}">
+                                <input type="text" readonly value="${g.htmlQuote(e.todoInfo)}"/>
+                                <a class = "item -counsel-panel-indicator active" data-tab="call-panel">
+                                    <button type="button" class="ui icon button" onclick="viewCallPanel(); $('#calling-number${(g.usingServices.contains('AST') && g.user.isAstIn eq 'Y') || (g.usingServices.contains('BSTT') && g.user.isAstStt eq 'Y') ? "-stt" : ""}').val('${g.htmlQuote(e.todoInfo)}');">
+                                        <i class="phone icon"></i>
+                                    </button>
+                                </a>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </td>
             <td>${g.htmlQuote(message.getEnumText(e.todoStatus))}</td>
@@ -76,8 +92,7 @@
 
     function viewTalkRoom(roomId, test = true) {
         viewTalkPanel();
-
-        $('.-counsel-panel-indicator[data-tab="talk-panel"]').trigger("click");
+        $('.-counsel-panel-indicator[data-tab="call-panel"]').removeClass('active');
         $('.-counsel-panel-indicator[data-tab="talk-panel"]').addClass('active');
 
         if(!talkListContainer.roomMap[roomId]){
