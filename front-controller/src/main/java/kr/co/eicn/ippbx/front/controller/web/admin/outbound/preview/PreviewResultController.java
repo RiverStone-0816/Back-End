@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbResultController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.search.PreviewResultSearch;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.application.type.CommonTypeApiInterface;
 import kr.co.eicn.ippbx.front.service.api.outbound.preview.PreviewDataApiInterface;
@@ -29,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -57,17 +59,16 @@ public class PreviewResultController extends BaseController {
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") PreviewResultSearch search) throws IOException, ResultFailException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         final List<PrvGroup> previewGroups = previewDataApiInterface.prvGroup();
-        if (previewGroups.size() != 0) {
-
+        if (!CollectionUtils.isEmpty(previewGroups)) {
             final Map<Integer, String> groups = previewGroups.stream().collect(Collectors.toMap(PrvGroup::getSeq, PrvGroup::getName));
-            model.addAttribute("previewGroups", groups);
+            model.addAttribute("previewGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(groups));
 
             if (search.getGroupSeq() == null)
                 return "admin/outbound/preview/result/ground";
                 //search.setGroupSeq(previewGroups.get(0).getSeq());
 
             final Optional<PrvGroup> groupOptional = previewGroups.stream().filter(e -> Objects.equals(e.getSeq(), search.getGroupSeq())).findFirst();
-            if (!groupOptional.isPresent())
+            if (groupOptional.isEmpty())
                 throw new IllegalArgumentException("존재하지 않는 프리뷰 그룹입니다.(seq: " + search.getGroupSeq() + ")");
 
             final PrvGroup prvGroup = groupOptional.get();
@@ -79,21 +80,6 @@ public class PreviewResultController extends BaseController {
             model.addAttribute("previewType", previewType);
             final CommonTypeEntity resultType = commonTypeApiInterface.get(prvGroup.getResultType());
             model.addAttribute("resultType", resultType);
-
-            final Map<String, Map<String, String>> codeMap = new HashMap<>();
-            previewType.getFields().stream()
-                    .filter(e -> e.getCodes() != null && e.getCodes().size() > 0)
-                    .forEach(e -> {
-                        final Map<String, String> codes = e.getCodes().stream().collect(Collectors.toMap(CommonCodeEntity::getCodeId, CommonCodeEntity::getCodeName));
-                        codeMap.put(e.getFieldId(), codes);
-                    });
-            resultType.getFields().stream()
-                    .filter(e -> e.getCodes() != null && e.getCodes().size() > 0)
-                    .forEach(e -> {
-                        final Map<String, String> codes = e.getCodes().stream().collect(Collectors.toMap(CommonCodeEntity::getCodeId, CommonCodeEntity::getCodeName));
-                        codeMap.put(e.getFieldId(), codes);
-                    });
-            model.addAttribute("codeMap", new JSONObject(codeMap));
 
             model.addAttribute("seqToFieldNameToValueMap", MaindbResultController.createSeqToFieldNameToValueMap(pagination.getRows(), resultType));
             model.addAttribute("customIdToFieldNameToValueMap", PreviewDataController.createCustomIdToFieldNameToValueMap(pagination.getRows().stream().map(PrvResultCustomInfoEntity::getCustomInfo).collect(Collectors.toList()), previewType));
@@ -138,21 +124,21 @@ public class PreviewResultController extends BaseController {
     @GetMapping("_excel")
     public void downloadExcel(PreviewResultSearch search, HttpServletResponse response) throws IOException, ResultFailException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         final List<PrvGroup> previewGroups = previewDataApiInterface.prvGroup();
-        if (previewGroups.size() == 0)
+        if (CollectionUtils.isEmpty(previewGroups))
             throw new IllegalStateException("프리뷰 그룹이 존재하지 않습니다.");
 
         if (search.getGroupSeq() == null)
             search.setGroupSeq(previewGroups.get(0).getSeq());
 
         final Optional<PrvGroup> groupOptional = previewGroups.stream().filter(e -> Objects.equals(e.getSeq(), search.getGroupSeq())).findFirst();
-        if (!groupOptional.isPresent())
+        if (groupOptional.isEmpty())
             throw new IllegalArgumentException("존재하지 않는 프리뷰 그룹입니다.(seq: " + search.getGroupSeq() + ")");
 
         final PrvGroup prvGroup = groupOptional.get();
 
         search.setPage(1);
         search.setLimit(10000);
-        final Pagination<PrvResultCustomInfoEntity> pagination = apiInterface.getPagination(search.getGroupSeq(), search.convertToRequest("PRV_"));
+        final Pagination<PrvResultCustomInfoEntity> pagination = apiInterface.getPagination(search.getGroupSeq(), search.convertToRequest(""));
 
         final CommonTypeEntity previewType = commonTypeApiInterface.get(prvGroup.getPrvType());
         final CommonTypeEntity resultType = commonTypeApiInterface.get(prvGroup.getResultType());

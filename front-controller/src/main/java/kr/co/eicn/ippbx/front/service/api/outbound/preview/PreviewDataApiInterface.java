@@ -35,6 +35,8 @@ public class PreviewDataApiInterface extends ApiServerInterface {
         search.getDbTypeFields().forEach((key, condition) -> {
             if (StringUtils.isNotEmpty(condition.getKeyword()))
                 param.put("dbTypeFields[" + key + "].keyword", condition.getKeyword());
+            if (StringUtils.isNotEmpty(condition.getCode()))
+                param.put("dbTypeFields[" + key + "].code", condition.getCode());
             if (condition.getStartDate() != null)
                 param.put("dbTypeFields[" + key + "].startDate", condition.getStartDate().toString());
             if (condition.getEndDate() != null)

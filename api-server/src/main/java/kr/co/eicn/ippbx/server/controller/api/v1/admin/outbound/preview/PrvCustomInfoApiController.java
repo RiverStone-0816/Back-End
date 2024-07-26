@@ -73,21 +73,11 @@ public class PrvCustomInfoApiController extends ApiBaseController {
     public ResponseEntity<JsonResult<Void>> post(@Valid @RequestBody PrvCustomInfoFormRequest form, BindingResult bindingResult) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         if (!form.validate(bindingResult))
             throw new ValidationException(bindingResult);
-/*
-        PrvGroup prvGroup = prvGroupRepository.findOne(form.getGroupSeq());
-        CommonTypeEntity commonType = commonTypeRepository.getCommonType(prvGroup.getPrvType());
-        commonType.getFields()...
-
-
-        // check ... validate
-        if (!validate) {
-            bindingResult.reject("a가 필수 입니다." 가.. 맥스사이즈가 40BYTE입ㅁ니다);
-            throw new ValidationException(bindingResult);
-        }*/
 
         final PrvCustomInfoRepository repository = service.getRepository(form.getGroupSeq());
         repository.createTableIfNotExists();
         repository.insert(form);
+        groupRepository.updateTotalCntBySeq(form.getGroupSeq(), 1, true);
 
         return ResponseEntity.created(URI.create("api/v1/admin/outbound/preview/custominfo")).body(create());
     }
@@ -105,6 +95,7 @@ public class PrvCustomInfoApiController extends ApiBaseController {
     @DeleteMapping("{groupSeq}/data/{customId}")
     public ResponseEntity<JsonResult<Void>> delete(@PathVariable Integer groupSeq, @PathVariable String customId) {
         service.getRepository(groupSeq).delete(customId);
+        groupRepository.updateTotalCntBySeq(groupSeq, 1, false);
         return ResponseEntity.ok(create());
     }
 

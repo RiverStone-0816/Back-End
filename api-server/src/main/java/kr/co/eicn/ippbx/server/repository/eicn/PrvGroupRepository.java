@@ -10,6 +10,7 @@ import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
 import org.jooq.Condition;
 import org.jooq.Record;
+import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -35,6 +36,8 @@ public class PrvGroupRepository extends EicnBaseRepository<PrvGroup, kr.co.eicn.
         this.commonMemberRepository = commonMemberRepository;
         this.companyTreeRepository = companyTreeRepository;
         this.numberRepository = numberRepository;
+
+        addOrderingField(PRV_GROUP.NAME.asc());
     }
 
     public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PrvGroup> pagination(PrvGroupSearchRequest search) {
@@ -186,5 +189,13 @@ public class PrvGroupRepository extends EicnBaseRepository<PrvGroup, kr.co.eicn.
             conditions.add(PRV_GROUP.NAME.like("%" + search.getName() + "%"));
 
         return conditions;
+    }
+
+    public void updateTotalCntBySeq(Integer seq, Integer cnt, Boolean sign) {
+        dsl.update(PRV_GROUP)
+                .set(PRV_GROUP.TOTAL_CNT,
+                     DSL.field("{0} " + (sign ? "+" : "-") + "{1}", Integer.class, PRV_GROUP.TOTAL_CNT, cnt))
+                .where(PRV_GROUP.SEQ.eq(seq))
+                .execute();
     }
 }

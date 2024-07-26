@@ -48,7 +48,7 @@ public class PreviewResultExcel extends AbstractExcel {
         final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = PreviewDataController.createCustomIdToFieldNameToValueMap(list.stream().map(PrvResultCustomInfoEntity::getCustomInfo).collect(Collectors.toList()), previewType);
         final Map<Integer, Map<String, Object>> seqToFieldNameToValueMap = MaindbResultController.createSeqToFieldNameToValueMap(list, resultType);
         for (PrvResultCustomInfoEntity e : list) {
-            final List<String> row = new ArrayList<>(Arrays.asList(niceFormat(e.getResultDate()), niceFormat(e.getUpdateDate()), niceFormat(e.getUserName()), g.messageOf("ResultHangupCause", e.getHangupCause())));
+            final List<String> row = new ArrayList<>(Arrays.asList(niceFormat(e.getResultDate()), niceFormat(e.getUpdateDate()), niceFormat(e.getUserName()), niceFormat(g.messageOf("ResultHangupCause", e.getHangupCause()))));
 
             previewType.getFields().forEach(field -> {
                 final Object value = customIdToFieldNameToValueMap.get(e.getCustomInfo().getPrvSysCustomId()).get(field.getFieldId());

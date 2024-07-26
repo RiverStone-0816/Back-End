@@ -77,9 +77,9 @@ public class PDSResultCustomInfoRepository extends PDSDbBaseRepository<CommonPDS
 
     public void createTableIfNotExists(DSLContext dslContext) {
         dslContext.createTableIfNotExists(TABLE)
-                .columns(RESULT_CUSTOM_INFO.fields())
+                .columns(TABLE.fields())
                 .constraint(DSL.constraint(TABLE.SEQ.getName()).primaryKey(TABLE.SEQ.getName()))
-                .indexes(RESULT_CUSTOM_INFO.getIndexes().stream().filter(index -> !"PRIMARY".equals(index.getName())).collect(Collectors.toList()))
+                .indexes(TABLE.getIndexes().stream().filter(index -> !"PRIMARY".equals(index.getName())).collect(Collectors.toList()))
                 .storage("ENGINE=MyISAM")
                 .execute();
     }
@@ -124,26 +124,26 @@ public class PDSResultCustomInfoRepository extends PDSDbBaseRepository<CommonPDS
                 logger.warn("invalid type: " + k);
             } else if (field.getType().equals(Date.class) || field.getType().equals(Timestamp.class)) {
                 if (v.getStartDate() != null)
-                    conditions.add(DSL.cast(field, Date.class).greaterOrEqual(v.getStartDate()));
+                    conditions.add(TABLE.field(k, Date.class).greaterOrEqual(v.getStartDate()));
                 if (v.getEndDate() != null)
-                    conditions.add(DSL.cast(field, Date.class).lessOrEqual(v.getEndDate()));
+                    conditions.add(TABLE.field(k, Date.class).lessOrEqual(v.getEndDate()));
             } else if (k.contains("_INT_") || k.contains("_CODE_") || k.contains("_CONCODE_") || k.contains("_CSCODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
                 if (StringUtils.isNotEmpty(v.getKeyword()))
-                    conditions.add(DSL.cast(field, String.class).eq(v.getKeyword()));
+                    conditions.add(TABLE.field(k, String.class).eq(v.getKeyword()));
             } else if (k.contains("_STRING_") || k.contains("_NUMBER_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
                 if (StringUtils.isNotEmpty(v.getKeyword()))
-                    conditions.add(DSL.cast(field, String.class).like("%" + v.getKeyword() + "%"));
+                    conditions.add(TABLE.field(k, String.class).like("%" + v.getKeyword() + "%"));
             } else if (k.contains("_MULTICODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
                 if (StringUtils.isNotEmpty(v.getKeyword()))
                     conditions.add(
-                            DSL.cast(field, String.class).likeRegex("^" + v.getKeyword() + ",")
-                                    .or(DSL.cast(field, String.class).likeRegex("^" + v.getKeyword() + "$"))
-                                    .or(DSL.cast(field, String.class).likeRegex("," + v.getKeyword() + "$"))
-                                    .or(DSL.cast(field, String.class).likeRegex("," + v.getKeyword() + ","))
+                            TABLE.field(k, String.class).likeRegex("^" + v.getKeyword() + ",")
+                                    .or(TABLE.field(k, String.class).likeRegex("^" + v.getKeyword() + "$"))
+                                    .or(TABLE.field(k, String.class).likeRegex("," + v.getKeyword() + "$"))
+                                    .or(TABLE.field(k, String.class).likeRegex("," + v.getKeyword() + ","))
                     );
             } else {
                 if (StringUtils.isNotEmpty(v.getKeyword()))
-                    conditions.add(DSL.cast(field, String.class).eq(v.getKeyword()));
+                    conditions.add(TABLE.field(k, String.class).eq(v.getKeyword()));
             }
         });
 

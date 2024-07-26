@@ -40,26 +40,12 @@
                         <div class="ui grid">
                             <div class="row">
                                 <div class="two wide column"><label class="control-label">프리뷰 그룹</label></div>
-                                <div class="two wide column">
+                                <div class="five wide column">
                                     <div class="ui form">
                                         <form:select path="groupSeq">
                                             <form:option value="" label="선택안함" />
                                             <form:options  items="${previewGroups}"/>
                                         </form:select>
-                                    </div>
-                                </div>
-                                <div class="two wide column"><label class="control-label">데이터생성일</label></div>
-                                <div class="five wide column">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
-                                            <label for="createdStartDate" style="display:none">From</label>
-                                            <form:input path="createdStartDate" cssClass="-datepicker" placeholder="시작일"/>
-                                        </div>
-                                        <span class="tilde">~</span>
-                                        <div class="dp-wrap">
-                                            <label for="createdEndDate" style="display:none">to</label>
-                                            <form:input path="createdEndDate" cssClass="-datepicker" placeholder="종료일"/>
-                                        </div>
                                     </div>
                                 </div>
                                 <div class="two wide column"><label class="control-label">담당자</label></div>
@@ -73,17 +59,17 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="two wide column"><label class="control-label">마지막상담일</label></div>
+                                <div class="two wide column"><label class="control-label">데이터생성일</label></div>
                                 <div class="five wide column">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
+                                    <div class="date-picker from-to" style="width: 100%">
+                                        <div class="dp-wrap" style="width: 50%">
                                             <label for="createdStartDate" style="display:none">From</label>
-                                            <form:input path="lastResultStartDate" cssClass="-datepicker" placeholder="시작일"/>
+                                            <form:input path="createdStartDate" cssClass="-datepicker" placeholder="시작일" cssStyle="width: 100%;"/>
                                         </div>
                                         <span class="tilde">~</span>
-                                        <div class="dp-wrap">
+                                        <div class="dp-wrap" style="width: 50%">
                                             <label for="createdEndDate" style="display:none">to</label>
-                                            <form:input path="lastResultEndDate" cssClass="-datepicker" placeholder="종료일"/>
+                                            <form:input path="createdEndDate" cssClass="-datepicker" placeholder="종료일" cssStyle="width: 100%;"/>
                                         </div>
                                     </div>
                                 </div>
@@ -109,22 +95,50 @@
                                         </form:select>
                                     </div>
                                 </div>
-                                <%--<div class="five wide column -search-type-sub-input" data-type="DATE">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
+                                <div class="five wide column -search-type-sub-input" data-type="DATE">
+                                    <div class="date-picker from-to" style="width: 100%">
+                                        <div class="dp-wrap" style="width: 50%">
                                             <label for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일" cssStyle="width: 100%;"/>
                                         </div>
                                         <span class="tilde">~</span>
-                                        <div class="dp-wrap">
+                                        <div class="dp-wrap" style="width: 50%">
                                             <label for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일" cssStyle="width: 100%;"/>
                                         </div>
                                     </div>
-                                </div>--%>
-                                <div class="two wide column -search-type-sub-input">
+                                </div>
+                                <div class="two wide column -search-type-sub-input" data-type="TEXT">
                                     <div class="ui input fluid">
                                         <form:input path="keyword"/>
+                                    </div>
+                                </div>
+                                <div class="two wide column -search-type-sub-input" data-type="CODE">
+                                    <div class="ui form">
+                                        <form:select path="code"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="two wide column"><label class="control-label">마지막상담일</label></div>
+                                <div class="five wide column">
+                                    <div class="date-picker from-to" style="width: 100%">
+                                        <div class="dp-wrap" style="width: 50%">
+                                            <label for="createdStartDate" style="display:none">From</label>
+                                            <form:input path="lastResultStartDate" cssClass="-datepicker" placeholder="시작일" cssStyle="width: 100%;"/>
+                                        </div>
+                                        <span class="tilde">~</span>
+                                        <div class="dp-wrap" style="width: 50%">
+                                            <label for="createdEndDate" style="display:none">to</label>
+                                            <form:input path="lastResultEndDate" cssClass="-datepicker" placeholder="종료일" cssStyle="width: 100%;"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="two wide column"><label class="control-label">추가조건선택</label></div>
+                                <div class="three wide column">
+                                    <div class="ui checkbox">
+                                        <form:checkbox path="isConsultComplete" value="Y"/>
+                                        <label>상담미완료</label>
                                     </div>
                                 </div>
                             </div>
@@ -212,28 +226,26 @@
                                         </c:if>
                                         <c:if test="${resultType != null}">
                                             <c:forEach var="field" items="${resultType.fields}">
-                                                <c:if test="${e.result != null}">
-                                                    <c:set var="value" value="${seqToFieldNameToValueMap.get(e.result.seq).get(field.fieldId)}"/>
-                                                    <c:choose>
-                                                        <c:when test="${field.fieldType == 'CODE'}">
-                                                            <td>
-                                                                    ${field.codes.stream().filter(e -> e.codeId == value).map(e -> e.codeName).findFirst().orElse('')}
-                                                            </td>
-                                                        </c:when>
-                                                        <c:when test="${field.fieldType == 'MULTICODE'}">
-                                                            <td>
-                                                                <c:forEach var="v" items="${value.split(',')}">
-                                                                    ${field.codes.stream().filter(e -> e.codeId == v).map(e -> e.codeName).findFirst().orElse('')}&ensp;
-                                                                </c:forEach>
-                                                            </td>
-                                                        </c:when>
-                                                        <c:otherwise>
-                                                            <td class="${not empty value and fn:length(g.htmlQuote(value)) > 30 ? 'break-td mw300' : ''}">
-                                                                    ${g.htmlQuote(value)}
-                                                            </td>
-                                                        </c:otherwise>
-                                                    </c:choose>
-                                                </c:if>
+                                                <c:set var="value" value="${e.result != null ? seqToFieldNameToValueMap.get(e.result.seq).get(field.fieldId).trim() : ''}"/>
+                                                <c:choose>
+                                                    <c:when test="${field.fieldType == 'CODE'}">
+                                                        <td>
+                                                                ${field.codes.stream().filter(e -> e.codeId == value).map(e -> e.codeName).findFirst().orElse('')}
+                                                        </td>
+                                                    </c:when>
+                                                    <c:when test="${field.fieldType == 'MULTICODE'}">
+                                                        <td>
+                                                            <c:forEach var="v" items="${value.split(',')}">
+                                                                ${field.codes.stream().filter(e -> e.codeId == v).map(e -> e.codeName).findFirst().orElse('')}&ensp;
+                                                            </c:forEach>
+                                                        </td>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <td class="${not empty value and fn:length(g.htmlQuote(value)) > 30 ? 'break-td mw300' : ''}">
+                                                                ${g.htmlQuote(value)}
+                                                        </td>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </c:forEach>
                                         </c:if>
                                         <td>
@@ -261,14 +273,58 @@
 
     <tags:scripts>
         <script>
-            $('#search-form [name=searchType]').change(function () {
+            const codeMapInfo = {
+                <c:forEach var="field" items="${previewType.fields}">
+                <c:if test="${fn:contains(field.fieldId, 'CODE') and field.issearch == 'Y'}">
+                '${field.fieldId}' : {
+                    <c:forEach var="code" items="${field.codes}">
+                    '${code.sequence}' : {
+                        'codeId' : '${code.codeId}',
+                        'codeName' : '${code.codeName}',
+                    },
+                    </c:forEach>
+                },
+                </c:if>
+                </c:forEach>
+                <c:forEach var="field" items="${resultType.fields}">
+                <c:if test="${fn:contains(field.fieldId, 'CODE') and field.issearch == 'Y'}">
+                '${field.fieldId}' : {
+                    <c:forEach var="code" items="${field.codes}">
+                    '${code.sequence}' : {
+                        'codeId' : '${code.codeId}',
+                        'codeName' : '${code.codeName}',
+                    },
+                    </c:forEach>
+                },
+                </c:if>
+                </c:forEach>
+            };
+
+            const searchForm = $('#search-form');
+
+            searchForm.find('[name=searchType]').change(function () {
                 const type = $(this).find(':selected').attr('data-type');
+                const fieldId = $(this).find(':selected').val();
                 const subInput = $('.-search-type-sub-input').hide();
+                const codeSelect = $('#code');
+
+                $('input[name=startDate]').val('');
+                $('input[name=endDate]').val('');
+                codeSelect.empty();
+                $('#keyword').val('');
 
                 if (['DATE', 'DAY', 'DATETIME'].indexOf(type) >= 0) {
                     subInput.filter('[data-type="DATE"]').show();
+                } else if (['CODE', 'MULTICODE'].indexOf(type) >= 0) {
+                    const codeMap = codeMapInfo[fieldId];
+                    codeSelect.append($('<option/>', {value: '', text: '선택안함'}));
+                    for(let i = 0 ; i < Object.keys(codeMap).length ; i++) {
+                        codeSelect.append($('<option/>', {value: codeMap[i].codeId, text: codeMap[i].codeName}));
+                    }
+
+                    subInput.filter('[data-type="CODE"]').show();
                 } else {
-                    subInput.filter(':not([data-type="DATE"])').show();
+                    subInput.filter('[data-type="TEXT"]').show();
                 }
             }).change();
 
@@ -302,12 +358,22 @@
             function downloadExcel() {
                 window.open(contextPath + '/admin/outbound/preview/data/_excel?${g.escapeQuote(search.query)}', '_blank');
             }
+
             <c:if test="${previewGroups == null}">
             alert("[프리뷰 그룹] 이 없습니다.");
             </c:if>
+
             <c:if test="${g.user.idType eq 'M'}">
             $('#personIdInCharge').attr('disabled', 'true');
             </c:if>
+
+            $(window).on('load', function () {
+                $('#keyword').val('${search.keyword}').trigger("change");
+                $('#code').val('${search.code}').trigger("change");
+
+                $('input[name=startDate]').val('${search.startDate}');
+                $('input[name=endDate]').val('${search.endDate}');
+            });
         </script>
     </tags:scripts>
 </tags:tabContentLayout>

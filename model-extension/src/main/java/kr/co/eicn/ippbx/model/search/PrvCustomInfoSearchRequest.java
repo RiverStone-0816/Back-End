@@ -31,5 +31,8 @@ public class PrvCustomInfoSearchRequest extends PageForm {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = Constants.DEFAULT_TIMEZONE)
     private Date lastResultEndDate;
 
+    @PageQueryable
+    private Boolean isConsultComplete = false;
+
     private Map<String, MaindbDataSearchRequest.FieldCondition> dbTypeFields = new HashMap<>(); // 타입에 따른 필드 검색 조건
 }

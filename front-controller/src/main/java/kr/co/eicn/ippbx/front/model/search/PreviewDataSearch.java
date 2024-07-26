@@ -34,6 +34,9 @@ public class PreviewDataSearch extends PageForm {
     private Date lastResultEndDate;
 
     @PageQueryable
+    private Boolean isConsultComplete = false;
+
+    @PageQueryable
     private String searchType;
 
     @PageQueryable

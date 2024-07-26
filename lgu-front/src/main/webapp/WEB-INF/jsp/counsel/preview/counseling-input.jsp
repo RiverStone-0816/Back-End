@@ -185,8 +185,8 @@
     });
 
     window.preparePreviewCounselingInfoFormData = function (data) {
-        data.uniqueId = audioId;
-        data.customNumber = phoneNumber;
+        data.uniqueId = audioId || 'prv_' + new Date().getTime();
+        data.customNumber = phoneNumber ? phoneNumber : $('#preview-custom-input').find('.prv_phone_number').first().val();
 
         for (let name in data) {
             if (data.hasOwnProperty(name)) {
@@ -215,7 +215,7 @@
         phoneNumber = null;
         ipccCommunicator.status.clickKey = null;
 
-        $('#search-preview-form').submit();
+        $('#preview-list-body div.panel-footer a.item.active').trigger('click');
         loadPreviewCounselingInput($(form).find('[name=groupId]').val());
     };
 

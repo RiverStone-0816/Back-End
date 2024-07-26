@@ -72,7 +72,6 @@ public class PrvGroupApiController extends ApiBaseController {
 
                     return response;
                 })
-                .sorted(comparing(PrvGroupSummaryResponse::getSeq))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(data(new Pagination<>(rows, pagination.getPage(), pagination.getTotalCount(), search.getLimit())));

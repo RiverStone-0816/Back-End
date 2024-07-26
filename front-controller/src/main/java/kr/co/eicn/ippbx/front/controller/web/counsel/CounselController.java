@@ -746,21 +746,6 @@ public class CounselController extends BaseController {
         final CommonTypeEntity resultType = commonTypeApiInterface.get(customGroup.getResultType());
         model.addAttribute("resultType", resultType);
 
-        final Map<String, Map<String, String>> codeMap = new HashMap<>();
-        customDbType.getFields().stream()
-                .filter(e -> e.getCodes() != null && e.getCodes().size() > 0)
-                .forEach(e -> {
-                    final Map<String, String> codes = e.getCodes().stream().collect(Collectors.toMap(CommonCodeEntity::getCodeId, CommonCodeEntity::getCodeName));
-                    codeMap.put(e.getFieldId(), codes);
-                });
-        resultType.getFields().stream()
-                .filter(e -> e.getCodes() != null && e.getCodes().size() > 0)
-                .forEach(e -> {
-                    final Map<String, String> codes = e.getCodes().stream().collect(Collectors.toMap(CommonCodeEntity::getCodeId, CommonCodeEntity::getCodeName));
-                    codeMap.put(e.getFieldId(), codes);
-                });
-        model.addAttribute("codeMap", new JSONObject(codeMap));
-
         model.addAttribute("seqToFieldNameToValueMap", MaindbResultController.createSeqToFieldNameToValueMap(pagination.getRows(), resultType));
         model.addAttribute("customIdToFieldNameToValueMap", MaindbDataController.createCustomIdToFieldNameToValueMap(pagination.getRows().stream().map(ResultCustomInfoEntity::getCustomInfo).collect(Collectors.toList()), customDbType));
 

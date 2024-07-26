@@ -20,7 +20,7 @@ public class PrvGroupFormRequest extends BaseForm {
     private String info;        //추가정보
 
     @NotNull("다이얼시간")
-    private Byte dialTimeout;
+    private Byte dialTimeout = 30;
     /**
      * @see kr.co.eicn.ippbx.model.enums.RidKind
      */

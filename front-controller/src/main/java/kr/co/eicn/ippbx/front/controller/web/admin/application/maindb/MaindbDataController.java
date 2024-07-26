@@ -97,15 +97,6 @@ public class MaindbDataController extends BaseController {
             customDbType.setFields(customDbType.getFields().stream().filter(e -> "Y".equals(e.getIsdisplayList())).collect(Collectors.toList()));
             model.addAttribute("customDbType", customDbType);
 
-            final Map<String, Map<String, String>> codeMap = new HashMap<>();
-            customDbType.getFields().stream()
-                    .filter(e -> e.getCodes() != null && e.getCodes().size() > 0)
-                    .forEach(e -> {
-                        final Map<String, String> codes = e.getCodes().stream().collect(Collectors.toMap(CommonCodeEntity::getCodeId, CommonCodeEntity::getCodeName));
-                        codeMap.put(e.getFieldId(), codes);
-                    });
-            model.addAttribute("codeMap", new JSONObject(codeMap));
-
             model.addAttribute("customIdToFieldNameToValueMap", createCustomIdToFieldNameToValueMap(pagination.getRows(), customDbType));
         }
         return "admin/application/maindb/data/ground";

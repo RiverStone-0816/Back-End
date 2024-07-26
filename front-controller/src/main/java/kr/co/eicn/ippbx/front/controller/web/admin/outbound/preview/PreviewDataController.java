@@ -4,6 +4,7 @@ import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.controller.web.admin.application.maindb.MaindbResultController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
 import kr.co.eicn.ippbx.front.model.search.PreviewDataSearch;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.application.type.CommonTypeApiInterface;
 import kr.co.eicn.ippbx.front.service.api.outbound.preview.PreviewGroupApiInterface;
@@ -28,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -78,14 +80,13 @@ public class PreviewDataController extends BaseController {
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") PreviewDataSearch search) throws IOException, ResultFailException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         final List<PrvGroup> previewGroups = apiInterface.prvGroup();
-        if (previewGroups.size() != 0) {
-
+        if (!CollectionUtils.isEmpty(previewGroups)) {
             //상담원일 경우 ID 강제 적용
             if (g.getUser().getIdType().equals("M"))
                 search.setPersonIdInCharge(g.getUser().getId());
 
             final Map<Integer, String> groups = previewGroups.stream().collect(Collectors.toMap(PrvGroup::getSeq, PrvGroup::getName));
-            model.addAttribute("previewGroups", groups);
+            model.addAttribute("previewGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(groups));
 
             final PrvGroup prvGroup1 = previewGroups.stream().filter(e -> Objects.equals(e.getSeq(), search.getGroupSeq())).findFirst().orElse(null);
 
@@ -164,21 +165,21 @@ public class PreviewDataController extends BaseController {
     @GetMapping("_excel")
     public void downloadExcel(PreviewDataSearch search, HttpServletResponse response) throws IOException, ResultFailException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
         final List<PrvGroup> previewGroups = apiInterface.prvGroup();
-        if (previewGroups.size() == 0)
+        if (CollectionUtils.isEmpty(previewGroups))
             throw new IllegalStateException("프리뷰 그룹이 존재하지 않습니다.");
 
         if (search.getGroupSeq() == null)
             search.setGroupSeq(previewGroups.get(0).getSeq());
 
         final Optional<PrvGroup> groupOptional = previewGroups.stream().filter(e -> Objects.equals(e.getSeq(), search.getGroupSeq())).findFirst();
-        if (!groupOptional.isPresent())
+        if (groupOptional.isEmpty())
             throw new IllegalArgumentException("존재하지 않는 프리뷰 그룹입니다.(seq: " + search.getGroupSeq() + ")");
 
         final PrvGroup prvGroup = groupOptional.get();
 
         search.setPage(1);
         search.setLimit(10000);
-        final Pagination<PrvCustomInfoEntity> pagination = apiInterface.getPagination(search.getGroupSeq(), search.convertToRequest("PRV_"));
+        final Pagination<PrvCustomInfoEntity> pagination = apiInterface.getPagination(search.getGroupSeq(), search.convertToRequest(""));
 
         final CommonTypeEntity previewType = commonTypeApiInterface.get(prvGroup.getPrvType());
         final CommonTypeEntity resultType = commonTypeApiInterface.get(prvGroup.getResultType());

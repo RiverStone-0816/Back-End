@@ -339,6 +339,49 @@ pre {
         }
       }
     }
+
+
+    #consulting-screen-prv{
+      height: 95%;
+      overflow: hidden;
+      .consulting-panel-prv {
+        height: 100%;
+        #consulting-panel-prv {
+          height: 100%;
+          padding-left: 0;
+          padding-bottom: 0;
+
+          #prv-custom-input-panel {
+            height: 50%;
+
+            #preview-custom-input {
+              height: 98%;
+            }
+          }
+
+          #prv-counseling-input-panel {
+            height: ~"calc(50% + 1rem)";
+
+            #preview-counseling-input {
+              height: 100%;
+            }
+          }
+
+          td input[type="text"]:read-only, textarea[type="text"]:read-only {
+            background-color: lightyellow !important;
+          }
+
+          .ui.form textarea, input {
+            padding: 5.5px !important;
+          }
+
+          .panel-heading {
+            min-height: 42px;
+            max-height: 42px;
+          }
+        }
+      }
+    }
   }
   .tab-content {
     display: none;

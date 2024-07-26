@@ -122,8 +122,10 @@
             </div>
         </div>
         <c:if test="${hasExtension && isCti and usingServices.contains('PRV')}">
-            <div class="ui tab" data-tab="preview-tab">
-                <jsp:include page="/counsel/preview/"/>
+            <div class="ui tab" id="consulting-screen-prv" data-tab="preview-tab">
+                <div class="ui grid consulting-panel-prv">
+                    <jsp:include page="/counsel/preview/"/>
+                </div>
             </div>
         </c:if>
         <div class="ui tab -configured-tab" data-tab="menu1">상담결과이력</div>

@@ -14,8 +14,10 @@ import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,15 +77,17 @@ public class PrvResultCustomInfoApiController extends ApiBaseController {
         final PrvResultCustomInfoRepository repository = service.getRepository(form.getGroupId());
         repository.createTableIfNotExists();
 
-        final PrvResultCustomInfoSearchRequest search = new PrvResultCustomInfoSearchRequest();
-        search.setClickKey(form.getClickKey());
+        if (StringUtils.isNotEmpty(form.getClickKey()) && !form.getClickKey().equals("nonClickKey") && !form.getGroupKind().equals("TALK")) {
+            final PrvResultCustomInfoSearchRequest search = new PrvResultCustomInfoSearchRequest();
+            search.setClickKey(form.getClickKey());
+            final List<PrvResultCustomInfoEntity> seqCheck = repository.getOne(search);
 
-        final Pagination<PrvResultCustomInfoEntity> seqCheck = repository.pagination(search);
-        if (!seqCheck.getRows().isEmpty()) {
-            repository.update(form, seqCheck.getRows().get(0).getSeq());
-        } else {
+            if (!CollectionUtils.isEmpty(seqCheck))
+                repository.update(form, seqCheck.get(0).getSeq());
+            else
+                repository.insert(form);
+        } else
             repository.insert(form);
-        }
 
         return ResponseEntity.created(URI.create("api/v1/admin/outbound/preview/custominfo_add")).body(create());
     }

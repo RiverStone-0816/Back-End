@@ -391,6 +391,33 @@
             });
         });
 
+        const codeMapInfo = {
+            <c:forEach var="field" items="${customDbType.fields}">
+            <c:if test="${fn:contains(field.fieldId, 'CODE') and field.issearch == 'Y'}">
+            '${field.fieldId}' : {
+                <c:forEach var="code" items="${field.codes}">
+                '${code.sequence}' : {
+                    'codeId' : '${code.codeId}',
+                    'codeName' : '${code.codeName}',
+                },
+                </c:forEach>
+            },
+            </c:if>
+            </c:forEach>
+            <c:forEach var="field" items="${resultType.fields}">
+            <c:if test="${fn:contains(field.fieldId, 'CODE') and field.issearch == 'Y'}">
+            '${field.fieldId}' : {
+                <c:forEach var="code" items="${field.codes}">
+                '${code.sequence}' : {
+                    'codeId' : '${code.codeId}',
+                    'codeName' : '${code.codeName}',
+                },
+                </c:forEach>
+            },
+            </c:if>
+            </c:forEach>
+        };
+
         modal.find('[name=searchType]').change(function () {
             const type = $(this).find(':selected').attr('data-type');
             const fieldId = $(this).find(':selected').val();
@@ -405,12 +432,11 @@
             if (['DATE', 'DAY', 'DATETIME'].indexOf(type) >= 0) {
                 subInput.filter('[data-type="DATE"]').show();
             } else if (['CODE', 'MULTICODE'].indexOf(type) >= 0) {
-                const codeMap = JSON.parse('${codeMap}')[fieldId];
+                const codeMap = codeMapInfo[fieldId];
                 codeSelect.append($('<option/>', {value: '', text: '선택안함'}));
-                for (const key in codeMap) {
-                    if (codeMap.hasOwnProperty(key)) {
-                        codeSelect.append($('<option/>', {value: key, text: codeMap[key]}));
-                    }
+                const codeLength = codeMap ? Object.keys(codeMap).length : 0;
+                for(let i = 0 ; i < codeLength ; i++) {
+                    codeSelect.append($('<option/>', {value: codeMap[i].codeId, text: codeMap[i].codeName}));
                 }
 
                 subInput.filter('[data-type="CODE"]').show();
@@ -423,7 +449,6 @@
             modal.find('[name=channelData]').val('');
         });
     })();
-
 
     function setSearch() {
         $('#search-counseling-history-form').find('#keyword').val('${search.keyword}').trigger("change");

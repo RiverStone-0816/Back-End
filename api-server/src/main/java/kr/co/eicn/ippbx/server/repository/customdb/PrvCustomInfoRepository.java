@@ -46,7 +46,7 @@ public class PrvCustomInfoRepository extends CustomDBBaseRepository<CommonPrvCus
         this.TABLE = createTable(companyId, groupId);
         this.resultTable = PrvResultCustomInfoRepository.createTable(companyId, groupId);
 
-        addOrderingField(TABLE.PRV_SYS_UPLOAD_DATE.desc());
+        addOrderingField(TABLE.PRV_SYS_LAST_RESULT_ID.asc(), TABLE.PRV_SYS_LAST_RESULT_DATE.asc(), TABLE.PRV_SYS_CUSTOM_ID.asc());
     }
 
     public static CommonPrvCustomInfo createTable(String companyId, Integer groupId) {
@@ -76,7 +76,10 @@ public class PrvCustomInfoRepository extends CustomDBBaseRepository<CommonPrvCus
  .where();
  */
         return query
-                .leftJoin(resultTable).on(resultTable.CUSTOM_ID.eq(TABLE.PRV_SYS_CUSTOM_ID).and(TABLE.PRV_SYS_LAST_CALL_UNIQUEID.eq(resultTable.UNIQUEID)).and(resultTable.GROUP_KIND.eq("PHONE")))
+                .leftJoin(resultTable)
+                .on(resultTable.CUSTOM_ID.eq(TABLE.PRV_SYS_CUSTOM_ID)
+                            .and(TABLE.PRV_SYS_LAST_RESULT_ID.eq(resultTable.SEQ))
+                            .and(resultTable.GROUP_KIND.eq("PHONE")))
                 .where();
     }
 
@@ -87,6 +90,10 @@ public class PrvCustomInfoRepository extends CustomDBBaseRepository<CommonPrvCus
             final kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo customInfo = record.into(resultTable).into(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo.class);
             if (customInfo != null && customInfo.getSeq() != null)
                 entity.setResult(customInfo);
+
+            if (entity.getResult() == null)
+                entity.setPrvSysLastResultDate(null);
+
             return entity;
         };
     }
@@ -135,33 +142,40 @@ public class PrvCustomInfoRepository extends CustomDBBaseRepository<CommonPrvCus
         if (StringUtils.isNotEmpty(search.getPersonIdInCharge()))
             conditions.add(TABLE.PRV_SYS_DAMDANG_ID.eq(search.getPersonIdInCharge()));
 
+        if(search.getIsConsultComplete())
+            conditions.add(resultTable.SEQ.isNull());
+
         search.getDbTypeFields().forEach((k, v) -> {
-            final Field<?> field = TABLE.field(k) != null ? TABLE.field(k) : resultTable.field(k);
+            final Table<?> table = k.startsWith("PRV") ? TABLE : resultTable;
+            final Field<?> field = table.field(k);
 
             if (field == null) {
                 logger.warn("invalid type: " + k);
             } else if (field.getType().equals(Date.class) || field.getType().equals(Timestamp.class)) {
                 if (v.getStartDate() != null)
-                    conditions.add(DSL.cast(field, Date.class).greaterOrEqual(v.getStartDate()));
+                    conditions.add(table.field(k, Date.class).ge(v.getStartDate()));
                 if (v.getEndDate() != null)
-                    conditions.add(DSL.cast(field, Date.class).lessOrEqual(v.getEndDate()));
-            } else if (k.contains("_INT_") || k.contains("_CODE_") || k.contains("_CONCODE_") || k.contains("_CSCODE_")) {
+                    conditions.add(table.field(k, Date.class).le(v.getEndDate()));
+            } else if (k.contains("_INT_")) {
                 if (StringUtils.isNotEmpty(v.getKeyword()))
-                    conditions.add(DSL.cast(field, String.class).eq(v.getKeyword()));
+                    conditions.add(table.field(k, String.class).eq(v.getKeyword()));
+            } else if (k.contains("_CODE_") || k.contains("_CONCODE_") || k.contains("_CSCODE_")) {
+                if (StringUtils.isNotEmpty(v.getCode()))
+                    conditions.add(table.field(k, String.class).eq(v.getCode()));
             } else if (k.contains("_STRING_") || k.contains("_NUMBER_")) {
                 if (StringUtils.isNotEmpty(v.getKeyword()))
-                    conditions.add(DSL.cast(field, String.class).like("%" + v.getKeyword() + "%"));
+                    conditions.add(table.field(k, String.class).like("%" + v.getKeyword() + "%"));
             } else if (k.contains("_MULTICODE_")) {
-                if (StringUtils.isNotEmpty(v.getKeyword()))
+                if (StringUtils.isNotEmpty(v.getCode()))
                     conditions.add(
-                            DSL.cast(field, String.class).likeRegex("^" + v.getKeyword() + ",")
-                                    .or(DSL.cast(field, String.class).likeRegex("^" + v.getKeyword() + "$"))
-                                    .or(DSL.cast(field, String.class).likeRegex("," + v.getKeyword() + "$"))
-                                    .or(DSL.cast(field, String.class).likeRegex("," + v.getKeyword() + ","))
+                            table.field(k, String.class).likeRegex("^" + v.getCode() + ",")
+                                    .or(table.field(k, String.class).likeRegex("^" + v.getCode() + "$"))
+                                    .or(table.field(k, String.class).likeRegex("," + v.getCode() + "$"))
+                                    .or(table.field(k, String.class).likeRegex("," + v.getCode() + ","))
                     );
             } else {
                 if (StringUtils.isNotEmpty(v.getKeyword()))
-                    conditions.add(DSL.cast(field, String.class).eq(v.getKeyword()));
+                    conditions.add(table.field(k, String.class).eq(v.getKeyword()));
             }
         });
 
@@ -212,11 +226,6 @@ public class PrvCustomInfoRepository extends CustomDBBaseRepository<CommonPrvCus
         }
 
         query.execute();
-
-        dsl.update(PRV_GROUP)
-                .set(PRV_GROUP.TOTAL_CNT, PRV_GROUP.TOTAL_CNT.add(1))
-                .where(PRV_GROUP.SEQ.eq(prvGroup.getSeq()))
-                .execute();
     }
 
     @SuppressWarnings("unchecked")
@@ -256,12 +265,6 @@ public class PrvCustomInfoRepository extends CustomDBBaseRepository<CommonPrvCus
         final PrvCustomInfoEntity entity = findOneIfNullThrow(id);
 
         delete(entity.getPrvSysCustomId());
-
-        // TODO: 안좋은 코드. 다른 connector를 무단으로 사용
-        dsl.update(PRV_GROUP)
-                .set(PRV_GROUP.TOTAL_CNT, PRV_GROUP.TOTAL_CNT.minus(1))
-                .where(PRV_GROUP.SEQ.eq(entity.getPrvSysGroupId()))
-                .execute();
     }
 
     public void updateLastResult(String customId, Integer resultId, Timestamp resultDate, Timestamp callDate, String callUniqueId, String hangupCause) {

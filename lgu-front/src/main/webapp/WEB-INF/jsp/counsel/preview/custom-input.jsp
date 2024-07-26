@@ -21,7 +21,7 @@
             <button type="button" class="ui button mini right floated compact blue" id="preview-submitButton">${entity != null ? '고객수정' : '신규등록'}</button>
         </c:if>
     </div>
-    <div class="panel-body" style="height: 270px;">
+    <div class="panel-body custom-info-panel">
         <div style="height: 100%;">
             <table class="ui table celled definition">
                 <tbody>
@@ -79,11 +79,20 @@
                                             </div>
                                         </div>
                                     </c:when>
-                                    <c:when test="${field.fieldType == 'INT' || field.fieldType == 'NUMBER'}">
+                                    <c:when test="${field.fieldType == 'INT'}">
                                         <div class="sixteen wide column">
                                             <div class="ui form fluid">
                                                 <div class="field">
                                                     <input type="text" name="${name}" id="${name}" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" class="-input-numerical" value="${g.htmlQuote(value)}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </c:when>
+                                    <c:when test="${field.fieldType == 'NUMBER'}">
+                                        <div class="sixteen wide column">
+                                            <div class="ui form fluid">
+                                                <div class="field">
+                                                    <input type="text" name="${name}" id="${name}" data-text="${g.htmlQuote(field.fieldInfo)}" data-value="${field.isneed}" class="-input-numerical prv_phone_number" value="${g.htmlQuote(value)}"/>
                                                 </div>
                                             </div>
                                         </div>

@@ -25,6 +25,7 @@ import kr.co.eicn.ippbx.model.enums.MultichannelChannelType;
 import kr.co.eicn.ippbx.model.form.PrvCustomInfoFormRequest;
 import kr.co.eicn.ippbx.model.form.ResultCustomInfoFormRequest;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +57,17 @@ public class CounselPreviewController extends BaseController {
     private final PreviewGroupApiInterface previewGroupApiInterface;
 
     @GetMapping("")
-    public String previewTab(Model model) {
+    public String previewTab(Model model) throws IOException, ResultFailException {
+        final List<PrvGroup> previewGroups = previewDataApiInterface.prvGroup();
+        if (previewGroups.isEmpty())
+            return "counsel/preview/body";
+
+        final PrvGroup prvGroup = previewGroups.get(0);
+        final CommonTypeEntity previewType = commonTypeApiInterface.get(prvGroup.getPrvType());
+        model.addAttribute("previewType", previewType);
+        final CommonTypeEntity resultType = commonTypeApiInterface.get(prvGroup.getResultType());
+        model.addAttribute("resultType", resultType);
+
         return "counsel/preview/body";
     }
 
@@ -64,7 +75,7 @@ public class CounselPreviewController extends BaseController {
     @GetMapping("list-body")
     public String previewListBody(Model model, @ModelAttribute("search") PreviewDataSearch search) throws IOException, ResultFailException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
         final List<PrvGroup> previewGroups = previewDataApiInterface.prvGroup();
-        if (previewGroups.size() == 0)
+        if (CollectionUtils.isEmpty(previewGroups))
             return "counsel/preview/list-body";
 
         final Map<Integer, String> groups = previewGroups.stream().collect(Collectors.toMap(PrvGroup::getSeq, PrvGroup::getName));
@@ -83,7 +94,7 @@ public class CounselPreviewController extends BaseController {
 
         final PrvGroup prvGroup = groupOptional.get();
 
-        final Pagination<PrvCustomInfoEntity> pagination = previewDataApiInterface.getPagination(search.getGroupSeq(), search.convertToRequest("PRV_"));
+        final Pagination<PrvCustomInfoEntity> pagination = previewDataApiInterface.getPagination(search.getGroupSeq(), search.convertToRequest(""));
         model.addAttribute("pagination", pagination);
 
         final CommonTypeEntity previewType = commonTypeApiInterface.get(prvGroup.getPrvType());

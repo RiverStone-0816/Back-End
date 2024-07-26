@@ -33,14 +33,14 @@ public class PreviewDataExcel extends AbstractExcel {
         for (int i = 1; i < resultType.getFields().size(); i++) firstHeader.add("");
         addRow(sheetHeadStyle, firstHeader.toArray());
 
-        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 0, 2));
-        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 3, 3 + previewType.getFields().size() - 1));
-        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 3 + previewType.getFields().size(), 3 + previewType.getFields().size() + resultType.getFields().size() - 1));
-
         final List<String> secondHeader = new ArrayList<>(Arrays.asList("데이터생성일", "담당자", "마지막상담일"));
         previewType.getFields().forEach(field -> secondHeader.add(field.getFieldInfo()));
         resultType.getFields().forEach(field -> secondHeader.add(field.getFieldInfo()));
         addRow(sheetHeadStyle, secondHeader.toArray());
+
+        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 0, 2));
+        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 3, 3 + previewType.getFields().size() - 1));
+        getSheet().addMergedRegion(new CellRangeAddress(0, 0, 3 + previewType.getFields().size(), 3 + previewType.getFields().size() + resultType.getFields().size() - 1));
 
         final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = PreviewDataController.createCustomIdToFieldNameToValueMap(list, previewType);
         final Map<Integer, Map<String, Object>> seqToFieldNameToValueMap = MaindbResultController.createSeqToFieldNameToValueMap(list.stream().map(PrvCustomInfoEntity::getResult).filter(Objects::nonNull).collect(Collectors.toList()), resultType);

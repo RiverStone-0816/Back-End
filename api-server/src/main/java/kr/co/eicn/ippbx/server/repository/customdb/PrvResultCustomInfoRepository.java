@@ -18,6 +18,7 @@ import org.jooq.impl.DSL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
@@ -77,12 +78,12 @@ public class PrvResultCustomInfoRepository extends CustomDBBaseRepository<Common
 
     @Override
     protected void postProcedure(List<PrvResultCustomInfoEntity> entities) {
-        if (entities.size() == 0) return;
+        if (CollectionUtils.isEmpty(entities)) return;
 
         final Set<String> ids = new HashSet<>();
-        ids.addAll(entities.stream().map(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo::getUserid).collect(Collectors.toList()));
-        ids.addAll(entities.stream().map(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo::getUseridOrg).collect(Collectors.toList()));
-        ids.addAll(entities.stream().map(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo::getUseridTr).collect(Collectors.toList()));
+        ids.addAll(entities.stream().map(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo::getUserid).toList());
+        ids.addAll(entities.stream().map(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo::getUseridOrg).toList());
+        ids.addAll(entities.stream().map(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo::getUseridTr).toList());
 
         for (UserEntity user : userRepository.findAllByIds(ids)) {
             for (PrvResultCustomInfoEntity entity : entities) {
@@ -114,6 +115,13 @@ public class PrvResultCustomInfoRepository extends CustomDBBaseRepository<Common
         return super.pagination(search, conditions(search));
     }
 
+    public List<PrvResultCustomInfoEntity> getOne(PrvResultCustomInfoSearchRequest search) {
+        return dsl.select()
+                .from(TABLE)
+                .where(TABLE.CLICK_KEY.eq(search.getClickKey() == null ? "" : search.getClickKey()))
+                .fetchInto(PrvResultCustomInfoEntity.class);
+    }
+
     private List<Condition> conditions(PrvResultCustomInfoSearchRequest search) {
         final List<Condition> conditions = new ArrayList<>();
 
@@ -135,32 +143,37 @@ public class PrvResultCustomInfoRepository extends CustomDBBaseRepository<Common
             conditions.add(TABLE.CLICK_KEY.eq(search.getClickKey()));
 
         search.getDbTypeFields().forEach((k, v) -> {
-            final Field<?> field = TABLE.field(k) != null ? TABLE.field(k) : customInfoTable.field(k);
+            final Table<?> table = k.startsWith("PRV") ? customInfoTable : TABLE;
+            final Field<?> field = table.field(k);
 
             if (field == null) {
                 logger.warn("invalid type: " + k);
             } else if (field.getType().equals(Date.class) || field.getType().equals(Timestamp.class)) {
                 if (v.getStartDate() != null)
-                    conditions.add(DSL.cast(field, Date.class).greaterOrEqual(v.getStartDate()));
+                    conditions.add(table.field(k, Date.class).ge(v.getStartDate()));
                 if (v.getEndDate() != null)
-                    conditions.add(DSL.cast(field, Date.class).lessOrEqual(v.getEndDate()));
-            } else if (k.contains("_INT_") || k.contains("_CODE_") || k.contains("_CONCODE_") || k.contains("_CSCODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
+                    conditions.add(table.field(k, Date.class).le(v.getEndDate()));
+            } else if (k.contains("_INT_")) {
                 if (StringUtils.isNotEmpty(v.getKeyword()))
-                    conditions.add(DSL.cast(field, String.class).eq(v.getKeyword()));
+                if (StringUtils.isNotEmpty(v.getKeyword()))
+                    conditions.add(table.field(k, String.class).eq(v.getKeyword()));
+            } else if (k.contains("_CODE_") || k.contains("_CONCODE_") || k.contains("_CSCODE_")) {
+                if (StringUtils.isNotEmpty(v.getCode()))
+                    conditions.add(table.field(k, String.class).eq(v.getCode()));
             } else if (k.contains("_STRING_") || k.contains("_NUMBER_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
                 if (StringUtils.isNotEmpty(v.getKeyword()))
-                    conditions.add(DSL.cast(field, String.class).like("%" + v.getKeyword() + "%"));
+                    conditions.add(table.field(k, String.class).like("%" + v.getKeyword() + "%"));
             } else if (k.contains("_MULTICODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
-                if (StringUtils.isNotEmpty(v.getKeyword()))
+                if (StringUtils.isNotEmpty(v.getCode()))
                     conditions.add(
-                            DSL.cast(field, String.class).likeRegex("^" + v.getKeyword() + ",")
-                                    .or(DSL.cast(field, String.class).likeRegex("^" + v.getKeyword() + "$"))
-                                    .or(DSL.cast(field, String.class).likeRegex("," + v.getKeyword() + "$"))
-                                    .or(DSL.cast(field, String.class).likeRegex("," + v.getKeyword() + ","))
+                            table.field(k, String.class).likeRegex("^" + v.getCode() + ",")
+                                    .or(table.field(k, String.class).likeRegex("^" + v.getCode() + "$"))
+                                    .or(table.field(k, String.class).likeRegex("," + v.getCode() + "$"))
+                                    .or(table.field(k, String.class).likeRegex("," + v.getCode() + ","))
                     );
             } else {
                 if (StringUtils.isNotEmpty(v.getKeyword()))
-                    conditions.add(DSL.cast(field, String.class).eq(v.getKeyword()));
+                    conditions.add(table.field(k, String.class).eq(v.getKeyword()));
             }
         });
 
@@ -222,7 +235,7 @@ public class PrvResultCustomInfoRepository extends CustomDBBaseRepository<Common
                 .set(TABLE.CALL_TYPE, form.getCallType())
                 .set(TABLE.UNIQUEID, form.getUniqueId())
                 .set(TABLE.CUSTOM_NUMBER, form.getCustomNumber())
-                .set(TABLE.CLICK_KEY, form.getClickKey())
+                .set(TABLE.CLICK_KEY, StringUtils.isEmpty(form.getClickKey()) ? "nonClickKey" : form.getClickKey())
                 .set(TABLE.FROM_ORG, form.getFromOrg())
                 .set(TABLE.GROUP_KIND, form.getGroupKind())
                 .set(TABLE.GROUP_ID, form.getGroupId())

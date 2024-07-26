@@ -167,7 +167,7 @@ IpccCommunicator.prototype.processor = {
     HANGUPEVENT: function (message, kind, data1, data2, data3, data4, data5, data6, data7, data8) {
         this.send("CMD|HANGUP_ACK|" + data5 + ","
             + (data8 !== ""
-                ? data8
+                ? (data8 !== 'PRV' ? data8 : 2)
                 : data1.length === 3 && data2.length === 3 //내선끊은후 이전 상태콘트롤
                     ? this.status.bMemberStatus
                     : 'NORMAL'));
