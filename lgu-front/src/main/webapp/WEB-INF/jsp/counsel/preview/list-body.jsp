@@ -89,7 +89,7 @@
                                 <form:option value="" label="--고객정보--"/>
                                 <c:forEach var="e" items="${previewType.fields}">
                                     <c:if test="${e.issearch == 'Y'}">
-                                        <form:option value="${e.fieldId.substring(previewType.kind.length() + 1)}"
+                                        <form:option value="PRV_${e.fieldId.substring(previewType.kind.length() + 1)}"
                                                      label="${g.htmlQuote(e.fieldInfo)}"
                                                      data-type="${g.htmlQuote(e.fieldType)}"/>
                                     </c:if>
@@ -97,7 +97,7 @@
                                 <form:option value="" label="--상담결과--"/>
                                 <c:forEach var="e" items="${resultType.fields}">
                                     <c:if test="${e.issearch == 'Y'}">
-                                        <form:option value="${e.fieldId.substring(resultType.kind.length() + 1)}"
+                                        <form:option value="RS_${e.fieldId.substring(resultType.kind.length() + 1)}"
                                                      label="${g.htmlQuote(e.fieldInfo)}"
                                                      data-type="${g.htmlQuote(e.fieldType)}"/>
                                     </c:if>
@@ -116,6 +116,11 @@
                                 <label for="endDate" style="display:none">to</label>
                                 <form:input path="endDate" cssClass="-datepicker" cssStyle="width: 100%;" placeholder="종료일"/>
                             </div>
+                        </div>
+                    </div>
+                    <div class="seven wide column -search-type-sub-input" data-type="TEXT">
+                        <div class="ui input fluid">
+                            <form:input path="keyword"/>
                         </div>
                     </div>
                     <div class="seven wide column -search-type-sub-input" data-type="CODE">
@@ -203,7 +208,7 @@
                                                     ${g.htmlQuote(value)}
                                                 <c:if test="${field.fieldType == 'NUMBER' && value != null && value != ''}">
                                                     <button type="button" class="ui icon button mini compact"
-                                                            onclick="startPreview(${e.prvSysGroupId}, '${g.htmlQuote(g.escapeQuote(e.prvSysCustomId))}', '${g.htmlQuote(value)}')">
+                                                            onclick="$(this).closest('tr').siblings().removeClass('active');$(this).closest('tr').addClass('active');startPreview(${e.prvSysGroupId}, '${g.htmlQuote(g.escapeQuote(e.prvSysCustomId))}', '${g.htmlQuote(value)}')">
                                                         <i class="phone icon"></i>
                                                     </button>
                                                 </c:if>
@@ -328,7 +333,7 @@
     }
 
     if (window.$) {
-        setCounselPrvSearch()
+        setCounselPrvSearch();
 
         $('#search-preview-form').find('input[name=startDate]').val('${search.startDate}');
         $('#search-preview-form').find('input[name=endDate]').val('${search.endDate}');

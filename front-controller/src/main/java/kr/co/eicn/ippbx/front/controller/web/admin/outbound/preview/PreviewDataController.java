@@ -88,6 +88,9 @@ public class PreviewDataController extends BaseController {
             final Map<Integer, String> groups = previewGroups.stream().collect(Collectors.toMap(PrvGroup::getSeq, PrvGroup::getName));
             model.addAttribute("previewGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(groups));
 
+            if (search.getGroupSeq() == null)
+                return "admin/outbound/preview/data/ground";
+
             final PrvGroup prvGroup1 = previewGroups.stream().filter(e -> Objects.equals(e.getSeq(), search.getGroupSeq())).findFirst().orElse(null);
 
             if (prvGroup1 != null) {
@@ -104,8 +107,9 @@ public class PreviewDataController extends BaseController {
             }
 
             final Map<String, String> persons = callbackHistoryApiInterface.addPersons().stream().collect(Collectors.toMap(SummaryCallbackDistPersonResponse::getId, SummaryPersonResponse::getIdName));
-            model.addAttribute("persons", persons);
+            model.addAttribute("persons", new MapToLinkedHashMap().toLinkedHashMapByValue(persons));
         }
+
         return "admin/outbound/preview/data/ground";
     }
 

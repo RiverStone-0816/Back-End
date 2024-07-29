@@ -85,7 +85,7 @@ public class PreviewResultController extends BaseController {
             model.addAttribute("customIdToFieldNameToValueMap", PreviewDataController.createCustomIdToFieldNameToValueMap(pagination.getRows().stream().map(PrvResultCustomInfoEntity::getCustomInfo).collect(Collectors.toList()), previewType));
 
             final Map<String, String> persons = callbackHistoryApiInterface.addPersons().stream().collect(Collectors.toMap(SummaryCallbackDistPersonResponse::getId, SummaryPersonResponse::getIdName));
-            model.addAttribute("persons", persons);
+            model.addAttribute("persons", new MapToLinkedHashMap().toLinkedHashMapByValue(persons));
         }
         return "admin/outbound/preview/result/ground";
     }
