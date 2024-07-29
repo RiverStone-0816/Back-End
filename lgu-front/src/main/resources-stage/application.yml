@@ -52,7 +52,7 @@ eicn:
   service:
     base-url: https://dev.eicn.co.kr
     servicekind: SC
-  version: 20240718
+  version: 20240729
   debugging: true
   swagger:
     api-package: kr.co.eicn.ippbx.front.controller.api
