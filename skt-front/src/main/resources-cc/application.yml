@@ -93,3 +93,27 @@ eicn:
   message:
     url:
       id: message_connector
+stt:
+  transcribe:
+    dbHost: 122.49.74.102
+assist:
+  kms:
+    auth:
+      url: https://assist.eicn.co.kr:3006/api/assist/graphql
+    api:
+      url: https://assist.eicn.co.kr/kms/graphql
+  stt:
+    socket:
+      url: https://assist.eicn.co.kr:8087
+    request:
+      url: https://assist.eicn.co.kr:8087
+  sso:
+    token:
+      get:
+        url: https://dev.eicn.co.kr:8400/get_assist_token
+    request:
+      site:
+        url: https://assist.eicn.co.kr:3006/login
+  login:
+    record:
+      user: https://dev.eicn.co.kr:8400/login_info
