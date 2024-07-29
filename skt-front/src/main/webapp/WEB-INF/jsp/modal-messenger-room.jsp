@@ -627,7 +627,7 @@
                 },
                 loadTemplates: function () {
                     const _this = this
-                    restSelf.get('/api/talk-template/my/', null, false, null).done(function (response) {
+                    restSelf.get('/api/wtalk-template/my/', null, false, null).done(function (response) {
                         _this.templates = []
                         response.data.forEach(function (e) {
                             // note: 이미지 템플릿은 적용안하기로 함.
