@@ -696,16 +696,6 @@ public class CounselController extends BaseController {
         final MaindbGroupDetailResponse customGroup = maindbGroupApiInterface.get(search.getGroupSeq());
         final CommonTypeEntity customDbType = commonTypeApiInterface.get(customGroup.getMaindbType());
         model.addAttribute("customDbType", customDbType);
-
-        final Map<String, Map<String, String>> codeMap = new HashMap<>();
-        customDbType.getFields().stream()
-                .filter(e -> e.getCodes() != null && e.getCodes().size() > 0)
-                .forEach(e -> {
-                    final Map<String, String> codes = e.getCodes().stream().collect(Collectors.toMap(CommonCodeEntity::getCodeId, CommonCodeEntity::getCodeName));
-                    codeMap.put(e.getFieldId(), codes);
-                });
-        model.addAttribute("codeMap", new JSONObject(codeMap));
-
         model.addAttribute("customIdToFieldNameToValueMap", MaindbDataController.createCustomIdToFieldNameToValueMap(pagination.getRows(), customDbType));
 
         return "counsel/modal-search-maindb-custom-body";
