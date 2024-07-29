@@ -273,7 +273,7 @@
 
         const searchForm = $('#search-preview-form');
 
-        const groupSeq = searchForm.find('[name=searchType]').val();
+        const groupSeq = searchForm.find('[name=groupSeq]').val();
         if (groupSeq) {
             loadPreviewCustomInput(groupSeq);
             loadPreviewCounselingInput(groupSeq);
