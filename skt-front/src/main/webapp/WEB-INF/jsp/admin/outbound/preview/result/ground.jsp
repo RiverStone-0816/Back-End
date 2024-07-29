@@ -100,7 +100,9 @@
                                             <form:input path="keyword"/>
                                         </div>
                                         <div class="ip-wrap -search-type-sub-input" data-type="CODE">
-                                            <form:select path="code"/>
+                                            <div class="ui form">
+                                                <form:select path="code"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </td>
@@ -230,8 +232,34 @@
 
     <tags:scripts>
         <script>
-
             const searchForm = $('#search-form');
+
+            const codeMapInfo = {
+                <c:forEach var="field" items="${previewType.fields}">
+                <c:if test="${fn:contains(field.fieldId, 'CODE') and field.issearch == 'Y'}">
+                '${field.fieldId}' : {
+                    <c:forEach var="code" items="${field.codes}">
+                    '${code.sequence}' : {
+                        'codeId' : '${code.codeId}',
+                        'codeName' : '${code.codeName}',
+                    },
+                    </c:forEach>
+                },
+                </c:if>
+                </c:forEach>
+                <c:forEach var="field" items="${resultType.fields}">
+                <c:if test="${fn:contains(field.fieldId, 'CODE') and field.issearch == 'Y'}">
+                '${field.fieldId}' : {
+                    <c:forEach var="code" items="${field.codes}">
+                    '${code.sequence}' : {
+                        'codeId' : '${code.codeId}',
+                        'codeName' : '${code.codeName}',
+                    },
+                    </c:forEach>
+                },
+                </c:if>
+                </c:forEach>
+            };
 
             searchForm.find('[name=searchType]').change(function () {
                 const type = $(this).find(':selected').attr('data-type');
@@ -247,12 +275,11 @@
                 if (['DATE', 'DAY', 'DATETIME'].indexOf(type) >= 0) {
                     subInput.filter('[data-type="DATE"]').show();
                 } else if (['CODE', 'MULTICODE'].indexOf(type) >= 0) {
-                    const codeMap = JSON.parse('${codeMap}')[fieldId];
+                    const codeMap = codeMapInfo[fieldId];
                     codeSelect.append($('<option/>', {value: '', text: '선택안함'}));
-                    for (const key in codeMap) {
-                        if (codeMap.hasOwnProperty(key)) {
-                            codeSelect.append($('<option/>', {value: key, text: codeMap[key]}));
-                        }
+                    const codeLength = codeMap ? Object.keys(codeMap).length : 0;
+                    for(let i = 0 ; i < codeLength ; i++) {
+                        codeSelect.append($('<option/>', {value: codeMap[i].codeId, text: codeMap[i].codeName}));
                     }
 
                     subInput.filter('[data-type="CODE"]').show();
@@ -279,6 +306,14 @@
             <c:if test="${previewGroups == null}">
             alert("[프리뷰 그룹] 이 없습니다.");
             </c:if>
+
+            $(window).on('load', function () {
+                $('#keyword').val('${search.keyword}').trigger("change");
+                $('#code').val('${search.code}').trigger("change");
+
+                $('input[name=startDate]').val('${search.startDate}');
+                $('input[name=endDate]').val('${search.endDate}');
+            });
         </script>
     </tags:scripts>
 </tags:tabContentLayout>

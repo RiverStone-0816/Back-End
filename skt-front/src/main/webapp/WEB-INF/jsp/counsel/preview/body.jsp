@@ -35,6 +35,16 @@
 
 <tags:scripts>
     <script>
+        function startPreview(previewGroupId, previewCustomId, customNumber) {
+            if (ipccCommunicator.status.cMemberStatus === 1)
+                return alert("상담중 상태에서는 전화 걸기가 불가능합니다.");
+
+            if (customNumber) {
+                const cid = $('#cid').val()
+                ipccCommunicator.clickByCampaign(cid, customNumber, 'PRV', previewGroupId, previewCustomId);
+            }
+        }
+
         function loadPreviewCustomInput(groupSeq, customId) {
             return replaceReceivedHtmlInSilence($.addQueryString('/counsel/preview/custom-input', {
                 groupSeq: groupSeq || '',
@@ -50,6 +60,8 @@
         }
 
         $(window).on('load', function () {
+            setCounselPrvSearch();
+
             const groupSeq = $('#search-preview-form [name=groupSeq]').val();
             if (groupSeq) {
                 loadPreviewCustomInput(groupSeq);

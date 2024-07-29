@@ -44,16 +44,13 @@
                             </div>
                         </td>
                         <th>데이터생성일</th>
-                        <td>
-                            <div class="ui form flex">
-                                <div class="ui action input calendar-area flex-200">
-                                    <form:input path="createdStartDate" cssClass="-datepicker" placeholder="시작일"/>
-                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
-                                    <span class="tilde">~</span>
-                                    <form:input path="createdEndDate" cssClass="-datepicker" placeholder="종료일"/>
-                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
-                                </div>
-                                <div class="flex-100"></div>
+                        <td colspan="3">
+                            <div class="ui action input calendar-area">
+                                <form:input path="createdStartDate" cssClass="-datepicker" placeholder="시작일"/>
+                                <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                <span class="tilde">~</span>
+                                <form:input path="createdEndDate" cssClass="-datepicker" placeholder="종료일"/>
+                                <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                             </div>
                         </td>
                     </tr>
@@ -68,54 +65,55 @@
                             </div>
                         </td>
                         <th>마지막상담일</th>
-                        <td>
-                            <div class="ui form flex">
-                                <div class="ui action input calendar-area flex-200">
-                                    <form:input path="lastResultStartDate" cssClass="-datepicker" placeholder="시작일"/>
-                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
-                                    <span class="tilde">~</span>
-                                    <form:input path="lastResultEndDate" cssClass="-datepicker" placeholder="종료일"/>
-                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
-                                </div>
-                                <div class="flex-100"></div>
+                        <td colspan="3">
+                            <div class="ui action input calendar-area">
+                                <form:input path="lastResultStartDate" cssClass="-datepicker" placeholder="시작일"/>
+                                <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                <span class="tilde">~</span>
+                                <form:input path="lastResultEndDate" cssClass="-datepicker" placeholder="종료일"/>
+                                <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <th>검색항목</th>
-                        <td>
-                            <div class="ui form">
-                                <form:select path="searchType">
-                                    <form:option value="" label="선택안함"/>
-                                    <form:option value="" label="--고객정보--"/>
-                                    <c:forEach var="e" items="${previewType.fields}">
-                                        <c:if test="${e.issearch == 'Y'}">
-                                            <form:option value="${e.fieldId.substring(previewType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
-                                                         data-type="${g.htmlQuote(e.fieldType)}"/>
-                                        </c:if>
-                                    </c:forEach>
-                                    <form:option value="" label="--상담결과--"/>
-                                    <c:forEach var="e" items="${resultType.fields}">
-                                        <c:if test="${e.issearch == 'Y'}">
-                                            <form:option value="${e.fieldId.substring(resultType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
-                                                         data-type="${g.htmlQuote(e.fieldType)}"/>
-                                        </c:if>
-                                    </c:forEach>
-                                </form:select>
-                            </div>
-                        </td>
-                        <th>검색어</th>
-                        <td>
+                        <td colspan="5">
                             <div class="ui form flex">
-                                <div class="ui action input calendar-area -search-type-sub-input flex-200" data-type="DATE">
-                                    <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
-                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
-                                    <span class="tilde">~</span>
-                                    <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
-                                    <button type="button" class="ui basic button -click-prev"><img src="/resources/images/calendar.svg" alt="calendar"></button>
+                                <div class="ip-wrap">
+                                    <form:select path="searchType">
+                                        <form:option value="" label="선택안함"/>
+                                        <form:option value="" label="--고객정보--"/>
+                                        <c:forEach var="e" items="${previewType.fields}">
+                                            <c:if test="${e.issearch == 'Y'}">
+                                                <form:option value="PRV_${e.fieldId.substring(previewType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
+                                                             data-type="${g.htmlQuote(e.fieldType)}"/>
+                                            </c:if>
+                                        </c:forEach>
+                                        <form:option value="" label="--상담결과--"/>
+                                        <c:forEach var="e" items="${resultType.fields}">
+                                            <c:if test="${e.issearch == 'Y'}">
+                                                <form:option value="RS_${e.fieldId.substring(resultType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
+                                                             data-type="${g.htmlQuote(e.fieldType)}"/>
+                                            </c:if>
+                                        </c:forEach>
+                                    </form:select>
                                 </div>
-                                <div class="-search-type-sub-input flex-100">
+                                <div class="ip-wrap -search-type-sub-input" data-type="DATE">
+                                    <div class="ui action input calendar-area">
+                                        <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                        <span class="tilde">~</span>
+                                        <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                        <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                    </div>
+                                </div>
+                                <div class="ip-wrap -search-type-sub-input" data-type="TEXT">
                                     <form:input path="keyword"/>
+                                </div>
+                                <div class="ip-wrap -search-type-sub-input" data-type="CODE">
+                                    <div class="ui form">
+                                        <form:select path="code"/>
+                                    </div>
                                 </div>
                             </div>
                         </td>
@@ -244,42 +242,81 @@
     </div>
 </div>
 
-<tags:scripts>
-    <script>
-        $('#preview-list').on('change', '#search-preview-form [name=searchType]', function () {
-            const type = $(this).find(':selected').attr('data-type');
-            const subInput = $(this).closest('form').find('.-search-type-sub-input').hide();
+<script>
+    function setCounselPrvSearch() {
+        const prvCodeMapInfo = {
+            <c:forEach var="field" items="${previewType.fields}">
+            <c:if test="${fn:contains(field.fieldId, 'CODE') and field.issearch == 'Y'}">
+            '${field.fieldId}': {
+                <c:forEach var="code" items="${field.codes}">
+                '${code.sequence}': {
+                    'codeId': '${code.codeId}',
+                    'codeName': '${code.codeName}',
+                },
+                </c:forEach>
+            },
+            </c:if>
+            </c:forEach>
+            <c:forEach var="field" items="${resultType.fields}">
+            <c:if test="${fn:contains(field.fieldId, 'CODE') and field.issearch == 'Y'}">
+            '${field.fieldId}': {
+                <c:forEach var="code" items="${field.codes}">
+                '${code.sequence}': {
+                    'codeId': '${code.codeId}',
+                    'codeName': '${code.codeName}',
+                },
+                </c:forEach>
+            },
+            </c:if>
+            </c:forEach>
+        };
 
-            if (['DATE', 'DAY', 'DATETIME'].indexOf(type) >= 0) {
-                subInput.filter('[data-type="DATE"]').show();
-            } else {
-                subInput.filter(':not([data-type="DATE"])').show();
-            }
-        });
+        const searchForm = $('#search-preview-form');
 
-        $('#search-preview-form [name=searchType]').change();
-
-        function startPreview(previewGroupId, previewCustomId, customNumber) {
-            if (ipccCommunicator.status.cMemberStatus === 1)
-                return alert("상담중 상태에서는 전화 걸기가 불가능합니다.");
-
-            if (customNumber) {
-                const cid = $('#cid').val()
-                ipccCommunicator.clickByCampaign(cid, customNumber, 'PRV', previewGroupId, previewCustomId);
-            }
+        const groupSeq = searchForm.find('[name=searchType]').val();
+        if (groupSeq) {
+            loadPreviewCustomInput(groupSeq);
+            loadPreviewCounselingInput(groupSeq);
         }
 
         <c:if test="${g.user.idType eq 'M'}">
         $('#personIdInCharge').attr('disabled', 'true');
         </c:if>
-    </script>
-</tags:scripts>
 
-<script>
+        searchForm.find('[name=searchType]').change(function () {
+            const type = $(this).find(':selected').attr('data-type');
+            const fieldId = $(this).find(':selected').val();
+            const subInput = $('.-search-type-sub-input').hide();
+            const codeSelect = $('#code');
+
+            $('input[name=startDate]').val('');
+            $('input[name=endDate]').val('');
+            codeSelect.empty();
+            $('#keyword').val('');
+
+            if (['DATE', 'DAY', 'DATETIME'].indexOf(type) >= 0) {
+                subInput.filter('[data-type="DATE"]').show();
+            } else if (['CODE', 'MULTICODE'].indexOf(type) >= 0) {
+                const codeMap = prvCodeMapInfo[fieldId];
+                codeSelect.append($('<option/>', {value: '', text: '선택안함'}));
+                const codeLength = codeMap ? Object.keys(codeMap).length : 0;
+                for (let i = 0; i < codeLength; i++) {
+                    codeSelect.append($('<option/>', {value: codeMap[i].codeId, text: codeMap[i].codeName}));
+                }
+
+                subInput.filter('[data-type="CODE"]').show();
+            } else {
+                subInput.filter('[data-type="TEXT"]').show();
+            }
+        }).change();
+    }
+
     if (window.$) {
-        $('#search-preview-form [name=searchType]').change();
-        <c:if test="${g.user.idType eq 'M'}">
-        $('#personIdInCharge').attr('disabled', 'true');
-        </c:if>
+        setCounselPrvSearch()
+
+        $('#search-preview-form').find('input[name=startDate]').val('${search.startDate}');
+        $('#search-preview-form').find('input[name=endDate]').val('${search.endDate}');
+        $('#search-preview-form').find('#keyword').val('${search.keyword}');
+        $('#search-preview-form').find('#code').val('${search.code}');
     }
 </script>

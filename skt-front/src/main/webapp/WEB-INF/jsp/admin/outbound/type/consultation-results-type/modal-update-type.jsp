@@ -133,7 +133,7 @@
 
     <div class="actions">
         <button type="button" class="ui button modal-close">취소</button>
-        채팅상담
+        <button type="submit" class="ui brand button">확인</button>
     </div>
 </form:form>
 

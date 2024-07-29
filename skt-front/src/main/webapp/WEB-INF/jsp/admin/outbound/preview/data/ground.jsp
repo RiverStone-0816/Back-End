@@ -77,30 +77,44 @@
                             </tr>
                             <tr>
                                 <th>검색항목</th>
-                                <td colspan="13">
+                                <td colspan="5">
                                     <div class="ui form flex">
-                                       <div class="ip-wrap">
-                                           <form:select path="searchType">
-                                               <form:option value="" label="선택안함"/>
-                                               <form:option value="" label="--고객정보--"/>
-                                               <c:forEach var="e" items="${previewType.fields}">
-                                                   <c:if test="${e.issearch == 'Y'}">
-                                                       <form:option value="PRV_${e.fieldId.substring(previewType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
-                                                                    data-type="${g.htmlQuote(e.fieldType)}"/>
-                                                   </c:if>
-                                               </c:forEach>
-                                               <form:option value="" label="--상담결과--"/>
-                                               <c:forEach var="e" items="${resultType.fields}">
-                                                   <c:if test="${e.issearch == 'Y'}">
-                                                       <form:option value="RS_${e.fieldId.substring(resultType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
-                                                                    data-type="${g.htmlQuote(e.fieldType)}"/>
-                                                   </c:if>
-                                               </c:forEach>
-                                           </form:select>
-                                       </div>
-                                       <div class="ip-wrap">
-                                           <form:input path="keyword"/>
-                                       </div>
+                                        <div class="ip-wrap">
+                                            <form:select path="searchType">
+                                                <form:option value="" label="선택안함"/>
+                                                <form:option value="" label="--고객정보--"/>
+                                                <c:forEach var="e" items="${previewType.fields}">
+                                                    <c:if test="${e.issearch == 'Y'}">
+                                                        <form:option value="PRV_${e.fieldId.substring(previewType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
+                                                                     data-type="${g.htmlQuote(e.fieldType)}"/>
+                                                    </c:if>
+                                                </c:forEach>
+                                                <form:option value="" label="--상담결과--"/>
+                                                <c:forEach var="e" items="${resultType.fields}">
+                                                    <c:if test="${e.issearch == 'Y'}">
+                                                        <form:option value="RS_${e.fieldId.substring(resultType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}"
+                                                                     data-type="${g.htmlQuote(e.fieldType)}"/>
+                                                    </c:if>
+                                                </c:forEach>
+                                            </form:select>
+                                        </div>
+                                        <div class="ip-wrap -search-type-sub-input" data-type="DATE">
+                                            <div class="ui action input calendar-area">
+                                                <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                                <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                                <span class="tilde">~</span>
+                                                <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                                <button type="button" class="ui basic button -click-prev"><img src="<c:url value="/resources/images/calendar.svg"/>" alt="calendar"></button>
+                                            </div>
+                                        </div>
+                                        <div class="ip-wrap -search-type-sub-input" data-type="TEXT">
+                                            <form:input path="keyword"/>
+                                        </div>
+                                        <div class="ip-wrap -search-type-sub-input" data-type="CODE">
+                                            <div class="ui form">
+                                                <form:select path="code"/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -233,14 +247,58 @@
 
     <tags:scripts>
         <script>
-            $('#search-form [name=searchType]').change(function () {
+            const searchForm = $('#search-form');
+
+            const codeMapInfo = {
+                <c:forEach var="field" items="${previewType.fields}">
+                <c:if test="${fn:contains(field.fieldId, 'CODE') and field.issearch == 'Y'}">
+                '${field.fieldId}' : {
+                    <c:forEach var="code" items="${field.codes}">
+                    '${code.sequence}' : {
+                        'codeId' : '${code.codeId}',
+                        'codeName' : '${code.codeName}',
+                    },
+                    </c:forEach>
+                },
+                </c:if>
+                </c:forEach>
+                <c:forEach var="field" items="${resultType.fields}">
+                <c:if test="${fn:contains(field.fieldId, 'CODE') and field.issearch == 'Y'}">
+                '${field.fieldId}' : {
+                    <c:forEach var="code" items="${field.codes}">
+                    '${code.sequence}' : {
+                        'codeId' : '${code.codeId}',
+                        'codeName' : '${code.codeName}',
+                    },
+                    </c:forEach>
+                },
+                </c:if>
+                </c:forEach>
+            };
+
+            searchForm.find('[name=searchType]').change(function () {
                 const type = $(this).find(':selected').attr('data-type');
+                const fieldId = $(this).find(':selected').val();
                 const subInput = $('.-search-type-sub-input').hide();
+                const codeSelect = $('#code');
+
+                $('input[name=startDate]').val('');
+                $('input[name=endDate]').val('');
+                codeSelect.empty();
+                $('#keyword').val('');
 
                 if (['DATE', 'DAY', 'DATETIME'].indexOf(type) >= 0) {
                     subInput.filter('[data-type="DATE"]').show();
+                } else if (['CODE', 'MULTICODE'].indexOf(type) >= 0) {
+                    const codeMap = codeMapInfo[fieldId];
+                    codeSelect.append($('<option/>', {value: '', text: '선택안함'}));
+                    for(let i = 0 ; i < Object.keys(codeMap).length ; i++) {
+                        codeSelect.append($('<option/>', {value: codeMap[i].codeId, text: codeMap[i].codeName}));
+                    }
+
+                    subInput.filter('[data-type="CODE"]').show();
                 } else {
-                    subInput.filter(':not([data-type="DATE"])').show();
+                    subInput.filter('[data-type="TEXT"]').show();
                 }
             }).change();
 
@@ -277,9 +335,18 @@
             <c:if test="${previewGroups == null}">
             alert("[프리뷰 그룹] 이 없습니다.");
             </c:if>
+
             <c:if test="${g.user.idType eq 'M'}">
             $('#personIdInCharge').attr('disabled', 'true');
             </c:if>
+
+            $(window).on('load', function () {
+                $('#keyword').val('${search.keyword}').trigger("change");
+                $('#code').val('${search.code}').trigger("change");
+
+                $('input[name=startDate]').val('${search.startDate}');
+                $('input[name=endDate]').val('${search.endDate}');
+            });
         </script>
     </tags:scripts>
 </tags:tabContentLayout>
