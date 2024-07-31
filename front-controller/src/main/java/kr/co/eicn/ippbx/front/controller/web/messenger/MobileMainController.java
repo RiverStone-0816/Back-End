@@ -79,13 +79,12 @@ public class MobileMainController extends MessengerBaseController {
     }
 
     @GetMapping("")
-    public String loginPage(Model model, @ModelAttribute("form") LoginForm form) throws IOException, ResultFailException {
-        if (g.isLogin() && g.checkLogin())
-            return "redirect:/ipcc-messenger/main";
+    public String loginPage(Model model, @ModelAttribute("form") LoginForm form, @RequestParam(required = false) String message) throws IOException, ResultFailException {
+        if (g.isLogin() && g.checkLogin()) return "redirect:/ipcc-messenger/main";
 
         final Map<String, String> socketMap = daemonInfoInterface.getSocketList();
-
         model.addAttribute("adminSocketUrl", socketMap.get(adminSocketId));
+        model.addAttribute("message", message);
 
         return "ipcc-messenger/login";
     }

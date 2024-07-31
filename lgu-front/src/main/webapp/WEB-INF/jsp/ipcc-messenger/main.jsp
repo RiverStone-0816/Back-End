@@ -445,11 +445,23 @@
                         messenger.ui.bookmarkPanel.find('.-messenger-bookmark').slideToggle(0);
                     });
 
-                    function logout() {
-                        restSelf.get("/api/auth/logout").done(function () {
-                            location.href = contextPath + '/ipcc-messenger';
-                            messenger.setWindowSize(536, 700)
-                        });
+                    function logout(auto = true, alertMessage) {
+                        function closeLogic(message) {
+                            restSelf.get("/api/auth/logout").done(function () {
+                                if (message)
+                                    location.href = contextPath + '/ipcc-messenger?message=' + encodeURI(alertMessage);
+                                else
+                                    location.href = contextPath + '/ipcc-messenger';
+                            });
+                        }
+
+                        if (auto === false) {
+                            confirm('정말 로그아웃하시겠습니까??').done(function () {
+                                closeLogic(alertMessage);
+                            });
+                        } else {
+                            closeLogic(alertMessage);
+                        }
                     }
                 </script>
             </tags:scripts>

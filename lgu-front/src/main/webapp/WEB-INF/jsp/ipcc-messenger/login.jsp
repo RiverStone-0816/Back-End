@@ -261,7 +261,6 @@
                 });
             });
 
-
             $(document).ready(function () {
                 const storedValues = localStorage.getItem(STORAGE_KEY);
                 if (!storedValues) return;
@@ -281,6 +280,15 @@
                         }
                     }
                 }
+
+                <c:if test="${message ne null && not empty message}">
+                alert('${g.escapeQuote(message)}');
+                </c:if>
+            });
+
+            form.find('input').keypress(function (e) {
+                if (e.keyCode === 13)
+                    return $('.-login-submit').click();
             });
         </script>
     </tags:scripts>

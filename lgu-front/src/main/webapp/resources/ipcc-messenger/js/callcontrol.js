@@ -234,6 +234,9 @@ const ipccCommunicator = new IpccCommunicator()
                 $('.-calling-number').val(phoneNumber).text(phoneNumber);
                 console.log('[발신] 전화벨 울림 [' + moment().format('HH시 mm분') + ']');
             }
+
+            if (window.isElectron)
+                window.ipcRenderer.send('calling');
         } else if (kind === 'OD') { // 아웃바운드 통화시작
             audioId = data8;
             phoneNumber = data2;
@@ -270,10 +273,10 @@ const ipccCommunicator = new IpccCommunicator()
     })
     .on('BYE', function (message, kind/*[ SAME_UID | SAME_PID ]*/, data1, data2, data3) {
         switch (kind) {
-            case"SAME_UID":
-                return alert("다른 컴퓨터에서 같은 아이디로 로긴되어서 서버와 끊김", logout);
+            case "SAME_UID":
+                return logout(true, '다른 컴퓨터에서 같은 아이디로 로긴되어서 서버와 끊김');
             case "SAME_PID":
-                return alert("다른 컴퓨터에서 같은 내선으로로 로긴되어서 서버와 끊김", logout);
+                return logout(true, '다른 컴퓨터에서 같은 내선으로 로긴되어서 서버와 끊김');
             default:
                 return alert("[" + kind + "]" + data3 + "(" + data1 + ")");
         }
