@@ -986,6 +986,10 @@ Messenger.prototype.setWindowSize = function (width, height) {
         ipcRenderer.send('setWindowSize', {"width": width, "height": height});
 }
 
+Messenger.prototype.openBrowserLink = function (url) {
+    ipcRenderer.send('openBrowserLink', {"url": url});
+}
+
 Messenger.prototype.init = function () {
     const messenger = this;
 
