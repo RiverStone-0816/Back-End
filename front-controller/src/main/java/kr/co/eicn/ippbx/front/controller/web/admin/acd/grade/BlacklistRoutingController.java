@@ -11,6 +11,7 @@ import kr.co.eicn.ippbx.model.dto.eicn.search.SearchQueueResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.GradeListEntity;
 import kr.co.eicn.ippbx.model.form.GradeListFormRequest;
 import kr.co.eicn.ippbx.model.search.GradeListSearchRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,13 +63,14 @@ public class BlacklistRoutingController extends BaseController {
     @GetMapping("{seq}/modal")
     public String modal(Model model, @PathVariable Integer seq, @ModelAttribute("form") GradeListFormRequest form) throws IOException, ResultFailException {
         final GradeListEntity entity = apiInterface.get(seq);
-        ReflectionUtils.copy(form, entity);
         model.addAttribute("entity", entity);
+        ReflectionUtils.copy(form, entity);
+        form.setQueueNumber(entity.getHuntNumber());
 
         final Map<String, String> queues = apiInterface.queues().stream().collect(Collectors.toMap(SearchQueueResponse::getNumber, SearchQueueResponse::getHanName));
         model.addAttribute("queues", queues);
 
-        if (entity.getHuntNumber() != null && !queues.containsKey(entity.getHuntNumber()))
+        if (StringUtils.isNotEmpty(entity.getHuntNumber()) && !queues.containsKey(entity.getHuntNumber()))
             queues.put(entity.getHuntNumber(), entity.getHuntName());
 
         form.setGrade("BLACK");
