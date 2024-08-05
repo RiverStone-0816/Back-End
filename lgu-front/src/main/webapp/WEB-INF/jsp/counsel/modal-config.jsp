@@ -111,7 +111,7 @@
         </div>
     </div>
     <div class="actions">
-        <c:if test="${serviceKind.equals('SC')}">
+        <c:if test="${g.usingServices.contains('SMS')}">
             <div class="ui button left floated" onclick="smsCategoryAdd()">SMS 카테고리 등록</div>
             <div class="ui button left floated" onclick="smsTemplateAdd()">SMS 상용문구 등록</div>
         </c:if>
