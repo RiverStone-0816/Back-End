@@ -226,7 +226,7 @@
                                         </c:if>
                                         <c:if test="${resultType != null}">
                                             <c:forEach var="field" items="${resultType.fields}">
-                                                <c:set var="value" value="${e.result != null ? seqToFieldNameToValueMap.get(e.result.seq).get(field.fieldId).trim() : ''}"/>
+                                                <c:set var="value" value="${e.result != null ? seqToFieldNameToValueMap.get(e.result.seq).get(field.fieldId) : ''}"/>
                                                 <c:choose>
                                                     <c:when test="${field.fieldType == 'CODE'}">
                                                         <td>
