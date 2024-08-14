@@ -17,7 +17,7 @@
 <div class="nine wide column remove-margin" style="height: calc(100% + 2rem);">
     <div class="panel full-height remove-margin">
         <div class="panel-heading" style="min-height:42px;max-height: 42px;">
-            <label class="control-label">프리뷰 리스트</label>
+            <label class="control-label">프리뷰 목록</label>
         </div>
         <div class="panel-body" id="preview-list">
             <div class="sub-content ui container fluid unstackable remove-padding" id="preview-list-body">
