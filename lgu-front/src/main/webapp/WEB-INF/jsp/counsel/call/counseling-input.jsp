@@ -11,6 +11,7 @@
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
+<%--@elvariable id="usingServices" type="java.lang.String"--%>
 <%--@elvariable id="serviceKind" type="java.lang.String"--%>
 
 <form:form id="call-counseling-input" modelAttribute="form" cssClass="panel -json-submit"
@@ -217,7 +218,7 @@
                     </td>
                 </tr>
             </c:if>
-            <c:if test="${serviceKind.equals('SC')}">
+            <c:if test="${serviceKind.equals('SC') && usingServices.contains('VOC')}">
                 <c:if test="${smsVocGroups != null && smsVocGroups.size() > 0}">
                     <tr>
                         <td class="three wide">VOC/해피콜</td>

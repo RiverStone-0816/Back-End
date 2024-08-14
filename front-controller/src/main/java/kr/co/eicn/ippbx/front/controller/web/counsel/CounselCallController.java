@@ -329,11 +329,13 @@ public class CounselCallController extends BaseController {
         }
         model.addAttribute("todoStatuses", FormUtils.options(TodoListTodoStatus.class));
 
-        final List<VocGroup> vocGroups = vocGroupApiInterface.getArsSmsList("ARS");
-        model.addAttribute("vocGroups", vocGroups);
+        if (g.getUsingServices().contains("VOC")) {
+            final List<VocGroup> vocGroups = vocGroupApiInterface.getArsSmsList("ARS");
+            model.addAttribute("vocGroups", vocGroups);
 
-        final List<VocGroup> smsVocGroups = vocGroupApiInterface.getArsSmsList("SMS");
-        model.addAttribute("smsVocGroups", smsVocGroups);
+            final List<VocGroup> smsVocGroups = vocGroupApiInterface.getArsSmsList("SMS");
+            model.addAttribute("smsVocGroups", smsVocGroups);
+        }
 
         if (ObjectUtils.isNotEmpty(maindbResultSeq)) {
             final ResultCustomInfoEntity entity = maindbResultApiInterface.get(maindbResultSeq);

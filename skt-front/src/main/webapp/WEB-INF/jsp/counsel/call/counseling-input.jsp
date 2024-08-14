@@ -253,7 +253,7 @@
                 </div>
             </div>
         </c:if>
-        <c:if test="${serviceKind.equals('SC')}">
+        <c:if test="${serviceKind.equals('SC') && usingServices.contains('VOC')}">
                 <c:if test="${smsVocGroups != null && smsVocGroups.size() > 0}">
                     <div class="float-field fluid">
                         <div class="label">VOC/해피콜</div>
