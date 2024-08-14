@@ -57,17 +57,7 @@ public class CounselPreviewController extends BaseController {
     private final PreviewGroupApiInterface previewGroupApiInterface;
 
     @GetMapping("")
-    public String previewTab(Model model) throws IOException, ResultFailException {
-        final List<PrvGroup> previewGroups = previewDataApiInterface.prvGroup();
-        if (previewGroups.isEmpty())
-            return "counsel/preview/body";
-
-        final PrvGroup prvGroup = previewGroups.get(0);
-        final CommonTypeEntity previewType = commonTypeApiInterface.get(prvGroup.getPrvType());
-        model.addAttribute("previewType", previewType);
-        final CommonTypeEntity resultType = commonTypeApiInterface.get(prvGroup.getResultType());
-        model.addAttribute("resultType", resultType);
-
+    public String previewTab(){
         return "counsel/preview/body";
     }
 
