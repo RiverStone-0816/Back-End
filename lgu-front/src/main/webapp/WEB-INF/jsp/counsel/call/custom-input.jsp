@@ -405,7 +405,8 @@
 
     window.donePostCustomInfo = function (form, response) {
         alert('고객정보가 저장되었습니다.');
-        loadCustomInput('${form.groupSeq}', response.data || '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(phoneNumber)}');
+        if ($('#call-counseling-input').find('#customId').val() !== response.data && !$('#call-counseling-input').find('#is-result-save').text())
+            loadCustomInput('${form.groupSeq}', response.data || '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(phoneNumber)}');
     };
 
     ui.find('[name="channelType"]').change(function () {
