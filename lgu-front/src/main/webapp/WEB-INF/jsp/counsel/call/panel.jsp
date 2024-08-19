@@ -56,17 +56,25 @@
                             <tr>
                                 <td>전화걸기</td>
                                 <td>
-                                    <div class="ui action input fluid">
-                                        <select id="cid-stt" style="width: calc(100% - 115px)">
-                                            <option value="" label="">발신번호선택</option>
-                                            <c:forEach var="e" items="${services}">
-                                                <option value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.value)}(${g.htmlQuote(e.key)})</option>
-                                            </c:forEach>
-                                        </select>
-                                        <input style="width: 115px !important;" type="text" id="calling-number-stt" class="-calling-number"/>
-                                        <button type="button" class="ui icon button" onclick="tryDial('MAINDB')">
-                                            <i class="phone icon"></i>
-                                        </button>
+                                    <div class="ui form">
+                                        <div class="two fields">
+                                            <div class="field remove-padding">
+                                                <select id="cid-stt">
+                                                    <option value="" label="">발신번호선택</option>
+                                                    <c:forEach var="e" items="${services}">
+                                                        <option value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.value)}(${g.htmlQuote(e.key)})</option>
+                                                    </c:forEach>
+                                                </select>
+                                            </div>
+                                            <div class="field remove-pr">
+                                                <div class="ui action input fluid">
+                                                    <input style="width: 115px !important;" type="text" id="calling-number-stt" class="-calling-number"/>
+                                                    <button type="button" class="ui icon button" onclick="tryDial('MAINDB')">
+                                                        <i class="phone icon"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
