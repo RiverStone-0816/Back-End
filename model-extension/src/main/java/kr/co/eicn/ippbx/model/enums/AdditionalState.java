@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * 콜 부가상태
  * 	// 1=연결전끊음
- *	// 2=포기호(헌트대기중끊음)
+ *	// 2=큐대기중끊음
  *	// PICKUPEE=당겨짐
  *	// PICKUPER=당겨받음
  *  // PROTECT=성희롱,폭언 멘트
