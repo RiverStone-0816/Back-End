@@ -144,9 +144,13 @@ public class AuthApiController extends BaseController {
             user.setCompanyId(companyInfo.getCompanyId());
             user.setCompanyName(companyInfo.getCompanyName());
             user.setTelco(companyInfo.getTelco());
+
+            if (companyInfo.getService().contains("ASTIN"))
+                user.setLicenseList(user.getLicenseList().concat("ASTIN|"));
+            if (companyInfo.getService().contains("BSTT"))
+                user.setLicenseList(user.getLicenseList().concat("BSTT|"));
         } else {
-            if (StringUtils.isNotEmpty(user.getPeer()))
-                phone = phoneApiInterface.get(user.getPeer());
+            if (StringUtils.isNotEmpty(user.getPeer())) phone = phoneApiInterface.get(user.getPeer());
         }
 
         // if (isNotEmpty(form.getExtension()))
@@ -173,28 +177,17 @@ public class AuthApiController extends BaseController {
         g.setSSORequestSiteUrl();
         g.setSTTSocketUrl();
 
-
-        // 전체관리자 이상의 권한이 있으면서 회사가 서비스도 가지고 있음. (A조건)
-        if (
-                ("J|A".contains(g.getUser().getIdType())) &&
-                        (
-                                g.getUsingServices().contains("ASTIN") ||
-                                        g.getUsingServices().contains("ASTOUT") ||
-                                        g.getUsingServices().contains("BSTT")
-                        )
-        ) {
+        if ("J|A".contains(g.getUser().getIdType()) && (g.getUsingServices().contains("ASTIN") || g.getUsingServices().contains("ASTOUT") || g.getUsingServices().contains("BSTT"))) {
+            // 전체관리자 이상의 권한이 있으면서 회사가 서비스도 가지고 있음. (A조건)
             log.info("A조건 충족, recordLoginUserSessionId 실행@");
             authApiInterface.recordLoginUserSessionId();
-        }else if( // 상담사 이면서 ASTOUT 라이센스 가지고 있음. (B조건)
-                "M".contains(g.getUser().getIdType()) &&
-                        g.getUsingServices().contains("ASTOUT") &&
-                        g.getUser().getIsAstOut().equals("Y")
-        ) {
+        } else if ("M".contains(g.getUser().getIdType()) && g.getUsingServices().contains("ASTOUT") && g.getUser().getIsAstOut().equals("Y")) {
+            // 상담사 이면서 ASTOUT 라이센스 가지고 있음. (B조건)
             log.info("B조건 충족, recordLoginUserSessionId 실행@");
             authApiInterface.recordLoginUserSessionId();
-        }else{
+        } else
             log.info("충족하는 조건이 없어 record session 실행하지 않음.");
-        }
+
         // KMS토큰 발급 및 쿠키 저장
         // kmsGraphQLInterface.getAuthenticateWithCookie(request, response);
     }
