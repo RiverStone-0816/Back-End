@@ -16,12 +16,12 @@ public class RecordingHistoryStatExcel extends AbstractExcel {
     }
 
     private void createBody() {
-        addRow(sheetHeadStyle, "대표번호", /*"고객등급",*/ "발신번호", "수신번호", "시간", "수/발신", "통화자", "호상태(초)", "부가상태", "IVR", "종료");
+        addRow(sheetHeadStyle, "대표서비스", /*"고객등급",*/ "발신번호", "수신번호", "시간", "수/발신", "통화자", "호상태(초)", "부가상태", "IVR", "종료");
 
         for (CommonEicnCdrResponse e : list) {
-            final String userName = e.getPersonList() != null && e.getPersonList().getIdName() != null && e.getPersonList().getIdName().length() > 0 ? e.getPersonList().getIdName() : null;
+            final String userName = e.getPersonList() != null && e.getPersonList().getIdName() != null && !e.getPersonList().getIdName().isEmpty() ? e.getPersonList().getIdName() : null;
             addRow(defaultStyle,
-                    niceFormat(e.getService() != null ? e.getService().getSvcNumber() : null),
+                    niceFormat(e.getService() != null ? e.getService().getSvcName() : null),
                     /*niceFormat(e.getVipBlack()),*/
                     niceFormat(e.getSrc()),
                     niceFormat(e.getDst()),

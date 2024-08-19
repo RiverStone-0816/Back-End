@@ -186,7 +186,7 @@
                                         </form:select>
                                     </div>
                                 </div>
-                                <div class="two wide column"><label class="control-label">대표번호</label></div>
+                                <div class="two wide column"><label class="control-label">대표서비스</label></div>
                                 <div class="two wide column">
                                     <div class="ui form">
                                         <form:select path="iniNum">
