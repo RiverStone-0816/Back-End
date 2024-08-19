@@ -90,15 +90,6 @@
                             </button>
                         </div>
                     </div>
-                        <%--<div class="two wide column"><label class="control-label">고객등급</label></div>
-                        <div class="two wide column">
-                            <div class="ui form">
-                                <form:select path="customerRating">
-                                    <form:option value="" label="선택안함"/>
-                                    <form:options items="${customerGrades}"/>
-                                </form:select>
-                            </div>
-                        </div>--%>
                     <div class="three wide column"><label class="control-label">통화자</label></div>
                     <div class="three wide column">
                         <div class="ui form">
@@ -119,26 +110,11 @@
                             </form:select>
                         </div>
                     </div>
+                    <div class="three wide column"></div>
                     <div class="three wide column"><label class="control-label">전화번호</label></div>
                     <div class="three wide column">
                         <div class="ui form">
                             <form:input path="phone"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="three wide column"><label class="control-label">큐(그룹)경로</label></div>
-                    <div class="three wide column">
-                        <div class="ui form">
-                            <form:select path="iniNum">
-                                <form:option value="" label="선택안함"/>
-                                <form:options items="${queues}"/>
-                            </form:select>
-                        </div>
-                    </div>
-                    <div class="three wide column">
-                        <div class="ui form">
-                            <form:select path="sort" items="${sortTypes}"/>
                         </div>
                     </div>
                 </div>
@@ -168,6 +144,11 @@
                             </form:select>
                         </div>
                     </div>
+                    <div class="three wide column">
+                        <div class="ui form">
+                            <form:select path="sort" items="${sortTypes}"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="three wide column"></div>
@@ -186,29 +167,53 @@
                             </form:select>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="three wide column"><label class="control-label">통화시간별</label></div>
                     <div class="three wide column">
                         <div class="ui form">
-                            <form:select path="byCallTime">
-                                <form:option value="" label="시간대선택"/>
-                                <form:options items="${callTimeTypes}"/>
+                            <form:select path="iniNum">
+                                <form:option value="" label="대표서비스 선택"/>
+                                <form:options items="${services}" itemValue="svcNumber" itemLabel="svcName"/>
                             </form:select>
                         </div>
                     </div>
-                    <div class="seven wide column">
-                        <div class="ui input"><form:input path="callStartMinutes" size="2" class="-input-numerical"/></div>
-                        <span>분</span>
-                        <div class="ui input"><form:input path="callStartSeconds" size="2" class="-input-numerical"/></div>
-                        <span>초</span>
-                        <span class="tilde">~</span>
-                        <div class="ui input"><form:input path="callEndMinutes" size="2" class="-input-numerical"/></div>
-                        <span>분</span>
-                        <div class="ui input"><form:input path="callEndSeconds" size="2" class="-input-numerical"/></div>
-                        <span>초</span>
-                    </div>
+                    <c:if test="${serviceKind.contains('SC')}">
+                        <div class="three wide column">
+                            <div class="ui form">
+                                <form:select path="secondNum">
+                                    <form:option value="" label="큐(그룹)경로 선택"/>
+                                    <form:options items="${queues}"/>
+                                </form:select>
+                            </div>
+                        </div>
+                    </c:if>
                 </div>
+                <c:if test="${serviceKind.contains('SC')}">
+                    <div class="row">
+                        <div class="three wide column"><label class="control-label">통화시간별</label></div>
+                        <div class="three wide column">
+                            <div class="ui form">
+                                <form:select path="byCallTime">
+                                    <form:option value="" label="시간대선택"/>
+                                    <form:options items="${callTimeTypes}"/>
+                                </form:select>
+                            </div>
+                        </div>
+                        <div class="seven wide column">
+                            <div class="ui input"><form:input path="callStartMinutes" size="2"
+                                                              class="-input-numerical"/></div>
+                            <span>분</span>
+                            <div class="ui input"><form:input path="callStartSeconds" size="2"
+                                                              class="-input-numerical"/></div>
+                            <span>초</span>
+                            <span class="tilde">~</span>
+                            <div class="ui input"><form:input path="callEndMinutes" size="2"
+                                                              class="-input-numerical"/></div>
+                            <span>분</span>
+                            <div class="ui input"><form:input path="callEndSeconds" size="2"
+                                                              class="-input-numerical"/></div>
+                            <span>초</span>
+                        </div>
+                    </div>
+                </c:if>
             </div>
         </div>
     </div>

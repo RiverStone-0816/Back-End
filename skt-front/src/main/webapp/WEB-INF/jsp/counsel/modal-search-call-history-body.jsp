@@ -92,15 +92,6 @@
                                 </button>
                             </div>
                         </div>
-                            <%--<div class="two wide column"><label class="control-label">고객등급</label></div>
-                            <div class="two wide column">
-                                <div class="ui form">
-                                    <form:select path="customerRating">
-                                        <form:option value="" label="선택안함"/>
-                                        <form:options items="${customerGrades}"/>
-                                    </form:select>
-                                </div>
-                            </div>--%>
                         <div class="three wide column"><label class="control-label">상담원</label></div>
                         <div class="three wide column">
                             <div class="ui form">
