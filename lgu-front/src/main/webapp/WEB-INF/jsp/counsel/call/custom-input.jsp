@@ -45,13 +45,13 @@
                     <td>
                         <div class="ui form">
                             <div class="two fields">
-                                <div class="field">
+                                <div class="field remove-padding">
                                     <select onchange="loadCustomInput(${form.groupSeq}, $(this).val() === 'insert' ? null : '${entity != null ? g.htmlQuote(entity.maindbSysCustomId) : ''}', '${g.htmlQuote(phoneNumber)}')">
                                         <option value="insert" ${entity == null ? 'selected' : ''}>새로운 고객으로 등록</option>
                                         <option value="update" ${entity != null ? 'selected' : ''}>고객정보 갱신</option>
                                     </select>
                                 </div>
-                                <div class="field">
+                                <div class="field remove-pr">
                                     <select onchange="loadCustomInput($(this).val(), null, '${g.htmlQuote(phoneNumber)}')">
                                         <c:forEach var="e" items="${maindbGroups}">
                                             <option value="${e.seq}" ${e.seq == form.groupSeq ? 'selected' : ''}>${g.htmlQuote(e.name)}</option>
