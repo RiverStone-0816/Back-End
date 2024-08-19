@@ -138,12 +138,6 @@
                                         <form:select path="sort" items="${sortTypes}"/>
                                     </div>
                                 </div>
-                                <div class="two wide column"><label class="control-label">키워드</label></div>
-                                <div class="two wide column">
-                                    <div class="ui form">
-                                        <form:input path="keyword"/>
-                                    </div>
-                                </div>
                             </div>
                             <div class="row">
                                 <div class="two wide column"><label class="control-label">기타선택</label></div>
@@ -263,9 +257,6 @@
                             <th>통화자</th>
                             <th>호상태(초)</th>
                             <th>부가상태</th>
-                            <c:if test="${(g.usingServices.contains('AST') && g.user.isAstIn eq 'Y') || (g.usingServices.contains('BSTT') && g.user.isAstStt eq 'Y')}">
-                                <th>주요키워드</th>
-                            </c:if>
                             <th>IVR</th>
                             <th>종료</th>
                             <th>녹취</th>
@@ -302,9 +293,6 @@
                                         </td>
                                         <td>${g.htmlQuote(e.callStatusValue)}</td>
                                         <td>${g.htmlQuote(e.etcCallResultValue)}</td>
-                                        <c:if test="${(g.usingServices.contains('AST') && g.user.isAstIn eq 'Y') || (g.usingServices.contains('BSTT') && g.user.isAstStt eq 'Y')}">
-                                            <td>키워드, 키워드, 키워드</td>
-                                        </c:if>
                                         <td>${g.htmlQuote(e.ivrPathValue)}</td>
                                         <td>${g.htmlQuote(e.callingHangupValue)}</td>
                                         <td>
