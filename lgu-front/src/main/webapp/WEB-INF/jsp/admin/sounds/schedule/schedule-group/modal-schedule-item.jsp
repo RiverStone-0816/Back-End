@@ -205,9 +205,9 @@
                     <div class="ui form">
                         <select name="kindDataSMS">
                             <c:forEach var="e" items="${smsMessageTemplateList}">
-                                <option value="${g.htmlQuote(e.id)}"
-                                    ${entity.kindData == e.id ? 'selected' : null}
-                                >${g.htmlQuote(e.content)}</option>
+                                <option value="${g.htmlQuote(e.id)}" ${entity.kindData eq ''.concat(e.id) ? 'selected' : null}>
+                                        ${g.htmlQuote(e.content)}
+                                </option>
                             </c:forEach>
                         </select>
                     </div>
