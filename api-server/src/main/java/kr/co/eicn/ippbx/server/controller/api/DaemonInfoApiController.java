@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 import static kr.co.eicn.ippbx.util.JsonResult.data;
@@ -24,10 +26,10 @@ public class DaemonInfoApiController extends ApiBaseController{
     private final DaemonRepository daemonRepository;
 
     @GetMapping("")
-    public ResponseEntity<JsonResult<Map<String, String>>> get() {
+    public ResponseEntity<JsonResult<Map<String, String>>> get() throws UnknownHostException {
         final HttpServletRequest request = ContextUtil.getRequest();
         final String ip = request.getHeader("HTTP_CLIENT_IP");
 
-        return ResponseEntity.ok(data(daemonRepository.findAllNodeJSDaemon(ip.startsWith("192.") || ip.startsWith("172.") || ip.startsWith("10."))));
+        return ResponseEntity.ok(data(daemonRepository.findAllNodeJSDaemon(InetAddress.getByName(ip).isSiteLocalAddress())));
     }
 }
