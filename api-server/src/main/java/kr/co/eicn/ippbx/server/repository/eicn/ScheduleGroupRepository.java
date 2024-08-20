@@ -66,6 +66,7 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
         final Map<String, String> soundListMap = getSoundList().stream().collect(Collectors.toMap(e -> String.valueOf(e.getSeq()), SoundList::getSoundName));
         final Map<String, String> ivrTreeMap = getIvrRootTree().stream().collect(Collectors.toMap(e -> String.valueOf(e.getCode()), IvrTree::getName));
         final Map<String, String> contextInfoMap = getContextInfo().stream().collect(Collectors.toMap(ContextInfo::getContext, ContextInfo::getName));
+        final Map<String, String> sendMessageTemplateMap = getSendMessageTemplate().stream().collect(Collectors.toMap(e -> String.valueOf(e.getId()), SendMessageTemplate::getContent));
 
         recordResultMap.forEach((record, records) -> {
             final ScheduleGroupEntity scheduleGroupEntity = record.into(ScheduleGroupEntity.class);
@@ -94,9 +95,9 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
                             final String context = kindDataArray.length > 0 ? contextInfoMap.getOrDefault(kindDataArray[0], "미확인 예외컨택스트") : "예외컨택스트 설정필요";
                             final String data = kindDataArray.length > 1 ? ivrTreeMap.getOrDefault(kindDataArray[1], "미확인 IVR") : "설정필요";
                             into.setKindDataName(context.concat(" | ").concat(data));
+                        } else if (ScheduleKind.SMS.getCode().equals(into.getKind())) {
+                            into.setKindDataName(sendMessageTemplateMap.getOrDefault(into.getKindData(), "미확인 SMS 템플릿"));
                         }
-
-
                         return into;
                     })
                     .collect(Collectors.toList())
@@ -222,6 +223,13 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
                 .where(CONTEXT_INFO.COMPANY_ID.eq(getCompanyId()))
                 .orderBy(CONTEXT_INFO.NAME)
                 .fetchInto(ContextInfo.class);
+    }
+
+    private List<SendMessageTemplate> getSendMessageTemplate() {
+        return dsl.select(SEND_MESSAGE_TEMPLATE.ID, SEND_MESSAGE_TEMPLATE.CONTENT)
+                .from(SEND_MESSAGE_TEMPLATE)
+                .where(SEND_MESSAGE_TEMPLATE.COMPANY_ID.eq(getCompanyId()))
+                .fetchInto(SendMessageTemplate.class);
     }
 
     public void deleteAllPBXServer(Integer parent) {

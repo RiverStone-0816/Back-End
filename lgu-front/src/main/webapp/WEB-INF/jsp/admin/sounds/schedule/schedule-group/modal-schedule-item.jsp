@@ -114,7 +114,7 @@
                             <div class="field">
                                 <div class="ui radio checkbox">
                                     <form:radiobutton path="kind" value="SMS" class="hidden"/>
-                                    <label>SMS</label>
+                                    <label>문자발송</label>
                                 </div>
                             </div>
                         </div>
@@ -206,7 +206,7 @@
                         <select name="kindDataSMS">
                             <c:forEach var="e" items="${smsMessageTemplateList}">
                                 <option value="${g.htmlQuote(e.id)}" ${entity.kindData eq ''.concat(e.id) ? 'selected' : null}>
-                                        ${g.htmlQuote(e.content)}
+                                        ${g.htmlQuote(e.content).length() > 100 ? g.htmlQuote(e.content).substring(0, 100).concat("...") : g.htmlQuote(e.content)}
                                 </option>
                             </c:forEach>
                         </select>

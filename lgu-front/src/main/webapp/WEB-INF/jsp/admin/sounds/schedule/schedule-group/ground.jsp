@@ -29,13 +29,13 @@
                     <table class="ui structured celled table compact unstackable">
                         <thead>
                         <tr>
-                            <th class="two wide">유형명</th>
-                            <th colspan="2">시간</th>
-                            <th>수행유형</th>
+                            <th style="min-width: 100px;">유형명</th>
+                            <th style="min-width: 150px;" colspan="2">시간</th>
+                            <th style="min-width: 200px;">수행유형</th>
                             <th>수행데이터</th>
-                            <th>음원</th>
-                            <th class="one wide">관리</th>
-                            <th class="one wide">추가</th>
+                            <th style="min-width: 200px;">음원</th>
+                            <th style="min-width: 120px;">관리</th>
+                            <th style="min-width: 100px;">추가</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -65,21 +65,20 @@
                                                         <fmt:formatNumber value="${(s.tohour / 60).intValue()}" pattern="00"/>:<fmt:formatNumber value="${s.tohour % 60}" pattern="00"/>
                                                     </td>
                                                     <td>
-                                                            ${s.kind == 'S' ? '음원만플레이'
-                                                                    : s.kind == 'D' ? '번호직접연결(내부번호연결)'
-                                                                    : s.kind == 'F' ? '착신전환(외부번호연결)'
-                                                                    : s.kind == 'I' ? 'IVR연결'
-                                                                    : s.kind == 'C' ? '예외컨텍스트'
-                                                                    : s.kind == 'V' ? '음성사서함'
-                                                                    : s.kind == 'CD' ? '예외컨택스트후번호연결'
-                                                                    : s.kind == 'CI' ? '예외컨택스트후IVR'
-                                                                    : s.kind == 'SMS' ? 'SMS'
-                                                                    : '알수없음: ' + s.kind}
+                                                            ${g.htmlQuote(g.messageOf('ScheduleKind', s.kind))}
                                                     </td>
                                                     <td>
-                                                        <c:if test="${s.kind == 'I' || s.kind == 'C' || s.kind == 'CI' || s.kind == 'CD'}">${g.htmlQuote(s.kindDataName)}</c:if>
-                                                        <c:if test="${s.kind == 'SMS'}">문자발송</c:if>
-                                                        <c:if test="${s.kind != 'I' && s.kind != 'C' && s.kind != 'CI' && s.kind != 'CD' && s.kind != 'SMS'}">${g.htmlQuote(s.kindData)}</c:if>
+                                                        <c:choose>
+                                                            <c:when test="${s.kind == 'I' || s.kind == 'C' || s.kind == 'CI' || s.kind == 'CD'}">
+                                                                ${g.htmlQuote(s.kindDataName)}
+                                                            </c:when>
+                                                            <c:when test="${s.kind == 'SMS'}">
+                                                                ${g.htmlQuote(s.kindDataName).length()  > 30 ? g.htmlQuote(s.kindDataName).substring(0, 30).concat("...") : g.htmlQuote(s.kindDataName)}
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                ${g.htmlQuote(s.kindData)}
+                                                            </c:otherwise>
+                                                        </c:choose>
                                                     </td>
                                                     <td>${g.htmlQuote(s.kindSoundName)}</td>
                                                     <td>
