@@ -40,8 +40,6 @@ import kr.co.eicn.ippbx.front.service.api.sounds.schedule.OutboundDayScheduleApi
 import kr.co.eicn.ippbx.front.service.api.sounds.sounds.ArsApiInterface;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.page.Pagination;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonMaindbCustomInfo;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoKind;
 import kr.co.eicn.ippbx.meta.jooq.eicn.enums.TodoListTodoStatus;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
@@ -52,15 +50,13 @@ import kr.co.eicn.ippbx.model.dto.eicn.search.SearchMaindbGroupResponse;
 import kr.co.eicn.ippbx.model.dto.eicn.search.SearchQueueResponse;
 import kr.co.eicn.ippbx.model.entity.customdb.MaindbCustomInfoEntity;
 import kr.co.eicn.ippbx.model.entity.customdb.ResultCustomInfoEntity;
-import kr.co.eicn.ippbx.model.entity.eicn.CommonCodeEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CommonTypeEntity;
 import kr.co.eicn.ippbx.model.enums.*;
 import kr.co.eicn.ippbx.model.search.*;
 import kr.co.eicn.ippbx.model.search.search.SearchServiceRequest;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.jooq.tools.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -103,31 +99,31 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 public class CounselController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(CounselController.class);
 
-    private final MonitApiInterface monitApiInterface;
-    private final CompanyApiInterface companyApiInterface;
-    private final QueueApiInterface queueApiInterface;
-    private final PersonLinkApiInterface personLinkApiInterface;
-    private final CounselApiInterface counselApiInterface;
-    private final SearchApiInterface searchApiInterface;
-    private final RecordingHistoryApiInterface recordingHistoryApiInterface;
-    private final MaindbGroupApiInterface maindbGroupApiInterface;
-    private final MaindbDataApiInterface maindbDataApiInterface;
-    private final MaindbResultApiInterface maindbResultApiInterface;
-    private final CommonTypeApiInterface commonTypeApiInterface;
-    private final EnumerationValueApiInterface enumerationValueApiInterface;
-    private final OrganizationService organizationService;
+    private final MonitApiInterface               monitApiInterface;
+    private final CompanyApiInterface             companyApiInterface;
+    private final QueueApiInterface               queueApiInterface;
+    private final PersonLinkApiInterface          personLinkApiInterface;
+    private final CounselApiInterface             counselApiInterface;
+    private final SearchApiInterface              searchApiInterface;
+    private final RecordingHistoryApiInterface    recordingHistoryApiInterface;
+    private final MaindbGroupApiInterface         maindbGroupApiInterface;
+    private final MaindbDataApiInterface          maindbDataApiInterface;
+    private final MaindbResultApiInterface        maindbResultApiInterface;
+    private final CommonTypeApiInterface          commonTypeApiInterface;
+    private final EnumerationValueApiInterface    enumerationValueApiInterface;
+    private final OrganizationService             organizationService;
     private final OutboundDayScheduleApiInterface outboundDayScheduleApiInterface;
-    private final GradelistApiInterface gradelistApiInterface;
-    private final IvrApiInterface ivrApiInterface;
-    private final CallbackHistoryApiInterface callbackHistoryApiInterface;
-    private final ArsApiInterface arsApiInterface;
-    private final SmsCategoryApiInterface smsCategoryApiInterface;
-    private final ServiceApiInterface serviceApiInterface;
-    private final SmsMessageTemplateApiInterface smsMessageTemplateApiInterface;
-    private final KmsGraphQLInterface kmsGraphQLInterface;
-    private final KmsMemoInterface kmsMemoInterface;
-    private final SttTextApiInterface sttTextApiInterface;
-    private final UserApiInterface userApiInterface;
+    private final GradelistApiInterface           gradelistApiInterface;
+    private final IvrApiInterface                 ivrApiInterface;
+    private final CallbackHistoryApiInterface     callbackHistoryApiInterface;
+    private final ArsApiInterface                 arsApiInterface;
+    private final SmsCategoryApiInterface         smsCategoryApiInterface;
+    private final ServiceApiInterface             serviceApiInterface;
+    private final SmsMessageTemplateApiInterface  smsMessageTemplateApiInterface;
+    private final KmsGraphQLInterface             kmsGraphQLInterface;
+    private final KmsMemoInterface                kmsMemoInterface;
+    private final SttTextApiInterface             sttTextApiInterface;
+    private final UserApiInterface                userApiInterface;
 
     @Value("${assist.stt.request.url}")
     private String sttRequestUrl;
@@ -196,47 +192,44 @@ public class CounselController extends BaseController {
     @GetMapping("counsel-list")
     public String counselList(Model model, @RequestParam(required = false) String customId) throws IOException, ResultFailException {
         final ResultCustomInfoSearchRequest search = new ResultCustomInfoSearchRequest();
-        Calendar createdStartDate = Calendar.getInstance();
+        final Calendar createdStartDate = Calendar.getInstance();
         createdStartDate.add(Calendar.MONTH, -3);
         search.setCreatedStartDate(new java.sql.Date(createdStartDate.getTime().getTime()));
         search.setLimit(1000);
+
         if (StringUtils.isNotEmpty(customId))
             search.getDbTypeFields().put("CUSTOM_ID", new MaindbDataSearchRequest.FieldCondition(customId, null, null, null));
+
         final List<ResultCustomInfoEntity> list = maindbResultApiInterface.getPagination(search).getRows();
         model.addAttribute("list", list);
+
         return "counsel/counsel-list";
     }
 
     /**
-    * KMS 관련 컨트롤러 시작
-    */
+     * KMS 관련 컨트롤러 시작
+     */
     @GetMapping("assist-sso")
     public ResponseEntity<HashMap<String, String>> kmsCustomSidebarList(HttpSession session) throws JsonProcessingException {
-        String sessionId = session.getId();
-        HashMap<String, String> result = kmsGraphQLInterface.getSSOToken(sessionId);
+        final String sessionId = session.getId();
+        final HashMap<String, String> result = kmsGraphQLInterface.getSSOToken(sessionId);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("kms-custom-sidebar")
-    public String kmsCustomSidebarList(Model model, @RequestParam(required = false) Integer id, @RequestParam(required = false) String keyword, @RequestParam(required = false) String sort) throws IOException, ResultFailException {
-
+    public String kmsCustomSidebarList(Model model, @RequestParam(required = false) Integer id, @RequestParam(required = false) String keyword, @RequestParam(required = false) String sort) throws IOException {
         // KMS 로그인이 불가능한 상태라면, 어시스트 관련 사이드바 노출 하지 않음.
-        if(g.getUsingServices().contains("ASTIN") && g.getUser().getIsAstIn().equals("Y")){
-            Boolean availabilityCheck = kmsGraphQLInterface.loginAvailabilityCheck();
-            if(!availabilityCheck) {
+        if (g.getUsingServices().contains("ASTIN") && g.getUser().getIsAstIn().equals("Y")) {
+            final Boolean availabilityCheck = kmsGraphQLInterface.loginAvailabilityCheck();
+            if (!availabilityCheck) {
                 return "counsel/kms-custom-sidebar-empty";
             }
         }
 
-        if(g.getUsingServices().contains("ASTIN") && g.getUser().getIsAstIn().equals("Y")) {
+        if (g.getUsingServices().contains("ASTIN") && g.getUser().getIsAstIn().equals("Y")) {
             final List<KmsGraphQLInterface.GetKnowledgeCategory> category = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories();
-            model.addAttribute("kmsCategoryMenu", category
-                    .stream()
-                    .filter(e -> e.getLevel() == 0)
-                    .collect(Collectors.toList()));
-            model.addAttribute("kmsCategoryList", category
-                    .stream()
-                    .collect(Collectors.toMap(KmsGraphQLInterface.GetKnowledgeCategory::getId, e -> e)));
+            model.addAttribute("kmsCategoryMenu", category.stream().filter(e -> e.getLevel() == 0).collect(Collectors.toList()));
+            model.addAttribute("kmsCategoryList", category.stream().collect(Collectors.toMap(KmsGraphQLInterface.GetKnowledgeCategory::getId, e -> e)));
             model.addAttribute("kmsList", kmsGraphQLInterface.getSearchKnowledge(keyword, id, sort, "all").getData().getSearchKnowledgeBySolr().getRows());
         } else {
             model.addAttribute("kmsCategoryMenu", new ArrayList<>());
@@ -248,71 +241,67 @@ public class CounselController extends BaseController {
 
     // kms 리스트 가져오기 (json)
     @GetMapping("kms/list")
-    public ResponseEntity<JsonResult<Map<Object, List<?>>>> getKmsLists(Model model, @RequestParam(required = false) Integer id, @RequestParam(required = false) String keyword, @RequestParam(required = false) String sort, @RequestParam(required = false, name = "search_type_flag") String searchTypeFlag) throws IOException, ResultFailException {
+    public ResponseEntity<JsonResult<Map<Object, List<?>>>> getKmsLists(Model model, @RequestParam(required = false) Integer id, @RequestParam(required = false) String keyword, @RequestParam(required = false) String sort, @RequestParam(required = false, name = "search_type_flag") String searchTypeFlag) throws IOException {
         // searchType이 tag면 '태그' 검색, all이면 '태그/제목/내용' 검색
-        final List<KmsGraphQLInterface.GetKnowledgeCategory> category = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories();
-        List<KmsGraphQLInterface.GetKnowledgeCategory> categoryList = category.stream().collect(Collectors.toList());
-        List<KmsGraphQLInterface.Knowledge> kmsList = kmsGraphQLInterface.getSearchKnowledge(keyword, id, sort, searchTypeFlag).getData().getSearchKnowledgeBySolr().getRows();
-        Map<Object, List<?>> result = Map.of("categoryList", categoryList, "kmsList", kmsList);
+        final List<KmsGraphQLInterface.GetKnowledgeCategory> categoryList = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories();
+        final List<KmsGraphQLInterface.Knowledge> kmsList = kmsGraphQLInterface.getSearchKnowledge(keyword, id, sort, searchTypeFlag).getData().getSearchKnowledgeBySolr().getRows();
+        final Map<Object, List<?>> result = Map.of("categoryList", categoryList, "kmsList", kmsList);
         return ResponseEntity.ok(data(result));
     }
 
     // kms 지식정보 상세 조회
     @GetMapping("kms/{id}")
-    public ResponseEntity<JsonResult<Map<Object, Object>>> getKmsView(Model model, @PathVariable Integer id) throws IOException, ResultFailException {
-        KmsGraphQLInterface.Knowledge getKnowledge = kmsGraphQLInterface.getSearchIdKnowledge(id).getData().getGetKnowledge();
-        List<KmsGraphQLInterface.GetKnowledgeCategory> category = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories();
-        model.addAttribute("categoryList", category
-                .stream()
-                .collect(Collectors.toList()));
+    public ResponseEntity<JsonResult<Map<Object, Object>>> getKmsView(Model model, @PathVariable Integer id) throws IOException {
+        final KmsGraphQLInterface.Knowledge getKnowledge = kmsGraphQLInterface.getSearchIdKnowledge(id).getData().getGetKnowledge();
+        final List<KmsGraphQLInterface.GetKnowledgeCategory> category = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories();
+        model.addAttribute("categoryList", category);
 
-        Map<Object, Object> result = Map.of("categoryList", category, "kmsList", getKnowledge);
-
+        final Map<Object, Object> result = Map.of("categoryList", category, "kmsList", getKnowledge);
         return ResponseEntity.ok(data(result));
     }
 
     // kms 지식정보 상세 조회 (modal)
     @GetMapping("kms/{id}/modal")
-    public String getKmsViewModal(Model model, @PathVariable Integer id) throws IOException, ResultFailException {
+    public String getKmsViewModal(Model model, @PathVariable Integer id) throws IOException {
         model.addAttribute("kms", kmsGraphQLInterface.getSearchIdKnowledge(id).getData().getGetKnowledge());
         return "counsel/modal-kms-view";
     }
 
     // kms like
     @GetMapping("kms/{id}/like")
-    public ResponseEntity<JsonResult<KmsGraphQLInterface.Knowledge>> kmsLike(Model model, @PathVariable Integer id, @RequestParam boolean like) throws IOException, ResultFailException {
-        KmsGraphQLInterface.GetLikedResult likedResult = kmsGraphQLInterface.likeKnowledge(id, like);
-        KmsGraphQLInterface.Knowledge getKnowledge = kmsGraphQLInterface.getSearchIdKnowledge(id).getData().getGetKnowledge();
+    public ResponseEntity<JsonResult<KmsGraphQLInterface.Knowledge>> kmsLike(Model model, @PathVariable Integer id, @RequestParam boolean like) throws IOException {
+        kmsGraphQLInterface.likeKnowledge(id, like);
+        final KmsGraphQLInterface.Knowledge getKnowledge = kmsGraphQLInterface.getSearchIdKnowledge(id).getData().getGetKnowledge();
         return ResponseEntity.ok(data(getKnowledge));
     }
 
     // kms 북마크 하기
     @GetMapping("kms/{id}/bookmark")
-    public ResponseEntity<JsonResult<KmsGraphQLInterface.Knowledge>> kmsBookmark(Model model, @PathVariable Integer id, @RequestParam boolean bookmark) throws IOException, ResultFailException {
-        KmsGraphQLInterface.GetBookmarkedResult getBookmarkedResult = kmsGraphQLInterface.bookmarkKnowledge(id, bookmark);
-        KmsGraphQLInterface.Knowledge getKnowledge = kmsGraphQLInterface.getSearchIdKnowledge(id).getData().getGetKnowledge();
+    public ResponseEntity<JsonResult<KmsGraphQLInterface.Knowledge>> kmsBookmark(Model model, @PathVariable Integer id, @RequestParam boolean bookmark) throws IOException {
+        kmsGraphQLInterface.bookmarkKnowledge(id, bookmark);
+        final KmsGraphQLInterface.Knowledge getKnowledge = kmsGraphQLInterface.getSearchIdKnowledge(id).getData().getGetKnowledge();
         return ResponseEntity.ok(data(getKnowledge));
     }
 
     // kms 북마크 리스트 가져오기
     @GetMapping("kms/bookmark")
     public ResponseEntity<JsonResult<HashMap<String, Object>>> kmsBookmarkList() throws IOException, ResultFailException {
-        List<KmsGraphQLInterface.KnowledgeItem> bookmarkList = kmsGraphQLInterface.getMyBookmarkedKnowledge().getData().getGetMyBookmarkedKnowledge().getRows();
-        List<KmsGraphQLInterface.GetKnowledgeCategory> category = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories().stream().collect(Collectors.toList());
-        HashMap<String, Object> result = new HashMap<>();
+        final List<KmsGraphQLInterface.KnowledgeItem> bookmarkList = kmsGraphQLInterface.getMyBookmarkedKnowledge().getData().getGetMyBookmarkedKnowledge().getRows();
+        final List<KmsGraphQLInterface.GetKnowledgeCategory> category = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories();
+
+        final HashMap<String, Object> result = new HashMap<>();
         result.put("bookmarkList", bookmarkList);
         result.put("categoryList", category);
+
         return ResponseEntity.ok(data(result));
     }
 
     // component 모음
     @GetMapping(value = "kms/component", params = "type=bookmark")
     public String getKmsComponentBookmark(Model model) throws IOException, ResultFailException {
-        List<KmsGraphQLInterface.KnowledgeItem> bookmarkList = kmsGraphQLInterface.getMyBookmarkedKnowledge().getData().getGetMyBookmarkedKnowledge().getRows();
-        List<KmsGraphQLInterface.GetKnowledgeCategory> category = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories();
-        model.addAttribute("categoryList", category
-                .stream()
-                .collect(Collectors.toList()));
+        final List<KmsGraphQLInterface.KnowledgeItem> bookmarkList = kmsGraphQLInterface.getMyBookmarkedKnowledge().getData().getGetMyBookmarkedKnowledge().getRows();
+        final List<KmsGraphQLInterface.GetKnowledgeCategory> category = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories();
+        model.addAttribute("categoryList", category);
         model.addAttribute("bookmarkList", bookmarkList);
 
         return "counsel/component-bookmark";
@@ -320,69 +309,69 @@ public class CounselController extends BaseController {
 
     @GetMapping(value = "kms/component", params = "type=memo")
     public String getKmsComponentNote(Model model) throws IOException, ResultFailException {
-        List<Memo> memoList = kmsMemoInterface.getMemoList("");
+        final List<Memo> memoList = kmsMemoInterface.getMemoList("");
         model.addAttribute("memoList", memoList);
 
         return "counsel/component-memo";
     }
 
     @GetMapping(value = "kms/component", params = "type=recent")
-    public String getKmsComponentRecentRead(Model model) throws IOException, ResultFailException {
-        List<KmsGraphQLInterface.Knowledge> recentList = kmsGraphQLInterface.getRecentChangedKnowledge().getData().getGetRecentChangedKnowledge().getRows();
-        List<KmsGraphQLInterface.GetKnowledgeCategory> category = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories().stream().collect(Collectors.toList());
+    public String getKmsComponentRecentRead(Model model) throws IOException {
+        final List<KmsGraphQLInterface.Knowledge> recentList = kmsGraphQLInterface.getRecentChangedKnowledge().getData().getGetRecentChangedKnowledge().getRows();
+        final List<KmsGraphQLInterface.GetKnowledgeCategory> category = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories();
         model.addAttribute("recentList", recentList);
         model.addAttribute("categoryList", category);
+
         return "counsel/component-recent-read";
     }
 
     @GetMapping(value = "kms/component", params = "type=hits-rank")
-    public String getKmsComponentHitsRank(Model model) throws IOException, ResultFailException {
+    public String getKmsComponentHitsRank(Model model) throws IOException {
         // 현재월의 첫번째 일자
-        LocalDate firstDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-        String defaultStartDate = firstDate.format(DateTimeFormatter.ISO_DATE);
-        // System.out.println(defaultStartDate);  // 2023-06-01
+        final LocalDate firstDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+        final String defaultStartDate = firstDate.format(DateTimeFormatter.ISO_DATE);
 
         // 현재월의 마지막 일자
-        LocalDate lastDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-        String defaultEndDate = lastDate.format(DateTimeFormatter.ISO_DATE);
-        // System.out.println(defaultEndDate); // 2023-06-30
+        final LocalDate lastDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+        final String defaultEndDate = lastDate.format(DateTimeFormatter.ISO_DATE);
 
-        List<KmsGraphQLInterface.GetTopHitKnowledge> hitsRankList = kmsGraphQLInterface.getTopHitKnowledge(defaultStartDate, defaultEndDate).getData().getGetTopHitKnowledge();
-        List<KmsGraphQLInterface.GetKnowledgeCategory> category = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories().stream().collect(Collectors.toList());
+        final List<KmsGraphQLInterface.GetTopHitKnowledge> hitsRankList = kmsGraphQLInterface.getTopHitKnowledge(defaultStartDate, defaultEndDate).getData().getGetTopHitKnowledge();
+        final List<KmsGraphQLInterface.GetKnowledgeCategory> category = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories();
         model.addAttribute("hitsRankList", hitsRankList);
         model.addAttribute("categoryList", category);
+
         return "counsel/component-hits-rank";
     }
 
     @GetMapping(value = "kms/component", params = "type=hits-tag-rank")
-    public String getKmsComponentHitsTagRank(Model model) throws IOException, ResultFailException {
+    public String getKmsComponentHitsTagRank(Model model) throws IOException {
         // 현재월의 첫번째 일자
-        LocalDate firstDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-        String defaultStartDate = firstDate.format(DateTimeFormatter.ISO_DATE);
-        // System.out.println(defaultStartDate);  // 2023-06-01
+        final LocalDate firstDate = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+        final String defaultStartDate = firstDate.format(DateTimeFormatter.ISO_DATE);
 
         // 현재월의 마지막 일자
-        LocalDate lastDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-        String defaultEndDate = lastDate.format(DateTimeFormatter.ISO_DATE);
-        // System.out.println(defaultEndDate); // 2023-06-30
+        final LocalDate lastDate = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+        final String defaultEndDate = lastDate.format(DateTimeFormatter.ISO_DATE);
 
-        List<KmsGraphQLInterface.KnowledgeTags> hitsTagRankList = kmsGraphQLInterface.getTopHitKnowledgeTags(defaultStartDate, defaultEndDate).getData().getGetTopHitKnowledgeTags();
+        final List<KmsGraphQLInterface.KnowledgeTags> hitsTagRankList = kmsGraphQLInterface.getTopHitKnowledgeTags(defaultStartDate, defaultEndDate).getData().getGetTopHitKnowledgeTags();
         model.addAttribute("hitsTagRankList", hitsTagRankList);
+
         return "counsel/component-hits-tag-rank";
     }
 
     @GetMapping(value = "kms/component", params = "type=recommend-rank")
-    public String getKmsComponentRecommendRank(Model model) throws IOException, ResultFailException {
-        final List<KmsGraphQLInterface.GetKnowledgeCategory> categoryList = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories().stream().collect(Collectors.toList());
-        List<KmsGraphQLInterface.Knowledge> recommendList = kmsGraphQLInterface.getSearchKnowledge("", null, "LIKES", "all").getData().getSearchKnowledgeBySolr().getRows();
-
+    public String getKmsComponentRecommendRank(Model model) throws IOException {
+        final List<KmsGraphQLInterface.GetKnowledgeCategory> categoryList = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories();
+        final List<KmsGraphQLInterface.Knowledge> recommendList = kmsGraphQLInterface.getSearchKnowledge("", null, "LIKES", "all").getData().getSearchKnowledgeBySolr().getRows();
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("recommendList", recommendList);
+
         return "counsel/component-recommend-rank";
     }
 
     /**
      * 처음 JSP로 화면을 만들때 사용
+     *
      * @param model
      * @param commentFilter
      * @return
@@ -390,40 +379,41 @@ public class CounselController extends BaseController {
      */
     @GetMapping(value = "kms/component", params = "type=comment")
     public String getKmsComponentComment(Model model, @RequestParam(value = "commentFilter", required = false, defaultValue = "") String commentFilter) throws IOException {
-        PersonDetailResponse user = g.getUser();
-        String userId = user.getId();
-        String userName = user.getIdName();
-        String idType = user.getIdType();
+        final PersonDetailResponse user = g.getUser();
+        final String userName = user.getIdName();
+        final String idType = user.getIdType();
 
-
-        final List<KmsGraphQLInterface.GetKnowledgeCategory> categoryList = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories().stream().collect(Collectors.toList());
+        final List<KmsGraphQLInterface.GetKnowledgeCategory> categoryList = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories();
         model.addAttribute("categoryList", categoryList);
+
         List<kr.co.eicn.ippbx.front.service.api.application.kms.KmsGraphQLInterface.SearchKnowledgeUpdate> commentList = null;
-        if(idType.equals("A")){
+        if (idType.equals("A")) {
             commentList = kmsGraphQLInterface.searchKnowledgeUpdateRequestForAdmin().getData().getSearchKnowledgeUpdateRequest().getRows();
-        }else{
+        } else {
             // 상담사 화면을 위한 호출 이므로 userName과 requesterName으로 필터
             commentList = kmsGraphQLInterface.searchKnowledgeUpdateRequestForCounsel(commentFilter).getData().getSearchKnowledgeUpdateRequest().getRows();
-            List<KmsGraphQLInterface.SearchKnowledgeUpdate> filterCommentList = commentList.stream().filter(comment -> {
-                if(StringUtils.isNotEmpty(comment.getRequesterName()) && StringUtils.equals(comment.getRequesterName(), userName)) return true;
+
+            final List<KmsGraphQLInterface.SearchKnowledgeUpdate> filterCommentList = commentList.stream().filter(comment -> {
+                if (StringUtils.isNotEmpty(comment.getRequesterName()) && StringUtils.equals(comment.getRequesterName(), userName))
+                    return true;
                 return false;
             }).collect(Collectors.toList());
-            if(filterCommentList.size() > 0){
+            if (CollectionUtils.isNotEmpty(filterCommentList)) {
                 commentList = filterCommentList;
             }
         }
 
-        if(commentList.size() > 0) {
-            commentList.stream().forEach(e -> {
+        if (CollectionUtils.isNotEmpty(commentList)) {
+            commentList.forEach(e -> {
                 // createAt 날짜 포맷 변경하기
-                Instant instant = Instant.ofEpochMilli(e.getCreatedAt());
-                LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                final Instant instant = Instant.ofEpochMilli(e.getCreatedAt());
+                final LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+                final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 e.setFormatCreatedAt(dateTime.format(formatter));
 
                 // KMS 글의 카테고리명 넣어주기
-                categoryList.stream().forEach(category -> {
-                    if(StringUtils.equals(category.getId().toString(), e.getKnowledge().getCategory().toString())){
+                categoryList.forEach(category -> {
+                    if (StringUtils.equals(category.getId().toString(), e.getKnowledge().getCategory().toString())) {
                         e.setCategoryName(category.getName());
                     }
                 });
@@ -431,55 +421,60 @@ public class CounselController extends BaseController {
         }
 
         model.addAttribute("commentList", commentList);
+
         return "counsel/component-comment";
     }
 
     /**
      * JSP로 화면을 보는중, 새로고침이나 전체/답변완료/미답변 등 화면이 다시 렌더링 되어야 하는 경우 restSelf로 json을 가져와 수정하게 만들었음.
+     *
      * @param commentFilterType
      * @return
      * @throws IOException
      */
     @GetMapping(value = "kms/comment/json")
     public ResponseEntity<JsonResult<HashMap<String, Object>>> getKmsCommentListJson(@RequestParam(value = "commentFilterType", required = false) String commentFilterType) throws IOException {
-        PersonDetailResponse user = g.getUser();
-        String userName = user.getIdName();
-        String idType = user.getIdType();
-        HashMap result = new HashMap();
+        final PersonDetailResponse user = g.getUser();
+        final String userName = user.getIdName();
+        final String idType = user.getIdType();
 
-        final List<KmsGraphQLInterface.GetKnowledgeCategory> categoryList = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories().stream().collect(Collectors.toList());
+        final List<KmsGraphQLInterface.GetKnowledgeCategory> categoryList = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories();
         List<kr.co.eicn.ippbx.front.service.api.application.kms.KmsGraphQLInterface.SearchKnowledgeUpdate> commentList = null;
-        if(idType.equals("A")){
+        if (idType.equals("A")) {
             commentList = kmsGraphQLInterface.searchKnowledgeUpdateRequestForAdmin().getData().getSearchKnowledgeUpdateRequest().getRows();
-        }else{
+        } else {
             // 상담사 화면을 위한 호출 이므로 userName과 requesterName으로 필터
             commentList = kmsGraphQLInterface.searchKnowledgeUpdateRequestForCounsel(commentFilterType).getData().getSearchKnowledgeUpdateRequest().getRows();
-            List<KmsGraphQLInterface.SearchKnowledgeUpdate> filterCommentList = commentList.stream().filter(comment -> {
-                if(StringUtils.isNotEmpty(comment.getRequesterName()) && StringUtils.equals(comment.getRequesterName(), userName)) return true;
+
+            final List<KmsGraphQLInterface.SearchKnowledgeUpdate> filterCommentList = commentList.stream().filter(comment -> {
+                if (StringUtils.isNotEmpty(comment.getRequesterName()) && StringUtils.equals(comment.getRequesterName(), userName))
+                    return true;
                 return false;
             }).collect(Collectors.toList());
-            if(filterCommentList.size() > 0){
+
+            if (CollectionUtils.isNotEmpty(filterCommentList)) {
                 commentList = filterCommentList;
             }
         }
 
-        if(commentList.size() > 0) {
-            commentList.stream().forEach(e -> {
+        if (CollectionUtils.isNotEmpty(commentList)) {
+            commentList.forEach(e -> {
                 // createAt 날짜 포맷 변경하기
-                Instant instant = Instant.ofEpochMilli(e.getCreatedAt());
-                LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                final Instant instant = Instant.ofEpochMilli(e.getCreatedAt());
+                final LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+                final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                 e.setFormatCreatedAt(dateTime.format(formatter));
 
                 // KMS 글의 카테고리명 넣어주기
-                categoryList.stream().forEach(category -> {
-                    if(StringUtils.equals(category.getId().toString(), e.getKnowledge().getCategory().toString())){
+                categoryList.forEach(category -> {
+                    if (StringUtils.equals(category.getId().toString(), e.getKnowledge().getCategory().toString())) {
                         e.setCategoryName(category.getName());
                     }
                 });
             });
         }
 
+        final HashMap<String, Object> result = new HashMap<>();
         result.put("commentList", commentList);
         result.put("categoryList", categoryList);
 
@@ -488,7 +483,7 @@ public class CounselController extends BaseController {
 
     // 메모 추가를 위한 모달
     @GetMapping(value = "kms/memo/new/modal")
-    public String getKmsNewModal() throws IOException, ResultFailException {
+    public String getKmsNewModal() {
         return "counsel/kms-memo-modal";
     }
 
@@ -496,7 +491,8 @@ public class CounselController extends BaseController {
     @PostMapping(value = "kms/memo/new")
     public ResponseEntity<JsonResult<HashMap<String, Object>>> createKmsMemo(@Valid MemoFormRequest formRequest) throws IOException, ResultFailException {
         kmsMemoInterface.createMemo(formRequest);
-        HashMap<String, Object> result = new HashMap<>();
+
+        final HashMap<String, Object> result = new HashMap<>();
         result.put("result", "success");
         return ResponseEntity.ok(data(result));
     }
@@ -504,71 +500,82 @@ public class CounselController extends BaseController {
     // 메모 조회
     @GetMapping(value = "kms/memo")
     public ResponseEntity<JsonResult<HashMap<String, Object>>> getKmsMemo(@RequestParam(required = false) String keyword) throws IOException, ResultFailException {
-        String searchKeyword = keyword != null ? keyword : "";
-        List<Memo> memoList = kmsMemoInterface.getMemoList(searchKeyword);
-        HashMap<String, Object> result = new HashMap<>();
+        final String searchKeyword = keyword != null ? keyword : "";
+        final List<Memo> memoList = kmsMemoInterface.getMemoList(searchKeyword);
+
+        final HashMap<String, Object> result = new HashMap<>();
         result.put("kmsMemoList", memoList);
+
         return ResponseEntity.ok(data(result));
     }
 
     // 메모 수정
     @PutMapping(value = "kms/memo/{id}")
     public ResponseEntity<JsonResult<HashMap<String, Object>>> updateKmsMemo(@PathVariable Long id, @Valid @RequestBody MemoFormRequest formRequest) throws IOException, ResultFailException {
-        HashMap<String, Object> result = new HashMap<>();
         kmsMemoInterface.updateMemo(id, formRequest);
+
+        final HashMap<String, Object> result = new HashMap<>();
         result.put("result", "success");
+
         return ResponseEntity.ok(data(result));
     }
 
     // 메모 삭제
     @DeleteMapping(value = "kms/memo/{id}")
     public ResponseEntity<JsonResult<HashMap<String, Object>>> deleteKmsMemo(@PathVariable Long id) throws IOException, ResultFailException {
-        HashMap<String, Object> result = new HashMap<>();
         kmsMemoInterface.deleteMemo(id);
+
+        final HashMap<String, Object> result = new HashMap<>();
         result.put("result", "success");
+
         return ResponseEntity.ok(data(result));
     }
 
     // 메모 북마크
     @PutMapping(value = "kms/memo/{id}/bookmarked/{bookmarked}")
     public ResponseEntity<JsonResult<HashMap<String, Object>>> bookmarkKmsMemo(@PathVariable Long id, @PathVariable boolean bookmarked) throws IOException, ResultFailException {
-        HashMap<String, Object> result = new HashMap<>();
         kmsMemoInterface.bookmarkMemo(id, bookmarked);
+
+        final HashMap<String, Object> result = new HashMap<>();
         result.put("result", "success");
+
         return ResponseEntity.ok(data(result));
     }
 
     // 최근열람지식
     @GetMapping(value = "kms/recent-read")
     public ResponseEntity<JsonResult<HashMap<String, Object>>> getKmsRecentRead() throws IOException, ResultFailException {
-        List<KmsGraphQLInterface.Knowledge> recentList = kmsGraphQLInterface.getRecentChangedKnowledge().getData().getGetRecentChangedKnowledge().getRows();
-        List<KmsGraphQLInterface.GetKnowledgeCategory> categoryList = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories().stream().collect(Collectors.toList());
+        final List<KmsGraphQLInterface.Knowledge> recentList = kmsGraphQLInterface.getRecentChangedKnowledge().getData().getGetRecentChangedKnowledge().getRows();
+        final List<KmsGraphQLInterface.GetKnowledgeCategory> categoryList = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories().stream().collect(Collectors.toList());
 
-        HashMap<String, Object> result = new HashMap<>();
+        final HashMap<String, Object> result = new HashMap<>();
         result.put("recentList", recentList);
         result.put("categoryList", categoryList);
+
         return ResponseEntity.ok(data(result));
     }
 
     // 조회랭킹
     @GetMapping(value = "kms/hits-rank")
     public ResponseEntity<JsonResult<HashMap<String, Object>>> getKmsHitsRank(@RequestParam String startDate, @RequestParam String endDate) throws IOException, ResultFailException {
-        List<KmsGraphQLInterface.GetTopHitKnowledge> hitsRankList = kmsGraphQLInterface.getTopHitKnowledge(startDate, endDate).getData().getGetTopHitKnowledge();
-        List<KmsGraphQLInterface.GetKnowledgeCategory> categoryList = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories().stream().collect(Collectors.toList());
+        final List<KmsGraphQLInterface.GetTopHitKnowledge> hitsRankList = kmsGraphQLInterface.getTopHitKnowledge(startDate, endDate).getData().getGetTopHitKnowledge();
+        final List<KmsGraphQLInterface.GetKnowledgeCategory> categoryList = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories().stream().collect(Collectors.toList());
 
-        HashMap<String, Object> result = new HashMap<>();
+        final HashMap<String, Object> result = new HashMap<>();
         result.put("hitsRankList", hitsRankList);
         result.put("categoryList", categoryList);
+
         return ResponseEntity.ok(data(result));
     }
 
     // 키워드랭킹
     @GetMapping(value = "kms/hits-tag-rank")
     public ResponseEntity<JsonResult<HashMap<String, Object>>> getKmsHitsTagRank(@RequestParam String startDate, @RequestParam String endDate) throws IOException, ResultFailException {
-        List<KmsGraphQLInterface.KnowledgeTags> hitsTagRankList = kmsGraphQLInterface.getTopHitKnowledgeTags(startDate, endDate).getData().getGetTopHitKnowledgeTags();
+        final List<KmsGraphQLInterface.KnowledgeTags> hitsTagRankList = kmsGraphQLInterface.getTopHitKnowledgeTags(startDate, endDate).getData().getGetTopHitKnowledgeTags();
 
-        HashMap<String, Object> result = new HashMap<>();
+        final HashMap<String, Object> result = new HashMap<>();
         result.put("hitsTagRankList", hitsTagRankList);
+
         return ResponseEntity.ok(data(result));
     }
 
@@ -576,21 +583,23 @@ public class CounselController extends BaseController {
     @GetMapping(value = "kms/recommend-rank")
     public ResponseEntity<JsonResult<HashMap<String, Object>>> getKmsRecommendRank(Model model) throws IOException, ResultFailException {
         final List<KmsGraphQLInterface.GetKnowledgeCategory> categoryList = kmsGraphQLInterface.getCategory().getData().getGetKnowledgeCategories().stream().collect(Collectors.toList());
-        List<KmsGraphQLInterface.Knowledge> recommendList = kmsGraphQLInterface.getSearchKnowledge("", null, "LIKES", "all").getData().getSearchKnowledgeBySolr().getRows();
+        final List<KmsGraphQLInterface.Knowledge> recommendList = kmsGraphQLInterface.getSearchKnowledge("", null, "LIKES", "all").getData().getSearchKnowledgeBySolr().getRows();
 
-        HashMap<String, Object> result = new HashMap<>();
+        final HashMap<String, Object> result = new HashMap<>();
         result.put("categoryList", categoryList);
         result.put("recommendList", recommendList);
+
         return ResponseEntity.ok(data(result));
     }
 
     @GetMapping(value = "kms/comment")
     public ResponseEntity<JsonResult<HashMap<String, Object>>> createKmsComment(@RequestParam Integer id, @RequestParam String content) throws IOException, ResultFailException {
-        KmsGraphQLInterface.CreateKnowledgeUpdateRequestResult comment = kmsGraphQLInterface.createComment(id, content);
+        final KmsGraphQLInterface.CreateKnowledgeUpdateRequestResult comment = kmsGraphQLInterface.createComment(id, content);
 
-        HashMap<String, Object> result = new HashMap<>();
+        final HashMap<String, Object> result = new HashMap<>();
         result.put("createCommentId", comment.getData().getCreateKnowledgeUpdateRequest().getId());
         result.put("result", "success");
+
         return ResponseEntity.ok(data(result));
     }
 
@@ -598,12 +607,14 @@ public class CounselController extends BaseController {
     public String modalBookmark(Model model) throws IOException, ResultFailException {
         final List<PersonLink> list = personLinkApiInterface.list();
         model.addAttribute("list", list);
+
         return "counsel/modal-bookmark";
     }
 
     @GetMapping("modal-config")
     public String modalConfig(Model model) throws IOException, ResultFailException {
         model.addAttribute("todoKinds", FormUtils.options(TodoListTodoKind.TALK, TodoListTodoKind.CALLBACK, TodoListTodoKind.RESERVE, TodoListTodoKind.TRANSFER));
+
         return "counsel/modal-config";
     }
 
@@ -645,12 +656,13 @@ public class CounselController extends BaseController {
     }
 
     @GetMapping("modal-stt-monit/{userId}")
-    public String modalSttMonit(Model model,@PathVariable String userId) throws IOException, ResultFailException {
+    public String modalSttMonit(Model model, @PathVariable String userId) throws IOException, ResultFailException {
         final String callUniqueId = sttTextApiInterface.adminMonit(userId);
         model.addAttribute("callUniqueId", callUniqueId);
         model.addAttribute("sttCdr", sttTextApiInterface.getSttCdr(callUniqueId));
-        model.addAttribute("userId",userId);
+        model.addAttribute("userId", userId);
         model.addAttribute("personListMap", userApiInterface.list(new PersonSearchRequest()).stream().collect(Collectors.toMap(PersonSummaryResponse::getId, PersonSummaryResponse::getIdName)));
+
         return "counsel/modal-stt-monit";
     }
 
@@ -810,7 +822,6 @@ public class CounselController extends BaseController {
 
     @GetMapping("modal-field-info")
     public String modalFieldInfo(Model model, @RequestParam Integer type, @RequestParam String fieldId, @RequestParam List<String> selectItem) throws IOException, ResultFailException {
-
         final CommonFieldResponse field = enumerationValueApiInterface.getField(type, fieldId);
         List<CommonCodeDetailResponse> detail = field.getCommonCodes().stream().filter(e -> selectItem.contains(e.getCodeId())).collect(Collectors.toList());
         field.setCommonCodes(detail);
