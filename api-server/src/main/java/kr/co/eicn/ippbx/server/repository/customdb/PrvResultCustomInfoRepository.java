@@ -155,7 +155,6 @@ public class PrvResultCustomInfoRepository extends CustomDBBaseRepository<Common
                     conditions.add(table.field(k, Date.class).le(v.getEndDate()));
             } else if (k.contains("_INT_")) {
                 if (StringUtils.isNotEmpty(v.getKeyword()))
-                if (StringUtils.isNotEmpty(v.getKeyword()))
                     conditions.add(table.field(k, String.class).eq(v.getKeyword()));
             } else if (k.contains("_CODE_") || k.contains("_CONCODE_") || k.contains("_CSCODE_")) {
                 if (StringUtils.isNotEmpty(v.getCode()))
