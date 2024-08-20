@@ -5,6 +5,8 @@ server:
   servlet:
     context-path: /api-server
     encoding:
+      force: true
+      enabled: true
       charset: utf-8
       force-response: true
   error:
@@ -35,7 +37,6 @@ hikari:
   max-lifetime: 3600000
   connection-timeout: 5000
 
-
 ---
 # ipcc config
 ipcc:
@@ -50,20 +51,10 @@ ipcc:
 spring:
   profiles:
     active: local
-  resources:
-    cache:
-      period: 31536000
-      cachecontrol:
-        max-age: 31536000
   messages:
     cache-duration: 3600000
     basename: i18n/message
     encoding: utf-8
-  http:
-    encoding:
-      enabled: true
-      force: true
-      charset: UTF-8
   servlet:
     multipart:
       max-file-size: 500MB
@@ -73,6 +64,12 @@ spring:
       pool:
         size: 8
       thread-name-prefix: eicn-scheduler
+  web:
+    resources:
+      cache:
+        period: 31536000
+        cachecontrol:
+          max-age: 31536000
 ---
 # file path config
 file:
