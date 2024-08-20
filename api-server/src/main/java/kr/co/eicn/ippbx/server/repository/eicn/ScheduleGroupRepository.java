@@ -5,6 +5,7 @@ import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ContextInfo;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.ScheduleGroupList;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SoundList;
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.SendMessageTemplate;
 import kr.co.eicn.ippbx.model.entity.eicn.ScheduleGroupEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.ScheduleGroupListEntity;
 import kr.co.eicn.ippbx.model.enums.ScheduleKind;
@@ -26,13 +27,13 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ContextInfo.CONTEXT_INFO;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.IvrTree.IVR_TREE;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleGroup.SCHEDULE_GROUP;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ScheduleGroupList.SCHEDULE_GROUP_LIST;
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.SendMessageTemplate.SEND_MESSAGE_TEMPLATE;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.SoundList.SOUND_LIST;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -63,7 +64,7 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
 
         final List<ScheduleGroupEntity> scheduleGroupEntities = new ArrayList<>();
         final Map<String, String> soundListMap = getSoundList().stream().collect(Collectors.toMap(e -> String.valueOf(e.getSeq()), SoundList::getSoundName));
-        final Map<String, String> ivrTreeMap = getIvrRootTree().stream().filter(e -> StringUtils.isEmpty(e.getButton())).collect(Collectors.toMap(e -> String.valueOf(e.getCode()), IvrTree::getName));
+        final Map<String, String> ivrTreeMap = getIvrRootTree().stream().collect(Collectors.toMap(e -> String.valueOf(e.getCode()), IvrTree::getName));
         final Map<String, String> contextInfoMap = getContextInfo().stream().collect(Collectors.toMap(ContextInfo::getContext, ContextInfo::getName));
 
         recordResultMap.forEach((record, records) -> {
@@ -80,16 +81,19 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
                             into.setKindSoundName("TTS");
 
                         if (ScheduleKind.IVR_CONNECT.getCode().equals(into.getKind()))
-                            into.setKindDataName(ivrTreeMap.getOrDefault(into.getKindData(), EMPTY));
+                            into.setKindDataName(ivrTreeMap.getOrDefault(into.getKindData(), "미확인 예외컨택스트"));
                         else if (ScheduleKind.EXCEPTION_CONTEXT.getCode().equals(into.getKind()))
-                            into.setKindDataName(contextInfoMap.getOrDefault(into.getKindData(), EMPTY));
-                        else if (ScheduleKind.EXCEPTION_CONTEXT_DIRECT_NUMBER.getCode().equals(into.getKind())){
-                            String[] kindDataArray = into.getKindData().split("\\|");
-                            logger.info("kindDataArray ======> {}", (Object) kindDataArray);
-                            into.setKindDataName(contextInfoMap.getOrDefault(kindDataArray[0], EMPTY).concat("|").concat(StringUtils.isEmpty(kindDataArray[1]) ? "" : kindDataArray[1]));
+                            into.setKindDataName(contextInfoMap.getOrDefault(into.getKindData(), "미확인 예외컨택스트"));
+                        else if (ScheduleKind.EXCEPTION_CONTEXT_DIRECT_NUMBER.getCode().equals(into.getKind())) {
+                            final String[] kindDataArray = into.getKindData().split("\\|");
+                            final String context = kindDataArray.length > 0 ? contextInfoMap.getOrDefault(kindDataArray[0], "미확인 예외컨택스트") : "예외컨택스트 설정필요";
+                            final String data = kindDataArray.length > 1 ? kindDataArray[1] : "번호 설정필요";
+                            into.setKindDataName(context.concat(" | ").concat(data));
                         } else if (ScheduleKind.EXCEPTION_CONTEXT_IVR_CONNECT.getCode().equals(into.getKind())) {
-                            String[] kindDataArray = into.getKindData().split("\\|");
-                            into.setKindDataName(contextInfoMap.getOrDefault(kindDataArray[0], EMPTY).concat("|").concat(ivrTreeMap.getOrDefault(kindDataArray[1], EMPTY)));
+                            final String[] kindDataArray = into.getKindData().split("\\|");
+                            final String context = kindDataArray.length > 0 ? contextInfoMap.getOrDefault(kindDataArray[0], "미확인 예외컨택스트") : "예외컨택스트 설정필요";
+                            final String data = kindDataArray.length > 1 ? ivrTreeMap.getOrDefault(kindDataArray[1], "미확인 IVR") : "설정필요";
+                            into.setKindDataName(context.concat(" | ").concat(data));
                         }
 
 
@@ -195,18 +199,19 @@ public class ScheduleGroupRepository extends EicnBaseRepository<ScheduleGroup, k
     }
 
     private List<SoundList> getSoundList() {
-        return dsl.select()
+        return dsl.select(SOUND_LIST.SEQ, SOUND_LIST.SOUND_NAME)
                 .from(SOUND_LIST)
                 .where(SOUND_LIST.COMPANY_ID.eq(getCompanyId()))
                 .fetchInto(SoundList.class);
     }
 
     private List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree> getIvrRootTree() {
-        return dsl.select()
+        return dsl.select(IVR_TREE.BUTTON, IVR_TREE.CODE, IVR_TREE.NAME)
                 .from(IVR_TREE)
                 .where(IVR_TREE.COMPANY_ID.eq(getCompanyId()))
                 .and(IVR_TREE.TYPE.eq((byte) 1))
                 .and(IVR_TREE.LEVEL.eq(0))
+                .and(IVR_TREE.BUTTON.eq(EMPTY))
                 .orderBy(IVR_TREE.CODE)
                 .fetchInto(kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.IvrTree.class);
     }
