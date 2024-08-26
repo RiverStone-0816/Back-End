@@ -1022,6 +1022,7 @@
                     if (audio) {
                         const audioControl = maudio(audio);
                         audioControl.find('.mute, .volume-bar').remove()
+                        audioControl.find('.speed-control').hide()
                     }
                 })
             },

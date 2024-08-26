@@ -340,7 +340,6 @@ pre {
       }
     }
 
-
     #consulting-screen-prv{
       height: 95%;
       overflow: hidden;
@@ -360,6 +359,48 @@ pre {
           }
 
           #prv-counseling-input-panel {
+            height: ~"calc(50% + 1rem)";
+
+            #preview-counseling-input {
+              height: 100%;
+            }
+          }
+
+          td input[type="text"]:read-only, textarea[type="text"]:read-only {
+            background-color: lightyellow !important;
+          }
+
+          .ui.form textarea, input {
+            padding: 5.5px !important;
+          }
+
+          .panel-heading {
+            min-height: 42px;
+            max-height: 42px;
+          }
+        }
+      }
+    }
+
+    #consulting-screen-email{
+      height: 95%;
+      overflow: hidden;
+      .consulting-panel-email {
+        height: 100%;
+        #consulting-panel-email {
+          height: 100%;
+          padding-left: 0;
+          padding-bottom: 0;
+
+          #email-custom-input-panel {
+            height: 50%;
+
+            #preview-custom-input {
+              height: 98%;
+            }
+          }
+
+          #email-counseling-input-panel {
             height: ~"calc(50% + 1rem)";
 
             #preview-counseling-input {
@@ -2402,13 +2443,14 @@ label.control-label {
     height: 0;overflow: hidden;display: none;
   }
   .audio-control {
-    overflow: hidden;
+    overflow: visible;
     font-size: 12px;
     font-weight: normal;
-    min-width: 446px;
+    min-width: 460px;
+    text-align: center;
     a, div {
       float: left;
-      margin: 0 5px;
+      margin: 0 4px;
       cursor: pointer;
     }
     a {
@@ -2487,6 +2529,25 @@ label.control-label {
       margin: 0;
       border-radius: 2px;
       background: @color-brand;
+    }
+
+    select.speed-control {
+      width: 40px;
+      border: none;
+      border-radius: 0;
+      color: #45556c;
+      padding-top: 1px;
+      appearance: none;
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      text-align-last: center;
+
+      option {
+        text-align: center;
+        text-align-last: center;
+        -ms-text-align-last: center;
+        -moz-text-align-last: center;
+      }
     }
   }
 }

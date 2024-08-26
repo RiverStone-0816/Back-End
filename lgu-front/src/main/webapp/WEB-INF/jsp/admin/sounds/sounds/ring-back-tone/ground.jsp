@@ -83,9 +83,7 @@
                                                     <i class="volume up icon" data-value="${e.category}"></i>
                                                 </button>
                                                 <div class="ui popup top right">
-                                                    <div class="maudio">
-                                                        <audio data-src="${pageContext.request.contextPath}/api/ring-back-tone/id/${g.htmlQuote(e.category)}/resource?mode=PLAY"></audio>
-                                                    </div>
+                                                    <audio data-src="${pageContext.request.contextPath}/api/ring-back-tone/id/${g.htmlQuote(e.category)}/resource?mode=PLAY"></audio>
                                                 </div>
                                                 <a class="ui icon button mini compact"
                                                    href="${pageContext.request.contextPath}/api/ring-back-tone/id/${g.htmlQuote(e.category)}/resource?mode=DOWN">
