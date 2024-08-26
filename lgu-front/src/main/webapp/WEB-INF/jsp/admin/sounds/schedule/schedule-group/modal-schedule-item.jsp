@@ -10,6 +10,8 @@
 <%--@elvariable id="message" type="kr.co.eicn.ippbx.util.spring.RequestMessage"--%>
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
+<%--@elvariable id="apiServerUrl" type="java.lang.String"--%>
+<%--@elvariable id="accessToken" type="java.lang.String"--%>
 
 <form:form modelAttribute="form" cssClass="ui modal tiny -json-submit" data-method="${entity == null ? 'post' : 'put'}"
            action="${pageContext.request.contextPath}/api/schedule-group/item/${entity == null ? null : entity.child}"
@@ -123,7 +125,13 @@
                 </div>
             </div>
             <div class="row -kind-data" data-kind="S,D,F,C,V,SMS">
-                <div class="four wide column"><label class="control-label">음원선택</label></div>
+                <div class="four wide column">
+                    <label class="control-label">음원선택</label>
+                    <button type="button" class="ui icon button mini compact remove-margin -sound-play -play-trigger" style="padding: 5px;" data-sound-input="[name=kindSoundCode]" data-tts-input="[name=ttsData]">
+                        <i class="volume up icon"></i>
+                    </button>
+                    <div class="ui popup top left"></div>
+                </div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <form:select path="kindSoundCode">
@@ -265,6 +273,42 @@
 </form:form>
 
 <script>
+    modal.find('.-play-trigger').each(function () {
+        $(this).popup({
+            popup: $($(this).attr('data-target') || $(this).next()),
+            on: 'click'
+        });
+    });
+
+    modal.find('.-sound-play').click(function (event) {
+        event.stopPropagation();
+
+        const sound = modal.find($(this).attr('data-sound-input')).val();
+        const tts = modal.find($(this).attr('data-tts-input')).val();
+        const player = $(this).next().empty();
+        console.log("test: player-", player)
+
+        if (player.hasClass('out'))
+            return;
+
+        if (!sound)
+            return;
+
+        if (sound !== 'TTS') {
+            const src = contextPath + "/api/ars/id/" + sound + "/resource?mode=PLAY";
+            const audio = $('<audio controls/>').attr('data-src', src);
+            player.append(audio);
+            maudio({obj: audio[0], fastStep: 10});
+        } else if (tts) {
+            restSelf.post('/api/sounds-editor/pre-listen', {playSpeed: 100, comment: tts}).done(function (response) {
+                const src = $.addQueryString('${g.escapeQuote(apiServerUrl)}' + response.data, {token: '${g.escapeQuote(accessToken)}', ___t: new Date().getTime()});
+                const audio = $('<audio controls/>').attr('data-src', src);
+                player.append(audio);
+                maudio({obj: 'audio', fastStep: 10});
+            });
+        }
+    });
+
     window.prepareWriteFormData = function (data) {
         data.fromhour = parseInt(data.fromHour) * 60 + parseInt(data.fromMinute);
         data.tohour = parseInt(data.toHour) * 60 + parseInt(data.toMinute);
