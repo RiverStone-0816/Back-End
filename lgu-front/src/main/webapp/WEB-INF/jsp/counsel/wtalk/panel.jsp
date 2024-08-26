@@ -158,23 +158,37 @@
                 if (['file', 'image', 'audio', 'video'].includes(type)) {
                     const isImage = (fileName) => {
                         if (!fileName) return false
-                        return fileName.toLowerCase().endsWith('.jpg')
-                            || fileName.toLowerCase().endsWith('.jpeg')
-                            || fileName.toLowerCase().endsWith('.png')
-                            || fileName.toLowerCase().endsWith('.bmp')
-                            || fileName.toLowerCase().endsWith('.gif')
+                        const normalFileName = fileName.toLowerCase();
+                        return normalFileName.endsWith('.jpg')
+                            || normalFileName.endsWith('.jpeg')
+                            || normalFileName.endsWith('.png')
+                            || normalFileName.endsWith('.bmp')
+                            || normalFileName.endsWith('.gif')
+                            || normalFileName.includes('.jpg?')
+                            || normalFileName.includes('.jpeg?')
+                            || normalFileName.includes('.png?')
+                            || normalFileName.includes('.bmp?')
+                            || normalFileName.includes('.gif?')
                     }
                     const isAudio = (fileName) => {
                         if (!fileName) return false
-                        return fileName.toLowerCase().endsWith('.mp3')
-                            || fileName.toLowerCase().endsWith('.wav')
+                        const normalFileName = fileName.toLowerCase();
+                        return normalFileName.endsWith('.mp3')
+                            || normalFileName.endsWith('.wav')
+                            || normalFileName.includes('.mp3?')
+                            || normalFileName.includes('.wav?')
                     }
                     const isVideo = (fileName) => {
                         if (!fileName) return false
-                        return fileName.toLowerCase().endsWith('.mp4')
-                            || fileName.toLowerCase().endsWith('.avi')
-                            || fileName.toLowerCase().endsWith('.wmv')
-                            || fileName.toLowerCase().endsWith('.mov')
+                        const normalFileName = fileName.toLowerCase();
+                        return normalFileName.endsWith('.mp4')
+                            || normalFileName.endsWith('.avi')
+                            || normalFileName.endsWith('.wmv')
+                            || normalFileName.endsWith('.mov')
+                            || normalFileName.includes('.mp4?')
+                            || normalFileName.includes('.avi?')
+                            || normalFileName.includes('.wmv?')
+                            || normalFileName.includes('.mov?')
                     }
 
                     if (isImage(content)) return 'photo'
@@ -491,6 +505,9 @@
                 },
                 updated: function () {
                     $(this.$refs['talk-list-wrap']).overlayScrollbars({})
+                    $('.wrap-audio > audio').each(function () {
+                        maudio({obj: this});
+                    });
                 },
                 mounted: function () {
                     this.load()
@@ -751,7 +768,7 @@
                                                          class="cursor-pointer" @click="popupImageView(e.fileUrl)">
                                                     <img v-else-if="e.messageType === 'image_temp'" :src="e.fileUrl"
                                                          class="cursor-pointer" @click="popupImageView(e.fileUrl)">
-                                                    <div v-else-if="e.messageType === 'audio'" class="maudio" style="width: 330px">
+                                                    <div v-else-if="e.messageType === 'audio'" class="wrap-audio" style="width: 330px;">
                                                         <audio controls :data-src="e.fileUrl" initaudio="false"></audio>
                                                     </div>
                                                     <video v-else-if="e.messageType === 'video'" controls :src="e.fileUrl" width="250"></video>
