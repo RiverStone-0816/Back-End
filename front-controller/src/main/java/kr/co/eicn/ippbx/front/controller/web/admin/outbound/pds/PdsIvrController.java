@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.outbound.pds;
 
+import kr.co.eicn.ippbx.model.search.PDSIvrSearchRequest;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
@@ -39,25 +40,26 @@ import java.util.stream.Collectors;
 public class PdsIvrController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(PdsIvrController.class);
 
-    private final PdsIvrApiInterface apiInterface;
+    private final PdsIvrApiInterface        apiInterface;
     private final ScheduleGroupApiInterface scheduleGroupApiInterface;
 
     @GetMapping("")
-    public String page(Model model, @RequestParam(required = false) Integer seq) throws IOException, ResultFailException {
-        model.addAttribute("seq", seq);
-
+    public String page(Model model, @ModelAttribute("search") PDSIvrSearchRequest search) throws IOException, ResultFailException {
         final List<PDSIvrResponse> rootNodes = apiInterface.list();
         model.addAttribute("rootNodes", rootNodes);
 
-        final List<PDSIvrResponse> list = seq != null ? rootNodes.stream().filter(e -> Objects.equals(e.getSeq(), seq)).collect(Collectors.toList()) : rootNodes;
+        final List<PDSIvrResponse> list = search.getSeq() != null ? rootNodes.stream().filter(e -> Objects.equals(e.getSeq(), search.getSeq())).collect(Collectors.toList()) : rootNodes;
         model.addAttribute("list", list);
 
-        model.addAttribute("form", new PDSIvrFormRequest());
+        return "admin/outbound/pds/ivr/ground";
+    }
 
+    @GetMapping("new/modal")
+    public String modal(Model model, @ModelAttribute("form") PDSIvrFormRequest form) throws IOException, ResultFailException {
         final Map<Integer, String> sounds = scheduleGroupApiInterface.addSoundList().stream().collect(Collectors.toMap(SummarySoundListResponse::getSeq, SummarySoundListResponse::getSoundName));
         model.addAttribute("sounds", sounds);
 
-        return "admin/outbound/pds/ivr/ground";
+        return "admin/outbound/pds/ivr/modal";
     }
 
     @GetMapping("{seq}/modal-key-map")

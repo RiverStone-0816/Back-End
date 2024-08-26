@@ -18,7 +18,7 @@
     <div class="content-wrapper-frame">
         <tags:page-menu-tab url="/admin/outbound/pds/ivr/"/>
         <div class="sub-content ui container fluid unstackable">
-            <form class="panel panel-search" method="get">
+            <form:form id="search-form" modelAttribute="search" method="get" class="panel panel-search">
                 <div class="panel-heading dp-flex align-items-center justify-content-space-between">
                     <div>
                         검색
@@ -30,7 +30,9 @@
                         </div>
                         <div class="btn-wrap">
                             <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
+                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">
+                                초기화
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -41,19 +43,19 @@
                                 <div class="two wide column"><label class="control-label">루트IVR 선택</label></div>
                                 <div class="two wide column">
                                     <div class="ui form">
-                                        <select name="seq">
-                                            <option value="">IVR선택</option>
+                                        <form:select path="seq">
+                                            <form:option value="" label="IVR선택"/>
                                             <c:forEach var="e" items="${rootNodes}">
-                                                <option value="${e.seq}" ${e.seq == seq ? 'selected' : null}>${g.htmlQuote(e.name)}</option>
+                                                <form:option value="${e.seq}" label="${g.htmlQuote(e.name)}"/>
                                             </c:forEach>
-                                        </select>
+                                        </form:select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
+            </form:form>
             <div class="panel">
                 <div class="panel-heading">
                     <div class="pull-right">
@@ -68,14 +70,22 @@
                                     <c:forEach var="e" items="${list}">
                                         <div class="ui segments">
                                             <div class="ui segment">
-                                                <i class="folder icon"></i><span class="ui header"><c:if test="${e.button != null && e.button != ''}"><span
+                                                <i class="folder icon"></i><span class="ui header"><c:if
+                                                    test="${e.button != null && e.button != ''}"><span
                                                     class="ui grey circular label tiny">${e.button}</span></c:if>${g.htmlQuote(e.name)}</span>
                                                 <div class="ui buttons ivr-control">
                                                     <c:if test="${e.soundCode != null && e.soundCode != ''}">
-                                                        <button type="button" class="ui button mini compact -play-trigger" data-target="#ivr-sound-${e.seq}">음원듣기</button>
+                                                        <button type="button"
+                                                                class="ui button mini compact -play-trigger"
+                                                                data-target="#ivr-sound-${e.seq}">음원듣기
+                                                        </button>
                                                     </c:if>
-                                                    <button type="button" class="ui button mini compact" onclick="popupKeyMapModal(${e.seq})">버튼맵핑</button>
-                                                    <button type="button" class="ui button mini compact" onclick="deleteEntity(${e.code})">삭제</button>
+                                                    <button type="button" class="ui button mini compact"
+                                                            onclick="popupKeyMapModal(${e.seq})">버튼맵핑
+                                                    </button>
+                                                    <button type="button" class="ui button mini compact"
+                                                            onclick="deleteEntity(${e.code})">삭제
+                                                    </button>
                                                 </div>
                                                 <c:if test="${e.soundCode != null && e.soundCode != ''}">
                                                     <div class="ui popup top right" id="ivr-sound-${e.seq}">
@@ -102,44 +112,12 @@
             </div>
         </div>
     </div>
-
-    <form:form modelAttribute="form" id="root-ivr-modal" class="ui modal mini -json-submit" data-method="post"
-               action="${pageContext.request.contextPath}/api/pds-ivr/"
-               data-done="reload">
-
-        <i class="close icon"></i>
-        <div class="header">IVR[추가]</div>
-
-        <div class="content rows">
-            <div class="ui grid">
-                <div class="row">
-                    <div class="five wide column"><label class="control-label">IVR명</label></div>
-                    <div class="eleven wide column">
-                        <div class="ui input fluid">
-                            <form:input path="name"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="five wide column"><label class="control-label">음원선택</label></div>
-                    <div class="eleven wide column">
-                        <div class="ui form">
-                            <form:select path="soundCode" items="${sounds}"/>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <button type="button" class="ui button modal-close">취소</button>
-            <button type="submit" class="ui blue button">저장</button>
-        </div>
-    </form:form>
+    </div>
 
     <tags:scripts>
         <script>
             function rootIvrModal() {
-                $('#root-ivr-modal').modalShow();
+                popupReceivedHtml('/admin/outbound/pds/ivr/new/modal', 'root-ivr-modal');
             }
 
             function popupKeyMapModal(seq) {

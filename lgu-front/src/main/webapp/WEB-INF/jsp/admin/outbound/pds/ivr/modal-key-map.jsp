@@ -12,7 +12,7 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<form:form modelAttribute="form" cssClass="ui modal tiny -json-submit" data-method="put"
+<form:form modelAttribute="form" cssClass="ui modal small -json-submit" data-method="put"
            action="${pageContext.request.contextPath}/api/pds-ivr/${entity.code}"
            data-before="prepareWriteFormData" data-done="reload">
 
@@ -30,7 +30,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="five wide column"><label class="control-label">음원선택</label></div>
+                <div class="five wide column">
+                    <label class="control-label">음원선택</label>
+                    <button type="button" class="ui icon button mini compact remove-margin -sound-play -play-trigger" style="padding: 5px;" data-sound-input="[name=soundCode]">
+                        <i class="volume up icon"></i>
+                    </button>
+                    <div class="ui popup top left"></div>
+                </div>
                 <div class="eleven wide column">
                     <div class="ui form fluid">
                         <form:select path="soundCode" items="${sounds}"/>
@@ -98,6 +104,31 @@
 </form:form>
 
 <script>
+    modal.find('.-sound-play').click(function (event) {
+        event.stopPropagation();
+
+        const sound = modal.find($(this).attr('data-sound-input')).val();
+        const player = $(this).next().empty();
+
+        if (player.hasClass('out'))
+            return;
+
+        if (!sound)
+            return;
+
+        const src = contextPath + "/api/ars/id/" + sound + "/resource?mode=PLAY";
+        const audio = $('<audio controls/>').attr('data-src', src);
+        player.append(audio);
+        maudio({obj: audio[0], fastStep: 10});
+    });
+
+    modal.find('.-play-trigger').each(function () {
+        $(this).popup({
+            popup: $($(this).attr('data-target') || $(this).next()),
+            on: 'click'
+        });
+    });
+
     window.prepareWriteFormData = function (data) {
         const buttonMappingFormRequests = data.buttonMappingFormRequests;
         data.buttonMappingFormRequests = [];
