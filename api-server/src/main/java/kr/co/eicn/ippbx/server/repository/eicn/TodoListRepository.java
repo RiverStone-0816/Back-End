@@ -19,6 +19,8 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,25 +37,21 @@ public class TodoListRepository extends EicnBaseRepository<TodoList, kr.co.eicn.
     }
 
     public TodoDataResponse getTodoMonitor(TodoListTodoKind kind) {
-        final LocalDate toDay = LocalDate.now();
-        TodoDataResponse res = null;
-        res = dsl.select(TODO_LIST.TODO_KIND)
+        final TodoDataResponse res = dsl.select(TODO_LIST.TODO_KIND)
                 .select(DSL.count(TODO_LIST.TODO_KIND).as("total"))
                 .select(DSL.count(DSL.when(TODO_LIST.TODO_STATUS.eq(TodoListTodoStatus.DONE), 1)).as("success"))
                 .from(TODO_LIST)
-                .where(TODO_LIST.USERID.eq(g.getUser().getId()))
-                .and(TODO_LIST.REGDATE.ge(Timestamp.valueOf(toDay.toString() + " 00:00:00")))
-                .and(TODO_LIST.REGDATE.le(Timestamp.valueOf(toDay.toString() + " 23:59:59")))
+                .where(compareCompanyId())
+                .and(TODO_LIST.USERID.eq(g.getUser().getId()))
+                .and(TODO_LIST.REGDATE.ge(Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.MIN))))
                 .and(TODO_LIST.TODO_KIND.eq(kind))
-//				.groupBy(TODO_LIST.TODO_KIND)
-                .fetchOneInto(TodoDataResponse.class); // 이 부분은 수정해야됩니다.
-        if (res.getTodoKind() == null) {
+                .fetchOneInto(TodoDataResponse.class);
+
+        if (res.getTodoKind() == null)
             res.setTodoKind(kind);
-        }
-//		if(res.getTotal() != 0) {
-//			res.setSuccessRate((res.getTotal() / res.getSuccess()) * 100);
+
         res.setSuccessRate(EicnUtils.getRateValue(res.getSuccess(), res.getTotal()));
-//		}
+
         return res;
     }
 
