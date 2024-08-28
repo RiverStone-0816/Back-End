@@ -14,23 +14,24 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class PDSResultGroupUpdateFormRequest extends BaseForm {
-    private String name;                       // QUEUE 이름
+    private String name;            // QUEUE 이름
     @NotNull("큐그룹명")
     private String hanName;
     @NotNull("실행할 교환기")
-    private String runHost;      // 실행할 교환기
+    private String runHost;         // 실행할 교환기
     /**
      * @see kr.co.eicn.ippbx.model.enums.PDSResultGroupStrategy
      */
     @NotNull("통화분배정책")
-    private String strategy;               // 분배정책
-    private String busyContext;             // 비연결시 컨텍스트
-    private List<PDSResultGroupPersonFormRequest> addPersons; // 추가 사용자
+    private String strategy;        // 분배정책
+    private String busyContext;     // 비연결시 컨텍스트
+
+    private List<PDSResultGroupPersonFormRequest> addPersons;   //추가 사용자
 
     @SneakyThrows
     @Override
     public boolean validate(BindingResult bindingResult) {
-        if (addPersons != null && addPersons.size() > 0)
+        if (addPersons != null && !addPersons.isEmpty())
             for (PDSResultGroupPersonFormRequest addPerson : addPersons) {
                 if (isEmpty(addPerson.getUserId())) {
                     reject(bindingResult, "addPersons", "messages.validator.blank", "내선 전화기 ID");

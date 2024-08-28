@@ -12,7 +12,7 @@
 <%--@elvariable id="user" type="kr.co.eicn.ippbx.model.dto.eicn.PersonDetailResponse"--%>
 <%--@elvariable id="version" type="java.lang.String"--%>
 
-<form:form modelAttribute="form" cssClass="ui modal small -json-submit" data-method="${entity == null ? 'post' : 'put'}"
+<form:form modelAttribute="form" cssClass="ui modal -json-submit" data-method="${entity == null ? 'post' : 'put'}"
            action="${pageContext.request.contextPath}/api/pds-result-group/${entity == null ? null : entity.name}"
            data-before="prepareWriteFormData" data-done="reload">
 
@@ -42,7 +42,11 @@
                 <div class="four wide column"><label class="control-label">통화분배정책</label></div>
                 <div class="four wide column">
                     <div class="ui form">
-                        <form:select path="strategy" items="${strategyOptions}"/>
+                        <form:select path="strategy">
+                            <c:forEach var="e" items="${strategyOptions}">
+                                <form:option value="${e.key}" label="${e.value}(${e.key})"/>
+                            </c:forEach>
+                        </form:select>
                     </div>
                 </div>
                 <div class="four wide column"><label class="control-label">비연결시컨텍스트</label></div>
@@ -65,7 +69,7 @@
                         <div class="from-panel">
                             <select class="form-control -left-selector" size="8" multiple="multiple">
                                 <c:forEach var="e" items="${addOnPersons}">
-                                    <option value="${g.htmlQuote(e.userId)}">${g.htmlQuote(e.peer)} (${g.htmlQuote(e.idName)})</option>
+                                    <option value="${g.htmlQuote(e.userId)}">${g.htmlQuote(e.extension)}[${g.htmlQuote(e.idName)} - ${g.htmlQuote(e.companyTrees.stream().map(f -> f.groupName).reduce((a, b) -> b).orElse(""))}]</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -76,7 +80,7 @@
                         <div class="to-panel">
                             <select name="addPersons" class="form-control -right-selector" size="8" multiple="multiple">
                                 <c:forEach var="e" items="${entity.addPersons}">
-                                    <option value="${g.htmlQuote(e.userId)}">${g.htmlQuote(e.peer)} (${g.htmlQuote(e.idName)})</option>
+                                    <option value="${g.htmlQuote(e.userId)}">${g.htmlQuote(e.extension)}[${g.htmlQuote(e.idName)} - ${g.htmlQuote(e.companyTrees.stream().map(f -> f.groupName).reduce((a, b) -> b).orElse(""))}]</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -99,11 +103,4 @@
             data.addPersons.push({userId: $(this).val()});
         });
     };
-
-    const select = modal.find("#runHost");
-    select.find('option').filter(function(){
-        return $(this).val() === '${entity.hostName}';
-    }).prop('selected', true);
-    select.change();
-
 </script>

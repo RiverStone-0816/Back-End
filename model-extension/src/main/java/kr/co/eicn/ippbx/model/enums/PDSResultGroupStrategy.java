@@ -4,11 +4,20 @@ import kr.co.eicn.ippbx.util.CodeHasable;
 
 /**
  * pds_group.last_upload_status
- * "":지정안됨, rrmemory:마지막통화한다음순서(roundrobin), ringall:동시모두, sequence:목록순서, leastrecent:최소한최근에받은순서, fewestcalls:연결횟수가적은순서, random:랜덤
+ * RINGALL:동시모두
+ * LEASTRECENT:먼저끊은순서
+ * FEWESTCALLS:적게받은순서
+ * RRMEMORY:마지막통화한다음순서
+ * RANDOM:랜덤
+ * SEQUENCE:목록순서
  */
 public enum PDSResultGroupStrategy implements CodeHasable<String> {
-	DO_NOT_STRATEGY(""), RRMEMORY("rrmemory"), RINGALL("ringall"), SEQUENCE("sequence"),
-	LEASTRECENT("leastrecent"), FEWESTCALLS("fewestcalls"), RANDOM("fewestcalls");
+	RINGALL("ringall"),
+	LEASTRECENT("leastrecent"),
+	FEWESTCALLS("fewestcalls"),
+	RRMEMORY("rrmemory"),
+	RANDOM("random"),
+	SEQUENCE("sequence");
 
 	private final String code;
 

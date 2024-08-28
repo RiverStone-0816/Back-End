@@ -42,9 +42,9 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
     protected final Logger logger = LoggerFactory.getLogger(PDSQueueNameRepository.class);
 
     private final QueueMemberTableRepository queueMemberTableRepository;
-    private final QueueTableRepository queueTableRepository;
-    private final PBXServerInterface pbxServerInterface;
-    private final CacheService cacheService;
+    private final QueueTableRepository       queueTableRepository;
+    private final PBXServerInterface         pbxServerInterface;
+    private final CacheService               cacheService;
     private final WebSecureHistoryRepository webSecureHistoryRepository;
 
     public PDSQueueNameRepository(QueueMemberTableRepository queueMemberTableRepository, QueueTableRepository queueTableRepository, PBXServerInterface pbxServerInterface, CacheService cacheService, WebSecureHistoryRepository webSecureHistoryRepository) {
@@ -71,9 +71,9 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
     public String insertOnGeneratedKey(PDSResultGroupFormRequest form) {
         final PdsQueueName sequenceSeed = PDS_QUEUE_NAME.as("SEQUENCE_SEED");
         final Integer nextSequence = dsl.select(DSL.ifnull(DSL.max(sequenceSeed.SEQ), 0).add(1)).from(sequenceSeed).fetchOneInto(Integer.class);
-        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsQueueName queueNameRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsQueueName();
         final String queueName = "PDS_QUEUE".concat(String.valueOf(nextSequence));
 
+        final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsQueueName queueNameRecord = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsQueueName();
         queueNameRecord.setSeq(nextSequence);
         queueNameRecord.setName(queueName);
         queueNameRecord.setHanName(form.getHanName());
@@ -107,10 +107,10 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
         queueTableRecord.setMaxlen(20);
         queueTableRecord.setServicelevel(60);
         queueTableRecord.setStrategy(PDSResultGroupStrategy.SEQUENCE.getCode().equals(form.getStrategy())
-                ? PDSResultGroupStrategy.RINGALL.getCode()
-                : form.getStrategy());
+                                             ? PDSResultGroupStrategy.RINGALL.getCode()
+                                             : form.getStrategy());
         queueTableRecord.setJoinempty("yes");
-        queueTableRecord.setLeavewhenempty("yes");//대기자가 있어도 기다리지않음
+        queueTableRecord.setLeavewhenempty("yes");  //대기자가 있어도 기다리지 않음
         queueTableRecord.setEventmemberstatus(false);
         queueTableRecord.setEventwhencalled(true);
         queueTableRecord.setReportholdtime(false);
@@ -162,9 +162,10 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                     DSLContext pbxDsl = pbxServerInterface.using(optionalPbxServer.get().getHost());
                     queueMemberTableRepository.updateQueueNameAndMemberName(pbxDsl, record);
                 });
+
                 huntOldMembers.remove(userId);
             } else {
-                Optional<QueueMemberTable> optionalEmptyOrHuntQueueNameQueueMemberTable;
+                final Optional<QueueMemberTable> optionalEmptyOrHuntQueueNameQueueMemberTable;
                 if (optionalPbxServer.isPresent()) {
                     DSLContext pbxDsl = pbxServerInterface.using(form.getRunHost());
                     optionalEmptyOrHuntQueueNameQueueMemberTable = queueMemberTableRepository.findAll(pbxDsl, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(userId).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(QUEUE_MEMBER_TABLE.MEMBERNAME)))
@@ -175,8 +176,9 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                             .stream()
                             .findFirst();
                 }
+
                 if (optionalEmptyOrHuntQueueNameQueueMemberTable.isPresent()) {
-                    QueueMemberTable insertQueueMemberTableRecord = optionalEmptyOrHuntQueueNameQueueMemberTable.get();
+                    final QueueMemberTable insertQueueMemberTableRecord = optionalEmptyOrHuntQueueNameQueueMemberTable.get();
                     insertQueueMemberTableRecord.setPenalty(PDSResultGroupStrategy.SEQUENCE.getCode().equals(form.getStrategy()) ? index + 1 : 0);
                     insertQueueMemberTableRecord.setQueueName(queueName);
                     insertQueueMemberTableRecord.setUniqueid(null);
@@ -197,11 +199,13 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                                 .stream()
                                 .findFirst();
                     }
+
                     final QueueMemberTable insertQueueMemberTableRecord = new QueueMemberTable();
                     insertQueueMemberTableRecord.setQueueName(queueName);
                     insertQueueMemberTableRecord.setMembername(userId);
                     insertQueueMemberTableRecord.setInterface("SIP/".concat(userId));
                     insertQueueMemberTableRecord.setPenalty(PDSResultGroupStrategy.SEQUENCE.getCode().equals(form.getStrategy()) ? index + 1 : 0);
+
                     if (optionalDBRoutingQueueMemberTable.isPresent()) {
                         final QueueMemberTable r = optionalDBRoutingQueueMemberTable.get();
                         insertQueueMemberTableRecord.setIsLogin(r.getIsLogin());
@@ -210,7 +214,9 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                         insertQueueMemberTableRecord.setIsLogin("N");
                         insertQueueMemberTableRecord.setPaused(3);
                     }
+
                     insertQueueMemberTableRecord.setCompanyId(getCompanyId());
+
                     queueMemberTableRepository.insert(dsl, insertQueueMemberTableRecord);
                     optionalPbxServer.ifPresent(server -> {
                         DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
@@ -252,11 +258,9 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
             modQueueName.setBusyContext(form.getBusyContext());
             modQueueName.setHost(form.getRunHost());
             modQueueName.setCompanyId(getCompanyId());
-
-
             modQueueTable.setStrategy(CallDistributionStrategy.RINGALL.getCode().equals(form.getStrategy())
-                    ? CallDistributionStrategy.RINGALL.getCode() : form.getStrategy());
-
+                                              ? CallDistributionStrategy.RINGALL.getCode()
+                                              : form.getStrategy());
 
             updateByKey(modQueueName, modQueueTable.getName());
             queueTableRepository.updateByKey(modQueueTable, modQueueTable.getName());
@@ -278,18 +282,20 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
             int index = -1;
             for (PDSResultGroupPersonFormRequest addPerson : form.getAddPersons()) {
                 index = index + 1;
-                final String peer = addPerson.getUserId();
-                Optional<QueueMemberTable> optionalEmptyOrHuntQueueNameQueueMemberTable;
+                final String userId = addPerson.getUserId();
+                final Optional<QueueMemberTable> optionalEmptyOrHuntQueueNameQueueMemberTable;
+
                 if (optionalPbxServer.isPresent()) {
                     DSLContext pbxDsl = pbxServerInterface.using(form.getRunHost());
-                    optionalEmptyOrHuntQueueNameQueueMemberTable = queueMemberTableRepository.findAll(pbxDsl, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(peer).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(QUEUE_MEMBER_TABLE.MEMBERNAME)))
+                    optionalEmptyOrHuntQueueNameQueueMemberTable = queueMemberTableRepository.findAll(pbxDsl, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(userId).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(QUEUE_MEMBER_TABLE.MEMBERNAME)))
                             .stream()
                             .findFirst();
                 } else {
-                    optionalEmptyOrHuntQueueNameQueueMemberTable = queueMemberTableRepository.findAll(dsl, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(peer).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(QUEUE_MEMBER_TABLE.MEMBERNAME)))
+                    optionalEmptyOrHuntQueueNameQueueMemberTable = queueMemberTableRepository.findAll(dsl, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(userId).and(QUEUE_MEMBER_TABLE.QUEUE_NAME.notEqual(QUEUE_MEMBER_TABLE.MEMBERNAME)))
                             .stream()
                             .findFirst();
                 }
+
                 if (optionalEmptyOrHuntQueueNameQueueMemberTable.isPresent()) {
                     final QueueMemberTable insertRecord = optionalEmptyOrHuntQueueNameQueueMemberTable.get();
                     insertRecord.setPenalty(PDSResultGroupStrategy.SEQUENCE.getCode().equals(form.getStrategy()) ? index + 1 : 0);
@@ -303,31 +309,30 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
                         queueMemberTableRepository.insert(pbx, dsl.newRecord(QUEUE_MEMBER_TABLE, insertRecord));
                     });
                 } else {
-
                     final Optional<QueueMemberTable> optionalDBRoutingQueueMemberTable;
                     if (!optionalPbxServer.isPresent()) {
-                        optionalDBRoutingQueueMemberTable = queueMemberTableRepository.findAll(dsl, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(peer))
+                        optionalDBRoutingQueueMemberTable = queueMemberTableRepository.findAll(dsl, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(userId))
                                 .stream()
                                 .findFirst();
                     } else {
                         DSLContext pbx = pbxServerInterface.using(form.getRunHost());
-                        optionalDBRoutingQueueMemberTable = queueMemberTableRepository.findAll(pbx, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(peer))
+                        optionalDBRoutingQueueMemberTable = queueMemberTableRepository.findAll(pbx, QUEUE_MEMBER_TABLE.MEMBERNAME.eq(userId))
                                 .stream()
                                 .findFirst();
                     }
 
                     final QueueMemberTable insertRecord = new QueueMemberTable();
                     insertRecord.setQueueName(modQueueTable.getName());
-                    insertRecord.setMembername(peer);
-                    insertRecord.setInterface("SIP/".concat(peer));
+                    insertRecord.setMembername(userId);
+                    insertRecord.setInterface("SIP/".concat(userId));
                     insertRecord.setPenalty(PDSResultGroupStrategy.SEQUENCE.getCode().equals(form.getStrategy()) ? index + 1 : 0);
 
                     if (optionalDBRoutingQueueMemberTable.isPresent()) {
                         final QueueMemberTable r = optionalDBRoutingQueueMemberTable.get();
                         insertRecord.setIsLogin(r.getIsLogin());
-                    } else {
+                    } else
                         insertRecord.setIsLogin("N");
-                    }
+
                     insertRecord.setPaused(0);
                     insertRecord.setCompanyId(getCompanyId());
                     insertRecord.setUniqueid(null);
@@ -364,16 +369,15 @@ public class PDSQueueNameRepository extends EicnBaseRepository<PdsQueueName, kr.
             queueTableRepository.delete(pbxDsl, queueName);
             queueMemberTableRepository.delete(pbxDsl, QUEUE_MEMBER_TABLE.QUEUE_NAME.eq(queueName));
         });
+
         // queue_name 삭제
         final int r = super.delete(dsl, queueName);
-
         optionalPbxServer.ifPresent(server -> {
             DSLContext pbx = pbxServerInterface.using(server.getHost());
             super.delete(pbx, queueName);
         });
 
         webSecureHistoryRepository.insert(WebSecureActionType.PDS_GROUP, WebSecureActionSubType.DEL, pdsQueueName.getHanName() + "(" + queueName + ")");
-
         return r;
     }
 

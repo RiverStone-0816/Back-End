@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class SummaryPersonResponse {
 	private String userId;	  // 사용자 ID
-	private String idName;    // 한글이름
+	private String idName;    // 사용자명
 	private String peer;      // 전화기아이디
 	private String extension; // 내선
 	private String hostName;  // 호스트명
