@@ -42,6 +42,32 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
         this.pbxServerInterface = pbxServerInterface;
         this.serviceRepository = serviceRepository;
         this.cacheService = cacheService;
+
+        addField(PERSON_LIST.ID);
+        addField(PERSON_LIST.ID_TYPE);
+        addField(PERSON_LIST.ID_NAME);
+        addField(PERSON_LIST.GROUP_CODE);
+        addField(PERSON_LIST.GROUP_TREE_NAME);
+        addField(PERSON_LIST.GROUP_LEVEL);
+        addField(PERSON_LIST.IS_LOGIN);
+        addField(PERSON_LIST.IS_LOGIN_MSG);
+        addField(PERSON_LIST.IS_LOGIN_CHATT);
+        addField(PERSON_LIST.EXTENSION);
+        addField(PERSON_LIST.PEER);
+        addField(PERSON_LIST.PHONE_STATUS);
+        addField(PERSON_LIST.ETC);
+        addField(PERSON_LIST.LOGOUT_STATUS);
+        addField(PERSON_LIST.DIAL_STATUS);
+        addField(PERSON_LIST.COMPANY_ID);
+        addField(PERSON_LIST.ID_STATUS);
+        addField(PERSON_LIST.HP_NUMBER);
+        addField(PERSON_LIST.EMAIL_INFO);
+        addField(PERSON_LIST.PASS_CHANGE_DATE);
+        addField(PERSON_LIST.PASS_RESET);
+        addField(PERSON_LIST.LICENSE_LIST);
+        addField(PERSON_LIST.TRY_LOGIN_COUNT);
+        addField(PERSON_LIST.TRY_LOGIN_DATE);
+        addField(PERSON_LIST.PROFILE_PHOTO);
     }
 
     public List<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList> findAll(PersonSort sort) {
