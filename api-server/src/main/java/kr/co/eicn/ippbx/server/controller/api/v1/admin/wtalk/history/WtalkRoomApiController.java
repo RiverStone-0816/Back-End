@@ -58,7 +58,7 @@ public class WtalkRoomApiController extends ApiBaseController {
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<WtalkRoomResponse>>> pagination(TalkRoomSearchRequest search) {
         Pagination<WtalkRoomEntity> pagination;
-        final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+        final Map<String, String> personListMap = personListRepository.getIdAndNameMap();
 
         if (search.getStartDate() != null && search.getEndDate() != null)
             if (search.getStartDate().after(search.getEndDate()))
@@ -135,7 +135,7 @@ public class WtalkRoomApiController extends ApiBaseController {
      */
     @GetMapping("{roomId}/message")
     public ResponseEntity<JsonResult<List<WtalkMsgResponse>>> messageHistory(@PathVariable String roomId) {
-        final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+        final Map<String, String> personListMap = personListRepository.getIdAndNameMap();
 
         return ResponseEntity.ok(data(
                 wtalkMsgService.getRepository().findAll(roomId).stream()

@@ -303,7 +303,7 @@ public class EicnCdrRepository extends CustomDBBaseRepository<CommonEicnCdr, Eic
     }
 
     public List<EicnCdrEvaluationEntity> getEvaluationLists(final List<Integer> sequences) {
-        final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+        final Map<String, String> personListMap = personListRepository.getIdAndNameMap();
 
         return dsl.select()
                 .from(TABLE)

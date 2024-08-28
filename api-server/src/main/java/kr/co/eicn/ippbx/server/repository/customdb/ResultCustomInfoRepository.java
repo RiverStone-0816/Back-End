@@ -58,7 +58,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
     @Autowired
     private MaindbCustomInfoService maindbCustomInfoService;
     @Autowired
-    private UserRepository userRepository;
+    private  PersonListRepository personListRepository;
     @Autowired
     private TodoListRepository todoListRepository;
     @Autowired
@@ -114,13 +114,7 @@ public class ResultCustomInfoRepository extends CustomDBBaseRepository<CommonRes
         ).stream().collect(Collectors.groupingBy(CommonMaindbMultichannelInfo::getMaindbCustomId));
         entities.forEach(e -> e.setMultichannelList(customIdToChannelInfoList.get(e.getCustomId())));
 
-        final Set<String> ids = new HashSet<>();
-        ids.addAll(entities.stream().map(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo::getUserid).collect(Collectors.toList()));
-        ids.addAll(entities.stream().map(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo::getUseridOrg).collect(Collectors.toList()));
-        ids.addAll(entities.stream().map(kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonResultCustomInfo::getUseridTr).collect(Collectors.toList()));
-
-        final Map<String, String> userMap = userRepository.findAllByIds(ids).stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
-
+        final Map<String, String> userMap = personListRepository.getIdAndNameMap();
         for (ResultCustomInfoEntity entity : entities) {
             if (userMap.containsKey(entity.getUserid()))
                 entity.setUserName(userMap.get(entity.getUserid()));

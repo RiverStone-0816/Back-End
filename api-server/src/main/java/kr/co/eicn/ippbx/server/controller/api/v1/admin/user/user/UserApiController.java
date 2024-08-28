@@ -71,7 +71,6 @@ public class UserApiController extends ApiBaseController {
      */
     @GetMapping("")
     public ResponseEntity<JsonResult<List<PersonSummaryResponse>>> list(PersonSearchRequest search) {
-
         final List<UserEntity> list = repository.findAll(search);
         final List<CompanyTree> companyTrees = organizationService.getAllCompanyTrees();
         final List<PersonSummaryResponse> rows = list.stream()

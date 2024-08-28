@@ -115,7 +115,7 @@ public class MemoMsgService extends ApiBaseService implements ApplicationContext
     }
 
     public List<MemoMsgEntity> convertToMemoUserName(List<MemoMsgEntity> entities) {
-        final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+        final Map<String, String> personListMap = personListRepository.getIdAndNameMap();
         final Map<String, List<MemoMsgEntity>> memoMessageMap = this.getRepository().getReceiveUsers();
 
         return entities.stream()
@@ -141,7 +141,7 @@ public class MemoMsgService extends ApiBaseService implements ApplicationContext
 
     public MemoMsgEntity convertToMemoUserName(MemoMsgEntity entity) {
         final UserInfo userInfo = new UserInfo();
-        final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+        final Map<String, String> personListMap = personListRepository.getIdAndNameMap();
         final List<MemoMsgEntity> receiveUsers = this.getRepository().getReceiveUserByMessageId(entity.getMessageId());
         if (!entity.getSendReceive().equals(ChattingSendReceive.SEND.getCode()) && entity.getReadYn().equals(Bool.N.name()))
             this.getRepository().updateReadYn(entity.getSeq());

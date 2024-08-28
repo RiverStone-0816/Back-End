@@ -75,7 +75,7 @@ public class ChattRoomRepository extends CustomDBBaseRepository<CommonChattRoom,
     }
 
     protected ChattRoomEntity postProcedure(ChattRoomEntity entity, ChattingSearchRequest search) {
-        final Map<String, String> personMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+        final Map<String, String> personMap = personListRepository.getIdAndNameMap();
         if (entity != null) {
             final Map<String, List<ChattRoomMemberEntity>> chattingMembers = chattMemberService.findAllByRoomId(entity.getRoomId()).stream()
                     .map(e -> {

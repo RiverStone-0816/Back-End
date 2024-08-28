@@ -293,4 +293,11 @@ public class PersonListRepository extends EicnBaseRepository<PersonList, kr.co.e
                 .and(PERSON_LIST.PEER.isNotNull().and(PERSON_LIST.PEER.ne("")))
                 .fetchMap(PERSON_LIST.PEER, PERSON_LIST.ID);
     }
+
+    public Map<String, String> getIdAndNameMap() {
+        return dsl.select(PERSON_LIST.ID, PERSON_LIST.ID_NAME)
+                .from(PERSON_LIST)
+                .where(compareCompanyId())
+                .fetchMap(PERSON_LIST.ID, PERSON_LIST.ID_NAME);
+    }
 }

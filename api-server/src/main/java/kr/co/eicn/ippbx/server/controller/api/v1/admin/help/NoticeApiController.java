@@ -62,7 +62,7 @@ public class NoticeApiController extends ApiBaseController {
     @GetMapping
     public ResponseEntity<JsonResult<Pagination<BoardSummaryResponse>>> pagination(BoardSearchRequest search) {
         final Pagination<BoardNoticeInfo> pagination = repository.pagination(search);
-        final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+        final Map<String, String> personListMap = personListRepository.getIdAndNameMap();
 
         final List<BoardSummaryResponse> rows = pagination.getRows().stream()
                 .map((e) -> {

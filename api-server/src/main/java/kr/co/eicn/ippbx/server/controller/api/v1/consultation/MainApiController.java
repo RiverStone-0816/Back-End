@@ -367,7 +367,7 @@ public class MainApiController extends ApiBaseController {
                     talkServiceInfoMap.put(e.getSenderKey(), info);
                 });
 
-        final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+        final Map<String, String> personListMap = personListRepository.getIdAndNameMap();
         final Map<String, String> mainDb = maindbCustomInfoService.getRepository().findAllCustomNameByCustomIdMap();
         final List<WtalkRoomEntity> talkRoomList = currentWtalkRoomService.findAll(search);
         final List<WtalkCurrentListResponse> response = talkRoomList.stream()
@@ -407,8 +407,7 @@ public class MainApiController extends ApiBaseController {
      */
     @GetMapping("current-wtalk-msg/{roomId}")
     public ResponseEntity<JsonResult<WtalkCurrentMsgResponse>> currentTalkMsg(@PathVariable String roomId) {
-
-        final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+        final Map<String, String> personListMap = personListRepository.getIdAndNameMap();
 
         final WtalkRoomEntity wtalkRoomEntity = currentWtalkRoomRepository.findOne(CurrentWtalkRoom.CURRENT_WTALK_ROOM.ROOM_ID.eq(roomId));
 

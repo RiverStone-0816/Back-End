@@ -63,7 +63,7 @@ public class RecordDownApiController extends ApiBaseController {
 		if (search.getStartDate().after(search.getEndDate()))
 			throw new IllegalArgumentException("시작시간이 종료시간보다 이전이어야 합니다.");
 
-		final Map<String, String> personMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+		final Map<String, String> personMap = personListRepository.getIdAndNameMap();
 		final List<RecordDownSummaryResponse> rows = service.list(search).stream()
 				.map((e) -> {
 					final RecordDownSummaryResponse entity = convertDto(e, RecordDownSummaryResponse.class);

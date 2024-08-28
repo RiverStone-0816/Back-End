@@ -56,9 +56,9 @@ public class VOCResultHistoryApiController extends ApiBaseController {
 		final Pagination<VocResearchResultEntity> pagination = service.getRepository(search.getVocGroupSeq()).pagination(search);
 		final Map<Integer, ResearchList> researchListMap = researchListRepository.findAll().stream().collect(Collectors.toMap(ResearchList::getResearchId, e -> e));
 		final List<ResearchItem> items = researchItemRepository.findAll(RESEARCH_ITEM.MAPPING_NUMBER.ne((byte) 0)).stream()
-				.sorted(Comparator.comparing(ResearchItem::getMappingNumber)).collect(Collectors.toList());
+				.sorted(Comparator.comparing(ResearchItem::getMappingNumber)).toList();
 		final List<ResearchTree> trees = researchTreeRepository.findAll();
-		final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+		final Map<String, String> personListMap = personListRepository.getIdAndNameMap();
 
 		final List<VocResearchResultEntity> rows = pagination.getRows().stream()
 				.peek(e -> {

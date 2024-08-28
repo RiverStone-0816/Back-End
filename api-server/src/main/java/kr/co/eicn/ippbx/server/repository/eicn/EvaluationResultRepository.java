@@ -91,7 +91,7 @@ public class EvaluationResultRepository extends EicnBaseRepository<EvaluationRes
 
     protected void postProcedure(List<EvaluationResultEntity> evaluationResultEntities) {
         if (!evaluationResultEntities.isEmpty()) {
-            final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+            final Map<String, String> personListMap = personListRepository.getIdAndNameMap();
             evaluationResultEntities.forEach(e -> {
                 final EvaluationFormEntity evaluationFormEntity = evaluationFormRepository.get(e.getEvaluationId());
                 e.getForm().setCategories(evaluationFormEntity.getCategories());
@@ -130,7 +130,7 @@ public class EvaluationResultRepository extends EicnBaseRepository<EvaluationRes
     public List<EvaluationResultStatResponse> statistics(EvaluationResultSearchRequest search) {
         final AggregateFunction<Integer> count = DSL.countDistinct(EVALUATION_RESULT.TARGET_USERID, EVALUATION_RESULT.EVALUATION_ID, EVALUATION_RESULT.CDR_ID);
         final AggregateFunction<BigDecimal> sum = DSL.sum(EVALUATION_ITEM_SCORE.SCORE);
-        final Map<String, String> personListMap = personListRepository.findAll().stream().collect(Collectors.toMap(PersonList::getId, PersonList::getIdName));
+        final Map<String, String> personListMap = personListRepository.getIdAndNameMap();
         final Map<Long, String> evaluationFormMap = evaluationFormRepository.findAll().stream().collect(Collectors.toMap(EvaluationForm::getId, EvaluationForm::getName));
 
         return dsl.select(EVALUATION_RESULT.TARGET_USERID
