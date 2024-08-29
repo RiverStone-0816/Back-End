@@ -127,7 +127,7 @@
             <div class="row -kind-data" data-kind="S,D,F,C,V,SMS">
                 <div class="four wide column">
                     <label class="control-label">음원선택</label>
-                    <button type="button" class="ui icon button mini compact remove-margin -sound-play -play-trigger" style="padding: 5px;" data-sound-input="[name=kindSoundCode]" data-tts-input="[name=ttsData]">
+                    <button type="button" class="ui icon button mini compact remove-margin -sound-play sound-mini -play-trigger" data-sound-input="[name=kindSoundCode]" data-tts-input="[name=ttsData]">
                         <i class="volume up icon"></i>
                     </button>
                     <div class="ui popup top left"></div>
@@ -286,13 +286,14 @@
         const sound = modal.find($(this).attr('data-sound-input')).val();
         const tts = modal.find($(this).attr('data-tts-input')).val();
         const player = $(this).next().empty();
-        console.log("test: player-", player)
 
         if (player.hasClass('out'))
             return;
 
         if (!sound)
             return;
+
+        modal.find('.content.rows').addClass('overflow-visible');
 
         if (sound !== 'TTS') {
             const src = contextPath + "/api/ars/id/" + sound + "/resource?mode=PLAY";

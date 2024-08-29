@@ -57,12 +57,12 @@
             </div>
             <c:if test="${(entity == null && form.parentSeq == null) || (entity != null && entity.treeName.split('[_]')[1] == null)}">
                 <div class="row">
-                    <div class="four wide column">
+                    <div class="four wide column remove-pr">
                         <label class="control-label">인트로음원선택</label>
-                        <button type="button" class="ui icon button mini compact -sound-download" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
+                        <button type="button" class="ui icon button mini compact -sound-download sound-mini" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
                             <i class="arrow down icon"></i>
                         </button>
-                        <button type="button" class="ui icon button mini compact -sound-play -play-trigger" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
+                        <button type="button" class="ui icon button mini compact -sound-play sound-mini -play-trigger" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
                             <i class="volume up icon"></i>
                         </button>
                         <div class="ui popup top left"></div>
@@ -112,11 +112,11 @@
                                                             CONNECT_MENU_AFTER_DONE_EXCEPTION,
                                                             CONNECT_INNER_NUMBER_DIRECTLY]}"/>
                 <div class="four wide column">
-                    <label class="control-label">음원선택${requireSoundMenus.contains(form.type) ? '(*)' : ''}</label>
-                    <button type="button" class="ui icon button mini compact -sound-download" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
+                    <label class="control-label ${requireSoundMenus.contains(form.type) ? 'label-required' : ''} ">음원선택</label>
+                    <button type="button" class="ui icon button mini compact -sound-download sound-mini" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
                         <i class="arrow down icon"></i>
                     </button>
-                    <button type="button" class="ui icon button mini compact -sound-play -play-trigger" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
+                    <button type="button" class="ui icon button mini compact -sound-play sound-mini -play-trigger" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
                         <i class="volume up icon"></i>
                     </button>
                     <div class="ui popup top left"></div>
@@ -349,6 +349,8 @@
 
         if (!sound)
             return;
+
+        modal.find('.content.rows').addClass('overflow-visible');
 
         if (sound !== 'TTS') {
             const src = contextPath + "/api/ars/id/" + sound + "/resource?mode=PLAY";
