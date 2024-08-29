@@ -208,7 +208,7 @@
                 </div>
             </div>
             <div class="row -kind-data" data-kind="SMS">
-                <div class="four wide column"><label class="control-label">SMS 템플릿(*)</label></div>
+                <div class="four wide column"><label class="control-label label-required">SMS 템플릿</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <select name="kindDataSMS">

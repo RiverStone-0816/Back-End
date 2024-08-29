@@ -42,7 +42,7 @@
     <div class="content rows scrolling">
         <div class="ui centered grid">
             <div class="row">
-                <div class="four wide column"><label class="control-label">메뉴명(*)</label></div>
+                <div class="four wide column"><label class="control-label label-required">메뉴명</label></div>
                 <div class="twelve wide column">
                     <div class="ui input fluid">${g.htmlQuote(form.name)}</div>
                 </div>
@@ -101,7 +101,7 @@
                             CONNECT_REPRESENTABLE_NUMBER_AFTER_DONE_EXCEPTION,
                             CONNECT_HUNT_NUMBER_AFTER_DONE_EXCEPTION].contains(form.type)}">
                 <div class="row">
-                    <div class="four wide column"><label class="control-label">예외컨텍스트(*)</label></div>
+                    <div class="four wide column"><label class="control-label label-required">예외컨텍스트</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
                             <c:forEach var="e" items="${contexts}">
@@ -167,7 +167,7 @@
             <c:if test="${[CONNECT_REPRESENTABLE_NUMBER,
                             CONNECT_REPRESENTABLE_NUMBER_AFTER_DONE_EXCEPTION].contains(form.type)}">
                 <div class="row">
-                    <div class="four wide column"><label class="control-label">대표번호(*)</label></div>
+                    <div class="four wide column"><label class="control-label label-required">대표번호</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
                             <c:forEach var="e" items="${serviceNumbers}">
@@ -182,7 +182,7 @@
             <c:if test="${[CONNECT_HUNT_NUMBER,
                             CONNECT_HUNT_NUMBER_AFTER_DONE_EXCEPTION].contains(form.type)}">
                 <div class="row">
-                    <div class="four wide column"><label class="control-label">수신그룹번호(*)</label></div>
+                    <div class="four wide column"><label class="control-label label-required">수신그룹번호</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
                             <c:forEach var="e" items="${queues}">
@@ -196,7 +196,7 @@
             </c:if>
             <c:if test="${[CONNECT_INNER_NUMBER].contains(form.type)}">
                 <div class="row">
-                    <div class="four wide column"><label class="control-label">내선번호(*)</label></div>
+                    <div class="four wide column"><label class="control-label label-required">내선번호</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
                             <c:forEach var="e" items="${extensions}">
@@ -210,7 +210,7 @@
             </c:if>
             <c:if test="${[CONNECT_OUTER_NUMBER].contains(form.type)}">
                 <div class="row">
-                    <div class="four wide column"><label class="control-label">연결될외부번호(*)</label></div>
+                    <div class="four wide column"><label class="control-label label-required">연결될외부번호</label></div>
                     <div class="twelve wide column">
                         <div class="ui input fluid">
                                 ${entity != null && entity.typeData != null ? g.htmlQuote(entity.typeData.split('[|]')[0]) : ''}

@@ -22,7 +22,7 @@
     <div class="scrolling content rows">
         <div class="ui grid">
             <div class="row">
-                <div class="four wide column"><label class="control-label">채팅상담그룹명(*)</label></div>
+                <div class="four wide column"><label class="control-label label-required">채팅상담그룹명</label></div>
                 <div class="four wide column">
                     <div class="ui form">
                         <form:input path="groupName"/>
