@@ -106,27 +106,48 @@ assist:
   kms:
     auth:
       # KMS 로그인 (인증)
+      # 테스트
       url: https://assist.eicn.co.kr:3006/api/assist/graphql
+      # 실서버
+      #url: https://assistweb.uplus.co.kr:3006/api/assist/graphql
     api:
       # KMS 게시글
+      # 테스트
       url: https://assist.eicn.co.kr/kms/graphql
+      # 실서버
+      #url: https://assistweb.uplus.co.kr/kms/graphql
   stt:
     socket:
       # stt 소켓 연결
+      # 테스트
       url: https://assist.eicn.co.kr:8087
+      # 실서버
+      #url: https://assistweb.uplus.co.kr:8087
     request:
       # stt 가져오기 url
+      # 테스트
       url: https://assist.eicn.co.kr:8087
+      # 실서버
+      #url: https://assistweb.uplus.co.kr:8087
   sso:
     token:
       get:
         # 상담지원 버튼 클릭시, 상무님 서버로 부터 토큰을 발급 받음 (1)
+        # 테스트
         url: https://dev.eicn.co.kr:8400/get_assist_token
+        # 실서버
+        #url: [서버 URL]:8087/get_assist_token
     request:
       site:
         # 상담지원 버튼 클릭시, 독립형 어시스트 사이트를 오픈 (2)
+        # 테스트
         url: https://assist.eicn.co.kr:3006/login
+        # 실서버
+        #url: https://assistweb.uplus.co.kr/login
   login:
     record:
       # 유저 로그인시 session 기록용 url
+      # 테스트
       user: https://dev.eicn.co.kr:8400/login_info
+      # 실서버
+      #user: [서버 URL]::8400/login_info
