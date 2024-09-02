@@ -6,7 +6,7 @@ import org.jooq.impl.UpdatableRecordImpl;
 
 import java.sql.Date;
 
-public class CommonStatInboundRecord  extends UpdatableRecordImpl<CommonStatInboundRecord> {
+public class CommonStatInboundRecord extends UpdatableRecordImpl<CommonStatInboundRecord> {
 
     public CommonStatInboundRecord(Table<CommonStatInboundRecord> table) {
         super(table);
@@ -139,20 +139,18 @@ public class CommonStatInboundRecord  extends UpdatableRecordImpl<CommonStatInbo
     }
 
     /**
-     /**
-     * Setter for <code>STATDB.stat_inbound.ivr_tree_name</code>. ivr_tree의 tree_name
+     * Setter for <code>STATDB.stat_inbound.ivr_tree_name</code>. IVR트리명
      */
     public void setIvrTreeName(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>STATDB.stat_inbound.ivr_tree_name</code>. ivr_tree의 tree_name
+     * Getter for <code>STATDB.stat_inbound.ivr_tree_name</code>. IVR트리명
      */
     public String getIvrTreeName() {
         return (String) get(9);
     }
-
 
     /**
      * Setter for <code>STATDB.stat_inbound.dcontext</code>. 다이얼플랜컨텍스트
@@ -309,14 +307,14 @@ public class CommonStatInboundRecord  extends UpdatableRecordImpl<CommonStatInbo
     }
 
     /**
-     * Setter for <code>STATDB.stat_inbound.cancel_timeout</code>. 헌트타임아웃으로인한포기호
+     * Setter for <code>STATDB.stat_inbound.cancel_timeout</code>. 타임아웃포기호-상담사인입X,타임아웃O
      */
     public void setCancelTimeout(Integer value) {
         set(21, value);
     }
 
     /**
-     * Getter for <code>STATDB.stat_inbound.cancel_timeout</code>. 헌트타임아웃으로인한포기호
+     * Getter for <code>STATDB.stat_inbound.cancel_timeout</code>. 타임아웃포기호-상담사인입X,타임아웃O
      */
     public Integer getCancelTimeout() {
         return (Integer) get(21);
@@ -337,14 +335,14 @@ public class CommonStatInboundRecord  extends UpdatableRecordImpl<CommonStatInbo
     }
 
     /**
-     * Setter for <code>STATDB.stat_inbound.cancel_custom</code>. 고객포기호
+     * Setter for <code>STATDB.stat_inbound.cancel_custom</code>. 고객포기호-상담사인입X,타임아웃X
      */
     public void setCancelCustom(Integer value) {
         set(23, value);
     }
 
     /**
-     * Getter for <code>STATDB.stat_inbound.cancel_custom</code>. 고객포기호
+     * Getter for <code>STATDB.stat_inbound.cancel_custom</code>. 고객포기호-상담사인입X,타임아웃X
      */
     public Integer getCancelCustom() {
         return (Integer) get(23);

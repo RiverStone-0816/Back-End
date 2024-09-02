@@ -1,5 +1,6 @@
 package kr.co.eicn.ippbx.meta.jooq.customdb.tables.records;
 
+import org.jooq.Record2;
 import org.jooq.Table;
 import org.jooq.impl.UpdatableRecordImpl;
 
@@ -143,10 +144,20 @@ public class CommonChattRoomMemberRecord extends UpdatableRecordImpl<CommonChatt
     public void setReadTime(Timestamp value) {
         set(9, value);
     }
+
     /**
      * Getter for <code>CUSTOMDB.chatt_room_member.read_time</code>.
      */
     public Timestamp getReadTime() {
         return (Timestamp) get(9);
+    }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
+
+    @Override
+    public Record2<String, String> key() {
+        return (Record2) super.key();
     }
 }

@@ -11,6 +11,7 @@ public class CommonChattRoomRecord extends UpdatableRecordImpl<CommonChattRoomRe
     public CommonChattRoomRecord(Table<CommonChattRoomRecord> table) {
         super(table);
     }
+
     /**
      * Setter for <code>CUSTOMDB.chatt_room.room_id</code>.
      */
@@ -110,59 +111,87 @@ public class CommonChattRoomRecord extends UpdatableRecordImpl<CommonChattRoomRe
     }
 
     /**
+     * Setter for <code>CUSTOMDB.chatt_room.last_msg_type</code>.
+     */
+    public void setLastMsgType(String value) {
+        set(7, value);
+    }
+
+    /**
+     * Getter for <code>CUSTOMDB.chatt_room.last_msg_type</code>.
+     */
+    public String getLastMsgType() {
+        return (String) get(7);
+    }
+
+    /**
+     * Setter for <code>CUSTOMDB.chatt_room.last_msg_send_receive</code>.
+     */
+    public void setLastMsgSendReceive(String value) {
+        set(8, value);
+    }
+
+    /**
+     * Getter for <code>CUSTOMDB.chatt_room.last_msg_send_receive</code>.
+     */
+    public String getLastMsgSendReceive() {
+        return (String) get(8);
+    }
+
+    /**
      * Setter for <code>CUSTOMDB.chatt_room.last_userid</code>.
      */
     public void setLastUserid(String value) {
-        set(7, value);
+        set(9, value);
     }
 
     /**
      * Getter for <code>CUSTOMDB.chatt_room.last_userid</code>.
      */
     public String getLastUserid() {
-        return (String) get(7);
+        return (String) get(9);
     }
 
     /**
      * Setter for <code>CUSTOMDB.chatt_room.make_userid</code>.
      */
     public void setMakeUserid(String value) {
-        set(8, value);
+        set(10, value);
     }
 
     /**
      * Getter for <code>CUSTOMDB.chatt_room.make_userid</code>.
      */
     public String getMakeUserid() {
-        return (String) get(8);
+        return (String) get(10);
     }
 
     /**
      * Setter for <code>CUSTOMDB.chatt_room.cur_member_cnt</code>.
      */
     public void setCurMemberCnt(Integer value) {
-        set(9, value);
+        set(11, value);
     }
 
     /**
      * Getter for <code>CUSTOMDB.chatt_room.cur_member_cnt</code>.
      */
     public Integer getCurMemberCnt() {
-        return (Integer) get(9);
+        return (Integer) get(11);
     }
 
     /**
      * Setter for <code>CUSTOMDB.chatt_room.org_member_cnt</code>.
      */
     public void setOrgMemberCnt(Integer value) {
-        set(10, value);
+        set(12, value);
     }
 
     /**
      * Getter for <code>CUSTOMDB.chatt_room.org_member_cnt</code>.
      */
     public Integer getOrgMemberCnt() {
-        return (Integer) get(10);
+        return (Integer) get(12);
     }
 
     // -------------------------------------------------------------------------

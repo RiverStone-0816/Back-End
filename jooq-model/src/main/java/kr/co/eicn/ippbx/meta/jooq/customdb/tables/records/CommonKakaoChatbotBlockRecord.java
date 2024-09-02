@@ -1,6 +1,5 @@
 package kr.co.eicn.ippbx.meta.jooq.customdb.tables.records;
 
-import org.jooq.Row10;
 import org.jooq.Table;
 import org.jooq.impl.UpdatableRecordImpl;
 
@@ -148,19 +147,5 @@ public class CommonKakaoChatbotBlockRecord extends UpdatableRecordImpl<CommonKak
      */
     public String getUseYn() {
         return (String) get(9);
-    }
-
-    // -------------------------------------------------------------------------
-    // Record10 type implementation
-    // -------------------------------------------------------------------------
-
-    @Override
-    public Row10<Integer, String, String, String, String, String, String, String, String, String> fieldsRow() {
-        return (Row10) super.fieldsRow();
-    }
-
-    @Override
-    public Row10<Integer, String, String, String, String, String, String, String, String, String> valuesRow() {
-        return (Row10) super.valuesRow();
     }
 }

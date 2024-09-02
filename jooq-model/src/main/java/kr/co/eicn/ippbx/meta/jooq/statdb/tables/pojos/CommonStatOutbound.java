@@ -12,13 +12,14 @@ public class CommonStatOutbound implements Serializable {
     private String  groupCode;
     private String  groupTreeName;
     private Integer groupLevel;
+    private String  cidNumber;
     private String  fromOrg;
-    private Date statDate;
+    private String  worktimeYn;
+    private String  dcontext;
+    private Date    statDate;
     private Byte    statHour;
     private Integer total;
     private Integer success;
     private Integer billsecSum;
     private Integer waitSum;
-    private String  dcontext;
-    private String  worktimeYn;
 }

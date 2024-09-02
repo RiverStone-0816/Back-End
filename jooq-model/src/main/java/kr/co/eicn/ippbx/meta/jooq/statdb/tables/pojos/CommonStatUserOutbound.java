@@ -8,17 +8,18 @@ import java.sql.Date;
 @Data
 public class CommonStatUserOutbound implements Serializable {
     private Integer seq;
-    private String companyId;
-    private String groupCode;
-    private String groupTreeName;
+    private String  companyId;
+    private String  groupCode;
+    private String  groupTreeName;
     private Integer groupLevel;
-    private String userid;
-    private String userStatYn;
-    private String fromOrg;
-    private String worktimeYn;
-    private String dcontext;
-    private Date statDate;
-    private Byte statHour;
+    private String  cidNumber;
+    private String  userid;
+    private String  userStatYn;
+    private String  fromOrg;
+    private String  worktimeYn;
+    private String  dcontext;
+    private Date    statDate;
+    private Byte    statHour;
     private Integer outTotal;
     private Integer outSuccess;
     private Integer outBillsecSum;

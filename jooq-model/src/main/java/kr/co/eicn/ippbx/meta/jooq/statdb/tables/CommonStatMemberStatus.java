@@ -1,13 +1,18 @@
 package kr.co.eicn.ippbx.meta.jooq.statdb.tables;
 
+import kr.co.eicn.ippbx.meta.jooq.statdb.Indexes;
+import kr.co.eicn.ippbx.meta.jooq.statdb.Statdb;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.CommonStatMemberStatusRecord;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import java.sql.Date;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,42 +20,47 @@ public class CommonStatMemberStatus extends TableImpl<CommonStatMemberStatusReco
     /**
      * The column <code>STATDB.stat_member_status.seq</code>. 번호
      */
-    public final TableField<CommonStatMemberStatusRecord, Integer> SEQ = createField(DSL.name("seq"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "번호");
+    public final TableField<CommonStatMemberStatusRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.nullable(false).identity(true), this, "번호");
 
     /**
      * The column <code>STATDB.stat_member_status.stat_date</code>. 날짜
      */
-    public final TableField<CommonStatMemberStatusRecord, Date> STAT_DATE = createField(DSL.name("stat_date"), org.jooq.impl.SQLDataType.DATE.nullable(false).defaultValue(org.jooq.impl.DSL.inline("2009-01-01", org.jooq.impl.SQLDataType.DATE)), this, "날짜");
+    public final TableField<CommonStatMemberStatusRecord, Date> STAT_DATE = createField(DSL.name("stat_date"), SQLDataType.DATE.defaultValue(DSL.field("'2009-01-01'", SQLDataType.DATE)), this, "날짜");
 
     /**
      * The column <code>STATDB.stat_member_status.stat_hour</code>. 시간
      */
-    public final TableField<CommonStatMemberStatusRecord, Byte> STAT_HOUR = createField(DSL.name("stat_hour"), org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.TINYINT)), this, "시간");
+    public final TableField<CommonStatMemberStatusRecord, Byte> STAT_HOUR = createField(DSL.name("stat_hour"), SQLDataType.TINYINT.defaultValue(DSL.field("0", SQLDataType.TINYINT)), this, "시간");
 
     /**
      * The column <code>STATDB.stat_member_status.status</code>. 상태
      */
-    public final TableField<CommonStatMemberStatusRecord, String> STATUS = createField(DSL.name("status"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.CHAR)), this, "상태");
+    public final TableField<CommonStatMemberStatusRecord, String> STATUS = createField(DSL.name("status"), SQLDataType.CHAR(5).defaultValue(DSL.field("''", SQLDataType.CHAR)), this, "상태");
+
+    /**
+     * The column <code>STATDB.stat_member_status.in_out</code>. status가 1일때만 의미가 있음
+     */
+    public final TableField<CommonStatMemberStatusRecord, String> IN_OUT = createField(DSL.name("in_out"), SQLDataType.CHAR(1).defaultValue(DSL.field("'I'", SQLDataType.CHAR)), this, "status가 1일때만 의미가 있음");
 
     /**
      * The column <code>STATDB.stat_member_status.total</code>. 횟수
      */
-    public final TableField<CommonStatMemberStatusRecord, Integer> TOTAL = createField(DSL.name("total"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "횟수");
+    public final TableField<CommonStatMemberStatusRecord, Integer> TOTAL = createField(DSL.name("total"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "횟수");
 
     /**
      * The column <code>STATDB.stat_member_status.diff_sum</code>. 시간
      */
-    public final TableField<CommonStatMemberStatusRecord, Integer> DIFF_SUM = createField(DSL.name("diff_sum"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "시간");
+    public final TableField<CommonStatMemberStatusRecord, Integer> DIFF_SUM = createField(DSL.name("diff_sum"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "시간");
 
     /**
      * The column <code>STATDB.stat_member_status.userid</code>. 상담원아이디
      */
-    public final TableField<CommonStatMemberStatusRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(30).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "상담원아이디");
+    public final TableField<CommonStatMemberStatusRecord, String> USERID = createField(DSL.name("userid"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "상담원아이디");
 
     /**
      * The column <code>STATDB.stat_member_status.company_id</code>. 회사아이디
      */
-    public final TableField<CommonStatMemberStatusRecord, String> COMPANY_ID = createField(DSL.name("company_id"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "회사아이디");
+    public final TableField<CommonStatMemberStatusRecord, String> COMPANY_ID = createField(DSL.name("company_id"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "회사아이디");
 
     private final String tableName;
 
@@ -75,35 +85,40 @@ public class CommonStatMemberStatus extends TableImpl<CommonStatMemberStatusReco
         this.tableName = table.getName();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public Schema getSchema() {
+        return Statdb.STATDB;
+    }
+
+    @NotNull
+    @Override
+    public List<Index> getIndexes() {
+        return Arrays.<Index>asList(Indexes.STAT_MEMBER_STATUS_COMPANY_ID, Indexes.STAT_MEMBER_STATUS_IN_OUT, Indexes.STAT_MEMBER_STATUS_STAT_DATE, Indexes.STAT_MEMBER_STATUS_STAT_HOUR, Indexes.STAT_MEMBER_STATUS_USERID);
+    }
+
     @Override
     public Identity<CommonStatMemberStatusRecord, Integer> getIdentity() {
-        return org.jooq.impl.Internal.createIdentity(this, this.SEQ);
+        return Internal.createIdentity(this, this.SEQ);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public UniqueKey<CommonStatMemberStatusRecord> getPrimaryKey() {
-        return org.jooq.impl.Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
+        return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @NotNull
     @Override
     public List<UniqueKey<CommonStatMemberStatusRecord>> getKeys() {
         return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
+    @NotNull
     @Override
     public CommonStatMemberStatus as(String alias) {
         return new CommonStatMemberStatus(DSL.name(alias), this);
     }
 
+    @NotNull
     @Override
     public CommonStatMemberStatus as(Name alias) {
         return new CommonStatMemberStatus(alias, this);

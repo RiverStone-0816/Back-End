@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.sql.Date;
 
 @Data
-public class CommonStatInbound  implements Serializable {
+public class CommonStatInbound implements Serializable {
     private Integer seq;
     private String  companyId;
     private String  groupCode;

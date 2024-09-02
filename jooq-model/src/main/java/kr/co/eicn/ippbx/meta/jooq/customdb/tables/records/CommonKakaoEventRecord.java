@@ -192,5 +192,4 @@ public class CommonKakaoEventRecord extends TableRecordImpl<CommonKakaoEventReco
     public String getResponseBlockName() {
         return (String) get(12);
     }
-
 }

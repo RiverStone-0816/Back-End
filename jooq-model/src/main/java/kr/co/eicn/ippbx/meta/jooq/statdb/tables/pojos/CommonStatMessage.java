@@ -7,7 +7,7 @@ import java.sql.Date;
 
 @Data
 public class CommonStatMessage implements Serializable {
-    private Date statDate;
+    private Date    statDate;
     private Byte    statHour;
     private String  service;
     private String  projectId;

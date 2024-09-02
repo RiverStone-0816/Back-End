@@ -67,11 +67,11 @@ public class TranscribeGroupRepository extends CustomDBBaseRepository<CommonTran
         final CommonTranscribeGroupRecord transcribeRecord = new CommonTranscribeGroupRecord(TABLE);
 
         transcribeRecord.setCompanyId(getCompanyId());
-        transcribeRecord.setGroupName(form.getGroupName());
-        transcribeRecord.setUserId(form.getUserId());
+        transcribeRecord.setGroupname(form.getGroupName());
+        transcribeRecord.setUserid(form.getUserId());
         transcribeRecord.setStatus("A");
-        transcribeRecord.setFileCnt(0);
-        transcribeRecord.setRecRate((double) 0);
+        transcribeRecord.setFilecnt(0);
+        transcribeRecord.setRecrate((double) 0);
 
         final Record record = super.insertOnGeneratedKey(transcribeRecord);
 

@@ -2,7 +2,6 @@ package kr.co.eicn.ippbx.meta.jooq.customdb;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.routines.FnDecStringText;
 import kr.co.eicn.ippbx.meta.jooq.customdb.routines.FnEncStringText;
-
 import org.jooq.Configuration;
 import org.jooq.Field;
 

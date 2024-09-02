@@ -1,116 +1,121 @@
 package kr.co.eicn.ippbx.meta.jooq.statdb.tables;
 
+import kr.co.eicn.ippbx.meta.jooq.statdb.Indexes;
+import kr.co.eicn.ippbx.meta.jooq.statdb.Statdb;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.CommonStatUserOutboundRecord;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import java.sql.Date;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class CommonStatUserOutbound extends TableImpl<CommonStatUserOutboundRecord> {
     /**
-     * The column <code>STATDB.stat_user_outbound.seq</code>. 번호
+     * The column <code>STATDB.stat_user_outbound.seq</code>. 고유키
      */
-    public final TableField<CommonStatUserOutboundRecord, Integer> SEQ = createField(DSL.name("seq"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "번호");
+    public final TableField<CommonStatUserOutboundRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.nullable(false).identity(true), this, "고유키");
 
     /**
      * The column <code>STATDB.stat_user_outbound.company_id</code>. 회사아이디
      */
-    public final TableField<CommonStatUserOutboundRecord, String> COMPANY_ID = createField(DSL.name("company_id"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "회사아이디");
+    public final TableField<CommonStatUserOutboundRecord, String> COMPANY_ID = createField(DSL.name("company_id"), SQLDataType.VARCHAR(100).nullable(false).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "회사아이디");
 
     /**
      * The column <code>STATDB.stat_user_outbound.group_code</code>. 조직코드
      */
-    public final TableField<CommonStatUserOutboundRecord, String> GROUP_CODE = createField(DSL.name("group_code"), org.jooq.impl.SQLDataType.CHAR(4), this, "조직코드");
+    public final TableField<CommonStatUserOutboundRecord, String> GROUP_CODE = createField(DSL.name("group_code"), SQLDataType.CHAR(4).defaultValue(DSL.field("NULL", SQLDataType.CHAR)), this, "조직코드");
 
     /**
      * The column <code>STATDB.stat_user_outbound.group_tree_name</code>. 조직트리명
      */
-    public final TableField<CommonStatUserOutboundRecord, String> GROUP_TREE_NAME = createField(DSL.name("group_tree_name"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "조직트리명");
+    public final TableField<CommonStatUserOutboundRecord, String> GROUP_TREE_NAME = createField(DSL.name("group_tree_name"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "조직트리명");
 
     /**
-     * The column <code>STATDB.stat_user_outbound.group_level</code>. 조직레벨
+     * The column <code>STATDB.stat_user_outbound.group_level</code>. 조직트리레벨
      */
-    public final TableField<CommonStatUserOutboundRecord, Integer> GROUP_LEVEL = createField(DSL.name("group_level"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "조직레벨");
-
-    /**
-     * The column <code>STATDB.stat_user_outbound.userid</code>. 상담원아이디
-     */
-    public final TableField<CommonStatUserOutboundRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "상담원아이디");
-
-    /**
-     * The column <code>STATDB.stat_user_outbound.user_stat_yn</code>. 상담원통계라이센스여부
-     */
-    public final TableField<CommonStatUserOutboundRecord, String> USER_STAT_YN = createField(DSL.name("user_stat_yn"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("'Y'", org.jooq.impl.SQLDataType.CHAR)), this, "상담원통계라이센스여부");
-
-    /**
-     * The column <code>STATDB.stat_user_outbound.from_org</code>. 일반콜-NOR, 콜백콜-CALLBACK,예약콜-RESERVE, PDS콜-PDS, 고객DB-MAINDB
-     */
-    public final TableField<CommonStatUserOutboundRecord, String> FROM_ORG = createField(DSL.name("from_org"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "일반콜-NOR, 콜백콜-CALLBACK,예약콜-RESERVE, PDS콜-PDS, 고객DB-MAINDB");
-
-    /**
-     * The column <code>STATDB.stat_user_outbound.worktime_yn</code>.
-     */
-    public final TableField<CommonStatUserOutboundRecord, String> WORKTIME_YN = createField(DSL.name("worktime_yn"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("Y", org.jooq.impl.SQLDataType.CHAR)), this, "");
-
-    /**
-     * The column <code>STATDB.stat_user_outbound.dcontext</code>. 다이얼플랜컨택스트
-     */
-    public final TableField<CommonStatUserOutboundRecord, String> DCONTEXT = createField(DSL.name("dcontext"), org.jooq.impl.SQLDataType.VARCHAR(20).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "다이얼플랜컨택스트");
-
-    /**
-     * The column <code>STATDB.stat_user_outbound.stat_date</code>. 날짜
-     */
-    public final TableField<CommonStatUserOutboundRecord, Date> STAT_DATE = createField(DSL.name("stat_date"), org.jooq.impl.SQLDataType.DATE.defaultValue(org.jooq.impl.DSL.inline("2009-01-01", org.jooq.impl.SQLDataType.DATE)), this, "날짜");
-
-    /**
-     * The column <code>STATDB.stat_user_outbound.stat_hour</code>. 시간
-     */
-    public final TableField<CommonStatUserOutboundRecord, Byte> STAT_HOUR = createField(DSL.name("stat_hour"), org.jooq.impl.SQLDataType.TINYINT.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.TINYINT)), this, "시간");
-
-    /**
-     * The column <code>STATDB.stat_user_outbound.out_total</code>. 총계
-     */
-    public final TableField<CommonStatUserOutboundRecord, Integer> OUT_TOTAL = createField(DSL.name("out_total"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "총계");
-
-    /**
-     * The column <code>STATDB.stat_user_outbound.out_success</code>. 응답
-     */
-    public final TableField<CommonStatUserOutboundRecord, Integer> OUT_SUCCESS = createField(DSL.name("out_success"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "응답");
-
-    /**
-     * The column <code>STATDB.stat_user_outbound.out_billsec_sum</code>. 통화시간
-     */
-    public final TableField<CommonStatUserOutboundRecord, Integer> OUT_BILLSEC_SUM = createField(DSL.name("out_billsec_sum"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "통화시간");
-
-    /**
-     * The column <code>STATDB.stat_user_outbound.callback_call_cnt</code>. 콜백처리를위한 콜건수
-     */
-    public final TableField<CommonStatUserOutboundRecord, Integer> CALLBACK_CALL_CNT = createField(DSL.name("callback_call_cnt"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "콜백처리를위한 콜건수");
-
-    /**
-     * The column <code>STATDB.stat_user_outbound.callback_call_succ</code>. 콜백처리를위한 콜이후 완료건수
-     */
-    public final TableField<CommonStatUserOutboundRecord, Integer> CALLBACK_CALL_SUCC = createField(DSL.name("callback_call_succ"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "콜백처리를위한 콜이후 완료건수");
-
-    /**
-     * The column <code>STATDB.stat_user_outbound.reserve_call_cnt</code>. 예약콜처리를 위한 콜건수
-     */
-    public final TableField<CommonStatUserOutboundRecord, Integer> RESERVE_CALL_CNT = createField(DSL.name("reserve_call_cnt"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "예약콜처리를 위한 콜건수");
-
-    /**
-     * The column <code>STATDB.stat_user_outbound.reserve_call_succ</code>. 예약콜처리를 콜이후 완료건수
-     */
-    public final TableField<CommonStatUserOutboundRecord, Integer> RESERVE_CALL_SUCC = createField(DSL.name("reserve_call_succ"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "예약콜처리를 콜이후 완료건수");
+    public final TableField<CommonStatUserOutboundRecord, Integer> GROUP_LEVEL = createField(DSL.name("group_level"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "조직트리레벨");
 
     /**
      * The column <code>STATDB.stat_user_outbound.cid_number</code>. 발신번호
      */
-    public final TableField<CommonStatUserOutboundRecord, String> CID_NUMBER = createField(DSL.name("cid_number"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "발신번호");
+    public final TableField<CommonStatUserOutboundRecord, String> CID_NUMBER = createField(DSL.name("cid_number"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "발신번호");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.userid</code>.
+     */
+    public final TableField<CommonStatUserOutboundRecord, String> USERID = createField(DSL.name("userid"), SQLDataType.VARCHAR(30).nullable(false).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.user_stat_yn</code>.
+     */
+    public final TableField<CommonStatUserOutboundRecord, String> USER_STAT_YN = createField(DSL.name("user_stat_yn"), SQLDataType.CHAR(1).defaultValue(DSL.field("'Y'", SQLDataType.CHAR)), this, "");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.from_org</code>. 일반콜-NOR, 콜백콜-CALLBACK,예약콜-RESERVE, PDS콜-PDS, 고객DB-MAINDB
+     */
+    public final TableField<CommonStatUserOutboundRecord, String> FROM_ORG = createField(DSL.name("from_org"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "일반콜-NOR, 콜백콜-CALLBACK,예약콜-RESERVE, PDS콜-PDS, 고객DB-MAINDB");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.worktime_yn</code>. 업무시간여부
+     */
+    public final TableField<CommonStatUserOutboundRecord, String> WORKTIME_YN = createField(DSL.name("worktime_yn"), SQLDataType.CHAR(1).defaultValue(DSL.field("'Y'", SQLDataType.CHAR)), this, "업무시간여부");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.dcontext</code>. 다이얼플랜컨텍스트
+     */
+    public final TableField<CommonStatUserOutboundRecord, String> DCONTEXT = createField(DSL.name("dcontext"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "다이얼플랜컨텍스트");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.stat_date</code>.
+     */
+    public final TableField<CommonStatUserOutboundRecord, Date> STAT_DATE = createField(DSL.name("stat_date"), SQLDataType.DATE.defaultValue(DSL.field("'2009-01-01'", SQLDataType.DATE)), this, "");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.stat_hour</code>.
+     */
+    public final TableField<CommonStatUserOutboundRecord, Byte> STAT_HOUR = createField(DSL.name("stat_hour"), SQLDataType.TINYINT.defaultValue(DSL.field("0", SQLDataType.TINYINT)), this, "");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.out_total</code>.
+     */
+    public final TableField<CommonStatUserOutboundRecord, Integer> OUT_TOTAL = createField(DSL.name("out_total"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.out_success</code>.
+     */
+    public final TableField<CommonStatUserOutboundRecord, Integer> OUT_SUCCESS = createField(DSL.name("out_success"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.out_billsec_sum</code>.
+     */
+    public final TableField<CommonStatUserOutboundRecord, Integer> OUT_BILLSEC_SUM = createField(DSL.name("out_billsec_sum"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.callback_call_cnt</code>.
+     */
+    public final TableField<CommonStatUserOutboundRecord, Integer> CALLBACK_CALL_CNT = createField(DSL.name("callback_call_cnt"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.callback_call_succ</code>.
+     */
+    public final TableField<CommonStatUserOutboundRecord, Integer> CALLBACK_CALL_SUCC = createField(DSL.name("callback_call_succ"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.reserve_call_cnt</code>.
+     */
+    public final TableField<CommonStatUserOutboundRecord, Integer> RESERVE_CALL_CNT = createField(DSL.name("reserve_call_cnt"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
+
+    /**
+     * The column <code>STATDB.stat_user_outbound.reserve_call_succ</code>.
+     */
+    public final TableField<CommonStatUserOutboundRecord, Integer> RESERVE_CALL_SUCC = createField(DSL.name("reserve_call_succ"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     private final String tableName;
 
@@ -135,35 +140,40 @@ public class CommonStatUserOutbound extends TableImpl<CommonStatUserOutboundReco
         this.tableName = table.getName();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public Schema getSchema() {
+        return Statdb.STATDB;
+    }
+
+    @NotNull
+    @Override
+    public List<Index> getIndexes() {
+        return Arrays.<Index>asList(Indexes.STAT_USER_OUTBOUND_CID_NUMBER, Indexes.STAT_USER_OUTBOUND_COMPANY_ID, Indexes.STAT_USER_OUTBOUND_DCONTEXT, Indexes.STAT_USER_OUTBOUND_FROM_ORG, Indexes.STAT_USER_OUTBOUND_GROUP_CODE, Indexes.STAT_USER_OUTBOUND_GROUP_LEVEL, Indexes.STAT_USER_OUTBOUND_GROUP_TREE_NAME, Indexes.STAT_USER_OUTBOUND_STAT_DATE, Indexes.STAT_USER_OUTBOUND_STAT_HOUR, Indexes.STAT_USER_OUTBOUND_USERID, Indexes.STAT_USER_OUTBOUND_WORKTIME_YN);
+    }
+
     @Override
     public Identity<CommonStatUserOutboundRecord, Integer> getIdentity() {
-        return org.jooq.impl.Internal.createIdentity(this, this.SEQ);
+        return Internal.createIdentity(this, this.SEQ);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public UniqueKey<CommonStatUserOutboundRecord> getPrimaryKey() {
-        return org.jooq.impl.Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
+        return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @NotNull
     @Override
     public List<UniqueKey<CommonStatUserOutboundRecord>> getKeys() {
         return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
+    @NotNull
     @Override
     public CommonStatUserOutbound as(String alias) {
         return new CommonStatUserOutbound(DSL.name(alias), this);
     }
 
+    @NotNull
     @Override
     public CommonStatUserOutbound as(Name alias) {
         return new CommonStatUserOutbound(alias, this);

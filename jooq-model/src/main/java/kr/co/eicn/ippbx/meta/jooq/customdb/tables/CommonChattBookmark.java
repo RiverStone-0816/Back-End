@@ -1,34 +1,34 @@
 package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
-import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.ChattBookmarkRecord;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CommonChattBookmark extends TableImpl<ChattBookmarkRecord> {
-
-    public static final ChattBookmark CHATT_BOOKMARK = new ChattBookmark();
-
     /**
      * The column <code>CUSTOMDB.chatt_bookmark.seq</code>.
      */
-    public final TableField<ChattBookmarkRecord, Integer> SEQ = createField(DSL.name("seq"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<ChattBookmarkRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
      * The column <code>CUSTOMDB.chatt_bookmark.userid</code>.
      */
-    public final TableField<ChattBookmarkRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<ChattBookmarkRecord, String> USERID = createField(DSL.name("userid"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
 
     /**
      * The column <code>CUSTOMDB.chatt_bookmark.memberid</code>.
      */
-    public final TableField<ChattBookmarkRecord, String> MEMBERID = createField(DSL.name("memberid"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<ChattBookmarkRecord, String> MEMBERID = createField(DSL.name("memberid"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
+
     private String tableName;
 
     /**
@@ -58,25 +58,23 @@ public class CommonChattBookmark extends TableImpl<ChattBookmarkRecord> {
     }
 
     @Override
-    public List<Index> getIndexes() {
-        return Arrays.<Index>asList();
-    }
-
-    @Override
     public Identity<ChattBookmarkRecord, Integer> getIdentity() {
-        return (Identity<ChattBookmarkRecord, Integer>) super.getIdentity();
+        return Internal.createIdentity(this, this.SEQ);
     }
 
+    @NotNull
     @Override
     public List<UniqueKey<ChattBookmarkRecord>> getKeys() {
-        return Arrays.<UniqueKey<ChattBookmarkRecord>>asList(Keys.KEY_CHATT_BOOKMARK_SEQ);
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
+    @NotNull
     @Override
     public CommonChattBookmark as(String alias) {
         return new CommonChattBookmark(DSL.name(alias), this);
     }
 
+    @NotNull
     @Override
     public CommonChattBookmark as(Name alias) {
         return new CommonChattBookmark(alias, this);

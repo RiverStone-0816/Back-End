@@ -6,13 +6,14 @@ import org.jooq.impl.UpdatableRecordImpl;
 
 import java.sql.Date;
 
-public class CommonStatUserRankingRecord  extends UpdatableRecordImpl<CommonStatUserRankingRecord> {
+public class CommonStatUserRankingRecord extends UpdatableRecordImpl<CommonStatUserRankingRecord> {
+
     public CommonStatUserRankingRecord(Table<CommonStatUserRankingRecord> table) {
         super(table);
     }
 
     /**
-            * Setter for <code>STATDB.stat_user_ranking.seq</code>. 고유키
+     * Setter for <code>STATDB.stat_user_ranking.seq</code>. 고유키
      */
     public void setSeq(Integer value) {
         set(0, value);
@@ -220,6 +221,10 @@ public class CommonStatUserRankingRecord  extends UpdatableRecordImpl<CommonStat
     public Integer getCallbackSuccess() {
         return (Integer) get(14);
     }
+
+    // -------------------------------------------------------------------------
+    // Primary key information
+    // -------------------------------------------------------------------------
 
     @Override
     public Record1<Integer> key() {

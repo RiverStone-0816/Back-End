@@ -5,7 +5,7 @@ import org.jooq.impl.TableRecordImpl;
 
 import java.sql.Timestamp;
 
-public class CommonKakaoSkillMsgRecord  extends TableRecordImpl<CommonKakaoSkillMsgRecord> {
+public class CommonKakaoSkillMsgRecord extends TableRecordImpl<CommonKakaoSkillMsgRecord> {
 
     public CommonKakaoSkillMsgRecord(Table<CommonKakaoSkillMsgRecord> table) {
         super(table);
@@ -374,5 +374,4 @@ public class CommonKakaoSkillMsgRecord  extends TableRecordImpl<CommonKakaoSkill
     public String getResponseData() {
         return (String) get(25);
     }
-
 }

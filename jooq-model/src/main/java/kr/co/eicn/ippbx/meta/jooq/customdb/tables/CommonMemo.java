@@ -3,16 +3,9 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.MemoRecord;
-import org.jooq.Field;
-import org.jooq.ForeignKey;
-import org.jooq.Identity;
-import org.jooq.Index;
-import org.jooq.Name;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
-import org.jooq.Schema;
-import org.jooq.Table;
-import org.jooq.TableField;
-import org.jooq.UniqueKey;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
@@ -37,12 +30,12 @@ public class CommonMemo extends TableImpl<MemoRecord> {
     /**
      * The column <code>CUSTOMDB.memo.content</code>. 메모
      */
-    public final TableField<MemoRecord, String> CONTENT = createField(DSL.name("content"), SQLDataType.CLOB.defaultValue(DSL.inline("NULL", SQLDataType.CLOB)), this, "메모");
+    public final TableField<MemoRecord, String> CONTENT = createField(DSL.name("content"), SQLDataType.CLOB.defaultValue(DSL.field("NULL", SQLDataType.CLOB)), this, "메모");
 
     /**
      * The column <code>CUSTOMDB.memo.user</code>. 작성자
      */
-    public final TableField<MemoRecord, String> USER = createField(DSL.name("user"), SQLDataType.VARCHAR(100).defaultValue(DSL.inline("NULL", SQLDataType.VARCHAR)), this, "작성자");
+    public final TableField<MemoRecord, String> USER = createField(DSL.name("user"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("NULL", SQLDataType.VARCHAR)), this, "작성자");
 
     /**
      * The column <code>CUSTOMDB.memo.created_at</code>. 생성시각
@@ -52,12 +45,12 @@ public class CommonMemo extends TableImpl<MemoRecord> {
     /**
      * The column <code>CUSTOMDB.memo.updated_at</code>. 갱신시각
      */
-    public final TableField<MemoRecord, Timestamp> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.TIMESTAMP(0).defaultValue(DSL.inline("NULL", SQLDataType.TIMESTAMP)), this, "갱신시각");
+    public final TableField<MemoRecord, Timestamp> UPDATED_AT = createField(DSL.name("updated_at"), SQLDataType.TIMESTAMP(0).defaultValue(DSL.field("NULL", SQLDataType.TIMESTAMP)), this, "갱신시각");
 
     /**
      * The column <code>CUSTOMDB.memo.deleted_at</code>. 삭제시각
      */
-    public final TableField<MemoRecord, Timestamp> DELETED_AT = createField(DSL.name("deleted_at"), SQLDataType.TIMESTAMP(0).defaultValue(DSL.inline("NULL", SQLDataType.TIMESTAMP)), this, "삭제시각");
+    public final TableField<MemoRecord, Timestamp> DELETED_AT = createField(DSL.name("deleted_at"), SQLDataType.TIMESTAMP(0).defaultValue(DSL.field("NULL", SQLDataType.TIMESTAMP)), this, "삭제시각");
 
     /**
      * The column <code>CUSTOMDB.memo.title</code>. 북마크된
@@ -67,7 +60,7 @@ public class CommonMemo extends TableImpl<MemoRecord> {
     /**
      * The column <code>CUSTOMDB.memo.bookmarked</code>. 북마크된
      */
-    public final TableField<MemoRecord, Boolean> BOOKMARKED = createField(DSL.name("bookmarked"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.inline("0", SQLDataType.BOOLEAN)), this, "북마크된");
+    public final TableField<MemoRecord, Boolean> BOOKMARKED = createField(DSL.name("bookmarked"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field("0", SQLDataType.BOOLEAN)), this, "북마크된");
 
     private String tableName;
 
@@ -92,47 +85,40 @@ public class CommonMemo extends TableImpl<MemoRecord> {
         this.tableName = table.getName();
     }
 
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<MemoRecord> getRecordType() {
-        return MemoRecord.class;
-    }
-
     @Override
     public Schema getSchema() {
         return Customdb.CUSTOMDB;
     }
 
+    @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.MEMO_COMPANY_ID, Indexes.MEMO_USER);
+        return Arrays.<Index>asList(Indexes.MEMO_COMPANY_ID, Indexes.MEMO_USER);
     }
 
     @Override
-    public Identity<MemoRecord, Integer> getIdentity() {
-        return (Identity<MemoRecord, Integer>) super.getIdentity();
+    public Identity<MemoRecord, Long> getIdentity() {
+        return Internal.createIdentity(this, this.ID);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public UniqueKey<MemoRecord> getPrimaryKey() {
-        return org.jooq.impl.Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.ID);
+        return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.ID);
     }
 
+    @NotNull
     @Override
     public List<UniqueKey<MemoRecord>> getKeys() {
         return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.ID));
     }
 
+    @NotNull
     @Override
     public CommonMemo as(String alias) {
         return new CommonMemo(DSL.name(alias), this);
     }
 
+    @NotNull
     @Override
     public CommonMemo as(Name alias) {
         return new CommonMemo(alias, this);

@@ -1,11 +1,14 @@
 package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
+import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.EicnCdrRecord;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import java.sql.Timestamp;
@@ -15,259 +18,259 @@ import java.util.List;
 
 public class CommonEicnCdr extends TableImpl<EicnCdrRecord> {
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.seq</code>.
+     * The column <code>CUSTOMDB.eicn_cdr.seq</code>.
      */
-    public final TableField<EicnCdrRecord, Integer> SEQ = createField(DSL.name("seq"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<EicnCdrRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.ring_date</code>. 전화수발신시간
+     * The column <code>CUSTOMDB.eicn_cdr.ring_date</code>. 전화수발신시간
      */
-    public final TableField<EicnCdrRecord, Timestamp> RING_DATE = createField(DSL.name("ring_date"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("2010-01-01 01:00:00", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "전화수발신시간");
+    public final TableField<EicnCdrRecord, Timestamp> RING_DATE = createField(DSL.name("ring_date"), SQLDataType.TIMESTAMP(0).defaultValue(DSL.field("'2010-01-01 01:00:00'", SQLDataType.TIMESTAMP)), this, "전화수발신시간");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.waiting_date</code>. 헌트에들어와서기다리기시작한시간
+     * The column <code>CUSTOMDB.eicn_cdr.waiting_date</code>. 헌트에들어와서기다리기시작한시간
      */
-    public final TableField<EicnCdrRecord, Timestamp> WAITING_DATE = createField(DSL.name("waiting_date"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("2010-01-01 01:00:00", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "헌트에들어와서기다리기시작한시간");
+    public final TableField<EicnCdrRecord, Timestamp> WAITING_DATE = createField(DSL.name("waiting_date"), SQLDataType.TIMESTAMP(0).defaultValue(DSL.field("'2010-01-01 01:00:00'", SQLDataType.TIMESTAMP)), this, "헌트에들어와서기다리기시작한시간");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.dialup_date</code>. 상대방이전화를받은시간
+     * The column <code>CUSTOMDB.eicn_cdr.dialup_date</code>. 상대방이전화를받은시간
      */
-    public final TableField<EicnCdrRecord, Timestamp> DIALUP_DATE = createField(DSL.name("dialup_date"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("2010-01-01 01:00:00", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "상대방이전화를받은시간");
+    public final TableField<EicnCdrRecord, Timestamp> DIALUP_DATE = createField(DSL.name("dialup_date"), SQLDataType.TIMESTAMP(0).defaultValue(DSL.field("'2010-01-01 01:00:00'", SQLDataType.TIMESTAMP)), this, "상대방이전화를받은시간");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.hangup_date</code>. 전화가종료된시간
+     * The column <code>CUSTOMDB.eicn_cdr.hangup_date</code>. 전화가종료된시간
      */
-    public final TableField<EicnCdrRecord, Timestamp> HANGUP_DATE = createField(DSL.name("hangup_date"), org.jooq.impl.SQLDataType.TIMESTAMP.defaultValue(org.jooq.impl.DSL.inline("2010-01-01 01:00:00", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "전화가종료된시간");
+    public final TableField<EicnCdrRecord, Timestamp> HANGUP_DATE = createField(DSL.name("hangup_date"), SQLDataType.TIMESTAMP(0).defaultValue(DSL.field("'2010-01-01 01:00:00'", SQLDataType.TIMESTAMP)), this, "전화가종료된시간");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.duration</code>. hangup_date-ring_date
+     * The column <code>CUSTOMDB.eicn_cdr.duration</code>. hangup_date-ring_date
      */
-    public final TableField<EicnCdrRecord, Integer> DURATION = createField(DSL.name("duration"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "hangup_date-ring_date");
+    public final TableField<EicnCdrRecord, Integer> DURATION = createField(DSL.name("duration"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "hangup_date-ring_date");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.billsec</code>. hangup_date-dialup_date
+     * The column <code>CUSTOMDB.eicn_cdr.billsec</code>. hangup_date-dialup_date
      */
-    public final TableField<EicnCdrRecord, Integer> BILLSEC = createField(DSL.name("billsec"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "hangup_date-dialup_date");
+    public final TableField<EicnCdrRecord, Integer> BILLSEC = createField(DSL.name("billsec"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "hangup_date-dialup_date");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.waitsec</code>. waiting_date-dialup_date
+     * The column <code>CUSTOMDB.eicn_cdr.waitsec</code>. waiting_date-dialup_date
      */
-    public final TableField<EicnCdrRecord, Integer> WAITSEC = createField(DSL.name("waitsec"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "waiting_date-dialup_date");
+    public final TableField<EicnCdrRecord, Integer> WAITSEC = createField(DSL.name("waitsec"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "waiting_date-dialup_date");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.in_out</code>. 수신/발신여부
+     * The column <code>CUSTOMDB.eicn_cdr.in_out</code>. 수신/발신여부
      */
-    public final TableField<EicnCdrRecord, String> IN_OUT = createField(DSL.name("in_out"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("I", org.jooq.impl.SQLDataType.CHAR)), this, "수신/발신여부");
+    public final TableField<EicnCdrRecord, String> IN_OUT = createField(DSL.name("in_out"), SQLDataType.CHAR(1).defaultValue(DSL.field("'I'", SQLDataType.CHAR)), this, "수신/발신여부");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.dcontext</code>. 다이얼플랜에서의컨텍스트
+     * The column <code>CUSTOMDB.eicn_cdr.dcontext</code>. 다이얼플랜에서의컨텍스트
      */
-    public final TableField<EicnCdrRecord, String> DCONTEXT = createField(DSL.name("dcontext"), org.jooq.impl.SQLDataType.VARCHAR(20).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "다이얼플랜에서의컨텍스트");
+    public final TableField<EicnCdrRecord, String> DCONTEXT = createField(DSL.name("dcontext"), SQLDataType.VARCHAR(20).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "다이얼플랜에서의컨텍스트");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.peer</code>. 전화기아이디
+     * The column <code>CUSTOMDB.eicn_cdr.peer</code>. 전화기아이디
      */
-    public final TableField<EicnCdrRecord, String> PEER = createField(DSL.name("peer"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "전화기아이디");
+    public final TableField<EicnCdrRecord, String> PEER = createField(DSL.name("peer"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "전화기아이디");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.src</code>. 수신내선또는수신고객번호
+     * The column <code>CUSTOMDB.eicn_cdr.src</code>. 수신내선또는수신고객번호
      */
-    public final TableField<EicnCdrRecord, String> SRC = createField(DSL.name("src"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "수신내선또는수신고객번호");
+    public final TableField<EicnCdrRecord, String> SRC = createField(DSL.name("src"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "수신내선또는수신고객번호");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.dst</code>. 발신내선또는발신고객번호
+     * The column <code>CUSTOMDB.eicn_cdr.dst</code>. 발신내선또는발신고객번호
      */
-    public final TableField<EicnCdrRecord, String> DST = createField(DSL.name("dst"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "발신내선또는발신고객번호");
+    public final TableField<EicnCdrRecord, String> DST = createField(DSL.name("dst"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "발신내선또는발신고객번호");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.callstatus</code>. 전화상태 C-클릭투콜 R-링이가는중 D-전화받음 H-전화끊음
+     * The column <code>CUSTOMDB.eicn_cdr.callstatus</code>. 전화상태 C-클릭투콜 R-링이가는중 D-전화받음 H-전화끊음
      */
-    public final TableField<EicnCdrRecord, String> CALLSTATUS = createField(DSL.name("callstatus"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("R", org.jooq.impl.SQLDataType.CHAR)), this, "전화상태 C-클릭투콜 R-링이가는중 D-전화받음 H-전화끊음");
+    public final TableField<EicnCdrRecord, String> CALLSTATUS = createField(DSL.name("callstatus"), SQLDataType.CHAR(1).defaultValue(DSL.field("'R'", SQLDataType.CHAR)), this, "전화상태 C-클릭투콜 R-링이가는중 D-전화받음 H-전화끊음");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.detail_callstatus</code>. 다이얼플랜상디테일콜상태또는단계
+     * The column <code>CUSTOMDB.eicn_cdr.detail_callstatus</code>. 다이얼플랜상디테일콜상태또는단계
      */
-    public final TableField<EicnCdrRecord, String> DETAIL_CALLSTATUS = createField(DSL.name("detail_callstatus"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "다이얼플랜상디테일콜상태또는단계");
+    public final TableField<EicnCdrRecord, String> DETAIL_CALLSTATUS = createField(DSL.name("detail_callstatus"), SQLDataType.VARCHAR(500).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "다이얼플랜상디테일콜상태또는단계");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.record_info</code>. 녹취 S-녹취없음 M-녹취됨 M_$순차 -부분녹취가 발생하여 녹취가 여려개임
+     * The column <code>CUSTOMDB.eicn_cdr.record_info</code>. 녹취 S-녹취없음 M-녹취됨 M_$순차 -부분녹취가 발생하여 녹취가 여려개임
      */
-    public final TableField<EicnCdrRecord, String> RECORD_INFO = createField(DSL.name("record_info"), org.jooq.impl.SQLDataType.VARCHAR(20).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "녹취 S-녹취없음 M-녹취됨 M_$순차 -부분녹취가 발생하여 녹취가 여려개임");
+    public final TableField<EicnCdrRecord, String> RECORD_INFO = createField(DSL.name("record_info"), SQLDataType.VARCHAR(20).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "녹취 S-녹취없음 M-녹취됨 M_$순차 -부분녹취가 발생하여 녹취가 여려개임");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.record_file</code>. 녹취파일경로
+     * The column <code>CUSTOMDB.eicn_cdr.record_file</code>. 녹취파일경로
      */
-    public final TableField<EicnCdrRecord, String> RECORD_FILE = createField(DSL.name("record_file"), org.jooq.impl.SQLDataType.VARCHAR(300).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "녹취파일경로");
+    public final TableField<EicnCdrRecord, String> RECORD_FILE = createField(DSL.name("record_file"), SQLDataType.VARCHAR(300).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "녹취파일경로");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.uniqueid</code>. 아스터리스크 발신쪽 콜유니크 아이디 돌려줬을경우 같을수도 있음
+     * The column <code>CUSTOMDB.eicn_cdr.uniqueid</code>. 아스터리스크 발신쪽 콜유니크 아이디 돌려줬을경우 같을수도 있음
      */
-    public final TableField<EicnCdrRecord, String> UNIQUEID = createField(DSL.name("uniqueid"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "아스터리스크 발신쪽 콜유니크 아이디 돌려줬을경우 같을수도 있음");
+    public final TableField<EicnCdrRecord, String> UNIQUEID = createField(DSL.name("uniqueid"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "아스터리스크 발신쪽 콜유니크 아이디 돌려줬을경우 같을수도 있음");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.dst_uniqueid</code>. 아스터리스크 수신쪽 콜유니크
+     * The column <code>CUSTOMDB.eicn_cdr.dst_uniqueid</code>. 아스터리스크 수신쪽 콜유니크
      */
-    public final TableField<EicnCdrRecord, String> DST_UNIQUEID = createField(DSL.name("dst_uniqueid"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "아스터리스크 수신쪽 콜유니크");
+    public final TableField<EicnCdrRecord, String> DST_UNIQUEID = createField(DSL.name("dst_uniqueid"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "아스터리스크 수신쪽 콜유니크");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.channel</code>. 아스터리스크 발신쪽 채널아이디
+     * The column <code>CUSTOMDB.eicn_cdr.channel</code>. 아스터리스크 발신쪽 채널아이디
      */
-    public final TableField<EicnCdrRecord, String> CHANNEL = createField(DSL.name("channel"), org.jooq.impl.SQLDataType.VARCHAR(70).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "아스터리스크 발신쪽 채널아이디");
+    public final TableField<EicnCdrRecord, String> CHANNEL = createField(DSL.name("channel"), SQLDataType.VARCHAR(200).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "아스터리스크 발신쪽 채널아이디");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.dst_channel</code>. 아스터리스크 수신쪽 채널아이디
+     * The column <code>CUSTOMDB.eicn_cdr.dst_channel</code>. 아스터리스크 수신쪽 채널아이디
      */
-    public final TableField<EicnCdrRecord, String> DST_CHANNEL = createField(DSL.name("dst_channel"), org.jooq.impl.SQLDataType.VARCHAR(70).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "아스터리스크 수신쪽 채널아이디");
+    public final TableField<EicnCdrRecord, String> DST_CHANNEL = createField(DSL.name("dst_channel"), SQLDataType.VARCHAR(200).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "아스터리스크 수신쪽 채널아이디");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.ini_num</code>. 인바운드에서는첫인입대표번호, 아웃바운드에서는 발신CID
+     * The column <code>CUSTOMDB.eicn_cdr.ini_num</code>. 인바운드-첫인입대표 아웃바운드-발신CID
      */
-    public final TableField<EicnCdrRecord, String> INI_NUM = createField(DSL.name("ini_num"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "인바운드에서는첫인입대표번호, 아웃바운드에서는 발신CID");
+    public final TableField<EicnCdrRecord, String> INI_NUM = createField(DSL.name("ini_num"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "인바운드-첫인입대표 아웃바운드-발신CID");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.second_num</code>. 인바운드에서는헌트번호 아웃바운드에서는 발신과금번호
+     * The column <code>CUSTOMDB.eicn_cdr.second_num</code>. 인바운드에서는헌트번호 아웃바운드에서는 발신과금번호
      */
-    public final TableField<EicnCdrRecord, String> SECOND_NUM = createField(DSL.name("second_num"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "인바운드에서는헌트번호 아웃바운드에서는 발신과금번호");
+    public final TableField<EicnCdrRecord, String> SECOND_NUM = createField(DSL.name("second_num"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "인바운드에서는헌트번호 아웃바운드에서는 발신과금번호");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.worktime_yn</code>.
+     * The column <code>CUSTOMDB.eicn_cdr.worktime_yn</code>. 업무시간여부
      */
-    public final TableField<EicnCdrRecord, String> WORKTIME_YN = createField(DSL.name("worktime_yn"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("Y", org.jooq.impl.SQLDataType.CHAR)), this, "");
+    public final TableField<EicnCdrRecord, String> WORKTIME_YN = createField(DSL.name("worktime_yn"), SQLDataType.CHAR(1).defaultValue(DSL.field("'Y'", SQLDataType.CHAR)), this, "업무시간여부");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.stat_yn</code>.
+     * The column <code>CUSTOMDB.eicn_cdr.stat_yn</code>. 통계쌓을지여부
      */
-    public final TableField<EicnCdrRecord, String> STAT_YN = createField(DSL.name("stat_yn"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("Y", org.jooq.impl.SQLDataType.CHAR)), this, "");
+    public final TableField<EicnCdrRecord, String> STAT_YN = createField(DSL.name("stat_yn"), SQLDataType.CHAR(1).defaultValue(DSL.field("'Y'", SQLDataType.CHAR)), this, "통계쌓을지여부");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.ivr_key</code>. 인바운드에서 IVR순서
+     * The column <code>CUSTOMDB.eicn_cdr.ivr_key</code>. 인바운드에서 IVR순서
      */
-    public final TableField<EicnCdrRecord, String> IVR_KEY = createField(DSL.name("ivr_key"), org.jooq.impl.SQLDataType.VARCHAR(300).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "인바운드에서 IVR순서");
+    public final TableField<EicnCdrRecord, String> IVR_KEY = createField(DSL.name("ivr_key"), SQLDataType.VARCHAR(300).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "인바운드에서 IVR순서");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.queue_strategy</code>. 헌트의 콜분배 STRATEGY
+     * The column <code>CUSTOMDB.eicn_cdr.queue_strategy</code>. 헌트의 콜분배 STRATEGY
      */
-    public final TableField<EicnCdrRecord, String> QUEUE_STRATEGY = createField(DSL.name("queue_strategy"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "헌트의 콜분배 STRATEGY");
+    public final TableField<EicnCdrRecord, String> QUEUE_STRATEGY = createField(DSL.name("queue_strategy"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "헌트의 콜분배 STRATEGY");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.queue_sequence</code>. 헌트의 콜분배순서 전화기아이디
+     * The column <code>CUSTOMDB.eicn_cdr.queue_sequence</code>. 헌트의 콜분배순서 전화기아이디
      */
-    public final TableField<EicnCdrRecord, String> QUEUE_SEQUENCE = createField(DSL.name("queue_sequence"), org.jooq.impl.SQLDataType.VARCHAR(500).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "헌트의 콜분배순서 전화기아이디");
+    public final TableField<EicnCdrRecord, String> QUEUE_SEQUENCE = createField(DSL.name("queue_sequence"), SQLDataType.VARCHAR(500).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "헌트의 콜분배순서 전화기아이디");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.callee_hangup</code>. Y-받은사람이먼저끊음 N-건사람이 먼저끊음
+     * The column <code>CUSTOMDB.eicn_cdr.callee_hangup</code>. Y-받은사람이먼저끊음 N-건사람이 먼저끊음
      */
-    public final TableField<EicnCdrRecord, String> CALLEE_HANGUP = createField(DSL.name("callee_hangup"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.CHAR)), this, "Y-받은사람이먼저끊음 N-건사람이 먼저끊음");
+    public final TableField<EicnCdrRecord, String> CALLEE_HANGUP = createField(DSL.name("callee_hangup"), SQLDataType.CHAR(1).defaultValue(DSL.field("''", SQLDataType.CHAR)), this, "Y-받은사람이먼저끊음 N-건사람이 먼저끊음");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.web_voice_info</code>. 보이는ARS사용여부
+     * The column <code>CUSTOMDB.eicn_cdr.web_voice_info</code>. 보이는ARS사용여부
      */
-    public final TableField<EicnCdrRecord, String> WEB_VOICE_INFO = createField(DSL.name("web_voice_info"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "보이는ARS사용여부");
+    public final TableField<EicnCdrRecord, String> WEB_VOICE_INFO = createField(DSL.name("web_voice_info"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "보이는ARS사용여부");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.vip_black</code>. VIP-V,BLACK-B
+     * The column <code>CUSTOMDB.eicn_cdr.vip_black</code>. VIP-V,BLACK-B
      */
-    public final TableField<EicnCdrRecord, String> VIP_BLACK = createField(DSL.name("vip_black"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.CHAR)), this, "VIP-V,BLACK-B");
+    public final TableField<EicnCdrRecord, String> VIP_BLACK = createField(DSL.name("vip_black"), SQLDataType.CHAR(1).defaultValue(DSL.field("''", SQLDataType.CHAR)), this, "VIP-V,BLACK-B");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.userid</code>. 전화기사용자아이디
+     * The column <code>CUSTOMDB.eicn_cdr.userid</code>. 전화기사용자아이디
      */
-    public final TableField<EicnCdrRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "전화기사용자아이디");
+    public final TableField<EicnCdrRecord, String> USERID = createField(DSL.name("userid"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "전화기사용자아이디");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.group_code</code>. 전화기사용자소속코드
+     * The column <code>CUSTOMDB.eicn_cdr.group_code</code>. 전화기사용자소속코드
      */
-    public final TableField<EicnCdrRecord, String> GROUP_CODE = createField(DSL.name("group_code"), org.jooq.impl.SQLDataType.CHAR(4).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.CHAR)), this, "전화기사용자소속코드");
+    public final TableField<EicnCdrRecord, String> GROUP_CODE = createField(DSL.name("group_code"), SQLDataType.CHAR(4).defaultValue(DSL.field("''", SQLDataType.CHAR)), this, "전화기사용자소속코드");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.group_tree_name</code>. 전화기사용자소속트리명
+     * The column <code>CUSTOMDB.eicn_cdr.group_tree_name</code>. 전화기사용자소속트리명
      */
-    public final TableField<EicnCdrRecord, String> GROUP_TREE_NAME = createField(DSL.name("group_tree_name"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "전화기사용자소속트리명");
+    public final TableField<EicnCdrRecord, String> GROUP_TREE_NAME = createField(DSL.name("group_tree_name"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "전화기사용자소속트리명");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.group_level</code>. 전화기사용자소속트리레벨
+     * The column <code>CUSTOMDB.eicn_cdr.group_level</code>. 전화기사용자소속트리레벨
      */
-    public final TableField<EicnCdrRecord, Integer> GROUP_LEVEL = createField(DSL.name("group_level"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "전화기사용자소속트리레벨");
+    public final TableField<EicnCdrRecord, Integer> GROUP_LEVEL = createField(DSL.name("group_level"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "전화기사용자소속트리레벨");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.company_id</code>. 컴퍼니아이디
+     * The column <code>CUSTOMDB.eicn_cdr.company_id</code>. 컴퍼니아이디
      */
-    public final TableField<EicnCdrRecord, String> COMPANY_ID = createField(DSL.name("company_id"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "컴퍼니아이디");
+    public final TableField<EicnCdrRecord, String> COMPANY_ID = createField(DSL.name("company_id"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "컴퍼니아이디");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.host</code>. 콜이진행된PBX_SERVER
+     * The column <code>CUSTOMDB.eicn_cdr.host</code>. 콜이진행된PBX_SERVER
      */
-    public final TableField<EicnCdrRecord, String> HOST = createField(DSL.name("host"), org.jooq.impl.SQLDataType.VARCHAR(20).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "콜이진행된PBX_SERVER");
+    public final TableField<EicnCdrRecord, String> HOST = createField(DSL.name("host"), SQLDataType.VARCHAR(20).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "콜이진행된PBX_SERVER");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.hangup_cause</code>. 전화가끊어진원인
+     * The column <code>CUSTOMDB.eicn_cdr.hangup_cause</code>. 전화가끊어진원인
      */
-    public final TableField<EicnCdrRecord, String> HANGUP_CAUSE = createField(DSL.name("hangup_cause"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "전화가끊어진원인");
+    public final TableField<EicnCdrRecord, String> HANGUP_CAUSE = createField(DSL.name("hangup_cause"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "전화가끊어진원인");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.cmp_click_key</code>. 전화돌려주기,당겨받기 순서
+     * The column <code>CUSTOMDB.eicn_cdr.cmp_click_key</code>. 전화돌려주기,당겨받기 순서
      */
-    public final TableField<EicnCdrRecord, String> CMP_CLICK_KEY = createField(DSL.name("cmp_click_key"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "전화돌려주기,당겨받기 순서");
+    public final TableField<EicnCdrRecord, String> CMP_CLICK_KEY = createField(DSL.name("cmp_click_key"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "전화돌려주기,당겨받기 순서");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.cmp_click_from</code>. 콜을시도한성격 PDS,PRV,MAINDB등등
+     * The column <code>CUSTOMDB.eicn_cdr.cmp_click_from</code>. 콜을시도한성격 PDS,PRV,MAINDB등등
      */
-    public final TableField<EicnCdrRecord, String> CMP_CLICK_FROM = createField(DSL.name("cmp_click_from"), org.jooq.impl.SQLDataType.VARCHAR(20).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "콜을시도한성격 PDS,PRV,MAINDB등등");
+    public final TableField<EicnCdrRecord, String> CMP_CLICK_FROM = createField(DSL.name("cmp_click_from"), SQLDataType.VARCHAR(20).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "콜을시도한성격 PDS,PRV,MAINDB등등");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.cmp_group_id</code>. 캠페인그룹
+     * The column <code>CUSTOMDB.eicn_cdr.cmp_group_id</code>. 캠페인그룹
      */
-    public final TableField<EicnCdrRecord, Integer> CMP_GROUP_ID = createField(DSL.name("cmp_group_id"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "캠페인그룹");
+    public final TableField<EicnCdrRecord, Integer> CMP_GROUP_ID = createField(DSL.name("cmp_group_id"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "캠페인그룹");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.cmp_customid</code>. 캠페인고객아이디
+     * The column <code>CUSTOMDB.eicn_cdr.cmp_customid</code>. 캠페인고객아이디
      */
-    public final TableField<EicnCdrRecord, String> CMP_CUSTOMID = createField(DSL.name("cmp_customid"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "캠페인고객아이디");
+    public final TableField<EicnCdrRecord, String> CMP_CUSTOMID = createField(DSL.name("cmp_customid"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "캠페인고객아이디");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.turn_over_cnt</code>. 전화돌려주기,당겨받기 순서
+     * The column <code>CUSTOMDB.eicn_cdr.turn_over_cnt</code>. 전화돌려주기,당겨받기 순서
      */
-    public final TableField<EicnCdrRecord, Integer> TURN_OVER_CNT = createField(DSL.name("turn_over_cnt"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "전화돌려주기,당겨받기 순서");
+    public final TableField<EicnCdrRecord, Integer> TURN_OVER_CNT = createField(DSL.name("turn_over_cnt"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "전화돌려주기,당겨받기 순서");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.turn_over_kind</code>. 전화돌려주기,당겨받기 종류
+     * The column <code>CUSTOMDB.eicn_cdr.turn_over_kind</code>. 전화돌려주기,당겨받기 종류
      */
-    public final TableField<EicnCdrRecord, String> TURN_OVER_KIND = createField(DSL.name("turn_over_kind"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "전화돌려주기,당겨받기 종류");
+    public final TableField<EicnCdrRecord, String> TURN_OVER_KIND = createField(DSL.name("turn_over_kind"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "전화돌려주기,당겨받기 종류");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.turn_over_number</code>. 전화돌려주기,당겨받기 번호
+     * The column <code>CUSTOMDB.eicn_cdr.turn_over_number</code>. 전화돌려주기,당겨받기 번호
      */
-    public final TableField<EicnCdrRecord, String> TURN_OVER_NUMBER = createField(DSL.name("turn_over_number"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "전화돌려주기,당겨받기 번호");
+    public final TableField<EicnCdrRecord, String> TURN_OVER_NUMBER = createField(DSL.name("turn_over_number"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "전화돌려주기,당겨받기 번호");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.turn_over_uniqueid</code>. 전화돌려주기,당겨받기 uniqueid
+     * The column <code>CUSTOMDB.eicn_cdr.turn_over_uniqueid</code>. 전화돌려주기,당겨받기 uniqueid
      */
-    public final TableField<EicnCdrRecord, String> TURN_OVER_UNIQUEID = createField(DSL.name("turn_over_uniqueid"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "전화돌려주기,당겨받기 uniqueid");
+    public final TableField<EicnCdrRecord, String> TURN_OVER_UNIQUEID = createField(DSL.name("turn_over_uniqueid"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "전화돌려주기,당겨받기 uniqueid");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.etc1</code>.
+     * The column <code>CUSTOMDB.eicn_cdr.etc1</code>.
      */
-    public final TableField<EicnCdrRecord, String> ETC1 = createField(DSL.name("etc1"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<EicnCdrRecord, String> ETC1 = createField(DSL.name("etc1"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.etc2</code>.
+     * The column <code>CUSTOMDB.eicn_cdr.etc2</code>.
      */
-    public final TableField<EicnCdrRecord, String> ETC2 = createField(DSL.name("etc2"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<EicnCdrRecord, String> ETC2 = createField(DSL.name("etc2"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.etc3</code>.
+     * The column <code>CUSTOMDB.eicn_cdr.etc3</code>.
      */
-    public final TableField<EicnCdrRecord, String> ETC3 = createField(DSL.name("etc3"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<EicnCdrRecord, String> ETC3 = createField(DSL.name("etc3"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.etc4</code>.
+     * The column <code>CUSTOMDB.eicn_cdr.etc4</code>.
      */
-    public final TableField<EicnCdrRecord, String> ETC4 = createField(DSL.name("etc4"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<EicnCdrRecord, String> ETC4 = createField(DSL.name("etc4"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>CUSTOMDB.eicn_cdr_primium.etc5</code>.
+     * The column <code>CUSTOMDB.eicn_cdr.etc5</code>.
      */
-    public final TableField<EicnCdrRecord, String> ETC5 = createField(DSL.name("etc5"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<EicnCdrRecord, String> ETC5 = createField(DSL.name("etc5"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
 
     private final String tableName;
 
@@ -302,56 +305,40 @@ public class CommonEicnCdr extends TableImpl<EicnCdrRecord> {
         this.tableName = table.getName();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Schema getSchema() {
         return Customdb.CUSTOMDB;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList();
+        return Arrays.<Index>asList(Indexes.EICN_CDR_BILLSEC, Indexes.EICN_CDR_CALLSTATUS, Indexes.EICN_CDR_COMPANY_ID, Indexes.EICN_CDR_DST, Indexes.EICN_CDR_DST_UNIQUEID, Indexes.EICN_CDR_RING_DATE, Indexes.EICN_CDR_SRC, Indexes.EICN_CDR_TURN_OVER_NUMBER, Indexes.EICN_CDR_UNIQUEID, Indexes.EICN_CDR_USERID);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Identity<EicnCdrRecord, Integer> getIdentity() {
         return Internal.createIdentity(this, this.SEQ);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public UniqueKey<EicnCdrRecord> getPrimaryKey() {
         return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @NotNull
     @Override
     public List<UniqueKey<EicnCdrRecord>> getKeys() {
         return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
-    @Override
-    public Class<EicnCdrRecord> getRecordType() {
-        return EicnCdrRecord.class;
-    }
-
+    @NotNull
     @Override
     public CommonEicnCdr as(String alias) {
         return new CommonEicnCdr(DSL.name(alias), this);
     }
 
+    @NotNull
     @Override
     public CommonEicnCdr as(Name alias) {
         return new CommonEicnCdr(alias, this);

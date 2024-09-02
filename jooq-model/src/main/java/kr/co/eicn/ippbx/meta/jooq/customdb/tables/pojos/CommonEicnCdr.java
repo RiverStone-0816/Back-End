@@ -7,7 +7,6 @@ import java.sql.Timestamp;
 
 @Data
 public class CommonEicnCdr implements Serializable {
-
     private Integer   seq;
     private Timestamp ringDate;
     private Timestamp waitingDate;

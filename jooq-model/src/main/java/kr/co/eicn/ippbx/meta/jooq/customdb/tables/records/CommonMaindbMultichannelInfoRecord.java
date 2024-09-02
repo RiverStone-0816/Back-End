@@ -4,13 +4,11 @@
 package kr.co.eicn.ippbx.meta.jooq.customdb.tables.records;
 
 
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonMaindbMultichannelInfo;
 import org.jooq.Record1;
-import org.jooq.Row7;
 import org.jooq.Table;
 import org.jooq.impl.UpdatableRecordImpl;
 
-@SuppressWarnings({ "all", "unchecked", "rawtypes" })
+@SuppressWarnings({"all", "unchecked", "rawtypes"})
 public class CommonMaindbMultichannelInfoRecord extends UpdatableRecordImpl<CommonMaindbMultichannelInfoRecord> {
 
     public CommonMaindbMultichannelInfoRecord(Table<CommonMaindbMultichannelInfoRecord> table) {
@@ -18,98 +16,98 @@ public class CommonMaindbMultichannelInfoRecord extends UpdatableRecordImpl<Comm
     }
 
     /**
-     * Setter for <code>CUSTOMDB.maindb_multichannel_info_primium.seq</code>.
+     * Setter for <code>CUSTOMDB.maindb_multichannel_info.seq</code>.
      */
     public void setSeq(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.maindb_multichannel_info_primium.seq</code>.
+     * Getter for <code>CUSTOMDB.maindb_multichannel_info.seq</code>.
      */
     public Integer getSeq() {
         return (Integer) get(0);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.maindb_multichannel_info_primium.channel_type</code>.
+     * Setter for <code>CUSTOMDB.maindb_multichannel_info.channel_type</code>.
      */
     public void setChannelType(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.maindb_multichannel_info_primium.channel_type</code>.
+     * Getter for <code>CUSTOMDB.maindb_multichannel_info.channel_type</code>.
      */
     public String getChannelType() {
         return (String) get(1);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.maindb_multichannel_info_primium.channel_data</code>.
+     * Setter for <code>CUSTOMDB.maindb_multichannel_info.channel_data</code>.
      */
     public void setChannelData(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.maindb_multichannel_info_primium.channel_data</code>.
+     * Getter for <code>CUSTOMDB.maindb_multichannel_info.channel_data</code>.
      */
     public String getChannelData() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.maindb_multichannel_info_primium.maindb_group_id</code>.
+     * Setter for <code>CUSTOMDB.maindb_multichannel_info.maindb_group_id</code>.
      */
     public void setMaindbGroupId(Integer value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.maindb_multichannel_info_primium.maindb_group_id</code>.
+     * Getter for <code>CUSTOMDB.maindb_multichannel_info.maindb_group_id</code>.
      */
     public Integer getMaindbGroupId() {
         return (Integer) get(3);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.maindb_multichannel_info_primium.maindb_custom_id</code>.
+     * Setter for <code>CUSTOMDB.maindb_multichannel_info.maindb_custom_id</code>.
      */
     public void setMaindbCustomId(String value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.maindb_multichannel_info_primium.maindb_custom_id</code>.
+     * Getter for <code>CUSTOMDB.maindb_multichannel_info.maindb_custom_id</code>.
      */
     public String getMaindbCustomId() {
         return (String) get(4);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.maindb_multichannel_info_primium.maindb_custom_name</code>.
+     * Setter for <code>CUSTOMDB.maindb_multichannel_info.maindb_custom_name</code>.
      */
     public void setMaindbCustomName(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.maindb_multichannel_info_primium.maindb_custom_name</code>.
+     * Getter for <code>CUSTOMDB.maindb_multichannel_info.maindb_custom_name</code>.
      */
     public String getMaindbCustomName() {
         return (String) get(5);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.maindb_multichannel_info_primium.company_id</code>.
+     * Setter for <code>CUSTOMDB.maindb_multichannel_info.company_id</code>.
      */
     public void setCompanyId(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.maindb_multichannel_info_primium.company_id</code>.
+     * Getter for <code>CUSTOMDB.maindb_multichannel_info.company_id</code>.
      */
     public String getCompanyId() {
         return (String) get(6);
@@ -122,26 +120,5 @@ public class CommonMaindbMultichannelInfoRecord extends UpdatableRecordImpl<Comm
     @Override
     public Record1<Integer> key() {
         return (Record1) super.key();
-    }
-
-    // -------------------------------------------------------------------------
-    // Record7 type implementation
-    // -------------------------------------------------------------------------
-
-    @Override
-    public Row7<Integer, String, String, Integer, String, String, String> fieldsRow() {
-        return (Row7) super.fieldsRow();
-    }
-
-    @Override
-    public Row7<Integer, String, String, Integer, String, String, String> valuesRow() {
-        return (Row7) super.valuesRow();
-    }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-    public CommonMaindbMultichannelInfoRecord() {
-        super(CommonMaindbMultichannelInfo.MAINDB_MULTICHANNEL_INFO);
     }
 }

@@ -22,7 +22,7 @@ public class CommonPrvCustomInfo implements Serializable {
     private String    prvSysLastHangupCause;
     private String    prvSysLastCallUniqueid;
     private String    prvSysCompanyId;
-    private Date prvDate_1;
+    private Date      prvDate_1;
     private Date      prvDate_2;
     private Date      prvDate_3;
     private Date      prvDay_1;

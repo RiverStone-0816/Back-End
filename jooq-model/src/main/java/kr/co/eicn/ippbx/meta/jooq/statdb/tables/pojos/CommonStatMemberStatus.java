@@ -8,11 +8,12 @@ import java.sql.Date;
 @Data
 public class CommonStatMemberStatus implements Serializable {
     private Integer seq;
-    private Date statDate;
-    private Byte statHour;
+    private Date    statDate;
+    private Byte    statHour;
     private Integer status;
+    private String  inOut;
     private Integer total;
-    private Long diffSum;
-    private String userid;
-    private String companyId;
+    private Long    diffSum;
+    private String  userid;
+    private String  companyId;
 }

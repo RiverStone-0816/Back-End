@@ -13,7 +13,7 @@ public class CommonStatUserRanking {
     private Integer groupLevel;
     private String  userid;
     private String  worktimeYn;
-    private Date statDate;
+    private Date    statDate;
     private Integer totalSuccess;
     private Integer inSuccess;
     private Integer outSuccess;

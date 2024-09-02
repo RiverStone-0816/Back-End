@@ -41,42 +41,42 @@ public class CommonStatUserInboundRecord extends UpdatableRecordImpl<CommonStatU
     }
 
     /**
-     * Setter for <code>STATDB.stat_user_inbound.group_code</code>. 조직코드
+     * Setter for <code>STATDB.stat_user_inbound.group_code</code>.  ex&gt;0001
      */
     public void setGroupCode(String value) {
         set(2, value);
     }
 
     /**
-     * Getter for <code>STATDB.stat_user_inbound.group_code</code>. 조직코드
+     * Getter for <code>STATDB.stat_user_inbound.group_code</code>.  ex&gt;0001
      */
     public String getGroupCode() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>STATDB.stat_user_inbound.group_tree_name</code>. 조직트리명
+     * Setter for <code>STATDB.stat_user_inbound.group_tree_name</code>. ex&gt;0003_0008_0001
      */
     public void setGroupTreeName(String value) {
         set(3, value);
     }
 
     /**
-     * Getter for <code>STATDB.stat_user_inbound.group_tree_name</code>. 조직트리명
+     * Getter for <code>STATDB.stat_user_inbound.group_tree_name</code>. ex&gt;0003_0008_0001
      */
     public String getGroupTreeName() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>STATDB.stat_user_inbound.group_level</code>. 조직레벨
+     * Setter for <code>STATDB.stat_user_inbound.group_level</code>. 3
      */
     public void setGroupLevel(Integer value) {
         set(4, value);
     }
 
     /**
-     * Getter for <code>STATDB.stat_user_inbound.group_level</code>. 조직레벨
+     * Getter for <code>STATDB.stat_user_inbound.group_level</code>. 3
      */
     public Integer getGroupLevel() {
         return (Integer) get(4);
@@ -139,14 +139,14 @@ public class CommonStatUserInboundRecord extends UpdatableRecordImpl<CommonStatU
     }
 
     /**
-     * Setter for <code>STATDB.stat_user_inbound.worktime_yn</code>.
+     * Setter for <code>STATDB.stat_user_inbound.worktime_yn</code>. 업무시간여부
      */
     public void setWorktimeYn(String value) {
         set(9, value);
     }
 
     /**
-     * Getter for <code>STATDB.stat_user_inbound.worktime_yn</code>.
+     * Getter for <code>STATDB.stat_user_inbound.worktime_yn</code>. 업무시간여부
      */
     public String getWorktimeYn() {
         return (String) get(9);
@@ -236,6 +236,9 @@ public class CommonStatUserInboundRecord extends UpdatableRecordImpl<CommonStatU
         return (Integer) get(15);
     }
 
+    /**
+     * Setter for <code>STATDB.stat_user_inbound.in_hunt_noanswer</code>. 헌트시비응답
+     */
     public void setInHuntNoanswer(Integer value) {
         set(16, value);
     }
@@ -262,14 +265,14 @@ public class CommonStatUserInboundRecord extends UpdatableRecordImpl<CommonStatU
     }
 
     /**
-     * Setter for <code>STATDB.stat_user_inbound.in_waitsec_sum</code>. 고객대기시간
+     * Setter for <code>STATDB.stat_user_inbound.in_waitsec_sum</code>. 대기시간
      */
     public void setInWaitsecSum(Integer value) {
         set(18, value);
     }
 
     /**
-     * Getter for <code>STATDB.stat_user_inbound.in_waitsec_sum</code>. 고객대기시간
+     * Getter for <code>STATDB.stat_user_inbound.in_waitsec_sum</code>. 대기시간
      */
     public Integer getInWaitsecSum() {
         return (Integer) get(18);

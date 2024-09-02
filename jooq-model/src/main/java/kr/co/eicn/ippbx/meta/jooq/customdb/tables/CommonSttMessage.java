@@ -3,9 +3,9 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.SttMessageRecord;
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.SttMessageRecord;
-import org.jooq.*;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
 import org.jooq.impl.SQLDataType;
@@ -17,14 +17,40 @@ import java.util.Collections;
 import java.util.List;
 
 public class CommonSttMessage extends TableImpl<SttMessageRecord> {
-
+    /**
+     * The column <code>CUSTOMDB.stt_message.seq</code>.
+     */
     public final TableField<SttMessageRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
-    public final TableField<SttMessageRecord, String> MESSAGE_ID = createField(DSL.name("message_id"), SQLDataType.VARCHAR(50).defaultValue(DSL.inline("''", SQLDataType.VARCHAR)), this, "");
-    public final TableField<SttMessageRecord, Timestamp> INSERT_TIME = createField(DSL.name("insert_time"), SQLDataType.TIMESTAMP(0).nullable(false).defaultValue(DSL.inline("'2009-07-01 00:00:00'", SQLDataType.TIMESTAMP)), this, "");
-    public final TableField<SttMessageRecord, String> CALL_UNIQUEID = createField(DSL.name("call_uniqueid"), SQLDataType.VARCHAR(50).defaultValue(DSL.inline("''", SQLDataType.VARCHAR)), this, "");
-    public final TableField<SttMessageRecord, String> USERID = createField(DSL.name("userid"), SQLDataType.VARCHAR(50).defaultValue(DSL.inline("''", SQLDataType.VARCHAR)), this, "");
-    public final TableField<SttMessageRecord, String> TARGET_USERID = createField(DSL.name("target_userid"), SQLDataType.VARCHAR(50).defaultValue(DSL.inline("''", SQLDataType.VARCHAR)), this, "");
-    public final TableField<SttMessageRecord, String> MESSAGE = createField(DSL.name("message"), SQLDataType.VARCHAR(500).defaultValue(DSL.inline("''", SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>CUSTOMDB.stt_message.message_id</code>.
+     */
+    public final TableField<SttMessageRecord, String> MESSAGE_ID = createField(DSL.name("message_id"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>CUSTOMDB.stt_message.insert_time</code>.
+     */
+    public final TableField<SttMessageRecord, Timestamp> INSERT_TIME = createField(DSL.name("insert_time"), SQLDataType.TIMESTAMP(0).nullable(false).defaultValue(DSL.field("'2009-07-01 00:00:00'", SQLDataType.TIMESTAMP)), this, "");
+
+    /**
+     * The column <code>CUSTOMDB.stt_message.call_uniqueid</code>.
+     */
+    public final TableField<SttMessageRecord, String> CALL_UNIQUEID = createField(DSL.name("call_uniqueid"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>CUSTOMDB.stt_message.userid</code>.
+     */
+    public final TableField<SttMessageRecord, String> USERID = createField(DSL.name("userid"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>CUSTOMDB.stt_message.target_userid</code>.
+     */
+    public final TableField<SttMessageRecord, String> TARGET_USERID = createField(DSL.name("target_userid"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
+
+    /**
+     * The column <code>CUSTOMDB.stt_message.message</code>.
+     */
+    public final TableField<SttMessageRecord, String> MESSAGE = createField(DSL.name("message"), SQLDataType.VARCHAR(500).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
 
     private String tableName;
 
@@ -49,47 +75,35 @@ public class CommonSttMessage extends TableImpl<SttMessageRecord> {
         this.tableName = table.getName();
     }
 
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<SttMessageRecord> getRecordType() {
-        return SttMessageRecord.class;
-    }
-
     @Override
     public Schema getSchema() {
         return Customdb.CUSTOMDB;
     }
 
+    @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.WTALK_ROOM_COMPANY_ID, Indexes.WTALK_ROOM_ROOM_ID, Indexes.WTALK_ROOM_SENDER_KEY, Indexes.WTALK_ROOM_USER_KEY);
+        return Arrays.<Index>asList(Indexes.STT_MESSAGE_CALL_UNIQUEID, Indexes.STT_MESSAGE_INSERT_TIME, Indexes.STT_MESSAGE_TARGET_USERID, Indexes.STT_MESSAGE_USERID);
     }
 
     @Override
     public Identity<SttMessageRecord, Integer> getIdentity() {
-        return (Identity<SttMessageRecord, Integer>) super.getIdentity();
+        return Internal.createIdentity(this, this.SEQ);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public UniqueKey<SttMessageRecord> getPrimaryKey() {
-        return org.jooq.impl.Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
-    }
-
+    @NotNull
     @Override
     public List<UniqueKey<SttMessageRecord>> getKeys() {
         return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
+    @NotNull
     @Override
     public CommonSttMessage as(String alias) {
         return new CommonSttMessage(DSL.name(alias), this);
     }
 
+    @NotNull
     @Override
     public CommonSttMessage as(Name alias) {
         return new CommonSttMessage(alias, this);

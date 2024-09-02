@@ -5,12 +5,11 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class CommonTranscribeGroup implements Serializable {
+public class CommonTranscribeLearn implements Serializable {
     private Integer seq;
     private String  companyId;
     private String  groupname;
-    private String  userid;
-    private String  status;
-    private Integer filecnt;
-    private Double  recrate;
+    private String  learngroupcode;
+    private String  learnstatus;
+    private String  learnfilename;
 }

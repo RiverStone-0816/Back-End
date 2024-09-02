@@ -4,67 +4,88 @@
 package kr.co.eicn.ippbx.meta.jooq.statdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.statdb.Indexes;
-import kr.co.eicn.ippbx.meta.jooq.statdb.Keys;
 import kr.co.eicn.ippbx.meta.jooq.statdb.Statdb;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.StatVocRecord;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import java.sql.Date;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CommonStatVoc extends TableImpl<StatVocRecord> {
+    /**
+     * The class holding records for this type
+     */
+    @NotNull
+    @Override
+    public Class<StatVocRecord> getRecordType() {
+        return StatVocRecord.class;
+    }
 
     /**
      * The column <code>STATDB.stat_voc.seq</code>. 고유키
      */
-    public final TableField<StatVocRecord, Integer> SEQ = createField(DSL.name("seq"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "고유키");
+    public final TableField<StatVocRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.nullable(false).identity(true), this, "고유키");
+
     /**
      * The column <code>STATDB.stat_voc.company_id</code>. 회사 ID
      */
-    public final TableField<StatVocRecord, String> COMPANY_ID = createField(DSL.name("company_id"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "회사 ID");
+    public final TableField<StatVocRecord, String> COMPANY_ID = createField(DSL.name("company_id"), SQLDataType.VARCHAR(100).nullable(false).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "회사 ID");
+
     /**
      * The column <code>STATDB.stat_voc.voc_group_id</code>.
      */
-    public final TableField<StatVocRecord, Integer> VOC_GROUP_ID = createField(DSL.name("voc_group_id"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<StatVocRecord, Integer> VOC_GROUP_ID = createField(DSL.name("voc_group_id"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
+
     /**
      * The column <code>STATDB.stat_voc.research_id</code>. 설문아이디
      */
-    public final TableField<StatVocRecord, Integer> RESEARCH_ID = createField(DSL.name("research_id"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "설문아이디");
+    public final TableField<StatVocRecord, Integer> RESEARCH_ID = createField(DSL.name("research_id"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "설문아이디");
+
     /**
      * The column <code>STATDB.stat_voc.userid</code>. 상담원아이디
      */
-    public final TableField<StatVocRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "상담원아이디");
+    public final TableField<StatVocRecord, String> USERID = createField(DSL.name("userid"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "상담원아이디");
+
     /**
      * The column <code>STATDB.stat_voc.research_tree_path</code>. 설문단계
      */
-    public final TableField<StatVocRecord, String> RESEARCH_TREE_PATH = createField(DSL.name("research_tree_path"), org.jooq.impl.SQLDataType.VARCHAR(800).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "설문단계");
+    public final TableField<StatVocRecord, String> RESEARCH_TREE_PATH = createField(DSL.name("research_tree_path"), SQLDataType.VARCHAR(800).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "설문단계");
+
     /**
      * The column <code>STATDB.stat_voc.research_response</code>. 설문답변
      */
-    public final TableField<StatVocRecord, String> RESEARCH_RESPONSE = createField(DSL.name("research_response"), org.jooq.impl.SQLDataType.VARCHAR(20).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "설문답변");
+    public final TableField<StatVocRecord, String> RESEARCH_RESPONSE = createField(DSL.name("research_response"), SQLDataType.VARCHAR(20).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "설문답변");
+
     /**
      * The column <code>STATDB.stat_voc.stat_date</code>. 생성일
      */
-    public final TableField<StatVocRecord, Date> STAT_DATE = createField(DSL.name("stat_date"), org.jooq.impl.SQLDataType.DATE.nullable(false).defaultValue(org.jooq.impl.DSL.inline("2009-01-01", org.jooq.impl.SQLDataType.DATE)), this, "생성일");
+    public final TableField<StatVocRecord, Date> STAT_DATE = createField(DSL.name("stat_date"), SQLDataType.DATE.nullable(false).defaultValue(DSL.field("'2009-01-01'", SQLDataType.DATE)), this, "생성일");
+
     /**
      * The column <code>STATDB.stat_voc.stat_hour</code>. 생성시간
      */
-    public final TableField<StatVocRecord, Byte> STAT_HOUR = createField(DSL.name("stat_hour"), org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.TINYINT)), this, "생성시간");
+    public final TableField<StatVocRecord, Byte> STAT_HOUR = createField(DSL.name("stat_hour"), SQLDataType.TINYINT.nullable(false).defaultValue(DSL.field("0", SQLDataType.TINYINT)), this, "생성시간");
+
     /**
      * The column <code>STATDB.stat_voc.total</code>. 총계
      */
-    public final TableField<StatVocRecord, Integer> TOTAL = createField(DSL.name("total"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "총계");
+    public final TableField<StatVocRecord, Integer> TOTAL = createField(DSL.name("total"), SQLDataType.INTEGER.nullable(false).defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "총계");
+
     private final String tableName;
 
     /**
      * Create an aliased <code>eicn.stat_voc</code> table reference
      */
-    public CommonStatVoc(String companyGroup) {
-        this(DSL.name("stat_voc_" + companyGroup), null);
+    public CommonStatVoc(String companyName) {
+        this(DSL.name("stat_voc_" + companyName), null);
     }
 
     private CommonStatVoc(String alias, Table<StatVocRecord> aliased) {
@@ -85,44 +106,40 @@ public class CommonStatVoc extends TableImpl<StatVocRecord> {
         this.tableName = table.getName();
     }
 
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<StatVocRecord> getRecordType() {
-        return StatVocRecord.class;
-    }
-
     @Override
     public Schema getSchema() {
         return Statdb.STATDB;
     }
 
+    @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.STAT_VOC_COMPANY_ID, Indexes.STAT_VOC_RESEARCH_ID, Indexes.STAT_VOC_RESEARCH_TREE_PATH, Indexes.STAT_VOC_STAT_DATE, Indexes.STAT_VOC_STAT_HOUR, Indexes.STAT_VOC_USERID);
+        return Arrays.<Index>asList(Indexes.STAT_WTALK_ACTION_TYPE, Indexes.STAT_WTALK_GROUP_CODE, Indexes.STAT_WTALK_GROUP_LEVEL, Indexes.STAT_WTALK_GROUP_TREE_NAME, Indexes.STAT_WTALK_SENDER_KEY, Indexes.STAT_WTALK_STAT_DATE, Indexes.STAT_WTALK_STAT_HOUR, Indexes.STAT_WTALK_USERID, Indexes.STAT_WTALK_WORKTIME_YN);
     }
 
     @Override
     public Identity<StatVocRecord, Integer> getIdentity() {
-        return (Identity<StatVocRecord, Integer>) super.getIdentity();
+        return Internal.createIdentity(this, this.SEQ);
     }
 
     @Override
     public UniqueKey<StatVocRecord> getPrimaryKey() {
-        return Keys.KEY_STAT_VOC_PRIMARY;
+        return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
+    @NotNull
     @Override
     public List<UniqueKey<StatVocRecord>> getKeys() {
-        return Arrays.<UniqueKey<StatVocRecord>>asList(Keys.KEY_STAT_VOC_PRIMARY);
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
+    @NotNull
     @Override
     public CommonStatVoc as(String alias) {
         return new CommonStatVoc(DSL.name(alias), this);
     }
 
+    @NotNull
     @Override
     public CommonStatVoc as(Name alias) {
         return new CommonStatVoc(alias, this);
@@ -142,14 +159,5 @@ public class CommonStatVoc extends TableImpl<StatVocRecord> {
     @Override
     public CommonStatVoc rename(Name name) {
         return new CommonStatVoc(name, null);
-    }
-
-    // -------------------------------------------------------------------------
-    // Row9 type methods
-    // -------------------------------------------------------------------------
-
-    @Override
-    public Row9<Integer, Date, Byte, String, String, Integer, Integer, String, Integer> fieldsRow() {
-        return (Row9) super.fieldsRow();
     }
 }
