@@ -842,13 +842,15 @@
                 </c:if>
             });
 
-            for (let status in statusCodes) {
+            const userAllowedPds = ${user.isPds eq 'Y'};
 
+            for (let status in statusCodes) {
                 if (status === '9')
                     continue;
 
                 if (statusCodes.hasOwnProperty(status)) {
                     const isPds = statusCodes[status] === 'PDS';
+                    if (isPds && !userAllowedPds) continue;
 
                     $('<button/>', {
                         type: 'button',
