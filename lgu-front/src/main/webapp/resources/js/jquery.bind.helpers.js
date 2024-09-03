@@ -324,6 +324,23 @@
         /* jquery-ui.datepicker 호출. id 재생성되므로, 기존 id 속성을 삭제시킨다. */
         findAndMe('.-datepicker', this).asDatepicker();
 
+        findAndMe('.comment-icon', this).each(function () {
+            const _this = $(this)
+
+            _this.hover(function () {
+                _this.addClass("inverted");
+            }, function () {
+                _this.removeClass("inverted");
+            })
+
+            _this.tooltip({
+                position: {
+                    my: "left+25 top",
+                    collision: "fit"
+                }
+            });
+        });
+
         return this;
     };
 

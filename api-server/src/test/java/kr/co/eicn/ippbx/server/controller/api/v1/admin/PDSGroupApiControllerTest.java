@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin;
 
-import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
 import kr.co.eicn.ippbx.model.enums.PDSGroupRidKind;
 import kr.co.eicn.ippbx.model.enums.PDSGroupSpeedMultiple;
 import kr.co.eicn.ippbx.model.form.PDSExecuteFormRequest;
 import kr.co.eicn.ippbx.model.form.PDSGroupFormRequest;
+import kr.co.eicn.ippbx.server.controller.api.BaseControllerTest;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -14,7 +14,6 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -220,7 +219,7 @@ public class PDSGroupApiControllerTest extends BaseControllerTest {
         form.setDialTimeout((byte) 30); // 다이얼 시간
         form.setIsRecord("N");  // 녹취사용 유무
         form.setNumberField("RS_NUMBER_1"); // 콜시도할전화번호필드
-        form.setRidKind(PDSGroupRidKind.GROUP_BY_RID.getCode());
+        form.setRidKind(PDSGroupRidKind.CAMPAIGN.getCode());
         form.setRidData("121212"); // RID(발신번호) 정보
         form.setBillingKind("NUMBER"); // 과금번호설정 구분
         form.setBillingData("07075490677"); // 과금번호 정보

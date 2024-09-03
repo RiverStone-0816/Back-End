@@ -27,6 +27,8 @@ import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static kr.co.eicn.ippbx.meta.jooq.customdb.tables.ResultCustomInfo.RESULT_CUSTOM_INFO;
+
 @Getter
 public class PrvResultCustomInfoRepository extends CustomDBBaseRepository<CommonResultCustomInfo, PrvResultCustomInfoEntity, Integer> {
     protected final Logger logger = LoggerFactory.getLogger(PrvResultCustomInfoRepository.class);
@@ -104,9 +106,9 @@ public class PrvResultCustomInfoRepository extends CustomDBBaseRepository<Common
 
     public int createTableIfNotExists(DSLContext dslContext) {
         return dslContext.createTableIfNotExists(TABLE)
-                .columns(TABLE.fields())
+                .columns(RESULT_CUSTOM_INFO.fields())
                 .constraint(DSL.constraint(TABLE.SEQ.getName()).primaryKey(TABLE.SEQ.getName()))
-                .indexes(TABLE.getIndexes().stream().filter(index -> !"PRIMARY".equals(index.getName())).collect(Collectors.toList()))
+                .indexes(RESULT_CUSTOM_INFO.getIndexes().stream().filter(index -> !"PRIMARY".equals(index.getName())).collect(Collectors.toList()))
                 .storage("ENGINE=MyISAM")
                 .execute();
     }

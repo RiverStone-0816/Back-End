@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.model.enums;
 import kr.co.eicn.ippbx.util.CodeHasable;
 
 /**
- * pds_group.last_upload_status
+ * PDS 상담그룹 > 분배정책 종류
  * RINGALL:동시모두
  * LEASTRECENT:먼저끊은순서
  * FEWESTCALLS:적게받은순서
@@ -12,21 +12,21 @@ import kr.co.eicn.ippbx.util.CodeHasable;
  * SEQUENCE:목록순서
  */
 public enum PDSResultGroupStrategy implements CodeHasable<String> {
-	RINGALL("ringall"),
-	LEASTRECENT("leastrecent"),
-	FEWESTCALLS("fewestcalls"),
-	RRMEMORY("rrmemory"),
-	RANDOM("random"),
-	SEQUENCE("sequence");
+    RINGALL("ringall"),
+    LEASTRECENT("leastrecent"),
+    FEWESTCALLS("fewestcalls"),
+    RRMEMORY("rrmemory"),
+    RANDOM("random"),
+    SEQUENCE("sequence");
 
-	private final String code;
+    private final String code;
 
-	PDSResultGroupStrategy(String code) {
-		this.code = code;
-	}
+    PDSResultGroupStrategy(String code) {
+        this.code = code;
+    }
 
-	@Override
-	public String getCode() {
-		return code;
-	}
+    @Override
+    public String getCode() {
+        return code;
+    }
 }

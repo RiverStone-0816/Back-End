@@ -1,6 +1,5 @@
 package kr.co.eicn.ippbx.server.repository.eicn;
 
-import kr.co.eicn.ippbx.server.config.Constants;
 import kr.co.eicn.ippbx.meta.jooq.eicn.Tables;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.PdsGroup;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType;
@@ -15,6 +14,7 @@ import kr.co.eicn.ippbx.model.form.PDSExecuteFormRequest;
 import kr.co.eicn.ippbx.model.form.PDSGroupFormRequest;
 import kr.co.eicn.ippbx.model.search.PDSGroupSearchRequest;
 import kr.co.eicn.ippbx.model.search.PDSMonitSearchRequest;
+import kr.co.eicn.ippbx.server.config.Constants;
 import kr.co.eicn.ippbx.server.service.*;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.Getter;
@@ -28,7 +28,10 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static kr.co.eicn.ippbx.meta.jooq.eicn.Tables.*;
 import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.ExecutePdsGroup.EXECUTE_PDS_GROUP;
@@ -40,23 +43,24 @@ import static org.apache.commons.lang3.StringUtils.*;
 public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup, Integer> {
     private final Logger logger = LoggerFactory.getLogger(PDSGroupRepository.class);
 
-    private final PDSCustomInfoService pdsCustomInfoService;
+    private final PDSCustomInfoService        pdsCustomInfoService;
     private final ExecutePDSCustomInfoService executePDSCustomInfoService;
-    private final ExecutePDSGroupRepository executePDSGroupRepository;
-    private final PDSResearchResultService pdsResearchResultService;
-    private final PDSResultCustomInfoService pdsResultCustomInfoService;
-    private final HistoryPDSGroupRepository historyPDSGroupRepository;
-    private final CompanyTreeRepository companyTreeRepository;
-    private final WebSecureHistoryRepository webSecureHistoryRepository;
+    private final ExecutePDSGroupRepository   executePDSGroupRepository;
+    private final PDSResearchResultService    pdsResearchResultService;
+    private final PDSResultCustomInfoService  pdsResultCustomInfoService;
+    private final HistoryPDSGroupRepository   historyPDSGroupRepository;
+    private final CompanyTreeRepository       companyTreeRepository;
+    private final WebSecureHistoryRepository  webSecureHistoryRepository;
     private final HistoryUploadInfoRepository historyUploadInfoRepository;
-    private final CommonTypeRepository commonTypeRepository;
-    private final CacheService cacheService;
-    private final PBXServerInterface pbxServerInterface;
+    private final CommonTypeRepository        commonTypeRepository;
+    private final CacheService                cacheService;
+    private final PBXServerInterface          pbxServerInterface;
 
     public PDSGroupRepository(PDSCustomInfoService pdsCustomInfoService, ExecutePDSCustomInfoService executePDSCustomInfoService, ExecutePDSGroupRepository executePDSGroupRepository,
-                              PDSResearchResultService pdsResearchResultService, PDSResultCustomInfoService pdsResultCustomInfoService, HistoryPDSGroupRepository historyPDSGroupRepository,
-                              CompanyTreeRepository companyTreeRepository, WebSecureHistoryRepository webSecureHistoryRepository, HistoryUploadInfoRepository historyUploadInfoRepository,
-                              CommonTypeRepository commonTypeRepository, CacheService cacheService, PBXServerInterface pbxServerInterface) {
+            PDSResearchResultService pdsResearchResultService, PDSResultCustomInfoService pdsResultCustomInfoService, HistoryPDSGroupRepository historyPDSGroupRepository,
+            CompanyTreeRepository companyTreeRepository, WebSecureHistoryRepository webSecureHistoryRepository, HistoryUploadInfoRepository historyUploadInfoRepository,
+            CommonTypeRepository commonTypeRepository, CacheService cacheService, PBXServerInterface pbxServerInterface
+    ) {
         super(PDS_GROUP, PDS_GROUP.SEQ, kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup.class);
         orderByFields.add(PDS_GROUP.MAKE_DATE.asc());
 
@@ -89,9 +93,10 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
     public void insertWithPDSCustomInfoTableCreate(PDSGroupFormRequest form) {
         final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup record = new kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup();
 
-        final Optional<CommonType> optionalPdsTypeEntity = commonTypeRepository.findAll(COMMON_TYPE.SEQ.eq(form.getPdsType())
-                        .and(COMMON_TYPE.KIND.eq(CommonTypeKind.PDS.getCode()))
-                        .and(COMMON_TYPE.STATUS.eq(CommonTypeStatus.USING.getCode()))).stream().findAny();
+        final Optional<CommonType> optionalPdsTypeEntity =
+                commonTypeRepository.findAll(COMMON_TYPE.SEQ.eq(form.getPdsType())
+                                                     .and(COMMON_TYPE.KIND.eq(CommonTypeKind.PDS.getCode()))
+                                                     .and(COMMON_TYPE.STATUS.eq(CommonTypeStatus.USING.getCode()))).stream().findAny();
         if (!optionalPdsTypeEntity.isPresent())
             throw new IllegalArgumentException("PDS유형만 등록 할 수 있습니다.");
 
@@ -151,9 +156,10 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
     public void updateByKey(PDSGroupFormRequest form, Integer seq) {
         final kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup record = findOneIfNullThrow(seq);
 
-        final Optional<CommonType> optionalPdsTypeEntity = commonTypeRepository.findAll(COMMON_TYPE.SEQ.eq(form.getPdsType())
-                .and(COMMON_TYPE.KIND.eq(CommonTypeKind.PDS.getCode()))
-                .and(COMMON_TYPE.STATUS.eq(CommonTypeStatus.USING.getCode()))).stream().findAny();
+        final Optional<CommonType> optionalPdsTypeEntity =
+                commonTypeRepository.findAll(COMMON_TYPE.SEQ.eq(form.getPdsType())
+                                                     .and(COMMON_TYPE.KIND.eq(CommonTypeKind.PDS.getCode()))
+                                                     .and(COMMON_TYPE.STATUS.eq(CommonTypeStatus.USING.getCode()))).stream().findAny();
         if (!optionalPdsTypeEntity.isPresent())
             throw new IllegalArgumentException("PDS유형만 등록 할 수 있습니다.");
 
@@ -162,7 +168,7 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
         record.setInfo(defaultString(form.getInfo()));
         if (isNotEmpty(form.getGroupCode())) {
             final CompanyTree companyTree = companyTreeRepository.findOneByGroupCode(form.getGroupCode());
-            if (companyTree != null ) {
+            if (companyTree != null) {
                 record.setGroupCode(form.getGroupCode());
                 record.setGroupTreeName(companyTree.getGroupTreeName());
                 record.setGroupLevel(companyTree.getGroupLevel());
@@ -201,16 +207,16 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
 
         final String executeId = seq + "_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
 
-        List<ExecutePDSGroupEntity> executePDSGroupEntities = Collections.emptyList();
+        final List<ExecutePDSGroupEntity> executePDSGroupEntities = new ArrayList<>();
 
-        if (Constants.LOCAL_HOST.equals(entity.getRunHost())) {
-            executePDSGroupEntities = executePDSGroupRepository.findAllGroupId(dsl, entity.getSeq());
-        } else {
+        if (Constants.LOCAL_HOST.equals(entity.getRunHost()))
+            executePDSGroupEntities.addAll(executePDSGroupRepository.findAllGroupId(dsl, entity.getSeq()));
+        else {
             final Optional<CompanyServerEntity> optionalServer = cacheService.pbxServerList(getCompanyId()).stream().filter(server -> server.getHost().equals(form.getRunHost())).findAny();
             if (optionalServer.isPresent()) {
                 final CompanyServerEntity server = optionalServer.get();
                 DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
-                executePDSGroupEntities = executePDSGroupRepository.findAllGroupId(pbxDsl, entity.getSeq());
+                executePDSGroupEntities.addAll(executePDSGroupRepository.findAllGroupId(pbxDsl, entity.getSeq()));
             }
         }
 
@@ -285,14 +291,12 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
 
             historyPDSGroupRepository.insert(executePdsGroupRecord);
 
-            if (PDSGroupConnectKind.ARS_RESEARCH.getCode().equals(entity.getConnectKind())
-                        || PDSGroupConnectKind.RESEARCH.getCode().equals(entity.getConnectKind())) {
+            if (PDSGroupConnectKind.ARS_RSCH.getCode().equals(entity.getConnectKind()))
                 pdsResearchResultService.getRepository(executeId).createTableIfNotExists();
-            }
         } else {
             final ExecutePDSGroupEntity executePdsGroup = executePDSGroupEntities.get(0);
             if (PDSGroupExecuteStatus.READY.getCode().equals(executePdsGroup.getPdsStatus())
-                        || PDSGroupExecuteStatus.PROCEEDING.getCode().equals(executePdsGroup.getPdsStatus()))
+                    || PDSGroupExecuteStatus.PROCEEDING.getCode().equals(executePdsGroup.getPdsStatus()))
                 throw new IllegalStateException("PDS(" + executePdsGroup.getPdsName() + ")가 진행중입니다.");
 
             executePdsGroupRecord.setExecuteName(form.getExecuteName());
@@ -337,33 +341,32 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
             executePdsGroupRecord.setReserveYn("N");
             executePdsGroupRecord.setReserveDate(Timestamp.valueOf("1970-01-01 00:00:00"));
 
-            if (Constants.LOCAL_HOST.equals(entity.getRunHost())) {
+            if (Constants.LOCAL_HOST.equals(entity.getRunHost()))
                 executePDSGroupRepository.update(dsl, executePdsGroupRecord, Tables.EXECUTE_PDS_GROUP.PDS_GROUP_ID.eq(seq));
-            } else {
+            else
                 cacheService.pbxServerList(getCompanyId()).stream().filter(server -> server.getHost().equals(form.getRunHost())).findAny().ifPresent(server -> {
                     DSLContext pbxDsl = pbxServerInterface.using(server.getHost());
                     executePDSGroupRepository.update(pbxDsl, executePdsGroupRecord, Tables.EXECUTE_PDS_GROUP.PDS_GROUP_ID.eq(seq));
                 });
-            }
         }
 
         dsl.update(PDS_GROUP)
-             .set(PDS_GROUP.LAST_EXECUTE_ID, executeId)
-             .set(PDS_GROUP.LAST_EXECUTE_NAME, form.getExecuteName())
-             .set(PDS_GROUP.LAST_EXECUTE_STATUS, PDSGroupExecuteStatus.PREPARING.getCode())
-             .set(PDS_GROUP.LAST_EXECUTE_DATE, DSL.now())
-             .set(PDS_GROUP.EXECUTE_TRY_CNT, PDS_GROUP.EXECUTE_TRY_CNT.add(1))
-             .where(PDS_GROUP.SEQ.eq(entity.getSeq()))
-             .execute();
+                .set(PDS_GROUP.LAST_EXECUTE_ID, executeId)
+                .set(PDS_GROUP.LAST_EXECUTE_NAME, form.getExecuteName())
+                .set(PDS_GROUP.LAST_EXECUTE_STATUS, PDSGroupExecuteStatus.PREPARING.getCode())
+                .set(PDS_GROUP.LAST_EXECUTE_DATE, DSL.now())
+                .set(PDS_GROUP.EXECUTE_TRY_CNT, PDS_GROUP.EXECUTE_TRY_CNT.add(1))
+                .where(PDS_GROUP.SEQ.eq(entity.getSeq()))
+                .execute();
 
-        if (Constants.LOCAL_HOST.equals(form.getRunHost())) {
+        if (Constants.LOCAL_HOST.equals(form.getRunHost()))
             executePDSCustomInfoService.getRepository(executeId).createTableIfNotExists();
-        } else {
+        else
             cacheService.pbxServerList(getCompanyId()).stream().filter(server -> server.getHost().equals(form.getRunHost())).findAny().ifPresent(server -> {
                 DSLContext pbxDsl = pbxServerInterface.using(server.getHost(), "PDS");
                 executePDSCustomInfoService.getRepository(executeId).createTableIfNotExists(pbxDsl);
             });
-        }
+
     }
 
     public int deleteWithRelationShipTable(Integer seq) {
@@ -391,9 +394,9 @@ public class PDSGroupRepository extends EicnBaseRepository<PdsGroup, kr.co.eicn.
         final List<Condition> conditions = new ArrayList<>();
 
         if (search.getStartDate() != null)
-        	conditions.add(PDS_GROUP.MAKE_DATE.ge(DSL.timestamp(search.getStartDate() + " 00:00:00")));
+            conditions.add(PDS_GROUP.MAKE_DATE.ge(DSL.timestamp(search.getStartDate() + " 00:00:00")));
         if (search.getEndDate() != null)
-        	conditions.add(PDS_GROUP.MAKE_DATE.le(DSL.timestamp(search.getEndDate() + " 23:59:59")));
+            conditions.add(PDS_GROUP.MAKE_DATE.le(DSL.timestamp(search.getEndDate() + " 23:59:59")));
         if (search.getPdsType() != null)
             conditions.add(PDS_GROUP.PDS_TYPE.eq(search.getPdsType()));
         if (isNotEmpty(search.getName()))

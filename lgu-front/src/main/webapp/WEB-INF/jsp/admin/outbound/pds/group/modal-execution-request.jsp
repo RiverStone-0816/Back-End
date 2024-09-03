@@ -22,6 +22,12 @@
 
     <div class="scrolling content rows">
         <div class="ui grid">
+
+            <div class="row">
+                <div class="sixteen wide column">
+                    <h4 class="ui header title">실행설정</h4>
+                </div>
+            </div>
             <div class="row">
                 <div class="four wide column"><label class="control-label">실행명</label></div>
                 <div class="four wide column">
@@ -34,10 +40,19 @@
                 <div class="four wide column"><label class="control-label">실행할교환기</label></div>
                 <div class="four wide column">
                     <div class="ui form">
-                        <form:select path="runHost" items="${hosts}"/>
+                        <form:select path="runHost">
+                            <c:forEach var="e" items="${hosts}">
+                                <form:option value="${e.key}" label="${e.value}(${e.key})" data-host="${e.key}"/>
+                            </c:forEach>
+                        </form:select>
                     </div>
                 </div>
-                <div class="eight wide column">(콜을 아웃바운드 시킬 교환기)</div>
+                <div class="eight wide column">(콜을 발신할 교환기)</div>
+            </div>
+            <div class="row">
+                <div class="sixteen wide column">
+                    <h4 class="ui header title">PDS항목설정</h4>
+                </div>
             </div>
             <div class="row">
                 <div class="four wide column"><label class="control-label">다이얼시간</label></div>
@@ -69,7 +84,8 @@
                                     <option value="ALL">모든전화필드</option>
                                     <c:forEach var="e" items="${commonFields}">
                                         <c:if test="${e.fieldId eq form.numberField}">
-                                            <option value="${g.htmlQuote(e.fieldId)}" selected>${g.htmlQuote(e.fieldInfo)}</option>
+                                            <option value="${g.htmlQuote(e.fieldId)}"
+                                                    selected>${g.htmlQuote(e.fieldInfo)}</option>
                                         </c:if>
                                     </c:forEach>
                                 </c:otherwise>
@@ -77,91 +93,97 @@
                         </select>
                     </div>
                 </div>
-                <div class="eight wide column">(기본항목 설정의 업로드유형을 선택한 후 사용 가능)</div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">RID(발신번호) 설정</label></div>
-
-                <div class="three wide column">
+                <div class="four wide column"><label class="control-label label-required">RID(발신번호) 설정</label></div>
+                <div class="four wide column">
                     <div class="ui radio checkbox">
                         <form:radiobutton path="ridKind" value="CAMPAIGN"/>
-                        <label>그룹별RID지정</label>
+                        <label>${g.htmlQuote(g.messageOf('PDSGroupRidKind', 'CAMPAIGN'))}</label>
                     </div>
                 </div>
-                <div class="three wide column">
-                    <div class="ui form">
-                        <form:input path="ridData"/>
+                <div class="four wide column">
+                    <div class="ui form ${form.ridKind eq 'CAMPAIGN' ? '' : 'disabled'}">
+                        <form:input path="ridData" cssClass="-input-numerical" placeholder="발신번호 입력"/>
                     </div>
                 </div>
-                <div class="six wide column"></div>
                 <div class="four wide column"></div>
-                <div class="three wide column">
+                <div class="four wide column"></div>
+                <div class="four wide column">
                     <div class="ui radio checkbox">
                         <form:radiobutton path="ridKind" value="FIELD"/>
-                        <label>업로드RID지정</label>
+                        <label>${g.htmlQuote(g.messageOf('PDSGroupRidKind', 'FIELD'))}</label>
                     </div>
                 </div>
             </div>
             <div class="row blank">
-                <div class="four wide column"><label class="control-label">과금번호설정</label></div>
-                <div class="three wide column">
+                <div class="four wide column"><label class="control-label label-required">과금번호설정</label></div>
+                <div class="four wide column">
                     <div class="ui radio checkbox">
                         <form:radiobutton path="billingKind" value="NUMBER"/>
-                        <label>그룹별번호</label>
+                        <label>${g.htmlQuote(g.messageOf('PDSGroupBillingKind', 'NUMBER'))}</label>
                     </div>
                 </div>
-                <div class="three wide column">
-                    <div class="ui form">
+                <div class="four wide column">
+                    <div class="ui form ${form.billingKind eq 'NUMBER' ? '' : 'disabled'}">
                         <select name="billingData_NUMBER">
-							<option value="">선택</option>
+                            <option value="">과금번호 선택</option>
                             <c:forEach var="e" items="${numbers}">
                                 <option value="${g.htmlQuote(e.key)}" ${form.billingKind == 'NUMBER' && e.key == form.billingData ? 'selected' : ''}>${g.htmlQuote(e.value)}</option>
                             </c:forEach>
                         </select>
                     </div>
                 </div>
-                <div class="six wide column"></div>
                 <div class="four wide column"></div>
-                <div class="three wide column">
+                <div class="four wide column"></div>
+                <div class="four wide column">
                     <div class="ui radio checkbox">
                         <form:radiobutton path="billingKind" value="DIRECT"/>
-                        <label>그룹별직접입력</label>
+                        <label>${g.htmlQuote(g.messageOf('PDSGroupBillingKind', 'DIRECT'))}</label>
                     </div>
                 </div>
-                <div class="three wide column">
-                    <div class="ui input fluid">
-                        <input type="text" name="billingData_DIRECT" value="${form.billingKind == 'DIRECT' ? g.htmlQuote(form.billingData) : ''}">
+                <div class="four wide column">
+                    <div class="ui input fluid ${form.billingKind eq 'DIRECT' ? '' : 'disabled'}">
+                        <input type="text" name="billingData_DIRECT" class="-input-numerical" placeholder="과금번호 입력"
+                               value="${form.billingKind == 'DIRECT' ? g.htmlQuote(form.billingData) : ''}">
                     </div>
                 </div>
             </div>
-            <div class="row blank">
-                <div class="four wide column"><label class="control-label">속도</label></div>
-                <div class="three wide column">
-                    <div class="ui radio checkbox">
-                        <form:radiobutton path="speedKind" value="MEMBER"/>
-                        <label>대기중상담원기준</label>
-                    </div>
-                </div>
-                <div class="three wide column">
-                    <div class="ui form">
-                        <select name="speedData_MEMBER">
-                            <c:forEach var="e" begin="10" end="55" step="5">
-                                <option value="${e}" ${form.speedKind == 'MEMBER' && form.speedData == e ? 'selected' : ''}>${e/10}배수</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-                <div class="six wide column"></div>
-                <div class="four wide column"></div>
-                <div class="three wide column">
-                    <div class="ui radio checkbox">
-                        <form:radiobutton path="speedKind" value="CHANNEL"/>
-                        <label>동시통화기준</label>
-                    </div>
-                </div>
-                <div class="three wide column">
-                    <input type="text" size="2" name="speedData_CHANNEL" value="${form.speedKind == 'CHANNEL' ? form.speedData : ''}"> 채널(500미만)
-                </div>
+            <div class="row blank -pds-connect-kind-speed-field">
+                <div class="four wide column"><label class="control-label label-required">속도</label></div>
+                <c:choose>
+                    <c:when test="${form.speedKind eq 'MEMBER'}">
+                        <div class="four wide column -pds-connect-kind-speed" data-group="1">
+                            <div class="ui radio checkbox">
+                                <form:radiobutton path="speedKind" value="MEMBER"/>
+                                <label>${g.htmlQuote(g.messageOf('PDSGroupSpeedKind', 'MEMBER'))}</label>
+                            </div>
+                        </div>
+                        <div class="four wide column -pds-connect-kind-speed" data-group="1">
+                            <div class="ui form">
+                                <select name="speedData_MEMBER">
+                                    <c:forEach var="e" items="${pdsGroupSpeedOptions}">
+                                        <option value="${e.key}" ${form.speedKind == 'MEMBER' and form.speedData == e.key ? 'selected' : ''}>
+                                                ${e.value}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="four wide column -pds-connect-kind-speed" data-group="2">
+                            <div class="ui radio checkbox">
+                                <form:radiobutton path="speedKind" value="CHANNEL"/>
+                                <label>${g.htmlQuote(g.messageOf('PDSGroupSpeedKind', 'CHANNEL'))}</label>
+                            </div>
+                        </div>
+                        <div class="four wide column -pds-connect-kind-speed" data-group="2">
+                            <input type="text" size="2" name="speedData_CHANNEL" class="-input-numerical"
+                                   value="${form.speedKind == 'CHANNEL' ? form.speedData : ''}"> 채널 (500미만)
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </div>
     </div>
@@ -184,5 +206,34 @@
 
         delete data.connectData_MEMBER;
         delete data.connectData_PDS_IVR;
+        delete data.connectData_ARS_RSCH;
     };
+
+    modal.find('[name=ridKind]').change(function () {
+        const ridKind = modal.find('[name=ridKind]:checked').val();
+        const ridDate = modal.find('#ridData');
+        ridDate.val('');
+
+        if (ridKind === 'CAMPAIGN') {
+            ridDate.parent().removeClass('disabled');
+        } else {
+            ridDate.parent().addClass('disabled');
+        }
+    });
+
+    modal.find('[name=billingKind]').change(function () {
+        const billingKind = modal.find('[name=billingKind]:checked').val();
+        const billingDataNUMBER = modal.find('[name=billingData_NUMBER]');
+        const billingDataDIRECT = modal.find('[name=billingData_DIRECT]');
+        billingDataNUMBER.val('');
+        billingDataDIRECT.val('');
+
+        if (billingKind === 'NUMBER') {
+            billingDataNUMBER.parent().removeClass('disabled');
+            billingDataDIRECT.parent().addClass('disabled');
+        } else {
+            billingDataNUMBER.parent().addClass('disabled');
+            billingDataDIRECT.parent().removeClass('disabled');
+        }
+    });
 </script>

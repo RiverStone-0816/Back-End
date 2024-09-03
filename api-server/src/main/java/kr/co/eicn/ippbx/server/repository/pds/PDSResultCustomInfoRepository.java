@@ -77,9 +77,9 @@ public class PDSResultCustomInfoRepository extends PDSDbBaseRepository<CommonPDS
 
     public void createTableIfNotExists(DSLContext dslContext) {
         dslContext.createTableIfNotExists(TABLE)
-                .columns(TABLE.fields())
+                .columns(RESULT_CUSTOM_INFO.fields())
                 .constraint(DSL.constraint(TABLE.SEQ.getName()).primaryKey(TABLE.SEQ.getName()))
-                .indexes(TABLE.getIndexes().stream().filter(index -> !"PRIMARY".equals(index.getName())).collect(Collectors.toList()))
+                .indexes(RESULT_CUSTOM_INFO.getIndexes().stream().filter(index -> !"PRIMARY".equals(index.getName())).collect(Collectors.toList()))
                 .storage("ENGINE=MyISAM")
                 .execute();
     }

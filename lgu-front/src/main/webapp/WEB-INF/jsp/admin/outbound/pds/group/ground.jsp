@@ -29,7 +29,9 @@
                         </div>
                         <div class="btn-wrap">
                             <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
+                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">
+                                초기화
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -38,10 +40,12 @@
                         <div class="ui grid">
                             <div class="row">
                                 <div class="two wide column"><label class="control-label">그룹생성일</label></div>
-                                <div class="nine wide column -buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
+                                <div class="nine wide column -buttons-set-range-container"
+                                     data-startdate="[name=startDate]" data-enddate="[name=endDate]">
                                     <div class="date-picker from-to">
                                         <div class="dp-wrap">
-                                            <label class="control-label" for="startDate" style="display:none">From</label>
+                                            <label class="control-label" for="startDate"
+                                                   style="display:none">From</label>
                                             <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
                                         </div>
                                         <span class="tilde">~</span>
@@ -51,12 +55,24 @@
                                         </div>
                                     </div>
                                     <div class="ui basic buttons">
-                                        <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
-                                        <button type="button" data-interval="day" data-number="3" class="ui button -button-set-range">3일</button>
-                                        <button type="button" data-interval="day" data-number="7" class="ui button -button-set-range">1주일</button>
-                                        <button type="button" data-interval="month" data-number="1" class="ui button -button-set-range">1개월</button>
-                                        <button type="button" data-interval="month" data-number="3" class="ui button -button-set-range">3개월</button>
-                                        <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
+                                        <button type="button" data-interval="day" data-number="1"
+                                                class="ui button -button-set-range">당일
+                                        </button>
+                                        <button type="button" data-interval="day" data-number="3"
+                                                class="ui button -button-set-range">3일
+                                        </button>
+                                        <button type="button" data-interval="day" data-number="7"
+                                                class="ui button -button-set-range">1주일
+                                        </button>
+                                        <button type="button" data-interval="month" data-number="1"
+                                                class="ui button -button-set-range">1개월
+                                        </button>
+                                        <button type="button" data-interval="month" data-number="3"
+                                                class="ui button -button-set-range">3개월
+                                        </button>
+                                        <button type="button" data-interval="month" data-number="6"
+                                                class="ui button -button-set-range">6개월
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="two wide column"><label class="control-label">유형</label></div>
@@ -94,10 +110,8 @@
                         </div>
                         <div class="ui basic buttons">
                             <button class="ui button -control-entity" data-entity="PdsGroup" style="display: none;" onclick="popupUploadModal(getEntityId('PdsGroup'))">데이터업로드</button>
-                                <%--                            <a href="<c:url value="/admin/outbound/pds/upload/"/>" class="ui button basic tab-indicator">업로드상세정보</a>--%>
-                            <button class="ui basic button -control-entity" data-entity="PdsGroup" style="display: none;" onclick="url(getEntityId('PdsGroup'))">
-                                <a href="${pageContext.request.contextPath}/admin/outbound/pds/custominfo/" class="url">데이터관리</a>
-                            </button>
+                            <%--<a href="<c:url value="/admin/outbound/pds/upload/"/>" class="ui button basic tab-indicator">업로드상세정보</a>--%>
+                            <button class="ui basic button -control-entity" data-entity="PdsGroup" style="display: none;" onclick="url(getEntityId('PdsGroup'))">데이터관리</button>
                         </div>
                         <button class="ui button -control-entity" data-entity="PdsGroup" style="display: none;" onclick="popupExecutionRequestModal(getEntityId('PdsGroup'))">실행요청</button>
                     </div>
@@ -106,12 +120,24 @@
                     <table class="ui structured celled table compact unstackable num-tbl ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PdsGroup">
                         <thead>
                         <tr>
+                            <th rowspan="2">번호</th>
+                            <th colspan="6">그룹기본정보</th>
+                            <th colspan="4">업로드정보</th>
+                            <th colspan="3">실행정보</th>
+                        </tr>
+                        <tr>
                             <th>그룹명</th>
                             <th>그룹생성일</th>
+                            <th>PDS유형</th>
+                            <th>연결구분</th>
+                            <th>연결대상</th>
+                            <th>추가정보</th>
+
                             <th>마지막업로드날짜</th>
-                            <th>업로드데이터수</th>
+                            <th>데이터수</th>
                             <th>업로드횟수</th>
                             <th>마지막업로드상태</th>
+
                             <th>마지막실행한날</th>
                             <th>실행횟수</th>
                             <th>실행상태</th>
@@ -122,12 +148,20 @@
                             <c:when test="${pagination.rows.size() > 0}">
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${g.htmlQuote(e.seq)}">
+                                        <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
+
                                         <td>${g.htmlQuote(e.name)}</td>
                                         <td><fmt:formatDate value="${e.makeDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                        <td>${g.htmlQuote(e.pdsTypeValue)}</td>
+                                        <td>${g.htmlQuote(g.messageOf('PDSGroupConnectKind', e.connectKind))}</td>
+                                        <td>${g.htmlQuote(e.connectDataValue)}</td>
+                                        <td>${g.htmlQuote(e.info)}</td>
+
                                         <td><fmt:formatDate value="${e.lastUploadDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>${e.totalCnt}</td>
                                         <td>${e.uploadTryCnt}</td>
                                         <td>${g.htmlQuote(g.messageOf('PDSGroupUploadStatus', e.lastUploadStatus))}</td>
+
                                         <td><fmt:formatDate value="${e.lastExecuteDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                                         <td>${e.executeTryCnt}</td>
                                         <td>${g.htmlQuote(g.messageOf('PDSGroupExecuteStatus', e.lastExecuteStatus))}</td>
@@ -136,7 +170,7 @@
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="9" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <td colspan="13" class="null-data">조회된 데이터가 없습니다.</td>
                                 </tr>
                             </c:otherwise>
                         </c:choose>
@@ -144,7 +178,8 @@
                     </table>
                 </div>
                 <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/outbound/pds/group/" pageForm="${search}"/>
+                    <tags:pagination navigation="${pagination.navigation}" pageForm="${search}"
+                                     url="${pageContext.request.contextPath}/admin/outbound/pds/group/"/>
                 </div>
             </div>
         </div>
@@ -165,15 +200,23 @@
             }
 
             function deleteEntity(seq) {
-                confirm('정말 삭제하시겠습니까?').done(function () {[]
+                confirm('정말 삭제하시겠습니까?').done(function () {
                     restSelf.delete('/api/pds-group/' + seq).done(function () {
                         reload();
                     });
                 });
             }
 
+            function downloadExampleExcel(seq) {
+                window.open(contextPath + '/admin/outbound/pds/group/' + seq + '/_excel/example', '_blank');
+            }
+
             function url(seq) {
-                $('.url').attr("href", "/admin/outbound/pds/custominfo?groupSeq="+ seq)
+                const customDataLink = $('<a/>', {
+                    href: '/admin/outbound/pds/custominfo?groupSeq=' + seq,
+                    html: '데이터관리'
+                });
+                parent.tabController.attachTab(customDataLink);
             }
         </script>
     </tags:scripts>
