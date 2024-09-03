@@ -22,7 +22,7 @@
     <div class="content rows">
         <div class="ui grid">
             <div class="row">
-                <div class="five wide column"><label class="control-label">IVR명</label></div>
+                <div class="five wide column"><label class="control-label label-required">IVR명</label></div>
                 <div class="eleven wide column">
                     <div class="ui input fluid">
                         <form:input path="name"/>

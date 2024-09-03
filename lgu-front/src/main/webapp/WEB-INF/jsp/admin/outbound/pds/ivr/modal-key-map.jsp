@@ -22,7 +22,7 @@
     <div class="scrolling content rows">
         <div class="ui grid">
             <div class="row">
-                <div class="five wide column"><label class="control-label">IVR명</label></div>
+                <div class="five wide column"><label class="control-label label-required">IVR명</label></div>
                 <div class="eleven wide column">
                     <div class="ui input fluid">
                         <form:input path="name"/>
@@ -123,7 +123,7 @@
         if (!sound)
             return;
 
-        modal.find('.scrolling.content.rows').addClass('overflow-visible');
+        // modal.find('.scrolling.content.rows').addClass('overflow-visible');
 
         const src = contextPath + "/api/ars/id/" + sound + "/resource?mode=PLAY";
         const audio = $('<audio controls/>').attr('data-src', src);
