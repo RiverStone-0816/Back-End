@@ -11,14 +11,14 @@ public class CommonTranscribeGroupRecord extends UpdatableRecordImpl<CommonTrans
     }
 
     /**
-     * Setter for <code>CUSTOMDB.transcribe_group_*.seq</code>.
+     * Setter for <code>CUSTOMDB.transcribe_group.seq</code>.
      */
     public void setSeq(Integer value) {
         set(0, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.transcribe_group_*.seq</code>.
+     * Getter for <code>CUSTOMDB.transcribe_group.seq</code>.
      */
     public Integer getSeq() {
         return (Integer) get(0);
@@ -39,77 +39,81 @@ public class CommonTranscribeGroupRecord extends UpdatableRecordImpl<CommonTrans
     }
 
     /**
-     * Setter for <code>CUSTOMDB.transcribe_group_*.group_name</code>. 전사그룹명
+     * Setter for <code>CUSTOMDB.transcribe_group.groupName</code>. 전사그룹명
      */
-    public void setGroupName(String value) { set(2, value); }
+    public void setGroupname(String value) {
+        set(2, value);
+    }
 
     /**
      * Getter for <code>CUSTOMDB.transcribe_group.groupName</code>. 전사그룹명
      */
-    public String getGroupName() {
+    public String getGroupname() {
         return (String) get(2);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.transcribe_group_*.userId</code>. 그룹담당자ID
+     * Setter for <code>CUSTOMDB.transcribe_group.userId</code>. 그룹담당자ID
      */
-    public void setUserId(String value) { set(3, value); }
+    public void setUserid(String value) {
+        set(3, value);
+    }
 
     /**
-     * Getter for <code>CUSTOMDB.transcribe_group_*.userId</code>. 그룹담당자ID
+     * Getter for <code>CUSTOMDB.transcribe_group.userId</code>. 그룹담당자ID
      */
-    public String getUserId() {
+    public String getUserid() {
         return (String) get(3);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.transcribe_group_*.status</code>. 그룹진행상태
+     * Setter for <code>CUSTOMDB.transcribe_group.status</code>. 그룹진행상태
      */
-    public void setStatus(String value) { set(4, value); }
+    public void setStatus(String value) {
+        set(4, value);
+    }
 
     /**
-     * Getter for <code>CUSTOMDB.transcribe_group_*.status</code>. 그룹진행상태
+     * Getter for <code>CUSTOMDB.transcribe_group.status</code>. 그룹진행상태
      */
     public String getStatus() {
         return (String) get(4);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.eicn_cdr_*.fileCnt</code>. 녹취파일갯수
+     * Setter for <code>CUSTOMDB.transcribe_group.fileCnt</code>. 녹취파일갯수
      */
-    public void setFileCnt(Integer value) {
+    public void setFilecnt(Integer value) {
         set(5, value);
     }
 
     /**
      * Getter for <code>CUSTOMDB.transcribe_group.fileCnt</code>. 녹취파일갯수
      */
-    public Integer getFileCnt() {
+    public Integer getFilecnt() {
         return (Integer) get(5);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.transcribe_group_*.recRate</code>. 인식률
+     * Setter for <code>CUSTOMDB.transcribe_group.recRate</code>. 인식률
      */
-    public void setRecRate(Double value) { set(6, value); }
+    public void setRecrate(Double value) {
+        set(6, value);
+    }
 
     /**
-     * Getter for <code>CUSTOMDB.transcribe_group_*.recRate</code>. 인식률
+     * Getter for <code>CUSTOMDB.transcribe_group.recRate</code>. 인식률
      */
-    public Double getRecRate() { return (Double) get(6); }
+    public Double getRecrate() {
+        return (Double) get(6);
+    }
 
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
 
     @Override
-    public Record1<String> key() {
+    public Record1<Integer> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-
 }

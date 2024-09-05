@@ -1699,9 +1699,11 @@ label.control-label {
 .overflow-overlay {
   overflow: overlay !important;
 }
-
 .overflow-hidden {
   overflow: hidden !important;
+}
+.overflow-visible {
+  overflow: visible !important;
 }
 .progress-wrap {
   width: 345px;
@@ -3751,7 +3753,7 @@ g {
 }
 
 .label-required:after {
-  content: '⠀⁕';
+  content: ' ⁕';
   display: inline-block;
   color: @color-red;;
 }
@@ -4683,4 +4685,8 @@ g {
       min-width: 300px !important;
     }
   }
+}
+
+.sound-mini {
+  padding: 2px !important;
 }

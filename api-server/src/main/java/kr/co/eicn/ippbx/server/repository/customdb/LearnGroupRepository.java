@@ -1,7 +1,7 @@
 package kr.co.eicn.ippbx.server.repository.customdb;
 
-import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonLearnGroup;
-import kr.co.eicn.ippbx.model.entity.customdb.LearnGroupEntity;
+import kr.co.eicn.ippbx.meta.jooq.customdb.tables.CommonTranscribeLearn;
+import kr.co.eicn.ippbx.model.entity.customdb.TranscribeLearnEntity;
 import kr.co.eicn.ippbx.model.form.LearnGroupFormRequest;
 import kr.co.eicn.ippbx.model.search.LearnGroupSearchRequest;
 import kr.co.eicn.ippbx.util.page.Pagination;
@@ -15,17 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-public class LearnGroupRepository extends CustomDBBaseRepository<CommonLearnGroup, LearnGroupEntity, Integer>{
+public class LearnGroupRepository extends CustomDBBaseRepository<CommonTranscribeLearn, TranscribeLearnEntity, Integer>{
     protected final Logger logger = LoggerFactory.getLogger(LearnGroupRepository.class);
 
-    private final CommonLearnGroup TABLE;
+    private final CommonTranscribeLearn TABLE;
 
     public LearnGroupRepository(String companyId) {
-        super(new CommonLearnGroup(companyId), new CommonLearnGroup(companyId).SEQ, LearnGroupEntity.class);
-        this.TABLE = new CommonLearnGroup(companyId);
+        super(new CommonTranscribeLearn(companyId), new CommonTranscribeLearn(companyId).SEQ, TranscribeLearnEntity.class);
+        this.TABLE = new CommonTranscribeLearn(companyId);
     }
 
-    public Pagination<LearnGroupEntity> pagination(LearnGroupSearchRequest search) {
+    public Pagination<TranscribeLearnEntity> pagination(LearnGroupSearchRequest search) {
         return super.pagination(search, conditions(search));
     }
 

@@ -48,7 +48,7 @@
         <form:hidden path="parentSeq"/>
         <div class="ui centered grid">
             <div class="row">
-                <div class="four wide column"><label class="control-label">메뉴명(*)</label></div>
+                <div class="four wide column"><label class="control-label label-required">메뉴명</label></div>
                 <div class="twelve wide column">
                     <div class="ui input fluid">
                         <form:input path="name"/>
@@ -59,10 +59,10 @@
                 <div class="row">
                     <div class="four wide column remove-pr">
                         <label class="control-label">인트로음원선택</label>
-                        <button type="button" class="ui icon button mini compact -sound-download" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
+                        <button type="button" class="ui icon button mini compact -sound-download sound-mini" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
                             <i class="arrow down icon"></i>
                         </button>
-                        <button type="button" class="ui icon button mini compact -sound-play -play-trigger" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
+                        <button type="button" class="ui icon button mini compact -sound-play sound-mini -play-trigger" data-sound-input="[name=introSoundCode]" data-tts-input="[name=introTtsData]">
                             <i class="volume up icon"></i>
                         </button>
                         <div class="ui popup top left"></div>
@@ -93,7 +93,7 @@
                             CONNECT_REPRESENTABLE_NUMBER_AFTER_DONE_EXCEPTION,
                             CONNECT_HUNT_NUMBER_AFTER_DONE_EXCEPTION].contains(form.type)}">
                 <div class="row">
-                    <div class="four wide column"><label class="control-label">예외컨텍스트선택(*)</label></div>
+                    <div class="four wide column"><label class="control-label label-required">예외컨텍스트선택</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
                             <select name="typeDataStrings" data-multiple="multiple" class="wantsort2">
@@ -112,11 +112,11 @@
                                                             CONNECT_MENU_AFTER_DONE_EXCEPTION,
                                                             CONNECT_INNER_NUMBER_DIRECTLY]}"/>
                 <div class="four wide column">
-                    <label class="control-label">음원선택${requireSoundMenus.contains(form.type) ? '(*)' : ''}</label>
-                    <button type="button" class="ui icon button mini compact -sound-download" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
+                    <label class="control-label ${requireSoundMenus.contains(form.type) ? 'label-required' : ''}">음원선택</label>
+                    <button type="button" class="ui icon button mini compact -sound-download sound-mini" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
                         <i class="arrow down icon"></i>
                     </button>
-                    <button type="button" class="ui icon button mini compact -sound-play -play-trigger" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
+                    <button type="button" class="ui icon button mini compact -sound-play sound-mini -play-trigger" data-sound-input="[name=soundCode]" data-tts-input="[name=ttsData]">
                         <i class="volume up icon"></i>
                     </button>
                     <div class="ui popup top left"></div>
@@ -146,7 +146,7 @@
             <c:if test="${[CONNECT_REPRESENTABLE_NUMBER,
                             CONNECT_REPRESENTABLE_NUMBER_AFTER_DONE_EXCEPTION].contains(form.type)}">
                 <div class="row">
-                    <div class="four wide column"><label class="control-label">대표번호선택(*)</label></div>
+                    <div class="four wide column"><label class="control-label label-required">대표번호선택</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
                             <select name="typeDataStrings" data-multiple="multiple">
@@ -162,7 +162,7 @@
             <c:if test="${[CONNECT_HUNT_NUMBER,
                             CONNECT_HUNT_NUMBER_AFTER_DONE_EXCEPTION].contains(form.type)}">
                 <div class="row">
-                    <div class="four wide column"><label class="control-label">수신그룹번호선택(*)</label></div>
+                    <div class="four wide column"><label class="control-label label-required">수신그룹번호선택</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
                             <select name="typeDataStrings" data-multiple="multiple">
@@ -177,7 +177,7 @@
             </c:if>
             <c:if test="${[CONNECT_INNER_NUMBER].contains(form.type)}">
                 <div class="row">
-                    <div class="four wide column"><label class="control-label">내선번호선택(*)</label></div>
+                    <div class="four wide column"><label class="control-label label-required">내선번호선택</label></div>
                     <div class="twelve wide column">
                         <div class="ui form">
                             <select name="typeDataStrings" data-multiple="multiple">
@@ -192,7 +192,7 @@
             </c:if>
             <c:if test="${[CONNECT_OUTER_NUMBER].contains(form.type)}">
                 <div class="row">
-                    <div class="four wide column"><label class="control-label">연결될외부번호(*)</label></div>
+                    <div class="four wide column"><label class="control-label label-required">연결될외부번호</label></div>
                     <div class="twelve wide column">
                         <div class="ui input fluid">
                             <input type="text" name="typeDataStrings" data-multiple="multiple"
@@ -335,6 +335,8 @@
 
         if (!sound)
             return;
+
+        modal.find('.content.rows').addClass('overflow-visible');
 
         if (sound !== 'TTS') {
             const src = "${pageContext.request.contextPath}/api/ars/id/" + sound + "/resource?mode=PLAY";

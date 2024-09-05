@@ -945,14 +945,4 @@ public class CommonMaindbCustomInfoRecord extends UpdatableRecordImpl<CommonMain
     public Record1<String> key() {
         return (Record1) super.key();
     }
-
-    // -------------------------------------------------------------------------
-    // Constructors
-    // -------------------------------------------------------------------------
-
-    /**
-     * Create a detached MaindbCustomInfoRecord
-     */
-
-
 }

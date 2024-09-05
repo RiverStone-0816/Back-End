@@ -1,58 +1,72 @@
 package kr.co.eicn.ippbx.meta.jooq.statdb.tables;
 
+import kr.co.eicn.ippbx.meta.jooq.statdb.Indexes;
+import kr.co.eicn.ippbx.meta.jooq.statdb.Statdb;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.StatQueueWaitRecord;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import java.sql.Date;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class CommonStatQueueWait extends TableImpl<StatQueueWaitRecord> {
-
     /**
      * The column <code>STATDB.stat_queue_wait.seq</code>. 고유키
      */
-    public final TableField<StatQueueWaitRecord, Integer> SEQ = createField(DSL.name("seq"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "고유키");
+    public final TableField<StatQueueWaitRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.nullable(false).identity(true), this, "고유키");
+
     /**
      * The column <code>STATDB.stat_queue_wait.company_id</code>. 회사 ID
      */
-    public final TableField<StatQueueWaitRecord, String> COMPANY_ID = createField(DSL.name("company_id"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "회사 ID");
+    public final TableField<StatQueueWaitRecord, String> COMPANY_ID = createField(DSL.name("company_id"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "회사 ID");
+
     /**
      * The column <code>STATDB.stat_queue_wait.group_code</code>. 조직코드
      */
-    public final TableField<StatQueueWaitRecord, String> GROUP_CODE = createField(DSL.name("group_code"), org.jooq.impl.SQLDataType.CHAR(4), this, "조직코드");
+    public final TableField<StatQueueWaitRecord, String> GROUP_CODE = createField(DSL.name("group_code"), SQLDataType.CHAR(4).defaultValue(DSL.field("NULL", SQLDataType.CHAR)), this, "조직코드");
+
     /**
      * The column <code>STATDB.stat_queue_wait.group_tree_name</code>. 조직트리명
      */
-    public final TableField<StatQueueWaitRecord, String> GROUP_TREE_NAME = createField(DSL.name("group_tree_name"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "조직트리명");
+    public final TableField<StatQueueWaitRecord, String> GROUP_TREE_NAME = createField(DSL.name("group_tree_name"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "조직트리명");
+
     /**
      * The column <code>STATDB.stat_queue_wait.group_level</code>. 조직레벨
      */
-    public final TableField<StatQueueWaitRecord, Integer> GROUP_LEVEL = createField(DSL.name("group_level"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "조직레벨");
+    public final TableField<StatQueueWaitRecord, Integer> GROUP_LEVEL = createField(DSL.name("group_level"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "조직레벨");
+
     /**
      * The column <code>STATDB.stat_queue_wait.queue_name</code>. QUEUE 이름
      */
-    public final TableField<StatQueueWaitRecord, String> QUEUE_NAME = createField(DSL.name("queue_name"), org.jooq.impl.SQLDataType.VARCHAR(128).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "QUEUE 이름");
+    public final TableField<StatQueueWaitRecord, String> QUEUE_NAME = createField(DSL.name("queue_name"), SQLDataType.VARCHAR(128).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "QUEUE 이름");
+
     /**
      * The column <code>STATDB.stat_queue_wait.stat_date</code>. 생성일
      */
-    public final TableField<StatQueueWaitRecord, Date> STAT_DATE = createField(DSL.name("stat_date"), org.jooq.impl.SQLDataType.DATE.defaultValue(org.jooq.impl.DSL.inline("2009-01-01", org.jooq.impl.SQLDataType.DATE)), this, "생성일");
+    public final TableField<StatQueueWaitRecord, Date> STAT_DATE = createField(DSL.name("stat_date"), SQLDataType.DATE.defaultValue(DSL.field("'2009-01-01'", SQLDataType.DATE)), this, "생성일");
+
     /**
      * The column <code>STATDB.stat_queue_wait.stat_hour</code>. 생성시간
      */
-    public final TableField<StatQueueWaitRecord, Byte> STAT_HOUR = createField(DSL.name("stat_hour"), org.jooq.impl.SQLDataType.TINYINT.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.TINYINT)), this, "생성시간");
+    public final TableField<StatQueueWaitRecord, Byte> STAT_HOUR = createField(DSL.name("stat_hour"), SQLDataType.TINYINT.defaultValue(DSL.field("0", SQLDataType.TINYINT)), this, "생성시간");
+
     /**
      * The column <code>STATDB.stat_queue_wait.total_wait</code>. 시간당대기자수합계
      */
-    public final TableField<StatQueueWaitRecord, Integer> TOTAL_WAIT = createField(DSL.name("total_wait"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "시간당대기자수합계");
+    public final TableField<StatQueueWaitRecord, Integer> TOTAL_WAIT = createField(DSL.name("total_wait"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "시간당대기자수합계");
+
     /**
      * The column <code>STATDB.stat_queue_wait.max_wait</code>. 최대대기자수
      */
-    public final TableField<StatQueueWaitRecord, Integer> MAX_WAIT = createField(DSL.name("max_wait"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "최대대기자수");
+    public final TableField<StatQueueWaitRecord, Integer> MAX_WAIT = createField(DSL.name("max_wait"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "최대대기자수");
+
     private final String tableName;
 
     /**
@@ -76,43 +90,40 @@ public class CommonStatQueueWait extends TableImpl<StatQueueWaitRecord> {
         this.tableName = table.getName();
     }
 
-    /**
-     * The class holding records for this type
-     */
     @Override
-    public Class<StatQueueWaitRecord> getRecordType() {
-        return StatQueueWaitRecord.class;
+    public Schema getSchema() {
+        return Statdb.STATDB;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @NotNull
+    @Override
+    public List<Index> getIndexes() {
+        return Arrays.<Index>asList(Indexes.STAT_QUEUE_WAIT_COMPANY_ID, Indexes.STAT_QUEUE_WAIT_GROUP_CODE, Indexes.STAT_QUEUE_WAIT_GROUP_LEVEL, Indexes.STAT_QUEUE_WAIT_GROUP_TREE_NAME, Indexes.STAT_QUEUE_WAIT_QUEUE_NAME, Indexes.STAT_QUEUE_WAIT_STAT_DATE, Indexes.STAT_QUEUE_WAIT_STAT_HOUR);
+    }
+
     @Override
     public Identity<StatQueueWaitRecord, Integer> getIdentity() {
-        return org.jooq.impl.Internal.createIdentity(this, this.SEQ);
+        return Internal.createIdentity(this, this.SEQ);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public UniqueKey<StatQueueWaitRecord> getPrimaryKey() {
-        return org.jooq.impl.Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
+        return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @NotNull
     @Override
     public List<UniqueKey<StatQueueWaitRecord>> getKeys() {
         return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
+    @NotNull
     @Override
     public CommonStatQueueWait as(String alias) {
         return new CommonStatQueueWait(DSL.name(alias), this);
     }
 
+    @NotNull
     @Override
     public CommonStatQueueWait as(Name alias) {
         return new CommonStatQueueWait(alias, this);
@@ -132,14 +143,5 @@ public class CommonStatQueueWait extends TableImpl<StatQueueWaitRecord> {
     @Override
     public CommonStatQueueWait rename(Name name) {
         return new CommonStatQueueWait(name, null);
-    }
-
-    // -------------------------------------------------------------------------
-    // Row10 type methods
-    // -------------------------------------------------------------------------
-
-    @Override
-    public Row10<Integer, String, String, String, Integer, String, Date, Byte, Integer, Integer> fieldsRow() {
-        return (Row10) super.fieldsRow();
     }
 }

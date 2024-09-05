@@ -1,11 +1,14 @@
 package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
+import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.CommonMaindbMultichannelInfoRecord;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import java.util.Arrays;
@@ -13,43 +16,41 @@ import java.util.Collections;
 import java.util.List;
 
 public class CommonMaindbMultichannelInfo extends TableImpl<CommonMaindbMultichannelInfoRecord> {
-
-    public static final CommonMaindbMultichannelInfo MAINDB_MULTICHANNEL_INFO = new CommonMaindbMultichannelInfo();
+    /**
+     * The column <code>CUSTOMDB.maindb_multichannel_info.seq</code>.
+     */
+    public final TableField<CommonMaindbMultichannelInfoRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.nullable(false).identity(true), this, "");
 
     /**
-     * The column <code>CUSTOMDB.maindb_multichannel_info_*.seq</code>.
+     * The column <code>CUSTOMDB.maindb_multichannel_info.channel_type</code>.
      */
-    public final TableField<CommonMaindbMultichannelInfoRecord, Integer> SEQ = createField(DSL.name("seq"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<CommonMaindbMultichannelInfoRecord, String> CHANNEL_TYPE = createField(DSL.name("channel_type"), SQLDataType.VARCHAR(20).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>CUSTOMDB.maindb_multichannel_info_*.channel_type</code>.
+     * The column <code>CUSTOMDB.maindb_multichannel_info.channel_data</code>.
      */
-    public final TableField<CommonMaindbMultichannelInfoRecord, String> CHANNEL_TYPE = createField(DSL.name("channel_type"), org.jooq.impl.SQLDataType.VARCHAR(20).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<CommonMaindbMultichannelInfoRecord, String> CHANNEL_DATA = createField(DSL.name("channel_data"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>CUSTOMDB.maindb_multichannel_info_*.channel_data</code>.
+     * The column <code>CUSTOMDB.maindb_multichannel_info.maindb_group_id</code>.
      */
-    public final TableField<CommonMaindbMultichannelInfoRecord, String> CHANNEL_DATA = createField(DSL.name("channel_data"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<CommonMaindbMultichannelInfoRecord, Integer> MAINDB_GROUP_ID = createField(DSL.name("maindb_group_id"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "");
 
     /**
-     * The column <code>CUSTOMDB.maindb_multichannel_info_*.maindb_group_id</code>.
+     * The column <code>CUSTOMDB.maindb_multichannel_info.maindb_custom_id</code>.
      */
-    public final TableField<CommonMaindbMultichannelInfoRecord, Integer> MAINDB_GROUP_ID = createField(DSL.name("maindb_group_id"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
+    public final TableField<CommonMaindbMultichannelInfoRecord, String> MAINDB_CUSTOM_ID = createField(DSL.name("maindb_custom_id"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>CUSTOMDB.maindb_multichannel_info_*.maindb_custom_id</code>.
+     * The column <code>CUSTOMDB.maindb_multichannel_info.maindb_custom_name</code>.
      */
-    public final TableField<CommonMaindbMultichannelInfoRecord, String> MAINDB_CUSTOM_ID = createField(DSL.name("maindb_custom_id"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<CommonMaindbMultichannelInfoRecord, String> MAINDB_CUSTOM_NAME = createField(DSL.name("maindb_custom_name"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
 
     /**
-     * The column <code>CUSTOMDB.maindb_multichannel_info_*.maindb_custom_name</code>.
+     * The column <code>CUSTOMDB.maindb_multichannel_info.company_id</code>.
      */
-    public final TableField<CommonMaindbMultichannelInfoRecord, String> MAINDB_CUSTOM_NAME = createField(DSL.name("maindb_custom_name"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<CommonMaindbMultichannelInfoRecord, String> COMPANY_ID = createField(DSL.name("company_id"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
 
-    /**
-     * The column <code>CUSTOMDB.maindb_multichannel_info_*.company_id</code>.
-     */
-    public final TableField<CommonMaindbMultichannelInfoRecord, String> COMPANY_ID = createField(DSL.name("company_id"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
     private final String tableName;
 
     /**
@@ -90,22 +91,15 @@ public class CommonMaindbMultichannelInfo extends TableImpl<CommonMaindbMulticha
         this.tableName = table.getName();
     }
 
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<CommonMaindbMultichannelInfoRecord> getRecordType() {
-        return CommonMaindbMultichannelInfoRecord.class;
-    }
-
     @Override
     public Schema getSchema() {
         return Customdb.CUSTOMDB;
     }
 
+    @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList();
+        return Arrays.<Index>asList(Indexes.MAINDB_MULTICHANNEL_INFO_CHANNEL_DATA, Indexes.MAINDB_MULTICHANNEL_INFO_CHANNEL_TYPE, Indexes.MAINDB_MULTICHANNEL_INFO_MAINDB_CUSTOM_ID, Indexes.MAINDB_MULTICHANNEL_INFO_MAINDB_GROUP_ID);
     }
 
     @Override
@@ -118,16 +112,19 @@ public class CommonMaindbMultichannelInfo extends TableImpl<CommonMaindbMulticha
         return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
+    @NotNull
     @Override
     public List<UniqueKey<CommonMaindbMultichannelInfoRecord>> getKeys() {
         return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
+    @NotNull
     @Override
     public CommonMaindbMultichannelInfo as(String alias) {
         return new CommonMaindbMultichannelInfo(DSL.name(alias), this);
     }
 
+    @NotNull
     @Override
     public CommonMaindbMultichannelInfo as(Name alias) {
         return new CommonMaindbMultichannelInfo(alias, this);

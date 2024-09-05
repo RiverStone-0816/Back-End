@@ -22,24 +22,25 @@
     <div class="content rows scrolling">
         <div class="ui grid">
             <div class="row">
-                <div class="four wide column"><label class="control-label">큐(그룹)명</label></div>
+                <div class="four wide column"><label class="control-label label-required">큐(그룹)명</label></div>
                 <div class="four wide column">
                     <div class="ui input fluid">
                         <form:input path="hanName"/>
                     </div>
                 </div>
-                <div class="four wide column"><label class="control-label">실행할교환기</label></div>
+                <div class="four wide column"><label class="control-label label-required">실행할교환기</label></div>
                 <div class="four wide column">
                     <div class="ui form">
                         <form:select path="runHost">
-                            <form:option value="" label="선택안함"/>
-                            <form:options items="${hosts}"/>
+                            <c:forEach var="e" items="${hosts}">
+                                <form:option value="${e.key}" label="${e.value}(${e.key})" data-host="${e.key}"/>
+                            </c:forEach>
                         </form:select>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">통화분배정책</label></div>
+                <div class="four wide column"><label class="control-label label-required">통화분배정책</label></div>
                 <div class="four wide column">
                     <div class="ui form">
                         <form:select path="strategy">

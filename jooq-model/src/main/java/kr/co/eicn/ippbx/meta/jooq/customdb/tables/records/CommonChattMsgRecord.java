@@ -26,115 +26,100 @@ public class CommonChattMsgRecord extends UpdatableRecordImpl<CommonChattMsgReco
     }
 
     /**
-     * Setter for <code>CUSTOMDB.chatt_msg.write_date</code>.
+     * Setter for <code>CUSTOMDB.chatt_msg.room_id</code>.
      */
-    public void setWriteDate(Timestamp value) {
+    public void setRoomId(String value) {
         set(1, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.chatt_msg.write_date</code>.
+     * Getter for <code>CUSTOMDB.chatt_msg.room_id</code>.
      */
-    public Timestamp getWriteDate() {
-        return (Timestamp) get(1);
-    }
-
-    /**
-     * Setter for <code>CUSTOMDB.chatt_msg.roomid</code>.
-     */
-    public void setRoomid(String value) {
-        set(2, value);
-    }
-
-    /**
-     * Getter for <code>CUSTOMDB.chatt_msg.roomid</code>.
-     */
-    public String getRoomid() {
-        return (String) get(2);
-    }
-
-    /**
-     * Setter for <code>CUSTOMDB.chatt_msg.parent_roomid</code>.
-     */
-    public void setParentRoomid(String value) {
-        set(3, value);
-    }
-
-    /**
-     * Getter for <code>CUSTOMDB.chatt_msg.parent_roomid</code>.
-     */
-    public String getParentRoomid() {
-        return (String) get(3);
+    public String getRoomId() {
+        return (String) get(1);
     }
 
     /**
      * Setter for <code>CUSTOMDB.chatt_msg.userid</code>.
      */
     public void setUserid(String value) {
-        set(4, value);
+        set(2, value);
     }
 
     /**
      * Getter for <code>CUSTOMDB.chatt_msg.userid</code>.
      */
     public String getUserid() {
+        return (String) get(2);
+    }
+
+    /**
+     * Setter for <code>CUSTOMDB.chatt_msg.insert_time</code>.
+     */
+    public void setInsertTime(Timestamp value) {
+        set(3, value);
+    }
+
+    /**
+     * Getter for <code>CUSTOMDB.chatt_msg.insert_time</code>.
+     */
+    public Timestamp getInsertTime() {
+        return (Timestamp) get(3);
+    }
+
+    /**
+     * Setter for <code>CUSTOMDB.chatt_msg.send_receive</code>.
+     */
+    public void setSendReceive(String value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>CUSTOMDB.chatt_msg.send_receive</code>.
+     */
+    public String getSendReceive() {
         return (String) get(4);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.chatt_msg.username</code>.
+     * Setter for <code>CUSTOMDB.chatt_msg.message_id</code>.
      */
-    public void setUsername(String value) {
+    public void setMessageId(String value) {
         set(5, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.chatt_msg.username</code>.
+     * Getter for <code>CUSTOMDB.chatt_msg.message_id</code>.
      */
-    public String getUsername() {
+    public String getMessageId() {
         return (String) get(5);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.chatt_msg.msg_kind</code>.
+     * Setter for <code>CUSTOMDB.chatt_msg.type</code>.
      */
-    public void setMsgKind(String value) {
+    public void setType(String value) {
         set(6, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.chatt_msg.msg_kind</code>.
+     * Getter for <code>CUSTOMDB.chatt_msg.type</code>.
      */
-    public String getMsgKind() {
+    public String getType() {
         return (String) get(6);
     }
 
     /**
-     * Setter for <code>CUSTOMDB.chatt_msg.msg</code>.
+     * Setter for <code>CUSTOMDB.chatt_msg.content</code>.
      */
-    public void setMsg(String value) {
+    public void setContent(String value) {
         set(7, value);
     }
 
     /**
-     * Getter for <code>CUSTOMDB.chatt_msg.msg</code>.
+     * Getter for <code>CUSTOMDB.chatt_msg.content</code>.
      */
-    public String getMsg() {
+    public String getContent() {
         return (String) get(7);
     }
-
-    /**
-     * Setter for <code>CUSTOMDB.chatt_msg.company_id</code>.
-     */
-    public void setCompanyId(String value) {
-        set(8, value);
-    }
-
-    /**
-     * Getter for <code>CUSTOMDB.chatt_msg.company_id</code>.
-     */
-    public String getCompanyId() {
-        return (String) get(8);
-    }
-
 }

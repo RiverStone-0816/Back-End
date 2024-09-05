@@ -40,7 +40,7 @@
                     <div class="search-area">
                         <div class="ui grid">
                             <div class="row">
-                                <div class="two wide column"><label class="control-label">루트IVR 선택</label></div>
+                                <div class="two wide column"><label class="control-label">IVR</label></div>
                                 <div class="two wide column">
                                     <div class="ui form">
                                         <form:select path="seq">

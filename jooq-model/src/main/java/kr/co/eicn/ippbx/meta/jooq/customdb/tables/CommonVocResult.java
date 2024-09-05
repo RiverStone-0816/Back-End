@@ -6,67 +6,81 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
-import kr.co.eicn.ippbx.meta.jooq.customdb.Keys;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.VocResultRecord;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
+import org.jooq.impl.Internal;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class CommonVocResult extends TableImpl<VocResultRecord> {
+    /**
+     * The column <code>CUSTOMDB.voc_result.seq</code>. SEQUENCE KEY
+     */
+    public final TableField<VocResultRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.nullable(false).identity(true), this, "SEQUENCE KEY");
 
     /**
-     * The column <code>CUSTOMDB.voc_result.seq</code>.
+     * The column <code>CUSTOMDB.voc_result.result_date</code>. 설문일시
      */
-    public final TableField<VocResultRecord, Integer> SEQ = createField(DSL.name("seq"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "");
+    public final TableField<VocResultRecord, Timestamp> RESULT_DATE = createField(DSL.name("result_date"), SQLDataType.TIMESTAMP(0).nullable(false).defaultValue(DSL.field("'2010-01-01 00:00:00'", SQLDataType.TIMESTAMP)), this, "설문일시");
+
     /**
-     * The column <code>CUSTOMDB.voc_result.result_date</code>.
+     * The column <code>CUSTOMDB.voc_result.uniqueid</code>. 유니크 아이디
      */
-    public final TableField<VocResultRecord, Timestamp> RESULT_DATE = createField(DSL.name("result_date"), org.jooq.impl.SQLDataType.TIMESTAMP.nullable(false).defaultValue(org.jooq.impl.DSL.inline("2010-01-01 00:00:00", org.jooq.impl.SQLDataType.TIMESTAMP)), this, "");
+    public final TableField<VocResultRecord, String> UNIQUEID = createField(DSL.name("uniqueid"), SQLDataType.VARCHAR(50).nullable(false).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "유니크 아이디");
+
     /**
-     * The column <code>CUSTOMDB.voc_result.uniqueid</code>.
+     * The column <code>CUSTOMDB.voc_result.hangup_cause</code>. 전화행업코드
      */
-    public final TableField<VocResultRecord, String> UNIQUEID = createField(DSL.name("uniqueid"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<VocResultRecord, String> HANGUP_CAUSE = createField(DSL.name("hangup_cause"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "전화행업코드");
+
     /**
-     * The column <code>CUSTOMDB.voc_result.hangup_cause</code>.
+     * The column <code>CUSTOMDB.voc_result.hangup_msg</code>. 전화행업메시지
      */
-    public final TableField<VocResultRecord, String> HANGUP_CAUSE = createField(DSL.name("hangup_cause"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<VocResultRecord, String> HANGUP_MSG = createField(DSL.name("hangup_msg"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "전화행업메시지");
+
     /**
-     * The column <code>CUSTOMDB.voc_result.hangup_msg</code>.
+     * The column <code>CUSTOMDB.voc_result.billsec</code>. 통화시간
      */
-    public final TableField<VocResultRecord, String> HANGUP_MSG = createField(DSL.name("hangup_msg"), org.jooq.impl.SQLDataType.VARCHAR(100).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<VocResultRecord, Integer> BILLSEC = createField(DSL.name("billsec"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "통화시간");
+
     /**
-     * The column <code>CUSTOMDB.voc_result.billsec</code>.
+     * The column <code>CUSTOMDB.voc_result.custom_number</code>. 고객 전화번호
      */
-    public final TableField<VocResultRecord, Integer> BILLSEC = createField(DSL.name("billsec"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "");
-    /**
-     * The column <code>CUSTOMDB.voc_result.custom_number</code>.
-     */
-    public final TableField<VocResultRecord, String> CUSTOM_NUMBER = createField(DSL.name("custom_number"), org.jooq.impl.SQLDataType.VARCHAR(50).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<VocResultRecord, String> CUSTOM_NUMBER = createField(DSL.name("custom_number"), SQLDataType.VARCHAR(50).nullable(false).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "고객 전화번호");
+
     /**
      * The column <code>CUSTOMDB.voc_result.userid</code>. 상담자
      */
-    public final TableField<VocResultRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "상담자");
+    public final TableField<VocResultRecord, String> USERID = createField(DSL.name("userid"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "상담자");
+
     /**
      * The column <code>CUSTOMDB.voc_result.voc_group_id</code>. VOC그룹 아이디
      */
-    public final TableField<VocResultRecord, Integer> VOC_GROUP_ID = createField(DSL.name("voc_group_id"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "VOC그룹 아이디");
+    public final TableField<VocResultRecord, Integer> VOC_GROUP_ID = createField(DSL.name("voc_group_id"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "VOC그룹 아이디");
+
     /**
      * The column <code>CUSTOMDB.voc_result.research_id</code>. 설문 아이디
      */
-    public final TableField<VocResultRecord, Integer> RESEARCH_ID = createField(DSL.name("research_id"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "설문 아이디");
+    public final TableField<VocResultRecord, Integer> RESEARCH_ID = createField(DSL.name("research_id"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "설문 아이디");
+
     /**
      * The column <code>CUSTOMDB.voc_result.tree_path</code>. 설문단계
      */
-    public final TableField<VocResultRecord, String> TREE_PATH = createField(DSL.name("tree_path"), org.jooq.impl.SQLDataType.VARCHAR(800).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "설문단계");
+    public final TableField<VocResultRecord, String> TREE_PATH = createField(DSL.name("tree_path"), SQLDataType.VARCHAR(800).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "설문단계");
+
     /**
      * The column <code>CUSTOMDB.voc_result.company_id</code>. 고객사 아이디
      */
-    public final TableField<VocResultRecord, String> COMPANY_ID = createField(DSL.name("company_id"), org.jooq.impl.SQLDataType.VARCHAR(30).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "고객사 아이디");
+    public final TableField<VocResultRecord, String> COMPANY_ID = createField(DSL.name("company_id"), SQLDataType.VARCHAR(30).nullable(false).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "고객사 아이디");
+
     private final String tableName;
 
     /**
@@ -94,44 +108,40 @@ public class CommonVocResult extends TableImpl<VocResultRecord> {
         this.tableName = table.getName();
     }
 
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<VocResultRecord> getRecordType() {
-        return VocResultRecord.class;
-    }
-
     @Override
     public Schema getSchema() {
         return Customdb.CUSTOMDB;
     }
 
+    @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.asList(Indexes.VOC_RESULT_RESEARCH_ID, Indexes.VOC_RESULT_TREE_PATH);
+        return Arrays.<Index>asList(Indexes.VOC_RESULT_COMPANY_ID, Indexes.VOC_RESULT_RESEARCH_ID, Indexes.VOC_RESULT_TREE_PATH, Indexes.VOC_RESULT_VOC_GROUP_ID);
     }
 
     @Override
     public Identity<VocResultRecord, Integer> getIdentity() {
-        return (Identity<VocResultRecord, Integer>) super.getIdentity();
+        return Internal.createIdentity(this, this.SEQ);
     }
 
     @Override
     public UniqueKey<VocResultRecord> getPrimaryKey() {
-        return Keys.KEY_VOC_RESULT_PRIMARY;
+        return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
+    @NotNull
     @Override
     public List<UniqueKey<VocResultRecord>> getKeys() {
-        return Arrays.asList(Keys.KEY_VOC_RESULT_PRIMARY);
+        return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
+    @NotNull
     @Override
     public CommonVocResult as(String alias) {
         return new CommonVocResult(DSL.name(alias), this);
     }
 
+    @NotNull
     @Override
     public CommonVocResult as(Name alias) {
         return new CommonVocResult(alias, this);

@@ -3,9 +3,11 @@ package kr.co.eicn.ippbx.meta.jooq.customdb.tables;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Customdb;
 import kr.co.eicn.ippbx.meta.jooq.customdb.Indexes;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.records.ChattMsgReadRecord;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
 import org.jooq.*;
 import org.jooq.impl.DSL;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import java.util.Arrays;
@@ -13,22 +15,22 @@ import java.util.List;
 
 public class CommonChattMsgRead extends TableImpl<ChattMsgReadRecord> {
     /**
-     * The reference instance of <code>CUSTOMDB.chatt_msg_read</code>
-     */
-    public static final ChattMsgRead CHATT_MSG_READ = new ChattMsgRead();
-    /**
      * The column <code>CUSTOMDB.chatt_msg_read.message_id</code>.
      */
-    public final TableField<ChattMsgReadRecord, String> MESSAGE_ID = createField(DSL.name("message_id"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<ChattMsgReadRecord, String> MESSAGE_ID = createField(DSL.name("message_id"), SQLDataType.VARCHAR(100).nullable(false).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
+
     /**
      * The column <code>CUSTOMDB.chatt_msg_read.room_id</code>.
      */
-    public final TableField<ChattMsgReadRecord, String> ROOM_ID = createField(DSL.name("room_id"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<ChattMsgReadRecord, String> ROOM_ID = createField(DSL.name("room_id"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
+
     /**
      * The column <code>CUSTOMDB.chatt_msg_read.userid</code>.
      */
-    public final TableField<ChattMsgReadRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "");
+    public final TableField<ChattMsgReadRecord, String> USERID = createField(DSL.name("userid"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "");
+
     private String tableName;
+
     /**
      * Create a <code>CUSTOMDB.chatt_msg_read</code> table reference
      */
@@ -50,29 +52,24 @@ public class CommonChattMsgRead extends TableImpl<ChattMsgReadRecord> {
         this.tableName = table.getName();
     }
 
-    /**
-     * The class holding records for this type
-     */
-    @Override
-    public Class<ChattMsgReadRecord> getRecordType() {
-        return ChattMsgReadRecord.class;
-    }
-
     @Override
     public Schema getSchema() {
         return Customdb.CUSTOMDB;
     }
 
+    @NotNull
     @Override
     public List<Index> getIndexes() {
         return Arrays.<Index>asList(Indexes.CHATT_MSG_READ_MESSAGE_ID, Indexes.CHATT_MSG_READ_ROOM_ID, Indexes.CHATT_MSG_READ_USERID);
     }
 
+    @NotNull
     @Override
     public CommonChattMsgRead as(String alias) {
         return new CommonChattMsgRead(DSL.name(alias), this);
     }
 
+    @NotNull
     @Override
     public CommonChattMsgRead as(Name alias) {
         return new CommonChattMsgRead(alias, this);

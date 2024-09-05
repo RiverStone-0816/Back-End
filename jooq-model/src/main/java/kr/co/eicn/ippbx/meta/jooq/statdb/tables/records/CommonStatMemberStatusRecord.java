@@ -69,59 +69,73 @@ public class CommonStatMemberStatusRecord extends UpdatableRecordImpl<CommonStat
     }
 
     /**
+     * Setter for <code>STATDB.stat_member_status.in_out</code>. status가 1일때만 의미가 있음
+     */
+    public void setInOut(String value) {
+        set(4, value);
+    }
+
+    /**
+     * Getter for <code>STATDB.stat_member_status.in_out</code>. status가 1일때만 의미가 있음
+     */
+    public String getInOut() {
+        return (String) get(4);
+    }
+
+    /**
      * Setter for <code>STATDB.stat_member_status.total</code>. 횟수
      */
     public void setTotal(Integer value) {
-        set(4, value);
+        set(5, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_member_status.total</code>. 횟수
      */
     public Integer getTotal() {
-        return (Integer) get(4);
+        return (Integer) get(5);
     }
 
     /**
      * Setter for <code>STATDB.stat_member_status.diff_sum</code>. 시간
      */
     public void setDiffSum(Integer value) {
-        set(5, value);
+        set(6, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_member_status.diff_sum</code>. 시간
      */
     public Integer getDiffSum() {
-        return (Integer) get(5);
+        return (Integer) get(6);
     }
 
     /**
      * Setter for <code>STATDB.stat_member_status.userid</code>. 상담원아이디
      */
     public void setUserid(String value) {
-        set(6, value);
+        set(7, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_member_status.userid</code>. 상담원아이디
      */
     public String getUserid() {
-        return (String) get(6);
+        return (String) get(7);
     }
 
     /**
      * Setter for <code>STATDB.stat_member_status.company_id</code>. 회사아이디
      */
     public void setCompanyId(String value) {
-        set(7, value);
+        set(8, value);
     }
 
     /**
      * Getter for <code>STATDB.stat_member_status.company_id</code>. 회사아이디
      */
     public String getCompanyId() {
-        return (String) get(7);
+        return (String) get(8);
     }
 
     // -------------------------------------------------------------------------

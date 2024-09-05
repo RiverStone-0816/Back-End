@@ -1,13 +1,18 @@
 package kr.co.eicn.ippbx.meta.jooq.statdb.tables;
 
+import kr.co.eicn.ippbx.meta.jooq.statdb.Indexes;
+import kr.co.eicn.ippbx.meta.jooq.statdb.Statdb;
 import kr.co.eicn.ippbx.meta.jooq.statdb.tables.records.CommonStatUserInboundRecord;
-import org.jooq.*;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.Record;
+import org.jooq.*;
 import org.jooq.impl.DSL;
 import org.jooq.impl.Internal;
+import org.jooq.impl.SQLDataType;
 import org.jooq.impl.TableImpl;
 
 import java.sql.Date;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,128 +20,127 @@ public class CommonStatUserInbound extends TableImpl<CommonStatUserInboundRecord
     /**
      * The column <code>STATDB.stat_user_inbound.seq</code>. 번호
      */
-    public final TableField<CommonStatUserInboundRecord, Integer> SEQ = createField(DSL.name("seq"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).identity(true), this, "번호");
+    public final TableField<CommonStatUserInboundRecord, Integer> SEQ = createField(DSL.name("seq"), SQLDataType.INTEGER.nullable(false).identity(true), this, "번호");
 
     /**
      * The column <code>STATDB.stat_user_inbound.company_id</code>. 회사아이디
      */
-    public final TableField<CommonStatUserInboundRecord, String> COMPANY_ID = createField(DSL.name("company_id"), org.jooq.impl.SQLDataType.VARCHAR(100).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "회사아이디");
+    public final TableField<CommonStatUserInboundRecord, String> COMPANY_ID = createField(DSL.name("company_id"), SQLDataType.VARCHAR(100).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "회사아이디");
 
     /**
      * The column <code>STATDB.stat_user_inbound.group_code</code>.  ex&gt;0001
      */
-    public final TableField<CommonStatUserInboundRecord, String> GROUP_CODE = createField(DSL.name("group_code"), org.jooq.impl.SQLDataType.CHAR(4).nullable(false), this, " ex>0001");
+    public final TableField<CommonStatUserInboundRecord, String> GROUP_CODE = createField(DSL.name("group_code"), SQLDataType.CHAR(4).defaultValue(DSL.field("NULL", SQLDataType.CHAR)), this, " ex>0001");
 
     /**
      * The column <code>STATDB.stat_user_inbound.group_tree_name</code>. ex&gt;0003_0008_0001
      */
-    public final TableField<CommonStatUserInboundRecord, String> GROUP_TREE_NAME = createField(DSL.name("group_tree_name"), org.jooq.impl.SQLDataType.VARCHAR(50).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "ex>0003_0008_0001");
+    public final TableField<CommonStatUserInboundRecord, String> GROUP_TREE_NAME = createField(DSL.name("group_tree_name"), SQLDataType.VARCHAR(50).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "ex>0003_0008_0001");
 
     /**
      * The column <code>STATDB.stat_user_inbound.group_level</code>. 3
      */
-    public final TableField<CommonStatUserInboundRecord, Integer> GROUP_LEVEL = createField(DSL.name("group_level"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "3");
+    public final TableField<CommonStatUserInboundRecord, Integer> GROUP_LEVEL = createField(DSL.name("group_level"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "3");
 
     /**
      * The column <code>STATDB.stat_user_inbound.userid</code>. 상담원아이디
      */
-    public final TableField<CommonStatUserInboundRecord, String> USERID = createField(DSL.name("userid"), org.jooq.impl.SQLDataType.VARCHAR(30).nullable(false).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "상담원아이디");
+    public final TableField<CommonStatUserInboundRecord, String> USERID = createField(DSL.name("userid"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "상담원아이디");
 
     /**
      * The column <code>STATDB.stat_user_inbound.user_stat_yn</code>. 상담원통계라이센스여부
      */
-    public final TableField<CommonStatUserInboundRecord, String> USER_STAT_YN = createField(DSL.name("user_stat_yn"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("'Y'", org.jooq.impl.SQLDataType.CHAR)), this, "상담원통계라이센스여부");
-
+    public final TableField<CommonStatUserInboundRecord, String> USER_STAT_YN = createField(DSL.name("user_stat_yn"), SQLDataType.CHAR(1).defaultValue(DSL.field("'Y'", SQLDataType.CHAR)), this, "상담원통계라이센스여부");
 
     /**
      * The column <code>STATDB.stat_user_inbound.service_number</code>. 대표번호070
      */
-    public final TableField<CommonStatUserInboundRecord, String> SERVICE_NUMBER = createField(DSL.name("service_number"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "대표번호070");
+    public final TableField<CommonStatUserInboundRecord, String> SERVICE_NUMBER = createField(DSL.name("service_number"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "대표번호070");
 
     /**
      * The column <code>STATDB.stat_user_inbound.hunt_number</code>. 헌트번호
      */
-    public final TableField<CommonStatUserInboundRecord, String> HUNT_NUMBER = createField(DSL.name("hunt_number"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "헌트번호");
+    public final TableField<CommonStatUserInboundRecord, String> HUNT_NUMBER = createField(DSL.name("hunt_number"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "헌트번호");
 
     /**
-     * The column <code>STATDB.stat_user_inbound.worktime_yn</code>.
+     * The column <code>STATDB.stat_user_inbound.worktime_yn</code>. 업무시간여부
      */
-    public final TableField<CommonStatUserInboundRecord, String> WORKTIME_YN = createField(DSL.name("worktime_yn"), org.jooq.impl.SQLDataType.CHAR(1).defaultValue(org.jooq.impl.DSL.inline("Y", org.jooq.impl.SQLDataType.CHAR)), this, "");
+    public final TableField<CommonStatUserInboundRecord, String> WORKTIME_YN = createField(DSL.name("worktime_yn"), SQLDataType.CHAR(1).defaultValue(DSL.field("''", SQLDataType.CHAR)), this, "업무시간여부");
 
     /**
      * The column <code>STATDB.stat_user_inbound.category</code>. 인입경로
      */
-    public final TableField<CommonStatUserInboundRecord, String> CATEGORY = createField(DSL.name("category"), org.jooq.impl.SQLDataType.VARCHAR(300).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "인입경로");
+    public final TableField<CommonStatUserInboundRecord, String> CATEGORY = createField(DSL.name("category"), SQLDataType.VARCHAR(300).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "인입경로");
 
     /**
      * The column <code>STATDB.stat_user_inbound.dcontext</code>. 다이얼플랜컨택스트
      */
-    public final TableField<CommonStatUserInboundRecord, String> DCONTEXT = createField(DSL.name("dcontext"), org.jooq.impl.SQLDataType.VARCHAR(30).defaultValue(org.jooq.impl.DSL.inline("", org.jooq.impl.SQLDataType.VARCHAR)), this, "다이얼플랜컨택스트");
+    public final TableField<CommonStatUserInboundRecord, String> DCONTEXT = createField(DSL.name("dcontext"), SQLDataType.VARCHAR(30).defaultValue(DSL.field("''", SQLDataType.VARCHAR)), this, "다이얼플랜컨택스트");
 
     /**
      * The column <code>STATDB.stat_user_inbound.stat_date</code>. 날짜
      */
-    public final TableField<CommonStatUserInboundRecord, Date> STAT_DATE = createField(DSL.name("stat_date"), org.jooq.impl.SQLDataType.DATE.nullable(false).defaultValue(org.jooq.impl.DSL.inline("2009-01-01", org.jooq.impl.SQLDataType.DATE)), this, "날짜");
+    public final TableField<CommonStatUserInboundRecord, Date> STAT_DATE = createField(DSL.name("stat_date"), SQLDataType.DATE.defaultValue(DSL.field("'2009-01-01'", SQLDataType.DATE)), this, "날짜");
 
     /**
      * The column <code>STATDB.stat_user_inbound.stat_hour</code>. 시간
      */
-    public final TableField<CommonStatUserInboundRecord, Byte> STAT_HOUR = createField(DSL.name("stat_hour"), org.jooq.impl.SQLDataType.TINYINT.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.TINYINT)), this, "시간");
+    public final TableField<CommonStatUserInboundRecord, Byte> STAT_HOUR = createField(DSL.name("stat_hour"), SQLDataType.TINYINT.defaultValue(DSL.field("0", SQLDataType.TINYINT)), this, "시간");
 
     /**
      * The column <code>STATDB.stat_user_inbound.in_total</code>. 총계
      */
-    public final TableField<CommonStatUserInboundRecord, Integer> IN_TOTAL = createField(DSL.name("in_total"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "총계");
+    public final TableField<CommonStatUserInboundRecord, Integer> IN_TOTAL = createField(DSL.name("in_total"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "총계");
 
     /**
      * The column <code>STATDB.stat_user_inbound.in_success</code>. 응답
      */
-    public final TableField<CommonStatUserInboundRecord, Integer> IN_SUCCESS = createField(DSL.name("in_success"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "응답");
+    public final TableField<CommonStatUserInboundRecord, Integer> IN_SUCCESS = createField(DSL.name("in_success"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "응답");
 
     /**
      * The column <code>STATDB.stat_user_inbound.in_hunt_noanswer</code>. 헌트시비응답
      */
-    public final TableField<CommonStatUserInboundRecord, Integer> IN_HUNT_NOANSWER = createField(DSL.name("in_hunt_noanswer"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "헌트시비응답");
+    public final TableField<CommonStatUserInboundRecord, Integer> IN_HUNT_NOANSWER = createField(DSL.name("in_hunt_noanswer"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "헌트시비응답");
 
     /**
      * The column <code>STATDB.stat_user_inbound.in_billsec_sum</code>. 통화시간
      */
-    public final TableField<CommonStatUserInboundRecord, Integer> IN_BILLSEC_SUM = createField(DSL.name("in_billsec_sum"), org.jooq.impl.SQLDataType.INTEGER.nullable(false).defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "통화시간");
+    public final TableField<CommonStatUserInboundRecord, Integer> IN_BILLSEC_SUM = createField(DSL.name("in_billsec_sum"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "통화시간");
 
     /**
-     * The column <code>STATDB.stat_user_inbound.in_waitsec_sum</code>. 고객대기시간
+     * The column <code>STATDB.stat_user_inbound.in_waitsec_sum</code>. 대기시간
      */
-    public final TableField<CommonStatUserInboundRecord, Integer> IN_WAITSEC_SUM = createField(DSL.name("in_waitsec_sum"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "고객대기시간");
+    public final TableField<CommonStatUserInboundRecord, Integer> IN_WAITSEC_SUM = createField(DSL.name("in_waitsec_sum"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "대기시간");
 
     /**
      * The column <code>STATDB.stat_user_inbound.transferer</code>. 전환한콜수
      */
-    public final TableField<CommonStatUserInboundRecord, Integer> TRANSFERER = createField(DSL.name("transferer"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "전환한콜수");
+    public final TableField<CommonStatUserInboundRecord, Integer> TRANSFERER = createField(DSL.name("transferer"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "전환한콜수");
 
     /**
      * The column <code>STATDB.stat_user_inbound.transferee</code>. 전환받은콜수
      */
-    public final TableField<CommonStatUserInboundRecord, Integer> TRANSFEREE = createField(DSL.name("transferee"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "전환받은콜수");
+    public final TableField<CommonStatUserInboundRecord, Integer> TRANSFEREE = createField(DSL.name("transferee"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "전환받은콜수");
 
     /**
      * The column <code>STATDB.stat_user_inbound.transferee_succ</code>. 전환받은성공콜수
      */
-    public final TableField<CommonStatUserInboundRecord, Integer> TRANSFEREE_SUCC = createField(DSL.name("transferee_succ"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "전환받은성공콜수");
+    public final TableField<CommonStatUserInboundRecord, Integer> TRANSFEREE_SUCC = createField(DSL.name("transferee_succ"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "전환받은성공콜수");
 
     /**
      * The column <code>STATDB.stat_user_inbound.callback_dist</code>. 콜백분배받은건수
      */
-    public final TableField<CommonStatUserInboundRecord, Integer> CALLBACK_DIST = createField(DSL.name("callback_dist"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "콜백분배받은건수");
+    public final TableField<CommonStatUserInboundRecord, Integer> CALLBACK_DIST = createField(DSL.name("callback_dist"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "콜백분배받은건수");
 
     /**
      * The column <code>STATDB.stat_user_inbound.callback_succ</code>. 분배받은 콜백을 처리한건수
      */
-    public final TableField<CommonStatUserInboundRecord, Integer> CALLBACK_SUCC = createField(DSL.name("callback_succ"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "분배받은 콜백을 처리한건수");
+    public final TableField<CommonStatUserInboundRecord, Integer> CALLBACK_SUCC = createField(DSL.name("callback_succ"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "분배받은 콜백을 처리한건수");
 
     /**
      * The column <code>STATDB.stat_user_inbound.service_level_ok</code>. 서비스레벨안에 전화를 받은건수
      */
-    public final TableField<CommonStatUserInboundRecord, Integer> SERVICE_LEVEL_OK = createField(DSL.name("service_level_ok"), org.jooq.impl.SQLDataType.INTEGER.defaultValue(org.jooq.impl.DSL.inline("0", org.jooq.impl.SQLDataType.INTEGER)), this, "서비스레벨안에 전화를 받은건수");
+    public final TableField<CommonStatUserInboundRecord, Integer> SERVICE_LEVEL_OK = createField(DSL.name("service_level_ok"), SQLDataType.INTEGER.defaultValue(DSL.field("0", SQLDataType.INTEGER)), this, "서비스레벨안에 전화를 받은건수");
 
     private final String tableName;
 
@@ -161,35 +165,40 @@ public class CommonStatUserInbound extends TableImpl<CommonStatUserInboundRecord
         this.tableName = table.getName();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public Schema getSchema() {
+        return Statdb.STATDB;
+    }
+
+    @NotNull
+    @Override
+    public List<Index> getIndexes() {
+        return Arrays.<Index>asList(Indexes.STAT_USER_INBOUND_COMPANY_ID, Indexes.STAT_USER_INBOUND_GROUP_CODE, Indexes.STAT_USER_INBOUND_GROUP_LEVEL, Indexes.STAT_USER_INBOUND_GROUP_TREE_NAME, Indexes.STAT_USER_INBOUND_HUNT_NUMBER, Indexes.STAT_USER_INBOUND_SERVICE_NUMBER, Indexes.STAT_USER_INBOUND_STAT_DATE, Indexes.STAT_USER_INBOUND_STAT_HOUR, Indexes.STAT_USER_INBOUND_USER_STAT_YN, Indexes.STAT_USER_INBOUND_USERID, Indexes.STAT_USER_INBOUND_WORKTIME_YN);
+    }
+
     @Override
     public Identity<CommonStatUserInboundRecord, Integer> getIdentity() {
-        return org.jooq.impl.Internal.createIdentity(this, this.SEQ);
+        return Internal.createIdentity(this, this.SEQ);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public UniqueKey<CommonStatUserInboundRecord> getPrimaryKey() {
-        return org.jooq.impl.Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
+        return Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @NotNull
     @Override
     public List<UniqueKey<CommonStatUserInboundRecord>> getKeys() {
         return Collections.singletonList(Internal.createUniqueKey(this, DSL.name("KEY_" + getName() + "_PRIMARY"), this.SEQ));
     }
 
+    @NotNull
     @Override
     public CommonStatUserInbound as(String alias) {
         return new CommonStatUserInbound(DSL.name(alias), this);
     }
 
+    @NotNull
     @Override
     public CommonStatUserInbound as(Name alias) {
         return new CommonStatUserInbound(alias, this);

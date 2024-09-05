@@ -173,7 +173,7 @@ project(':jooq-model') {
                     name = 'org.jooq.codegen.DefaultGeneratorStrategy'
                 }
                 database {
-                    name = 'org.jooq.meta.mysql.MySQLDatabase'
+                    name = 'org.jooq.meta.mariadb.MariaDBDatabase'
                     schemata {
                         schema {
                             inputSchema = 'eicn'

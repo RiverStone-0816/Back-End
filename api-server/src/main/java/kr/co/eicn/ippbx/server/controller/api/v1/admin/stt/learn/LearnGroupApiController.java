@@ -3,7 +3,7 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin.stt.learn;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.customdb.tables.pojos.CommonTranscribeGroup;
 import kr.co.eicn.ippbx.model.dto.eicn.LearnGroupResponse;
-import kr.co.eicn.ippbx.model.entity.customdb.LearnGroupEntity;
+import kr.co.eicn.ippbx.model.entity.customdb.TranscribeLearnEntity;
 import kr.co.eicn.ippbx.model.form.LearnGroupFormRequest;
 import kr.co.eicn.ippbx.model.search.LearnGroupSearchRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
@@ -46,15 +46,15 @@ public class LearnGroupApiController extends ApiBaseController {
 
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<LearnGroupResponse>>> pagination(LearnGroupSearchRequest search) {
-        Pagination<LearnGroupEntity> pagination;
-        Map<Integer, String> groupNameMap = transcribeGroupService.getRepository().findAll().stream().collect(Collectors.toMap(CommonTranscribeGroup::getSeq, CommonTranscribeGroup::getGroupName));
+        Pagination<TranscribeLearnEntity> pagination;
+        Map<Integer, String> groupNameMap = transcribeGroupService.getRepository().findAll().stream().collect(Collectors.toMap(CommonTranscribeGroup::getSeq, CommonTranscribeGroup::getGroupname));
 
         pagination = learnGroupService.getRepository().pagination(search);
         List<LearnGroupResponse> rows = pagination.getRows().stream()
                 .map((e) -> {
                     LearnGroupResponse learnGroupResponse = convertDto(e, LearnGroupResponse.class);
 
-                    learnGroupResponse.setGroupList(Arrays.stream(e.getLearnGroupCode().split("\\|")).map(f -> groupNameMap.get(Integer.parseInt(f))).collect(Collectors.toList()));
+                    learnGroupResponse.setGroupList(Arrays.stream(e.getLearngroupcode().split("\\|")).map(f -> groupNameMap.get(Integer.parseInt(f))).collect(Collectors.toList()));
 
                     return learnGroupResponse;
                 })

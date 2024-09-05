@@ -64,7 +64,7 @@ public class TranscribeGroupApiController extends ApiBaseController {
                 .map((e) -> {
                     TranscribeGroupResponse transcribeGroupResponse = convertDto(e, TranscribeGroupResponse.class);
 
-                    transcribeGroupResponse.setUserId(personList.stream().filter(person -> person.getId().equals(e.getUserId())).map(PersonList::getIdName).findFirst().orElse(""));
+                    transcribeGroupResponse.setUserId(personList.stream().filter(person -> person.getId().equals(e.getUserid())).map(PersonList::getIdName).findFirst().orElse(""));
 
                     return transcribeGroupResponse;
                 })
