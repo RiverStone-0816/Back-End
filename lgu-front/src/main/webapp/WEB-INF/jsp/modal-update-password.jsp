@@ -48,7 +48,7 @@
 <tags:scripts>
     <script>
         function doneUpdateMyPassword() {
-            alert('적용되었습니다.');
+            alert('패스워드가 적용되어 로그아웃 됩니다. 다시 로그인해주세요.', logout());
             $('#oldPassword').val('');
             $('#password').val('');
             $('#passwordConfirm').val('');
