@@ -10,5 +10,5 @@ public class PDSMonitResponse {
     private PDSMonitGroupResponse pdsGroup;         //PDS그룹정보
     private ExecutePDSGroupResponse executeGroup;   //실행중인 PDS정보
     private ExecutePDSCustomInfoCountResponse count;//통계정보
-    private List<PersonListSummary> persons;        //담당자목록
+    private List<PersonListSummary> persons;        //상담원 목록
 }

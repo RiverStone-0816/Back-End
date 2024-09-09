@@ -1,10 +1,8 @@
 package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.pds;
 
+import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
+import kr.co.eicn.ippbx.model.enums.PDSGroupConnectKind;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.CommonType;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PdsGroup;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.PersonList;
-import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.QueueMemberTable;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
 import kr.co.eicn.ippbx.model.entity.eicn.ExecutePDSGroupEntity;
 import kr.co.eicn.ippbx.model.search.PDSMonitSearchRequest;
@@ -14,15 +12,18 @@ import kr.co.eicn.ippbx.util.JsonResult;
 import kr.co.eicn.ippbx.util.page.Pagination;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static kr.co.eicn.ippbx.meta.jooq.eicn.tables.PdsIvr.PDS_IVR;
 import static kr.co.eicn.ippbx.util.JsonResult.data;
 
 /**
@@ -31,45 +32,59 @@ import static kr.co.eicn.ippbx.util.JsonResult.data;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("api/v1/admin/outbound/pds/monit")
+@RequestMapping(value = "api/v1/admin/outbound/pds/monit", produces = MediaType.APPLICATION_JSON_VALUE)
 public class PDSMonitApiController extends ApiBaseController {
+
     private final ExecutePDSCustomInfoService executePDSCustomInfoService;
-    private final PDSGroupRepository pdsGroupRepository;
-    private final ExecutePDSGroupRepository executePDSGroupRepository;
-    private final QueueMemberTableRepository queueMemberTableRepository;
-    private final PersonListRepository personListRepository;
-    private final CommonTypeRepository commonTypeRepository;
+    private final PDSGroupRepository          pdsGroupRepository;
+    private final ExecutePDSGroupRepository   executePDSGroupRepository;
+    private final QueueMemberTableRepository  queueMemberTableRepository;
+    private final PersonListRepository        personListRepository;
+    private final CommonTypeRepository        commonTypeRepository;
+    private final PDSIvrRepository            pdsIvrRepository;
+    private final PDSQueueNameRepository      pdsQueueNameRepository;
+    private final ResearchListRepository      researchListRepository;
 
     /**
-     * pds 실행 목록 조회
+     * pds 실행/모니터링 목록 조회
      **/
     @GetMapping("")
     public ResponseEntity<JsonResult<Pagination<PDSMonitResponse>>> pagination(PDSMonitSearchRequest search) {
-        Pagination<PdsGroup> pagination = pdsGroupRepository.pagination(search);
-        List<QueueMemberTable> queueMemberList = queueMemberTableRepository.findAllPDSMember();
-        List<PersonList> personList = personListRepository.findAll();
-        List<CommonType> commonTypeList = commonTypeRepository.findAll();
+        final Pagination<PdsGroup> pagination = pdsGroupRepository.pagination(search);
+        final List<QueueMemberTable> queueMemberList = queueMemberTableRepository.findAllPDSMember();
+        final List<PersonList> personList = personListRepository.findAll();
+        final List<CommonType> commonTypeList = commonTypeRepository.findAll();
+        final Map<String, String> personListMap = personListRepository.getIdAndNameMap();
 
-        List<PDSMonitResponse> rows = pagination.getRows().stream()
+        final Map<String, Map<String, String>> connectDataValueMap = new HashMap<>();
+        connectDataValueMap.put(PDSGroupConnectKind.PDS_IVR.getCode(), pdsIvrRepository.findAll(PDS_IVR.PARENT.eq(0)).stream().collect(Collectors.toMap(e -> String.valueOf(e.getCode()), PdsIvr::getName)));
+        connectDataValueMap.put(PDSGroupConnectKind.MEMBER.getCode(), pdsQueueNameRepository.findAll().stream().collect(Collectors.toMap(PdsQueueName::getName, PdsQueueName::getHanName)));
+        if (g.isServiceAvailable("RSH"))
+            connectDataValueMap.put(PDSGroupConnectKind.ARS_RSCH.getCode(), researchListRepository.findAll().stream().collect(Collectors.toMap(e -> String.valueOf(e.getResearchId()), ResearchList::getResearchName)));
+
+        final List<PDSMonitResponse> rows = pagination.getRows().stream()
                 .map(pdsGroup -> {
-                    PDSMonitResponse pdsMonitResponse = new PDSMonitResponse();
-                    pdsMonitResponse.setPdsGroup(convertDto(pdsGroup, PDSMonitGroupResponse.class));
-                    ExecutePDSGroupEntity executePDSGroupEntity = executePDSGroupRepository.findByRunHost(pdsGroup.getRunHost(), pdsGroup.getLastExecuteId());
-                    ExecutePDSGroupResponse executePDSGroupResponse = convertDto(executePDSGroupEntity, ExecutePDSGroupResponse.class);
+                    final PDSMonitResponse pdsMonitResponse = new PDSMonitResponse();
+
+                    final PDSMonitGroupResponse pdsGroupEntity = convertDto(pdsGroup, PDSMonitGroupResponse.class);
+                    pdsGroupEntity.setConnectDataValue(connectDataValueMap.containsKey(pdsGroup.getConnectKind()) ? connectDataValueMap.get(pdsGroup.getConnectKind()).getOrDefault(pdsGroup.getConnectData(), "") : "");
+                    pdsMonitResponse.setPdsGroup(pdsGroupEntity);
+
+                    final ExecutePDSGroupEntity executePDSGroupEntity = executePDSGroupRepository.findByRunHost(pdsGroup.getRunHost(), pdsGroup.getLastExecuteId());
+                    final ExecutePDSGroupResponse executePDSGroupResponse = convertDto(executePDSGroupEntity, ExecutePDSGroupResponse.class);
                     executePDSGroupResponse.setSpeedData(executePDSGroupEntity.getSpeedDataBySpeedKind());
                     executePDSGroupResponse.setPdsTypeName(commonTypeList.stream().filter(type -> type.getSeq().equals(executePDSGroupEntity.getPdsType())).map(CommonType::getName).findFirst().orElse(""));
+                    executePDSGroupResponse.setPdsAdminName(personListMap.getOrDefault(executePDSGroupEntity.getAdminid(), executePDSGroupEntity.getAdminid()));
                     pdsMonitResponse.setExecuteGroup(executePDSGroupResponse);
 
                     pdsMonitResponse.setCount(executePDSCustomInfoService.findAllCount(pdsGroup.getLastExecuteId(), pdsGroup.getRunHost()));
 
-                    Map<String, Integer> memberList = queueMemberList.stream().filter(queue -> queue.getQueueName().equals(pdsGroup.getConnectData()))
+                    final Map<String, Integer> memberList = queueMemberList.stream().filter(queue -> queue.getQueueName().equals(pdsGroup.getConnectData()))
                             .collect(Collectors.toMap(QueueMemberTable::getMembername, QueueMemberTable::getPaused));
-
                     pdsMonitResponse.setPersons(
                             personList.stream().filter(person -> memberList.containsKey(person.getId()))
                                     .map(person -> {
-                                        PersonListSummary personListSummary = convertDto(person, PersonListSummary.class);
-
+                                        final PersonListSummary personListSummary = convertDto(person, PersonListSummary.class);
                                         personListSummary.setPaused(memberList.get(person.getId()));
 
                                         return personListSummary;

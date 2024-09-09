@@ -2008,11 +2008,12 @@ IpccPdsCommunicator.prototype.delete = function (pdsGroupId) {
 IpccPdsCommunicator.prototype.setRid = function (executeId, pdsGroupId, value) {
     this.send("CMD|PDS_SETRID|" + executeId + "," + pdsGroupId + "," + value);
 };
-IpccPdsCommunicator.prototype.setSpeed = function (executeId, pdsGroupId, value) {
-    this.send("CMD|PDS_SETRID|" + executeId + "," + pdsGroupId + "," + value);
+IpccPdsCommunicator.prototype.setSpeed = function (pdsGroupId, value) {
+    this.send("CMD|PDS_SETSPEED|" + pdsGroupId + "," + value);
 };
-IpccPdsCommunicator.prototype.setTimeout = function (executeId, pdsGroupId, value) {
-    this.send("CMD|PDS_SETRID|" + executeId + "," + pdsGroupId + "," + value);
+IpccPdsCommunicator.prototype.setTimeout = function (pdsGroupId, value) {
+    this.send("CMD|PDS_SETTIMEOUT|" + pdsGroupId + "," + value);
+};
 };function IpccCommunicator() {
     this.socket = null;
     this.init();

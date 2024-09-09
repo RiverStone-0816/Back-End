@@ -133,7 +133,7 @@
                                                     <div class="ui action input fluid">
                                                         <input type="text" class="-input-float" placeholder="1이상~5이하" value="${e.executeGroup.speedData}">
                                                         <button type="button" class="ui button"
-                                                                onclick="setSpeed('${g.htmlQuote(e.executeGroup.executeId)}', '${g.htmlQuote(e.executeGroup.pdsGroupId)}', $(this).prev().val())">
+                                                                onclick="setSpeed('${g.htmlQuote(e.executeGroup.pdsGroupId)}', $(this).prev().val())">
                                                             수정
                                                         </button>
                                                     </div>
@@ -142,7 +142,7 @@
                                                     <div class="ui action input fluid">
                                                         <input type="text" class="-input-numerical" value="${g.htmlQuote(e.executeGroup.dialTimeout)}">
                                                         <button type="button" class="ui button"
-                                                                onclick="setTimeoutValue('${g.htmlQuote(e.executeGroup.executeId)}', '${g.htmlQuote(e.executeGroup.pdsGroupId)}', $(this).prev().val())">
+                                                                onclick="setTimeoutValue('${g.htmlQuote(e.executeGroup.pdsGroupId)}', $(this).prev().val())">
                                                             수정
                                                         </button>
                                                     </div>
@@ -240,12 +240,12 @@
                 ipccPdsCommunicator.setRid(executeId, pdsGroupId, value);
             }
 
-            function setSpeed(executeId, pdsGroupId, value) {
-                ipccPdsCommunicator.setSpeed(executeId, pdsGroupId, value);
+            function setSpeed(pdsGroupId, value) {
+                ipccPdsCommunicator.setSpeed(pdsGroupId, value);
             }
 
-            function setTimeoutValue(executeId, pdsGroupId, value) {
-                ipccPdsCommunicator.setTimeout(executeId, pdsGroupId, value);
+            function setTimeoutValue(pdsGroupId, value) {
+                ipccPdsCommunicator.setTimeout(pdsGroupId, value);
             }
 
             const ipccPdsCommunicator = new IpccPdsCommunicator();

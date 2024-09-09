@@ -5,10 +5,11 @@ import lombok.Data;
 
 @Data
 public class PDSMonitGroupResponse {
-    private String lastExecuteId;   //pds실행 id
-    private String runHost;         //실행 호스트
+    private String lastExecuteId;   //PDS 실행 id
+    private String runHost;         //실행할교환기
     /**
      * @see PDSGroupConnectKind ;
-     * */
-    private String connectKind;     //연결대상
+     */
+    private String connectKind;     //연결대상 구분
+    private String connectDataValue; // 연결대상 값
 }
