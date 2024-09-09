@@ -103,16 +103,14 @@ public class WebSecureHistoryRepository extends EicnBaseRepository<WebSecureHist
     }
 
     public void overwrite(Integer limit) {
-        final List<Integer> webSecureHistories = dsl.select(WEB_SECURE_HISTORY.SEQ)
+        final Integer webSecureHistorie = dsl.select(DSL.min(WEB_SECURE_HISTORY.SEQ))
                 .from(WEB_SECURE_HISTORY)
                 .where(compareCompanyId())
                 .orderBy(WEB_SECURE_HISTORY.INSERT_DATE.asc())
                 .limit(limit)
-                .fetchInto(Integer.class);
+                .fetchOneInto(Integer.class);
 
-        for (Integer seq : webSecureHistories) {
-            deleteOnIfNullThrow(seq);
-        }
+        super.delete(WEB_SECURE_HISTORY.SEQ.lt(webSecureHistorie));
     }
 
     public void deleteIds(List<Integer> seq) {
