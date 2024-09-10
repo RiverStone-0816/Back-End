@@ -1,5 +1,8 @@
 package kr.co.eicn.ippbx.front.controller.web.admin.outbound.preview;
 
+import kr.co.eicn.ippbx.front.service.api.application.type.CommonTypeApiInterface;
+import kr.co.eicn.ippbx.front.service.excel.example.PrvCustomUploadExampleExcel;
+import kr.co.eicn.ippbx.model.entity.eicn.CommonTypeEntity;
 import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.front.controller.BaseController;
@@ -26,7 +29,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -44,6 +49,7 @@ public class PreviewGroupController extends BaseController {
     private final PdsGroupApiInterface        pdsGroupApiInterface;
     private final OrganizationService         organizationService;
     private final CallbackHistoryApiInterface callbackHistoryApiInterface;
+    private final CommonTypeApiInterface      commonTypeApiInterface;
 
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") PrvGroupSearchRequest search) throws IOException, ResultFailException {
@@ -96,5 +102,13 @@ public class PreviewGroupController extends BaseController {
         model.addAttribute("entity", entity);
 
         return "admin/outbound/preview/group/modal-upload";
+    }
+
+    @GetMapping("{seq}/_excel/example")
+    public void downloadExcel(@PathVariable Integer seq, HttpServletResponse response) throws IOException, ResultFailException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        final PrvGroupDetailResponse group = apiInterface.get(seq);
+        final CommonTypeEntity pdsType = commonTypeApiInterface.get(group.getPrvType());
+
+        new PrvCustomUploadExampleExcel(group, pdsType).generator(response, "프리뷰그룹_고객정보_업로드_예시");
     }
 }

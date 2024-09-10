@@ -134,6 +134,10 @@
                     });
                 });
             }
+
+            function downloadExampleExcel(seq) {
+                window.open(contextPath + '/admin/outbound/preview/group/' + seq + '/_excel/example', '_blank');
+            }
         </script>
     </tags:scripts>
 </tags:tabContentLayout>

@@ -39,12 +39,23 @@
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">파일선택</label></div>
+                <div class="four wide column">
+                    <label class="control-label label-required">파일선택</label>
+                    <i class="circular red info icon small comment-icon" title="※ 파일 업로드 주의사항 ※
+                            1. 첫 행 필수 기입
+                            3. 해당 프리뷰 그룹의 상담원 설정이 '담당자아이디 사용'으로 되어 있을 경우, '담당자ID' 필드 필수 기입(조건부 필수)
+                            4. 위의 필수 기입 필드 누락 시, 데이터 업로드가 실패할 수 있습니다.
+                            5. 필드명 수정 불가. 필드명 수정 시, 데이터 업로드가 실패할 수 있습니다.
+                            6. 모든 셀은 표시 형식이 '텍스트' 형식이어야 합니다."></i>
+                </div>
                 <div class="twelve wide column">
                     <form:hidden path="fileName"/>
                     <form:hidden path="filePath"/>
                     <form:hidden path="originalName"/>
                     <div class="file-upload-header">
+                        <label class="ui button blue mini compact" onclick="downloadExampleExcel('${entity.seq}')">
+                            예시 Excel 다운로드
+                        </label>
                         <label for="file" class="ui button blue mini compact">파일찾기</label>
                         <input type="file" id="file">
                         <span class="file-name">No file selected</span>

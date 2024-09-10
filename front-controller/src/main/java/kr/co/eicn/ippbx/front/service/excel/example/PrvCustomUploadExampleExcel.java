@@ -1,10 +1,10 @@
 package kr.co.eicn.ippbx.front.service.excel.example;
 
 import kr.co.eicn.ippbx.front.service.excel.AbstractExcel;
-import kr.co.eicn.ippbx.model.dto.eicn.PDSGroupDetailResponse;
+import kr.co.eicn.ippbx.model.dto.eicn.PrvGroupDetailResponse;
 import kr.co.eicn.ippbx.model.entity.eicn.CommonFieldEntity;
 import kr.co.eicn.ippbx.model.entity.eicn.CommonTypeEntity;
-import kr.co.eicn.ippbx.model.enums.PDSGroupRidKind;
+import kr.co.eicn.ippbx.model.enums.PrvMemberKind;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -15,11 +15,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class PdsCustomUploadExampleExcel extends AbstractExcel {
-    private final PDSGroupDetailResponse group;
+public class PrvCustomUploadExampleExcel extends AbstractExcel {
+    private final PrvGroupDetailResponse group;
     private final CommonTypeEntity       customDbType;
 
-    public PdsCustomUploadExampleExcel(PDSGroupDetailResponse group, CommonTypeEntity customDbType) {
+    public PrvCustomUploadExampleExcel(PrvGroupDetailResponse group, CommonTypeEntity customDbType) {
         this.group = group;
         this.customDbType = customDbType;
         createBody();
@@ -32,8 +32,8 @@ public class PdsCustomUploadExampleExcel extends AbstractExcel {
 
         int index = 0;
         final Set<Integer> requiredFieldsIndexes = new HashSet<>();
-        if (group.getRidKind().equals(PDSGroupRidKind.FIELD.getCode())) {
-            headers.add("RID");
+        if (group.getMemberKind().equals(PrvMemberKind.FIELD.getCode())) {
+            headers.add("담당자ID");
             requiredFieldsIndexes.add(0);
             index++;
         }

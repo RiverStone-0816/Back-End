@@ -23,9 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.Comparator.comparing;
@@ -93,8 +91,11 @@ public class PrvGroupApiController extends ApiBaseController {
             response.setResultTypeName(commonTypeMap.get(prvGroup.getResultType()));
 
         response.setGroupTreeNames(companyTrees);
-        response.setFieldInfoType(fieldRepository.findAllCommonField(prvGroup.getPrvType()).stream()
-                .collect(Collectors.toMap(CommonField::getFieldInfo, CommonField::getFieldType)));
+        response.setFieldInfoType(
+                fieldRepository.findAllCommonField(prvGroup.getPrvType()).stream()
+                        .sorted(Comparator.comparing(CommonField::getDisplaySeq))
+                        .collect(Collectors.toMap(CommonField::getFieldInfo, CommonField::getFieldType, (o, n) -> o, LinkedHashMap::new))
+        );
 
         response.setMemberDataList(personList.stream()
                 .filter(e -> commonMember.stream().anyMatch(id -> id.equals(e.getId())))
