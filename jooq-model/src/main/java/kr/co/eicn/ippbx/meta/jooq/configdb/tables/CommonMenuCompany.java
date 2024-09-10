@@ -154,7 +154,7 @@ public class CommonMenuCompany extends TableImpl<CommonMenuCompanyRecord> {
     @NotNull
     @Override
     public List<Index> getIndexes() {
-        return Arrays.<Index>asList(Indexes.MENU_COMPANY_SEQUENCE, Indexes.MENU_COMPANY_USERID);
+        return Arrays.asList();
     }
 
     @Override
