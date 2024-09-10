@@ -28,7 +28,9 @@
                         </div>
                         <div class="btn-wrap">
                             <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
+                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">
+                                초기화
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -36,12 +38,14 @@
                     <div class="search-area">
                         <div class="ui grid">
                             <div class="row">
-                                <div class="two wide column"><label class="control-label">상담날짜</label></div>
-                                <div class="ten wide column -buttons-set-range-container" data-startdate="[name=createdStartDate]" data-enddate="[name=createdEndDate]">
+                                <div class="two wide column"><label class="control-label">데이터생성일</label></div>
+                                <div class="fourteen wide column -buttons-set-range-container"
+                                     data-startdate="[name=createdStartDate]" data-enddate="[name=createdEndDate]">
                                     <div class="date-picker from-to">
                                         <div class="dp-wrap">
                                             <label for="createdStartDate" style="display:none">From</label>
-                                            <form:input path="createdStartDate" cssClass="-datepicker" placeholder="시작일"/>
+                                            <form:input path="createdStartDate" cssClass="-datepicker"
+                                                        placeholder="시작일"/>
                                         </div>
                                         <span class="tilde">~</span>
                                         <div class="dp-wrap">
@@ -50,14 +54,28 @@
                                         </div>
                                     </div>
                                     <div class="ui basic buttons">
-                                        <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
-                                        <button type="button" data-interval="day" data-number="3" class="ui button -button-set-range">3일</button>
-                                        <button type="button" data-interval="day" data-number="7" class="ui button -button-set-range">1주일</button>
-                                        <button type="button" data-interval="month" data-number="1" class="ui button -button-set-range">1개월</button>
-                                        <button type="button" data-interval="month" data-number="3" class="ui button -button-set-range">3개월</button>
-                                        <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
+                                        <button type="button" data-interval="day" data-number="1"
+                                                class="ui button -button-set-range">당일
+                                        </button>
+                                        <button type="button" data-interval="day" data-number="3"
+                                                class="ui button -button-set-range">3일
+                                        </button>
+                                        <button type="button" data-interval="day" data-number="7"
+                                                class="ui button -button-set-range">1주일
+                                        </button>
+                                        <button type="button" data-interval="month" data-number="1"
+                                                class="ui button -button-set-range">1개월
+                                        </button>
+                                        <button type="button" data-interval="month" data-number="3"
+                                                class="ui button -button-set-range">3개월
+                                        </button>
+                                        <button type="button" data-interval="month" data-number="6"
+                                                class="ui button -button-set-range">6개월
+                                        </button>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="two wide column"><label class="control-label">상담그룹</label></div>
                                 <div class="two wide column">
                                     <div class="ui form">
@@ -67,8 +85,6 @@
                                         </form:select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
                                 <div class="two wide column"><label class="control-label">검색항목</label></div>
                                 <div class="two wide column">
                                     <div class="ui form">
@@ -76,28 +92,38 @@
                                             <form:option value="" label="선택안함"/>
                                             <c:forEach var="e" items="${pdsType.fields}">
                                                 <c:if test="${e.issearch == 'Y'}">
-                                                    <form:option value="${e.fieldId.substring(pdsType.kind.length() + 1)}" label="${g.htmlQuote(e.fieldInfo)}" data-type="${g.htmlQuote(e.fieldType)}"/>
+                                                    <form:option
+                                                            value="PDS_${e.fieldId.substring(pdsType.kind.length() + 1)}"
+                                                            label="${g.htmlQuote(e.fieldInfo)}"
+                                                            data-type="${g.htmlQuote(e.fieldType)}"/>
                                                 </c:if>
                                             </c:forEach>
                                         </form:select>
                                     </div>
                                 </div>
                                 <div class="five wide column -search-type-sub-input" data-type="DATE">
-                                    <div class="date-picker from-to">
-                                        <div class="dp-wrap">
+                                    <div class="date-picker from-to" style="width: 100%">
+                                        <div class="dp-wrap" style="width: 50%">
                                             <label for="startDate" style="display:none">From</label>
-                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
+                                            <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"
+                                                        cssStyle="width: 100%;"/>
                                         </div>
                                         <span class="tilde">~</span>
-                                        <div class="dp-wrap">
+                                        <div class="dp-wrap" style="width: 50%">
                                             <label for="endDate" style="display:none">to</label>
-                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"/>
+                                            <form:input path="endDate" cssClass="-datepicker" placeholder="종료일"
+                                                        cssStyle="width: 100%;"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="two wide column -search-type-sub-input">
+                                <div class="two wide column -search-type-sub-input" data-type="TEXT">
                                     <div class="ui input fluid">
                                         <form:input path="keyword"/>
+                                    </div>
+                                </div>
+                                <div class="two wide column -search-type-sub-input" data-type="CODE">
+                                    <div class="ui form">
+                                        <form:select path="code"/>
                                     </div>
                                 </div>
                             </div>
@@ -111,20 +137,24 @@
                         <h3 class="panel-title">전체 <span class="text-primary">${pagination.totalCount}</span> 건</h3>
                     </div>
                     <div class="pull-right">
-                        <button class="ui basic green button" type="button" onclick="downloadExcel()">Excel 다운로드</button>
+                        <button class="ui basic green button" type="button" onclick="downloadExcel()">Excel 다운로드
+                        </button>
                         <div class="ui basic buttons">
                             <button class="ui button" onclick="popupModal(${search.groupSeq})">추가</button>
                             <button class="ui button -control-entity" data-entity="PdsCustominfo" style="display: none;"
-                                    onclick="popupModal(getEntityId('PdsCustominfo', 'group'), getEntityId('PdsCustominfo'))">수정
+                                    onclick="popupModal(getEntityId('PdsCustominfo', 'group'), getEntityId('PdsCustominfo'))">
+                                수정
                             </button>
                             <button class="ui button -control-entity" data-entity="PdsCustominfo" style="display: none;"
-                                    onclick="deleteEntity(getEntityId('PdsCustominfo', 'group'), getEntityId('PdsCustominfo'))">삭제
+                                    onclick="deleteEntity(getEntityId('PdsCustominfo', 'group'), getEntityId('PdsCustominfo'))">
+                                삭제
                             </button>
                         </div>
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table structured compact unstackable fixed ${pagination.rows.size() > 0 ? "selectable-only" : null}" data-entity="PdsCustominfo">
+                    <table class="ui celled table structured compact unstackable fixed ${pagination.rows.size() > 0 ? "selectable-only" : null}"
+                           data-entity="PdsCustominfo">
                         <thead>
                         <tr>
                             <th rowspan="${pdsType.fields.size() == 0 ? "1" : "2"}" style="width: 5em;">번호</th>
@@ -141,114 +171,147 @@
                         </c:if>
                         </thead>
                         <c:choose>
-                            <c:when test="${pdsType.fields.size() != 0}">
-                                <tbody>
-                                <c:choose>
-                                    <c:when test="${pagination.rows.size() > 0}">
-                                        <c:forEach var="e" items="${pagination.rows}" varStatus="status">
-                                            <tr data-id="${g.htmlQuote(e.pdsSysCustomId)}" data-group="${search.groupSeq}">
-                                                <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
-                                                <td><fmt:formatDate value="${e.pdsSysUploadDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                        <c:when test="${pdsType.fields.size() != 0}">
+                        <tbody>
+                        <c:choose>
+                            <c:when test="${pagination.rows.size() > 0}">
+                                <c:forEach var="e" items="${pagination.rows}" varStatus="status">
+                                    <tr data-id="${g.htmlQuote(e.pdsSysCustomId)}" data-group="${search.groupSeq}">
+                                        <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
+                                        <td><fmt:formatDate value="${e.pdsSysUploadDate}"
+                                                            pattern="yyyy-MM-dd HH:mm:ss"/></td>
 
-                                                <c:forEach var="field" items="${pdsType.fields}">
-                                                    <td>${g.htmlQuote(customIdToFieldNameToValueMap.get(e.pdsSysCustomId).get(field.fieldId))}</td>
-                                                </c:forEach>
-                                            </tr>
+                                        <c:forEach var="field" items="${pdsType.fields}">
+                                            <c:set var="value"
+                                                   value="${customIdToFieldNameToValueMap.get(e.pdsSysCustomId).get(field.fieldId)}"/>
+                                            <c:choose>
+                                                <c:when test="${field.fieldType == 'CODE'}">
+                                                    <td>
+                                                            ${field.codes.stream().filter(code -> code.codeId == value).map(code -> code.codeName).findFirst().orElse('')}
+                                                    </td>
+                                                </c:when>
+                                                <c:when test="${field.fieldType == 'MULTICODE'}">
+                                                    <td>
+                                                        <c:forEach var="v" items="${value.split(',')}">
+                                                            ${field.codes.stream().filter(code -> code.codeId == v).map(code -> code.codeName).findFirst().orElse('')}&ensp;
+                                                        </c:forEach>
+                                                    </td>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <td class="${not empty value and fn:length(g.htmlQuote(value)) > 30 ? 'break-td mw300' : ''}">
+                                                            ${g.htmlQuote(value)}
+                                                    </td>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:forEach>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <tr>
-                                            <td colspan="${2 + (fn:length(pdsType.fields) > 0 ? pdsType.fields.size() : 1)}" class="null-data">조회된 데이터가 없습니다.</td>
-                                        </tr>
-                                    </c:otherwise>
-                                </c:choose>
+                                    </tr>
+                                </c:forEach>
                             </c:when>
                             <c:otherwise>
                                 <tr>
-                                    <td colspan="3" class="null-data">조회된 데이터가 없습니다.</td>
+                                    <td colspan="${2 + (fn:length(pdsType.fields) > 0 ? pdsType.fields.size() : 1)}"
+                                        class="null-data">조회된 데이터가 없습니다.
+                                    </td>
                                 </tr>
                             </c:otherwise>
+                        </c:choose>
+                        </c:when>
+                        <c:otherwise>
+                            <tr>
+                                <td colspan="3" class="null-data">조회된 데이터가 없습니다.</td>
+                            </tr>
+                        </c:otherwise>
                         </c:choose>
 
                         </tbody>
                     </table>
                 </div>
                 <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/outbound/pds/custominfo/" pageForm="${search}"/>
+                    <tags:pagination navigation="${pagination.navigation}"
+                                     url="${pageContext.request.contextPath}/admin/outbound/pds/custominfo/"
+                                     pageForm="${search}"/>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="ui modal small" id="modal-pds-data-add-popup">
-        <i class="close icon"></i>
-        <div class="header">
-            Auto IVR 추가[그룹명:김옥중테스트]
-        </div>
-        <div class="content rows scrolling">
-            <div class="ui grid">
-                <div class="row">
-                    <div class="four wide column"><label class="control-label">고객명</label></div>
-                    <div class="six wide column">
-                        <div class="ui input fluid">
-                            <input type="text">
-                        </div>
-                    </div>
-                    <div class="four wide column">
-                        (max 100 Bytes.)
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="four wide column"><label class="control-label">전화번호</label></div>
-                    <div class="six wide column">
-                        <div class="ui input fluid">
-                            <input type="text">
-                        </div>
-                    </div>
-                    <div class="four wide column">
-                        (최대길이:숫자15개)
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="actions">
-            <button class="ui button modal-close">취소</button>
-            <button class="ui blue button">확인</button>
         </div>
     </div>
 
     <tags:scripts>
         <script>
+            const codeMapInfo = {
+                <c:forEach var="field" items="${pdsType.fields}">
+                <c:if test="${fn:contains(field.fieldId, 'CODE') and field.issearch == 'Y'}">
+                '${field.fieldId}': {
+                    <c:forEach var="code" items="${field.codes}">
+                    '${code.sequence}': {
+                        'codeId': '${code.codeId}',
+                        'codeName': '${code.codeName}',
+                    },
+                    </c:forEach>
+                },
+                </c:if>
+                </c:forEach>
+            };
+
+            const searchForm = $('#search-form');
+
+            searchForm.find('[name=searchType]').change(function () {
+                const type = $(this).find(':selected').attr('data-type');
+                const fieldId = $(this).find(':selected').val();
+                const subInput = $('.-search-type-sub-input').hide();
+                const codeSelect = $('#code');
+
+                $('input[name=startDate]').val('');
+                $('input[name=endDate]').val('');
+                codeSelect.empty();
+                $('#keyword').val('');
+
+                if (['DATE', 'DAY', 'DATETIME'].indexOf(type) >= 0) {
+                    subInput.filter('[data-type="DATE"]').show();
+                } else if (['CODE', 'MULTICODE'].indexOf(type) >= 0) {
+
+                    console.log("test: fieldId-", fieldId)
+                    const codeMap = codeMapInfo[fieldId];
+                    codeSelect.append($('<option/>', {value: '', text: '선택안함'}));
+                    for (let i = 0; i < Object.keys(codeMap).length; i++) {
+                        codeSelect.append($('<option/>', {value: codeMap[i].codeId, text: codeMap[i].codeName}));
+                    }
+
+                    subInput.filter('[data-type="CODE"]').show();
+                } else {
+                    subInput.filter('[data-type="TEXT"]').show();
+                }
+            }).change();
+
             function popupModal(groupSeq, id) {
                 popupReceivedHtml('/admin/outbound/pds/custominfo/' + encodeURIComponent(id || 'new') + '/modal?groupSeq=' + groupSeq, 'modal-data');
             }
 
             function deleteEntity(groupSeq, id) {
                 confirm('정말 삭제하시겠습니까?').done(function () {
-                    restSelf.delete($.addQueryString('/api/pds-custominfo/', {groupSeq: groupSeq, id: id})).done(function () {
+                    restSelf.delete($.addQueryString('/api/pds-custominfo/', {
+                        groupSeq: groupSeq,
+                        id: id
+                    })).done(function () {
                         reload();
                     });
                 });
             }
-
-            $('#search-form [name=searchType]').change(function () {
-                const type = $(this).find(':selected').attr('data-type');
-                const subInput = $('.-search-type-sub-input').hide();
-
-                if (['DATE', 'DAY', 'DATETIME'].indexOf(type) >= 0) {
-                    subInput.filter('[data-type="DATE"]').show();
-                } else {
-                    subInput.filter(':not([data-type="DATE"])').show();
-                }
-            }).change();
 
             function downloadExcel() {
                 window.open(contextPath + '/admin/outbound/pds/custominfo/_excel?${g.escapeQuote(search.query)}', '_blank');
             }
 
             <c:if test="${groups == null}">
-            alert("그룹이 없습니다.");
+            alert("PDS그룹이 없습니다.");
             </c:if>
+
+            $(window).on('load', function () {
+                $('#keyword').val('${search.keyword}').trigger("change");
+                $('#code').val('${search.code}').trigger("change");
+
+                $('input[name=startDate]').val('${search.startDate}');
+                $('input[name=endDate]').val('${search.endDate}');
+            });
         </script>
     </tags:scripts>
 </tags:tabContentLayout>

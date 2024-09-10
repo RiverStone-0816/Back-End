@@ -26,7 +26,8 @@
                 <c:set var="name" value="${field.fieldId.substring(pdsType.kind.length() + '_'.length()).toLowerCase()}"/>
                 <c:set var="value" value="${fieldNameToValueMap.get(field.fieldId)}"/>
                 <div class="row">
-                    <div class="four wide column"><label class="control-label">${g.htmlQuote(field.fieldInfo)}</label></div>
+                    <div class="four wide column"><label class="control-label">${g.htmlQuote(field.fieldInfo)}</label>
+                    </div>
                     <c:choose>
                         <c:when test="${field.fieldType == 'MULTICODE'}">
                             <div class="twelve wide column">
@@ -42,7 +43,8 @@
                                                         </c:if>
                                                     </c:forEach>
                                                 </c:if>
-                                                <option value="${g.htmlQuote(e.codeId)}" ${contains ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>                                            </c:forEach>
+                                                <option value="${g.htmlQuote(e.codeId)}" ${contains ? 'selected' : ''}>${g.htmlQuote(e.codeName)}</option>
+                                            </c:forEach>
                                         </select>
                                     </div>
                                 </div>
@@ -66,7 +68,8 @@
                             <div class="twelve wide column">
                                 <div class="ui form fluid">
                                     <div class="field">
-                                        <input type="text" name="${name}" class="-input-numerical" value="${g.htmlQuote(value)}"/>
+                                        <input type="text" name="${name}" class="-input-numerical"
+                                               value="${g.htmlQuote(value)}"/>
                                     </div>
                                 </div>
                             </div>
@@ -74,10 +77,17 @@
                         <c:when test="${field.fieldType == 'DATETIME'}">
                             <div class="twelve wide column">
                                 <div class="ui form fluid">
-                                    <input type="text" name="${name}" multiple="multiple" value="${value != null ? g.dateFormat(value) : null}" class="-datepicker" style="width: 130px"/>&ensp;
-                                    <input type="text" name="${name}" multiple="multiple" value="${value != null ? value.hours : null}" class="-input-numeric" style="width: 50px"/>시
-                                    <input type="text" name="${name}" multiple="multiple" value="${value != null ? value.minutes : null}" class="-input-numeric" style="width: 50px"/>분
-                                    <input type="hidden" name="${name}" multiple="multiple" value="00" class="-input-numeric"/>
+                                    <input type="text" name="${name}" multiple="multiple"
+                                           value="${value != null ? g.dateFormat(value) : null}" class="-datepicker"
+                                           style="width: 130px"/>&ensp;
+                                    <input type="text" name="${name}" multiple="multiple"
+                                           value="${value != null ? value.hours : null}" class="-input-numeric"
+                                           style="width: 50px"/>시
+                                    <input type="text" name="${name}" multiple="multiple"
+                                           value="${value != null ? value.minutes : null}" class="-input-numeric"
+                                           style="width: 50px"/>분
+                                    <input type="hidden" name="${name}" multiple="multiple" value="00"
+                                           class="-input-numeric"/>
                                 </div>
                             </div>
                         </c:when>
@@ -85,7 +95,8 @@
                             <div class="twelve wide column">
                                 <div class="ui form fluid">
                                     <div class="field">
-                                        <input type="text" name="${name}" class="-datepicker"/>
+                                        <input type="text" name="${name}" class="-datepicker"
+                                               value="${g.htmlQuote(value)}"/>
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +105,8 @@
                             <div class="twelve wide column">
                                 <div class="ui form fluid">
                                     <div class="field">
-                                        <textarea name="${name}" rows="3" maxlength="${field.fieldSize}">${g.htmlQuote(value)}</textarea>
+                                        <textarea name="${name}" rows="3"
+                                                  maxlength="${field.fieldSize}">${g.htmlQuote(value)}</textarea>
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +114,8 @@
                         <c:otherwise>
                             <div class="four wide column">
                                 <div class="ui input fluid">
-                                    <input type="text" name="${name}" maxlength="${field.fieldSize}" value="${g.htmlQuote(value)}"/>
+                                    <input type="text" name="${name}" maxlength="${field.fieldSize}"
+                                           value="${g.htmlQuote(value)}"/>
                                 </div>
                             </div>
                             <c:if test="${field.fieldSize > 0}">

@@ -86,19 +86,22 @@ public class PDSCustomInfoRepository extends PDSDbBaseRepository<CommonPDSCustom
 					conditions.add(TABLE.field(k, Date.class).greaterOrEqual(v.getStartDate()));
 				if (v.getEndDate() != null)
 					conditions.add(TABLE.field(k, Date.class).lessOrEqual(v.getEndDate()));
-			} else if (k.contains("_INT_") || k.contains("_CODE_") || k.contains("_CONCODE_") || k.contains("_CSCODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
+			} else if (k.contains("_INT_") || k.contains("_CONCODE_") || k.contains("_CSCODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
 				if (StringUtils.isNotEmpty(v.getKeyword()))
 					conditions.add(TABLE.field(k, String.class).eq(v.getKeyword()));
 			} else if (k.contains("_STRING_") || k.contains("_NUMBER_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
 				if (StringUtils.isNotEmpty(v.getKeyword()))
 					conditions.add(TABLE.field(k, String.class).like("%" + v.getKeyword() + "%"));
+			} else if (k.contains("_CODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
+				if (StringUtils.isNotEmpty(v.getCode()))
+					conditions.add(TABLE.field(k, String.class).eq(v.getCode()));
 			} else if (k.contains("_MULTICODE_")) { // FIXME: column 타입이 변경되면 에러를 발생시킬수 있다.
-				if (StringUtils.isNotEmpty(v.getKeyword()))
+				if (StringUtils.isNotEmpty(v.getCode()))
 					conditions.add(
-							TABLE.field(k, String.class).likeRegex("^" + v.getKeyword() + ",")
-									.or(TABLE.field(k, String.class).likeRegex("^" + v.getKeyword() + "$"))
-									.or(TABLE.field(k, String.class).likeRegex("," + v.getKeyword() + "$"))
-									.or(TABLE.field(k, String.class).likeRegex("," + v.getKeyword() + ","))
+							TABLE.field(k, String.class).likeRegex("^" + v.getCode() + ",")
+									.or(TABLE.field(k, String.class).likeRegex("^" + v.getCode() + "$"))
+									.or(TABLE.field(k, String.class).likeRegex("," + v.getCode() + "$"))
+									.or(TABLE.field(k, String.class).likeRegex("," + v.getCode() + ","))
 					);
 			} else {
 				if (StringUtils.isNotEmpty(v.getKeyword()))

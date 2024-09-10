@@ -21,6 +21,7 @@ import kr.co.eicn.ippbx.model.enums.MultichannelChannelType;
 import kr.co.eicn.ippbx.model.form.MaindbCustomInfoFormRequest;
 import kr.co.eicn.ippbx.model.search.PDSGroupSearchRequest;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -47,13 +49,13 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("admin/outbound/pds/custominfo")
 public class PdsCustominfoController extends BaseController {
-    private static final Logger logger = LoggerFactory.getLogger(PdsCustominfoController.class);
+    private static final Logger logger               = LoggerFactory.getLogger(PdsCustominfoController.class);
     private static final String DB_TYPE_FIELD_PREFIX = "PDS_";
-    private static final String POJO_GETTER_PREFIX = "getPds";
+    private static final String POJO_GETTER_PREFIX   = "getPds";
 
     private final PdsCustominfoApiInterface apiInterface;
-    private final PdsGroupApiInterface pdsGroupApiInterface;
-    private final CommonTypeApiInterface commonTypeApiInterface;
+    private final PdsGroupApiInterface      pdsGroupApiInterface;
+    private final CommonTypeApiInterface    commonTypeApiInterface;
 
     public static <T extends PdsCustomInfo> Map<String, Map<String, Object>> createCustomIdToFieldNameToValueMap(List<T> list, CommonTypeEntity pdsType) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         final Map<String, Map<String, Object>> customIdToFieldNameToValueMap = new HashMap<>();
@@ -85,40 +87,49 @@ public class PdsCustominfoController extends BaseController {
         groupSearch.setLimit(10000);
         final List<PDSGroupSummaryResponse> groups = pdsGroupApiInterface.pagination(groupSearch).getRows();
 
-        if (groups.size() != 0) {
-            model.addAttribute("groups", groups.stream().collect(Collectors.toMap(PDSGroupSummaryResponse::getSeq, PDSGroupSummaryResponse::getName)));
+        if (CollectionUtils.isEmpty(groups))
+            return "admin/outbound/pds/custominfo/ground";
 
-            if (search.getGroupSeq() == null)
-                search.setGroupSeq(groups.get(0).getSeq());
+        model.addAttribute("groups", groups.stream().collect(Collectors.toMap(PDSGroupSummaryResponse::getSeq, PDSGroupSummaryResponse::getName)));
 
-            final Pagination<PDSCustomInfoEntity> pagination = apiInterface.getPagination(search.getGroupSeq(), search.convertToRequest(DB_TYPE_FIELD_PREFIX));
-            model.addAttribute("pagination", pagination);
+        if (search.getGroupSeq() == null)
+            search.setGroupSeq(groups.get(0).getSeq());
 
-            final PDSGroupDetailResponse group = pdsGroupApiInterface.get(search.getGroupSeq());
-            final CommonTypeEntity pdsType = commonTypeApiInterface.get(group.getPdsType());
-            pdsType.setFields(pdsType.getFields().stream().filter(e -> "Y".equals(e.getIsdisplayList())).collect(Collectors.toList()));
-            model.addAttribute("pdsType", pdsType);
+        final Pagination<PDSCustomInfoEntity> pagination = apiInterface.getPagination(search.getGroupSeq(), search.convertToRequest(""));
+        model.addAttribute("pagination", pagination);
 
-            model.addAttribute("customIdToFieldNameToValueMap", createCustomIdToFieldNameToValueMap(pagination.getRows(), pdsType));
-        }
+        final PDSGroupDetailResponse group = pdsGroupApiInterface.get(search.getGroupSeq());
+        final CommonTypeEntity pdsType = commonTypeApiInterface.get(group.getPdsType());
+        pdsType.setFields(pdsType.getFields().stream().filter(e -> "Y".equals(e.getIsdisplayList())).collect(Collectors.toList()));
+        model.addAttribute("pdsType", pdsType);
+
+        model.addAttribute("customIdToFieldNameToValueMap", createCustomIdToFieldNameToValueMap(pagination.getRows(), pdsType));
 
         return "admin/outbound/pds/custominfo/ground";
     }
 
     @GetMapping(value = "new/modal", params = "groupSeq")
     public String modal(Model model, @ModelAttribute("form") MaindbCustomInfoFormRequest form) throws IOException, ResultFailException {
-        final PDSGroupDetailResponse group = pdsGroupApiInterface.get(form.getGroupSeq());
-        model.addAttribute("group", group);
+        final PDSGroupDetailResponse group;
+        if (model.containsAttribute("group"))
+            group = (PDSGroupDetailResponse) model.getAttribute("group");
+        else {
+            group = pdsGroupApiInterface.get(form.getGroupSeq());
+            model.addAttribute("group", group);
+        }
 
-        final CommonTypeEntity pdsType = commonTypeApiInterface.get(group.getPdsType());
-        pdsType.setFields(pdsType.getFields().stream().filter(e -> "Y".equals(e.getIsdisplay())).collect(Collectors.toList()));
-        model.addAttribute("pdsType", pdsType);
-
-        final Map<String, String> channelTypes = FormUtils.options(MultichannelChannelType.class);
-        model.addAttribute("channelTypes", channelTypes);
+        final CommonTypeEntity pdsType;
+        if (model.containsAttribute("pdsType")) {
+            pdsType = (CommonTypeEntity) model.getAttribute("pdsType");
+        } else {
+            pdsType = commonTypeApiInterface.get(Objects.requireNonNull(group).getPdsType());
+            pdsType.setFields(pdsType.getFields().stream().filter(e -> "Y".equals(e.getIsdisplay())).collect(Collectors.toList()));
+            model.addAttribute("pdsType", pdsType);
+        }
+        model.addAttribute("channelTypes", FormUtils.options(MultichannelChannelType.class));
 
         final Map<String, String> fieldToRelatedField = new HashMap<>();
-        for (CommonFieldEntity field : pdsType.getFields()) {
+        for (CommonFieldEntity field : Objects.requireNonNull(pdsType).getFields()) {
             if (field.getCodes() != null) {
                 for (CommonCodeEntity code : field.getCodes()) {
                     if (StringUtils.isNotEmpty(code.getRelatedFieldId())) {
@@ -147,10 +158,7 @@ public class PdsCustominfoController extends BaseController {
         final Map<String, Object> fieldNameToValueMap = createFieldNameToValueMap(entity, pdsType);
         model.addAttribute("fieldNameToValueMap", fieldNameToValueMap);
 
-        final Map<String, String> channelTypes = FormUtils.options(MultichannelChannelType.class);
-        model.addAttribute("channelTypes", channelTypes);
-
-        return "admin/outbound/pds/custominfo/modal";
+        return modal(model, form);
     }
 
     @GetMapping("_excel")

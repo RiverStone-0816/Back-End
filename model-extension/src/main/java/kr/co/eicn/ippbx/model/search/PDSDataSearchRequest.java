@@ -32,6 +32,7 @@ public class PDSDataSearchRequest extends PageForm {
     @AllArgsConstructor
     public static class FieldCondition {
         private String keyword;
+        private String code;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = Constants.DEFAULT_TIMEZONE)
         private Date startDate;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = Constants.DEFAULT_TIMEZONE)

@@ -19,26 +19,28 @@ public class PdsCustominfoSearch extends PageForm {
     private Integer groupSeq;
     @PageQueryable
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = Constants.DEFAULT_TIMEZONE)
-    private Date createdStartDate;
+    private Date    createdStartDate;
     @PageQueryable
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = Constants.DEFAULT_TIMEZONE)
-    private Date createdEndDate;
+    private Date    createdEndDate;
     @PageQueryable
-    private String searchType;
+    private String  searchType;
 
     @PageQueryable
     private String keyword;
     @PageQueryable
-    private Date startDate;
+    private String code;
     @PageQueryable
-    private Date endDate;
+    private Date   startDate;
+    @PageQueryable
+    private Date   endDate;
 
     public PDSDataSearchRequest convertToRequest(String dbTypeFieldPrefix) {
         final PDSDataSearchRequest search = new PDSDataSearchRequest();
         ReflectionUtils.copy(search, this);
 
         if (StringUtils.isNotEmpty(searchType)) {
-            search.getDbTypeFields().put(dbTypeFieldPrefix + searchType, new PDSDataSearchRequest.FieldCondition(keyword, startDate, endDate));
+            search.getDbTypeFields().put(dbTypeFieldPrefix + searchType, new PDSDataSearchRequest.FieldCondition(keyword, code, startDate, endDate));
         }
 
         return search;
