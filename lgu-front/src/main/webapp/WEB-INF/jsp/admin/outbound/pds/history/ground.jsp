@@ -29,7 +29,9 @@
                         </div>
                         <div class="btn-wrap">
                             <button type="submit" class="ui brand basic button">검색</button>
-                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">초기화</button>
+                            <button type="button" class="ui grey basic button" onclick="refreshPageWithoutParameters()">
+                                초기화
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -38,10 +40,12 @@
                         <div class="ui grid">
                             <div class="row">
                                 <div class="two wide column"><label class="control-label">실행날짜</label></div>
-                                <div class="nine wide column -buttons-set-range-container" data-startdate="[name=startDate]" data-enddate="[name=endDate]">
+                                <div class="nine wide column -buttons-set-range-container"
+                                     data-startdate="[name=startDate]" data-enddate="[name=endDate]">
                                     <div class="date-picker from-to">
                                         <div class="dp-wrap">
-                                            <label class="control-label" for="startDate" style="display:none">From</label>
+                                            <label class="control-label" for="startDate"
+                                                   style="display:none">From</label>
                                             <form:input path="startDate" cssClass="-datepicker" placeholder="시작일"/>
                                         </div>
                                         <span class="tilde">~</span>
@@ -51,14 +55,28 @@
                                         </div>
                                     </div>
                                     <div class="ui basic buttons">
-                                        <button type="button" data-interval="day" data-number="1" class="ui button -button-set-range">당일</button>
-                                        <button type="button" data-interval="day" data-number="3" class="ui button -button-set-range">3일</button>
-                                        <button type="button" data-interval="day" data-number="7" class="ui button -button-set-range">1주일</button>
-                                        <button type="button" data-interval="month" data-number="1" class="ui button -button-set-range">1개월</button>
-                                        <button type="button" data-interval="month" data-number="3" class="ui button -button-set-range">3개월</button>
-                                        <button type="button" data-interval="month" data-number="6" class="ui button -button-set-range">6개월</button>
+                                        <button type="button" data-interval="day" data-number="1"
+                                                class="ui button -button-set-range">당일
+                                        </button>
+                                        <button type="button" data-interval="day" data-number="3"
+                                                class="ui button -button-set-range">3일
+                                        </button>
+                                        <button type="button" data-interval="day" data-number="7"
+                                                class="ui button -button-set-range">1주일
+                                        </button>
+                                        <button type="button" data-interval="month" data-number="1"
+                                                class="ui button -button-set-range">1개월
+                                        </button>
+                                        <button type="button" data-interval="month" data-number="3"
+                                                class="ui button -button-set-range">3개월
+                                        </button>
+                                        <button type="button" data-interval="month" data-number="6"
+                                                class="ui button -button-set-range">6개월
+                                        </button>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="two wide column"><label class="control-label">상담그룹</label></div>
                                 <div class="two wide column">
                                     <div class="ui form">
@@ -66,6 +84,12 @@
                                             <form:option value="" label="선택안함"/>
                                             <form:options items="${pdsGroups}"/>
                                         </form:select>
+                                    </div>
+                                </div>
+                                <div class="two wide column"><label class="control-label">실행명</label></div>
+                                <div class="four wide column">
+                                    <div class="ui input fluid">
+                                        <form:input path="executeName"/>
                                     </div>
                                 </div>
                             </div>
@@ -80,25 +104,29 @@
                     </div>
                     <div class="pull-right">
                         <c:if test="${serviceKind.equals('SC')}">
-                            <a href="<c:url value="/admin/outbound/pds/result/"/>" class="ui button basic tab-indicator">상담결과이력</a>
+                            <a href="<c:url value="/admin/outbound/pds/result/"/>"
+                               class="ui button basic tab-indicator">PDS결과이력</a>
                         </c:if>
                         <a href="<c:url value="/admin/record/history/history/"/>" class="ui button basic tab-indicator">통화이력</a>
-                        <button class="ui basic button -control-entity" data-entity="PdsHistory" style="display: none;" onclick="deleteEntity(getEntityId('PdsHistory'))">삭제</button>
+                        <button class="ui basic button -control-entity" data-entity="PdsHistory" style="display: none;"
+                                onclick="deleteEntity(getEntityId('PdsHistory'))">삭제
+                        </button>
                     </div>
                 </div>
                 <div class="panel-body">
-                    <table class="ui celled table compact unstackable ${pagination.rows.size() > 0 ? 'selectable-only' : null}" data-entity="PdsHistory">
+                    <table class="ui celled table compact unstackable ${pagination.rows.size() > 0 ? 'selectable-only' : null}"
+                           data-entity="PdsHistory">
                         <thead>
                         <tr>
                             <th>번호</th>
-                            <th>실행명</th>
                             <th>그룹명</th>
+                            <th>실행명</th>
                             <th>실행시작</th>
                             <th>실행종료</th>
                             <th>수행시간</th>
-                            <th>고객수/전화번호수</th>
-                            <th>진행된건/남은건</th>
-                            <th>수신/비수신/통화중/비연결/기타</th>
+                            <th>고객수 / 전화번호수</th>
+                            <th>진행된건 / 남은건</th>
+                            <th>수신 / 비수신 / 통화중 / 비연결 / 기타</th>
                             <th>상태</th>
                         </tr>
                         </thead>
@@ -108,13 +136,13 @@
                                 <c:forEach var="e" items="${pagination.rows}" varStatus="status">
                                     <tr data-id="${g.htmlQuote(e.executeId)}">
                                         <td>${(pagination.page - 1) * pagination.numberOfRowsPerPage + status.index + 1}</td>
-                                        <td>${g.htmlQuote(e.executeName)}</td>
                                         <td>${g.htmlQuote(e.pdsName)}</td>
-                                        <td>${g.htmlQuote(e.startDate)}</td>
-                                        <td>${g.htmlQuote(e.stopDate)}</td>
-                                        <td>${e.totalRunTime}</td>
-                                        <td>${e.totalCnt}/${e.numberCnt}</td>
-                                        <td>${e.callTryCnt}/${e.noCallCnt}</td>
+                                        <td>${g.htmlQuote(e.executeName)}</td>
+                                        <td><fmt:formatDate value="${e.startDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                        <td><fmt:formatDate value="${e.stopDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                        <td>${g.timeFormatFromSecondsWithoutSimpleDateFormat(e.totalRunTime)}</td>
+                                        <td>${e.totalCnt} / ${e.numbersCnt}</td>
+                                        <td>${e.callTryCnt} / ${e.noCallCnt}</td>
                                         <td>${g.htmlQuote(e.lastCallStat)}</td>
                                         <td>${g.htmlQuote(g.messageOf('PDSGroupExecuteStatus', e.pdsStatus))}</td>
                                     </tr>
@@ -130,7 +158,9 @@
                     </table>
                 </div>
                 <div class="panel-footer">
-                    <tags:pagination navigation="${pagination.navigation}" url="${pageContext.request.contextPath}/admin/outbound/pds/history/" pageForm="${search}"/>
+                    <tags:pagination navigation="${pagination.navigation}"
+                                     url="${pageContext.request.contextPath}/admin/outbound/pds/history/"
+                                     pageForm="${search}"/>
                 </div>
             </div>
         </div>

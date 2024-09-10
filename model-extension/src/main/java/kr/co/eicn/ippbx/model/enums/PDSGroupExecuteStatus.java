@@ -11,6 +11,7 @@ import kr.co.eicn.ippbx.util.CodeHasable;
  * STOP:정지
  * COMPLETE:완료됨
  * FINISHED:마침
+ * EXCLUDED:PDS그룹삭제됨
  */
 public enum PDSGroupExecuteStatus implements CodeHasable<String> {
     UN_EXECUTED(""),
@@ -19,7 +20,8 @@ public enum PDSGroupExecuteStatus implements CodeHasable<String> {
     PROCEEDING("P"),
     STOP("S"),
     COMPLETE("C"),
-    FINISHED("D");
+    FINISHED("D"),
+    EXCLUDED("X");
 
     private final String code;
 

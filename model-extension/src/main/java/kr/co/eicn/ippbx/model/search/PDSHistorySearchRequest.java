@@ -20,5 +20,8 @@ public class PDSHistorySearchRequest extends PageForm {
     private Date endDate;
 
     @PageQueryable
-    private Integer seq;    //pds 그룹 seq값
+    private Integer seq;        //pds 그룹 seq값
+
+    @PageQueryable
+    private String executeName;    //실행명
 }

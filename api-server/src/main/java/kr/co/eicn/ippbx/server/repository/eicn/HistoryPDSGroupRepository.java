@@ -34,13 +34,19 @@ public class HistoryPDSGroupRepository extends EicnBaseRepository<HistoryPdsGrou
     }
 
     private List<Condition> conditions(PDSHistorySearchRequest search) {
-        List<Condition> conditions = new ArrayList<>();
+        final List<Condition> conditions = new ArrayList<>();
+
         if (search.getStartDate() != null)
             conditions.add(HISTORY_PDS_GROUP.START_DATE.ge(DSL.timestamp(search.getStartDate())));
         if (search.getEndDate() != null)
-            conditions.add(HISTORY_PDS_GROUP.START_DATE.le(DSL.timestamp(search.getEndDate()+" 23:59:59")));
+            conditions.add(HISTORY_PDS_GROUP.START_DATE.le(DSL.timestamp(search.getEndDate() + " 23:59:59")));
+
         if (search.getSeq() != null)
             conditions.add(HISTORY_PDS_GROUP.PDS_GROUP_ID.eq(search.getSeq()));
+
+        if (search.getExecuteName() != null)
+            conditions.add(HISTORY_PDS_GROUP.EXECUTE_NAME.like("%" + search.getExecuteName() + "%"));
+
         conditions.add(HISTORY_PDS_GROUP.PDS_STATUS.notEqual(""));
         conditions.add(HISTORY_PDS_GROUP.PDS_STATUS.notEqual("I"));
 
@@ -76,7 +82,7 @@ public class HistoryPDSGroupRepository extends EicnBaseRepository<HistoryPdsGrou
         if (StringUtils.isNotEmpty(search.getExecuteId()))
             conditions.add(HISTORY_PDS_GROUP.EXECUTE_ID.eq(search.getExecuteId()));
 
-        if (search.getConnectKinds() != null && !search.getConnectKinds().isEmpty() )
+        if (search.getConnectKinds() != null && !search.getConnectKinds().isEmpty())
             conditions.add(HISTORY_PDS_GROUP.CONNECT_KIND.in(search.getConnectKinds()));
 
         return conditions;
