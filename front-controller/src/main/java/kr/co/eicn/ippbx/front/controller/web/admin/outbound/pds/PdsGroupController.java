@@ -18,9 +18,9 @@ import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.util.page.Pagination;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,20 +36,17 @@ import java.util.stream.Collectors;
 /**
  * @author tinywind
  */
+@AllArgsConstructor
 @LoginRequired
 @Controller
 @RequestMapping("admin/outbound/pds/group")
 public class PdsGroupController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(PdsGroupController.class);
 
-    @Autowired
-    private PdsGroupApiInterface   apiInterface;
-    @Autowired
-    private OrganizationService    organizationService;
-    @Autowired
-    private CommonTypeApiInterface commonTypeApiInterface;
-    @Autowired
-    private CompanyApiInterface    companyApiInterface;
+    private final PdsGroupApiInterface   apiInterface;
+    private final OrganizationService    organizationService;
+    private final CommonTypeApiInterface commonTypeApiInterface;
+    private final CompanyApiInterface    companyApiInterface;
 
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") PDSGroupSearchRequest search) throws IOException, ResultFailException {
@@ -71,6 +68,7 @@ public class PdsGroupController extends BaseController {
             model.addAttribute("researchList", apiInterface.addResearchLists().stream().collect(Collectors.toMap(SummaryResearchListResponse::getResearchId, SummaryResearchListResponse::getResearchName)));
 
         model.addAttribute("commonFields", apiInterface.addCommonFieldLists());
+        model.addAttribute("rids", apiInterface.addRidNumberLists());
         model.addAttribute("numbers", apiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber)));
         model.addAttribute("pdsGroupSpeedOptions", FormUtils.optionsOfCode(PDSGroupSpeedMultiple.class));
         model.addAttribute("rsTypes", apiInterface.addCommonTypeLists("RS").stream().collect(Collectors.toMap(e -> e.getSeq().toString(), SummaryCommonTypeResponse::getName)));
@@ -97,6 +95,7 @@ public class PdsGroupController extends BaseController {
 
         model.addAttribute("hosts", apiInterface.addServerLists().stream().collect(Collectors.toMap(SummaryCompanyServerResponse::getHost, SummaryCompanyServerResponse::getName)));
         model.addAttribute("commonFields", apiInterface.addCommonFieldLists().stream().filter(e -> e.getType().equals(entity.getPdsType())).collect(Collectors.toList()));
+        model.addAttribute("rids", apiInterface.addRidNumberLists());
         model.addAttribute("numbers", apiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber)));
         model.addAttribute("pdsGroupSpeedOptions", FormUtils.optionsOfCode(PDSGroupSpeedMultiple.class));
 

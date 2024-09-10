@@ -1,6 +1,7 @@
 package kr.co.eicn.ippbx.front.service.api.outbound.pds;
 
 import kr.co.eicn.ippbx.front.model.form.FileForm;
+import kr.co.eicn.ippbx.model.dto.eicn.search.SearchOutboundNumberResponse;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.front.service.api.ApiServerInterface;
 import kr.co.eicn.ippbx.util.page.Pagination;
@@ -56,6 +57,10 @@ public class PdsGroupApiInterface extends ApiServerInterface {
 
     public List<SummaryCompanyServerResponse> addServerLists() throws IOException, ResultFailException {
         return getList(subUrl + "add-server", null, SummaryCompanyServerResponse.class).getData();
+    }
+
+    public List<SearchOutboundNumberResponse> addRidNumberLists() throws IOException, ResultFailException {
+        return getList(subUrl + "add-rid-numbers", null, SearchOutboundNumberResponse.class).getData();
     }
 
     public List<SummaryNumber070Response> addNumberLists() throws IOException, ResultFailException {

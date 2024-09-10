@@ -102,12 +102,14 @@
                         <label>${g.htmlQuote(g.messageOf('PDSGroupRidKind', 'CAMPAIGN'))}</label>
                     </div>
                 </div>
-                <div class="four wide column">
+                <div class="eight wide column">
                     <div class="ui form ${form.ridKind eq 'CAMPAIGN' ? '' : 'disabled'}">
-                        <form:input path="ridData" cssClass="-input-numerical" placeholder="발신번호 입력"/>
+                        <form:select path="ridData">
+                            <form:option value="" label="번호선택"/>
+                            <form:options items="${rids}" itemValue="number" itemLabel="name" cssStyle="white-space: pre;"/>
+                        </form:select>
                     </div>
                 </div>
-                <div class="four wide column"></div>
                 <div class="four wide column"></div>
                 <div class="four wide column">
                     <div class="ui radio checkbox">
@@ -118,7 +120,7 @@
             </div>
             <div class="row blank">
                 <div class="four wide column"><label class="control-label label-required">과금번호설정</label></div>
-                <div class="four wide column">
+                <div class="four wide column" style="display: none;">
                     <div class="ui radio checkbox">
                         <form:radiobutton path="billingKind" value="NUMBER"/>
                         <label>${g.htmlQuote(g.messageOf('PDSGroupBillingKind', 'NUMBER'))}</label>
@@ -134,20 +136,20 @@
                         </select>
                     </div>
                 </div>
-                <div class="four wide column"></div>
-                <div class="four wide column"></div>
-                <div class="four wide column">
-                    <div class="ui radio checkbox">
-                        <form:radiobutton path="billingKind" value="DIRECT"/>
-                        <label>${g.htmlQuote(g.messageOf('PDSGroupBillingKind', 'DIRECT'))}</label>
-                    </div>
-                </div>
-                <div class="four wide column">
-                    <div class="ui input fluid ${form.billingKind eq 'DIRECT' ? '' : 'disabled'}">
-                        <input type="text" name="billingData_DIRECT" class="-input-numerical" placeholder="과금번호 입력"
-                               value="${form.billingKind == 'DIRECT' ? g.htmlQuote(form.billingData) : ''}">
-                    </div>
-                </div>
+<%--                <div class="four wide column"></div>--%>
+<%--                <div class="four wide column"></div>--%>
+<%--                <div class="four wide column">--%>
+<%--                    <div class="ui radio checkbox">--%>
+<%--                        <form:radiobutton path="billingKind" value="DIRECT"/>--%>
+<%--                        <label>${g.htmlQuote(g.messageOf('PDSGroupBillingKind', 'DIRECT'))}</label>--%>
+<%--                    </div>--%>
+<%--                </div>--%>
+<%--                <div class="four wide column">--%>
+<%--                    <div class="ui input fluid ${form.billingKind eq 'DIRECT' ? '' : 'disabled'}">--%>
+<%--                        <input type="text" name="billingData_DIRECT" class="-input-numerical" placeholder="과금번호 입력"--%>
+<%--                               value="${form.billingKind == 'DIRECT' ? g.htmlQuote(form.billingData) : ''}">--%>
+<%--                    </div>--%>
+<%--                </div>--%>
             </div>
             <div class="row blank -pds-connect-kind-speed-field">
                 <div class="four wide column"><label class="control-label label-required">속도</label></div>

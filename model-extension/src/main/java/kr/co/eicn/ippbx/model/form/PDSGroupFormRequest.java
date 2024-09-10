@@ -78,9 +78,9 @@ public class PDSGroupFormRequest extends BaseForm {
     public boolean validate(BindingResult bindingResult) {
         if (isNotEmpty(ridKind) && ridKind.equals(PDSGroupRidKind.CAMPAIGN.getCode()))
             if (isEmpty(ridData))
-                reject(bindingResult, "ridData", "messages.validator.blank", "발신번호");
+                reject(bindingResult, "ridData", "messages.validator.blank", "RID(발신번호)");
             else if (isNotEmpty(ridData) && !NumberUtils.isDigits(ridData))
-                reject(bindingResult, "ridData", "messages.validator.invalid", "발신번호");
+                reject(bindingResult, "ridData", "messages.validator.invalid", "RID(발신번호)");
 
         if (isNotEmpty(billingKind)) {
             if (Objects.isNull(EnumUtils.of(PDSGroupBillingKind.class, billingKind)))

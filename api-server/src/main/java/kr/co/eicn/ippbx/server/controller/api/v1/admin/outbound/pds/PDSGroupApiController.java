@@ -3,6 +3,7 @@ package kr.co.eicn.ippbx.server.controller.api.v1.admin.outbound.pds;
 import kr.co.eicn.ippbx.exception.ValidationException;
 import kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.*;
 import kr.co.eicn.ippbx.model.dto.eicn.*;
+import kr.co.eicn.ippbx.model.dto.eicn.search.SearchOutboundNumberResponse;
 import kr.co.eicn.ippbx.model.enums.CommonTypeKind;
 import kr.co.eicn.ippbx.model.enums.CommonTypeStatus;
 import kr.co.eicn.ippbx.model.enums.PDSGroupConnectKind;
@@ -10,6 +11,7 @@ import kr.co.eicn.ippbx.model.enums.ServerType;
 import kr.co.eicn.ippbx.model.form.PDSExecuteFormRequest;
 import kr.co.eicn.ippbx.model.form.PDSGroupFormRequest;
 import kr.co.eicn.ippbx.model.search.PDSGroupSearchRequest;
+import kr.co.eicn.ippbx.model.search.search.SearchServiceRequest;
 import kr.co.eicn.ippbx.server.controller.api.ApiBaseController;
 import kr.co.eicn.ippbx.server.repository.eicn.*;
 import kr.co.eicn.ippbx.server.service.CommonFieldPoster;
@@ -58,6 +60,8 @@ public class PDSGroupApiController extends ApiBaseController {
     private final OrganizationService     organizationService;
     private final CommonFieldRepository   commonFieldRepository;
     private final CommonFieldPoster       commonFieldPoster;
+    private final ServiceRepository       serviceRepository;
+    private final PhoneInfoRepository     phoneInfoRepository;
 
     @GetMapping("search")
     public ResponseEntity<JsonResult<List<PDSGroupSummaryResponse>>> list(PDSGroupSearchRequest search) {
@@ -183,6 +187,31 @@ public class PDSGroupApiController extends ApiBaseController {
                         })
                         .collect(Collectors.toList()))
         );
+    }
+
+    /**
+     * RID(발신번호) 목록 조회
+     */
+    @GetMapping("add-rid-numbers")
+    public ResponseEntity<JsonResult<List<SearchOutboundNumberResponse>>> addRidNumberLists() {
+        final List<SearchOutboundNumberResponse> rows = new ArrayList<>();
+        serviceRepository.search(new SearchServiceRequest()).forEach(e -> {
+            final SearchOutboundNumberResponse row = new SearchOutboundNumberResponse();
+            row.setName("[대표번호] " + StringUtils.rightPad(e.getSvcCid(), 11, " ") + " (" + e.getSvcName() + ")");
+            row.setNumber(e.getSvcCid());
+
+            rows.add(row);
+        });
+
+        phoneInfoRepository.findAll().forEach(e -> {
+            final SearchOutboundNumberResponse row = new SearchOutboundNumberResponse();
+            row.setName("[개인번호] " + e.getVoipTel() + " (" + e.getExtension() + ")");
+            row.setNumber(e.getVoipTel());
+
+            rows.add(row);
+        });
+
+        return ResponseEntity.ok(data(rows));
     }
 
     /**
