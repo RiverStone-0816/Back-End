@@ -235,7 +235,7 @@
             <div class="row blank">
                 <div class="four wide column"><label class="control-label label-required">과금번호설정</label></div>
                 <div class="four wide column" style="display: none;">
-                    <div class="ui radio checkbox">
+                    <div class="ui radio checkbox checked">
                         <form:radiobutton path="billingKind" value="NUMBER"/>
                         <label>${g.htmlQuote(g.messageOf('PDSGroupBillingKind', 'NUMBER'))}</label>
                     </div>

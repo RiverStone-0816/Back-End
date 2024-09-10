@@ -15,6 +15,7 @@ import kr.co.eicn.ippbx.model.form.PDSExecuteFormRequest;
 import kr.co.eicn.ippbx.model.form.PDSGroupFormRequest;
 import kr.co.eicn.ippbx.model.search.PDSGroupSearchRequest;
 import kr.co.eicn.ippbx.util.FormUtils;
+import kr.co.eicn.ippbx.util.MapToLinkedHashMap;
 import kr.co.eicn.ippbx.util.ReflectionUtils;
 import kr.co.eicn.ippbx.util.ResultFailException;
 import kr.co.eicn.ippbx.util.page.Pagination;
@@ -69,7 +70,7 @@ public class PdsGroupController extends BaseController {
 
         model.addAttribute("commonFields", apiInterface.addCommonFieldLists());
         model.addAttribute("rids", apiInterface.addRidNumberLists());
-        model.addAttribute("numbers", apiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber)));
+        model.addAttribute("numbers", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber))));
         model.addAttribute("pdsGroupSpeedOptions", FormUtils.optionsOfCode(PDSGroupSpeedMultiple.class));
         model.addAttribute("rsTypes", apiInterface.addCommonTypeLists("RS").stream().collect(Collectors.toMap(e -> e.getSeq().toString(), SummaryCommonTypeResponse::getName)));
 
@@ -96,7 +97,7 @@ public class PdsGroupController extends BaseController {
         model.addAttribute("hosts", apiInterface.addServerLists().stream().collect(Collectors.toMap(SummaryCompanyServerResponse::getHost, SummaryCompanyServerResponse::getName)));
         model.addAttribute("commonFields", apiInterface.addCommonFieldLists().stream().filter(e -> e.getType().equals(entity.getPdsType())).collect(Collectors.toList()));
         model.addAttribute("rids", apiInterface.addRidNumberLists());
-        model.addAttribute("numbers", apiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber)));
+        model.addAttribute("numbers", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber))));
         model.addAttribute("pdsGroupSpeedOptions", FormUtils.optionsOfCode(PDSGroupSpeedMultiple.class));
 
         return "admin/outbound/pds/group/modal-execution-request";
