@@ -19,8 +19,10 @@ import kr.co.eicn.ippbx.util.EnumUtils;
 import kr.co.eicn.ippbx.util.JsonResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -143,6 +145,9 @@ public class OutboundCommonCodeApiController extends ApiBaseController {
         CommonFieldResponse commonFieldResponse = convertDto(commonField, CommonFieldResponse.class);
 
         commonFieldResponse.setCommonCodes(commonCodeList.stream().map(commonCode -> convertDto(commonCode, CommonCodeDetailResponse.class)).collect(Collectors.toList()));
+
+        if(!CollectionUtils.isEmpty(commonCodeList) && StringUtils.isNotEmpty(commonCodeList.get(0).getRelatedFieldId()))
+            commonFieldResponse.setRelatedFieldId(commonCodeList.get(0).getRelatedFieldId());
 
         return ResponseEntity.ok(data(commonFieldResponse));
     }
