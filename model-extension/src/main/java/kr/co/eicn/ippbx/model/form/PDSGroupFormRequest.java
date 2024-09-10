@@ -86,7 +86,7 @@ public class PDSGroupFormRequest extends BaseForm {
             if (Objects.isNull(EnumUtils.of(PDSGroupBillingKind.class, billingKind)))
                 reject(bindingResult, "billingKind", "messages.validator.invalid", "과금번호설정 구분");
 
-            if (isEmpty(billingData))
+            if (!billingKind.equals(PDSGroupBillingKind.PBX.getCode()) && isEmpty(billingData))
                 reject(bindingResult, "billingData", "messages.validator.blank", "과금번호");
 
             if (billingKind.equals(PDSGroupBillingKind.NUMBER.getCode()))

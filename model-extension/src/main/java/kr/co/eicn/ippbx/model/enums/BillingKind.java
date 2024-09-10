@@ -3,10 +3,13 @@ package kr.co.eicn.ippbx.model.enums;
 import kr.co.eicn.ippbx.util.CodeHasable;
 
 /**
- * PBX: 내선별, DIRECT: 직접입력, NUMBER: 번호선택
+ * 프리뷰그룹 > 과금번호설정 구분
+ * PBX:내선별 PBX 설정에 따름
+ * NUMBER:그룹별번호
+ * DIRECT:그룹별직접입력 (미사용)
  */
 public enum BillingKind implements CodeHasable<String> {
-    PBX("PBX"), DIRECT("DIRECT"), NUMBER("NUMBER");
+    PBX("PBX"), NUMBER("NUMBER"), DIRECT("DIRECT");
 
     private final String code;
 

@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -41,9 +40,9 @@ import java.util.stream.Collectors;
 public class PreviewGroupController extends BaseController {
     private static final Logger logger = LoggerFactory.getLogger(PreviewGroupController.class);
 
-    private final PreviewGroupApiInterface apiInterface;
-    private final PdsGroupApiInterface pdsGroupApiInterface;
-    private final OrganizationService organizationService;
+    private final PreviewGroupApiInterface    apiInterface;
+    private final PdsGroupApiInterface        pdsGroupApiInterface;
+    private final OrganizationService         organizationService;
     private final CallbackHistoryApiInterface callbackHistoryApiInterface;
 
     @GetMapping("")
@@ -51,32 +50,22 @@ public class PreviewGroupController extends BaseController {
         final Pagination<PrvGroupSummaryResponse> pagination = apiInterface.pagination(search);
         model.addAttribute("pagination", pagination);
 
-        final Map<Integer, String> prvTypes = apiInterface.prvType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("prvTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(prvTypes));
+        model.addAttribute("prvTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.prvType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName))));
 
         return "admin/outbound/preview/group/ground";
     }
 
     @GetMapping("new/modal")
     public String modal(Model model, @ModelAttribute("form") PrvGroupFormRequest form) throws IOException, ResultFailException {
-        final Map<Integer, String> prvTypes = apiInterface.prvType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("prvTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(prvTypes));
+        model.addAttribute("prvTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.prvType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName))));
+        model.addAttribute("resultTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.resultType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName))));
+        model.addAttribute("rids", pdsGroupApiInterface.addRidNumberLists());
+        model.addAttribute("numbers", new MapToLinkedHashMap().toLinkedHashMapByValue(pdsGroupApiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber))));
+        model.addAttribute("prvGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(apiInterface.prvGroup().stream().collect(Collectors.toMap(PrvGroupResponse::getSeq, PrvGroupResponse::getName))));
+        model.addAttribute("memberKinds", new MapToLinkedHashMap().toLinkedHashMapByValue(FormUtils.optionsOfCode(PrvMemberKind.class)));
 
-        final Map<Integer, String> resultTypes = apiInterface.resultType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("resultTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(resultTypes));
-
-        final Map<String, String> numbers = pdsGroupApiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber));
-        model.addAttribute("numbers", new MapToLinkedHashMap().toLinkedHashMapByValue(numbers));
-
-        final List<PrvGroupResponse> prvGroupList = apiInterface.prvGroup();
-        final Map<Integer, String> prvGroups = prvGroupList.stream().collect(Collectors.toMap(PrvGroupResponse::getSeq, PrvGroupResponse::getName));
-        model.addAttribute("prvGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(prvGroups));
-
-        final Map<String, String> memberKinds = FormUtils.optionsOfCode(PrvMemberKind.class);
-        model.addAttribute("memberKinds", new MapToLinkedHashMap().toLinkedHashMapByValue(memberKinds));
-
-        final Map<String, String> persons = callbackHistoryApiInterface.addPersons().stream().collect(Collectors.toMap(SummaryCallbackDistPersonResponse::getId, SummaryPersonResponse::getIdName));
-        model.addAttribute("persons", new MapToLinkedHashMap().toLinkedHashMapByValue(persons));
+        if (!model.containsAttribute("persons"))
+            model.addAttribute("persons", new MapToLinkedHashMap().toLinkedHashMapByValue(callbackHistoryApiInterface.addPersons().stream().collect(Collectors.toMap(SummaryCallbackDistPersonResponse::getId, SummaryPersonResponse::getIdName))));
 
         return "admin/outbound/preview/group/modal";
     }
@@ -89,22 +78,6 @@ public class PreviewGroupController extends BaseController {
 
         model.addAttribute("searchOrganizationNames", organizationService.getHierarchicalOrganizationNames(entity.getGroupCode()));
 
-        final Map<Integer, String> prvTypes = apiInterface.prvType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("prvTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(prvTypes));
-
-        final Map<Integer, String> resultTypes = apiInterface.resultType().stream().collect(Collectors.toMap(CommonTypeResponse::getSeq, CommonTypeResponse::getName));
-        model.addAttribute("resultTypes", new MapToLinkedHashMap().toLinkedHashMapByValue(resultTypes));
-
-        final Map<String, String> numbers = pdsGroupApiInterface.addNumberLists().stream().collect(Collectors.toMap(SummaryNumber070Response::getNumber, SummaryNumber070Response::getNumber));
-        model.addAttribute("numbers", new MapToLinkedHashMap().toLinkedHashMapByValue(numbers));
-
-        final List<PrvGroupResponse> prvGroupList = apiInterface.prvGroup();
-        final Map<Integer, String> prvGroups = prvGroupList.stream().collect(Collectors.toMap(PrvGroupResponse::getSeq, PrvGroupResponse::getName));
-        model.addAttribute("prvGroups", new MapToLinkedHashMap().toLinkedHashMapByValue(prvGroups));
-
-        final Map<String, String> memberKinds = FormUtils.optionsOfCode(PrvMemberKind.class);
-        model.addAttribute("memberKinds", new MapToLinkedHashMap().toLinkedHashMapByValue(memberKinds));
-
         final Map<String, String> persons = callbackHistoryApiInterface.addPersons().stream().collect(Collectors.toMap(SummaryCallbackDistPersonResponse::getId, SummaryPersonResponse::getIdName));
         model.addAttribute("persons", new MapToLinkedHashMap().toLinkedHashMapByValue(persons));
 
@@ -114,7 +87,7 @@ public class PreviewGroupController extends BaseController {
         for (String id : members.keySet())
             persons.remove(id);
 
-        return "admin/outbound/preview/group/modal";
+        return modal(model, form);
     }
 
     @GetMapping("{seq}/modal-upload")

@@ -105,8 +105,8 @@
                 <div class="eight wide column">
                     <div class="ui form ${form.ridKind eq 'CAMPAIGN' ? '' : 'disabled'}">
                         <form:select path="ridData">
-                            <form:option value="" label="번호선택"/>
-                            <form:options items="${rids}" itemValue="number" itemLabel="name" cssStyle="white-space: pre;"/>
+                            <form:option value="" label="RID(발신번호) 선택"/>
+                            <form:options items="${rids}" itemValue="number" itemLabel="name"/>
                         </form:select>
                     </div>
                 </div>

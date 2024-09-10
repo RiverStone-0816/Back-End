@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">그룹명</label></div>
+                <div class="four wide column"><label class="control-label label-required">그룹명</label></div>
                 <div class="twelve wide column">
                     <div class="ui input fluid">
                         <form:input path="name"/>
@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">프리뷰 유형</label></div>
+                <div class="four wide column"><label class="control-label label-required">프리뷰 유형</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <form:select path="prvType">
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">상담결과 유형</label></div>
+                <div class="four wide column"><label class="control-label label-required">상담결과 유형</label></div>
                 <div class="twelve wide column">
                     <div class="ui form">
                         <form:select path="resultType">
@@ -59,7 +59,8 @@
             <div class="row">
                 <div class="four wide column"><label class="control-label">부서선택</label></div>
                 <div class="twelve wide column">
-                    <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]" data-name=".-group-name" data-select=".-select-group" data-clear=".-clear-group">
+                    <div class="ui form organization-select -select-group-container" data-input="[name=groupCode]"
+                         data-name=".-group-name" data-select=".-select-group" data-clear=".-clear-group">
                         <button type="button" class="ui icon button mini blue compact -select-group">
                             <i class="search icon"></i>
                         </button>
@@ -103,59 +104,62 @@
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">다이얼시간</label></div>
+                <div class="four wide column"><label class="control-label label-required">다이얼시간</label></div>
                 <div class="twelve wide column">
                     <form:input path="dialTimeout" size="2" cssClass="-input-numerical"/> 초 (30초이상권장)
                 </div>
             </div>
             <div class="row">
-                <div class="four wide column"><label class="control-label">RID(발신번호) 설정</label></div>
-                <div class="six wide column">
+                <div class="four wide column"><label class="control-label label-required">RID(발신번호) 설정</label></div>
+                <div class="five wide column">
                     <div class="ui radio checkbox">
                         <form:radiobutton path="ridKind" value="CAMPAIGN"/>
-                        <label>그룹별RID지정</label>
+                        <label>${g.htmlQuote(g.messageOf('RidKind', 'CAMPAIGN'))}</label>
                     </div>
                 </div>
-                <div class="six wide column">
-                    <div class="ui form">
-                        <form:input path="ridData" />
+                <div class="seven wide column">
+                    <div class="ui form ${form.ridKind eq 'CAMPAIGN' ? '' : 'disabled'}">
+                        <form:select path="ridData">
+                            <form:option value="" label="RID(발신번호) 선택"/>
+                            <form:options items="${rids}" itemValue="number" itemLabel="name"/>
+                        </form:select>
                     </div>
                 </div>
                 <div class="four wide column"></div>
-                <div class="six wide column">
+                <div class="five wide column">
                     <div class="ui radio checkbox">
                         <form:radiobutton path="ridKind" value="PBX"/>
-                        <label>내선별 PBX 설정에 따름</label>
+                        <label>${g.htmlQuote(g.messageOf('RidKind', 'PBX'))}</label>
                     </div>
                 </div>
             </div>
             <div class="row blank">
-                <div class="four wide column"><label class="control-label">과금번호설정</label></div>
-                <div class="six wide column">
+                <div class="four wide column"><label class="control-label label-required">과금번호설정</label></div>
+                <div class="five wide column">
                     <div class="ui radio checkbox">
                         <form:radiobutton path="billingKind" value="NUMBER"/>
-                        <label>그룹별번호</label>
+                        <label>${g.htmlQuote(g.messageOf('BillingKind', 'NUMBER'))}</label>
                     </div>
                 </div>
-                <div class="six wide column">
-                    <div class="ui form">
+                <div class="seven wide column">
+                    <div class="ui form ${form.billingKind eq 'NUMBER' ? '' : 'disabled'}">
                         <form:select path="billingData">
-                            <form:option value="" label="선택안함"/>
+                            <form:option value="" label="과금번호 선택"/>
                             <form:options items="${numbers}"/>
                         </form:select>
                     </div>
                 </div>
                 <div class="four wide column"></div>
-                <div class="six wide column">
+                <div class="five wide column">
                     <div class="ui radio checkbox">
                         <form:radiobutton path="billingKind" value="PBX"/>
-                        <label>내선별 PBX 설정에 따름</label>
+                        <label>${g.htmlQuote(g.messageOf('BillingKind', 'PBX'))}</label>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="four wide column">
-                    <label class="control-label">상담원설정</label>
+                    <label class="control-label label-required">상담원설정</label>
                 </div>
                 <div class="twelve wide column">
                     <c:forEach var="e" items="${memberKinds}">
@@ -168,8 +172,8 @@
                     </c:forEach>
                 </div>
                 <div class="four wide column"></div>
-                <div class="twelve wide column">
-                    <div class="jp-multiselect -moving-container">
+                <div class="twelve wide column ${form.memberKind eq 'CAMPAIGN' ? '' : 'disabled'}">
+                    <div class="jp-multiselect -moving-container" id="prv-member-container">
                         <div class="from-panel">
                             <select class="form-control -left-selector" size="8" multiple="multiple">
                                 <c:forEach var="e" items="${persons}">
@@ -182,7 +186,8 @@
                             <button type="button" class="btn-move-selected-left -to-left">‹</button>
                         </div>
                         <div class="to-panel">
-                            <select name="memberDataList" class="form-control -right-selector" size="8" multiple="multiple">
+                            <select name="memberDataList" class="form-control -right-selector" size="8"
+                                    multiple="multiple">
                                 <c:forEach var="e" items="${members}">
                                     <option value="${g.htmlQuote(e.key)}">${g.htmlQuote(e.key)} (${g.htmlQuote(e.value)})</option>
                                 </c:forEach>
@@ -207,4 +212,40 @@
             data.memberDataList.push($(this).val());
         });
     };
+
+    modal.find('[name=ridKind]').change(function () {
+        const ridKind = modal.find('[name=ridKind]:checked').val();
+        const ridDate = modal.find('#ridData');
+        ridDate.val('');
+
+        if (ridKind === 'CAMPAIGN')
+            ridDate.parent().removeClass('disabled');
+        else
+            ridDate.parent().addClass('disabled');
+
+        console.log("test: ssssssss")
+    });
+
+    modal.find('[name=billingKind]').change(function () {
+        const billingKind = modal.find('[name=billingKind]:checked').val();
+        const billingData = modal.find('#billingData');
+        billingData.val('');
+
+        if (billingKind === 'NUMBER')
+            billingData.parent().removeClass('disabled');
+        else
+            billingData.parent().addClass('disabled');
+
+    });
+
+    modal.find('[name=memberKind]').change(function () {
+        const memberKind = modal.find('[name=memberKind]:checked').val();
+        const memberContainer = modal.find('#prv-member-container');
+        memberContainer.val('');
+
+        if (memberKind === 'CAMPAIGN')
+            memberContainer.parent().removeClass('disabled');
+        else
+            memberContainer.parent().addClass('disabled');
+    });
 </script>
