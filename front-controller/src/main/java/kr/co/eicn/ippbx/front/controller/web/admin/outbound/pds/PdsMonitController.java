@@ -2,6 +2,7 @@ package kr.co.eicn.ippbx.front.controller.web.admin.outbound.pds;
 
 import kr.co.eicn.ippbx.front.controller.BaseController;
 import kr.co.eicn.ippbx.front.interceptor.LoginRequired;
+import kr.co.eicn.ippbx.front.service.api.outbound.pds.PdsGroupApiInterface;
 import kr.co.eicn.ippbx.model.enums.PDSGroupSpeedMultiple;
 import kr.co.eicn.ippbx.util.FormUtils;
 import kr.co.eicn.ippbx.util.ResultFailException;
@@ -34,6 +35,7 @@ public class PdsMonitController extends BaseController {
 
     private final PdsMonitApiInterface apiInterface;
     private final QueueApiInterface    queueApiInterface;
+    private final PdsGroupApiInterface pdsGroupApiInterface;
 
     @GetMapping("")
     public String page(Model model, @ModelAttribute("search") PDSMonitSearchRequest search) throws IOException, ResultFailException {
@@ -42,6 +44,7 @@ public class PdsMonitController extends BaseController {
 
         model.addAttribute("pdsList", apiInterface.getPDSList(new PDSMonitSearchRequest()).stream().collect(Collectors.toMap(PDSExecuteListResponse::getLastExecuteId, PDSExecuteListResponse::getLastExecuteName)));
         model.addAttribute("pdsStatues", queueApiInterface.getPdsQueuePersonStatus());
+        model.addAttribute("rids", pdsGroupApiInterface.addRidNumberLists());
         model.addAttribute("pdsGroupSpeedOptions", FormUtils.optionsOfCode(PDSGroupSpeedMultiple.class));
 
         return "admin/outbound/pds/monit/ground";

@@ -163,10 +163,14 @@
                                                 <td>${g.htmlQuote(g.messageOf('PDSGroupConnectKind', e.pdsGroup.connectKind))}</td>
                                                 <td>${g.htmlQuote(e.pdsGroup.connectDataValue)}</td>
                                                 <td>
-                                                    <div class="ui action input fluid">
-                                                        <input type="text" class="-input-numerical -pds-rid-data"
-                                                               data-execute-id="${g.htmlQuote(e.executeGroup.executeId)}"
-                                                               value="${g.htmlQuote(e.executeGroup.ridData)}">
+                                                    <div class="ui action input form fluid">
+                                                        <select class="-pds-rid-data"
+                                                                style="border-top-right-radius: 0 !important;border-bottom-right-radius: 0 !important;border-right-color: transparent !important;"
+                                                                data-execute-id="${g.htmlQuote(e.executeGroup.executeId)}">
+                                                            <c:forEach var="f" items="${rids}">
+                                                                <option value="${f.number}" ${e.executeGroup.ridData eq f.number ? 'selected' : ''}>${f.name}</option>
+                                                            </c:forEach>
+                                                        </select>
                                                         <button type="button" class="ui button "
                                                                 onclick="setRid('${g.htmlQuote(e.executeGroup.executeId)}', '${g.htmlQuote(e.executeGroup.pdsGroupId)}', $(this).prev().val())">
                                                             수정
@@ -306,7 +310,7 @@
                     ipccPdsCommunicator.delete($(this).val());
                 });
 
-                $('#search-form').submit();
+                setTimeout(() => $('#search-form').submit(), 1000);
             }
 
             function setRid(executeId, pdsGroupId, value) {
