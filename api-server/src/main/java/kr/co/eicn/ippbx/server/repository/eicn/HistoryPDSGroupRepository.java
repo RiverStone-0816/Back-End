@@ -30,7 +30,7 @@ public class HistoryPDSGroupRepository extends EicnBaseRepository<HistoryPdsGrou
     }
 
     public Pagination<kr.co.eicn.ippbx.meta.jooq.eicn.tables.pojos.HistoryPdsGroup> pagination(PDSHistorySearchRequest search) {
-        return pagination(search, conditions(search), Collections.singletonList(HISTORY_PDS_GROUP.STOP_DATE.desc()));
+        return pagination(search, conditions(search));
     }
 
     private List<Condition> conditions(PDSHistorySearchRequest search) {
