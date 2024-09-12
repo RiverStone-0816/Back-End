@@ -290,10 +290,14 @@
                         <label>${g.htmlQuote(g.messageOf('PDSGroupSpeedKind', 'CHANNEL'))}</label>
                     </div>
                 </div>
-                <div class="four wide column -pds-connect-kind-speed" data-group="2">
-                    <input type="text" size="2" name="speedData_CHANNEL" class="-input-numerical"
-                           value="${form.speedKind == 'CHANNEL' ? form.speedData : ''}"> 채널 (500미만)
+                <div class="two wide column -pds-connect-kind-speed" data-group="2">
+                    <div class="ui input form fluid">
+                        <input type="number" name="speedData_CHANNEL"
+                               min="1" max="500" placeholder="1~500" title="1~500"
+                               value="${form.speedKind == 'CHANNEL' ? form.speedData : ''}">
+                    </div>
                 </div>
+                <div class="four wide column remove-padding">채널 (500이하)</div>
             </div>
             <div class="row blank -connect-kind-update-data" data-value="Y">
                 <div class="four wide column"><label class="control-label label-required">상담결과화면</label></div>
