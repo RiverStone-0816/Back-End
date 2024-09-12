@@ -2014,7 +2014,7 @@ IpccPdsCommunicator.prototype.setSpeed = function (pdsGroupId, value) {
 IpccPdsCommunicator.prototype.setTimeout = function (pdsGroupId, value) {
     this.send("CMD|PDS_SETTIMEOUT|" + pdsGroupId + "," + value);
 };
-};function IpccCommunicator() {
+function IpccCommunicator() {
     this.socket = null;
     this.init();
 }
@@ -2174,8 +2174,8 @@ IpccCommunicator.prototype.processor = {
         this.status.cMemberStatus = parseInt(kind);
         this.status.memberStatus = parseInt(kind);
     },
-    CALLEVENT: function (message, kind, data1, data2, data3, data4, data5, data6, data7, data8, date9, date10){
-        this.status.clickKey = date10.toLowerCase();
+    CALLEVENT: function (message, kind, data1, data2, data3, data4, data5, data6, data7, data8, data9, data10){
+        this.status.clickKey = data10 ? data10.toLowerCase() : '';
     },
     HANGUPEVENT: function (message, kind, data1, data2, data3, data4, data5, data6, data7, data8) {
         this.send("CMD|HANGUP_ACK|" + data5 + ","

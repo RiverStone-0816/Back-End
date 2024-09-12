@@ -161,8 +161,7 @@ IpccCommunicator.prototype.processor = {
         this.status.memberStatus = parseInt(kind);
     },
     CALLEVENT: function (message, kind, data1, data2, data3, data4, data5, data6, data7, data8, data9, data10) {
-        if (data10)
-            this.status.clickKey = data10.toLowerCase();
+        this.status.clickKey = data10 ? data10.toLowerCase() : '';
     },
     HANGUPEVENT: function (message, kind, data1, data2, data3, data4, data5, data6, data7, data8) {
         this.send("CMD|HANGUP_ACK|" + data5 + ","
